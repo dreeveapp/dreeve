@@ -12,14 +12,21 @@ use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Year;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final readonly class TrainingGoalsWidget implements Widget
 {
     public function __construct(
+        private TranslatorInterface $translator,
         private QueryBus $queryBus,
         private Environment $twig,
     ) {
+    }
+
+    public function getLabel(): string
+    {
+        return $this->translator->trans('Training goals');
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration

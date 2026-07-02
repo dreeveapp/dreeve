@@ -7,7 +7,7 @@ namespace App\Domain\Dashboard;
 final readonly class DashboardLayout implements \IteratorAggregate
 {
     private function __construct(
-        /** @var list<array{widget: string, width: int, enabled: bool}> */
+        /** @var list<array{widget: string, width: int}> */
         private array $config,
     ) {
     }
@@ -18,36 +18,35 @@ final readonly class DashboardLayout implements \IteratorAggregate
     }
 
     /**
-     * @return list<array{widget: string, width: int, enabled: bool}>
+     * @return list<array{widget: string, width: int}>
      */
     public static function default(): array
     {
         return [
-            ['widget' => 'mostRecentActivities', 'width' => 66, 'enabled' => true, 'config' => ['numberOfActivitiesToDisplay' => 5]],
-            ['widget' => 'introText', 'width' => 33, 'enabled' => true],
-            ['widget' => 'trainingGoals', 'width' => 33, 'enabled' => false, 'config' => ['goals' => []]],
-            ['widget' => 'weeklyStats', 'width' => 100, 'enabled' => true, 'config' => ['metricsDisplayOrder' => ['distance', 'movingTime', 'elevation']]],
-            ['widget' => 'activityGrid', 'width' => 100, 'enabled' => true],
-            ['widget' => 'streaks', 'width' => 33, 'enabled' => true, 'config' => ['subtitle' => null, 'sportTypesToInclude' => []]],
-            ['widget' => 'athleteProfile', 'width' => 33, 'enabled' => true],
-            ['widget' => 'eddington', 'width' => 33, 'enabled' => true],
-            ['widget' => 'peakPowerOutputs', 'width' => 50, 'enabled' => true],
-            ['widget' => 'heartRateZones', 'width' => 50, 'enabled' => true],
-            ['widget' => 'monthlyStats', 'width' => 66, 'enabled' => true, 'config' => [
+            ['widget' => 'mostRecentActivities', 'width' => 66, 'config' => ['numberOfActivitiesToDisplay' => 5]],
+            ['widget' => 'introText', 'width' => 33],
+            ['widget' => 'weeklyStats', 'width' => 100, 'config' => ['metricsDisplayOrder' => ['distance', 'movingTime', 'elevation']]],
+            ['widget' => 'activityGrid', 'width' => 100],
+            ['widget' => 'streaks', 'width' => 33, 'config' => ['subtitle' => null, 'sportTypesToInclude' => []]],
+            ['widget' => 'athleteProfile', 'width' => 33],
+            ['widget' => 'eddington', 'width' => 33],
+            ['widget' => 'peakPowerOutputs', 'width' => 50],
+            ['widget' => 'heartRateZones', 'width' => 50],
+            ['widget' => 'monthlyStats', 'width' => 66, 'config' => [
                 'enableLastXYearsByDefault' => 10, 'metricsDisplayOrder' => ['distance', 'movingTime', 'elevation'],
             ]],
-            ['widget' => 'mostRecentMilestones', 'width' => 33, 'enabled' => true, 'config' => ['numberOfMilestonesToDisplay' => 5]],
-            ['widget' => 'trainingLoad', 'width' => 100, 'enabled' => true],
-            ['widget' => 'weekdayStats', 'width' => 50, 'enabled' => true],
-            ['widget' => 'dayTimeStats', 'width' => 50, 'enabled' => true],
-            ['widget' => 'distanceBreakdown', 'width' => 50, 'enabled' => true],
-            ['widget' => 'gearStats', 'width' => 50, 'enabled' => true, 'config' => ['includeRetiredGear' => true]],
-            ['widget' => 'yearlyStats', 'width' => 100, 'enabled' => true, 'config' => ['enableLastXYearsByDefault' => 10, 'metricsDisplayOrder' => ['distance', 'movingTime', 'elevation']]],
-            ['widget' => 'zwiftStats', 'width' => 50, 'enabled' => true],
-            ['widget' => 'ftpHistory', 'width' => 50, 'enabled' => true],
-            ['widget' => 'challengeConsistency', 'width' => 50, 'enabled' => true, 'config' => ['challenges' => []]],
-            ['widget' => 'mostRecentChallengesCompleted', 'width' => 50, 'enabled' => true, 'config' => ['numberOfChallengesToDisplay' => 5]],
-            ['widget' => 'athleteWeightHistory', 'width' => 50, 'enabled' => true],
+            ['widget' => 'mostRecentMilestones', 'width' => 33, 'config' => ['numberOfMilestonesToDisplay' => 5]],
+            ['widget' => 'trainingLoad', 'width' => 100],
+            ['widget' => 'weekdayStats', 'width' => 50],
+            ['widget' => 'dayTimeStats', 'width' => 50],
+            ['widget' => 'distanceBreakdown', 'width' => 50],
+            ['widget' => 'gearStats', 'width' => 50, 'config' => ['includeRetiredGear' => true]],
+            ['widget' => 'yearlyStats', 'width' => 100, 'config' => ['enableLastXYearsByDefault' => 10, 'metricsDisplayOrder' => ['distance', 'movingTime', 'elevation']]],
+            ['widget' => 'zwiftStats', 'width' => 50],
+            ['widget' => 'ftpHistory', 'width' => 50],
+            ['widget' => 'challengeConsistency', 'width' => 50, 'config' => ['challenges' => []]],
+            ['widget' => 'mostRecentChallengesCompleted', 'width' => 50, 'config' => ['numberOfChallengesToDisplay' => 5]],
+            ['widget' => 'athleteWeightHistory', 'width' => 50],
         ];
     }
 
@@ -62,15 +61,11 @@ final readonly class DashboardLayout implements \IteratorAggregate
         }
 
         foreach ($config as $widget) {
-            foreach (['widget', 'width', 'enabled'] as $requiredKey) {
+            foreach (['widget', 'width'] as $requiredKey) {
                 if (array_key_exists($requiredKey, $widget)) {
                     continue;
                 }
                 throw new InvalidDashboardLayout(sprintf('"%s" property is required for each dashboard widget', $requiredKey));
-            }
-
-            if (!is_bool($widget['enabled'])) {
-                throw new InvalidDashboardLayout('"enabled" property must be a boolean');
             }
 
             if (!is_int($widget['width'])) {

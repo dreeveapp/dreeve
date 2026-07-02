@@ -27,6 +27,7 @@ Activity: Activité
 'Add component': 'Add component'
 'Add gear': 'Add gear'
 'Add task': 'Add task'
+'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
 Admin: Admin
 'Admin panel': 'Admin panel'
@@ -86,6 +87,7 @@ Compare: Comparer
 Component: Component
 Components: Components
 Config: Config
+Configure: Configure
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Congrats! You achieved {numberOfPRs} PRs in this activity.'
 'Consider reducing load': 'Envisagez de réduire la charge'
 Consistency: Uniformité
@@ -100,6 +102,7 @@ Cycling: Cyclisme
 Dance: Dance
 'Dark mode': 'Mode sombre'
 Dashboard: 'Tableau de bord'
+'Dashboard layout': 'Dashboard layout'
 Date: Date
 Day: Day
 'Days needed': 'Jours nécessaires'
@@ -125,6 +128,7 @@ Distance: Distance
 'Distance over time per gear': 'Distance dans le temps par matériel'
 'Distance per month per gear': 'Distance par mois par matériel'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Un mélange de vélo, de course, de natation et de renforcement musculaire augmente votre score de variété.'
+'Drag to reorder': 'Drag to reorder'
 Duration: Durée
 'E-Bike Rides': 'Sorties en vélo électrique'
 'E-Mountain Bike Rides': 'Sorties en VTT électrique'
@@ -232,6 +236,7 @@ Imperial: Impérial
 'Individual thresholds vary based on fitness level.': 'Les seuils individuels varient selon le niveau de forme physique.'
 'Inline Skate': 'Roller en ligne'
 Intensity: Intensité
+'Intro text': 'Intro text'
 'It looks like no valid gear is attached to any of the components. Please check your config file.': "Il semble qu'aucun matériel valide ne soit attaché aux composants. Veuillez vérifier votre fichier de configuration."
 Jan: Jan
 Jul: Juil
@@ -374,6 +379,9 @@ Ranking: Classement
 'Remember me for 7 days': 'Remember me for 7 days'
 Remove: Remove
 'Remove task': 'Remove task'
+'Remove widget': 'Remove widget'
+"Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
+'Reset to default': 'Reset to default'
 'Rest Days': 'Jours de repos'
 'Rest days': 'Jours de repos'
 'Rest days in last 7 days': 'Jours de repos des 7 derniers jours'
@@ -394,6 +402,7 @@ Sail: Voile
 Sat: Sam
 Sat.: Sat.
 Save: Save
+'Save layout': 'Save layout'
 'Save settings': 'Save settings'
 Saved: Saved
 Saving...: Saving...
@@ -405,6 +414,7 @@ Segments: Segments
 'Select a component…': 'Select a component…'
 'Select the serviced gear…': 'Select the serviced gear…'
 Sep: Sep
+Settings: Settings
 'Show information': 'Afficher les informations'
 'Show password': 'Show password'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'

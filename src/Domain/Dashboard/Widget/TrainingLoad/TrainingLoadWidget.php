@@ -35,6 +35,11 @@ final readonly class TrainingLoadWidget implements Widget
     {
     }
 
+    public function getLabel(): string
+    {
+        return $this->translator->trans('Training Load Analysis');
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();

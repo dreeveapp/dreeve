@@ -19,6 +19,11 @@ final readonly class IntroTextWidget implements Widget
     ) {
     }
 
+    public function getLabel(): string
+    {
+        return $this->translator->trans('Intro text');
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();

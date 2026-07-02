@@ -13,16 +13,23 @@ use App\Domain\Ftp\Ftps;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final readonly class FtpHistoryWidget implements Widget
 {
     public function __construct(
+        private TranslatorInterface $translator,
         private FtpHistory $ftpHistory,
         private AthleteWeightHistory $athleteWeightHistory,
         private ActivityTypeRepository $activityTypeRepository,
         private Environment $twig,
     ) {
+    }
+
+    public function getLabel(): string
+    {
+        return $this->translator->trans('FTP history');
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration

@@ -7,14 +7,21 @@ namespace App\Domain\Dashboard\Widget;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final readonly class MostRecentChallengesCompletedWidget implements Widget
 {
     public function __construct(
+        private TranslatorInterface $translator,
         private ChallengeRepository $challengeRepository,
         private Environment $twig,
     ) {
+    }
+
+    public function getLabel(): string
+    {
+        return $this->translator->trans('Most recent challenges');
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration

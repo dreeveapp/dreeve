@@ -21,6 +21,11 @@ final readonly class DayTimeStatsWidget implements Widget
     ) {
     }
 
+    public function getLabel(): string
+    {
+        return $this->translator->trans('Daytime stats');
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();

@@ -27,6 +27,7 @@ Activity: 活动
 'Add component': 'Add component'
 'Add gear': 'Add gear'
 'Add task': 'Add task'
+'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
 Admin: Admin
 'Admin panel': 'Admin panel'
@@ -86,6 +87,7 @@ Compare: 对比
 Component: Component
 Components: Components
 Config: Config
+Configure: Configure
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Congrats! You achieved {numberOfPRs} PRs in this activity.'
 'Consider reducing load': 'Consider reducing load'
 Consistency: Consistency
@@ -100,6 +102,7 @@ Cycling: 骑行
 Dance: Dance
 'Dark mode': 'Dark mode'
 Dashboard: 仪表板
+'Dashboard layout': 'Dashboard layout'
 Date: 日期
 Day: Day
 'Days needed': 所需天数
@@ -125,6 +128,7 @@ Distance: 距离
 'Distance over time per gear': 每个装备随时间变化的距离
 'Distance per month per gear': 每个装备每月的距离
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.'
+'Drag to reorder': 'Drag to reorder'
 Duration: Duration
 'E-Bike Rides': 电动自行车骑行
 'E-Mountain Bike Rides': 电动山地车骑行
@@ -232,6 +236,7 @@ Imperial: Imperial
 'Individual thresholds vary based on fitness level.': 个人阈值因体能水平而异。
 'Inline Skate': 直排轮滑
 Intensity: Intensity
+'Intro text': 'Intro text'
 'It looks like no valid gear is attached to any of the components. Please check your config file.': 无法在任何组件上找到有效装备。请检查您的配置文件。
 Jan: 一月
 Jul: 七月
@@ -374,6 +379,9 @@ Ranking: Ranking
 'Remember me for 7 days': 'Remember me for 7 days'
 Remove: Remove
 'Remove task': 'Remove task'
+'Remove widget': 'Remove widget'
+"Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
+'Reset to default': 'Reset to default'
 'Rest Days': 休息日
 'Rest days': 休息日
 'Rest days in last 7 days': 最近7天的休息日
@@ -394,6 +402,7 @@ Sail: 帆船
 Sat: 周六
 Sat.: Sat.
 Save: Save
+'Save layout': 'Save layout'
 'Save settings': 'Save settings'
 Saved: Saved
 Saving...: Saving...
@@ -405,6 +414,7 @@ Segments: 路段
 'Select a component…': 'Select a component…'
 'Select the serviced gear…': 'Select the serviced gear…'
 Sep: 九月
+Settings: Settings
 'Show information': 显示信息
 'Show password': 'Show password'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'

@@ -27,6 +27,7 @@ Activity: Tevékenység
 'Add component': 'Add component'
 'Add gear': 'Add gear'
 'Add task': 'Add task'
+'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
 Admin: Admin
 'Admin panel': 'Admin panel'
@@ -86,6 +87,7 @@ Compare: Összehasonlítás
 Component: Component
 Components: Components
 Config: Config
+Configure: Configure
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Congrats! You achieved {numberOfPRs} PRs in this activity.'
 'Consider reducing load': 'Fontold meg a terhelés csökkentését'
 Consistency: Következetesség
@@ -100,6 +102,7 @@ Cycling: Kerékpározás
 Dance: Tánc
 'Dark mode': 'Sötét mód'
 Dashboard: Irányítópult
+'Dashboard layout': 'Dashboard layout'
 Date: Dátum
 Day: Nap
 'Days needed': 'Szükséges napok'
@@ -125,6 +128,7 @@ Distance: Távolság
 'Distance over time per gear': 'Távolság időben felszerelésenkén'
 'Distance per month per gear': 'Havi távolság felszerelésenkén'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'A kerékpározás, futás, úszás és erőedzés vegyítése növeli a változatossági pontszámodat.'
+'Drag to reorder': 'Drag to reorder'
 Duration: Időtartam
 'E-Bike Rides': 'E-Bike túrák'
 'E-Mountain Bike Rides': 'E-MTB túrák'
@@ -232,6 +236,7 @@ Imperial: Angolszász
 'Individual thresholds vary based on fitness level.': 'Az egyéni küszöbértékek a fitnesz szinttől függően változnak.'
 'Inline Skate': Görkorcsolya
 Intensity: Intenzitás
+'Intro text': 'Intro text'
 'It looks like no valid gear is attached to any of the components. Please check your config file.': 'Úgy tűnik, hogy egyetlen komponenshez sem tartozik érvényes felszerelés. Kérjük, ellenőrizd a konfigurációs fájlt.'
 Jan: Jan
 Jul: Júl
@@ -374,6 +379,9 @@ Ranking: Ranglista
 'Remember me for 7 days': 'Remember me for 7 days'
 Remove: Remove
 'Remove task': 'Remove task'
+'Remove widget': 'Remove widget'
+"Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
+'Reset to default': 'Reset to default'
 'Rest Days': Pihenőnapok
 'Rest days': Pihenőnapok
 'Rest days in last 7 days': 'Pihenőnapok az utolsó 7 napban'
@@ -394,6 +402,7 @@ Sail: Vitorlázás
 Sat: Szo
 Sat.: Sat.
 Save: Save
+'Save layout': 'Save layout'
 'Save settings': 'Save settings'
 Saved: Saved
 Saving...: Saving...
@@ -405,6 +414,7 @@ Segments: Szegmensek
 'Select a component…': 'Select a component…'
 'Select the serviced gear…': 'Select the serviced gear…'
 Sep: Szept
+Settings: Settings
 'Show information': 'Információ megjelenítése'
 'Show password': 'Show password'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'

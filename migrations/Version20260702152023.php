@@ -37,6 +37,15 @@ final class Version20260702152023 extends AbstractMigration
             'No dashboard layout configured, nothing to migrate'
         );
 
+        // Skip disabled widgets and drop the "enabled" flag.
+        $layout = array_values(array_filter(
+            $layout,
+            static fn (array $widget): bool => (bool) ($widget['enabled'] ?? true),
+        ));
+        foreach ($layout as $i => $widget) {
+            unset($layout[$i]['enabled']);
+        }
+
         $this->connection->executeStatement(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [

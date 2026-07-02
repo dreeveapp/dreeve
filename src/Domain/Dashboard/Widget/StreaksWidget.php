@@ -13,16 +13,23 @@ use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Years;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final readonly class StreaksWidget implements Widget
 {
     public function __construct(
+        private TranslatorInterface $translator,
         private EnrichedActivities $enrichedActivities,
         private QueryBus $queryBus,
         private Clock $clock,
         private Environment $twig,
     ) {
+    }
+
+    public function getLabel(): string
+    {
+        return $this->translator->trans('Current streaks');
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration

@@ -36,14 +36,6 @@ class DashboardLayoutTest extends TestCase
         yield 'missing "width" key' => [$yml, '"width" property is required for each dashboard widget'];
 
         $yml = self::getValidYml();
-        unset($yml[0]['enabled']);
-        yield 'missing "enabled" key' => [$yml, '"enabled" property is required for each dashboard widget'];
-
-        $yml = self::getValidYml();
-        $yml[0]['enabled'] = 'test';
-        yield 'invalid "enabled" key' => [$yml, '"enabled" property must be a boolean'];
-
-        $yml = self::getValidYml();
         $yml[0]['width'] = '33';
         yield 'invalid "width" key' => [$yml, '"width" property must be a valid integer'];
 
@@ -63,20 +55,20 @@ class DashboardLayoutTest extends TestCase
     private static function getValidYml(): array
     {
         return Yaml::parse(<<<YML
-- {'widget': 'mostRecentActivities', 'width': 66, 'enabled': true}
-- {'widget': 'introText', 'width': 33, 'enabled': true}
-- {'widget': 'weeklyStats', 'width': 100, 'enabled': true}
-- {'widget': 'peakPowerOutputs', 'width': 50, 'enabled': true}
-- {'widget': 'heartRateZones', 'width': 50, 'enabled': true}
-- {'widget': 'activityGrid', 'width': 100, 'enabled': true}
-- {'widget': 'trainingLoad', 'width': 100, 'enabled': true}
-- {'widget': 'weekdayStats', 'width': 50, 'enabled': true}
-- {'widget': 'dayTimeStats', 'width': 50, 'enabled': true}
-- {'widget': 'distanceBreakdown', 'width': 100, 'enabled': true}
-- {'widget': 'bestEfforts', 'width': 100, 'enabled': true}
-- {'widget': 'yearlyDistances', 'width': 100, 'enabled': true}
-- {'widget': 'challengeConsistency', 'width': 50, 'enabled': true}
-- {'widget': 'ftpHistory', 'width': 50, 'enabled': true}
+- {'widget': 'mostRecentActivities', 'width': 66}
+- {'widget': 'introText', 'width': 33}
+- {'widget': 'weeklyStats', 'width': 100}
+- {'widget': 'peakPowerOutputs', 'width': 50}
+- {'widget': 'heartRateZones', 'width': 50}
+- {'widget': 'activityGrid', 'width': 100}
+- {'widget': 'trainingLoad', 'width': 100}
+- {'widget': 'weekdayStats', 'width': 50}
+- {'widget': 'dayTimeStats', 'width': 50}
+- {'widget': 'distanceBreakdown', 'width': 100}
+- {'widget': 'bestEfforts', 'width': 100}
+- {'widget': 'yearlyDistances', 'width': 100}
+- {'widget': 'challengeConsistency', 'width': 50}
+- {'widget': 'ftpHistory', 'width': 50}
 YML
         );
     }

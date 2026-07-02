@@ -36,4 +36,9 @@ final class WidgetConfiguration
     {
         return array_key_exists($key, $this->configuration);
     }
+
+    public function isEmpty(): bool
+    {
+        return [] === $this->configuration;
+    }
 }

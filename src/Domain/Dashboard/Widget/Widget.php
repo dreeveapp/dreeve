@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag('app.dashboard.widget')]
 interface Widget
 {
+    public function getLabel(): string;
+
     public function getDefaultConfiguration(): WidgetConfiguration;
 
     public function guardValidConfiguration(WidgetConfiguration $configuration): void;

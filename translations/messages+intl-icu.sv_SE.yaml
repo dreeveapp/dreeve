@@ -27,6 +27,7 @@ Activity: Aktivitet
 'Add component': 'Add component'
 'Add gear': 'Add gear'
 'Add task': 'Add task'
+'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
 Admin: Admin
 'Admin panel': 'Admin panel'
@@ -86,6 +87,7 @@ Compare: Jämför
 Component: Component
 Components: Components
 Config: Config
+Configure: Configure
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Congrats! You achieved {numberOfPRs} PRs in this activity.'
 'Consider reducing load': 'Consider reducing load'
 Consistency: Consistency
@@ -100,6 +102,7 @@ Cycling: Cykling
 Dance: Dance
 'Dark mode': 'Dark mode'
 Dashboard: Översikt
+'Dashboard layout': 'Dashboard layout'
 Date: Datum
 Day: Day
 'Days needed': 'Dagar saknade'
@@ -125,6 +128,7 @@ Distance: Distans
 'Distance over time per gear': 'Distans över tid per utrustning'
 'Distance per month per gear': 'Distans per månad per utrustning'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.'
+'Drag to reorder': 'Drag to reorder'
 Duration: Duration
 'E-Bike Rides': 'E-Cykel Turer'
 'E-Mountain Bike Rides': 'E-Mountain Bike Turer'
@@ -232,6 +236,7 @@ Imperial: Imperial
 'Individual thresholds vary based on fitness level.': 'Individuella trösklar varierar beroende på hur vältränad du är.'
 'Inline Skate': Rullskridskor
 Intensity: Intensity
+'Intro text': 'Intro text'
 'It looks like no valid gear is attached to any of the components. Please check your config file.': 'Det verkar som att ingen giltig utrustning är kopplad till någon av komponenterna. Kontrollera din konfigurationsfil.'
 Jan: Jan
 Jul: Jul
@@ -374,6 +379,9 @@ Ranking: Rankning
 'Remember me for 7 days': 'Remember me for 7 days'
 Remove: Remove
 'Remove task': 'Remove task'
+'Remove widget': 'Remove widget'
+"Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
+'Reset to default': 'Reset to default'
 'Rest Days': Vilodagar
 'Rest days': Vilodagar
 'Rest days in last 7 days': 'Vilodagar de senaste 7 dagarna'
@@ -394,6 +402,7 @@ Sail: Segling
 Sat: Lör
 Sat.: Sat.
 Save: Save
+'Save layout': 'Save layout'
 'Save settings': 'Save settings'
 Saved: Saved
 Saving...: Saving...
@@ -405,6 +414,7 @@ Segments: Segment
 'Select a component…': 'Select a component…'
 'Select the serviced gear…': 'Select the serviced gear…'
 Sep: Sep
+Settings: Settings
 'Show information': 'Visa information'
 'Show password': 'Show password'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'

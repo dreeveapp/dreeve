@@ -27,6 +27,7 @@ Activity: Aktivität
 'Add component': 'Komponente hinzufügen'
 'Add gear': 'Ausrüstung hinzufügen'
 'Add task': 'Aufgabe hinzufügen'
+'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Füge {fit}, {tcx} oder {gpx} Dateien hinzu. Sie werden alle paar Minuten verarbeitet'
 Admin: Admin
 'Admin panel': 'Adminbereich'
@@ -86,6 +87,7 @@ Compare: Vergleich
 Component: Komponente
 Components: Komponenten
 Config: Konfiguration
+Configure: Configure
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Glückwunsch! Du hast {numberOfPRs} PRs in der Aktivität.'
 'Consider reducing load': 'Belastungsreduzierung in Erwägung ziehen'
 Consistency: Konstanz
@@ -100,6 +102,7 @@ Cycling: Radfahren
 Dance: Tanzen
 'Dark mode': 'Dark mode'
 Dashboard: Dashboard
+'Dashboard layout': 'Dashboard layout'
 Date: Datum
 Day: Tag
 'Days needed': 'Benötigte Tage'
@@ -125,6 +128,7 @@ Distance: Distanz
 'Distance over time per gear': 'Distanz über Zeit pro Ausrüstung'
 'Distance per month per gear': 'Distanz pro Monat pro Ausrüstung'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Eine Mischung aus Radfahren, Laufen, Schwimmen und Krafttraining erhöht deinen Abwechslungs-Wert.'
+'Drag to reorder': 'Drag to reorder'
 Duration: Dauer
 'E-Bike Rides': E-Bike-Radfahrten
 'E-Mountain Bike Rides': E-Mountainbike-Fahrten
@@ -232,6 +236,7 @@ Imperial: Imperial
 'Individual thresholds vary based on fitness level.': 'Individuelle Schwellenwerte variieren je nach Fitnesslevel.'
 'Inline Skate': Inlineskaten
 Intensity: Intensität
+'Intro text': 'Intro text'
 'It looks like no valid gear is attached to any of the components. Please check your config file.': 'Es sieht so aus, als wäre keine gültige Ausrüstung an deinen Komponanten angebracht. Bitte überprüfe die config Datei.'
 Jan: Jan
 Jul: Jul
@@ -374,6 +379,9 @@ Ranking: Rangliste
 'Remember me for 7 days': 'Für 7 Tage angemeldet bleiben'
 Remove: Entfernen
 'Remove task': 'Aufgabe entfernen'
+'Remove widget': 'Remove widget'
+"Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
+'Reset to default': 'Reset to default'
 'Rest Days': Ruhetage
 'Rest days': Ruhetage
 'Rest days in last 7 days': 'Ruhetage in den letzten 7 Tagen'
@@ -394,6 +402,7 @@ Sail: Segeln
 Sat: Sa
 Sat.: Sa.
 Save: Speichern
+'Save layout': 'Save layout'
 'Save settings': 'Einstellungen speichern'
 Saved: gespeichert
 Saving...: Wird gespeichert...
@@ -405,6 +414,7 @@ Segments: Segmente
 'Select a component…': 'Komponente auswählen…'
 'Select the serviced gear…': 'Gewartete Ausrüstung auswählen…'
 Sep: Sep
+Settings: Settings
 'Show information': 'Informationen anzeigen'
 'Show password': 'Passwort anzeigen'
 'Showing {first} - {last} of {total}': 'Zeige {first} - {last} von {total}'

@@ -8,15 +8,22 @@ use App\Domain\Activity\Eddington\Eddington;
 use App\Domain\Activity\Eddington\EddingtonCalculator;
 use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final readonly class EddingtonWidget implements Widget
 {
     public function __construct(
+        private TranslatorInterface $translator,
         private EddingtonCalculator $eddingtonCalculator,
         private UnitSystem $unitSystem,
         private Environment $twig,
     ) {
+    }
+
+    public function getLabel(): string
+    {
+        return $this->translator->trans('Eddington');
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration

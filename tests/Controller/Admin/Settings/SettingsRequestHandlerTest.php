@@ -21,6 +21,7 @@ class SettingsRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('Dashboard', $crawler->filter('main')->text());
+        $this->assertGreaterThan(0, $crawler->filter('button[title="Configure"]')->count());
     }
 
     public function testItRendersTheSettingsNavigation(): void
@@ -31,10 +32,8 @@ class SettingsRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
 
-        // The Settings item in the icon rail is highlighted.
         $this->assertCount(1, $crawler->filter('#drawer-navigation a[title="Settings"][aria-selected="true"]'));
 
-        // The Settings contextual panel is shown with the (selected) Dashboard link.
         $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');
         $this->assertCount(1, $settingsPanel);
         $selectedLink = $settingsPanel->filter('a[aria-selected="true"]');

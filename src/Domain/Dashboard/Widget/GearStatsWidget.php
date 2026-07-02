@@ -17,17 +17,24 @@ use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Years;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final readonly class GearStatsWidget implements Widget
 {
     public function __construct(
+        private TranslatorInterface $translator,
         private GearRepository $gearRepository,
         private ActivityTypeRepository $activityTypeRepository,
         private QueryBus $queryBus,
         private Clock $clock,
         private Environment $twig,
     ) {
+    }
+
+    public function getLabel(): string
+    {
+        return $this->translator->trans('Total hours spent per gear');
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration

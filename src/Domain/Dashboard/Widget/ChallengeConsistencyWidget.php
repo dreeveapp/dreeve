@@ -9,15 +9,22 @@ use App\Domain\Calendar\Months;
 use App\Domain\Challenge\Consistency\ConsistencyChallengeCalculator;
 use App\Domain\Challenge\Consistency\ConsistencyChallenges;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final readonly class ChallengeConsistencyWidget implements Widget
 {
     public function __construct(
+        private TranslatorInterface $translator,
         private EnrichedActivities $enrichedActivities,
         private ConsistencyChallengeCalculator $consistencyChallengeCalculator,
         private Environment $twig,
     ) {
+    }
+
+    public function getLabel(): string
+    {
+        return $this->translator->trans('Challenge consistency');
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration
