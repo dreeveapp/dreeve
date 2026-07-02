@@ -19,7 +19,7 @@
     </head>
     <body class="min-h-screen bg-gray-50 text-gray-900 antialiased admin">
         {% include 'html/admin/component/toast-messages.html.twig' %}
-        {% set hasSubNav = isActiveNavItem({'/admin/gear': false}) %}
+        {% set hasSubNav = isActiveNavItem({'/admin/gear': false}) or isActiveNavItem({'/admin/settings': false}) %}
         <!-- NAVIGATION -->
         {% include 'html/admin/navigation/top-nav-bar.html.twig' %}
         <!-- SIDEBAR -->

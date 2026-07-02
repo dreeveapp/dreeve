@@ -47,4 +47,19 @@
             </ul>
         </nav>
     {% endif %}
+    {% if isActiveNavItem({'/admin/settings': false}) %}
+        {% set inDashboard = isActiveNavItem({'/admin/settings/dashboard': false}) %}
+        <nav class="contextual-panel" aria-label="{{ "Settings"|trans }}">
+            <p class="px-2 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                {{ "Settings"|trans }}
+            </p>
+            <ul class="space-y-1">
+                <li>
+                    <a href="{{ relativeUrl(path('admin_settings_dashboard')) }}" {{ inDashboard ? 'aria-selected="true"' : '' }}>
+                        {{ "Dashboard"|trans }}
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
 {% endautoescape %}
