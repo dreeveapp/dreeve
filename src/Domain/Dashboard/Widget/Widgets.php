@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget;
 
-use App\Domain\Dashboard\DashboardLayout;
+use App\Domain\Dashboard\DashboardLayoutRepository;
 use App\Domain\Dashboard\RenderedWidget;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
@@ -20,7 +20,7 @@ final class Widgets implements \IteratorAggregate
     public function __construct(
         #[AutowireIterator('app.dashboard.widget')]
         iterable $widgets,
-        private readonly DashboardLayout $dashboardLayout,
+        private readonly DashboardLayoutRepository $dashboardLayoutRepository,
         private readonly Clock $clock,
     ) {
         foreach ($widgets as $widget) {
@@ -32,7 +32,7 @@ final class Widgets implements \IteratorAggregate
     public function getIterator(): \Traversable
     {
         $renderedWidgets = [];
-        foreach ($this->dashboardLayout as $configuredWidget) {
+        foreach ($this->dashboardLayoutRepository->find() as $configuredWidget) {
             if (!$configuredWidget['enabled']) {
                 continue;
             }

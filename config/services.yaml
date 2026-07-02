@@ -159,10 +159,6 @@ services:
     NeuronAI\Tools\Toolkits\ToolkitInterface:
         class: App\Domain\Integration\AI\Tool\Toolkit
 
-    App\Domain\Dashboard\DashboardLayout:
-      factory: [ null, 'fromArray' ]
-      arguments: ['@=app_config("appearance.dashboard.layout", [])']
-
     App\Domain\Integration\AI\Chat\ChatCommands:
         factory: [ null, 'fromArray' ]
         arguments: ['@=app_config("integrations.ai.agent.commands", [])']
