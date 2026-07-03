@@ -26,6 +26,7 @@ Activity: Activity
 'Add a component to start tracking maintenance.': 'Add a component to start tracking maintenance.'
 'Add component': 'Add component'
 'Add gear': 'Add gear'
+'Add goal': 'Add goal'
 'Add task': 'Add task'
 'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
@@ -184,6 +185,7 @@ Fitness: Forma
 'Form (TSB)': 'Forma (TSB)'
 Fri: Sex
 Fri.: Fri.
+From: From
 GAP: GAP
 Gear: Equipamento
 'Gear "{gearId}" is referenced in your maintenance config file, but was not imported from Strava. Please check that the gear exists and is correctly synced.': 'Equipamento "{gearId}" está referenciado no ficheiro de configuração, mas não foi importado do Strava. Por favor verifique se o equipamento existe e foi corretamente sincronizado.'
@@ -248,6 +250,7 @@ Jun: Jun
 KOM: KOM
 Kayaking: Caiaque
 'Kite Surf': Kitesurf
+Label: Label
 Lap: Volta
 'Last 30 days': 'Last 30 days'
 'Last 7 days training load': 'Carga de treino dos últimos 7 dias'
@@ -327,6 +330,7 @@ None: None
 'Not supported': 'Not supported'
 Nov: Nov
 Now: Now
+'Number of activities': 'Number of activities'
 'Number of activities per month': 'Número de actividades por mês'
 'Number of activities to display': 'Number of activities to display'
 'Number of challenges to display': 'Number of challenges to display'
@@ -338,6 +342,7 @@ Oct: Out
 'One of your gear maintenance tasks is due': 'Uma das tarefas de manutenção de equipamento está atrasada'
 'Optimal training range': 'Intervalo de treino ideal'
 'Optional subtitle': 'Optional subtitle'
+'Optional. Leave empty to always apply this goal.': 'Optional. Leave empty to always apply this goal.'
 Other: Outro
 'Outdoor Sports': 'Desportos ao Ar Livre'
 Over-fatigued: Over-fatigued
@@ -388,6 +393,7 @@ Ranking: Ranking
 'Relative cost': 'Relative cost'
 'Remember me for 7 days': 'Remember me for 7 days'
 Remove: Remove
+'Remove goal': 'Remove goal'
 'Remove task': 'Remove task'
 'Remove widget': 'Remove widget'
 Removing...: Removing...
@@ -397,6 +403,7 @@ Removing...: Removing...
 'Rest days': 'Dias de descanso'
 'Rest days in last 7 days': 'Descanso nos últimos 7 dias'
 'Rest days vs. active days': 'Dias de descanso vs. Dias activo'
+'Restrict to date range': 'Restrict to date range'
 Retired: Retired
 'Retired gear': 'Retired gear'
 'Return to app': 'Return to app'
@@ -423,6 +430,7 @@ Search: Pesquisar
 Segments: Segmentos
 'Select a component first...': 'Select a component first...'
 'Select a component…': 'Select a component…'
+'Select at least one sport type.': 'Select at least one sport type.'
 'Select the serviced gear…': 'Select the serviced gear…'
 Sep: Set
 Settings: Settings
@@ -580,6 +588,7 @@ Time: Hora
 'Time in zone': 'Time in zone'
 'Times completed': 'Vezes concluído'
 Title: Title
+To: To
 'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect': 'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect'
 'Toggle sidebar': 'Ativar/desativar barra lateral'
 'Top 10': 'Top 10'
@@ -601,6 +610,8 @@ Title: Title
 Tue: Ter
 Tue.: Tue.
 'Turn gear maintenance tracking on or off.': 'Turn gear maintenance tracking on or off.'
+Type: Type
+Unit: Unit
 Unspecified: 'Não especificado'
 'Unsupported file type': 'Unsupported file type'
 'Updated on': 'Atualizado em'
@@ -696,6 +707,7 @@ max: max
 'max {max} MB each': 'max {max} MB each'
 'miles used': 'miles used'
 min: min
+minutes: minutes
 months: meses
 more: mais
 n/a: n/d

@@ -52,6 +52,11 @@ final readonly class ConfiguredWidget
         );
     }
 
+    public function hasWideConfigurationForm(): bool
+    {
+        return $this->widget instanceof HasWideConfigurationForm;
+    }
+
     public function getConfiguration(): WidgetConfiguration
     {
         return $this->configuration;

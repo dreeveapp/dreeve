@@ -3,7 +3,7 @@
     {% autoescape false %}
     {% set dashboardUrl = relativeUrl(path('admin_settings_dashboard')) %}
     <div class="modal-like-form">
-        <div class="w-full max-w-lg overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
+        <div class="w-full {{ configuredWidget.hasWideConfigurationForm() ? 'max-w-3xl' : 'max-w-lg' }} overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold">
                     {{ "Configure {widget}"|trans({'{widget}': configuredWidget.getLabel()}) }}

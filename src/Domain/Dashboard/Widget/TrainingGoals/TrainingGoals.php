@@ -6,6 +6,7 @@ namespace App\Domain\Dashboard\Widget\TrainingGoals;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
+use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Infrastructure\ValueObject\Collection;
 use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -36,51 +37,47 @@ final class TrainingGoals extends Collection
                 continue;
             }
 
-            throw new InvalidTrainingGoalsConfiguration(sprintf('"%s" is not a valid goal period', $trainingGoalPeriod));
+            throw new InvalidDashboardLayout(sprintf('"%s" is not a valid goal period', $trainingGoalPeriod));
         }
 
         foreach ($items as $period => $periodGoalConfig) {
             $trainingGoalPeriod = TrainingGoalPeriod::from($period);
             foreach ($periodGoalConfig as $goalConfig) {
                 if (!is_array($goalConfig)) {
-                    throw new InvalidTrainingGoalsConfiguration('Invalid TrainingGoals configuration provided');
+                    throw new InvalidDashboardLayout('Invalid TrainingGoals configuration provided');
                 }
 
-                foreach (['label', 'enabled', 'type', 'unit', 'goal', 'sportTypesToInclude'] as $requiredKey) {
+                foreach (['label', 'type', 'unit', 'goal', 'sportTypesToInclude'] as $requiredKey) {
                     if (array_key_exists($requiredKey, $goalConfig)) {
                         continue;
                     }
-                    throw new InvalidTrainingGoalsConfiguration(sprintf('"%s" property is required', $requiredKey));
+                    throw new InvalidDashboardLayout(sprintf('"%s" property is required', $requiredKey));
                 }
 
                 if (empty($goalConfig['label'])) {
-                    throw new InvalidTrainingGoalsConfiguration('"label" property cannot be empty');
-                }
-
-                if (!is_bool($goalConfig['enabled'])) {
-                    throw new InvalidTrainingGoalsConfiguration('"enabled" property must be a boolean');
+                    throw new InvalidDashboardLayout('"label" property cannot be empty');
                 }
 
                 if (!is_numeric($goalConfig['goal'])) {
-                    throw new InvalidTrainingGoalsConfiguration('"goal" property must be a valid number');
+                    throw new InvalidDashboardLayout('"goal" property must be a valid number');
                 }
 
                 if (!$type = TrainingGoalType::tryFrom($goalConfig['type'])) {
-                    throw new InvalidTrainingGoalsConfiguration(sprintf('"%s" is not a valid goalType', $goalConfig['type']));
+                    throw new InvalidDashboardLayout(sprintf('"%s" is not a valid goalType', $goalConfig['type']));
                 }
 
                 if (!is_array($goalConfig['sportTypesToInclude'])) {
-                    throw new InvalidTrainingGoalsConfiguration('"sportTypesToInclude" property must be an array');
+                    throw new InvalidDashboardLayout('"sportTypesToInclude" property must be an array');
                 }
 
                 if (empty($goalConfig['sportTypesToInclude'])) {
-                    throw new InvalidTrainingGoalsConfiguration('"sportTypesToInclude" property cannot be empty');
+                    throw new InvalidDashboardLayout('"sportTypesToInclude" property cannot be empty');
                 }
 
                 $sportTypesToInclude = SportTypes::empty();
                 foreach ($goalConfig['sportTypesToInclude'] as $sportTypeToInclude) {
                     if (!$sportType = SportType::tryFrom($sportTypeToInclude)) {
-                        throw new InvalidTrainingGoalsConfiguration(sprintf('"%s" is not a valid sport type', $sportTypeToInclude));
+                        throw new InvalidDashboardLayout(sprintf('"%s" is not a valid sport type', $sportTypeToInclude));
                     }
                     $sportTypesToInclude->add($sportType);
                 }
@@ -91,14 +88,14 @@ final class TrainingGoals extends Collection
                     TrainingGoal::MILES,
                     TrainingGoal::FOOT,
                 ])) {
-                    throw new InvalidTrainingGoalsConfiguration(sprintf('The unit "%s" is not valid for goal type "%s"', $goalConfig['unit'], $type->value));
+                    throw new InvalidDashboardLayout(sprintf('The unit "%s" is not valid for goal type "%s"', $goalConfig['unit'], $type->value));
                 }
 
                 if (TrainingGoalType::MOVING_TIME === $type && !in_array($goalConfig['unit'], [
                     TrainingGoal::HOUR,
                     TrainingGoal::MINUTE,
                 ])) {
-                    throw new InvalidTrainingGoalsConfiguration(sprintf('The unit "%s" is not valid for goal type "%s"', $goalConfig['unit'], $type->value));
+                    throw new InvalidDashboardLayout(sprintf('The unit "%s" is not valid for goal type "%s"', $goalConfig['unit'], $type->value));
                 }
 
                 if (in_array($type, TrainingGoalType::simpleUnitRelated())) {
@@ -107,13 +104,10 @@ final class TrainingGoals extends Collection
                 }
 
                 $restrictToDateRange = null;
-                if (array_key_exists('restrictToDateRange', $goalConfig)) {
+                if (array_key_exists('restrictToDateRange', $goalConfig) && !(empty($goalConfig['restrictToDateRange']['from']) && empty($goalConfig['restrictToDateRange']['to']))) {
                     $dateRangeConfig = $goalConfig['restrictToDateRange'];
-                    if (!is_array($dateRangeConfig)) {
-                        throw new InvalidTrainingGoalsConfiguration('"restrictToDateRange" property must be an object with "from" and "to" keys');
-                    }
-                    if (!array_key_exists('from', $dateRangeConfig) || !array_key_exists('to', $dateRangeConfig)) {
-                        throw new InvalidTrainingGoalsConfiguration('"restrictToDateRange" requires both "from" and "to" keys');
+                    if (empty($dateRangeConfig['from']) || empty($dateRangeConfig['to'])) {
+                        throw new InvalidDashboardLayout('"restrictToDateRange" requires both "from" and "to" keys');
                     }
                     try {
                         $restrictToDateRange = DateRange::fromDates(
@@ -121,15 +115,14 @@ final class TrainingGoals extends Collection
                             till: SerializableDateTime::fromString($dateRangeConfig['to'].' 23:59:59'),
                         );
                     } catch (\DateMalformedStringException) {
-                        throw new InvalidTrainingGoalsConfiguration('"restrictToDateRange" contains invalid date values, expected format "YYYY-MM-DD"');
+                        throw new InvalidDashboardLayout('"restrictToDateRange" contains invalid date values, expected format "YYYY-MM-DD"');
                     } catch (\InvalidArgumentException) {
-                        throw new InvalidTrainingGoalsConfiguration('"restrictToDateRange.from" must be before or equal to "restrictToDateRange.to"');
+                        throw new InvalidDashboardLayout('"restrictToDateRange.from" must be before or equal to "restrictToDateRange.to"');
                     }
                 }
 
                 $trainingGoals[] = TrainingGoal::create(
                     label: $goalConfig['label'],
-                    isEnabled: $goalConfig['enabled'],
                     type: $type,
                     period: $trainingGoalPeriod,
                     goal: (float) $goalConfig['goal'],

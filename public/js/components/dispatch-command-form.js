@@ -98,7 +98,12 @@ class Repeater {
             row.querySelectorAll('[data-repeater-field]').forEach((field) => {
                 const value = field.dataset.repeaterField.split('.').reduce((value, key) => (null == value ? undefined : value[key]), data);
                 if (undefined !== value && null !== value) {
-                    field.value = value;
+                    if ('checkbox' === field.type) {
+                        // Boolean checkbox (true/false) or a checkbox group seeded from an array of values.
+                        field.checked = Array.isArray(value) ? value.includes(field.value) : Boolean(value);
+                    } else {
+                        field.value = value;
+                    }
                 }
             });
         }
@@ -152,8 +157,25 @@ const resetLoading = (buttons) => {
     });
 };
 
+const syncCheckboxGroupValidity = (group) => {
+    const boxes = group.querySelectorAll('input[type="checkbox"]');
+    if (!boxes.length) return;
+    const message = [...boxes].some((box) => box.checked)
+        ? ''
+        : (group.dataset.requiredCheckboxGroup || 'Please select at least one option.');
+    boxes[0].setCustomValidity(message);
+};
+
 export default function initDispatchCommandForm(rootNode = document) {
     rootNode.querySelectorAll('[data-dispatch-command] [data-repeater]').forEach((root) => new Repeater(root).init());
+
+    rootNode.addEventListener('change', (event) => {
+        const target = event.target;
+        if (target instanceof HTMLInputElement && 'checkbox' === target.type) {
+            const group = target.closest('[data-required-checkbox-group]');
+            if (group) syncCheckboxGroupValidity(group);
+        }
+    });
 
     rootNode.addEventListener('submit', async (event) => {
         const form = event.target;
@@ -166,6 +188,14 @@ export default function initDispatchCommandForm(rootNode = document) {
         const commandName = form.getAttribute('data-dispatch-command');
         const errorBox = form.querySelector('[data-form-error]');
         const loadingButtons = form.querySelectorAll('button[data-has-loading-state]');
+
+        // Required checkbox groups aren't native-required fields, so the submit event fires even when
+        // they're empty (and the loading state has already been applied); gate on them here.
+        form.querySelectorAll('[data-required-checkbox-group]').forEach(syncCheckboxGroupValidity);
+        if (!form.reportValidity()) {
+            resetLoading(loadingButtons);
+            return;
+        }
 
         hideError(errorBox);
 

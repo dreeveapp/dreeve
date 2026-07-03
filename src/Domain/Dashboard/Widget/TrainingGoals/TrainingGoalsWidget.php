@@ -6,6 +6,7 @@ namespace App\Domain\Dashboard\Widget\TrainingGoals;
 
 use App\Domain\Calendar\Month;
 use App\Domain\Calendar\Week;
+use App\Domain\Dashboard\Widget\HasWideConfigurationForm;
 use App\Domain\Dashboard\Widget\TrainingGoals\FindTrainingGoalMetrics\FindTrainingGoalMetrics;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
@@ -15,7 +16,7 @@ use App\Infrastructure\ValueObject\Time\Year;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class TrainingGoalsWidget implements Widget
+final readonly class TrainingGoalsWidget implements Widget, HasWideConfigurationForm
 {
     public function __construct(
         private TranslatorInterface $translator,
@@ -94,9 +95,6 @@ final readonly class TrainingGoalsWidget implements Widget
             };
 
             foreach ($trainingGoals as $trainingGoal) {
-                if (!$trainingGoal->isEnabled()) {
-                    continue;
-                }
                 if (!$trainingGoal->isActiveOn($now)) {
                     continue;
                 }

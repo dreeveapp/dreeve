@@ -1,0 +1,90 @@
+{% set goals = configuration.get('goals') %}
+{% set typeLabels = {
+    'distance': 'Distance'|trans,
+    'elevation': 'Elevation'|trans,
+    'movingTime': 'Moving time'|trans,
+    'numberOfActivities': 'Number of activities'|trans,
+    'calories': 'Calories'|trans,
+} %}
+{% set unitLabels = {
+    'km': 'km', 'm': 'm', 'mi': 'mi', 'ft': 'ft',
+    'hour': 'hours'|trans, 'minute': 'minutes'|trans,
+} %}
+{% for period in enum('App\\Domain\\Dashboard\\Widget\\TrainingGoals\\TrainingGoalPeriod').cases() %}
+    {% set periodGoals = goals[period.value]|default([]) %}
+    <div data-repeater data-repeater-min="0">
+        <h4>{{ period|trans }}</h4>
+        <div class="mt-2 flex flex-col gap-3"
+             data-repeater-list
+             data-repeater-initial="{{ periodGoals|json_encode|e('html_attr') }}">
+        </div>
+        <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
+            <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+            </svg>
+            <span>{{ "Add goal"|trans }}</span>
+        </button>
+        <template data-repeater-template>
+            <div class="relative flex flex-col gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater-item>
+                <button type="button" data-repeater-remove
+                        class="absolute top-2 right-2 grid place-items-center size-9 shrink-0 rounded-lg border border-gray-200 bg-white text-gray-400 transition-colors hover:text-red-600 hover:border-red-200"
+                        aria-label="{{ "Remove goal"|trans }}">
+                    <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                    </svg>
+                </button>
+                <div class="grid gap-3 pr-11 md:grid-cols-2 lg:grid-cols-4">
+                    <div>
+                        <label class="mt-0!">{{ "Label"|trans }}</label>
+                        <input type="text" name="config[goals][{{ period.value }}][__index__][label]"
+                               data-repeater-field="label" required placeholder="{{ "Cycling"|trans }}">
+                    </div>
+                    <div>
+                        <label class="mt-0!">{{ "Type"|trans }}</label>
+                        <select name="config[goals][{{ period.value }}][__index__][type]" data-repeater-field="type">
+                            {% for type in enum('App\\Domain\\Dashboard\\Widget\\TrainingGoals\\TrainingGoalType').cases() %}
+                                <option value="{{ type.value }}">{{ typeLabels[type.value] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="mt-0!">{{ "Goal"|trans }}</label>
+                        <input type="number" step="any" min="0" name="config[goals][{{ period.value }}][__index__][goal]"
+                               data-repeater-field="goal" required placeholder="0">
+                    </div>
+                    <div>
+                        <label class="mt-0!">{{ "Unit"|trans }}</label>
+                        <select name="config[goals][{{ period.value }}][__index__][unit]" data-repeater-field="unit">
+                            {% for unit, unitLabel in unitLabels %}
+                                <option value="{{ unit }}">{{ unitLabel }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="mt-0!">{{ "Sport types to include"|trans }}</label>
+                    <div class="mt-1 max-h-40 overflow-y-auto flex flex-col gap-1.5 rounded-lg border border-gray-200 p-2"
+                         data-required-checkbox-group="{{ "Select at least one sport type."|trans }}">
+                        {% for sportType in enum('App\\Domain\\Activity\\SportType\\SportType').cases() %}
+                            <label class="flex items-center gap-2 mt-0! text-sm font-normal cursor-pointer">
+                                <input type="checkbox" name="config[goals][{{ period.value }}][__index__][sportTypesToInclude][]"
+                                       value="{{ sportType.value }}" data-repeater-field="sportTypesToInclude">
+                                <span>{{ sportType|trans }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div>
+                    <label class="mt-0!">{{ "Restrict to date range"|trans }}</label>
+                    <p class="mt-0.5 text-xxs text-gray-500">{{ "Optional. Leave empty to always apply this goal."|trans }}</p>
+                    <div class="mt-1 grid grid-cols-2 gap-3">
+                        <input type="date" name="config[goals][{{ period.value }}][__index__][restrictToDateRange][from]"
+                               data-repeater-field="restrictToDateRange.from" aria-label="{{ "From"|trans }}">
+                        <input type="date" name="config[goals][{{ period.value }}][__index__][restrictToDateRange][to]"
+                               data-repeater-field="restrictToDateRange.to" aria-label="{{ "To"|trans }}">
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+{% endfor %}

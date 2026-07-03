@@ -26,6 +26,7 @@ Activity: Aktivität
 'Add a component to start tracking maintenance.': 'Füge eine Komponente hinzu, um mit der Wartungsverfolgung zu beginnen.'
 'Add component': 'Komponente hinzufügen'
 'Add gear': 'Ausrüstung hinzufügen'
+'Add goal': 'Add goal'
 'Add task': 'Aufgabe hinzufügen'
 'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Füge {fit}, {tcx} oder {gpx} Dateien hinzu. Sie werden alle paar Minuten verarbeitet'
@@ -184,6 +185,7 @@ Fitness: Fitness
 'Form (TSB)': 'Form (TSB)'
 Fri: Fr
 Fri.: Fr.
+From: From
 GAP: GAP
 Gear: Ausrüstung
 'Gear "{gearId}" is referenced in your maintenance config file, but was not imported from Strava. Please check that the gear exists and is correctly synced.': 'Die Ausrüstung "{gearId}" ist in deiner "gear-maintenance.yaml" referenziert, wurde aber nicht von Strava importiert. Bitte überprüfe, dass die Ausrüstung existiert und korrekt synchronisiert wurde.'
@@ -248,6 +250,7 @@ Jun: Jun
 KOM: KOM
 Kayaking: Kajakfahren
 'Kite Surf': Kitesurfen
+Label: Label
 Lap: Runde
 'Last 30 days': 'Letzte 30 Tage'
 'Last 7 days training load': 'Trainingsbelastung der letzten 7 Tage'
@@ -327,6 +330,7 @@ None: Keine
 'Not supported': 'Nicht unterstützt'
 Nov: Nov
 Now: Jetzt
+'Number of activities': 'Number of activities'
 'Number of activities per month': 'Anzahl an Aktivitäten pro Monat'
 'Number of activities to display': 'Number of activities to display'
 'Number of challenges to display': 'Number of challenges to display'
@@ -338,6 +342,7 @@ Oct: Okt
 'One of your gear maintenance tasks is due': 'Eine deiner Ausrüstungswartungsaufgaben steht an'
 'Optimal training range': 'Optimale Trainingszone'
 'Optional subtitle': 'Optional subtitle'
+'Optional. Leave empty to always apply this goal.': 'Optional. Leave empty to always apply this goal.'
 Other: Andere
 'Outdoor Sports': Outdoor-Sportarten
 Over-fatigued: Übermüdet
@@ -388,6 +393,7 @@ Ranking: Rangliste
 'Relative cost': 'Relative Kosten'
 'Remember me for 7 days': 'Für 7 Tage angemeldet bleiben'
 Remove: Entfernen
+'Remove goal': 'Remove goal'
 'Remove task': 'Aufgabe entfernen'
 'Remove widget': 'Remove widget'
 Removing...: Removing...
@@ -397,6 +403,7 @@ Removing...: Removing...
 'Rest days': Ruhetage
 'Rest days in last 7 days': 'Ruhetage in den letzten 7 Tagen'
 'Rest days vs. active days': 'Ruhetage vs. aktive Tage'
+'Restrict to date range': 'Restrict to date range'
 Retired: Ausgemustert
 'Retired gear': 'ausgemusterte Ausrüstung'
 'Return to app': 'Zurück zur App'
@@ -423,6 +430,7 @@ Search: Suche
 Segments: Segmente
 'Select a component first...': 'Wähle zuerst eine Komponente aus...'
 'Select a component…': 'Komponente auswählen…'
+'Select at least one sport type.': 'Select at least one sport type.'
 'Select the serviced gear…': 'Gewartete Ausrüstung auswählen…'
 Sep: Sep
 Settings: Settings
@@ -580,6 +588,7 @@ Time: Zeit
 'Time in zone': 'Zeit in Zone'
 'Times completed': 'Male abgeschlossen'
 Title: Titel
+To: To
 'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect': 'Um dies zu aktivieren, konfiguriere es im Adminbereich und erstelle die Dateien neu, damit die Änderungen wirksam werden.'
 'Toggle sidebar': 'Seitenleiste umschalten'
 'Top 10': 'Top 10'
@@ -601,6 +610,8 @@ Title: Titel
 Tue: Di
 Tue.: Tue.
 'Turn gear maintenance tracking on or off.': 'Wartungsverfolgung für Ausrüstung ein- oder ausschalten.'
+Type: Type
+Unit: Unit
 Unspecified: 'Nicht spezifiziert'
 'Unsupported file type': 'Nicht unterstützter Dateityp'
 'Updated on': 'Aktualisiert am'
@@ -696,6 +707,7 @@ max: max
 'max {max} MB each': 'max {max} MB je Datei'
 'miles used': 'genutzte Meilen'
 min: min
+minutes: minutes
 months: Monate
 more: mehr
 n/a: n/v

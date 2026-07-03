@@ -70,6 +70,47 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
         );
     }
 
+    public function testItStoresNestedTrainingGoalsPreservingPeriodKeys(): void
+    {
+        $this->seedLayout([
+            ['id' => 'dashboardWidget-trainingGoals', 'widget' => 'trainingGoals', 'width' => 33, 'config' => ['goals' => []]],
+        ]);
+
+        $goals = [
+            'weekly' => [
+                ['label' => 'Ride 100km', 'type' => 'distance', 'unit' => 'km', 'goal' => '100', 'sportTypesToInclude' => ['Ride']],
+            ],
+            'monthly' => [
+                ['label' => 'Run 50km', 'type' => 'distance', 'unit' => 'km', 'goal' => '50', 'sportTypesToInclude' => ['Run']],
+            ],
+        ];
+
+        $this->commandBus->dispatch(ConfigureWidget::fromPayload([
+            'dashboardWidgetId' => 'dashboardWidget-trainingGoals',
+            'config' => ['goals' => $goals],
+        ]));
+
+        $this->assertSame(['goals' => $goals], $this->storedConfigFor('dashboardWidget-trainingGoals'));
+    }
+
+    public function testItRejectsInvalidTrainingGoalsWithACleanMessage(): void
+    {
+        $this->seedLayout([
+            ['id' => 'dashboardWidget-trainingGoals', 'widget' => 'trainingGoals', 'width' => 33, 'config' => ['goals' => []]],
+        ]);
+
+        $this->expectException(CouldNotProcessCommand::class);
+
+        $this->commandBus->dispatch(ConfigureWidget::fromPayload([
+            'dashboardWidgetId' => 'dashboardWidget-trainingGoals',
+            'config' => ['goals' => [
+                'weekly' => [
+                    ['label' => 'Ride', 'type' => 'distance', 'unit' => 'minute', 'goal' => '100', 'sportTypesToInclude' => ['Ride']],
+                ],
+            ]],
+        ]));
+    }
+
     public function testItRejectsInvalidConfigurationWithACleanMessage(): void
     {
         $this->seedLayout([

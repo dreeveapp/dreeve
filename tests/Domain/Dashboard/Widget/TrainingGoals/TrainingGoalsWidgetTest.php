@@ -32,34 +32,30 @@ class TrainingGoalsWidgetTest extends ContainerTestCase
         $config = WidgetConfiguration::empty()
             ->add('goals', [
                 'weekly' => [
-                    ['label' => 'Cycling',  'enabled' => true, 'type' => 'distance', 'unit' => 'km', 'goal' => 200,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
-                    ['label' => 'Cycling',  'enabled' => true, 'type' => 'elevation', 'unit' => 'm', 'goal' => 1000,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
-                    ['label' => 'Cycling',  'enabled' => true, 'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
-                    ['label' => 'Cycling',  'enabled' => true, 'type' => 'calories', 'unit' => 'hour', 'goal' => 250,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
-                    ['label' => 'Cycling',  'enabled' => true, 'type' => 'numberOfActivities', 'unit' => 'hour', 'goal' => 8,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
-                    ['label' => 'Running',  'enabled' => true, 'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Run']],
-                    ['label' => 'Running',  'enabled' => false, 'type' => 'elevation', 'unit' => 'm', 'goal' => 2,  'sportTypesToInclude' => ['Run']],
+                    ['label' => 'Cycling',  'type' => 'distance', 'unit' => 'km', 'goal' => 200,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Cycling',  'type' => 'elevation', 'unit' => 'm', 'goal' => 1000,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Cycling',  'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Cycling',  'type' => 'calories', 'unit' => 'hour', 'goal' => 250,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Cycling',  'type' => 'numberOfActivities', 'unit' => 'hour', 'goal' => 8,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Running',  'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Run']],
                 ],
                 'monthly' => [
-                    ['label' => 'Cycling',  'enabled' => true, 'type' => 'distance', 'unit' => 'km', 'goal' => 200,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
-                    ['label' => 'Cycling',  'enabled' => true, 'type' => 'elevation', 'unit' => 'm', 'goal' => 1000,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
-                    ['label' => 'Cycling',  'enabled' => true, 'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
-                    ['label' => 'Running',  'enabled' => true, 'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Run']],
-                    ['label' => 'Running',  'enabled' => false, 'type' => 'elevation', 'unit' => 'm', 'goal' => 2,  'sportTypesToInclude' => ['Run']],
+                    ['label' => 'Cycling',  'type' => 'distance', 'unit' => 'km', 'goal' => 200,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Cycling',  'type' => 'elevation', 'unit' => 'm', 'goal' => 1000,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Cycling',  'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Running',  'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Run']],
                 ],
                 'yearly' => [
-                    ['label' => 'Cycling',  'enabled' => true, 'type' => 'distance', 'unit' => 'km', 'goal' => 200,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
-                    ['label' => 'Cycling',  'enabled' => true, 'type' => 'elevation', 'unit' => 'm', 'goal' => 1000,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
-                    ['label' => 'Cycling',  'enabled' => true, 'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
-                    ['label' => 'Running',  'enabled' => true, 'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Run']],
-                    ['label' => 'Running',  'enabled' => false, 'type' => 'elevation', 'unit' => 'm', 'goal' => 2,  'sportTypesToInclude' => ['Run']],
+                    ['label' => 'Cycling',  'type' => 'distance', 'unit' => 'km', 'goal' => 200,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Cycling',  'type' => 'elevation', 'unit' => 'm', 'goal' => 1000,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Cycling',  'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Running',  'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Run']],
                 ],
                 'lifetime' => [
-                    ['label' => 'Cycling',  'enabled' => true, 'type' => 'distance', 'unit' => 'km', 'goal' => 200,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
-                    ['label' => 'Cycling',  'enabled' => true, 'type' => 'elevation', 'unit' => 'm', 'goal' => 1000,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
-                    ['label' => 'Cycling',  'enabled' => true, 'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
-                    ['label' => 'Running',  'enabled' => true, 'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Run']],
-                    ['label' => 'Running',  'enabled' => false, 'type' => 'elevation', 'unit' => 'm', 'goal' => 2,  'sportTypesToInclude' => ['Run']],
+                    ['label' => 'Cycling',  'type' => 'distance', 'unit' => 'km', 'goal' => 200,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Cycling',  'type' => 'elevation', 'unit' => 'm', 'goal' => 1000,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Cycling',  'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Running',  'type' => 'movingTime', 'unit' => 'hour', 'goal' => 2,  'sportTypesToInclude' => ['Run']],
                 ],
             ]);
 
@@ -86,9 +82,9 @@ class TrainingGoalsWidgetTest extends ContainerTestCase
         $config = WidgetConfiguration::empty()
             ->add('goals', [
                 'weekly' => [
-                    ['label' => 'Running (base)',  'enabled' => true, 'type' => 'distance', 'unit' => 'km', 'goal' => 25,  'sportTypesToInclude' => ['Run'], 'restrictToDateRange' => ['from' => '2025-01-01', 'to' => '2025-03-31']],
-                    ['label' => 'Running (build)', 'enabled' => true, 'type' => 'distance', 'unit' => 'km', 'goal' => 40,  'sportTypesToInclude' => ['Run'], 'restrictToDateRange' => ['from' => '2025-10-01', 'to' => '2025-12-31']],
-                    ['label' => 'Cycling',         'enabled' => true, 'type' => 'distance', 'unit' => 'km', 'goal' => 200, 'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
+                    ['label' => 'Running (base)',  'type' => 'distance', 'unit' => 'km', 'goal' => 25,  'sportTypesToInclude' => ['Run'], 'restrictToDateRange' => ['from' => '2025-01-01', 'to' => '2025-03-31']],
+                    ['label' => 'Running (build)', 'type' => 'distance', 'unit' => 'km', 'goal' => 40,  'sportTypesToInclude' => ['Run'], 'restrictToDateRange' => ['from' => '2025-10-01', 'to' => '2025-12-31']],
+                    ['label' => 'Cycling',         'type' => 'distance', 'unit' => 'km', 'goal' => 200, 'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']],
                 ],
             ]);
 
@@ -104,7 +100,7 @@ class TrainingGoalsWidgetTest extends ContainerTestCase
         $config = WidgetConfiguration::empty()
             ->add('goals', [
                 'weekly' => [
-                    ['label' => 'Running', 'enabled' => true, 'type' => 'distance', 'unit' => 'km', 'goal' => 25, 'sportTypesToInclude' => ['Run'], 'restrictToDateRange' => ['from' => '2025-01-01', 'to' => '2025-03-31']],
+                    ['label' => 'Running', 'type' => 'distance', 'unit' => 'km', 'goal' => 25, 'sportTypesToInclude' => ['Run'], 'restrictToDateRange' => ['from' => '2025-01-01', 'to' => '2025-03-31']],
                 ],
             ]);
 

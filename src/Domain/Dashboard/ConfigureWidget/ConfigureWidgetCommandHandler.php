@@ -31,8 +31,8 @@ final readonly class ConfigureWidgetCommandHandler implements CommandHandler
         }
 
         $configuration = $this->coerce(
-            $configuredWidget->getWidget()->getDefaultConfiguration(),
-            $command->getConfiguration(),
+            defaults: $configuredWidget->getWidget()->getDefaultConfiguration(),
+            submitted: $command->getConfiguration(),
         );
 
         try {
@@ -42,8 +42,8 @@ final readonly class ConfigureWidgetCommandHandler implements CommandHandler
         }
 
         $this->dashboardLayoutRepository->updateWidgetConfiguration(
-            $command->getDashboardWidgetId(),
-            $configuration->toArray(),
+            dashboardWidgetId: $command->getDashboardWidgetId(),
+            configuration: $configuration->toArray(),
         );
     }
 
@@ -59,7 +59,7 @@ final readonly class ConfigureWidgetCommandHandler implements CommandHandler
                 is_bool($default) => filter_var($submitted[$key] ?? false, FILTER_VALIDATE_BOOLEAN),
                 is_int($default) => array_key_exists($key, $submitted) ? (int) $submitted[$key] : $default,
                 is_float($default) => array_key_exists($key, $submitted) ? (float) $submitted[$key] : $default,
-                is_array($default) => array_values((array) ($submitted[$key] ?? [])),
+                is_array($default) => (array) ($submitted[$key] ?? []),
                 is_string($default) => array_key_exists($key, $submitted) ? (string) $submitted[$key] : $default,
                 // Null default: treat as a nullable string, empty means "unset".
                 default => '' === trim((string) ($submitted[$key] ?? '')) ? null : (string) $submitted[$key],
