@@ -24,6 +24,7 @@ Activity: 活动
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': '短期/长期疲劳比率 – ATL与CTL的比值。表示受伤风险。'
 'Adaptive & Inclusive Sports': 适应性和包容性运动
 'Add a component to start tracking maintenance.': 'Add a component to start tracking maintenance.'
+'Add challenge': 'Add challenge'
 'Add component': 'Add component'
 'Add gear': 'Add gear'
 'Add goal': 'Add goal'
@@ -72,6 +73,7 @@ Cancel: Cancel
 Canoeing: 划独木舟
 'Carbon saved': 碳减排
 'Challenge consistency': 挑战一致性
+'Challenge name': 'Challenge name'
 Challenges: 挑战
 'Changes still need to be processed before they appear on the app': 'Changes still need to be processed before they appear on the app'
 'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
@@ -101,6 +103,7 @@ Crossfit: 交叉健身
 'Current Status': 'Current Status'
 'Current streaks': 'Current streaks'
 Cycling: 骑行
+'DDistance (single activity)': 'DDistance (single activity)'
 'Daily TRIMP': 每日TRIMP
 'Daily activities': 每日活动
 Dance: Dance
@@ -150,6 +153,7 @@ Edit: Edit
 Elev: 海拔
 Elev.: Elev.
 Elevation: 海拔高度
+'Elevation (single activity)': 'Elevation (single activity)'
 'Elevation in {unit}': '海拔高度（单位：{unit})'
 Elliptical: 椭圆机
 Enabled: Enabled
@@ -393,6 +397,7 @@ Ranking: Ranking
 'Relative cost': 相对成本
 'Remember me for 7 days': 'Remember me for 7 days'
 Remove: Remove
+'Remove challenge': 'Remove challenge'
 'Remove goal': 'Remove goal'
 'Remove task': 'Remove task'
 'Remove widget': 'Remove widget'

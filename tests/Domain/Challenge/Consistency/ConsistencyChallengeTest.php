@@ -39,7 +39,6 @@ class ConsistencyChallengeTest extends TestCase
         $this->expectExceptionObject(new \RuntimeException('Cannot convert Kilometer to App\Infrastructure\ValueObject\Measurement\Time\Hour'));
         ConsistencyChallenge::create(
             label: 'label',
-            isEnabled: true,
             type: ChallengeConsistencyType::DISTANCE,
             goal: 0,
             unit: 'hour',
@@ -61,7 +60,6 @@ class ConsistencyChallengeTest extends TestCase
         $this->expectExceptionObject(new \RuntimeException('Cannot convert Meter to App\Infrastructure\ValueObject\Measurement\Time\Hour'));
         ConsistencyChallenge::create(
             label: 'label',
-            isEnabled: true,
             type: ChallengeConsistencyType::DISTANCE,
             goal: 0,
             unit: 'hour',
@@ -83,7 +81,6 @@ class ConsistencyChallengeTest extends TestCase
         $this->expectExceptionObject(new \RuntimeException('Cannot convert Seconds to App\Infrastructure\ValueObject\Measurement\Length\Meter'));
         ConsistencyChallenge::create(
             label: 'label',
-            isEnabled: true,
             type: ChallengeConsistencyType::DISTANCE,
             goal: 0,
             unit: 'm',
@@ -96,7 +93,6 @@ class ConsistencyChallengeTest extends TestCase
         yield 'kilometer' => [
             ConsistencyChallenge::create(
                 label: 'label',
-                isEnabled: true,
                 type: ChallengeConsistencyType::DISTANCE,
                 goal: 0,
                 unit: 'km',
@@ -107,7 +103,6 @@ class ConsistencyChallengeTest extends TestCase
         yield 'meter' => [
             ConsistencyChallenge::create(
                 label: 'label',
-                isEnabled: true,
                 type: ChallengeConsistencyType::DISTANCE,
                 goal: 0,
                 unit: 'm',
@@ -118,7 +113,6 @@ class ConsistencyChallengeTest extends TestCase
         yield 'miles' => [
             ConsistencyChallenge::create(
                 label: 'label',
-                isEnabled: true,
                 type: ChallengeConsistencyType::DISTANCE,
                 goal: 0,
                 unit: 'mi',
@@ -129,7 +123,6 @@ class ConsistencyChallengeTest extends TestCase
         yield 'foot' => [
             ConsistencyChallenge::create(
                 label: 'label',
-                isEnabled: true,
                 type: ChallengeConsistencyType::DISTANCE,
                 goal: 0,
                 unit: 'ft',
@@ -144,7 +137,6 @@ class ConsistencyChallengeTest extends TestCase
         yield 'hour' => [
             ConsistencyChallenge::create(
                 label: 'label',
-                isEnabled: true,
                 type: ChallengeConsistencyType::MOVING_TIME,
                 goal: 0,
                 unit: 'hour',
@@ -155,7 +147,6 @@ class ConsistencyChallengeTest extends TestCase
         yield 'minute' => [
             ConsistencyChallenge::create(
                 label: 'label',
-                isEnabled: true,
                 type: ChallengeConsistencyType::DISTANCE,
                 goal: 0,
                 unit: 'minute',

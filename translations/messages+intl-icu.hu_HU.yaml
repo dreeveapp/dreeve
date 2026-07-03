@@ -24,6 +24,7 @@ Activity: Tevékenység
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Akut:Krónikus arány – az ATL és CTL aránya. Sérülésveszélyt jelöl.'
 'Adaptive & Inclusive Sports': 'Adaptív és inkluzív sportok'
 'Add a component to start tracking maintenance.': 'Add a component to start tracking maintenance.'
+'Add challenge': 'Add challenge'
 'Add component': 'Add component'
 'Add gear': 'Add gear'
 'Add goal': 'Add goal'
@@ -72,6 +73,7 @@ Cancel: Cancel
 Canoeing: Kenuzás
 'Carbon saved': 'Megtakarított szén-dioxid'
 'Challenge consistency': 'Kihívás következetesség'
+'Challenge name': 'Challenge name'
 Challenges: Kihívások
 'Changes still need to be processed before they appear on the app': 'Changes still need to be processed before they appear on the app'
 'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
@@ -101,6 +103,7 @@ Crossfit: Crossfit
 'Current Status': 'Jelenlegi állapot'
 'Current streaks': 'Aktuális sorozatok'
 Cycling: Kerékpározás
+'DDistance (single activity)': 'DDistance (single activity)'
 'Daily TRIMP': 'Napi TRIMP'
 'Daily activities': 'Napi tevékenységek'
 Dance: Tánc
@@ -150,6 +153,7 @@ Edit: Edit
 Elev: Szintek
 Elev.: Elev.
 Elevation: Szintemelkedés
+'Elevation (single activity)': 'Elevation (single activity)'
 'Elevation in {unit}': 'Szintemelkedés ({unit})'
 Elliptical: 'Elliptikus gép'
 Enabled: Enabled
@@ -393,6 +397,7 @@ Ranking: Ranglista
 'Relative cost': 'Relatív költség'
 'Remember me for 7 days': 'Remember me for 7 days'
 Remove: Remove
+'Remove challenge': 'Remove challenge'
 'Remove goal': 'Remove goal'
 'Remove task': 'Remove task'
 'Remove widget': 'Remove widget'

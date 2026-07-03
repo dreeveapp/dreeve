@@ -24,6 +24,7 @@ Activity: Aktivitet
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Akut:Kronisk Ratio - Ratio av ATL till CTL. Indikerar skaderisk.'
 'Adaptive & Inclusive Sports': 'Adaptiva & Inkluderande Sporter'
 'Add a component to start tracking maintenance.': 'Add a component to start tracking maintenance.'
+'Add challenge': 'Add challenge'
 'Add component': 'Add component'
 'Add gear': 'Add gear'
 'Add goal': 'Add goal'
@@ -72,6 +73,7 @@ Cancel: Cancel
 Canoeing: Kanot
 'Carbon saved': 'Sparat koldioxid'
 'Challenge consistency': Utmaningsihållighet
+'Challenge name': 'Challenge name'
 Challenges: Utmaningar
 'Changes still need to be processed before they appear on the app': 'Changes still need to be processed before they appear on the app'
 'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
@@ -101,6 +103,7 @@ Crossfit: Crossfit
 'Current Status': 'Current Status'
 'Current streaks': 'Current streaks'
 Cycling: Cykling
+'DDistance (single activity)': 'DDistance (single activity)'
 'Daily TRIMP': 'Daglig TRIMP'
 'Daily activities': 'Dagliga aktiviteter'
 Dance: Dance
@@ -150,6 +153,7 @@ Edit: Edit
 Elev: Höjd
 Elev.: Elev.
 Elevation: Höjdmeter
+'Elevation (single activity)': 'Elevation (single activity)'
 'Elevation in {unit}': 'Höjdmeter i {unit}'
 Elliptical: Elliptisk
 Enabled: Enabled
@@ -393,6 +397,7 @@ Ranking: Rankning
 'Relative cost': 'Relativ kostnad'
 'Remember me for 7 days': 'Remember me for 7 days'
 Remove: Remove
+'Remove challenge': 'Remove challenge'
 'Remove goal': 'Remove goal'
 'Remove task': 'Remove task'
 'Remove widget': 'Remove widget'

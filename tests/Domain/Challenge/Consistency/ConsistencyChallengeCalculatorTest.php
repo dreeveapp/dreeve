@@ -37,7 +37,6 @@ class ConsistencyChallengeCalculatorTest extends ContainerTestCase
                 challenges: ConsistencyChallenges::fromArray([
                     ConsistencyChallenge::create(
                         label: 'Ride a total of 1km',
-                        isEnabled: true,
                         type: ChallengeConsistencyType::DISTANCE,
                         goal: 1,
                         unit: ConsistencyChallenge::KILOMETER,
@@ -47,7 +46,6 @@ class ConsistencyChallengeCalculatorTest extends ContainerTestCase
                     ),
                     ConsistencyChallenge::create(
                         label: 'Ride a total of 200km',
-                        isEnabled: true,
                         type: ChallengeConsistencyType::DISTANCE,
                         goal: 200,
                         unit: ConsistencyChallenge::KILOMETER,
@@ -57,7 +55,6 @@ class ConsistencyChallengeCalculatorTest extends ContainerTestCase
                     ),
                     ConsistencyChallenge::create(
                         label: 'a 2km ride',
-                        isEnabled: true,
                         type: ChallengeConsistencyType::DISTANCE_IN_ONE_ACTIVITY,
                         goal: 2,
                         unit: ConsistencyChallenge::KILOMETER,
@@ -67,7 +64,6 @@ class ConsistencyChallengeCalculatorTest extends ContainerTestCase
                     ),
                     ConsistencyChallenge::create(
                         label: 'Total elevation',
-                        isEnabled: true,
                         type: ChallengeConsistencyType::ELEVATION,
                         goal: 2,
                         unit: ConsistencyChallenge::METER,
@@ -77,7 +73,6 @@ class ConsistencyChallengeCalculatorTest extends ContainerTestCase
                     ),
                     ConsistencyChallenge::create(
                         label: 'a 1m elevation ride',
-                        isEnabled: true,
                         type: ChallengeConsistencyType::ELEVATION_IN_ONE_ACTIVITY,
                         goal: 2,
                         unit: ConsistencyChallenge::METER,
@@ -87,7 +82,6 @@ class ConsistencyChallengeCalculatorTest extends ContainerTestCase
                     ),
                     ConsistencyChallenge::create(
                         label: 'Swim a total of 200km',
-                        isEnabled: true,
                         type: ChallengeConsistencyType::DISTANCE,
                         goal: 200,
                         unit: ConsistencyChallenge::KILOMETER,
@@ -97,7 +91,6 @@ class ConsistencyChallengeCalculatorTest extends ContainerTestCase
                     ),
                     ConsistencyChallenge::create(
                         label: 'Quantity',
-                        isEnabled: true,
                         type: ChallengeConsistencyType::NUMBER_OF_ACTIVITIES,
                         goal: 2,
                         unit: ConsistencyChallenge::METER,
@@ -107,22 +100,11 @@ class ConsistencyChallengeCalculatorTest extends ContainerTestCase
                     ),
                     ConsistencyChallenge::create(
                         label: 'Calories',
-                        isEnabled: true,
                         type: ChallengeConsistencyType::CALORIES,
                         goal: 2,
                         unit: ConsistencyChallenge::METER,
                         sportTypesToInclude: SportTypes::fromArray([
                             SportType::RIDE, SportType::MOUNTAIN_BIKE_RIDE, SportType::GRAVEL_RIDE, SportType::VIRTUAL_RIDE,
-                        ]),
-                    ),
-                    ConsistencyChallenge::create(
-                        label: 'Swim a total of 100km',
-                        isEnabled: false,
-                        type: ChallengeConsistencyType::DISTANCE,
-                        goal: 100,
-                        unit: ConsistencyChallenge::KILOMETER,
-                        sportTypesToInclude: SportTypes::fromArray([
-                            SportType::SWIM,
                         ]),
                     ),
                 ]),

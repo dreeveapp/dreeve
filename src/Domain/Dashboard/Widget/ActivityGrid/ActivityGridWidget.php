@@ -51,7 +51,7 @@ final readonly class ActivityGridWidget implements Widget
         if (!is_array($configuration->get('metricsDisplayOrder'))) {
             throw new InvalidDashboardLayout('Configuration item "metricsDisplayOrder" must be an array.');
         }
-        if (3 !== count($configuration->get('metricsDisplayOrder'))) {
+        if (3 !== count(array_unique($configuration->get('metricsDisplayOrder')))) {
             throw new InvalidDashboardLayout('Configuration item "metricsDisplayOrder" must contain all 3 grid types.');
         }
         foreach ($configuration->get('metricsDisplayOrder') as $metricDisplayOrder) {

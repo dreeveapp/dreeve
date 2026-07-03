@@ -6,6 +6,7 @@ namespace App\Domain\Challenge\Consistency;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
+use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Infrastructure\ValueObject\Collection;
 
 /**
@@ -26,7 +27,6 @@ final class ConsistencyChallenges extends Collection
         return [
             [
                 'label' => 'Ride a total of 200km',
-                'enabled' => true,
                 'type' => 'distance',
                 'unit' => 'km',
                 'goal' => 200,
@@ -34,7 +34,6 @@ final class ConsistencyChallenges extends Collection
             ],
             [
                 'label' => 'Ride a total of 600km',
-                'enabled' => true,
                 'type' => 'distance',
                 'unit' => 'km',
                 'goal' => 600,
@@ -42,7 +41,6 @@ final class ConsistencyChallenges extends Collection
             ],
             [
                 'label' => 'Ride a total of 1250km',
-                'enabled' => true,
                 'type' => 'distance',
                 'unit' => 'km',
                 'goal' => 1250,
@@ -50,7 +48,6 @@ final class ConsistencyChallenges extends Collection
             ],
             [
                 'label' => 'Complete a 100km ride',
-                'enabled' => true,
                 'type' => 'distanceInOneActivity',
                 'unit' => 'km',
                 'goal' => 100,
@@ -58,7 +55,6 @@ final class ConsistencyChallenges extends Collection
             ],
             [
                 'label' => 'Climb a total of 7500m',
-                'enabled' => true,
                 'type' => 'elevation',
                 'unit' => 'm',
                 'goal' => 7500,
@@ -66,7 +62,6 @@ final class ConsistencyChallenges extends Collection
             ],
             [
                 'label' => 'Complete a 5km run',
-                'enabled' => true,
                 'type' => 'distanceInOneActivity',
                 'unit' => 'km',
                 'goal' => 5,
@@ -74,7 +69,6 @@ final class ConsistencyChallenges extends Collection
             ],
             [
                 'label' => 'Complete a 10km run',
-                'enabled' => true,
                 'type' => 'distanceInOneActivity',
                 'unit' => 'km',
                 'goal' => 10,
@@ -82,7 +76,6 @@ final class ConsistencyChallenges extends Collection
             ],
             [
                 'label' => 'Complete a half marathon run',
-                'enabled' => true,
                 'type' => 'distanceInOneActivity',
                 'unit' => 'km',
                 'goal' => 21.1,
@@ -90,7 +83,6 @@ final class ConsistencyChallenges extends Collection
             ],
             [
                 'label' => 'Run a total of 100km',
-                'enabled' => true,
                 'type' => 'distance',
                 'unit' => 'km',
                 'goal' => 100,
@@ -98,7 +90,6 @@ final class ConsistencyChallenges extends Collection
             ],
             [
                 'label' => 'Climb a total of 2000m',
-                'enabled' => true,
                 'type' => 'elevation',
                 'unit' => 'm',
                 'goal' => 2000,
@@ -121,40 +112,36 @@ final class ConsistencyChallenges extends Collection
         $consistencyChallenges = [];
         foreach ($items as $challengeConfig) {
             if (!is_array($challengeConfig)) {
-                throw new InvalidConsistencyChallengeConfiguration('Invalid Challenge configuration provided');
+                throw new InvalidDashboardLayout('Invalid Challenge configuration provided');
             }
 
-            foreach (['label', 'enabled', 'type', 'unit', 'goal', 'sportTypesToInclude'] as $requiredKey) {
+            foreach (['label', 'type', 'unit', 'goal', 'sportTypesToInclude'] as $requiredKey) {
                 if (array_key_exists($requiredKey, $challengeConfig)) {
                     continue;
                 }
-                throw new InvalidConsistencyChallengeConfiguration(sprintf('"%s" property is required', $requiredKey));
+                throw new InvalidDashboardLayout(sprintf('"%s" property is required', $requiredKey));
             }
 
             if (empty($challengeConfig['label'])) {
-                throw new InvalidConsistencyChallengeConfiguration('"label" property cannot be empty');
-            }
-
-            if (!is_bool($challengeConfig['enabled'])) {
-                throw new InvalidConsistencyChallengeConfiguration('"enabled" property must be a boolean');
+                throw new InvalidDashboardLayout('"label" property cannot be empty');
             }
 
             if (!is_numeric($challengeConfig['goal'])) {
-                throw new InvalidConsistencyChallengeConfiguration('"goal" property must be a valid number');
+                throw new InvalidDashboardLayout('"goal" property must be a valid number');
             }
 
             if (!$type = ChallengeConsistencyType::tryFrom($challengeConfig['type'])) {
-                throw new InvalidConsistencyChallengeConfiguration(sprintf('"%s" is not a valid type', $challengeConfig['type']));
+                throw new InvalidDashboardLayout(sprintf('"%s" is not a valid type', $challengeConfig['type']));
             }
 
             if (!is_array($challengeConfig['sportTypesToInclude'])) {
-                throw new InvalidConsistencyChallengeConfiguration('"sportTypesToInclude" property must be an array');
+                throw new InvalidDashboardLayout('"sportTypesToInclude" property must be an array');
             }
 
             $sportTypesToInclude = SportTypes::empty();
             foreach ($challengeConfig['sportTypesToInclude'] as $sportTypeToInclude) {
                 if (!$sportType = SportType::tryFrom($sportTypeToInclude)) {
-                    throw new InvalidConsistencyChallengeConfiguration(sprintf('"%s" is not a valid sport type', $sportTypeToInclude));
+                    throw new InvalidDashboardLayout(sprintf('"%s" is not a valid sport type', $sportTypeToInclude));
                 }
                 $sportTypesToInclude->add($sportType);
             }
@@ -165,14 +152,14 @@ final class ConsistencyChallenges extends Collection
                 ConsistencyChallenge::MILES,
                 ConsistencyChallenge::FOOT,
             ])) {
-                throw new InvalidConsistencyChallengeConfiguration(sprintf('The unit "%s" is not valid for challenge type "%s"', $challengeConfig['unit'], $type->value));
+                throw new InvalidDashboardLayout(sprintf('The unit "%s" is not valid for challenge type "%s"', $challengeConfig['unit'], $type->value));
             }
 
             if (ChallengeConsistencyType::MOVING_TIME === $type && !in_array($challengeConfig['unit'], [
                 ConsistencyChallenge::HOUR,
                 ConsistencyChallenge::MINUTE,
             ])) {
-                throw new InvalidConsistencyChallengeConfiguration(sprintf('The unit "%s" is not valid for challenge type "%s"', $challengeConfig['unit'], $type->value));
+                throw new InvalidDashboardLayout(sprintf('The unit "%s" is not valid for challenge type "%s"', $challengeConfig['unit'], $type->value));
             }
 
             if (ChallengeConsistencyType::NUMBER_OF_ACTIVITIES === $type) {
@@ -186,7 +173,6 @@ final class ConsistencyChallenges extends Collection
 
             $consistencyChallenges[] = ConsistencyChallenge::create(
                 label: $challengeConfig['label'],
-                isEnabled: $challengeConfig['enabled'],
                 type: $type,
                 goal: (float) $challengeConfig['goal'],
                 unit: $challengeConfig['unit'],

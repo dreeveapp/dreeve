@@ -12,7 +12,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class ChallengeConsistencyWidget implements Widget
+final readonly class ChallengeConsistencyWidget implements Widget, HasWideConfigurationForm
 {
     public function __construct(
         private TranslatorInterface $translator,

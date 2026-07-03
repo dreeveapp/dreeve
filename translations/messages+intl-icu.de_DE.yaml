@@ -24,6 +24,7 @@ Activity: Aktivität
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Aktuelle vs. dauerhafte Trainingsbelastung - Verhältnis von ATL zu CTL. Gibt das Verletzungsrisiko an.'
 'Adaptive & Inclusive Sports': 'Adaptive & inklusive Sportarten'
 'Add a component to start tracking maintenance.': 'Füge eine Komponente hinzu, um mit der Wartungsverfolgung zu beginnen.'
+'Add challenge': 'Add challenge'
 'Add component': 'Komponente hinzufügen'
 'Add gear': 'Ausrüstung hinzufügen'
 'Add goal': 'Add goal'
@@ -72,6 +73,7 @@ Cancel: Abbrechen
 Canoeing: Kanufahren
 'Carbon saved': 'Kohlendioxid gespart'
 'Challenge consistency': Herausforderungskonstanz
+'Challenge name': 'Challenge name'
 Challenges: Herausforderungen
 'Changes still need to be processed before they appear on the app': 'Changes still need to be processed before they appear on the app'
 'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
@@ -101,6 +103,7 @@ Crossfit: Crossfit
 'Current Status': 'Aktueller Status'
 'Current streaks': 'Aktuelle Serien'
 Cycling: Radfahren
+'DDistance (single activity)': 'DDistance (single activity)'
 'Daily TRIMP': 'Täglicher TRIMP'
 'Daily activities': 'Tägliche Aktivitäten'
 Dance: Tanzen
@@ -150,6 +153,7 @@ Edit: Edit
 Elev: Anstieg
 Elev.: Höhenm.
 Elevation: Höhenmeter
+'Elevation (single activity)': 'Elevation (single activity)'
 'Elevation in {unit}': 'Höhenmeter in {unit}'
 Elliptical: Crosstrainer
 Enabled: Aktiviert
@@ -393,6 +397,7 @@ Ranking: Rangliste
 'Relative cost': 'Relative Kosten'
 'Remember me for 7 days': 'Für 7 Tage angemeldet bleiben'
 Remove: Entfernen
+'Remove challenge': 'Remove challenge'
 'Remove goal': 'Remove goal'
 'Remove task': 'Aufgabe entfernen'
 'Remove widget': 'Remove widget'

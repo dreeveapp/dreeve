@@ -27,10 +27,6 @@ final readonly class ConsistencyChallengeCalculator
 
         $consistency = [];
         foreach ($challenges as $challenge) {
-            if (!$challenge->isEnabled()) {
-                continue;
-            }
-
             if (!$this->activityIdRepository->hasForSportTypes($challenge->getSportTypesToInclude())) {
                 continue;
             }
