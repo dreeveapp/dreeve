@@ -1,11 +1,4 @@
 {% set goals = configuration.get('goals') %}
-{% set typeLabels = {
-    'distance': 'Distance'|trans,
-    'elevation': 'Elevation'|trans,
-    'movingTime': 'Moving time'|trans,
-    'numberOfActivities': 'Number of activities'|trans,
-    'calories': 'Calories'|trans,
-} %}
 {% set unitLabels = {
     'km': 'km', 'm': 'm', 'mi': 'mi', 'ft': 'ft',
     'hour': 'hours'|trans, 'minute': 'minutes'|trans,
@@ -43,7 +36,7 @@
                         <label class="mt-0!">{{ "Type"|trans }}</label>
                         <select name="config[goals][{{ period.value }}][__index__][type]" data-repeater-field="type">
                             {% for type in enum('App\\Domain\\Dashboard\\Widget\\TrainingGoals\\TrainingGoalType').cases() %}
-                                <option value="{{ type.value }}">{{ typeLabels[type.value] }}</option>
+                                <option value="{{ type.value }}">{{ type|trans }}</option>
                             {% endfor %}
                         </select>
                     </div>

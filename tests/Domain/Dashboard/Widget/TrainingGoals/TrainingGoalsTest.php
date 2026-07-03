@@ -174,21 +174,21 @@ class TrainingGoalsTest extends TestCase
             'weekly' => [
                 [
                     'label' => 'Cycling',
-                    'type' =>'distance',
+                    'type' => 'distance',
                     'unit' => 'km',
                     'goal' => 200,
                     'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide'],
                 ],
                 [
                     'label' => 'Cycling',
-                    'type' =>'elevation',
+                    'type' => 'elevation',
                     'unit' => 'm',
                     'goal' => 7500,
                     'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide'],
                 ],
                 [
                     'label' => 'Cycling',
-                    'type' =>'movingTime',
+                    'type' => 'movingTime',
                     'unit' => 'hour',
                     'goal' => 7500,
                     'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide'],
