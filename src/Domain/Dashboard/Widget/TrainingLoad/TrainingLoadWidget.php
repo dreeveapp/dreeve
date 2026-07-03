@@ -40,6 +40,11 @@ final readonly class TrainingLoadWidget implements Widget
         return $this->translator->trans('Training Load Analysis');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--training-load';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();
@@ -82,7 +87,7 @@ final readonly class TrainingLoadWidget implements Widget
             ])
         );
 
-        return $this->twig->load('html/dashboard/widget/widget--training-load.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'timeInHeartRateZonesForLast30Days' => $timeInHeartRateZonesForLast30Days,
             'trainingMetrics' => $trainingMetrics,
             'restDaysInLast7Days' => $numberOfRestDays,

@@ -24,6 +24,11 @@ final readonly class MostRecentMilestonesWidget implements Widget
         return $this->translator->trans('Most recent milestones');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--most-recent-milestones';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty()
@@ -54,7 +59,7 @@ final readonly class MostRecentMilestonesWidget implements Widget
 
         $numberOfMilestonesToDisplay = (int) $configuration->get('numberOfMilestonesToDisplay');
 
-        return $this->twig->load('html/dashboard/widget/widget--most-recent-milestones.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'milestones' => $milestones->slice(0, $numberOfMilestonesToDisplay),
         ]);
     }

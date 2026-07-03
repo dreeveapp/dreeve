@@ -24,6 +24,11 @@ final readonly class ZwiftStatsWidget implements Widget
         return $this->translator->trans('Zwift stats');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--zwift-stats';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();
@@ -40,7 +45,7 @@ final readonly class ZwiftStatsWidget implements Widget
             return null;
         }
 
-        return $this->twig->load('html/dashboard/widget/widget--zwift-stats.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'statsPerWorld' => $statsPerWorld,
         ]);
     }

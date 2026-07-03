@@ -4,6 +4,10 @@ namespace App\Tests\Controller\Admin;
 
 use App\Domain\Import\UploadActivityFile\UploadActivityFile;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\KeyValue\Key;
+use App\Infrastructure\KeyValue\KeyValue;
+use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
 use Symfony\Component\HttpFoundation\Response;
@@ -126,6 +130,40 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
         );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+    }
+
+    public function testHandleReturnsTheValidationMessageWhenAWidgetConfigurationIsInvalid(): void
+    {
+        $this->client->loginUser($this->adminUser());
+        $this->client->disableReboot();
+
+        /** @var KeyValueStore $keyValueStore */
+        $keyValueStore = static::getContainer()->get(KeyValueStore::class);
+        $keyValueStore->save(KeyValue::fromState(
+            key: Key::DASHBOARD,
+            value: Value::fromString(Json::encode([
+                ['id' => 'dashboardWidget-mostRecentActivities', 'widget' => 'mostRecentActivities', 'width' => 66, 'config' => ['numberOfActivitiesToDisplay' => 5]],
+            ])),
+        ));
+
+        $this->client->request(
+            method: 'POST',
+            uri: '/admin/dispatchCommand',
+            server: ['HTTP_X_CSRF_TOKEN' => $this->validCsrfToken()],
+            content: Json::encode([
+                'commandName' => 'configure-widget',
+                'payload' => [
+                    'dashboardWidgetId' => 'dashboardWidget-mostRecentActivities',
+                    'config' => ['numberOfActivitiesToDisplay' => '0'],
+                ],
+            ]),
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertSame(
+            ['error' => 'Configuration item "numberOfActivitiesToDisplay" must be set to a value of 1 or greater.'],
+            Json::decode((string) $this->client->getResponse()->getContent()),
+        );
     }
 
     private function validCsrfToken(): string

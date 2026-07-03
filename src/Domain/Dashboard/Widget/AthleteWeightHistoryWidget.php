@@ -27,6 +27,11 @@ final readonly class AthleteWeightHistoryWidget implements Widget
         return $this->translator->trans('Weight history');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--athlete-weight-history';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();
@@ -43,7 +48,7 @@ final readonly class AthleteWeightHistoryWidget implements Widget
             return null;
         }
 
-        return $this->twig->load('html/dashboard/widget/widget--athlete-weight-history.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'athleteWeightHistoryChart' => Json::encode(
                 AthleteWeightHistoryChart::create(
                     athleteWeights: $allWeights,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\CommandDeserializer;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,7 +46,11 @@ final readonly class DispatchCommandRequestHandler
             return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        $this->commandBus->dispatch($command);
+        try {
+            $this->commandBus->dispatch($command);
+        } catch (CouldNotProcessCommand $e) {
+            return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
 
         $session = $request->getSession();
         if ($session instanceof FlashBagAwareSessionInterface) {

@@ -32,6 +32,11 @@ final readonly class FtpHistoryWidget implements Widget
         return $this->translator->trans('FTP history');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--ftp-history';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();
@@ -76,7 +81,7 @@ final readonly class FtpHistoryWidget implements Widget
             return null;
         }
 
-        return $this->twig->load('html/dashboard/widget/widget--ftp-history.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'ftpHistoryCharts' => $ftpHistoryCharts,
         ]);
     }

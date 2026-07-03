@@ -12,6 +12,8 @@ interface Widget
 {
     public function getLabel(): string;
 
+    public function getTemplateName(): string;
+
     public function getDefaultConfiguration(): WidgetConfiguration;
 
     public function guardValidConfiguration(WidgetConfiguration $configuration): void;

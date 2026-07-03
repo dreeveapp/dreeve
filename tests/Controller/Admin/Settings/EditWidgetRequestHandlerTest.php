@@ -38,4 +38,37 @@ class EditWidgetRequestHandlerTest extends AdminWebTestCase
         $this->expectException(NotFoundHttpException::class);
         $this->client->request('GET', '/admin/settings/dashboard/widget/dashboardWidget-does-not-exist/delete');
     }
+
+    public function testRendersTheConfigurationForm(): void
+    {
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/settings/dashboard/widget/dashboardWidget-streaks/configure');
+
+        $this->assertResponseIsSuccessful();
+
+        $form = $crawler->filter('form[data-dispatch-command="configure-widget"]');
+        $this->assertCount(1, $form);
+        $this->assertSame('dashboardWidget-streaks', $form->filter('input[name="dashboardWidgetId"]')->attr('value'));
+        $this->assertCount(1, $form->filter('input[name="config[subtitle]"]'));
+        $this->assertGreaterThan(0, $form->filter('input[type="checkbox"][name="config[sportTypesToInclude][]"]')->count());
+    }
+
+    public function testReturns404WhenConfiguringANonConfigurableWidget(): void
+    {
+        $this->client->loginUser($this->adminUser());
+        $this->client->catchExceptions(false);
+
+        $this->expectException(NotFoundHttpException::class);
+        $this->client->request('GET', '/admin/settings/dashboard/widget/dashboardWidget-eddington/configure');
+    }
+
+    public function testReturns404WhenConfiguringAnUnknownWidget(): void
+    {
+        $this->client->loginUser($this->adminUser());
+        $this->client->catchExceptions(false);
+
+        $this->expectException(NotFoundHttpException::class);
+        $this->client->request('GET', '/admin/settings/dashboard/widget/dashboardWidget-does-not-exist/configure');
+    }
 }

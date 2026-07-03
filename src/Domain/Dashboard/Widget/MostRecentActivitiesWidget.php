@@ -24,6 +24,11 @@ final readonly class MostRecentActivitiesWidget implements Widget
         return $this->translator->trans('Most recent activities');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--most-recent-activities';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty()
@@ -51,7 +56,7 @@ final readonly class MostRecentActivitiesWidget implements Widget
 
         $numberOfActivitiesToDisplay = (int) $configuration->get('numberOfActivitiesToDisplay');
 
-        return $this->twig->load('html/dashboard/widget/widget--most-recent-activities.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'mostRecentActivities' => $allActivities->slice(0, $numberOfActivitiesToDisplay),
         ]);
     }

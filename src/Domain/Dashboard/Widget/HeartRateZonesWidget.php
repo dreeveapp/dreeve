@@ -27,6 +27,11 @@ final readonly class HeartRateZonesWidget implements Widget
         return $this->translator->trans('Heart rate zones');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--heart-rate-zones';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();
@@ -53,7 +58,7 @@ final readonly class HeartRateZonesWidget implements Widget
             }
         }
 
-        return $this->twig->load('html/dashboard/widget/widget--heart-rate-zones.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'timeInHeartRateZoneChart' => Json::encode(
                 TimeInHeartRateZoneChart::create(
                     timeInHeartRateZones: $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZones(),

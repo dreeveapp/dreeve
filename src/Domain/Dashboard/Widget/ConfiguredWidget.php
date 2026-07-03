@@ -44,6 +44,14 @@ final readonly class ConfiguredWidget
         return !$this->widget->getDefaultConfiguration()->isEmpty();
     }
 
+    public function getConfigurationTemplate(): string
+    {
+        return sprintf(
+            'html/admin/page/settings/widget-config/%s.html.twig',
+            $this->widget->getTemplateName(),
+        );
+    }
+
     public function getConfiguration(): WidgetConfiguration
     {
         return $this->configuration;

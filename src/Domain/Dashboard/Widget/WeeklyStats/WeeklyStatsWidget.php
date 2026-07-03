@@ -32,6 +32,11 @@ final readonly class WeeklyStatsWidget implements Widget
         return $this->translator->trans('Weekly stats');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--weekly-stats';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty()
@@ -46,7 +51,7 @@ final readonly class WeeklyStatsWidget implements Widget
         if (!is_array($configuration->get('metricsDisplayOrder'))) {
             throw new InvalidDashboardLayout('Configuration item "metricsDisplayOrder" must be an array.');
         }
-        if (3 !== count($configuration->get('metricsDisplayOrder'))) {
+        if (3 !== count(array_unique($configuration->get('metricsDisplayOrder')))) {
             throw new InvalidDashboardLayout('Configuration item "metricsDisplayOrder" must contain all 3 metrics.');
         }
         foreach ($configuration->get('metricsDisplayOrder') as $metricDisplayOrder) {
@@ -95,7 +100,7 @@ final readonly class WeeklyStatsWidget implements Widget
             }
         }
 
-        return $this->twig->load('html/dashboard/widget/widget--weekly-stats.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'weeklyDistanceCharts' => $weeklyDistanceTimeCharts,
             'weeksPerActivityType' => $weeksPerActivityType,
         ]);

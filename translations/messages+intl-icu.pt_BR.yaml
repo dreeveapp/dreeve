@@ -73,6 +73,7 @@ Canoeing: Canoagem
 'Challenge consistency': 'Consistência nos desafios'
 Challenges: Desafios
 'Changes still need to be processed before they appear on the app': 'Changes still need to be processed before they appear on the app'
+'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Carga de Treinamento Crônica (Condicionamento) - Média móvel exponencial de 42 dias da sua carga de treinamento diária. Representa a adaptação ao treinamento de longo prazo.'
 Clear: Clear
 'Clear all filters': 'Limpar todos os filtros'
@@ -89,6 +90,7 @@ Component: Component
 Components: Componentes
 Config: Config
 Configure: Configure
+'Configure {widget}': 'Configure {widget}'
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Parabéns! Você alcançou {numberOfPRs} RPs nesta atividade.'
 'Consider reducing load': 'Considere reduzir a carga'
 Consistency: Consistência
@@ -234,6 +236,7 @@ Imperial: Imperial
 'Imported from Strava': 'Imported from Strava'
 'Imported on': 'Imported on'
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'Nesse tempo, percorri {totalDistance}, o que equivale a {numberOfTripsAroundTheWorld} voltas ao mundo 🌍 ou {numberOfTripsToTheMoonPercent}% do caminho até a lua 🌕, e acumulei uma elevação de {totalElevation}, o que representa {timesMountEverest} vezes o Monte Everest 🏔. No total, são {totalTimeRecorded} de tempo em movimento 🎉.'
+'Include retired gear': 'Include retired gear'
 'Individual thresholds vary based on fitness level.': 'Os limiares individuais variam de acordo com o nível de condicionamento físico.'
 'Inline Skate': 'Patinação em Linha'
 Intensity: Intensidade
@@ -255,6 +258,7 @@ Lap: Volta
 'Last month': 'Último mês'
 'Last week': 'Última semana'
 'Last {numberOfDays} days': 'Últimos {numberOfDays} dias'
+'Leave empty to include all sport types.': 'Leave empty to include all sport types.'
 Lifetime: Vitalício
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Fadiga leve com boa prontidão. Um ótimo equilíbrio para treinos de qualidade ou esforços mais longos'
 Load: Carga
@@ -282,6 +286,7 @@ Max: Máx
 May: Mai
 Medium: Média
 Metric: Métrico
+'Metric display order': 'Metric display order'
 Milestones: Marcos
 'Mind & Body Sports': 'Esportes para Corpo e Mente'
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Fadiga moderada com condicionamento estável. Bem adequado para treinos consistentes no dia a dia'
@@ -323,12 +328,16 @@ None: Nenhum
 Nov: Nov
 Now: Agora
 'Number of activities per month': 'Número de atividades por mês'
+'Number of activities to display': 'Number of activities to display'
+'Number of challenges to display': 'Number of challenges to display'
+'Number of milestones to display': 'Number of milestones to display'
 'Number of times completed': 'Número de vezes concluído'
 Oct: Out
 'Older effort': 'Esforço mais antigo'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'Em média, isso dá {dailyAverage} por dia, uma média semanal de {weeklyAverage} e uma média mensal de {monthlyAverage} 🐣.'
 'One of your gear maintenance tasks is due': 'Uma das suas tarefas de manutenção do equipamento está vencida'
 'Optimal training range': 'Faixa ideal de treinamento'
+'Optional subtitle': 'Optional subtitle'
 Other: Outro
 'Outdoor Sports': 'Esportes ao Ar Livre'
 Over-fatigued: Sobrecarregado
@@ -418,6 +427,7 @@ Segments: Segmentos
 Sep: Set
 Settings: Settings
 'Show information': 'Mostrar informação'
+'Show last X years by default': 'Show last X years by default'
 'Show password': 'Show password'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Mostra como seu TSB (Forma) e Razão A:C se recuperarão ao longo do tempo se você tirar dias completos de descanso.'
@@ -437,6 +447,7 @@ Source: Source
 Speed: Velocidade
 Splits: Parciais
 'Sport type': 'Sport type'
+'Sport types to include': 'Sport types to include'
 'Sport variety': 'Variedade de esporte'
 Squash: Squash
 'Stair Stepper': 'Subida de Escadas'
@@ -448,6 +459,7 @@ Status: Status
 'Strava profile': 'Perfil do Strava'
 'Streak started on {date}': 'Sequência iniciada em {date}'
 Streaks: Sequências
+Subtitle: Subtitle
 Success: Success
 Sun: Dom
 Sun.: Dom.
@@ -624,6 +636,7 @@ Weight: Peso
 'Weight Training': 'Treino de Força'
 'Weight history': 'Histórico de peso'
 Wheelchair: 'Cadeira de Rodas'
+'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
 'Wind Surf': Windsurf
 'Winter Sports': 'Esportes de Inverno'

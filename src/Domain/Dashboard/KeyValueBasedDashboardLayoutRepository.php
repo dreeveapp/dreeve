@@ -42,4 +42,23 @@ final readonly class KeyValueBasedDashboardLayoutRepository implements Dashboard
             Value::fromString(Json::encode($layout)),
         ));
     }
+
+    public function updateWidgetConfiguration(DashboardWidgetId $dashboardWidgetId, array $configuration): void
+    {
+        $layout = array_map(
+            static function (array $item) use ($dashboardWidgetId, $configuration): array {
+                if (($item['id'] ?? null) === (string) $dashboardWidgetId) {
+                    $item['config'] = $configuration;
+                }
+
+                return $item;
+            },
+            iterator_to_array($this->find()),
+        );
+
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode($layout)),
+        ));
+    }
 }

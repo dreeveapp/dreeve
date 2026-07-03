@@ -24,6 +24,11 @@ final readonly class IntroTextWidget implements Widget
         return $this->translator->trans('Intro text');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--intro-text';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();
@@ -42,7 +47,7 @@ final readonly class IntroTextWidget implements Widget
             translator: $this->translator,
         );
 
-        return $this->twig->load('html/dashboard/widget/widget--intro-text.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'intro' => $activityTotals,
         ]);
     }

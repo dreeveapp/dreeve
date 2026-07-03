@@ -73,6 +73,7 @@ Canoeing: Kanot
 'Challenge consistency': Utmaningsihållighet
 Challenges: Utmaningar
 'Changes still need to be processed before they appear on the app': 'Changes still need to be processed before they appear on the app'
+'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Kronisk träningsbelastning (Träningsform) - 42 dagars exponentiellt viktat medelvärde av din dagliga träningsbelastning. Representerar långsiktig träningsanpassning.'
 Clear: Clear
 'Clear all filters': 'Clear all filters'
@@ -89,6 +90,7 @@ Component: Component
 Components: Components
 Config: Config
 Configure: Configure
+'Configure {widget}': 'Configure {widget}'
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Congrats! You achieved {numberOfPRs} PRs in this activity.'
 'Consider reducing load': 'Consider reducing load'
 Consistency: Consistency
@@ -234,6 +236,7 @@ Imperial: Imperial
 'Imported from Strava': 'Imported from Strava'
 'Imported on': 'Imported on'
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉."
+'Include retired gear': 'Include retired gear'
 'Individual thresholds vary based on fitness level.': 'Individuella trösklar varierar beroende på hur vältränad du är.'
 'Inline Skate': Rullskridskor
 Intensity: Intensity
@@ -255,6 +258,7 @@ Lap: Varv
 'Last month': 'Last month'
 'Last week': 'Last week'
 'Last {numberOfDays} days': 'Senaste {numberOfDays} dagarna'
+'Leave empty to include all sport types.': 'Leave empty to include all sport types.'
 Lifetime: Lifetime
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Light fatigue with good readiness. A great balance for quality training or longer efforts'
 Load: Load
@@ -282,6 +286,7 @@ Max: Max
 May: May
 Medium: Mellan
 Metric: Metric
+'Metric display order': 'Metric display order'
 Milestones: Milestones
 'Mind & Body Sports': 'Sinne- och kroppssporter'
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training'
@@ -323,12 +328,16 @@ None: Inga
 Nov: Nov
 Now: Now
 'Number of activities per month': 'Antal aktiviteter per månad'
+'Number of activities to display': 'Number of activities to display'
+'Number of challenges to display': 'Number of challenges to display'
+'Number of milestones to display': 'Number of milestones to display'
 'Number of times completed': 'Antal gånger avklarat'
 Oct: Okt
 'Older effort': 'Older effort'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.'
 'One of your gear maintenance tasks is due': 'En av dina underhållsuppgifter behöver uppmärksamhet'
 'Optimal training range': 'Optimal träning'
+'Optional subtitle': 'Optional subtitle'
 Other: Annat
 'Outdoor Sports': 'Utomhus sport'
 Over-fatigued: Over-fatigued
@@ -418,6 +427,7 @@ Segments: Segment
 Sep: Sep
 Settings: Settings
 'Show information': 'Visa information'
+'Show last X years by default': 'Show last X years by default'
 'Show password': 'Show password'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.'
@@ -437,6 +447,7 @@ Source: Source
 Speed: Fart
 Splits: Delar
 'Sport type': 'Sport type'
+'Sport types to include': 'Sport types to include'
 'Sport variety': 'Sport variety'
 Squash: Squash
 'Stair Stepper': Trappmaskin
@@ -448,6 +459,7 @@ Status: Status
 'Strava profile': 'Strava profile'
 'Streak started on {date}': 'Streak started on {date}'
 Streaks: Serie
+Subtitle: Subtitle
 Success: Success
 Sun: Sön
 Sun.: Sun.
@@ -624,6 +636,7 @@ Weight: Weight
 'Weight Training': Viktträning
 'Weight history': 'Weight history'
 Wheelchair: Rullstol
+'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
 'Wind Surf': Vindsurfing
 'Winter Sports': Vintersporter

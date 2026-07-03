@@ -27,6 +27,11 @@ final readonly class ChallengeConsistencyWidget implements Widget
         return $this->translator->trans('Challenge consistency');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--challenge-consistency';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty()
@@ -52,7 +57,7 @@ final readonly class ChallengeConsistencyWidget implements Widget
         $config = $configuration->get('challenges');
         $consistencyChallenges = ConsistencyChallenges::fromConfig($config);
 
-        return $this->twig->load('html/dashboard/widget/widget--challenge-consistency.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'allMonths' => $allMonths,
             'allConsistencyChallenges' => $consistencyChallenges,
             'calculatedConsistencyChallenges' => $this->consistencyChallengeCalculator->calculateFor(

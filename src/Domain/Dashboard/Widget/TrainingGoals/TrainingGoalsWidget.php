@@ -29,6 +29,11 @@ final readonly class TrainingGoalsWidget implements Widget
         return $this->translator->trans('Training goals');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--training-goals';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty()
@@ -122,7 +127,7 @@ final readonly class TrainingGoalsWidget implements Widget
             return null;
         }
 
-        return $this->twig->load('html/dashboard/widget/widget--training-goals.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'fromToLabels' => $fromToLabels,
             'calculatedTrainingGoalsPerPeriod' => $calculatedGoalsPerPeriod,
         ]);

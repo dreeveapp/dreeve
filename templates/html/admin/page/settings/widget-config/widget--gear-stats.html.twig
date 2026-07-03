@@ -1,0 +1,7 @@
+<div class="flex items-start gap-2">
+    <input type="checkbox" id="config-includeRetiredGear" name="config[includeRetiredGear]" value="true" {{ configuration.get('includeRetiredGear') ? 'checked' }} class="mt-0.5">
+    <div>
+        <label for="config-includeRetiredGear" class="mt-0!">{{ "Include retired gear"|trans }}</label>
+        <p class="mt-0.5 text-xxs text-gray-500">{{ "When disabled, gear marked as retired is left out of the chart."|trans }}</p>
+    </div>
+</div>

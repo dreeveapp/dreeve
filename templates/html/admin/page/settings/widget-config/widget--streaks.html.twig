@@ -1,0 +1,16 @@
+<div>
+    <label for="config-subtitle">{{ "Subtitle"|trans }}</label>
+    <input type="text" id="config-subtitle" name="config[subtitle]" value="{{ configuration.get('subtitle') }}" placeholder="{{ "Optional subtitle"|trans }}">
+</div>
+<div>
+    <label>{{ "Sport types to include"|trans }}</label>
+    <div class="mt-1 max-h-48 overflow-y-auto flex flex-col gap-1.5 rounded-lg border border-gray-200 p-2">
+        {% for sportType in enum('App\\Domain\\Activity\\SportType\\SportType').cases() %}
+            <label class="flex items-center gap-2 mt-0! text-sm font-normal cursor-pointer">
+                <input type="checkbox" name="config[sportTypesToInclude][]" value="{{ sportType.value }}" {{ sportType.value in configuration.get('sportTypesToInclude') ? 'checked' }}>
+                <span>{{ sportType|trans }}</span>
+            </label>
+        {% endfor %}
+    </div>
+    <p class="mt-1 text-xxs text-gray-500">{{ "Leave empty to include all sport types."|trans }}</p>
+</div>

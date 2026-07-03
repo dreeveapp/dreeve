@@ -73,6 +73,7 @@ Canoeing: Kenuzás
 'Challenge consistency': 'Kihívás következetesség'
 Challenges: Kihívások
 'Changes still need to be processed before they appear on the app': 'Changes still need to be processed before they appear on the app'
+'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Krónikus edzésterhelés (Fitnesz) – a napi edzésterhelés 42 napos exponenciálisan súlyozott átlaga. A hosszú távú edzésadaptációt mutatja.'
 Clear: Clear
 'Clear all filters': 'Clear all filters'
@@ -89,6 +90,7 @@ Component: Component
 Components: Components
 Config: Config
 Configure: Configure
+'Configure {widget}': 'Configure {widget}'
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Congrats! You achieved {numberOfPRs} PRs in this activity.'
 'Consider reducing load': 'Fontold meg a terhelés csökkentését'
 Consistency: Következetesség
@@ -234,6 +236,7 @@ Imperial: Angolszász
 'Imported from Strava': 'Imported from Strava'
 'Imported on': 'Imported on'
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'Ez idő alatt {totalDistance}-t tettem meg, ami {numberOfTripsAroundTheWorld} körülutazás a Föld körül, vagy {numberOfTripsToTheMoonPercent}% az úton a Hold felé, és {totalElevation} szintemelkedést győztem le, ami {timesMountEverest}-szer a Mount Everest magassága. Összesen {totalTimeRecorded} mozgásban töltött idő.'
+'Include retired gear': 'Include retired gear'
 'Individual thresholds vary based on fitness level.': 'Az egyéni küszöbértékek a fitnesz szinttől függően változnak.'
 'Inline Skate': Görkorcsolya
 Intensity: Intenzitás
@@ -255,6 +258,7 @@ Lap: Kör
 'Last month': 'Last month'
 'Last week': 'Last week'
 'Last {numberOfDays} days': 'Utolsó {numberOfDays} nap'
+'Leave empty to include all sport types.': 'Leave empty to include all sport types.'
 Lifetime: 'Teljes időszak'
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Enyhe fáradtság jó készenléti állapottal. Kiváló egyensúly a minőségi edzéshez vagy hosszabb erőfeszítésekhez'
 Load: Terhelés
@@ -282,6 +286,7 @@ Max: Max
 May: Máj
 Medium: Közepes
 Metric: Metrikus
+'Metric display order': 'Metric display order'
 Milestones: Mérföldkövek
 'Mind & Body Sports': 'Test-lélek sportok'
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Mérsékelt fáradtság stabil fittséggel. Kiváló a következetes napi edzéshez'
@@ -323,12 +328,16 @@ None: 'Egyik sem'
 Nov: Nov
 Now: Most
 'Number of activities per month': 'Havi tevékenységek száma'
+'Number of activities to display': 'Number of activities to display'
+'Number of challenges to display': 'Number of challenges to display'
+'Number of milestones to display': 'Number of milestones to display'
 'Number of times completed': 'Teljesítések száma'
 Oct: Okt
 'Older effort': 'Korábbi teljesítmény'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'Átlagosan ez {dailyAverage} naponta, heti átlag {weeklyAverage} és havi átlag {monthlyAverage}.'
 'One of your gear maintenance tasks is due': 'Az egyik felszerelés karbantartási feladatod esedékes'
 'Optimal training range': 'Optimális edzéstartomány'
+'Optional subtitle': 'Optional subtitle'
 Other: Egyéb
 'Outdoor Sports': 'Szabadtéri sportok'
 Over-fatigued: Túlterhelve
@@ -418,6 +427,7 @@ Segments: Szegmensek
 Sep: Szept
 Settings: Settings
 'Show information': 'Információ megjelenítése'
+'Show last X years by default': 'Show last X years by default'
 'Show password': 'Show password'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Megmutatja, hogyan fog a TSB (Forma) és az A:C arány idővel helyreállni, ha teljes pihenőnapokat tartasz.'
@@ -437,6 +447,7 @@ Source: Source
 Speed: Sebesség
 Splits: Részidők
 'Sport type': 'Sport type'
+'Sport types to include': 'Sport types to include'
 'Sport variety': Sporttípus-változatosság
 Squash: Squash
 'Stair Stepper': 'Lépcső szimulátor'
@@ -448,6 +459,7 @@ Status: Állapot
 'Strava profile': 'Strava profil'
 'Streak started on {date}': 'Sorozat kezdete: {date}'
 Streaks: Sorozatok
+Subtitle: Subtitle
 Success: Success
 Sun: V
 Sun.: Sun.
@@ -624,6 +636,7 @@ Weight: Súly
 'Weight Training': 'Súlyzós edzés'
 'Weight history': 'Súly előzmények'
 Wheelchair: Kerekesszék
+'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
 'Wind Surf': Windsurfing
 'Winter Sports': 'Téli sportok'

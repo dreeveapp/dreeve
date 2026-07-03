@@ -28,6 +28,11 @@ final readonly class DistanceBreakdownWidget implements Widget
         return $this->translator->trans('Distance breakdown');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--distance-breakdown';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();
@@ -62,7 +67,7 @@ final readonly class DistanceBreakdownWidget implements Widget
             }
         }
 
-        return $this->twig->load('html/dashboard/widget/widget--distance-breakdown.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'distanceBreakdowns' => $distanceBreakdowns,
         ]);
     }

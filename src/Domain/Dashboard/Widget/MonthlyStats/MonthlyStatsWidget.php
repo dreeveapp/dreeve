@@ -33,6 +33,11 @@ final readonly class MonthlyStatsWidget implements Widget
         return $this->translator->trans('Monthly stats');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--monthly-stats';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty()
@@ -54,7 +59,7 @@ final readonly class MonthlyStatsWidget implements Widget
         if (!is_array($configuration->get('metricsDisplayOrder'))) {
             throw new InvalidDashboardLayout('Configuration item "metricsDisplayOrder" must be an array.');
         }
-        if (3 !== count($configuration->get('metricsDisplayOrder'))) {
+        if (3 !== count(array_unique($configuration->get('metricsDisplayOrder')))) {
             throw new InvalidDashboardLayout('Configuration item "metricsDisplayOrder" must contain all 3 metrics.');
         }
         foreach ($configuration->get('metricsDisplayOrder') as $metricDisplayOrder) {
@@ -95,7 +100,7 @@ final readonly class MonthlyStatsWidget implements Widget
         /** @var string[] $metricsDisplayOrder */
         $metricsDisplayOrder = $configuration->get('metricsDisplayOrder');
 
-        return $this->twig->load('html/dashboard/widget/widget--monthly-stats.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'monthlyStatsChartsPerContext' => $monthlyStatChartsPerContext,
             'metricsDisplayOrder' => array_map(
                 StatsContext::from(...),

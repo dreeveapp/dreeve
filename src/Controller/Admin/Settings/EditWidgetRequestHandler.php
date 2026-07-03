@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Settings;
 
+use App\Domain\Dashboard\ConfigureWidget\ConfigureWidget;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\DeleteWidget\DeleteWidget;
 use App\Domain\Dashboard\Widget\ConfiguredWidget;
@@ -21,6 +22,20 @@ final readonly class EditWidgetRequestHandler
         private Environment $twig,
         private ConfiguredWidgets $configuredWidgets,
     ) {
+    }
+
+    #[Route(path: '/admin/settings/dashboard/widget/{dashboardWidgetId}/configure', name: 'admin_configure_dashboard_widget', methods: ['GET'], priority: 10)]
+    public function handleConfigure(string $dashboardWidgetId): Response
+    {
+        $widget = $this->configuredWidgets->find(DashboardWidgetId::fromString($dashboardWidgetId));
+        if (!$widget instanceof ConfiguredWidget || !$widget->isConfigurable()) {
+            throw new NotFoundHttpException('Widget not found');
+        }
+
+        return new Response($this->twig->render('html/admin/page/settings/configure-widget.html.twig', [
+            'dispatchCommand' => ConfigureWidget::getCommandName(),
+            'configuredWidget' => $widget,
+        ]));
     }
 
     #[Route(path: '/admin/settings/dashboard/widget/{dashboardWidgetId}/delete', name: 'admin_delete_dashboard_widget', methods: ['GET'], priority: 10)]

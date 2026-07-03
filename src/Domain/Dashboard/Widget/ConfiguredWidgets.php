@@ -45,7 +45,6 @@ final class ConfiguredWidgets implements \IteratorAggregate
             foreach ($layoutItem['config'] ?? [] as $key => $value) {
                 $configuration->add($key, $value);
             }
-            $widget->guardValidConfiguration($configuration);
 
             $configuredWidgets[] = new ConfiguredWidget(
                 id: DashboardWidgetId::fromString($layoutItem['id']),

@@ -32,6 +32,11 @@ final readonly class ActivityGridWidget implements Widget
         return $this->translator->trans('Activity heatmap');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--activity-grid';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty()
@@ -113,7 +118,7 @@ final readonly class ActivityGridWidget implements Widget
             )->build());
         }
 
-        return $this->twig->load('html/dashboard/widget/widget--activity-grid.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'gridCharts' => $activityGridsCharts,
             'metricsDisplayOrder' => array_map(
                 ActivityGridType::from(...),

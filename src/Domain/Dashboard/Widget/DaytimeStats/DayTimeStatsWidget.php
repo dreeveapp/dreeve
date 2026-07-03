@@ -26,6 +26,11 @@ final readonly class DayTimeStatsWidget implements Widget
         return $this->translator->trans('Daytime stats');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--day-time-stats';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();
@@ -57,7 +62,7 @@ final readonly class DayTimeStatsWidget implements Widget
         $allActivities = $this->enrichedActivities->findAll();
         $allDayTimeStats = DaytimeStats::create($allActivities);
 
-        return $this->twig->load('html/dashboard/widget/widget--day-time-stats.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'allActivities' => [
                 'chart' => Json::encode(
                     DaytimeStatsChart::create(

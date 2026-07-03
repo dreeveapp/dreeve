@@ -32,6 +32,11 @@ final readonly class StreaksWidget implements Widget
         return $this->translator->trans('Current streaks');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--streaks';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty()
@@ -80,7 +85,7 @@ final readonly class StreaksWidget implements Widget
             }
         }
 
-        return $this->twig->load('html/dashboard/widget/widget--streaks.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'subtitle' => $configuration->get('subtitle'),
             'mostRecentActivity' => $mostRecentActivity,
             'dayStreak' => $findStreaksResponse->getCurrentDayStreak(),

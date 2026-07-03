@@ -24,6 +24,11 @@ final readonly class MostRecentChallengesCompletedWidget implements Widget
         return $this->translator->trans('Most recent challenges');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--most-recent-challenges';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty()
@@ -52,7 +57,7 @@ final readonly class MostRecentChallengesCompletedWidget implements Widget
 
         $numberOfChallengesToDisplay = (int) $configuration->get('numberOfChallengesToDisplay');
 
-        return $this->twig->load('html/dashboard/widget/widget--most-recent-challenges.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'challenges' => $challenges->slice(0, $numberOfChallengesToDisplay),
         ]);
     }

@@ -37,6 +37,11 @@ final readonly class GearStatsWidget implements Widget
         return $this->translator->trans('Total hours spent per gear');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--gear-stats';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty()
@@ -93,7 +98,7 @@ final readonly class GearStatsWidget implements Widget
             }
         }
 
-        return $this->twig->load('html/dashboard/widget/widget--gear-stats.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'chartAllGears' => Json::encode(MovingTimePerGearChart::create(
                 movingTimePerGear: $this->queryBus->ask(new FindMovingTimePerGear($allYears, null))->getMovingTimePerGear(),
                 gears: $allUsedGears,

@@ -36,6 +36,11 @@ final readonly class YearlyStatsWidget implements Widget
         return $this->translator->trans('Yearly stats');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--yearly-stats';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty()
@@ -57,7 +62,7 @@ final readonly class YearlyStatsWidget implements Widget
         if (!is_array($configuration->get('metricsDisplayOrder'))) {
             throw new InvalidDashboardLayout('Configuration item "metricsDisplayOrder" must be an array.');
         }
-        if (3 !== count($configuration->get('metricsDisplayOrder'))) {
+        if (3 !== count(array_unique($configuration->get('metricsDisplayOrder')))) {
             throw new InvalidDashboardLayout('Configuration item "metricsDisplayOrder" must contain all 3 metrics.');
         }
         foreach ($configuration->get('metricsDisplayOrder') as $metricDisplayOrder) {
@@ -119,7 +124,7 @@ final readonly class YearlyStatsWidget implements Widget
         /** @var string[] $metricsDisplayOrder */
         $metricsDisplayOrder = $configuration->get('metricsDisplayOrder');
 
-        return $this->twig->load('html/dashboard/widget/widget--yearly-stats.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'yearlyStatsChartsPerContext' => $yearlyStatChartsPerContext,
             'yearlyStatistics' => $yearlyStatistics,
             'metricsDisplayOrder' => array_map(

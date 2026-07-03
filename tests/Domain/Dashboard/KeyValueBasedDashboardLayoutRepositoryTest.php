@@ -78,6 +78,34 @@ class KeyValueBasedDashboardLayoutRepositoryTest extends ContainerTestCase
         $this->assertContains('dashboardWidget-mostRecentActivities', $ids);
     }
 
+    public function testUpdateWidgetConfigurationOnlyChangesTheMatchingWidget(): void
+    {
+        $layout = [
+            ['id' => 'dashboardWidget-a', 'widget' => 'introText', 'width' => 33],
+            ['id' => 'dashboardWidget-b', 'widget' => 'streaks', 'width' => 33, 'config' => ['subtitle' => null, 'sportTypesToInclude' => []]],
+            ['id' => 'dashboardWidget-c', 'widget' => 'eddington', 'width' => 33],
+        ];
+
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::DASHBOARD,
+            value: Value::fromString(Json::encode($layout)),
+        ));
+
+        $this->repository->updateWidgetConfiguration(
+            DashboardWidgetId::fromString('dashboardWidget-b'),
+            ['subtitle' => 'Keep it up', 'sportTypesToInclude' => ['Run']],
+        );
+
+        $this->assertEquals(
+            DashboardLayout::fromArray([
+                ['id' => 'dashboardWidget-a', 'widget' => 'introText', 'width' => 33],
+                ['id' => 'dashboardWidget-b', 'widget' => 'streaks', 'width' => 33, 'config' => ['subtitle' => 'Keep it up', 'sportTypesToInclude' => ['Run']]],
+                ['id' => 'dashboardWidget-c', 'widget' => 'eddington', 'width' => 33],
+            ]),
+            $this->repository->find(),
+        );
+    }
+
     #[\Override]
     protected function setUp(): void
     {

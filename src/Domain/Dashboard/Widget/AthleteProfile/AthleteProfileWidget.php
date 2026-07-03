@@ -30,6 +30,11 @@ final readonly class AthleteProfileWidget implements Widget
         return $this->translator->trans('Athlete profile');
     }
 
+    public function getTemplateName(): string
+    {
+        return 'widget--athlete-profile';
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();
@@ -94,7 +99,7 @@ final readonly class AthleteProfileWidget implements Widget
             return null;
         }
 
-        return $this->twig->load('html/dashboard/widget/widget--athlete-profile.html.twig')->render([
+        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'athleteProfileChart' => Json::encode(
                 AthleteProfileChart::create(
                     chartData: $chartData,

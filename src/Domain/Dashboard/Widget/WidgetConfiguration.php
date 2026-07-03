@@ -41,4 +41,12 @@ final class WidgetConfiguration
     {
         return [] === $this->configuration;
     }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
+    {
+        return $this->configuration;
+    }
 }
