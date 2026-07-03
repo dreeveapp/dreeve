@@ -10,6 +10,7 @@ use App\Domain\Integration\Notification\Shoutrrr\ShoutrrrUrl;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\Serialization\Json;
+use Stringable;
 
 final readonly class SendNotificationCommandHandler implements CommandHandler
 {
@@ -25,8 +26,10 @@ final readonly class SendNotificationCommandHandler implements CommandHandler
 
         /** @var ShoutrrrUrl $configuredNotificationService */
         foreach ($this->configuredNotificationServices as $configuredNotificationService) {
-            $this->shoutrrr->send(
-                shoutrrrUrl: $configuredNotificationService->withParams([
+            $shoutrrrUrl = $configuredNotificationService;
+
+            if (!$this->isTelegramUrl($configuredNotificationService)) {
+                $shoutrrrUrl = $configuredNotificationService->withParams([
                     'click' => (string) $command->getActionUrl(),
                     'icon' => 'https://raw.githubusercontent.com/dreeveapp/dreeve/master/public/assets/images/manifest/icon-192.png',
                     'tags' => implode(',', $command->getTags()),
@@ -38,10 +41,19 @@ final readonly class SendNotificationCommandHandler implements CommandHandler
                             'clear' => true,
                         ],
                     ]),
-                ]),
+                ]);
+            }
+
+            $this->shoutrrr->send(
+                shoutrrrUrl: $shoutrrrUrl,
                 message: $command->getMessage(),
                 title: $command->getTitle(),
             );
         }
+    }
+
+    private function isTelegramUrl(Stringable|string $shoutrrrUrl): bool
+    {
+        return str_starts_with((string) $shoutrrrUrl, 'telegram://');
     }
 }
