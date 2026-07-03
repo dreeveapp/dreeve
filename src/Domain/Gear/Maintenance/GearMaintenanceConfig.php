@@ -64,7 +64,7 @@ final readonly class GearMaintenanceConfig
 
             foreach ($component['maintenance'] ?? [] as $task) {
                 $gearComponent->addMaintenanceTask(MaintenanceTask::create(
-                    id: MaintenanceTaskId::fromUnprefixed($task['id']),
+                    id: MaintenanceTaskId::fromString($task['id']),
                     label: Name::fromString($task['label']),
                     intervalValue: $task['interval']['value'],
                     intervalUnit: IntervalUnit::from($task['interval']['unit'])

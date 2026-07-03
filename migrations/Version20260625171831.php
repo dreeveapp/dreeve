@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use App\Domain\Gear\Maintenance\GearComponentId;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogId;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Infrastructure\KeyValue\Key;
@@ -60,7 +61,7 @@ final class Version20260625171831 extends AbstractMigration
                 continue;
             }
 
-            $config['components'][$i]['id'] = $componentTag;
+            $config['components'][$i]['id'] = (string) GearComponentId::fromUnprefixed($componentTag);
             unset($config['components'][$i]['tag']);
 
             foreach ($component['maintenance'] ?? [] as $j => $task) {
@@ -69,7 +70,7 @@ final class Version20260625171831 extends AbstractMigration
                 }
                 // The task id stays globally unique by keeping its component as a prefix,
                 // which also matches the "#<prefix>-<component>-<task>" hashtag we backfill from.
-                $config['components'][$i]['maintenance'][$j]['id'] = $componentTag.'-'.$task['tag'];
+                $config['components'][$i]['maintenance'][$j]['id'] = (string) MaintenanceTaskId::fromUnprefixed($componentTag.'-'.$task['tag']);
                 unset($config['components'][$i]['maintenance'][$j]['tag']);
             }
         }
@@ -126,10 +127,9 @@ final class Version20260625171831 extends AbstractMigration
                 }
 
                 // Legacy data was tagged in activity titles as "#<hashtagPrefix>-<component>-<task>",
-                // which is exactly "#<hashtagPrefix>-<task id>" now that the task id keeps its
-                // component as a prefix.
-                $legacyHashtag = '#'.implode('-', [$hashtagPrefix, $task['id']]);
-                $maintenanceTaskId = (string) MaintenanceTaskId::fromUnprefixed($task['id']);
+                // which is exactly "#<hashtagPrefix>-<unprefixed task id>".
+                $maintenanceTaskId = MaintenanceTaskId::fromString($task['id']);
+                $legacyHashtag = '#'.implode('-', [$hashtagPrefix, $maintenanceTaskId->toUnprefixedString()]);
 
                 foreach ($activities as $activity) {
                     if (!str_contains((string) $activity['name'], $legacyHashtag)) {
@@ -145,7 +145,7 @@ final class Version20260625171831 extends AbstractMigration
                         [
                             'id' => (string) GearMaintenanceLogId::random(),
                             'gearId' => $activity['gearId'],
-                            'maintenanceTaskId' => $maintenanceTaskId,
+                            'maintenanceTaskId' => (string) $maintenanceTaskId,
                             'performedOn' => $activity['startDateTime'],
                         ]
                     );

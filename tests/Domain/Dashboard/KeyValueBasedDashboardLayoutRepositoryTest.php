@@ -27,8 +27,8 @@ class KeyValueBasedDashboardLayoutRepositoryTest extends ContainerTestCase
     public function testFindReturnsStoredLayout(): void
     {
         $layout = [
-            ['widget' => 'introText', 'width' => 33],
-            ['widget' => 'weeklyStats', 'width' => 100],
+            ['id' => 'dashboardWidget-a', 'widget' => 'introText', 'width' => 33],
+            ['id' => 'dashboardWidget-b', 'widget' => 'weeklyStats', 'width' => 100],
         ];
 
         $this->keyValueStore->save(KeyValue::fromState(

@@ -16,7 +16,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
     public function testItYieldsConfiguredWidgetsWithMergedConfiguration(): void
     {
         $this->saveLayout([
-            ['widget' => 'gearStats', 'width' => 50, 'config' => ['includeRetiredGear' => false]],
+            ['id' => 'dashboardWidget-fixed', 'widget' => 'gearStats', 'width' => 50, 'config' => ['includeRetiredGear' => false]],
         ]);
 
         /** @var ConfiguredWidget[] $configuredWidgets */
@@ -24,6 +24,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
 
         $this->assertCount(1, $configuredWidgets);
         $configuredWidget = $configuredWidgets[0];
+        $this->assertSame('dashboardWidget-fixed', (string) $configuredWidget->getId());
         $this->assertSame('Total hours spent per gear', $configuredWidget->getLabel());
         $this->assertSame(50, $configuredWidget->getWidth());
         $this->assertSame(6, $configuredWidget->getSpan());
@@ -34,9 +35,8 @@ class ConfiguredWidgetsTest extends ContainerTestCase
 
     public function testAWidgetWithoutConfigurationIsNotConfigurable(): void
     {
-        // introText exposes no configuration.
         $this->saveLayout([
-            ['widget' => 'introText', 'width' => 66],
+            ['id' => 'dashboardWidget-1', 'widget' => 'introText', 'width' => 66],
         ]);
 
         /** @var ConfiguredWidget[] $configuredWidgets */

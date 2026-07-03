@@ -7,7 +7,7 @@ namespace App\Domain\Dashboard;
 final readonly class DashboardLayout implements \IteratorAggregate
 {
     private function __construct(
-        /** @var list<array{widget: string, width: int}> */
+        /** @var list<array{id: string, widget: string, width: int}> */
         private array $config,
     ) {
     }
@@ -18,35 +18,35 @@ final readonly class DashboardLayout implements \IteratorAggregate
     }
 
     /**
-     * @return list<array{widget: string, width: int}>
+     * @return list<array{id: string, widget: string, width: int}>
      */
     public static function default(): array
     {
         return [
-            ['widget' => 'mostRecentActivities', 'width' => 66, 'config' => ['numberOfActivitiesToDisplay' => 5]],
-            ['widget' => 'introText', 'width' => 33],
-            ['widget' => 'weeklyStats', 'width' => 100, 'config' => ['metricsDisplayOrder' => ['distance', 'movingTime', 'elevation']]],
-            ['widget' => 'activityGrid', 'width' => 100],
-            ['widget' => 'streaks', 'width' => 33, 'config' => ['subtitle' => null, 'sportTypesToInclude' => []]],
-            ['widget' => 'athleteProfile', 'width' => 33],
-            ['widget' => 'eddington', 'width' => 33],
-            ['widget' => 'peakPowerOutputs', 'width' => 50],
-            ['widget' => 'heartRateZones', 'width' => 50],
-            ['widget' => 'monthlyStats', 'width' => 66, 'config' => [
+            ['id' => 'dashboardWidget-mostRecentActivities', 'widget' => 'mostRecentActivities', 'width' => 66, 'config' => ['numberOfActivitiesToDisplay' => 5]],
+            ['id' => 'dashboardWidget-introText', 'widget' => 'introText', 'width' => 33],
+            ['id' => 'dashboardWidget-weeklyStats', 'widget' => 'weeklyStats', 'width' => 100, 'config' => ['metricsDisplayOrder' => ['distance', 'movingTime', 'elevation']]],
+            ['id' => 'dashboardWidget-activityGrid', 'widget' => 'activityGrid', 'width' => 100],
+            ['id' => 'dashboardWidget-streaks', 'widget' => 'streaks', 'width' => 33, 'config' => ['subtitle' => null, 'sportTypesToInclude' => []]],
+            ['id' => 'dashboardWidget-athleteProfile', 'widget' => 'athleteProfile', 'width' => 33],
+            ['id' => 'dashboardWidget-eddington', 'widget' => 'eddington', 'width' => 33],
+            ['id' => 'dashboardWidget-peakPowerOutputs', 'widget' => 'peakPowerOutputs', 'width' => 50],
+            ['id' => 'dashboardWidget-heartRateZones', 'widget' => 'heartRateZones', 'width' => 50],
+            ['id' => 'dashboardWidget-monthlyStats', 'widget' => 'monthlyStats', 'width' => 66, 'config' => [
                 'enableLastXYearsByDefault' => 10, 'metricsDisplayOrder' => ['distance', 'movingTime', 'elevation'],
             ]],
-            ['widget' => 'mostRecentMilestones', 'width' => 33, 'config' => ['numberOfMilestonesToDisplay' => 5]],
-            ['widget' => 'trainingLoad', 'width' => 100],
-            ['widget' => 'weekdayStats', 'width' => 50],
-            ['widget' => 'dayTimeStats', 'width' => 50],
-            ['widget' => 'distanceBreakdown', 'width' => 50],
-            ['widget' => 'gearStats', 'width' => 50, 'config' => ['includeRetiredGear' => true]],
-            ['widget' => 'yearlyStats', 'width' => 100, 'config' => ['enableLastXYearsByDefault' => 10, 'metricsDisplayOrder' => ['distance', 'movingTime', 'elevation']]],
-            ['widget' => 'zwiftStats', 'width' => 50],
-            ['widget' => 'ftpHistory', 'width' => 50],
-            ['widget' => 'challengeConsistency', 'width' => 50, 'config' => ['challenges' => []]],
-            ['widget' => 'mostRecentChallengesCompleted', 'width' => 50, 'config' => ['numberOfChallengesToDisplay' => 5]],
-            ['widget' => 'athleteWeightHistory', 'width' => 50],
+            ['id' => 'dashboardWidget-mostRecentMilestones', 'widget' => 'mostRecentMilestones', 'width' => 33, 'config' => ['numberOfMilestonesToDisplay' => 5]],
+            ['id' => 'dashboardWidget-trainingLoad', 'widget' => 'trainingLoad', 'width' => 100],
+            ['id' => 'dashboardWidget-weekdayStats', 'widget' => 'weekdayStats', 'width' => 50],
+            ['id' => 'dashboardWidget-dayTimeStats', 'widget' => 'dayTimeStats', 'width' => 50],
+            ['id' => 'dashboardWidget-distanceBreakdown', 'widget' => 'distanceBreakdown', 'width' => 50],
+            ['id' => 'dashboardWidget-gearStats', 'widget' => 'gearStats', 'width' => 50, 'config' => ['includeRetiredGear' => true]],
+            ['id' => 'dashboardWidget-yearlyStats', 'widget' => 'yearlyStats', 'width' => 100, 'config' => ['enableLastXYearsByDefault' => 10, 'metricsDisplayOrder' => ['distance', 'movingTime', 'elevation']]],
+            ['id' => 'dashboardWidget-zwiftStats', 'widget' => 'zwiftStats', 'width' => 50],
+            ['id' => 'dashboardWidget-ftpHistory', 'widget' => 'ftpHistory', 'width' => 50],
+            ['id' => 'dashboardWidget-challengeConsistency', 'widget' => 'challengeConsistency', 'width' => 50, 'config' => ['challenges' => []]],
+            ['id' => 'dashboardWidget-mostRecentChallengesCompleted', 'widget' => 'mostRecentChallengesCompleted', 'width' => 50, 'config' => ['numberOfChallengesToDisplay' => 5]],
+            ['id' => 'dashboardWidget-athleteWeightHistory', 'widget' => 'athleteWeightHistory', 'width' => 50],
         ];
     }
 

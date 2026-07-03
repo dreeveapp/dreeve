@@ -14,7 +14,7 @@
     {% if component %}
         {% for task in component.getMaintenanceTasks() %}
             {% set initialTasks = initialTasks|merge([{
-                id: task.getId().toUnprefixedString(),
+                id: task.getId(),
                 label: task.getLabel(),
                 interval: {value: task.getIntervalValue(), unit: task.getIntervalUnit().value}
             }]) %}

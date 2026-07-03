@@ -28,30 +28,30 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->importGearMaintenanceConfig();
 
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
-            'gearComponentId' => 'chain',
+            'gearComponentId' => 'gearComponent-chain',
             'label' => 'Updated chain',
             'attachedTo' => ['b9'],
             'maintenanceTasks' => [
-                ['id' => 'chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 600, 'unit' => 'km']],
+                ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 600, 'unit' => 'km']],
             ],
         ]));
 
         $config = Json::decode((string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
 
         $this->assertCount(2, $config['components']);
-        $this->assertSame('chain', $config['components'][0]['id']);
+        $this->assertSame('gearComponent-chain', $config['components'][0]['id']);
 
-        $chain = $this->findComponentById($config['components'], 'chain');
+        $chain = $this->findComponentById($config['components'], 'gearComponent-chain');
         $this->assertNotNull($chain);
         $this->assertSame('Updated chain', $chain['label']);
         $this->assertSame(['b9'], $chain['attachedTo']);
 
         $this->assertSame('files/gear-maintenance/chain.png', $chain['localImagePath']);
         $this->assertCount(1, $chain['maintenance']);
-        $this->assertSame('chain-lubed', $chain['maintenance'][0]['id']);
+        $this->assertSame('maintenanceTask-chain-lubed', $chain['maintenance'][0]['id']);
         $this->assertSame(600, $chain['maintenance'][0]['interval']['value']);
 
-        $di2 = $this->findComponentById($config['components'], 'di-2');
+        $di2 = $this->findComponentById($config['components'], 'gearComponent-di-2');
         $this->assertNotNull($di2);
         $this->assertSame('DI2 Battery', $di2['label']);
     }
@@ -62,7 +62,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->fileStorage->write('gear-maintenance/old.png', 'old-content');
 
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
-            'gearComponentId' => 'chain',
+            'gearComponentId' => 'gearComponent-chain',
             'label' => 'Chain',
             'attachedTo' => ['b1'],
             'localImagePath' => json_encode([
@@ -70,7 +70,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
                 ['status' => 'new', 'filename' => 'new.png', 'content' => base64_encode('new-content')],
             ]),
             'maintenanceTasks' => [
-                ['id' => 'chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
             ],
         ]));
 
@@ -88,14 +88,14 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->fileStorage->write('gear-maintenance/old.png', 'old-content');
 
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
-            'gearComponentId' => 'chain',
+            'gearComponentId' => 'gearComponent-chain',
             'label' => 'Chain',
             'attachedTo' => ['b1'],
             'localImagePath' => json_encode([
                 ['status' => 'removed', 'path' => '/files/gear-maintenance/old.png'],
             ]),
             'maintenanceTasks' => [
-                ['id' => 'chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
             ],
         ]));
 
@@ -112,12 +112,12 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             Value::fromString(Json::encode([
                 'enabled' => true,
                 'components' => [[
-                    'id' => 'chain',
+                    'id' => 'gearComponent-chain',
                     'label' => 'Chain',
                     'localImagePath' => $localImagePath,
                     'attachedTo' => ['b1'],
                     'maintenance' => [
-                        ['id' => 'chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                        ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
                     ],
                 ]],
             ])),

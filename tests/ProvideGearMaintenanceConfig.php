@@ -26,7 +26,7 @@ trait ProvideGearMaintenanceConfig
 enabled: true
 ignoreRetiredGear: true
 components:
-  - id: chain
+  - id: gearComponent-chain
     label: Some cool chain
     localImagePath: files/gear-maintenance/chain.png
     attachedTo:
@@ -37,29 +37,29 @@ components:
       amountInCents: 123456
       currency: 'EUR'
     maintenance:
-      - id: chain-lubed
+      - id: maintenanceTask-chain-lubed
         label: Lube
         interval:
           value: 500
           unit: km
-      - id: chain-replaced
+      - id: maintenanceTask-chain-replaced
         label: Replace
         interval:
           value: 1000
           unit: km
-      - id: chain-cleaned
+      - id: maintenanceTask-chain-cleaned
         label: Clean
         interval:
           value: 1000
           unit: km
-  - id: di-2
+  - id: gearComponent-di-2
     label: DI2 Battery
     localImagePath: files/gear-maintenance/battery.png
     attachedTo:
       - g1233776
       - g10130856
     maintenance:
-      - id: di-2-charged
+      - id: maintenanceTask-di-2-charged
         label: Charge
         interval:
           value: 11

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\Serialization\Json;
 use Doctrine\DBAL\Schema\Schema;
@@ -37,13 +38,14 @@ final class Version20260702152023 extends AbstractMigration
             'No dashboard layout configured, nothing to migrate'
         );
 
-        // Skip disabled widgets and drop the "enabled" flag.
+        // Skip disabled widgets, drop the "enabled" flag, and give each widget an id.
         $layout = array_values(array_filter(
             $layout,
             static fn (array $widget): bool => (bool) ($widget['enabled'] ?? true),
         ));
         foreach ($layout as $i => $widget) {
-            unset($layout[$i]['enabled']);
+            unset($widget['enabled']);
+            $layout[$i] = ['id' => (string) DashboardWidgetId::random()] + $widget;
         }
 
         $this->connection->executeStatement(

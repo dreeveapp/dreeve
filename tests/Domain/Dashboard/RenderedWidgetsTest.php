@@ -31,7 +31,7 @@ class RenderedWidgetsTest extends ContainerTestCase
         ));
 
         $this->saveLayout([
-            ['widget' => 'introText', 'width' => 66],
+            ['id' => 'dashboardWidget-1', 'widget' => 'introText', 'width' => 66],
         ]);
 
         /** @var RenderedWidget[] $rendered */
@@ -45,7 +45,7 @@ class RenderedWidgetsTest extends ContainerTestCase
     public function testItSkipsWidgetsThatRenderNothing(): void
     {
         $this->saveLayout([
-            ['widget' => 'gearStats', 'width' => 50],
+            ['id' => 'dashboardWidget-1', 'widget' => 'gearStats', 'width' => 50],
         ]);
 
         $this->assertCount(0, $this->renderedWidgets()->getIterator());

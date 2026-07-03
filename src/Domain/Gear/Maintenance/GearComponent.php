@@ -114,7 +114,7 @@ final readonly class GearComponent implements \JsonSerializable
             ),
             'maintenance' => $this->maintenanceTasks->map(
                 static fn (MaintenanceTask $task): array => [
-                    'id' => $task->getId()->toUnprefixedString(),
+                    'id' => (string) $task->getId(),
                     'label' => (string) $task->getLabel(),
                     'interval' => [
                         'value' => $task->getIntervalValue(),

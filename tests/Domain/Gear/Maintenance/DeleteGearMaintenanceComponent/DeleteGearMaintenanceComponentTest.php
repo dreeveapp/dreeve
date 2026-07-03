@@ -13,10 +13,10 @@ class DeleteGearMaintenanceComponentTest extends TestCase
     public function testFromPayload(): void
     {
         $command = DeleteGearMaintenanceComponent::fromPayload([
-            'gearComponentId' => '  chain  ',
+            'gearComponentId' => '  gearComponent-chain  ',
         ]);
 
-        $this->assertSame('chain', (string) $command->getGearComponentId());
+        $this->assertSame('gearComponent-chain', (string) $command->getGearComponentId());
     }
 
     public function testFromPayloadThrowsOnMissingGearComponentId(): void

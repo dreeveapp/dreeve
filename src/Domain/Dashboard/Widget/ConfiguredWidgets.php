@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Dashboard\Widget;
 
 use App\Domain\Dashboard\DashboardLayoutRepository;
+use App\Domain\Dashboard\DashboardWidgetId;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 final class ConfiguredWidgets implements \IteratorAggregate
@@ -47,6 +48,7 @@ final class ConfiguredWidgets implements \IteratorAggregate
             $widget->guardValidConfiguration($configuration);
 
             $configuredWidgets[] = new ConfiguredWidget(
+                id: DashboardWidgetId::fromString($layoutItem['id']),
                 widget: $widget,
                 configuration: $configuration,
                 width: $layoutItem['width'],

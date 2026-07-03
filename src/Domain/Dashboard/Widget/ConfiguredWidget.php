@@ -4,16 +4,24 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget;
 
+use App\Domain\Dashboard\DashboardWidgetId;
+
 final readonly class ConfiguredWidget
 {
     /** @var array<int, int> */
     private const array SPAN_BY_WIDTH = [33 => 4, 50 => 6, 66 => 8, 100 => 12];
 
     public function __construct(
+        private DashboardWidgetId $id,
         private Widget $widget,
         private WidgetConfiguration $configuration,
         private int $width,
     ) {
+    }
+
+    public function getId(): DashboardWidgetId
+    {
+        return $this->id;
     }
 
     public function getWidget(): Widget

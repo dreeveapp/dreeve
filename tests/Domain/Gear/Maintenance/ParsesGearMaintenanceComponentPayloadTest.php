@@ -103,7 +103,7 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
     {
         $tasks = $this->parser->doParseMaintenanceTasks([
             'maintenanceTasks' => [
-                ['id' => ' chain-lubed ', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                ['id' => ' maintenanceTask-chain-lubed ', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
             ],
         ], generateMissingIds: false);
 
@@ -195,8 +195,8 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
 
         $this->parser->doParseMaintenanceTasks([
             'maintenanceTasks' => [
-                ['id' => 'chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
-                ['id' => 'chain-lubed', 'label' => 'Replace', 'interval' => ['value' => 1000, 'unit' => 'km']],
+                ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Replace', 'interval' => ['value' => 1000, 'unit' => 'km']],
             ],
         ], generateMissingIds: false);
     }

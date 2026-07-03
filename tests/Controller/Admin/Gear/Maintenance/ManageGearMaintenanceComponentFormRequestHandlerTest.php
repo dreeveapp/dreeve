@@ -22,14 +22,14 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
 
     public function testAnonymousUsersAreRedirectedToTheLoginPageOnEdit(): void
     {
-        $this->client->request('GET', '/admin/gear/maintenance-config/component/chain/edit');
+        $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-chain/edit');
 
         $this->assertResponseRedirects('/admin/login');
     }
 
     public function testAnonymousUsersAreRedirectedToTheLoginPageOnDelete(): void
     {
-        $this->client->request('GET', '/admin/gear/maintenance-config/component/chain/delete');
+        $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-chain/delete');
 
         $this->assertResponseRedirects('/admin/login');
     }
@@ -72,7 +72,7 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/gear/maintenance-config/component/chain/edit');
+        $crawler = $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-chain/edit');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('Edit component', $crawler->filter('h3')->text());
@@ -80,7 +80,7 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $form = $crawler->filter('form[data-dispatch-command="update-gear-maintenance-component"]');
         $this->assertCount(1, $form);
 
-        $this->assertSame('chain', $form->filter('input[name="gearComponentId"]')->attr('value'));
+        $this->assertSame('gearComponent-chain', $form->filter('input[name="gearComponentId"]')->attr('value'));
         $this->assertSame('Some cool chain', $form->filter('input[name="label"]')->attr('value'));
 
         $this->assertGreaterThanOrEqual(1, $form->filter('input[name="attachedTo[]"][checked]')->count());
@@ -101,14 +101,14 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/gear/maintenance-config/component/chain/delete');
+        $crawler = $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-chain/delete');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('Delete component', $crawler->filter('h3')->text());
 
         $form = $crawler->filter('form[data-dispatch-command="delete-gear-maintenance-component"]');
         $this->assertCount(1, $form);
-        $this->assertSame('chain', $form->filter('input[name="gearComponentId"]')->attr('value'));
+        $this->assertSame('gearComponent-chain', $form->filter('input[name="gearComponentId"]')->attr('value'));
         $this->assertCount(1, $form->filter('button.btn--danger'));
         $this->assertStringContainsString('Some cool chain', $form->text());
     }
@@ -121,7 +121,7 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->client->catchExceptions(false);
 
         $this->expectException(NotFoundHttpException::class);
-        $this->client->request('GET', '/admin/gear/maintenance-config/component/does-not-exist/edit');
+        $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-does-not-exist/edit');
     }
 
     public function testReturns404WhenDeletingAnUnknownComponent(): void
@@ -132,7 +132,7 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->client->catchExceptions(false);
 
         $this->expectException(NotFoundHttpException::class);
-        $this->client->request('GET', '/admin/gear/maintenance-config/component/does-not-exist/delete');
+        $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-does-not-exist/delete');
     }
 
     private function seedGears(): void

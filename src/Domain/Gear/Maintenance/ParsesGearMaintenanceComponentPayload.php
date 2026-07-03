@@ -74,7 +74,7 @@ trait ParsesGearMaintenanceComponentPayload
 
             $taskId = null;
             if (isset($task['id']) && is_string($task['id']) && '' !== trim($task['id'])) {
-                $taskId = MaintenanceTaskId::fromUnprefixed(trim($task['id']));
+                $taskId = MaintenanceTaskId::fromString(trim($task['id']));
             } elseif (!$generateMissingIds) {
                 throw CouldNotDeserializeCommand::invalidPayload('An "id" is required for each maintenance task.');
             }

@@ -54,36 +54,36 @@ class GearMaintenanceConfigTest extends ContainerTestCase
         return Yaml::parse(<<<YML
 enabled: true
 components:
-  - id: 'chain'
+  - id: 'gearComponent-chain'
     label: 'Some cool chain'
     localImagePath: 'chain.png'
     attachedTo:
       - 'bike-one-gear-id'
       - 'bike-two-gear-id'
     maintenance:
-      - id: chain-lubed
+      - id: maintenanceTask-chain-lubed
         label: Lube
         interval:
           value: 500
           unit: km
       - label: Clean
-        id: chain-cleaned
+        id: maintenanceTask-chain-cleaned
         interval:
           value: 200
           unit: hours
       - label: Replace
-        id: chain-replaced
+        id: maintenanceTask-chain-replaced
         interval:
           value: 500
           unit: days
-  - id: 'chain-two'
+  - id: 'gearComponent-chain-two'
     label: 'Some cool chain'
     localImagePath: 'chain.png'
     attachedTo:
       - 'bike-one-gear-id'
       - 'bike-two-gear-id'
     maintenance:
-      - id: chain-two-lubed
+      - id: maintenanceTask-chain-two-lubed
         label: Lube
         interval:
           value: 500
@@ -97,34 +97,34 @@ YML
         return Yaml::parse(<<<YML
 enabled: true
 components:
-  - id: 'chain'
+  - id: 'gearComponent-chain'
     label: 'Some cool chain'
     localImagePath: 'chain.png'
     attachedTo:
       - '123456'
     maintenance:
-      - id: chain-lubed
+      - id: maintenanceTask-chain-lubed
         label: Lube
         interval:
           value: 500
           unit: km
       - label: Clean
-        id: chain-cleaned
+        id: maintenanceTask-chain-cleaned
         interval:
           value: 200
           unit: hours
       - label: Replace
-        id: chain-replaced
+        id: maintenanceTask-chain-replaced
         interval:
           value: 500
           unit: days
-  - id: 'chain-two'
+  - id: 'gearComponent-chain-two'
     label: 'Some cool chain'
     localImagePath: 'chain.png'
     attachedTo:
       - '123456'
     maintenance:
-      - id: chain-two-lubed
+      - id: maintenanceTask-chain-two-lubed
         label: Lube
         interval:
           value: 500

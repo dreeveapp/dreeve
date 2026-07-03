@@ -13,15 +13,15 @@ class UpdateGearMaintenanceComponentTest extends TestCase
     public function testFromPayload(): void
     {
         $command = UpdateGearMaintenanceComponent::fromPayload([
-            'gearComponentId' => '  chain  ',
+            'gearComponentId' => '  gearComponent-chain  ',
             'label' => 'Updated chain',
             'attachedTo' => ['b1'],
             'maintenanceTasks' => [
-                ['id' => 'chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
             ],
         ]);
 
-        $this->assertSame('chain', (string) $command->getGearComponentId());
+        $this->assertSame('gearComponent-chain', (string) $command->getGearComponentId());
         $this->assertSame('Updated chain', (string) $command->getLabel());
         $this->assertCount(1, $command->getMaintenanceTasks());
     }

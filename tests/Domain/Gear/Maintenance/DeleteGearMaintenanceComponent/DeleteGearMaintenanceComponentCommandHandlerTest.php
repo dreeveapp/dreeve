@@ -28,13 +28,13 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->importGearMaintenanceConfig();
 
         $this->commandBus->dispatch(DeleteGearMaintenanceComponent::fromPayload([
-            'gearComponentId' => 'chain',
+            'gearComponentId' => 'gearComponent-chain',
         ]));
 
         $config = Json::decode((string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
 
         $this->assertCount(1, $config['components']);
-        $this->assertSame('di-2', $config['components'][0]['id']);
+        $this->assertSame('gearComponent-di-2', $config['components'][0]['id']);
     }
 
     public function testItIsANoopWhenComponentDoesNotExist(): void
@@ -42,7 +42,7 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->importGearMaintenanceConfig();
 
         $this->commandBus->dispatch(DeleteGearMaintenanceComponent::fromPayload([
-            'gearComponentId' => 'does-not-exist',
+            'gearComponentId' => 'gearComponent-does-not-exist',
         ]));
 
         $config = Json::decode((string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
@@ -57,12 +57,12 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             Value::fromString(Json::encode([
                 'enabled' => true,
                 'components' => [[
-                    'id' => 'chain',
+                    'id' => 'gearComponent-chain',
                     'label' => 'Chain',
                     'localImagePath' => 'files/gear-maintenance/old.png',
                     'attachedTo' => ['b1'],
                     'maintenance' => [
-                        ['id' => 'chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                        ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
                     ],
                 ]],
             ])),
@@ -70,7 +70,7 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->fileStorage->write('gear-maintenance/old.png', 'old-content');
 
         $this->commandBus->dispatch(DeleteGearMaintenanceComponent::fromPayload([
-            'gearComponentId' => 'chain',
+            'gearComponentId' => 'gearComponent-chain',
         ]));
 
         $config = Json::decode((string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
