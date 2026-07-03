@@ -40,6 +40,7 @@ Apr: Abr
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
 'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?'
+'Are you sure you want to remove the {widget} widget?': 'Are you sure you want to remove the {widget} widget?'
 'Ask Mark something...': 'Pergunte algo ao Mark...'
 'Athlete profile': 'Perfil do atleta'
 'Attached to': 'Attached to'
@@ -380,6 +381,7 @@ Ranking: Ranking
 Remove: Remove
 'Remove task': 'Remove task'
 'Remove widget': 'Remove widget'
+Removing...: Removing...
 "Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
 'Reset to default': 'Reset to default'
 'Rest Days': 'Dias de Descanso'
@@ -633,6 +635,7 @@ Year: Ano
 Yearly: Anual
 'Yearly stats': 'Estatísticas anuais'
 Yoga: Yoga
+'You can add it back to your dashboard again later.': 'You can add it back to your dashboard again later.'
 'You can also copy files straight into the {watchFolder} folder.': 'You can also copy files straight into the {watchFolder} folder.'
 'You can select up to {max} images': 'You can select up to {max} images'
 "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API"

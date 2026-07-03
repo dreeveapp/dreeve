@@ -3,6 +3,7 @@
 namespace App\Tests\Domain\Dashboard;
 
 use App\Domain\Dashboard\DashboardLayout;
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\KeyValueBasedDashboardLayoutRepository;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
@@ -40,6 +41,41 @@ class KeyValueBasedDashboardLayoutRepositoryTest extends ContainerTestCase
             DashboardLayout::fromArray($layout),
             $this->repository->find(),
         );
+    }
+
+    public function testDeleteWidgetPreservesOrderOfRemainingWidgets(): void
+    {
+        $layout = [
+            ['id' => 'dashboardWidget-a', 'widget' => 'introText', 'width' => 33],
+            ['id' => 'dashboardWidget-b', 'widget' => 'weeklyStats', 'width' => 100],
+            ['id' => 'dashboardWidget-c', 'widget' => 'eddington', 'width' => 33],
+        ];
+
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::DASHBOARD,
+            value: Value::fromString(Json::encode($layout)),
+        ));
+
+        $this->repository->deleteWidget(DashboardWidgetId::fromString('dashboardWidget-b'));
+
+        $this->assertEquals(
+            DashboardLayout::fromArray([
+                ['id' => 'dashboardWidget-a', 'widget' => 'introText', 'width' => 33],
+                ['id' => 'dashboardWidget-c', 'widget' => 'eddington', 'width' => 33],
+            ]),
+            $this->repository->find(),
+        );
+    }
+
+    public function testDeleteWidgetFromDefaultLayoutPersistsRemainder(): void
+    {
+        $this->repository->deleteWidget(DashboardWidgetId::fromString('dashboardWidget-introText'));
+
+        $remaining = iterator_to_array($this->repository->find());
+        $ids = array_column($remaining, 'id');
+
+        $this->assertNotContains('dashboardWidget-introText', $ids);
+        $this->assertContains('dashboardWidget-mostRecentActivities', $ids);
     }
 
     #[\Override]

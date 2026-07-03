@@ -57,4 +57,15 @@ final class ConfiguredWidgets implements \IteratorAggregate
 
         return new \ArrayIterator($configuredWidgets);
     }
+
+    public function find(DashboardWidgetId $dashboardWidgetId): ?ConfiguredWidget
+    {
+        foreach ($this as $configuredWidget) {
+            if ((string) $configuredWidget->getId() === (string) $dashboardWidgetId) {
+                return $configuredWidget;
+            }
+        }
+
+        return null;
+    }
 }

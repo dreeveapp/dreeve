@@ -7,4 +7,6 @@ namespace App\Domain\Dashboard;
 interface DashboardLayoutRepository
 {
     public function find(): DashboardLayout;
+
+    public function deleteWidget(DashboardWidgetId $dashboardWidgetId): void;
 }

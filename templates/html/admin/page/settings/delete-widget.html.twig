@@ -1,0 +1,49 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block main %}
+    {% autoescape false %}
+    {% set dashboardUrl = relativeUrl(path('admin_settings_dashboard')) %}
+    <div class="modal-like-form">
+        <div class="w-full max-w-lg overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">
+                    {{ "Remove widget"|trans }}
+                </h3>
+                <a href="{{ dashboardUrl }}" aria-label="{{ "Close"|trans }}"
+                   class="grid place-items-center size-8 rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900">
+                    <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                    </svg>
+                </a>
+            </div>
+            <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ dashboardUrl }}" class="flex flex-col gap-4">
+                <input type="hidden" name="dashboardWidgetId" value="{{ widget.getId() }}">
+                <div data-form-error class="hidden rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert"></div>
+                <div class="flex items-start gap-3">
+                    <span class="grid place-items-center size-10 shrink-0 rounded-full bg-red-100 text-red-600" aria-hidden="true">
+                        <svg class="size-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                        </svg>
+                    </span>
+                    <div class="space-y-1 text-sm text-gray-600">
+                        <p>
+                            {{ "Are you sure you want to remove the {widget} widget?"|trans({
+                                '{widget}': '<span class="font-semibold text-gray-900">' ~ widget.getLabel() ~ '</span>',
+                            }) }}
+                        </p>
+                        <p>
+                            {{ "You can add it back to your dashboard again later."|trans }}
+                        </p>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
+                    <a href="{{ dashboardUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans }}</a>
+                    <button type="submit" data-has-loading-state class="group btn--danger">
+                        <span class="label">{{ "Remove"|trans }}</span>
+                        <span class="label--loading">{{ "Removing..."|trans }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endautoescape %}
+{% endblock main %}

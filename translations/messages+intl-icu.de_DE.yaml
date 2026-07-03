@@ -40,6 +40,7 @@ Apr: Apr
 'Are you sure you want to delete the {component} component?': 'Möchtest du die Komponente {component} wirklich löschen?'
 'Are you sure you want to delete {name}?': 'Möchtest du {name} wirklich löschen?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Möchtest du {task} an {component} für {gear}, durchgeführt am {date}, wirklich löschen?'
+'Are you sure you want to remove the {widget} widget?': 'Are you sure you want to remove the {widget} widget?'
 'Ask Mark something...': 'Frag Mark etwas...'
 'Athlete profile': Sportlerprofil
 'Attached to': 'Zugeordnet zu'
@@ -380,6 +381,7 @@ Ranking: Rangliste
 Remove: Entfernen
 'Remove task': 'Aufgabe entfernen'
 'Remove widget': 'Remove widget'
+Removing...: Removing...
 "Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
 'Reset to default': 'Reset to default'
 'Rest Days': Ruhetage
@@ -633,6 +635,7 @@ Year: Jahr
 Yearly: Jährlich
 'Yearly stats': 'Jährliche Statistiken'
 Yoga: Yoga
+'You can add it back to your dashboard again later.': 'You can add it back to your dashboard again later.'
 'You can also copy files straight into the {watchFolder} folder.': 'Du kannst Dateien auch direkt in den Ordner {watchFolder} kopieren.'
 'You can select up to {max} images': 'Du kannst bis zu {max} Bilder auswählen.'
 "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": "Du importierst derzeit über die Strava-API. Setze {importMode}, um Aktivitätsdateien direkt hochzuladen, ohne von der Strava-API abhängig zu sein."

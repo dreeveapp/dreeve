@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Dashboard\Widget;
 
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\Widget\ConfiguredWidget;
 use App\Domain\Dashboard\Widget\ConfiguredWidgets;
 use App\Infrastructure\KeyValue\Key;
@@ -63,6 +64,30 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         ]);
 
         $this->assertCount(0, $this->configuredWidgets()->getIterator());
+    }
+
+    public function testFindReturnsTheMatchingWidget(): void
+    {
+        $this->saveLayout([
+            ['id' => 'dashboardWidget-1', 'widget' => 'introText', 'width' => 66],
+            ['id' => 'dashboardWidget-2', 'widget' => 'gearStats', 'width' => 50],
+        ]);
+
+        $configuredWidget = $this->configuredWidgets()->find(DashboardWidgetId::fromString('dashboardWidget-2'));
+
+        $this->assertInstanceOf(ConfiguredWidget::class, $configuredWidget);
+        $this->assertSame('dashboardWidget-2', (string) $configuredWidget->getId());
+    }
+
+    public function testFindReturnsNullWhenWidgetIsNotInTheLayout(): void
+    {
+        $this->saveLayout([
+            ['id' => 'dashboardWidget-1', 'widget' => 'introText', 'width' => 66],
+        ]);
+
+        $this->assertNull(
+            $this->configuredWidgets()->find(DashboardWidgetId::fromString('dashboardWidget-does-not-exist')),
+        );
     }
 
     private function configuredWidgets(): ConfiguredWidgets
