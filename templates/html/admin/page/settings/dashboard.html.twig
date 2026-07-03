@@ -1,5 +1,11 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
+    {% set colSpanMap = {
+        33: 'col-span-2',
+        50: 'col-span-3',
+        66: 'col-span-4',
+        100: 'col-span-6'
+    } %}
     {% autoescape false %}
         <form class="p-4 sm:p-6 bg-white border border-gray-200 rounded-lg shadow-xs max-w-6xl">
             <div class="flex flex-wrap items-start justify-between gap-3 mb-1">
@@ -16,9 +22,9 @@
                     <span>{{ "Add widget"|trans }}</span>
                 </button>
             </div>
-            <div class="grid grid-cols-12 gap-3 mt-4">
+            <div class="grid grid-cols-6 gap-3 mt-4">
                 {% for widget in widgets %}
-                    <div class="flex flex-col rounded-lg border border-gray-200 bg-white shadow-xs" data-widget-id="{{ widget.getId() }}" style="grid-column: span {{ widget.getSpan() }} / span {{ widget.getSpan() }};">
+                    <div class="{{ colSpanMap[widget.getWidth()] }} flex flex-col rounded-lg border border-gray-200 bg-white shadow-xs" data-widget-id="{{ widget.getId() }}">
                         <div class="flex items-center gap-2 px-3 py-2 border-b border-gray-100">
                             <span class="shrink-0 text-gray-400" title="{{ "Drag to reorder"|trans }}">
                                 <svg class="size-4.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

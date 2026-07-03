@@ -28,7 +28,6 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         $this->assertSame('dashboardWidget-fixed', (string) $configuredWidget->getId());
         $this->assertSame('Total hours spent per gear', $configuredWidget->getLabel());
         $this->assertSame(50, $configuredWidget->getWidth());
-        $this->assertSame(6, $configuredWidget->getSpan());
         $this->assertTrue($configuredWidget->isConfigurable());
         $this->assertFalse($configuredWidget->getConfiguration()->get('includeRetiredGear'));
         $this->assertSame([], $configuredWidget->getConfiguration()->get('restrictToSportTypes'));

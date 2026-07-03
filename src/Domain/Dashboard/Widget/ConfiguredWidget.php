@@ -8,9 +8,6 @@ use App\Domain\Dashboard\DashboardWidgetId;
 
 final readonly class ConfiguredWidget
 {
-    /** @var array<int, int> */
-    private const array SPAN_BY_WIDTH = [33 => 4, 50 => 6, 66 => 8, 100 => 12];
-
     public function __construct(
         private DashboardWidgetId $id,
         private Widget $widget,
@@ -32,11 +29,6 @@ final readonly class ConfiguredWidget
     public function getLabel(): string
     {
         return $this->widget->getLabel();
-    }
-
-    public function getSpan(): int
-    {
-        return self::SPAN_BY_WIDTH[$this->width] ?? 12;
     }
 
     public function isConfigurable(): bool
