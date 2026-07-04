@@ -10,7 +10,6 @@ use App\Domain\Integration\Notification\Shoutrrr\ShoutrrrUrl;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\Serialization\Json;
-use Stringable;
 
 final readonly class SendNotificationCommandHandler implements CommandHandler
 {
@@ -52,7 +51,7 @@ final readonly class SendNotificationCommandHandler implements CommandHandler
         }
     }
 
-    private function isTelegramUrl(Stringable|string $shoutrrrUrl): bool
+    private function isTelegramUrl(\Stringable|string $shoutrrrUrl): bool
     {
         return str_starts_with((string) $shoutrrrUrl, 'telegram://');
     }
