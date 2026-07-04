@@ -32,7 +32,7 @@ final readonly class EditWidgetRequestHandler
             throw new NotFoundHttpException('Widget not found');
         }
 
-        return new Response($this->twig->render('html/admin/page/settings/configure-widget.html.twig', [
+        return new Response($this->twig->render('html/admin/page/settings/dashboard/configure-widget.html.twig', [
             'dispatchCommand' => ConfigureWidget::getCommandName(),
             'configuredWidget' => $widget,
         ]));
@@ -46,7 +46,7 @@ final readonly class EditWidgetRequestHandler
             throw new NotFoundHttpException('Widget not found');
         }
 
-        return new Response($this->twig->render('html/admin/page/settings/delete-widget.html.twig', [
+        return new Response($this->twig->render('html/admin/page/settings/dashboard/delete-widget.html.twig', [
             'dispatchCommand' => DeleteWidget::getCommandName(),
             'widget' => $widget,
         ]));

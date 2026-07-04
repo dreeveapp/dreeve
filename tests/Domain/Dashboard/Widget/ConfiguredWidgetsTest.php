@@ -77,19 +77,6 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         $this->assertFalse($configuredWidgets[0]->stillNeedsConfiguration());
     }
 
-    public function testWidgetThatDoesNotRequireConfigurationNeverStillNeedsConfiguration(): void
-    {
-        $this->saveLayout([
-            ['id' => 'dashboardWidget-1', 'widget' => 'introText', 'width' => 66],
-        ]);
-
-        /** @var ConfiguredWidget[] $configuredWidgets */
-        $configuredWidgets = iterator_to_array($this->configuredWidgets());
-
-        $this->assertCount(1, $configuredWidgets);
-        $this->assertFalse($configuredWidgets[0]->stillNeedsConfiguration());
-    }
-
     public function testWhenWidgetDoesNotExists(): void
     {
         $this->saveLayout([

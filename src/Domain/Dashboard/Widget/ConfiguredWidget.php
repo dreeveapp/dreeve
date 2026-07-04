@@ -39,7 +39,7 @@ final readonly class ConfiguredWidget
     public function getConfigurationTemplate(): string
     {
         return sprintf(
-            'html/admin/page/settings/widget-config/%s.html.twig',
+            'html/admin/page/settings/dashboard/widget-config/%s.html.twig',
             $this->widget->getTemplateName(),
         );
     }

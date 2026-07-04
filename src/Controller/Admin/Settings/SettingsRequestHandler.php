@@ -23,7 +23,7 @@ final readonly class SettingsRequestHandler
     #[Route(path: '/admin/settings/dashboard', name: 'admin_settings_dashboard', methods: ['GET'], priority: 10)]
     public function handle(): Response
     {
-        return new Response($this->twig->render('html/admin/page/settings/dashboard.html.twig', [
+        return new Response($this->twig->render('html/admin/page/settings/dashboard/dashboard.html.twig', [
             'widgets' => $this->configuredWidgets,
             'widths' => ConfiguredWidgets::WIDTHS,
             'availableWidgets' => $this->configuredWidgets->getAvailableWidgets(),
