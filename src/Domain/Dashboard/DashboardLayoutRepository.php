@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard;
 
+use App\Domain\Dashboard\Widget\WidgetName;
+
 interface DashboardLayoutRepository
 {
     public function find(): DashboardLayout;
+
+    public function addWidget(DashboardWidgetId $dashboardWidgetId, WidgetName $widgetName, int $width): void;
 
     public function deleteWidget(DashboardWidgetId $dashboardWidgetId): void;
 

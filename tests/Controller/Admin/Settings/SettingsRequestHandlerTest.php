@@ -22,6 +22,9 @@ class SettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('Dashboard', $crawler->filter('main')->text());
         $this->assertGreaterThan(0, $crawler->filter('a[title="Configure"]')->count());
+
+        $this->assertCount(1, $crawler->filter('button[data-dropdown="addWidgetDropdown"]'));
+        $this->assertGreaterThan(0, $crawler->filter('#addWidgetDropdown form[data-dispatch-command="add-widget"]')->count());
     }
 
     public function testItRendersTheSettingsNavigation(): void

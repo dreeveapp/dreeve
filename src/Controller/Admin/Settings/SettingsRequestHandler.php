@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Settings;
 
+use App\Domain\Dashboard\AddWidget\AddWidget;
 use App\Domain\Dashboard\Widget\ConfiguredWidgets;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -25,6 +26,8 @@ final readonly class SettingsRequestHandler
         return new Response($this->twig->render('html/admin/page/settings/dashboard.html.twig', [
             'widgets' => $this->configuredWidgets,
             'widths' => ConfiguredWidgets::WIDTHS,
+            'availableWidgets' => $this->configuredWidgets->getAvailableWidgets(),
+            'addWidgetCommand' => AddWidget::getCommandName(),
         ]));
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard;
 
+use App\Domain\Dashboard\Widget\WidgetName;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
@@ -28,6 +29,21 @@ final readonly class KeyValueBasedDashboardLayoutRepository implements Dashboard
         }
 
         return DashboardLayout::fromArray(is_array($config) ? $config : null);
+    }
+
+    public function addWidget(DashboardWidgetId $dashboardWidgetId, WidgetName $widgetName, int $width): void
+    {
+        $layout = iterator_to_array($this->find());
+        $layout[] = [
+            'id' => (string) $dashboardWidgetId,
+            'widget' => (string) $widgetName,
+            'width' => $width,
+        ];
+
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode($layout)),
+        ));
     }
 
     public function deleteWidget(DashboardWidgetId $dashboardWidgetId): void

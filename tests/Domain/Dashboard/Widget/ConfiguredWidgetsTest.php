@@ -5,6 +5,7 @@ namespace App\Tests\Domain\Dashboard\Widget;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\Widget\ConfiguredWidget;
 use App\Domain\Dashboard\Widget\ConfiguredWidgets;
+use App\Domain\Dashboard\Widget\WidgetName;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
@@ -87,6 +88,27 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         $this->assertNull(
             $this->configuredWidgets()->find(DashboardWidgetId::fromString('dashboardWidget-does-not-exist')),
         );
+    }
+
+    public function testGetAvailableWidgetsReturnsCatalogSortedByLabel(): void
+    {
+        $availableWidgets = $this->configuredWidgets()->getAvailableWidgets();
+
+        $this->assertArrayHasKey('eddington', $availableWidgets);
+        $this->assertArrayHasKey('gearStats', $availableWidgets);
+
+        $labels = array_map(static fn ($widget): string => $widget->getLabel(), $availableWidgets);
+        $sorted = $labels;
+        uasort($sorted, 'strcasecmp');
+        $this->assertSame(array_values($sorted), array_values($labels));
+    }
+
+    public function testHasAvailableWidget(): void
+    {
+        $configuredWidgets = $this->configuredWidgets();
+
+        $this->assertTrue($configuredWidgets->hasAvailableWidget(WidgetName::fromConfigValue('eddington')));
+        $this->assertFalse($configuredWidgets->hasAvailableWidget(WidgetName::fromConfigValue('doesNotExist')));
     }
 
     private function configuredWidgets(): ConfiguredWidgets

@@ -5,6 +5,7 @@ namespace App\Tests\Domain\Dashboard;
 use App\Domain\Dashboard\DashboardLayout;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\KeyValueBasedDashboardLayoutRepository;
+use App\Domain\Dashboard\Widget\WidgetName;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
@@ -39,6 +40,34 @@ class KeyValueBasedDashboardLayoutRepositoryTest extends ContainerTestCase
 
         $this->assertEquals(
             DashboardLayout::fromArray($layout),
+            $this->repository->find(),
+        );
+    }
+
+    public function testAddWidgetAppendsToTheLayout(): void
+    {
+        $layout = [
+            ['id' => 'dashboardWidget-a', 'widget' => 'introText', 'width' => 33],
+            ['id' => 'dashboardWidget-b', 'widget' => 'weeklyStats', 'width' => 100],
+        ];
+
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::DASHBOARD,
+            value: Value::fromString(Json::encode($layout)),
+        ));
+
+        $this->repository->addWidget(
+            DashboardWidgetId::fromString('dashboardWidget-new'),
+            WidgetName::fromConfigValue('eddington'),
+            50,
+        );
+
+        $this->assertEquals(
+            DashboardLayout::fromArray([
+                ['id' => 'dashboardWidget-a', 'widget' => 'introText', 'width' => 33],
+                ['id' => 'dashboardWidget-b', 'widget' => 'weeklyStats', 'width' => 100],
+                ['id' => 'dashboardWidget-new', 'widget' => 'eddington', 'width' => 50],
+            ]),
             $this->repository->find(),
         );
     }

@@ -57,6 +57,22 @@ final class ConfiguredWidgets implements \IteratorAggregate
         return new \ArrayIterator($configuredWidgets);
     }
 
+    /**
+     * @return array<string, Widget>
+     */
+    public function getAvailableWidgets(): array
+    {
+        $widgets = $this->widgets;
+        uasort($widgets, static fn (Widget $a, Widget $b): int => strcasecmp($a->getLabel(), $b->getLabel()));
+
+        return $widgets;
+    }
+
+    public function hasAvailableWidget(WidgetName $widgetName): bool
+    {
+        return array_key_exists((string) $widgetName, $this->widgets);
+    }
+
     public function find(DashboardWidgetId $dashboardWidgetId): ?ConfiguredWidget
     {
         foreach ($this as $configuredWidget) {
