@@ -7,6 +7,7 @@ namespace App\Domain\Dashboard\Widget\TrainingGoals;
 use App\Domain\Calendar\Month;
 use App\Domain\Calendar\Week;
 use App\Domain\Dashboard\Widget\HasWideConfigurationForm;
+use App\Domain\Dashboard\Widget\RequiresConfiguration;
 use App\Domain\Dashboard\Widget\TrainingGoals\FindTrainingGoalMetrics\FindTrainingGoalMetrics;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
@@ -16,7 +17,7 @@ use App\Infrastructure\ValueObject\Time\Year;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class TrainingGoalsWidget implements Widget, HasWideConfigurationForm
+final readonly class TrainingGoalsWidget implements Widget, HasWideConfigurationForm, RequiresConfiguration
 {
     public function __construct(
         private TranslatorInterface $translator,
@@ -46,6 +47,11 @@ final readonly class TrainingGoalsWidget implements Widget, HasWideConfiguration
         /** @var array<string, mixed> $config */
         $config = $configuration->get('goals');
         TrainingGoals::fromConfig($config);
+    }
+
+    public function configurationIsEmpty(WidgetConfiguration $configuration): bool
+    {
+        return empty($configuration->get('goals'));
     }
 
     public function render(SerializableDateTime $now, WidgetConfiguration $configuration): ?string

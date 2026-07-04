@@ -33,6 +33,13 @@
                                 </svg>
                             </span>
                             <span class="min-w-0 truncate text-sm font-medium text-gray-800">{{ widget.getLabel() }}</span>
+                            {% if widget.stillNeedsConfiguration() %}
+                                <span class="shrink-0 text-amber-500" title="{{ "This widget still needs to be configured."|trans }}">
+                                    <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                    </svg>
+                                </span>
+                            {% endif %}
                             <div class="ml-auto flex items-center gap-1.5 shrink-0">
                                 {% if widget.isConfigurable() %}
                                     <a href="{{ relativeUrl(path('admin_configure_dashboard_widget', {'dashboardWidgetId': widget.getId()})) }}" class="text-gray-400 hover:text-primary p-1 rounded-md hover:bg-gray-100" title="{{ "Configure"|trans }}">
