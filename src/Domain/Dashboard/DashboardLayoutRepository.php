@@ -23,4 +23,6 @@ interface DashboardLayoutRepository
      * @param list<array{id: string, width: int}> $orderedWidgets
      */
     public function saveLayout(array $orderedWidgets): void;
+
+    public function resetToDefault(): void;
 }

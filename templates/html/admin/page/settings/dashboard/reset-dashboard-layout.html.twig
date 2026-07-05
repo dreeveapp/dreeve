@@ -1,0 +1,46 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block main %}
+    {% autoescape false %}
+    {% set dashboardUrl = relativeUrl(path('admin_settings_dashboard')) %}
+    <div class="modal-like-form">
+        <div class="w-full max-w-lg overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">
+                    {{ "Reset dashboard to default"|trans }}
+                </h3>
+                <a href="{{ dashboardUrl }}" aria-label="{{ "Close"|trans }}"
+                   class="grid place-items-center size-8 rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900">
+                    <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                    </svg>
+                </a>
+            </div>
+            <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ dashboardUrl }}" class="flex flex-col gap-4">
+                <div data-form-error class="hidden rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert"></div>
+                <div class="flex items-start gap-3">
+                    <span class="grid place-items-center size-10 shrink-0 rounded-full bg-amber-100 text-amber-500" aria-hidden="true">
+                        <svg class="size-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                        </svg>
+                    </span>
+                    <div class="space-y-1 text-sm text-gray-600">
+                        <p>
+                            {{ "This will discard your current dashboard layout and restore the default widgets."|trans }}
+                        </p>
+                        <p>
+                            {{ "This action cannot be undone."|trans }}
+                        </p>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
+                    <a href="{{ dashboardUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans }}</a>
+                    <button type="submit" data-has-loading-state class="group btn--danger">
+                        <span class="label">{{ "Reset to default"|trans }}</span>
+                        <span class="label--loading">{{ "Resetting..."|trans }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endautoescape %}
+{% endblock main %}

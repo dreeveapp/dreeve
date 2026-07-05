@@ -4,7 +4,7 @@ namespace App\Tests\Controller\Admin\Settings;
 
 use App\Tests\Controller\Admin\AdminWebTestCase;
 
-class SettingsRequestHandlerTest extends AdminWebTestCase
+class DashboardSettingsRequestHandlerTest extends AdminWebTestCase
 {
     public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
     {
@@ -25,6 +25,18 @@ class SettingsRequestHandlerTest extends AdminWebTestCase
 
         $this->assertCount(1, $crawler->filter('button[data-dropdown="addWidgetDropdown"]'));
         $this->assertGreaterThan(0, $crawler->filter('#addWidgetDropdown form[data-dispatch-command="add-widget"]')->count());
+
+        $this->assertGreaterThan(0, $crawler->filter('a[href*="/admin/settings/dashboard/reset"]')->count());
+    }
+
+    public function testItRendersTheResetConfirmationPage(): void
+    {
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/settings/dashboard/reset');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(1, $crawler->filter('form[data-dispatch-command="reset-dashboard-layout-to-default"]'));
     }
 
     public function testItRendersTheSettingsNavigation(): void

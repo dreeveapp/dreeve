@@ -92,6 +92,14 @@ final readonly class KeyValueBasedDashboardLayoutRepository implements Dashboard
         ));
     }
 
+    public function resetToDefault(): void
+    {
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode(DashboardLayout::default())),
+        ));
+    }
+
     public function updateWidgetConfiguration(DashboardWidgetId $dashboardWidgetId, array $configuration): void
     {
         $layout = array_map(
