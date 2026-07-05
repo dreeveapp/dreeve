@@ -8,6 +8,7 @@ use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\CommandDeserializer;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
+use App\Infrastructure\CQRS\Command\SuppressesFlashMessage;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,8 +53,10 @@ final readonly class DispatchCommandRequestHandler
             return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
+        $suppressesFlash = [] !== (new \ReflectionClass($command))->getAttributes(SuppressesFlashMessage::class);
+
         $session = $request->getSession();
-        if ($session instanceof FlashBagAwareSessionInterface) {
+        if (!$suppressesFlash && $session instanceof FlashBagAwareSessionInterface) {
             $session->getFlashBag()->add(
                 type: 'success',
                 message: $this->translator->trans('Your changes have been saved.')

@@ -59,6 +59,39 @@ final readonly class KeyValueBasedDashboardLayoutRepository implements Dashboard
         ));
     }
 
+    public function saveLayout(array $orderedWidgets): void
+    {
+        $stored = [];
+        foreach (iterator_to_array($this->find()) as $item) {
+            $stored[$item['id']] = $item;
+        }
+
+        $layout = [];
+        foreach ($orderedWidgets as $orderedWidget) {
+            $id = $orderedWidget['id'];
+            if (!isset($stored[$id])) {
+                // Ignore ids that are no longer part of the stored layout (e.g. stale page).
+                continue;
+            }
+
+            $item = $stored[$id];
+            $item['width'] = $orderedWidget['width'];
+            $layout[] = $item;
+            unset($stored[$id]);
+        }
+
+        // Preserve any stored widgets that were not part of the payload (e.g. added in another
+        // tab while this page was open) by appending them in their existing relative order.
+        foreach ($stored as $item) {
+            $layout[] = $item;
+        }
+
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode($layout)),
+        ));
+    }
+
     public function updateWidgetConfiguration(DashboardWidgetId $dashboardWidgetId, array $configuration): void
     {
         $layout = array_map(

@@ -4,12 +4,6 @@ const AUTO_DISMISS_MS = 4000;
 
 const KNOWN_TYPES = ['success', 'error', 'warning', 'info'];
 
-const iconFor = (name) => {
-    const tpl = document.querySelector(`#flash-toast-icons template[data-icon="${name}"]`);
-    const svg = tpl?.content?.firstElementChild;
-    return svg ? svg.cloneNode(true) : null;
-};
-
 const ensureContainer = () => {
     let container = document.getElementById('flash-toast-container');
     if (!container) {
@@ -39,10 +33,6 @@ const buildToast = (type, message, index) => {
 
     const icon = document.createElement('div');
     icon.className = `icon icon--${variant}`;
-    const iconSvg = iconFor(variant);
-    if (iconSvg) {
-        icon.appendChild(iconSvg);
-    }
 
     const body = document.createElement('div');
     body.className = 'body';
@@ -53,10 +43,6 @@ const buildToast = (type, message, index) => {
     close.className = 'close unstyled';
     close.setAttribute('aria-label', 'Close');
     close.setAttribute('data-dismiss-target', `#${toast.id}`);
-    const closeSvg = iconFor('close');
-    if (closeSvg) {
-        close.appendChild(closeSvg);
-    }
 
     toast.append(icon, body, close);
     return toast;

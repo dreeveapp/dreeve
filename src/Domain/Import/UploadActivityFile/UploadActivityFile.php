@@ -10,9 +10,11 @@ use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
 use App\Infrastructure\CQRS\Command\RequiresRebuild;
+use App\Infrastructure\CQRS\Command\SuppressesFlashMessage;
 use App\Infrastructure\ValueObject\String\Path;
 
 #[RequiresRebuild]
+#[SuppressesFlashMessage]
 final readonly class UploadActivityFile extends DomainCommand implements DeserializableCommand
 {
     use ProvidesCommandName;

@@ -7,6 +7,7 @@ import initRebuildStatus from "./components/rebuild-status";
 import initToasts from "./components/toast";
 import FileDropzoneUpload from "./features/file-upload/file-dropzone-upload";
 import {initImageDropZones} from "./features/file-upload/image-dropzone-upload";
+import initDashboardLayout from "./features/dashboard/dashboard-layout";
 import {initDrawers, initCollapses} from "flowbite";
 
 initDrawers();
@@ -22,3 +23,4 @@ initToasts();
 
 new FileDropzoneUpload(document).init();
 initImageDropZones(document);
+initDashboardLayout(document);

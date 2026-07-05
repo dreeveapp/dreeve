@@ -18,4 +18,9 @@ interface DashboardLayoutRepository
      * @param array<string, mixed> $configuration
      */
     public function updateWidgetConfiguration(DashboardWidgetId $dashboardWidgetId, array $configuration): void;
+
+    /**
+     * @param list<array{id: string, width: int}> $orderedWidgets
+     */
+    public function saveLayout(array $orderedWidgets): void;
 }

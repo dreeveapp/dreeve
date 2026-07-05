@@ -2,6 +2,7 @@
 @import "../../node_modules/flowbite/src/themes/default.css";
 @import "./components/chat.css";
 @import "./components/dark-mode.css";
+@import "./components/dashboard-layout.css";
 @import "./components/data-table.css";
 @import "./components/filter-dropdown.css";
 @import "./components/toast.css";

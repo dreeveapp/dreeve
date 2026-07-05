@@ -1,0 +1,65 @@
+@layer components {
+    [data-widget-grid] {
+        > [data-width="33"] {
+            @apply col-span-2;
+        }
+
+        > [data-width="50"] {
+            @apply col-span-3;
+        }
+
+        > [data-width="66"] {
+            @apply col-span-4;
+        }
+
+        > [data-width="100"] {
+            @apply col-span-6;
+        }
+    }
+
+
+    [data-width-seg] button {
+        @apply cursor-pointer text-gray-500 hover:text-gray-800 rounded px-1.5 py-0.5;
+
+        &[aria-pressed="true"] {
+            @apply bg-white text-primary shadow-xs;
+        }
+    }
+
+    [data-layout-status] {
+        @apply inline-flex items-center gap-2 rounded-lg bg-white px-3 py-1.5 text-sm font-medium text-gray-500 transition-opacity duration-300;
+
+        &:empty {
+            @apply hidden;
+        }
+
+        &::before {
+            @apply size-6 shrink-0 rounded-md bg-center bg-no-repeat;
+            content: "";
+            background-size: 1rem;
+        }
+
+        &[data-status="saving"] {
+            @apply text-gray-500;
+
+            &::before {
+                @apply animate-spin rounded-full bg-gray-100;
+                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="%239ca3af" stroke-linecap="round" stroke-width="2.5" d="M12 3a9 9 0 1 0 9 9"/></svg>');
+            }
+        }
+
+        &[data-status="success"] {
+            &::before {
+                @apply bg-green-100;
+                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="%2322c55e" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m5 13 4 4L19 7"/></svg>');
+            }
+        }
+
+        &[data-status="error"] {
+            &::before {
+                @apply bg-red-100;
+                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="%23ef4444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18 18 6M6 6l12 12"/></svg>');
+            }
+        }
+    }
+}

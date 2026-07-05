@@ -135,6 +135,63 @@ class KeyValueBasedDashboardLayoutRepositoryTest extends ContainerTestCase
         );
     }
 
+    public function testSaveLayoutReordersAppliesWidthsAndPreservesConfig(): void
+    {
+        $layout = [
+            ['id' => 'dashboardWidget-a', 'widget' => 'introText', 'width' => 33],
+            ['id' => 'dashboardWidget-b', 'widget' => 'streaks', 'width' => 33, 'config' => ['subtitle' => 'Keep it up', 'sportTypesToInclude' => ['Run']]],
+            ['id' => 'dashboardWidget-c', 'widget' => 'eddington', 'width' => 33],
+        ];
+
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::DASHBOARD,
+            value: Value::fromString(Json::encode($layout)),
+        ));
+
+        $this->repository->saveLayout([
+            ['id' => 'dashboardWidget-c', 'width' => 100],
+            ['id' => 'dashboardWidget-a', 'width' => 50],
+            ['id' => 'dashboardWidget-b', 'width' => 66],
+        ]);
+
+        $this->assertEquals(
+            DashboardLayout::fromArray([
+                ['id' => 'dashboardWidget-c', 'widget' => 'eddington', 'width' => 100],
+                ['id' => 'dashboardWidget-a', 'widget' => 'introText', 'width' => 50],
+                ['id' => 'dashboardWidget-b', 'widget' => 'streaks', 'width' => 66, 'config' => ['subtitle' => 'Keep it up', 'sportTypesToInclude' => ['Run']]],
+            ]),
+            $this->repository->find(),
+        );
+    }
+
+    public function testSaveLayoutIgnoresUnknownIdsAndAppendsStoredWidgetsMissingFromThePayload(): void
+    {
+        $layout = [
+            ['id' => 'dashboardWidget-a', 'widget' => 'introText', 'width' => 33],
+            ['id' => 'dashboardWidget-b', 'widget' => 'weeklyStats', 'width' => 100],
+            ['id' => 'dashboardWidget-c', 'widget' => 'eddington', 'width' => 33],
+        ];
+
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::DASHBOARD,
+            value: Value::fromString(Json::encode($layout)),
+        ));
+
+        $this->repository->saveLayout([
+            ['id' => 'dashboardWidget-b', 'width' => 50],
+            ['id' => 'dashboardWidget-unknown', 'width' => 66],
+        ]);
+
+        $this->assertEquals(
+            DashboardLayout::fromArray([
+                ['id' => 'dashboardWidget-b', 'widget' => 'weeklyStats', 'width' => 50],
+                ['id' => 'dashboardWidget-a', 'widget' => 'introText', 'width' => 33],
+                ['id' => 'dashboardWidget-c', 'widget' => 'eddington', 'width' => 33],
+            ]),
+            $this->repository->find(),
+        );
+    }
+
     #[\Override]
     protected function setUp(): void
     {

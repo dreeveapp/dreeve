@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Settings;
 
 use App\Domain\Dashboard\AddWidget\AddWidget;
+use App\Domain\Dashboard\SaveDashboardLayout\SaveDashboardLayout;
 use App\Domain\Dashboard\Widget\ConfiguredWidgets;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -28,6 +29,7 @@ final readonly class SettingsRequestHandler
             'widths' => ConfiguredWidgets::WIDTHS,
             'availableWidgets' => $this->configuredWidgets->getAvailableWidgets(),
             'addWidgetCommand' => AddWidget::getCommandName(),
+            'saveLayoutCommand' => SaveDashboardLayout::getCommandName(),
         ]));
     }
 }

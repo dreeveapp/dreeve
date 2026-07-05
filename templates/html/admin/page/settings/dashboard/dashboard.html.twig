@@ -1,14 +1,8 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
-    {% set colSpanMap = {
-        33: 'col-span-2',
-        50: 'col-span-3',
-        66: 'col-span-4',
-        100: 'col-span-6'
-    } %}
     {% set dashboardUrl = relativeUrl(path('admin_settings_dashboard')) %}
     {% autoescape false %}
-        <form class="p-4 sm:p-6 bg-white border border-gray-200 rounded-lg shadow-xs max-w-6xl">
+        <form data-dashboard-layout-form data-save-command="{{ saveLayoutCommand }}" class="p-4 sm:p-6 bg-white border border-gray-200 rounded-lg shadow-xs max-w-6xl">
             <div class="flex flex-wrap items-start justify-between gap-3 mb-1">
                 <div>
                     <h3 class="text-lg font-semibold">{{ "Dashboard layout"|trans }}</h3>
@@ -23,11 +17,12 @@
                     <span>{{ "Add widget"|trans }}</span>
                 </button>
             </div>
-            <div class="grid grid-cols-6 gap-3 mt-4">
+            <input type="hidden" name="layout" data-layout-field>
+            <div class="grid grid-cols-6 gap-3 mt-4" data-widget-grid>
                 {% for widget in widgets %}
-                    <div class="{{ colSpanMap[widget.getWidth()] }} flex flex-col rounded-lg border border-gray-200 bg-white shadow-xs" data-widget-id="{{ widget.getId() }}">
+                    <div class="flex flex-col rounded-lg border border-gray-200 bg-white shadow-xs" data-widget-id="{{ widget.getId() }}" data-width="{{ widget.getWidth() }}">
                         <div class="flex items-center gap-2 px-3 py-2 border-b border-gray-100">
-                            <span class="shrink-0 text-gray-400" title="{{ "Drag to reorder"|trans }}">
+                            <span class="shrink-0 text-gray-400 cursor-grab active:cursor-grabbing" data-drag-handle title="{{ "Drag to reorder"|trans }}">
                                 <svg class="size-4.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"/>
                                 </svg>
@@ -66,9 +61,9 @@
                         </div>
 
                         <div class="flex items-center justify-between gap-2 px-3 py-2 border-t border-gray-100">
-                            <div class="inline-flex rounded-md border border-gray-200 bg-gray-50 p-0.5 text-xxs font-medium">
+                            <div class="inline-flex rounded-md border border-gray-200 bg-gray-50 p-0.5 text-xxs font-medium" data-width-seg>
                                 {% for width in widths %}
-                                    <button type="button" class="unstyled rounded px-1.5 py-0.5 {{ width == widget.getWidth() ? 'bg-white text-primary shadow-xs' : 'text-gray-500 hover:text-gray-800' }}">{{ width }}%</button>
+                                    <button type="button" data-w="{{ width }}" aria-pressed="{{ width == widget.getWidth() ? 'true' : 'false' }}" class="unstyled">{{ width }}%</button>
                                 {% endfor %}
                             </div>
                         </div>
@@ -78,7 +73,7 @@
 
             <div class="sticky bottom-0 z-10 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 mt-6 flex items-center justify-between gap-2 rounded-b-lg border-t border-gray-200 bg-white px-4 sm:px-6 py-4">
                 <button type="submit" class="btn--secondary">{{ "Reset to default"|trans }}</button>
-                <button type="submit" class="btn--primary">{{ "Save layout"|trans }}</button>
+                <span data-layout-status role="status" aria-live="polite"></span>
             </div>
         </form>
 

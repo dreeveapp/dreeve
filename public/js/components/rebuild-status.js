@@ -15,41 +15,23 @@ export default function initRebuildStatus() {
 
     let intervalId = null;
 
-    const stop = () => {
-        if (intervalId !== null) {
-            clearInterval(intervalId);
-            intervalId = null;
-        }
-    };
-
     const poll = async () => {
         try {
             const {pending} = await fetchJson(url);
             if (!pending) {
                 badge.remove();
-                stop();
+
+                if (intervalId !== null) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
             }
         } catch {
 
         }
     };
 
-    const start = () => {
-        if (intervalId === null && document.getElementById('rebuild-pending-badge')) {
-            intervalId = setInterval(poll, POLL_INTERVAL_MS);
-        }
-    };
-
-    // Only poll while the tab is visible to avoid needless background requests.
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            stop();
-        } else {
-            start();
-        }
-    });
-
-    if (!document.hidden) {
-        start();
+    if (document.getElementById('rebuild-pending-badge')) {
+        intervalId = setInterval(poll, POLL_INTERVAL_MS);
     }
 }

@@ -3,11 +3,6 @@ set -e
 
 echo "date.timezone=\"${TZ:-UTC}\"" > "${PHP_INI_DIR}/conf.d/timezone.ini"
 
-# Symfony requires APP_SECRET in prod (CSRF tokens, signed URIs, ...).
-if [ -z "$APP_SECRET" ]; then
-    export APP_SECRET="$(php -r 'echo bin2hex(random_bytes(16));')"
-fi
-
 # Run database migrations once at startup. The app and daemon containers share
 # the same image and the same SQLite database volume, so flock serializes the
 # two startups: the winner migrates.

@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller\Admin;
 
+use App\Domain\Dashboard\AddWidget\AddWidget;
 use App\Domain\Import\UploadActivityFile\UploadActivityFile;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\KeyValue\Key;
@@ -47,6 +48,38 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
         $dispatchedCommands = $spyCommandBus->getDispatchedCommands();
         $this->assertCount(1, $dispatchedCommands);
         $this->assertInstanceOf(UploadActivityFile::class, $dispatchedCommands[0]);
+
+        $this->assertSame(
+            [],
+            $this->client->getRequest()->getSession()->getFlashBag()->peek('success'),
+        );
+    }
+
+    public function testHandleAddsASuccessFlashMessageForCommandsThatDoNotSuppressIt(): void
+    {
+        $this->client->loginUser($this->adminUser());
+        $this->client->disableReboot();
+
+        $spyCommandBus = new SpyCommandBus();
+        static::getContainer()->set(CommandBus::class, $spyCommandBus);
+
+        $this->client->request(
+            method: 'POST',
+            uri: '/admin/dispatchCommand',
+            server: ['HTTP_X_CSRF_TOKEN' => $this->validCsrfToken()],
+            content: Json::encode([
+                'commandName' => 'add-widget',
+                'payload' => [
+                    'widget' => 'eddington',
+                ],
+            ]),
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
+
+        $dispatchedCommands = $spyCommandBus->getDispatchedCommands();
+        $this->assertCount(1, $dispatchedCommands);
+        $this->assertInstanceOf(AddWidget::class, $dispatchedCommands[0]);
 
         $this->assertSame(
             ['Your changes have been saved.'],

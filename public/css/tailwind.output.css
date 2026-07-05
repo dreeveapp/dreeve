@@ -1082,15 +1082,6 @@
   .col-span-2 {
     grid-column: span 2 / span 2;
   }
-  .col-span-3 {
-    grid-column: span 3 / span 3;
-  }
-  .col-span-4 {
-    grid-column: span 4 / span 4;
-  }
-  .col-span-6 {
-    grid-column: span 6 / span 6;
-  }
   .container {
     width: 100%;
     @media (width >= 40rem) {
@@ -2263,6 +2254,9 @@
   }
   .cursor-default {
     cursor: default;
+  }
+  .cursor-grab {
+    cursor: grab;
   }
   .cursor-not-allowed {
     cursor: not-allowed;
@@ -3711,6 +3705,9 @@
   .opacity-0 {
     opacity: 0%;
   }
+  .opacity-40 {
+    opacity: 40%;
+  }
   .opacity-60 {
     opacity: 60%;
   }
@@ -4284,13 +4281,6 @@
       }
     }
   }
-  .hover\:text-gray-800 {
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-gray-800);
-      }
-    }
-  }
   .hover\:text-gray-900 {
     &:hover {
       @media (hover: hover) {
@@ -4449,6 +4439,11 @@
   .active\:scale-\[0\.97\] {
     &:active {
       scale: 0.97;
+    }
+  }
+  .active\:cursor-grabbing {
+    &:active {
+      cursor: grabbing;
     }
   }
   .disabled\:cursor-not-allowed {
@@ -5528,6 +5523,93 @@
     background-image: url('data:image/svg+xml;utf8,<svg fill="none" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="%239CA3AF" fill-rule="evenodd" clip-rule="evenodd" d="M12.2256 2.00253C9.59172 1.94346 6.93894 2.9189 4.92893 4.92891C1.02369 8.83415 1.02369 15.1658 4.92893 19.071C8.83418 22.9763 15.1658 22.9763 19.0711 19.071C21.0811 17.061 22.0565 14.4082 21.9975 11.7743C21.9796 10.9772 21.8669 10.1818 21.6595 9.40643C21.0933 9.9488 20.5078 10.4276 19.9163 10.8425C18.5649 11.7906 17.1826 12.4053 15.9301 12.6837C14.0241 13.1072 12.7156 12.7156 12 12C11.2844 11.2844 10.8928 9.97588 11.3163 8.0699C11.5947 6.81738 12.2094 5.43511 13.1575 4.08368C13.5724 3.49221 14.0512 2.90664 14.5935 2.34046C13.8182 2.13305 13.0228 2.02041 12.2256 2.00253ZM17.6569 17.6568C18.9081 16.4056 19.6582 14.8431 19.9072 13.2186C16.3611 15.2643 12.638 15.4664 10.5858 13.4142C8.53361 11.362 8.73568 7.63895 10.7814 4.09281C9.1569 4.34184 7.59434 5.09193 6.34315 6.34313C3.21895 9.46732 3.21895 14.5326 6.34315 17.6568C9.46734 20.781 14.5327 20.781 17.6569 17.6568Z" /></svg>');
   }
 }
+@layer components {
+  [data-widget-grid] {
+    > [data-width="33"] {
+      grid-column: span 2 / span 2;
+    }
+    > [data-width="50"] {
+      grid-column: span 3 / span 3;
+    }
+    > [data-width="66"] {
+      grid-column: span 4 / span 4;
+    }
+    > [data-width="100"] {
+      grid-column: span 6 / span 6;
+    }
+  }
+  [data-width-seg] button {
+    cursor: pointer;
+    border-radius: 0.25rem;
+    padding-inline: calc(var(--spacing) * 1.5);
+    padding-block: calc(var(--spacing) * 0.5);
+    color: var(--color-gray-500);
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-gray-800);
+      }
+    }
+    &[aria-pressed="true"] {
+      background-color: var(--color-white);
+      color: var(--color-primary);
+      --tw-shadow: 0 1px 2px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    }
+  }
+  [data-layout-status] {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--spacing) * 2);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-white);
+    padding-inline: calc(var(--spacing) * 3);
+    padding-block: calc(var(--spacing) * 1.5);
+    font-size: var(--text-sm);
+    line-height: var(--tw-leading, var(--text-sm--line-height));
+    --tw-font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-gray-500);
+    transition-property: opacity;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+    --tw-duration: 300ms;
+    transition-duration: 300ms;
+    &:empty {
+      display: none;
+    }
+    &::before {
+      width: calc(var(--spacing) * 6);
+      height: calc(var(--spacing) * 6);
+      flex-shrink: 0;
+      border-radius: var(--radius-md);
+      background-position: center;
+      background-repeat: no-repeat;
+      content: "";
+      background-size: 1rem;
+    }
+    &[data-status="saving"] {
+      color: var(--color-gray-500);
+      &::before {
+        animation: var(--animate-spin);
+        border-radius: calc(infinity * 1px);
+        background-color: var(--color-gray-100);
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="%239ca3af" stroke-linecap="round" stroke-width="2.5" d="M12 3a9 9 0 1 0 9 9"/></svg>');
+      }
+    }
+    &[data-status="success"] {
+      &::before {
+        background-color: var(--color-green-100);
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="%2322c55e" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m5 13 4 4L19 7"/></svg>');
+      }
+    }
+    &[data-status="error"] {
+      &::before {
+        background-color: var(--color-red-100);
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="%23ef4444" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18 18 6M6 6l12 12"/></svg>');
+      }
+    }
+  }
+}
 table.data-table {
   width: 100%;
   text-align: center;
@@ -5830,25 +5912,37 @@ table.data-table {
         align-items: center;
         justify-content: center;
         border-radius: var(--radius-lg);
-        svg {
-          height: calc(var(--spacing) * 5);
+        &::before {
+          content: "";
           width: calc(var(--spacing) * 5);
+          height: calc(var(--spacing) * 5);
+          background-size: contain;
+          background-position: center;
+          background-repeat: no-repeat;
         }
         &.icon--success {
           background-color: var(--color-green-100);
-          color: var(--color-green-500);
+          &::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%2322c55e" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>');
+          }
         }
         &.icon--error {
           background-color: var(--color-red-100);
-          color: var(--color-red-500);
+          &::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%23ef4444" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>');
+          }
         }
         &.icon--warning {
           background-color: var(--color-yellow-100);
-          color: var(--color-yellow-500);
+          &::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%23eab308" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86l-8.48 14.7A1 1 0 002.67 20h18.66a1 1 0 00.86-1.44l-8.48-14.7a1 1 0 00-1.72 0z"/></svg>');
+          }
         }
         &.icon--info {
           background-color: var(--color-blue-100);
-          color: var(--color-blue-500);
+          &::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%233b82f6" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>');
+          }
         }
       }
       .body {
@@ -5866,21 +5960,14 @@ table.data-table {
         cursor: pointer;
         align-items: center;
         justify-content: center;
-        border-radius: var(--radius-lg);
-        color: var(--color-gray-400);
-        &:hover {
-          @media (hover: hover) {
-            background-color: var(--color-gray-100);
-          }
-        }
-        &:hover {
-          @media (hover: hover) {
-            color: var(--color-gray-900);
-          }
-        }
-        svg {
+        &::before {
+          content: "";
           width: calc(var(--spacing) * 5);
           height: calc(var(--spacing) * 5);
+          background-size: contain;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%239ca3af" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>');
         }
       }
     }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard;
 
+use App\Domain\Dashboard\Widget\ConfiguredWidgets;
+
 final readonly class DashboardLayout implements \IteratorAggregate
 {
     private function __construct(
@@ -72,8 +74,8 @@ final readonly class DashboardLayout implements \IteratorAggregate
                 throw new InvalidDashboardLayout('"width" property must be a valid integer');
             }
 
-            if (!in_array($widget['width'], [33, 50, 66, 100])) {
-                throw new InvalidDashboardLayout(sprintf('"width" property must be one of [33, 50, 66, 100], found %s', $widget['width']));
+            if (!in_array($widget['width'], ConfiguredWidgets::WIDTHS, true)) {
+                throw new InvalidDashboardLayout(sprintf('"width" property must be one of [%s], found %s', implode(', ', ConfiguredWidgets::WIDTHS), $widget['width']));
             }
 
             if (array_key_exists('config', $widget)) {
