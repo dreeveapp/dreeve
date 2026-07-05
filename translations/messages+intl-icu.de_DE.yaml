@@ -18,7 +18,7 @@ Activity: Aktivität
 'Activity count': 'Anzahl Aktivitäten'
 'Activity heatmap': 'Aktivitäten Heatmap'
 'Activity locations': Orte
-'Activity management': 'Aktivitätenverwaltung'
+'Activity management': Aktivitätenverwaltung
 'Activity start times': 'Startzeiten der Aktivitäten'
 'Acute Training Load (Fatigue) - 7-day exponentially weighted average of your daily training load. Represents short-term fatigue.': 'Akute Trainingsbelastung (Ermüdung) - 7-tägiger exponentiell gewichteter Durchschnitt deiner täglichen Trainingsbelastung. Stellt die kurzfristige Ermüdung dar.'
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Aktuelle vs. dauerhafte Trainingsbelastung - Verhältnis von ATL zu CTL. Gibt das Verletzungsrisiko an.'
@@ -33,7 +33,7 @@ Activity: Aktivität
 'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Füge {fit}, {tcx} oder {gpx} Dateien hinzu. Sie werden alle paar Minuten verarbeitet'
 Admin: Admin
-'Admin panel': 'Adminbereich'
+'Admin panel': Adminbereich
 Afternoon: Nachmittag
 All: Alle
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'Alle zugehörigen Wartungsaufgaben und Protokolle werden entfernt. Diese Aktion kann nicht rückgängig gemacht werden'
@@ -52,7 +52,7 @@ Average: Durchschnitt
 'Average gradient': 'Ø Steigung'
 'Avg gradient': 'Ø Steigung'
 'Avg pace': 'Ø Tempo'
-'Avg speed': 'Durchschnittsgeschwindigkeit'
+'Avg speed': Durchschnittsgeschwindigkeit
 'Back Country Ski': Skitouren
 'Back to app': 'Zurück zur App'
 Badges: Abzeichen
@@ -121,7 +121,7 @@ Delete: Löschen
 'Delete activity': 'Aktivität löschen'
 'Delete component': 'Komponente löschen'
 'Delete maintenance log': 'Wartungsprotokoll löschen'
-Deleting...: wird gelöscht...
+Deleting...: 'wird gelöscht...'
 Density: Dichte
 Description: Beschreibung
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Ausführliche Anleitungen findest du in {linkOpen}der Dokumentation{linkClose}.'
@@ -195,7 +195,7 @@ GAP: GAP
 Gear: Ausrüstung
 'Gear "{gearId}" is referenced in your maintenance config file, but was not imported from Strava. Please check that the gear exists and is correctly synced.': 'Die Ausrüstung "{gearId}" ist in deiner "gear-maintenance.yaml" referenziert, wurde aber nicht von Strava importiert. Bitte überprüfe, dass die Ausrüstung existiert und korrekt synchronisiert wurde.'
 'Gear maintenance': Ausrüstungswartung
-'Gear management': 'Ausrüstungsverwaltung'
+'Gear management': Ausrüstungsverwaltung
 'Gear stats': Ausrüstungsstatistiken
 "Gear that hasn't been used in the last three months, is disabled by default.": 'Ausrüstung, die in den letzten drei Monaten nicht verwendet wurde, ist standardmäßig deaktiviert.'
 'Gear that is retired is disabled by default.': 'Ausgemusterte Ausrüstung ist standardmäßig deaktiviert.'
@@ -285,9 +285,9 @@ Low: Niedrig
 'Low risk': 'Geringes Risiko'
 'Low training load': 'Niedrige Trainingsbelastung'
 Maintenance: Wartung
-'Maintenance log': 'Wartungsprotokoll'
+'Maintenance log': Wartungsprotokoll
 'Maintenance logs will appear here once maintenance has been registered.': 'Wartungsprotokolle werden hier angezeigt, sobald eine Wartung erfasst wurde.'
-'Maintenance tasks': 'Wartungsaufgaben'
+'Maintenance tasks': Wartungsaufgaben
 Mar: Mär
 Max: Max
 'Max gradient': 'Max Steigung'
@@ -366,7 +366,7 @@ Password: Passwort
 'Personal bests': 'Persönliche Bestleistungen'
 Photo: Foto
 Photos: Fotos
-'Physical Therapy': 'Physiotherapie'
+'Physical Therapy': Physiotherapie
 'Pickle Ball': Pickleball
 Pilates: Pilates
 'Pizza slices': Pizzastücke
@@ -404,7 +404,9 @@ Remove: Entfernen
 'Remove widget': 'Remove widget'
 Removing...: Removing...
 "Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
+'Reset dashboard to default': 'Reset dashboard to default'
 'Reset to default': 'Reset to default'
+Resetting...: Resetting...
 'Rest Days': Ruhetage
 'Rest days': Ruhetage
 'Rest days in last 7 days': 'Ruhetage in den letzten 7 Tagen'
@@ -428,7 +430,7 @@ Sat.: Sa.
 Save: Speichern
 'Save settings': 'Einstellungen speichern'
 Saved: gespeichert
-Saving...: Wird gespeichert...
+Saving...: 'Wird gespeichert...'
 Search: Suche
 'Search activity...': 'Aktivität suchen...'
 'Search segment...': 'Segment suchen...'
@@ -444,9 +446,9 @@ Settings: Settings
 'Show password': 'Passwort anzeigen'
 'Showing {first} - {last} of {total}': 'Zeige {first} - {last} von {total}'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Hier siehst du, wie sich deine Form (TSB) und dein A:C-Verhältnis entwickeln, wenn du komplette Ruhetage einlegst..'
-'Sign in': 'Anmelden'
+'Sign in': Anmelden
 'Sign in to the admin panel': 'Im Adminbereich anmelden'
-'Sign out': 'Abmelden'
+'Sign out': Abmelden
 'Signing in...': 'Anmeldung läuft...'
 "Since I began using Strava {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": 'Seit ich vor {numberOfDaysAgo}, am {startDate}, mit Strava angefangen habe, habe ich {totalDaysOfWorkingOut} aktive Trainingstage absolviert.'
 Skateboard: Skateboard
@@ -459,7 +461,7 @@ Soccer: Fußball
 Source: Quelle
 Speed: Geschwindigkeit
 Splits: Zwischenzeiten
-'Sport type': 'Sportart'
+'Sport type': Sportart
 'Sport types to include': 'Sport types to include'
 'Sport variety': Sportvielfalt
 Squash: Squash
@@ -484,7 +486,7 @@ Swim: Schwimmen
 'Table Tennis': Tischtennis
 'Taper sweet-spot (+15)': 'Taper sweet-spot (+15)'
 Task: Aufgabe
-'Task name': 'Aufgabenname'
+'Task name': Aufgabenname
 Tasks: Aufgaben
 'Team Sports': Teamsportarten
 Tennis: Tennis
@@ -577,7 +579,7 @@ Tennis: Tennis
 "That's {number} days of at least {distance}": 'Das sind {number} Tage mit mindestens {distance}'
 "That's {percentage}% of all countries 🌍": 'Das sind {percentage}% aller Länder 🌍'
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'Die Eddington-Zahl im Zusammenhang mit Radfahren oder Laufen ist definiert als die höchste Zahl E, bei der der Athlet an mindestens E Tagen jeweils mindestens E km zurückgelegt hat.'
-"The name is derived from the device recorded on your activities and can't be edited.": "Der Name wird aus dem Gerät abgeleitet, das bei deinen Aktivitäten aufgezeichnet wurde, und kann nicht bearbeitet werden."
+"The name is derived from the device recorded on your activities and can't be edited.": 'Der Name wird aus dem Gerät abgeleitet, das bei deinen Aktivitäten aufgezeichnet wurde, und kann nicht bearbeitet werden.'
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': 'Diese Abzeichen sind dynamisch erstellt. Du kannst sie in allen &lt;img&gt; Tags verwenden.'
 Thinking...: Denke...
 'This action cannot be undone.': 'This action cannot be undone.'
@@ -585,9 +587,10 @@ Thinking...: Denke...
 'This component is fitted to multiple gears, pick the one you serviced.': 'Diese Komponente ist an mehreren Ausrüstungen montiert. Wähle die aus, die du gewartet hast.'
 'This feature is currently disabled': 'Dieses Feature ist momentan deaktiviert'
 'This month': 'Dieser Monat'
-"This value is imported from Strava and can't be edited here.": "Dieser Wert wird von Strava importiert und kann hier nicht bearbeitet werden."
+"This value is imported from Strava and can't be edited here.": 'Dieser Wert wird von Strava importiert und kann hier nicht bearbeitet werden.'
 'This week': 'Diese Woche'
 'This widget still needs to be configured.': 'This widget still needs to be configured.'
+'This will discard your current dashboard layout and restore the default widgets.': 'This will discard your current dashboard layout and restore the default widgets.'
 Thu: Do
 Thu.: Do.
 Time: Zeit
@@ -625,7 +628,7 @@ Unspecified: 'Nicht spezifiziert'
 'Upload failed': 'Upload fehlgeschlagen'
 'Upload files': 'Dateien hochladen'
 Uploaded: Hochgeladen
-Uploading...: Wird hochgeladen...
+Uploading...: 'Wird hochgeladen...'
 'User badge': 'Benutzer Abzeichen'
 Username: Benutzername
 'Velo Mobiles': Velomobil
@@ -654,7 +657,7 @@ Weight: Gewicht
 'Weight history': Gewichtsverlauf
 Wheelchair: Rollstuhl
 'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
-"When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "Wenn aktiviert, wird als ausgemustert markierte Ausrüstung übersprungen. Ihre Komponenten erhöhen die Nutzung nicht und es wird keine Wartung dafür verfolgt."
+"When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Wenn aktiviert, wird als ausgemustert markierte Ausrüstung übersprungen. Ihre Komponenten erhöhen die Nutzung nicht und es wird keine Wartung dafür verfolgt.'
 'Wind Surf': Windsurfen
 'Winter Sports': Wintersport
 Workout: Training
@@ -668,7 +671,7 @@ Yoga: Yoga
 'You can add it back to your dashboard again later.': 'You can add it back to your dashboard again later.'
 'You can also copy files straight into the {watchFolder} folder.': 'Du kannst Dateien auch direkt in den Ordner {watchFolder} kopieren.'
 'You can select up to {max} images': 'Du kannst bis zu {max} Bilder auswählen.'
-"You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": "Du importierst derzeit über die Strava-API. Setze {importMode}, um Aktivitätsdateien direkt hochzuladen, ohne von der Strava-API abhängig zu sein."
+"You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": 'Du importierst derzeit über die Strava-API. Setze {importMode}, um Aktivitätsdateien direkt hochzuladen, ohne von der Strava-API abhängig zu sein.'
 'Your PB badge': 'Dein PB Abzeichen'
 'Your Strava badge': 'Dein Strava-Abzeichen'
 'Your Zwift badge': 'Dein Zwift-Abzeichen'
@@ -695,7 +698,7 @@ activities: Aktivitäten
 and: und
 avg: durchschn.
 bpm: bpm
-'calendar days': 'Kalendertage'
+'calendar days': Kalendertage
 challenges: Herausforderungen
 clear: löschen
 compare: vergleiche

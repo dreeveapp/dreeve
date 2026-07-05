@@ -404,7 +404,9 @@ Remove: Remove
 'Remove widget': 'Remove widget'
 Removing...: Removing...
 "Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
+'Reset dashboard to default': 'Reset dashboard to default'
 'Reset to default': 'Reset to default'
+Resetting...: Resetting...
 'Rest Days': 'Rest Days'
 'Rest days': 'Rest days'
 'Rest days in last 7 days': 'Rest days in last 7 days'
@@ -588,6 +590,7 @@ Thinking...: Thinking...
 "This value is imported from Strava and can't be edited here.": "This value is imported from Strava and can't be edited here."
 'This week': 'This week'
 'This widget still needs to be configured.': 'This widget still needs to be configured.'
+'This will discard your current dashboard layout and restore the default widgets.': 'This will discard your current dashboard layout and restore the default widgets.'
 Thu: Thu
 Thu.: Thu.
 Time: Time
