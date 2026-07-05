@@ -48,6 +48,7 @@ final class ConfiguredWidgets implements \IteratorAggregate
 
             $configuredWidgets[] = new ConfiguredWidget(
                 id: DashboardWidgetId::fromString($layoutItem['id']),
+                name: $widgetName,
                 widget: $widget,
                 configuration: $configuration,
                 width: $layoutItem['width'],
@@ -71,6 +72,21 @@ final class ConfiguredWidgets implements \IteratorAggregate
     public function hasAvailableWidget(WidgetName $widgetName): bool
     {
         return array_key_exists((string) $widgetName, $this->widgets);
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    public function getConfiguredWidgetCountPerType(): array
+    {
+        $counts = [];
+        foreach ($this as $configuredWidget) {
+            $widgetName = (string) $configuredWidget->getName();
+            $counts[$widgetName] ??= 0;
+            ++$counts[$widgetName];
+        }
+
+        return $counts;
     }
 
     public function find(DashboardWidgetId $dashboardWidgetId): ?ConfiguredWidget

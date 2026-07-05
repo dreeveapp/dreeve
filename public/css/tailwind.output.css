@@ -2151,6 +2151,9 @@
   .min-w-0 {
     min-width: 0;
   }
+  .min-w-5 {
+    min-width: calc(var(--spacing) * 5);
+  }
   .min-w-160 {
     min-width: calc(var(--spacing) * 160);
   }

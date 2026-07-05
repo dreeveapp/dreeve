@@ -28,7 +28,6 @@ final readonly class DashboardSettingsRequestHandler
         return new Response($this->twig->render('html/admin/page/settings/dashboard/dashboard.html.twig', [
             'widgets' => $this->configuredWidgets,
             'widths' => ConfiguredWidgets::WIDTHS,
-            'availableWidgets' => $this->configuredWidgets->getAvailableWidgets(),
             'addWidgetCommand' => AddWidget::getCommandName(),
             'saveLayoutCommand' => SaveDashboardLayout::getCommandName(),
         ]));

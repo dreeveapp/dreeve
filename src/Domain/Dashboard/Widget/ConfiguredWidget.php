@@ -10,6 +10,7 @@ final readonly class ConfiguredWidget
 {
     public function __construct(
         private DashboardWidgetId $id,
+        private WidgetName $name,
         private Widget $widget,
         private WidgetConfiguration $configuration,
         private int $width,
@@ -19,6 +20,11 @@ final readonly class ConfiguredWidget
     public function getId(): DashboardWidgetId
     {
         return $this->id;
+    }
+
+    public function getName(): WidgetName
+    {
+        return $this->name;
     }
 
     public function getWidget(): Widget

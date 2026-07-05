@@ -27,6 +27,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         $this->assertCount(1, $configuredWidgets);
         $configuredWidget = $configuredWidgets[0];
         $this->assertSame('dashboardWidget-fixed', (string) $configuredWidget->getId());
+        $this->assertSame('gearStats', (string) $configuredWidget->getName());
         $this->assertSame('Total hours spent per gear', $configuredWidget->getLabel());
         $this->assertSame(50, $configuredWidget->getWidth());
         $this->assertTrue($configuredWidget->isConfigurable());
@@ -139,6 +140,20 @@ class ConfiguredWidgetsTest extends ContainerTestCase
 
         $this->assertTrue($configuredWidgets->hasAvailableWidget(WidgetName::fromConfigValue('eddington')));
         $this->assertFalse($configuredWidgets->hasAvailableWidget(WidgetName::fromConfigValue('doesNotExist')));
+    }
+
+    public function testGetConfiguredWidgetCountPerType(): void
+    {
+        $this->saveLayout([
+            ['id' => 'dashboardWidget-1', 'widget' => 'introText', 'width' => 66],
+            ['id' => 'dashboardWidget-2', 'widget' => 'gearStats', 'width' => 50],
+            ['id' => 'dashboardWidget-3', 'widget' => 'gearStats', 'width' => 50],
+        ]);
+
+        $this->assertSame(
+            ['introText' => 1, 'gearStats' => 2],
+            $this->configuredWidgets()->getConfiguredWidgetCountPerType(),
+        );
     }
 
     private function configuredWidgets(): ConfiguredWidgets
