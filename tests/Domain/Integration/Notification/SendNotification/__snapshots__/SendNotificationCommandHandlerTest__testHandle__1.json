@@ -13,5 +13,10 @@
         "url": "discord://token@webhookid?thread_id=123456789?click=https%3A%2F%2Flocalhost&icon=https%3A%2F%2Fraw.githubusercontent.com%2Fdreeveapp%2Fdreeve%2Fmaster%2Fpublic%2Fassets%2Fimages%2Fmanifest%2Ficon-192.png&tags=tag1%2Ctag2&actions=%5B%7B%22action%22%3A%22view%22%2C%22label%22%3A%22Open+app%22%2C%22url%22%3A%22https%3A%5C%2F%5C%2Flocalhost%22%2C%22clear%22%3Atrue%7D%5D",
         "message": "le message",
         "title": "le title"
+    },
+    {
+        "url": "telegram://token@telegram/?channels=channel",
+        "message": "le message",
+        "title": "le title"
     }
 ]

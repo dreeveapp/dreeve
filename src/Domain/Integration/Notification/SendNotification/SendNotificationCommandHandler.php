@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Integration\Notification\SendNotification;
 
-use App\Domain\Integration\Notification\Shoutrrr\ConfiguredNotificationServices;
+use App\Domain\Integration\Notification\Shoutrrr\ConfiguredNotificationUrls;
 use App\Domain\Integration\Notification\Shoutrrr\Shoutrrr;
 use App\Domain\Integration\Notification\Shoutrrr\ShoutrrrUrl;
 use App\Infrastructure\CQRS\Command\Command;
@@ -15,7 +15,7 @@ final readonly class SendNotificationCommandHandler implements CommandHandler
 {
     public function __construct(
         private Shoutrrr $shoutrrr,
-        private ConfiguredNotificationServices $configuredNotificationServices,
+        private ConfiguredNotificationUrls $configuredNotificationUrls,
     ) {
     }
 
@@ -23,10 +23,10 @@ final readonly class SendNotificationCommandHandler implements CommandHandler
     {
         assert($command instanceof SendNotification);
 
-        /** @var ShoutrrrUrl $configuredNotificationService */
-        foreach ($this->configuredNotificationServices as $configuredNotificationService) {
-            $this->shoutrrr->send(
-                shoutrrrUrl: $configuredNotificationService->withParams([
+        /** @var ShoutrrrUrl $configuredNotificationUrl */
+        foreach ($this->configuredNotificationUrls as $configuredNotificationUrl) {
+            if (!$configuredNotificationUrl->isTelegramUrl()) {
+                $configuredNotificationUrl = $configuredNotificationUrl->withParams([
                     'click' => (string) $command->getActionUrl(),
                     'icon' => 'https://raw.githubusercontent.com/dreeveapp/dreeve/master/public/assets/images/manifest/icon-192.png',
                     'tags' => implode(',', $command->getTags()),
@@ -38,7 +38,11 @@ final readonly class SendNotificationCommandHandler implements CommandHandler
                             'clear' => true,
                         ],
                     ]),
-                ]),
+                ]);
+            }
+
+            $this->shoutrrr->send(
+                shoutrrrUrl: $configuredNotificationUrl,
                 message: $command->getMessage(),
                 title: $command->getTitle(),
             );

@@ -2,11 +2,11 @@
 
 namespace App\Tests\Domain\Integration\Notification\Shoutrrr;
 
-use App\Domain\Integration\Notification\Shoutrrr\ConfiguredNotificationServices;
+use App\Domain\Integration\Notification\Shoutrrr\ConfiguredNotificationUrls;
 use App\Domain\Integration\Notification\Shoutrrr\ShoutrrrUrl;
 use PHPUnit\Framework\TestCase;
 
-class ConfiguredNotificationServicesTest extends TestCase
+class ConfiguredNotificationUrlsTest extends TestCase
 {
     public function testFromConfig(): void
     {
@@ -16,7 +16,7 @@ class ConfiguredNotificationServicesTest extends TestCase
                 ShoutrrrUrl::fromString('ntfy://admin:admin@ntfy.sh/topic'),
                 ShoutrrrUrl::fromString('discord://token@webhookid?thread_id=123456789'),
             ],
-            iterator_to_array(ConfiguredNotificationServices::fromConfig(
+            iterator_to_array(ConfiguredNotificationUrls::fromConfig(
                 config: [
                     'ntfy://admin:admin@ntfy.sh/topic',
                     'discord://token@webhookid?thread_id=123456789',
@@ -32,7 +32,7 @@ class ConfiguredNotificationServicesTest extends TestCase
     {
         $this->expectExceptionObject(new \RuntimeException('Notification service name must be a string'));
 
-        ConfiguredNotificationServices::fromConfig(
+        ConfiguredNotificationUrls::fromConfig(
             config: [
                 [],
             ],
