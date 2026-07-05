@@ -129,7 +129,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
 
         $labels = array_map(static fn ($widget): string => $widget->getLabel(), $availableWidgets);
         $sorted = $labels;
-        uasort($sorted, 'strcasecmp');
+        uasort($sorted, strcasecmp(...));
         $this->assertSame(array_values($sorted), array_values($labels));
     }
 

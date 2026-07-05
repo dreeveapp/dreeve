@@ -53,7 +53,7 @@ final readonly class DispatchCommandRequestHandler
             return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        $suppressesFlash = [] !== (new \ReflectionClass($command))->getAttributes(SuppressesFlashMessage::class);
+        $suppressesFlash = [] !== new \ReflectionClass($command)->getAttributes(SuppressesFlashMessage::class);
 
         $session = $request->getSession();
         if (!$suppressesFlash && $session instanceof FlashBagAwareSessionInterface) {
