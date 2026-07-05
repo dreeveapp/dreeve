@@ -170,7 +170,7 @@ services:
     App\Domain\Integration\AI\AIProviderFactory:
         arguments: ['@=app_config("integrations.ai", [])']
 
-    App\Domain\Integration\Notification\Shoutrrr\ConfiguredNotificationServices:
+    App\Domain\Integration\Notification\Shoutrrr\ConfiguredNotificationUrls:
       factory: [ null, 'fromConfig' ]
       arguments: [
         '@=app_config("integrations.notifications.services", [])',

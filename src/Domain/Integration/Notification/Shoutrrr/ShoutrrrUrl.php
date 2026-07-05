@@ -19,6 +19,11 @@ final readonly class ShoutrrrUrl extends NonEmptyStringLiteral
         return self::fromString(sprintf('%s?%s', $this, http_build_query($params)));
     }
 
+    public function isTelegramUrl(): bool
+    {
+        return str_starts_with((string) $this, 'telegram://');
+    }
+
     public static function fromDeprecatedNtfyConfig(
         string $ntfyUrl,
         ?string $ntfyUsername,

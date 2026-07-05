@@ -2,7 +2,7 @@
 
 namespace App\Domain\Integration\Notification\Shoutrrr;
 
-final readonly class ConfiguredNotificationServices implements \IteratorAggregate
+final readonly class ConfiguredNotificationUrls implements \IteratorAggregate
 {
     public function __construct(
         /** @var ShoutrrrUrl[] */
@@ -19,10 +19,10 @@ final readonly class ConfiguredNotificationServices implements \IteratorAggregat
         ?string $ntfyUsername,
         ?string $ntfyPassword): self
     {
-        $configuredNotificationServices = [];
+        $configuredNotificationUrls = [];
         if (!in_array($ntfyUrl, [null, '', '0'], true)) {
             // Make sure feature is BC with old ntfy config.
-            $configuredNotificationServices[] = ShoutrrrUrl::fromDeprecatedNtfyConfig(
+            $configuredNotificationUrls[] = ShoutrrrUrl::fromDeprecatedNtfyConfig(
                 ntfyUrl: $ntfyUrl,
                 ntfyUsername: $ntfyUsername,
                 ntfyPassword: $ntfyPassword
@@ -33,10 +33,10 @@ final readonly class ConfiguredNotificationServices implements \IteratorAggregat
             if (!is_string($notificationService)) {
                 throw new \RuntimeException('Notification service name must be a string');
             }
-            $configuredNotificationServices[] = ShoutrrrUrl::fromString($notificationService);
+            $configuredNotificationUrls[] = ShoutrrrUrl::fromString($notificationService);
         }
 
-        return new self($configuredNotificationServices);
+        return new self($configuredNotificationUrls);
     }
 
     public function getIterator(): \Traversable
