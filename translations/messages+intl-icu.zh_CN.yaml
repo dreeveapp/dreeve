@@ -104,7 +104,6 @@ Crossfit: 交叉健身
 'Current Status': 'Current Status'
 'Current streaks': 'Current streaks'
 Cycling: 骑行
-'DDistance (single activity)': 'DDistance (single activity)'
 'Daily TRIMP': 每日TRIMP
 'Daily activities': 每日活动
 Dance: Dance
@@ -130,6 +129,7 @@ Device: 设备
 Dist.: Dist.
 Distance: 距离
 'Distance & Elevation': 'Distance & Elevation'
+'Distance (single activity)': 'Distance (single activity)'
 'Distance breakdown': 距离分解
 'Distance distribution': 'Distance distribution'
 'Distance in {unit}': '以{unit}为单位的距离'

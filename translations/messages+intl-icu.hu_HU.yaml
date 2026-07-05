@@ -104,7 +104,6 @@ Crossfit: Crossfit
 'Current Status': 'Jelenlegi állapot'
 'Current streaks': 'Aktuális sorozatok'
 Cycling: Kerékpározás
-'DDistance (single activity)': 'DDistance (single activity)'
 'Daily TRIMP': 'Napi TRIMP'
 'Daily activities': 'Napi tevékenységek'
 Dance: Tánc
@@ -130,6 +129,7 @@ Device: Eszköz
 Dist.: Dist.
 Distance: Távolság
 'Distance & Elevation': 'Távolság & szintemelkedés'
+'Distance (single activity)': 'Distance (single activity)'
 'Distance breakdown': 'Távolság részletezés'
 'Distance distribution': 'Distance distribution'
 'Distance in {unit}': 'Távolság ({unit})'

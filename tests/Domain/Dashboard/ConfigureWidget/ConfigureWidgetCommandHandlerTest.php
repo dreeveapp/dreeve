@@ -127,6 +127,20 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
         ]));
     }
 
+    public function testItThrowsWhenWidgetDoesNotExist(): void
+    {
+        $this->seedLayout([
+            ['id' => 'dashboardWidget-streaks', 'widget' => 'streaks', 'width' => 33, 'config' => ['subtitle' => null, 'sportTypesToInclude' => []]],
+        ]);
+
+        $this->expectExceptionObject(new \RuntimeException('Dashboard widget "dashboardWidget-doesNotExist" does not exist.'));
+
+        $this->commandBus->dispatch(ConfigureWidget::fromPayload([
+            'dashboardWidgetId' => 'dashboardWidget-doesNotExist',
+            'config' => ['subtitle' => 'Keep it up'],
+        ]));
+    }
+
     private function seedLayout(array $layout): void
     {
         $this->keyValueStore->save(KeyValue::fromState(

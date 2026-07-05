@@ -104,7 +104,6 @@ Crossfit: Crossfit
 'Current Status': 'Current Status'
 'Current streaks': 'Current streaks'
 Cycling: Cykling
-'DDistance (single activity)': 'DDistance (single activity)'
 'Daily TRIMP': 'Daglig TRIMP'
 'Daily activities': 'Dagliga aktiviteter'
 Dance: Dance
@@ -130,6 +129,7 @@ Device: Enhet
 Dist.: Dist.
 Distance: Distans
 'Distance & Elevation': 'Distance & Elevation'
+'Distance (single activity)': 'Distance (single activity)'
 'Distance breakdown': 'Sammanställning av sträckor'
 'Distance distribution': 'Distance distribution'
 'Distance in {unit}': 'Distans i {unit}'

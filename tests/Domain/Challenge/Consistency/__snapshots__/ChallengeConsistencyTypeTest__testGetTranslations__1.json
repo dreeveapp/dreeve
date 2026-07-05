@@ -1,0 +1,9 @@
+{
+    "distance": "Distance",
+    "distanceInOneActivity": "Distance (single activity)",
+    "elevation": "Elevation",
+    "elevationInOneActivity": "Elevation (single activity)",
+    "movingTime": "Moving time",
+    "numberOfActivities": "Number of activities",
+    "calories": "Calories"
+}

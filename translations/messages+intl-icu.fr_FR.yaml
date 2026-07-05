@@ -104,7 +104,6 @@ Crossfit: Crossfit
 'Current Status': 'Status actuel'
 'Current streaks': 'Séries actuelles'
 Cycling: Cyclisme
-'DDistance (single activity)': 'DDistance (single activity)'
 'Daily TRIMP': 'TRIMP quotidien'
 'Daily activities': 'Activités quotidiennes'
 Dance: Dance
@@ -130,6 +129,7 @@ Device: Appareil
 Dist.: Dist.
 Distance: Distance
 'Distance & Elevation': 'Distance & Elevation'
+'Distance (single activity)': 'Distance (single activity)'
 'Distance breakdown': 'Répartition des distances'
 'Distance distribution': 'Distance distribution'
 'Distance in {unit}': 'Distance en {unit}'

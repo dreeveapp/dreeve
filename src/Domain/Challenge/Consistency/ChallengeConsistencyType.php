@@ -21,7 +21,7 @@ enum ChallengeConsistencyType: string implements TranslatableInterface
     {
         return match ($this) {
             self::DISTANCE => $translator->trans('Distance', locale: $locale),
-            self::DISTANCE_IN_ONE_ACTIVITY => $translator->trans('DDistance (single activity)', locale: $locale),
+            self::DISTANCE_IN_ONE_ACTIVITY => $translator->trans('Distance (single activity)', locale: $locale),
             self::ELEVATION => $translator->trans('Elevation', locale: $locale),
             self::ELEVATION_IN_ONE_ACTIVITY => $translator->trans('Elevation (single activity)', locale: $locale),
             self::MOVING_TIME => $translator->trans('Moving time', locale: $locale),
