@@ -21,6 +21,12 @@ class AthleteProfileWidgetTest extends ContainerTestCase
         );
     }
 
+    public function testGuardValidConfigurationItShouldNotThrow(): void
+    {
+        $this->expectNotToPerformAssertions();
+        $this->widget->guardValidConfiguration(WidgetConfiguration::empty());
+    }
+
     #[\Override]
     protected function setUp(): void
     {

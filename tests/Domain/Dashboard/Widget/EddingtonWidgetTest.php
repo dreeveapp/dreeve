@@ -2,16 +2,16 @@
 
 namespace App\Tests\Domain\Dashboard\Widget;
 
+use App\Domain\Dashboard\Widget\EddingtonWidget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
-use App\Domain\Dashboard\Widget\ZwiftStatsWidget;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 
-class ZwiftStatsWidgetTest extends ContainerTestCase
+class EddingtonWidgetTest extends ContainerTestCase
 {
-    private ZwiftStatsWidget $widget;
+    private EddingtonWidget $widget;
 
-    public function testItShouldRenderNull(): void
+    public function testRenderWhenNoEddingtons(): void
     {
         $this->assertNull($this->widget->render(
             now: SerializableDateTime::fromString('2025-12-02'),
@@ -30,6 +30,6 @@ class ZwiftStatsWidgetTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->widget = $this->getContainer()->get(ZwiftStatsWidget::class);
+        $this->widget = $this->getContainer()->get(EddingtonWidget::class);
     }
 }
