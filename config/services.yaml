@@ -124,7 +124,7 @@ services:
 
     App\Application\AppUrl:
         factory: [ null, 'fromString' ]
-        arguments: ['@=app_config("general.appUrl")']
+        arguments: ['%env(string:APP_URL)%']
 
     App\Application\ProfilePictureUrl:
       factory: [ null, 'fromOptionalString' ]
