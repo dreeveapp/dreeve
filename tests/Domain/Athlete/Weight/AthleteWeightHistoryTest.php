@@ -4,6 +4,7 @@ namespace App\Tests\Domain\Athlete\Weight;
 
 use App\Domain\Athlete\Weight\AthleteWeight;
 use App\Domain\Athlete\Weight\AthleteWeightHistory;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\Measurement\Mass\Kilogram;
 use App\Infrastructure\ValueObject\Measurement\Mass\Pound;
 use App\Infrastructure\ValueObject\Measurement\UnitSystem;
@@ -60,6 +61,17 @@ class AthleteWeightHistoryTest extends TestCase
             ),
             $weightHistory->find(SerializableDateTime::fromString('2025-01-01'))
         );
+    }
+
+    public function testFindShouldThrowWhenNoWeightIsRecordedBeforeTheGivenDate(): void
+    {
+        $weightHistory = AthleteWeightHistory::fromArray([
+            ['on' => '2024-01-01', 'weight' => 220],
+            ['on' => '2024-02-02', 'weight' => 221],
+        ], UnitSystem::METRIC);
+
+        $this->expectExceptionObject(new EntityNotFound('AthleteWeight for date "2023-01-01 00:00:00" not found'));
+        $weightHistory->find(SerializableDateTime::fromString('2023-01-01'));
     }
 
     public function testItShouldThrowOnInvalidWeight(): void
