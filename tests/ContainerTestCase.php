@@ -20,6 +20,8 @@ use Symfony\Component\Translation\LocaleSwitcher;
 
 abstract class ContainerTestCase extends KernelTestCase
 {
+    use ProvideSettings;
+
     protected static ?Connection $ourDbalConnection = null;
 
     protected function setUp(): void
@@ -62,6 +64,9 @@ abstract class ContainerTestCase extends KernelTestCase
         $localeSwitcher = $this->getContainer()->get(LocaleSwitcher::class);
         $localeSwitcher->reset();
         Carbon::setLocale($localeSwitcher->getLocale());
+
+        // Seed settings.
+        $this->provideSettings();
     }
 
     protected function tearDown(): void
