@@ -10,7 +10,7 @@ use App\Domain\Integration\AI\SupportsAITooling;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
-final readonly class Athlete implements \JsonSerializable, SupportsAITooling
+final readonly class Athlete implements SupportsAITooling
 {
     private function __construct(
         private string $athleteId,
@@ -55,7 +55,7 @@ final readonly class Athlete implements \JsonSerializable, SupportsAITooling
 
     public function getAgeInYears(SerializableDateTime $on): int
     {
-        return $this->birthDate->diff($on)->y;
+        return $this->getBirthDate()->diff($on)->y;
     }
 
     public function getRestingHeartRate(SerializableDateTime $on): int
@@ -87,14 +87,6 @@ final readonly class Athlete implements \JsonSerializable, SupportsAITooling
     public function isMale(): bool
     {
         return 'M' === strtoupper($this->gender ?? 'M');
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function jsonSerialize(): array
-    {
-        return $this->exportForAITooling();
     }
 
     /**

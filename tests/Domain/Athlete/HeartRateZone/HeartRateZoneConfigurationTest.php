@@ -155,6 +155,79 @@ class HeartRateZoneConfigurationTest extends TestCase
             ['mode' => 'relative', 'zones' => $validZones, 'advanced' => "sportTypes:\n  NotASport:\n    default: {}"],
             '"NotASport" is not a valid sport type',
         ];
+
+        yield 'negative "from"' => [
+            ['mode' => 'relative', 'zones' => [['from' => -1, 'to' => 60], ...\array_slice($validZones, 1)]],
+            'zone1 "from" value needs to a positive integer, got -1',
+        ];
+
+        yield 'invalid "to"' => [
+            ['mode' => 'relative', 'zones' => [['from' => 50, 'to' => 'lol'], ...\array_slice($validZones, 1)]],
+            'zone1 "to" value needs to a valid integer, got lol',
+        ];
+
+        yield 'relative "to" higher than 99' => [
+            ['mode' => 'relative', 'zones' => [['from' => 50, 'to' => 100], ...\array_slice($validZones, 1)]],
+            'zone1 "to" value cannot be higher than 99, got 100',
+        ];
+
+        yield '"from" greater than "to"' => [
+            ['mode' => 'relative', 'zones' => [['from' => 60, 'to' => 50], ...\array_slice($validZones, 1)]],
+            'zone1 has "from" (60) greater than "to" (50), which is invalid',
+        ];
+
+        $validZonesYaml = <<<YML
+                zone1: {from: 50, to: 60}
+                zone2: {from: 61, to: 70}
+                zone3: {from: 71, to: 80}
+                zone4: {from: 81, to: 90}
+                zone5: {from: 91, to: null}
+            YML;
+
+        yield 'advanced sportTypes not an array' => [
+            ['mode' => 'relative', 'zones' => $validZones, 'advanced' => 'sportTypes: lol'],
+            '"sportTypes" property must be an array',
+        ];
+
+        yield 'advanced sportType without default' => [
+            ['mode' => 'relative', 'zones' => $validZones, 'advanced' => "sportTypes:\n  Ride:\n    dateRanges: {}"],
+            '"default" property is required for sportType Ride',
+        ];
+
+        yield 'advanced sportType default not an array' => [
+            ['mode' => 'relative', 'zones' => $validZones, 'advanced' => "sportTypes:\n  Ride:\n    default: lol"],
+            '"default" property must be an array for sportType Ride',
+        ];
+
+        yield 'advanced sportType dateRanges not an array' => [
+            [
+                'mode' => 'relative',
+                'zones' => $validZones,
+                'advanced' => "sportTypes:\n  Ride:\n    default:\n"
+                    .implode("\n", array_map(static fn (string $line): string => '      '.$line, explode("\n", $validZonesYaml)))
+                    ."\n    dateRanges: lol",
+            ],
+            '"dateRanges" property must be an array for sportType Ride',
+        ];
+
+        yield 'advanced dateRanges invalid date' => [
+            [
+                'mode' => 'relative',
+                'zones' => $validZones,
+                'advanced' => "dateRanges:\n  \"not-a-date\":\n"
+                    .implode("\n", array_map(static fn (string $line): string => '    '.$line, explode("\n", $validZonesYaml))),
+            ],
+            'Invalid date "not-a-date" set for athlete heartRateZone',
+        ];
+
+        yield 'advanced dateRanges missing zone' => [
+            [
+                'mode' => 'relative',
+                'zones' => $validZones,
+                'advanced' => "dateRanges:\n  \"2025-01-01\":\n    zone1: {from: 50, to: 60}\n    zone2: {from: 61, to: 70}\n    zone3: {from: 71, to: 80}\n    zone4: {from: 81, to: 90}",
+            ],
+            '"zone5" property is required for each range of heart zones',
+        ];
     }
 
     public function testFromArrayThrowsOnInvalidAdvancedYaml(): void
