@@ -185,10 +185,6 @@ final class HeartRateZoneConfiguration
             throw new InvalidHeartZoneConfiguration(sprintf('"%s" is not a valid mode', $config['mode']));
         }
 
-        if (!is_array($config['default'])) {
-            throw new InvalidHeartZoneConfiguration('"default" property must be an array');
-        }
-
         if (array_key_exists('dateRanges', $config) && !is_array($config['dateRanges'])) {
             throw new InvalidHeartZoneConfiguration('"dateRanges" property must be an array');
         }
