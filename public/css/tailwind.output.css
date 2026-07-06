@@ -1999,6 +1999,9 @@
   .w-15 {
     width: calc(var(--spacing) * 15);
   }
+  .w-16 {
+    width: calc(var(--spacing) * 16);
+  }
   .w-17\.5 {
     width: calc(var(--spacing) * 17.5);
   }
@@ -5996,6 +5999,12 @@ table.data-table {
       --tw-font-weight: var(--font-weight-medium);
       font-weight: var(--font-weight-medium);
       color: var(--color-gray-700);
+    }
+    .description {
+      margin-top: calc(var(--spacing) * 0.5);
+      font-size: var(--text-xs);
+      line-height: var(--tw-leading, var(--text-xs--line-height));
+      color: var(--color-gray-500);
     }
     input:where([type="text"], [type="number"], [type="date"], [type="password"], [type="email"], [type="search"], [type="url"]):not(.unstyled), textarea:not(.unstyled), select:not(.unstyled) {
       margin-top: var(--spacing);

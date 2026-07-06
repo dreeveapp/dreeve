@@ -98,14 +98,12 @@ final class Version20260706053720 extends AbstractMigration
         }
         $athlete = $subtree['athlete'];
 
-        // weightHistory: { "2020-01-01": 68 } -> [ { "on": "2020-01-01", "weight": 68 } ]
         $weightHistory = [];
         foreach ((is_array($athlete['weightHistory'] ?? null) ? $athlete['weightHistory'] : []) as $on => $weight) {
             $weightHistory[] = ['on' => (string) $on, 'weight' => $weight];
         }
         $athlete['weightHistory'] = $weightHistory;
 
-        // ftpHistory: { cycling: {...}, running: {...} } -> { cycling: [ { "on", "ftp" } ], running: [...] }
         $ftpHistory = is_array($athlete['ftpHistory'] ?? null) ? $athlete['ftpHistory'] : [];
         if (!array_key_exists('cycling', $ftpHistory) && !array_key_exists('running', $ftpHistory)) {
             $ftpHistory = ['cycling' => $ftpHistory, 'running' => []];
@@ -119,6 +117,34 @@ final class Version20260706053720 extends AbstractMigration
             $running[] = ['on' => (string) $on, 'ftp' => $ftp];
         }
         $athlete['ftpHistory'] = ['cycling' => $cycling, 'running' => $running];
+
+        if (is_array($athlete['heartRateZones'] ?? null)) {
+            $heartRateZones = $athlete['heartRateZones'];
+            $default = is_array($heartRateZones['default'] ?? null) ? $heartRateZones['default'] : [];
+
+            $zones = [];
+            foreach (['zone1', 'zone2', 'zone3', 'zone4', 'zone5'] as $name) {
+                $zone = is_array($default[$name] ?? null) ? $default[$name] : [];
+                $zones[] = ['from' => $zone['from'] ?? null, 'to' => $zone['to'] ?? null];
+            }
+
+            $flat = [
+                'mode' => $heartRateZones['mode'] ?? 'relative',
+                'zones' => $zones,
+            ];
+
+            $advanced = [];
+            foreach (['dateRanges', 'sportTypes'] as $key) {
+                if (isset($heartRateZones[$key])) {
+                    $advanced[$key] = $heartRateZones[$key];
+                }
+            }
+            if ([] !== $advanced) {
+                $flat['advanced'] = Yaml::dump($advanced, 6, 2);
+            }
+
+            $athlete['heartRateZones'] = $flat;
+        }
 
         $subtree['athlete'] = $athlete;
 

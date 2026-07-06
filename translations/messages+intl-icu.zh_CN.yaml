@@ -36,6 +36,7 @@ Activity: 活动
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
 Admin: Admin
 'Admin panel': 'Admin panel'
+'Advanced (per-date & per-sport-type overrides)': 'Advanced (per-date & per-sport-type overrides)'
 Afternoon: 下午
 All: All
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'All associated maintenance tasks and logs will be removed. This action cannot be undone.'
@@ -249,6 +250,7 @@ History: 历史
 'How often do you train': 'How often do you train'
 'Ice Skate': 冰刀
 Id: Id
+"If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm.": "If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm."
 'Ignore retired gear': 'Ignore retired gear'
 Image: Image
 Images: Images
@@ -314,6 +316,7 @@ Metric: Metric
 'Metric display order': 'Metric display order'
 Milestones: Milestones
 'Mind & Body Sports': 心灵与身体运动
+Mode: Mode
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training'
 'Moderate monotony': 适度单调性
 Mon: 周一
@@ -364,6 +367,7 @@ Oct: 十月
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': '平均而言，每天的平均值为 {dailyAverage}，每周的平均值为 {weeklyAverage}，每月的平均值为 {monthlyAverage} 🐣。'
 'One of your gear maintenance tasks is due': 您有装备需维护
 'Optimal training range': 最佳训练范围
+'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.'
 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.'
 'Optional subtitle': 'Optional subtitle'
 'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.': 'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.'
@@ -602,6 +606,7 @@ Tennis: 网球
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.'
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.': 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.'
+'The last zone has no upper bound.': 'The last zone has no upper bound.'
 "The name is derived from the device recorded on your activities and can't be edited.": "The name is derived from the device recorded on your activities and can't be edited."
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': '徽章为动态生成，您可在任意 &lt;img&gt; 标签中使用'
 Thinking...: 思考中...
@@ -710,6 +715,7 @@ Z3: Z3
 Z4: Z4
 'Z4-5 (High)': Z4-5（高）
 Z5: Z5
+Zone: Zone
 'Zone 1 (recovery)': 区域1（恢复）
 'Zone 2 (aerobic)': 区域2（有氧）
 'Zone 3 (aerobic/anaerobic)': 区域3（有氧/无氧）

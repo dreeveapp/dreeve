@@ -8,6 +8,10 @@
             @apply block text-sm font-medium text-gray-700;
         }
 
+        .description {
+            @apply mt-0.5 text-xs text-gray-500;
+        }
+
         input:where([type="text"], [type="number"], [type="date"], [type="password"], [type="email"], [type="search"], [type="url"]):not(.unstyled),
         textarea:not(.unstyled),
         select:not(.unstyled) {

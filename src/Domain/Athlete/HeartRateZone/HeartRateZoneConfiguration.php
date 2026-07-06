@@ -6,6 +6,8 @@ namespace App\Domain\Athlete\HeartRateZone;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 
 final class HeartRateZoneConfiguration
 {
@@ -100,6 +102,14 @@ final class HeartRateZoneConfiguration
     }
 
     /**
+     * @return list<array{from: int, to: int|null}>
+     */
+    public static function getDefaultZones(): array
+    {
+        return array_values(self::getDefaultConfig()['default']);
+    }
+
+    /**
      * @return array<string, mixed>
      */
     private static function getDefaultConfig(): array
@@ -136,17 +146,39 @@ final class HeartRateZoneConfiguration
      */
     public static function fromArray(array $config): self
     {
-        if ([] === $config) {
-            // Make sure this new feature is backwards compatible.
-            // Use the old default configuration.
-            $config = self::getDefaultConfig();
+        $modeValue = $config['mode'] ?? 'relative';
+        $zones = is_array($config['zones'] ?? null) ? array_values($config['zones']) : [];
+        $advanced = $config['advanced'] ?? null;
+
+        if ([] === $zones) {
+            $default = self::getDefaultConfig()['default'];
+        } else {
+            $default = [];
+            foreach (['zone1', 'zone2', 'zone3', 'zone4', 'zone5'] as $index => $name) {
+                $zone = is_array($zones[$index] ?? null) ? $zones[$index] : [];
+                $from = $zone['from'] ?? null;
+                $to = $zone['to'] ?? null;
+                $default[$name] = [
+                    'from' => is_numeric($from) ? (int) $from : ('' === $from ? null : $from),
+                    'to' => is_numeric($to) ? (int) $to : ('' === $to ? null : $to),
+                ];
+            }
         }
 
-        foreach (['mode', 'default'] as $requiredKey) {
-            if (array_key_exists($requiredKey, $config)) {
-                continue;
+        $config = ['mode' => $modeValue, 'default' => $default];
+
+        if (is_string($advanced) && '' !== trim($advanced)) {
+            try {
+                $parsed = Yaml::parse($advanced);
+            } catch (ParseException $e) {
+                throw new InvalidHeartZoneConfiguration(sprintf('Invalid YAML in advanced heart rate zone configuration: %s', $e->getMessage()));
             }
-            throw new InvalidHeartZoneConfiguration(sprintf('"%s" property is required', $requiredKey));
+
+            foreach (['dateRanges', 'sportTypes'] as $key) {
+                if (is_array($parsed) && array_key_exists($key, $parsed)) {
+                    $config[$key] = $parsed[$key];
+                }
+            }
         }
 
         if (!$mode = HeartRateZoneMode::tryFrom($config['mode'])) {

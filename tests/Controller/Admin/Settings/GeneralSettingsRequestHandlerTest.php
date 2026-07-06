@@ -41,6 +41,19 @@ class GeneralSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('"weight"', $initial);
     }
 
+    public function testItRendersTheHeartRateZonesEditor(): void
+    {
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/settings/general');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(1, $crawler->filter('select[name="data[athlete][heartRateZones][mode]"]'));
+        // Five default zone rows, pre-filled since the baseline has no custom zones.
+        $this->assertCount(5, $crawler->filter('input[name^="data[athlete][heartRateZones][zones]"][name$="[from]"]'));
+        $this->assertCount(1, $crawler->filter('textarea[name="data[athlete][heartRateZones][advanced]"]'));
+    }
+
     public function testItRendersTheSettingsNavigationWithGeneralActive(): void
     {
         $this->client->loginUser($this->adminUser());

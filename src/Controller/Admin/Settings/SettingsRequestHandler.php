@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Settings;
 
+use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Settings\UpdateSettings\UpdateSettings;
@@ -45,6 +46,7 @@ final readonly class SettingsRequestHandler
                 'dispatchCommand' => UpdateSettings::getCommandName(),
                 'group' => $settingsGroup,
                 'settings' => $this->settingsRepository->find($settingsGroup),
+                'defaultHeartRateZones' => HeartRateZoneConfiguration::getDefaultZones(),
             ],
         ));
     }

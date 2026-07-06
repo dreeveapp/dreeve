@@ -4,7 +4,7 @@
     <div data-repeater data-repeater-min="0">
         <label class="mt-0!">{{ title }}</label>
         {% if description %}
-            <p class="mt-0.5 mb-2 text-xxs text-gray-500">{{ description }}</p>
+            <p class="description mb-2">{{ description }}</p>
         {% endif %}
         <div class="flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ rows|json_encode|e('html_attr') }}"></div>
         <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
@@ -16,11 +16,11 @@
         <template data-repeater-template>
             <div class="flex items-end gap-2" data-repeater-item>
                 <div class="flex-1">
-                    <label class="mt-0! text-xxs text-gray-500">{{ "Date"|trans }}</label>
+                    <label class="mt-0! text-xs text-gray-500">{{ "Date"|trans }}</label>
                     <input type="date" name="{{ fieldPath }}[__index__][on]" data-repeater-field="on" required>
                 </div>
                 <div class="flex-1">
-                    <label class="mt-0! text-xxs text-gray-500">{{ valueLabel }}</label>
+                    <label class="mt-0! text-xs text-gray-500">{{ valueLabel }}</label>
                     <input type="number" step="{{ valueStep }}" min="0" name="{{ fieldPath }}[__index__][{{ valueKey }}]" data-repeater-field="{{ valueKey }}" required>
                 </div>
                 <button type="button" data-repeater-remove
@@ -50,14 +50,14 @@
                 <div>
                     <label for="appSubTitle">{{ "App subtitle"|trans }}</label>
                     <input type="text" id="appSubTitle" name="data[appSubTitle]" value="{{ settings.appSubTitle ?? '' }}">
-                    <p class="mt-0.5 text-xxs text-gray-500">
+                    <p class="description">
                         {{ "Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable."|trans }}
                     </p>
                 </div>
                 <div>
                     <label for="profilePictureUrl">{{ "Profile picture URL"|trans }}</label>
                     <input type="text" id="profilePictureUrl" name="data[profilePictureUrl]" value="{{ settings.profilePictureUrl ?? '' }}">
-                    <p class="mt-0.5 text-xxs text-gray-500">
+                    <p class="description">
                         {{ "Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable."|trans }}
                     </p>
                 </div>
@@ -75,7 +75,7 @@
                     <div>
                         <label for="birthday">{{ "Birthday"|trans }}</label>
                         <input type="date" id="birthday" name="data[athlete][birthday]" value="{{ athlete.birthday ?? '' }}" required>
-                        <p class="mt-0.5 text-xxs text-gray-500">
+                        <p class="description">
                             {{ "Your birthday. Needed to calculate heart rate zones."|trans }}
                         </p>
                     </div>
@@ -86,7 +86,7 @@
                                 <option value="{{ value }}" {{ (athlete.gender ?? '') == value ? 'selected' : '' }}>{{ genderLabel }}</option>
                             {% endfor %}
                         </select>
-                        <p class="mt-0.5 text-xxs text-gray-500">
+                        <p class="description">
                             {{ "Your gender. Used to determine activity training load."|trans }}
                         </p>
                     </div>
@@ -99,7 +99,7 @@
                             <option value="{{ formula }}" {{ maxHeartRateFormula == formula ? 'selected' : '' }}>{{ formula }}</option>
                         {% endfor %}
                     </select>
-                    <p class="mt-0.5 text-xxs text-gray-500">
+                    <p class="description">
                         {{ "The formula used to calculate your max heart rate. The default is Fox (220 − age)."|trans }}
                     </p>
                 </div>
@@ -107,7 +107,7 @@
                 <div>
                     <label for="restingHeartRateFormula">{{ "Resting heart rate formula"|trans }}</label>
                     <input type="text" id="restingHeartRateFormula" name="data[athlete][restingHeartRateFormula]" value="{{ restingHeartRateFormula is iterable ? '' : (restingHeartRateFormula ?? '') }}">
-                    <p class="mt-0.5 text-xxs text-gray-500">
+                    <p class="description">
                         {{ "The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased."|trans }}
                     </p>
                 </div>
@@ -143,6 +143,50 @@
                     'ftp',
                     '1'
                 ) }}
+            </div>
+            {% set heartRateZoneModeOptions = enum('App\\Domain\\Athlete\\HeartRateZone\\HeartRateZoneMode').cases() %}
+            {% set heartRateZones = athlete.heartRateZones ?? {} %}
+            {% set heartRateZoneRows = (heartRateZones.zones is defined and heartRateZones.zones) ? heartRateZones.zones : defaultHeartRateZones %}
+            <div class="mt-6 border-t border-gray-200 pt-6">
+                <label class="mt-0!">{{ "Heart rate zones"|trans }}</label>
+                <p class="description mb-3">
+                    {{ "If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm."|trans }}
+                </p>
+                <div class="max-w-md">
+                    <label for="heartRateZoneMode" class="mt-0! text-xs text-gray-500">{{ "Mode"|trans }}</label>
+                    <select id="heartRateZoneMode" name="data[athlete][heartRateZones][mode]">
+                        {% for mode in heartRateZoneModeOptions %}
+                            <option value="{{ mode.value }}" {{ (heartRateZones.mode ?? 'relative') == mode.value ? 'selected' : '' }}>{{ mode.value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mt-3 flex flex-col gap-2 max-w-md">
+                    {% for i in 0..4 %}
+                        {% set zone = heartRateZoneRows[i] ?? {} %}
+                        <div class="flex items-end gap-2">
+                            <span class="w-16 shrink-0 text-sm text-gray-600">{{ "Zone"|trans }} {{ i + 1 }}</span>
+                            <div class="flex-1">
+                                <label class="mt-0! text-xs text-gray-500">{{ "From"|trans }}</label>
+                                <input type="number" min="0" name="data[athlete][heartRateZones][zones][{{ i }}][from]" value="{{ zone.from ?? '' }}" required>
+                            </div>
+                            <div class="flex-1">
+                                <label class="mt-0! text-xs text-gray-500">{{ "To"|trans }}</label>
+                                {% if i == 4 %}
+                                    <input type="text" value="∞" title="{{ "The last zone has no upper bound."|trans }}" disabled>
+                                {% else %}
+                                    <input type="number" min="0" name="data[athlete][heartRateZones][zones][{{ i }}][to]" value="{{ zone.to ?? '' }}" required>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <details class="mt-4">
+                    <summary class="cursor-pointer text-sm text-gray-600">{{ "Advanced (per-date & per-sport-type overrides)"|trans }}</summary>
+                    <p class="description mb-2">
+                        {{ "Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it."|trans }}
+                    </p>
+                    <textarea name="data[athlete][heartRateZones][advanced]" rows="8" class="font-mono text-xs" spellcheck="false">{{ heartRateZones.advanced ?? '' }}</textarea>
+                </details>
             </div>
             <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
                 <button type="submit" data-has-loading-state class="group btn--primary">
