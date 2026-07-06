@@ -10,7 +10,6 @@ use App\Application\AppUrl;
 use App\Application\Build\RunBuild\RunBuild;
 use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
 use App\Application\Import\FileImport\ImportActivityFiles\ImportActivityFiles;
-use App\Application\Import\FileImport\ImportAthlete\ImportAthlete;
 use App\Application\RebuildStatus;
 use App\Domain\Import\ImportMode;
 use App\Domain\Import\WatchDirectory;
@@ -115,7 +114,6 @@ final class RunFileImportAndBuildAppConsoleCommand extends Command
             }
 
             if ($shouldBuild) {
-                $this->commandBus->dispatch(new ImportAthlete());
                 $this->appStatusChecker->ensureIsReadyForBuild();
 
                 $this->commandBus->dispatch(new RunBuild(

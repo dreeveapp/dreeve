@@ -8,9 +8,10 @@ use App\Domain\Activity\ActivitySummaryRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
-use App\Domain\Athlete\Weight\AthleteWeightHistory;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Carbon\CarbonInterval;
@@ -26,8 +27,9 @@ final class StreamBasedActivityPowerRepository implements ActivityPowerRepositor
         private readonly Connection $connection,
         private readonly ActivityIdRepository $activityIdRepository,
         private readonly ActivitySummaryRepository $activitySummaryRepository,
-        private readonly AthleteWeightHistory $athleteWeightHistory,
         private readonly ActivitiesExcludedFromPeakPowerOutputs $activitiesExcludedFromPeakPowerOutputs,
+        private readonly SettingsRepository $settingsRepository,
+        private readonly UnitSystem $unitSystem,
     ) {
     }
 
@@ -43,6 +45,8 @@ final class StreamBasedActivityPowerRepository implements ActivityPowerRepositor
         if ([] !== StreamBasedActivityPowerRepository::$cachedPowerOutputs) {
             return;
         }
+
+        $athleteWeightHistory = $this->settingsRepository->general()->getAthleteWeightHistory($this->unitSystem);
 
         $activityIds = $this->activityIdRepository->findAll();
         foreach ($activityIds as $activityId) {
@@ -71,9 +75,9 @@ final class StreamBasedActivityPowerRepository implements ActivityPowerRepositor
                 $bestAverageForTimeInterval = $bestAverages[$timeIntervalInSeconds];
 
                 try {
-                    $athleteWeight = $this->athleteWeightHistory->find($activitySummary->getStartDate())->getWeightInKg();
+                    $athleteWeight = $athleteWeightHistory->find($activitySummary->getStartDate())->getWeightInKg();
                 } catch (EntityNotFound) {
-                    throw new EntityNotFound(sprintf('Trying to calculate the relative power for activity "%s" on %s, but no corresponding athleteWeight was found. 
+                    throw new EntityNotFound(sprintf('Trying to calculate the relative power for activity "%s" on %s, but no corresponding athleteWeight was found.
                     Make sure you configure the proper weights in your config.yaml file. Do not forgot to restart your container after changing the weights', $activitySummary->getName(), $activitySummary->getStartDate()->format('Y-m-d')));
                 }
 
@@ -138,6 +142,8 @@ final class StreamBasedActivityPowerRepository implements ActivityPowerRepositor
 
         $results = $this->connection->executeQuery($sql, $params, $types)->fetchAllAssociative();
 
+        $athleteWeightHistory = $this->settingsRepository->general()->getAthleteWeightHistory($this->unitSystem);
+
         /** @var array<int, array{activityId: string, power: int}> $bestPerInterval */
         $bestPerInterval = [];
         foreach ($results as $result) {
@@ -162,7 +168,7 @@ final class StreamBasedActivityPowerRepository implements ActivityPowerRepositor
             $interval = CarbonInterval::seconds($timeIntervalInSeconds);
 
             try {
-                $athleteWeight = $this->athleteWeightHistory->find($activitySummary->getStartDate())->getWeightInKg();
+                $athleteWeight = $athleteWeightHistory->find($activitySummary->getStartDate())->getWeightInKg();
             } catch (EntityNotFound) {
                 throw new EntityNotFound(sprintf('Trying to calculate the relative power for activity "%s" on %s, but no corresponding athleteWeight was found. 
                     Make sure you configure the proper weights in your config.yaml file. Do not forgot to restart your container after changing the weights', $activitySummary->getName(), $activitySummary->getStartDate()->format('Y-m-d')));

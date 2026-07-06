@@ -1,9 +1,5 @@
 [
     {
-        "commandName": "App\\Application\\Import\\FileImport\\ImportAthlete\\ImportAthlete",
-        "payload": []
-    },
-    {
         "commandName": "App\\Application\\Build\\RunBuild\\RunBuild",
         "payload": {
             "output": {}

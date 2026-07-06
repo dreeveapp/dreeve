@@ -10,8 +10,8 @@ use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\BestEffort\BestEffortPeriod;
 use App\Domain\Activity\BestEffort\BestEffortsCalculator;
 use App\Domain\Activity\EnrichedActivities;
-use App\Domain\Athlete\AthleteRepository;
 use App\Domain\Challenge\ChallengeRepository;
+use App\Domain\Settings\SettingsRepository;
 use App\Domain\Zwift\ZwiftLevel;
 use App\Domain\Zwift\ZwiftRacingScore;
 use App\Infrastructure\CQRS\Command\Command;
@@ -23,7 +23,7 @@ use Twig\Environment;
 final readonly class BuildBadgeSvgCommandHandler implements CommandHandler
 {
     public function __construct(
-        private AthleteRepository $athleteRepository,
+        private SettingsRepository $settingsRepository,
         private ChallengeRepository $challengeRepository,
         private EnrichedActivities $enrichedActivities,
         private BestEffortsCalculator $bestEffortsCalculator,
@@ -42,7 +42,7 @@ final readonly class BuildBadgeSvgCommandHandler implements CommandHandler
         assert($command instanceof BuildBadgeSvg);
 
         $now = $command->getCurrentDateTime();
-        $athlete = $this->athleteRepository->find();
+        $athlete = $this->settingsRepository->general()->getAthlete();
         $activities = $this->enrichedActivities->findAll();
 
         $activityTotals = ActivityTotals::getInstance(

@@ -2,9 +2,7 @@
 
 namespace App\Domain\Activity;
 
-use App\Domain\Athlete\AthleteRepository;
-use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
-use App\Domain\Ftp\FtpHistory;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -17,9 +15,7 @@ final class DailyTrainingLoad
     public function __construct(
         private readonly EnrichedActivities $enrichedActivities,
         private readonly ActivityIntensity $activityIntensity,
-        private readonly FtpHistory $ftpHistory,
-        private readonly AthleteRepository $athleteRepository,
-        private readonly HeartRateZoneConfiguration $heartRateZoneConfiguration,
+        private readonly SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -36,6 +32,8 @@ final class DailyTrainingLoad
         );
         $load = 0;
 
+        $general = $this->settingsRepository->general();
+
         /** @var Activity $activity */
         foreach ($activities as $activity) {
             $movingTimeInSeconds = $activity->getMovingTimeInSeconds();
@@ -43,7 +41,7 @@ final class DailyTrainingLoad
                 try {
                     $intensity = $this->activityIntensity->calculatePowerBased($activity->getId());
                     $intensity /= 100;
-                    $ftp = $this->ftpHistory->find(ActivityType::RIDE, $activity->getStartDate())->getFtp();
+                    $ftp = $general->getFtpHistory()->find(ActivityType::RIDE, $activity->getStartDate())->getFtp();
                     $load += ($movingTimeInSeconds * $normalizedPower * $intensity) / ($ftp->getValue() * 3600) * 100;
 
                     continue;
@@ -54,14 +52,14 @@ final class DailyTrainingLoad
             try {
                 $intensity = $this->activityIntensity->calculateHeartRateBased($activity->getId());
                 $intensity /= 100;
-                $athlete = $this->athleteRepository->find();
+                $athlete = $general->getAthlete();
                 $bannisterKFactor = $athlete->isMale() ? 1.92 : 1.67;
                 $trimp = Seconds::from($movingTimeInSeconds)->toMinute()->toFloat() * $intensity * exp($bannisterKFactor * $intensity);
 
                 // Normalize TRIMP to hrTSS so it's on the same scale as power-based TSS.
                 $athleteMaxHeartRate = $athlete->getMaxHeartRate($activity->getStartDate());
                 $restingHeartRateFormula = $athlete->getRestingHeartRate($activity->getStartDate());
-                $lthrBpm = $this->heartRateZoneConfiguration->getHeartRateZonesFor(
+                $lthrBpm = $general->getHeartRateZoneConfiguration()->getHeartRateZonesFor(
                     sportType: $activity->getSportType(),
                     on: $activity->getStartDate()
                 )->getZoneFive()->getRangeInBpm($athleteMaxHeartRate)[0];

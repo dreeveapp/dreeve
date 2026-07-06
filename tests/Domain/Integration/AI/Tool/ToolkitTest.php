@@ -13,8 +13,6 @@ use App\Domain\Activity\Stream\Metric\ActivityStreamMetric;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Activity\Stream\StreamType;
-use App\Domain\Athlete\Athlete;
-use App\Domain\Athlete\AthleteRepository;
 use App\Domain\Challenge\ChallengeId;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Gear\GearId;
@@ -289,12 +287,5 @@ class ToolkitTest extends ContainerTestCase
                 ->withLocalLogoUrl('files/challenges/b7537b1e-69f7-11ee-a81e-0242a0cd5a47.png')
                 ->build()
         );
-
-        $this->getContainer()->get(AthleteRepository::class)->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'Robin',
-            'lastname' => 'Ingelbrecht',
-        ]));
     }
 }

@@ -2,11 +2,10 @@
 
 namespace App\Tests\Domain\Integration\AI\Chat;
 
-use App\Domain\Athlete\Athlete;
-use App\Domain\Athlete\AthleteRepository;
 use App\Domain\Integration\AI\Chat\ChatMessageId;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Integration\AI\Chat\DbalChatRepository;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
@@ -23,18 +22,12 @@ class DbalChatRepositoryTest extends ContainerTestCase
 
     public function testAddAndGetHistory(): void
     {
-        $this->getContainer()->get(AthleteRepository::class)->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'robin',
-        ]));
-
         $this->chatRepository->add(
             ChatMessageBuilder::fromDefaults()
                 ->withMessageId(ChatMessageId::fromUnprefixed('test'))
                 ->withMessage('User Message')
                 ->withMessageRole(MessageRole::USER)
-                ->withFirstLetterOfFirstName('r')
+                ->withFirstLetterOfFirstName('R')
                 ->build()
         );
 
@@ -43,7 +36,7 @@ class DbalChatRepositoryTest extends ContainerTestCase
                 ->withMessageId(ChatMessageId::fromUnprefixed('test-2'))
                 ->withMessage('Assistant Message')
                 ->withMessageRole(MessageRole::ASSISTANT)
-                ->withFirstLetterOfFirstName('r')
+                ->withFirstLetterOfFirstName('R')
                 ->build()
         );
 
@@ -53,13 +46,13 @@ class DbalChatRepositoryTest extends ContainerTestCase
                     ->withMessageId(ChatMessageId::fromUnprefixed('test'))
                     ->withMessage('User Message')
                     ->withMessageRole(MessageRole::USER)
-                    ->withFirstLetterOfFirstName('r')
+                    ->withFirstLetterOfFirstName('R')
                     ->build(),
                 ChatMessageBuilder::fromDefaults()
                     ->withMessageId(ChatMessageId::fromUnprefixed('test-2'))
                     ->withMessage('Assistant Message')
                     ->withMessageRole(MessageRole::ASSISTANT)
-                    ->withFirstLetterOfFirstName('r')
+                    ->withFirstLetterOfFirstName('R')
                     ->build(),
             ],
             $this->chatRepository->findAll()
@@ -71,12 +64,6 @@ class DbalChatRepositoryTest extends ContainerTestCase
 
     public function testCreate(): void
     {
-        $this->getContainer()->get(AthleteRepository::class)->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'robin',
-        ]));
-
         $message = $this->chatRepository->buildMessage('The message', MessageRole::USER);
         $this->assertEquals(
             'The message',
@@ -95,9 +82,8 @@ class DbalChatRepositoryTest extends ContainerTestCase
 
         $this->chatRepository = new DbalChatRepository(
             $this->getConnection(),
-            null,
-            $this->getContainer()->get(AthleteRepository::class),
             PausedClock::on(SerializableDateTime::fromString('2019-08-14')),
+            $this->getContainer()->get(SettingsRepository::class),
         );
     }
 }

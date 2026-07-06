@@ -4,14 +4,13 @@ namespace App\Tests\Controller;
 
 use App\Application\AppUrl;
 use App\Controller\AIChatRequestHandler;
-use App\Domain\Athlete\Athlete;
-use App\Domain\Athlete\AthleteRepository;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Domain\Integration\AI\Chat\ChatCommands;
 use App\Domain\Integration\AI\Chat\ChatMessage;
 use App\Domain\Integration\AI\Chat\ChatMessageId;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Integration\AI\Chat\DbalChatRepository;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Config\AppConfig;
 use App\Infrastructure\Config\PlatformEnvironment;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
@@ -124,17 +123,10 @@ class AIChatRequestHandlerTest extends ContainerTestCase
     #[AllowMockObjectsWithoutExpectations]
     public function testChatSse(): void
     {
-        $this->getContainer()->get(AthleteRepository::class)->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'robin',
-        ]));
-
         $chatRepository = new DbalChatRepository(
             connection: $this->getConnection(),
-            profilePictureUrl: null,
-            athleteRepository: $this->getContainer()->get(AthleteRepository::class),
             clock: PausedClock::on(SerializableDateTime::fromString('2025-05-05')),
+            settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );
 
         $agent = Agent::make()->setAiProvider(
@@ -166,17 +158,10 @@ class AIChatRequestHandlerTest extends ContainerTestCase
     #[AllowMockObjectsWithoutExpectations]
     public function testChatSseOnError(): void
     {
-        $this->getContainer()->get(AthleteRepository::class)->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'robin',
-        ]));
-
         $chatRepository = new DbalChatRepository(
             connection: $this->getConnection(),
-            profilePictureUrl: null,
-            athleteRepository: $this->getContainer()->get(AthleteRepository::class),
             clock: PausedClock::on(SerializableDateTime::fromString('2025-05-05')),
+            settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );
 
         $agent = Agent::make()->setAiProvider(

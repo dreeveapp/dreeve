@@ -3,6 +3,8 @@
 namespace App\Tests\Domain\Athlete;
 
 use App\Domain\Athlete\Athlete;
+use App\Domain\Athlete\MaxHeartRate\Fox;
+use App\Domain\Athlete\RestingHeartRate\HeuristicAgeBased;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -16,39 +18,19 @@ class AthleteTest extends TestCase
         int $expectedAge): void
     {
         $athlete = Athlete::create(
-            data: [
-                'birthDate' => $athleteBirthday->format('Y-m-d'),
-            ],
+            athleteId: 'athlete-1',
+            birthDate: $athleteBirthday,
+            firstName: 'Robin',
+            lastName: 'Ingelbrecht',
+            gender: 'M',
+            maxHeartRateFormula: new Fox(),
+            restingHeartRateFormula: new HeuristicAgeBased(),
         );
 
         $this->assertEquals(
             $expectedAge,
             $athlete->getAgeInYears($on)
         );
-    }
-
-    public function testGetMaxHeartRateItShouldThrowWhenStrategyNotSet(): void
-    {
-        $this->expectExceptionObject(new \RuntimeException('Max heart rate formula not set'));
-
-        $athlete = Athlete::create(
-            data: [
-                'birthDate' => '2024-01-01',
-            ],
-        );
-        $athlete->getMaxHeartRate(SerializableDateTime::fromString('2024-01-01'));
-    }
-
-    public function testGetRestingHeartRateItShouldThrowWhenStrategyNotSet(): void
-    {
-        $this->expectExceptionObject(new \RuntimeException('Resting heart rate formula not set'));
-
-        $athlete = Athlete::create(
-            data: [
-                'birthDate' => '2024-01-01',
-            ],
-        );
-        $athlete->getRestingHeartRate(SerializableDateTime::fromString('2024-01-01'));
     }
 
     public static function provideDataAthleteAgeData(): array

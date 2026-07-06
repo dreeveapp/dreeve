@@ -10,8 +10,6 @@ use App\Application\Import\StravaImport\ImportGear\GearImportStatus;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Athlete\Athlete;
-use App\Domain\Athlete\AthleteRepository;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
@@ -89,13 +87,6 @@ class RunBuildCommandHandlerTest extends ContainerTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->getContainer()->get(AthleteRepository::class)->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'Robin',
-            'lastname' => 'Ingelbrecht',
-        ]));
 
         $this->buildAppCommandHandler = new RunBuildCommandHandler(
             commandBus: $this->commandBus = new SpyCommandBus(),

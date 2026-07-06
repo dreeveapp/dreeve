@@ -10,63 +10,56 @@ use App\Domain\Integration\AI\SupportsAITooling;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
-final class Athlete implements \JsonSerializable, SupportsAITooling
+final readonly class Athlete implements \JsonSerializable, SupportsAITooling
 {
-    private ?MaxHeartRateFormula $maxHeartRateFormula = null;
-    private ?RestingHeartRateFormula $restingHeartRateFormula = null;
-
     private function __construct(
-        /** @var array<string, mixed> */
-        private readonly array $data,
+        private string $athleteId,
+        private SerializableDateTime $birthDate,
+        private ?string $firstName,
+        private ?string $lastName,
+        private ?string $gender,
+        private MaxHeartRateFormula $maxHeartRateFormula,
+        private RestingHeartRateFormula $restingHeartRateFormula,
     ) {
     }
 
-    /**
-     * @param array<string, mixed> $data
-     */
     public static function create(
-        array $data,
+        string $athleteId,
+        SerializableDateTime $birthDate,
+        ?string $firstName,
+        ?string $lastName,
+        ?string $gender,
+        MaxHeartRateFormula $maxHeartRateFormula,
+        RestingHeartRateFormula $restingHeartRateFormula,
     ): self {
         return new self(
-            data: $data,
+            athleteId: $athleteId,
+            birthDate: $birthDate,
+            firstName: $firstName,
+            lastName: $lastName,
+            gender: $gender,
+            maxHeartRateFormula: $maxHeartRateFormula,
+            restingHeartRateFormula: $restingHeartRateFormula,
         );
-    }
-
-    public function setMaxHeartRateFormula(MaxHeartRateFormula $maxHeartRateFormula): self
-    {
-        $this->maxHeartRateFormula = $maxHeartRateFormula;
-
-        return $this;
-    }
-
-    public function setRestingHeartRateFormula(RestingHeartRateFormula $restingHeartRateFormula): self
-    {
-        $this->restingHeartRateFormula = $restingHeartRateFormula;
-
-        return $this;
     }
 
     public function getAthleteId(): string
     {
-        return (string) $this->data['id'];
+        return $this->athleteId;
     }
 
     public function getBirthDate(): SerializableDateTime
     {
-        return SerializableDateTime::fromString($this->data['birthDate']);
+        return $this->birthDate;
     }
 
     public function getAgeInYears(SerializableDateTime $on): int
     {
-        return $this->getBirthDate()->diff($on)->y;
+        return $this->birthDate->diff($on)->y;
     }
 
     public function getRestingHeartRate(SerializableDateTime $on): int
     {
-        if (is_null($this->restingHeartRateFormula)) {
-            throw new \RuntimeException('Resting heart rate formula not set');
-        }
-
         return $this->restingHeartRateFormula->calculate(
             age: $this->getAgeInYears($on),
             on: $on
@@ -75,10 +68,6 @@ final class Athlete implements \JsonSerializable, SupportsAITooling
 
     public function getMaxHeartRate(SerializableDateTime $on): int
     {
-        if (is_null($this->maxHeartRateFormula)) {
-            throw new \RuntimeException('Max heart rate formula not set');
-        }
-
         return $this->maxHeartRateFormula->calculate(
             age: $this->getAgeInYears($on),
             on: $on
@@ -87,17 +76,17 @@ final class Athlete implements \JsonSerializable, SupportsAITooling
 
     public function getName(): Name
     {
-        return Name::fromString(sprintf('%s %s', $this->data['firstname'] ?? 'John', $this->data['lastname'] ?? 'Doe'));
+        return Name::fromString(sprintf('%s %s', $this->firstName ?? 'John', $this->lastName ?? 'Doe'));
     }
 
     public function getFirstLetterOfFirstName(): string
     {
-        return substr((string) ($this->data['firstname'] ?? 'J'), 0, 1);
+        return substr($this->firstName ?? 'J', 0, 1);
     }
 
     public function isMale(): bool
     {
-        return 'M' === strtoupper($this->data['sex'] ?? 'M');
+        return 'M' === strtoupper($this->gender ?? 'M');
     }
 
     /**
@@ -113,6 +102,12 @@ final class Athlete implements \JsonSerializable, SupportsAITooling
      */
     public function exportForAITooling(): array
     {
-        return $this->data;
+        return [
+            'id' => $this->athleteId,
+            'firstname' => $this->firstName,
+            'lastname' => $this->lastName,
+            'sex' => $this->gender,
+            'birthDate' => $this->birthDate->format('Y-m-d'),
+        ];
     }
 }

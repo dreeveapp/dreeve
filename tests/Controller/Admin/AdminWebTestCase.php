@@ -3,12 +3,15 @@
 namespace App\Tests\Controller\Admin;
 
 use App\Domain\Import\ImportMode;
+use App\Tests\ProvideSettings;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Security\Core\User\InMemoryUser;
 
 abstract class AdminWebTestCase extends WebTestCase
 {
+    use ProvideSettings;
+
     protected const string ADMIN_USERNAME = 'admin';
     protected const string ADMIN_PASSWORD = 'admin-password';
 
@@ -32,6 +35,9 @@ abstract class AdminWebTestCase extends WebTestCase
         );
 
         $this->client = static::createClient();
+
+        // Seed the DB-backed settings baseline the whole suite relies on.
+        $this->provideSettings();
     }
 
     #[\Override]

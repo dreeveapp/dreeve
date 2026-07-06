@@ -8,10 +8,9 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivitySummaryRepository;
 use App\Domain\Activity\ActivityType;
-use App\Domain\Athlete\AthleteRepository;
 use App\Domain\Athlete\HeartRateZone\HeartRateZone;
-use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
 use App\Domain\Athlete\HeartRateZone\TimeInHeartRateZones;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Time\Clock\Clock;
 
@@ -32,9 +31,8 @@ final class StreamBasedActivityHeartRateRepository implements ActivityHeartRateR
         private readonly ActivitySummaryRepository $activitySummaryRepository,
         private readonly ActivityIdRepository $activityIdRepository,
         private readonly ActivityStreamRepository $activityStreamRepository,
-        private readonly AthleteRepository $athleteRepository,
-        private readonly HeartRateZoneConfiguration $heartRateZoneConfiguration,
         private readonly Clock $clock,
+        private readonly SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -102,8 +100,10 @@ final class StreamBasedActivityHeartRateRepository implements ActivityHeartRateR
 
         $interval = \DateInterval::createFromDateString(self::CALCULATE_HEART_RATE_ZONES_FOR_LAST_X_DAYS.' days');
         $cutOffDate = $this->clock->getCurrentDateTimeImmutable()->sub($interval);
-        $athlete = $this->athleteRepository->find();
+        $general = $this->settingsRepository->general();
+        $athlete = $general->getAthlete();
         $activityIds = $this->activityIdRepository->findAll();
+        $heartRateZoneConfiguration = $general->getHeartRateZoneConfiguration();
 
         StreamBasedActivityHeartRateRepository::$cachedHeartRateZones = [
             HeartRateZone::ONE => 0,
@@ -136,7 +136,7 @@ final class StreamBasedActivityHeartRateRepository implements ActivityHeartRateR
 
             $activityStartDate = $activitySummary->getStartDate();
             $athleteMaxHeartRate = $athlete->getMaxHeartRate($activityStartDate);
-            $athleteHeartRateZones = $this->heartRateZoneConfiguration->getHeartRateZonesFor(
+            $athleteHeartRateZones = $heartRateZoneConfiguration->getHeartRateZonesFor(
                 sportType: $activitySummary->getSportType(),
                 on: $activityStartDate
             );

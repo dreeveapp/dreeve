@@ -9,10 +9,9 @@ use App\Console\Daemon\RunFileImportAndBuildAppConsoleCommand;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Athlete\Athlete;
-use App\Domain\Athlete\AthleteRepository;
 use App\Domain\Import\ImportMode;
 use App\Domain\Import\WatchDirectory;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\FileSystem\PermissionChecker;
@@ -305,13 +304,6 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
         $this->watchStorage->deleteDirectory('watch');
         $this->keyValueStore = $this->getContainer()->get(KeyValueStore::class);
 
-        $this->getContainer()->get(AthleteRepository::class)->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'Robin',
-            'lastname' => 'Ingelbrecht',
-        ]));
-
         $this->command = $this->buildCommand($this->commandBus = new SpyCommandBus());
     }
 
@@ -324,7 +316,7 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
         return new RunFileImportAndBuildAppConsoleCommand(
             commandBus: $commandBus,
             appStatusChecker: new AppStatusChecker(
-                $this->getContainer()->get(AthleteRepository::class),
+                $this->getContainer()->get(SettingsRepository::class),
                 $this->getContainer()->get(ActivityIdRepository::class),
                 $permissionChecker,
             ),

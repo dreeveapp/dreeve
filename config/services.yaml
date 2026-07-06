@@ -118,17 +118,9 @@ services:
         factory: [ null, 'from' ]
         arguments: ['@=app_config("appearance.locale")']
 
-    App\Application\AppSubTitle:
-        factory: [ null, 'fromOptionalString' ]
-        arguments: [ '@=app_config("general.appSubTitle", "")' ]
-
     App\Application\AppUrl:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:APP_URL)%']
-
-    App\Application\ProfilePictureUrl:
-      factory: [ null, 'fromOptionalString' ]
-      arguments: ['@=app_config("general.profilePictureUrl")']
 
     App\Application\Import\StravaImport\ImportActivities\ActivityVisibilitiesToImport:
       factory: [ null, 'from' ]
@@ -191,22 +183,6 @@ services:
         factory: [ null, 'fromArray' ]
         arguments: ['@=app_config("import.webhooks", [])']
 
-    App\Domain\Athlete\AthleteBirthDate:
-        factory: [ null, 'fromString' ]
-        arguments: ['@=app_config("general.athlete.birthday")']
-
-    App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration:
-        factory: [ null, 'fromArray' ]
-        arguments: ['@=app_config("general.athlete.heartRateZones", [])']
-
-    App\Domain\Athlete\MaxHeartRate\MaxHeartRateFormula:
-        factory: [ '@App\Domain\Athlete\MaxHeartRate\MaxHeartRateFormulas', 'determineFormula' ]
-        arguments: ['@=app_config("general.athlete.maxHeartRateFormula")']
-
-    App\Domain\Athlete\RestingHeartRate\RestingHeartRateFormula:
-        factory: [ '@App\Domain\Athlete\RestingHeartRate\RestingHeartRateFormulas', 'determineFormula' ]
-        arguments: ['@=app_config("general.athlete.restingHeartRateFormula", "heuristicAgeBased")']
-
     App\Domain\Activity\Eddington\Config\EddingtonConfiguration:
         factory: [ null, 'fromScalarArray' ]
         arguments: ['@=app_config("metrics.eddington", [])']
@@ -222,17 +198,6 @@ services:
     App\Domain\Activity\Stream\ActivitiesExcludedFromPeakPowerOutputs:
         factory: [ null, 'from' ]
         arguments: ['@=app_config("metrics.excludeActivitiesFromPeakPowerOutputs", [])']
-
-    App\Domain\Athlete\Weight\AthleteWeightHistory:
-        factory: [ null, 'fromArray' ]
-        arguments: [
-            '@=app_config("general.athlete.weightHistory")',
-            '@App\Infrastructure\ValueObject\Measurement\UnitSystem'
-        ]
-
-    App\Domain\Ftp\FtpHistory:
-        factory: [ null, 'fromArray' ]
-        arguments: ['@=app_config("general.athlete.ftpHistory")']
 
     App\Domain\Import\ImportMode:
         public: true

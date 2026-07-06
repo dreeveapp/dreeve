@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Integration\AI\Chat;
 
-use App\Application\ProfilePictureUrl;
-use App\Domain\Athlete\AthleteRepository;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -16,9 +15,8 @@ final readonly class DbalChatRepository extends DbalRepository implements ChatRe
 {
     public function __construct(
         Connection $connection,
-        private ?ProfilePictureUrl $profilePictureUrl,
-        private AthleteRepository $athleteRepository,
         private Clock $clock,
+        private SettingsRepository $settingsRepository,
     ) {
         parent::__construct($connection);
     }
@@ -41,6 +39,8 @@ final readonly class DbalChatRepository extends DbalRepository implements ChatRe
         $results = $this->connection->executeQuery('SELECT * FROM ChatMessage ORDER BY `on` ASC')
             ->fetchAllAssociative();
 
+        $general = $this->settingsRepository->general();
+
         $history = [];
         foreach ($results as $result) {
             $history[] = new ChatMessage(
@@ -48,8 +48,8 @@ final readonly class DbalChatRepository extends DbalRepository implements ChatRe
                 message: (string) $result['message'],
                 messageRole: MessageRole::from($result['messageRole']),
                 on: SerializableDateTime::fromString($result['on']),
-            )->withUserProfilePictureUrl($this->profilePictureUrl)
-                ->withFirstLetterOfFirstName($this->athleteRepository->find()->getFirstLetterOfFirstName());
+            )->withUserProfilePictureUrl($general->getProfilePictureUrl())
+                ->withFirstLetterOfFirstName($general->getAthlete()->getFirstLetterOfFirstName());
         }
 
         return $history;
@@ -62,12 +62,14 @@ final readonly class DbalChatRepository extends DbalRepository implements ChatRe
 
     public function buildMessage(string $message, MessageRole $messageRole): ChatMessage
     {
+        $general = $this->settingsRepository->general();
+
         return new ChatMessage(
             messageId: ChatMessageId::random(),
             message: $message,
             messageRole: $messageRole,
             on: $this->clock->getCurrentDateTimeImmutable()
-        )->withUserProfilePictureUrl($this->profilePictureUrl)
-            ->withFirstLetterOfFirstName(substr((string) $this->athleteRepository->find()->getName(), 0, 1));
+        )->withUserProfilePictureUrl($general->getProfilePictureUrl())
+            ->withFirstLetterOfFirstName(substr((string) $general->getAthlete()->getName(), 0, 1));
     }
 }

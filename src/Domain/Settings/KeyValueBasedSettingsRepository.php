@@ -36,4 +36,9 @@ final readonly class KeyValueBasedSettingsRepository implements SettingsReposito
             Value::fromString(Json::encode($data)),
         ));
     }
+
+    public function general(): GeneralSettings
+    {
+        return GeneralSettings::fromArray($this->find(SettingsGroup::GENERAL));
+    }
 }

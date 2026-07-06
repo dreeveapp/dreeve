@@ -24,12 +24,10 @@ use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\VelocityDistributionChart;
-use App\Domain\Athlete\AthleteRepository;
-use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
-use App\Domain\Ftp\FtpHistory;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\Exception\EntityNotFound;
@@ -44,7 +42,6 @@ use Twig\Environment;
 final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
 {
     public function __construct(
-        private AthleteRepository $athleteRepository,
         private EnrichedActivities $enrichedActivities,
         private ActivityStreamRepository $activityStreamRepository,
         private ActivityStreamMetricRepository $activityStreamMetricRepository,
@@ -56,15 +53,14 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
         private SegmentEffortRepository $segmentEffortRepository,
         private GearRepository $gearRepository,
         private RecordingDeviceRepository $recordingDeviceRepository,
-        private FtpHistory $ftpHistory,
         private BestEffortsCalculator $bestEffortsCalculator,
-        private HeartRateZoneConfiguration $heartRateZoneConfiguration,
         private Countries $countries,
         private UnitSystem $unitSystem,
         private Environment $twig,
         private FilesystemOperator $buildHtmlStorage,
         private FilesystemOperator $buildApiStorage,
         private TranslatorInterface $translator,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -73,7 +69,8 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
         assert($command instanceof BuildActivitiesHtml);
 
         $now = $command->getCurrentDateTime();
-        $athlete = $this->athleteRepository->find();
+        $general = $this->settingsRepository->general();
+        $athlete = $general->getAthlete();
         $importedSportTypes = $this->sportTypeRepository->findAll();
 
         $activities = $this->enrichedActivities->findAll();
@@ -113,7 +110,7 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                         heartRateData: $heartRateDistribution,
                         averageHeartRate: $activity->getAverageHeartRate(),
                         athleteMaxHeartRate: $athlete->getMaxHeartRate($activity->getStartDate()),
-                        heartRateZones: $this->heartRateZoneConfiguration->getHeartRateZonesFor(
+                        heartRateZones: $general->getHeartRateZoneConfiguration()->getHeartRateZonesFor(
                             sportType: $activity->getSportType(),
                             on: $activity->getStartDate()
                         )
@@ -126,7 +123,7 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                 && count($powerDistribution) > 1) {
                 $ftp = null;
                 try {
-                    $ftp = $this->ftpHistory->find(
+                    $ftp = $general->getFtpHistory()->find(
                         activityType: $activityType,
                         on: $activity->getStartDate()
                     );

@@ -2,14 +2,12 @@
 
 namespace App\Tests\Domain\Dashboard\Widget;
 
-use App\Domain\Athlete\Weight\AthleteWeightHistory;
 use App\Domain\Dashboard\Widget\AthleteWeightHistoryWidget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 class AthleteWeightHistoryWidgetTest extends ContainerTestCase
 {
@@ -17,15 +15,18 @@ class AthleteWeightHistoryWidgetTest extends ContainerTestCase
 
     public function testRenderWhenNoWeights(): void
     {
-        $widget = new AthleteWeightHistoryWidget(
-            AthleteWeightHistory::fromArray([], UnitSystem::METRIC),
-            UnitSystem::METRIC,
-            $this->getContainer()->get(Environment::class),
-            $this->getContainer()->get(TranslatorInterface::class),
-        );
+        // Remove the weight history from the general settings.
+        $this->getContainer()->get(SettingsRepository::class)->save(SettingsGroup::GENERAL, [
+            'athlete' => [
+                'birthday' => '1989-08-14',
+                'firstName' => 'Robin',
+                'lastName' => 'Ingelbrecht',
+                'maxHeartRateFormula' => 'fox',
+            ],
+        ]);
 
         $this->assertNull(
-            $widget->render(
+            $this->widget->render(
                 SerializableDateTime::fromString('2026-01-09'),
                 WidgetConfiguration::empty()
             )

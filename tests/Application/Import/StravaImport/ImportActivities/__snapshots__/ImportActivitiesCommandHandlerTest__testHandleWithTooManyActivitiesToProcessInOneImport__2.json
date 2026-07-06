@@ -1,5 +1,9 @@
 [
     {
+        "key": "settingsGeneral",
+        "value": "{\"profilePictureUrl\":null,\"appSubTitle\":\"Robin The King \\ud83d\\udc51\",\"athlete\":{\"birthday\":\"1989-08-14\",\"firstName\":\"Robin\",\"lastName\":\"Ingelbrecht\",\"maxHeartRateFormula\":\"fox\",\"weightHistory\":{\"2020-01-01\":68,\"2019-12-01\":69,\"2019-08-01\":70,\"2019-07-01\":71},\"ftpHistory\":{\"cycling\":{\"2023-01-01\":198,\"2023-03-22\":220,\"2023-03-29\":238,\"2023-04-01\":250},\"running\":{\"2023-01-01\":100,\"2023-03-22\":110,\"2023-03-29\":120,\"2023-04-01\":130}}}}"
+    },
+    {
         "key": "lock.importDataOrBuildApp",
         "value": "{\"heartbeat\":1764806400,\"lockAcquiredBy\":\"test\"}"
     }

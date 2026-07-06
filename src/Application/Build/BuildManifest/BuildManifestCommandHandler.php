@@ -6,7 +6,7 @@ namespace App\Application\Build\BuildManifest;
 
 use App\Application\AppName;
 use App\Application\AppUrl;
-use App\Domain\Athlete\AthleteRepository;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
@@ -15,7 +15,7 @@ use League\Flysystem\FilesystemOperator;
 final readonly class BuildManifestCommandHandler implements CommandHandler
 {
     public function __construct(
-        private AthleteRepository $athleteRepository,
+        private SettingsRepository $settingsRepository,
         private AppUrl $appUrl,
         private KernelProjectDir $kernelProjectDir,
         private FilesystemOperator $buildStorage,
@@ -26,7 +26,7 @@ final readonly class BuildManifestCommandHandler implements CommandHandler
     {
         assert($command instanceof BuildManifest);
 
-        $athlete = $this->athleteRepository->find();
+        $athlete = $this->settingsRepository->general()->getAthlete();
 
         $manifest = file_get_contents($this->kernelProjectDir.'/templates/manifest.json');
         assert(is_string($manifest));

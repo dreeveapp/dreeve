@@ -16,7 +16,7 @@ class DbalKeyValueStoreTest extends ContainerTestCase
     public function testFind(): void
     {
         $keyValue = KeyValue::fromState(
-            key: Key::ATHLETE,
+            key: Key::THEME,
             value: Value::fromString('1989-08-14'),
         );
         $this->keyValueStore->save($keyValue);
@@ -24,27 +24,27 @@ class DbalKeyValueStoreTest extends ContainerTestCase
 
         $this->assertEquals(
             $keyValue->getValue(),
-            $this->keyValueStore->find(Key::ATHLETE)
+            $this->keyValueStore->find(Key::THEME)
         );
     }
 
     public function testClear(): void
     {
         $keyValue = KeyValue::fromState(
-            key: Key::ATHLETE,
+            key: Key::THEME,
             value: Value::fromString('1989-08-14'),
         );
         $this->keyValueStore->save($keyValue);
-        $this->keyValueStore->clear(Key::ATHLETE);
+        $this->keyValueStore->clear(Key::THEME);
 
         $this->expectException(EntityNotFound::class);
-        $this->keyValueStore->find(Key::ATHLETE);
+        $this->keyValueStore->find(Key::THEME);
     }
 
     public function testItShouldThrowWhenNotFound(): void
     {
         $this->expectException(EntityNotFound::class);
-        $this->keyValueStore->find(Key::ATHLETE);
+        $this->keyValueStore->find(Key::THEME);
     }
 
     #[\Override]

@@ -22,8 +22,6 @@ use App\Domain\Activity\Stream\Metric\ActivityStreamMetric;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Activity\Stream\StreamType;
-use App\Domain\Athlete\Athlete;
-use App\Domain\Athlete\AthleteRepository;
 use App\Domain\Challenge\ChallengeId;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Gear\GearId;
@@ -90,14 +88,7 @@ trait ProvideTestData
 
     protected function addGeneralFixtures(): void
     {
-        /** @var AthleteRepository $athleteRepository */
-        $athleteRepository = $this->getContainer()->get(AthleteRepository::class);
-        $athleteRepository->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'Robin',
-            'lastname' => 'Ingelbrecht',
-        ]));
+        // The athlete is derived from the general settings baseline (see ProvideSettings).
 
         /** @var KeyValueStore $keyValueStore */
         $keyValueStore = $this->getContainer()->get(KeyValueStore::class);

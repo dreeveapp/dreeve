@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Integration\AI\Tool;
 
-use App\Domain\Ftp\FtpHistory;
+use App\Domain\Settings\SettingsRepository;
 use NeuronAI\Tools\Tool;
 
 final class GetFtpHistory extends Tool
 {
     public function __construct(
-        private readonly FtpHistory $ftpHistory,
+        private readonly SettingsRepository $settingsRepository,
     ) {
         parent::__construct(
             'get_ftp_history',
@@ -27,6 +27,6 @@ final class GetFtpHistory extends Tool
      */
     public function __invoke(): array
     {
-        return $this->ftpHistory->exportForAITooling();
+        return $this->settingsRepository->general()->getFtpHistory()->exportForAITooling();
     }
 }

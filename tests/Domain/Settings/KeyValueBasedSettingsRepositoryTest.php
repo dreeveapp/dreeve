@@ -14,22 +14,20 @@ class KeyValueBasedSettingsRepositoryTest extends ContainerTestCase
 
     public function testFindReturnsEmptyArrayWhenAbsent(): void
     {
-        $this->assertSame([], $this->settingsRepository->find(SettingsGroup::GENERAL));
+        // ZWIFT is not part of the seeded settings baseline (see ProvideSettings).
+        $this->assertSame([], $this->settingsRepository->find(SettingsGroup::ZWIFT));
     }
 
     public function testSaveAndFindRoundTripsANestedArray(): void
     {
         $data = [
-            'appUrl' => 'https://example.com',
-            'athlete' => [
-                'birthday' => '1990-01-01',
-                'ftpHistory' => ['2024-01-01' => 250],
-            ],
+            'level' => 42,
+            'nested' => ['foo' => 'bar', 'list' => [1, 2, 3]],
         ];
 
-        $this->settingsRepository->save(SettingsGroup::GENERAL, $data);
+        $this->settingsRepository->save(SettingsGroup::ZWIFT, $data);
 
-        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::GENERAL));
+        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::ZWIFT));
     }
 
     #[\Override]

@@ -7,7 +7,7 @@ namespace App\Domain\Settings;
 interface SettingsRepository
 {
     /**
-     * @return array<string, mixed> keyed, nested settings for the group
+     * @return array<string, mixed>
      */
     public function find(SettingsGroup $group): array;
 
@@ -15,4 +15,6 @@ interface SettingsRepository
      * @param array<string, mixed> $data
      */
     public function save(SettingsGroup $group, array $data): void;
+
+    public function general(): GeneralSettings;
 }

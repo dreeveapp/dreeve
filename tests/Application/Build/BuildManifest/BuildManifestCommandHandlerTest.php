@@ -3,8 +3,6 @@
 namespace App\Tests\Application\Build\BuildManifest;
 
 use App\Application\Build\BuildManifest\BuildManifest;
-use App\Domain\Athlete\Athlete;
-use App\Domain\Athlete\AthleteRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\ContainerTestCase;
@@ -20,15 +18,6 @@ class BuildManifestCommandHandlerTest extends ContainerTestCase
 
     public function testHandle(): void
     {
-        /** @var AthleteRepository $athleteRepository */
-        $athleteRepository = $this->getContainer()->get(AthleteRepository::class);
-        $athleteRepository->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'Robin',
-            'lastname' => 'Ingelbrecht',
-        ]));
-
         $this->commandBus->dispatch(new BuildManifest());
         $this->assertFileSystemWrites($this->getContainer()->get('build.storage'));
     }

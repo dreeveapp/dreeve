@@ -11,10 +11,9 @@ use App\Console\ImportDataAndBuildAppConsoleCommand;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Athlete\Athlete;
-use App\Domain\Athlete\AthleteRepository;
 use App\Domain\Import\ImportMode;
 use App\Domain\Import\WatchDirectory;
+use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Strava;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\Mutex\LockName;
@@ -105,12 +104,6 @@ class ImportDataAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
     {
         parent::setUp();
 
-        $this->getContainer()->get(AthleteRepository::class)->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'Robin',
-            'lastname' => 'Ingelbrecht',
-        ]));
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()->build(),
             [],
@@ -135,7 +128,7 @@ class ImportDataAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
                 lockName: LockName::IMPORT_DATA_OR_BUILD_APP,
             ),
             appStatusChecker: new AppStatusChecker(
-                $this->getContainer()->get(AthleteRepository::class),
+                $this->getContainer()->get(SettingsRepository::class),
                 $this->getContainer()->get(ActivityIdRepository::class),
                 new SuccessfulPermissionChecker(),
             ),
@@ -152,7 +145,7 @@ class ImportDataAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
         return new RunFileImportAndBuildAppConsoleCommand(
             commandBus: $this->spyCommandBus = new SpyCommandBus(),
             appStatusChecker: new AppStatusChecker(
-                $this->getContainer()->get(AthleteRepository::class),
+                $this->getContainer()->get(SettingsRepository::class),
                 $this->getContainer()->get(ActivityIdRepository::class),
                 new SuccessfulPermissionChecker(),
             ),

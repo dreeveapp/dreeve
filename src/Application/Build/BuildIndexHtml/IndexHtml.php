@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace App\Application\Build\BuildIndexHtml;
 
-use App\Application\AppSubTitle;
 use App\Application\AppUrl;
-use App\Application\ProfilePictureUrl;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\Eddington\EddingtonCalculator;
 use App\Domain\Activity\Image\ImageRepository;
-use App\Domain\Athlete\AthleteRepository;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Config\Leaflet\LeafletConfig;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Measurement\UnitSystem;
@@ -25,7 +23,6 @@ use Symfony\Component\Translation\LocaleSwitcher;
 final readonly class IndexHtml
 {
     public function __construct(
-        private AthleteRepository $athleteRepository,
         private ActivityIdRepository $activityIdRepository,
         private GearRepository $gearRepository,
         private ChallengeRepository $challengeRepository,
@@ -34,11 +31,10 @@ final readonly class IndexHtml
         private EddingtonCalculator $eddingtonCalculator,
         private MaintenanceTaskProgressCalculator $maintenanceTaskProgressCalculator,
         private LeafletConfig $leafletConfig,
-        private ?ProfilePictureUrl $profilePictureUrl,
-        private ?AppSubTitle $appSubTitle,
         private AppUrl $appUrl,
         private UnitSystem $unitSystem,
         private LocaleSwitcher $localeSwitcher,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -57,6 +53,8 @@ final readonly class IndexHtml
             $eddingtonNumbers[] = $eddington->getNumber();
         }
 
+        $general = $this->settingsRepository->general();
+
         return [
             'totalActivityCount' => $this->activityIdRepository->count(),
             'eddingtonNumbers' => $eddingtonNumbers,
@@ -64,9 +62,9 @@ final readonly class IndexHtml
             'totalPhotoCount' => $this->imageRepository->count(),
             'hasGear' => $this->gearRepository->hasGear(),
             'lastUpdate' => $now,
-            'athlete' => $this->athleteRepository->find(),
-            'profilePictureUrl' => $this->profilePictureUrl,
-            'subTitle' => $this->appSubTitle,
+            'athlete' => $general->getAthlete(),
+            'profilePictureUrl' => $general->getProfilePictureUrl(),
+            'subTitle' => $general->getAppSubTitle(),
             'maintenanceTaskIsDue' => !$this->maintenanceTaskProgressCalculator->getGearIdsThatHaveDueTasks()->isEmpty(),
             'hasBestEfforts' => $this->activityBestEffortRepository->hasData(),
             'javascriptWindowConstants' => Json::encode([

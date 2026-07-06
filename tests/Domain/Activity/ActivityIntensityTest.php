@@ -6,33 +6,22 @@ use App\Domain\Activity\ActivityIntensity;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\CouldNotDetermineActivityIntensity;
-use App\Domain\Activity\EnrichedActivities;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetric;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Activity\Stream\StreamType;
-use App\Domain\Athlete\Athlete;
-use App\Domain\Athlete\AthleteRepository;
-use App\Domain\Athlete\KeyValueBasedAthleteRepository;
-use App\Domain\Athlete\MaxHeartRate\MaxHeartRateFormula;
-use App\Domain\Athlete\RestingHeartRate\RestingHeartRateFormula;
-use App\Domain\Ftp\FtpHistory;
-use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 
 class ActivityIntensityTest extends ContainerTestCase
 {
     private ActivityIntensity $activityIntensity;
-    private AthleteRepository $athleteRepository;
 
     public function testCalculateWithPower(): void
     {
-        $this->athleteRepository->save(Athlete::create([
-            'birthDate' => '1989-08-14',
-        ]));
-
         $activity = ActivityBuilder::fromDefaults()
             ->withAverageHeartRate(250)
             ->withMovingTimeInSeconds(3600)
@@ -67,10 +56,6 @@ class ActivityIntensityTest extends ContainerTestCase
 
     public function testCalculateWithPowerWhenEmptyNormalizedPower(): void
     {
-        $this->athleteRepository->save(Athlete::create([
-            'birthDate' => '1989-08-14',
-        ]));
-
         $activity = ActivityBuilder::fromDefaults()
             ->withAverageHeartRate(250)
             ->withMovingTimeInSeconds(3600)
@@ -88,10 +73,6 @@ class ActivityIntensityTest extends ContainerTestCase
 
     public function testCalculateWithPowerWhenActivityIsNotARide(): void
     {
-        $this->athleteRepository->save(Athlete::create([
-            'birthDate' => '1989-08-14',
-        ]));
-
         $activity = ActivityBuilder::fromDefaults()
             ->withSportType(SportType::RUN)
             ->build();
@@ -107,19 +88,15 @@ class ActivityIntensityTest extends ContainerTestCase
 
     public function testCalculateWithPowerWhenFtpNotFound(): void
     {
-        $this->activityIntensity = new ActivityIntensity(
-            $this->getContainer()->get(EnrichedActivities::class),
-            $this->athleteRepository = new KeyValueBasedAthleteRepository(
-                $this->getContainer()->get(KeyValueStore::class),
-                $this->getContainer()->get(MaxHeartRateFormula::class),
-                $this->getContainer()->get(RestingHeartRateFormula::class),
-            ),
-            FtpHistory::fromArray([]),
-        );
-
-        $this->athleteRepository->save(Athlete::create([
-            'birthDate' => '1989-08-14',
-        ]));
+        // Remove the FTP history so the power-based calculation cannot find an FTP.
+        $this->getContainer()->get(SettingsRepository::class)->save(SettingsGroup::GENERAL, [
+            'athlete' => [
+                'birthday' => '1989-08-14',
+                'firstName' => 'Robin',
+                'lastName' => 'Ingelbrecht',
+                'maxHeartRateFormula' => 'fox',
+            ],
+        ]);
 
         $activity = ActivityBuilder::fromDefaults()
             ->withAverageHeartRate(250)
@@ -155,10 +132,6 @@ class ActivityIntensityTest extends ContainerTestCase
             []
         ));
 
-        $this->athleteRepository->save(Athlete::create([
-            'birthDate' => '1989-08-14',
-        ]));
-
         $this->assertEmpty(ActivityIntensity::$cachedIntensities);
         $this->assertEquals(
             87,
@@ -187,10 +160,6 @@ class ActivityIntensityTest extends ContainerTestCase
             []
         ));
 
-        $this->athleteRepository->save(Athlete::create([
-            'birthDate' => '1989-08-14',
-        ]));
-
         $this->assertEquals(
             0,
             $this->activityIntensity->calculate($activity->getId()),
@@ -202,14 +171,6 @@ class ActivityIntensityTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->activityIntensity = new ActivityIntensity(
-            $this->getContainer()->get(EnrichedActivities::class),
-            $this->athleteRepository = new KeyValueBasedAthleteRepository(
-                $this->getContainer()->get(KeyValueStore::class),
-                $this->getContainer()->get(MaxHeartRateFormula::class),
-                $this->getContainer()->get(RestingHeartRateFormula::class),
-            ),
-            FtpHistory::fromArray(['2023-04-01' => 250]),
-        );
+        $this->activityIntensity = $this->getContainer()->get(ActivityIntensity::class);
     }
 }

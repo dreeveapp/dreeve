@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Integration\AI\Tool;
 
 use App\Domain\Activity\SportType\SportType;
-use App\Domain\Athlete\AthleteRepository;
-use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
-use App\Domain\Athlete\MaxHeartRate\MaxHeartRateFormula;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Time\Clock\Clock;
 use NeuronAI\Tools\PropertyType;
 use NeuronAI\Tools\Tool;
@@ -16,10 +14,8 @@ use NeuronAI\Tools\ToolProperty;
 final class GetDefaultHeartRateZone extends Tool
 {
     public function __construct(
-        private readonly AthleteRepository $athleteRepository,
-        private readonly HeartRateZoneConfiguration $configuration,
-        private readonly MaxHeartRateFormula $maxHeartRateFormula,
         private readonly Clock $clock,
+        private readonly SettingsRepository $settingsRepository,
     ) {
         parent::__construct(
             'get_heart_rate_zones',
@@ -58,14 +54,10 @@ final class GetDefaultHeartRateZone extends Tool
     {
         $now = $this->clock->getCurrentDateTimeImmutable();
         $sportType = SportType::tryFrom($sportType ?? '');
-        $heartRateZones = $this->configuration->getDefaultHearRateZones($sportType);
+        $general = $this->settingsRepository->general();
+        $heartRateZones = $general->getHeartRateZoneConfiguration()->getDefaultHearRateZones($sportType);
 
-        $athlete = $this->athleteRepository->find();
-
-        $maxHeartRate = $this->maxHeartRateFormula->calculate(
-            age: $athlete->getAgeInYears($now),
-            on: $now,
-        );
+        $maxHeartRate = $general->getAthlete()->getMaxHeartRate($now);
 
         return [
             'zone1' => $heartRateZones->getZoneOne()->getRangeInBpm($maxHeartRate),

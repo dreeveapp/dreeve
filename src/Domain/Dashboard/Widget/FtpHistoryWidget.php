@@ -6,12 +6,12 @@ namespace App\Domain\Dashboard\Widget;
 
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypeRepository;
-use App\Domain\Athlete\Weight\AthleteWeightHistory;
-use App\Domain\Ftp\FtpHistory;
 use App\Domain\Ftp\FtpHistoryChart;
 use App\Domain\Ftp\Ftps;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -20,10 +20,10 @@ final readonly class FtpHistoryWidget implements Widget
 {
     public function __construct(
         private TranslatorInterface $translator,
-        private FtpHistory $ftpHistory,
-        private AthleteWeightHistory $athleteWeightHistory,
         private ActivityTypeRepository $activityTypeRepository,
         private Environment $twig,
+        private SettingsRepository $settingsRepository,
+        private UnitSystem $unitSystem,
     ) {
     }
 
@@ -50,13 +50,17 @@ final readonly class FtpHistoryWidget implements Widget
     {
         $ftpHistoryCharts = [];
 
+        $general = $this->settingsRepository->general();
+        $ftpHistory = $general->getFtpHistory();
+        $athleteWeightHistory = $general->getAthleteWeightHistory($this->unitSystem);
+
         /** @var ActivityType $activityType */
         foreach ($this->activityTypeRepository->findAll() as $activityType) {
             if (!$activityType->supportsPowerData()) {
                 continue; // @codeCoverageIgnore
             }
 
-            $allFtps = $this->ftpHistory->findAll($activityType);
+            $allFtps = $ftpHistory->findAll($activityType);
             if ($allFtps->isEmpty()) {
                 continue; // @codeCoverageIgnore
             }
@@ -65,7 +69,7 @@ final readonly class FtpHistoryWidget implements Widget
             foreach ($allFtps as $ftp) {
                 $athleteWeight = null;
                 try {
-                    $athleteWeight = $this->athleteWeightHistory->find($ftp->getSetOn())->getWeightInKg();
+                    $athleteWeight = $athleteWeightHistory->find($ftp->getSetOn())->getWeightInKg();
                 } catch (EntityNotFound) { // @codeCoverageIgnore
                 }
                 $ftpsEnrichedWithAthleteWeight->add($ftp->withAthleteWeight($athleteWeight));

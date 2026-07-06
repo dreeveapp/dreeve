@@ -37,8 +37,8 @@ class UpdateSettingsTest extends TestCase
     public function testItThrowsWhenGroupIsNotYetMigrated(): void
     {
         $this->expectException(CouldNotDeserializeCommand::class);
-        $this->expectExceptionMessage('Settings group "general" is not migrated yet.');
+        $this->expectExceptionMessage('Settings group "zwift" is not migrated yet.');
 
-        UpdateSettings::fromPayload(['group' => 'general', 'data' => []]);
+        UpdateSettings::fromPayload(['group' => 'zwift', 'data' => []]);
     }
 }

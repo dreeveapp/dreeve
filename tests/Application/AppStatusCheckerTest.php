@@ -9,8 +9,8 @@ use App\Application\AppStatusChecker;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Athlete\Athlete;
-use App\Domain\Athlete\AthleteRepository;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\FileSystem\PermissionChecker;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -37,24 +37,11 @@ class AppStatusCheckerTest extends ContainerTestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->getContainer()->get(AthleteRepository::class)->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'Robin',
-            'lastname' => 'Ingelbrecht',
-        ]));
         $this->buildChecker(new SuccessfulPermissionChecker())->ensureIsReadyForFileImport();
     }
 
     public function testEnsureIsReadyForFileImportThrowsWhenFileSystemIsNotWritable(): void
     {
-        $this->getContainer()->get(AthleteRepository::class)->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'Robin',
-            'lastname' => 'Ingelbrecht',
-        ]));
-
         $this->expectExceptionObject(AppIsNotReady::becauseFileSystemIsNotWritable());
 
         $this->buildChecker(new UnwritablePermissionChecker())->ensureIsReadyForFileImport();
@@ -64,12 +51,6 @@ class AppStatusCheckerTest extends ContainerTestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->getContainer()->get(AthleteRepository::class)->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'Robin',
-            'lastname' => 'Ingelbrecht',
-        ]));
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()->build(),
             [],
@@ -78,27 +59,23 @@ class AppStatusCheckerTest extends ContainerTestCase
         $this->buildChecker(new SuccessfulPermissionChecker())->ensureIsReadyForBuild();
     }
 
-    public function testEnsureIsReadyForBuildThrowsWhenAthleteHasNotBeenImported(): void
+    public function testEnsureIsReadyForBuildThrowsWhenAthleteHasNotBeenConfigured(): void
     {
+        // Clear the general settings so the athlete cannot be loaded.
+        $this->getContainer()->get(SettingsRepository::class)->save(SettingsGroup::GENERAL, []);
+
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()->build(),
             [],
         ));
 
-        $this->expectExceptionObject(AppIsNotReady::becauseAthleteHasNotBeenImportedYet());
+        $this->expectExceptionObject(AppIsNotReady::becauseAthleteHasNotBeenConfiguredYet());
 
         $this->buildChecker(new SuccessfulPermissionChecker())->ensureIsReadyForBuild();
     }
 
     public function testEnsureIsReadyForBuildThrowsWhenNoActivitiesHaveBeenImported(): void
     {
-        $this->getContainer()->get(AthleteRepository::class)->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'Robin',
-            'lastname' => 'Ingelbrecht',
-        ]));
-
         $this->expectExceptionObject(AppIsNotReady::becauseNoActivitiesHaveBeenImportedYet());
 
         $this->buildChecker(new SuccessfulPermissionChecker())->ensureIsReadyForBuild();
@@ -107,7 +84,7 @@ class AppStatusCheckerTest extends ContainerTestCase
     private function buildChecker(PermissionChecker $permissionChecker): AppStatusChecker
     {
         return new AppStatusChecker(
-            $this->getContainer()->get(AthleteRepository::class),
+            $this->getContainer()->get(SettingsRepository::class),
             $this->getContainer()->get(ActivityIdRepository::class),
             $permissionChecker,
         );

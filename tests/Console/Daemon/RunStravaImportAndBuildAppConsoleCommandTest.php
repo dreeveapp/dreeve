@@ -9,9 +9,8 @@ use App\Console\Daemon\RunStravaImportAndBuildAppConsoleCommand;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Athlete\Athlete;
-use App\Domain\Athlete\AthleteRepository;
 use App\Domain\Import\ImportMode;
+use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Strava;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Exception\EntityNotFound;
@@ -239,7 +238,7 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
         $command = $this->buildCommand(
             commandBus: $this->commandBus,
             appStatusChecker: new AppStatusChecker(
-                $this->getContainer()->get(AthleteRepository::class),
+                $this->getContainer()->get(SettingsRepository::class),
                 $this->getContainer()->get(ActivityIdRepository::class),
                 new UnwritablePermissionChecker(),
             ),
@@ -266,12 +265,6 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
 
         $this->keyValueStore = $this->getContainer()->get(KeyValueStore::class);
 
-        $this->getContainer()->get(AthleteRepository::class)->save(Athlete::create([
-            'id' => 100,
-            'birthDate' => '1989-08-14',
-            'firstname' => 'Robin',
-            'lastname' => 'Ingelbrecht',
-        ]));
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()->build(),
             [],
@@ -297,7 +290,7 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
                 lockName: LockName::IMPORT_DATA_OR_BUILD_APP,
             ),
             appStatusChecker: $appStatusChecker ?? new AppStatusChecker(
-                $this->getContainer()->get(AthleteRepository::class),
+                $this->getContainer()->get(SettingsRepository::class),
                 $this->getContainer()->get(ActivityIdRepository::class),
                 new SuccessfulPermissionChecker(),
             ),

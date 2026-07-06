@@ -1,11 +1,5 @@
 [
     {
-        "commandName": "App\\Application\\Import\\StravaImport\\ImportAthlete\\ImportAthlete",
-        "payload": {
-            "output": {}
-        }
-    },
-    {
         "commandName": "App\\Application\\Import\\StravaImport\\ImportActivities\\ImportActivities",
         "payload": {
             "output": {},

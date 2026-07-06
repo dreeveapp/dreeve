@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
-use App\Domain\Athlete\AthleteRepository;
-use App\Domain\Ftp\FtpHistory;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 
 final class ActivityIntensity
@@ -15,8 +14,7 @@ final class ActivityIntensity
 
     public function __construct(
         private readonly EnrichedActivities $enrichedActivities,
-        private readonly AthleteRepository $athleteRepository,
-        private readonly FtpHistory $ftpHistory,
+        private readonly SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -59,7 +57,7 @@ final class ActivityIntensity
         }
 
         try {
-            $ftp = $this->ftpHistory->find(ActivityType::RIDE, $activity->getStartDate())->getFtp();
+            $ftp = $this->settingsRepository->general()->getFtpHistory()->find(ActivityType::RIDE, $activity->getStartDate())->getFtp();
             // IF = Normalized Power / FTP
             $intensity = (int) round(($normalizedPower / $ftp->getValue()) * 100);
             self::$cachedIntensities[$cacheKey] = $intensity;
@@ -83,7 +81,7 @@ final class ActivityIntensity
             throw new CouldNotDetermineActivityIntensity();
         }
 
-        $athlete = $this->athleteRepository->find();
+        $athlete = $this->settingsRepository->general()->getAthlete();
         $athleteRestingHeartRate = $athlete->getRestingHeartRate($activity->getStartDate());
         $athleteMaxHeartRate = $athlete->getMaxHeartRate($activity->getStartDate());
 

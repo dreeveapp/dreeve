@@ -11,7 +11,6 @@ use App\Application\Build\RunBuild\RunBuild;
 use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
 use App\Application\Import\StravaImport\DeleteActivitiesMarkedForDeletion\DeleteActivitiesMarkedForDeletion;
 use App\Application\Import\StravaImport\ImportActivities\ImportActivities;
-use App\Application\Import\StravaImport\ImportAthlete\ImportAthlete;
 use App\Application\Import\StravaImport\ImportChallenges\ImportChallenges;
 use App\Application\Import\StravaImport\ImportGear\ImportGear;
 use App\Application\Import\StravaImport\ImportSegments\ImportSegments;
@@ -127,7 +126,6 @@ final class RunStravaImportAndBuildAppConsoleCommand extends Command
             if ($shouldImport) {
                 $this->appStatusChecker->ensureIsReadyForStravaImport();
 
-                $this->commandBus->dispatch(new ImportAthlete($output));
                 $this->commandBus->dispatch(new ImportActivities(
                     output: $output,
                     restrictToActivityIds: $restrictToActivityIds

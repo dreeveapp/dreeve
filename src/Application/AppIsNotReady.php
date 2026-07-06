@@ -6,9 +6,9 @@ namespace App\Application;
 
 final class AppIsNotReady extends \RuntimeException
 {
-    public static function becauseAthleteHasNotBeenImportedYet(): self
+    public static function becauseAthleteHasNotBeenConfiguredYet(): self
     {
-        return new self('Wait until your athlete has been imported before continuing');
+        return new self('Configure your athlete in the general settings before continuing');
     }
 
     public static function becauseNoActivitiesHaveBeenImportedYet(): self
