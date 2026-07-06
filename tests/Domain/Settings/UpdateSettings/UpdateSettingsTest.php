@@ -41,4 +41,15 @@ class UpdateSettingsTest extends TestCase
 
         UpdateSettings::fromPayload(['group' => 'zwift', 'data' => []]);
     }
+
+    public function testItThrowsWhenGeneralDataIsInvalid(): void
+    {
+        $this->expectException(CouldNotDeserializeCommand::class);
+        $this->expectExceptionMessage('A "birthday" is required for the athlete in the general settings');
+
+        UpdateSettings::fromPayload([
+            'group' => 'general',
+            'data' => ['athlete' => ['firstName' => 'Jane']],
+        ]);
+    }
 }
