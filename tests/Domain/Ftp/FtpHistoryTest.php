@@ -15,8 +15,8 @@ class FtpHistoryTest extends TestCase
     public function testItShouldBeBackwardsCompatible(): void
     {
         $this->assertEquals(
-            FtpHistory::fromArray(['cycling' => ['2025-11-28' => 220]]),
-            FtpHistory::fromArray(['2025-11-28' => 220]),
+            FtpHistory::fromArray(['cycling' => [['on' => '2025-11-28', 'ftp' => 220]]]),
+            FtpHistory::fromArray([['on' => '2025-11-28', 'ftp' => 220]]),
         );
     }
 
@@ -27,32 +27,32 @@ class FtpHistoryTest extends TestCase
                 setOn: SerializableDateTime::fromString('2025-11-28'),
                 ftp: FtpValue::fromInt(220),
             )]),
-            FtpHistory::fromArray(['running' => ['2025-11-28' => 220]])->findAll(ActivityType::RUN),
+            FtpHistory::fromArray(['running' => [['on' => '2025-11-28', 'ftp' => 220]]])->findAll(ActivityType::RUN),
         );
         $this->assertEquals(
             Ftps::fromArray([Ftp::fromState(
                 setOn: SerializableDateTime::fromString('2025-11-28'),
                 ftp: FtpValue::fromInt(220),
             )]),
-            FtpHistory::fromArray(['cycling' => ['2025-11-28' => 220]])->findAll(ActivityType::RIDE),
+            FtpHistory::fromArray(['cycling' => [['on' => '2025-11-28', 'ftp' => 220]]])->findAll(ActivityType::RIDE),
         );
     }
 
     public function testFindItShouldThrowForUnsupportedActivityType(): void
     {
         $this->expectExceptionObject(new \RuntimeException('ActivityType "Walk" does not support FTP'));
-        FtpHistory::fromArray(['cycling' => ['2025-11-28' => 220]])->find(ActivityType::WALK, SerializableDateTime::fromString('2025-11-28'));
+        FtpHistory::fromArray(['cycling' => [['on' => '2025-11-28', 'ftp' => 220]]])->find(ActivityType::WALK, SerializableDateTime::fromString('2025-11-28'));
     }
 
     public function testFindAllItShouldThrowForUnsupportedActivityType(): void
     {
         $this->expectExceptionObject(new \RuntimeException('ActivityType "Walk" does not support FTP'));
-        FtpHistory::fromArray(['cycling' => ['2025-11-28' => 220]])->findAll(ActivityType::WALK);
+        FtpHistory::fromArray(['cycling' => [['on' => '2025-11-28', 'ftp' => 220]]])->findAll(ActivityType::WALK);
     }
 
     public function testItShouldThrowOnInvalidDate(): void
     {
         $this->expectExceptionObject(new \InvalidArgumentException('Invalid date "YYYY-MM-DD" set for athlete cycling ftpHistory in config.yaml file'));
-        FtpHistory::fromArray(['YYYY-MM-DD' => 220]);
+        FtpHistory::fromArray([['on' => 'YYYY-MM-DD', 'ftp' => 220]]);
     }
 }

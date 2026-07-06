@@ -15,10 +15,10 @@ class AthleteWeightHistoryTest extends TestCase
     public function testFind(): void
     {
         $weightHistory = AthleteWeightHistory::fromArray([
-            '2024-01-01' => 220,
-            '2024-02-02' => 221,
-            '2024-04-04' => 223,
-            '2024-03-03' => 222,
+            ['on' => '2024-01-01', 'weight' => 220],
+            ['on' => '2024-02-02', 'weight' => 221],
+            ['on' => '2024-04-04', 'weight' => 223],
+            ['on' => '2024-03-03', 'weight' => 222],
         ], UnitSystem::METRIC);
 
         $this->assertEquals(
@@ -40,10 +40,10 @@ class AthleteWeightHistoryTest extends TestCase
     public function testFindImperial(): void
     {
         $weightHistory = AthleteWeightHistory::fromArray([
-            '2024-01-01' => 220,
-            '2024-02-02' => 221,
-            '2024-04-04' => 223,
-            '2024-03-03' => 222,
+            ['on' => '2024-01-01', 'weight' => 220],
+            ['on' => '2024-02-02', 'weight' => 221],
+            ['on' => '2024-04-04', 'weight' => 223],
+            ['on' => '2024-03-03', 'weight' => 222],
         ], UnitSystem::IMPERIAL);
 
         $this->assertEquals(
@@ -65,12 +65,12 @@ class AthleteWeightHistoryTest extends TestCase
     public function testItShouldThrowOnInvalidWeight(): void
     {
         $this->expectExceptionObject(new \InvalidArgumentException('Invalid weight "lol" set for athlete weightHistory in config.yaml file'));
-        AthleteWeightHistory::fromArray(['2025-11-16' => 'lol'], UnitSystem::METRIC);
+        AthleteWeightHistory::fromArray([['on' => '2025-11-16', 'weight' => 'lol']], UnitSystem::METRIC);
     }
 
     public function testItShouldThrowOnInvalidDate(): void
     {
         $this->expectExceptionObject(new \InvalidArgumentException('Invalid date "YYYY-MM-DD" set for athlete weightHistory in config.yaml file'));
-        AthleteWeightHistory::fromArray(['YYYY-MM-DD' => 220], UnitSystem::METRIC);
+        AthleteWeightHistory::fromArray([['on' => 'YYYY-MM-DD', 'weight' => 220]], UnitSystem::METRIC);
     }
 }

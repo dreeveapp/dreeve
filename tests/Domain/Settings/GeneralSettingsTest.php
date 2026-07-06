@@ -27,8 +27,8 @@ class GeneralSettingsTest extends TestCase
                 'lastName' => 'Ingelbrecht',
                 'gender' => 'M',
                 'maxHeartRateFormula' => 'fox',
-                'weightHistory' => ['2024-01-01' => 70],
-                'ftpHistory' => ['2023-01-01' => 250],
+                'weightHistory' => [['on' => '2024-01-01', 'weight' => 70]],
+                'ftpHistory' => [['on' => '2023-01-01', 'ftp' => 250]],
             ],
         ];
     }

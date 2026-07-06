@@ -18,20 +18,20 @@ final class FtpHistory implements SupportsAITooling
     private array $ftps;
 
     /**
-     * @param array<string, array<string, int>> $ftps
+     * @param array<string, mixed> $ftps
      */
     private function __construct(
         array $ftps,
     ) {
-        $this->ftps[self::CYCLING_KEY] = $this->mapFtpHistory($ftps[self::CYCLING_KEY] ?? [], self::CYCLING_KEY);
-        $this->ftps[self::RUNNING_KEY] = $this->mapFtpHistory($ftps[self::RUNNING_KEY] ?? [], self::RUNNING_KEY);
+        $this->ftps[self::CYCLING_KEY] = $this->mapFtpHistory(is_array($ftps[self::CYCLING_KEY] ?? null) ? $ftps[self::CYCLING_KEY] : [], self::CYCLING_KEY);
+        $this->ftps[self::RUNNING_KEY] = $this->mapFtpHistory(is_array($ftps[self::RUNNING_KEY] ?? null) ? $ftps[self::RUNNING_KEY] : [], self::RUNNING_KEY);
 
         krsort($this->ftps[self::CYCLING_KEY]);
         krsort($this->ftps[self::RUNNING_KEY]);
     }
 
     /**
-     * @param array<string, int> $entries
+     * @param array<int|string, mixed> $entries
      *
      * @return array<int, Ftp>
      */
@@ -39,12 +39,15 @@ final class FtpHistory implements SupportsAITooling
     {
         $result = [];
 
-        foreach ($entries as $setOn => $ftpValue) {
+        foreach ($entries as $entry) {
+            $setOn = is_array($entry) && is_string($entry['on'] ?? null) ? $entry['on'] : '';
+            $ftpValue = is_array($entry) ? ($entry['ftp'] ?? null) : null;
+
             try {
                 $date = SerializableDateTime::fromString($setOn);
                 $result[$date->getTimestamp()] = Ftp::fromState(
                     setOn: $date,
-                    ftp: FtpValue::fromInt($ftpValue)
+                    ftp: FtpValue::fromInt((int) $ftpValue)
                 );
             } catch (\DateMalformedStringException) {
                 throw new \InvalidArgumentException(sprintf('Invalid date "%s" set for athlete %s ftpHistory in config.yaml file', $setOn, $type));

@@ -23,6 +23,7 @@ Activity: Aktivitet
 'Acute Training Load (Fatigue) - 7-day exponentially weighted average of your daily training load. Represents short-term fatigue.': 'Akut träningsbelastning (trötthet) – 7 dagars exponentiellt viktat medelvärde av din dagliga träningsbelastning. Representerar kortvarig utmattning.'
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Akut:Kronisk Ratio - Ratio av ATL till CTL. Indikerar skaderisk.'
 'Adaptive & Inclusive Sports': 'Adaptiva & Inkluderande Sporter'
+'Add FTP': 'Add FTP'
 'Add a component to start tracking maintenance.': 'Add a component to start tracking maintenance.'
 'Add a widget': 'Add a widget'
 'Add challenge': 'Add challenge'
@@ -30,6 +31,7 @@ Activity: Aktivitet
 'Add gear': 'Add gear'
 'Add goal': 'Add goal'
 'Add task': 'Add task'
+'Add weight': 'Add weight'
 'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
 Admin: Admin
@@ -39,6 +41,7 @@ All: Alla
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'All associated maintenance tasks and logs will be removed. This action cannot be undone.'
 'All time': 'Från start'
 'Alpine Ski': Alpint
+'App subtitle': 'App subtitle'
 Apr: Apr
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
 'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
@@ -63,6 +66,7 @@ Best: Bästa
 'Best effort': 'Bästa resultatet'
 'Best efforts': 'Bästa Insatser'
 'Best efforts for {sportType}': 'Bästa resultaten för {sportType}'
+Birthday: Birthday
 'Build zone (–10)': 'Utvecklingsfas (–10)'
 'CTL (Fitness)': 'CTL (Träningsform)'
 Cadence: Kadens
@@ -166,10 +170,14 @@ Energy: Energy
 Evening: Kväll
 Every: Every
 'Excludes commutes': 'Uteslut pendling'
+FTP: FTP
 'FTP history': 'FTP historik'
+'FTP history (cycling)': 'FTP history (cycling)'
+'FTP history (running)': 'FTP history (running)'
 Failed: Failed
 Favourite: Favoriter
 Feb: Feb
+Female: Female
 'File exceeds {max} MB': 'File exceeds {max} MB'
 'File imports': 'File imports'
 'File imports are only available in file import mode': 'File imports are only available in file import mode'
@@ -181,6 +189,7 @@ Filename: Filename
 'Filter on sport type': 'Filtrera på sport'
 'Filter on starred segments': 'Filtrera på favorit segment'
 'First activity in {countryName}': 'First activity in {countryName}'
+'First name': 'First name'
 'First-ever activity recorded': 'First-ever activity recorded'
 Firsts: Firsts
 Fitness: Träning
@@ -200,6 +209,8 @@ Gear: Utrustning
 "Gear that hasn't been used in the last three months, is disabled by default.": 'Utrustning som inte har använts under de senaste tre månaderna blir inaktiverad.'
 'Gear that is retired is disabled by default.': 'Utrustning som är avställd blir inaktiverad.'
 'Gear will appear here once you add them.': 'Gear will appear here once you add them.'
+Gender: Gender
+General: General
 'Go to first page': 'Go to first page'
 'Go to last page': 'Go to last page'
 'Go to next page': 'Go to next page'
@@ -227,6 +238,9 @@ High: Hög
 Hikes: Vandringar
 History: Historik
 'History (6 weeks)': 'History (6 weeks)'
+'History of cycling FTP. Needed to calculate activity stress level.': 'History of cycling FTP. Needed to calculate activity stress level.'
+'History of running FTP. Needed to calculate activity stress level.': 'History of running FTP. Needed to calculate activity stress level.'
+'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.'
 'How diverse is your training': 'How diverse is your training'
 'How hard is your typical training session': 'How hard is your typical training session'
 'How long is your typical training session': 'How long is your typical training session'
@@ -264,6 +278,7 @@ Lap: Varv
 'Last effort date': 'Last effort date'
 'Last maintenance': 'Senast underhållet'
 'Last month': 'Last month'
+'Last name': 'Last name'
 'Last week': 'Last week'
 'Last {numberOfDays} days': 'Senaste {numberOfDays} dagarna'
 'Leave empty to include all sport types.': 'Leave empty to include all sport types.'
@@ -288,9 +303,11 @@ Maintenance: Underhåll
 'Maintenance log': 'Maintenance log'
 'Maintenance logs will appear here once maintenance has been registered.': 'Maintenance logs will appear here once maintenance has been registered.'
 'Maintenance tasks': 'Maintenance tasks'
+Male: Male
 Mar: Mar
 Max: Max
 'Max gradient': 'Max gradient'
+'Max heart rate formula': 'Max heart rate formula'
 May: May
 Medium: Mellan
 Metric: Metric
@@ -347,7 +364,9 @@ Oct: Okt
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.'
 'One of your gear maintenance tasks is due': 'En av dina underhållsuppgifter behöver uppmärksamhet'
 'Optimal training range': 'Optimal träning'
+'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.'
 'Optional subtitle': 'Optional subtitle'
+'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.': 'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.'
 'Optional. Leave empty to always apply this goal.': 'Optional. Leave empty to always apply this goal.'
 Other: Annat
 'Outdoor Sports': 'Utomhus sport'
@@ -376,6 +395,7 @@ Power: Effekt
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.'
 'Prev year': 'Tidigare år'
 Previous: Previous
+'Profile picture URL': 'Profile picture URL'
 'Purchase price': 'Purchase price'
 Race: Tävling
 'Racing Score': Tävlingspoäng
@@ -412,6 +432,7 @@ Resetting...: Resetting...
 'Rest days': Vilodagar
 'Rest days in last 7 days': 'Vilodagar de senaste 7 dagarna'
 'Rest days vs. active days': 'Vilodagar kontra aktiva dagar'
+'Resting heart rate formula': 'Resting heart rate formula'
 'Restrict to date range': 'Restrict to date range'
 Retired: Retired
 'Retired gear': 'Avställd utrustning'
@@ -579,6 +600,8 @@ Tennis: Tennis
 "That's {number} days of at least {distance}": "That's {number} days of at least {distance}"
 "That's {percentage}% of all countries 🌍": "That's {percentage}% of all countries 🌍"
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.'
+'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
+'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.': 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.'
 "The name is derived from the device recorded on your activities and can't be edited.": "The name is derived from the device recorded on your activities and can't be edited."
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': 'Dessa märken skapas dynamiskt. Du kan använda dem i vilken &lt;img&gt; tagg som helst'
 Thinking...: Tänker...
@@ -676,7 +699,9 @@ Yoga: Yoga
 'Your Strava badge': 'Ditt strava märke'
 'Your Zwift badge': 'Ditt Zwift märke'
 'Your badge(s)': 'Ditt/Dina märke(n)'
+'Your birthday. Needed to calculate heart rate zones.': 'Your birthday. Needed to calculate heart rate zones.'
 'Your changes have been saved.': 'Your changes have been saved.'
+'Your gender. Used to determine activity training load.': 'Your gender. Used to determine activity training load.'
 Z1: Z1
 'Z1-2 (Low)': 'Z1-2 (Låg)'
 Z2: Z2

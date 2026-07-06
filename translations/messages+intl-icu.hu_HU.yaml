@@ -23,6 +23,7 @@ Activity: Tevékenység
 'Acute Training Load (Fatigue) - 7-day exponentially weighted average of your daily training load. Represents short-term fatigue.': 'Akut edzésterhelés (Fáradtság) – a napi edzésterhelés 7 napos exponenciálisan súlyozott átlaga. A rövid távú fáradtságot mutatja.'
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Akut:Krónikus arány – az ATL és CTL aránya. Sérülésveszélyt jelöl.'
 'Adaptive & Inclusive Sports': 'Adaptív és inkluzív sportok'
+'Add FTP': 'Add FTP'
 'Add a component to start tracking maintenance.': 'Add a component to start tracking maintenance.'
 'Add a widget': 'Add a widget'
 'Add challenge': 'Add challenge'
@@ -30,6 +31,7 @@ Activity: Tevékenység
 'Add gear': 'Add gear'
 'Add goal': 'Add goal'
 'Add task': 'Add task'
+'Add weight': 'Add weight'
 'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
 Admin: Admin
@@ -39,6 +41,7 @@ All: Mind
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'All associated maintenance tasks and logs will be removed. This action cannot be undone.'
 'All time': Összesített
 'Alpine Ski': 'Alpesi sí'
+'App subtitle': 'App subtitle'
 Apr: Ápr
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
 'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
@@ -63,6 +66,7 @@ Best: Legjobb
 'Best effort': 'Legjobb teljesítmény'
 'Best efforts': 'Legjobb teljesítmények'
 'Best efforts for {sportType}': 'Legjobb teljesítmények ({sportType})'
+Birthday: Birthday
 'Build zone (–10)': 'Építési zóna (–10)'
 'CTL (Fitness)': 'CTL (Fitnesz)'
 Cadence: Kadencia
@@ -166,10 +170,14 @@ Energy: Energy
 Evening: Este
 Every: Every
 'Excludes commutes': 'Ingázások nélkül'
+FTP: FTP
 'FTP history': 'FTP előzmények'
+'FTP history (cycling)': 'FTP history (cycling)'
+'FTP history (running)': 'FTP history (running)'
 Failed: Failed
 Favourite: Kedvenc
 Feb: Feb
+Female: Female
 'File exceeds {max} MB': 'File exceeds {max} MB'
 'File imports': 'File imports'
 'File imports are only available in file import mode': 'File imports are only available in file import mode'
@@ -181,6 +189,7 @@ Filename: Filename
 'Filter on sport type': 'Szűrés sporttípusra'
 'Filter on starred segments': 'Szűrés csillagozott szegmensekre'
 'First activity in {countryName}': 'Első tevékenység {countryName} országban'
+'First name': 'First name'
 'First-ever activity recorded': 'Első rögzített tevékenység'
 Firsts: Elsők
 Fitness: Fitnesz
@@ -200,6 +209,8 @@ Gear: Felszerelés
 "Gear that hasn't been used in the last three months, is disabled by default.": 'Az elmúlt három hónapban nem használt felszerelés alapértelmezés szerint le van tiltva.'
 'Gear that is retired is disabled by default.': 'A visszavont felszerelés alapértelmezés szerint le van tiltva.'
 'Gear will appear here once you add them.': 'Gear will appear here once you add them.'
+Gender: Gender
+General: General
 'Go to first page': 'Go to first page'
 'Go to last page': 'Go to last page'
 'Go to next page': 'Go to next page'
@@ -227,6 +238,9 @@ High: Magas
 Hikes: Túrák
 History: Előzmények
 'History (6 weeks)': 'Előzmények (6 hét)'
+'History of cycling FTP. Needed to calculate activity stress level.': 'History of cycling FTP. Needed to calculate activity stress level.'
+'History of running FTP. Needed to calculate activity stress level.': 'History of running FTP. Needed to calculate activity stress level.'
+'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.'
 'How diverse is your training': 'Mennyire változatos az edzésed'
 'How hard is your typical training session': 'Milyen kemény a tipikus edzésed'
 'How long is your typical training session': 'Milyen hosszú a tipikus edzésed'
@@ -264,6 +278,7 @@ Lap: Kör
 'Last effort date': 'Utolsó teljesítmény dátuma'
 'Last maintenance': 'Utolsó karbantartás'
 'Last month': 'Last month'
+'Last name': 'Last name'
 'Last week': 'Last week'
 'Last {numberOfDays} days': 'Utolsó {numberOfDays} nap'
 'Leave empty to include all sport types.': 'Leave empty to include all sport types.'
@@ -288,9 +303,11 @@ Maintenance: Karbantartás
 'Maintenance log': 'Maintenance log'
 'Maintenance logs will appear here once maintenance has been registered.': 'Maintenance logs will appear here once maintenance has been registered.'
 'Maintenance tasks': 'Maintenance tasks'
+Male: Male
 Mar: Már
 Max: Max
 'Max gradient': 'Max. lejtés'
+'Max heart rate formula': 'Max heart rate formula'
 May: Máj
 Medium: Közepes
 Metric: Metrikus
@@ -347,7 +364,9 @@ Oct: Okt
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'Átlagosan ez {dailyAverage} naponta, heti átlag {weeklyAverage} és havi átlag {monthlyAverage}.'
 'One of your gear maintenance tasks is due': 'Az egyik felszerelés karbantartási feladatod esedékes'
 'Optimal training range': 'Optimális edzéstartomány'
+'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.'
 'Optional subtitle': 'Optional subtitle'
+'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.': 'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.'
 'Optional. Leave empty to always apply this goal.': 'Optional. Leave empty to always apply this goal.'
 Other: Egyéb
 'Outdoor Sports': 'Szabadtéri sportok'
@@ -376,6 +395,7 @@ Power: Teljesítmény
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Ezt becsült {caloriesBurned} kalória hajtotta, ami nagyjából {numberOfPizzaSlices} szelet pizza.'
 'Prev year': 'Előző év'
 Previous: Előző
+'Profile picture URL': 'Profile picture URL'
 'Purchase price': 'Purchase price'
 Race: Verseny
 'Racing Score': Versenypontszám
@@ -412,6 +432,7 @@ Resetting...: Resetting...
 'Rest days': Pihenőnapok
 'Rest days in last 7 days': 'Pihenőnapok az utolsó 7 napban'
 'Rest days vs. active days': 'Pihenőnapok vs. aktív napok'
+'Resting heart rate formula': 'Resting heart rate formula'
 'Restrict to date range': 'Restrict to date range'
 Retired: Retired
 'Retired gear': 'Visszavont felszerelés'
@@ -579,6 +600,8 @@ Tennis: Tenisz
 "That's {number} days of at least {distance}": 'Ez {number} nap legalább {distance}-vel'
 "That's {percentage}% of all countries 🌍": "That's {percentage}% of all countries 🌍"
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.'
+'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
+'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.': 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.'
 "The name is derived from the device recorded on your activities and can't be edited.": "The name is derived from the device recorded on your activities and can't be edited."
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': 'Ezek a kitűzők dinamikusan jönnek létre. Bármely &lt;img&gt; tagben használhatod őket'
 Thinking...: Gondolkodás...
@@ -676,7 +699,9 @@ Yoga: Jóga
 'Your Strava badge': 'Strava kitűződ'
 'Your Zwift badge': 'Zwift kitűződ'
 'Your badge(s)': Kitűződ(ök)
+'Your birthday. Needed to calculate heart rate zones.': 'Your birthday. Needed to calculate heart rate zones.'
 'Your changes have been saved.': 'Your changes have been saved.'
+'Your gender. Used to determine activity training load.': 'Your gender. Used to determine activity training load.'
 Z1: Z1
 'Z1-2 (Low)': 'Z1-2 (Alacsony)'
 Z2: Z2

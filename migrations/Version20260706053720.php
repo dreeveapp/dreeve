@@ -39,6 +39,7 @@ final class Version20260706053720 extends AbstractMigration
 
         $subtree = $this->normalizeKeys($subtree);
         $subtree = $this->applyStoredAthlete($subtree);
+        $subtree = $this->normalizeAthleteHistories($subtree);
 
         $this->connection->executeStatement(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
@@ -81,6 +82,45 @@ final class Version20260706053720 extends AbstractMigration
             }
         }
         $subtree['athlete'] = $current;
+
+        return $subtree;
+    }
+
+    /**
+     * @param array<string, mixed> $subtree
+     *
+     * @return array<string, mixed>
+     */
+    private function normalizeAthleteHistories(array $subtree): array
+    {
+        if (!is_array($subtree['athlete'] ?? null)) {
+            return $subtree;
+        }
+        $athlete = $subtree['athlete'];
+
+        // weightHistory: { "2020-01-01": 68 } -> [ { "on": "2020-01-01", "weight": 68 } ]
+        $weightHistory = [];
+        foreach ((is_array($athlete['weightHistory'] ?? null) ? $athlete['weightHistory'] : []) as $on => $weight) {
+            $weightHistory[] = ['on' => (string) $on, 'weight' => $weight];
+        }
+        $athlete['weightHistory'] = $weightHistory;
+
+        // ftpHistory: { cycling: {...}, running: {...} } -> { cycling: [ { "on", "ftp" } ], running: [...] }
+        $ftpHistory = is_array($athlete['ftpHistory'] ?? null) ? $athlete['ftpHistory'] : [];
+        if (!array_key_exists('cycling', $ftpHistory) && !array_key_exists('running', $ftpHistory)) {
+            $ftpHistory = ['cycling' => $ftpHistory, 'running' => []];
+        }
+        $cycling = [];
+        foreach ((is_array($ftpHistory['cycling'] ?? null) ? $ftpHistory['cycling'] : []) as $on => $ftp) {
+            $cycling[] = ['on' => (string) $on, 'ftp' => $ftp];
+        }
+        $running = [];
+        foreach ((is_array($ftpHistory['running'] ?? null) ? $ftpHistory['running'] : []) as $on => $ftp) {
+            $running[] = ['on' => (string) $on, 'ftp' => $ftp];
+        }
+        $athlete['ftpHistory'] = ['cycling' => $cycling, 'running' => $running];
+
+        $subtree['athlete'] = $athlete;
 
         return $subtree;
     }

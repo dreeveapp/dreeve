@@ -49,7 +49,8 @@ final readonly class GeneralSettings
         }
 
         $restingHeartRateFormula = $athlete['restingHeartRateFormula'] ?? 'heuristicAgeBased';
-        if (!is_string($restingHeartRateFormula) && !is_array($restingHeartRateFormula) && !is_int($restingHeartRateFormula)) {
+        if (!is_array($restingHeartRateFormula) && !is_int($restingHeartRateFormula)
+            && (!is_string($restingHeartRateFormula) || '' === trim($restingHeartRateFormula))) {
             $restingHeartRateFormula = 'heuristicAgeBased';
         }
 

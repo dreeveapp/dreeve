@@ -1,0 +1,155 @@
+{% extends "html/admin/page/template.html.twig" %}
+
+{% macro historyEditor(fieldPath, rows, title, description, valueLabel, addLabel, valueKey, valueStep) %}
+    <div data-repeater data-repeater-min="0">
+        <label class="mt-0!">{{ title }}</label>
+        {% if description %}
+            <p class="mt-0.5 mb-2 text-xxs text-gray-500">{{ description }}</p>
+        {% endif %}
+        <div class="flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ rows|json_encode|e('html_attr') }}"></div>
+        <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
+            <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+            </svg>
+            <span>{{ addLabel }}</span>
+        </button>
+        <template data-repeater-template>
+            <div class="flex items-end gap-2" data-repeater-item>
+                <div class="flex-1">
+                    <label class="mt-0! text-xxs text-gray-500">{{ "Date"|trans }}</label>
+                    <input type="date" name="{{ fieldPath }}[__index__][on]" data-repeater-field="on" required>
+                </div>
+                <div class="flex-1">
+                    <label class="mt-0! text-xxs text-gray-500">{{ valueLabel }}</label>
+                    <input type="number" step="{{ valueStep }}" min="0" name="{{ fieldPath }}[__index__][{{ valueKey }}]" data-repeater-field="{{ valueKey }}" required>
+                </div>
+                <button type="button" data-repeater-remove
+                        class="unstyled cursor-pointer grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
+                        aria-label="{{ "Remove"|trans }}">
+                    <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                    </svg>
+                </button>
+            </div>
+        </template>
+    </div>
+{% endmacro %}
+
+{% block main %}
+    {% set athlete = settings.athlete ?? {} %}
+    {% set genderOptions = {'M': 'Male'|trans, 'F': 'Female'|trans, 'X': 'Other'|trans} %}
+    {% set maxHeartRateFormulaOptions = ['arena', 'astrand', 'fox', 'gellish', 'nes', 'tanaka'] %}
+    <div class="flex flex-col gap-4">
+        <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            <input type="hidden" name="group" value="{{ group.value }}">
+            <div class="mb-5">
+                <h3 class="text-lg font-semibold">{{ "General"|trans }}</h3>
+            </div>
+            <div data-form-error class="hidden mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert"></div>
+            <div class="flex flex-col gap-4">
+                <div>
+                    <label for="appSubTitle">{{ "App subtitle"|trans }}</label>
+                    <input type="text" id="appSubTitle" name="data[appSubTitle]" value="{{ settings.appSubTitle ?? '' }}">
+                    <p class="mt-0.5 text-xxs text-gray-500">
+                        {{ "Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable."|trans }}
+                    </p>
+                </div>
+                <div>
+                    <label for="profilePictureUrl">{{ "Profile picture URL"|trans }}</label>
+                    <input type="text" id="profilePictureUrl" name="data[profilePictureUrl]" value="{{ settings.profilePictureUrl ?? '' }}">
+                    <p class="mt-0.5 text-xxs text-gray-500">
+                        {{ "Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable."|trans }}
+                    </p>
+                </div>
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="firstName">{{ "First name"|trans }}</label>
+                        <input type="text" id="firstName" name="data[athlete][firstName]" value="{{ athlete.firstName ?? '' }}">
+                    </div>
+                    <div>
+                        <label for="lastName">{{ "Last name"|trans }}</label>
+                        <input type="text" id="lastName" name="data[athlete][lastName]" value="{{ athlete.lastName ?? '' }}">
+                    </div>
+                </div>
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="birthday">{{ "Birthday"|trans }}</label>
+                        <input type="date" id="birthday" name="data[athlete][birthday]" value="{{ athlete.birthday ?? '' }}" required>
+                        <p class="mt-0.5 text-xxs text-gray-500">
+                            {{ "Your birthday. Needed to calculate heart rate zones."|trans }}
+                        </p>
+                    </div>
+                    <div>
+                        <label for="gender">{{ "Gender"|trans }}</label>
+                        <select id="gender" name="data[athlete][gender]">
+                            {% for value, genderLabel in genderOptions %}
+                                <option value="{{ value }}" {{ (athlete.gender ?? '') == value ? 'selected' : '' }}>{{ genderLabel }}</option>
+                            {% endfor %}
+                        </select>
+                        <p class="mt-0.5 text-xxs text-gray-500">
+                            {{ "Your gender. Used to determine activity training load."|trans }}
+                        </p>
+                    </div>
+                </div>
+                {% set maxHeartRateFormula = athlete.maxHeartRateFormula ?? null %}
+                <div>
+                    <label for="maxHeartRateFormula">{{ "Max heart rate formula"|trans }}</label>
+                    <select id="maxHeartRateFormula" name="data[athlete][maxHeartRateFormula]">
+                        {% for formula in maxHeartRateFormulaOptions %}
+                            <option value="{{ formula }}" {{ maxHeartRateFormula == formula ? 'selected' : '' }}>{{ formula }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="mt-0.5 text-xxs text-gray-500">
+                        {{ "The formula used to calculate your max heart rate. The default is Fox (220 − age)."|trans }}
+                    </p>
+                </div>
+                {% set restingHeartRateFormula = athlete.restingHeartRateFormula ?? null %}
+                <div>
+                    <label for="restingHeartRateFormula">{{ "Resting heart rate formula"|trans }}</label>
+                    <input type="text" id="restingHeartRateFormula" name="data[athlete][restingHeartRateFormula]" value="{{ restingHeartRateFormula is iterable ? '' : (restingHeartRateFormula ?? '') }}">
+                    <p class="mt-0.5 text-xxs text-gray-500">
+                        {{ "The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased."|trans }}
+                    </p>
+                </div>
+            </div>
+            <div class="mt-6 flex flex-col gap-6 border-t border-gray-200 pt-6">
+                {{ _self.historyEditor(
+                    'data[athlete][weightHistory]',
+                    athlete.weightHistory ?? [],
+                    "Weight history"|trans,
+                    "History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg."|trans,
+                    "Weight"|trans,
+                    "Add weight"|trans,
+                    'weight',
+                    'any'
+                ) }}
+                {{ _self.historyEditor(
+                    'data[athlete][ftpHistory][cycling]',
+                    athlete.ftpHistory.cycling ?? [],
+                    "FTP history (cycling)"|trans,
+                    "History of cycling FTP. Needed to calculate activity stress level."|trans,
+                    "FTP"|trans,
+                    "Add FTP"|trans,
+                    'ftp',
+                    '1'
+                ) }}
+                {{ _self.historyEditor(
+                    'data[athlete][ftpHistory][running]',
+                    athlete.ftpHistory.running ?? [],
+                    "FTP history (running)"|trans,
+                    "History of running FTP. Needed to calculate activity stress level."|trans,
+                    "FTP"|trans,
+                    "Add FTP"|trans,
+                    'ftp',
+                    '1'
+                ) }}
+            </div>
+            <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
+                <button type="submit" data-has-loading-state class="group btn--primary">
+                    <span class="label">{{ "Save settings"|trans }}</span>
+                    <span class="label--loading">{{ "Saving..."|trans }}</span>
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock main %}
