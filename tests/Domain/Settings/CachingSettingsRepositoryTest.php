@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Settings;
 
 use App\Domain\Settings\AthleteHasNotBeenConfigured;
-use App\Domain\Settings\GeneralSettings;
 use App\Domain\Settings\CachingSettingsRepository;
+use App\Domain\Settings\GeneralSettings;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use PHPUnit\Framework\TestCase;
@@ -56,15 +56,15 @@ class CachingSettingsRepositoryTest extends TestCase
 
         $repository = new CachingSettingsRepository($inner);
 
-        $repository->general();                                        // fills the memo
-        $repository->save(SettingsGroup::GENERAL, ['foo' => 'bar']);   // invalidates it
-        $repository->general();                                        // re-reads inner
+        $repository->general();
+        $repository->save(SettingsGroup::GENERAL, ['foo' => 'bar']);
+        $repository->general();
     }
 
     public function testAthleteNotConfiguredExceptionIsNotMemoized(): void
     {
         $inner = $this->createMock(SettingsRepository::class);
-        // A failing read must not be cached: every call re-hits inner.
+
         $inner->expects($this->exactly(2))
             ->method('general')
             ->willThrowException(AthleteHasNotBeenConfigured::because('nope'));
