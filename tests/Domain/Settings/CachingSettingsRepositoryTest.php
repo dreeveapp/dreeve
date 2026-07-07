@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Settings;
 
 use App\Domain\Settings\AthleteHasNotBeenConfigured;
-use App\Domain\Settings\GeneralSettings;
 use App\Domain\Settings\CachingSettingsRepository;
 use App\Domain\Settings\GeneralSettings;
 use App\Domain\Settings\SettingsGroup;
