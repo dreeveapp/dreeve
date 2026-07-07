@@ -41,4 +41,9 @@ final readonly class KeyValueBasedSettingsRepository implements SettingsReposito
     {
         return GeneralSettings::fromArray($this->find(SettingsGroup::GENERAL));
     }
+
+    public function appearance(): AppearanceSettings
+    {
+        return AppearanceSettings::fromArray($this->find(SettingsGroup::APPEARANCE));
+    }
 }

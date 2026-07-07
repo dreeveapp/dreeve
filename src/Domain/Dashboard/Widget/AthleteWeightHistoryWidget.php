@@ -7,7 +7,6 @@ namespace App\Domain\Dashboard\Widget;
 use App\Domain\Athlete\Weight\AthleteWeightHistoryChart;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -15,7 +14,6 @@ use Twig\Environment;
 final readonly class AthleteWeightHistoryWidget implements Widget
 {
     public function __construct(
-        private UnitSystem $unitSystem,
         private Environment $twig,
         private TranslatorInterface $translator,
         private SettingsRepository $settingsRepository,
@@ -43,7 +41,8 @@ final readonly class AthleteWeightHistoryWidget implements Widget
 
     public function render(SerializableDateTime $now, WidgetConfiguration $configuration): ?string
     {
-        $allWeights = $this->settingsRepository->general()->getAthleteWeightHistory($this->unitSystem)->findAll();
+        $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
+        $allWeights = $this->settingsRepository->general()->getAthleteWeightHistory($unitSystem)->findAll();
         if ([] === $allWeights) {
             return null;
         }
@@ -53,7 +52,7 @@ final readonly class AthleteWeightHistoryWidget implements Widget
                 AthleteWeightHistoryChart::create(
                     athleteWeights: $allWeights,
                     now: $now,
-                    unitSystem: $this->unitSystem,
+                    unitSystem: $unitSystem,
                     translator: $this->translator
                 )->build()
             ),

@@ -10,9 +10,9 @@ use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\StatsContext;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -22,7 +22,7 @@ final readonly class MonthlyStatsWidget implements Widget
     public function __construct(
         private ActivityTypeRepository $activityTypeRepository,
         private QueryBus $queryBus,
-        private UnitSystem $unitSystem,
+        private SettingsRepository $settingsRepository,
         private Environment $twig,
         private TranslatorInterface $translator,
     ) {
@@ -89,7 +89,7 @@ final readonly class MonthlyStatsWidget implements Widget
                         activityType: $activityType,
                         monthlyStats: $monthlyStats,
                         context: $monthlyStatsContext,
-                        unitSystem: $this->unitSystem,
+                        unitSystem: $this->settingsRepository->appearance()->getUnitSystem(),
                         translator: $this->translator,
                         enableLastXYearsByDefault: $enableLastXYearsByDefault
                     )->build()

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Twig;
 
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
 use App\Infrastructure\ValueObject\Measurement\Imperial;
 use App\Infrastructure\ValueObject\Measurement\Metric;
@@ -19,17 +20,18 @@ final readonly class MeasurementTwigExtension
     use ProvideTimeFormats;
 
     public function __construct(
-        private UnitSystem $unitSystem,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
     #[AsTwigFilter('convertMeasurement')]
     public function convertMeasurement(Unit $measurement): Unit
     {
-        if (UnitSystem::IMPERIAL === $this->unitSystem && $measurement instanceof Metric) {
+        $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
+        if (UnitSystem::IMPERIAL === $unitSystem && $measurement instanceof Metric) {
             return $measurement->toImperial();
         }
-        if (UnitSystem::METRIC === $this->unitSystem && $measurement instanceof Imperial) {
+        if (UnitSystem::METRIC === $unitSystem && $measurement instanceof Imperial) {
             return $measurement->toMetric();
         }
 
@@ -75,7 +77,7 @@ final readonly class MeasurementTwigExtension
     #[AsTwigFilter('formatPace')]
     public function formatPace(Pace $pace): string
     {
-        $pace = $pace->toUnitSystem($this->unitSystem);
+        $pace = $pace->toUnitSystem($this->settingsRepository->appearance()->getUnitSystem());
 
         return $this->formatDurationAsClock($pace->toInt());
     }
@@ -83,11 +85,13 @@ final readonly class MeasurementTwigExtension
     #[AsTwigFunction('renderUnitSymbol')]
     public function getUnitSymbol(string $unitName): string
     {
+        $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
+
         return match ($unitName) {
-            'distance' => $this->unitSystem->distanceSymbol(),
-            'elevation' => $this->unitSystem->elevationSymbol(),
-            'pace' => $this->unitSystem->paceSymbol(),
-            'speed' => $this->unitSystem->speedSymbol(),
+            'distance' => $unitSystem->distanceSymbol(),
+            'elevation' => $unitSystem->elevationSymbol(),
+            'pace' => $unitSystem->paceSymbol(),
+            'speed' => $unitSystem->speedSymbol(),
             default => throw new \RuntimeException(sprintf('Invalid unitName "%s"', $unitName)),
         };
     }

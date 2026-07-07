@@ -32,10 +32,11 @@ enum SettingsGroup: string
     /**
      * @param array<string, mixed> $data
      */
-    public function settingsFromArray(array $data): GeneralSettings
+    public function settingsFromArray(array $data): object
     {
         return match ($this) {
             self::GENERAL => GeneralSettings::fromArray($data),
+            self::APPEARANCE => AppearanceSettings::fromArray($data),
             default => throw new \LogicException(sprintf('Settings group "%s" is not migrated yet.', $this->value)),
         };
     }

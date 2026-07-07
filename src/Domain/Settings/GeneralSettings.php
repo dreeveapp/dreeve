@@ -36,7 +36,7 @@ final readonly class GeneralSettings
     public static function fromArray(?array $data): self
     {
         $data ??= [];
-        $athlete = is_array($data['athlete'] ?? null) ? $data['athlete'] : [];
+        $athlete = $data['athlete'] ?? [];
 
         $birthday = $athlete['birthday'] ?? null;
         if (!is_string($birthday) || '' === trim($birthday)) {
@@ -55,24 +55,24 @@ final readonly class GeneralSettings
         }
 
         $athleteBirthDate = AthleteBirthDate::fromString($birthday);
-        $firstName = is_string($athlete['firstName'] ?? null) ? $athlete['firstName'] : null;
-        $lastName = is_string($athlete['lastName'] ?? null) ? $athlete['lastName'] : null;
+        $firstName = $athlete['firstName'] ?? null;
+        $lastName = $athlete['lastName'] ?? null;
 
         return new self(
-            appSubTitle: AppSubTitle::fromOptionalString(is_string($data['appSubTitle'] ?? null) ? $data['appSubTitle'] : null),
+            appSubTitle: AppSubTitle::fromOptionalString($data['appSubTitle'] ?? null),
             profilePictureUrl: ProfilePictureUrl::fromOptionalString(is_string($data['profilePictureUrl'] ?? null) ? $data['profilePictureUrl'] : null),
             athlete: Athlete::create(
                 athleteId: substr(hash('sha256', sprintf('%s|%s|%s', $firstName ?? '', $lastName ?? '', $athleteBirthDate->format('Y-m-d'))), 0, 12),
                 birthDate: $athleteBirthDate,
                 firstName: $firstName,
                 lastName: $lastName,
-                gender: is_string($athlete['gender'] ?? null) ? $athlete['gender'] : null,
+                gender: $athlete['gender'] ?? null,
                 maxHeartRateFormula: new MaxHeartRateFormulas()->determineFormula($maxHeartRateFormula),
                 restingHeartRateFormula: new RestingHeartRateFormulas()->determineFormula($restingHeartRateFormula),
             ),
-            heartRateZoneConfiguration: HeartRateZoneConfiguration::fromArray(is_array($athlete['heartRateZones'] ?? null) ? $athlete['heartRateZones'] : []),
-            ftpHistory: FtpHistory::fromArray(is_array($athlete['ftpHistory'] ?? null) ? $athlete['ftpHistory'] : []),
-            weightHistory: is_array($athlete['weightHistory'] ?? null) ? $athlete['weightHistory'] : [],
+            heartRateZoneConfiguration: HeartRateZoneConfiguration::fromArray($athlete['heartRateZones'] ?? []),
+            ftpHistory: FtpHistory::fromArray($athlete['ftpHistory'] ?? []),
+            weightHistory: $athlete['weightHistory'] ?? [],
         );
     }
 

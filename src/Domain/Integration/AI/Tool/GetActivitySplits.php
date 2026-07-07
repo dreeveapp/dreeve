@@ -7,7 +7,7 @@ namespace App\Domain\Integration\AI\Tool;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\Split\ActivitySplit;
 use App\Domain\Activity\Split\ActivitySplitRepository;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Domain\Settings\SettingsRepository;
 use NeuronAI\Tools\PropertyType;
 use NeuronAI\Tools\Tool;
 use NeuronAI\Tools\ToolProperty;
@@ -16,7 +16,7 @@ final class GetActivitySplits extends Tool
 {
     public function __construct(
         private readonly ActivitySplitRepository $activitySplitRepository,
-        private readonly UnitSystem $unitSystem,
+        private readonly SettingsRepository $settingsRepository,
     ) {
         parent::__construct(
             'get_activity_splits',
@@ -61,7 +61,7 @@ final class GetActivitySplits extends Tool
         $activityId = ActivityId::fromUnprefixed($activityId);
         $splits = $this->activitySplitRepository->findBy(
             activityId: $activityId,
-            unitSystem: $this->unitSystem
+            unitSystem: $this->settingsRepository->appearance()->getUnitSystem()
         );
 
         return $splits->map(static fn (ActivitySplit $split): array => $split->exportForAITooling());

@@ -8,7 +8,7 @@ use App\Domain\Activity\EnrichedActivities;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Image\ImageOrientation;
 use App\Domain\Image\ImagePath;
-use App\Infrastructure\Config\Photos\HidePhotosForSportTypes;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Infrastructure\ValueObject\Time\Year;
@@ -21,7 +21,7 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
         private EnrichedActivities $enrichedActivities,
         private ActivityRepository $activityRepository,
         private FilesystemOperator $fileStorage,
-        private HidePhotosForSportTypes $hidePhotosForSportTypes,
+        private SettingsRepository $settingsRepository,
         private KernelProjectDir $kernelProjectDir,
     ) {
     }
@@ -35,7 +35,7 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
                 continue;
             }
 
-            if ($this->hidePhotosForSportTypes->has($activity->getSportType())) {
+            if ($this->settingsRepository->appearance()->getHidePhotosForSportTypes()->has($activity->getSportType())) {
                 continue;
             }
 
@@ -103,7 +103,7 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
         $totalImageCount = 0;
 
         foreach ($activities as $activity) {
-            if ($this->hidePhotosForSportTypes->has($activity->getSportType())) {
+            if ($this->settingsRepository->appearance()->getHidePhotosForSportTypes()->has($activity->getSportType())) {
                 continue;
             }
             $totalImageCount += $activity->getTotalImageCount();

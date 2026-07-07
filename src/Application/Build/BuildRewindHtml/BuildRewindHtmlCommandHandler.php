@@ -36,12 +36,12 @@ use App\Domain\Rewind\RestDaysVsActiveDaysChart;
 use App\Domain\Rewind\RewindItem;
 use App\Domain\Rewind\RewindItems;
 use App\Domain\Rewind\RewindItemsPerGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\Year;
 use App\Infrastructure\ValueObject\Time\Years;
 use League\Flysystem\FilesystemOperator;
@@ -55,7 +55,7 @@ final readonly class BuildRewindHtmlCommandHandler implements CommandHandler
         private ImageRepository $imageRepository,
         private EnrichedActivities $enrichedActivities,
         private QueryBus $queryBus,
-        private UnitSystem $unitSystem,
+        private SettingsRepository $settingsRepository,
         private Environment $twig,
         private FilesystemOperator $buildHtmlStorage,
         private TranslatorInterface $translator,
@@ -67,6 +67,7 @@ final readonly class BuildRewindHtmlCommandHandler implements CommandHandler
         assert($command instanceof BuildRewindHtml);
 
         $now = $command->getCurrentDateTime();
+        $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
         $availableRewindOptionsResponse = $this->queryBus->ask(new FindAvailableRewindOptions());
         $availableRewindOptions = $availableRewindOptionsResponse->getAvailableOptions();
         $usedGears = $this->gearRepository->findAllUsed();
@@ -156,12 +157,12 @@ final readonly class BuildRewindHtmlCommandHandler implements CommandHandler
                     content: $this->twig->render('html/rewind/rewind-chart.html.twig', [
                         'chart' => Json::encode(DistancePerMonthChart::create(
                             distancePerMonth: $totalsPerMonthResponse->getDistancePerMonth(),
-                            unitSystem: $this->unitSystem,
+                            unitSystem: $unitSystem,
                             translator: $this->translator,
                         )->build()),
                     ]),
-                    totalMetric: $totalsPerMonthResponse->getTotalDistance()->toUnitSystem($this->unitSystem)->toInt(),
-                    totalMetricLabel: $this->unitSystem->distanceSymbol(),
+                    totalMetric: $totalsPerMonthResponse->getTotalDistance()->toUnitSystem($unitSystem)->toInt(),
+                    totalMetricLabel: $unitSystem->distanceSymbol(),
                 ))
                 ->add(RewindItem::from(
                     icon: 'time',
@@ -183,12 +184,12 @@ final readonly class BuildRewindHtmlCommandHandler implements CommandHandler
                     content: $this->twig->render('html/rewind/rewind-chart.html.twig', [
                         'chart' => Json::encode(ElevationPerMonthChart::create(
                             elevationPerMonth: $totalsPerMonthResponse->getElevationPerMonth(),
-                            unitSystem: $this->unitSystem,
+                            unitSystem: $unitSystem,
                             translator: $this->translator,
                         )->build()),
                     ]),
-                    totalMetric: $totalsPerMonthResponse->getTotalElevation()->toUnitSystem($this->unitSystem)->toInt(),
-                    totalMetricLabel: $this->unitSystem->elevationSymbol(),
+                    totalMetric: $totalsPerMonthResponse->getTotalElevation()->toUnitSystem($unitSystem)->toInt(),
+                    totalMetricLabel: $unitSystem->elevationSymbol(),
                 ))->add(RewindItem::from(
                     icon: 'time',
                     title: $this->translator->trans('Moving time by sport'),

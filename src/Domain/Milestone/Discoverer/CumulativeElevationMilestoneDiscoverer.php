@@ -12,6 +12,7 @@ use App\Domain\Milestone\MilestoneCategory;
 use App\Domain\Milestone\MilestoneIdFactory;
 use App\Domain\Milestone\Milestones;
 use App\Domain\Milestone\PreviousMilestone;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\ValueObject\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -21,7 +22,7 @@ final readonly class CumulativeElevationMilestoneDiscoverer implements Milestone
 {
     public function __construct(
         private Connection $connection,
-        private UnitSystem $unitSystem,
+        private SettingsRepository $settingsRepository,
         private MilestoneIdFactory $milestoneIdFactory,
     ) {
     }
@@ -46,7 +47,7 @@ final readonly class CumulativeElevationMilestoneDiscoverer implements Milestone
              ORDER BY startDateTime ASC'
         )->fetchAllAssociative();
 
-        $thresholds = UnitSystem::IMPERIAL === $this->unitSystem ? self::IMPERIAL_THRESHOLDS : self::METRIC_THRESHOLDS;
+        $thresholds = UnitSystem::IMPERIAL === $this->settingsRepository->appearance()->getUnitSystem() ? self::IMPERIAL_THRESHOLDS : self::METRIC_THRESHOLDS;
 
         $milestones = [];
         $globalElevationM = 0.0;
@@ -72,7 +73,7 @@ final readonly class CumulativeElevationMilestoneDiscoverer implements Milestone
             $achievedOn = SerializableDateTime::fromString($row['startDateTime']);
 
             $globalElevationM += $elevationM;
-            $globalCumulativeInUnit = Meter::from($globalElevationM)->toUnitSystem($this->unitSystem);
+            $globalCumulativeInUnit = Meter::from($globalElevationM)->toUnitSystem($this->settingsRepository->appearance()->getUnitSystem());
 
             while ($globalThresholdIndex < count($thresholds) && $globalCumulativeInUnit->toFloat() >= $thresholds[$globalThresholdIndex]) {
                 $threshold = $thresholds[$globalThresholdIndex];
@@ -93,7 +94,7 @@ final readonly class CumulativeElevationMilestoneDiscoverer implements Milestone
                 $sportPreviousMilestones[$sportTypeValue] = null;
             }
             $sportElevationsM[$sportTypeValue] += $elevationM;
-            $sportCumulativeInUnit = Meter::from($sportElevationsM[$sportTypeValue])->toUnitSystem($this->unitSystem);
+            $sportCumulativeInUnit = Meter::from($sportElevationsM[$sportTypeValue])->toUnitSystem($this->settingsRepository->appearance()->getUnitSystem());
 
             while ($sportThresholdIndices[$sportTypeValue] < count($thresholds) && $sportCumulativeInUnit->toFloat() >= $thresholds[$sportThresholdIndices[$sportTypeValue]]) {
                 $threshold = $thresholds[$sportThresholdIndices[$sportTypeValue]];
@@ -118,7 +119,7 @@ final readonly class CumulativeElevationMilestoneDiscoverer implements Milestone
         int $threshold,
         ?Milestone $previousMilestone,
     ): Milestone {
-        $thresholdInUnit = $this->unitSystem->elevation($threshold);
+        $thresholdInUnit = $this->settingsRepository->appearance()->getUnitSystem()->elevation($threshold);
 
         return Milestone::create(
             id: $this->milestoneIdFactory->random(),

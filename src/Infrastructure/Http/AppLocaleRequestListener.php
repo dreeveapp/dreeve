@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http;
 
-use App\Infrastructure\Localisation\Locale;
+use App\Domain\Settings\SettingsRepository;
 use Carbon\Carbon;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -14,7 +14,7 @@ use Symfony\Component\Translation\LocaleSwitcher;
 final readonly class AppLocaleRequestListener implements EventSubscriberInterface
 {
     public function __construct(
-        private Locale $locale,
+        private SettingsRepository $settingsRepository,
         private LocaleSwitcher $localeSwitcher,
     ) {
     }
@@ -25,9 +25,10 @@ final readonly class AppLocaleRequestListener implements EventSubscriberInterfac
             return;
         }
 
-        $event->getRequest()->setLocale($this->locale->value);
-        $this->localeSwitcher->setLocale($this->locale->value);
-        Carbon::setLocale($this->locale->value);
+        $locale = $this->settingsRepository->appearance()->getLocale();
+        $event->getRequest()->setLocale($locale->value);
+        $this->localeSwitcher->setLocale($locale->value);
+        Carbon::setLocale($locale->value);
     }
 
     /**

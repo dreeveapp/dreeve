@@ -8,13 +8,11 @@ use App\Domain\Activity\Route\Route;
 use App\Domain\Activity\Route\RouteRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypeRepository;
-use App\Infrastructure\Config\Leaflet\HeatmapConfig;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\Time\Format\DateAndTimeFormat;
 use App\Infrastructure\Twig\UrlTwigExtension;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use League\Flysystem\FilesystemOperator;
 use Twig\Environment;
 
@@ -23,11 +21,9 @@ final readonly class BuildHeatmapHtmlCommandHandler implements CommandHandler
     public function __construct(
         private RouteRepository $routeRepository,
         private SportTypeRepository $sportTypeRepository,
-        private HeatmapConfig $heatmapConfig,
+        private SettingsRepository $settingsRepository,
         private Environment $twig,
         private UrlTwigExtension $urlTwigExtension,
-        private UnitSystem $unitSystem,
-        private DateAndTimeFormat $dateAndTimeFormat,
         private FilesystemOperator $buildHtmlStorage,
         private FilesystemOperator $buildApiStorage,
     ) {
@@ -37,6 +33,8 @@ final readonly class BuildHeatmapHtmlCommandHandler implements CommandHandler
     {
         assert($command instanceof BuildHeatmapHtml);
 
+        $appearance = $this->settingsRepository->appearance();
+
         $importedSportTypes = $this->sportTypeRepository->findAll();
         $routes = $this->routeRepository->findAll();
 
@@ -44,8 +42,8 @@ final readonly class BuildHeatmapHtmlCommandHandler implements CommandHandler
         foreach ($routes as $route) {
             $enrichedRoutes[] = $route
                 ->withUnitSystemAndDateTimeFormat(
-                    unitSystem: $this->unitSystem,
-                    dateAndTimeFormat: $this->dateAndTimeFormat,
+                    unitSystem: $appearance->getUnitSystem(),
+                    dateAndTimeFormat: $appearance->getDateAndTimeFormat(),
                 )
                 ->withRelativeActivityUri($this->urlTwigExtension->toRelativeUrl('activity/'.$route->getActivityId().'.html'));
         }
@@ -65,7 +63,7 @@ final readonly class BuildHeatmapHtmlCommandHandler implements CommandHandler
                 'numberOfCountriesWithWorkouts' => count(array_filter(array_unique($routes->map(
                     fn (Route $route): ?string => $route->getRouteGeography()->getStartingPointCountryCode()
                 )))),
-                'heatmapConfig' => $this->heatmapConfig,
+                'heatmapConfig' => $appearance->getHeatmapConfig(),
             ]),
         );
     }

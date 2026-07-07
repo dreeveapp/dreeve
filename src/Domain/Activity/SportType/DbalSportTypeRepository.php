@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\SportType;
 
-use App\Infrastructure\Config\Photos\HidePhotosForSportTypes;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Repository\DbalRepository;
 use Doctrine\DBAL\Connection;
 
@@ -12,8 +12,7 @@ final readonly class DbalSportTypeRepository extends DbalRepository implements S
 {
     public function __construct(
         Connection $connection,
-        private SportTypesSortingOrder $sportTypesSortingOrder,
-        private HidePhotosForSportTypes $hidePhotosForSportTypes,
+        private SettingsRepository $settingsRepository,
     ) {
         parent::__construct($connection);
     }
@@ -31,7 +30,7 @@ final readonly class DbalSportTypeRepository extends DbalRepository implements S
     public function findForImages(): SportTypes
     {
         $notInSportTypes = ['invalid'];
-        foreach ($this->hidePhotosForSportTypes as $sportType) {
+        foreach ($this->settingsRepository->appearance()->getHidePhotosForSportTypes() as $sportType) {
             $notInSportTypes[] = $sportType->value;
         }
 
@@ -50,7 +49,7 @@ final readonly class DbalSportTypeRepository extends DbalRepository implements S
     private function buildOrderByStatement(): string
     {
         $orderByStatement = [];
-        foreach ($this->sportTypesSortingOrder as $index => $sportType) {
+        foreach ($this->settingsRepository->appearance()->getSportTypesSortingOrder() as $index => $sportType) {
             $orderByStatement[] = sprintf('WHEN "%s" THEN %d', $sportType->value, $index);
         }
         $orderByStatement[] = 'ELSE 9999';

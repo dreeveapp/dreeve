@@ -11,7 +11,6 @@ use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Carbon\CarbonInterval;
@@ -29,7 +28,6 @@ final class StreamBasedActivityPowerRepository implements ActivityPowerRepositor
         private readonly ActivitySummaryRepository $activitySummaryRepository,
         private readonly ActivitiesExcludedFromPeakPowerOutputs $activitiesExcludedFromPeakPowerOutputs,
         private readonly SettingsRepository $settingsRepository,
-        private readonly UnitSystem $unitSystem,
     ) {
     }
 
@@ -46,7 +44,7 @@ final class StreamBasedActivityPowerRepository implements ActivityPowerRepositor
             return;
         }
 
-        $athleteWeightHistory = $this->settingsRepository->general()->getAthleteWeightHistory($this->unitSystem);
+        $athleteWeightHistory = $this->settingsRepository->general()->getAthleteWeightHistory($this->settingsRepository->appearance()->getUnitSystem());
 
         $activityIds = $this->activityIdRepository->findAll();
         foreach ($activityIds as $activityId) {
@@ -141,7 +139,7 @@ final class StreamBasedActivityPowerRepository implements ActivityPowerRepositor
 
         $results = $this->connection->executeQuery($sql, $params, $types)->fetchAllAssociative();
 
-        $athleteWeightHistory = $this->settingsRepository->general()->getAthleteWeightHistory($this->unitSystem);
+        $athleteWeightHistory = $this->settingsRepository->general()->getAthleteWeightHistory($this->settingsRepository->appearance()->getUnitSystem());
 
         /** @var array<int, array{activityId: string, power: int}> $bestPerInterval */
         $bestPerInterval = [];

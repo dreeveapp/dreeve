@@ -11,7 +11,6 @@ use App\Domain\Ftp\Ftps;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -23,7 +22,6 @@ final readonly class FtpHistoryWidget implements Widget
         private ActivityTypeRepository $activityTypeRepository,
         private Environment $twig,
         private SettingsRepository $settingsRepository,
-        private UnitSystem $unitSystem,
     ) {
     }
 
@@ -52,7 +50,7 @@ final readonly class FtpHistoryWidget implements Widget
 
         $general = $this->settingsRepository->general();
         $ftpHistory = $general->getFtpHistory();
-        $athleteWeightHistory = $general->getAthleteWeightHistory($this->unitSystem);
+        $athleteWeightHistory = $general->getAthleteWeightHistory($this->settingsRepository->appearance()->getUnitSystem());
 
         /** @var ActivityType $activityType */
         foreach ($this->activityTypeRepository->findAll() as $activityType) {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\Build\ConfigureAppLocale;
 
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
-use App\Infrastructure\Localisation\Locale;
 use Carbon\Carbon;
 use Symfony\Component\Translation\LocaleSwitcher;
 
@@ -14,7 +14,7 @@ final readonly class ConfigureAppLocaleCommandHandler implements CommandHandler
 {
     public function __construct(
         private LocaleSwitcher $localeSwitcher,
-        private Locale $locale,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -22,7 +22,8 @@ final readonly class ConfigureAppLocaleCommandHandler implements CommandHandler
     {
         assert($command instanceof ConfigureAppLocale);
 
-        $this->localeSwitcher->setLocale($this->locale->value);
-        Carbon::setLocale($this->locale->value);
+        $locale = $this->settingsRepository->appearance()->getLocale();
+        $this->localeSwitcher->setLocale($locale->value);
+        Carbon::setLocale($locale->value);
     }
 }

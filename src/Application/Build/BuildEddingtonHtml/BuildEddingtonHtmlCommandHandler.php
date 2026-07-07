@@ -7,6 +7,7 @@ namespace App\Application\Build\BuildEddingtonHtml;
 use App\Domain\Activity\Eddington\EddingtonCalculator;
 use App\Domain\Activity\Eddington\EddingtonChart;
 use App\Domain\Activity\Eddington\EddingtonHistoryChart;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\Serialization\Json;
@@ -19,7 +20,7 @@ final readonly class BuildEddingtonHtmlCommandHandler implements CommandHandler
 {
     public function __construct(
         private EddingtonCalculator $eddingtonCalculator,
-        private UnitSystem $unitSystem,
+        private SettingsRepository $settingsRepository,
         private Environment $twig,
         private FilesystemOperator $buildHtmlStorage,
         private TranslatorInterface $translator,
@@ -57,7 +58,7 @@ final readonly class BuildEddingtonHtmlCommandHandler implements CommandHandler
         $this->buildHtmlStorage->write(
             'eddington.html',
             $this->twig->load('html/eddington.html.twig')->render([
-                'activeUnitSystem' => $this->unitSystem,
+                'activeUnitSystem' => $this->settingsRepository->appearance()->getUnitSystem(),
                 'eddingtons' => $allEddingtons,
                 'eddingtonCharts' => $eddingtonCharts,
                 'eddingtonHistoryCharts' => $eddingtonHistoryCharts,

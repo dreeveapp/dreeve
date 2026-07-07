@@ -37,26 +37,6 @@ services:
     App\Infrastructure\Config\AppConfig:
         public: true
 
-    App\Infrastructure\Config\Leaflet\LeafletConfig:
-        factory: [ null, 'create' ]
-        arguments: [
-            '@=app_config("appearance.maps.polylineColor", "#fc6719")',
-            '@=app_config("appearance.maps.tileLayerUrl", "https://tile.openstreetmap.org/{z}/{x}/{y}.png")',
-            '@=app_config("appearance.maps.enableGreyScale", true)',
-        ]
-
-    App\Infrastructure\Config\Leaflet\HeatmapConfig:
-        factory: [ null, 'create' ]
-        arguments: [
-            '@App\Infrastructure\Config\Leaflet\LeafletConfig',
-            '@=app_config("appearance.maps.heatmap.initialCenter", [])',
-            '@=app_config("appearance.maps.heatmap.initialZoom", 12)'
-        ]
-
-    App\Infrastructure\Config\Photos\HidePhotosForSportTypes:
-        factory: [ null, 'from' ]
-        arguments: ['@=app_config("appearance.photos.hidePhotosForSportTypes", [])']
-
     App\Infrastructure\Http\ErrorResponseExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
@@ -81,15 +61,6 @@ services:
         autoconfigure: false
         factory: [ null, 'fromServer' ]
 
-    App\Infrastructure\Time\Format\DateAndTimeFormat:
-        factory: [ null, 'create' ]
-        arguments: [
-            '@=app_config("appearance.dateFormat.short", "d-m-y")',
-            '@=app_config("appearance.dateFormat.normal", "d-m-Y")',
-            '@=app_config("appearance.dateFormat", "")',
-            '@=app_config("appearance.timeFormat")',
-        ]
-
     App\Infrastructure\ValueObject\Time\SerializableTimezone:
         factory: [ null, 'fromOptionalString' ]
         arguments: ['%env(string:TZ)%']
@@ -109,16 +80,6 @@ services:
     App\Infrastructure\Security\AdminPasswordHash:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:ADMIN_PASSWORD_HASH)%']
-
-    App\Infrastructure\ValueObject\Measurement\UnitSystem:
-        autoconfigure: false
-        factory: [ null, 'from' ]
-        arguments: [ '@=app_config("appearance.unitSystem")' ]
-
-    App\Infrastructure\Localisation\Locale:
-        autoconfigure: false
-        factory: [ null, 'from' ]
-        arguments: ['@=app_config("appearance.locale")']
 
     App\Application\AppUrl:
         factory: [ null, 'fromString' ]
@@ -188,10 +149,6 @@ services:
     App\Domain\Activity\Eddington\Config\EddingtonConfiguration:
         factory: [ null, 'fromScalarArray' ]
         arguments: ['@=app_config("metrics.eddington", [])']
-
-    App\Domain\Activity\SportType\SportTypesSortingOrder:
-        factory: [ null, 'from' ]
-        arguments: ['@=app_config("appearance.sportTypesSortingOrder", [])']
 
     App\Domain\Activity\SportType\SportTypesToImport:
         factory: [ null, 'from' ]

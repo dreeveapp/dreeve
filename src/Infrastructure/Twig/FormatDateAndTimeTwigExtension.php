@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Twig;
 
-use App\Infrastructure\Time\Format\DateAndTimeFormat;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Time\Format\TimeFormat;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Twig\Attribute\AsTwigFilter;
@@ -12,16 +12,17 @@ use Twig\Attribute\AsTwigFilter;
 final readonly class FormatDateAndTimeTwigExtension
 {
     public function __construct(
-        private DateAndTimeFormat $dateAndTimeFormat,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
     #[AsTwigFilter('formatDate')]
     public function formatDate(SerializableDateTime $date, string $formatType = 'short'): string
     {
+        $dateAndTimeFormat = $this->settingsRepository->appearance()->getDateAndTimeFormat();
         $dateFormat = match ($formatType) {
-            'short' => $this->dateAndTimeFormat->getDateFormatShort(),
-            'normal' => $this->dateAndTimeFormat->getDateFormatNormal(),
+            'short' => $dateAndTimeFormat->getDateFormatShort(),
+            'normal' => $dateAndTimeFormat->getDateFormatNormal(),
             default => throw new \InvalidArgumentException(sprintf('Invalid date formatType "%s"', $formatType)),
         };
 
@@ -31,7 +32,7 @@ final readonly class FormatDateAndTimeTwigExtension
     #[AsTwigFilter('formatTime')]
     public function formatTime(SerializableDateTime $date, bool $includeSeconds = false): string
     {
-        $timeFormat = $this->dateAndTimeFormat->getTimeFormat();
+        $timeFormat = $this->settingsRepository->appearance()->getDateAndTimeFormat()->getTimeFormat();
 
         if ($includeSeconds) {
             return match ($timeFormat) {

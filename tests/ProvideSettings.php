@@ -55,5 +55,15 @@ trait ProvideSettings
                 ],
             ])),
         ));
+
+        $keyValueStore->save(KeyValue::fromState(
+            SettingsGroup::APPEARANCE->keyValueKey(),
+            Value::fromString(Json::encode([
+                'locale' => 'en_US',
+                'unitSystem' => 'metric',
+                'timeFormat' => 24,
+                'dateFormat' => 'DAY-MONTH-YEAR',
+            ])),
+        ));
     }
 }

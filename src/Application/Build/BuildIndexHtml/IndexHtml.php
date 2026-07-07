@@ -13,9 +13,7 @@ use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\Config\Leaflet\LeafletConfig;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Translation\LocaleSwitcher;
@@ -30,9 +28,7 @@ final readonly class IndexHtml
         private ImageRepository $imageRepository,
         private EddingtonCalculator $eddingtonCalculator,
         private MaintenanceTaskProgressCalculator $maintenanceTaskProgressCalculator,
-        private LeafletConfig $leafletConfig,
         private AppUrl $appUrl,
-        private UnitSystem $unitSystem,
         private LocaleSwitcher $localeSwitcher,
         private SettingsRepository $settingsRepository,
     ) {
@@ -43,8 +39,11 @@ final readonly class IndexHtml
      */
     public function getContext(SerializableDateTime $now): array
     {
+        $appearance = $this->settingsRepository->appearance();
+        $unitSystem = $appearance->getUnitSystem();
+
         $eddingtonNumbers = [];
-        $eddingtons = $this->eddingtonCalculator->calculate($this->unitSystem);
+        $eddingtons = $this->eddingtonCalculator->calculate($unitSystem);
 
         foreach ($eddingtons as $eddington) {
             if (!$eddington->getConfig()->showInNavBar()) {
@@ -73,12 +72,12 @@ final readonly class IndexHtml
                     'basePath' => $this->appUrl->getBasePath() ?? '',
                 ],
                 'unitSystem' => [
-                    'name' => $this->unitSystem->value,
-                    'paceSymbol' => $this->unitSystem->paceSymbol(),
-                    'distanceSymbol' => $this->unitSystem->distanceSymbol(),
-                    'elevationSymbol' => $this->unitSystem->elevationSymbol(),
+                    'name' => $unitSystem->value,
+                    'paceSymbol' => $unitSystem->paceSymbol(),
+                    'distanceSymbol' => $unitSystem->distanceSymbol(),
+                    'elevationSymbol' => $unitSystem->elevationSymbol(),
                 ],
-                'leafletConfig' => $this->leafletConfig,
+                'leafletConfig' => $appearance->getLeafletConfig(),
             ]),
         ];
     }

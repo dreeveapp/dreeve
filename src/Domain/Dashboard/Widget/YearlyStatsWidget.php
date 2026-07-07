@@ -12,9 +12,9 @@ use App\Domain\Dashboard\Widget\YearlyStats\FindYearlyStats\FindYearlyStats;
 use App\Domain\Dashboard\Widget\YearlyStats\FindYearlyStatsPerDay\FindYearlyStatsPerDay;
 use App\Domain\Dashboard\Widget\YearlyStats\YearlyStatistics;
 use App\Domain\Dashboard\Widget\YearlyStats\YearlyStatisticsChart;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Years;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -25,7 +25,7 @@ final readonly class YearlyStatsWidget implements Widget
     public function __construct(
         private EnrichedActivities $enrichedActivities,
         private QueryBus $queryBus,
-        private UnitSystem $unitSystem,
+        private SettingsRepository $settingsRepository,
         private Environment $twig,
         private TranslatorInterface $translator,
     ) {
@@ -107,7 +107,7 @@ final readonly class YearlyStatsWidget implements Widget
                         uniqueYears: $activitiesPerActivityType[$activityType->value]->getUniqueYears(),
                         activityType: $activityType,
                         context: $yearlyStatsContext,
-                        unitSystem: $this->unitSystem,
+                        unitSystem: $this->settingsRepository->appearance()->getUnitSystem(),
                         translator: $this->translator,
                         now: $now,
                         enableLastXYearsByDefault: $enableLastXYearsByDefault

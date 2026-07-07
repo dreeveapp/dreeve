@@ -11,6 +11,7 @@ use App\Domain\Milestone\MilestoneCategory;
 use App\Domain\Milestone\MilestoneIdFactory;
 use App\Domain\Milestone\Milestones;
 use App\Domain\Milestone\PreviousMilestone;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\ValueObject\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -20,7 +21,7 @@ final readonly class GearDistanceMilestoneDiscoverer implements MilestoneDiscove
 {
     public function __construct(
         private Connection $connection,
-        private UnitSystem $unitSystem,
+        private SettingsRepository $settingsRepository,
         private MilestoneIdFactory $milestoneIdFactory,
     ) {
     }
@@ -45,7 +46,7 @@ final readonly class GearDistanceMilestoneDiscoverer implements MilestoneDiscove
              ORDER BY a.startDateTime ASC'
         )->fetchAllAssociative();
 
-        $thresholds = UnitSystem::IMPERIAL === $this->unitSystem ? self::IMPERIAL_THRESHOLDS : self::METRIC_THRESHOLDS;
+        $thresholds = UnitSystem::IMPERIAL === $this->settingsRepository->appearance()->getUnitSystem() ? self::IMPERIAL_THRESHOLDS : self::METRIC_THRESHOLDS;
         $milestones = [];
 
         /** @var array<string, array{distanceM: float, name: string, idx: int, prev: ?Milestone}> $gearState */
@@ -72,11 +73,11 @@ final readonly class GearDistanceMilestoneDiscoverer implements MilestoneDiscove
 
             $state = &$gearState[$gearId];
             $state['distanceM'] += $distanceM;
-            $cumulativeInUnit = Meter::from($state['distanceM'])->toKilometer()->toUnitSystem($this->unitSystem);
+            $cumulativeInUnit = Meter::from($state['distanceM'])->toKilometer()->toUnitSystem($this->settingsRepository->appearance()->getUnitSystem());
 
             while ($state['idx'] < count($thresholds) && $cumulativeInUnit->toFloat() >= $thresholds[$state['idx']]) {
                 $threshold = $thresholds[$state['idx']];
-                $thresholdInUnit = $this->unitSystem->distance($threshold);
+                $thresholdInUnit = $this->settingsRepository->appearance()->getUnitSystem()->distance($threshold);
 
                 $milestone = Milestone::create(
                     id: $this->milestoneIdFactory->random(),

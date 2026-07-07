@@ -17,4 +17,6 @@ interface SettingsRepository
     public function save(SettingsGroup $group, array $data): void;
 
     public function general(): GeneralSettings;
+
+    public function appearance(): AppearanceSettings;
 }

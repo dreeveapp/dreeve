@@ -11,12 +11,12 @@ use App\Domain\Segment\SegmentEffort\SegmentEffortHistoryChart;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEffortVsHeartRateChart;
 use App\Domain\Segment\SegmentRepository;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\DataTableRow;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -31,7 +31,7 @@ final readonly class BuildSegmentsHtmlCommandHandler implements CommandHandler
         private Environment $twig,
         private FilesystemOperator $buildHtmlStorage,
         private FilesystemOperator $buildApiStorage,
-        private UnitSystem $unitSystem,
+        private SettingsRepository $settingsRepository,
         private TranslatorInterface $translator,
     ) {
     }
@@ -40,6 +40,7 @@ final readonly class BuildSegmentsHtmlCommandHandler implements CommandHandler
     {
         assert($command instanceof BuildSegmentsHtml);
 
+        $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
         $importedSportTypes = $this->sportTypeRepository->findAll();
 
         $dataDatableRows = [];
@@ -73,7 +74,7 @@ final readonly class BuildSegmentsHtmlCommandHandler implements CommandHandler
                             SegmentEffortVsHeartRateChart::create(
                                 segmentEfforts: $segmentEfforts,
                                 sportType: $segment->getSportType(),
-                                unitSystem: $this->unitSystem,
+                                unitSystem: $unitSystem,
                                 translator: $this->translator
                             )->build()
                         ),
@@ -92,7 +93,7 @@ final readonly class BuildSegmentsHtmlCommandHandler implements CommandHandler
                         'segment' => $segment,
                     ]),
                     searchables: $segment->getSearchables(),
-                    filterables: $segment->getFilterables($this->unitSystem),
+                    filterables: $segment->getFilterables($unitSystem),
                     sortValues: $segment->getSortables(),
                     summables: []
                 );

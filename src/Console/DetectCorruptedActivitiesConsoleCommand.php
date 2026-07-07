@@ -10,6 +10,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivitySummaryRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
+use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Webhook\WebhookAspectType;
 use App\Domain\Strava\Webhook\WebhookConfig;
 use App\Domain\Strava\Webhook\WebhookEvent;
@@ -21,7 +22,6 @@ use App\Infrastructure\Doctrine\Migrations\RequiresUpToDateDatabaseSchema;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressIndicator;
@@ -44,7 +44,7 @@ class DetectCorruptedActivitiesConsoleCommand extends Command
         private readonly CombinedActivityStreamRepository $combinedActivityStreamRepository,
         private readonly WebhookEventRepository $webhookEventRepository,
         private readonly CommandBus $commandBus,
-        private readonly UnitSystem $unitSystem,
+        private readonly SettingsRepository $settingsRepository,
         private readonly WebhookConfig $webhookConfig,
         private readonly Mutex $mutex,
     ) {
@@ -86,7 +86,7 @@ class DetectCorruptedActivitiesConsoleCommand extends Command
             try {
                 $this->combinedActivityStreamRepository->findOneForActivityAndUnitSystem(
                     activityId: $activityId,
-                    unitSystem: $this->unitSystem,
+                    unitSystem: $this->settingsRepository->appearance()->getUnitSystem(),
                 );
             } catch (EntityNotFound) {
             } catch (\JsonException) {

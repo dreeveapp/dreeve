@@ -11,13 +11,13 @@ use App\Domain\Milestone\MilestoneCategory;
 use App\Domain\Milestone\MilestoneIdFactory;
 use App\Domain\Milestone\Milestones;
 use App\Domain\Milestone\PreviousMilestone;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Domain\Settings\SettingsRepository;
 
 final readonly class EddingtonMilestoneDiscoverer implements MilestoneDiscoverer
 {
     public function __construct(
         private EddingtonCalculator $eddingtonCalculator,
-        private UnitSystem $unitSystem,
+        private SettingsRepository $settingsRepository,
         private MilestoneIdFactory $milestoneIdFactory,
     ) {
     }
@@ -27,7 +27,7 @@ final readonly class EddingtonMilestoneDiscoverer implements MilestoneDiscoverer
         $milestones = [];
         $thresholds = range(1, 250);
 
-        foreach ($this->eddingtonCalculator->calculate($this->unitSystem) as $eddington) {
+        foreach ($this->eddingtonCalculator->calculate($this->settingsRepository->appearance()->getUnitSystem()) as $eddington) {
             $history = $eddington->getEddingtonHistory();
             /** @var ?Milestone $previousMilestone */
             $previousMilestone = null;
@@ -57,7 +57,7 @@ final readonly class EddingtonMilestoneDiscoverer implements MilestoneDiscoverer
                     context: new EddingtonContext(
                         label: $eddington->getLabel(),
                         number: $threshold,
-                        distance: $this->unitSystem->distance($threshold),
+                        distance: $this->settingsRepository->appearance()->getUnitSystem()->distance($threshold),
                     ),
                 )->withPrevious($previous);
 

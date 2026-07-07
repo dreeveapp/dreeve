@@ -11,8 +11,8 @@ use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\StatsContext;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -21,7 +21,7 @@ final readonly class WeeklyStatsWidget implements Widget
 {
     public function __construct(
         private EnrichedActivities $enrichedActivities,
-        private UnitSystem $unitSystem,
+        private SettingsRepository $settingsRepository,
         private Environment $twig,
         private TranslatorInterface $translator,
     ) {
@@ -87,7 +87,7 @@ final readonly class WeeklyStatsWidget implements Widget
 
             if ($activityType->supportsWeeklyStats() && $chartData = WeeklyStatsChart::create(
                 activities: $activitiesPerActivityType[$activityType->value],
-                unitSystem: $this->unitSystem,
+                unitSystem: $this->settingsRepository->appearance()->getUnitSystem(),
                 activityType: $activityType,
                 metricsDisplayOrder: array_map(
                     StatsContext::from(...),

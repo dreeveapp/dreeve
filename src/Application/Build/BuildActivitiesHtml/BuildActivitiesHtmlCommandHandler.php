@@ -33,7 +33,6 @@ use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\DataTableRow;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Measurement\Velocity\KmPerHour;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -55,7 +54,6 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
         private RecordingDeviceRepository $recordingDeviceRepository,
         private BestEffortsCalculator $bestEffortsCalculator,
         private Countries $countries,
-        private UnitSystem $unitSystem,
         private Environment $twig,
         private FilesystemOperator $buildHtmlStorage,
         private FilesystemOperator $buildApiStorage,
@@ -70,6 +68,7 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
 
         $now = $command->getCurrentDateTime();
         $general = $this->settingsRepository->general();
+        $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
         $athlete = $general->getAthlete();
         $importedSportTypes = $this->sportTypeRepository->findAll();
 
@@ -152,7 +151,7 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                     velocityData: $velocityDistribution,
                     averageSpeed: $activity->getAverageSpeed(),
                     sportType: $activity->getSportType(),
-                    unitSystem: $this->unitSystem,
+                    unitSystem: $unitSystem,
                 )->build();
 
                 if (!is_null($velocityDistributionChart)) {
@@ -184,7 +183,7 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
 
             $activitySplits = $this->activitySplitRepository->findBy(
                 activityId: $activity->getId(),
-                unitSystem: $this->unitSystem
+                unitSystem: $unitSystem
             );
 
             $profileChart = null;
@@ -193,7 +192,7 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
             try {
                 $combinedActivityStream = $this->combinedActivityStreamRepository->findOneForActivityAndUnitSystem(
                     activityId: $activity->getId(),
-                    unitSystem: $this->unitSystem
+                    unitSystem: $unitSystem
                 );
 
                 $maximumNumberOfDigits = $combinedActivityStream->getMaximumNumberOfDigits();
@@ -215,10 +214,10 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                     items: array_reverse($items),
                     topXAxisData: $times,
                     bottomXAxisData: $distances,
-                    bottomXAxisSuffix: $this->unitSystem->distanceSymbol(),
+                    bottomXAxisSuffix: $unitSystem->distanceSymbol(),
                     grades: $grades,
                     maximumNumberOfDigitsOnYAxis: $maximumNumberOfDigits,
-                    unitSystem: $this->unitSystem,
+                    unitSystem: $unitSystem,
                     translator: $this->translator,
                 );
                 $profileChart = $combinedCharts->build();
@@ -282,9 +281,9 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                     'activity' => $activity,
                 ]),
                 searchables: $activity->getSearchables(),
-                filterables: $activity->getFilterables($this->unitSystem),
+                filterables: $activity->getFilterables($unitSystem),
                 sortValues: $activity->getSortables(),
-                summables: $activity->getSummables($this->unitSystem),
+                summables: $activity->getSummables($unitSystem),
             );
         }
 
