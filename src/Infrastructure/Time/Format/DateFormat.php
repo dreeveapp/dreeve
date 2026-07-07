@@ -6,9 +6,6 @@ namespace App\Infrastructure\Time\Format;
 
 final readonly class DateFormat implements \Stringable
 {
-    public const string LEGACY_FORMAT_DAY_MONTH_YEAR = 'DAY-MONTH-YEAR';
-    public const string LEGACY_FORMAT_MONTH_DAY_YEAR = 'MONTH-DAY-YEAR';
-
     private function __construct(
         private string $dateFormatString,
     ) {

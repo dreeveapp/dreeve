@@ -49,7 +49,6 @@ final readonly class AppearanceSettings
             dateAndTimeFormat: DateAndTimeFormat::create(
                 dateFormatShort: $dateFormat['short'] ?? 'd-m-y',
                 dateFormatNormal: $dateFormat['normal'] ?? 'd-m-Y',
-                legacyDateFormat: $dateFormat,
                 timeFormat: (int) ($data['timeFormat'] ?? 24)
             ),
             sportTypesSortingOrder: SportTypesSortingOrder::from($data['sportTypesSortingOrder'] ?? []),
