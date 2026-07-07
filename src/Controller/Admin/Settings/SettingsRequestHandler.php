@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Settings;
 
 use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
+use App\Domain\Settings\KeyValueBasedSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Settings\UpdateSettings\UpdateSettings;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -21,6 +23,7 @@ final readonly class SettingsRequestHandler
 {
     public function __construct(
         private Environment $twig,
+        #[Autowire(service: KeyValueBasedSettingsRepository::class)]
         private SettingsRepository $settingsRepository,
         private UrlGeneratorInterface $urlGenerator,
     ) {

@@ -69,6 +69,8 @@ services:
       class: App\Infrastructure\KeyValue\DbalKeyValueStore
       public: true
 
+    App\Domain\Settings\SettingsRepository: '@App\Domain\Settings\CachingSettingsRepository'
+
     App\Infrastructure\ValueObject\String\KernelProjectDir:
         public: true
         factory: [ null, 'fromString' ]

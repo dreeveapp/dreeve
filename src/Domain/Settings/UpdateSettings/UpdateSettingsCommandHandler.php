@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Domain\Settings\UpdateSettings;
 
+use App\Domain\Settings\KeyValueBasedSettingsRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final readonly class UpdateSettingsCommandHandler implements CommandHandler
 {
     public function __construct(
+        #[Autowire(service: KeyValueBasedSettingsRepository::class)]
         private SettingsRepository $settingsRepository,
     ) {
     }

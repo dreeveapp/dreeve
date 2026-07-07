@@ -1,0 +1,38 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domain\Settings;
+
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+
+final class CachingSettingsRepository implements SettingsRepository
+{
+    /** @var array<string, array<string, mixed>> */
+    private array $findCache = [];
+    private ?GeneralSettings $general = null;
+
+    public function __construct(
+        #[Autowire(service: KeyValueBasedSettingsRepository::class)]
+        private readonly SettingsRepository $settingsRepository,
+    ) {
+    }
+
+    public function find(SettingsGroup $group): array
+    {
+        return $this->findCache[$group->value] ??= $this->settingsRepository->find($group);
+    }
+
+    public function save(SettingsGroup $group, array $data): void
+    {
+        $this->settingsRepository->save($group, $data);
+
+        $this->findCache = [];
+        $this->general = null;
+    }
+
+    public function general(): GeneralSettings
+    {
+        return $this->general ??= $this->settingsRepository->general();
+    }
+}
