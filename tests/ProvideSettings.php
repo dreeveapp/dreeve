@@ -62,7 +62,10 @@ trait ProvideSettings
                 'locale' => 'en_US',
                 'unitSystem' => 'metric',
                 'timeFormat' => 24,
-                'dateFormat' => 'DAY-MONTH-YEAR',
+                'dateFormat' => [
+                    'short' => 'd-m-y',
+                    'normal' => 'd-m-Y',
+                ],
             ])),
         ));
     }

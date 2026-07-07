@@ -32,7 +32,7 @@ final readonly class AppearanceSettings
     {
         $data ??= [];
 
-        $dateFormat = $data['dateFormat'] ?? '';
+        $dateFormat = $data['dateFormat'] ?? [];
 
         $maps = $data['maps'] ?? [];
         $heatmap = $maps['heatmap'] ?? [];
@@ -57,7 +57,7 @@ final readonly class AppearanceSettings
             leafletConfig: $leafletConfig,
             heatmapConfig: HeatmapConfig::create(
                 leafletConfig: $leafletConfig,
-                initialCenter: [] !== $heatmap['initialCenter'] ? $heatmap['initialCenter'] : null,
+                initialCenter: [] !== ($heatmap['initialCenter'] ?? []) ? $heatmap['initialCenter'] : null,
                 initialZoom: (int) ($heatmap['initialZoom'] ?? 12)
             ),
         );

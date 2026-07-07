@@ -9,9 +9,9 @@ use App\Domain\Activity\Eddington\EddingtonCalculator;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Milestone\Context\EddingtonContext;
 use App\Domain\Milestone\Discoverer\EddingtonMilestoneDiscoverer;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -73,7 +73,7 @@ class EddingtonMilestoneDiscovererTest extends ContainerTestCase
         parent::setUp();
         $this->discoverer = new EddingtonMilestoneDiscoverer(
             $this->getContainer()->get(EddingtonCalculator::class),
-            UnitSystem::METRIC,
+            $this->getContainer()->get(SettingsRepository::class),
             new IncrementingMilestoneIdFactory(),
         );
     }

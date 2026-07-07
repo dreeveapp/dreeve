@@ -8,8 +8,8 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\DbalSportTypeRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
-use App\Domain\Activity\SportType\SportTypesSortingOrder;
-use App\Infrastructure\Config\Photos\HidePhotosForSportTypes;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 
@@ -39,22 +39,14 @@ class DbalSportTypeRepositoryTest extends ContainerTestCase
             []
         ));
 
-        $sportTypeRepository = new DbalSportTypeRepository(
-            $this->getConnection(),
-            SportTypesSortingOrder::fromArray([SportType::RUN, SportType::WALK]),
-            HidePhotosForSportTypes::empty(),
-        );
+        $sportTypeRepository = $this->sportTypeRepositoryFor([SportType::RUN, SportType::WALK]);
 
         $this->assertEquals(
             SportTypes::fromArray([SportType::RUN, SportType::WALK]),
             $sportTypeRepository->findAll(),
         );
 
-        $sportTypeRepository = new DbalSportTypeRepository(
-            $this->getConnection(),
-            SportTypesSortingOrder::fromArray([SportType::WALK, SportType::RUN]),
-            HidePhotosForSportTypes::empty()
-        );
+        $sportTypeRepository = $this->sportTypeRepositoryFor([SportType::WALK, SportType::RUN]);
 
         $this->assertEquals(
             SportTypes::fromArray([SportType::WALK, SportType::RUN]),
@@ -97,15 +89,24 @@ class DbalSportTypeRepositoryTest extends ContainerTestCase
             []
         ));
 
-        $sportTypeRepository = new DbalSportTypeRepository(
-            $this->getConnection(),
-            SportTypesSortingOrder::fromArray([SportType::RUN, SportType::WALK]),
-            HidePhotosForSportTypes::fromArray([SportType::RIDE])
-        );
+        $sportTypeRepository = $this->sportTypeRepositoryFor([SportType::RUN, SportType::WALK], [SportType::RIDE]);
 
         $this->assertEquals(
             SportTypes::fromArray([SportType::RUN]),
             $sportTypeRepository->findForImages(),
         );
+    }
+
+    private function sportTypeRepositoryFor(array $sportTypesSortingOrder, array $hidePhotosForSportTypes = []): DbalSportTypeRepository
+    {
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::APPEARANCE, [
+            'sportTypesSortingOrder' => array_map(fn (SportType $sportType): string => $sportType->value, $sportTypesSortingOrder),
+            'photos' => [
+                'hidePhotosForSportTypes' => array_map(fn (SportType $sportType): string => $sportType->value, $hidePhotosForSportTypes),
+            ],
+        ]);
+
+        return new DbalSportTypeRepository($this->getConnection(), $settingsRepository);
     }
 }

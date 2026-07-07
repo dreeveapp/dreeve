@@ -1,4 +1,5 @@
 '# completed': '# completed'
+24-hour: 24-hour
 '42-day fitness trend': 'Trend di forma a 42 giorni'
 '7-day fatigue level': 'Livello di fatica a 7 giorni'
 '< 1.5: Good variety in training': '< 1.5: Buona varietà di allenamento'
@@ -8,6 +9,7 @@
 'A high score means you concentrate more training into fewer, heavier days.': 'Un punteggio alto significa che concentri più allenamento in meno giorni, ma più intensi.'
 'A:C Ratio': 'Rapporto A:C'
 'A:C optimal in': 'A:C ottimale tra'
+AM/PM: AM/PM
 'ATL (Fatigue)': 'ATL (Fatica)'
 'Accumulated fatigue': 'Fatica accumulata'
 Active: Active
@@ -43,6 +45,7 @@ All: Tutti
 'All time': 'Da sempre'
 'Alpine Ski': 'Sci alpino'
 'App subtitle': 'App subtitle'
+Appearance: Appearance
 Apr: Apr
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
 'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
@@ -231,6 +234,7 @@ HR: FC
 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones': "Distribuzione delle zone di frequenza cardiaca nell'ultimo mese. Per un allenamento polarizzato efficace, gli allenamenti dovrebbero ricadere principalmente nelle seguenti zone"
 'Heart rate zones': 'Zone frequenza cardiaca'
 Heatmap: 'Mappa di calore'
+'Hide photos for sport types': 'Hide photos for sport types'
 High: Alto
 'High fatigue levels may increase injury or burnout risk. Consider reducing load and prioritizing recovery': 'Livelli elevati di fatica possono aumentare il rischio di infortuni o burnout. Valuta di ridurre il carico e dare priorità al recupero'
 'High monotony - increase variety': 'Monotonia elevata - aumenta la varietà'
@@ -290,6 +294,7 @@ Load: Load
 'Load (CTL/ATL)': 'Carico (CTL/ATL)'
 'Loading data...': 'Caricamento informazioni...'
 Loading...: Caricamento...
+Locale: Locale
 'Locations over the globe': 'Luoghi nel mondo'
 Log: Log
 'Long run': 'Corsa lunga'
@@ -351,6 +356,7 @@ Night: Notte
 'No recording devices yet.': 'No recording devices yet.'
 None: Nessuno
 'Nordic Ski': 'Sci nordico'
+'Normal date format': 'Normal date format'
 'Normalized power': 'Normalized power'
 'Not supported': 'Non supportato'
 Nov: Nov
@@ -379,6 +385,8 @@ Over-fatigued: Over-fatigued
 'Overall weekly training stress': 'Stress di allenamento settimanale complessivo'
 'PB badges': 'Badge record personali'
 'PET bottles produced': 'Bottiglie PET prodotte'
+'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.': 'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.'
+'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.': 'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.'
 Pace: Andatura
 Padel: Padel
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Parts you track maintenance for, eg: chains, cassettes, brake pads...'
@@ -390,6 +398,7 @@ Password: Password
 'Personal bests': 'Record personali'
 Photo: Foto
 Photos: Foto
+'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
 'Physical Therapy': 'Physical Therapy'
 'Pickle Ball': Pickleball
 Pilates: Pilates
@@ -467,6 +476,7 @@ Segments: Segmenti
 'Select the serviced gear…': 'Select the serviced gear…'
 Sep: Set
 Settings: Settings
+'Short date format': 'Short date format'
 'Show information': 'Mostra Informazione'
 'Show last X years by default': 'Show last X years by default'
 'Show password': 'Show password'
@@ -607,7 +617,9 @@ Tennis: Tennis
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.': 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.'
 'The last zone has no upper bound.': 'The last zone has no upper bound.'
+'The locale used to render the app.': 'The locale used to render the app.'
 "The name is derived from the device recorded on your activities and can't be edited.": "The name is derived from the device recorded on your activities and can't be edited."
+'The unit system used to render distances, elevations, temperatures, etc.': 'The unit system used to render distances, elevations, temperatures, etc.'
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': 'Questi badge sono generati dinamicamente. Puoi usarli in qualsiasi tag &lt;img&gt;'
 Thinking...: Elaborazione...
 'This action cannot be undone.': 'This action cannot be undone.'
@@ -622,6 +634,7 @@ Thinking...: Elaborazione...
 Thu: Gio
 Thu.: Thu.
 Time: Tempo
+'Time format': 'Time format'
 'Time in zone': 'Time in zone'
 'Times completed': 'Volte completate'
 Title: Title
@@ -649,6 +662,7 @@ Tue.: Tue.
 'Turn gear maintenance tracking on or off.': 'Turn gear maintenance tracking on or off.'
 Type: Type
 Unit: Unit
+'Unit system': 'Unit system'
 Unspecified: 'Non specificato'
 'Unsupported file type': 'Unsupported file type'
 'Updated on': 'Aggiornato il'

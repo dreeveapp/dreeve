@@ -9,9 +9,9 @@ use App\Domain\Activity\ActivityTypes;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\DbalSportTypeRepository;
 use App\Domain\Activity\SportType\SportType;
-use App\Domain\Activity\SportType\SportTypesSortingOrder;
 use App\Domain\Activity\SportTypeBasedActivityTypeRepository;
-use App\Infrastructure\Config\Photos\HidePhotosForSportTypes;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Tests\ContainerTestCase;
 
 class SportTypeBasedActivityTypeRepositoryTest extends ContainerTestCase
@@ -48,11 +48,7 @@ class SportTypeBasedActivityTypeRepositoryTest extends ContainerTestCase
         ));
 
         $activityTypeRepository = new SportTypeBasedActivityTypeRepository(
-            new DbalSportTypeRepository(
-                $this->getConnection(),
-                SportTypesSortingOrder::fromArray([SportType::RUN, SportType::WALK]),
-                HidePhotosForSportTypes::empty()
-            )
+            $this->sportTypeRepositoryFor([SportType::RUN, SportType::WALK])
         );
 
         $this->assertEquals(
@@ -61,16 +57,22 @@ class SportTypeBasedActivityTypeRepositoryTest extends ContainerTestCase
         );
 
         $activityTypeRepository = new SportTypeBasedActivityTypeRepository(
-            new DbalSportTypeRepository(
-                $this->getConnection(),
-                SportTypesSortingOrder::fromArray([SportType::WALK, SportType::RUN]),
-                HidePhotosForSportTypes::empty()
-            )
+            $this->sportTypeRepositoryFor([SportType::WALK, SportType::RUN])
         );
 
         $this->assertEquals(
             ActivityTypes::fromArray([ActivityType::WALK, ActivityType::RUN]),
             $activityTypeRepository->findAll(),
         );
+    }
+
+    private function sportTypeRepositoryFor(array $sportTypesSortingOrder): DbalSportTypeRepository
+    {
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::APPEARANCE, [
+            'sportTypesSortingOrder' => array_map(fn (SportType $sportType): string => $sportType->value, $sportTypesSortingOrder),
+        ]);
+
+        return new DbalSportTypeRepository($this->getConnection(), $settingsRepository);
     }
 }

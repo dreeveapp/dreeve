@@ -2,25 +2,20 @@
 
 namespace App\Tests\Infrastructure\Twig;
 
-use App\Infrastructure\Time\Format\DateAndTimeFormat;
-use App\Infrastructure\Time\Format\DateFormat;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Time\Format\TimeFormat;
 use App\Infrastructure\Twig\FormatDateAndTimeTwigExtension;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use App\Tests\ContainerTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 
-class FormatDateAndTimeTwigExtensionTest extends TestCase
+class FormatDateAndTimeTwigExtensionTest extends ContainerTestCase
 {
     #[DataProvider(methodName: 'provideDates')]
-    public function testFormatDate(string $expectedFormattedDateString, SerializableDateTime $date, string $formatType, string $shortDateFormat, string $normalDateFormat, string|array $legacyDateFormat): void
+    public function testFormatDate(string $expectedFormattedDateString, SerializableDateTime $date, string $formatType, string $shortDateFormat, string $normalDateFormat): void
     {
-        $extension = new FormatDateAndTimeTwigExtension(DateAndTimeFormat::create(
-            dateFormatShort: $shortDateFormat,
-            dateFormatNormal: $normalDateFormat,
-            legacyDateFormat: $legacyDateFormat,
-            timeFormat: TimeFormat::AM_PM->value,
-        ));
+        $extension = $this->extensionFor($shortDateFormat, $normalDateFormat, TimeFormat::AM_PM);
 
         $this->assertEquals(
             $expectedFormattedDateString,
@@ -30,12 +25,7 @@ class FormatDateAndTimeTwigExtensionTest extends TestCase
 
     public function testFormatDateItShouldThrow(): void
     {
-        $extension = new FormatDateAndTimeTwigExtension(DateAndTimeFormat::create(
-            dateFormatShort: 'd-m-y',
-            dateFormatNormal: 'd-m-Y',
-            legacyDateFormat: [],
-            timeFormat: TimeFormat::AM_PM->value,
-        ));
+        $extension = $this->extensionFor('d-m-y', 'd-m-Y', TimeFormat::AM_PM);
 
         $this->expectExceptionObject(new \InvalidArgumentException('Invalid date formatType "invalid"'));
         $extension->formatDate(SerializableDateTime::fromString('2025-01-01'), 'invalid');
@@ -44,12 +34,7 @@ class FormatDateAndTimeTwigExtensionTest extends TestCase
     #[DataProvider(methodName: 'provideTimes')]
     public function testFormatTime(string $expectedFormattedTimeString, SerializableDateTime $date, TimeFormat $timeFormat): void
     {
-        $extension = new FormatDateAndTimeTwigExtension(DateAndTimeFormat::create(
-            dateFormatShort: 'd-m-y',
-            dateFormatNormal: 'd-m-Y',
-            legacyDateFormat: [],
-            timeFormat: $timeFormat->value,
-        ));
+        $extension = $this->extensionFor('d-m-y', 'd-m-Y', $timeFormat);
 
         $this->assertEquals(
             $expectedFormattedTimeString,
@@ -57,18 +42,28 @@ class FormatDateAndTimeTwigExtensionTest extends TestCase
         );
     }
 
+    private function extensionFor(string $shortDateFormat, string $normalDateFormat, TimeFormat $timeFormat): FormatDateAndTimeTwigExtension
+    {
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::APPEARANCE, [
+            'dateFormat' => [
+                'short' => $shortDateFormat,
+                'normal' => $normalDateFormat,
+            ],
+            'timeFormat' => $timeFormat->value,
+        ]);
+
+        return new FormatDateAndTimeTwigExtension($settingsRepository);
+    }
+
     public static function provideDates(): array
     {
         return [
-            ['31-01-25', SerializableDateTime::fromString('31-01-2025 15:30'), 'short', 'd-m-y', 'd-m-Y', []],
-            ['31-01-2025', SerializableDateTime::fromString('31-01-2025 15:30'), 'normal', 'd-m-y', 'd-m-Y', []],
-            ['01-31-25', SerializableDateTime::fromString('31-01-2025 15:30'), 'short', 'm-d-y', 'm-d-Y', []],
-            ['01-31-2025', SerializableDateTime::fromString('31-01-2025 15:30'), 'normal', 'm-d-y', 'm-d-Y', []],
-            ['Fri., 31.01.25', SerializableDateTime::fromString('31-01-2025 15:30'), 'normal', 'D., d.m.y', 'D., d.m.y', []],
-            ['31-01-25', SerializableDateTime::fromString('31-01-2025 15:30'), 'short', 'D., d.m.y', 'D., d.m.y', DateFormat::LEGACY_FORMAT_DAY_MONTH_YEAR],
-            ['31-01-2025', SerializableDateTime::fromString('31-01-2025 15:30'), 'normal', 'D., d.m.y', 'D., d.m.y', DateFormat::LEGACY_FORMAT_DAY_MONTH_YEAR],
-            ['01-31-25', SerializableDateTime::fromString('31-01-2025 15:30'), 'short', 'D., d.m.y', 'D., d.m.y', DateFormat::LEGACY_FORMAT_MONTH_DAY_YEAR],
-            ['01-31-2025', SerializableDateTime::fromString('31-01-2025 15:30'), 'normal', 'D., d.m.y', 'D., d.m.y', DateFormat::LEGACY_FORMAT_MONTH_DAY_YEAR],
+            ['31-01-25', SerializableDateTime::fromString('31-01-2025 15:30'), 'short', 'd-m-y', 'd-m-Y'],
+            ['31-01-2025', SerializableDateTime::fromString('31-01-2025 15:30'), 'normal', 'd-m-y', 'd-m-Y'],
+            ['01-31-25', SerializableDateTime::fromString('31-01-2025 15:30'), 'short', 'm-d-y', 'm-d-Y'],
+            ['01-31-2025', SerializableDateTime::fromString('31-01-2025 15:30'), 'normal', 'm-d-y', 'm-d-Y'],
+            ['Fri., 31.01.25', SerializableDateTime::fromString('31-01-2025 15:30'), 'normal', 'D., d.m.y', 'D., d.m.y'],
         ];
     }
 

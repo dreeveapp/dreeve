@@ -1,0 +1,92 @@
+{% extends "html/admin/page/template.html.twig" %}
+
+{% block main %}
+    {% set unitSystemOptions = enum('App\\Infrastructure\\ValueObject\\Measurement\\UnitSystem').cases() %}
+    {% set localeOptions = enum('App\\Infrastructure\\Localisation\\Locale').cases() %}
+    {% set timeFormatOptions = enum('App\\Infrastructure\\Time\\Format\\TimeFormat').cases() %}
+    {% set dateFormat = settings.dateFormat ?? {} %}
+    {% set photos = settings.photos ?? {} %}
+    {% set hidePhotosForSportTypes = photos.hidePhotosForSportTypes ?? [] %}
+    <div class="flex flex-col gap-4">
+        <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            <input type="hidden" name="group" value="{{ group.value }}">
+            <div class="mb-5">
+                <h3 class="text-lg font-semibold">{{ "Appearance"|trans }}</h3>
+            </div>
+            <div data-form-error class="hidden mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert"></div>
+            <div class="flex flex-col gap-4">
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="unitSystem">{{ "Unit system"|trans }}</label>
+                        <select id="unitSystem" name="data[unitSystem]">
+                            {% for unitSystem in unitSystemOptions %}
+                                <option value="{{ unitSystem.value }}" {{ (settings.unitSystem ?? 'metric') == unitSystem.value ? 'selected' : '' }}>{{ unitSystem.value }}</option>
+                            {% endfor %}
+                        </select>
+                        <p class="description">
+                            {{ "The unit system used to render distances, elevations, temperatures, etc."|trans }}
+                        </p>
+                    </div>
+                    <div>
+                        <label for="locale">{{ "Locale"|trans }}</label>
+                        <select id="locale" name="data[locale]">
+                            {% for locale in localeOptions %}
+                                <option value="{{ locale.value }}" {{ (settings.locale ?? 'en_US') == locale.value ? 'selected' : '' }}>{{ locale.value }}</option>
+                            {% endfor %}
+                        </select>
+                        <p class="description">
+                            {{ "The locale used to render the app."|trans }}
+                        </p>
+                    </div>
+                </div>
+                <div class="grid gap-4 sm:grid-cols-3">
+                    <div>
+                        <label for="timeFormat">{{ "Time format"|trans }}</label>
+                        <select id="timeFormat" name="data[timeFormat]">
+                            {% for timeFormat in timeFormatOptions %}
+                                <option value="{{ timeFormat.value }}" {{ (settings.timeFormat ?? 24) == timeFormat.value ? 'selected' : '' }}>
+                                    {{ timeFormat.value == 24 ? "24-hour"|trans : "AM/PM"|trans }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label for="dateFormatShort">{{ "Short date format"|trans }}</label>
+                        <input type="text" id="dateFormatShort" name="data[dateFormat][short]" value="{{ dateFormat.short ?? 'd-m-y' }}" required>
+                        <p class="description">
+                            {{ "PHP date format for short dates, e.g. d-m-y renders to 01-01-25."|trans }}
+                        </p>
+                    </div>
+                    <div>
+                        <label for="dateFormatNormal">{{ "Normal date format"|trans }}</label>
+                        <input type="text" id="dateFormatNormal" name="data[dateFormat][normal]" value="{{ dateFormat.normal ?? 'd-m-Y' }}" required>
+                        <p class="description">
+                            {{ "PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025."|trans }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 border-t border-gray-200 pt-6">
+                <label class="mt-0!">{{ "Hide photos for sport types"|trans }}</label>
+                <p class="description mb-2">
+                    {{ "Photos of the selected sport types are excluded from the photo gallery."|trans }}
+                </p>
+                <div class="mt-1 max-h-40 overflow-y-auto flex flex-col gap-1.5 rounded-lg border border-gray-200 p-2">
+                    {% for sportType in enum('App\\Domain\\Activity\\SportType\\SportType').cases() %}
+                        <label class="flex items-center gap-2 mt-0! text-sm font-normal cursor-pointer">
+                            <input type="checkbox" name="data[photos][hidePhotosForSportTypes][]"
+                                   value="{{ sportType.value }}" {{ sportType.value in hidePhotosForSportTypes ? 'checked' : '' }}>
+                            <span>{{ sportType|trans }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
+                <button type="submit" data-has-loading-state class="group btn--primary">
+                    <span class="label">{{ "Save settings"|trans }}</span>
+                    <span class="label--loading">{{ "Saving..."|trans }}</span>
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock main %}

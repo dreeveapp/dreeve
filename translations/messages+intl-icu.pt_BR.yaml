@@ -1,4 +1,5 @@
 '# completed': '# concluído'
+24-hour: 24-hour
 '42-day fitness trend': 'Tendência de condicionamento de 42 dias'
 '7-day fatigue level': 'Nível de fadiga de 7 dias'
 '< 1.5: Good variety in training': '< 1.5: Boa variedade no treino'
@@ -8,6 +9,7 @@
 'A high score means you concentrate more training into fewer, heavier days.': 'Uma pontuação alta significa que você concentra mais treino em menos dias, porém mais pesados.'
 'A:C Ratio': 'Razão A:C'
 'A:C optimal in': 'A:C ideal em'
+AM/PM: AM/PM
 'ATL (Fatigue)': 'ATL (Fadiga)'
 'Accumulated fatigue': 'Fadiga acumulada'
 Active: Active
@@ -43,6 +45,7 @@ All: Todos
 'All time': 'Desde sempre'
 'Alpine Ski': 'Esqui Alpino'
 'App subtitle': 'App subtitle'
+Appearance: Appearance
 Apr: Abr
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
 'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
@@ -231,6 +234,7 @@ HR: FC
 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones': 'Distribuição da zona de frequência cardíaca no último mês. Para um treinamento polarizado eficaz, seus treinos devem cair principalmente nas seguintes zonas'
 'Heart rate zones': 'Zonas de frequência cardíaca'
 Heatmap: 'Mapa de calor'
+'Hide photos for sport types': 'Hide photos for sport types'
 High: Alta
 'High fatigue levels may increase injury or burnout risk. Consider reducing load and prioritizing recovery': 'Altos níveis de fadiga podem aumentar o risco de lesões ou esgotamento. Considere reduzir a carga e priorizar a recuperação'
 'High monotony - increase variety': 'Alta monotonia - aumente a variedade'
@@ -290,6 +294,7 @@ Load: Carga
 'Load (CTL/ATL)': 'Carga (CTL/ATL)'
 'Loading data...': 'Carregando dados...'
 Loading...: Carregando...
+Locale: Locale
 'Locations over the globe': 'Locais ao redor do globo'
 Log: Log
 'Long run': 'Corridas longas'
@@ -351,6 +356,7 @@ Night: Noite
 'No recording devices yet.': 'No recording devices yet.'
 None: Nenhum
 'Nordic Ski': 'Esqui Nórdico'
+'Normal date format': 'Normal date format'
 'Normalized power': 'Potência normalizada'
 'Not supported': 'Não suportado'
 Nov: Nov
@@ -379,6 +385,8 @@ Over-fatigued: Sobrecarregado
 'Overall weekly training stress': 'Estresse geral de treino semanal'
 'PB badges': 'Emblemas de RP'
 'PET bottles produced': 'Garrafas PET produzidas'
+'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.': 'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.'
+'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.': 'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.'
 Pace: Ritmo
 Padel: Padel
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Parts you track maintenance for, eg: chains, cassettes, brake pads...'
@@ -390,6 +398,7 @@ Password: Password
 'Personal bests': 'Recordes pessoais'
 Photo: Foto
 Photos: Fotos
+'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
 'Physical Therapy': Fisioterapia
 'Pickle Ball': Pickleball
 Pilates: Pilates
@@ -467,6 +476,7 @@ Segments: Segmentos
 'Select the serviced gear…': 'Select the serviced gear…'
 Sep: Set
 Settings: Settings
+'Short date format': 'Short date format'
 'Show information': 'Mostrar informação'
 'Show last X years by default': 'Show last X years by default'
 'Show password': 'Show password'
@@ -607,7 +617,9 @@ Tennis: Tênis
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.': 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.'
 'The last zone has no upper bound.': 'The last zone has no upper bound.'
+'The locale used to render the app.': 'The locale used to render the app.'
 "The name is derived from the device recorded on your activities and can't be edited.": "The name is derived from the device recorded on your activities and can't be edited."
+'The unit system used to render distances, elevations, temperatures, etc.': 'The unit system used to render distances, elevations, temperatures, etc.'
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': 'Esses emblemas são criados dinamicamente. Você pode usá-los em qualquer tag &lt;img&gt;'
 Thinking...: Pensando...
 'This action cannot be undone.': 'This action cannot be undone.'
@@ -622,6 +634,7 @@ Thinking...: Pensando...
 Thu: Qui
 Thu.: Qui.
 Time: Tempo
+'Time format': 'Time format'
 'Time in zone': 'Tempo na zona'
 'Times completed': 'Vezes concluído'
 Title: Título
@@ -649,6 +662,7 @@ Tue.: Ter.
 'Turn gear maintenance tracking on or off.': 'Turn gear maintenance tracking on or off.'
 Type: Type
 Unit: Unit
+'Unit system': 'Unit system'
 Unspecified: 'Não especificado'
 'Unsupported file type': 'Unsupported file type'
 'Updated on': 'Atualizado em'

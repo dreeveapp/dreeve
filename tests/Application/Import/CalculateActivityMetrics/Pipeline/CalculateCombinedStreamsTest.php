@@ -10,6 +10,8 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
 use App\Infrastructure\ValueObject\Measurement\UnitSystem;
@@ -52,11 +54,14 @@ class CalculateCombinedStreamsTest extends ContainerTestCase
             omitDistanceStream: false,
         );
 
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::APPEARANCE, ['unitSystem' => UnitSystem::IMPERIAL->value]);
+
         new CalculateCombinedStreams(
             activityRepository: $this->getContainer()->get(ActivityRepository::class),
             combinedActivityStreamRepository: $this->getContainer()->get(CombinedActivityStreamRepository::class),
             activityStreamRepository: $this->getContainer()->get(ActivityStreamRepository::class),
-            unitSystem: UnitSystem::IMPERIAL,
+            settingsRepository: $settingsRepository,
             mutex: new Mutex(
                 connection: $this->getConnection(),
                 clock: PausedClock::fromString('2025-12-04'),

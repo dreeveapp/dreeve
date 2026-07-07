@@ -24,10 +24,10 @@ use App\Domain\Milestone\Discoverer\GearMovingTimeMilestoneDiscoverer;
 use App\Domain\Milestone\Discoverer\PersonalBestMilestoneDiscoverer;
 use App\Domain\Milestone\Discoverer\StreakMilestoneDiscoverer;
 use App\Domain\Milestone\MilestoneCollector;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
 use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -189,7 +189,7 @@ class MilestoneCollectorTest extends ContainerTestCase
     private function createCollector(): MilestoneCollector
     {
         $connection = $this->getConnection();
-        $unitSystem = UnitSystem::METRIC;
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
         $milestoneIdFactory = new IncrementingMilestoneIdFactory();
 
         return new MilestoneCollector([
@@ -197,17 +197,17 @@ class MilestoneCollectorTest extends ContainerTestCase
             new ActivityDistanceMilestoneDiscoverer($connection, $milestoneIdFactory),
             new ActivityElevationMilestoneDiscoverer($connection, $milestoneIdFactory),
             new ActivityMovingTimeMilestoneDiscoverer($connection, $milestoneIdFactory),
-            new CumulativeDistanceMilestoneDiscoverer($connection, $unitSystem, $milestoneIdFactory),
-            new CumulativeElevationMilestoneDiscoverer($connection, $unitSystem, $milestoneIdFactory),
+            new CumulativeDistanceMilestoneDiscoverer($connection, $settingsRepository, $milestoneIdFactory),
+            new CumulativeElevationMilestoneDiscoverer($connection, $settingsRepository, $milestoneIdFactory),
             new CumulativeMovingTimeMilestoneDiscoverer($connection, $milestoneIdFactory),
             new EddingtonMilestoneDiscoverer(
                 $this->getContainer()->get(EddingtonCalculator::class),
-                $unitSystem,
+                $settingsRepository,
                 $milestoneIdFactory,
             ),
             new FirstActivityOfSportTypeMilestoneDiscoverer($connection, $milestoneIdFactory),
-            new GearDistanceMilestoneDiscoverer($connection, $unitSystem, $milestoneIdFactory),
-            new GearElevationMilestoneDiscoverer($connection, $unitSystem, $milestoneIdFactory),
+            new GearDistanceMilestoneDiscoverer($connection, $settingsRepository, $milestoneIdFactory),
+            new GearElevationMilestoneDiscoverer($connection, $settingsRepository, $milestoneIdFactory),
             new GearMovingTimeMilestoneDiscoverer($connection, $milestoneIdFactory),
             new PersonalBestMilestoneDiscoverer($connection, $milestoneIdFactory),
             new StreakMilestoneDiscoverer($connection, $milestoneIdFactory),

@@ -40,6 +40,30 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
         $this->assertSame('1', (string) $this->keyValueStore->find(Key::FORCE_REBUILD));
     }
 
+    public function testItUpdatesAppearanceSettingsAndFlagsForceRebuild(): void
+    {
+        $data = [
+            'unitSystem' => 'imperial',
+            'locale' => 'nl_BE',
+            'timeFormat' => 12,
+            'dateFormat' => [
+                'short' => 'm-d-y',
+                'normal' => 'm-d-Y',
+            ],
+            'photos' => [
+                'hidePhotosForSportTypes' => ['VirtualRide'],
+            ],
+        ];
+
+        $this->commandBus->dispatch(UpdateSettings::fromPayload([
+            'group' => SettingsGroup::APPEARANCE->value,
+            'data' => $data,
+        ]));
+
+        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::APPEARANCE));
+        $this->assertSame('1', (string) $this->keyValueStore->find(Key::FORCE_REBUILD));
+    }
+
     #[\Override]
     protected function setUp(): void
     {

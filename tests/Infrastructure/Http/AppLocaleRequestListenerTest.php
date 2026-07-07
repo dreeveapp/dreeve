@@ -2,16 +2,18 @@
 
 namespace App\Tests\Infrastructure\Http;
 
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Http\AppLocaleRequestListener;
 use App\Infrastructure\Localisation\Locale;
+use App\Tests\ContainerTestCase;
 use Carbon\Carbon;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Translation\LocaleSwitcher;
 
-class AppLocaleRequestListenerTest extends TestCase
+class AppLocaleRequestListenerTest extends ContainerTestCase
 {
     private string $originalLocale;
 
@@ -23,7 +25,7 @@ class AppLocaleRequestListenerTest extends TestCase
             ->method('setLocale')
             ->with('nl_BE');
 
-        $listener = new AppLocaleRequestListener(Locale::nl_BE, $localeSwitcher);
+        $listener = new AppLocaleRequestListener($this->settingsRepositoryFor(Locale::nl_BE), $localeSwitcher);
 
         $request = Request::create('/admin');
 
@@ -44,7 +46,7 @@ class AppLocaleRequestListenerTest extends TestCase
             ->expects($this->never())
             ->method('setLocale');
 
-        $listener = new AppLocaleRequestListener(Locale::nl_BE, $localeSwitcher);
+        $listener = new AppLocaleRequestListener($this->settingsRepositoryFor(Locale::nl_BE), $localeSwitcher);
 
         $listener->onKernelRequest(new RequestEvent(
             kernel: $this->createStub(HttpKernelInterface::class),
@@ -53,11 +55,23 @@ class AppLocaleRequestListenerTest extends TestCase
         ));
     }
 
+    private function settingsRepositoryFor(Locale $locale): SettingsRepository
+    {
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::APPEARANCE, ['locale' => $locale->value]);
+
+        return $settingsRepository;
+    }
+
+    #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->originalLocale = Carbon::getLocale();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         Carbon::setLocale($this->originalLocale);

@@ -8,9 +8,10 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Milestone\Context\CumulativeElevationContext;
 use App\Domain\Milestone\Discoverer\CumulativeElevationMilestoneDiscoverer;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -61,9 +62,11 @@ class CumulativeElevationMilestoneDiscovererTest extends ContainerTestCase
     {
         $this->insertActivity(1, '2024-01-01', 500.0);
 
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::APPEARANCE, ['unitSystem' => 'imperial']);
         $discoverer = new CumulativeElevationMilestoneDiscoverer(
             $this->getConnection(),
-            UnitSystem::IMPERIAL,
+            $settingsRepository,
             new IncrementingMilestoneIdFactory(),
         );
         $milestones = $discoverer->discover();
@@ -93,7 +96,7 @@ class CumulativeElevationMilestoneDiscovererTest extends ContainerTestCase
         parent::setUp();
         $this->discoverer = new CumulativeElevationMilestoneDiscoverer(
             $this->getConnection(),
-            UnitSystem::METRIC,
+            $this->getContainer()->get(SettingsRepository::class),
             new IncrementingMilestoneIdFactory(),
         );
     }

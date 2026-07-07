@@ -1,4 +1,5 @@
 '# completed': '# completed'
+24-hour: 24-hour
 '42-day fitness trend': 42天健身趋势
 '7-day fatigue level': 7天疲劳水平
 '< 1.5: Good variety in training': '< 1.5: 训练多样性良好'
@@ -8,6 +9,7 @@
 'A high score means you concentrate more training into fewer, heavier days.': 'A high score means you concentrate more training into fewer, heavier days.'
 'A:C Ratio': 'A:C 比值'
 'A:C optimal in': 'A:C optimal in'
+AM/PM: AM/PM
 'ATL (Fatigue)': 'ATL (疲劳)'
 'Accumulated fatigue': 'Accumulated fatigue'
 Active: Active
@@ -43,6 +45,7 @@ All: All
 'All time': 所有时间
 'Alpine Ski': 高山滑雪
 'App subtitle': 'App subtitle'
+Appearance: Appearance
 Apr: 四月
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
 'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
@@ -231,6 +234,7 @@ HR: 心率
 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones': 过去一个月的心率区间分布。为了进行有效的极化训练，您的训练应主要在以下区间内进行。
 'Heart rate zones': 心率区间
 Heatmap: 热图
+'Hide photos for sport types': 'Hide photos for sport types'
 High: 高
 'High fatigue levels may increase injury or burnout risk. Consider reducing load and prioritizing recovery': 'High fatigue levels may increase injury or burnout risk. Consider reducing load and prioritizing recovery'
 'High monotony - increase variety': 单调性高——增加多样性
@@ -290,6 +294,7 @@ Load: Load
 'Load (CTL/ATL)': '负荷 (CTL/ATL)'
 'Loading data...': 加载数据中...
 Loading...: 加载中...
+Locale: Locale
 'Locations over the globe': 全球位置
 Log: Log
 'Long run': 长跑
@@ -351,6 +356,7 @@ Night: 夜晚
 'No recording devices yet.': 'No recording devices yet.'
 None: 无
 'Nordic Ski': 北欧滑雪
+'Normal date format': 'Normal date format'
 'Normalized power': 'Normalized power'
 'Not supported': 不支持
 Nov: 十一月
@@ -379,6 +385,8 @@ Over-fatigued: Over-fatigued
 'Overall weekly training stress': 每周训练负荷总览
 'PB badges': PB徽章
 'PET bottles produced': PET瓶量
+'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.': 'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.'
+'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.': 'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.'
 Pace: 步速
 Padel: Padel
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Parts you track maintenance for, eg: chains, cassettes, brake pads...'
@@ -390,6 +398,7 @@ Password: Password
 'Personal bests': 'Personal bests'
 Photo: 照片
 Photos: 照片
+'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
 'Physical Therapy': 'Physical Therapy'
 'Pickle Ball': 匹克球
 Pilates: 普拉提
@@ -467,6 +476,7 @@ Segments: 路段
 'Select the serviced gear…': 'Select the serviced gear…'
 Sep: 九月
 Settings: Settings
+'Short date format': 'Short date format'
 'Show information': 显示信息
 'Show last X years by default': 'Show last X years by default'
 'Show password': 'Show password'
@@ -607,7 +617,9 @@ Tennis: 网球
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.': 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.'
 'The last zone has no upper bound.': 'The last zone has no upper bound.'
+'The locale used to render the app.': 'The locale used to render the app.'
 "The name is derived from the device recorded on your activities and can't be edited.": "The name is derived from the device recorded on your activities and can't be edited."
+'The unit system used to render distances, elevations, temperatures, etc.': 'The unit system used to render distances, elevations, temperatures, etc.'
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': '徽章为动态生成，您可在任意 &lt;img&gt; 标签中使用'
 Thinking...: 思考中...
 'This action cannot be undone.': 'This action cannot be undone.'
@@ -622,6 +634,7 @@ Thinking...: 思考中...
 Thu: 周四
 Thu.: Thu.
 Time: 时间
+'Time format': 'Time format'
 'Time in zone': 'Time in zone'
 'Times completed': 完成次数
 Title: Title
@@ -649,6 +662,7 @@ Tue.: Tue.
 'Turn gear maintenance tracking on or off.': 'Turn gear maintenance tracking on or off.'
 Type: Type
 Unit: Unit
+'Unit system': 'Unit system'
 Unspecified: 未指定
 'Unsupported file type': 'Unsupported file type'
 'Updated on': 更新于

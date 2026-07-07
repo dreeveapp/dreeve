@@ -12,6 +12,8 @@ use App\Domain\Activity\Stream\Metric\ActivityStreamMetric;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -123,11 +125,14 @@ class CalculateStreamValueDistributionTest extends ContainerTestCase
             data: [4 => 3, 2 => 3],
         ));
 
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::APPEARANCE, ['unitSystem' => $unitSystem->value]);
+
         new CalculateStreamValueDistribution(
             $this->getContainer()->get(ActivityStreamRepository::class),
             $this->getContainer()->get(ActivityStreamMetricRepository::class),
             $this->getContainer()->get(ActivityRepository::class),
-            $unitSystem,
+            $settingsRepository,
         )->process($output);
 
         $this->assertMatchesTextSnapshot($output);

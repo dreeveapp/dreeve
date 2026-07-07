@@ -5,6 +5,8 @@ namespace App\Tests\Application\Build\ConfigureAppLocale;
 use App\Application\Build\BuildIndexHtml\BuildIndexHtml;
 use App\Application\Build\ConfigureAppLocale\ConfigureAppLocale;
 use App\Application\Build\ConfigureAppLocale\ConfigureAppLocaleCommandHandler;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Localisation\Locale;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -23,6 +25,7 @@ class ConfigureAppLocaleCommandHandlerTest extends ContainerTestCase
 
     private string $snapshotName;
     private LocaleSwitcher $localeSwitcher;
+    private SettingsRepository $settingsRepository;
     private CommandBus $commandBus;
 
     #[DataProvider(methodName: 'provideLocales')]
@@ -39,10 +42,7 @@ class ConfigureAppLocaleCommandHandlerTest extends ContainerTestCase
             Carbon::getLocale()
         );
 
-        new ConfigureAppLocaleCommandHandler(
-            $this->localeSwitcher,
-            $locale
-        )->handle(new ConfigureAppLocale());
+        $this->configureLocaleHandlerFor($locale)->handle(new ConfigureAppLocale());
 
         $this->provideFullTestSet();
         $this->commandBus->dispatch(new BuildIndexHtml(SerializableDateTime::fromString('2023-10-17 16:15:04')));
@@ -68,10 +68,7 @@ class ConfigureAppLocaleCommandHandlerTest extends ContainerTestCase
         );
 
         // Reset to default locale
-        new ConfigureAppLocaleCommandHandler(
-            $this->localeSwitcher,
-            Locale::en_US
-        )->handle(new ConfigureAppLocale());
+        $this->configureLocaleHandlerFor(Locale::en_US)->handle(new ConfigureAppLocale());
     }
 
     public static function provideLocales(): array
@@ -86,12 +83,23 @@ class ConfigureAppLocaleCommandHandlerTest extends ContainerTestCase
             $this->snapshotName;
     }
 
+    private function configureLocaleHandlerFor(Locale $locale): ConfigureAppLocaleCommandHandler
+    {
+        $this->settingsRepository->save(SettingsGroup::APPEARANCE, [
+            ...$this->settingsRepository->find(SettingsGroup::APPEARANCE),
+            'locale' => $locale->value,
+        ]);
+
+        return new ConfigureAppLocaleCommandHandler($this->localeSwitcher, $this->settingsRepository);
+    }
+
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->localeSwitcher = $this->getContainer()->get(LocaleSwitcher::class);
+        $this->settingsRepository = $this->getContainer()->get(SettingsRepository::class);
         $this->commandBus = $this->getContainer()->get(CommandBus::class);
     }
 }

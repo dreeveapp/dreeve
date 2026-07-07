@@ -30,12 +30,26 @@ final class Version20260706053720 extends AbstractMigration
         );
 
         $config = Yaml::parseFile($configFile);
-        $subtree = $config[SettingsGroup::GENERAL->value] ?? null;
 
-        $this->skipIf(
-            empty($subtree),
-            'No "general" config configured, nothing to migrate'
-        );
+        $this->migrateGeneral($config);
+        $this->migrateAppearance($config);
+    }
+
+    public function down(Schema $schema): void
+    {
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::GENERAL->keyValueKey()->value]);
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::APPEARANCE->keyValueKey()->value]);
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function migrateGeneral(array $config): void
+    {
+        $subtree = $config[SettingsGroup::GENERAL->value] ?? null;
+        if (empty($subtree)) {
+            return;
+        }
 
         $subtree = $this->normalizeKeys($subtree);
         $subtree = $this->applyStoredAthlete($subtree);
@@ -50,9 +64,48 @@ final class Version20260706053720 extends AbstractMigration
         );
     }
 
-    public function down(Schema $schema): void
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function migrateAppearance(array $config): void
     {
-        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::GENERAL->keyValueKey()->value]);
+        $subtree = $config[SettingsGroup::APPEARANCE->value] ?? null;
+        if (empty($subtree)) {
+            return;
+        }
+
+        $subtree = $this->normalizeKeys($subtree);
+        // The dashboard layout is stored separately under Key::DASHBOARD.
+        unset($subtree['dashboard']);
+        // Convert the legacy string date format to the modern {short, normal} shape.
+        if (isset($subtree['dateFormat']) && is_string($subtree['dateFormat'])) {
+            $subtree['dateFormat'] = $this->normalizeDateFormat($subtree['dateFormat']);
+        }
+        if (empty($subtree)) {
+            return;
+        }
+
+        $this->connection->executeStatement(
+            'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
+            [
+                'key' => SettingsGroup::APPEARANCE->keyValueKey()->value,
+                'value' => Json::encode($subtree),
+            ]
+        );
+    }
+
+    /**
+     * @return array{short: string, normal: string}
+     */
+    private function normalizeDateFormat(string $legacyDateFormat): array
+    {
+        [$short, $normal] = match ($legacyDateFormat) {
+            'DAY-MONTH-YEAR' => ['d-m-y', 'd-m-Y'],
+            'MONTH-DAY-YEAR' => ['m-d-y', 'm-d-Y'],
+            default => throw new \InvalidArgumentException(sprintf('Invalid date format "%s"', $legacyDateFormat)),
+        };
+
+        return ['short' => $short, 'normal' => $normal];
     }
 
     /**

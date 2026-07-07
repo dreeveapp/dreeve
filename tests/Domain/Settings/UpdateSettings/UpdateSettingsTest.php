@@ -52,4 +52,14 @@ class UpdateSettingsTest extends TestCase
             'data' => ['athlete' => ['firstName' => 'Jane']],
         ]);
     }
+
+    public function testItThrowsWhenAppearanceDataIsInvalid(): void
+    {
+        $this->expectException(CouldNotDeserializeCommand::class);
+
+        UpdateSettings::fromPayload([
+            'group' => 'appearance',
+            'data' => ['dateFormat' => ['short' => 'q', 'normal' => 'q']],
+        ]);
+    }
 }

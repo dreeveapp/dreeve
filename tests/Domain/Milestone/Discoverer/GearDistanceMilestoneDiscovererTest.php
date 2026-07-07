@@ -9,9 +9,10 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Milestone\Context\GearDistanceContext;
 use App\Domain\Milestone\Discoverer\GearDistanceMilestoneDiscoverer;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -99,9 +100,11 @@ class GearDistanceMilestoneDiscovererTest extends ContainerTestCase
         $this->insertGear($gearId, 'Canyon Endurace');
         $this->insertActivity('1', '2024-01-01', $gearId, 161.0);
 
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::APPEARANCE, ['unitSystem' => 'imperial']);
         $discoverer = new GearDistanceMilestoneDiscoverer(
             $this->getConnection(),
-            UnitSystem::IMPERIAL,
+            $settingsRepository,
             new IncrementingMilestoneIdFactory(),
         );
         $milestones = $discoverer->discover();
@@ -117,7 +120,7 @@ class GearDistanceMilestoneDiscovererTest extends ContainerTestCase
         parent::setUp();
         $this->discoverer = new GearDistanceMilestoneDiscoverer(
             $this->getConnection(),
-            UnitSystem::METRIC,
+            $this->getContainer()->get(SettingsRepository::class),
             new IncrementingMilestoneIdFactory(),
         );
     }

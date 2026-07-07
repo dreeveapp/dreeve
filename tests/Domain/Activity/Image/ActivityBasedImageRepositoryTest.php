@@ -10,7 +10,7 @@ use App\Domain\Activity\Image\ActivityBasedImageRepository;
 use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
-use App\Infrastructure\Config\Photos\HidePhotosForSportTypes;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -147,7 +147,7 @@ class ActivityBasedImageRepositoryTest extends ContainerTestCase
             $this->getContainer()->get(EnrichedActivities::class),
             $this->getContainer()->get(ActivityRepository::class),
             $this->fileStorage = $this->getContainer()->get('file.storage'),
-            HidePhotosForSportTypes::fromArray([]),
+            $this->getContainer()->get(SettingsRepository::class),
             KernelProjectDir::fromString('var/www')
         );
     }

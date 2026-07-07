@@ -2,21 +2,23 @@
 
 namespace App\Tests\Infrastructure\Twig;
 
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Twig\MeasurementTwigExtension;
 use App\Infrastructure\ValueObject\Measurement\Length\Foot;
 use App\Infrastructure\ValueObject\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\Measurement\Unit;
 use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Measurement\Velocity\SecPerKm;
+use App\Tests\ContainerTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 
-class MeasurementTwigExtensionTest extends TestCase
+class MeasurementTwigExtensionTest extends ContainerTestCase
 {
     #[DataProvider(methodName: 'provideConversions')]
     public function testDoConversion(Unit $expectedMeasurement, UnitSystem $unitSystem, Unit $measurementToConvert): void
     {
-        $extension = new MeasurementTwigExtension($unitSystem);
+        $extension = $this->extensionFor($unitSystem);
 
         $this->assertEquals(
             $expectedMeasurement,
@@ -26,7 +28,7 @@ class MeasurementTwigExtensionTest extends TestCase
 
     public function testFormatPace(): void
     {
-        $extension = new MeasurementTwigExtension(UnitSystem::METRIC);
+        $extension = $this->extensionFor(UnitSystem::METRIC);
 
         $this->assertEquals(
             '10:00',
@@ -37,7 +39,7 @@ class MeasurementTwigExtensionTest extends TestCase
     #[DataProvider(methodName: 'provideUnitSymbols')]
     public function testGetUnitSymbol(string $expectedUnitSymbol, UnitSystem $unitSystem, string $unitName): void
     {
-        $extension = new MeasurementTwigExtension($unitSystem);
+        $extension = $this->extensionFor($unitSystem);
         $this->assertEquals(
             $expectedUnitSymbol,
             $extension->getUnitSymbol($unitName),
@@ -48,13 +50,13 @@ class MeasurementTwigExtensionTest extends TestCase
     {
         $this->expectExceptionObject(new \RuntimeException('Invalid unitName "invalid"'));
 
-        $extension = new MeasurementTwigExtension(UnitSystem::METRIC);
+        $extension = $this->extensionFor(UnitSystem::METRIC);
         $extension->getUnitSymbol('invalid');
     }
 
     public function testFormatNumber(): void
     {
-        $extension = new MeasurementTwigExtension(UnitSystem::METRIC);
+        $extension = $this->extensionFor(UnitSystem::METRIC);
 
         $this->assertEquals(
             "1\u{00A0}000",
@@ -69,6 +71,14 @@ class MeasurementTwigExtensionTest extends TestCase
             0,
             $extension->formatNumber(null, 0)
         );
+    }
+
+    private function extensionFor(UnitSystem $unitSystem): MeasurementTwigExtension
+    {
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::APPEARANCE, ['unitSystem' => $unitSystem->value]);
+
+        return new MeasurementTwigExtension($settingsRepository);
     }
 
     public static function provideConversions(): array
