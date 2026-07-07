@@ -145,6 +145,7 @@ Distance: Distance
 'Distance per month per gear': 'Distance per month per gear'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.'
 'Drag to reorder': 'Drag to reorder'
+'Drag to set the order in which sport types are displayed throughout the app.': 'Drag to set the order in which sport types are displayed throughout the app.'
 Duration: Duration
 'E-Bike Rides': 'E-Bike Rides'
 'E-Mountain Bike Rides': 'E-Mountain Bike Rides'
@@ -498,6 +499,7 @@ Source: Source
 Speed: Speed
 Splits: Splits
 'Sport type': 'Sport type'
+'Sport types sorting order': 'Sport types sorting order'
 'Sport types to include': 'Sport types to include'
 'Sport variety': 'Sport variety'
 Squash: Squash

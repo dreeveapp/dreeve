@@ -81,6 +81,25 @@
                     {% endfor %}
                 </div>
             </div>
+            <div class="mt-6">
+                <label class="mt-0!">{{ "Sport types sorting order"|trans }}</label>
+                <p class="description mb-2">
+                    {{ "Drag to set the order in which sport types are displayed throughout the app."|trans }}
+                </p>
+                <div class="mt-1 max-h-64 overflow-y-auto flex flex-col gap-1.5 rounded-lg border border-gray-200 p-2" data-sortable-list>
+                    {% for sportType in sportTypes %}
+                        <div class="flex items-center gap-2 rounded-md border border-gray-200 bg-white px-2 py-1.5 shadow-xs" data-sort-item>
+                            <span class="shrink-0 text-gray-400 cursor-grab active:cursor-grabbing" data-drag-handle title="{{ "Drag to reorder"|trans }}">
+                                <svg class="size-4.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"/>
+                                </svg>
+                            </span>
+                            <span class="min-w-0 truncate text-sm font-normal text-gray-800">{{ sportType|trans }}</span>
+                            <input type="hidden" name="data[sportTypesSortingOrder][]" value="{{ sportType.value }}">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
             <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
                 <button type="submit" data-has-loading-state class="group btn--primary">
                     <span class="label">{{ "Save settings"|trans }}</span>

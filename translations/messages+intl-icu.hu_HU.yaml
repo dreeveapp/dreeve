@@ -145,6 +145,7 @@ Distance: Távolság
 'Distance per month per gear': 'Havi távolság felszerelésenkén'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'A kerékpározás, futás, úszás és erőedzés vegyítése növeli a változatossági pontszámodat.'
 'Drag to reorder': 'Drag to reorder'
+'Drag to set the order in which sport types are displayed throughout the app.': 'Drag to set the order in which sport types are displayed throughout the app.'
 Duration: Időtartam
 'E-Bike Rides': 'E-Bike túrák'
 'E-Mountain Bike Rides': 'E-MTB túrák'
@@ -498,6 +499,7 @@ Source: Source
 Speed: Sebesség
 Splits: Részidők
 'Sport type': 'Sport type'
+'Sport types sorting order': 'Sport types sorting order'
 'Sport types to include': 'Sport types to include'
 'Sport variety': Sporttípus-változatosság
 Squash: Squash

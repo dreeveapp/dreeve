@@ -145,6 +145,7 @@ Distance: Distans
 'Distance per month per gear': 'Distans per månad per utrustning'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.'
 'Drag to reorder': 'Drag to reorder'
+'Drag to set the order in which sport types are displayed throughout the app.': 'Drag to set the order in which sport types are displayed throughout the app.'
 Duration: Duration
 'E-Bike Rides': 'E-Cykel Turer'
 'E-Mountain Bike Rides': 'E-Mountain Bike Turer'
@@ -498,6 +499,7 @@ Source: Source
 Speed: Fart
 Splits: Delar
 'Sport type': 'Sport type'
+'Sport types sorting order': 'Sport types sorting order'
 'Sport types to include': 'Sport types to include'
 'Sport variety': 'Sport variety'
 Squash: Squash
