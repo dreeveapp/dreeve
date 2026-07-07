@@ -11,6 +11,7 @@ final class CachingSettingsRepository implements SettingsRepository
     /** @var array<string, array<string, mixed>> */
     private array $findCache = [];
     private ?GeneralSettings $general = null;
+    private ?AppearanceSettings $appearanceSettings = null;
 
     public function __construct(
         #[Autowire(service: KeyValueBasedSettingsRepository::class)]
@@ -29,10 +30,16 @@ final class CachingSettingsRepository implements SettingsRepository
 
         $this->findCache = [];
         $this->general = null;
+        $this->appearanceSettings = null;
     }
 
     public function general(): GeneralSettings
     {
         return $this->general ??= $this->settingsRepository->general();
+    }
+
+    public function appearance(): AppearanceSettings
+    {
+        return $this->appearanceSettings ??= $this->settingsRepository->appearance();
     }
 }
