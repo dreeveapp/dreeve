@@ -38,7 +38,7 @@ enum SettingsGroup: string
             self::GENERAL => GeneralSettings::fromArray($data),
             self::APPEARANCE => AppearanceSettings::fromArray($data),
             self::IMPORT => ImportSettings::fromArray($data),
-            default => throw new \LogicException(sprintf('Settings group "%s" is not migrated yet.', $this->value)),
+            default => throw new \RuntimeException(sprintf('Settings group "%s" is not migrated yet.', $this->value)),
         };
     }
 }

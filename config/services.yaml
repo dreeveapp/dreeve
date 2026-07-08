@@ -6,13 +6,13 @@
 parameters:
     env(APP_DEBUG): 0
     env(IMPORT_MODE): 'stravaApi'
-    env(LOCK_DSN): 'flock'
-    env(TZ): ''
-    env(ADMIN_ALLOWED_IPS): ''
-    env(DEMO_MODE_IS_ENABLED): 0
-    env(DATABASE_DIRECTORY): '%kernel.project_dir%/storage/database'
     env(ADMIN_USERNAME): 'admin'
     env(ADMIN_PASSWORD_HASH): ''
+    env(ADMIN_ALLOWED_IPS): ''
+    env(DEMO_MODE_IS_ENABLED): 0
+    env(LOCK_DSN): 'flock'
+    env(TZ): ''
+    env(DATABASE_DIRECTORY): '%kernel.project_dir%/storage/database'
 
 services:
     # default configuration for services in *this* file
