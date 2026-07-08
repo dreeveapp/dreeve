@@ -4,9 +4,10 @@ namespace App\Tests\Application\Import\StravaImport\ImportSegments;
 
 use App\Application\Import\StravaImport\ImportSegments\ImportSegments;
 use App\Application\Import\StravaImport\ImportSegments\ImportSegmentsCommandHandler;
-use App\Application\Import\StravaImport\ImportSegments\OptInToSegmentDetailsImport;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Strava;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Mutex\LockName;
@@ -48,7 +49,7 @@ class ImportSegmentsCommandHandlerTest extends ContainerTestCase
 
         $commandHandler = new ImportSegmentsCommandHandler(
             $this->getContainer()->get(SegmentRepository::class),
-            OptInToSegmentDetailsImport::fromBool(true),
+            $this->seedOptInToSegmentDetailsImport(true),
             $this->strava,
             new Mutex(
                 connection: $this->getConnection(),
@@ -77,7 +78,7 @@ class ImportSegmentsCommandHandlerTest extends ContainerTestCase
 
         $commandHandler = new ImportSegmentsCommandHandler(
             $this->getContainer()->get(SegmentRepository::class),
-            OptInToSegmentDetailsImport::fromBool(true),
+            $this->seedOptInToSegmentDetailsImport(true),
             $this->strava,
             new Mutex(
                 connection: $this->getConnection(),
@@ -94,7 +95,7 @@ class ImportSegmentsCommandHandlerTest extends ContainerTestCase
     {
         $commandHandler = new ImportSegmentsCommandHandler(
             $this->getContainer()->get(SegmentRepository::class),
-            OptInToSegmentDetailsImport::fromBool(false),
+            $this->seedOptInToSegmentDetailsImport(false),
             $this->strava,
             new Mutex(
                 connection: $this->getConnection(),
@@ -121,5 +122,15 @@ class ImportSegmentsCommandHandlerTest extends ContainerTestCase
             'INSERT INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             ['key' => 'lock.importDataOrBuildApp', 'value' => '{"lockAcquiredBy": "test"}']
         );
+    }
+
+    private function seedOptInToSegmentDetailsImport(bool $optIn): SettingsRepository
+    {
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::IMPORT, [
+            'optInToSegmentDetailImport' => $optIn,
+        ]);
+
+        return $settingsRepository;
     }
 }

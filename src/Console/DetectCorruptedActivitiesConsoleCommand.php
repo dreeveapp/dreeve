@@ -12,7 +12,6 @@ use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Webhook\WebhookAspectType;
-use App\Domain\Strava\Webhook\WebhookConfig;
 use App\Domain\Strava\Webhook\WebhookEvent;
 use App\Domain\Strava\Webhook\WebhookEventRepository;
 use App\Infrastructure\Console\ProvideConsoleIntro;
@@ -45,7 +44,6 @@ class DetectCorruptedActivitiesConsoleCommand extends Command
         private readonly WebhookEventRepository $webhookEventRepository,
         private readonly CommandBus $commandBus,
         private readonly SettingsRepository $settingsRepository,
-        private readonly WebhookConfig $webhookConfig,
         private readonly Mutex $mutex,
     ) {
         parent::__construct();
@@ -120,7 +118,7 @@ class DetectCorruptedActivitiesConsoleCommand extends Command
         $this->activityRepository->markActivitiesForDeletion($activityIdsToDelete);
         $this->commandBus->dispatch(new DeleteActivitiesMarkedForDeletion($output));
 
-        if (!$this->webhookConfig->isEnabled()) {
+        if (!$this->settingsRepository->import()->getWebhookConfig()->isEnabled()) {
             return Command::SUCCESS;
         }
 

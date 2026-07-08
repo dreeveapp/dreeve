@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Strava;
 
+use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Webhook\ProcessWebhookEvent\ProcessWebhookEvent;
-use App\Domain\Strava\Webhook\WebhookConfig;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Serialization\Json;
 use Monolog\Attribute\WithMonologChannel;
@@ -21,7 +21,7 @@ final readonly class StravaWebhookRequestHandler
     public const string STRAVA_WEBHOOKS_ENDPOINT = '/strava/webhook';
 
     public function __construct(
-        private WebhookConfig $webhookConfig,
+        private SettingsRepository $settingsRepository,
         private CommandBus $commandBus,
         private LoggerInterface $logger,
     ) {
@@ -30,7 +30,8 @@ final readonly class StravaWebhookRequestHandler
     #[Route(path: self::STRAVA_WEBHOOKS_ENDPOINT, methods: ['GET'], priority: 2)]
     public function handleValidation(Request $request): JsonResponse
     {
-        if (!$this->webhookConfig->isEnabled()) {
+        $webhookConfig = $this->settingsRepository->import()->getWebhookConfig();
+        if (!$webhookConfig->isEnabled()) {
             return new JsonResponse('Webhooks are not enabled', Response::HTTP_NOT_FOUND);
         }
 
@@ -45,9 +46,9 @@ final readonly class StravaWebhookRequestHandler
             'all' => $request->query->all(),
         ]);
 
-        if ($verifyToken !== $this->webhookConfig->getVerifyToken()) {
+        if ($verifyToken !== $webhookConfig->getVerifyToken()) {
             $this->logger->error('Invalid verify token received', [
-                'expected' => $this->webhookConfig->getVerifyToken(),
+                'expected' => $webhookConfig->getVerifyToken(),
                 'received' => $verifyToken,
             ]);
 
@@ -62,7 +63,7 @@ final readonly class StravaWebhookRequestHandler
     #[Route(path: self::STRAVA_WEBHOOKS_ENDPOINT, methods: ['POST'], priority: 2)]
     public function handleEvent(Request $request): Response
     {
-        if (!$this->webhookConfig->isEnabled()) {
+        if (!$this->settingsRepository->import()->getWebhookConfig()->isEnabled()) {
             return new JsonResponse('Webhooks are not enabled', Response::HTTP_NOT_FOUND);
         }
 

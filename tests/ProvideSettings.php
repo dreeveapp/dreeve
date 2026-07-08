@@ -68,5 +68,22 @@ trait ProvideSettings
                 ],
             ])),
         ));
+
+        // Baseline the whole suite gets today from config/app/test/config-import.yaml, normalized to camelCase.
+        $keyValueStore->save(KeyValue::fromState(
+            SettingsGroup::IMPORT->keyValueKey(),
+            Value::fromString(Json::encode([
+                'numberOfNewActivitiesToProcessPerImport' => 250,
+                'sportTypesToImport' => [],
+                'activityVisibilitiesToImport' => [],
+                'skipActivitiesRecordedBefore' => null,
+                'activitiesToSkipDuringImport' => ['skip'],
+                'optInToSegmentDetailImport' => true,
+                'webhooks' => [
+                    'enabled' => true,
+                    'verifyToken' => 'ffc26d52-d3ff-4797-a2b7-780a593a3547',
+                ],
+            ])),
+        ));
     }
 }

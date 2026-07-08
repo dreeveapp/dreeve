@@ -6,12 +6,4 @@ namespace App\Domain\Strava\Webhook;
 
 final class InvalidWebhookConfig extends \RuntimeException
 {
-    public function __construct(string $message = '', int $code = 0, ?\Throwable $previous = null)
-    {
-        $message = sprintf(
-            'config/app/config.yaml import.webhooks: %s',
-            $message,
-        );
-        parent::__construct($message, $code, $previous);
-    }
 }

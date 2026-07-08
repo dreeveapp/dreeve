@@ -4,8 +4,9 @@ namespace App\Tests\Console\Webhook;
 
 use App\Application\AppUrl;
 use App\Console\Webhook\StravaCreateWebhookSubscriptionConsoleCommand;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Strava;
-use App\Domain\Strava\Webhook\WebhookConfig;
 use App\Tests\Console\ConsoleCommandTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
@@ -39,7 +40,7 @@ class StravaCreateWebhookSubscriptionConsoleCommandTest extends ConsoleCommandTe
     {
         $this->stravaCreateWebhookSubscriptionConsoleCommand = new StravaCreateWebhookSubscriptionConsoleCommand(
             $this->getContainer()->get(Strava::class),
-            WebhookConfig::fromArray(['enabled' => false, 'verifyToken' => '']),
+            $this->settingsWithWebhooks(enabled: false, verifyToken: ''),
             AppUrl::fromString('https://localhost/'),
             $this->logger,
         );
@@ -67,10 +68,20 @@ class StravaCreateWebhookSubscriptionConsoleCommandTest extends ConsoleCommandTe
 
         $this->stravaCreateWebhookSubscriptionConsoleCommand = new StravaCreateWebhookSubscriptionConsoleCommand(
             $this->getContainer()->get(Strava::class),
-            WebhookConfig::fromArray(['enabled' => true, 'verifyToken' => 'el-token']),
+            $this->settingsWithWebhooks(enabled: true, verifyToken: 'el-token'),
             AppUrl::fromString('https://localhost/'),
             $this->logger = $this->createMock(LoggerInterface::class),
         );
+    }
+
+    private function settingsWithWebhooks(bool $enabled, string $verifyToken): SettingsRepository
+    {
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::IMPORT, [
+            'webhooks' => ['enabled' => $enabled, 'verifyToken' => $verifyToken],
+        ]);
+
+        return $settingsRepository;
     }
 
     protected function getConsoleCommand(): Command

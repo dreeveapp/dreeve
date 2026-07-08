@@ -6,8 +6,8 @@ namespace App\Console\Webhook;
 
 use App\Application\AppUrl;
 use App\Controller\Strava\StravaWebhookRequestHandler;
+use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Strava;
-use App\Domain\Strava\Webhook\WebhookConfig;
 use App\Infrastructure\Doctrine\Migrations\RequiresUpToDateDatabaseSchema;
 use App\Infrastructure\Logging\LoggableConsoleOutput;
 use App\Infrastructure\ValueObject\String\Url;
@@ -26,7 +26,7 @@ final class StravaCreateWebhookSubscriptionConsoleCommand extends Command
 {
     public function __construct(
         private readonly Strava $strava,
-        private readonly WebhookConfig $webhookConfig,
+        private readonly SettingsRepository $settingsRepository,
         private readonly AppUrl $appUrl,
         private readonly LoggerInterface $logger,
     ) {
@@ -37,7 +37,8 @@ final class StravaCreateWebhookSubscriptionConsoleCommand extends Command
     {
         $output = new SymfonyStyle($input, new LoggableConsoleOutput($output, $this->logger));
 
-        if (!$this->webhookConfig->isEnabled()) {
+        $webhookConfig = $this->settingsRepository->import()->getWebhookConfig();
+        if (!$webhookConfig->isEnabled()) {
             // Do not allow to create a webhook subscription as the validation request handler won't work.
             $output->warning('Webhooks not enabled. Enable them by setting import.webhooks.enabled = true');
 
@@ -49,7 +50,7 @@ final class StravaCreateWebhookSubscriptionConsoleCommand extends Command
 
         $this->strava->createWebhookSubscription(
             callbackUrl: $callbackUrl,
-            verifyToken: $this->webhookConfig->getVerifyToken(),
+            verifyToken: $webhookConfig->getVerifyToken(),
         );
 
         $output->success('Webhook subscription created successfully!');

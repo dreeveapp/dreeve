@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Settings;
 
+use App\Application\AppUrl;
 use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
+use App\Domain\Import\ImportMode;
 use App\Domain\Settings\KeyValueBasedSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Settings\UpdateSettings\UpdateSettings;
+use App\Domain\Strava\StravaClientId;
+use App\Domain\Strava\StravaClientSecret;
+use App\Domain\Strava\StravaRefreshToken;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +30,14 @@ final readonly class SettingsRequestHandler
         private Environment $twig,
         #[Autowire(service: KeyValueBasedSettingsRepository::class)]
         private SettingsRepository $settingsRepository,
+        private AppUrl $appUrl,
+        #[\SensitiveParameter]
+        private StravaClientId $stravaClientId,
+        #[\SensitiveParameter]
+        private StravaClientSecret $stravaClientSecret,
+        #[\SensitiveParameter]
+        private StravaRefreshToken $stravaRefreshToken,
+        private ImportMode $importMode,
         private UrlGeneratorInterface $urlGenerator,
     ) {
     }
@@ -43,12 +56,20 @@ final readonly class SettingsRequestHandler
         $settingsGroup = SettingsGroup::tryFrom($group)
             ?? throw new NotFoundHttpException(sprintf('Unknown settings group "%s"', $group));
 
+        if (SettingsGroup::IMPORT === $settingsGroup && !$this->importMode->isStravaApi()) {
+            throw new NotFoundHttpException('Page not found');
+        }
+
         return new Response($this->twig->render(
             sprintf('html/admin/page/settings/%s.html.twig', $settingsGroup->value),
             [
                 'dispatchCommand' => UpdateSettings::getCommandName(),
                 'group' => $settingsGroup,
                 'settings' => $this->settingsRepository->find($settingsGroup),
+                'appUrl' => $this->appUrl,
+                'stravaClientId' => $this->stravaClientId,
+                'stravaClientSecret' => $this->stravaClientSecret,
+                'stravaClientRefreshToken' => $this->stravaRefreshToken,
                 'sportTypes' => $this->settingsRepository->appearance()->getSportTypesSortingOrder(),
                 'defaultHeartRateZones' => HeartRateZoneConfiguration::getDefaultZones(),
             ],

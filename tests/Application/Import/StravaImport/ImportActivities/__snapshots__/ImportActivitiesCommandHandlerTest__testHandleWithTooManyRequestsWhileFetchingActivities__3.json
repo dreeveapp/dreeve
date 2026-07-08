@@ -8,6 +8,10 @@
         "value": "{\"locale\":\"en_US\",\"unitSystem\":\"metric\",\"timeFormat\":24,\"dateFormat\":{\"short\":\"d-m-y\",\"normal\":\"d-m-Y\"}}"
     },
     {
+        "key": "settingsImport",
+        "value": "{\"numberOfNewActivitiesToProcessPerImport\":250,\"sportTypesToImport\":[],\"activityVisibilitiesToImport\":[],\"skipActivitiesRecordedBefore\":null,\"activitiesToSkipDuringImport\":[\"skip\"],\"optInToSegmentDetailImport\":true,\"webhooks\":{\"enabled\":true,\"verifyToken\":\"ffc26d52-d3ff-4797-a2b7-780a593a3547\"}}"
+    },
+    {
         "key": "lock.importDataOrBuildApp",
         "value": "{\"heartbeat\":1764806400,\"lockAcquiredBy\":\"test\"}"
     }

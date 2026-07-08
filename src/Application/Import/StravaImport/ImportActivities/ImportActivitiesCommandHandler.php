@@ -12,8 +12,8 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityVisibility;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
-use App\Domain\Activity\SportType\SportTypesToImport;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
+use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\RateLimit\StravaRateLimitHasBeenReached;
 use App\Domain\Strava\Strava;
 use App\Infrastructure\CQRS\Command\Command;
@@ -38,11 +38,7 @@ final readonly class ImportActivitiesCommandHandler implements CommandHandler
         private ActivityRepository $activityRepository,
         private ActivityIdRepository $activityIdRepository,
         private ActivityStreamRepository $activityStreamRepository,
-        private NumberOfNewActivitiesToProcessPerImport $numberOfNewActivitiesToProcessPerImport,
-        private SportTypesToImport $sportTypesToImport,
-        private ActivityVisibilitiesToImport $activityVisibilitiesToImport,
-        private ActivitiesToSkipDuringImport $activitiesToSkipDuringImport,
-        private ?SkipActivitiesRecordedBefore $skipActivitiesRecordedBefore,
+        private SettingsRepository $settingsRepository,
         private Mutex $mutex,
         #[AutowireIterator('app.activity_import.pipeline_step')]
         private iterable $steps,
@@ -53,6 +49,13 @@ final readonly class ImportActivitiesCommandHandler implements CommandHandler
     {
         assert($command instanceof ImportActivities);
         $command->getOutput()->writeln('Importing activities...');
+
+        $importSettings = $this->settingsRepository->import();
+        $numberOfNewActivitiesToProcessPerImport = $importSettings->getNumberOfNewActivitiesToProcessPerImport();
+        $sportTypesToImport = $importSettings->getSportTypesToImport();
+        $activityVisibilitiesToImport = $importSettings->getActivityVisibilitiesToImport();
+        $activitiesToSkipDuringImport = $importSettings->getActivitiesToSkipDuringImport();
+        $skipActivitiesRecordedBefore = $importSettings->getSkipActivitiesRecordedBefore();
 
         $this->strava->setConsoleOutput($command->getOutput());
 
@@ -101,16 +104,16 @@ final readonly class ImportActivitiesCommandHandler implements CommandHandler
             }
 
             $sportType = SportType::from($rawStravaData['sport_type']);
-            if (!$this->sportTypesToImport->has($sportType)) {
+            if (!$sportTypesToImport->has($sportType)) {
                 continue;
             }
 
             $activityVisibility = ActivityVisibility::from($rawStravaData['visibility']);
-            if (!$this->activityVisibilitiesToImport->has($activityVisibility)) {
+            if (!$activityVisibilitiesToImport->has($activityVisibility)) {
                 continue;
             }
 
-            if ($this->skipActivitiesRecordedBefore?->isAfterOrOn(SerializableDateTime::createFromFormat(
+            if ($skipActivitiesRecordedBefore?->isAfterOrOn(SerializableDateTime::createFromFormat(
                 format: Activity::DATE_TIME_FORMAT,
                 datetime: $rawStravaData['start_date_local'],
                 timezone: SerializableTimezone::default(),
@@ -119,7 +122,7 @@ final readonly class ImportActivitiesCommandHandler implements CommandHandler
             }
 
             $activityId = ActivityId::fromUnprefixed((string) $rawStravaData['id']);
-            if ($this->activitiesToSkipDuringImport->has($activityId)) {
+            if ($activitiesToSkipDuringImport->has($activityId)) {
                 continue;
             }
 
@@ -162,7 +165,7 @@ final readonly class ImportActivitiesCommandHandler implements CommandHandler
                     rawData: $context->getRawStravaData()
                 ));
 
-                $this->numberOfNewActivitiesToProcessPerImport->increaseNumberOfProcessedActivities();
+                $numberOfNewActivitiesToProcessPerImport->increaseNumberOfProcessedActivities();
             } else {
                 $this->activityRepository->update(ActivityWithRawData::fromState(
                     activity: $activity,
@@ -191,7 +194,7 @@ final readonly class ImportActivitiesCommandHandler implements CommandHandler
                 $activity->getStartDate()->format('d-m-Y'))
             );
 
-            if ($this->numberOfNewActivitiesToProcessPerImport->maxNumberProcessed()) {
+            if ($numberOfNewActivitiesToProcessPerImport->maxNumberProcessed()) {
                 // Stop importing activities, we reached the max number to process for this batch.
                 break;
             }
@@ -200,7 +203,7 @@ final readonly class ImportActivitiesCommandHandler implements CommandHandler
             ++$delta;
         }
 
-        if ($this->numberOfNewActivitiesToProcessPerImport->maxNumberProcessed()) {
+        if ($numberOfNewActivitiesToProcessPerImport->maxNumberProcessed()) {
             // Shortcut the process here to make sure no activities are deleted yet.
             return;
         }

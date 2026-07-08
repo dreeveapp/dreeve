@@ -64,6 +64,30 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
         $this->assertSame('1', (string) $this->keyValueStore->find(Key::FORCE_REBUILD));
     }
 
+    public function testItUpdatesImportSettingsAndFlagsForceRebuild(): void
+    {
+        $data = [
+            'numberOfNewActivitiesToProcessPerImport' => 100,
+            'sportTypesToImport' => ['Ride'],
+            'activityVisibilitiesToImport' => ['everyone'],
+            'skipActivitiesRecordedBefore' => '2023-09-01',
+            'activitiesToSkipDuringImport' => ['123'],
+            'optInToSegmentDetailImport' => false,
+            'webhooks' => [
+                'enabled' => true,
+                'verifyToken' => 'el-token',
+            ],
+        ];
+
+        $this->commandBus->dispatch(UpdateSettings::fromPayload([
+            'group' => SettingsGroup::IMPORT->value,
+            'data' => $data,
+        ]));
+
+        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::IMPORT));
+        $this->assertSame('1', (string) $this->keyValueStore->find(Key::FORCE_REBUILD));
+    }
+
     #[\Override]
     protected function setUp(): void
     {

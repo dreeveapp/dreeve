@@ -37,6 +37,7 @@ enum SettingsGroup: string
         return match ($this) {
             self::GENERAL => GeneralSettings::fromArray($data),
             self::APPEARANCE => AppearanceSettings::fromArray($data),
+            self::IMPORT => ImportSettings::fromArray($data),
             default => throw new \LogicException(sprintf('Settings group "%s" is not migrated yet.', $this->value)),
         };
     }

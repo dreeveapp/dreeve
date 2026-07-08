@@ -85,26 +85,6 @@ services:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:APP_URL)%']
 
-    App\Application\Import\StravaImport\ImportActivities\ActivityVisibilitiesToImport:
-      factory: [ null, 'from' ]
-      arguments: ['@=app_config("import.activityVisibilitiesToImport")']
-
-    App\Application\Import\StravaImport\ImportActivities\NumberOfNewActivitiesToProcessPerImport:
-      factory: [ null, 'fromInt' ]
-      arguments: ['@=app_config("import.numberOfNewActivitiesToProcessPerImport")']
-
-    App\Application\Import\StravaImport\ImportActivities\ActivitiesToSkipDuringImport:
-      factory: [ null, 'from' ]
-      arguments: ['@=app_config("import.activitiesToSkipDuringImport")']
-
-    App\Application\Import\StravaImport\ImportActivities\SkipActivitiesRecordedBefore:
-      factory: [ null, 'fromOptionalString' ]
-      arguments: ['@=app_config("import.skipActivitiesRecordedBefore")']
-
-    App\Application\Import\StravaImport\ImportSegments\OptInToSegmentDetailsImport:
-      factory: [ null, 'fromBool' ]
-      arguments: [ '@=app_config("import.optInToSegmentDetailImport", false)' ]
-
     NeuronAI\Agent\AgentInterface:
         class: App\Domain\Integration\AI\NeuronAIAgent
 
@@ -142,17 +122,9 @@ services:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:STRAVA_REFRESH_TOKEN)%']
 
-    App\Domain\Strava\Webhook\WebhookConfig:
-        factory: [ null, 'fromArray' ]
-        arguments: ['@=app_config("import.webhooks", [])']
-
     App\Domain\Activity\Eddington\Config\EddingtonConfiguration:
         factory: [ null, 'fromScalarArray' ]
         arguments: ['@=app_config("metrics.eddington", [])']
-
-    App\Domain\Activity\SportType\SportTypesToImport:
-        factory: [ null, 'from' ]
-        arguments: ['@=app_config("import.sportTypesToImport")']
 
     App\Domain\Activity\Stream\ActivitiesExcludedFromPeakPowerOutputs:
         factory: [ null, 'from' ]

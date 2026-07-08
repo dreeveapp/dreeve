@@ -15,19 +15,23 @@ AM/PM: AM/PM
 Active: Active
 'Active days': 'Dias ativos'
 Activities: Atividades
+'Activities to skip during import': 'Activities to skip during import'
 'Activities will appear here once they are imported.': 'Activities will appear here once they are imported.'
 Activity: Atividade
+'Activity ID': 'Activity ID'
 'Activity count': 'Contagem de atividades'
 'Activity heatmap': 'Mapa de calor de atividades'
 'Activity locations': 'Locais de atividades'
 'Activity management': 'Activity management'
 'Activity start times': 'Horários de início de atividades'
+'Activity visibilities to import': 'Activity visibilities to import'
 'Acute Training Load (Fatigue) - 7-day exponentially weighted average of your daily training load. Represents short-term fatigue.': 'Carga de Treinamento Aguda (Fadiga) - Média móvel exponencial de 7 dias da sua carga de treinamento diária. Representa a fadiga de curto prazo.'
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Razão Aguda:Crônica - Razão entre ATL e CTL. Indica risco de lesão.'
 'Adaptive & Inclusive Sports': 'Esportes Adaptados e Inclusivos'
 'Add FTP': 'Add FTP'
 'Add a component to start tracking maintenance.': 'Add a component to start tracking maintenance.'
 'Add a widget': 'Add a widget'
+'Add activity': 'Add activity'
 'Add challenge': 'Add challenge'
 'Add component': 'Add component'
 'Add gear': 'Add gear'
@@ -44,6 +48,7 @@ All: Todos
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'All associated maintenance tasks and logs will be removed. This action cannot be undone.'
 'All time': 'Desde sempre'
 'Alpine Ski': 'Esqui Alpino'
+'App URL': 'App URL'
 'App subtitle': 'App subtitle'
 Appearance: Appearance
 Apr: Abr
@@ -85,6 +90,7 @@ Canoeing: Canoagem
 'Challenge name': 'Challenge name'
 Challenges: Desafios
 'Changes still need to be processed before they appear on the app': 'Changes still need to be processed before they appear on the app'
+'Check interval (minutes)': 'Check interval (minutes)'
 'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Carga de Treinamento Crônica (Condicionamento) - Média móvel exponencial de 42 dias da sua carga de treinamento diária. Representa a adaptação ao treinamento de longo prazo.'
 Clear: Clear
@@ -103,6 +109,8 @@ Components: Componentes
 Config: Config
 Configure: Configure
 'Configure {widget}': 'Configure {widget}'
+'Configured via an environment variable and cannot be changed here.': 'Configured via an environment variable and cannot be changed here.'
+'Configured via environment variables and cannot be changed here.': 'Configured via environment variables and cannot be changed here.'
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Parabéns! Você alcançou {numberOfPRs} RPs nesta atividade.'
 'Consider reducing load': 'Considere reduzir a carga'
 Consistency: Consistência
@@ -166,6 +174,7 @@ Elevation: Elevação
 'Elevation (single activity)': 'Elevation (single activity)'
 'Elevation in {unit}': 'Elevação em {unit}'
 Elliptical: Elíptica
+'Enable Strava webhooks': 'Enable Strava webhooks'
 Enabled: Enabled
 Energy: Energia
 'Energy burned across your activities': 'Energia queimada ao longo das suas atividades'
@@ -252,6 +261,7 @@ History: Histórico
 'How long is your typical training session': 'Qual a duração da sua sessão de treino típica'
 'How much do you train on average per week': 'Quanto você treina em média por semana'
 'How much training you do in total on days you train.': 'Quanto treino você faz no total nos dias em que treina.'
+'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'How often (in minutes, between 1 and 60) queued webhook events are processed.'
 'How often do you train': 'Com que frequência você treina'
 'Ice Skate': 'Patinação no Gelo'
 Id: ID
@@ -260,6 +270,9 @@ Id: ID
 Image: Image
 Images: Images
 Imperial: Imperial
+Import: Import
+'Import segment details': 'Import segment details'
+'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
 'Imported files will appear here once you upload them.': 'Imported files will appear here once you upload them.'
 'Imported from Strava': 'Imported from Strava'
 'Imported on': 'Imported on'
@@ -288,6 +301,8 @@ Lap: Volta
 'Last name': 'Last name'
 'Last week': 'Última semana'
 'Last {numberOfDays} days': 'Últimos {numberOfDays} dias'
+'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.': 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.'
+'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.'
 'Leave empty to include all sport types.': 'Leave empty to include all sport types.'
 Lifetime: Vitalício
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Fadiga leve com boa prontidão. Um ótimo equilíbrio para treinos de qualidade ou esforços mais longos'
@@ -367,6 +382,7 @@ Now: Agora
 'Number of activities to display': 'Number of activities to display'
 'Number of challenges to display': 'Number of challenges to display'
 'Number of milestones to display': 'Number of milestones to display'
+'Number of new activities to process per import': 'Number of new activities to process per import'
 'Number of times completed': 'Número de vezes concluído'
 'Number of widgets of this type you already have configured.': 'Number of widgets of this type you already have configured.'
 Oct: Out
@@ -378,6 +394,7 @@ Oct: Out
 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.'
 'Optional subtitle': 'Optional subtitle'
 'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.': 'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.'
+'Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date.': 'Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date.'
 'Optional. Leave empty to always apply this goal.': 'Optional. Leave empty to always apply this goal.'
 Other: Outro
 'Outdoor Sports': 'Esportes ao Ar Livre'
@@ -490,6 +507,7 @@ Settings: Settings
 "Since I began using Strava {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": 'Desde que comecei a usar o Strava há {numberOfDaysAgo} dias em {startDate}, registrei {totalDaysOfWorkingOut} dias ativos de treino e aventura.'
 Skateboard: Skate
 Skating: Patinação
+'Skip activities recorded before': 'Skip activities recorded before'
 'Slightly fresh': 'Levemente descansado'
 Snowboard: Snowboard
 Snowshoe: 'Raquetes de Neve'
@@ -500,6 +518,7 @@ Speed: Velocidade
 Splits: Parciais
 'Sport type': 'Sport type'
 'Sport types sorting order': 'Sport types sorting order'
+'Sport types to import': 'Sport types to import'
 'Sport types to include': 'Sport types to include'
 'Sport variety': 'Variedade de esporte'
 Squash: Squash
@@ -509,6 +528,13 @@ Squash: Squash
 'Start times': 'Horários de início'
 'Stats per weekday': 'Estatísticas por dia da semana'
 Status: Status
+'Strava API credentials.': 'Strava API credentials.'
+'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.'
+'Strava activity IDs to skip during import.': 'Strava activity IDs to skip during import.'
+'Strava client ID': 'Strava client ID'
+'Strava client secret': 'Strava client secret'
+'Strava import': 'Strava import'
+'Strava refresh token': 'Strava refresh token'
 'Streak started on {date}': 'Sequência iniciada em {date}'
 Streaks: Sequências
 Subtitle: Subtitle
@@ -616,6 +642,7 @@ Tennis: Tênis
 "That's {number} days of at least {distance}": 'São {number} dias de pelo menos {distance}'
 "That's {percentage}% of all countries 🌍": 'Isso representa {percentage}% de todos os países 🌍'
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'O número de Eddington no contexto de ciclismo ou corrida é definido como o número máximo E tal que o atleta percorreu pelo menos E km em pelo menos E dias.'
+'The URL the app is hosted on.': 'The URL the app is hosted on.'
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.': 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.'
 'The last zone has no upper bound.': 'The last zone has no upper bound.'
@@ -643,6 +670,7 @@ Title: Título
 To: To
 'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect': 'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect'
 'Toggle sidebar': 'Ativar/desativar barra lateral'
+'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.': 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.'
 'Top 10': 'Top 10'
 'Total distance per month': 'Distância total por mês'
 'Total elevation per month': 'Elevação total por mês'
@@ -676,6 +704,7 @@ Uploading...: Uploading...
 'User badge': 'Emblema do usuário'
 Username: Username
 'Velo Mobiles': 'Velo Móveis'
+'Verify token': 'Verify token'
 'Very high': 'Muito alta'
 'View all': 'Ver tudo'
 'View details': 'Ver detalhes'
@@ -689,6 +718,7 @@ Walking: Caminhada
 Walks: Caminhadas
 'Water Sports': 'Esportes Aquáticos'
 'We detected following issues': 'Detectamos os seguintes problemas'
+Webhooks: Webhooks
 Wed: Qua
 Wed.: Qua.
 Weekly: Semanal

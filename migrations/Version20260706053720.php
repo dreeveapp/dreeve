@@ -33,12 +33,14 @@ final class Version20260706053720 extends AbstractMigration
 
         $this->migrateGeneral($config);
         $this->migrateAppearance($config);
+        $this->migrateImport($config);
     }
 
     public function down(Schema $schema): void
     {
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::GENERAL->keyValueKey()->value]);
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::APPEARANCE->keyValueKey()->value]);
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::IMPORT->keyValueKey()->value]);
     }
 
     /**
@@ -89,6 +91,27 @@ final class Version20260706053720 extends AbstractMigration
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
                 'key' => SettingsGroup::APPEARANCE->keyValueKey()->value,
+                'value' => Json::encode($subtree),
+            ]
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function migrateImport(array $config): void
+    {
+        $subtree = $config[SettingsGroup::IMPORT->value] ?? null;
+        if (empty($subtree)) {
+            return;
+        }
+
+        $subtree = $this->normalizeKeys($subtree);
+
+        $this->connection->executeStatement(
+            'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
+            [
+                'key' => SettingsGroup::IMPORT->keyValueKey()->value,
                 'value' => Json::encode($subtree),
             ]
         );

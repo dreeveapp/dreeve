@@ -39,7 +39,7 @@ final readonly class UpdateSettings extends DomainCommand implements Deserializa
 
         try {
             $group->settingsFromArray($data);
-        } catch (\Throwable $e) {
+        } catch (\RuntimeException $e) {
             throw CouldNotDeserializeCommand::invalidPayload($e->getMessage());
         }
 

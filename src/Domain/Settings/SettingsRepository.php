@@ -19,4 +19,6 @@ interface SettingsRepository
     public function general(): GeneralSettings;
 
     public function appearance(): AppearanceSettings;
+
+    public function import(): ImportSettings;
 }

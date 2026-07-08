@@ -1,0 +1,155 @@
+{% extends "html/admin/page/template.html.twig" %}
+
+{% block main %}
+    {% set webhooks = settings.webhooks ?? {} %}
+    {% set sportTypesToImport = settings.sportTypesToImport ?? [] %}
+    {% set activityVisibilitiesToImport = settings.activityVisibilitiesToImport ?? [] %}
+    {% set skipRows = [] %}
+    {% for id in settings.activitiesToSkipDuringImport ?? [] %}
+        {% set skipRows = skipRows|merge([{'value': id}]) %}
+    {% endfor %}
+    <div class="flex flex-col gap-4">
+        <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            <input type="hidden" name="group" value="{{ group.value }}">
+            <div class="mb-5">
+                <h3 class="text-lg font-semibold">{{ "Import"|trans }}</h3>
+            </div>
+            <div data-form-error class="hidden mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert"></div>
+            <div class="mb-4 grid gap-4 sm:grid-cols-2">
+                <div>
+                    <label for="stravaClientId">{{ "Strava client ID"|trans }}</label>
+                    <input type="text" id="stravaClientId" value="{{ stravaClientId }}" disabled>
+                </div>
+                <div>
+                    <label for="stravaClientSecret">{{ "Strava client secret"|trans }}</label>
+                    <input type="text" id="stravaClientSecret" value="{{ stravaClientSecret }}" disabled>
+                </div>
+                <div>
+                    <label for="stravaClientRefreshToken">{{ "Strava refresh token"|trans }}</label>
+                    <input type="text" id="stravaClientRefreshToken" value="{{ stravaClientRefreshToken }}" disabled>
+                </div>
+            </div>
+            <p class="description mb-4">
+                {{ "Strava API credentials."|trans }}
+                {{ "Configured via environment variables and cannot be changed here."|trans }}
+            </p>
+            <div class="flex flex-col gap-4">
+                <div>
+                    <label for="numberOfNewActivitiesToProcessPerImport">{{ "Number of new activities to process per import"|trans }}</label>
+                    <input type="number" min="1" id="numberOfNewActivitiesToProcessPerImport"
+                           name="data[numberOfNewActivitiesToProcessPerImport]"
+                           value="{{ settings.numberOfNewActivitiesToProcessPerImport ?? 250 }}" required>
+                    <p class="description">
+                        {{ "Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number."|trans }}
+                    </p>
+                </div>
+                <div>
+                    <label for="skipActivitiesRecordedBefore">{{ "Skip activities recorded before"|trans }}</label>
+                    <input type="date" id="skipActivitiesRecordedBefore"
+                           name="data[skipActivitiesRecordedBefore]"
+                           value="{{ settings.skipActivitiesRecordedBefore ?? '' }}">
+                    <p class="description">
+                        {{ "Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date."|trans }}
+                    </p>
+                </div>
+                <div>
+                    <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
+                        <input type="checkbox" name="data[optInToSegmentDetailImport]" value="1"
+                               {{ (settings.optInToSegmentDetailImport ?? false) ? 'checked' : '' }}>
+                        <span>{{ "Import segment details"|trans }}</span>
+                    </label>
+                    <p class="description">
+                        {{ "Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly."|trans }}
+                    </p>
+                </div>
+            </div>
+            <div class="mt-6">
+                <label class="mt-0!">{{ "Sport types to import"|trans }}</label>
+                <p class="description mb-2">
+                    {{ "Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types."|trans }}
+                </p>
+                <div class="mt-1 max-h-40 overflow-y-auto flex flex-col gap-1.5 rounded-lg border border-gray-200 p-2">
+                    {% for sportType in enum('App\\Domain\\Activity\\SportType\\SportType').cases() %}
+                        <label class="flex items-center gap-2 mt-0! text-sm font-normal cursor-pointer">
+                            <input type="checkbox" name="data[sportTypesToImport][]"
+                                   value="{{ sportType.value }}" {{ sportType.value in sportTypesToImport ? 'checked' : '' }}>
+                            <span>{{ sportType|trans }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="mt-6">
+                <label class="mt-0!">{{ "Activity visibilities to import"|trans }}</label>
+                <p class="description mb-2">
+                    {{ "Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities."|trans }}
+                </p>
+                <div class="mt-1 flex flex-col gap-1.5 rounded-lg border border-gray-200 p-2">
+                    {% for visibility in enum('App\\Domain\\Activity\\ActivityVisibility').cases() %}
+                        <label class="flex items-center gap-2 mt-0! text-sm font-normal cursor-pointer">
+                            <input type="checkbox" name="data[activityVisibilitiesToImport][]"
+                                   value="{{ visibility.value }}" {{ visibility.value in activityVisibilitiesToImport ? 'checked' : '' }}>
+                            <span>{{ visibility.value }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="mt-6" data-repeater data-repeater-min="0">
+                <label class="mt-0!">{{ "Activities to skip during import"|trans }}</label>
+                <p class="description mb-2">
+                    {{ "Strava activity IDs to skip during import."|trans }}
+                </p>
+                <div class="flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ skipRows|json_encode|e('html_attr') }}"></div>
+                <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
+                    <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                    </svg>
+                    <span>{{ "Add activity"|trans }}</span>
+                </button>
+                <template data-repeater-template>
+                    <div class="flex items-end gap-2" data-repeater-item>
+                        <div class="flex-1">
+                            <input type="text" name="data[activitiesToSkipDuringImport][]" data-repeater-field="value" placeholder="{{ "Activity ID"|trans }}">
+                        </div>
+                        <button type="button" data-repeater-remove
+                                class="unstyled cursor-pointer grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
+                                aria-label="{{ "Remove"|trans }}">
+                            <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </template>
+            </div>
+            <div class="mt-6 flex flex-col gap-4 border-t border-gray-200 pt-6">
+                <label class="mt-0!">{{ "Webhooks"|trans }}</label>
+                <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
+                    <input type="checkbox" name="data[webhooks][enabled]" value="1" {{ (webhooks.enabled ?? false) ? 'checked' : '' }}>
+                    <span>{{ "Enable Strava webhooks"|trans }}</span>
+                </label>
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="webhookVerifyToken">{{ "Verify token"|trans }}</label>
+                        <input type="text" id="webhookVerifyToken" name="data[webhooks][verifyToken]" value="{{ webhooks.verifyToken ?? '' }}">
+                        <p class="description">
+                            {{ "Token used to validate incoming Strava webhook requests. Required when webhooks are enabled."|trans }}
+                        </p>
+                    </div>
+                    <div>
+                        <label for="webhookCheckInterval">{{ "Check interval (minutes)"|trans }}</label>
+                        <input type="number" min="1" max="60" id="webhookCheckInterval"
+                               name="data[webhooks][checkIntervalInMinutes]" value="{{ webhooks.checkIntervalInMinutes ?? 1 }}">
+                        <p class="description">
+                            {{ "How often (in minutes, between 1 and 60) queued webhook events are processed."|trans }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
+                <button type="submit" data-has-loading-state class="group btn--primary">
+                    <span class="label">{{ "Save settings"|trans }}</span>
+                    <span class="label--loading">{{ "Saving..."|trans }}</span>
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock main %}

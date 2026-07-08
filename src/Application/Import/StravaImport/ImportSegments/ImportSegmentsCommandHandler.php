@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Import\StravaImport\ImportSegments;
 
 use App\Domain\Segment\SegmentRepository;
+use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\RateLimit\StravaRateLimitHasBeenReached;
 use App\Domain\Strava\Strava;
 use App\Infrastructure\CQRS\Command\Command;
@@ -21,7 +22,7 @@ final readonly class ImportSegmentsCommandHandler implements CommandHandler
 {
     public function __construct(
         private SegmentRepository $segmentRepository,
-        private OptInToSegmentDetailsImport $optInToSegmentDetailsImport,
+        private SettingsRepository $settingsRepository,
         private Strava $strava,
         private Mutex $mutex,
     ) {
@@ -31,7 +32,7 @@ final readonly class ImportSegmentsCommandHandler implements CommandHandler
     {
         assert($command instanceof ImportSegments);
 
-        if (!$this->optInToSegmentDetailsImport->hasOptedIn()) {
+        if (!$this->settingsRepository->import()->getOptInToSegmentDetailsImport()->hasOptedIn()) {
             return;
         }
         $this->strava->setConsoleOutput($command->getOutput());

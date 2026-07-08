@@ -3,7 +3,8 @@
 namespace App\Tests\Controller\Strava;
 
 use App\Controller\Strava\StravaWebhookRequestHandler;
-use App\Domain\Strava\Webhook\WebhookConfig;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
@@ -73,7 +74,7 @@ class StravaWebhookRequestHandlerTest extends ContainerTestCase
             ->method('info');
 
         $stravaWebhookRequestHandler = new StravaWebhookRequestHandler(
-            WebhookConfig::fromArray(['enabled' => false, 'verifyToken' => 'el-token']),
+            $this->settingsWithWebhooks(enabled: false, verifyToken: 'el-token'),
             $this->commandBus,
             $this->logger,
         );
@@ -129,7 +130,7 @@ class StravaWebhookRequestHandlerTest extends ContainerTestCase
             ->willThrowException(new \Exception('Something happened'));
 
         $stravaWebhookRequestHandler = new StravaWebhookRequestHandler(
-            WebhookConfig::fromArray(['enabled' => true, 'verifyToken' => 'el-token']),
+            $this->settingsWithWebhooks(enabled: true, verifyToken: 'el-token'),
             $commandBus,
             $this->logger,
         );
@@ -152,7 +153,7 @@ class StravaWebhookRequestHandlerTest extends ContainerTestCase
             ->method('info');
 
         $stravaWebhookRequestHandler = new StravaWebhookRequestHandler(
-            WebhookConfig::fromArray(['enabled' => false, 'verifyToken' => 'el-token']),
+            $this->settingsWithWebhooks(enabled: false, verifyToken: 'el-token'),
             $this->commandBus,
             $this->logger,
         );
@@ -174,9 +175,19 @@ class StravaWebhookRequestHandlerTest extends ContainerTestCase
         parent::setUp();
 
         $this->stravaWebhookRequestHandler = new StravaWebhookRequestHandler(
-            WebhookConfig::fromArray(['enabled' => true, 'verifyToken' => 'el-token']),
+            $this->settingsWithWebhooks(enabled: true, verifyToken: 'el-token'),
             $this->commandBus = new SpyCommandBus(),
             $this->logger = $this->createMock(LoggerInterface::class),
         );
+    }
+
+    private function settingsWithWebhooks(bool $enabled, string $verifyToken): SettingsRepository
+    {
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::IMPORT, [
+            'webhooks' => ['enabled' => $enabled, 'verifyToken' => $verifyToken],
+        ]);
+
+        return $settingsRepository;
     }
 }

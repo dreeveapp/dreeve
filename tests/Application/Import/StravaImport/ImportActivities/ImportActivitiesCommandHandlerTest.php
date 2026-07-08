@@ -2,18 +2,14 @@
 
 namespace App\Tests\Application\Import\StravaImport\ImportActivities;
 
-use App\Application\Import\StravaImport\ImportActivities\ActivitiesToSkipDuringImport;
-use App\Application\Import\StravaImport\ImportActivities\ActivityVisibilitiesToImport;
 use App\Application\Import\StravaImport\ImportActivities\ImportActivities;
 use App\Application\Import\StravaImport\ImportActivities\ImportActivitiesCommandHandler;
-use App\Application\Import\StravaImport\ImportActivities\NumberOfNewActivitiesToProcessPerImport;
 use App\Application\Import\StravaImport\ImportActivities\Pipeline\ActivityImportStep;
 use App\Application\Import\StravaImport\ImportActivities\Pipeline\AnalyzeRouteGeography;
 use App\Application\Import\StravaImport\ImportActivities\Pipeline\DetermineActivityWeather;
 use App\Application\Import\StravaImport\ImportActivities\Pipeline\DownloadActivityImages;
 use App\Application\Import\StravaImport\ImportActivities\Pipeline\FetchActivityStreams;
 use App\Application\Import\StravaImport\ImportActivities\Pipeline\InitializeActivity;
-use App\Application\Import\StravaImport\ImportActivities\SkipActivitiesRecordedBefore;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivityIds;
@@ -24,7 +20,6 @@ use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\Lap\ActivityLapRepository;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\SportType\SportType;
-use App\Domain\Activity\SportType\SportTypesToImport;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
@@ -32,6 +27,8 @@ use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Strava;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
@@ -272,22 +269,8 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
 
     public function testHandleWithActivityVisibilitiesToImport(): void
     {
-        $this->importActivitiesCommandHandler = new ImportActivitiesCommandHandler(
-            strava: $this->strava = $this->getContainer()->get(Strava::class),
-            activityRepository: $this->getContainer()->get(ActivityRepository::class),
-            activityIdRepository: $this->getContainer()->get(ActivityIdRepository::class),
-            activityStreamRepository: $this->getContainer()->get(ActivityStreamRepository::class),
-            numberOfNewActivitiesToProcessPerImport: $this->getContainer()->get(NumberOfNewActivitiesToProcessPerImport::class),
-            sportTypesToImport: $this->getContainer()->get(SportTypesToImport::class),
-            activityVisibilitiesToImport: ActivityVisibilitiesToImport::from([ActivityVisibility::EVERYONE->value]),
-            activitiesToSkipDuringImport: $this->getContainer()->get(ActivitiesToSkipDuringImport::class),
-            skipActivitiesRecordedBefore: $this->getContainer()->get(SkipActivitiesRecordedBefore::class),
-            mutex: new Mutex(
-                connection: $this->getConnection(),
-                clock: PausedClock::fromString('2025-12-04'),
-                lockName: LockName::IMPORT_DATA_OR_BUILD_APP,
-            ),
-            steps: $this->getPipelineSteps(),
+        $this->importActivitiesCommandHandler = $this->createHandler(
+            $this->seedImportSettings(['activityVisibilitiesToImport' => [ActivityVisibility::EVERYONE->value]])
         );
 
         $output = new SpyOutput();
@@ -310,22 +293,8 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
 
     public function testHandleWithTooManyActivitiesToProcessInOneImport(): void
     {
-        $this->importActivitiesCommandHandler = new ImportActivitiesCommandHandler(
-            strava: $this->strava = $this->getContainer()->get(Strava::class),
-            activityRepository: $this->getContainer()->get(ActivityRepository::class),
-            activityIdRepository: $this->getContainer()->get(ActivityIdRepository::class),
-            activityStreamRepository: $this->getContainer()->get(ActivityStreamRepository::class),
-            numberOfNewActivitiesToProcessPerImport: NumberOfNewActivitiesToProcessPerImport::fromInt(1),
-            sportTypesToImport: $this->getContainer()->get(SportTypesToImport::class),
-            activityVisibilitiesToImport: $this->getContainer()->get(ActivityVisibilitiesToImport::class),
-            activitiesToSkipDuringImport: $this->getContainer()->get(ActivitiesToSkipDuringImport::class),
-            skipActivitiesRecordedBefore: $this->getContainer()->get(SkipActivitiesRecordedBefore::class),
-            mutex: new Mutex(
-                connection: $this->getConnection(),
-                clock: PausedClock::fromString('2025-12-04'),
-                lockName: LockName::IMPORT_DATA_OR_BUILD_APP,
-            ),
-            steps: $this->getPipelineSteps(),
+        $this->importActivitiesCommandHandler = $this->createHandler(
+            $this->seedImportSettings(['numberOfNewActivitiesToProcessPerImport' => 1])
         );
 
         $output = new SpyOutput();
@@ -353,22 +322,8 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
 
     public function testHandleWithSkipActivitiesRecordedBefore(): void
     {
-        $this->importActivitiesCommandHandler = new ImportActivitiesCommandHandler(
-            strava: $this->strava = $this->getContainer()->get(Strava::class),
-            activityRepository: $this->getContainer()->get(ActivityRepository::class),
-            activityIdRepository: $this->getContainer()->get(ActivityIdRepository::class),
-            activityStreamRepository: $this->getContainer()->get(ActivityStreamRepository::class),
-            numberOfNewActivitiesToProcessPerImport: $this->getContainer()->get(NumberOfNewActivitiesToProcessPerImport::class),
-            sportTypesToImport: $this->getContainer()->get(SportTypesToImport::class),
-            activityVisibilitiesToImport: $this->getContainer()->get(ActivityVisibilitiesToImport::class),
-            activitiesToSkipDuringImport: $this->getContainer()->get(ActivitiesToSkipDuringImport::class),
-            skipActivitiesRecordedBefore: SkipActivitiesRecordedBefore::fromOptionalString('2023-09-01'),
-            mutex: new Mutex(
-                connection: $this->getConnection(),
-                clock: PausedClock::fromString('2025-12-04'),
-                lockName: LockName::IMPORT_DATA_OR_BUILD_APP,
-            ),
-            steps: $this->getPipelineSteps(),
+        $this->importActivitiesCommandHandler = $this->createHandler(
+            $this->seedImportSettings(['skipActivitiesRecordedBefore' => '2023-09-01'])
         );
 
         $output = new SpyOutput();
@@ -387,22 +342,8 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
 
     public function testHandleWithSportTypeIsNotIncluded(): void
     {
-        $this->importActivitiesCommandHandler = new ImportActivitiesCommandHandler(
-            strava: $this->strava = $this->getContainer()->get(Strava::class),
-            activityRepository: $this->getContainer()->get(ActivityRepository::class),
-            activityIdRepository: $this->getContainer()->get(ActivityIdRepository::class),
-            activityStreamRepository: $this->getContainer()->get(ActivityStreamRepository::class),
-            numberOfNewActivitiesToProcessPerImport: $this->getContainer()->get(NumberOfNewActivitiesToProcessPerImport::class),
-            sportTypesToImport: SportTypesToImport::from(['Ride']),
-            activityVisibilitiesToImport: $this->getContainer()->get(ActivityVisibilitiesToImport::class),
-            activitiesToSkipDuringImport: $this->getContainer()->get(ActivitiesToSkipDuringImport::class),
-            skipActivitiesRecordedBefore: $this->getContainer()->get(SkipActivitiesRecordedBefore::class),
-            mutex: new Mutex(
-                connection: $this->getConnection(),
-                clock: PausedClock::fromString('2025-12-04'),
-                lockName: LockName::IMPORT_DATA_OR_BUILD_APP,
-            ),
-            steps: $this->getPipelineSteps(),
+        $this->importActivitiesCommandHandler = $this->createHandler(
+            $this->seedImportSettings(['sportTypesToImport' => ['Ride']])
         );
 
         $output = new SpyOutput();
@@ -480,16 +421,19 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
             ['key' => 'lock.importDataOrBuildApp', 'value' => '{"lockAcquiredBy": "test"}']
         );
 
-        $this->importActivitiesCommandHandler = new ImportActivitiesCommandHandler(
+        $this->importActivitiesCommandHandler = $this->createHandler(
+            $this->getContainer()->get(SettingsRepository::class)
+        );
+    }
+
+    private function createHandler(SettingsRepository $settingsRepository): ImportActivitiesCommandHandler
+    {
+        return new ImportActivitiesCommandHandler(
             strava: $this->strava = $this->getContainer()->get(Strava::class),
             activityRepository: $this->getContainer()->get(ActivityRepository::class),
             activityIdRepository: $this->getContainer()->get(ActivityIdRepository::class),
             activityStreamRepository: $this->getContainer()->get(ActivityStreamRepository::class),
-            numberOfNewActivitiesToProcessPerImport: $this->getContainer()->get(NumberOfNewActivitiesToProcessPerImport::class),
-            sportTypesToImport: $this->getContainer()->get(SportTypesToImport::class),
-            activityVisibilitiesToImport: $this->getContainer()->get(ActivityVisibilitiesToImport::class),
-            activitiesToSkipDuringImport: $this->getContainer()->get(ActivitiesToSkipDuringImport::class),
-            skipActivitiesRecordedBefore: $this->getContainer()->get(SkipActivitiesRecordedBefore::class),
+            settingsRepository: $settingsRepository,
             mutex: new Mutex(
                 connection: $this->getConnection(),
                 clock: PausedClock::fromString('2025-12-04'),
@@ -497,6 +441,26 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
             ),
             steps: $this->getPipelineSteps(),
         );
+    }
+
+    /**
+     * @param array<string, mixed> $overrides
+     */
+    private function seedImportSettings(array $overrides): SettingsRepository
+    {
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::IMPORT, [
+            'numberOfNewActivitiesToProcessPerImport' => 250,
+            'sportTypesToImport' => [],
+            'activityVisibilitiesToImport' => [],
+            'skipActivitiesRecordedBefore' => null,
+            'activitiesToSkipDuringImport' => ['skip'],
+            'optInToSegmentDetailImport' => true,
+            'webhooks' => ['enabled' => true, 'verifyToken' => 'ffc26d52-d3ff-4797-a2b7-780a593a3547'],
+            ...$overrides,
+        ]);
+
+        return $settingsRepository;
     }
 
     /**

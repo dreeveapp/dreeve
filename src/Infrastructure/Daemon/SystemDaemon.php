@@ -8,7 +8,7 @@ use App\Console\Daemon\ProcessStravaWebhooksConsoleCommand;
 use App\Console\Daemon\RunFileImportAndBuildAppConsoleCommand;
 use App\Console\Daemon\RunStravaImportAndBuildAppConsoleCommand;
 use App\Domain\Import\ImportMode;
-use App\Domain\Strava\Webhook\WebhookConfig;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Console\ConsoleOutputAware;
 use App\Infrastructure\Daemon\Cron\ConfiguredCronActions;
 use App\Infrastructure\Daemon\Cron\CronAction;
@@ -32,7 +32,7 @@ final class SystemDaemon implements Daemon
     public function __construct(
         private readonly Clock $clock,
         private readonly ConfiguredCronActions $configuredCronActions,
-        private readonly WebhookConfig $webhookConfig,
+        private readonly SettingsRepository $settingsRepository,
         private readonly ImportMode $importMode,
     ) {
     }
@@ -122,12 +122,13 @@ final class SystemDaemon implements Daemon
             );
         }
 
-        if ($this->importMode->isStravaApi() && $this->webhookConfig->isEnabled()) {
-            $extraConfiguredCronActionsOutput[] = sprintf('<info> - processStravaWebhooks: %s</info>', $this->webhookConfig->getCronExpression());
+        $webhookConfig = $this->settingsRepository->import()->getWebhookConfig();
+        if ($this->importMode->isStravaApi() && $webhookConfig->isEnabled()) {
+            $extraConfiguredCronActionsOutput[] = sprintf('<info> - processStravaWebhooks: %s</info>', $webhookConfig->getCronExpression());
             $actions[] = new Action(
                 key: 'processStravaWebhooks',
                 mutexTtl: 60,
-                expression: (string) $this->webhookConfig->getCronExpression(),
+                expression: (string) $webhookConfig->getCronExpression(),
                 performer: function (): PromiseInterface {
                     $process = new CronProcess(
                         cronActionId: 'processStravaWebhooks',

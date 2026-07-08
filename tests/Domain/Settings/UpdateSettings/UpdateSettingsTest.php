@@ -62,4 +62,15 @@ class UpdateSettingsTest extends TestCase
             'data' => ['dateFormat' => ['short' => 'q', 'normal' => 'q']],
         ]);
     }
+
+    public function testItThrowsWhenImportDataIsInvalid(): void
+    {
+        $this->expectException(CouldNotDeserializeCommand::class);
+
+        // A webhook that is enabled but has no verify token is invalid.
+        UpdateSettings::fromPayload([
+            'group' => 'import',
+            'data' => ['webhooks' => ['enabled' => true]],
+        ]);
+    }
 }
