@@ -2,6 +2,7 @@
 
 namespace App\Tests\Infrastructure\Twig;
 
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Twig\NavigationTwigExtension;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +22,7 @@ class NavigationTwigExtensionTest extends TestCase
 
         self::assertSame(
             $expected,
-            new NavigationTwigExtension($requestStack)->isActiveNavItem($rules)
+            new NavigationTwigExtension($requestStack, $this->createStub(SettingsRepository::class))->isActiveNavItem($rules)
         );
     }
 
@@ -48,7 +49,7 @@ class NavigationTwigExtensionTest extends TestCase
 
     public function testItIsNeverActiveWithoutACurrentRequest(): void
     {
-        $extension = new NavigationTwigExtension(new RequestStack());
+        $extension = new NavigationTwigExtension(new RequestStack(), $this->createStub(SettingsRepository::class));
 
         self::assertFalse($extension->isActiveNavItem(['/admin' => true]));
     }

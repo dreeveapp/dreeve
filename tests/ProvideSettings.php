@@ -91,5 +91,20 @@ trait ProvideSettings
                 'racingScore' => 495,
             ])),
         ));
+
+        $keyValueStore->save(KeyValue::fromState(
+            SettingsGroup::INTEGRATIONS->keyValueKey(),
+            Value::fromString(Json::encode([
+                'notifications' => [
+                    'services' => [
+                        // The deprecated ntfy config is folded into the services list by the migration.
+                        'ntfy://admin:pass@ntfy.sh/el-test',
+                        'ntfy://admin:admin@ntfy.sh/topic',
+                        'discord://token@webhookid?thread_id=123456789',
+                        'telegram://token@telegram/?channels=channel',
+                    ],
+                ],
+            ])),
+        ));
     }
 }

@@ -25,4 +25,6 @@ interface SettingsRepository
     public function metrics(): MetricsSettings;
 
     public function zwift(): ZwiftSettings;
+
+    public function integrations(): IntegrationsSettings;
 }

@@ -8,6 +8,7 @@ use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Settings\UpdateSettings\UpdateSettings;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Tests\ContainerTestCase;
@@ -109,6 +110,55 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
 
         $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::METRICS));
         $this->assertSame('1', (string) $this->keyValueStore->find(Key::FORCE_REBUILD));
+    }
+
+    public function testItUpdatesIntegrationsSettingsAndFlagsForceRebuild(): void
+    {
+        $data = [
+            'ai' => [
+                'enabled' => true,
+                'enableUI' => true,
+                'provider' => 'openAI',
+                'configuration' => [
+                    'key' => 'my-key',
+                    'model' => 'cool-model',
+                ],
+                'agent' => [
+                    'commands' => [
+                        ['command' => 'ftp', 'message' => 'What is my FTP?'],
+                    ],
+                ],
+            ],
+            'notifications' => [
+                'services' => ['discord://token@webhookid?thread_id=123456789'],
+            ],
+        ];
+
+        $this->commandBus->dispatch(UpdateSettings::fromPayload([
+            'group' => SettingsGroup::INTEGRATIONS->value,
+            'data' => $data,
+        ]));
+
+        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::INTEGRATIONS));
+        $this->assertSame('1', (string) $this->keyValueStore->find(Key::FORCE_REBUILD));
+    }
+
+    public function testItRejectsInvalidIntegrationsSettings(): void
+    {
+        $this->expectException(CouldNotDeserializeCommand::class);
+
+        UpdateSettings::fromPayload([
+            'group' => SettingsGroup::INTEGRATIONS->value,
+            'data' => [
+                'ai' => [
+                    'agent' => [
+                        'commands' => [
+                            ['command' => '/ftp', 'message' => 'What is my FTP?'],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
     }
 
     public function testItUpdatesZwiftSettingsAndFlagsForceRebuild(): void

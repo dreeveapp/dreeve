@@ -76,4 +76,9 @@ final readonly class KeyValueBasedSettingsRepository implements SettingsReposito
     {
         return ZwiftSettings::fromArray($this->find(SettingsGroup::ZWIFT));
     }
+
+    public function integrations(): IntegrationsSettings
+    {
+        return IntegrationsSettings::fromArray($this->find(SettingsGroup::INTEGRATIONS));
+    }
 }

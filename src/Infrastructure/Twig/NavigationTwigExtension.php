@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Twig;
 
+use App\Domain\Settings\SettingsRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Attribute\AsTwigFunction;
@@ -12,7 +13,14 @@ final readonly class NavigationTwigExtension
 {
     public function __construct(
         private RequestStack $requestStack,
+        private SettingsRepository $settingsRepository,
     ) {
+    }
+
+    #[AsTwigFunction('isAIIntegrationWithUIEnabled')]
+    public function isAIIntegrationWithUIEnabled(): bool
+    {
+        return $this->settingsRepository->integrations()->isAIIntegrationWithUIEnabled();
     }
 
     /**

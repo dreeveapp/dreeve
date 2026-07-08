@@ -9,7 +9,9 @@
 'A high score means you concentrate more training into fewer, heavier days.': 'A magas pontszám azt jelenti, hogy több edzést koncentrálsz kevesebb, de nehezebb napra.'
 'A:C Ratio': 'A:C arány'
 'A:C optimal in': 'A:C optimális ezután:'
+AI: AI
 AM/PM: AM/PM
+'API key': 'API key'
 'ATL (Fatigue)': 'ATL (Fáradtság)'
 'Accumulated fatigue': 'Felhalmozott fáradtság'
 Active: Active
@@ -36,9 +38,11 @@ Activity: Tevékenység
 'Add a widget': 'Add a widget'
 'Add activity': 'Add activity'
 'Add challenge': 'Add challenge'
+'Add command': 'Add command'
 'Add component': 'Add component'
 'Add gear': 'Add gear'
 'Add goal': 'Add goal'
+'Add service': 'Add service'
 'Add task': 'Add task'
 'Add weight': 'Add weight'
 'Add widget': 'Add widget'
@@ -52,6 +56,7 @@ All: Mind
 'All sport types must belong to the same activity type.': 'All sport types must belong to the same activity type.'
 'All time': Összesített
 'Alpine Ski': 'Alpesi sí'
+'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.'
 'App URL': 'App URL'
 'App subtitle': 'App subtitle'
 Appearance: Appearance
@@ -74,6 +79,7 @@ Average: Average
 Badges: Kitűzők
 Badminton: Tollaslabda
 Bananas: Bananas
+'Base URI': 'Base URI'
 Basketball: Kosárlabda
 Best: Legjobb
 'Best effort': 'Legjobb teljesítmény'
@@ -94,6 +100,7 @@ Canoeing: Kenuzás
 'Challenge name': 'Challenge name'
 Challenges: Kihívások
 'Changes still need to be processed before they appear on the app': 'Changes still need to be processed before they appear on the app'
+'Chat commands': 'Chat commands'
 'Check interval (minutes)': 'Check interval (minutes)'
 'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Krónikus edzésterhelés (Fitnesz) – a napi edzésterhelés 42 napos exponenciálisan súlyozott átlaga. A hosszú távú edzésadaptációt mutatja.'
@@ -102,6 +109,7 @@ Clear: Clear
 'Clear chat': 'Chat törlése'
 Close: Close
 'Close modal': Bezárás
+Command: Command
 Commute: Commute
 Commutes: Ingázások
 'Commutes only': 'Csak ingázások'
@@ -179,8 +187,10 @@ Elevation: Szintemelkedés
 'Elevation (single activity)': 'Elevation (single activity)'
 'Elevation in {unit}': 'Szintemelkedés ({unit})'
 Elliptical: 'Elliptikus gép'
+'Enable AI integration': 'Enable AI integration'
 'Enable Strava webhooks': 'Enable Strava webhooks'
 Enabled: Enabled
+Endpoint: Endpoint
 Energy: Energy
 'Energy burned across your activities': 'Energy burned across your activities'
 'Enter fullscreen mode': 'Teljes képernyős mód'
@@ -284,6 +294,7 @@ Import: Import
 'Include retired gear': 'Include retired gear'
 'Individual thresholds vary based on fitness level.': 'Az egyéni küszöbértékek a fitnesz szinttől függően változnak.'
 'Inline Skate': Görkorcsolya
+Integrations: Integrations
 Intensity: Intenzitás
 'Intro text': 'Intro text'
 'It looks like no valid gear is attached to any of the components. Please check your config file.': 'Úgy tűnik, hogy egyetlen komponenshez sem tartozik érvényes felszerelés. Kérjük, ellenőrizd a konfigurációs fájlt.'
@@ -337,12 +348,14 @@ Max: Max
 'Max heart rate formula': 'Max heart rate formula'
 May: Máj
 Medium: Közepes
+Message: Message
 Metric: Metrikus
 'Metric display order': 'Metric display order'
 Metrics: Metrics
 Milestones: Mérföldkövek
 'Mind & Body Sports': 'Test-lélek sportok'
 Mode: Mode
+Model: Model
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Mérsékelt fáradtság stabil fittséggel. Kiváló a következetes napi edzéshez'
 'Moderate monotony': 'Mérsékelt monotonitás'
 Mon: H
@@ -380,6 +393,7 @@ None: 'Egyik sem'
 'Normal date format': 'Normal date format'
 'Normalized power': 'Normalized power'
 'Not supported': 'Nem támogatott'
+'Notification services': 'Notification services'
 Nov: Nov
 Now: Most
 'Number of activities': 'Number of activities'
@@ -394,6 +408,9 @@ Oct: Okt
 'Older effort': 'Korábbi teljesítmény'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'Átlagosan ez {dailyAverage} naponta, heti átlag {weeklyAverage} és havi átlag {monthlyAverage}.'
 'One of your gear maintenance tasks is due': 'Az egyik felszerelés karbantartási feladatod esedékes'
+'Only required for the Azure OpenAI provider.': 'Only required for the Azure OpenAI provider.'
+'Only required for the Ollama provider.': 'Only required for the Ollama provider.'
+'Only required for the OpenAI-like provider.': 'Only required for the OpenAI-like provider.'
 'Optimal training range': 'Optimális edzéstartomány'
 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.'
 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.'
@@ -435,6 +452,7 @@ Power: Teljesítmény
 Previous: Előző
 'Processed on': 'Processed on'
 'Profile picture URL': 'Profile picture URL'
+Provider: Provider
 'Purchase price': 'Purchase price'
 Race: Verseny
 'Racing Score': Versenypontszám
@@ -460,6 +478,7 @@ Ranking: Ranglista
 Remove: Remove
 'Remove Eddington': 'Remove Eddington'
 'Remove challenge': 'Remove challenge'
+'Remove command': 'Remove command'
 'Remove goal': 'Remove goal'
 'Remove task': 'Remove task'
 'Remove widget': 'Remove widget'
@@ -505,11 +524,13 @@ Segments: Szegmensek
 Sep: Szept
 Settings: Settings
 'Short date format': 'Short date format'
+'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.'
 'Show in dashboard widget': 'Show in dashboard widget'
 'Show in navigation bar': 'Show in navigation bar'
 'Show information': 'Információ megjelenítése'
 'Show last X years by default': 'Show last X years by default'
 'Show password': 'Show password'
+'Show the workout assistant in the UI.': 'Show the workout assistant in the UI.'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Megmutatja, hogyan fog a TSB (Forma) és az A:C arány idővel helyreállni, ha teljes pihenőnapokat tartasz.'
 'Sign in': 'Sign in'
@@ -703,7 +724,9 @@ To: To
 Tue: K
 Tue.: Tue.
 'Turn gear maintenance tracking on or off.': 'Turn gear maintenance tracking on or off.'
+'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Turns on the AI-powered workout assistant, which can then be used from the command line.'
 Type: Type
+URL: URL
 Unit: Unit
 'Unit system': 'Unit system'
 Unspecified: Meghatározatlan
@@ -718,6 +741,7 @@ Uploading...: Uploading...
 Username: Username
 'Velo Mobiles': Velomobil
 'Verify token': 'Verify token'
+Version: Version
 'Very high': 'Nagyon magas'
 'View all': 'Összes megtekintése'
 'View details': 'Részletek megtekintése'
@@ -742,6 +766,7 @@ Weekly: Heti
 Weight: Súly
 'Weight Training': 'Súlyzós edzés'
 'Weight history': 'Súly előzmények'
+'What is my FTP?': 'What is my FTP?'
 Wheelchair: Kerekesszék
 'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
@@ -800,6 +825,8 @@ day(s): nap(ok)
 days: napok
 'days needed for next Eddington': 'napok a következő Eddington-számhoz'
 'days to reach {n}': 'days to reach {n}'
+'discord://token@id': 'discord://token@id'
+ftp: ftp
 hours: órák
 'hours used': 'hours used'
 hrs: h
@@ -839,6 +866,7 @@ workouts: edzések
 '{numberOfResults} results': '{numberOfResults} results'
 '{numberOfResults} routes': '{numberOfResults} routes'
 '{numberOfWeeks} weeks': '{numberOfWeeks} hét'
+'{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images'
 '{threshold} hours using {gearName}': '{threshold} óra {gearName} felhasználásával'

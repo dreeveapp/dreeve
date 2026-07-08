@@ -5,16 +5,18 @@ namespace App\Tests\Controller;
 use App\Application\AppUrl;
 use App\Controller\AIChatRequestHandler;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
-use App\Domain\Integration\AI\Chat\ChatCommands;
 use App\Domain\Integration\AI\Chat\ChatMessage;
 use App\Domain\Integration\AI\Chat\ChatMessageId;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Integration\AI\Chat\DbalChatRepository;
+use App\Domain\Settings\KeyValueBasedSettingsRepository;
+use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\Config\AppConfig;
-use App\Infrastructure\Config\PlatformEnvironment;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
-use App\Infrastructure\ValueObject\String\KernelProjectDir;
+use App\Infrastructure\KeyValue\KeyValue;
+use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Infrastructure\KeyValue\Value;
+use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
@@ -57,7 +59,7 @@ class AIChatRequestHandlerTest extends ContainerTestCase
             )->withFirstLetterOfFirstName('R')]);
 
         $requestHandler = $this->buildRequestHandler(
-            $this->getContainer()->get(KernelProjectDir::class)->getForTestSuite('app-configs/config-ai-enabled')
+            true
         );
 
         $this->assertMatchesHtmlSnapshot($requestHandler->handle()->getContent());
@@ -70,7 +72,7 @@ class AIChatRequestHandlerTest extends ContainerTestCase
             ->method('findAll');
 
         $requestHandler = $this->buildRequestHandler(
-            $this->getContainer()->get(KernelProjectDir::class)->getForTestSuite('app-configs/config-ai-enabled')
+            true
         );
 
         $this->assertMatchesHtmlSnapshot($requestHandler->handle()->getContent());
@@ -85,7 +87,7 @@ class AIChatRequestHandlerTest extends ContainerTestCase
             ->method('findAll');
 
         $requestHandler = $this->buildRequestHandler(
-            $this->getContainer()->get(KernelProjectDir::class)->getForTestSuite('app-configs/config-ai-disabled')
+            false
         );
 
         $this->assertMatchesHtmlSnapshot($requestHandler->handle()->getContent());
@@ -94,7 +96,7 @@ class AIChatRequestHandlerTest extends ContainerTestCase
     public function testClearChat(): void
     {
         $requestHandler = $this->buildRequestHandler(
-            $this->getContainer()->get(KernelProjectDir::class)->getForTestSuite('app-configs/config-ai-enabled')
+            true
         );
 
         $this->chatRepository
@@ -114,7 +116,7 @@ class AIChatRequestHandlerTest extends ContainerTestCase
             ->method('clear');
 
         $requestHandler = $this->buildRequestHandler(
-            $this->getContainer()->get(KernelProjectDir::class)->getForTestSuite('app-configs/config-ai-disabled')
+            false
         );
 
         $this->assertMatchesHtmlSnapshot($requestHandler->clearChat()->getContent());
@@ -197,32 +199,24 @@ class AIChatRequestHandlerTest extends ContainerTestCase
     public function testChatSseAINotEnabled(): void
     {
         $requestHandler = $this->buildRequestHandler(
-            $this->getContainer()->get(KernelProjectDir::class)->getForTestSuite('app-configs/config-ai-disabled')
+            false
         );
 
         $request = new Request(query: ['message' => 'What is my FTP?']);
         $this->assertMatchesHtmlSnapshot($requestHandler->chatSse($request)->getContent());
     }
 
-    private function buildRequestHandler(KernelProjectDir $kernelProjectDir): AIChatRequestHandler
+    private function buildRequestHandler(bool $aiUIEnabled): AIChatRequestHandler
     {
-        AppConfig::setYamlConfigFilesToParse(
-            kernelProjectDir: $kernelProjectDir,
-            platformEnvironment: PlatformEnvironment::PROD,
-        );
-
-        $config = new AppConfig();
-
         return new AIChatRequestHandler(
             buildHtmlStorage: $this->buildStorage,
             neuronAIAgent: $this->neuronAIAgent,
-            chatCommands: ChatCommands::fromArray([]),
             chatRepository: $this->chatRepository,
             commandBus: $this->getContainer()->get(CommandBus::class),
             appUrl: AppUrl::fromString('http://localhost'),
             formFactory: $this->getContainer()->get(FormFactoryInterface::class),
             twig: $this->getContainer()->get(Environment::class),
-            config: $config,
+            settingsRepository: $this->buildSettingsRepository($aiUIEnabled),
         );
     }
 
@@ -231,24 +225,38 @@ class AIChatRequestHandlerTest extends ContainerTestCase
         AgentInterface $agent,
         CommandBus $commandBus,
     ): AIChatRequestHandler {
-        AppConfig::setYamlConfigFilesToParse(
-            kernelProjectDir: $this->getContainer()->get(KernelProjectDir::class)->getForTestSuite('app-configs/config-ai-enabled'),
-            platformEnvironment: PlatformEnvironment::PROD,
-        );
-
-        $config = new AppConfig();
-
         return new AIChatRequestHandler(
             buildHtmlStorage: $this->buildStorage,
             neuronAIAgent: $agent,
-            chatCommands: ChatCommands::fromArray([]),
             chatRepository: $chatRepository,
             commandBus: $commandBus,
             appUrl: AppUrl::fromString('http://localhost'),
             formFactory: $this->getContainer()->get(FormFactoryInterface::class),
             twig: $this->getContainer()->get(Environment::class),
-            config: $config,
+            settingsRepository: $this->buildSettingsRepository(true),
         );
+    }
+
+    private function buildSettingsRepository(bool $aiUIEnabled): SettingsRepository
+    {
+        /** @var KeyValueStore $keyValueStore */
+        $keyValueStore = $this->getContainer()->get(KeyValueStore::class);
+        $keyValueStore->save(KeyValue::fromState(
+            SettingsGroup::INTEGRATIONS->keyValueKey(),
+            Value::fromString(Json::encode([
+                'ai' => [
+                    'enabled' => true,
+                    'enableUI' => $aiUIEnabled,
+                    'provider' => 'openAI',
+                    'configuration' => [
+                        'key' => 'my-key',
+                        'model' => 'cool-model',
+                    ],
+                ],
+            ])),
+        ));
+
+        return new KeyValueBasedSettingsRepository($keyValueStore);
     }
 
     #[\Override]

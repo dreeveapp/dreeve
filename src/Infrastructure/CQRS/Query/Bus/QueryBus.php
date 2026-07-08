@@ -17,9 +17,4 @@ interface QueryBus
      * @return T
      */
     public function ask(Query $query): Response;
-
-    /**
-     * @return array<int, string>
-     */
-    public function getAvailableQueryHandlers(): array;
 }

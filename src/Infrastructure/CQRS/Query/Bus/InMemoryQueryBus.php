@@ -27,7 +27,7 @@ final readonly class InMemoryQueryBus implements QueryBus
      */
     public function __construct(
         #[AutowireIterator('app.query_handler')]
-        private iterable $queryHandlers,
+        iterable $queryHandlers,
     ) {
         $this->bus = new MessageBus([
             new HandleMessageMiddleware(
@@ -54,17 +54,5 @@ final readonly class InMemoryQueryBus implements QueryBus
             }
             throw $e;
         }
-    }
-
-    public function getAvailableQueryHandlers(): array
-    {
-        $queryHandlers = array_map(
-            static fn (QueryHandler $handler): string => new \ReflectionClass($handler::class)->getShortName(),
-            iterator_to_array($this->queryHandlers),
-        );
-
-        sort($queryHandlers);
-
-        return $queryHandlers;
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console;
 
-use App\Infrastructure\Config\AppConfig;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Doctrine\Migrations\RequiresUpToDateDatabaseSchema;
 use GuzzleHttp\Exception\ClientException;
 use NeuronAI\Agent\AgentInterface;
@@ -27,7 +27,7 @@ final class AIAgentChatConsoleCommand extends Command
 {
     public function __construct(
         private readonly AgentInterface $agent,
-        private readonly AppConfig $config,
+        private readonly SettingsRepository $settingsRepository,
     ) {
         parent::__construct();
     }
@@ -35,7 +35,7 @@ final class AIAgentChatConsoleCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        if (!$this->config->isAIIntegrationEnabled()) {
+        if (!$this->settingsRepository->integrations()->isAIIntegrationEnabled()) {
             $io->error('The AI feature is not enabled.');
 
             return Command::SUCCESS;

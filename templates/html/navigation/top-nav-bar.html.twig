@@ -101,7 +101,7 @@
                         </div>
                     </div>
                     <ul class="px-2 pb-2 text-sm text-body font-medium" aria-labelledby="profileDropdownMenuButton">
-                        {% if appConfig.isAIIntegrationWithUIEnabled() %}
+                        {% if isAIIntegrationWithUIEnabled() %}
                             <li>
                                 <a href="#" data-modal-custom-ai="{{ relativeUrl('/ai/chat') }}" data-close-dropdown
                                    class="inline-flex items-center w-full p-2 hover:bg-gray-50 rounded">

@@ -9,7 +9,9 @@
 'A high score means you concentrate more training into fewer, heavier days.': 'Un score élevé signifie que vous vous entraînez plus dans moins de jours.'
 'A:C Ratio': 'Ratio Aiguë:Chronique'
 'A:C optimal in': 'A:C optimal in'
+AI: AI
 AM/PM: AM/PM
+'API key': 'API key'
 'ATL (Fatigue)': 'ATL (Fatigue à court terme)'
 'Accumulated fatigue': 'Fatigue accumulée'
 Active: Active
@@ -36,9 +38,11 @@ Activity: Activité
 'Add a widget': 'Add a widget'
 'Add activity': 'Add activity'
 'Add challenge': 'Add challenge'
+'Add command': 'Add command'
 'Add component': 'Add component'
 'Add gear': 'Add gear'
 'Add goal': 'Add goal'
+'Add service': 'Add service'
 'Add task': 'Add task'
 'Add weight': 'Add weight'
 'Add widget': 'Add widget'
@@ -52,6 +56,7 @@ All: Tous
 'All sport types must belong to the same activity type.': 'All sport types must belong to the same activity type.'
 'All time': 'Depuis toujours'
 'Alpine Ski': 'Ski alpin'
+'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.'
 'App URL': 'App URL'
 'App subtitle': 'App subtitle'
 Appearance: Appearance
@@ -74,6 +79,7 @@ Average: Average
 Badges: Badges
 Badminton: Badminton
 Bananas: Bananas
+'Base URI': 'Base URI'
 Basketball: Basketball
 Best: Meilleur
 'Best effort': 'Meilleur effort'
@@ -94,6 +100,7 @@ Canoeing: Canoë
 'Challenge name': 'Challenge name'
 Challenges: Défis
 'Changes still need to be processed before they appear on the app': 'Changes still need to be processed before they appear on the app'
+'Chat commands': 'Chat commands'
 'Check interval (minutes)': 'Check interval (minutes)'
 'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': "Charge d'Entraînement Chronique (Forme) - Moyenne pondérée exponentiellement sur 42 jours de votre charge d'entraînement quotidienne. Représente l'adaptation d'entraînement à long terme."
@@ -102,6 +109,7 @@ Clear: Clear
 'Clear chat': 'Effacer le chat'
 Close: Close
 'Close modal': 'Fermer la fenêtre modale'
+Command: Command
 Commute: Commute
 Commutes: 'Trajets domicile-travail'
 'Commutes only': 'Trajets domicile-travail uniquement'
@@ -179,8 +187,10 @@ Elevation: Dénivelé
 'Elevation (single activity)': 'Elevation (single activity)'
 'Elevation in {unit}': 'Dénivelé en {unit}'
 Elliptical: Elliptique
+'Enable AI integration': 'Enable AI integration'
 'Enable Strava webhooks': 'Enable Strava webhooks'
 Enabled: Enabled
+Endpoint: Endpoint
 Energy: Energy
 'Energy burned across your activities': 'Energy burned across your activities'
 'Enter fullscreen mode': 'Mode plein-écran'
@@ -284,6 +294,7 @@ Import: Import
 'Include retired gear': 'Include retired gear'
 'Individual thresholds vary based on fitness level.': 'Les seuils individuels varient selon le niveau de forme physique.'
 'Inline Skate': 'Roller en ligne'
+Integrations: Integrations
 Intensity: Intensité
 'Intro text': 'Intro text'
 'It looks like no valid gear is attached to any of the components. Please check your config file.': "Il semble qu'aucun matériel valide ne soit attaché aux composants. Veuillez vérifier votre fichier de configuration."
@@ -337,12 +348,14 @@ Max: Max
 'Max heart rate formula': 'Max heart rate formula'
 May: Mai
 Medium: Moyen
+Message: Message
 Metric: Métrique
 'Metric display order': 'Metric display order'
 Metrics: Metrics
 Milestones: Milestones
 'Mind & Body Sports': "Sports du corps et de l'esprit"
 Mode: Mode
+Model: Model
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training'
 'Moderate monotony': 'Monotonie modérée'
 Mon: Lun
@@ -380,6 +393,7 @@ None: Aucun
 'Normal date format': 'Normal date format'
 'Normalized power': 'Normalized power'
 'Not supported': 'Non pris en charge'
+'Notification services': 'Notification services'
 Nov: Nov
 Now: Now
 'Number of activities': 'Number of activities'
@@ -394,6 +408,9 @@ Oct: Oct
 'Older effort': 'Older effort'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'En moyenne, cela représente {dailyAverage} par jour, une moyenne hebdomadaire de {weeklyAverage} et une moyenne mensuelle de {monthlyAverage} 🐣.'
 'One of your gear maintenance tasks is due': 'Une de vos tâches de maintenance de matériel est à effectuer'
+'Only required for the Azure OpenAI provider.': 'Only required for the Azure OpenAI provider.'
+'Only required for the Ollama provider.': 'Only required for the Ollama provider.'
+'Only required for the OpenAI-like provider.': 'Only required for the OpenAI-like provider.'
 'Optimal training range': "Zone d'entraînement optimale"
 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.'
 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.'
@@ -435,6 +452,7 @@ Power: Puissance
 Previous: Précédent
 'Processed on': 'Processed on'
 'Profile picture URL': 'Profile picture URL'
+Provider: Provider
 'Purchase price': 'Purchase price'
 Race: Course
 'Racing Score': 'Score de course'
@@ -460,6 +478,7 @@ Ranking: Classement
 Remove: Remove
 'Remove Eddington': 'Remove Eddington'
 'Remove challenge': 'Remove challenge'
+'Remove command': 'Remove command'
 'Remove goal': 'Remove goal'
 'Remove task': 'Remove task'
 'Remove widget': 'Remove widget'
@@ -505,11 +524,13 @@ Segments: Segments
 Sep: Sep
 Settings: Settings
 'Short date format': 'Short date format'
+'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.'
 'Show in dashboard widget': 'Show in dashboard widget'
 'Show in navigation bar': 'Show in navigation bar'
 'Show information': 'Afficher les informations'
 'Show last X years by default': 'Show last X years by default'
 'Show password': 'Show password'
+'Show the workout assistant in the UI.': 'Show the workout assistant in the UI.'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.'
 'Sign in': 'Sign in'
@@ -703,7 +724,9 @@ To: To
 Tue: Mar
 Tue.: Tue.
 'Turn gear maintenance tracking on or off.': 'Turn gear maintenance tracking on or off.'
+'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Turns on the AI-powered workout assistant, which can then be used from the command line.'
 Type: Type
+URL: URL
 Unit: Unit
 'Unit system': 'Unit system'
 Unspecified: 'Non spécifié'
@@ -718,6 +741,7 @@ Uploading...: Uploading...
 Username: Username
 'Velo Mobiles': Vélomobiles
 'Verify token': 'Verify token'
+Version: Version
 'Very high': 'Très élevé'
 'View all': 'Voir tout'
 'View details': 'Voir les détails'
@@ -742,6 +766,7 @@ Weekly: Hebdomadaire
 Weight: Poids
 'Weight Training': 'Entraînement avec poids'
 'Weight history': 'Historique de poids'
+'What is my FTP?': 'What is my FTP?'
 Wheelchair: 'Fauteuil roulant'
 'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
@@ -800,6 +825,8 @@ day(s): jour(s)
 days: jours
 'days needed for next Eddington': 'jours nécessaires pour le prochain Eddington'
 'days to reach {n}': 'days to reach {n}'
+'discord://token@id': 'discord://token@id'
+ftp: ftp
 hours: heures
 'hours used': 'hours used'
 hrs: h
@@ -839,6 +866,7 @@ workouts: entraînements
 '{numberOfResults} results': '{numberOfResults} results'
 '{numberOfResults} routes': '{numberOfResults} routes'
 '{numberOfWeeks} weeks': '{numberOfWeeks} semaines'
+'{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images'
 '{threshold} hours using {gearName}': '{threshold} heures en utilisant {gearName}'

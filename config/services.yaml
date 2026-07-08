@@ -5,10 +5,13 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     env(APP_DEBUG): 0
-    env(IMPORT_MODE): 'stravaApi'
+    env(IMPORT_MODE): 'files'
     env(ADMIN_USERNAME): 'admin'
     env(ADMIN_PASSWORD_HASH): ''
     env(ADMIN_ALLOWED_IPS): ''
+    env(STRAVA_CLIENT_ID): 'replace-me'
+    env(STRAVA_CLIENT_SECRET): 'replace-me'
+    env(STRAVA_REFRESH_TOKEN): 'replace-me'
     env(DEMO_MODE_IS_ENABLED): 0
     env(LOCK_DSN): 'flock'
     env(TZ): ''
@@ -93,22 +96,6 @@ services:
 
     NeuronAI\Tools\Toolkits\ToolkitInterface:
         class: App\Domain\Integration\AI\Tool\Toolkit
-
-    App\Domain\Integration\AI\Chat\ChatCommands:
-        factory: [ null, 'fromArray' ]
-        arguments: ['@=app_config("integrations.ai.agent.commands", [])']
-
-    App\Domain\Integration\AI\AIProviderFactory:
-        arguments: ['@=app_config("integrations.ai", [])']
-
-    App\Domain\Integration\Notification\Shoutrrr\ConfiguredNotificationUrls:
-      factory: [ null, 'fromConfig' ]
-      arguments: [
-        '@=app_config("integrations.notifications.services", [])',
-        '@=app_config("integrations.notifications.ntfyUrl", "")',
-        '@=app_config("integrations.notifications.ntfyUsername", "")',
-        '@=app_config("integrations.notifications.ntfyPassword", "")'
-      ]
 
     App\Domain\Strava\StravaClientId:
         factory: [ null, 'fromString' ]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use App\Domain\Integration\Notification\Shoutrrr\ShoutrrrUrl;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\KeyValue\Key;
@@ -55,6 +56,7 @@ final class Version20260706053720 extends AbstractMigration
         $this->migrateImport($config);
         $this->migrateMetrics($config);
         $this->migrateZwift($config);
+        $this->migrateIntegrations($config);
     }
 
     public function down(Schema $schema): void
@@ -65,6 +67,7 @@ final class Version20260706053720 extends AbstractMigration
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::IMPORT->keyValueKey()->value]);
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::METRICS->keyValueKey()->value]);
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::ZWIFT->keyValueKey()->value]);
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::INTEGRATIONS->keyValueKey()->value]);
     }
 
     /**
@@ -206,6 +209,46 @@ final class Version20260706053720 extends AbstractMigration
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
                 'key' => SettingsGroup::ZWIFT->keyValueKey()->value,
+                'value' => Json::encode($subtree),
+            ]
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function migrateIntegrations(array $config): void
+    {
+        $subtree = $config[SettingsGroup::INTEGRATIONS->value] ?? null;
+        if (empty($subtree)) {
+            return;
+        }
+
+        $subtree = $this->normalizeKeys($subtree);
+
+        // Fold the deprecated ntfy config into a regular notification service URL.
+        if (is_array($subtree['notifications'] ?? null)) {
+            $notifications = $subtree['notifications'];
+            $services = is_array($notifications['services'] ?? null) ? array_values($notifications['services']) : [];
+
+            $ntfyUrl = $notifications['ntfyUrl'] ?? null;
+            if (is_string($ntfyUrl) && !in_array($ntfyUrl, ['', '0'], true)) {
+                array_unshift($services, (string) ShoutrrrUrl::fromDeprecatedNtfyConfig(
+                    ntfyUrl: $ntfyUrl,
+                    ntfyUsername: isset($notifications['ntfyUsername']) ? (string) $notifications['ntfyUsername'] : null,
+                    ntfyPassword: isset($notifications['ntfyPassword']) ? (string) $notifications['ntfyPassword'] : null,
+                ));
+            }
+
+            unset($notifications['ntfyUrl'], $notifications['ntfyUsername'], $notifications['ntfyPassword']);
+            $notifications['services'] = $services;
+            $subtree['notifications'] = $notifications;
+        }
+
+        $this->addSql(
+            'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
+            [
+                'key' => SettingsGroup::INTEGRATIONS->keyValueKey()->value,
                 'value' => Json::encode($subtree),
             ]
         );

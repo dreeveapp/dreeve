@@ -12,7 +12,6 @@ class ConfiguredNotificationUrlsTest extends TestCase
     {
         $this->assertEquals(
             [
-                ShoutrrrUrl::fromString('ntfy://username:password@ntfy.sh'),
                 ShoutrrrUrl::fromString('ntfy://admin:admin@ntfy.sh/topic'),
                 ShoutrrrUrl::fromString('discord://token@webhookid?thread_id=123456789'),
             ],
@@ -21,9 +20,6 @@ class ConfiguredNotificationUrlsTest extends TestCase
                     'ntfy://admin:admin@ntfy.sh/topic',
                     'discord://token@webhookid?thread_id=123456789',
                 ],
-                ntfyUrl: 'https://ntfy.sh',
-                ntfyUsername: 'username',
-                ntfyPassword: 'password',
             )),
         );
     }
@@ -36,9 +32,6 @@ class ConfiguredNotificationUrlsTest extends TestCase
             config: [
                 [],
             ],
-            ntfyUrl: 'https://ntfy.sh',
-            ntfyUsername: 'username',
-            ntfyPassword: 'password',
         );
     }
 }

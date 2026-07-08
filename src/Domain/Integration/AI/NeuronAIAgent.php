@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Integration\AI;
 
+use App\Domain\Settings\SettingsRepository;
 use NeuronAI\Agent\Agent;
 use NeuronAI\Agent\SystemPrompt;
 use NeuronAI\Chat\History\ChatHistoryInterface;
@@ -16,7 +17,7 @@ use NeuronAI\Tools\Toolkits\ToolkitInterface;
 final class NeuronAIAgent extends Agent
 {
     public function __construct(
-        private readonly AIProviderFactory $AIProviderFactory,
+        private readonly SettingsRepository $settingsRepository,
         private readonly ToolkitInterface $toolkit,
         private readonly ChatHistoryInterface $history,
     ) {
@@ -26,7 +27,7 @@ final class NeuronAIAgent extends Agent
     #[\Override]
     protected function provider(): AIProviderInterface
     {
-        return $this->AIProviderFactory->create();
+        return $this->settingsRepository->integrations()->createAIProvider();
     }
 
     #[\Override]

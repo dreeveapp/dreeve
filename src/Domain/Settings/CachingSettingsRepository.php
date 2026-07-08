@@ -15,6 +15,7 @@ final class CachingSettingsRepository implements SettingsRepository
     private ?ImportSettings $importSettings = null;
     private ?MetricsSettings $metricsSettings = null;
     private ?ZwiftSettings $zwiftSettings = null;
+    private ?IntegrationsSettings $integrationsSettings = null;
 
     public function __construct(
         #[Autowire(service: KeyValueBasedSettingsRepository::class)]
@@ -37,6 +38,7 @@ final class CachingSettingsRepository implements SettingsRepository
         $this->importSettings = null;
         $this->metricsSettings = null;
         $this->zwiftSettings = null;
+        $this->integrationsSettings = null;
     }
 
     public function general(): GeneralSettings
@@ -62,5 +64,10 @@ final class CachingSettingsRepository implements SettingsRepository
     public function zwift(): ZwiftSettings
     {
         return $this->zwiftSettings ??= $this->settingsRepository->zwift();
+    }
+
+    public function integrations(): IntegrationsSettings
+    {
+        return $this->integrationsSettings ??= $this->settingsRepository->integrations();
     }
 }

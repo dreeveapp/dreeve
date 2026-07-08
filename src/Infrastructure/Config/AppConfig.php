@@ -57,16 +57,6 @@ final class AppConfig
         return $root;
     }
 
-    public function isAIIntegrationEnabled(): bool
-    {
-        return !empty($this->get('integrations.ai.enabled', false));
-    }
-
-    public function isAIIntegrationWithUIEnabled(): bool
-    {
-        return $this->isAIIntegrationEnabled() && !empty($this->get('integrations.ai.enableUI', false));
-    }
-
     public static function setYamlConfigFilesToParse(KernelProjectDir $kernelProjectDir, PlatformEnvironment $platformEnvironment): void
     {
         $basePath = $platformEnvironment->isTest() ? $kernelProjectDir.'/config/app/test' : $kernelProjectDir.'/config/app';

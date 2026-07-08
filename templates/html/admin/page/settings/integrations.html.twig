@@ -1,0 +1,155 @@
+{% extends "html/admin/page/template.html.twig" %}
+
+{% block main %}
+    {% set ai = settings.ai ?? {} %}
+    {% set aiConfiguration = ai.configuration ?? {} %}
+    {% set notifications = settings.notifications ?? {} %}
+    {% set commandRows = [] %}
+    {% for command in ai.agent.commands ?? [] %}
+        {% set commandRows = commandRows|merge([{'command': command.command ?? '', 'message': command.message ?? ''}]) %}
+    {% endfor %}
+    {% set serviceRows = [] %}
+    {% for service in notifications.services ?? [] %}
+        {% set serviceRows = serviceRows|merge([{'value': service}]) %}
+    {% endfor %}
+    {% set aiProviders = ['anthropic', 'azureOpenAI', 'deepseek', 'gemini', 'grok', 'huggingFace', 'ollama', 'openAI', 'openAILike', 'openAIResponses', 'mistral'] %}
+    <div class="flex flex-col gap-4">
+        <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            <input type="hidden" name="group" value="{{ group.value }}">
+            <div class="mb-5">
+                <h3 class="text-lg font-semibold">{{ "Integrations"|trans }}</h3>
+            </div>
+            <div data-form-error class="hidden mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert"></div>
+            <div class="flex flex-col gap-4">
+                <h4 class="mt-0!">{{ "AI"|trans }}</h4>
+                <div>
+                    <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
+                        <input type="checkbox" name="data[ai][enabled]" value="1" {{ (ai.enabled ?? false) ? 'checked' : '' }}>
+                        <span>{{ "Enable AI integration"|trans }}</span>
+                    </label>
+                    <p class="description">
+                        {{ "Turns on the AI-powered workout assistant, which can then be used from the command line."|trans }}
+                    </p>
+                </div>
+                <div>
+                    <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
+                        <input type="checkbox" name="data[ai][enableUI]" value="1" {{ (ai.enableUI ?? false) ? 'checked' : '' }}>
+                        <span>{{ "Show the workout assistant in the UI."|trans }}</span>
+                    </label>
+                    <p class="description">
+                        {{ "Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible."|trans }}
+                    </p>
+                </div>
+                <div>
+                    <label for="aiProvider">{{ "Provider"|trans }}</label>
+                    <select id="aiProvider" name="data[ai][provider]">
+                        <option value="">{{ "None"|trans }}</option>
+                        {% for provider in aiProviders %}
+                            <option value="{{ provider }}" {{ (ai.provider ?? '') == provider ? 'selected' : '' }}>{{ provider }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="aiModel">{{ "Model"|trans }}</label>
+                        <input type="text" id="aiModel" name="data[ai][configuration][model]" value="{{ aiConfiguration.model ?? '' }}">
+                    </div>
+                    <div>
+                        <label for="aiKey">{{ "API key"|trans }}</label>
+                        <input type="password" id="aiKey" name="data[ai][configuration][key]" value="{{ aiConfiguration.key ?? '' }}" autocomplete="off">
+                    </div>
+                    <div>
+                        <label for="aiUrl">{{ "URL"|trans }}</label>
+                        <input type="text" id="aiUrl" name="data[ai][configuration][url]" value="{{ aiConfiguration.url ?? '' }}">
+                        <p class="description">{{ "Only required for the Ollama provider."|trans }}</p>
+                    </div>
+                    <div>
+                        <label for="aiBaseUri">{{ "Base URI"|trans }}</label>
+                        <input type="text" id="aiBaseUri" name="data[ai][configuration][baseUri]" value="{{ aiConfiguration.baseUri ?? '' }}">
+                        <p class="description">{{ "Only required for the OpenAI-like provider."|trans }}</p>
+                    </div>
+                    <div>
+                        <label for="aiEndpoint">{{ "Endpoint"|trans }}</label>
+                        <input type="text" id="aiEndpoint" name="data[ai][configuration][endpoint]" value="{{ aiConfiguration.endpoint ?? '' }}">
+                        <p class="description">{{ "Only required for the Azure OpenAI provider."|trans }}</p>
+                    </div>
+                    <div>
+                        <label for="aiVersion">{{ "Version"|trans }}</label>
+                        <input type="text" id="aiVersion" name="data[ai][configuration][version]" value="{{ aiConfiguration.version ?? '' }}">
+                        <p class="description">{{ "Only required for the Azure OpenAI provider."|trans }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 border-t border-gray-200 pt-6" data-repeater data-repeater-min="0">
+                <label class="mt-0!">{{ "Chat commands"|trans }}</label>
+                <p class="description mb-2">
+                    {{ "Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash."|trans }}
+                </p>
+                <div class="flex flex-col gap-3"
+                     data-repeater-list
+                     data-repeater-initial="{{ commandRows|json_encode|e('html_attr') }}">
+                </div>
+                <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
+                    <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                    </svg>
+                    <span>{{ "Add command"|trans }}</span>
+                </button>
+                <template data-repeater-template>
+                    <div class="relative flex flex-col gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater-item>
+                        <button type="button" data-repeater-remove
+                                class="unstyled cursor-pointer absolute top-2 right-2 grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
+                                aria-label="{{ "Remove command"|trans }}">
+                            <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                            </svg>
+                        </button>
+                        <div class="pr-11">
+                            <label class="mt-0!">{{ "Command"|trans }}</label>
+                            <input type="text" name="data[ai][agent][commands][__index__][command]"
+                                   data-repeater-field="command" placeholder="{{ "ftp"|trans }}">
+                        </div>
+                        <div>
+                            <label class="mt-0!">{{ "Message"|trans }}</label>
+                            <input type="text" name="data[ai][agent][commands][__index__][message]"
+                                   data-repeater-field="message" placeholder="{{ "What is my FTP?"|trans }}">
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <div class="mt-6 border-t border-gray-200 pt-6" data-repeater data-repeater-min="0">
+                <h4 class="mt-0!">{{ "Notification services"|trans }}</h4>
+                <p class="description mb-2">
+                    {{ "{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely."|trans({'{shoutrrr}': '<a class="underline" href="https://shoutrrr.nickfedor.com/dev/services/overview/" target="_blank" rel="noopener">Shoutrrr</a>'})|raw }}
+                </p>
+                <div class="flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ serviceRows|json_encode|e('html_attr') }}"></div>
+                <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
+                    <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                    </svg>
+                    <span>{{ "Add service"|trans }}</span>
+                </button>
+                <template data-repeater-template>
+                    <div class="flex items-end gap-2" data-repeater-item>
+                        <div class="flex-1">
+                            <input type="text" name="data[notifications][services][]" data-repeater-field="value" placeholder="{{ "discord://token@id"|trans }}">
+                        </div>
+                        <button type="button" data-repeater-remove
+                                class="unstyled cursor-pointer grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
+                                aria-label="{{ "Remove"|trans }}">
+                            <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </template>
+            </div>
+            <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
+                <button type="submit" data-has-loading-state class="group btn--primary">
+                    <span class="label">{{ "Save settings"|trans }}</span>
+                    <span class="label--loading">{{ "Saving..."|trans }}</span>
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock main %}

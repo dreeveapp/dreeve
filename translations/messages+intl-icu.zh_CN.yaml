@@ -9,7 +9,9 @@
 'A high score means you concentrate more training into fewer, heavier days.': 'A high score means you concentrate more training into fewer, heavier days.'
 'A:C Ratio': 'A:C 比值'
 'A:C optimal in': 'A:C optimal in'
+AI: AI
 AM/PM: AM/PM
+'API key': 'API key'
 'ATL (Fatigue)': 'ATL (疲劳)'
 'Accumulated fatigue': 'Accumulated fatigue'
 Active: Active
@@ -36,9 +38,11 @@ Activity: 活动
 'Add a widget': 'Add a widget'
 'Add activity': 'Add activity'
 'Add challenge': 'Add challenge'
+'Add command': 'Add command'
 'Add component': 'Add component'
 'Add gear': 'Add gear'
 'Add goal': 'Add goal'
+'Add service': 'Add service'
 'Add task': 'Add task'
 'Add weight': 'Add weight'
 'Add widget': 'Add widget'
@@ -52,6 +56,7 @@ All: All
 'All sport types must belong to the same activity type.': 'All sport types must belong to the same activity type.'
 'All time': 所有时间
 'Alpine Ski': 高山滑雪
+'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.'
 'App URL': 'App URL'
 'App subtitle': 'App subtitle'
 Appearance: Appearance
@@ -74,6 +79,7 @@ Average: Average
 Badges: Badges
 Badminton: 羽毛球
 Bananas: Bananas
+'Base URI': 'Base URI'
 Basketball: Basketball
 Best: 最佳
 'Best effort': 最佳努力
@@ -94,6 +100,7 @@ Canoeing: 划独木舟
 'Challenge name': 'Challenge name'
 Challenges: 挑战
 'Changes still need to be processed before they appear on the app': 'Changes still need to be processed before they appear on the app'
+'Chat commands': 'Chat commands'
 'Check interval (minutes)': 'Check interval (minutes)'
 'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': '长期训练负荷（体能）— 42天训练的负荷指数加权平均值。代表长期训练适应情况。'
@@ -102,6 +109,7 @@ Clear: Clear
 'Clear chat': 'Clear chat'
 Close: Close
 'Close modal': 关闭模态框
+Command: Command
 Commute: Commute
 Commutes: 通勤
 'Commutes only': 仅通勤
@@ -179,8 +187,10 @@ Elevation: 海拔高度
 'Elevation (single activity)': 'Elevation (single activity)'
 'Elevation in {unit}': '海拔高度（单位：{unit})'
 Elliptical: 椭圆机
+'Enable AI integration': 'Enable AI integration'
 'Enable Strava webhooks': 'Enable Strava webhooks'
 Enabled: Enabled
+Endpoint: Endpoint
 Energy: Energy
 'Energy burned across your activities': 'Energy burned across your activities'
 'Enter fullscreen mode': 'Enter fullscreen mode'
@@ -284,6 +294,7 @@ Import: Import
 'Include retired gear': 'Include retired gear'
 'Individual thresholds vary based on fitness level.': 个人阈值因体能水平而异。
 'Inline Skate': 直排轮滑
+Integrations: Integrations
 Intensity: Intensity
 'Intro text': 'Intro text'
 'It looks like no valid gear is attached to any of the components. Please check your config file.': 无法在任何组件上找到有效装备。请检查您的配置文件。
@@ -337,12 +348,14 @@ Max: 最大
 'Max heart rate formula': 'Max heart rate formula'
 May: 五月
 Medium: 中等
+Message: Message
 Metric: Metric
 'Metric display order': 'Metric display order'
 Metrics: Metrics
 Milestones: Milestones
 'Mind & Body Sports': 心灵与身体运动
 Mode: Mode
+Model: Model
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training'
 'Moderate monotony': 适度单调性
 Mon: 周一
@@ -380,6 +393,7 @@ None: 无
 'Normal date format': 'Normal date format'
 'Normalized power': 'Normalized power'
 'Not supported': 不支持
+'Notification services': 'Notification services'
 Nov: 十一月
 Now: Now
 'Number of activities': 'Number of activities'
@@ -394,6 +408,9 @@ Oct: 十月
 'Older effort': 'Older effort'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': '平均而言，每天的平均值为 {dailyAverage}，每周的平均值为 {weeklyAverage}，每月的平均值为 {monthlyAverage} 🐣。'
 'One of your gear maintenance tasks is due': 您有装备需维护
+'Only required for the Azure OpenAI provider.': 'Only required for the Azure OpenAI provider.'
+'Only required for the Ollama provider.': 'Only required for the Ollama provider.'
+'Only required for the OpenAI-like provider.': 'Only required for the OpenAI-like provider.'
 'Optimal training range': 最佳训练范围
 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.'
 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.'
@@ -435,6 +452,7 @@ Power: 功率
 Previous: Previous
 'Processed on': 'Processed on'
 'Profile picture URL': 'Profile picture URL'
+Provider: Provider
 'Purchase price': 'Purchase price'
 Race: 比赛
 'Racing Score': 赛车成绩
@@ -460,6 +478,7 @@ Ranking: Ranking
 Remove: Remove
 'Remove Eddington': 'Remove Eddington'
 'Remove challenge': 'Remove challenge'
+'Remove command': 'Remove command'
 'Remove goal': 'Remove goal'
 'Remove task': 'Remove task'
 'Remove widget': 'Remove widget'
@@ -505,11 +524,13 @@ Segments: 路段
 Sep: 九月
 Settings: Settings
 'Short date format': 'Short date format'
+'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.'
 'Show in dashboard widget': 'Show in dashboard widget'
 'Show in navigation bar': 'Show in navigation bar'
 'Show information': 显示信息
 'Show last X years by default': 'Show last X years by default'
 'Show password': 'Show password'
+'Show the workout assistant in the UI.': 'Show the workout assistant in the UI.'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.'
 'Sign in': 'Sign in'
@@ -703,7 +724,9 @@ To: To
 Tue: 周二
 Tue.: Tue.
 'Turn gear maintenance tracking on or off.': 'Turn gear maintenance tracking on or off.'
+'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Turns on the AI-powered workout assistant, which can then be used from the command line.'
 Type: Type
+URL: URL
 Unit: Unit
 'Unit system': 'Unit system'
 Unspecified: 未指定
@@ -718,6 +741,7 @@ Uploading...: Uploading...
 Username: Username
 'Velo Mobiles': 躺车
 'Verify token': 'Verify token'
+Version: Version
 'Very high': 非常高
 'View all': 查看全部
 'View details': 查看详情
@@ -742,6 +766,7 @@ Weekly: Weekly
 Weight: 体重
 'Weight Training': 重量训练
 'Weight history': 历史体重
+'What is my FTP?': 'What is my FTP?'
 Wheelchair: 轮椅
 'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
@@ -800,6 +825,8 @@ day(s): day(s)
 days: 天
 'days needed for next Eddington': '天 - 下一个爱丁顿所需天数'
 'days to reach {n}': 'days to reach {n}'
+'discord://token@id': 'discord://token@id'
+ftp: ftp
 hours: 小时
 'hours used': 'hours used'
 hrs: hrs
@@ -839,6 +866,7 @@ workouts: 锻炼
 '{numberOfResults} results': '{numberOfResults} results'
 '{numberOfResults} routes': '{numberOfResults} routes'
 '{numberOfWeeks} weeks': '{numberOfWeeks} weeks'
+'{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images'
 '{threshold} hours using {gearName}': '{threshold} hours using {gearName}'
