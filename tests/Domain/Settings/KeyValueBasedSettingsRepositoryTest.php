@@ -14,8 +14,8 @@ class KeyValueBasedSettingsRepositoryTest extends ContainerTestCase
 
     public function testFindReturnsEmptyArrayWhenAbsent(): void
     {
-        // ZWIFT is not part of the seeded settings baseline (see ProvideSettings).
-        $this->assertSame([], $this->settingsRepository->find(SettingsGroup::ZWIFT));
+        // DAEMON is not part of the seeded settings baseline (see ProvideSettings).
+        $this->assertSame([], $this->settingsRepository->find(SettingsGroup::DAEMON));
     }
 
     public function testSaveAndFindRoundTripsANestedArray(): void
@@ -25,9 +25,9 @@ class KeyValueBasedSettingsRepositoryTest extends ContainerTestCase
             'nested' => ['foo' => 'bar', 'list' => [1, 2, 3]],
         ];
 
-        $this->settingsRepository->save(SettingsGroup::ZWIFT, $data);
+        $this->settingsRepository->save(SettingsGroup::DAEMON, $data);
 
-        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::ZWIFT));
+        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::DAEMON));
     }
 
     #[\Override]

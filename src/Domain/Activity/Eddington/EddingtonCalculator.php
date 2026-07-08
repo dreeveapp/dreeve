@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Eddington;
 
-use App\Domain\Activity\Eddington\Config\EddingtonConfiguration;
 use App\Domain\Activity\EnrichedActivities;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 
 final readonly class EddingtonCalculator
 {
     public function __construct(
         private EnrichedActivities $enrichedActivities,
-        private EddingtonConfiguration $eddingtonConfiguration,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -22,7 +22,7 @@ final readonly class EddingtonCalculator
     public function calculate(UnitSystem $unitSystem): array
     {
         $eddingtons = [];
-        foreach ($this->eddingtonConfiguration as $eddingtonConfigItem) {
+        foreach ($this->settingsRepository->metrics()->getEddingtonConfiguration() as $eddingtonConfigItem) {
             $activities = $this->enrichedActivities->findBySportTypes($eddingtonConfigItem->getSportTypesToInclude());
             if ($activities->isEmpty()) {
                 continue;

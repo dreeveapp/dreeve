@@ -34,6 +34,8 @@ final class Version20260706053720 extends AbstractMigration
         $this->migrateGeneral($config);
         $this->migrateAppearance($config);
         $this->migrateImport($config);
+        $this->migrateMetrics($config);
+        $this->migrateZwift($config);
     }
 
     public function down(Schema $schema): void
@@ -41,6 +43,8 @@ final class Version20260706053720 extends AbstractMigration
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::GENERAL->keyValueKey()->value]);
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::APPEARANCE->keyValueKey()->value]);
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::IMPORT->keyValueKey()->value]);
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::METRICS->keyValueKey()->value]);
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::ZWIFT->keyValueKey()->value]);
     }
 
     /**
@@ -112,6 +116,48 @@ final class Version20260706053720 extends AbstractMigration
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
                 'key' => SettingsGroup::IMPORT->keyValueKey()->value,
+                'value' => Json::encode($subtree),
+            ]
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function migrateMetrics(array $config): void
+    {
+        $subtree = $config[SettingsGroup::METRICS->value] ?? null;
+        if (empty($subtree)) {
+            return;
+        }
+
+        $subtree = $this->normalizeKeys($subtree);
+
+        $this->connection->executeStatement(
+            'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
+            [
+                'key' => SettingsGroup::METRICS->keyValueKey()->value,
+                'value' => Json::encode($subtree),
+            ]
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function migrateZwift(array $config): void
+    {
+        $subtree = $config[SettingsGroup::ZWIFT->value] ?? null;
+        if (empty($subtree)) {
+            return;
+        }
+
+        $subtree = $this->normalizeKeys($subtree);
+
+        $this->connection->executeStatement(
+            'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
+            [
+                'key' => SettingsGroup::ZWIFT->keyValueKey()->value,
                 'value' => Json::encode($subtree),
             ]
         );

@@ -8,6 +8,10 @@
         "value": "{\"locale\":\"en_US\",\"unitSystem\":\"metric\",\"timeFormat\":24,\"dateFormat\":{\"short\":\"d-m-y\",\"normal\":\"d-m-Y\"}}"
     },
     {
+        "key": "settingsZwift",
+        "value": "{\"level\":80,\"racingScore\":495}"
+    },
+    {
         "key": "lock.importDataOrBuildApp",
         "value": "{\"heartbeat\":1764806400,\"lockAcquiredBy\":\"test\"}"
     },

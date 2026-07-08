@@ -1,7 +1,7 @@
 {% extends "html/admin/page/template.html.twig" %}
 
 {% macro historyEditor(fieldPath, rows, title, description, valueLabel, addLabel, valueKey, valueStep) %}
-    <div data-repeater data-repeater-min="0">
+    <div class="p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater data-repeater-min="0">
         <label class="mt-0!">{{ title }}</label>
         {% if description %}
             <p class="description mb-2">{{ description }}</p>

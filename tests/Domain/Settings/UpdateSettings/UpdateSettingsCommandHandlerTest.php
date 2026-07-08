@@ -88,6 +88,45 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
         $this->assertSame('1', (string) $this->keyValueStore->find(Key::FORCE_REBUILD));
     }
 
+    public function testItUpdatesMetricsSettingsAndFlagsForceRebuild(): void
+    {
+        $data = [
+            'excludeActivitiesFromPeakPowerOutputs' => ['123456'],
+            'eddington' => [
+                [
+                    'label' => 'Ride',
+                    'showInNavBar' => true,
+                    'showInDashboardWidget' => false,
+                    'sportTypesToInclude' => ['Ride', 'VirtualRide'],
+                ],
+            ],
+        ];
+
+        $this->commandBus->dispatch(UpdateSettings::fromPayload([
+            'group' => SettingsGroup::METRICS->value,
+            'data' => $data,
+        ]));
+
+        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::METRICS));
+        $this->assertSame('1', (string) $this->keyValueStore->find(Key::FORCE_REBUILD));
+    }
+
+    public function testItUpdatesZwiftSettingsAndFlagsForceRebuild(): void
+    {
+        $data = [
+            'level' => 100,
+            'racingScore' => 511,
+        ];
+
+        $this->commandBus->dispatch(UpdateSettings::fromPayload([
+            'group' => SettingsGroup::ZWIFT->value,
+            'data' => $data,
+        ]));
+
+        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::ZWIFT));
+        $this->assertSame('1', (string) $this->keyValueStore->find(Key::FORCE_REBUILD));
+    }
+
     #[\Override]
     protected function setUp(): void
     {

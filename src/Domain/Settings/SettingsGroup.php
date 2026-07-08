@@ -38,6 +38,8 @@ enum SettingsGroup: string
             self::GENERAL => GeneralSettings::fromArray($data),
             self::APPEARANCE => AppearanceSettings::fromArray($data),
             self::IMPORT => ImportSettings::fromArray($data),
+            self::METRICS => MetricsSettings::fromArray($data),
+            self::ZWIFT => ZwiftSettings::fromArray($data),
             default => throw new \RuntimeException(sprintf('Settings group "%s" is not migrated yet.', $this->value)),
         };
     }

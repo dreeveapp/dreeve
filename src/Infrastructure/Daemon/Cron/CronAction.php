@@ -50,6 +50,10 @@ final readonly class CronAction
 
     public function supportsImportMode(ImportMode $importMode): bool
     {
-        return !('importDataAndBuildApp' === $this->getId() && $importMode->isFiles());
+        if ('importDataAndBuildApp' !== $this->getId()) {
+            return true;
+        }
+
+        return !$importMode->isFiles();
     }
 }

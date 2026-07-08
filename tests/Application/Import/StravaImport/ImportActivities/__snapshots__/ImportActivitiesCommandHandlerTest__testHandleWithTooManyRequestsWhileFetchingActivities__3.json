@@ -12,6 +12,10 @@
         "value": "{\"numberOfNewActivitiesToProcessPerImport\":250,\"sportTypesToImport\":[],\"activityVisibilitiesToImport\":[],\"skipActivitiesRecordedBefore\":null,\"activitiesToSkipDuringImport\":[\"skip\"],\"optInToSegmentDetailImport\":true,\"webhooks\":{\"enabled\":true,\"verifyToken\":\"ffc26d52-d3ff-4797-a2b7-780a593a3547\"}}"
     },
     {
+        "key": "settingsZwift",
+        "value": "{\"level\":80,\"racingScore\":495}"
+    },
+    {
         "key": "lock.importDataOrBuildApp",
         "value": "{\"heartbeat\":1764806400,\"lockAcquiredBy\":\"test\"}"
     }

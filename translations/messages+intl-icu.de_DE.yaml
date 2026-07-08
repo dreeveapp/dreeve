@@ -15,10 +15,12 @@ AM/PM: AM/PM
 Active: Aktiv
 'Active days': 'Aktive Tage'
 Activities: Aktivitäten
+'Activities excluded from peak power outputs': 'Activities excluded from peak power outputs'
 'Activities to skip during import': 'Activities to skip during import'
 'Activities will appear here once they are imported.': 'Aktivitäten werden hier angezeigt, sobald sie importiert wurden.'
 Activity: Aktivität
 'Activity ID': 'Activity ID'
+'Activity IDs to exclude when calculating peak power outputs.': 'Activity IDs to exclude when calculating peak power outputs.'
 'Activity count': 'Anzahl Aktivitäten'
 'Activity heatmap': 'Aktivitäten Heatmap'
 'Activity locations': Orte
@@ -28,6 +30,7 @@ Activity: Aktivität
 'Acute Training Load (Fatigue) - 7-day exponentially weighted average of your daily training load. Represents short-term fatigue.': 'Akute Trainingsbelastung (Ermüdung) - 7-tägiger exponentiell gewichteter Durchschnitt deiner täglichen Trainingsbelastung. Stellt die kurzfristige Ermüdung dar.'
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Aktuelle vs. dauerhafte Trainingsbelastung - Verhältnis von ATL zu CTL. Gibt das Verletzungsrisiko an.'
 'Adaptive & Inclusive Sports': 'Adaptive & inklusive Sportarten'
+'Add Eddington': 'Add Eddington'
 'Add FTP': 'Add FTP'
 'Add a component to start tracking maintenance.': 'Füge eine Komponente hinzu, um mit der Wartungsverfolgung zu beginnen.'
 'Add a widget': 'Add a widget'
@@ -46,6 +49,7 @@ Admin: Admin
 Afternoon: Nachmittag
 All: Alle
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'Alle zugehörigen Wartungsaufgaben und Protokolle werden entfernt. Diese Aktion kann nicht rückgängig gemacht werden'
+'All sport types must belong to the same activity type.': 'All sport types must belong to the same activity type.'
 'All time': Gesamtzeit
 'Alpine Ski': 'Ski Alpin'
 'App URL': 'App URL'
@@ -108,6 +112,7 @@ Component: Komponente
 Components: Komponenten
 Config: Konfiguration
 Configure: Configure
+'Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget.': 'Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget.'
 'Configure {widget}': 'Configure {widget}'
 'Configured via an environment variable and cannot be changed here.': 'Configured via an environment variable and cannot be changed here.'
 'Configured via environment variables and cannot be changed here.': 'Configured via environment variables and cannot be changed here.'
@@ -335,6 +340,7 @@ May: Mai
 Medium: Mittel
 Metric: Metrisch
 'Metric display order': 'Metric display order'
+Metrics: Metrics
 Milestones: Meilensteine
 'Mind & Body Sports': 'Geist & Körper Sportarten'
 Mode: Mode
@@ -396,6 +402,8 @@ Oct: Okt
 'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.': 'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.'
 'Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date.': 'Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date.'
 'Optional. Leave empty to always apply this goal.': 'Optional. Leave empty to always apply this goal.'
+'Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge.': 'Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge.'
+'Optional. Your current Zwift racing score (between 0 and 1000).': 'Optional. Your current Zwift racing score (between 0 and 1000).'
 Other: Andere
 'Outdoor Sports': Outdoor-Sportarten
 Over-fatigued: Übermüdet
@@ -450,6 +458,7 @@ Ranking: Rangliste
 'Relative cost': 'Relative Kosten'
 'Remember me for 7 days': 'Für 7 Tage angemeldet bleiben'
 Remove: Entfernen
+'Remove Eddington': 'Remove Eddington'
 'Remove challenge': 'Remove challenge'
 'Remove goal': 'Remove goal'
 'Remove task': 'Aufgabe entfernen'
@@ -470,6 +479,7 @@ Retired: Ausgemustert
 'Return to app': 'Zurück zur App'
 Rewind: Rückblick
 'Rewind comparisons are only available on larger screens.': 'Rückblick Vergleiche sind nur auf großen Bildschirmen verfügbar.'
+Ride: Ride
 Rides: Radfahren
 'Risk of detraining': 'Risiko für Leistungsabfall'
 'Rock Climbing': Klettern
@@ -495,6 +505,8 @@ Segments: Segmente
 Sep: Sep
 Settings: Settings
 'Short date format': 'Short date format'
+'Show in dashboard widget': 'Show in dashboard widget'
+'Show in navigation bar': 'Show in navigation bar'
 'Show information': 'Informationen anzeigen'
 'Show last X years by default': 'Show last X years by default'
 'Show password': 'Passwort anzeigen'
@@ -767,8 +779,11 @@ Zone: Zone
 'Zone 3 (aerobic/anaerobic)': 'Zone 3 (aerob/anaerob)'
 'Zone 4 (anaerobic)': 'Zone 4 (anaerob)'
 'Zone 5 (maximal)': 'Zone 5 (maximal)'
+Zwift: Zwift
 'Zwift Statistics': Zwift-Statistiken
 'Zwift badge': 'Zwift Abzeichen'
+'Zwift level': 'Zwift level'
+'Zwift racing score': 'Zwift racing score'
 'Zwift stats': 'Zwift Statistiken'
 'active days': 'aktive Tage'
 activities: Aktivitäten

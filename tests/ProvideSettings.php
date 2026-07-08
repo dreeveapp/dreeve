@@ -20,8 +20,6 @@ trait ProvideSettings
         /** @var KeyValueStore $keyValueStore */
         $keyValueStore = $this->getContainer()->get(KeyValueStore::class);
 
-        // Baseline the whole suite gets today from config/app/test/ (config.yaml + config-athlete.yaml),
-        // normalized to camelCase. "appUrl" stays env-driven, so it is not stored here.
         $keyValueStore->save(KeyValue::fromState(
             SettingsGroup::GENERAL->keyValueKey(),
             Value::fromString(Json::encode([
@@ -69,7 +67,6 @@ trait ProvideSettings
             ])),
         ));
 
-        // Baseline the whole suite gets today from config/app/test/config-import.yaml, normalized to camelCase.
         $keyValueStore->save(KeyValue::fromState(
             SettingsGroup::IMPORT->keyValueKey(),
             Value::fromString(Json::encode([
@@ -83,6 +80,15 @@ trait ProvideSettings
                     'enabled' => true,
                     'verifyToken' => 'ffc26d52-d3ff-4797-a2b7-780a593a3547',
                 ],
+            ])),
+        ));
+
+        // Baseline the whole suite gets today from config/app/test/config.yaml, normalized to camelCase.
+        $keyValueStore->save(KeyValue::fromState(
+            SettingsGroup::ZWIFT->keyValueKey(),
+            Value::fromString(Json::encode([
+                'level' => 80,
+                'racingScore' => 495,
             ])),
         ));
     }

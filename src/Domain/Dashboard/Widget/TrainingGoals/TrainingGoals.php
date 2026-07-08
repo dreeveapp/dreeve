@@ -104,7 +104,7 @@ final class TrainingGoals extends Collection
                 }
 
                 $restrictToDateRange = null;
-                if (array_key_exists('restrictToDateRange', $goalConfig) && !(empty($goalConfig['restrictToDateRange']['from']) && empty($goalConfig['restrictToDateRange']['to']))) {
+                if (array_key_exists('restrictToDateRange', $goalConfig) && (!empty($goalConfig['restrictToDateRange']['from']) || !empty($goalConfig['restrictToDateRange']['to']))) {
                     $dateRangeConfig = $goalConfig['restrictToDateRange'];
                     if (empty($dateRangeConfig['from']) || empty($dateRangeConfig['to'])) {
                         throw new InvalidDashboardLayout('"restrictToDateRange" requires both "from" and "to" keys');

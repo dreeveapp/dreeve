@@ -26,7 +26,6 @@ final class StreamBasedActivityPowerRepository implements ActivityPowerRepositor
         private readonly Connection $connection,
         private readonly ActivityIdRepository $activityIdRepository,
         private readonly ActivitySummaryRepository $activitySummaryRepository,
-        private readonly ActivitiesExcludedFromPeakPowerOutputs $activitiesExcludedFromPeakPowerOutputs,
         private readonly SettingsRepository $settingsRepository,
     ) {
     }
@@ -130,7 +129,7 @@ final class StreamBasedActivityPowerRepository implements ActivityPowerRepositor
             'sportTypes' => $sportTypes->map(fn (SportType $sportType) => $sportType->value),
             'dateFrom' => $dateRange->getFrom()->format('Y-m-d 00:00:00'),
             'dateTill' => $dateRange->getTill()->format('Y-m-d 23:59:59'),
-            'excludedActivityIds' => $this->activitiesExcludedFromPeakPowerOutputs->map(fn (ActivityId $activityId): string => (string) $activityId) ?: ['unexisting-id'],
+            'excludedActivityIds' => $this->settingsRepository->metrics()->getActivitiesExcludedFromPeakPowerOutputs()->map(fn (ActivityId $activityId): string => (string) $activityId) ?: ['unexisting-id'],
         ];
         $types = [
             'sportTypes' => ArrayParameterType::STRING,

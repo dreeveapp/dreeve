@@ -1,0 +1,37 @@
+{% extends "html/admin/page/template.html.twig" %}
+
+{% block main %}
+    <div class="flex flex-col gap-4">
+        <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            <input type="hidden" name="group" value="{{ group.value }}">
+            <div class="mb-5">
+                <h3 class="text-lg font-semibold">{{ "Zwift"|trans }}</h3>
+            </div>
+            <div data-form-error class="hidden mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert"></div>
+            <div class="flex flex-col gap-4">
+                <div>
+                    <label for="zwiftLevel">{{ "Zwift level"|trans }}</label>
+                    <input type="number" min="1" id="zwiftLevel" name="data[level]"
+                           value="{{ settings.level ?? '' }}">
+                    <p class="description">
+                        {{ "Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge."|trans }}
+                    </p>
+                </div>
+                <div>
+                    <label for="zwiftRacingScore">{{ "Zwift racing score"|trans }}</label>
+                    <input type="number" min="0" max="1000" id="zwiftRacingScore" name="data[racingScore]"
+                           value="{{ settings.racingScore ?? '' }}">
+                    <p class="description">
+                        {{ "Optional. Your current Zwift racing score (between 0 and 1000)."|trans }}
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
+                <button type="submit" data-has-loading-state class="group btn--primary">
+                    <span class="label">{{ "Save settings"|trans }}</span>
+                    <span class="label--loading">{{ "Saving..."|trans }}</span>
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock main %}

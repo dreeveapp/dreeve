@@ -37,9 +37,9 @@ class UpdateSettingsTest extends TestCase
     public function testItThrowsWhenGroupIsNotYetMigrated(): void
     {
         $this->expectException(CouldNotDeserializeCommand::class);
-        $this->expectExceptionMessage('Settings group "zwift" is not migrated yet.');
+        $this->expectExceptionMessage('Settings group "daemon" is not migrated yet.');
 
-        UpdateSettings::fromPayload(['group' => 'zwift', 'data' => []]);
+        UpdateSettings::fromPayload(['group' => 'daemon', 'data' => []]);
     }
 
     public function testItThrowsWhenGeneralDataIsInvalid(): void
@@ -71,6 +71,36 @@ class UpdateSettingsTest extends TestCase
         UpdateSettings::fromPayload([
             'group' => 'import',
             'data' => ['webhooks' => ['enabled' => true]],
+        ]);
+    }
+
+    public function testItThrowsWhenMetricsDataIsInvalid(): void
+    {
+        $this->expectException(CouldNotDeserializeCommand::class);
+
+        // An unknown sport type in the Eddington configuration is invalid.
+        UpdateSettings::fromPayload([
+            'group' => 'metrics',
+            'data' => [
+                'eddington' => [
+                    [
+                        'label' => 'Ride',
+                        'showInNavBar' => true,
+                        'sportTypesToInclude' => ['NotASportType'],
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    public function testItThrowsWhenZwiftDataIsInvalid(): void
+    {
+        $this->expectException(CouldNotDeserializeCommand::class);
+
+        // A racing score above 1000 is invalid.
+        UpdateSettings::fromPayload([
+            'group' => 'zwift',
+            'data' => ['racingScore' => 1001],
         ]);
     }
 }

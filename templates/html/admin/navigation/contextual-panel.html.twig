@@ -51,6 +51,8 @@
         {% set inGeneral = isActiveNavItem({'/admin/settings/general': false}) %}
         {% set inAppearance = isActiveNavItem({'/admin/settings/appearance': false}) %}
         {% set inImport = isActiveNavItem({'/admin/settings/import': false}) %}
+        {% set inMetrics = isActiveNavItem({'/admin/settings/metrics': false}) %}
+        {% set inZwift = isActiveNavItem({'/admin/settings/zwift': false}) %}
         {% set inDashboard = isActiveNavItem({'/admin/settings/dashboard': false}) %}
         <nav class="contextual-panel" aria-label="{{ "Settings"|trans }}">
             <p class="px-2 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
@@ -67,6 +69,11 @@
                         {{ "Appearance"|trans }}
                     </a>
                 </li>
+                <li>
+                    <a href="{{ relativeUrl(path('admin_settings_dashboard')) }}" {{ inDashboard ? 'aria-selected="true"' : '' }}>
+                        {{ "Dashboard"|trans }}
+                    </a>
+                </li>
                 {% if importMode.isStravaApi() %}
                     <li>
                         <a href="{{ relativeUrl(path('admin_settings', {'group': 'import'})) }}" {{ inImport ? 'aria-selected="true"' : '' }}>
@@ -75,8 +82,13 @@
                     </li>
                 {% endif %}
                 <li>
-                    <a href="{{ relativeUrl(path('admin_settings_dashboard')) }}" {{ inDashboard ? 'aria-selected="true"' : '' }}>
-                        {{ "Dashboard"|trans }}
+                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'metrics'})) }}" {{ inMetrics ? 'aria-selected="true"' : '' }}>
+                        {{ "Metrics"|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'zwift'})) }}" {{ inZwift ? 'aria-selected="true"' : '' }}>
+                        {{ "Zwift"|trans }}
                     </a>
                 </li>
             </ul>

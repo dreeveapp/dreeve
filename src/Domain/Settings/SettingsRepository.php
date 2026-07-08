@@ -21,4 +21,8 @@ interface SettingsRepository
     public function appearance(): AppearanceSettings;
 
     public function import(): ImportSettings;
+
+    public function metrics(): MetricsSettings;
+
+    public function zwift(): ZwiftSettings;
 }

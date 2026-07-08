@@ -22,7 +22,7 @@ final class EddingtonConfiguration extends Collection
     /**
      * @return array<int, mixed>
      */
-    private static function getDefaultConfig(): array
+    public static function getDefaultConfig(): array
     {
         return [
             [

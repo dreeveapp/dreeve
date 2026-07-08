@@ -122,27 +122,11 @@ services:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:STRAVA_REFRESH_TOKEN)%']
 
-    App\Domain\Activity\Eddington\Config\EddingtonConfiguration:
-        factory: [ null, 'fromScalarArray' ]
-        arguments: ['@=app_config("metrics.eddington", [])']
-
-    App\Domain\Activity\Stream\ActivitiesExcludedFromPeakPowerOutputs:
-        factory: [ null, 'from' ]
-        arguments: ['@=app_config("metrics.excludeActivitiesFromPeakPowerOutputs", [])']
-
     App\Domain\Import\ImportMode:
         public: true
         autoconfigure: false
         factory: [ null, 'from' ]
         arguments: ['%env(string:IMPORT_MODE)%']
-
-    App\Domain\Zwift\ZwiftLevel:
-        factory: [ null, 'fromOptionalString' ]
-        arguments: ['@=app_config("zwift.level")']
-
-    App\Domain\Zwift\ZwiftRacingScore:
-        factory: [ null, 'fromOptionalString' ]
-        arguments: ['@=app_config("zwift.racingScore")']
 
     # Autowiring of vendor classes
     League\Flysystem\FilesystemOperator: '@default.storage'

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Settings;
 
+use App\Domain\Activity\Eddington\Config\EddingtonConfiguration;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
@@ -26,7 +27,21 @@ final readonly class KeyValueBasedSettingsRepository implements SettingsReposito
             $data = null;
         }
 
-        return is_array($data) ? $data : [];
+        return $this->applyDefaults($group, is_array($data) ? $data : []);
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     *
+     * @return array<string, mixed>
+     */
+    private function applyDefaults(SettingsGroup $group, array $data): array
+    {
+        if (SettingsGroup::METRICS === $group && empty($data['eddington'])) {
+            $data['eddington'] = EddingtonConfiguration::getDefaultConfig();
+        }
+
+        return $data;
     }
 
     public function save(SettingsGroup $group, array $data): void
@@ -50,5 +65,15 @@ final readonly class KeyValueBasedSettingsRepository implements SettingsReposito
     public function import(): ImportSettings
     {
         return ImportSettings::fromArray($this->find(SettingsGroup::IMPORT));
+    }
+
+    public function metrics(): MetricsSettings
+    {
+        return MetricsSettings::fromArray($this->find(SettingsGroup::METRICS));
+    }
+
+    public function zwift(): ZwiftSettings
+    {
+        return ZwiftSettings::fromArray($this->find(SettingsGroup::ZWIFT));
     }
 }
