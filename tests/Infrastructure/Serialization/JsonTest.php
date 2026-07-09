@@ -21,6 +21,22 @@ class JsonTest extends TestCase
         $this->assertEquals($array, Json::encodeAndDecode($array));
     }
 
+    public function testEncodePretty(): void
+    {
+        $array = ['random' => ['array' => ['with', 'children']]];
+        $this->assertEquals(
+            '{
+    "random": {
+        "array": [
+            "with",
+            "children"
+        ]
+    }
+}',
+            Json::encodePretty($array)
+        );
+    }
+
     public function testDecodeWhenInvalidJson(): void
     {
         $this->expectExceptionObject(new \JsonException('Invalid JSON detected. This is usually caused by corrupted activity data.

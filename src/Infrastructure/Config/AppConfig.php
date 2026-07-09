@@ -39,24 +39,6 @@ final class AppConfig
         return $this->config[$key];
     }
 
-    /**
-     * @return array<string|int, mixed>
-     */
-    public function getRoot(): array
-    {
-        $root = [];
-
-        foreach ($this->config as $name => $value) {
-            if (str_contains((string) $name, '.')) {
-                continue;
-            }
-
-            $root[$name] = $value;
-        }
-
-        return $root;
-    }
-
     public static function setYamlConfigFilesToParse(KernelProjectDir $kernelProjectDir, PlatformEnvironment $platformEnvironment): void
     {
         $basePath = $platformEnvironment->isTest() ? $kernelProjectDir.'/config/app/test' : $kernelProjectDir.'/config/app';
