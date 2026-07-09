@@ -24,63 +24,66 @@
                 <h4 class="mt-0!">{{ "AI"|trans }}</h4>
                 <div>
                     <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
-                        <input type="checkbox" name="data[ai][enabled]" value="1" {{ (ai.enabled ?? false) ? 'checked' : '' }}>
+                        <input type="checkbox" id="aiEnabled" name="data[ai][enabled]" value="1" {{ (ai.enabled ?? false) ? 'checked' : '' }}>
                         <span>{{ "Enable AI integration"|trans }}</span>
                     </label>
                     <p class="description">
                         {{ "Turns on the AI-powered workout assistant, which can then be used from the command line."|trans }}
                     </p>
                 </div>
-                <div>
-                    <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
-                        <input type="checkbox" name="data[ai][enableUI]" value="1" {{ (ai.enableUI ?? false) ? 'checked' : '' }}>
-                        <span>{{ "Show the workout assistant in the UI."|trans }}</span>
-                    </label>
-                    <p class="description">
-                        {{ "Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible."|trans }}
-                    </p>
-                </div>
-                <div>
-                    <label for="aiProvider">{{ "Provider"|trans }}</label>
-                    <select id="aiProvider" name="data[ai][provider]">
-                        <option value="">{{ "None"|trans }}</option>
-                        {% for provider in aiProviders %}
-                            <option value="{{ provider }}" {{ (ai.provider ?? '') == provider ? 'selected' : '' }}>{{ provider }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="grid gap-4 sm:grid-cols-2">
+                <div class="flex flex-col gap-4" data-dependent-on="aiEnabled" data-visible-when="checked">
                     <div>
-                        <label for="aiModel">{{ "Model"|trans }}</label>
-                        <input type="text" id="aiModel" name="data[ai][configuration][model]" value="{{ aiConfiguration.model ?? '' }}">
+                        <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
+                            <input type="checkbox" name="data[ai][enableUI]" value="1" {{ (ai.enableUI ?? false) ? 'checked' : '' }}>
+                            <span>{{ "Show the workout assistant in the UI."|trans }}</span>
+                        </label>
+                        <p class="description">
+                            {{ "Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible."|trans }}
+                        </p>
                     </div>
                     <div>
-                        <label for="aiKey">{{ "API key"|trans }}</label>
-                        <input type="password" id="aiKey" name="data[ai][configuration][key]" value="{{ aiConfiguration.key ?? '' }}" autocomplete="off">
+                        <label for="aiProvider">{{ "Provider"|trans }}</label>
+                        <select id="aiProvider" name="data[ai][provider]">
+                            <option value="">{{ "None"|trans }}</option>
+                            {% for provider in aiProviders %}
+                                <option value="{{ provider }}" {{ (ai.provider ?? '') == provider ? 'selected' : '' }}>{{ provider }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    <div>
-                        <label for="aiUrl">{{ "URL"|trans }}</label>
-                        <input type="text" id="aiUrl" name="data[ai][configuration][url]" value="{{ aiConfiguration.url ?? '' }}">
-                        <p class="description">{{ "Only required for the Ollama provider."|trans }}</p>
-                    </div>
-                    <div>
-                        <label for="aiBaseUri">{{ "Base URI"|trans }}</label>
-                        <input type="text" id="aiBaseUri" name="data[ai][configuration][baseUri]" value="{{ aiConfiguration.baseUri ?? '' }}">
-                        <p class="description">{{ "Only required for the OpenAI-like provider."|trans }}</p>
-                    </div>
-                    <div>
-                        <label for="aiEndpoint">{{ "Endpoint"|trans }}</label>
-                        <input type="text" id="aiEndpoint" name="data[ai][configuration][endpoint]" value="{{ aiConfiguration.endpoint ?? '' }}">
-                        <p class="description">{{ "Only required for the Azure OpenAI provider."|trans }}</p>
-                    </div>
-                    <div>
-                        <label for="aiVersion">{{ "Version"|trans }}</label>
-                        <input type="text" id="aiVersion" name="data[ai][configuration][version]" value="{{ aiConfiguration.version ?? '' }}">
-                        <p class="description">{{ "Only required for the Azure OpenAI provider."|trans }}</p>
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviders|join(',') }}">
+                            <label for="aiModel">{{ "Model"|trans }}</label>
+                            <input type="text" id="aiModel" name="data[ai][configuration][model]" value="{{ aiConfiguration.model ?? '' }}">
+                        </div>
+                        <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviders|filter(p => p != 'ollama')|join(',') }}">
+                            <label for="aiKey">{{ "API key"|trans }}</label>
+                            <input type="password" id="aiKey" name="data[ai][configuration][key]" value="{{ aiConfiguration.key ?? '' }}" autocomplete="off">
+                        </div>
+                        <div data-dependent-on="aiProvider" data-visible-when="ollama">
+                            <label for="aiUrl">{{ "URL"|trans }}</label>
+                            <input type="text" id="aiUrl" name="data[ai][configuration][url]" value="{{ aiConfiguration.url ?? '' }}">
+                            <p class="description">{{ "Only required for the Ollama provider."|trans }}</p>
+                        </div>
+                        <div data-dependent-on="aiProvider" data-visible-when="openAILike">
+                            <label for="aiBaseUri">{{ "Base URI"|trans }}</label>
+                            <input type="text" id="aiBaseUri" name="data[ai][configuration][baseUri]" value="{{ aiConfiguration.baseUri ?? '' }}">
+                            <p class="description">{{ "Only required for the OpenAI-like provider."|trans }}</p>
+                        </div>
+                        <div data-dependent-on="aiProvider" data-visible-when="azureOpenAI">
+                            <label for="aiEndpoint">{{ "Endpoint"|trans }}</label>
+                            <input type="text" id="aiEndpoint" name="data[ai][configuration][endpoint]" value="{{ aiConfiguration.endpoint ?? '' }}">
+                            <p class="description">{{ "Only required for the Azure OpenAI provider."|trans }}</p>
+                        </div>
+                        <div data-dependent-on="aiProvider" data-visible-when="azureOpenAI">
+                            <label for="aiVersion">{{ "Version"|trans }}</label>
+                            <input type="text" id="aiVersion" name="data[ai][configuration][version]" value="{{ aiConfiguration.version ?? '' }}">
+                            <p class="description">{{ "Only required for the Azure OpenAI provider."|trans }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="mt-6 border-t border-gray-200 pt-6" data-repeater data-repeater-min="0">
+            <div class="mt-6 border-t border-gray-200 pt-6" data-repeater data-repeater-min="0"
+                 data-dependent-on="aiEnabled" data-visible-when="checked">
                 <label class="mt-0!">{{ "Chat commands"|trans }}</label>
                 <p class="description mb-2">
                     {{ "Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash."|trans }}
