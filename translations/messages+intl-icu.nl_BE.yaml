@@ -280,7 +280,6 @@ Import: Import
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
 'Imported files will appear here once you upload them.': 'Imported files will appear here once you upload them.'
 'Imported from Strava': 'Imported from Strava'
-'Imported on': 'Imported on'
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉."
 'Include retired gear': 'Include retired gear'
 'Individual thresholds vary based on fitness level.': 'Individual thresholds vary based on fitness level.'
@@ -434,6 +433,7 @@ Power: Kracht
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.'
 'Prev year': 'Vorig jaar'
 Previous: Previous
+'Processed on': 'Processed on'
 'Profile picture URL': 'Profile picture URL'
 'Purchase price': 'Purchase price'
 Race: Race
@@ -520,6 +520,7 @@ Settings: Settings
 Skateboard: Skateboard
 Skating: Skating
 'Skip activities recorded before': 'Skip activities recorded before'
+Skipped: Skipped
 'Slightly fresh': 'Slightly fresh'
 Snowboard: Snowboard
 Snowshoe: Snowshoe

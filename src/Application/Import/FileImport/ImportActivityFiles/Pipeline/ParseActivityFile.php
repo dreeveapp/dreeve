@@ -8,6 +8,7 @@ use App\Domain\Import\DuplicateActivityScanner;
 use App\Domain\Import\FileParser\ActivityFileParsers;
 use App\Domain\Import\FileParser\RawActivityFile;
 use App\Domain\Import\WatchDirectory;
+use App\Infrastructure\ValueObject\Identifier\UuidFactory;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
 #[AsTaggedItem(priority: 100)]
@@ -17,6 +18,7 @@ final readonly class ParseActivityFile implements ImportActivityFileStep
         private WatchDirectory $watchDirectory,
         private ActivityFileParsers $activityFileParsers,
         private DuplicateActivityScanner $duplicateActivityScanner,
+        private UuidFactory $uuidFactory,
     ) {
     }
 
@@ -36,7 +38,8 @@ final readonly class ParseActivityFile implements ImportActivityFileStep
             sportType: $activity->getSportType(),
             startDateTime: $activity->getStartDate()
         )) {
-            throw new SkipDuplicateActivity();
+            // We need to create a new RawActivityFile because the fileContents has needs to be unique.
+            throw new SkipDuplicateActivity(RawActivityFile::from(filePath: $context->getFilePath(), fileContents: $this->uuidFactory->random()));
         }
 
         return $context

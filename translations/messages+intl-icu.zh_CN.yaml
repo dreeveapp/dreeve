@@ -280,7 +280,6 @@ Import: Import
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
 'Imported files will appear here once you upload them.': 'Imported files will appear here once you upload them.'
 'Imported from Strava': 'Imported from Strava'
-'Imported on': 'Imported on'
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": '在那段时间里，我走了{totalDistance}，相当于环游世界{numberOfTripsAroundTheWorld}次🌍，或者说是到达月球的{numberOfTripsToTheMoonPercent}%🌕，并且攀登了{totalElevation}，相当于珠穆朗玛峰的{timesMountEverest}倍🏔。总而言之，我走了{totalTimeRecorded}的路🎉。'
 'Include retired gear': 'Include retired gear'
 'Individual thresholds vary based on fitness level.': 个人阈值因体能水平而异。
@@ -434,6 +433,7 @@ Power: 功率
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': '消耗了约{caloriesBurned}卡路里，或大约{numberOfPizzaSlices}片披萨🍕。'
 'Prev year': 去年
 Previous: Previous
+'Processed on': 'Processed on'
 'Profile picture URL': 'Profile picture URL'
 'Purchase price': 'Purchase price'
 Race: 比赛
@@ -520,6 +520,7 @@ Settings: Settings
 Skateboard: 滑板
 Skating: 滑冰
 'Skip activities recorded before': 'Skip activities recorded before'
+Skipped: Skipped
 'Slightly fresh': 'Slightly fresh'
 Snowboard: 单板滑雪
 Snowshoe: 雪鞋

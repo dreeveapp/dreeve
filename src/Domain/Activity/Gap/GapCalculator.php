@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Gap;
 
 use App\Domain\Activity\Math;
+use App\Infrastructure\ValueObject\Geography\GeoMath;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 /**
@@ -164,7 +165,7 @@ final readonly class GapCalculator
         $pointCount = \count($points);
 
         for ($i = 1; $i < $pointCount; ++$i) {
-            $cumulativeDistances[] = $cumulativeDistances[$i - 1] + Math::haversineDistance(
+            $cumulativeDistances[] = $cumulativeDistances[$i - 1] + GeoMath::haversineDistance(
                 $points[$i - 1]['lat'],
                 $points[$i - 1]['lon'],
                 $points[$i]['lat'],

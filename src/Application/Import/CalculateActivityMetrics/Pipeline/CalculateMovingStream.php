@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Application\Import\CalculateActivityMetrics\Pipeline;
 
-use App\Domain\Activity\Math;
 use App\Domain\Activity\Stream\ActivityStream;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\ActivityStreams;
 use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Console\ProgressIndicator;
 use App\Infrastructure\Time\Clock\Clock;
+use App\Infrastructure\ValueObject\Geography\GeoMath;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
@@ -145,7 +145,7 @@ final readonly class CalculateMovingStream implements CalculateActivityMetricsSt
                 continue;
             }
 
-            $meters = Math::haversineDistance(
+            $meters = GeoMath::haversineDistance(
                 (float) $current[0], (float) $current[1],
                 (float) $previous[0], (float) $previous[1],
             );

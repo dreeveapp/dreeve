@@ -22,9 +22,9 @@ use App\Domain\Activity\WorldType;
 use App\Domain\Import\SupportedFileExtension;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
-use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
+use App\Infrastructure\ValueObject\Geography\Polyline;
 use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
 use App\Infrastructure\ValueObject\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\Measurement\Velocity\MetersPerSecond;
@@ -443,6 +443,6 @@ final readonly class TcxFileParser implements ActivityFileParser
             return null;
         }
 
-        return (string) EncodedPolyline::encode($coordinates);
+        return (string) Polyline::fromCoordinates($coordinates)->simplify()->encode();
     }
 }

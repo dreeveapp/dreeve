@@ -37,6 +37,7 @@
         "doctrine/orm": "^3.3",
         "gehrisandro/tailwind-merge-php": "^1.1",
         "guzzlehttp/guzzle": "^7.9",
+        "halaxa/json-machine": "^1.2",
         "league/flysystem-bundle": "^3.3",
         "league/flysystem-memory": "^3.29",
         "moneyphp/money": "^4.8",

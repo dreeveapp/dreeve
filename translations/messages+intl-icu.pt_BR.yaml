@@ -280,7 +280,6 @@ Import: Import
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
 'Imported files will appear here once you upload them.': 'Imported files will appear here once you upload them.'
 'Imported from Strava': 'Imported from Strava'
-'Imported on': 'Imported on'
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'Nesse tempo, percorri {totalDistance}, o que equivale a {numberOfTripsAroundTheWorld} voltas ao mundo 🌍 ou {numberOfTripsToTheMoonPercent}% do caminho até a lua 🌕, e acumulei uma elevação de {totalElevation}, o que representa {timesMountEverest} vezes o Monte Everest 🏔. No total, são {totalTimeRecorded} de tempo em movimento 🎉.'
 'Include retired gear': 'Include retired gear'
 'Individual thresholds vary based on fitness level.': 'Os limiares individuais variam de acordo com o nível de condicionamento físico.'
@@ -434,6 +433,7 @@ Power: Potência
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Alimentado por cerca de {caloriesBurned} calorias estimadas, ou aproximadamente {numberOfPizzaSlices} fatias de pizza 🍕.'
 'Prev year': 'Ano anterior'
 Previous: Anterior
+'Processed on': 'Processed on'
 'Profile picture URL': 'Profile picture URL'
 'Purchase price': 'Preço de compra'
 Race: Competição
@@ -520,6 +520,7 @@ Settings: Settings
 Skateboard: Skate
 Skating: Patinação
 'Skip activities recorded before': 'Skip activities recorded before'
+Skipped: Skipped
 'Slightly fresh': 'Levemente descansado'
 Snowboard: Snowboard
 Snowshoe: 'Raquetes de Neve'

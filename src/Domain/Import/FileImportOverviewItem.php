@@ -57,6 +57,11 @@ final readonly class FileImportOverviewItem implements Item
         return FileImportStatus::FAILED === $this->status;
     }
 
+    public function wasSkipped(): bool
+    {
+        return FileImportStatus::SKIPPED === $this->status;
+    }
+
     public function getErrorMessage(): ?string
     {
         return $this->errorMessage;

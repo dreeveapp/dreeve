@@ -280,7 +280,6 @@ Import: Import
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
 'Imported files will appear here once you upload them.': 'Importierte Dateien werden hier angezeigt, sobald du sie hochlädst.'
 'Imported from Strava': 'Von Strava importiert'
-'Imported on': 'Importiert am'
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'In dieser Zeit habe ich {totalDistance} zurückgelegt – das entspricht {numberOfTripsAroundTheWorld} Erdumrundungen 🌍 oder {numberOfTripsToTheMoonPercent}% des Weges zum Mond 🌕. Und ich habe {totalElevation} Höhenmeter überwunden, was {timesMountEverest} Mal dem Mount Everest entspricht 🏔. Insgesamt sind das {totalTimeRecorded} reine Bewegungszeit 🎉.'
 'Include retired gear': 'Include retired gear'
 'Individual thresholds vary based on fitness level.': 'Individuelle Schwellenwerte variieren je nach Fitnesslevel.'
@@ -434,6 +433,7 @@ Power: Leistung
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Dabei wurden geschätzte {caloriesBurned} Kalorien verbraucht, was ungefähr {numberOfPizzaSlices} Pizzastücken entspricht 🍕.'
 'Prev year': Vorjahr
 Previous: Vorherige
+'Processed on': 'Processed on'
 'Profile picture URL': 'Profile picture URL'
 'Purchase price': Kaufpreis
 Race: Wettkampf
@@ -520,6 +520,7 @@ Settings: Settings
 Skateboard: Skateboard
 Skating: Skaten
 'Skip activities recorded before': 'Skip activities recorded before'
+Skipped: Skipped
 'Slightly fresh': 'Leicht regeneriert'
 Snowboard: Snowboard
 Snowshoe: Schneeschuhwandern

@@ -72,7 +72,14 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $output = new SpyOutput();
         $this->handler->handle(new ImportActivityFiles($output));
 
-        $this->assertCount(1, $this->getFileImports());
+        $this->assertCount(2, $this->getFileImports());
+        $this->assertEquals(
+            [FileImportStatus::SUCCESS, FileImportStatus::SKIPPED],
+            array_map(
+                static fn (array $file): FileImportStatus => FileImportStatus::from($file['status']),
+                array_values($this->getFileImports())
+            )
+        );
         $this->assertMatchesSnapshot($output, new ConsoleOutputSnapshotDriver());
     }
 

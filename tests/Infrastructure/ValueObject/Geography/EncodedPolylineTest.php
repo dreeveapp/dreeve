@@ -26,12 +26,11 @@ class EncodedPolylineTest extends TestCase
         );
     }
 
-    public function testEncode(): void
+    public function testFromCoordinates(): void
     {
-        // Canonical Google polyline example.
         $this->assertEquals(
             EncodedPolyline::fromString('_p~iF~ps|U_ulLnnqC_mqNvxq`@'),
-            EncodedPolyline::encode([
+            EncodedPolyline::fromCoordinates([
                 [38.5, -120.2],
                 [40.7, -120.95],
                 [43.252, -126.453],
@@ -49,7 +48,7 @@ class EncodedPolylineTest extends TestCase
 
         $this->assertEqualsWithDelta(
             $coordinates,
-            EncodedPolyline::encode($coordinates)->decodeAndPairLatLng(),
+            EncodedPolyline::fromCoordinates($coordinates)->decodeAndPairLatLng(),
             0.00001
         );
     }
