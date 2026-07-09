@@ -9,10 +9,7 @@ use App\Domain\Activity\Eddington\Eddington;
 use App\Domain\Activity\EnrichedActivities;
 use App\Domain\Activity\Stream\StreamBasedActivityHeartRateRepository;
 use App\Domain\Activity\Stream\StreamBasedActivityPowerRepository;
-use App\Infrastructure\Config\AppConfig;
-use App\Infrastructure\Config\PlatformEnvironment;
 use App\Infrastructure\Twig\HtmlTwigExtension;
-use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -67,17 +64,6 @@ abstract class ContainerTestCase extends KernelTestCase
 
         // Seed settings.
         $this->provideSettings();
-    }
-
-    protected function tearDown(): void
-    {
-        // The YAML config is static; rebuild it from the real test config so state does never get leaked to other tests.
-        AppConfig::setYamlConfigFilesToParse(
-            kernelProjectDir: $this->getContainer()->get(KernelProjectDir::class),
-            platformEnvironment: PlatformEnvironment::TEST,
-        );
-
-        parent::tearDown();
     }
 
     protected function getConnection(): Connection

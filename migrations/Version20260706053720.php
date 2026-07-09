@@ -57,6 +57,7 @@ final class Version20260706053720 extends AbstractMigration
         $this->migrateMetrics($config);
         $this->migrateZwift($config);
         $this->migrateIntegrations($config);
+        $this->migrateDaemon($config);
     }
 
     public function down(Schema $schema): void
@@ -68,6 +69,7 @@ final class Version20260706053720 extends AbstractMigration
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::METRICS->keyValueKey()->value]);
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::ZWIFT->keyValueKey()->value]);
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::INTEGRATIONS->keyValueKey()->value]);
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::DAEMON->keyValueKey()->value]);
     }
 
     /**
@@ -255,6 +257,40 @@ final class Version20260706053720 extends AbstractMigration
             [
                 'key' => SettingsGroup::INTEGRATIONS->keyValueKey()->value,
                 'value' => Json::encode($subtree),
+            ]
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function migrateDaemon(array $config): void
+    {
+        $cron = $config[SettingsGroup::DAEMON->value]['cron'] ?? null;
+        if (empty($cron) || !is_array($cron)) {
+            return;
+        }
+
+        $actions = [];
+        foreach ($cron as $item) {
+            if (!is_array($item) || !isset($item['action'])) {
+                continue;
+            }
+            $actions[(string) $item['action']] = [
+                'expression' => (string) ($item['expression'] ?? ''),
+                'enabled' => (bool) ($item['enabled'] ?? false),
+            ];
+        }
+
+        if ([] === $actions) {
+            return;
+        }
+
+        $this->addSql(
+            'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
+            [
+                'key' => SettingsGroup::DAEMON->keyValueKey()->value,
+                'value' => Json::encode(['cron' => $actions]),
             ]
         );
     }

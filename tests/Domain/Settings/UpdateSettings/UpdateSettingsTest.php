@@ -34,14 +34,6 @@ class UpdateSettingsTest extends TestCase
         UpdateSettings::fromPayload(['group' => 'general', 'data' => 'not-an-array']);
     }
 
-    public function testItThrowsWhenGroupIsNotYetMigrated(): void
-    {
-        $this->expectException(CouldNotDeserializeCommand::class);
-        $this->expectExceptionMessage('Settings group "daemon" is not migrated yet.');
-
-        UpdateSettings::fromPayload(['group' => 'daemon', 'data' => []]);
-    }
-
     public function testItThrowsWhenGeneralDataIsInvalid(): void
     {
         $this->expectException(CouldNotDeserializeCommand::class);

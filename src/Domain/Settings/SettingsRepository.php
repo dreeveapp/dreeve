@@ -27,4 +27,6 @@ interface SettingsRepository
     public function zwift(): ZwiftSettings;
 
     public function integrations(): IntegrationsSettings;
+
+    public function daemon(): DaemonSettings;
 }

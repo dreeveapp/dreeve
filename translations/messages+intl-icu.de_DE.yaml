@@ -59,6 +59,7 @@ All: Alle
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.'
 'App URL': 'App URL'
 'App subtitle': 'App subtitle'
+'App update available notification': 'App update available notification'
 Appearance: Appearance
 Apr: Apr
 'Are you sure you want to delete the {component} component?': 'Möchtest du die Komponente {component} wirklich löschen?'
@@ -129,10 +130,13 @@ Configure: Configure
 Consistency: Konstanz
 Country: Land
 Cricket: Cricket
+'Cron expression': 'Cron expression'
+"Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."
 Crossfit: Crossfit
 'Current Status': 'Aktueller Status'
 'Current streaks': 'Aktuelle Serien'
 Cycling: Radfahren
+Daemon: Daemon
 'Daily TRIMP': 'Täglicher TRIMP'
 'Daily activities': 'Tägliche Aktivitäten'
 Dance: Tanzen
@@ -233,6 +237,7 @@ GAP: GAP
 Gear: Ausrüstung
 'Gear "{gearId}" is referenced in your maintenance config file, but was not imported from Strava. Please check that the gear exists and is correctly synced.': 'Die Ausrüstung "{gearId}" ist in deiner "gear-maintenance.yaml" referenziert, wurde aber nicht von Strava importiert. Bitte überprüfe, dass die Ausrüstung existiert und korrekt synchronisiert wurde.'
 'Gear maintenance': Ausrüstungswartung
+'Gear maintenance notification': 'Gear maintenance notification'
 'Gear management': Ausrüstungsverwaltung
 'Gear stats': Ausrüstungsstatistiken
 "Gear that hasn't been used in the last three months, is disabled by default.": 'Ausrüstung, die in den letzten drei Monaten nicht verwendet wurde, ist standardmäßig deaktiviert.'
@@ -286,10 +291,12 @@ Image: Bild
 Images: Bilder
 Imperial: Imperial
 Import: Import
+'Import data & build app': 'Import data & build app'
 'Import segment details': 'Import segment details'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
 'Imported files will appear here once you upload them.': 'Importierte Dateien werden hier angezeigt, sobald du sie hochlädst.'
 'Imported from Strava': 'Von Strava importiert'
+'Imports new Strava activities and rebuilds the app.': 'Imports new Strava activities and rebuilds the app.'
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'In dieser Zeit habe ich {totalDistance} zurückgelegt – das entspricht {numberOfTripsAroundTheWorld} Erdumrundungen 🌍 oder {numberOfTripsToTheMoonPercent}% des Weges zum Mond 🌕. Und ich habe {totalElevation} Höhenmeter überwunden, was {timesMountEverest} Mal dem Mount Everest entspricht 🏔. Insgesamt sind das {totalTimeRecorded} reine Bewegungszeit 🎉.'
 'Include retired gear': 'Include retired gear'
 'Individual thresholds vary based on fitness level.': 'Individuelle Schwellenwerte variieren je nach Fitnesslevel.'
@@ -513,6 +520,7 @@ Save: Speichern
 'Save settings': 'Einstellungen speichern'
 Saved: gespeichert
 Saving...: 'Wird gespeichert...'
+'Scheduled actions the daemon runs at regular intervals. Only applies when the daemon container is set up.': 'Scheduled actions the daemon runs at regular intervals. Only applies when the daemon container is set up.'
 Search: Suche
 'Search activity...': 'Aktivität suchen...'
 'Search segment...': 'Segment suchen...'
@@ -521,6 +529,8 @@ Segments: Segmente
 'Select a component…': 'Komponente auswählen…'
 'Select at least one sport type.': 'Select at least one sport type.'
 'Select the serviced gear…': 'Gewartete Ausrüstung auswählen…'
+'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sends a notification when a new app version is available. Requires a configured notification service.'
+'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sends a notification when gear maintenance is due. Requires a configured notification service.'
 Sep: Sep
 Settings: Settings
 'Short date format': 'Short date format'

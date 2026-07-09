@@ -10,7 +10,6 @@ use App\Console\Daemon\RunStravaImportAndBuildAppConsoleCommand;
 use App\Domain\Import\ImportMode;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Console\ConsoleOutputAware;
-use App\Infrastructure\Daemon\Cron\ConfiguredCronActions;
 use App\Infrastructure\Daemon\Cron\CronAction;
 use App\Infrastructure\Daemon\Cron\CronProcess;
 use App\Infrastructure\Time\Clock\Clock;
@@ -31,7 +30,6 @@ final class SystemDaemon implements Daemon
 
     public function __construct(
         private readonly Clock $clock,
-        private readonly ConfiguredCronActions $configuredCronActions,
         private readonly SettingsRepository $settingsRepository,
         private readonly ImportMode $importMode,
     ) {
@@ -52,7 +50,7 @@ final class SystemDaemon implements Daemon
         $actions = [];
         $processedCronAction = [];
         /** @var CronAction $cronAction */
-        foreach ($this->configuredCronActions as $cronAction) {
+        foreach ($this->settingsRepository->daemon()->getConfiguredCronActions() as $cronAction) {
             if (!$cronAction->supportsImportMode($this->importMode)) {
                 continue;
             }

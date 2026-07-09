@@ -41,7 +41,7 @@ enum SettingsGroup: string
             self::METRICS => MetricsSettings::fromArray($data),
             self::ZWIFT => ZwiftSettings::fromArray($data),
             self::INTEGRATIONS => IntegrationsSettings::fromArray($data),
-            default => throw new \RuntimeException(sprintf('Settings group "%s" is not migrated yet.', $this->value)),
+            self::DAEMON => DaemonSettings::fromArray($data),
         };
     }
 }

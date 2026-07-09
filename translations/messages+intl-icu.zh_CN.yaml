@@ -59,6 +59,7 @@ All: All
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.'
 'App URL': 'App URL'
 'App subtitle': 'App subtitle'
+'App update available notification': 'App update available notification'
 Appearance: Appearance
 Apr: 四月
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
@@ -129,10 +130,13 @@ Configure: Configure
 Consistency: Consistency
 Country: Country
 Cricket: Cricket
+'Cron expression': 'Cron expression'
+"Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."
 Crossfit: 交叉健身
 'Current Status': 'Current Status'
 'Current streaks': 'Current streaks'
 Cycling: 骑行
+Daemon: Daemon
 'Daily TRIMP': 每日TRIMP
 'Daily activities': 每日活动
 Dance: Dance
@@ -233,6 +237,7 @@ GAP: GAP
 Gear: 装备
 'Gear "{gearId}" is referenced in your maintenance config file, but was not imported from Strava. Please check that the gear exists and is correctly synced.': '您的维护配置文件中引用了装备"{gearId}"，但该装备尚未从 Strava 导入。请检查该装备是否存在并已正确同步。'
 'Gear maintenance': 装备维护
+'Gear maintenance notification': 'Gear maintenance notification'
 'Gear management': 'Gear management'
 'Gear stats': 装备统计
 "Gear that hasn't been used in the last three months, is disabled by default.": 过去三个月未使用的装备默认禁用。
@@ -286,10 +291,12 @@ Image: Image
 Images: Images
 Imperial: Imperial
 Import: Import
+'Import data & build app': 'Import data & build app'
 'Import segment details': 'Import segment details'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
 'Imported files will appear here once you upload them.': 'Imported files will appear here once you upload them.'
 'Imported from Strava': 'Imported from Strava'
+'Imports new Strava activities and rebuilds the app.': 'Imports new Strava activities and rebuilds the app.'
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": '在那段时间里，我走了{totalDistance}，相当于环游世界{numberOfTripsAroundTheWorld}次🌍，或者说是到达月球的{numberOfTripsToTheMoonPercent}%🌕，并且攀登了{totalElevation}，相当于珠穆朗玛峰的{timesMountEverest}倍🏔。总而言之，我走了{totalTimeRecorded}的路🎉。'
 'Include retired gear': 'Include retired gear'
 'Individual thresholds vary based on fitness level.': 个人阈值因体能水平而异。
@@ -513,6 +520,7 @@ Save: Save
 'Save settings': 'Save settings'
 Saved: Saved
 Saving...: Saving...
+'Scheduled actions the daemon runs at regular intervals. Only applies when the daemon container is set up.': 'Scheduled actions the daemon runs at regular intervals. Only applies when the daemon container is set up.'
 Search: 搜索
 'Search activity...': 搜索活动...
 'Search segment...': 搜索路段...
@@ -521,6 +529,8 @@ Segments: 路段
 'Select a component…': 'Select a component…'
 'Select at least one sport type.': 'Select at least one sport type.'
 'Select the serviced gear…': 'Select the serviced gear…'
+'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sends a notification when a new app version is available. Requires a configured notification service.'
+'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sends a notification when gear maintenance is due. Requires a configured notification service.'
 Sep: 九月
 Settings: Settings
 'Short date format': 'Short date format'

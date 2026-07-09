@@ -54,6 +54,7 @@
         {% set inMetrics = isActiveNavItem({'/admin/settings/metrics': false}) %}
         {% set inZwift = isActiveNavItem({'/admin/settings/zwift': false}) %}
         {% set inIntegrations = isActiveNavItem({'/admin/settings/integrations': false}) %}
+        {% set inDaemon = isActiveNavItem({'/admin/settings/daemon': false}) %}
         {% set inDashboard = isActiveNavItem({'/admin/settings/dashboard': false}) %}
         <nav class="contextual-panel" aria-label="{{ "Settings"|trans }}">
             <p class="px-2 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
@@ -95,6 +96,11 @@
                 <li>
                     <a href="{{ relativeUrl(path('admin_settings', {'group': 'integrations'})) }}" {{ inIntegrations ? 'aria-selected="true"' : '' }}>
                         {{ "Integrations"|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'daemon'})) }}" {{ inDaemon ? 'aria-selected="true"' : '' }}>
+                        {{ "Daemon"|trans }}
                     </a>
                 </li>
             </ul>

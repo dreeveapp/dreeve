@@ -32,7 +32,7 @@ readonly class ConfiguredCronActions implements \IteratorAggregate
     }
 
     /**
-     * @param array<string, mixed> $config
+     * @param array<int|string, mixed> $config
      */
     public static function fromConfig(array $config): self
     {

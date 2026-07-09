@@ -177,6 +177,39 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
         $this->assertSame('1', (string) $this->keyValueStore->find(Key::FORCE_REBUILD));
     }
 
+    public function testItUpdatesDaemonSettingsAndFlagsForceRebuild(): void
+    {
+        $data = [
+            'cron' => [
+                'importDataAndBuildApp' => ['expression' => '0 3 * * *', 'enabled' => true],
+                'gearMaintenanceNotification' => ['expression' => '0 4 * * *', 'enabled' => false],
+                'appUpdateAvailableNotification' => ['expression' => '0 5 * * *', 'enabled' => false],
+            ],
+        ];
+
+        $this->commandBus->dispatch(UpdateSettings::fromPayload([
+            'group' => SettingsGroup::DAEMON->value,
+            'data' => $data,
+        ]));
+
+        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::DAEMON));
+        $this->assertSame('1', (string) $this->keyValueStore->find(Key::FORCE_REBUILD));
+    }
+
+    public function testItRejectsInvalidDaemonSettings(): void
+    {
+        $this->expectException(CouldNotDeserializeCommand::class);
+
+        UpdateSettings::fromPayload([
+            'group' => SettingsGroup::DAEMON->value,
+            'data' => [
+                'cron' => [
+                    'importDataAndBuildApp' => ['expression' => 'not-a-cron', 'enabled' => true],
+                ],
+            ],
+        ]);
+    }
+
     #[\Override]
     protected function setUp(): void
     {

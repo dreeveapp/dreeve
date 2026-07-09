@@ -37,16 +37,9 @@ services:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
 
-    App\Infrastructure\Config\AppConfig:
-        public: true
-
     App\Infrastructure\Http\ErrorResponseExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
-
-    App\Infrastructure\Daemon\Cron\ConfiguredCronActions:
-      factory: [ null, 'fromConfig' ]
-      arguments: [ '@=app_config("daemon.cron", [])' ]
 
     App\Infrastructure\KeyValue\KeyValueStore:
       class: App\Infrastructure\KeyValue\DbalKeyValueStore

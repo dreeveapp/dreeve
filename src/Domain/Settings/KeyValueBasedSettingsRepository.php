@@ -81,4 +81,9 @@ final readonly class KeyValueBasedSettingsRepository implements SettingsReposito
     {
         return IntegrationsSettings::fromArray($this->find(SettingsGroup::INTEGRATIONS));
     }
+
+    public function daemon(): DaemonSettings
+    {
+        return DaemonSettings::fromArray($this->find(SettingsGroup::DAEMON));
+    }
 }
