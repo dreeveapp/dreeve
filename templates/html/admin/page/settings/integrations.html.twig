@@ -8,9 +8,9 @@
     {% for command in ai.agent.commands ?? [] %}
         {% set commandRows = commandRows|merge([{'command': command.command ?? '', 'message': command.message ?? ''}]) %}
     {% endfor %}
-    {% set serviceRows = [] %}
+    {% set notificationServiceRows = [] %}
     {% for service in notifications.services ?? [] %}
-        {% set serviceRows = serviceRows|merge([{'value': service}]) %}
+        {% set notificationServiceRows = notificationServiceRows|merge([{'value': service}]) %}
     {% endfor %}
     {% set aiProviders = ['anthropic', 'azureOpenAI', 'deepseek', 'gemini', 'grok', 'huggingFace', 'ollama', 'openAI', 'openAILike', 'openAIResponses', 'mistral'] %}
     <div class="flex flex-col gap-4">
@@ -57,7 +57,10 @@
                         </div>
                         <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviders|filter(p => p != 'ollama')|join(',') }}">
                             <label for="aiKey">{{ "API key"|trans }}</label>
-                            <input type="password" id="aiKey" name="data[ai][configuration][key]" value="{{ aiConfiguration.key ?? '' }}" autocomplete="off">
+                            <input type="text" id="aiKey" value="{{ AIApiKey }}" disabled>
+                            <p class="description">
+                                {{ "Configured via an environment variable and cannot be changed here."|trans }}
+                            </p>
                         </div>
                         <div data-dependent-on="aiProvider" data-visible-when="ollama">
                             <label for="aiUrl">{{ "URL"|trans }}</label>
@@ -125,7 +128,7 @@
                 <p class="description mb-2">
                     {{ "{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely."|trans({'{shoutrrr}': '<a class="underline" href="https://shoutrrr.nickfedor.com/dev/services/overview/" target="_blank" rel="noopener">Shoutrrr</a>'})|raw }}
                 </p>
-                <div class="flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ serviceRows|json_encode|e('html_attr') }}"></div>
+                <div class="flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ notificationServiceRows|json_encode|e('html_attr') }}"></div>
                 <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
                     <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>

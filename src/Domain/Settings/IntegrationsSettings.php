@@ -4,10 +4,22 @@ declare(strict_types=1);
 
 namespace App\Domain\Settings;
 
-use App\Domain\Integration\AI\AIProviderFactory;
+use App\Domain\Integration\AI\AIApiKey;
 use App\Domain\Integration\AI\Chat\ChatCommands;
+use App\Domain\Integration\AI\InvalidAIConfiguration;
 use App\Domain\Integration\Notification\Shoutrrr\ConfiguredNotificationUrls;
 use NeuronAI\Providers\AIProviderInterface;
+use NeuronAI\Providers\Anthropic\Anthropic;
+use NeuronAI\Providers\Deepseek\Deepseek;
+use NeuronAI\Providers\Gemini\Gemini;
+use NeuronAI\Providers\HuggingFace\HuggingFace;
+use NeuronAI\Providers\Mistral\Mistral;
+use NeuronAI\Providers\Ollama\Ollama;
+use NeuronAI\Providers\OpenAI\AzureOpenAI;
+use NeuronAI\Providers\OpenAI\OpenAI;
+use NeuronAI\Providers\OpenAI\Responses\OpenAIResponses;
+use NeuronAI\Providers\OpenAILike;
+use NeuronAI\Providers\XAI\Grok;
 
 final readonly class IntegrationsSettings
 {
@@ -29,12 +41,30 @@ final readonly class IntegrationsSettings
     {
         $data ??= [];
 
-        $ai = is_array($data['ai'] ?? null) ? $data['ai'] : [];
-        $aiEnabled = filter_var($ai['enabled'] ?? false, FILTER_VALIDATE_BOOLEAN);
-        $aiUIEnabled = $aiEnabled && filter_var($ai['enableUI'] ?? false, FILTER_VALIDATE_BOOLEAN);
+        $aiConfig = $data['ai'] ?? [];
+        $aiEnabled = filter_var($aiConfig['enabled'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
-        $commands = $ai['agent']['commands'] ?? [];
-        $commands = is_array($commands) ? array_values($commands) : [];
+        if ($aiEnabled) {
+            $providerName = empty($aiConfig['provider']) ? throw new InvalidAIConfiguration('Provider cannot be empty') : $aiConfig['provider'];
+            $config = isset($aiConfig['configuration']) && [] !== $aiConfig['configuration'] ? $aiConfig['configuration'] : throw new InvalidAIConfiguration('Config cannot be empty');
+
+            $requiredConfigKeys = match ($providerName) {
+                'ollama' => ['model', 'url'],
+                'azureOpenAI' => ['endpoint', 'model', 'version'],
+                'openAILike' => ['baseUri', 'model'],
+                default => ['model'],
+            };
+
+            if ('ollama' !== $providerName && AIApiKey::fromServerVar()->isEmpty()) {
+                throw new InvalidAIConfiguration('API key cannot be empty');
+            }
+
+            foreach ($requiredConfigKeys as $key) {
+                if (empty($config[$key])) {
+                    throw new InvalidAIConfiguration(sprintf('%s cannot be empty', ucfirst($key)));
+                }
+            }
+        }
 
         $notifications = is_array($data['notifications'] ?? null) ? $data['notifications'] : [];
         $services = $notifications['services'] ?? [];
@@ -45,9 +75,9 @@ final readonly class IntegrationsSettings
 
         return new self(
             aiIntegrationEnabled: $aiEnabled,
-            aiIntegrationWithUIEnabled: $aiUIEnabled,
-            aiConfig: $ai,
-            chatCommands: ChatCommands::fromArray($commands),
+            aiIntegrationWithUIEnabled: $aiEnabled && filter_var($aiConfig['enableUI'] ?? false, FILTER_VALIDATE_BOOLEAN),
+            aiConfig: $aiConfig,
+            chatCommands: ChatCommands::fromArray($aiConfig['agent']['commands'] ?? []),
             configuredNotificationUrls: ConfiguredNotificationUrls::fromConfig($services),
         );
     }
@@ -72,8 +102,60 @@ final readonly class IntegrationsSettings
         return $this->configuredNotificationUrls;
     }
 
-    public function createAIProvider(): AIProviderInterface
+    public function getAIProvider(): AIProviderInterface
     {
-        return new AIProviderFactory($this->aiConfig)->create();
+        $providerName = $this->aiConfig['provider'];
+        $apiKey = AIApiKey::fromServerVar();
+
+        return match ($providerName) {
+            'anthropic' => new Anthropic(
+                key: (string) $apiKey,
+                model: $this->aiConfig['configuration']['model'],
+            ),
+            'azureOpenAI' => new AzureOpenAI(
+                key: (string) $apiKey,
+                endpoint: $this->aiConfig['configuration']['endpoint'],
+                model: $this->aiConfig['configuration']['model'],
+                version: $this->aiConfig['configuration']['version'],
+            ),
+            'deepseek' => new Deepseek(
+                key: (string) $apiKey,
+                model: $this->aiConfig['configuration']['model'],
+            ),
+            'gemini' => new Gemini(
+                key: (string) $apiKey,
+                model: $this->aiConfig['configuration']['model'],
+            ),
+            'grok' => new Grok(
+                key: (string) $apiKey,
+                model: $this->aiConfig['configuration']['model'],
+            ),
+            'huggingFace' => new HuggingFace(
+                key: (string) $apiKey,
+                model: $this->aiConfig['configuration']['model'],
+            ),
+            'ollama' => new Ollama(
+                url: (string) $apiKey,
+                model: $this->aiConfig['configuration']['model'],
+            ),
+            'openAI' => new OpenAI(
+                key: (string) $apiKey,
+                model: $this->aiConfig['configuration']['model'],
+            ),
+            'openAILike' => new OpenAILike(
+                baseUri: $this->aiConfig['configuration']['baseUri'],
+                key: (string) $apiKey,
+                model: $this->aiConfig['configuration']['model'],
+            ),
+            'openAIResponses' => new OpenAIResponses(
+                key: (string) $apiKey,
+                model: $this->aiConfig['configuration']['model'],
+            ),
+            'mistral' => new Mistral(
+                key: (string) $apiKey,
+                model: $this->aiConfig['configuration']['model'],
+            ),
+            default => throw new InvalidAIConfiguration(sprintf('AI provider "%s" is not supported', $providerName)),
+        };
     }
 }

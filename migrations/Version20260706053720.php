@@ -245,6 +245,11 @@ final class Version20260706053720 extends AbstractMigration
             $subtree['notifications'] = $notifications;
         }
 
+        if (isset($subtree['ai']['config']['key'])) {
+            // Do not store sensitive data in database.
+            unset($subtree['ai']['config']['key']);
+        }
+
         $this->addSql(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [

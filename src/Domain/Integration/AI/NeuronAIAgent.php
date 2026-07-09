@@ -27,7 +27,7 @@ final class NeuronAIAgent extends Agent
     #[\Override]
     protected function provider(): AIProviderInterface
     {
-        return $this->settingsRepository->integrations()->createAIProvider();
+        return $this->settingsRepository->integrations()->getAIProvider();
     }
 
     #[\Override]

@@ -7,6 +7,7 @@ namespace App\Controller\Admin\Settings;
 use App\Application\AppUrl;
 use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
 use App\Domain\Import\ImportMode;
+use App\Domain\Integration\AI\AIApiKey;
 use App\Domain\Settings\KeyValueBasedSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
@@ -70,6 +71,7 @@ final readonly class SettingsRequestHandler
                 'stravaClientId' => $this->stravaClientId,
                 'stravaClientSecret' => $this->stravaClientSecret,
                 'stravaClientRefreshToken' => $this->stravaRefreshToken,
+                'AIApiKey' => AIApiKey::fromServerVar(),
                 'sportTypes' => $this->settingsRepository->appearance()->getSportTypesSortingOrder(),
                 'defaultHeartRateZones' => HeartRateZoneConfiguration::getDefaultZones(),
             ],

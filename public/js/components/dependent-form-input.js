@@ -1,23 +1,3 @@
-// Shows/hides form fields based on the value of another form field (the "controller").
-// Works when the controller is a checkbox or a select.
-//
-// Markup convention — put both attributes on the element you want toggled (usually a
-// field wrapper):
-//   data-dependent-on="<id of the controlling input>"
-//   data-visible-when="<comma-separated controller values that make it visible>"
-//
-// The controller's "current value" is resolved as:
-//   * checkbox        -> "checked" / "unchecked"
-//   * select (or any
-//     other input)    -> its current value
-//
-// When a field is hidden, the form controls inside it are disabled so their values
-// aren't submitted (and don't trip HTML validation). Nesting is supported: a control
-// stays disabled while any of its dependent ancestors is hidden.
-//
-// Sibling component: dependent-select.js (which rebuilds a <select>'s options based on
-// another select). Kept separate on purpose for now; the two may be merged later.
-
 const SELECTOR = '[data-dependent-on][data-visible-when]';
 
 const controllerValueOf = (controller) => {

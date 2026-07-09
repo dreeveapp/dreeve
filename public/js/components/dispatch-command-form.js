@@ -215,6 +215,7 @@ export default function initDispatchCommandForm(rootNode = document) {
             }
         } catch (error) {
             showError(errorBox, error.message);
+            window.scrollTo(0, 0);
             resetLoading(loadingButtons);
         }
     });

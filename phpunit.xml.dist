@@ -23,6 +23,7 @@
         <server name="SYMFONY_PHPUNIT_VERSION" value="13" />
         <env name="APP_URL" value="http://localhost:8080/" force="true" />
         <env name="IMPORT_MODE" value="stravaApi" force="true" />
+        <env name="AI_API_KEY" value="the-key" force="true" />
     </php>
     <extensions>
         <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />

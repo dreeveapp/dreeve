@@ -43,7 +43,10 @@ final readonly class UpdateSettings extends DomainCommand implements Deserializa
             throw CouldNotDeserializeCommand::invalidPayload($e->getMessage());
         }
 
-        return new self($group, $data);
+        return new self(
+            group: $group,
+            data: $data
+        );
     }
 
     public function getGroup(): SettingsGroup
