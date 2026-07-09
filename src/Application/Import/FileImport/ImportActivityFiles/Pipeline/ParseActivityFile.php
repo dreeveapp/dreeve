@@ -38,7 +38,8 @@ final readonly class ParseActivityFile implements ImportActivityFileStep
             sportType: $activity->getSportType(),
             startDateTime: $activity->getStartDate()
         )) {
-            // We need to create a new RawActivityFile because the fileContents needs to be unique.
+            // We need to create a new RawActivityFile because the fileContents needs to be unique
+            // when saving the FileImport entity to the db.
             throw new SkipDuplicateActivity(RawActivityFile::from(filePath: $context->getFilePath(), fileContents: $this->uuidFactory->random()));
         }
 
