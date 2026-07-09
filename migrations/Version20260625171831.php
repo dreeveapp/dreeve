@@ -34,7 +34,7 @@ final class Version20260625171831 extends AbstractMigration
 
         $config = $this->migrateLegacyComponents(Yaml::parseFile($gearMaintenanceConfigFile));
 
-        $this->connection->executeStatement(
+        $this->addSql(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
                 'key' => Key::GEAR_MAINTENANCE->value,

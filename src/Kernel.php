@@ -51,7 +51,6 @@ class Kernel extends BaseKernel
         assert($kernelProjectDir instanceof KernelProjectDir);
         $platformEnvironment = $this->getContainer()->get(PlatformEnvironment::class);
         assert($platformEnvironment instanceof PlatformEnvironment);
-        AppConfig::setImportMode($importMode);
         AppConfig::setYamlConfigFilesToParse($kernelProjectDir, $platformEnvironment);
     }
 }

@@ -34,6 +34,7 @@ composer:
 
 download-database:
 	@make stop
+	rm -Rf storage/database/dreeve.*
 	scp $(user)@$(server):/home/docker/stacks/dreeve/storage/database/dreeve.db ./storage/database/dreeve.db
 	@make dc cmd="up -d --build"
 

@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Settings\SettingsGroup;
+use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\Serialization\Json;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -22,15 +26,30 @@ final class Version20260706053720 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $configFile = dirname(__DIR__).'/config/app/config.yaml';
+        $basePath = dirname(__DIR__).'/config/app';
+        $configFile = $basePath.'/config.yaml';
 
         $this->skipIf(
             !file_exists($configFile),
             'No config.yaml found, nothing to migrate'
         );
 
-        $config = Yaml::parseFile($configFile);
+        $finder = Finder::create()
+            ->in($basePath)
+            ->depth('== 0')
+            ->files()
+            ->sortByName()
+            ->name('config-*.yaml');
 
+        $config = Yaml::parseFile($configFile);
+        foreach ($finder as $file) {
+            try {
+                $config = array_replace_recursive($config, Yaml::parseFile($file->getRealPath()));
+            } catch (ParseException) {
+            }
+        }
+
+        $this->migrateDashboard($config);
         $this->migrateGeneral($config);
         $this->migrateAppearance($config);
         $this->migrateImport($config);
@@ -40,11 +59,40 @@ final class Version20260706053720 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => Key::DASHBOARD->value]);
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::GENERAL->keyValueKey()->value]);
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::APPEARANCE->keyValueKey()->value]);
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::IMPORT->keyValueKey()->value]);
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::METRICS->keyValueKey()->value]);
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::ZWIFT->keyValueKey()->value]);
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function migrateDashboard(array $config): void
+    {
+        if (!$layout = $config['appearance']['dashboard']['layout'] ?? null) {
+            return;
+        }
+
+        // Skip disabled widgets, drop the "enabled" flag, and give each widget an id.
+        $layout = array_values(array_filter(
+            $layout,
+            static fn (array $widget): bool => (bool) ($widget['enabled'] ?? true),
+        ));
+        foreach ($layout as $i => $widget) {
+            unset($widget['enabled']);
+            $layout[$i] = ['id' => (string) DashboardWidgetId::random()] + $widget;
+        }
+
+        $this->addSql(
+            'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
+            [
+                'key' => Key::DASHBOARD->value,
+                'value' => Json::encode($layout),
+            ]
+        );
     }
 
     /**
@@ -61,7 +109,7 @@ final class Version20260706053720 extends AbstractMigration
         $subtree = $this->applyStoredAthlete($subtree);
         $subtree = $this->normalizeAthleteHistories($subtree);
 
-        $this->connection->executeStatement(
+        $this->addSql(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
                 'key' => SettingsGroup::GENERAL->keyValueKey()->value,
@@ -91,7 +139,7 @@ final class Version20260706053720 extends AbstractMigration
             return;
         }
 
-        $this->connection->executeStatement(
+        $this->addSql(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
                 'key' => SettingsGroup::APPEARANCE->keyValueKey()->value,
@@ -112,7 +160,7 @@ final class Version20260706053720 extends AbstractMigration
 
         $subtree = $this->normalizeKeys($subtree);
 
-        $this->connection->executeStatement(
+        $this->addSql(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
                 'key' => SettingsGroup::IMPORT->keyValueKey()->value,
@@ -133,7 +181,7 @@ final class Version20260706053720 extends AbstractMigration
 
         $subtree = $this->normalizeKeys($subtree);
 
-        $this->connection->executeStatement(
+        $this->addSql(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
                 'key' => SettingsGroup::METRICS->keyValueKey()->value,
@@ -154,7 +202,7 @@ final class Version20260706053720 extends AbstractMigration
 
         $subtree = $this->normalizeKeys($subtree);
 
-        $this->connection->executeStatement(
+        $this->addSql(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
                 'key' => SettingsGroup::ZWIFT->keyValueKey()->value,

@@ -18,4 +18,9 @@ enum ImportMode: string
     {
         return self::FILES === $this;
     }
+
+    public static function fromServerVar(): self
+    {
+        return self::from($_SERVER['IMPORT_MODE']);
+    }
 }

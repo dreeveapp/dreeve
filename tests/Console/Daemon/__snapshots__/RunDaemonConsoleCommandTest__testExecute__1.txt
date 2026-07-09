@@ -7,12 +7,7 @@ Startedon0811202514:47:03
 
 Runtime:PHP8.5.x(cli)Symfony8.1.1Linux
 
-Configuredimportmode:STRAVA_API
-
-Configurationfiles:
-config.yaml
-configathlete.yaml
-configimport.yaml
+Configuredimportmode:stravaApi
 
 
 

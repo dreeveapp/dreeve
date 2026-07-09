@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Config;
 
-use App\Domain\Import\ImportMode;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 use Symfony\Component\Finder\Finder;
@@ -16,7 +15,6 @@ final class AppConfig
     /** @var array<string|int, string|int|float|array<string|int,mixed>|null> */
     private array $config = [];
 
-    private static ?ImportMode $importMode = null;
     /** @var array<string> */
     private static array $yamlConfigFiles = [];
 
@@ -69,20 +67,6 @@ final class AppConfig
         return $this->isAIIntegrationEnabled() && !empty($this->get('integrations.ai.enableUI', false));
     }
 
-    public static function setImportMode(ImportMode $importMode): void
-    {
-        self::$importMode = $importMode;
-    }
-
-    public static function getImportMode(): ImportMode
-    {
-        if (!self::$importMode instanceof ImportMode) {
-            throw new \RuntimeException('$importMode not set. Please call AppConfig::setImportMode() before using this method.'); // @codeCoverageIgnore
-        }
-
-        return self::$importMode;
-    }
-
     public static function setYamlConfigFilesToParse(KernelProjectDir $kernelProjectDir, PlatformEnvironment $platformEnvironment): void
     {
         $basePath = $platformEnvironment->isTest() ? $kernelProjectDir.'/config/app/test' : $kernelProjectDir.'/config/app';
@@ -106,18 +90,6 @@ final class AppConfig
             }
         } catch (DirectoryNotFoundException) { // @codeCoverageIgnore
         }
-    }
-
-    /**
-     * @return non-empty-array<string>
-     */
-    public static function getYamlFilesToProcess(): array
-    {
-        if ([] === self::$yamlConfigFiles) {
-            throw new \RuntimeException('No YAML config files processed yet. AppConfig::setYamlConfigFilesToParse() must be called first.'); // @codeCoverageIgnore
-        }
-
-        return self::$yamlConfigFiles;
     }
 
     private function buildConfig(): void
