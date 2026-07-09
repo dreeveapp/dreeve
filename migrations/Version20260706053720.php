@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
-use App\Domain\Integration\Notification\Shoutrrr\ShoutrrrUrl;
 use App\Domain\Dashboard\DashboardWidgetId;
+use App\Domain\Integration\Notification\Shoutrrr\ShoutrrrUrl;
 use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\Serialization\Json;
