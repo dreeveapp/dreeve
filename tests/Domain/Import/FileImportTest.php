@@ -21,7 +21,7 @@ class FileImportTest extends TestCase
         $fileImportId = FileImportId::fromUnprefixed('abc');
         $file = RawActivityFile::from(Path::fromString('ride.fit'), 'raw-fit-bytes');
 
-        $fileImport = FileImport::create(
+        $fileImport = FileImport::createFromRawFile(
             fileImportId: $fileImportId,
             file: $file,
             source: ImportSource::FIT_FILE,

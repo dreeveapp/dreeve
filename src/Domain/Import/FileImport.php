@@ -19,8 +19,8 @@ final readonly class FileImport
         private FileImportId $fileImportId,
         #[ORM\Column(type: 'string')]
         private string $originalFilename,
-        #[ORM\Column(type: 'string')]
-        private string $fileHash,
+        #[ORM\Column(type: 'string', nullable: true)]
+        private ?string $fileHash,
         #[ORM\Column(type: 'blob', nullable: true)]
         private ?string $fileContents,
         #[ORM\Column(type: 'string')]
@@ -37,6 +37,28 @@ final readonly class FileImport
     }
 
     public static function create(
+        FileImportId $fileImportId,
+        string $originalFilename,
+        ImportSource $source,
+        FileImportStatus $status,
+        ?string $errorMessage,
+        ?ActivityId $activityId,
+        SerializableDateTime $importedOn,
+    ): self {
+        return new self(
+            fileImportId: $fileImportId,
+            originalFilename: $originalFilename,
+            fileHash: null,
+            fileContents: null,
+            source: $source,
+            status: $status,
+            errorMessage: $errorMessage,
+            activityId: $activityId,
+            importedOn: $importedOn,
+        );
+    }
+
+    public static function createFromRawFile(
         FileImportId $fileImportId,
         RawActivityFile $file,
         ImportSource $source,
@@ -61,7 +83,7 @@ final readonly class FileImport
     public static function fromState(
         FileImportId $fileImportId,
         string $originalFilename,
-        string $fileHash,
+        ?string $fileHash,
         ?string $fileContents,
         ImportSource $source,
         FileImportStatus $status,
@@ -92,7 +114,7 @@ final readonly class FileImport
         return $this->originalFilename;
     }
 
-    public function getFileHash(): string
+    public function getFileHash(): ?string
     {
         return $this->fileHash;
     }

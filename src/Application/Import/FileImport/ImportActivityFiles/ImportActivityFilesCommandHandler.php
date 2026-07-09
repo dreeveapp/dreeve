@@ -75,11 +75,11 @@ final readonly class ImportActivityFilesCommandHandler implements CommandHandler
                 foreach ($this->steps as $step) {
                     $context = $step->process($context);
                 }
-            } catch (SkipDuplicateActivity $e) {
+            } catch (SkipDuplicateActivity) {
                 $this->watchDirectory->deleteFile($filePath);
                 $this->fileImportRepository->add(FileImport::create(
                     fileImportId: FileImportId::random(),
-                    file: $e->getActivityFile(),
+                    originalFilename: $context->getFilePath()->getFilename(),
                     source: $context->getImportSource(),
                     status: FileImportStatus::SKIPPED,
                     errorMessage: 'Skipped, activity was already imported',
@@ -95,7 +95,7 @@ final readonly class ImportActivityFilesCommandHandler implements CommandHandler
                 ++$countSkipped;
                 continue;
             } catch (CouldNotParseActivityFile $e) {
-                $this->fileImportRepository->add(FileImport::create(
+                $this->fileImportRepository->add(FileImport::createFromRawFile(
                     fileImportId: FileImportId::random(),
                     file: $e->getActivityFile(),
                     source: $context->getImportSource(),
@@ -131,7 +131,7 @@ final readonly class ImportActivityFilesCommandHandler implements CommandHandler
             $file = $context->getFile();
             assert($file instanceof RawActivityFile);
 
-            $this->fileImportRepository->add(FileImport::create(
+            $this->fileImportRepository->add(FileImport::createFromRawFile(
                 fileImportId: FileImportId::random(),
                 file: $file,
                 source: $activity->getImportSource(),
