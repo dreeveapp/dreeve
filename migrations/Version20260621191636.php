@@ -26,6 +26,7 @@ final class Version20260621191636 extends AbstractMigration
         $this->addSql('CREATE TABLE RecordingDevice (id VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, purchasePriceAmount BIGINT DEFAULT NULL, purchasePriceCurrency VARCHAR(3) DEFAULT NULL, PRIMARY KEY (id))');
         $this->addSql('CREATE TABLE GearMaintenanceLog (gearMaintenanceLogId VARCHAR(255) NOT NULL, gearId VARCHAR(255) NOT NULL, maintenanceTaskId VARCHAR(255) NOT NULL, performedOn DATETIME NOT NULL, PRIMARY KEY (gearMaintenanceLogId))');
         $this->addSql('CREATE INDEX GearMaintenanceLog_gearIndex ON GearMaintenanceLog (gearId)');
+        $this->addSql('DELETE FROM FileImport');
         $this->addSql('DROP INDEX IF EXISTS UNIQ_FileImport_fileHash');
         $this->addSql('ALTER TABLE FileImport DROP COLUMN fileHash');
         $this->addSql('ALTER TABLE FileImport ADD COLUMN fileHash VARCHAR(255) DEFAULT NULL');

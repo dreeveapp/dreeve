@@ -65,16 +65,16 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
     {
         $bytes = $this->fixture('activity.tcx');
 
-        $this->dropInWatchFolder('ride.tcx', $bytes);
-        $this->handler->handle(new ImportActivityFiles(new SpyOutput()));
+        $this->dropInWatchFolder('ride1.tcx', $bytes);
+        $this->dropInWatchFolder('ride2.tcx', $bytes);
+        $this->dropInWatchFolder('ride3.tcx', $bytes);
 
-        $this->dropInWatchFolder('ride.tcx', $bytes);
         $output = new SpyOutput();
         $this->handler->handle(new ImportActivityFiles($output));
 
-        $this->assertCount(2, $this->getFileImports());
+        $this->assertCount(3, $this->getFileImports());
         $this->assertEquals(
-            [FileImportStatus::SUCCESS, FileImportStatus::SKIPPED],
+            [FileImportStatus::SUCCESS, FileImportStatus::SKIPPED,  FileImportStatus::SKIPPED],
             array_map(
                 static fn (array $file): FileImportStatus => FileImportStatus::from($file['status']),
                 array_values($this->getFileImports())

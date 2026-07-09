@@ -1,3 +1,5 @@
 Importingactivityfiles...
-=>[1/1]Skipping"ride.tcx",activitywasalreadyimported
-=>Imported0,skipped1,failed0activityfile(s)
+=>[1/3]Imported"ride1.tcx"asactivity"NightRide08092021"
+=>[2/3]Skipping"ride2.tcx",activitywasalreadyimported
+=>[3/3]Skipping"ride3.tcx",activitywasalreadyimported
+=>Imported1,skipped2,failed0activityfile(s)
