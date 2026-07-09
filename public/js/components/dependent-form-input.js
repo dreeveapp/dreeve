@@ -29,6 +29,7 @@ export default function initDependentFormInputs(rootNode = document) {
     }
 
     const visibility = new WeakMap();
+    const originalDisabled = new WeakMap();
 
     const apply = () => {
         fields.forEach((field) => visibility.set(field, isVisible(field)));
@@ -37,6 +38,10 @@ export default function initDependentFormInputs(rootNode = document) {
         // Disable controls that live inside a hidden field. Walk up the chain of
         // dependent ancestors so nested fields stay disabled while a parent is hidden.
         rootNode.querySelectorAll('input, select, textarea').forEach((control) => {
+            if (!originalDisabled.has(control)) {
+                originalDisabled.set(control, control.disabled);
+            }
+
             let ancestor = control.closest(SELECTOR);
             if (null === ancestor) {
                 return; // not managed by this component, leave it untouched
@@ -51,7 +56,7 @@ export default function initDependentFormInputs(rootNode = document) {
                 ancestor = ancestor.parentElement ? ancestor.parentElement.closest(SELECTOR) : null;
             }
 
-            control.disabled = hidden;
+            control.disabled = originalDisabled.get(control) || hidden;
         });
     };
 
