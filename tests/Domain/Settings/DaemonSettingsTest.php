@@ -6,6 +6,7 @@ namespace App\Tests\Domain\Settings;
 
 use App\Domain\Settings\DaemonSettings;
 use App\Infrastructure\Daemon\Cron\CronAction;
+use App\Infrastructure\Daemon\Cron\CronActionId;
 use App\Infrastructure\Daemon\Cron\InvalidCronConfig;
 use PHPUnit\Framework\TestCase;
 
@@ -27,7 +28,7 @@ class DaemonSettingsTest extends TestCase
     {
         $settings = DaemonSettings::fromArray([
             'cron' => [
-                'importDataAndBuildApp' => ['expression' => '0 3 * * *', 'enabled' => true],
+                'runStravaImportAndBuildApp' => ['expression' => '0 3 * * *', 'enabled' => true],
                 'gearMaintenanceNotification' => ['expression' => '0 4 * * *', 'enabled' => false],
             ],
         ]);
@@ -35,7 +36,7 @@ class DaemonSettingsTest extends TestCase
         $this->assertEquals(
             [
                 CronAction::create(
-                    id: 'importDataAndBuildApp',
+                    id: CronActionId::RUN_STRAVA_IMPORT_AND_BUILD_APP,
                     expression: new \Cron\CronExpression('0 3 * * *'),
                 ),
             ],
@@ -53,14 +54,14 @@ class DaemonSettingsTest extends TestCase
 
         $actions = iterator_to_array($settings->getConfiguredCronActions());
         $this->assertCount(1, $actions);
-        $this->assertSame('appUpdateAvailableNotification', $actions[0]->getId());
+        $this->assertSame(CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, $actions[0]->getId());
     }
 
     public function testItFallsBackToTheDefaultExpressionWhenNoneStored(): void
     {
         $settings = DaemonSettings::fromArray([
             'cron' => [
-                'importDataAndBuildApp' => ['enabled' => true],
+                'runStravaImportAndBuildApp' => ['enabled' => true],
             ],
         ]);
 
@@ -75,7 +76,7 @@ class DaemonSettingsTest extends TestCase
 
         DaemonSettings::fromArray([
             'cron' => [
-                'importDataAndBuildApp' => ['expression' => 'not-a-cron', 'enabled' => true],
+                'runStravaImportAndBuildApp' => ['expression' => 'not-a-cron', 'enabled' => true],
             ],
         ]);
     }

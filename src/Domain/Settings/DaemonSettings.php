@@ -5,18 +5,10 @@ declare(strict_types=1);
 namespace App\Domain\Settings;
 
 use App\Infrastructure\Daemon\Cron\ConfiguredCronActions;
+use App\Infrastructure\Daemon\Cron\CronActionId;
 
 final readonly class DaemonSettings
 {
-    /**
-     * @var array<string, string>
-     */
-    public const array CRON_ACTIONS = [
-        'importDataAndBuildApp' => '0 2 * * *',
-        'gearMaintenanceNotification' => '* * * * *',
-        'appUpdateAvailableNotification' => '* * * * *',
-    ];
-
     private function __construct(
         private ConfiguredCronActions $configuredCronActions,
     ) {
@@ -30,17 +22,19 @@ final readonly class DaemonSettings
         $data ??= [];
         $storedCron = is_array($data['cron'] ?? null) ? $data['cron'] : [];
 
+        // The cron actions are a fixed, hardcoded set (see CronActionId), so we always build the full
+        // catalog, backfilling defaults for any action absent from storage.
         $config = [];
-        foreach (self::CRON_ACTIONS as $action => $defaultExpression) {
-            $stored = is_array($storedCron[$action] ?? null) ? $storedCron[$action] : [];
+        foreach (CronActionId::cases() as $actionId) {
+            $stored = is_array($storedCron[$actionId->value] ?? null) ? $storedCron[$actionId->value] : [];
 
             $expression = trim((string) ($stored['expression'] ?? ''));
             if ('' === $expression) {
-                $expression = $defaultExpression;
+                $expression = $actionId->defaultCronExpression();
             }
 
             $config[] = [
-                'action' => $action,
+                'action' => $actionId->value,
                 'expression' => $expression,
                 'enabled' => filter_var($stored['enabled'] ?? false, FILTER_VALIDATE_BOOLEAN),
             ];

@@ -12,6 +12,16 @@
             @apply mt-0.5 text-xs text-gray-500;
         }
 
+        .form-error {
+            @apply flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50;
+
+            &::before {
+                content: "";
+                @apply shrink-0 size-4 me-3 bg-contain bg-center bg-no-repeat;
+                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23991b1b" viewBox="0 0 20 20"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 4.5a1 1 0 0 1 1 1v5a1 1 0 0 1-2 0v-5a1 1 0 0 1 1-1ZM10 12.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Z"/></svg>');
+            }
+        }
+
         input:where([type="text"], [type="number"], [type="date"], [type="password"], [type="email"], [type="search"], [type="url"]):not(.unstyled),
         textarea:not(.unstyled),
         select:not(.unstyled) {

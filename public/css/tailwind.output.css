@@ -6012,6 +6012,31 @@ table.data-table {
       line-height: var(--tw-leading, var(--text-xs--line-height));
       color: var(--color-gray-500);
     }
+    .form-error {
+      margin-bottom: calc(var(--spacing) * 4);
+      display: flex;
+      align-items: center;
+      border-radius: var(--radius-lg);
+      border-style: var(--tw-border-style);
+      border-width: 1px;
+      border-color: var(--color-red-300);
+      background-color: var(--color-red-50);
+      padding: calc(var(--spacing) * 4);
+      font-size: var(--text-sm);
+      line-height: var(--tw-leading, var(--text-sm--line-height));
+      color: var(--color-red-800);
+      &::before {
+        content: "";
+        margin-inline-end: calc(var(--spacing) * 3);
+        width: calc(var(--spacing) * 4);
+        height: calc(var(--spacing) * 4);
+        flex-shrink: 0;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23991b1b" viewBox="0 0 20 20"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 4.5a1 1 0 0 1 1 1v5a1 1 0 0 1-2 0v-5a1 1 0 0 1 1-1ZM10 12.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Z"/></svg>');
+      }
+    }
     input:where([type="text"], [type="number"], [type="date"], [type="password"], [type="email"], [type="search"], [type="url"]):not(.unstyled), textarea:not(.unstyled), select:not(.unstyled) {
       margin-top: var(--spacing);
       display: block;

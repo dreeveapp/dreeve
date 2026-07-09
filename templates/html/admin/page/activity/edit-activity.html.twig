@@ -17,7 +17,7 @@
             </div>
             <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ relativeUrl(path('admin_manage_activity_overview')) }}" class="flex flex-col gap-4">
                 <input type="hidden" name="activityId" value="{{ activity.getId() }}">
-                <div data-form-error class="hidden rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert"></div>
+                <div data-form-error class="form-error hidden" role="alert"></div>
                 {% embed 'html/admin/component/strava-disabled-form-input.html.twig' with {
                     label: 'Name'|trans,
                     for: 'activity-name', name: 'name', value: activity.getOriginalName(),

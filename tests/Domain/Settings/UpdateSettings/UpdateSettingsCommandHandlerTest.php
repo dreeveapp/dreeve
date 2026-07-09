@@ -181,7 +181,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
     {
         $data = [
             'cron' => [
-                'importDataAndBuildApp' => ['expression' => '0 3 * * *', 'enabled' => true],
+                'runStravaImportAndBuildApp' => ['expression' => '0 3 * * *', 'enabled' => true],
                 'gearMaintenanceNotification' => ['expression' => '0 4 * * *', 'enabled' => false],
                 'appUpdateAvailableNotification' => ['expression' => '0 5 * * *', 'enabled' => false],
             ],
@@ -204,7 +204,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
             'group' => SettingsGroup::DAEMON->value,
             'data' => [
                 'cron' => [
-                    'importDataAndBuildApp' => ['expression' => 'not-a-cron', 'enabled' => true],
+                    'runStravaImportAndBuildApp' => ['expression' => 'not-a-cron', 'enabled' => true],
                 ],
             ],
         ]);

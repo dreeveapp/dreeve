@@ -520,7 +520,7 @@ Save: Save
 'Save settings': 'Save settings'
 Saved: Saved
 Saving...: Saving...
-'Scheduled actions the daemon runs at regular intervals. Only applies when the daemon container is set up.': 'Scheduled actions the daemon runs at regular intervals. Only applies when the daemon container is set up.'
+'Scheduled actions the daemon runs at regular intervals.': 'Scheduled actions the daemon runs at regular intervals.'
 Search: Sök
 'Search activity...': 'Sök aktivitet...'
 'Search segment...': 'Sök segment...'

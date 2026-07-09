@@ -56,12 +56,12 @@ final class SystemDaemon implements Daemon
             }
             $processedCronAction[] = $cronAction;
             $actions[] = new Action(
-                key: $cronAction->getId(),
+                key: $cronAction->getId()->value,
                 mutexTtl: 1200,
                 expression: (string) $cronAction->getExpression(),
                 performer: function () use ($cronAction): PromiseInterface {
                     $process = new CronProcess(
-                        cronActionId: $cronAction->getId(),
+                        cronActionId: $cronAction->getId()->value,
                         clock: $this->clock,
                         output: $this->getConsoleOutput(),
                         command: $cronAction->getCommand(),
@@ -154,7 +154,7 @@ final class SystemDaemon implements Daemon
         $this->getConsoleOutput()->writeln(sprintf('<info>%s</info>', 'Cron configured'));
         $this->getConsoleOutput()->writeln([
             ...array_map(
-                fn (CronAction $action): string => \sprintf('<info> - %s: %s</info>', $action->getId(), $action->getExpression()),
+                fn (CronAction $action): string => \sprintf('<info> - %s: %s</info>', $action->getId()->value, $action->getExpression()),
                 $processedCronAction
             ),
             ...$extraConfiguredCronActionsOutput,

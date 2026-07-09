@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Daemon\Cron;
 
-use App\Console\Daemon\AppUpdateAvailableNotificationCronAction;
-use App\Console\Daemon\GearMaintenanceNotificationConsoleCommand;
-use App\Console\Daemon\RunStravaImportAndBuildAppConsoleCommand;
 use App\Domain\Import\ImportMode;
 use Cron\CronExpression;
 
 final readonly class CronAction
 {
     private function __construct(
-        private string $id,
+        private CronActionId $id,
         private CronExpression $expression,
     ) {
     }
 
     public static function create(
-        string $id,
+        CronActionId $id,
         CronExpression $expression,
     ): self {
         return new self(
@@ -28,7 +25,7 @@ final readonly class CronAction
         );
     }
 
-    public function getId(): string
+    public function getId(): CronActionId
     {
         return $this->id;
     }
@@ -40,20 +37,11 @@ final readonly class CronAction
 
     public function getCommand(): string
     {
-        return match ($this->getId()) {
-            'importDataAndBuildApp' => sprintf('bin/console %s', RunStravaImportAndBuildAppConsoleCommand::NAME),
-            'gearMaintenanceNotification' => sprintf('bin/console %s', GearMaintenanceNotificationConsoleCommand::NAME),
-            'appUpdateAvailableNotification' => sprintf('bin/console %s', AppUpdateAvailableNotificationCronAction::NAME),
-            default => throw new \RuntimeException(sprintf('Unsupported Cron action: %s', $this->getId())),
-        };
+        return $this->id->command();
     }
 
     public function supportsImportMode(ImportMode $importMode): bool
     {
-        if ('importDataAndBuildApp' !== $this->getId()) {
-            return true;
-        }
-
-        return !$importMode->isFiles();
+        return $this->id->supportsImportMode($importMode);
     }
 }

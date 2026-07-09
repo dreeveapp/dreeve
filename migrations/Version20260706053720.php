@@ -7,6 +7,7 @@ namespace DoctrineMigrations;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Integration\Notification\Shoutrrr\ShoutrrrUrl;
 use App\Domain\Settings\SettingsGroup;
+use App\Infrastructure\Daemon\Cron\CronActionId;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\Serialization\Json;
 use Doctrine\DBAL\Schema\Schema;
@@ -271,12 +272,16 @@ final class Version20260706053720 extends AbstractMigration
             return;
         }
 
+        $renamedActions = ['importDataAndBuildApp' => CronActionId::RUN_STRAVA_IMPORT_AND_BUILD_APP->value];
+
         $actions = [];
         foreach ($cron as $item) {
             if (!is_array($item) || !isset($item['action'])) {
                 continue;
             }
-            $actions[(string) $item['action']] = [
+            $action = (string) $item['action'];
+            $action = $renamedActions[$action] ?? $action;
+            $actions[$action] = [
                 'expression' => (string) ($item['expression'] ?? ''),
                 'enabled' => (bool) ($item['enabled'] ?? false),
             ];

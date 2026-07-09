@@ -39,7 +39,7 @@
                 {% if component %}
                     <input type="hidden" name="gearComponentId" value="{{ component.getId() }}">
                 {% endif %}
-                <div data-form-error class="hidden rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert"></div>
+                <div data-form-error class="form-error hidden" role="alert"></div>
                 <div class="grid gap-4 md:grid-cols-2">
                     <div>
                         <label for="component-label">{{ "Name"|trans }}</label>

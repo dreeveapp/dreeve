@@ -19,7 +19,7 @@
             <form data-dispatch-command="{{ dispatchCommand }}"
                   data-redirect="{{ overviewUrl }}"
                   class="flex flex-col gap-4">
-                <div data-form-error class="hidden rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert"></div>
+                <div data-form-error class="form-error hidden" role="alert"></div>
                 {% if gearMaintenanceLog %}
                     <input type="hidden" name="gearMaintenanceLogId" value="{{ gearMaintenanceLog.getGearMaintenanceLogId() }}">
                     <div class="grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-3 text-sm">

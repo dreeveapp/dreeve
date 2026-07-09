@@ -2,48 +2,42 @@
 
 {% block main %}
     {% set cron = settings.cron ?? {} %}
-    {% set cronActions = {
-        'importDataAndBuildApp': {
-            'label': "Import data & build app"|trans,
-            'description': "Imports new Strava activities and rebuilds the app."|trans,
-            'default': '0 2 * * *',
-        },
-        'gearMaintenanceNotification': {
-            'label': "Gear maintenance notification"|trans,
-            'description': "Sends a notification when gear maintenance is due. Requires a configured notification service."|trans,
-            'default': '* * * * *',
-        },
-        'appUpdateAvailableNotification': {
-            'label': "App update available notification"|trans,
-            'description': "Sends a notification when a new app version is available. Requires a configured notification service."|trans,
-            'default': '* * * * *',
-        },
-    } %}
     <div class="flex flex-col gap-4">
         <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
             <input type="hidden" name="group" value="{{ group.value }}">
             <div class="mb-5">
                 <h3 class="text-lg font-semibold">{{ "Daemon"|trans }}</h3>
                 <p class="description">
-                    {{ "Scheduled actions the daemon runs at regular intervals. Only applies when the daemon container is set up."|trans }}
+                    {{ "Scheduled actions the daemon runs at regular intervals."|trans }}
                 </p>
             </div>
-            <div data-form-error class="hidden mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert"></div>
+            <div data-form-error class="form-error hidden" role="alert"></div>
+            <div class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50" role="alert">
+                <svg class="shrink-0 inline size-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="sr-only">{{ "Info"|trans }}</span>
+                <div>
+                    {{ "Changes to these settings only take effect after you restart the daemon container."|trans }}
+                </div>
+            </div>
             <div class="flex flex-col gap-3">
-                {% for actionId, meta in cronActions %}
+                {% for action in enum('App\\Infrastructure\\Daemon\\Cron\\CronActionId').cases()|filter(action => action.supportsImportMode(importMode)) %}
+                    {% set actionId = action.value %}
                     {% set stored = cron[actionId] ?? {} %}
+                    {% set defaultExpression = action.defaultCronExpression %}
                     <div class="flex flex-col gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
                         <label class="flex items-center gap-2 mt-0! font-medium cursor-pointer">
                             <input type="checkbox" name="data[cron][{{ actionId }}][enabled]" value="1"
                                    {{ (stored.enabled ?? false) ? 'checked' : '' }}>
-                            <span>{{ meta.label }}</span>
+                            <span>{{ action|trans }}</span>
                         </label>
-                        <p class="description mt-0!">{{ meta.description }}</p>
+                        <p class="description mt-0!">{{ action|transDescription }}</p>
                         <div>
                             <label for="cron-{{ actionId }}">{{ "Cron expression"|trans }}</label>
                             <input type="text" id="cron-{{ actionId }}" name="data[cron][{{ actionId }}][expression]"
-                                   value="{{ stored.expression ?? meta.default }}" required
-                                   placeholder="{{ meta.default }}">
+                                   value="{{ stored.expression ?? defaultExpression }}" required
+                                   placeholder="{{ defaultExpression }}">
                             <p class="description">
                                 {{ "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."|trans }}
                             </p>

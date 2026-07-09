@@ -16,7 +16,7 @@
             </div>
             <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ relativeUrl(path('admin_manage_recording_devices_overview')) }}" class="flex flex-col gap-4">
                 <input type="hidden" name="name" value="{{ recordingDevice.getName() }}">
-                <div data-form-error class="hidden rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert"></div>
+                <div data-form-error class="form-error hidden" role="alert"></div>
                 <div>
                     <label for="recording-device-name">{{ "Name"|trans }}</label>
                     <input type="text" id="recording-device-name" value="{{ recordingDevice.getName() }}" disabled>

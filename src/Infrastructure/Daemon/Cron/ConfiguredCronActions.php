@@ -23,7 +23,7 @@ readonly class ConfiguredCronActions implements \IteratorAggregate
             }
 
             $cronActions[] = CronAction::create(
-                id: $action['action'],
+                id: CronActionId::from($action['action']),
                 expression: new CronExpression($action['expression']),
             );
         }
@@ -49,6 +49,10 @@ readonly class ConfiguredCronActions implements \IteratorAggregate
 
             if (!is_bool($configuredCronAction['enabled'])) {
                 throw new InvalidCronConfig('configuration item "enabled" must be a boolean');
+            }
+
+            if (null === CronActionId::tryFrom((string) $configuredCronAction['action'])) {
+                throw new InvalidCronConfig(sprintf('"%s" is not a supported cron action', $configuredCronAction['action']));
             }
 
             if (!CronExpression::isValidExpression($configuredCronAction['expression'])) {
