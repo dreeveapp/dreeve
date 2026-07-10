@@ -44,7 +44,7 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: |
-            robiningelbrecht/strava-statistics
+            robiningelbrecht/dreeve
             ghcr.io/${{ github.repository }}
 
       - name: Set up QEMU
@@ -67,7 +67,7 @@ jobs:
       - name: Generate artifact attestation for Docker Hub
         uses: actions/attest-build-provenance@v4
         with:
-          subject-name: index.docker.io/robiningelbrecht/strava-statistics
+          subject-name: index.docker.io/robiningelbrecht/dreeve
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: false
 

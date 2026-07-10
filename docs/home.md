@@ -8,22 +8,12 @@
 <a href="https://raw.githubusercontent.com/dreeveapp/dreeve/refs/heads/master/LICENSE"><img src="https://img.shields.io/github/license/dreeveapp/dreeve?color=428f7e&logo=open%20source%20initiative&logoColor=white" alt="License"></a>
 <a href="https://hub.docker.com/r/robiningelbrecht/dreeve"><img src="https://img.shields.io/docker/image-size/robiningelbrecht/dreeve?logo=docker&logoColor=white" alt="Docker Image Size"></a>
 <a href="https://hub.docker.com/r/robiningelbrecht/dreeve"><img src="https://img.shields.io/docker/v/robiningelbrecht/dreeve?sort=semver&logo=docker&logoColor=white" alt="Docker version"></a>
-<a href="https://discord.gg/p4zpZyCHNc"><img src="https://img.shields.io/badge/Statistics%20for%20Strava-%235865F4?logo=discord&logoColor=%23ffffff&label=%20&labelColor=585858" alt="Discord server"></a>  
+<a href="https://discord.gg/p4zpZyCHNc"><img src="https://img.shields.io/badge/Dreeve?logo=discord&logoColor=%23ffffff&label=%20&labelColor=585858" alt="Discord server"></a>  
 </div>
 
 ---
 
-> [!NOTE]
-> On June 1, 2026, Strava announced significant changes to its Developer Program,
-> including a requirement for developers to have an active Strava subscription in order to access the API.
->
-> We are exploring possibilities to serve people with an active Strava subscription as well as people that want to move away from Strava.
-> Keep an eye out on future release notes or join our Discord server to stay up to date.
-
 # :camera_flash: Showcase
-
-> [!NOTE]
-> **Note** This app is in no way affiliated with or part of the official Strava software suite.
 
 [Showcase](https://www.youtube.com/embed/UfVLXqAtlX8 ':include :type=iframe width=100% height=400px title="Dreeve" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen')
 
@@ -40,7 +30,6 @@
 * **Heatmap** - Visualize where you’ve been active the most
 * **Milestones** - A timeline view of your key achievements and milestones over time
 * **Strava Rewind** - A fun way to look back on your year in motion
-* **Challenges** - See which Strava challenges you've conquered
 * **Activity Photos** - Relive your moments with a photo archive
 * **User badges** - Shareable badges you can embed on your website, blog, or forum profiles
 * **PWA support** - Use it like a native app on your phone
