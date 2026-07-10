@@ -5,23 +5,15 @@ declare(strict_types=1);
 namespace App\Tests\Infrastructure\ValueObject\String;
 
 use App\Infrastructure\ValueObject\String\Slug;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class SlugTest extends TestCase
 {
-    public function testItShouldSlugify(): void
+    #[DataProvider(methodName: 'provideData')]
+    public function testItShouldSlugify(string $input, string $expected): void
     {
-        self::assertEquals('morning-ride', (string) Slug::fromString('Morning Ride'));
-        self::assertEquals('morning-ride', (string) Slug::fromString('  Morning   Ride  '));
-        self::assertEquals('morning-ride', (string) Slug::fromString('Morning Ride! 🚴'));
-        self::assertEquals('roc-d-azur-2024', (string) Slug::fromString("Roc d'Azur 2024"));
-        self::assertEquals('hello-world', (string) Slug::fromString('hello_world'));
-        self::assertEquals('123numbers456', (string) Slug::fromString('123numbers456'));
-    }
-
-    public function testItShouldSlugifyToEmptyStringWhenOnlySymbols(): void
-    {
-        self::assertEquals('', (string) Slug::fromString('🚴🚴'));
+        self::assertEquals($expected, (string) Slug::fromString($input));
     }
 
     public function testItShouldThrowWhenEmpty(): void
@@ -29,5 +21,21 @@ class SlugTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         Slug::fromString('');
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function provideData(): array
+    {
+        return [
+            'simple' => ['Morning Ride', 'morning-ride'],
+            'surrounding whitespace' => ['  Morning   Ride  ', 'morning-ride'],
+            'special characters and emoji' => ['Morning Ride! 🚴', 'morning-ride'],
+            'apostrophe' => ["Roc d'Azur 2024", 'roc-d-azur-2024'],
+            'underscores' => ['hello_world', 'hello-world'],
+            'numbers' => ['123numbers456', '123numbers456'],
+            'only symbols' => ['🚴🚴', ''],
+        ];
     }
 }
