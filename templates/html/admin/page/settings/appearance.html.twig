@@ -11,65 +11,65 @@
         <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
             <input type="hidden" name="group" value="{{ group.value }}">
             <div class="mb-5">
-                <h3 class="text-lg font-semibold">{{ "Appearance"|trans }}</h3>
+                <h3 class="text-lg font-semibold">{{ "Appearance"|trans({}, 'admin') }}</h3>
             </div>
             <div data-form-error class="form-error hidden" role="alert"></div>
             <div class="flex flex-col gap-4">
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div>
-                        <label for="unitSystem">{{ "Unit system"|trans }}</label>
+                        <label for="unitSystem">{{ "Unit system"|trans({}, 'admin') }}</label>
                         <select id="unitSystem" name="data[unitSystem]">
                             {% for unitSystem in unitSystemOptions %}
                                 <option value="{{ unitSystem.value }}" {{ (settings.unitSystem ?? 'metric') == unitSystem.value ? 'selected' : '' }}>{{ unitSystem.value }}</option>
                             {% endfor %}
                         </select>
                         <p class="description">
-                            {{ "The unit system used to render distances, elevations, temperatures, etc."|trans }}
+                            {{ "The unit system used to render distances, elevations, temperatures, etc."|trans({}, 'admin') }}
                         </p>
                     </div>
                     <div>
-                        <label for="locale">{{ "Locale"|trans }}</label>
+                        <label for="locale">{{ "Locale"|trans({}, 'admin') }}</label>
                         <select id="locale" name="data[locale]">
                             {% for locale in localeOptions %}
                                 <option value="{{ locale.value }}" {{ (settings.locale ?? 'en_US') == locale.value ? 'selected' : '' }}>{{ locale.value }}</option>
                             {% endfor %}
                         </select>
                         <p class="description">
-                            {{ "The locale used to render the app."|trans }}
+                            {{ "The locale used to render the app."|trans({}, 'admin') }}
                         </p>
                     </div>
                 </div>
                 <div class="grid gap-4 sm:grid-cols-3">
                     <div>
-                        <label for="timeFormat">{{ "Time format"|trans }}</label>
+                        <label for="timeFormat">{{ "Time format"|trans({}, 'admin') }}</label>
                         <select id="timeFormat" name="data[timeFormat]">
                             {% for timeFormat in timeFormatOptions %}
                                 <option value="{{ timeFormat.value }}" {{ (settings.timeFormat ?? 24) == timeFormat.value ? 'selected' : '' }}>
-                                    {{ timeFormat.value == 24 ? "24-hour"|trans : "AM/PM"|trans }}
+                                    {{ timeFormat.value == 24 ? "24-hour"|trans({}, 'admin') : "AM/PM"|trans({}, 'admin') }}
                                 </option>
                             {% endfor %}
                         </select>
                     </div>
                     <div>
-                        <label for="dateFormatShort">{{ "Short date format"|trans }}</label>
+                        <label for="dateFormatShort">{{ "Short date format"|trans({}, 'admin') }}</label>
                         <input type="text" id="dateFormatShort" name="data[dateFormat][short]" value="{{ dateFormat.short ?? 'd-m-y' }}" required>
                         <p class="description">
-                            {{ "PHP date format for short dates, e.g. d-m-y renders to 01-01-25."|trans }}
+                            {{ "PHP date format for short dates, e.g. d-m-y renders to 01-01-25."|trans({}, 'admin') }}
                         </p>
                     </div>
                     <div>
-                        <label for="dateFormatNormal">{{ "Normal date format"|trans }}</label>
+                        <label for="dateFormatNormal">{{ "Normal date format"|trans({}, 'admin') }}</label>
                         <input type="text" id="dateFormatNormal" name="data[dateFormat][normal]" value="{{ dateFormat.normal ?? 'd-m-Y' }}" required>
                         <p class="description">
-                            {{ "PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025."|trans }}
+                            {{ "PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025."|trans({}, 'admin') }}
                         </p>
                     </div>
                 </div>
             </div>
             <div class="mt-6">
-                <label class="mt-0!">{{ "Hide photos for sport types"|trans }}</label>
+                <label class="mt-0!">{{ "Hide photos for sport types"|trans({}, 'admin') }}</label>
                 <p class="description mb-2">
-                    {{ "Photos of the selected sport types are excluded from the photo gallery."|trans }}
+                    {{ "Photos of the selected sport types are excluded from the photo gallery."|trans({}, 'admin') }}
                 </p>
                 <div class="mt-1 max-h-40 overflow-y-auto flex flex-col gap-1.5 rounded-lg border border-gray-200 p-2">
                     {% for sportType in enum('App\\Domain\\Activity\\SportType\\SportType').cases() %}
@@ -82,14 +82,14 @@
                 </div>
             </div>
             <div class="mt-6">
-                <label class="mt-0!">{{ "Sport types sorting order"|trans }}</label>
+                <label class="mt-0!">{{ "Sport types sorting order"|trans({}, 'admin') }}</label>
                 <p class="description mb-2">
-                    {{ "Drag to set the order in which sport types are displayed throughout the app."|trans }}
+                    {{ "Drag to set the order in which sport types are displayed throughout the app."|trans({}, 'admin') }}
                 </p>
                 <div class="mt-1 max-h-64 overflow-y-auto flex flex-col gap-1.5 rounded-lg border border-gray-200 p-2" data-sortable-list>
                     {% for sportType in sportTypes %}
                         <div class="flex items-center gap-2 rounded-md border border-gray-200 bg-white px-2 py-1.5 shadow-xs" data-sort-item>
-                            <span class="shrink-0 text-gray-400 cursor-grab active:cursor-grabbing" data-drag-handle title="{{ "Drag to reorder"|trans }}">
+                            <span class="shrink-0 text-gray-400 cursor-grab active:cursor-grabbing" data-drag-handle title="{{ "Drag to reorder"|trans({}, 'admin') }}">
                                 <svg class="size-4.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"/>
                                 </svg>
@@ -102,8 +102,8 @@
             </div>
             <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
                 <button type="submit" data-has-loading-state class="group btn--primary">
-                    <span class="label">{{ "Save settings"|trans }}</span>
-                    <span class="label--loading">{{ "Saving..."|trans }}</span>
+                    <span class="label">{{ "Save settings"|trans({}, 'admin') }}</span>
+                    <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
                 </button>
             </div>
         </form>

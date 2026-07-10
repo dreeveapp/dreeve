@@ -6,7 +6,7 @@
             <div class="mb-5">
                 <h3 class="text-lg font-semibold">{{ "Gear maintenance"|trans }}</h3>
                 <p class="mt-1 text-sm text-gray-500 max-w-2xl">
-                    {{ "Track gear usage from your activities and stay on top of usage- and time-based maintenance."|trans }}
+                    {{ "Track gear usage from your activities and stay on top of usage- and time-based maintenance."|trans({}, 'admin') }}
                 </p>
             </div>
             <div data-form-error class="form-error hidden" role="alert"></div>
@@ -14,9 +14,9 @@
                 <div class="flex items-start gap-2">
                     <input type="checkbox" id="enabled" name="enabled" value="true" {{ gearMaintenanceConfig.isFeatureEnabled ? 'checked' }} class="mt-0.5">
                     <div>
-                        <label for="enabled" class="mt-0!">{{ "Enabled"|trans }}</label>
+                        <label for="enabled" class="mt-0!">{{ "Enabled"|trans({}, 'admin') }}</label>
                         <p class="mt-0.5 text-xxs text-gray-500">
-                            {{ "Turn gear maintenance tracking on or off."|trans }}
+                            {{ "Turn gear maintenance tracking on or off."|trans({}, 'admin') }}
                         </p>
                     </div>
                 </div>
@@ -24,17 +24,17 @@
                 <div class="flex items-start gap-2">
                     <input type="checkbox" id="ignoreRetiredGear" name="ignoreRetiredGear" value="true" {{ gearMaintenanceConfig.ignoreRetiredGear ? 'checked' }} class="mt-0.5">
                     <div>
-                        <label for="ignoreRetiredGear" class="mt-0!">{{ "Ignore retired gear"|trans }}</label>
+                        <label for="ignoreRetiredGear" class="mt-0!">{{ "Ignore retired gear"|trans({}, 'admin') }}</label>
                         <p class="mt-0.5 text-xxs text-gray-500">
-                            {{ "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."|trans }}
+                            {{ "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."|trans({}, 'admin') }}
                         </p>
                     </div>
                 </div>
             </div>
             <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
                 <button type="submit" data-has-loading-state class="group btn--primary">
-                    <span class="label">{{ "Save settings"|trans }}</span>
-                    <span class="label--loading">{{ "Saving..."|trans }}</span>
+                    <span class="label">{{ "Save settings"|trans({}, 'admin') }}</span>
+                    <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
                 </button>
             </div>
         </form>
@@ -42,24 +42,24 @@
             <div class="flex items-center justify-between mb-4">
                 <div>
                     <h3 class="text-lg font-semibold">{{ "Components"|trans }}</h3>
-                    <p class="mt-1 text-sm text-gray-500">{{ "Parts you track maintenance for, eg: chains, cassettes, brake pads..."|trans }}</p>
+                    <p class="mt-1 text-sm text-gray-500">{{ "Parts you track maintenance for, eg: chains, cassettes, brake pads..."|trans({}, 'admin') }}</p>
                 </div>
                 <a href="{{ relativeUrl(path('admin_add_gear_maintenance_component')) }}" type="button" class="btn--add">
                     <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
                     </svg>
-                    <span>{{ "Add component"|trans }}</span>
+                    <span>{{ "Add component"|trans({}, 'admin') }}</span>
                 </a>
             </div>
             <div class="relative overflow-x-auto">
                 <table class="data-table">
                     <thead>
                     <tr>
-                        <th scope="col" class="text-left">{{ "Component"|trans }}</th>
-                        <th scope="col" class="text-left">{{ "Attached to"|trans }}</th>
-                        <th scope="col">{{ "Tasks"|trans }}</th>
+                        <th scope="col" class="text-left">{{ "Component"|trans({}, 'admin') }}</th>
+                        <th scope="col" class="text-left">{{ "Attached to"|trans({}, 'admin') }}</th>
+                        <th scope="col">{{ "Tasks"|trans({}, 'admin') }}</th>
                         <th scope="col">{{ "Purchase price"|trans }}</th>
-                        <th scope="col" class="narrow"><span class="sr-only">{{ "Edit"|trans }}</span></th>
+                        <th scope="col" class="narrow"><span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -96,14 +96,14 @@
                             </td>
                             <td class="narrow whitespace-nowrap">
                                 <div class="inline-flex items-center gap-2">
-                                    <a href="{{ relativeUrl(path('admin_edit_gear_maintenance_component', {gearComponentId: component.getId()})) }}" class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-primary" title="{{ "Edit"|trans }}">
-                                        <span class="sr-only">{{ "Edit"|trans }}</span>
+                                    <a href="{{ relativeUrl(path('admin_edit_gear_maintenance_component', {gearComponentId: component.getId()})) }}" class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-primary" title="{{ "Edit"|trans({}, 'admin') }}">
+                                        <span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span>
                                         <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
                                         </svg>
                                     </a>
-                                    <a href="{{ relativeUrl(path('admin_delete_gear_maintenance_component', {gearComponentId: component.getId()})) }}" class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600" title="{{ "Delete"|trans }}">
-                                        <span class="sr-only">{{ "Delete"|trans }}</span>
+                                    <a href="{{ relativeUrl(path('admin_delete_gear_maintenance_component', {gearComponentId: component.getId()})) }}" class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600" title="{{ "Delete"|trans({}, 'admin') }}">
+                                        <span class="sr-only">{{ "Delete"|trans({}, 'admin') }}</span>
                                         <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
                                         </svg>
@@ -121,8 +121,8 @@
                                         </svg>
                                     </span>
                                     <div class="flex flex-col gap-1">
-                                        <span class="text-sm font-medium text-gray-800">{{ "No components yet."|trans }}</span>
-                                        <span class="text-xs text-gray-500">{{ "Add a component to start tracking maintenance."|trans }}</span>
+                                        <span class="text-sm font-medium text-gray-800">{{ "No components yet."|trans({}, 'admin') }}</span>
+                                        <span class="text-xs text-gray-500">{{ "Add a component to start tracking maintenance."|trans({}, 'admin') }}</span>
                                     </div>
                                 </div>
                             </td>

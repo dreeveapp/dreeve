@@ -17,32 +17,32 @@
         <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
             <input type="hidden" name="group" value="{{ group.value }}">
             <div class="mb-5">
-                <h3 class="text-lg font-semibold">{{ "Integrations"|trans }}</h3>
+                <h3 class="text-lg font-semibold">{{ "Integrations"|trans({}, 'admin') }}</h3>
             </div>
             <div data-form-error class="form-error hidden" role="alert"></div>
             <div class="flex flex-col gap-4">
-                <h4 class="mt-0!">{{ "AI"|trans }}</h4>
+                <h4 class="mt-0!">{{ "AI"|trans({}, 'admin') }}</h4>
                 <div>
                     <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
                         <input type="checkbox" id="aiEnabled" name="data[ai][enabled]" value="1" {{ (ai.enabled ?? false) ? 'checked' : '' }}>
-                        <span>{{ "Enable AI integration"|trans }}</span>
+                        <span>{{ "Enable AI integration"|trans({}, 'admin') }}</span>
                     </label>
                     <p class="description">
-                        {{ "Turns on the AI-powered workout assistant, which can then be used from the command line."|trans }}
+                        {{ "Turns on the AI-powered workout assistant, which can then be used from the command line."|trans({}, 'admin') }}
                     </p>
                 </div>
                 <div class="flex flex-col gap-4" data-dependent-on="aiEnabled" data-visible-when="checked">
                     <div>
                         <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
                             <input type="checkbox" name="data[ai][enableUI]" value="1" {{ (ai.enableUI ?? false) ? 'checked' : '' }}>
-                            <span>{{ "Show the workout assistant in the UI."|trans }}</span>
+                            <span>{{ "Show the workout assistant in the UI."|trans({}, 'admin') }}</span>
                         </label>
                         <p class="description">
-                            {{ "Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible."|trans }}
+                            {{ "Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible."|trans({}, 'admin') }}
                         </p>
                     </div>
                     <div>
-                        <label for="aiProvider">{{ "Provider"|trans }}</label>
+                        <label for="aiProvider">{{ "Provider"|trans({}, 'admin') }}</label>
                         <select id="aiProvider" name="data[ai][provider]">
                             <option value="">{{ "None"|trans }}</option>
                             {% for provider in aiProviders %}
@@ -52,44 +52,44 @@
                     </div>
                     <div class="grid gap-4 sm:grid-cols-2">
                         <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviders|join(',') }}">
-                            <label for="aiModel">{{ "Model"|trans }}</label>
+                            <label for="aiModel">{{ "Model"|trans({}, 'admin') }}</label>
                             <input type="text" id="aiModel" name="data[ai][configuration][model]" value="{{ aiConfiguration.model ?? '' }}">
                         </div>
                         <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviders|filter(p => p != 'ollama')|join(',') }}">
-                            <label for="aiKey">{{ "API key"|trans }}</label>
+                            <label for="aiKey">{{ "API key"|trans({}, 'admin') }}</label>
                             <input type="text" id="aiKey" value="{{ AIApiKey }}" disabled>
                             <p class="description">
-                                {{ "Configured via an environment variable and cannot be changed here."|trans }}
+                                {{ "Configured via an environment variable and cannot be changed here."|trans({}, 'admin') }}
                             </p>
                         </div>
                         <div data-dependent-on="aiProvider" data-visible-when="ollama">
-                            <label for="aiUrl">{{ "URL"|trans }}</label>
+                            <label for="aiUrl">{{ "URL"|trans({}, 'admin') }}</label>
                             <input type="text" id="aiUrl" name="data[ai][configuration][url]" value="{{ aiConfiguration.url ?? '' }}">
-                            <p class="description">{{ "Only required for the Ollama provider."|trans }}</p>
+                            <p class="description">{{ "Only required for the Ollama provider."|trans({}, 'admin') }}</p>
                         </div>
                         <div data-dependent-on="aiProvider" data-visible-when="openAILike">
-                            <label for="aiBaseUri">{{ "Base URI"|trans }}</label>
+                            <label for="aiBaseUri">{{ "Base URI"|trans({}, 'admin') }}</label>
                             <input type="text" id="aiBaseUri" name="data[ai][configuration][baseUri]" value="{{ aiConfiguration.baseUri ?? '' }}">
-                            <p class="description">{{ "Only required for the OpenAI-like provider."|trans }}</p>
+                            <p class="description">{{ "Only required for the OpenAI-like provider."|trans({}, 'admin') }}</p>
                         </div>
                         <div data-dependent-on="aiProvider" data-visible-when="azureOpenAI">
-                            <label for="aiEndpoint">{{ "Endpoint"|trans }}</label>
+                            <label for="aiEndpoint">{{ "Endpoint"|trans({}, 'admin') }}</label>
                             <input type="text" id="aiEndpoint" name="data[ai][configuration][endpoint]" value="{{ aiConfiguration.endpoint ?? '' }}">
-                            <p class="description">{{ "Only required for the Azure OpenAI provider."|trans }}</p>
+                            <p class="description">{{ "Only required for the Azure OpenAI provider."|trans({}, 'admin') }}</p>
                         </div>
                         <div data-dependent-on="aiProvider" data-visible-when="azureOpenAI">
-                            <label for="aiVersion">{{ "Version"|trans }}</label>
+                            <label for="aiVersion">{{ "Version"|trans({}, 'admin') }}</label>
                             <input type="text" id="aiVersion" name="data[ai][configuration][version]" value="{{ aiConfiguration.version ?? '' }}">
-                            <p class="description">{{ "Only required for the Azure OpenAI provider."|trans }}</p>
+                            <p class="description">{{ "Only required for the Azure OpenAI provider."|trans({}, 'admin') }}</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="mt-6 border-t border-gray-200 pt-6" data-repeater data-repeater-min="0"
                  data-dependent-on="aiEnabled" data-visible-when="checked">
-                <label class="mt-0!">{{ "Chat commands"|trans }}</label>
+                <label class="mt-0!">{{ "Chat commands"|trans({}, 'admin') }}</label>
                 <p class="description mb-2">
-                    {{ "Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash."|trans }}
+                    {{ "Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash."|trans({}, 'admin') }}
                 </p>
                 <div class="flex flex-col gap-3"
                      data-repeater-list
@@ -99,50 +99,50 @@
                     <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
                     </svg>
-                    <span>{{ "Add command"|trans }}</span>
+                    <span>{{ "Add command"|trans({}, 'admin') }}</span>
                 </button>
                 <template data-repeater-template>
                     <div class="relative flex flex-col gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater-item>
                         <button type="button" data-repeater-remove
                                 class="unstyled cursor-pointer absolute top-2 right-2 grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
-                                aria-label="{{ "Remove command"|trans }}">
+                                aria-label="{{ "Remove command"|trans({}, 'admin') }}">
                             <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                             </svg>
                         </button>
                         <div class="pr-11">
-                            <label class="mt-0!">{{ "Command"|trans }}</label>
+                            <label class="mt-0!">{{ "Command"|trans({}, 'admin') }}</label>
                             <input type="text" name="data[ai][agent][commands][__index__][command]"
-                                   data-repeater-field="command" placeholder="{{ "ftp"|trans }}">
+                                   data-repeater-field="command" placeholder="{{ "ftp"|trans({}, 'admin') }}">
                         </div>
                         <div>
-                            <label class="mt-0!">{{ "Message"|trans }}</label>
+                            <label class="mt-0!">{{ "Message"|trans({}, 'admin') }}</label>
                             <input type="text" name="data[ai][agent][commands][__index__][message]"
-                                   data-repeater-field="message" placeholder="{{ "What is my FTP?"|trans }}">
+                                   data-repeater-field="message" placeholder="{{ "What is my FTP?"|trans({}, 'admin') }}">
                         </div>
                     </div>
                 </template>
             </div>
             <div class="mt-6 border-t border-gray-200 pt-6" data-repeater data-repeater-min="0">
-                <h4 class="mt-0!">{{ "Notification services"|trans }}</h4>
+                <h4 class="mt-0!">{{ "Notification services"|trans({}, 'admin') }}</h4>
                 <p class="description mb-2">
-                    {{ "{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely."|trans({'{shoutrrr}': '<a class="underline" href="https://shoutrrr.nickfedor.com/dev/services/overview/" target="_blank" rel="noopener">Shoutrrr</a>'})|raw }}
+                    {{ "{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely."|trans({'{shoutrrr}': '<a class="underline" href="https://shoutrrr.nickfedor.com/dev/services/overview/" target="_blank" rel="noopener">Shoutrrr</a>'}, 'admin')|raw }}
                 </p>
                 <div class="flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ notificationServiceRows|json_encode|e('html_attr') }}"></div>
                 <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
                     <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
                     </svg>
-                    <span>{{ "Add service"|trans }}</span>
+                    <span>{{ "Add service"|trans({}, 'admin') }}</span>
                 </button>
                 <template data-repeater-template>
                     <div class="flex items-end gap-2" data-repeater-item>
                         <div class="flex-1">
-                            <input type="text" name="data[notifications][services][]" data-repeater-field="value" placeholder="{{ "discord://token@id"|trans }}">
+                            <input type="text" name="data[notifications][services][]" data-repeater-field="value" placeholder="{{ "discord://token@id"|trans({}, 'admin') }}">
                         </div>
                         <button type="button" data-repeater-remove
                                 class="unstyled cursor-pointer grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
-                                aria-label="{{ "Remove"|trans }}">
+                                aria-label="{{ "Remove"|trans({}, 'admin') }}">
                             <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                             </svg>
@@ -152,8 +152,8 @@
             </div>
             <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
                 <button type="submit" data-has-loading-state class="group btn--primary">
-                    <span class="label">{{ "Save settings"|trans }}</span>
-                    <span class="label--loading">{{ "Saving..."|trans }}</span>
+                    <span class="label">{{ "Save settings"|trans({}, 'admin') }}</span>
+                    <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
                 </button>
             </div>
         </form>

@@ -29,12 +29,12 @@
                     <ul id="submenu-maintenance" class="{{ inMaintenance ? '' : 'hidden' }} mt-1 space-y-1">
                         <li>
                             <a href="{{ relativeUrl(path('admin_manage_gear_maintenance_logs_overview')) }}" class="ps-5" {{ inMaintenanceLog ? 'aria-selected="true"' : '' }}>
-                                {{ "Log"|trans }}
+                                {{ "Log"|trans({}, 'admin') }}
                             </a>
                         </li>
                         <li>
                             <a href="{{ relativeUrl(path('admin_manage_gear_maintenance_config')) }}" class="ps-5" {{ inMaintenanceConfig ? 'aria-selected="true"' : '' }}>
-                                {{ "Config"|trans }}
+                                {{ "Config"|trans({}, 'admin') }}
                             </a>
                         </li>
                     </ul>
@@ -56,19 +56,19 @@
         {% set inIntegrations = isActiveNavItem({'/admin/settings/integrations': false}) %}
         {% set inDaemon = isActiveNavItem({'/admin/settings/daemon': false}) %}
         {% set inDashboard = isActiveNavItem({'/admin/settings/dashboard': false}) %}
-        <nav class="contextual-panel" aria-label="{{ "Settings"|trans }}">
+        <nav class="contextual-panel" aria-label="{{ "Settings"|trans({}, 'admin') }}">
             <p class="px-2 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
-                {{ "Settings"|trans }}
+                {{ "Settings"|trans({}, 'admin') }}
             </p>
             <ul class="space-y-1">
                 <li>
                     <a href="{{ relativeUrl(path('admin_settings', {'group': 'general'})) }}" {{ inGeneral ? 'aria-selected="true"' : '' }}>
-                        {{ "General"|trans }}
+                        {{ "General"|trans({}, 'admin') }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ relativeUrl(path('admin_settings', {'group': 'appearance'})) }}" {{ inAppearance ? 'aria-selected="true"' : '' }}>
-                        {{ "Appearance"|trans }}
+                        {{ "Appearance"|trans({}, 'admin') }}
                     </a>
                 </li>
                 <li>
@@ -79,28 +79,28 @@
                 {% if importMode.isStravaApi() %}
                     <li>
                         <a href="{{ relativeUrl(path('admin_settings', {'group': 'import'})) }}" {{ inImport ? 'aria-selected="true"' : '' }}>
-                            {{ "Strava import"|trans }}
+                            {{ "Strava import"|trans({}, 'admin') }}
                         </a>
                     </li>
                 {% endif %}
                 <li>
                     <a href="{{ relativeUrl(path('admin_settings', {'group': 'metrics'})) }}" {{ inMetrics ? 'aria-selected="true"' : '' }}>
-                        {{ "Metrics"|trans }}
+                        {{ "Metrics"|trans({}, 'admin') }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ relativeUrl(path('admin_settings', {'group': 'zwift'})) }}" {{ inZwift ? 'aria-selected="true"' : '' }}>
-                        {{ "Zwift"|trans }}
+                        {{ "Zwift"|trans({}, 'admin') }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ relativeUrl(path('admin_settings', {'group': 'integrations'})) }}" {{ inIntegrations ? 'aria-selected="true"' : '' }}>
-                        {{ "Integrations"|trans }}
+                        {{ "Integrations"|trans({}, 'admin') }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ relativeUrl(path('admin_settings', {'group': 'daemon'})) }}" {{ inDaemon ? 'aria-selected="true"' : '' }}>
-                        {{ "Daemon"|trans }}
+                        {{ "Daemon"|trans({}, 'admin') }}
                     </a>
                 </li>
             </ul>

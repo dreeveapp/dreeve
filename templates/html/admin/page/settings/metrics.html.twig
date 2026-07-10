@@ -9,13 +9,13 @@
         <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
             <input type="hidden" name="group" value="{{ group.value }}">
             <div class="mb-5">
-                <h3 class="text-lg font-semibold">{{ "Metrics"|trans }}</h3>
+                <h3 class="text-lg font-semibold">{{ "Metrics"|trans({}, 'admin') }}</h3>
             </div>
             <div data-form-error class="form-error hidden" role="alert"></div>
             <div data-repeater data-repeater-min="0">
                 <label class="mt-0!">{{ "Eddington"|trans }}</label>
                 <p class="description mb-2">
-                    {{ "Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget."|trans }}
+                    {{ "Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget."|trans({}, 'admin') }}
                 </p>
                 <div class="flex flex-col gap-3"
                      data-repeater-list
@@ -25,41 +25,41 @@
                     <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
                     </svg>
-                    <span>{{ "Add Eddington"|trans }}</span>
+                    <span>{{ "Add Eddington"|trans({}, 'admin') }}</span>
                 </button>
                 <template data-repeater-template>
                     <div class="relative flex flex-col gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater-item>
                         <button type="button" data-repeater-remove
                                 class="unstyled cursor-pointer absolute top-2 right-2 grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
-                                aria-label="{{ "Remove Eddington"|trans }}">
+                                aria-label="{{ "Remove Eddington"|trans({}, 'admin') }}">
                             <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                             </svg>
                         </button>
                         <div class="pr-11">
-                            <label class="mt-0!">{{ "Label"|trans }}</label>
+                            <label class="mt-0!">{{ "Label"|trans({}, 'admin') }}</label>
                             <input type="text" name="data[eddington][__index__][label]"
-                                   data-repeater-field="label" required placeholder="{{ "Ride"|trans }}">
+                                   data-repeater-field="label" required placeholder="{{ "Ride"|trans({}, 'admin') }}">
                         </div>
                         <div class="flex flex-col gap-2">
                             <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
                                 <input type="checkbox" name="data[eddington][__index__][showInNavBar]" value="1"
                                        data-repeater-field="showInNavBar">
-                                <span>{{ "Show in navigation bar"|trans }}</span>
+                                <span>{{ "Show in navigation bar"|trans({}, 'admin') }}</span>
                             </label>
                             <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
                                 <input type="checkbox" name="data[eddington][__index__][showInDashboardWidget]" value="1"
                                        data-repeater-field="showInDashboardWidget">
-                                <span>{{ "Show in dashboard widget"|trans }}</span>
+                                <span>{{ "Show in dashboard widget"|trans({}, 'admin') }}</span>
                             </label>
                         </div>
                         <div>
-                            <label class="mt-0!">{{ "Sport types to include"|trans }}</label>
+                            <label class="mt-0!">{{ "Sport types to include"|trans({}, 'admin') }}</label>
                             <p class="description mb-2">
-                                {{ "All sport types must belong to the same activity type."|trans }}
+                                {{ "All sport types must belong to the same activity type."|trans({}, 'admin') }}
                             </p>
                             <div class="mt-1 max-h-40 overflow-y-auto flex flex-col gap-1.5 rounded-lg border border-gray-200 p-2"
-                                 data-required-checkbox-group="{{ "Select at least one sport type."|trans }}">
+                                 data-required-checkbox-group="{{ "Select at least one sport type."|trans({}, 'admin') }}">
                                 {% for sportType in enum('App\\Domain\\Activity\\SportType\\SportType').cases() %}
                                     <label class="flex items-center gap-2 mt-0! text-sm font-normal cursor-pointer">
                                         <input type="checkbox" name="data[eddington][__index__][sportTypesToInclude][]"
@@ -73,25 +73,25 @@
                 </template>
             </div>
             <div class="mt-6 border-t border-gray-200 pt-6" data-repeater data-repeater-min="0">
-                <label class="mt-0!">{{ "Activities excluded from peak power outputs"|trans }}</label>
+                <label class="mt-0!">{{ "Activities excluded from peak power outputs"|trans({}, 'admin') }}</label>
                 <p class="description mb-2">
-                    {{ "Activity IDs to exclude when calculating peak power outputs."|trans }}
+                    {{ "Activity IDs to exclude when calculating peak power outputs."|trans({}, 'admin') }}
                 </p>
                 <div class="flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ excludedRows|json_encode|e('html_attr') }}"></div>
                 <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
                     <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
                     </svg>
-                    <span>{{ "Add activity"|trans }}</span>
+                    <span>{{ "Add activity"|trans({}, 'admin') }}</span>
                 </button>
                 <template data-repeater-template>
                     <div class="flex items-end gap-2" data-repeater-item>
                         <div class="flex-1">
-                            <input type="text" name="data[excludeActivitiesFromPeakPowerOutputs][]" data-repeater-field="value" placeholder="{{ "Activity ID"|trans }}">
+                            <input type="text" name="data[excludeActivitiesFromPeakPowerOutputs][]" data-repeater-field="value" placeholder="{{ "Activity ID"|trans({}, 'admin') }}">
                         </div>
                         <button type="button" data-repeater-remove
                                 class="unstyled cursor-pointer grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
-                                aria-label="{{ "Remove"|trans }}">
+                                aria-label="{{ "Remove"|trans({}, 'admin') }}">
                             <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                             </svg>
@@ -101,8 +101,8 @@
             </div>
             <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
                 <button type="submit" data-has-loading-state class="group btn--primary">
-                    <span class="label">{{ "Save settings"|trans }}</span>
-                    <span class="label--loading">{{ "Saving..."|trans }}</span>
+                    <span class="label">{{ "Save settings"|trans({}, 'admin') }}</span>
+                    <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
                 </button>
             </div>
         </form>

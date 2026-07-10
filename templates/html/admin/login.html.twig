@@ -19,7 +19,7 @@
         <div class="mx-auto w-full max-w-sm">
             <img class="mx-auto h-12 w-auto" src="{{ relativeUrl('assets/images/logo.svg') }}" alt="{{ appName }}">
             <h1 class="mt-6 text-center text-2xl font-bold tracking-tight">{{ appName }}</h1>
-            <p class="mt-1 text-center text-sm text-gray-500">{{ "Sign in to the admin panel"|trans }}</p>
+            <p class="mt-1 text-center text-sm text-gray-500">{{ "Sign in to the admin panel"|trans({}, 'admin') }}</p>
             {% if error %}
                 <div class="mt-6 overflow-hidden rounded-xl border border-red-200 bg-red-100/60 text-red-700">
                     <p class="px-4 py-3 text-sm">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
@@ -27,28 +27,28 @@
             {% endif %}
             <form class="mt-6 space-y-4" method="post" action="{{ relativeUrl(path('admin_login')) }}">
                 <div>
-                    <label for="username">{{ "Username"|trans }}</label>
+                    <label for="username">{{ "Username"|trans({}, 'admin') }}</label>
                     <div class="mt-1 flex items-center rounded-xl border border-gray-300 shadow-sm overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
                         <span class="flex items-center self-stretch px-3 bg-gray-100 text-gray-500 border-r border-gray-300">
                             <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                               <path stroke="currentColor" stroke-width="2" d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                             </svg>
                         </span>
-                        <input type="text" id="username" name="_username" autocomplete="username" required autofocus placeholder="{{ "Enter your username"|trans }}"
+                        <input type="text" id="username" name="_username" autocomplete="username" required autofocus placeholder="{{ "Enter your username"|trans({}, 'admin') }}"
                                class="unstyled block w-full border-0 px-3 py-2 bg-transparent focus:outline-none focus:ring-0">
                     </div>
                 </div>
                 <div>
-                    <label for="password">{{ "Password"|trans }}</label>
+                    <label for="password">{{ "Password"|trans({}, 'admin') }}</label>
                     <div class="mt-1 flex items-center rounded-xl border border-gray-300 shadow-sm overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
                         <span class="flex items-center self-stretch px-3 bg-gray-100 text-gray-500 border-r border-gray-300">
                             <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v3m-3-6V7a3 3 0 1 1 6 0v4m-8 0h10a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1Z"/>
                             </svg>
                         </span>
-                        <input type="password" id="password" name="_password" autocomplete="current-password" required placeholder="{{ "Enter your password"|trans }}"
+                        <input type="password" id="password" name="_password" autocomplete="current-password" required placeholder="{{ "Enter your password"|trans({}, 'admin') }}"
                                class="unstyled block w-full border-0 px-3 py-2 bg-transparent focus:outline-none focus:ring-0">
-                        <button type="button" data-toggle-password="password" aria-label="{{ "Show password"|trans }}"
+                        <button type="button" data-toggle-password="password" aria-label="{{ "Show password"|trans({}, 'admin') }}"
                                 class="unstyled cursor-pointer flex items-center self-stretch px-3 text-gray-500 hover:text-gray-700 focus:outline-none">
                             <svg class="size-4" data-icon-show aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                               <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
@@ -62,19 +62,19 @@
                 </div>
                 <label class="flex items-center gap-2 text-sm text-gray-700">
                     <input type="checkbox" name="_remember_me">
-                    <span>{{ "Remember me for 7 days"|trans }}</span>
+                    <span>{{ "Remember me for 7 days"|trans({}, 'admin') }}</span>
                 </label>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 <button type="submit" data-has-loading-state class="group w-full btn--primary btn--large">
-                    <span class="label">{{ "Sign in"|trans }}</span>
-                    <span class="label--loading">{{ "Signing in..."|trans }}</span>
+                    <span class="label">{{ "Sign in"|trans({}, 'admin') }}</span>
+                    <span class="label--loading">{{ "Signing in..."|trans({}, 'admin') }}</span>
                 </button>
             </form>
             <p class="mt-6 text-center">
                 <a href="{{ relativeUrl('/') }}"
                    class="inline-flex items-center gap-x-1.5 text-sm font-medium text-gray-500 hover:text-gray-900">
                     <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                    {{ "Back to app"|trans }}
+                    {{ "Back to app"|trans({}, 'admin') }}
                 </a>
             </p>
         </div>

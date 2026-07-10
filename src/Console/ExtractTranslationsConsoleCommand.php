@@ -21,6 +21,8 @@ use Symfony\Component\Yaml\Yaml;
 #[AsCommand(name: 'app:translations:extract', description: 'Extract translations for all locales')]
 class ExtractTranslationsConsoleCommand extends Command
 {
+    private const array DOMAINS = ['messages', 'admin'];
+
     public function __construct(
         private readonly ExtractorInterface $extractor,
         private readonly KernelProjectDir $kernelProjectDir,
@@ -35,23 +37,25 @@ class ExtractTranslationsConsoleCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        foreach (Locale::cases() as $locale) {
-            $arrayInput = new ArrayInput([
-                'command' => 'translation:extract',
-                '--force' => true,
-                '--prefix' => '',
-                '--domain' => 'messages',
-                '--format' => 'yaml',
-                '--sort' => 'ASC',
-                'locale' => $locale->value,
-            ]);
-            $arrayInput->setInteractive(false);
-            ConsoleApplication::get()->doRun(
-                input: $arrayInput,
-                output: new NullOutput(),
-            );
+        foreach (self::DOMAINS as $domain) {
+            foreach (Locale::cases() as $locale) {
+                $arrayInput = new ArrayInput([
+                    'command' => 'translation:extract',
+                    '--force' => true,
+                    '--prefix' => '',
+                    '--domain' => $domain,
+                    '--format' => 'yaml',
+                    '--sort' => 'ASC',
+                    'locale' => $locale->value,
+                ]);
+                $arrayInput->setInteractive(false);
+                ConsoleApplication::get()->doRun(
+                    input: $arrayInput,
+                    output: new NullOutput(),
+                );
 
-            $output->writeln(sprintf('<info>Extracted translations for "%s"</info>', $locale->value));
+                $output->writeln(sprintf('<info>Extracted "%s" translations for "%s"</info>', $domain, $locale->value));
+            }
         }
 
         if (!$input->getOption('removeObsoleteTranslatables')) {
@@ -62,26 +66,28 @@ class ExtractTranslationsConsoleCommand extends Command
 
         $this->extractor->extract($this->kernelProjectDir.'/templates', $messages);
         $this->extractor->extract($this->kernelProjectDir.'/src', $messages);
-        $translatables = $messages->all()['messages'];
 
-        $translatableKeys = array_keys($translatables ?? []);
+        foreach (self::DOMAINS as $domain) {
+            $translatables = $messages->all()[$domain] ?? [];
+            $translatableKeys = array_keys($translatables);
 
-        $translationFilePath = sprintf('%s/translations/messages%s.%s.yaml', $this->kernelProjectDir, MessageCatalogue::INTL_DOMAIN_SUFFIX, Locale::en_US->value);
-        $parsedTranslations = Yaml::parse(file_get_contents($translationFilePath) ?: '');
+            $translationFilePath = sprintf('%s/translations/%s%s.%s.yaml', $this->kernelProjectDir, $domain, MessageCatalogue::INTL_DOMAIN_SUFFIX, Locale::en_US->value);
+            $parsedTranslations = Yaml::parse(file_get_contents($translationFilePath) ?: '') ?? [];
 
-        if (!$translationKeysToRemove = array_diff(array_keys($parsedTranslations), $translatableKeys)) {
-            return Command::SUCCESS;
-        }
-
-        foreach (Locale::cases() as $locale) {
-            $translationFilePath = sprintf('%s/translations/messages%s.%s.yaml', $this->kernelProjectDir, MessageCatalogue::INTL_DOMAIN_SUFFIX, $locale->value);
-            $parsedTranslations = Yaml::parse(file_get_contents($translationFilePath) ?: '');
-
-            foreach ($translationKeysToRemove as $keyToRemove) {
-                unset($parsedTranslations[$keyToRemove]);
+            if (!$translationKeysToRemove = array_diff(array_keys($parsedTranslations), $translatableKeys)) {
+                continue;
             }
 
-            file_put_contents($translationFilePath, Yaml::dump($parsedTranslations));
+            foreach (Locale::cases() as $locale) {
+                $translationFilePath = sprintf('%s/translations/%s%s.%s.yaml', $this->kernelProjectDir, $domain, MessageCatalogue::INTL_DOMAIN_SUFFIX, $locale->value);
+                $parsedTranslations = Yaml::parse(file_get_contents($translationFilePath) ?: '') ?? [];
+
+                foreach ($translationKeysToRemove as $keyToRemove) {
+                    unset($parsedTranslations[$keyToRemove]);
+                }
+
+                file_put_contents($translationFilePath, Yaml::dump($parsedTranslations));
+            }
         }
 
         return Command::SUCCESS;

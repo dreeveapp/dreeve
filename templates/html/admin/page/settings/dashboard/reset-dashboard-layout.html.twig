@@ -6,9 +6,9 @@
         <div class="w-full max-w-lg overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold">
-                    {{ "Reset dashboard to default"|trans }}
+                    {{ "Reset dashboard to default"|trans({}, 'admin') }}
                 </h3>
-                <a href="{{ dashboardUrl }}" aria-label="{{ "Close"|trans }}"
+                <a href="{{ dashboardUrl }}" aria-label="{{ "Close"|trans({}, 'admin') }}"
                    class="grid place-items-center size-8 rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900">
                     <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
@@ -25,18 +25,18 @@
                     </span>
                     <div class="space-y-1 text-sm text-gray-600">
                         <p>
-                            {{ "This will discard your current dashboard layout and restore the default widgets."|trans }}
+                            {{ "This will discard your current dashboard layout and restore the default widgets."|trans({}, 'admin') }}
                         </p>
                         <p>
-                            {{ "This action cannot be undone."|trans }}
+                            {{ "This action cannot be undone."|trans({}, 'admin') }}
                         </p>
                     </div>
                 </div>
                 <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
-                    <a href="{{ dashboardUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans }}</a>
+                    <a href="{{ dashboardUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>
                     <button type="submit" data-has-loading-state class="group btn--danger">
-                        <span class="label">{{ "Reset to default"|trans }}</span>
-                        <span class="label--loading">{{ "Resetting..."|trans }}</span>
+                        <span class="label">{{ "Reset to default"|trans({}, 'admin') }}</span>
+                        <span class="label--loading">{{ "Resetting..."|trans({}, 'admin') }}</span>
                     </button>
                 </div>
             </form>

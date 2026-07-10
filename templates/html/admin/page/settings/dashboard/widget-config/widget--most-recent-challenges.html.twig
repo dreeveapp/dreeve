@@ -1,4 +1,4 @@
 <div>
-    <label for="config-numberOfChallengesToDisplay">{{ "Number of challenges to display"|trans }}</label>
+    <label for="config-numberOfChallengesToDisplay">{{ "Number of challenges to display"|trans({}, 'admin') }}</label>
     <input type="number" min="1" step="1" required id="config-numberOfChallengesToDisplay" name="config[numberOfChallengesToDisplay]" value="{{ configuration.get('numberOfChallengesToDisplay') }}">
 </div>

@@ -1,0 +1,303 @@
+24-hour: 24-hour
+AI: AI
+AM/PM: AM/PM
+'API key': 'API key'
+'Activities excluded from peak power outputs': 'Activities excluded from peak power outputs'
+'Activities to skip during import': 'Activities to skip during import'
+'Activities will appear here once they are imported.': 'Activities will appear here once they are imported.'
+'Activity ID': 'Activity ID'
+'Activity IDs to exclude when calculating peak power outputs.': 'Activity IDs to exclude when calculating peak power outputs.'
+'Activity management': 'Activity management'
+'Activity visibilities to import': 'Activity visibilities to import'
+'Add Eddington': 'Add Eddington'
+'Add FTP': 'Add FTP'
+'Add a component to start tracking maintenance.': 'Add a component to start tracking maintenance.'
+'Add a widget': 'Add a widget'
+'Add activity': 'Add activity'
+'Add challenge': 'Add challenge'
+'Add command': 'Add command'
+'Add component': 'Add component'
+'Add gear': 'Add gear'
+'Add goal': 'Add goal'
+'Add service': 'Add service'
+'Add task': 'Add task'
+'Add weight': 'Add weight'
+'Add widget': 'Add widget'
+'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
+Admin: Admin
+'Admin panel': 'Admin panel'
+'Advanced (per-date & per-sport-type overrides)': 'Advanced (per-date & per-sport-type overrides)'
+'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'All associated maintenance tasks and logs will be removed. This action cannot be undone.'
+'All sport types must belong to the same activity type.': 'All sport types must belong to the same activity type.'
+'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.'
+'App URL': 'App URL'
+'App subtitle': 'App subtitle'
+Appearance: Appearance
+'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
+'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
+'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?'
+'Are you sure you want to remove the {widget} widget?': 'Are you sure you want to remove the {widget} widget?'
+'Attached to': 'Attached to'
+'Back to app': 'Back to app'
+'Base URI': 'Base URI'
+Birthday: Birthday
+Cancel: Cancel
+'Challenge name': 'Challenge name'
+'Changes still need to be processed before they appear on the app': 'Changes still need to be processed before they appear on the app'
+'Changes to these settings only take effect after you restart the daemon container.': 'Changes to these settings only take effect after you restart the daemon container.'
+'Chat commands': 'Chat commands'
+'Check interval (minutes)': 'Check interval (minutes)'
+'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
+Clear: Clear
+Close: Close
+Command: Command
+Commute: Commute
+Component: Component
+Config: Config
+Configure: Configure
+'Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget.': 'Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget.'
+'Configure {widget}': 'Configure {widget}'
+'Configured via an environment variable and cannot be changed here.': 'Configured via an environment variable and cannot be changed here.'
+'Configured via environment variables and cannot be changed here.': 'Configured via environment variables and cannot be changed here.'
+'Cron expression': 'Cron expression'
+"Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."
+Daemon: Daemon
+'Dashboard layout': 'Dashboard layout'
+'Define what needs doing and how often.': 'Define what needs doing and how often.'
+Delete: Delete
+'Delete activity': 'Delete activity'
+'Delete component': 'Delete component'
+'Delete maintenance log': 'Delete maintenance log'
+Deleting...: Deleting...
+Description: Description
+'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.'
+'Drag to reorder': 'Drag to reorder'
+'Drag to set the order in which sport types are displayed throughout the app.': 'Drag to set the order in which sport types are displayed throughout the app.'
+Edit: Edit
+'Edit activity': 'Edit activity'
+'Edit component': 'Edit component'
+'Edit gear': 'Edit gear'
+'Edit maintenance log': 'Edit maintenance log'
+'Edit recording device': 'Edit recording device'
+'Enable AI integration': 'Enable AI integration'
+'Enable Strava webhooks': 'Enable Strava webhooks'
+Enabled: Enabled
+Endpoint: Endpoint
+'Enter your password': 'Enter your password'
+'Enter your username': 'Enter your username'
+Every: Every
+FTP: FTP
+'FTP history (cycling)': 'FTP history (cycling)'
+'FTP history (running)': 'FTP history (running)'
+Failed: Failed
+Female: Female
+'File exceeds {max} MB': 'File exceeds {max} MB'
+'File imports': 'File imports'
+'File imports are only available in file import mode': 'File imports are only available in file import mode'
+'File upload': 'File upload'
+'File upload is only available in file import mode': 'File upload is only available in file import mode'
+Filename: Filename
+'First name': 'First name'
+From: From
+'Gear management': 'Gear management'
+'Gear will appear here once you add them.': 'Gear will appear here once you add them.'
+Gender: Gender
+General: General
+'Go to first page': 'Go to first page'
+'Go to last page': 'Go to last page'
+'Go to next page': 'Go to next page'
+'Go to previous page': 'Go to previous page'
+'Hide photos for sport types': 'Hide photos for sport types'
+'History of cycling FTP. Needed to calculate activity stress level.': 'History of cycling FTP. Needed to calculate activity stress level.'
+'History of running FTP. Needed to calculate activity stress level.': 'History of running FTP. Needed to calculate activity stress level.'
+'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.'
+'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'How often (in minutes, between 1 and 60) queued webhook events are processed.'
+"If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm.": "If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm."
+'Ignore retired gear': 'Ignore retired gear'
+Image: Image
+Images: Images
+Import: Import
+'Import segment details': 'Import segment details'
+'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
+'Imported files will appear here once you upload them.': 'Imported files will appear here once you upload them.'
+'Imported from Strava': 'Imported from Strava'
+'Include retired gear': 'Include retired gear'
+Info: Info
+Integrations: Integrations
+'Invalid CSRF token.': 'Invalid CSRF token.'
+Label: Label
+'Last name': 'Last name'
+'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.': 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.'
+'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.'
+'Leave empty to include all sport types.': 'Leave empty to include all sport types.'
+Locale: Locale
+Log: Log
+'Maintenance log': 'Maintenance log'
+'Maintenance logs will appear here once maintenance has been registered.': 'Maintenance logs will appear here once maintenance has been registered.'
+'Maintenance tasks': 'Maintenance tasks'
+Male: Male
+'Max heart rate formula': 'Max heart rate formula'
+Message: Message
+'Metric display order': 'Metric display order'
+Metrics: Metrics
+Mode: Mode
+Model: Model
+'More pages': 'More pages'
+'No activities imported yet.': 'No activities imported yet.'
+'No components yet.': 'No components yet.'
+'No files imported yet.': 'No files imported yet.'
+'No gears added yet.': 'No gears added yet.'
+'No maintenance logs yet.': 'No maintenance logs yet.'
+'No recording devices yet.': 'No recording devices yet.'
+'Normal date format': 'Normal date format'
+'Notification services': 'Notification services'
+'Number of activities to display': 'Number of activities to display'
+'Number of challenges to display': 'Number of challenges to display'
+'Number of milestones to display': 'Number of milestones to display'
+'Number of new activities to process per import': 'Number of new activities to process per import'
+'Number of widgets of this type you already have configured.': 'Number of widgets of this type you already have configured.'
+'Only required for the Azure OpenAI provider.': 'Only required for the Azure OpenAI provider.'
+'Only required for the Ollama provider.': 'Only required for the Ollama provider.'
+'Only required for the OpenAI-like provider.': 'Only required for the OpenAI-like provider.'
+'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.'
+'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.'
+'Optional subtitle': 'Optional subtitle'
+'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.': 'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.'
+'Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date.': 'Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date.'
+'Optional. Leave empty to always apply this goal.': 'Optional. Leave empty to always apply this goal.'
+'Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge.': 'Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge.'
+'Optional. Your current Zwift racing score (between 0 and 1000).': 'Optional. Your current Zwift racing score (between 0 and 1000).'
+'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.': 'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.'
+'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.': 'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.'
+'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Parts you track maintenance for, eg: chains, cassettes, brake pads...'
+Password: Password
+'Performed on': 'Performed on'
+'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
+'Processed on': 'Processed on'
+'Profile picture URL': 'Profile picture URL'
+Provider: Provider
+'Rebuild pending': 'Rebuild pending'
+'Recording device management': 'Recording device management'
+'Recording devices will appear here once activities have been imported.': 'Recording devices will appear here once activities have been imported.'
+'Register maintenance': 'Register maintenance'
+'Remember me for 7 days': 'Remember me for 7 days'
+Remove: Remove
+'Remove Eddington': 'Remove Eddington'
+'Remove challenge': 'Remove challenge'
+'Remove command': 'Remove command'
+'Remove goal': 'Remove goal'
+'Remove task': 'Remove task'
+'Remove widget': 'Remove widget'
+Removing...: Removing...
+"Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
+'Reset dashboard to default': 'Reset dashboard to default'
+'Reset to default': 'Reset to default'
+Resetting...: Resetting...
+'Resting heart rate formula': 'Resting heart rate formula'
+'Restrict to date range': 'Restrict to date range'
+'Return to app': 'Return to app'
+Ride: Ride
+Save: Save
+'Save settings': 'Save settings'
+Saved: Saved
+Saving...: Saving...
+'Scheduled actions the daemon runs at regular intervals.': 'Scheduled actions the daemon runs at regular intervals.'
+'Select a component first...': 'Select a component first...'
+'Select a component…': 'Select a component…'
+'Select at least one sport type.': 'Select at least one sport type.'
+'Select the serviced gear…': 'Select the serviced gear…'
+Settings: Settings
+'Short date format': 'Short date format'
+'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.'
+'Show in dashboard widget': 'Show in dashboard widget'
+'Show in navigation bar': 'Show in navigation bar'
+'Show last X years by default': 'Show last X years by default'
+'Show password': 'Show password'
+'Show the workout assistant in the UI.': 'Show the workout assistant in the UI.'
+'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'
+'Sign in': 'Sign in'
+'Sign in to the admin panel': 'Sign in to the admin panel'
+'Sign out': 'Sign out'
+'Signing in...': 'Signing in...'
+'Skip activities recorded before': 'Skip activities recorded before'
+Skipped: Skipped
+Source: Source
+'Sport type': 'Sport type'
+'Sport types sorting order': 'Sport types sorting order'
+'Sport types to import': 'Sport types to import'
+'Sport types to include': 'Sport types to include'
+'Strava API credentials.': 'Strava API credentials.'
+'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.'
+'Strava activity IDs to skip during import.': 'Strava activity IDs to skip during import.'
+'Strava client ID': 'Strava client ID'
+'Strava client secret': 'Strava client secret'
+'Strava import': 'Strava import'
+'Strava refresh token': 'Strava refresh token'
+Subtitle: Subtitle
+Success: Success
+'Supported types': 'Supported types'
+Task: Task
+'Task name': 'Task name'
+Tasks: Tasks
+'The URL the app is hosted on.': 'The URL the app is hosted on.'
+'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
+'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.': 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.'
+'The last zone has no upper bound.': 'The last zone has no upper bound.'
+'The locale used to render the app.': 'The locale used to render the app.'
+"The name is derived from the device recorded on your activities and can't be edited.": "The name is derived from the device recorded on your activities and can't be edited."
+'The unit system used to render distances, elevations, temperatures, etc.': 'The unit system used to render distances, elevations, temperatures, etc.'
+'This action cannot be undone.': 'This action cannot be undone.'
+'This component is fitted to multiple gears, pick the one you serviced.': 'This component is fitted to multiple gears, pick the one you serviced.'
+"This value is imported from Strava and can't be edited here.": "This value is imported from Strava and can't be edited here."
+'This widget still needs to be configured.': 'This widget still needs to be configured.'
+'This will discard your current dashboard layout and restore the default widgets.': 'This will discard your current dashboard layout and restore the default widgets.'
+'Time format': 'Time format'
+To: To
+'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.': 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.'
+'Total size exceeds {max} MB': 'Total size exceeds {max} MB'
+'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.'
+'Turn gear maintenance tracking on or off.': 'Turn gear maintenance tracking on or off.'
+'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Turns on the AI-powered workout assistant, which can then be used from the command line.'
+Type: Type
+URL: URL
+Unit: Unit
+'Unit system': 'Unit system'
+'Unsupported file type': 'Unsupported file type'
+'Upload activity files': 'Upload activity files'
+'Upload failed': 'Upload failed'
+'Upload files': 'Upload files'
+Uploaded: Uploaded
+Uploading...: Uploading...
+Username: Username
+'Verify token': 'Verify token'
+Version: Version
+Webhooks: Webhooks
+'What is my FTP?': 'What is my FTP?'
+'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
+"When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
+'You can add it back to your dashboard again later.': 'You can add it back to your dashboard again later.'
+'You can also copy files straight into the {watchFolder} folder.': 'You can also copy files straight into the {watchFolder} folder.'
+'You can select up to {max} images': 'You can select up to {max} images'
+"You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API"
+'Your birthday. Needed to calculate heart rate zones.': 'Your birthday. Needed to calculate heart rate zones.'
+'Your changes have been saved.': 'Your changes have been saved.'
+'Your gender. Used to determine activity training load.': 'Your gender. Used to determine activity training load.'
+Zone: Zone
+Zwift: Zwift
+'Zwift level': 'Zwift level'
+'Zwift racing score': 'Zwift racing score'
+'active days': 'active days'
+'calendar days': 'calendar days'
+'discord://token@id': 'discord://token@id'
+ftp: ftp
+'hours used': 'hours used'
+'kilometers used': 'kilometers used'
+'max {max} MB each': 'max {max} MB each'
+'miles used': 'miles used'
+minutes: minutes
+'{count} files ready to upload': '{count} files ready to upload'
+'{count} files uploaded': '{count} files uploaded'
+'{count} images selected': '{count} images selected'
+'{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.'
+'{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files'
+'{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images'

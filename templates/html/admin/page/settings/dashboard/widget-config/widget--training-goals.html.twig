@@ -1,7 +1,7 @@
 {% set goals = configuration.get('goals') %}
 {% set unitLabels = {
     'km': 'km', 'm': 'm', 'mi': 'mi', 'ft': 'ft',
-    'hour': 'hours'|trans, 'minute': 'minutes'|trans,
+    'hour': 'hours'|trans, 'minute': 'minutes'|trans({}, 'admin'),
 } %}
 {% for period in enum('App\\Domain\\Dashboard\\Widget\\TrainingGoals\\TrainingGoalPeriod').cases() %}
     {% set periodGoals = goals[period.value]|default([]) %}
@@ -15,25 +15,25 @@
             <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
             </svg>
-            <span>{{ "Add goal"|trans }}</span>
+            <span>{{ "Add goal"|trans({}, 'admin') }}</span>
         </button>
         <template data-repeater-template>
             <div class="relative flex flex-col gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater-item>
                 <button type="button" data-repeater-remove
                         class="unstyled cursor-pointer absolute top-2 right-2 grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600 hover:border-red-200"
-                        aria-label="{{ "Remove goal"|trans }}">
+                        aria-label="{{ "Remove goal"|trans({}, 'admin') }}">
                     <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                     </svg>
                 </button>
                 <div class="grid gap-3 pr-11 md:grid-cols-2 lg:grid-cols-4">
                     <div>
-                        <label class="mt-0!">{{ "Label"|trans }}</label>
+                        <label class="mt-0!">{{ "Label"|trans({}, 'admin') }}</label>
                         <input type="text" name="config[goals][{{ period.value }}][__index__][label]"
                                data-repeater-field="label" required placeholder="{{ "Cycling"|trans }}">
                     </div>
                     <div>
-                        <label class="mt-0!">{{ "Type"|trans }}</label>
+                        <label class="mt-0!">{{ "Type"|trans({}, 'admin') }}</label>
                         <select name="config[goals][{{ period.value }}][__index__][type]" data-repeater-field="type">
                             {% for type in enum('App\\Domain\\Dashboard\\Widget\\TrainingGoals\\TrainingGoalType').cases() %}
                                 <option value="{{ type.value }}">{{ type|trans }}</option>
@@ -46,7 +46,7 @@
                                data-repeater-field="goal" required placeholder="0">
                     </div>
                     <div>
-                        <label class="mt-0!">{{ "Unit"|trans }}</label>
+                        <label class="mt-0!">{{ "Unit"|trans({}, 'admin') }}</label>
                         <select name="config[goals][{{ period.value }}][__index__][unit]" data-repeater-field="unit">
                             {% for unit, unitLabel in unitLabels %}
                                 <option value="{{ unit }}">{{ unitLabel }}</option>
@@ -55,9 +55,9 @@
                     </div>
                 </div>
                 <div>
-                    <label class="mt-0!">{{ "Sport types to include"|trans }}</label>
+                    <label class="mt-0!">{{ "Sport types to include"|trans({}, 'admin') }}</label>
                     <div class="mt-1 max-h-40 overflow-y-auto flex flex-col gap-1.5 rounded-lg border border-gray-200 p-2"
-                         data-required-checkbox-group="{{ "Select at least one sport type."|trans }}">
+                         data-required-checkbox-group="{{ "Select at least one sport type."|trans({}, 'admin') }}">
                         {% for sportType in enum('App\\Domain\\Activity\\SportType\\SportType').cases() %}
                             <label class="flex items-center gap-2 mt-0! text-sm font-normal cursor-pointer">
                                 <input type="checkbox" name="config[goals][{{ period.value }}][__index__][sportTypesToInclude][]"
@@ -68,13 +68,13 @@
                     </div>
                 </div>
                 <div>
-                    <label class="mt-0!">{{ "Restrict to date range"|trans }}</label>
-                    <p class="mt-0.5 text-xxs text-gray-500">{{ "Optional. Leave empty to always apply this goal."|trans }}</p>
+                    <label class="mt-0!">{{ "Restrict to date range"|trans({}, 'admin') }}</label>
+                    <p class="mt-0.5 text-xxs text-gray-500">{{ "Optional. Leave empty to always apply this goal."|trans({}, 'admin') }}</p>
                     <div class="mt-1 grid grid-cols-2 gap-3">
                         <input type="date" name="config[goals][{{ period.value }}][__index__][restrictToDateRange][from]"
-                               data-repeater-field="restrictToDateRange.from" aria-label="{{ "From"|trans }}">
+                               data-repeater-field="restrictToDateRange.from" aria-label="{{ "From"|trans({}, 'admin') }}">
                         <input type="date" name="config[goals][{{ period.value }}][__index__][restrictToDateRange][to]"
-                               data-repeater-field="restrictToDateRange.to" aria-label="{{ "To"|trans }}">
+                               data-repeater-field="restrictToDateRange.to" aria-label="{{ "To"|trans({}, 'admin') }}">
                     </div>
                 </div>
             </div>

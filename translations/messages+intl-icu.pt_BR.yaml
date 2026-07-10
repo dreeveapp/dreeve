@@ -1,5 +1,4 @@
 '# completed': '# concluído'
-24-hour: 24-hour
 '42-day fitness trend': 'Tendência de condicionamento de 42 dias'
 '7-day fatigue level': 'Nível de fadiga de 7 dias'
 '< 1.5: Good variety in training': '< 1.5: Boa variedade no treino'
@@ -9,66 +8,28 @@
 'A high score means you concentrate more training into fewer, heavier days.': 'Uma pontuação alta significa que você concentra mais treino em menos dias, porém mais pesados.'
 'A:C Ratio': 'Razão A:C'
 'A:C optimal in': 'A:C ideal em'
-AI: AI
-AM/PM: AM/PM
-'API key': 'API key'
 'ATL (Fatigue)': 'ATL (Fadiga)'
 'Accumulated fatigue': 'Fadiga acumulada'
 Active: Active
 'Active days': 'Dias ativos'
 Activities: Atividades
-'Activities excluded from peak power outputs': 'Activities excluded from peak power outputs'
-'Activities to skip during import': 'Activities to skip during import'
-'Activities will appear here once they are imported.': 'Activities will appear here once they are imported.'
 Activity: Atividade
-'Activity ID': 'Activity ID'
-'Activity IDs to exclude when calculating peak power outputs.': 'Activity IDs to exclude when calculating peak power outputs.'
 'Activity count': 'Contagem de atividades'
 'Activity heatmap': 'Mapa de calor de atividades'
 'Activity locations': 'Locais de atividades'
-'Activity management': 'Activity management'
 'Activity start times': 'Horários de início de atividades'
-'Activity visibilities to import': 'Activity visibilities to import'
 'Acute Training Load (Fatigue) - 7-day exponentially weighted average of your daily training load. Represents short-term fatigue.': 'Carga de Treinamento Aguda (Fadiga) - Média móvel exponencial de 7 dias da sua carga de treinamento diária. Representa a fadiga de curto prazo.'
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Razão Aguda:Crônica - Razão entre ATL e CTL. Indica risco de lesão.'
 'Adaptive & Inclusive Sports': 'Esportes Adaptados e Inclusivos'
-'Add Eddington': 'Add Eddington'
-'Add FTP': 'Add FTP'
-'Add a component to start tracking maintenance.': 'Add a component to start tracking maintenance.'
-'Add a widget': 'Add a widget'
-'Add activity': 'Add activity'
-'Add challenge': 'Add challenge'
-'Add command': 'Add command'
-'Add component': 'Add component'
-'Add gear': 'Add gear'
-'Add goal': 'Add goal'
-'Add service': 'Add service'
-'Add task': 'Add task'
-'Add weight': 'Add weight'
-'Add widget': 'Add widget'
-'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
-Admin: Admin
 'Admin panel': 'Admin panel'
-'Advanced (per-date & per-sport-type overrides)': 'Advanced (per-date & per-sport-type overrides)'
 Afternoon: Tarde
 All: Todos
-'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'All associated maintenance tasks and logs will be removed. This action cannot be undone.'
-'All sport types must belong to the same activity type.': 'All sport types must belong to the same activity type.'
 'All time': 'Desde sempre'
 'Alpine Ski': 'Esqui Alpino'
-'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.'
-'App URL': 'App URL'
-'App subtitle': 'App subtitle'
 'App update available notification': 'App update available notification'
-Appearance: Appearance
 Apr: Abr
-'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
-'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
-'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?'
-'Are you sure you want to remove the {widget} widget?': 'Are you sure you want to remove the {widget} widget?'
 'Ask Mark something...': 'Pergunte algo ao Mark...'
 'Athlete profile': 'Perfil do atleta'
-'Attached to': 'Attached to'
 Aug: Ago
 Average: Média
 'Average gradient': 'Inclinação média'
@@ -76,17 +37,14 @@ Average: Média
 'Avg pace': 'Ritmo médio'
 'Avg speed': 'Velocidade média'
 'Back Country Ski': 'Esqui Fora de Pista'
-'Back to app': 'Back to app'
 Badges: Emblemas
 Badminton: Badminton
 Bananas: Bananas
-'Base URI': 'Base URI'
 Basketball: Basquete
 Best: Melhor
 'Best effort': 'Melhor esforço'
 'Best efforts': 'Melhores Esforços'
 'Best efforts for {sportType}': 'Melhores esforços para {sportType}'
-Birthday: Birthday
 'Build zone (–10)': 'Zona de construção (–10)'
 'CTL (Fitness)': 'CTL (Condicionamento)'
 Cadence: Cadência
@@ -94,70 +52,40 @@ Cal.: Cal.
 Calories: Calorias
 'Calories burned': 'Calorias queimadas'
 'Calories burnt': 'Calorias queimadas'
-Cancel: Cancel
 Canoeing: Canoagem
 'Carbon saved': 'Carbono economizado'
 'Challenge consistency': 'Consistência nos desafios'
-'Challenge name': 'Challenge name'
 Challenges: Desafios
-'Changes still need to be processed before they appear on the app': 'Changes still need to be processed before they appear on the app'
-'Changes to these settings only take effect after you restart the daemon container.': 'Changes to these settings only take effect after you restart the daemon container.'
-'Chat commands': 'Chat commands'
-'Check interval (minutes)': 'Check interval (minutes)'
-'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Carga de Treinamento Crônica (Condicionamento) - Média móvel exponencial de 42 dias da sua carga de treinamento diária. Representa a adaptação ao treinamento de longo prazo.'
-Clear: Clear
 'Clear all filters': 'Limpar todos os filtros'
 'Clear chat': 'Limpar chat'
-Close: Close
 'Close modal': 'Fechar modal'
-Command: Command
-Commute: Commute
 Commutes: Deslocamentos
 'Commutes only': 'Apenas deslocamentos'
 Compare: Comparar
 'Compare to': 'Comparar com'
 'Completed {threshold} activities': 'Completou {threshold} atividades'
-Component: Component
 Components: Componentes
-Config: Config
-Configure: Configure
-'Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget.': 'Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget.'
-'Configure {widget}': 'Configure {widget}'
-'Configured via an environment variable and cannot be changed here.': 'Configured via an environment variable and cannot be changed here.'
-'Configured via environment variables and cannot be changed here.': 'Configured via environment variables and cannot be changed here.'
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Parabéns! Você alcançou {numberOfPRs} RPs nesta atividade.'
 'Consider reducing load': 'Considere reduzir a carga'
 Consistency: Consistência
 Country: País
 Cricket: Críquete
-'Cron expression': 'Cron expression'
-"Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."
 Crossfit: Crossfit
 'Current Status': 'Status atual'
 'Current streaks': 'Sequências atuais'
 Cycling: Ciclismo
-Daemon: Daemon
 'Daily TRIMP': 'TRIMP Diário'
 'Daily activities': 'Atividades diárias'
 Dance: Dança
 'Dark mode': 'Modo escuro'
 Dashboard: Painel
-'Dashboard layout': 'Dashboard layout'
 Date: Data
 Day: Dia
 'Days needed': 'Dias necessários'
 'Daytime stats': 'Estatísticas por períodos do dia'
 Dec: Dez
-'Define what needs doing and how often.': 'Define what needs doing and how often.'
-Delete: Delete
-'Delete activity': 'Delete activity'
-'Delete component': 'Delete component'
-'Delete maintenance log': 'Delete maintenance log'
-Deleting...: Deleting...
 Density: Densidade
-Description: Description
-'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.'
 Details: Detalhes
 Device: Dispositivo
 Dist.: Dist.
@@ -170,20 +98,12 @@ Distance: Distância
 'Distance over time per gear': 'Distância ao longo do tempo por equipamento'
 'Distance per month per gear': 'Distância por mês por equipamento'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Fazer uma mistura de ciclismo, corrida, natação e treino de força aumenta sua pontuação de variedade.'
-'Drag to reorder': 'Drag to reorder'
-'Drag to set the order in which sport types are displayed throughout the app.': 'Drag to set the order in which sport types are displayed throughout the app.'
 Duration: Duração
 'E-Bike Rides': 'Pedais de E-Bike'
 'E-Mountain Bike Rides': 'Pedais de E-MTB'
 Eddington: Eddington
 'Eddington number': 'Número de Eddington'
 'Eddington over time': 'Eddington ao longo do tempo'
-Edit: Edit
-'Edit activity': 'Edit activity'
-'Edit component': 'Edit component'
-'Edit gear': 'Edit gear'
-'Edit maintenance log': 'Edit maintenance log'
-'Edit recording device': 'Edit recording device'
 'Effort vs heart rate': 'Esforço vs frequência cardíaca'
 'Elapsed time': 'Tempo decorrido'
 Elev: Desnível
@@ -192,38 +112,19 @@ Elevation: Elevação
 'Elevation (single activity)': 'Elevation (single activity)'
 'Elevation in {unit}': 'Elevação em {unit}'
 Elliptical: Elíptica
-'Enable AI integration': 'Enable AI integration'
-'Enable Strava webhooks': 'Enable Strava webhooks'
-Enabled: Enabled
-Endpoint: Endpoint
 Energy: Energia
 'Energy burned across your activities': 'Energia queimada ao longo das suas atividades'
 'Enter fullscreen mode': 'Entrar em tela cheia'
-'Enter your password': 'Enter your password'
-'Enter your username': 'Enter your username'
 Evening: 'Fim da tarde'
-Every: Every
 'Excludes commutes': 'Ocultar deslocamentos'
-FTP: FTP
 'FTP history': 'Histórico de FTP'
-'FTP history (cycling)': 'FTP history (cycling)'
-'FTP history (running)': 'FTP history (running)'
-Failed: Failed
 Favourite: Favorito
 Feb: Fev
-Female: Female
-'File exceeds {max} MB': 'File exceeds {max} MB'
-'File imports': 'File imports'
-'File imports are only available in file import mode': 'File imports are only available in file import mode'
-'File upload': 'File upload'
-'File upload is only available in file import mode': 'File upload is only available in file import mode'
-Filename: Filename
 'Filter on KOM segments': 'Filtrar por segmentos KOM'
 'Filter on country': 'Filtrar por país'
 'Filter on sport type': 'Filtrar por tipo de esporte'
 'Filter on starred segments': 'Filtrar por segmentos favoritos'
 'First activity in {countryName}': 'Primeira atividade em {countryName}'
-'First name': 'First name'
 'First-ever activity recorded': 'Primeira atividade registrada'
 Firsts: Primeiros
 Fitness: Condicionamento
@@ -233,23 +134,14 @@ Fitness: Condicionamento
 'Form (TSB)': 'Forma (TSB)'
 Fri: Sex
 Fri.: Sex.
-From: From
 GAP: GAP
 Gear: Equipamento
 'Gear "{gearId}" is referenced in your maintenance config file, but was not imported from Strava. Please check that the gear exists and is correctly synced.': 'O equipamento "{gearId}" está referenciado no seu arquivo de configuração de manutenção, mas não foi importado do Strava. Por favor, verifique se o equipamento existe e está corretamente sincronizado.'
 'Gear maintenance': 'Manutenção de equipamento'
 'Gear maintenance notification': 'Gear maintenance notification'
-'Gear management': 'Gear management'
 'Gear stats': 'Estatísticas do equipamento'
 "Gear that hasn't been used in the last three months, is disabled by default.": 'Equipamento não utilizado nos últimos três meses é desativado por padrão.'
 'Gear that is retired is disabled by default.': 'Equipamento aposentado é desativado por padrão.'
-'Gear will appear here once you add them.': 'Gear will appear here once you add them.'
-Gender: Gender
-General: General
-'Go to first page': 'Go to first page'
-'Go to last page': 'Go to last page'
-'Go to next page': 'Go to next page'
-'Go to previous page': 'Go to previous page'
 Goal: Meta
 Golf: Golfe
 'Good training variety': 'Boa variedade de treino'
@@ -265,7 +157,6 @@ HR: FC
 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones': 'Distribuição da zona de frequência cardíaca no último mês. Para um treinamento polarizado eficaz, seus treinos devem cair principalmente nas seguintes zonas'
 'Heart rate zones': 'Zonas de frequência cardíaca'
 Heatmap: 'Mapa de calor'
-'Hide photos for sport types': 'Hide photos for sport types'
 High: Alta
 'High fatigue levels may increase injury or burnout risk. Consider reducing load and prioritizing recovery': 'Altos níveis de fadiga podem aumentar o risco de lesões ou esgotamento. Considere reduzir a carga e priorizar a recuperação'
 'High monotony - increase variety': 'Alta monotonia - aumente a variedade'
@@ -274,36 +165,20 @@ High: Alta
 Hikes: Caminhadas
 History: Histórico
 'History (6 weeks)': 'Histórico (6 semanas)'
-'History of cycling FTP. Needed to calculate activity stress level.': 'History of cycling FTP. Needed to calculate activity stress level.'
-'History of running FTP. Needed to calculate activity stress level.': 'History of running FTP. Needed to calculate activity stress level.'
-'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.'
 'How diverse is your training': 'Quão diversificado é o seu treino'
 'How hard is your typical training session': 'Qual a intensidade da sua sessão de treino típica'
 'How long is your typical training session': 'Qual a duração da sua sessão de treino típica'
 'How much do you train on average per week': 'Quanto você treina em média por semana'
 'How much training you do in total on days you train.': 'Quanto treino você faz no total nos dias em que treina.'
-'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'How often (in minutes, between 1 and 60) queued webhook events are processed.'
 'How often do you train': 'Com que frequência você treina'
 'Ice Skate': 'Patinação no Gelo'
 Id: ID
-"If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm.": "If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm."
-'Ignore retired gear': 'Ignore retired gear'
-Image: Image
-Images: Images
 Imperial: Imperial
-Import: Import
 'Import data & build app': 'Import data & build app'
-'Import segment details': 'Import segment details'
-'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
-'Imported files will appear here once you upload them.': 'Imported files will appear here once you upload them.'
-'Imported from Strava': 'Imported from Strava'
 'Imports new Strava activities and rebuilds the app.': 'Imports new Strava activities and rebuilds the app.'
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'Nesse tempo, percorri {totalDistance}, o que equivale a {numberOfTripsAroundTheWorld} voltas ao mundo 🌍 ou {numberOfTripsToTheMoonPercent}% do caminho até a lua 🌕, e acumulei uma elevação de {totalElevation}, o que representa {timesMountEverest} vezes o Monte Everest 🏔. No total, são {totalTimeRecorded} de tempo em movimento 🎉.'
-'Include retired gear': 'Include retired gear'
 'Individual thresholds vary based on fitness level.': 'Os limiares individuais variam de acordo com o nível de condicionamento físico.'
-Info: Info
 'Inline Skate': 'Patinação em Linha'
-Integrations: Integrations
 Intensity: Intensidade
 'Intro text': 'Intro text'
 'It looks like no valid gear is attached to any of the components. Please check your config file.': 'Parece que nenhum equipamento válido está vinculado aos componentes. Verifique seu arquivo de configuração.'
@@ -313,7 +188,6 @@ Jun: Jun
 KOM: KOM
 Kayaking: Caiaque
 'Kite Surf': Kitesurf
-Label: Label
 Lap: Volta
 'Last 30 days': 'Últimos 30 dias'
 'Last 7 days training load': 'Carga de treino dos últimos 7 dias'
@@ -322,21 +196,15 @@ Lap: Volta
 'Last effort date': 'Data do último esforço'
 'Last maintenance': 'Última manutenção'
 'Last month': 'Último mês'
-'Last name': 'Last name'
 'Last week': 'Última semana'
 'Last {numberOfDays} days': 'Últimos {numberOfDays} dias'
-'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.': 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.'
-'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.'
-'Leave empty to include all sport types.': 'Leave empty to include all sport types.'
 Lifetime: Vitalício
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Fadiga leve com boa prontidão. Um ótimo equilíbrio para treinos de qualidade ou esforços mais longos'
 Load: Carga
 'Load (CTL/ATL)': 'Carga (CTL/ATL)'
 'Loading data...': 'Carregando dados...'
 Loading...: Carregando...
-Locale: Locale
 'Locations over the globe': 'Locais ao redor do globo'
-Log: Log
 'Long run': 'Corridas longas'
 'Longest activity': 'Atividade mais longa'
 'Longest activity (h)': 'Atividade mais longa (h)'
@@ -347,24 +215,14 @@ Low: Baixa
 'Low risk': 'Baixo risco'
 'Low training load': 'Baixa carga de treino'
 Maintenance: Manutenção
-'Maintenance log': 'Maintenance log'
-'Maintenance logs will appear here once maintenance has been registered.': 'Maintenance logs will appear here once maintenance has been registered.'
-'Maintenance tasks': 'Maintenance tasks'
-Male: Male
 Mar: Mar
 Max: Máx
 'Max gradient': 'Inclinação máxima'
-'Max heart rate formula': 'Max heart rate formula'
 May: Mai
 Medium: Média
-Message: Message
 Metric: Métrico
-'Metric display order': 'Metric display order'
-Metrics: Metrics
 Milestones: Marcos
 'Mind & Body Sports': 'Esportes para Corpo e Mente'
-Mode: Mode
-Model: Model
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Fadiga moderada com condicionamento estável. Bem adequado para treinos consistentes no dia a dia'
 'Moderate monotony': 'Monotonia moderada'
 Mon: Seg
@@ -372,7 +230,6 @@ Mon.: Seg.
 Monotony: Monotonia
 Monthly: Mensal
 'Monthly stats': 'Estatísticas mensais'
-'More pages': 'More pages'
 Morning: Manhã
 'Most elevation': 'Maior ganho de elevação'
 'Most recent activities': 'Atividades mais recentes'
@@ -388,47 +245,23 @@ Neutral: Neutro
 'Next milestone': 'Próximo marco'
 Night: Noite
 'No activities': 'Sem atividades'
-'No activities imported yet.': 'No activities imported yet.'
-'No components yet.': 'No components yet.'
 'No data available': 'Nenhum dado disponível'
-'No files imported yet.': 'No files imported yet.'
-'No gears added yet.': 'No gears added yet.'
-'No maintenance logs yet.': 'No maintenance logs yet.'
 'No milestones achieved yet': 'Nenhum marco alcançado ainda'
 'No other options to compare with': 'Nenhuma outra opção para comparar'
-'No recording devices yet.': 'No recording devices yet.'
 None: Nenhum
 'Nordic Ski': 'Esqui Nórdico'
-'Normal date format': 'Normal date format'
 'Normalized power': 'Potência normalizada'
 'Not supported': 'Não suportado'
-'Notification services': 'Notification services'
 Nov: Nov
 Now: Agora
 'Number of activities': 'Number of activities'
 'Number of activities per month': 'Número de atividades por mês'
-'Number of activities to display': 'Number of activities to display'
-'Number of challenges to display': 'Number of challenges to display'
-'Number of milestones to display': 'Number of milestones to display'
-'Number of new activities to process per import': 'Number of new activities to process per import'
 'Number of times completed': 'Número de vezes concluído'
-'Number of widgets of this type you already have configured.': 'Number of widgets of this type you already have configured.'
 Oct: Out
 'Older effort': 'Esforço mais antigo'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'Em média, isso dá {dailyAverage} por dia, uma média semanal de {weeklyAverage} e uma média mensal de {monthlyAverage} 🐣.'
 'One of your gear maintenance tasks is due': 'Uma das suas tarefas de manutenção do equipamento está vencida'
-'Only required for the Azure OpenAI provider.': 'Only required for the Azure OpenAI provider.'
-'Only required for the Ollama provider.': 'Only required for the Ollama provider.'
-'Only required for the OpenAI-like provider.': 'Only required for the OpenAI-like provider.'
 'Optimal training range': 'Faixa ideal de treinamento'
-'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.'
-'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.'
-'Optional subtitle': 'Optional subtitle'
-'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.': 'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.'
-'Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date.': 'Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date.'
-'Optional. Leave empty to always apply this goal.': 'Optional. Leave empty to always apply this goal.'
-'Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge.': 'Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge.'
-'Optional. Your current Zwift racing score (between 0 and 1000).': 'Optional. Your current Zwift racing score (between 0 and 1000).'
 Other: Outro
 'Outdoor Sports': 'Esportes ao Ar Livre'
 Over-fatigued: Sobrecarregado
@@ -436,20 +269,14 @@ Over-fatigued: Sobrecarregado
 'Overall weekly training stress': 'Estresse geral de treino semanal'
 'PB badges': 'Emblemas de RP'
 'PET bottles produced': 'Garrafas PET produzidas'
-'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.': 'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.'
-'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.': 'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.'
 Pace: Ritmo
 Padel: Padel
-'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Parts you track maintenance for, eg: chains, cassettes, brake pads...'
-Password: Password
 'Peak fresh': 'Máxima prontidão'
 'Peak power outputs': 'Picos de potência'
 'Per {unit}': 'Por {unit}'
-'Performed on': 'Performed on'
 'Personal bests': 'Recordes pessoais'
 Photo: Foto
 Photos: Fotos
-'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
 'Physical Therapy': Fisioterapia
 'Pickle Ball': Pickleball
 Pilates: Pilates
@@ -459,9 +286,6 @@ Power: Potência
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Alimentado por cerca de {caloriesBurned} calorias estimadas, ou aproximadamente {numberOfPizzaSlices} fatias de pizza 🍕.'
 'Prev year': 'Ano anterior'
 Previous: Anterior
-'Processed on': 'Processed on'
-'Profile picture URL': 'Profile picture URL'
-Provider: Provider
 'Purchase price': 'Preço de compra'
 Race: Competição
 'Racing Score': 'Pontuação de Corrida'
@@ -472,42 +296,21 @@ Ranking: Ranking
 'Reached {threshold} hours total moving time': 'Alcançou {threshold} horas de tempo total em movimento'
 'Reached {threshold} total distance': 'Alcançou {threshold} de distância total'
 'Reached {threshold} total elevation': 'Alcançou {threshold} de elevação total'
-'Rebuild pending': 'Rebuild pending'
 'Recent effort': 'Esforço recente'
-'Recording device management': 'Recording device management'
 'Recording devices': 'Dispositivos de gravação'
 'Recording devices details': 'Detalhes dos dispositivos de gravação'
-'Recording devices will appear here once activities have been imported.': 'Recording devices will appear here once activities have been imported.'
 'Recovery Timeline': 'Linha do Tempo de Recuperação'
 'Recovery forecast': 'Previsão de recuperação'
 'Reduced carbon emission by commuting': 'Emissões de carbono reduzidas através de deslocamentos'
-'Register maintenance': 'Register maintenance'
 'Relative cost': 'Custo relativo'
-'Remember me for 7 days': 'Remember me for 7 days'
-Remove: Remove
-'Remove Eddington': 'Remove Eddington'
-'Remove challenge': 'Remove challenge'
-'Remove command': 'Remove command'
-'Remove goal': 'Remove goal'
-'Remove task': 'Remove task'
-'Remove widget': 'Remove widget'
-Removing...: Removing...
-"Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
-'Reset dashboard to default': 'Reset dashboard to default'
-'Reset to default': 'Reset to default'
-Resetting...: Resetting...
 'Rest Days': 'Dias de Descanso'
 'Rest days': 'Dias de descanso'
 'Rest days in last 7 days': 'Dias de descanso nos últimos 7 dias'
 'Rest days vs. active days': 'Dias de descanso vs. dias ativos'
-'Resting heart rate formula': 'Resting heart rate formula'
-'Restrict to date range': 'Restrict to date range'
 Retired: Retired
 'Retired gear': 'Equipamento aposentado'
-'Return to app': 'Return to app'
 Rewind: Retrospectiva
 'Rewind comparisons are only available on larger screens.': 'Comparações de retrospectiva só estão disponíveis em telas maiores.'
-Ride: Ride
 Rides: Pedais
 'Risk of detraining': 'Risco de perda de condicionamento'
 'Rock Climbing': Escalada
@@ -518,54 +321,25 @@ Runs: Corridas
 Sail: Vela
 Sat: Sáb
 Sat.: Sáb.
-Save: Save
-'Save settings': 'Save settings'
-Saved: Saved
-Saving...: Saving...
-'Scheduled actions the daemon runs at regular intervals.': 'Scheduled actions the daemon runs at regular intervals.'
 Search: Pesquisar
 'Search activity...': 'Pesquisar atividade...'
 'Search segment...': 'Pesquisar segmento...'
 Segments: Segmentos
-'Select a component first...': 'Select a component first...'
-'Select a component…': 'Select a component…'
-'Select at least one sport type.': 'Select at least one sport type.'
-'Select the serviced gear…': 'Select the serviced gear…'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sends a notification when a new app version is available. Requires a configured notification service.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sends a notification when gear maintenance is due. Requires a configured notification service.'
 Sep: Set
-Settings: Settings
-'Short date format': 'Short date format'
-'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.'
-'Show in dashboard widget': 'Show in dashboard widget'
-'Show in navigation bar': 'Show in navigation bar'
 'Show information': 'Mostrar informação'
-'Show last X years by default': 'Show last X years by default'
-'Show password': 'Show password'
-'Show the workout assistant in the UI.': 'Show the workout assistant in the UI.'
-'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Mostra como seu TSB (Forma) e Razão A:C se recuperarão ao longo do tempo se você tirar dias completos de descanso.'
-'Sign in': 'Sign in'
-'Sign in to the admin panel': 'Sign in to the admin panel'
-'Sign out': 'Sign out'
-'Signing in...': 'Signing in...'
 "Since I began using Strava {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": 'Desde que comecei a usar o Strava há {numberOfDaysAgo} dias em {startDate}, registrei {totalDaysOfWorkingOut} dias ativos de treino e aventura.'
 Skateboard: Skate
 Skating: Patinação
-'Skip activities recorded before': 'Skip activities recorded before'
-Skipped: Skipped
 'Slightly fresh': 'Levemente descansado'
 Snowboard: Snowboard
 Snowshoe: 'Raquetes de Neve'
 Soccer: Futebol
 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.': 'Alguém que treina regularmente por 90 minutos pontuará mais do que alguém que faz principalmente sessões curtas.'
-Source: Source
 Speed: Velocidade
 Splits: Parciais
-'Sport type': 'Sport type'
-'Sport types sorting order': 'Sport types sorting order'
-'Sport types to import': 'Sport types to import'
-'Sport types to include': 'Sport types to include'
 'Sport variety': 'Variedade de esporte'
 Squash: Squash
 'Stair Stepper': 'Subida de Escadas'
@@ -574,29 +348,16 @@ Squash: Squash
 'Start times': 'Horários de início'
 'Stats per weekday': 'Estatísticas por dia da semana'
 Status: Status
-'Strava API credentials.': 'Strava API credentials.'
-'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.'
-'Strava activity IDs to skip during import.': 'Strava activity IDs to skip during import.'
-'Strava client ID': 'Strava client ID'
-'Strava client secret': 'Strava client secret'
-'Strava import': 'Strava import'
-'Strava refresh token': 'Strava refresh token'
 'Streak started on {date}': 'Sequência iniciada em {date}'
 Streaks: Sequências
-Subtitle: Subtitle
-Success: Success
 Sun: Dom
 Sun.: Dom.
-'Supported types': 'Supported types'
 Surfing: Surf
 Swim: Natação
 'TSB (Form)': 'TSB (Forma)'
 'TSB positive in': 'TSB positivo em'
 'Table Tennis': 'Tênis de Mesa'
 'Taper sweet-spot (+15)': 'Ponto ideal de polimento (+15)'
-Task: Task
-'Task name': 'Task name'
-Tasks: Tasks
 'Team Sports': 'Esportes Coletivos'
 Tennis: Tênis
 "That's 1.5 times the distance to the edge of space": 'Isso é 1,5 vezes a distância até o limite do espaço'
@@ -688,43 +449,26 @@ Tennis: Tênis
 "That's {number} days of at least {distance}": 'São {number} dias de pelo menos {distance}'
 "That's {percentage}% of all countries 🌍": 'Isso representa {percentage}% de todos os países 🌍'
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'O número de Eddington no contexto de ciclismo ou corrida é definido como o número máximo E tal que o atleta percorreu pelo menos E km em pelo menos E dias.'
-'The URL the app is hosted on.': 'The URL the app is hosted on.'
-'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
-'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.': 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.'
-'The last zone has no upper bound.': 'The last zone has no upper bound.'
-'The locale used to render the app.': 'The locale used to render the app.'
-"The name is derived from the device recorded on your activities and can't be edited.": "The name is derived from the device recorded on your activities and can't be edited."
-'The unit system used to render distances, elevations, temperatures, etc.': 'The unit system used to render distances, elevations, temperatures, etc.'
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': 'Esses emblemas são criados dinamicamente. Você pode usá-los em qualquer tag &lt;img&gt;'
 Thinking...: Pensando...
-'This action cannot be undone.': 'This action cannot be undone.'
 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.': 'Este gráfico resume como você treina. Cada eixo reflete um hábito de treino normalizado diferente, portanto, valores maiores significam maior ênfase.'
-'This component is fitted to multiple gears, pick the one you serviced.': 'This component is fitted to multiple gears, pick the one you serviced.'
 'This feature is currently disabled': 'Essa funcionalidade está desativada'
 'This month': 'Este mês'
-"This value is imported from Strava and can't be edited here.": "This value is imported from Strava and can't be edited here."
 'This week': 'Esta semana'
-'This widget still needs to be configured.': 'This widget still needs to be configured.'
-'This will discard your current dashboard layout and restore the default widgets.': 'This will discard your current dashboard layout and restore the default widgets.'
 Thu: Qui
 Thu.: Qui.
 Time: Tempo
-'Time format': 'Time format'
 'Time in zone': 'Tempo na zona'
 'Times completed': 'Vezes concluído'
 Title: Título
-To: To
 'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect': 'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect'
 'Toggle sidebar': 'Ativar/desativar barra lateral'
-'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.': 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.'
 'Top 10': 'Top 10'
 'Total distance per month': 'Distância total por mês'
 'Total elevation per month': 'Elevação total por mês'
 'Total hours spent per gear': 'Horas totais por equipamento'
 'Total hours spent per sport type': 'Horas totais por tipo de esporte'
 'Total moving time per month': 'Tempo em movimento total por mês'
-'Total size exceeds {max} MB': 'Total size exceeds {max} MB'
-'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.'
 'Trail Runs': 'Corridas em Trilha'
 'Training 4–5 days every week scores higher than doing everything in one or two days.': 'Treinar de 4 a 5 dias por semana pontua mais do que fazer tudo em um ou dois dias.'
 'Training Impulse - Training load metric that accounts for intensity and duration.': 'Impulso de Treinamento - Métrica de carga de treino que considera a intensidade e a duração.'
@@ -735,25 +479,10 @@ To: To
 'Training load is accumulating, recovery days are important': 'A carga de treino está se acumulando, os dias de recuperação são importantes'
 Tue: Ter
 Tue.: Ter.
-'Turn gear maintenance tracking on or off.': 'Turn gear maintenance tracking on or off.'
-'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Turns on the AI-powered workout assistant, which can then be used from the command line.'
-Type: Type
-URL: URL
-Unit: Unit
-'Unit system': 'Unit system'
 Unspecified: 'Não especificado'
-'Unsupported file type': 'Unsupported file type'
 'Updated on': 'Atualizado em'
-'Upload activity files': 'Upload activity files'
-'Upload failed': 'Upload failed'
-'Upload files': 'Upload files'
-Uploaded: Uploaded
-Uploading...: Uploading...
 'User badge': 'Emblema do usuário'
-Username: Username
 'Velo Mobiles': 'Velo Móveis'
-'Verify token': 'Verify token'
-Version: Version
 'Very high': 'Muito alta'
 'View all': 'Ver tudo'
 'View details': 'Ver detalhes'
@@ -767,7 +496,6 @@ Walking: Caminhada
 Walks: Caminhadas
 'Water Sports': 'Esportes Aquáticos'
 'We detected following issues': 'Detectamos os seguintes problemas'
-Webhooks: Webhooks
 Wed: Qua
 Wed.: Qua.
 Weekly: Semanal
@@ -778,10 +506,7 @@ Weekly: Semanal
 Weight: Peso
 'Weight Training': 'Treino de Força'
 'Weight history': 'Histórico de peso'
-'What is my FTP?': 'What is my FTP?'
 Wheelchair: 'Cadeira de Rodas'
-'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
-"When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
 'Wind Surf': Windsurf
 'Winter Sports': 'Esportes de Inverno'
 Workout: Treino
@@ -792,17 +517,10 @@ Year: Ano
 Yearly: Anual
 'Yearly stats': 'Estatísticas anuais'
 Yoga: Yoga
-'You can add it back to your dashboard again later.': 'You can add it back to your dashboard again later.'
-'You can also copy files straight into the {watchFolder} folder.': 'You can also copy files straight into the {watchFolder} folder.'
-'You can select up to {max} images': 'You can select up to {max} images'
-"You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API"
 'Your PB badge': 'Seu emblema de RP'
 'Your Strava badge': 'Seu emblema do Strava'
 'Your Zwift badge': 'Seu emblema do Zwift'
 'Your badge(s)': 'Seu(s) emblema(s)'
-'Your birthday. Needed to calculate heart rate zones.': 'Your birthday. Needed to calculate heart rate zones.'
-'Your changes have been saved.': 'Your changes have been saved.'
-'Your gender. Used to determine activity training load.': 'Your gender. Used to determine activity training load.'
 Z1: Z1
 'Z1-2 (Low)': 'Z1-2 (Baixa)'
 Z2: Z2
@@ -811,24 +529,18 @@ Z3: Z3
 Z4: Z4
 'Z4-5 (High)': 'Z4-5 (Alta)'
 Z5: Z5
-Zone: Zone
 'Zone 1 (recovery)': 'Zona 1 (recuperação)'
 'Zone 2 (aerobic)': 'Zona 2 (aeróbica)'
 'Zone 3 (aerobic/anaerobic)': 'Zona 3 (aeróbica/anaeróbica)'
 'Zone 4 (anaerobic)': 'Zona 4 (anaeróbica)'
 'Zone 5 (maximal)': 'Zona 5 (máxima)'
-Zwift: Zwift
 'Zwift Statistics': 'Estatísticas do Zwift'
 'Zwift badge': 'Emblema do Zwift'
-'Zwift level': 'Zwift level'
-'Zwift racing score': 'Zwift racing score'
 'Zwift stats': 'Estatísticas do Zwift'
-'active days': 'active days'
 activities: atividades
 and: e
 avg: méd
 bpm: bpm
-'calendar days': 'calendar days'
 challenges: desafios
 clear: limpar
 compare: comparar
@@ -837,18 +549,11 @@ day(s): dia(s)
 days: dias
 'days needed for next Eddington': 'dias necessários para o próximo Eddington'
 'days to reach {n}': 'dias para alcançar {n}'
-'discord://token@id': 'discord://token@id'
-ftp: ftp
 hours: horas
-'hours used': 'hours used'
 hrs: hrs
-'kilometers used': 'kilometers used'
 'last {numberOfDays} days': 'últimos {numberOfDays} dias'
 max: máx
-'max {max} MB each': 'max {max} MB each'
-'miles used': 'miles used'
 min: min
-minutes: minutes
 months: meses
 more: mais
 n/a: n/d
@@ -864,9 +569,6 @@ total: total
 watts: watts
 weeks: semanas
 workouts: treinos
-'{count} files ready to upload': '{count} files ready to upload'
-'{count} files uploaded': '{count} files uploaded'
-'{count} images selected': '{count} images selected'
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} dias'
 '{days} consecutive days of activity': '{days} dias consecutivos de atividade'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} horas'
@@ -878,9 +580,6 @@ workouts: treinos
 '{numberOfResults} results': '{numberOfResults} resultados'
 '{numberOfResults} routes': '{numberOfResults} rotas'
 '{numberOfWeeks} weeks': '{numberOfWeeks} semanas'
-'{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.'
-'{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files'
-'{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images'
 '{threshold} hours using {gearName}': '{threshold} horas usando {gearName}'
 '{threshold} total distance using {gearName}': 'distância total de {threshold} usando {gearName}'
 '{threshold} total elevation using {gearName}': 'elevação total de {threshold} usando {gearName}'

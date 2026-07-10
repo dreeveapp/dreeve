@@ -18,35 +18,38 @@ class TranslationsTest extends ContainerTestCase
     private KernelProjectDir $kernelProjectDir;
     private ExtractorInterface $extractor;
 
+    private const array DOMAINS = ['messages', 'admin'];
+
     public function testAllTranslationsHaveBeenExtracted(): void
     {
-        $messages = new MessageCatalogue(Locale::en_US->value);
-        $this->extractor->extract($this->kernelProjectDir.'/templates', $messages);
-        $this->extractor->extract($this->kernelProjectDir.'/src', $messages);
-        $translatables = $messages->all()['messages'];
-
-        $translatableKeys = array_keys($translatables ?? []);
+        $catalogue = new MessageCatalogue(Locale::en_US->value);
+        $this->extractor->extract($this->kernelProjectDir.'/templates', $catalogue);
+        $this->extractor->extract($this->kernelProjectDir.'/src', $catalogue);
 
         $messages = [];
-        foreach (Locale::cases() as $locale) {
-            $translationFilePath = sprintf('%s/translations/messages%s.%s.yaml', $this->kernelProjectDir, MessageCatalogue::INTL_DOMAIN_SUFFIX, $locale->value);
-            if (!file_exists($translationFilePath)) {
-                $this->fail(sprintf('Not all translations for locale %s have been exported. Please run "make translation-extract"', $locale->value));
-            }
+        foreach (self::DOMAINS as $domain) {
+            $translatableKeys = array_keys($catalogue->all()[$domain] ?? []);
 
-            $parsedTranslations = Yaml::parse(file_get_contents($translationFilePath));
-
-            $missingTranslationKeys = array_diff($translatableKeys, array_keys($parsedTranslations));
-            $extraTranslationKeys = array_diff(array_keys($parsedTranslations), $translatableKeys);
-
-            if ([] !== $missingTranslationKeys || [] !== $extraTranslationKeys) {
-                $messages[] = sprintf("Translation mismatch for locale '%s':\n", $locale->value);
-
-                if ([] !== $missingTranslationKeys) {
-                    $messages[] = " Missing keys:\n  - ".implode("\n  - ", $missingTranslationKeys)."\n";
+            foreach (Locale::cases() as $locale) {
+                $translationFilePath = sprintf('%s/translations/%s%s.%s.yaml', $this->kernelProjectDir, $domain, MessageCatalogue::INTL_DOMAIN_SUFFIX, $locale->value);
+                if (!file_exists($translationFilePath)) {
+                    $this->fail(sprintf('Not all translations for locale %s have been exported. Please run "make translation-extract"', $locale->value));
                 }
-                if ([] !== $extraTranslationKeys) {
-                    $messages[] = " Extra keys:\n  - ".implode("\n  - ", $extraTranslationKeys)."\n";
+
+                $parsedTranslations = Yaml::parse(file_get_contents($translationFilePath)) ?? [];
+
+                $missingTranslationKeys = array_diff($translatableKeys, array_keys($parsedTranslations));
+                $extraTranslationKeys = array_diff(array_keys($parsedTranslations), $translatableKeys);
+
+                if ([] !== $missingTranslationKeys || [] !== $extraTranslationKeys) {
+                    $messages[] = sprintf("Translation mismatch for domain '%s', locale '%s':\n", $domain, $locale->value);
+
+                    if ([] !== $missingTranslationKeys) {
+                        $messages[] = " Missing keys:\n  - ".implode("\n  - ", $missingTranslationKeys)."\n";
+                    }
+                    if ([] !== $extraTranslationKeys) {
+                        $messages[] = " Extra keys:\n  - ".implode("\n  - ", $extraTranslationKeys)."\n";
+                    }
                 }
             }
         }
@@ -60,27 +63,29 @@ class TranslationsTest extends ContainerTestCase
 
     public function testTranslationsContainPlaceholders(): void
     {
-        foreach (Locale::cases() as $locale) {
-            $translationFilePath = sprintf('%s/translations/messages%s.%s.yaml', $this->kernelProjectDir, MessageCatalogueInterface::INTL_DOMAIN_SUFFIX, $locale->value);
-            if (!file_exists($translationFilePath)) {
-                continue;
-            }
-
-            $parsedTranslations = Yaml::parse(file_get_contents($translationFilePath));
-            foreach ($parsedTranslations as $key => $translation) {
-                if (!preg_match_all('/[\s\S]*\{(?<matches>[\S]*)\}[\s\S]*/U', (string) $key, $translationPlaceholdersInKeys)) {
+        foreach (self::DOMAINS as $domain) {
+            foreach (Locale::cases() as $locale) {
+                $translationFilePath = sprintf('%s/translations/%s%s.%s.yaml', $this->kernelProjectDir, $domain, MessageCatalogueInterface::INTL_DOMAIN_SUFFIX, $locale->value);
+                if (!file_exists($translationFilePath)) {
                     continue;
                 }
 
-                if (!preg_match_all('/[\s\S]*\{(?<matches>[\S]*)\}[\s\S]*/U', (string) $translation, $translationPlaceholdersInTranslations)) {
-                    $this->fail(sprintf('The translation "%s" does not contain all placeholders.', $translation));
-                }
+                $parsedTranslations = Yaml::parse(file_get_contents($translationFilePath)) ?? [];
+                foreach ($parsedTranslations as $key => $translation) {
+                    if (!preg_match_all('/[\s\S]*\{(?<matches>[\S]*)\}[\s\S]*/U', (string) $key, $translationPlaceholdersInKeys)) {
+                        continue;
+                    }
 
-                $this->assertEqualsCanonicalizing(
-                    $translationPlaceholdersInKeys['matches'],
-                    $translationPlaceholdersInTranslations['matches'],
-                    sprintf('The translation "%s" does not contain all placeholders.', $translation)
-                );
+                    if (!preg_match_all('/[\s\S]*\{(?<matches>[\S]*)\}[\s\S]*/U', (string) $translation, $translationPlaceholdersInTranslations)) {
+                        $this->fail(sprintf('The translation "%s" does not contain all placeholders.', $translation));
+                    }
+
+                    $this->assertEqualsCanonicalizing(
+                        $translationPlaceholdersInKeys['matches'],
+                        $translationPlaceholdersInTranslations['matches'],
+                        sprintf('The translation "%s" does not contain all placeholders.', $translation)
+                    );
+                }
             }
         }
     }

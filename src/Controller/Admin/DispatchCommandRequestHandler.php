@@ -38,7 +38,7 @@ final readonly class DispatchCommandRequestHandler
     {
         $token = new CsrfToken(self::CSRF_TOKEN_ID, $request->headers->get(self::CSRF_TOKEN_HEADER, ''));
         if (!$this->csrfTokenManager->isTokenValid($token)) {
-            return new JsonResponse(['error' => 'Invalid CSRF token.'], Response::HTTP_FORBIDDEN);
+            return new JsonResponse(['error' => $this->translator->trans('Invalid CSRF token.', [], 'admin')], Response::HTTP_FORBIDDEN);
         }
 
         try {
@@ -59,7 +59,7 @@ final readonly class DispatchCommandRequestHandler
         if (!$suppressesFlash && $session instanceof FlashBagAwareSessionInterface) {
             $session->getFlashBag()->add(
                 type: 'success',
-                message: $this->translator->trans('Your changes have been saved.')
+                message: $this->translator->trans('Your changes have been saved.', [], 'admin')
             );
         }
 

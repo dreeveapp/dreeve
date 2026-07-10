@@ -18,12 +18,12 @@
                     {% set codeOpen = '<code class="font-mono text-[0.85em] bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded">' %}
                     {% set codeClose = '</code>' %}
                     <p class="text-sm text-gray-500">
-                        {{ "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API"|trans({'{importMode}': codeOpen ~ 'IMPORT_MODE=files' ~ codeClose}) }}.
+                        {{ "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API"|trans({'{importMode}': codeOpen ~ 'IMPORT_MODE=files' ~ codeClose}, 'admin') }}.
                     </p>
                     {% set linkOpen = '<a class="font-semibold underline hover:no-underline" href="https://docs.dreeve.app/#/getting-started/installation?id=env">' %}
                     {% set linkClose = '</a>' %}
                     <p class="text-xs text-gray-400">
-                        {{ "Detailed instructions are available in {linkOpen}the documentation{linkClose}."|trans({'{linkOpen}': linkOpen, '{linkClose}': linkClose}) }}
+                        {{ "Detailed instructions are available in {linkOpen}the documentation{linkClose}."|trans({'{linkOpen}': linkOpen, '{linkClose}': linkClose}, 'admin') }}
                     </p>
                 {% endautoescape %}</div>
             </div>

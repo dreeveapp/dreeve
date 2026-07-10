@@ -5,31 +5,31 @@
         <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
             <input type="hidden" name="group" value="{{ group.value }}">
             <div class="mb-5">
-                <h3 class="text-lg font-semibold">{{ "Zwift"|trans }}</h3>
+                <h3 class="text-lg font-semibold">{{ "Zwift"|trans({}, 'admin') }}</h3>
             </div>
             <div data-form-error class="form-error hidden" role="alert"></div>
             <div class="flex flex-col gap-4">
                 <div>
-                    <label for="zwiftLevel">{{ "Zwift level"|trans }}</label>
+                    <label for="zwiftLevel">{{ "Zwift level"|trans({}, 'admin') }}</label>
                     <input type="number" min="1" id="zwiftLevel" name="data[level]"
                            value="{{ settings.level ?? '' }}">
                     <p class="description">
-                        {{ "Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge."|trans }}
+                        {{ "Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge."|trans({}, 'admin') }}
                     </p>
                 </div>
                 <div>
-                    <label for="zwiftRacingScore">{{ "Zwift racing score"|trans }}</label>
+                    <label for="zwiftRacingScore">{{ "Zwift racing score"|trans({}, 'admin') }}</label>
                     <input type="number" min="0" max="1000" id="zwiftRacingScore" name="data[racingScore]"
                            value="{{ settings.racingScore ?? '' }}">
                     <p class="description">
-                        {{ "Optional. Your current Zwift racing score (between 0 and 1000)."|trans }}
+                        {{ "Optional. Your current Zwift racing score (between 0 and 1000)."|trans({}, 'admin') }}
                     </p>
                 </div>
             </div>
             <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
                 <button type="submit" data-has-loading-state class="group btn--primary">
-                    <span class="label">{{ "Save settings"|trans }}</span>
-                    <span class="label--loading">{{ "Saving..."|trans }}</span>
+                    <span class="label">{{ "Save settings"|trans({}, 'admin') }}</span>
+                    <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
                 </button>
             </div>
         </form>

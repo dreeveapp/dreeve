@@ -1,5 +1,4 @@
 '# completed': '# completed'
-24-hour: 24-hour
 '42-day fitness trend': 42天健身趋势
 '7-day fatigue level': 7天疲劳水平
 '< 1.5: Good variety in training': '< 1.5: 训练多样性良好'
@@ -9,66 +8,28 @@
 'A high score means you concentrate more training into fewer, heavier days.': 'A high score means you concentrate more training into fewer, heavier days.'
 'A:C Ratio': 'A:C 比值'
 'A:C optimal in': 'A:C optimal in'
-AI: AI
-AM/PM: AM/PM
-'API key': 'API key'
 'ATL (Fatigue)': 'ATL (疲劳)'
 'Accumulated fatigue': 'Accumulated fatigue'
 Active: Active
 'Active days': 训练天数
 Activities: 活动
-'Activities excluded from peak power outputs': 'Activities excluded from peak power outputs'
-'Activities to skip during import': 'Activities to skip during import'
-'Activities will appear here once they are imported.': 'Activities will appear here once they are imported.'
 Activity: 活动
-'Activity ID': 'Activity ID'
-'Activity IDs to exclude when calculating peak power outputs.': 'Activity IDs to exclude when calculating peak power outputs.'
 'Activity count': 活动量
 'Activity heatmap': 活动热图
 'Activity locations': 活动地点
-'Activity management': 'Activity management'
 'Activity start times': 活动开始时间
-'Activity visibilities to import': 'Activity visibilities to import'
 'Acute Training Load (Fatigue) - 7-day exponentially weighted average of your daily training load. Represents short-term fatigue.': '短期训练负荷（疲劳）– 7天每日训练负荷的指数加权平均值。代表短期疲劳。'
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': '短期/长期疲劳比率 – ATL与CTL的比值。表示受伤风险。'
 'Adaptive & Inclusive Sports': 适应性和包容性运动
-'Add Eddington': 'Add Eddington'
-'Add FTP': 'Add FTP'
-'Add a component to start tracking maintenance.': 'Add a component to start tracking maintenance.'
-'Add a widget': 'Add a widget'
-'Add activity': 'Add activity'
-'Add challenge': 'Add challenge'
-'Add command': 'Add command'
-'Add component': 'Add component'
-'Add gear': 'Add gear'
-'Add goal': 'Add goal'
-'Add service': 'Add service'
-'Add task': 'Add task'
-'Add weight': 'Add weight'
-'Add widget': 'Add widget'
-'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
-Admin: Admin
 'Admin panel': 'Admin panel'
-'Advanced (per-date & per-sport-type overrides)': 'Advanced (per-date & per-sport-type overrides)'
 Afternoon: 下午
 All: All
-'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'All associated maintenance tasks and logs will be removed. This action cannot be undone.'
-'All sport types must belong to the same activity type.': 'All sport types must belong to the same activity type.'
 'All time': 所有时间
 'Alpine Ski': 高山滑雪
-'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.'
-'App URL': 'App URL'
-'App subtitle': 'App subtitle'
 'App update available notification': 'App update available notification'
-Appearance: Appearance
 Apr: 四月
-'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
-'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
-'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?'
-'Are you sure you want to remove the {widget} widget?': 'Are you sure you want to remove the {widget} widget?'
 'Ask Mark something...': 问问Mark...
 'Athlete profile': 'Athlete profile'
-'Attached to': 'Attached to'
 Aug: 八月
 Average: Average
 'Average gradient': 'Average gradient'
@@ -76,17 +37,14 @@ Average: Average
 'Avg pace': 'Avg pace'
 'Avg speed': 'Avg speed'
 'Back Country Ski': 越野滑雪
-'Back to app': 'Back to app'
 Badges: Badges
 Badminton: 羽毛球
 Bananas: Bananas
-'Base URI': 'Base URI'
 Basketball: Basketball
 Best: 最佳
 'Best effort': 最佳努力
 'Best efforts': 最佳努力
 'Best efforts for {sportType}': '{sportType}最佳努力'
-Birthday: Birthday
 'Build zone (–10)': '构建区 (–10)'
 'CTL (Fitness)': 'CTL (体能)'
 Cadence: 踏频
@@ -94,70 +52,40 @@ Cal.: Cal.
 Calories: 卡路里
 'Calories burned': 燃烧的卡路里
 'Calories burnt': 'Calories burnt'
-Cancel: Cancel
 Canoeing: 划独木舟
 'Carbon saved': 碳减排
 'Challenge consistency': 挑战一致性
-'Challenge name': 'Challenge name'
 Challenges: 挑战
-'Changes still need to be processed before they appear on the app': 'Changes still need to be processed before they appear on the app'
-'Changes to these settings only take effect after you restart the daemon container.': 'Changes to these settings only take effect after you restart the daemon container.'
-'Chat commands': 'Chat commands'
-'Check interval (minutes)': 'Check interval (minutes)'
-'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': '长期训练负荷（体能）— 42天训练的负荷指数加权平均值。代表长期训练适应情况。'
-Clear: Clear
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Clear chat'
-Close: Close
 'Close modal': 关闭模态框
-Command: Command
-Commute: Commute
 Commutes: 通勤
 'Commutes only': 仅通勤
 Compare: 对比
 'Compare to': 对比
 'Completed {threshold} activities': 'Completed {threshold} activities'
-Component: Component
 Components: Components
-Config: Config
-Configure: Configure
-'Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget.': 'Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget.'
-'Configure {widget}': 'Configure {widget}'
-'Configured via an environment variable and cannot be changed here.': 'Configured via an environment variable and cannot be changed here.'
-'Configured via environment variables and cannot be changed here.': 'Configured via environment variables and cannot be changed here.'
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Congrats! You achieved {numberOfPRs} PRs in this activity.'
 'Consider reducing load': 'Consider reducing load'
 Consistency: Consistency
 Country: Country
 Cricket: Cricket
-'Cron expression': 'Cron expression'
-"Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."
 Crossfit: 交叉健身
 'Current Status': 'Current Status'
 'Current streaks': 'Current streaks'
 Cycling: 骑行
-Daemon: Daemon
 'Daily TRIMP': 每日TRIMP
 'Daily activities': 每日活动
 Dance: Dance
 'Dark mode': 'Dark mode'
 Dashboard: 仪表板
-'Dashboard layout': 'Dashboard layout'
 Date: 日期
 Day: Day
 'Days needed': 所需天数
 'Daytime stats': 白天统计
 Dec: 十二月
-'Define what needs doing and how often.': 'Define what needs doing and how often.'
-Delete: Delete
-'Delete activity': 'Delete activity'
-'Delete component': 'Delete component'
-'Delete maintenance log': 'Delete maintenance log'
-Deleting...: Deleting...
 Density: Density
-Description: Description
-'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.'
 Details: 详情
 Device: 设备
 Dist.: Dist.
@@ -170,20 +98,12 @@ Distance: 距离
 'Distance over time per gear': 每个装备随时间变化的距离
 'Distance per month per gear': 每个装备每月的距离
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.'
-'Drag to reorder': 'Drag to reorder'
-'Drag to set the order in which sport types are displayed throughout the app.': 'Drag to set the order in which sport types are displayed throughout the app.'
 Duration: Duration
 'E-Bike Rides': 电动自行车骑行
 'E-Mountain Bike Rides': 电动山地车骑行
 Eddington: 愛丁頓數
 'Eddington number': 'Eddington number'
 'Eddington over time': 'Eddington over time'
-Edit: Edit
-'Edit activity': 'Edit activity'
-'Edit component': 'Edit component'
-'Edit gear': 'Edit gear'
-'Edit maintenance log': 'Edit maintenance log'
-'Edit recording device': 'Edit recording device'
 'Effort vs heart rate': 'Effort vs heart rate'
 'Elapsed time': 'Elapsed time'
 Elev: 海拔
@@ -192,38 +112,19 @@ Elevation: 海拔高度
 'Elevation (single activity)': 'Elevation (single activity)'
 'Elevation in {unit}': '海拔高度（单位：{unit})'
 Elliptical: 椭圆机
-'Enable AI integration': 'Enable AI integration'
-'Enable Strava webhooks': 'Enable Strava webhooks'
-Enabled: Enabled
-Endpoint: Endpoint
 Energy: Energy
 'Energy burned across your activities': 'Energy burned across your activities'
 'Enter fullscreen mode': 'Enter fullscreen mode'
-'Enter your password': 'Enter your password'
-'Enter your username': 'Enter your username'
 Evening: 晚上
-Every: Every
 'Excludes commutes': 筛除通勤
-FTP: FTP
 'FTP history': FTP历史
-'FTP history (cycling)': 'FTP history (cycling)'
-'FTP history (running)': 'FTP history (running)'
-Failed: Failed
 Favourite: 收藏夹
 Feb: 二月
-Female: Female
-'File exceeds {max} MB': 'File exceeds {max} MB'
-'File imports': 'File imports'
-'File imports are only available in file import mode': 'File imports are only available in file import mode'
-'File upload': 'File upload'
-'File upload is only available in file import mode': 'File upload is only available in file import mode'
-Filename: Filename
 'Filter on KOM segments': 筛选KOM路段
 'Filter on country': 按国家筛选
 'Filter on sport type': 按运动类型筛选
 'Filter on starred segments': 筛选星标路段
 'First activity in {countryName}': 'First activity in {countryName}'
-'First name': 'First name'
 'First-ever activity recorded': 'First-ever activity recorded'
 Firsts: Firsts
 Fitness: 健身
@@ -233,23 +134,14 @@ Fitness: 健身
 'Form (TSB)': '状态 (TSB)'
 Fri: 周五
 Fri.: Fri.
-From: From
 GAP: GAP
 Gear: 装备
 'Gear "{gearId}" is referenced in your maintenance config file, but was not imported from Strava. Please check that the gear exists and is correctly synced.': '您的维护配置文件中引用了装备"{gearId}"，但该装备尚未从 Strava 导入。请检查该装备是否存在并已正确同步。'
 'Gear maintenance': 装备维护
 'Gear maintenance notification': 'Gear maintenance notification'
-'Gear management': 'Gear management'
 'Gear stats': 装备统计
 "Gear that hasn't been used in the last three months, is disabled by default.": 过去三个月未使用的装备默认禁用。
 'Gear that is retired is disabled by default.': 退役的装备默认禁用。
-'Gear will appear here once you add them.': 'Gear will appear here once you add them.'
-Gender: Gender
-General: General
-'Go to first page': 'Go to first page'
-'Go to last page': 'Go to last page'
-'Go to next page': 'Go to next page'
-'Go to previous page': 'Go to previous page'
 Goal: Goal
 Golf: 高尔夫
 'Good training variety': 良好的训练多样性
@@ -265,7 +157,6 @@ HR: 心率
 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones': 过去一个月的心率区间分布。为了进行有效的极化训练，您的训练应主要在以下区间内进行。
 'Heart rate zones': 心率区间
 Heatmap: 热图
-'Hide photos for sport types': 'Hide photos for sport types'
 High: 高
 'High fatigue levels may increase injury or burnout risk. Consider reducing load and prioritizing recovery': 'High fatigue levels may increase injury or burnout risk. Consider reducing load and prioritizing recovery'
 'High monotony - increase variety': 单调性高——增加多样性
@@ -274,36 +165,20 @@ High: 高
 Hikes: 徒步
 History: 历史
 'History (6 weeks)': 'History (6 weeks)'
-'History of cycling FTP. Needed to calculate activity stress level.': 'History of cycling FTP. Needed to calculate activity stress level.'
-'History of running FTP. Needed to calculate activity stress level.': 'History of running FTP. Needed to calculate activity stress level.'
-'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.'
 'How diverse is your training': 'How diverse is your training'
 'How hard is your typical training session': 'How hard is your typical training session'
 'How long is your typical training session': 'How long is your typical training session'
 'How much do you train on average per week': 'How much do you train on average per week'
 'How much training you do in total on days you train.': 'How much training you do in total on days you train.'
-'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'How often (in minutes, between 1 and 60) queued webhook events are processed.'
 'How often do you train': 'How often do you train'
 'Ice Skate': 冰刀
 Id: Id
-"If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm.": "If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm."
-'Ignore retired gear': 'Ignore retired gear'
-Image: Image
-Images: Images
 Imperial: Imperial
-Import: Import
 'Import data & build app': 'Import data & build app'
-'Import segment details': 'Import segment details'
-'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
-'Imported files will appear here once you upload them.': 'Imported files will appear here once you upload them.'
-'Imported from Strava': 'Imported from Strava'
 'Imports new Strava activities and rebuilds the app.': 'Imports new Strava activities and rebuilds the app.'
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": '在那段时间里，我走了{totalDistance}，相当于环游世界{numberOfTripsAroundTheWorld}次🌍，或者说是到达月球的{numberOfTripsToTheMoonPercent}%🌕，并且攀登了{totalElevation}，相当于珠穆朗玛峰的{timesMountEverest}倍🏔。总而言之，我走了{totalTimeRecorded}的路🎉。'
-'Include retired gear': 'Include retired gear'
 'Individual thresholds vary based on fitness level.': 个人阈值因体能水平而异。
-Info: Info
 'Inline Skate': 直排轮滑
-Integrations: Integrations
 Intensity: Intensity
 'Intro text': 'Intro text'
 'It looks like no valid gear is attached to any of the components. Please check your config file.': 无法在任何组件上找到有效装备。请检查您的配置文件。
@@ -313,7 +188,6 @@ Jun: 六月
 KOM: 赛段王
 Kayaking: 皮划艇
 'Kite Surf': 风筝冲浪
-Label: Label
 Lap: 圈
 'Last 30 days': 'Last 30 days'
 'Last 7 days training load': 最近7天训练负荷
@@ -322,21 +196,15 @@ Lap: 圈
 'Last effort date': 'Last effort date'
 'Last maintenance': 最后维护
 'Last month': 'Last month'
-'Last name': 'Last name'
 'Last week': 'Last week'
 'Last {numberOfDays} days': '最近{numberOfDays}天'
-'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.': 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.'
-'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.'
-'Leave empty to include all sport types.': 'Leave empty to include all sport types.'
 Lifetime: Lifetime
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Light fatigue with good readiness. A great balance for quality training or longer efforts'
 Load: Load
 'Load (CTL/ATL)': '负荷 (CTL/ATL)'
 'Loading data...': 加载数据中...
 Loading...: 加载中...
-Locale: Locale
 'Locations over the globe': 全球位置
-Log: Log
 'Long run': 长跑
 'Longest activity': 'Longest activity'
 'Longest activity (h)': '最久运动 (h)'
@@ -347,24 +215,14 @@ Low: 低
 'Low risk': 'Low risk'
 'Low training load': 'Low training load'
 Maintenance: 维护
-'Maintenance log': 'Maintenance log'
-'Maintenance logs will appear here once maintenance has been registered.': 'Maintenance logs will appear here once maintenance has been registered.'
-'Maintenance tasks': 'Maintenance tasks'
-Male: Male
 Mar: 三月
 Max: 最大
 'Max gradient': 'Max gradient'
-'Max heart rate formula': 'Max heart rate formula'
 May: 五月
 Medium: 中等
-Message: Message
 Metric: Metric
-'Metric display order': 'Metric display order'
-Metrics: Metrics
 Milestones: Milestones
 'Mind & Body Sports': 心灵与身体运动
-Mode: Mode
-Model: Model
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training'
 'Moderate monotony': 适度单调性
 Mon: 周一
@@ -372,7 +230,6 @@ Mon.: Mon.
 Monotony: 单调性
 Monthly: Monthly
 'Monthly stats': 每月统计
-'More pages': 'More pages'
 Morning: 早晨
 'Most elevation': 'Most elevation'
 'Most recent activities': 最近的活动
@@ -388,47 +245,23 @@ Neutral: Neutral
 'Next milestone': 'Next milestone'
 Night: 夜晚
 'No activities': 没有活动
-'No activities imported yet.': 'No activities imported yet.'
-'No components yet.': 'No components yet.'
 'No data available': 没有可用数据
-'No files imported yet.': 'No files imported yet.'
-'No gears added yet.': 'No gears added yet.'
-'No maintenance logs yet.': 'No maintenance logs yet.'
 'No milestones achieved yet': 'No milestones achieved yet'
 'No other options to compare with': 无可供比较的其他选项
-'No recording devices yet.': 'No recording devices yet.'
 None: 无
 'Nordic Ski': 北欧滑雪
-'Normal date format': 'Normal date format'
 'Normalized power': 'Normalized power'
 'Not supported': 不支持
-'Notification services': 'Notification services'
 Nov: 十一月
 Now: Now
 'Number of activities': 'Number of activities'
 'Number of activities per month': 每月活动数量
-'Number of activities to display': 'Number of activities to display'
-'Number of challenges to display': 'Number of challenges to display'
-'Number of milestones to display': 'Number of milestones to display'
-'Number of new activities to process per import': 'Number of new activities to process per import'
 'Number of times completed': 完成次数
-'Number of widgets of this type you already have configured.': 'Number of widgets of this type you already have configured.'
 Oct: 十月
 'Older effort': 'Older effort'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': '平均而言，每天的平均值为 {dailyAverage}，每周的平均值为 {weeklyAverage}，每月的平均值为 {monthlyAverage} 🐣。'
 'One of your gear maintenance tasks is due': 您有装备需维护
-'Only required for the Azure OpenAI provider.': 'Only required for the Azure OpenAI provider.'
-'Only required for the Ollama provider.': 'Only required for the Ollama provider.'
-'Only required for the OpenAI-like provider.': 'Only required for the OpenAI-like provider.'
 'Optimal training range': 最佳训练范围
-'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.'
-'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.'
-'Optional subtitle': 'Optional subtitle'
-'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.': 'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.'
-'Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date.': 'Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date.'
-'Optional. Leave empty to always apply this goal.': 'Optional. Leave empty to always apply this goal.'
-'Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge.': 'Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge.'
-'Optional. Your current Zwift racing score (between 0 and 1000).': 'Optional. Your current Zwift racing score (between 0 and 1000).'
 Other: 其他
 'Outdoor Sports': 户外运动
 Over-fatigued: Over-fatigued
@@ -436,20 +269,14 @@ Over-fatigued: Over-fatigued
 'Overall weekly training stress': 每周训练负荷总览
 'PB badges': PB徽章
 'PET bottles produced': PET瓶量
-'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.': 'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.'
-'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.': 'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.'
 Pace: 步速
 Padel: Padel
-'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Parts you track maintenance for, eg: chains, cassettes, brake pads...'
-Password: Password
 'Peak fresh': 'Peak fresh'
 'Peak power outputs': 峰值功率输出
 'Per {unit}': 'Per {unit}'
-'Performed on': 'Performed on'
 'Personal bests': 'Personal bests'
 Photo: 照片
 Photos: 照片
-'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
 'Physical Therapy': 'Physical Therapy'
 'Pickle Ball': 匹克球
 Pilates: 普拉提
@@ -459,9 +286,6 @@ Power: 功率
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': '消耗了约{caloriesBurned}卡路里，或大约{numberOfPizzaSlices}片披萨🍕。'
 'Prev year': 去年
 Previous: Previous
-'Processed on': 'Processed on'
-'Profile picture URL': 'Profile picture URL'
-Provider: Provider
 'Purchase price': 'Purchase price'
 Race: 比赛
 'Racing Score': 赛车成绩
@@ -472,42 +296,21 @@ Ranking: Ranking
 'Reached {threshold} hours total moving time': 'Reached {threshold} hours total moving time'
 'Reached {threshold} total distance': 'Reached {threshold} total distance'
 'Reached {threshold} total elevation': 'Reached {threshold} total elevation'
-'Rebuild pending': 'Rebuild pending'
 'Recent effort': 'Recent effort'
-'Recording device management': 'Recording device management'
 'Recording devices': 'Recording devices'
 'Recording devices details': 'Recording devices details'
-'Recording devices will appear here once activities have been imported.': 'Recording devices will appear here once activities have been imported.'
 'Recovery Timeline': 'Recovery Timeline'
 'Recovery forecast': 'Recovery forecast'
 'Reduced carbon emission by commuting': 通勤减少的碳排放
-'Register maintenance': 'Register maintenance'
 'Relative cost': 相对成本
-'Remember me for 7 days': 'Remember me for 7 days'
-Remove: Remove
-'Remove Eddington': 'Remove Eddington'
-'Remove challenge': 'Remove challenge'
-'Remove command': 'Remove command'
-'Remove goal': 'Remove goal'
-'Remove task': 'Remove task'
-'Remove widget': 'Remove widget'
-Removing...: Removing...
-"Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
-'Reset dashboard to default': 'Reset dashboard to default'
-'Reset to default': 'Reset to default'
-Resetting...: Resetting...
 'Rest Days': 休息日
 'Rest days': 休息日
 'Rest days in last 7 days': 最近7天的休息日
 'Rest days vs. active days': '休息日 训练如 对比'
-'Resting heart rate formula': 'Resting heart rate formula'
-'Restrict to date range': 'Restrict to date range'
 Retired: Retired
 'Retired gear': 退役装备
-'Return to app': 'Return to app'
 Rewind: 回顾
 'Rewind comparisons are only available on larger screens.': 回顾对比仅适用于大屏幕。
-Ride: Ride
 Rides: 骑行
 'Risk of detraining': 'Risk of detraining'
 'Rock Climbing': 攀岩
@@ -518,54 +321,25 @@ Runs: 跑步
 Sail: 帆船
 Sat: 周六
 Sat.: Sat.
-Save: Save
-'Save settings': 'Save settings'
-Saved: Saved
-Saving...: Saving...
-'Scheduled actions the daemon runs at regular intervals.': 'Scheduled actions the daemon runs at regular intervals.'
 Search: 搜索
 'Search activity...': 搜索活动...
 'Search segment...': 搜索路段...
 Segments: 路段
-'Select a component first...': 'Select a component first...'
-'Select a component…': 'Select a component…'
-'Select at least one sport type.': 'Select at least one sport type.'
-'Select the serviced gear…': 'Select the serviced gear…'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sends a notification when a new app version is available. Requires a configured notification service.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sends a notification when gear maintenance is due. Requires a configured notification service.'
 Sep: 九月
-Settings: Settings
-'Short date format': 'Short date format'
-'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.'
-'Show in dashboard widget': 'Show in dashboard widget'
-'Show in navigation bar': 'Show in navigation bar'
 'Show information': 显示信息
-'Show last X years by default': 'Show last X years by default'
-'Show password': 'Show password'
-'Show the workout assistant in the UI.': 'Show the workout assistant in the UI.'
-'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.'
-'Sign in': 'Sign in'
-'Sign in to the admin panel': 'Sign in to the admin panel'
-'Sign out': 'Sign out'
-'Signing in...': 'Signing in...'
 "Since I began using Strava {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": '从{startDate}算起，我已使用Strava {numberOfDaysAgo}多天​，我已经记录了{totalDaysOfWorkingOut}天的训练和冒险活动。'
 Skateboard: 滑板
 Skating: 滑冰
-'Skip activities recorded before': 'Skip activities recorded before'
-Skipped: Skipped
 'Slightly fresh': 'Slightly fresh'
 Snowboard: 单板滑雪
 Snowshoe: 雪鞋
 Soccer: 足球
 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.': 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.'
-Source: Source
 Speed: 速度
 Splits: 分段
-'Sport type': 'Sport type'
-'Sport types sorting order': 'Sport types sorting order'
-'Sport types to import': 'Sport types to import'
-'Sport types to include': 'Sport types to include'
 'Sport variety': 'Sport variety'
 Squash: 壁球
 'Stair Stepper': 楼梯机
@@ -574,29 +348,16 @@ Squash: 壁球
 'Start times': 开始时间
 'Stats per weekday': 按工作日统计
 Status: Status
-'Strava API credentials.': 'Strava API credentials.'
-'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.'
-'Strava activity IDs to skip during import.': 'Strava activity IDs to skip during import.'
-'Strava client ID': 'Strava client ID'
-'Strava client secret': 'Strava client secret'
-'Strava import': 'Strava import'
-'Strava refresh token': 'Strava refresh token'
 'Streak started on {date}': 'Streak started on {date}'
 Streaks: 连续记录
-Subtitle: Subtitle
-Success: Success
 Sun: 周日
 Sun.: Sun.
-'Supported types': 'Supported types'
 Surfing: 冲浪
 Swim: 游泳
 'TSB (Form)': 'TSB (状态)'
 'TSB positive in': 'TSB positive in'
 'Table Tennis': 乒乓球
 'Taper sweet-spot (+15)': '最佳减量期 (+15)'
-Task: Task
-'Task name': 'Task name'
-Tasks: Tasks
 'Team Sports': 'Team Sports'
 Tennis: 网球
 "That's 1.5 times the distance to the edge of space": "That's 1.5 times the distance to the edge of space"
@@ -688,43 +449,26 @@ Tennis: 网球
 "That's {number} days of at least {distance}": "That's {number} days of at least {distance}"
 "That's {percentage}% of all countries 🌍": "That's {percentage}% of all countries 🌍"
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.'
-'The URL the app is hosted on.': 'The URL the app is hosted on.'
-'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
-'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.': 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.'
-'The last zone has no upper bound.': 'The last zone has no upper bound.'
-'The locale used to render the app.': 'The locale used to render the app.'
-"The name is derived from the device recorded on your activities and can't be edited.": "The name is derived from the device recorded on your activities and can't be edited."
-'The unit system used to render distances, elevations, temperatures, etc.': 'The unit system used to render distances, elevations, temperatures, etc.'
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': '徽章为动态生成，您可在任意 &lt;img&gt; 标签中使用'
 Thinking...: 思考中...
-'This action cannot be undone.': 'This action cannot be undone.'
 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.': 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.'
-'This component is fitted to multiple gears, pick the one you serviced.': 'This component is fitted to multiple gears, pick the one you serviced.'
 'This feature is currently disabled': 功能当前被禁用
 'This month': 'This month'
-"This value is imported from Strava and can't be edited here.": "This value is imported from Strava and can't be edited here."
 'This week': 'This week'
-'This widget still needs to be configured.': 'This widget still needs to be configured.'
-'This will discard your current dashboard layout and restore the default widgets.': 'This will discard your current dashboard layout and restore the default widgets.'
 Thu: 周四
 Thu.: Thu.
 Time: 时间
-'Time format': 'Time format'
 'Time in zone': 'Time in zone'
 'Times completed': 完成次数
 Title: Title
-To: To
 'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect': 'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect'
 'Toggle sidebar': 切换侧边栏
-'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.': 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.'
 'Top 10': 前10名
 'Total distance per month': 每月总距离
 'Total elevation per month': 每月总海拔
 'Total hours spent per gear': 每种装备总时长
 'Total hours spent per sport type': 每种运动的总时长
 'Total moving time per month': 'Total moving time per month'
-'Total size exceeds {max} MB': 'Total size exceeds {max} MB'
-'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.'
 'Trail Runs': 越野跑
 'Training 4–5 days every week scores higher than doing everything in one or two days.': 'Training 4–5 days every week scores higher than doing everything in one or two days.'
 'Training Impulse - Training load metric that accounts for intensity and duration.': '训练脉冲 - 训练负荷指标，综合考虑强度和持续时间。'
@@ -735,25 +479,10 @@ To: To
 'Training load is accumulating, recovery days are important': 'Training load is accumulating, recovery days are important'
 Tue: 周二
 Tue.: Tue.
-'Turn gear maintenance tracking on or off.': 'Turn gear maintenance tracking on or off.'
-'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Turns on the AI-powered workout assistant, which can then be used from the command line.'
-Type: Type
-URL: URL
-Unit: Unit
-'Unit system': 'Unit system'
 Unspecified: 未指定
-'Unsupported file type': 'Unsupported file type'
 'Updated on': 更新于
-'Upload activity files': 'Upload activity files'
-'Upload failed': 'Upload failed'
-'Upload files': 'Upload files'
-Uploaded: Uploaded
-Uploading...: Uploading...
 'User badge': 用户徽章
-Username: Username
 'Velo Mobiles': 躺车
-'Verify token': 'Verify token'
-Version: Version
 'Very high': 非常高
 'View all': 查看全部
 'View details': 查看详情
@@ -767,7 +496,6 @@ Walking: 健步
 Walks: 散步
 'Water Sports': 水上运动
 'We detected following issues': 检测到以下问题
-Webhooks: Webhooks
 Wed: 周三
 Wed.: Wed.
 Weekly: Weekly
@@ -778,10 +506,7 @@ Weekly: Weekly
 Weight: 体重
 'Weight Training': 重量训练
 'Weight history': 历史体重
-'What is my FTP?': 'What is my FTP?'
 Wheelchair: 轮椅
-'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
-"When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
 'Wind Surf': 风帆冲浪
 'Winter Sports': 冬季运动
 Workout: 锻炼
@@ -792,17 +517,10 @@ Year: 年
 Yearly: Yearly
 'Yearly stats': 年度统计
 Yoga: 瑜伽
-'You can add it back to your dashboard again later.': 'You can add it back to your dashboard again later.'
-'You can also copy files straight into the {watchFolder} folder.': 'You can also copy files straight into the {watchFolder} folder.'
-'You can select up to {max} images': 'You can select up to {max} images'
-"You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API"
 'Your PB badge': PB徽章
 'Your Strava badge': Strava徽章
 'Your Zwift badge': Zwift徽章
 'Your badge(s)': 徽章
-'Your birthday. Needed to calculate heart rate zones.': 'Your birthday. Needed to calculate heart rate zones.'
-'Your changes have been saved.': 'Your changes have been saved.'
-'Your gender. Used to determine activity training load.': 'Your gender. Used to determine activity training load.'
 Z1: Z1
 'Z1-2 (Low)': Z1-2（低）
 Z2: Z2
@@ -811,24 +529,18 @@ Z3: Z3
 Z4: Z4
 'Z4-5 (High)': Z4-5（高）
 Z5: Z5
-Zone: Zone
 'Zone 1 (recovery)': 区域1（恢复）
 'Zone 2 (aerobic)': 区域2（有氧）
 'Zone 3 (aerobic/anaerobic)': 区域3（有氧/无氧）
 'Zone 4 (anaerobic)': 区域4（无氧）
 'Zone 5 (maximal)': 区域5（最大）
-Zwift: Zwift
 'Zwift Statistics': Zwift统计
 'Zwift badge': Zwift徽章
-'Zwift level': 'Zwift level'
-'Zwift racing score': 'Zwift racing score'
 'Zwift stats': Zwift统计
-'active days': 'active days'
 activities: 活动
 and: 和
 avg: 平均
 bpm: 拍子数
-'calendar days': 'calendar days'
 challenges: challenges
 clear: 清除
 compare: 对比
@@ -837,18 +549,11 @@ day(s): day(s)
 days: 天
 'days needed for next Eddington': '天 - 下一个爱丁顿所需天数'
 'days to reach {n}': 'days to reach {n}'
-'discord://token@id': 'discord://token@id'
-ftp: ftp
 hours: 小时
-'hours used': 'hours used'
 hrs: hrs
-'kilometers used': 'kilometers used'
 'last {numberOfDays} days': '最近{numberOfDays}天'
 max: max
-'max {max} MB each': 'max {max} MB each'
-'miles used': 'miles used'
 min: min
-minutes: minutes
 months: 月
 more: 更多
 n/a: 不适用
@@ -864,9 +569,6 @@ total: 总计
 watts: watts
 weeks: 周
 workouts: 锻炼
-'{count} files ready to upload': '{count} files ready to upload'
-'{count} files uploaded': '{count} files uploaded'
-'{count} images selected': '{count} images selected'
 '{daysSinceLastTagged} days': '{daysSinceLastTagged}天'
 '{days} consecutive days of activity': '{days} consecutive days of activity'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged}小时'
@@ -878,9 +580,6 @@ workouts: 锻炼
 '{numberOfResults} results': '{numberOfResults} results'
 '{numberOfResults} routes': '{numberOfResults} routes'
 '{numberOfWeeks} weeks': '{numberOfWeeks} weeks'
-'{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.'
-'{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files'
-'{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images'
 '{threshold} hours using {gearName}': '{threshold} hours using {gearName}'
 '{threshold} total distance using {gearName}': '{threshold} total distance using {gearName}'
 '{threshold} total elevation using {gearName}': '{threshold} total elevation using {gearName}'

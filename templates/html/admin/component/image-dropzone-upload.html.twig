@@ -19,12 +19,12 @@
          data-supported-extensions='{{ extensions|json_encode }}'
          data-existing-images='{{ existingImages|json_encode }}'
          data-translations='{{ {
-             "imagesSelected": "{count} images selected"|trans,
-             "unsupportedFileType": "Unsupported file type"|trans,
-             "fileTooLarge": "File exceeds {max} MB"|trans,
-             "limitReached": "You can select up to {max} images"|trans,
-             "totalSizeExceeded": "Total size exceeds {max} MB"|trans,
-             "existingImage": "Saved"|trans,
+             "imagesSelected": "{count} images selected"|trans({}, 'admin'),
+             "unsupportedFileType": "Unsupported file type"|trans({}, 'admin'),
+             "fileTooLarge": "File exceeds {max} MB"|trans({}, 'admin'),
+             "limitReached": "You can select up to {max} images"|trans({}, 'admin'),
+             "totalSizeExceeded": "Total size exceeds {max} MB"|trans({}, 'admin'),
+             "existingImage": "Saved"|trans({}, 'admin'),
          }|json_encode }}'
          class="flex flex-col">
         <input type="hidden" data-images-field name="{{ name }}"/>
@@ -45,14 +45,14 @@
                 {{ "{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images"|trans({
                     '{strongOpen}': strongOpen,
                     '{strongClose}': strongClose
-                }) }}
+                }, 'admin') }}
             </span>
             <span class="mt-0.5 text-xs text-gray-400">
-                {{ "Supported types"|trans }}:
+                {{ "Supported types"|trans({}, 'admin') }}:
                 {% for extension in extensions %}
                     <code class="font-mono text-[0.85em] bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded">.{{ extension }}</code>
                 {% endfor %}
-                {{ "max {max} MB each"|trans({'{max}': maxFileSize}) }}
+                {{ "max {max} MB each"|trans({'{max}': maxFileSize}, 'admin') }}
             </span>
         </label>
         <div data-list-header class="flex items-center justify-between gap-2 mt-4 text-xs font-medium text-gray-500" hidden>
@@ -68,7 +68,7 @@
                     <span class="name text-sm font-medium text-gray-800 truncate"></span>
                     <span class="meta text-xs text-gray-500 in-[.is-invalid]:text-red-500"></span>
                 </span>
-                <button type="button" data-remove-file class="grid place-items-center size-9 shrink-0 p-0 rounded-lg border-0 bg-transparent text-gray-400 shadow-none cursor-pointer transition-colors hover:bg-gray-100 hover:text-gray-900" aria-label="{{ "Remove"|trans }}">
+                <button type="button" data-remove-file class="grid place-items-center size-9 shrink-0 p-0 rounded-lg border-0 bg-transparent text-gray-400 shadow-none cursor-pointer transition-colors hover:bg-gray-100 hover:text-gray-900" aria-label="{{ "Remove"|trans({}, 'admin') }}">
                     <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                         <path d="M6 6l12 12M18 6L6 18"/>
                     </svg>
@@ -76,7 +76,7 @@
             </li>
         </template>
         <div class="mt-3">
-            <button type="button" data-clear-btn class="hidden btn--secondary">{{ "Clear"|trans }}</button>
+            <button type="button" data-clear-btn class="hidden btn--secondary">{{ "Clear"|trans({}, 'admin') }}</button>
         </div>
     </div>
 {% endautoescape %}

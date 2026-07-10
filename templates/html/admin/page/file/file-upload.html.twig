@@ -5,26 +5,26 @@
         {% set codeOpen = '<code class="font-mono text-[0.85em] bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded">' %}
         {% set codeClose = '</code>' %}
         {% embed 'html/admin/component/gated-panel.html.twig' with { 'locked': not importMode.isFiles() } %}
-            {% block lockTitle %}{% autoescape false %}{{ "File upload is only available in file import mode"|trans }}{% endautoescape %}{% endblock %}
+            {% block lockTitle %}{% autoescape false %}{{ "File upload is only available in file import mode"|trans({}, 'admin') }}{% endautoescape %}{% endblock %}
             {% block content %}{% autoescape false %}
                 <h3 class="text-lg font-semibold">
-                    {{ "Upload activity files"|trans }}
+                    {{ "Upload activity files"|trans({}, 'admin') }}
                 </h3>
                 <p class="mt-1 text-sm text-gray-500">
                     {{ "Add {fit}, {tcx} or {gpx} files. They are processed every few minutes."|trans({
                         '{fit}': codeOpen ~ '.fit' ~ codeClose,
                         '{tcx}': codeOpen ~ '.tcx' ~ codeClose,
                         '{gpx}': codeOpen ~ '.gpx' ~ codeClose
-                    }) }}
+                    }, 'admin') }}
                 </p>
                 <form id="upload-form" class="flex flex-col mt-8"
                       data-supported-file-extensions='{{ supportedFileExtensions }}' data-translations='{{ {
-                    "filesReadyToUpload": "{count} files ready to upload"|trans,
-                    "filesUploaded": "{count} files uploaded"|trans,
-                    "unsupportedFileType": "Unsupported file type"|trans,
-                    "uploading": "Uploading..."|trans,
-                    "uploaded": "Uploaded"|trans,
-                    "uploadFailed": "Upload failed"|trans,
+                    "filesReadyToUpload": "{count} files ready to upload"|trans({}, 'admin'),
+                    "filesUploaded": "{count} files uploaded"|trans({}, 'admin'),
+                    "unsupportedFileType": "Unsupported file type"|trans({}, 'admin'),
+                    "uploading": "Uploading..."|trans({}, 'admin'),
+                    "uploaded": "Uploaded"|trans({}, 'admin'),
+                    "uploadFailed": "Upload failed"|trans({}, 'admin'),
                 }|json_encode }}' novalidate>
                     <label id="dropzone"
                            class="group relative flex flex-col items-center text-center gap-1.5 px-6 py-10 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 cursor-pointer transition-colors hover:border-primary hover:bg-primary-soft [&.is-dragging]:border-primary [&.is-dragging]:bg-primary-soft [&.is-dragging]:ring-4 [&.is-dragging]:ring-primary/10"
@@ -45,10 +45,10 @@
                             {{ "{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files"|trans({
                                 '{strongOpen}': strongOpen,
                                 '{strongClose}': strongClose
-                            }) }}
+                            }, 'admin') }}
                         </span>
                         <span class="mt-0.5 text-xs text-gray-400">
-                            {{ "Supported types"|trans }}:
+                            {{ "Supported types"|trans({}, 'admin') }}:
                             <code class="font-mono text-[0.85em] bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded">.fit</code>
                             <code class="font-mono text-[0.85em] bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded">.tcx</code>
                             <code class="font-mono text-[0.85em] bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded">.gpx</code>
@@ -82,7 +82,7 @@
                                 <span class="name text-sm font-medium text-gray-800 truncate"></span>
                                 <span class="meta text-xs text-gray-500 in-[.is-invalid]:text-red-500 in-[.is-uploading]:text-primary in-[.is-uploaded]:text-green-600"></span>
                             </span>
-                            <button type="button" data-remove-file class="grid place-items-center size-9 shrink-0 p-0 rounded-lg border-0 bg-transparent text-gray-400 shadow-none cursor-pointer transition-colors hover:bg-gray-100 hover:text-gray-900" aria-label="{{ "Remove"|trans }}">
+                            <button type="button" data-remove-file class="grid place-items-center size-9 shrink-0 p-0 rounded-lg border-0 bg-transparent text-gray-400 shadow-none cursor-pointer transition-colors hover:bg-gray-100 hover:text-gray-900" aria-label="{{ "Remove"|trans({}, 'admin') }}">
                                 <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                      stroke-linecap="round">
                                     <path d="M6 6l12 12M18 6L6 18"/>
@@ -92,14 +92,14 @@
                     </template>
                     <div class="flex flex-col gap-2 mt-5 sm:flex-row sm:items-center">
                         <button type="submit" id="upload-btn" class="group btn--primary" data-has-loading-state disabled>
-                            <span class="label">{{ "Upload files"|trans }}</span>
-                            <span class="label--loading">{{ "Uploading..."|trans }}</span>
+                            <span class="label">{{ "Upload files"|trans({}, 'admin') }}</span>
+                            <span class="label--loading">{{ "Uploading..."|trans({}, 'admin') }}</span>
                         </button>
-                        <button type="button" id="clear-btn" class="hidden btn--secondary">{{ "Clear"|trans }}</button>
+                        <button type="button" id="clear-btn" class="hidden btn--secondary">{{ "Clear"|trans({}, 'admin') }}</button>
                     </div>
                 </form>
                 <div class="mt-6 text-xs text-gray-500">
-                    {{ "You can also copy files straight into the {watchFolder} folder."|trans({'{watchFolder}': codeOpen ~ 'watch' ~ codeClose}) }}
+                    {{ "You can also copy files straight into the {watchFolder} folder."|trans({'{watchFolder}': codeOpen ~ 'watch' ~ codeClose}, 'admin') }}
                 </div>
             {% endautoescape %}{% endblock %}
         {% endembed %}

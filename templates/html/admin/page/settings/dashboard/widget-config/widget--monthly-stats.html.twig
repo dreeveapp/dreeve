@@ -1,11 +1,11 @@
 <div>
-    <label for="config-enableLastXYearsByDefault">{{ "Show last X years by default"|trans }}</label>
+    <label for="config-enableLastXYearsByDefault">{{ "Show last X years by default"|trans({}, 'admin') }}</label>
     <input type="number" min="1" step="1" required id="config-enableLastXYearsByDefault" name="config[enableLastXYearsByDefault]" value="{{ configuration.get('enableLastXYearsByDefault') }}">
 </div>
 {% set metrics = configuration.get('metricsDisplayOrder') %}
 <div>
-    <label>{{ "Metric display order"|trans }}</label>
-    <p class="mt-0.5 mb-2 text-xxs text-gray-500">{{ "Choose the order the metrics are shown in."|trans }}</p>
+    <label>{{ "Metric display order"|trans({}, 'admin') }}</label>
+    <p class="mt-0.5 mb-2 text-xxs text-gray-500">{{ "Choose the order the metrics are shown in."|trans({}, 'admin') }}</p>
     <div class="flex flex-col gap-2">
         {% for position in 1..3 %}
             <select name="config[metricsDisplayOrder][]">

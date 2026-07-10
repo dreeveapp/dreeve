@@ -25,7 +25,7 @@
                 </div>
                 <button type="button" data-repeater-remove
                         class="unstyled cursor-pointer grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
-                        aria-label="{{ "Remove"|trans }}">
+                        aria-label="{{ "Remove"|trans({}, 'admin') }}">
                     <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                     </svg>
@@ -37,86 +37,86 @@
 
 {% block main %}
     {% set athlete = settings.athlete ?? {} %}
-    {% set genderOptions = {'M': 'Male'|trans, 'F': 'Female'|trans, 'X': 'Other'|trans} %}
+    {% set genderOptions = {'M': 'Male'|trans({}, 'admin'), 'F': 'Female'|trans({}, 'admin'), 'X': 'Other'|trans} %}
     {% set maxHeartRateFormulaOptions = ['arena', 'astrand', 'fox', 'gellish', 'nes', 'tanaka'] %}
     <div class="flex flex-col gap-4">
         <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
             <input type="hidden" name="group" value="{{ group.value }}">
             <div class="mb-5">
-                <h3 class="text-lg font-semibold">{{ "General"|trans }}</h3>
+                <h3 class="text-lg font-semibold">{{ "General"|trans({}, 'admin') }}</h3>
             </div>
             <div data-form-error class="form-error hidden" role="alert"></div>
             <div class="flex flex-col gap-4">
                 <div>
-                    <label for="appUrl">{{ "App URL"|trans }}</label>
+                    <label for="appUrl">{{ "App URL"|trans({}, 'admin') }}</label>
                     <input type="text" id="appUrl" value="{{ appUrl }}" disabled>
                     <p class="description">
-                        {{ "The URL the app is hosted on."|trans }}
-                        {{ "Configured via an environment variable and cannot be changed here."|trans }}
+                        {{ "The URL the app is hosted on."|trans({}, 'admin') }}
+                        {{ "Configured via an environment variable and cannot be changed here."|trans({}, 'admin') }}
                     </p>
                 </div>
                 <div>
-                    <label for="appSubTitle">{{ "App subtitle"|trans }}</label>
+                    <label for="appSubTitle">{{ "App subtitle"|trans({}, 'admin') }}</label>
                     <input type="text" id="appSubTitle" name="data[appSubTitle]" value="{{ settings.appSubTitle ?? '' }}">
                     <p class="description">
-                        {{ "Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable."|trans }}
+                        {{ "Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable."|trans({}, 'admin') }}
                     </p>
                 </div>
                 <div>
-                    <label for="profilePictureUrl">{{ "Profile picture URL"|trans }}</label>
+                    <label for="profilePictureUrl">{{ "Profile picture URL"|trans({}, 'admin') }}</label>
                     <input type="text" id="profilePictureUrl" name="data[profilePictureUrl]" value="{{ settings.profilePictureUrl ?? '' }}">
                     <p class="description">
-                        {{ "Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable."|trans }}
+                        {{ "Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable."|trans({}, 'admin') }}
                     </p>
                 </div>
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div>
-                        <label for="firstName">{{ "First name"|trans }}</label>
+                        <label for="firstName">{{ "First name"|trans({}, 'admin') }}</label>
                         <input type="text" id="firstName" name="data[athlete][firstName]" value="{{ athlete.firstName ?? '' }}">
                     </div>
                     <div>
-                        <label for="lastName">{{ "Last name"|trans }}</label>
+                        <label for="lastName">{{ "Last name"|trans({}, 'admin') }}</label>
                         <input type="text" id="lastName" name="data[athlete][lastName]" value="{{ athlete.lastName ?? '' }}">
                     </div>
                 </div>
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div>
-                        <label for="birthday">{{ "Birthday"|trans }}</label>
+                        <label for="birthday">{{ "Birthday"|trans({}, 'admin') }}</label>
                         <input type="date" id="birthday" name="data[athlete][birthday]" value="{{ athlete.birthday ?? '' }}" required>
                         <p class="description">
-                            {{ "Your birthday. Needed to calculate heart rate zones."|trans }}
+                            {{ "Your birthday. Needed to calculate heart rate zones."|trans({}, 'admin') }}
                         </p>
                     </div>
                     <div>
-                        <label for="gender">{{ "Gender"|trans }}</label>
+                        <label for="gender">{{ "Gender"|trans({}, 'admin') }}</label>
                         <select id="gender" name="data[athlete][gender]">
                             {% for value, genderLabel in genderOptions %}
                                 <option value="{{ value }}" {{ (athlete.gender ?? '') == value ? 'selected' : '' }}>{{ genderLabel }}</option>
                             {% endfor %}
                         </select>
                         <p class="description">
-                            {{ "Your gender. Used to determine activity training load."|trans }}
+                            {{ "Your gender. Used to determine activity training load."|trans({}, 'admin') }}
                         </p>
                     </div>
                 </div>
                 {% set maxHeartRateFormula = athlete.maxHeartRateFormula ?? null %}
                 <div>
-                    <label for="maxHeartRateFormula">{{ "Max heart rate formula"|trans }}</label>
+                    <label for="maxHeartRateFormula">{{ "Max heart rate formula"|trans({}, 'admin') }}</label>
                     <select id="maxHeartRateFormula" name="data[athlete][maxHeartRateFormula]">
                         {% for formula in maxHeartRateFormulaOptions %}
                             <option value="{{ formula }}" {{ maxHeartRateFormula == formula ? 'selected' : '' }}>{{ formula }}</option>
                         {% endfor %}
                     </select>
                     <p class="description">
-                        {{ "The formula used to calculate your max heart rate. The default is Fox (220 − age)."|trans }}
+                        {{ "The formula used to calculate your max heart rate. The default is Fox (220 − age)."|trans({}, 'admin') }}
                     </p>
                 </div>
                 {% set restingHeartRateFormula = athlete.restingHeartRateFormula ?? null %}
                 <div>
-                    <label for="restingHeartRateFormula">{{ "Resting heart rate formula"|trans }}</label>
+                    <label for="restingHeartRateFormula">{{ "Resting heart rate formula"|trans({}, 'admin') }}</label>
                     <input type="text" id="restingHeartRateFormula" name="data[athlete][restingHeartRateFormula]" value="{{ restingHeartRateFormula is iterable ? '' : (restingHeartRateFormula ?? '') }}">
                     <p class="description">
-                        {{ "The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased."|trans }}
+                        {{ "The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased."|trans({}, 'admin') }}
                     </p>
                 </div>
             </div>
@@ -125,29 +125,29 @@
                     'data[athlete][weightHistory]',
                     athlete.weightHistory ?? [],
                     "Weight history"|trans,
-                    "History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg."|trans,
+                    "History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg."|trans({}, 'admin'),
                     "Weight"|trans,
-                    "Add weight"|trans,
+                    "Add weight"|trans({}, 'admin'),
                     'weight',
                     'any'
                 ) }}
                 {{ _self.historyEditor(
                     'data[athlete][ftpHistory][cycling]',
                     athlete.ftpHistory.cycling ?? [],
-                    "FTP history (cycling)"|trans,
-                    "History of cycling FTP. Needed to calculate activity stress level."|trans,
-                    "FTP"|trans,
-                    "Add FTP"|trans,
+                    "FTP history (cycling)"|trans({}, 'admin'),
+                    "History of cycling FTP. Needed to calculate activity stress level."|trans({}, 'admin'),
+                    "FTP"|trans({}, 'admin'),
+                    "Add FTP"|trans({}, 'admin'),
                     'ftp',
                     '1'
                 ) }}
                 {{ _self.historyEditor(
                     'data[athlete][ftpHistory][running]',
                     athlete.ftpHistory.running ?? [],
-                    "FTP history (running)"|trans,
-                    "History of running FTP. Needed to calculate activity stress level."|trans,
-                    "FTP"|trans,
-                    "Add FTP"|trans,
+                    "FTP history (running)"|trans({}, 'admin'),
+                    "History of running FTP. Needed to calculate activity stress level."|trans({}, 'admin'),
+                    "FTP"|trans({}, 'admin'),
+                    "Add FTP"|trans({}, 'admin'),
                     'ftp',
                     '1'
                 ) }}
@@ -158,10 +158,10 @@
             <div class="mt-6 border-t border-gray-200 pt-6">
                 <label class="mt-0!">{{ "Heart rate zones"|trans }}</label>
                 <p class="description mb-3">
-                    {{ "If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm."|trans }}
+                    {{ "If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm."|trans({}, 'admin') }}
                 </p>
                 <div class="max-w-md">
-                    <label for="heartRateZoneMode" class="mt-0! text-xs text-gray-500">{{ "Mode"|trans }}</label>
+                    <label for="heartRateZoneMode" class="mt-0! text-xs text-gray-500">{{ "Mode"|trans({}, 'admin') }}</label>
                     <select id="heartRateZoneMode" name="data[athlete][heartRateZones][mode]">
                         {% for mode in heartRateZoneModeOptions %}
                             <option value="{{ mode.value }}" {{ (heartRateZones.mode ?? 'relative') == mode.value ? 'selected' : '' }}>{{ mode.value }}</option>
@@ -172,15 +172,15 @@
                     {% for i in 0..4 %}
                         {% set zone = heartRateZoneRows[i] ?? {} %}
                         <div class="flex items-end gap-2">
-                            <span class="w-16 shrink-0 text-sm text-gray-600">{{ "Zone"|trans }} {{ i + 1 }}</span>
+                            <span class="w-16 shrink-0 text-sm text-gray-600">{{ "Zone"|trans({}, 'admin') }} {{ i + 1 }}</span>
                             <div class="flex-1">
-                                <label class="mt-0! text-xs text-gray-500">{{ "From"|trans }}</label>
+                                <label class="mt-0! text-xs text-gray-500">{{ "From"|trans({}, 'admin') }}</label>
                                 <input type="number" min="0" name="data[athlete][heartRateZones][zones][{{ i }}][from]" value="{{ zone.from ?? '' }}" required>
                             </div>
                             <div class="flex-1">
-                                <label class="mt-0! text-xs text-gray-500">{{ "To"|trans }}</label>
+                                <label class="mt-0! text-xs text-gray-500">{{ "To"|trans({}, 'admin') }}</label>
                                 {% if i == 4 %}
-                                    <input type="text" value="∞" title="{{ "The last zone has no upper bound."|trans }}" disabled>
+                                    <input type="text" value="∞" title="{{ "The last zone has no upper bound."|trans({}, 'admin') }}" disabled>
                                 {% else %}
                                     <input type="number" min="0" name="data[athlete][heartRateZones][zones][{{ i }}][to]" value="{{ zone.to ?? '' }}" required>
                                 {% endif %}
@@ -189,17 +189,17 @@
                     {% endfor %}
                 </div>
                 <details class="mt-4">
-                    <summary class="cursor-pointer text-sm text-gray-600">{{ "Advanced (per-date & per-sport-type overrides)"|trans }}</summary>
+                    <summary class="cursor-pointer text-sm text-gray-600">{{ "Advanced (per-date & per-sport-type overrides)"|trans({}, 'admin') }}</summary>
                     <p class="description mb-2">
-                        {{ "Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it."|trans }}
+                        {{ "Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it."|trans({}, 'admin') }}
                     </p>
                     <textarea name="data[athlete][heartRateZones][advanced]" rows="8" class="font-mono text-xs" spellcheck="false">{{ heartRateZones.advanced ?? '' }}</textarea>
                 </details>
             </div>
             <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
                 <button type="submit" data-has-loading-state class="group btn--primary">
-                    <span class="label">{{ "Save settings"|trans }}</span>
-                    <span class="label--loading">{{ "Saving..."|trans }}</span>
+                    <span class="label">{{ "Save settings"|trans({}, 'admin') }}</span>
+                    <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
                 </button>
             </div>
         </form>

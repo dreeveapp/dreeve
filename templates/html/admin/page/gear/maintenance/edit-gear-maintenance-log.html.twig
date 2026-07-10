@@ -7,9 +7,9 @@
         <div class="w-full max-w-lg overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold">
-                    {{ gearMaintenanceLog ? "Edit maintenance log"|trans : "Register maintenance"|trans }}
+                    {{ gearMaintenanceLog ? "Edit maintenance log"|trans({}, 'admin') : "Register maintenance"|trans({}, 'admin') }}
                 </h3>
-                <a href="{{ overviewUrl }}" aria-label="{{ "Close"|trans }}"
+                <a href="{{ overviewUrl }}" aria-label="{{ "Close"|trans({}, 'admin') }}"
                    class="grid place-items-center size-8 rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900">
                     <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
@@ -28,33 +28,33 @@
                             <span class="font-medium text-gray-800">{{ gearName }}</span>
                         </div>
                         <div>
-                            <span class="block text-xs font-medium text-gray-500">{{ "Component"|trans }}</span>
+                            <span class="block text-xs font-medium text-gray-500">{{ "Component"|trans({}, 'admin') }}</span>
                             <span class="font-medium text-gray-800">{{ componentLabel }}</span>
                         </div>
                         <div>
-                            <span class="block text-xs font-medium text-gray-500">{{ "Task"|trans }}</span>
+                            <span class="block text-xs font-medium text-gray-500">{{ "Task"|trans({}, 'admin') }}</span>
                             <span class="font-medium text-gray-800">{{ taskLabel }}</span>
                         </div>
                     </div>
                     <div>
-                        <label for="gml-performed-on">{{ "Performed on"|trans }}</label>
+                        <label for="gml-performed-on">{{ "Performed on"|trans({}, 'admin') }}</label>
                         <input type="date" id="gml-performed-on" name="performedOn" required
                                value="{{ gearMaintenanceLog.getPerformedOn()|date('Y-m-d') }}">
                     </div>
                 {% else %}
                     <div>
-                        <label for="gml-component">{{ "Component"|trans }}</label>
+                        <label for="gml-component">{{ "Component"|trans({}, 'admin') }}</label>
                         <select id="gml-component" required>
-                            <option value="" disabled selected>{{ "Select a component…"|trans }}</option>
+                            <option value="" disabled selected>{{ "Select a component…"|trans({}, 'admin') }}</option>
                             {% for component in components %}
                                 <option value="{{ loop.index0 }}">{{ component.label }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div>
-                        <label for="gml-task">{{ "Task"|trans }}</label>
+                        <label for="gml-task">{{ "Task"|trans({}, 'admin') }}</label>
                         <select id="gml-task" name="maintenanceTaskId" data-depends-on="gml-component" required disabled>
-                            <option value="" disabled selected>{{ "Select a component first..."|trans }}</option>
+                            <option value="" disabled selected>{{ "Select a component first..."|trans({}, 'admin') }}</option>
                             {% for component in components %}
                                 {% set componentIndex = loop.index0 %}
                                 {% for task in component.tasks %}
@@ -66,7 +66,7 @@
                     <div data-field class="hidden">
                         <label for="gml-gear">{{ "Gear"|trans }}</label>
                         <select id="gml-gear" name="gearId" data-depends-on="gml-component" data-collapse-single required disabled>
-                            <option value="" disabled selected>{{ "Select the serviced gear…"|trans }}</option>
+                            <option value="" disabled selected>{{ "Select the serviced gear…"|trans({}, 'admin') }}</option>
                             {% for component in components %}
                                 {% set componentIndex = loop.index0 %}
                                 {% for gear in component.gears %}
@@ -74,18 +74,18 @@
                                 {% endfor %}
                             {% endfor %}
                         </select>
-                        <p class="mt-1 text-xxs text-gray-500">{{ "This component is fitted to multiple gears, pick the one you serviced."|trans }}</p>
+                        <p class="mt-1 text-xxs text-gray-500">{{ "This component is fitted to multiple gears, pick the one you serviced."|trans({}, 'admin') }}</p>
                     </div>
                     <div>
-                        <label for="gml-performed-on">{{ "Performed on"|trans }}</label>
+                        <label for="gml-performed-on">{{ "Performed on"|trans({}, 'admin') }}</label>
                         <input type="date" id="gml-performed-on" name="performedOn" required value="{{ "now"|date('Y-m-d') }}">
                     </div>
                 {% endif %}
                 <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
-                    <a href="{{ overviewUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans }}</a>
+                    <a href="{{ overviewUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>
                     <button type="submit" data-has-loading-state class="group btn--primary">
-                        <span class="label">{{ "Save"|trans }}</span>
-                        <span class="label--loading">{{ "Saving..."|trans }}</span>
+                        <span class="label">{{ "Save"|trans({}, 'admin') }}</span>
+                        <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
                     </button>
                 </div>
             </form>

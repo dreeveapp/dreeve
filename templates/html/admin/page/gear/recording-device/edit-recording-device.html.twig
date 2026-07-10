@@ -5,9 +5,9 @@
         <div class="w-full max-w-lg overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold">
-                    {{ "Edit recording device"|trans }}
+                    {{ "Edit recording device"|trans({}, 'admin') }}
                 </h3>
-                <a href="{{ relativeUrl(path('admin_manage_recording_devices_overview')) }}" aria-label="{{ "Close"|trans }}"
+                <a href="{{ relativeUrl(path('admin_manage_recording_devices_overview')) }}" aria-label="{{ "Close"|trans({}, 'admin') }}"
                    class="grid place-items-center size-8 rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900">
                     <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
@@ -21,7 +21,7 @@
                     <label for="recording-device-name">{{ "Name"|trans }}</label>
                     <input type="text" id="recording-device-name" value="{{ recordingDevice.getName() }}" disabled>
                     <p class="mt-1 text-xs text-gray-500">
-                        {{ "The name is derived from the device recorded on your activities and can't be edited."|trans }}
+                        {{ "The name is derived from the device recorded on your activities and can't be edited."|trans({}, 'admin') }}
                     </p>
                 </div>
                 <div>
@@ -38,10 +38,10 @@
                     </div>
                 </div>
                 <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
-                    <a href="{{ relativeUrl(path('admin_manage_recording_devices_overview')) }}" type="button" class="btn--secondary">{{ "Cancel"|trans }}</a>
+                    <a href="{{ relativeUrl(path('admin_manage_recording_devices_overview')) }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>
                     <button type="submit" data-has-loading-state class="group btn--primary">
-                        <span class="label">{{ "Save"|trans }}</span>
-                        <span class="label--loading">{{ "Saving..."|trans }}</span>
+                        <span class="label">{{ "Save"|trans({}, 'admin') }}</span>
+                        <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
                     </button>
                 </div>
             </form>
