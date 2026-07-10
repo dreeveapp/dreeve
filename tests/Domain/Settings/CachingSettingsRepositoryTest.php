@@ -35,7 +35,7 @@ class CachingSettingsRepositoryTest extends TestCase
 
     public static function cachedAccessorProvider(): iterable
     {
-        yield 'general' => ['general', self::aGeneralSettings(), fn (SettingsRepository $r) => $r->general()];
+        yield 'general' => ['general', GeneralSettings::fromArray(['athlete' => ['birthday' => '1989-08-14', 'maxHeartRateFormula' => 'fox']]), fn (SettingsRepository $r) => $r->general()];
         yield 'appearance' => ['appearance', AppearanceSettings::fromArray(null), fn (SettingsRepository $r) => $r->appearance()];
         yield 'import' => ['import', ImportSettings::fromArray(null), fn (SettingsRepository $r) => $r->import()];
         yield 'metrics' => ['metrics', MetricsSettings::fromArray(null), fn (SettingsRepository $r) => $r->metrics()];
@@ -65,7 +65,12 @@ class CachingSettingsRepositoryTest extends TestCase
         // general() is re-read after the save invalidation => inner is hit twice.
         $inner->expects($this->exactly(2))
             ->method('general')
-            ->willReturn($this->aGeneralSettings());
+            ->willReturn(GeneralSettings::fromArray([
+                'athlete' => [
+                    'birthday' => '1989-08-14',
+                    'maxHeartRateFormula' => 'fox',
+                ],
+            ]));
         $inner->expects($this->once())
             ->method('save')
             ->with(SettingsGroup::GENERAL, ['foo' => 'bar']);
@@ -95,15 +100,5 @@ class CachingSettingsRepositoryTest extends TestCase
                 // expected on every call
             }
         }
-    }
-
-    private static function aGeneralSettings(): GeneralSettings
-    {
-        return GeneralSettings::fromArray([
-            'athlete' => [
-                'birthday' => '1989-08-14',
-                'maxHeartRateFormula' => 'fox',
-            ],
-        ]);
     }
 }

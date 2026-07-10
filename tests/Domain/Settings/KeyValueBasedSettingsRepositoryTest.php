@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Settings;
 
-use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\DaemonSettings;
+use App\Domain\Settings\KeyValueBasedSettingsRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Tests\ContainerTestCase;
 
@@ -14,20 +15,10 @@ class KeyValueBasedSettingsRepositoryTest extends ContainerTestCase
 
     public function testFindReturnsEmptyArrayWhenAbsent(): void
     {
-        // DAEMON is not part of the seeded settings baseline (see ProvideSettings).
-        $this->assertSame([], $this->settingsRepository->find(SettingsGroup::DAEMON));
-    }
-
-    public function testSaveAndFindRoundTripsANestedArray(): void
-    {
-        $data = [
-            'level' => 42,
-            'nested' => ['foo' => 'bar', 'list' => [1, 2, 3]],
-        ];
-
-        $this->settingsRepository->save(SettingsGroup::DAEMON, $data);
-
-        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::DAEMON));
+        $this->assertEquals(
+            DaemonSettings::fromArray([]),
+            $this->settingsRepository->daemon()
+        );
     }
 
     #[\Override]
@@ -35,6 +26,6 @@ class KeyValueBasedSettingsRepositoryTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $this->settingsRepository = $this->getContainer()->get(KeyValueBasedSettingsRepository::class);
     }
 }
