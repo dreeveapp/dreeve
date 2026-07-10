@@ -12,6 +12,9 @@ use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Console\ConsoleOutputAware;
 use App\Infrastructure\Daemon\Cron\CronAction;
 use App\Infrastructure\Daemon\Cron\CronProcess;
+use App\Infrastructure\DependencyInjection\Mutex\WithMutex;
+use App\Infrastructure\Mutex\LockName;
+use App\Infrastructure\Mutex\Mutex;
 use App\Infrastructure\Time\Clock\Clock;
 use React\EventLoop\Loop;
 use React\Promise\PromiseInterface;
@@ -22,6 +25,7 @@ use function React\Promise\resolve;
 /**
  * @codeCoverageIgnore
  */
+#[WithMutex(lockName: LockName::IMPORT_DATA_OR_BUILD_APP)]
 final class SystemDaemon implements Daemon
 {
     use ConsoleOutputAware;
@@ -32,6 +36,7 @@ final class SystemDaemon implements Daemon
         private readonly Clock $clock,
         private readonly SettingsRepository $settingsRepository,
         private readonly ImportMode $importMode,
+        private readonly Mutex $mutex,
     ) {
     }
 
@@ -43,6 +48,13 @@ final class SystemDaemon implements Daemon
                 $this->clock->getCurrentDateTimeImmutable()->format('H:i:s'),
             ));
         });
+    }
+
+    public function clearStaleImportLock(): void
+    {
+        // On startup no import child has been spawned yet, so any existing
+        // lock.importDataOrBuildApp row is stale.
+        $this->mutex->releaseLock();
     }
 
     public function configureCron(): void

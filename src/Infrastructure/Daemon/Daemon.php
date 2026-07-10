@@ -14,5 +14,7 @@ interface Daemon
 
     public function addPeriodicDebugTimer(): void;
 
+    public function clearStaleImportLock(): void;
+
     public function configureCron(): void;
 }
