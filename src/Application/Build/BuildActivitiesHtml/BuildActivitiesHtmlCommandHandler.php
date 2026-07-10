@@ -34,6 +34,7 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\DataTableRow;
 use App\Infrastructure\ValueObject\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\ValueObject\String\Slug;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -264,6 +265,11 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                         'map' => $leafletMap,
                     ] : null,
                     'gpxLink' => $activityHasTimeStream ? $gpxFileLocation : null,
+                    'gpxFileName' => sprintf(
+                        '%s-%s.gpx',
+                        $activity->getStartDate()->format('Y-m-d'),
+                        Slug::fromString($activity->getName()),
+                    ),
                     'distributionCharts' => $distributionCharts,
                     'segmentEfforts' => $this->segmentEffortRepository->findByActivityId($activity->getId()),
                     'splits' => $activitySplits,
