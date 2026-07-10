@@ -39,7 +39,7 @@ final class RunDaemonConsoleCommand extends Command
         $this->outputDaemonConsoleIntro($output, $this->clock);
 
         $this->daemon->setConsoleOutput($output);
-        $this->daemon->clearStaleImportLock();
+        $this->daemon->clearStaleCronLocks();
         $this->daemon->configureCron();
 
         if (!empty($_ENV['DAEMON_DEBUG'])) {

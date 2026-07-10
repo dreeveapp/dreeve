@@ -26,7 +26,7 @@ final class FakeDaemon implements Daemon
         $this->output->writeln('Periodic timer added');
     }
 
-    public function clearStaleImportLock(): void
+    public function clearStaleCronLocks(): void
     {
     }
 

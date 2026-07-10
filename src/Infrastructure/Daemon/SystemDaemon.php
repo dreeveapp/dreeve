@@ -12,10 +12,10 @@ use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Console\ConsoleOutputAware;
 use App\Infrastructure\Daemon\Cron\CronAction;
 use App\Infrastructure\Daemon\Cron\CronProcess;
-use App\Infrastructure\DependencyInjection\Mutex\WithMutex;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
 use App\Infrastructure\Time\Clock\Clock;
+use Doctrine\DBAL\Connection;
 use React\EventLoop\Loop;
 use React\Promise\PromiseInterface;
 use WyriHaximus\React\Cron\Action;
@@ -25,7 +25,6 @@ use function React\Promise\resolve;
 /**
  * @codeCoverageIgnore
  */
-#[WithMutex(lockName: LockName::IMPORT_DATA_OR_BUILD_APP)]
 final class SystemDaemon implements Daemon
 {
     use ConsoleOutputAware;
@@ -36,7 +35,7 @@ final class SystemDaemon implements Daemon
         private readonly Clock $clock,
         private readonly SettingsRepository $settingsRepository,
         private readonly ImportMode $importMode,
-        private readonly Mutex $mutex,
+        private readonly Connection $connection,
     ) {
     }
 
@@ -50,11 +49,17 @@ final class SystemDaemon implements Daemon
         });
     }
 
-    public function clearStaleImportLock(): void
+    public function clearStaleCronLocks(): void
     {
-        // On startup no import child has been spawned yet, so any existing
-        // lock.importDataOrBuildApp row is stale.
-        $this->mutex->releaseLock();
+        // On startup no cron child process is running yet, so any lock still present
+        // in the KeyValue table is stale.
+        foreach (LockName::cases() as $lockName) {
+            new Mutex(
+                connection: $this->connection,
+                clock: $this->clock,
+                lockName: $lockName,
+            )->releaseLock();
+        }
     }
 
     public function configureCron(): void
