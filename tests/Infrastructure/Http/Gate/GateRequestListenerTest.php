@@ -29,6 +29,24 @@ class GateRequestListenerTest extends TestCase
         $this->assertSame($redirect, $event->getResponse());
     }
 
+    public function testItInvokesGatesInOrderAndStopsAtTheFirstThatIntercepts(): void
+    {
+        /** @var \ArrayObject<int, string> $calls */
+        $calls = new \ArrayObject();
+        $listener = new GateRequestListener([
+            $this->recordingGate($calls, 'first', null),
+            $this->recordingGate($calls, 'second', new RedirectResponse('/gated')),
+            $this->recordingGate($calls, 'third', new RedirectResponse('/never-reached')),
+        ]);
+
+        $event = $this->mainRequest(Request::create('/dashboard'));
+        $listener->onKernelRequest($event);
+
+        // The third gate is never reached once the second one intercepts.
+        $this->assertSame(['first', 'second'], $calls->getArrayCopy());
+        $this->assertSame('/gated', $event->getResponse()?->getTargetUrl());
+    }
+
     public function testItLetsTheRequestThroughWhenNoGateIntercepts(): void
     {
         $listener = new GateRequestListener([$this->gate(null), $this->gate(null)]);
@@ -84,6 +102,31 @@ class GateRequestListenerTest extends TestCase
 
             public function handle(Request $request): ?Response
             {
+                return $this->response;
+            }
+        };
+    }
+
+    /**
+     * @param \ArrayObject<int, string> $calls
+     */
+    private function recordingGate(\ArrayObject $calls, string $name, ?Response $response): Gate
+    {
+        return new readonly class($calls, $name, $response) implements Gate {
+            /**
+             * @param \ArrayObject<int, string> $calls
+             */
+            public function __construct(
+                private \ArrayObject $calls,
+                private string $name,
+                private ?Response $response,
+            ) {
+            }
+
+            public function handle(Request $request): ?Response
+            {
+                $this->calls[] = $this->name;
+
                 return $this->response;
             }
         };
