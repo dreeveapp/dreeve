@@ -6,6 +6,7 @@ namespace App\Infrastructure\ValueObject\String;
 
 readonly class Slug extends NonEmptyStringLiteral
 {
+    #[\Override]
     public function __toString(): string
     {
         return $this->kebabCase();
