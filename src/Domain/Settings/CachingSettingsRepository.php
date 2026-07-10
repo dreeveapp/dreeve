@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Settings;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Contracts\Service\ResetInterface;
 
-final class CachingSettingsRepository implements SettingsRepository
+final class CachingSettingsRepository implements SettingsRepository, ResetInterface
 {
     /** @var array<string, array<string, mixed>> */
     private array $findCache = [];
@@ -33,6 +34,11 @@ final class CachingSettingsRepository implements SettingsRepository
     {
         $this->settingsRepository->save($group, $data);
 
+        $this->reset();
+    }
+
+    public function reset(): void
+    {
         $this->findCache = [];
         $this->general = null;
         $this->appearanceSettings = null;

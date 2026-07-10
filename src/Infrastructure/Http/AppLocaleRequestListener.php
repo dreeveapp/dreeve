@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http;
 
+use App\Domain\Settings\KeyValueBasedSettingsRepository;
 use App\Domain\Settings\SettingsRepository;
 use Carbon\Carbon;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
