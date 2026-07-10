@@ -4,28 +4,44 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Settings;
 
+use App\Domain\Settings\AppearanceSettings;
 use App\Domain\Settings\AthleteHasNotBeenConfigured;
 use App\Domain\Settings\CachingSettingsRepository;
+use App\Domain\Settings\DaemonSettings;
 use App\Domain\Settings\GeneralSettings;
+use App\Domain\Settings\ImportSettings;
+use App\Domain\Settings\IntegrationsSettings;
+use App\Domain\Settings\MetricsSettings;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
+use App\Domain\Settings\ZwiftSettings;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class CachingSettingsRepositoryTest extends TestCase
 {
-    public function testGeneralIsReadFromInnerOnlyOnce(): void
+    #[DataProvider('cachedAccessorProvider')]
+    public function testAccessorIsReadFromInnerOnlyOnce(string $method, object $value, callable $act): void
     {
         $inner = $this->createMock(SettingsRepository::class);
         $inner->expects($this->once())
-            ->method('general')
-            ->willReturn($this->aGeneralSettings());
+            ->method($method)
+            ->willReturn($value);
 
         $repository = new CachingSettingsRepository($inner);
 
-        $first = $repository->general();
-        $second = $repository->general();
+        $this->assertSame($act($repository), $act($repository));
+    }
 
-        $this->assertSame($first, $second);
+    public static function cachedAccessorProvider(): iterable
+    {
+        yield 'general' => ['general', self::aGeneralSettings(), fn (SettingsRepository $r) => $r->general()];
+        yield 'appearance' => ['appearance', AppearanceSettings::fromArray(null), fn (SettingsRepository $r) => $r->appearance()];
+        yield 'import' => ['import', ImportSettings::fromArray(null), fn (SettingsRepository $r) => $r->import()];
+        yield 'metrics' => ['metrics', MetricsSettings::fromArray(null), fn (SettingsRepository $r) => $r->metrics()];
+        yield 'zwift' => ['zwift', ZwiftSettings::fromArray(null), fn (SettingsRepository $r) => $r->zwift()];
+        yield 'integrations' => ['integrations', IntegrationsSettings::fromArray(null), fn (SettingsRepository $r) => $r->integrations()];
+        yield 'daemon' => ['daemon', DaemonSettings::fromArray(null), fn (SettingsRepository $r) => $r->daemon()];
     }
 
     public function testFindIsReadFromInnerOncePerGroup(): void
@@ -61,7 +77,7 @@ class CachingSettingsRepositoryTest extends TestCase
         $repository->general();
     }
 
-    public function testAthleteNotConfiguredExceptionIsNotMemoized(): void
+    public function testAthleteNotConfiguredExceptionIsNotCached(): void
     {
         $inner = $this->createMock(SettingsRepository::class);
 
@@ -81,7 +97,7 @@ class CachingSettingsRepositoryTest extends TestCase
         }
     }
 
-    private function aGeneralSettings(): GeneralSettings
+    private static function aGeneralSettings(): GeneralSettings
     {
         return GeneralSettings::fromArray([
             'athlete' => [
