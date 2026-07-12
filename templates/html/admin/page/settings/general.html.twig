@@ -37,8 +37,6 @@
 
 {% block main %}
     {% set athlete = settings.athlete ?? {} %}
-    {% set genderOptions = {'M': 'Male'|trans({}, 'admin'), 'F': 'Female'|trans({}, 'admin'), 'X': 'Other'|trans} %}
-    {% set maxHeartRateFormulaOptions = ['arena', 'astrand', 'fox', 'gellish', 'nes', 'tanaka'] %}
     <div class="flex flex-col gap-4">
         <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
             <input type="hidden" name="group" value="{{ group.value }}">
@@ -69,56 +67,10 @@
                         {{ "Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable."|trans({}, 'admin') }}
                     </p>
                 </div>
-                <div class="grid gap-4 sm:grid-cols-2">
-                    <div>
-                        <label for="firstName">{{ "First name"|trans({}, 'admin') }}</label>
-                        <input type="text" id="firstName" name="data[athlete][firstName]" value="{{ athlete.firstName ?? '' }}">
-                    </div>
-                    <div>
-                        <label for="lastName">{{ "Last name"|trans({}, 'admin') }}</label>
-                        <input type="text" id="lastName" name="data[athlete][lastName]" value="{{ athlete.lastName ?? '' }}">
-                    </div>
-                </div>
-                <div class="grid gap-4 sm:grid-cols-2">
-                    <div>
-                        <label for="birthday">{{ "Birthday"|trans({}, 'admin') }}</label>
-                        <input type="date" id="birthday" name="data[athlete][birthday]" value="{{ athlete.birthday ?? '' }}" required>
-                        <p class="description">
-                            {{ "Your birthday. Needed to calculate heart rate zones."|trans({}, 'admin') }}
-                        </p>
-                    </div>
-                    <div>
-                        <label for="gender">{{ "Gender"|trans({}, 'admin') }}</label>
-                        <select id="gender" name="data[athlete][gender]">
-                            {% for value, genderLabel in genderOptions %}
-                                <option value="{{ value }}" {{ (athlete.gender ?? '') == value ? 'selected' : '' }}>{{ genderLabel }}</option>
-                            {% endfor %}
-                        </select>
-                        <p class="description">
-                            {{ "Your gender. Used to determine activity training load."|trans({}, 'admin') }}
-                        </p>
-                    </div>
-                </div>
-                {% set maxHeartRateFormula = athlete.maxHeartRateFormula ?? null %}
-                <div>
-                    <label for="maxHeartRateFormula">{{ "Max heart rate formula"|trans({}, 'admin') }}</label>
-                    <select id="maxHeartRateFormula" name="data[athlete][maxHeartRateFormula]">
-                        {% for formula in maxHeartRateFormulaOptions %}
-                            <option value="{{ formula }}" {{ maxHeartRateFormula == formula ? 'selected' : '' }}>{{ formula }}</option>
-                        {% endfor %}
-                    </select>
-                    <p class="description">
-                        {{ "The formula used to calculate your max heart rate. The default is Fox (220 − age)."|trans({}, 'admin') }}
-                    </p>
-                </div>
-                {% set restingHeartRateFormula = athlete.restingHeartRateFormula ?? null %}
-                <div>
-                    <label for="restingHeartRateFormula">{{ "Resting heart rate formula"|trans({}, 'admin') }}</label>
-                    <input type="text" id="restingHeartRateFormula" name="data[athlete][restingHeartRateFormula]" value="{{ restingHeartRateFormula is iterable ? '' : (restingHeartRateFormula ?? '') }}">
-                    <p class="description">
-                        {{ "The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased."|trans({}, 'admin') }}
-                    </p>
-                </div>
+                {% include 'html/admin/page/settings/athlete-fields.html.twig' with {
+                    fieldPrefix: 'data[athlete]',
+                    athlete: athlete,
+                } only %}
             </div>
             <div class="mt-6 flex flex-col gap-6 border-t border-gray-200 pt-6">
                 {{ _self.historyEditor(

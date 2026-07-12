@@ -1,0 +1,29 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% set hideAdminNavigation = true %}
+{% block main %}
+    {% set athlete = settings.athlete ?? {} %}
+    {% set generalSettingsUrl = relativeUrl(path('admin_settings', {group: 'general'})) %}
+    <div class="modal-like-form">
+        <div class="w-full max-w-2xl overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
+            <div class="mb-4">
+                <h3 class="text-lg font-semibold">{{ "Athlete settings"|trans({}, 'admin') }}</h3>
+                <p class="mt-1 text-sm text-gray-500">
+                    {{ "Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on."|trans({}, 'admin') }}
+                </p>
+            </div>
+            <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ generalSettingsUrl }}" class="flex flex-col gap-4">
+                <div data-form-error class="form-error hidden" role="alert"></div>
+                {% include 'html/admin/page/settings/athlete-fields.html.twig' with {
+                    fieldPrefix: 'athlete',
+                    athlete: athlete,
+                } only %}
+                <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
+                    <button type="submit" data-has-loading-state class="group btn--primary">
+                        <span class="label">{{ "Save"|trans({}, 'admin') }}</span>
+                        <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock main %}

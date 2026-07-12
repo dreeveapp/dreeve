@@ -37,9 +37,11 @@ Appearance: Appearance
 'Are you sure you want to delete {name}?': 'Möchtest du {name} wirklich löschen?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Möchtest du {task} an {component} für {gear}, durchgeführt am {date}, wirklich löschen?'
 'Are you sure you want to remove the {widget} widget?': 'Are you sure you want to remove the {widget} widget?'
+'Athlete settings': 'Athlete settings'
 'Attached to': 'Zugeordnet zu'
 'Back to app': 'Zurück zur App'
 'Base URI': 'Base URI'
+'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.'
 Birthday: Birthday
 Cancel: Abbrechen
 'Challenge name': 'Challenge name'

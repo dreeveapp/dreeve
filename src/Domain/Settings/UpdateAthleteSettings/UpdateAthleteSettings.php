@@ -9,9 +9,7 @@ use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
-use App\Infrastructure\CQRS\Command\RequiresRebuild;
 
-#[RequiresRebuild]
 final readonly class UpdateAthleteSettings extends DomainCommand implements DeserializableCommand
 {
     use ProvidesCommandName;

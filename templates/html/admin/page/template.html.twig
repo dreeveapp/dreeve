@@ -19,12 +19,18 @@
     </head>
     <body class="min-h-screen bg-gray-50 text-gray-900 antialiased admin">
         {% include 'html/admin/component/toast-messages.html.twig' %}
+        {% set hideAdminNavigation = hideAdminNavigation ?? false %}
         {% set hasSubNav = isActiveNavItem({'/admin/gear': false}) or isActiveNavItem({'/admin/settings': false}) %}
         <!-- NAVIGATION -->
-        {% include 'html/admin/navigation/top-nav-bar.html.twig' %}
+        {% include 'html/admin/navigation/top-nav-bar.html.twig' with {
+            showDrawerToggle: not hideAdminNavigation,
+            showReturnToApp: not hideAdminNavigation,
+        } %}
         <!-- SIDEBAR -->
-        {% include 'html/admin/navigation/icon-rail.html.twig' %}
-        <main class="p-4 {{ hasSubNav ? 'md:ml-76' : 'md:ml-16' }} h-auto min-h-screen pt-20 text-gray-900">
+        {% if not hideAdminNavigation %}
+            {% include 'html/admin/navigation/icon-rail.html.twig' %}
+        {% endif %}
+        <main class="p-4 {{ hideAdminNavigation ? '' : (hasSubNav ? 'md:ml-76' : 'md:ml-16') }} h-auto min-h-screen pt-20 text-gray-900">
             {% block main %}
             {% endblock main %}
         </main>

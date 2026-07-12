@@ -8,7 +8,6 @@ use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Settings\UpdateAthleteSettings\UpdateAthleteSettings;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
-use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Tests\ContainerTestCase;
 
@@ -29,27 +28,34 @@ class UpdateAthleteSettingsCommandHandlerTest extends ContainerTestCase
                     'birthday' => '1980-01-01',
                     'firstName' => 'John',
                     'maxHeartRateFormula' => 'fox',
+                    'weightHistory' => [['on' => '2020-01-01', 'weight' => 70]],
+                    'heartRateZones' => ['mode' => 'absolute'],
                 ],
             ]
         );
 
-        $athlete = [
-            'birthday' => '1990-01-01',
-            'firstName' => 'Jane',
-            'lastName' => 'Doe',
-            'maxHeartRateFormula' => 'arena',
-        ];
-
         $this->commandBus->dispatch(UpdateAthleteSettings::fromPayload([
-            'athlete' => $athlete,
+            'athlete' => [
+                'birthday' => '1990-01-01',
+                'firstName' => 'Jane',
+                'lastName' => 'Doe',
+                'maxHeartRateFormula' => 'arena',
+            ],
         ]));
 
         $this->assertSame([
             'appSubTitle' => 'A subtitle that should be left alone',
             'profilePictureUrl' => 'https://example.com/picture.png',
-            'athlete' => $athlete,
+            'athlete' => [
+                'birthday' => '1990-01-01',
+                'firstName' => 'Jane',
+                'maxHeartRateFormula' => 'arena',
+                // The weight history and heart rate zones are managed on the general settings form.
+                'weightHistory' => [['on' => '2020-01-01', 'weight' => 70]],
+                'heartRateZones' => ['mode' => 'absolute'],
+                'lastName' => 'Doe',
+            ],
         ], $this->settingsRepository->find(SettingsGroup::GENERAL));
-        $this->assertSame('1', (string) $this->keyValueStore->find(Key::FORCE_REBUILD));
     }
 
     #[\Override]

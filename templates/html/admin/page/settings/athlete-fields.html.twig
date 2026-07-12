@@ -1,0 +1,54 @@
+{% set genderOptions = {'M': 'Male'|trans({}, 'admin'), 'F': 'Female'|trans({}, 'admin'), 'X': 'Other'|trans} %}
+{% set maxHeartRateFormulaOptions = ['arena', 'astrand', 'fox', 'gellish', 'nes', 'tanaka'] %}
+{% set maxHeartRateFormula = athlete.maxHeartRateFormula ?? null %}
+{% set restingHeartRateFormula = athlete.restingHeartRateFormula ?? null %}
+<div class="flex flex-col gap-4">
+    <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+            <label for="firstName">{{ "First name"|trans({}, 'admin') }}</label>
+            <input type="text" id="firstName" name="{{ fieldPrefix }}[firstName]" value="{{ athlete.firstName ?? '' }}">
+        </div>
+        <div>
+            <label for="lastName">{{ "Last name"|trans({}, 'admin') }}</label>
+            <input type="text" id="lastName" name="{{ fieldPrefix }}[lastName]" value="{{ athlete.lastName ?? '' }}">
+        </div>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+            <label for="birthday">{{ "Birthday"|trans({}, 'admin') }}</label>
+            <input type="date" id="birthday" name="{{ fieldPrefix }}[birthday]" value="{{ athlete.birthday ?? '' }}" required>
+            <p class="description">
+                {{ "Your birthday. Needed to calculate heart rate zones."|trans({}, 'admin') }}
+            </p>
+        </div>
+        <div>
+            <label for="gender">{{ "Gender"|trans({}, 'admin') }}</label>
+            <select id="gender" name="{{ fieldPrefix }}[gender]">
+                {% for value, genderLabel in genderOptions %}
+                    <option value="{{ value }}" {{ (athlete.gender ?? '') == value ? 'selected' : '' }}>{{ genderLabel }}</option>
+                {% endfor %}
+            </select>
+            <p class="description">
+                {{ "Your gender. Used to determine activity training load."|trans({}, 'admin') }}
+            </p>
+        </div>
+    </div>
+    <div>
+        <label for="maxHeartRateFormula">{{ "Max heart rate formula"|trans({}, 'admin') }}</label>
+        <select id="maxHeartRateFormula" name="{{ fieldPrefix }}[maxHeartRateFormula]">
+            {% for formula in maxHeartRateFormulaOptions %}
+                <option value="{{ formula }}" {{ maxHeartRateFormula == formula ? 'selected' : '' }}>{{ formula }}</option>
+            {% endfor %}
+        </select>
+        <p class="description">
+            {{ "The formula used to calculate your max heart rate. The default is Fox (220 − age)."|trans({}, 'admin') }}
+        </p>
+    </div>
+    <div>
+        <label for="restingHeartRateFormula">{{ "Resting heart rate formula"|trans({}, 'admin') }}</label>
+        <input type="text" id="restingHeartRateFormula" name="{{ fieldPrefix }}[restingHeartRateFormula]" value="{{ restingHeartRateFormula is iterable ? '' : (restingHeartRateFormula ?? '') }}">
+        <p class="description">
+            {{ "The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased."|trans({}, 'admin') }}
+        </p>
+    </div>
+</div>

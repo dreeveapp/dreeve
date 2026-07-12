@@ -11,6 +11,7 @@ use App\Domain\Integration\AI\AIApiKey;
 use App\Domain\Settings\KeyValueBasedSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
+use App\Domain\Settings\UpdateAthleteSettings\UpdateAthleteSettings;
 use App\Domain\Settings\UpdateSettings\UpdateSettings;
 use App\Domain\Strava\StravaClientId;
 use App\Domain\Strava\StravaClientSecret;
@@ -49,6 +50,18 @@ final readonly class SettingsRequestHandler
         return new RedirectResponse($this->urlGenerator->generate('admin_settings', [
             'group' => SettingsGroup::GENERAL->value,
         ]));
+    }
+
+    #[Route(path: '/admin/settings/athlete', name: 'admin_settings_athlete', methods: ['GET'], priority: 10)]
+    public function athlete(): Response
+    {
+        return new Response($this->twig->render(
+            'html/admin/page/settings/athlete.html.twig',
+            [
+                'dispatchCommand' => UpdateAthleteSettings::getCommandName(),
+                'settings' => $this->settingsRepository->find(SettingsGroup::GENERAL),
+            ],
+        ));
     }
 
     #[Route(path: '/admin/settings/{group}', name: 'admin_settings', methods: ['GET'], priority: 5)]

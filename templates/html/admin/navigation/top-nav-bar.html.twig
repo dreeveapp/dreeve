@@ -1,16 +1,18 @@
 <nav class="text-gray-900 bg-white border-b border-gray-200 px-4 py-2.5 fixed left-0 right-0 top-0 z-1100 group">
     <div class="flex flex-wrap justify-between items-center">
         <div class="flex justify-start items-center">
-            <button data-drawer-target="drawer-navigation" data-drawer-toggle="drawer-navigation"
-                    aria-controls="drawer-navigation"
-                    class="md:hidden mr-3 inline-flex items-center justify-center text-gray-600 cursor-pointer select-none">
-                <span aria-hidden="true" class="relative block w-3.5 h-5">
-                    <span class="absolute inset-x-0 top-1 h-0.5 rounded-full bg-current transition-all duration-300 ease-in-out drawer-open:top-1/2 drawer-open:-translate-y-1/2 drawer-open:rotate-45"></span>
-                    <span class="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-current transition-all duration-300 ease-in-out drawer-open:opacity-0"></span>
-                    <span class="absolute inset-x-0 bottom-1 h-0.5 rounded-full bg-current transition-all duration-300 ease-in-out drawer-open:bottom-1/2 drawer-open:translate-y-1/2 drawer-open:-rotate-45"></span>
-                </span>
-                <span class="sr-only">{{ "Toggle sidebar"|trans }}</span>
-            </button>
+            {% if showDrawerToggle ?? true %}
+                <button data-drawer-target="drawer-navigation" data-drawer-toggle="drawer-navigation"
+                        aria-controls="drawer-navigation"
+                        class="md:hidden mr-3 inline-flex items-center justify-center text-gray-600 cursor-pointer select-none">
+                    <span aria-hidden="true" class="relative block w-3.5 h-5">
+                        <span class="absolute inset-x-0 top-1 h-0.5 rounded-full bg-current transition-all duration-300 ease-in-out drawer-open:top-1/2 drawer-open:-translate-y-1/2 drawer-open:rotate-45"></span>
+                        <span class="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-current transition-all duration-300 ease-in-out drawer-open:opacity-0"></span>
+                        <span class="absolute inset-x-0 bottom-1 h-0.5 rounded-full bg-current transition-all duration-300 ease-in-out drawer-open:bottom-1/2 drawer-open:translate-y-1/2 drawer-open:-rotate-45"></span>
+                    </span>
+                    <span class="sr-only">{{ "Toggle sidebar"|trans }}</span>
+                </button>
+            {% endif %}
             <a href="{{ relativeUrl(path('admin')) }}" class="flex items-center justify-between mr-3">
                 <img src="{{ relativeUrl('assets/images/logo.svg') }}" class="rounded-full mr-3 h-8" alt="Logo"/>
                 <div class="flex gap-x-1 sm:text-lg font-extrabold whitespace-nowrap">
@@ -35,12 +37,14 @@
             </span>
             {% endif %}
         </div>
-        <div class="flex items-center lg:order-2">
-            <a href="{{ relativeUrl('/') }}"
-               class="inline-flex items-center gap-x-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100">
-                <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                <span class="hidden sm:inline">{{ "Return to app"|trans({}, 'admin') }}</span>
-            </a>
-        </div>
+        {% if showReturnToApp ?? true %}
+            <div class="flex items-center lg:order-2">
+                <a href="{{ relativeUrl('/') }}"
+                   class="inline-flex items-center gap-x-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                    <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                    <span class="hidden sm:inline">{{ "Return to app"|trans({}, 'admin') }}</span>
+                </a>
+            </div>
+        {% endif %}
     </div>
 </nav>

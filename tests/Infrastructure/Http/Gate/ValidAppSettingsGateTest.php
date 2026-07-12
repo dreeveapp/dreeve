@@ -44,12 +44,12 @@ class ValidAppSettingsGateTest extends ContainerTestCase
         $response = $this->gate()->handle(Request::create('/dashboard'));
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertSame('/admin/settings', $response->getTargetUrl());
+        $this->assertSame('/admin/settings/athlete', $response->getTargetUrl());
         $this->assertSame(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
-    #[DataProvider('provideExemptSettingsPaths')]
-    public function testItNeverRedirectsTheSettingsPage(string $path): void
+    #[DataProvider('provideExemptPaths')]
+    public function testItNeverRedirectsTheAthleteSettingsPageNorTheseEssentials(string $path): void
     {
         $this->settingsRepository
             ->expects($this->once())
@@ -59,10 +59,33 @@ class ValidAppSettingsGateTest extends ContainerTestCase
         $this->assertNull($this->gate()->handle(Request::create($path)));
     }
 
-    public static function provideExemptSettingsPaths(): iterable
+    public static function provideExemptPaths(): iterable
     {
-        yield 'the redirect target itself' => ['/admin/settings'];
-        yield 'a settings group sub path' => ['/admin/settings/general'];
+        yield 'the redirect target itself' => ['/admin/settings/athlete'];
+        yield 'the login page' => ['/admin/login'];
+        yield 'the logout endpoint' => ['/admin/logout'];
+        yield 'the command endpoint the athlete form posts to' => ['/admin/dispatchCommand'];
+    }
+
+    #[DataProvider('provideGuardedAdminPaths')]
+    public function testItRedirectsEveryOtherAdminPage(string $path): void
+    {
+        $this->settingsRepository
+            ->expects($this->once())
+            ->method('general')
+            ->willThrowException(AthleteHasNotBeenConfigured::because('nope'));
+
+        $response = $this->gate()->handle(Request::create($path));
+
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertSame('/admin/settings/athlete', $response->getTargetUrl());
+    }
+
+    public static function provideGuardedAdminPaths(): iterable
+    {
+        yield 'the settings index' => ['/admin/settings'];
+        yield 'another settings group' => ['/admin/settings/general'];
+        yield 'the file upload page' => ['/admin/upload'];
     }
 
     private function gate(): ValidAppSettingsGate

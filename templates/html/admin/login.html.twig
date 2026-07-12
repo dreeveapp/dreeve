@@ -20,12 +20,13 @@
             <img class="mx-auto h-12 w-auto" src="{{ relativeUrl('assets/images/logo.svg') }}" alt="{{ appName }}">
             <h1 class="mt-6 text-center text-2xl font-bold tracking-tight">{{ appName }}</h1>
             <p class="mt-1 text-center text-sm text-gray-500">{{ "Sign in to the admin panel"|trans({}, 'admin') }}</p>
-            {% if error %}
-                <div class="mt-6 overflow-hidden rounded-xl border border-red-200 bg-red-100/60 text-red-700">
-                    <p class="px-4 py-3 text-sm">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
-                </div>
-            {% endif %}
-            <form class="mt-6 space-y-4" method="post" action="{{ relativeUrl(path('admin_login')) }}">
+            <div class="mt-6 p-6 bg-white border border-gray-200 rounded-lg shadow-xs">
+                {% if error %}
+                    <div class="mb-4 overflow-hidden rounded-xl border border-red-200 bg-red-100/60 text-red-700">
+                        <p class="px-4 py-3 text-sm">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+                    </div>
+                {% endif %}
+                <form class="space-y-4" method="post" action="{{ relativeUrl(path('admin_login')) }}">
                 <div>
                     <label for="username">{{ "Username"|trans({}, 'admin') }}</label>
                     <div class="mt-1 flex items-center rounded-xl border border-gray-300 shadow-sm overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
@@ -70,6 +71,7 @@
                     <span class="label--loading">{{ "Signing in..."|trans({}, 'admin') }}</span>
                 </button>
             </form>
+            </div>
             <p class="mt-6 text-center">
                 <a href="{{ relativeUrl('/') }}"
                    class="inline-flex items-center gap-x-1.5 text-sm font-medium text-gray-500 hover:text-gray-900">
