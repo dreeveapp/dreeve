@@ -28,27 +28,7 @@ final class Version20260706053720 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $basePath = dirname(__DIR__).'/config/app';
-        $configFile = $basePath.'/config.yaml';
-
-        if (!file_exists($configFile)) {
-            return;
-        }
-
-        $finder = Finder::create()
-            ->in($basePath)
-            ->depth('== 0')
-            ->files()
-            ->sortByName()
-            ->name('config-*.yaml');
-
-        $config = Yaml::parseFile($configFile);
-        foreach ($finder as $file) {
-            try {
-                $config = array_replace_recursive($config, Yaml::parseFile($file->getRealPath()));
-            } catch (ParseException) {
-            }
-        }
+        $config = $this->loadLegacyConfig();
 
         $this->migrateDashboard($config);
         $this->migrateGeneral($config);
@@ -70,6 +50,36 @@ final class Version20260706053720 extends AbstractMigration
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::ZWIFT->keyValueKey()->value]);
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::INTEGRATIONS->keyValueKey()->value]);
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::DAEMON->keyValueKey()->value]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function loadLegacyConfig(): array
+    {
+        $basePath = dirname(__DIR__).'/config/app';
+        $configFile = $basePath.'/config.yaml';
+
+        if (!file_exists($configFile)) {
+            return [];
+        }
+
+        $finder = Finder::create()
+            ->in($basePath)
+            ->depth('== 0')
+            ->files()
+            ->sortByName()
+            ->name('config-*.yaml');
+
+        $config = Yaml::parseFile($configFile);
+        foreach ($finder as $file) {
+            try {
+                $config = array_replace_recursive($config, Yaml::parseFile($file->getRealPath()));
+            } catch (ParseException) {
+            }
+        }
+
+        return $config;
     }
 
     /**
@@ -105,13 +115,14 @@ final class Version20260706053720 extends AbstractMigration
      */
     private function migrateGeneral(array $config): void
     {
-        $subtree = $config[SettingsGroup::GENERAL->value] ?? null;
-        if (empty($subtree)) {
-            return;
-        }
+        $subtree = is_array($config[SettingsGroup::GENERAL->value] ?? null) ? $config[SettingsGroup::GENERAL->value] : [];
 
         $subtree = $this->normalizeKeys($subtree);
         $subtree = $this->applyStoredAthlete($subtree);
+        if ([] === $subtree) {
+            // No general config and no stored athlete.
+            return;
+        }
         $subtree = $this->normalizeAthleteHistories($subtree);
 
         $this->addSql(
@@ -338,6 +349,9 @@ final class Version20260706053720 extends AbstractMigration
             if (isset($athlete[$from]) && '' !== (string) $athlete[$from]) {
                 $current[$to] = $athlete[$from];
             }
+        }
+        if ([] === $current) {
+            return $subtree;
         }
         $subtree['athlete'] = $current;
 
