@@ -14,6 +14,8 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
 {
     public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
     {
+        $this->markAppAsBuilt();
+
         $this->client->request('GET', '/admin/activities');
 
         $this->assertResponseRedirects('/admin/login');
@@ -21,6 +23,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
 
     public function testRendersTheEmptyStateWhenThereAreNoActivities(): void
     {
+        $this->withImportMode(ImportMode::FILES);
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/activities');
@@ -36,6 +39,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
     public function testRendersTheTableWithoutPaginationForASinglePage(): void
     {
         $this->seedActivities(3);
+        $this->markAppAsBuilt();
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/activities');
@@ -57,6 +61,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
     public function testRendersTheTableWithPaginationWhenResultsExceedASinglePage(): void
     {
         $this->seedActivities(30);
+        $this->markAppAsBuilt();
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/activities');
@@ -86,6 +91,12 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
             '/admin/activities/'.ActivityId::fromUnprefixed('1').'/delete',
             $deleteLinks->first()->attr('href')
         );
+    }
+
+    #[\Override]
+    protected function shouldMarkAppAsBuilt(): bool
+    {
+        return false;
     }
 
     private function seedActivities(int $count): void

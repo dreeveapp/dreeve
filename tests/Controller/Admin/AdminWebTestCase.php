@@ -3,6 +3,7 @@
 namespace App\Tests\Controller\Admin;
 
 use App\Domain\Import\ImportMode;
+use App\Tests\ProvideBuiltApp;
 use App\Tests\ProvideSettings;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -11,6 +12,7 @@ use Symfony\Component\Security\Core\User\InMemoryUser;
 abstract class AdminWebTestCase extends WebTestCase
 {
     use ProvideSettings;
+    use ProvideBuiltApp;
 
     protected const string ADMIN_USERNAME = 'admin';
     protected const string ADMIN_PASSWORD = 'admin-password';
@@ -35,9 +37,19 @@ abstract class AdminWebTestCase extends WebTestCase
         );
 
         $this->client = static::createClient();
+        $this->client->disableReboot();
 
         // Seed the DB-backed settings baseline the whole suite relies on.
         $this->provideSettings();
+
+        if ($this->shouldMarkAppAsBuilt()) {
+            $this->markAppAsBuilt();
+        }
+    }
+
+    protected function shouldMarkAppAsBuilt(): bool
+    {
+        return true;
     }
 
     #[\Override]
@@ -67,5 +79,11 @@ abstract class AdminWebTestCase extends WebTestCase
 
         static::ensureKernelShutdown();
         $this->client = static::createClient();
+        $this->client->disableReboot();
+
+        // Booting a new kernel wiped the in memory build storage, mark the app as built again.
+        if ($this->shouldMarkAppAsBuilt()) {
+            $this->markAppAsBuilt();
+        }
     }
 }

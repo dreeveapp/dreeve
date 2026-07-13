@@ -3,6 +3,7 @@
 namespace App\Tests\Infrastructure\Http\Gate;
 
 use App\Domain\Activity\ActivityIdRepository;
+use App\Domain\Import\ImportMode;
 use App\Infrastructure\Http\Gate\AppHasBeenBuiltGate;
 use App\Tests\ContainerTestCase;
 use League\Flysystem\FilesystemOperator;
@@ -82,7 +83,7 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
     }
 
     #[DataProvider('provideExemptAdminPaths')]
-    public function testItKeepsTheAdminPanelReachableWhileBuilding(string $path): void
+    public function testItKeepsTheAdminPanelReachableWhileBuildingInFileImportMode(string $path): void
     {
         $this->buildHtmlStorage
             ->expects($this->once())
@@ -91,7 +92,24 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
             ->willReturn(false);
         $this->activityIdRepository->expects($this->never())->method('count');
 
-        $this->assertNull($this->gate()->handle(Request::create($path)));
+        $this->assertNull($this->gate(ImportMode::FILES)->handle(Request::create($path)));
+    }
+
+    #[DataProvider('provideExemptAdminPaths')]
+    public function testItRedirectsTheAdminPanelWhileBuildingInStravaApiImportMode(string $path): void
+    {
+        $this->buildHtmlStorage
+            ->expects($this->once())
+            ->method('fileExists')
+            ->with('index.html')
+            ->willReturn(false);
+        $this->activityIdRepository->expects($this->never())->method('count');
+
+        $response = $this->gate(ImportMode::STRAVA_API)->handle(Request::create($path));
+
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertSame('/finish-setup', $response->getTargetUrl());
+        $this->assertSame(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
     public static function provideExemptAdminPaths(): iterable
@@ -101,9 +119,9 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
         yield 'admin login' => ['/admin/login'];
     }
 
-    private function gate(): AppHasBeenBuiltGate
+    private function gate(ImportMode $importMode = ImportMode::FILES): AppHasBeenBuiltGate
     {
-        return new AppHasBeenBuiltGate($this->urlGenerator, $this->buildHtmlStorage, $this->activityIdRepository);
+        return new AppHasBeenBuiltGate($this->urlGenerator, $importMode, $this->buildHtmlStorage, $this->activityIdRepository);
     }
 
     #[\Override]
