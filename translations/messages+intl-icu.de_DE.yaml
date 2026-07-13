@@ -89,7 +89,7 @@ Device: Gerät
 Dist.: Dist.
 Distance: Distanz
 'Distance & Elevation': 'Distanz & Höhenmeter'
-'Distance (single activity)': 'Distance (single activity)'
+'Distance (single activity)': 'Distanz (einzelne Aktivität)'
 'Distance breakdown': Distanzaufschlüsselung
 'Distance distribution': Distanzverteilung
 'Distance in {unit}': 'Distanz in {unit}'
@@ -101,13 +101,13 @@ Duration: Dauer
 'E-Mountain Bike Rides': E-Mountainbike-Fahrten
 Eddington: Eddington
 'Eddington number': 'Eddington Zahl'
-'Eddington over time': 'Eddington over time'
+'Eddington over time': 'Eddington im zeitlichen Verlauf'
 'Effort vs heart rate': 'Anstrengung vs Herzfrequenz'
 'Elapsed time': 'verstrichene Zeit'
 Elev: Anstieg
 Elev.: Höhenm.
 Elevation: Höhenmeter
-'Elevation (single activity)': 'Elevation (single activity)'
+'Elevation (single activity)': 'Höhenmeter (einzelne Aktivität)'
 'Elevation in {unit}': 'Höhenmeter in {unit}'
 Elliptical: Crosstrainer
 Energy: Energie
@@ -248,7 +248,7 @@ None: Keine
 'Not supported': 'Nicht unterstützt'
 Nov: Nov
 Now: Jetzt
-'Number of activities': 'Number of activities'
+'Number of activities': ''Anzahl der Aktivitäten''
 'Number of activities per month': 'Anzahl an Aktivitäten pro Monat'
 'Number of times completed': 'Anzahl abgeschlossen'
 Oct: Okt
@@ -469,7 +469,7 @@ Title: Titel
 'Training goals': Trainingsziele
 'Training load is accumulating, recovery days are important': 'Belastung steigt an. Achte auf deine Regeneration.'
 Tue: Di
-Tue.: Tue.
+Tue.: Di.
 Unspecified: 'Nicht spezifiziert'
 'Updated on': 'Aktualisiert am'
 'User badge': 'Benutzer Abzeichen'
@@ -554,7 +554,7 @@ per: pro
 'per activity': 'pro Aktivität'
 'per hour': 'pro Stunde'
 'reached Eddington number {number}': 'erreichte Eddington Zahl {number}'
-rpm: rpm
+rpm: Umdrehungen
 to: mit
 total: gesamt
 watts: Watt
@@ -565,7 +565,7 @@ workouts: Trainingseinheiten
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} Stunden'
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} alle {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} Aktivitäten'
-'{numberOfActivities} activities in {year}': '{numberOfActivities} Aktivitäten im {year}'
+'{numberOfActivities} activities in {year}': '{numberOfActivities} Aktivitäten in {year}'
 '{numberOfMonths} months': '{numberOfMonths} Monate'
 '{numberOfResults} photos': '{numberOfResults} Bilder'
 '{numberOfResults} results': '{numberOfResults} Ergebnise'
