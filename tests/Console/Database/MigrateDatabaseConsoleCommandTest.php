@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Tests\Console;
+namespace App\Tests\Console\Database;
 
-use App\Console\MigrateDatabaseConsoleCommand;
+use App\Console\Database\MigrateDatabaseConsoleCommand;
 use App\Infrastructure\Doctrine\Migrations\CouldNotRunMigrations;
 use App\Infrastructure\Doctrine\Migrations\MigrationRunner;
 use App\Infrastructure\Doctrine\Migrations\MigrationsOutdated;
+use App\Tests\Console\ConsoleCommandTestCase;
 use App\Tests\Infrastructure\Doctrine\Migrations\VoidMigrationRunner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;

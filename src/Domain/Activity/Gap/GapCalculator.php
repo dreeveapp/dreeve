@@ -131,9 +131,9 @@ final readonly class GapCalculator
         }
 
         $pointCount = \count($points);
-        $smoothedPoints = $points;
+        $smoothedPoints = [];
 
-        foreach (array_keys($points) as $index) {
+        foreach ($points as $index => $point) {
             $weightedElevation = 0.0;
             $totalWeight = 0.0;
             $start = max(0, $index - $radius);
@@ -145,9 +145,11 @@ final readonly class GapCalculator
                 $totalWeight += $weight;
             }
 
-            $smoothedPoints[$index] = [
-                ...$smoothedPoints[$index],
+            $smoothedPoints[] = [
+                'lat' => $point['lat'],
+                'lon' => $point['lon'],
                 'ele' => $weightedElevation / $totalWeight,
+                'timestamp' => $point['timestamp'],
             ];
         }
 
@@ -281,7 +283,7 @@ final readonly class GapCalculator
     /**
      * @param array<string, mixed> $trackPoint
      *
-     * @return NormalizedTrackPoint
+     * @return array{lat: float,lon: float,ele: float,timestamp: int}
      */
     private function normalizePoint(array $trackPoint): array
     {

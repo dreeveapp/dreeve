@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Console;
+namespace App\Console\Database;
 
 use App\Infrastructure\Doctrine\Migrations\CouldNotRunMigrations;
 use App\Infrastructure\Doctrine\Migrations\MigrationRunner;
