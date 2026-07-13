@@ -283,7 +283,7 @@ final readonly class GapCalculator
     /**
      * @param array<string, mixed> $trackPoint
      *
-     * @return NormalizedTrackPoint
+     * @return array{lat: float,lon: float,ele: float,timestamp: int}
      */
     private function normalizePoint(array $trackPoint): array
     {
