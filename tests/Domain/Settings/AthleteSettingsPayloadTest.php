@@ -98,6 +98,26 @@ class AthleteSettingsPayloadTest extends TestCase
         ]);
     }
 
+    public function testItThrowsWhenTheDateRangesAreNotAList(): void
+    {
+        $this->expectExceptionObject(new InvalidHeartRateFormula('Invalid date ranges provided for the max heart rate formula'));
+
+        AthleteSettingsPayload::normalize([
+            'maxHeartRateFormula' => 'dateRangeBased',
+            'maxHeartRateFormulaRanges' => 'lol',
+        ]);
+    }
+
+    public function testItThrowsWhenADateRangeIsNotAnArray(): void
+    {
+        $this->expectExceptionObject(new InvalidHeartRateFormula('Invalid date ranges provided for the resting heart rate formula'));
+
+        AthleteSettingsPayload::normalize([
+            'restingHeartRateFormula' => 'dateRangeBased',
+            'restingHeartRateFormulaRanges' => ['lol'],
+        ]);
+    }
+
     public function testItThrowsWhenADateRangeHasNoDate(): void
     {
         $this->expectExceptionObject(new InvalidHeartRateFormula('Every date range of the max heart rate formula needs a date'));

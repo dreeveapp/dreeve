@@ -51,6 +51,9 @@ final readonly class GateRequestListener implements EventSubscriberInterface
             || '/strava/webhook' === $path;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public static function getSubscribedEvents(): array
     {
         // Priority 12: after the RouterListener, before the firewall (priority 8)
