@@ -11,15 +11,11 @@
     <link rel="icon" type="image/x-icon" href="{{ relativeUrl('assets/images/logo.svg') }}">
     <link href="{{ relativeUrl(asset('css/dist/tailwind.min.css')) }}" rel="stylesheet"/>
 </head>
-<body class="min-h-screen bg-white text-gray-900 antialiased">
+<body class="min-h-screen bg-gray-50 text-gray-900 antialiased">
 {% include 'html/navigation/top-nav-bar.html.twig' %}
 <section class="flex min-h-screen flex-col justify-center px-6 py-12 sm:px-12">
-    <div class="mx-auto w-full max-w-xl">
-        <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-green-700">
-                <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>
-                Authorization successful
-            </span>
-        <h2 class="mt-4 text-2xl font-bold tracking-tight">You're connected 🎉</h2>
+    <div class="mx-auto w-full max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <h2 class="text-2xl font-bold tracking-tight">You're connected 🎉</h2>
         <p class="mt-1 text-sm text-gray-500">One last step though...</p>
         <ol class="mt-6 space-y-4">
             <li class="flex items-start gap-3">

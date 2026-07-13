@@ -11,11 +11,11 @@
     <link rel="icon" type="image/x-icon" href="{{ relativeUrl('assets/images/logo.svg') }}">
     <link href="{{ relativeUrl(asset('css/dist/tailwind.min.css')) }}" rel="stylesheet"/>
 </head>
-<body class="min-h-screen bg-white text-gray-900 antialiased">
+<body class="min-h-screen bg-gray-50 text-gray-900 antialiased">
 {% include 'html/navigation/top-nav-bar.html.twig' %}
 <section class="flex min-h-screen flex-col justify-center px-6 py-12 sm:px-12">
-    <div class="mx-auto w-full max-w-xl">
-        <h2 class="mt-4 text-2xl font-bold tracking-tight">Connect your Strava account</h2>
+    <div class="mx-auto w-full max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <h2 class="text-2xl font-bold tracking-tight">Connect your Strava account</h2>
         <p class="mt-1 text-sm text-gray-500">You haven't completed the Strava authorization yet. We'll redirect you to Strava. Just click <strong>Authorize</strong> when the page loads.</p>
         <a href="http://www.strava.com/oauth/authorize?client_id={{ stravaClientId }}&response_type=code&redirect_uri={{ returnUrl }}&approval_prompt=force&scope=activity:read_all"
            class="mt-6 inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-primary px-5 py-3 font-semibold text-white shadow-sm transition hover:brightness-95">
