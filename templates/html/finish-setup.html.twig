@@ -11,10 +11,10 @@
     <link rel="icon" type="image/x-icon" href="{{ relativeUrl('assets/images/logo.svg') }}">
     <link href="{{ relativeUrl(asset('css/dist/tailwind.min.css')) }}" rel="stylesheet"/>
 </head>
-<body class="min-h-screen bg-white text-gray-900 antialiased">
+<body class="min-h-screen bg-gray-50 text-gray-900 antialiased">
 {% include 'html/navigation/top-nav-bar.html.twig' %}
 <section class="flex min-h-screen flex-col justify-center px-6 py-12 sm:px-12">
-    <div class="mx-auto w-full max-w-xl">
+    <div class="mx-auto w-full max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow-xs">
         <h2 class="text-2xl font-bold tracking-tight">Finish setup</h2>
         {% if importMode.isStravaApi() %}
             <p class="mt-1 text-sm text-gray-500">Looks like you still need to import your Strava data.</p>
@@ -96,7 +96,7 @@
                     your statistics will be available here.
                 </p>
             </div>
-            <div class="mt-6 bg-gray-50/50 px-4 py-3 text-sm text-gray-500">
+            <div class="mt-6 text-sm text-gray-500">
                 Refresh this page after the import has run.
             </div>
         {% endif %}
