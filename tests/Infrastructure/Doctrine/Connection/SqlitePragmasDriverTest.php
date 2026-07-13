@@ -38,7 +38,7 @@ class SqlitePragmasDriverTest extends TestCase
         $this->assertSame($connection, $result);
         $this->assertSame([
             'PRAGMA journal_mode=WAL',
-            'PRAGMA busy_timeout=5000',
+            'PRAGMA busy_timeout=30000',
             'PRAGMA synchronous=NORMAL',
         ], $executed);
     }

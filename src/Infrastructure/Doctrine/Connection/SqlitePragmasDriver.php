@@ -34,8 +34,9 @@ final class SqlitePragmasDriver extends AbstractDriverMiddleware
 
         // Lets readers and the writer run without blocking.
         $connection->exec('PRAGMA journal_mode=WAL');
-        // Makes a contended statement wait up to 5s for the lock instead of failing with SQLITE_BUSY
-        $connection->exec('PRAGMA busy_timeout=5000');
+        // Makes a contended statement wait up to 30s for the lock instead of failing with SQLITE_BUSY.
+        // Note that SQLite ignores this when a transaction upgrades from a read to a write lock.
+        $connection->exec('PRAGMA busy_timeout=30000');
         $connection->exec('PRAGMA synchronous=NORMAL');
 
         return $connection;
