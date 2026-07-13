@@ -46,7 +46,7 @@ Appearance: Darstellung
 'Attached to': 'Zugeordnet zu'
 'Back to app': 'Zurück zur App'
 'Base URI': 'Base URI'
-'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.'
+'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Bevor Sie die App nutzen können, benötigen wir einige Informationen über Sie. Diese werden verwendet, um Ihre Herzfrequenzzonen und Ihre Trainingsbelastung zu berechnen. Alle weiteren Einstellungen können Sie später anpassen.'
 Birthday: Geburtstag
 Cancel: Abbrechen
 'Challenge name': 'Herausforderungsname'
@@ -314,7 +314,7 @@ ftp: ftp
 'kilometers used': 'genutzte Kilometer'
 'max {max} MB each': 'max {max} MB je Datei'
 'miles used': 'genutzte Meilen'
-minutes: minutes
+minutes: Minuten
 '{count} files ready to upload': '{count} Dateien zum Hochladen bereit'
 '{count} files uploaded': '{count} Dateien hochgeladen'
 '{count} images selected': '{count} Bilder ausgewählt'
