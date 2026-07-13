@@ -3,6 +3,7 @@
 namespace App\Tests\Controller\Strava;
 
 use App\Controller\Strava\StravaOAuthRequestHandler;
+use App\Domain\Import\ImportMode;
 use App\Domain\Strava\InsufficientStravaAccessTokenScopes;
 use App\Domain\Strava\InvalidStravaAccessToken;
 use App\Domain\Strava\Strava;
@@ -188,6 +189,36 @@ class StravaOAuthRequestHandlerTest extends ContainerTestCase
         ))->getContent());
     }
 
+    public function testHandleItShouldWhenImportModeIsFiles(): void
+    {
+        $stravaOAuthRequestHandler = new StravaOAuthRequestHandler(
+            StravaClientId::fromString('client'),
+            StravaClientSecret::fromString('secret'),
+            $this->strava,
+            $this->client,
+            ImportMode::FILES,
+            $this->getContainer()->get(Environment::class),
+        );
+
+        $this->strava
+            ->expects($this->never())
+            ->method('verifyAccessToken');
+
+        $this->client
+            ->expects($this->never())
+            ->method('post');
+
+        $this->assertMatchesHtmlSnapshot($stravaOAuthRequestHandler->handle(new Request(
+            query: [],
+            request: [],
+            attributes: [],
+            cookies: [],
+            files: [],
+            server: [],
+            content: [],
+        ))->getContent());
+    }
+
     #[\Override]
     protected function setUp(): void
     {
@@ -196,6 +227,7 @@ class StravaOAuthRequestHandlerTest extends ContainerTestCase
             StravaClientSecret::fromString('secret'),
             $this->strava = $this->createMock(Strava::class),
             $this->client = $this->createMock(Client::class),
+            ImportMode::STRAVA_API,
             $this->getContainer()->get(Environment::class),
         );
     }

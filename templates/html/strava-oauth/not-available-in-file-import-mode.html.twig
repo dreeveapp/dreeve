@@ -1,0 +1,33 @@
+{% autoescape false %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ appName }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="theme-color" content="#F26822">
+    <meta name="mobile-web-app-title" content="{{ appName }}">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/x-icon" href="{{ relativeUrl('assets/images/logo.svg') }}">
+    <link href="{{ relativeUrl(asset('css/dist/tailwind.min.css')) }}" rel="stylesheet"/>
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-900 antialiased">
+{% include 'html/navigation/top-nav-bar.html.twig' %}
+<section class="flex min-h-screen flex-col justify-center px-6 py-12 sm:px-12">
+    <div class="mx-auto w-full max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <h2 class="text-2xl font-bold tracking-tight">Strava authorization is not needed here</h2>
+        <p class="mt-1 text-sm text-gray-500">
+            You are running {{ appName }} with <code class="font-mono text-xs text-gray-700">IMPORT_MODE=files</code>. In this mode activities are imported from the files you upload, so there is no need to connect a Strava account.
+        </p>
+        <p class="mt-4 text-sm text-gray-500">
+            Want to import straight from Strava instead? Switch to <code class="font-mono text-xs text-gray-700">IMPORT_MODE=stravaApi</code> and restart your container. See <a class="font-medium text-primary hover:underline" href="https://docs.dreeve.app/#/getting-started/installation?id=env">the docs</a> for the details.
+        </p>
+        <a href="{{ relativeUrl('/') }}"
+           class="mt-6 inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-primary px-5 py-3 font-semibold text-white shadow-sm transition hover:brightness-95">
+            Back to the app
+        </a>
+    </div>
+</section>
+</body>
+</html>
+{% endautoescape %}

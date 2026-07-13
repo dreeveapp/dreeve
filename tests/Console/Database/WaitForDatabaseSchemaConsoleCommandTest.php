@@ -39,7 +39,6 @@ class WaitForDatabaseSchemaConsoleCommandTest extends ConsoleCommandTestCase
 
         $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
         $this->assertSame(6, $this->sleep->getTotalSleptInSeconds());
-        $this->assertStringContainsString('Waiting for the database schema to be up to date', $commandTester->getDisplay());
     }
 
     public function testExecuteKeepsWaitingWhenTheDatabaseCannotBeReachedYet(): void

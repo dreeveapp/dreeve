@@ -10,6 +10,7 @@ echo "date.timezone=\"${TZ:-UTC}\"" > "${PHP_INI_DIR}/conf.d/timezone.ini"
 if [ "$1" = "frankenphp" ]; then
     php /var/www/bin/console app:db:migrate --no-interaction
 else
+    echo 'Waiting for the database schema to be up to date...'
     php /var/www/bin/console app:db:wait-for-schema
 fi
 

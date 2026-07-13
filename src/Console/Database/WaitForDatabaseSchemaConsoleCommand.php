@@ -36,10 +36,6 @@ final class WaitForDatabaseSchemaConsoleCommand extends Command
                 return Command::SUCCESS;
             }
 
-            if (1 === $attempt) {
-                $output->writeln('Waiting for the database schema to be up to date...');
-            }
-
             $this->sleep->sweetDreams(self::POLL_INTERVAL_IN_SECONDS);
         }
 

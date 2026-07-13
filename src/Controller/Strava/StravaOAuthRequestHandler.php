@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Strava;
 
+use App\Domain\Import\ImportMode;
 use App\Domain\Strava\InsufficientStravaAccessTokenScopes;
 use App\Domain\Strava\InvalidStravaAccessToken;
 use App\Domain\Strava\Strava;
@@ -30,6 +31,7 @@ final readonly class StravaOAuthRequestHandler
         private StravaClientSecret $stravaClientSecret,
         private Strava $strava,
         private Client $client,
+        private ImportMode $importMode,
         private Environment $twig,
     ) {
     }
@@ -37,6 +39,10 @@ final readonly class StravaOAuthRequestHandler
     #[Route(path: '/strava-oauth', name: 'strava_oauth', methods: ['GET'], priority: 2)]
     public function handle(Request $request): Response
     {
+        if ($this->importMode->isFiles()) {
+            return new Response($this->twig->render('html/strava-oauth/not-available-in-file-import-mode.html.twig'), Response::HTTP_OK);
+        }
+
         try {
             $this->strava->verifyAccessToken();
 
