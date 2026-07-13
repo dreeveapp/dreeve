@@ -33,8 +33,10 @@ class GpxFileParserTest extends ActivityFileParserTestCase
 
     public function testParseEmptyContentsThrows(): void
     {
-        $this->expectException(CouldNotParseActivityFile::class);
-        $this->parser->parse(RawActivityFile::from(Path::fromString('does-not-exist.gpx'), ''));
+        $rawActivityFile = RawActivityFile::from(Path::fromString('does-not-exist.gpx'), '');
+
+        $this->expectExceptionObject(new CouldNotParseActivityFile('Could not read "does-not-exist.gpx"', $rawActivityFile));
+        $this->parser->parse($rawActivityFile);
     }
 
     public function testParseUnknownSportDefaultsToWorkout(): void
@@ -74,8 +76,10 @@ class GpxFileParserTest extends ActivityFileParserTestCase
             </gpx>
             XML;
 
-        $this->expectException(CouldNotParseActivityFile::class);
-        $this->parser->parse(RawActivityFile::from(Path::fromString('no-time.gpx'), $xml));
+        $rawActivityFile = RawActivityFile::from(Path::fromString('no-time.gpx'), $xml);
+
+        $this->expectExceptionObject(new CouldNotParseActivityFile('No trackpoints with a timestamp found in "no-time.gpx"', $rawActivityFile));
+        $this->parser->parse($rawActivityFile);
     }
 
     #[\Override]

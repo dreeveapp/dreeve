@@ -8,14 +8,12 @@ use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Settings\UpdateAthleteSettings\UpdateAthleteSettings;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
-use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Tests\ContainerTestCase;
 
 class UpdateAthleteSettingsCommandHandlerTest extends ContainerTestCase
 {
     private CommandBus $commandBus;
     private SettingsRepository $settingsRepository;
-    private KeyValueStore $keyValueStore;
 
     public function testItOnlyUpdatesTheAthleteAndFlagsForceRebuild(): void
     {
@@ -66,6 +64,5 @@ class UpdateAthleteSettingsCommandHandlerTest extends ContainerTestCase
 
         $this->commandBus = $this->getContainer()->get(CommandBus::class);
         $this->settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $this->keyValueStore = $this->getContainer()->get(KeyValueStore::class);
     }
 }

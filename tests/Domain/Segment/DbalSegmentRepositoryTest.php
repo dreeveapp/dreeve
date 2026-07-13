@@ -54,7 +54,7 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
 
     public function testItShouldThrowWhenNotFound(): void
     {
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound('Segment "segment-1" not found'));
         $this->segmentRepository->find(SegmentId::fromUnprefixed('1'));
     }
 

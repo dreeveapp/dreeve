@@ -35,7 +35,7 @@ class EditWidgetRequestHandlerTest extends AdminWebTestCase
         $this->client->loginUser($this->adminUser());
         $this->client->catchExceptions(false);
 
-        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionObject(new NotFoundHttpException('Widget not found'));
         $this->client->request('GET', '/admin/settings/dashboard/widget/dashboardWidget-does-not-exist/delete');
     }
 
@@ -59,7 +59,7 @@ class EditWidgetRequestHandlerTest extends AdminWebTestCase
         $this->client->loginUser($this->adminUser());
         $this->client->catchExceptions(false);
 
-        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionObject(new NotFoundHttpException('Widget not found'));
         $this->client->request('GET', '/admin/settings/dashboard/widget/dashboardWidget-eddington/configure');
     }
 
@@ -68,7 +68,7 @@ class EditWidgetRequestHandlerTest extends AdminWebTestCase
         $this->client->loginUser($this->adminUser());
         $this->client->catchExceptions(false);
 
-        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionObject(new NotFoundHttpException('Widget not found'));
         $this->client->request('GET', '/admin/settings/dashboard/widget/dashboardWidget-does-not-exist/configure');
     }
 }

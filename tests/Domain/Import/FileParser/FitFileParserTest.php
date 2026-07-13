@@ -104,8 +104,10 @@ class FitFileParserTest extends ActivityFileParserTestCase
         $process->method('getErrorOutput')->willReturn('boom');
         $this->processFactory->method('create')->willReturn($process);
 
-        $this->expectException(CouldNotParseActivityFile::class);
-        $this->parser->parse($this->rawFile('/tmp/activity.fit'));
+        $rawActivityFile = $this->rawFile('/tmp/activity.fit');
+
+        $this->expectExceptionObject(new CouldNotParseActivityFile('fit-tool could not decode "activity.fit": boom', $rawActivityFile));
+        $this->parser->parse($rawActivityFile);
     }
 
     public function testParseUnsupportedSportThrows(): void
@@ -122,8 +124,10 @@ class FitFileParserTest extends ActivityFileParserTestCase
         unset($message);
         $this->givenFitToolReturns(Json::encode($document));
 
-        $this->expectException(CouldNotParseActivityFile::class);
-        $this->parser->parse($this->rawFile('/tmp/activity.fit'));
+        $rawActivityFile = $this->rawFile('/tmp/activity.fit');
+
+        $this->expectExceptionObject(new CouldNotParseActivityFile('Unsupported FIT sport 8 (sub sport null)', $rawActivityFile));
+        $this->parser->parse($rawActivityFile);
     }
 
     /**

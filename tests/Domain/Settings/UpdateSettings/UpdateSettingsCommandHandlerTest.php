@@ -146,7 +146,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
 
     public function testItRejectsInvalidIntegrationsSettings(): void
     {
-        $this->expectException(CouldNotDeserializeCommand::class);
+        $this->expectExceptionObject(new CouldNotDeserializeCommand('commands must not start with a slash. (/ftp)'));
 
         UpdateSettings::fromPayload([
             'group' => SettingsGroup::INTEGRATIONS->value,
@@ -199,7 +199,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
 
     public function testItRejectsInvalidDaemonSettings(): void
     {
-        $this->expectException(CouldNotDeserializeCommand::class);
+        $this->expectExceptionObject(new CouldNotDeserializeCommand('"not-a-cron" is not a valid cron expression'));
 
         UpdateSettings::fromPayload([
             'group' => SettingsGroup::DAEMON->value,

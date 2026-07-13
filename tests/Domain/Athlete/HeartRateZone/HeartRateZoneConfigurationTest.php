@@ -232,7 +232,7 @@ class HeartRateZoneConfigurationTest extends TestCase
 
     public function testFromArrayThrowsOnInvalidAdvancedYaml(): void
     {
-        $this->expectException(InvalidHeartZoneConfiguration::class);
+        $this->expectExceptionObject(new InvalidHeartZoneConfiguration('Invalid YAML in advanced heart rate zone configuration: Malformed inline YAML string at line 1 (near "{ this is: not valid").'));
 
         HeartRateZoneConfiguration::fromArray([
             'mode' => 'relative',

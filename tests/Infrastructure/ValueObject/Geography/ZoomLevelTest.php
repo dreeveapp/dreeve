@@ -28,22 +28,22 @@ class ZoomLevelTest extends TestCase
     }
 
     #[DataProvider('provideInvalidZoomLevels')]
-    public function testItShouldThrowWhenInvalidZoomLevel(int $value): void
+    public function testItShouldThrowWhenInvalidZoomLevel(int $value, string $expectedMessage): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionObject(new \InvalidArgumentException($expectedMessage));
 
         ZoomLevel::fromInt($value);
     }
 
     /**
-     * @return array<string, array{int}>
+     * @return array<string, array{int, string}>
      */
     public static function provideInvalidZoomLevels(): array
     {
         return [
-            'zero' => [0],
-            'below min' => [-1],
-            'above max' => [19],
+            'zero' => [0, 'ZoomLevel must be a number between 1 and 18, got 0'],
+            'below min' => [-1, 'Value must be a positive integer, got: -1'],
+            'above max' => [19, 'ZoomLevel must be a number between 1 and 18, got 19'],
         ];
     }
 

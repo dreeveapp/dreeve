@@ -63,7 +63,7 @@ class AppearanceSettingsTest extends TestCase
 
     public function testItThrowsForAnInvalidDateFormat(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionObject(new \InvalidArgumentException('Invalid date format provided "q", invalid format characters found: q'));
 
         AppearanceSettings::fromArray(['dateFormat' => ['short' => 'q', 'normal' => 'q']]);
     }

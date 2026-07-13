@@ -35,7 +35,7 @@ class AdminUserProviderTest extends TestCase
             AdminPasswordHash::fromString(''),
         );
 
-        $this->expectException(UserNotFoundException::class);
+        $this->expectExceptionObject(new UserNotFoundException(''));
 
         $provider->loadUserByIdentifier('admin');
     }
@@ -47,7 +47,7 @@ class AdminUserProviderTest extends TestCase
             AdminPasswordHash::fromString('hashed-password'),
         );
 
-        $this->expectException(UserNotFoundException::class);
+        $this->expectExceptionObject(new UserNotFoundException(''));
 
         $provider->loadUserByIdentifier('someone-else');
     }
@@ -74,7 +74,7 @@ class AdminUserProviderTest extends TestCase
             AdminPasswordHash::fromString('hashed-password'),
         );
 
-        $this->expectException(UnsupportedUserException::class);
+        $this->expectExceptionObject(new UnsupportedUserException(''));
 
         $provider->refreshUser($this->createStub(UserInterface::class));
     }

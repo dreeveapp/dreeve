@@ -47,8 +47,10 @@ class TcxFileParserTest extends ActivityFileParserTestCase
 
     public function testParseEmptyContentsThrows(): void
     {
-        $this->expectException(CouldNotParseActivityFile::class);
-        $this->parser->parse(RawActivityFile::from(Path::fromString('does-not-exist.tcx'), ''));
+        $rawActivityFile = RawActivityFile::from(Path::fromString('does-not-exist.tcx'), '');
+
+        $this->expectExceptionObject(new CouldNotParseActivityFile('Could not read "does-not-exist.tcx"', $rawActivityFile));
+        $this->parser->parse($rawActivityFile);
     }
 
     public function testParseUnknownSportDefaultsToWorkout(): void

@@ -65,9 +65,10 @@ class DbalGearMaintenanceLogRepositoryTest extends ContainerTestCase
 
     public function testFindItShouldThrowWhenNotFound(): void
     {
-        $this->expectException(EntityNotFound::class);
+        $gearMaintenanceLogId = GearMaintenanceLogId::random();
+        $this->expectExceptionObject(new EntityNotFound(sprintf('GearMaintenanceLog "%s" not found', $gearMaintenanceLogId)));
 
-        $this->gearMaintenanceLogRepository->find(GearMaintenanceLogId::random());
+        $this->gearMaintenanceLogRepository->find($gearMaintenanceLogId);
     }
 
     public function testUpdate(): void

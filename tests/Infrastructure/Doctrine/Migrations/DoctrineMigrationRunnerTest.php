@@ -41,8 +41,7 @@ class DoctrineMigrationRunnerTest extends ContainerTestCase
         $migrateCommand = $this->provideMigrateCommandThatIsLocked(times: PHP_INT_MAX);
         $migrationRunner = $this->buildMigrationRunner($migrateCommand);
 
-        $this->expectException(CouldNotRunMigrations::class);
-        $this->expectExceptionMessage('The database was locked by another process, migrations could not run.');
+        $this->expectExceptionObject(new CouldNotRunMigrations('The database was locked by another process, migrations could not run.'));
 
         try {
             $migrationRunner->run($this->output);
@@ -57,7 +56,7 @@ class DoctrineMigrationRunnerTest extends ContainerTestCase
         $migrateCommand = $this->provideMigrateCommandThatIsLocked(times: 0, exitCode: Command::FAILURE);
         $migrationRunner = $this->buildMigrationRunner($migrateCommand);
 
-        $this->expectException(CouldNotRunMigrations::class);
+        $this->expectExceptionObject(new CouldNotRunMigrations(''));
 
         try {
             $migrationRunner->run($this->output);

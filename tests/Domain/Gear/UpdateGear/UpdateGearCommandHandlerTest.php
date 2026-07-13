@@ -143,7 +143,7 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
 
     public function testHandleThrowsWhenGearNotFound(): void
     {
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound('Gear "gear-999" not found'));
 
         $this->commandBus->dispatch(UpdateGear::fromPayload([
             'gearId' => 'gear-999',

@@ -27,7 +27,7 @@ class DbalChallengeRepositoryTest extends ContainerTestCase
 
     public function testItShouldThrowWhenNotFound(): void
     {
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound('Challenge "challenge-1" not found'));
         $this->challengeRepository->find(ChallengeId::fromUnprefixed('1'));
     }
 
@@ -43,7 +43,7 @@ class DbalChallengeRepositoryTest extends ContainerTestCase
 
         $this->challengeRepository->updateChallengeId($oldId, $newId);
 
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound('Challenge "challenge-old-id" not found'));
         $this->challengeRepository->find($oldId);
     }
 

@@ -33,8 +33,7 @@ class NonEmptyStringLiteralTest extends TestCase
 
     public function testItShouldThrowWhenEmpty(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('App\Tests\Infrastructure\ValueObject\String\TestNonEmptyStringLiteral can not be empty');
+        $this->expectExceptionObject(new \InvalidArgumentException('App\\Tests\\Infrastructure\\ValueObject\\String\\TestNonEmptyStringLiteral can not be empty'));
 
         TestNonEmptyStringLiteral::fromString('');
     }

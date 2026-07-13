@@ -43,8 +43,7 @@ class CollectionTest extends TestCase
 
     public function testItShouldGuardCollectionItemType(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Item must be an instance of App\Infrastructure\ValueObject\String\Name');
+        $this->expectExceptionObject(new \InvalidArgumentException('Item must be an instance of App\\Infrastructure\\ValueObject\\String\\Name'));
 
         ATestCollection::empty()->add('wrong');
     }

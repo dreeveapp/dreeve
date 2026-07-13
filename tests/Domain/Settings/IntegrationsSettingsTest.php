@@ -143,7 +143,7 @@ class IntegrationsSettingsTest extends TestCase
 
     public function testItThrowsForAnInvalidChatCommand(): void
     {
-        $this->expectException(InvalidChatCommandsConfig::class);
+        $this->expectExceptionObject(new InvalidChatCommandsConfig('commands must not start with a slash. (/ftp)'));
 
         IntegrationsSettings::fromArray([
             'ai' => [

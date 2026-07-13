@@ -37,13 +37,13 @@ class DbalKeyValueStoreTest extends ContainerTestCase
         $this->keyValueStore->save($keyValue);
         $this->keyValueStore->clear(Key::THEME);
 
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound('KeyValue "theme" not found'));
         $this->keyValueStore->find(Key::THEME);
     }
 
     public function testItShouldThrowWhenNotFound(): void
     {
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound('KeyValue "theme" not found'));
         $this->keyValueStore->find(Key::THEME);
     }
 

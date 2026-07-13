@@ -31,10 +31,9 @@ final class Version20260706053720 extends AbstractMigration
         $basePath = dirname(__DIR__).'/config/app';
         $configFile = $basePath.'/config.yaml';
 
-        $this->skipIf(
-            !file_exists($configFile),
-            'No config.yaml found, nothing to migrate'
-        );
+        if (!file_exists($configFile)) {
+            return;
+        }
 
         $finder = Finder::create()
             ->in($basePath)

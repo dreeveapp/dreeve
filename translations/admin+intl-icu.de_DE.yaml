@@ -19,6 +19,8 @@ AM/PM: AM/PM
 'Add component': 'Komponente hinzufügen'
 'Add gear': 'Ausrüstung hinzufügen'
 'Add goal': 'Add goal'
+'Add max heart rate': 'Add max heart rate'
+'Add resting heart rate': 'Add resting heart rate'
 'Add service': 'Add service'
 'Add task': 'Aufgabe hinzufügen'
 'Add weight': 'Add weight'
@@ -27,6 +29,7 @@ AM/PM: AM/PM
 Admin: Admin
 'Admin panel': 'Admin panel'
 'Advanced (per-date & per-sport-type overrides)': 'Advanced (per-date & per-sport-type overrides)'
+'Age-based estimate': 'Age-based estimate'
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'Alle zugehörigen Wartungsaufgaben und Protokolle werden entfernt. Diese Aktion kann nicht rückgängig gemacht werden'
 'All sport types must belong to the same activity type.': 'All sport types must belong to the same activity type.'
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.'
@@ -65,6 +68,7 @@ Configure: Configure
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."
 Daemon: Daemon
 'Dashboard layout': 'Dashboard layout'
+'Date range based': 'Date range based'
 'Define what needs doing and how often.': 'Lege fest, was wie oft erledigt werden muss.'
 Delete: Löschen
 'Delete activity': 'Aktivität löschen'
@@ -100,6 +104,7 @@ Female: Female
 'File upload is only available in file import mode': 'Datei Upload ist nur im Datei Import Modus verfügbar.'
 Filename: Dateiname
 'First name': 'First name'
+'Fixed value': 'Fixed value'
 From: From
 'Gear management': Ausrüstungsverwaltung
 'Gear will appear here once you add them.': 'Ausrüstung wird hier angezeigt, sobald du sie hinzufügst.'
@@ -138,6 +143,7 @@ Log: Log
 'Maintenance logs will appear here once maintenance has been registered.': 'Wartungsprotokolle werden hier angezeigt, sobald eine Wartung erfasst wurde.'
 'Maintenance tasks': Wartungsaufgaben
 Male: Male
+'Max heart rate (bpm)': 'Max heart rate (bpm)'
 'Max heart rate formula': 'Max heart rate formula'
 Message: Message
 'Metric display order': 'Metric display order'
@@ -195,6 +201,7 @@ Removing...: Removing...
 'Reset dashboard to default': 'Reset dashboard to default'
 'Reset to default': 'Reset to default'
 Resetting...: Resetting...
+'Resting heart rate (bpm)': 'Resting heart rate (bpm)'
 'Resting heart rate formula': 'Resting heart rate formula'
 'Restrict to date range': 'Restrict to date range'
 'Return to app': 'Zurück zur App'
@@ -243,7 +250,7 @@ Task: Aufgabe
 Tasks: Aufgaben
 'The URL the app is hosted on.': 'The URL the app is hosted on.'
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
-'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.': 'The formula used to calculate your resting heart rate. Allowed values: heuristicAgeBased or a fixed number. The default is heuristicAgeBased.'
+'The formula used to calculate your resting heart rate. The default is an age-based estimate.': 'The formula used to calculate your resting heart rate. The default is an age-based estimate.'
 'The last zone has no upper bound.': 'The last zone has no upper bound.'
 'The locale used to render the app.': 'The locale used to render the app.'
 "The name is derived from the device recorded on your activities and can't be edited.": 'Der Name wird aus dem Gerät abgeleitet, das bei deinen Aktivitäten aufgezeichnet wurde, und kann nicht bearbeitet werden.'
@@ -284,6 +291,8 @@ Webhooks: Webhooks
 'Your birthday. Needed to calculate heart rate zones.': 'Your birthday. Needed to calculate heart rate zones.'
 'Your changes have been saved.': 'Your changes have been saved.'
 'Your gender. Used to determine activity training load.': 'Your gender. Used to determine activity training load.'
+'Your measured max heart rate, applied from the given date onwards.': 'Your measured max heart rate, applied from the given date onwards.'
+'Your measured resting heart rate, applied from the given date onwards.': 'Your measured resting heart rate, applied from the given date onwards.'
 Zone: Zone
 Zwift: Zwift
 'Zwift level': 'Zwift level'

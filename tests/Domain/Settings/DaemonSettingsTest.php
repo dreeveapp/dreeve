@@ -72,7 +72,7 @@ class DaemonSettingsTest extends TestCase
 
     public function testItThrowsForAnInvalidCronExpression(): void
     {
-        $this->expectException(InvalidCronConfig::class);
+        $this->expectExceptionObject(new InvalidCronConfig('"not-a-cron" is not a valid cron expression'));
 
         DaemonSettings::fromArray([
             'cron' => [

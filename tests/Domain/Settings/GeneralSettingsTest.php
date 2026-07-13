@@ -82,21 +82,21 @@ class GeneralSettingsTest extends TestCase
 
     public function testItThrowsWhenBirthdayIsMissing(): void
     {
-        $this->expectException(AthleteHasNotBeenConfigured::class);
+        $this->expectExceptionObject(new AthleteHasNotBeenConfigured('A "birthday" is required for the athlete in the general settings'));
 
         GeneralSettings::fromArray(['athlete' => ['maxHeartRateFormula' => 'fox']]);
     }
 
     public function testItThrowsWhenMaxHeartRateFormulaIsMissing(): void
     {
-        $this->expectException(AthleteHasNotBeenConfigured::class);
+        $this->expectExceptionObject(new AthleteHasNotBeenConfigured('A "maxHeartRateFormula" is required for the athlete in the general settings'));
 
         GeneralSettings::fromArray(['athlete' => ['birthday' => '1989-08-14']]);
     }
 
     public function testItThrowsWhenNothingIsConfigured(): void
     {
-        $this->expectException(AthleteHasNotBeenConfigured::class);
+        $this->expectExceptionObject(new AthleteHasNotBeenConfigured('A "birthday" is required for the athlete in the general settings'));
 
         GeneralSettings::fromArray(null);
     }

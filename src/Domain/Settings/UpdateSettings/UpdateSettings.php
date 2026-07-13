@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Settings\UpdateSettings;
 
+use App\Domain\Settings\AthleteSettingsPayload;
 use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
@@ -38,6 +39,9 @@ final readonly class UpdateSettings extends DomainCommand implements Deserializa
         }
 
         try {
+            if (SettingsGroup::GENERAL === $group && is_array($data['athlete'] ?? null)) {
+                $data['athlete'] = AthleteSettingsPayload::normalize($data['athlete']);
+            }
             $group->settingsFromArray($data);
         } catch (\RuntimeException|\InvalidArgumentException $e) {
             throw CouldNotDeserializeCommand::invalidPayload($e->getMessage());

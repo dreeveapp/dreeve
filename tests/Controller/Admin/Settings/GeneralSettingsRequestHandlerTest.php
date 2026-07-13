@@ -3,6 +3,7 @@
 namespace App\Tests\Controller\Admin\Settings;
 
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 class GeneralSettingsRequestHandlerTest extends AdminWebTestCase
 {
@@ -32,11 +33,13 @@ class GeneralSettingsRequestHandlerTest extends AdminWebTestCase
         $crawler = $this->client->request('GET', '/admin/settings/general');
 
         $this->assertResponseIsSuccessful();
-        // Three native repeaters: weight, FTP cycling, FTP running.
-        $this->assertCount(3, $crawler->filter('form[data-dispatch-command="update-settings"] [data-repeater]'));
+        // Five repeaters: max heart rate ranges, resting heart rate ranges, weight, FTP cycling, FTP running.
+        $this->assertCount(5, $crawler->filter('form[data-dispatch-command="update-settings"] [data-repeater]'));
 
-        // The seeded weight history is passed to the first repeater as its list-shaped initial rows.
-        $initial = (string) $crawler->filter('[data-repeater-list]')->first()->attr('data-repeater-initial');
+        $initial = (string) $crawler->filter('[data-repeater]')
+            ->reduce(fn (Crawler $repeater) => str_contains($repeater->html(), 'data[athlete][weightHistory]'))
+            ->filter('[data-repeater-list]')
+            ->attr('data-repeater-initial');
         $this->assertStringContainsString('2020-01-01', $initial);
         $this->assertStringContainsString('"weight"', $initial);
     }

@@ -72,7 +72,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
 
     public function testItShouldThrowWhenNotFound(): void
     {
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound('Gear "gear-1" not found'));
         $this->gearRepository->find(GearId::fromUnprefixed('1'));
     }
 

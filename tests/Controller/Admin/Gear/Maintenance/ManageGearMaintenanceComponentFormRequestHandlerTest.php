@@ -120,7 +120,7 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->client->loginUser($this->adminUser());
         $this->client->catchExceptions(false);
 
-        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionObject(new NotFoundHttpException('Component not found'));
         $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-does-not-exist/edit');
     }
 
@@ -131,7 +131,7 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->client->loginUser($this->adminUser());
         $this->client->catchExceptions(false);
 
-        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionObject(new NotFoundHttpException('Component not found'));
         $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-does-not-exist/delete');
     }
 

@@ -208,8 +208,9 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
     {
         $this->seedConfigAndGear();
 
-        $this->expectException(EntityNotFound::class);
-        $this->gearMaintenanceLogOverviewRepository->findOneByGearMaintenanceLogId(GearMaintenanceLogId::random());
+        $gearMaintenanceLogId = GearMaintenanceLogId::random();
+        $this->expectExceptionObject(new EntityNotFound(sprintf('Gear maintenance log "%s" is no longer available', $gearMaintenanceLogId)));
+        $this->gearMaintenanceLogOverviewRepository->findOneByGearMaintenanceLogId($gearMaintenanceLogId);
     }
 
     public function testFindOneByGearMaintenanceLogIdThrowsWhenGearIsAbsent(): void
@@ -223,7 +224,7 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
         );
         $this->gearMaintenanceLogRepository->add($log);
 
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound(sprintf('Gear maintenance log "%s" is no longer available', $log->getId())));
         $this->gearMaintenanceLogOverviewRepository->findOneByGearMaintenanceLogId($log->getId());
     }
 
@@ -238,7 +239,7 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
         );
         $this->gearMaintenanceLogRepository->add($log);
 
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound(sprintf('Gear maintenance log "%s" is no longer available', $log->getId())));
         $this->gearMaintenanceLogOverviewRepository->findOneByGearMaintenanceLogId($log->getId());
     }
 

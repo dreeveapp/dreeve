@@ -41,13 +41,15 @@ class ActivityFileParsersTest extends TestCase
 
     public function testParseWithoutExtensionThrows(): void
     {
-        $this->expectException(CouldNotParseActivityFile::class);
-        $this->registry->parse($this->rawFile('/import/activity'));
+        $rawActivityFile = $this->rawFile('/import/activity');
+
+        $this->expectExceptionObject(new CouldNotParseActivityFile('Could not determine file extension for "/import/activity"', $rawActivityFile));
+        $this->registry->parse($rawActivityFile);
     }
 
     public function testParseWithUnsupportedExtensionThrows(): void
     {
-        $this->expectException(UnsupportedFileType::class);
+        $this->expectExceptionObject(new UnsupportedFileType('No parser available for file extension "./import/activity.lol"'));
         $this->registry->parse($this->rawFile('/import/activity.lol'));
     }
 

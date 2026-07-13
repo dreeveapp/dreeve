@@ -185,7 +185,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
 
     public function testHandleThrowsWhenActivityNotFound(): void
     {
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound('Activity "activity-999" not found'));
 
         $this->commandBus->dispatch(UpdateActivity::fromPayload([
             'activityId' => 'activity-999',

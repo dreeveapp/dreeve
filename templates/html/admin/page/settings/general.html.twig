@@ -1,39 +1,5 @@
 {% extends "html/admin/page/template.html.twig" %}
-
-{% macro historyEditor(fieldPath, rows, title, description, valueLabel, addLabel, valueKey, valueStep) %}
-    <div class="p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater data-repeater-min="0">
-        <label class="mt-0!">{{ title }}</label>
-        {% if description %}
-            <p class="description mb-2">{{ description }}</p>
-        {% endif %}
-        <div class="flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ rows|json_encode|e('html_attr') }}"></div>
-        <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
-            <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
-            </svg>
-            <span>{{ addLabel }}</span>
-        </button>
-        <template data-repeater-template>
-            <div class="flex items-end gap-2" data-repeater-item>
-                <div class="flex-1">
-                    <label class="mt-0! text-xs text-gray-500">{{ "Date"|trans }}</label>
-                    <input type="date" name="{{ fieldPath }}[__index__][on]" data-repeater-field="on" required>
-                </div>
-                <div class="flex-1">
-                    <label class="mt-0! text-xs text-gray-500">{{ valueLabel }}</label>
-                    <input type="number" step="{{ valueStep }}" min="0" name="{{ fieldPath }}[__index__][{{ valueKey }}]" data-repeater-field="{{ valueKey }}" required>
-                </div>
-                <button type="button" data-repeater-remove
-                        class="unstyled cursor-pointer grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
-                        aria-label="{{ "Remove"|trans({}, 'admin') }}">
-                    <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
-                    </svg>
-                </button>
-            </div>
-        </template>
-    </div>
-{% endmacro %}
+{% import 'html/admin/page/settings/macro/history-editor.html.twig' as editor %}
 
 {% block main %}
     {% set athlete = settings.athlete ?? {} %}
@@ -73,7 +39,7 @@
                 } only %}
             </div>
             <div class="mt-6 flex flex-col gap-6 border-t border-gray-200 pt-6">
-                {{ _self.historyEditor(
+                {{ editor.historyEditor(
                     'data[athlete][weightHistory]',
                     athlete.weightHistory ?? [],
                     "Weight history"|trans,
@@ -83,7 +49,7 @@
                     'weight',
                     'any'
                 ) }}
-                {{ _self.historyEditor(
+                {{ editor.historyEditor(
                     'data[athlete][ftpHistory][cycling]',
                     athlete.ftpHistory.cycling ?? [],
                     "FTP history (cycling)"|trans({}, 'admin'),
@@ -93,7 +59,7 @@
                     'ftp',
                     '1'
                 ) }}
-                {{ _self.historyEditor(
+                {{ editor.historyEditor(
                     'data[athlete][ftpHistory][running]',
                     athlete.ftpHistory.running ?? [],
                     "FTP history (running)"|trans({}, 'admin'),

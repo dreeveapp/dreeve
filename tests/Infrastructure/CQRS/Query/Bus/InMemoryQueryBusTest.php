@@ -43,16 +43,14 @@ class InMemoryQueryBusTest extends TestCase
     {
         $commandBus = new InMemoryQueryBus([]);
 
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The query has not a valid handler: App\Tests\Infrastructure\CQRS\Query\Bus\FindSomething\FindSomething');
+        $this->expectExceptionObject(new \InvalidArgumentException('The query has not a valid handler: App\\Tests\\Infrastructure\\CQRS\\Query\\Bus\\FindSomething\\FindSomething'));
 
         $commandBus->ask(new FindSomething());
     }
 
     public function testAskWithoutCorrespondingCommand(): void
     {
-        $this->expectException(CanNotRegisterCQRSHandler::class);
-        $this->expectExceptionMessage('No corresponding object for QueryHandler "App\Tests\Infrastructure\CQRS\Query\Bus\FindSomethingWithoutQuery\FindSomethingWithoutQueryQueryHandler" found. Expected namespace: App\Tests\Infrastructure\CQRS\Query\Bus\FindSomethingWithoutQuery\FindSomethingWithoutQuery');
+        $this->expectExceptionObject(new CanNotRegisterCQRSHandler('No corresponding object for QueryHandler "App\\Tests\\Infrastructure\\CQRS\\Query\\Bus\\FindSomethingWithoutQuery\\FindSomethingWithoutQueryQueryHandler" found. Expected namespace: App\\Tests\\Infrastructure\\CQRS\\Query\\Bus\\FindSomethingWithoutQuery\\FindSomethingWithoutQuery'));
 
         new InMemoryQueryBus([
             new FindSomethingWithoutQueryQueryHandler(),
@@ -61,8 +59,7 @@ class InMemoryQueryBusTest extends TestCase
 
     public function testAskWithInvalidCommandName(): void
     {
-        $this->expectException(CanNotRegisterCQRSHandler::class);
-        $this->expectExceptionMessage('Object name cannot end with "Query"');
+        $this->expectExceptionObject(new CanNotRegisterCQRSHandler('Object name cannot end with "Query"'));
 
         new InMemoryQueryBus([
             new FindSomethingQueryQueryHandler(),
@@ -71,8 +68,7 @@ class InMemoryQueryBusTest extends TestCase
 
     public function testAskWithInvalidCommandHandlerName(): void
     {
-        $this->expectException(CanNotRegisterCQRSHandler::class);
-        $this->expectExceptionMessage('Fqcn "App\Tests\Infrastructure\CQRS\Query\Bus\FindSomethingWithInvalidNameQuery" does not end with "QueryHandler"');
+        $this->expectExceptionObject(new CanNotRegisterCQRSHandler('Fqcn "App\\Tests\\Infrastructure\\CQRS\\Query\\Bus\\FindSomethingWithInvalidNameQuery" does not end with "QueryHandler"'));
 
         new InMemoryQueryBus([
             new FindSomethingWithInvalidNameQuery(),

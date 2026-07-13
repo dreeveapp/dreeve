@@ -52,7 +52,7 @@ class ZwiftSettingsTest extends TestCase
 
     public function testItThrowsForAnInvalidRacingScore(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionObject(new \InvalidArgumentException('ZwiftRacingScore must be a number between 0 and 1000'));
 
         ZwiftSettings::fromArray(['racingScore' => 1001]);
     }

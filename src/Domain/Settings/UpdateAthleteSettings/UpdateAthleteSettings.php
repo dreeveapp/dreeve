@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Settings\UpdateAthleteSettings;
 
+use App\Domain\Settings\AthleteSettingsPayload;
 use App\Domain\Settings\GeneralSettings;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
@@ -30,6 +31,7 @@ final readonly class UpdateAthleteSettings extends DomainCommand implements Dese
         }
 
         try {
+            $athlete = AthleteSettingsPayload::normalize($athlete);
             GeneralSettings::fromArray(['athlete' => $athlete]);
         } catch (\RuntimeException|\InvalidArgumentException $e) {
             throw CouldNotDeserializeCommand::invalidPayload($e->getMessage());

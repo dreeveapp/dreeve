@@ -55,14 +55,14 @@ class ImportSettingsTest extends TestCase
 
     public function testItThrowsForAnInvalidWebhookConfig(): void
     {
-        $this->expectException(InvalidWebhookConfig::class);
+        $this->expectExceptionObject(new InvalidWebhookConfig('"verifyToken" property cannot be empty.'));
 
         ImportSettings::fromArray(['webhooks' => ['enabled' => true]]);
     }
 
     public function testItThrowsForAnInvalidSportType(): void
     {
-        $this->expectException(\ValueError::class);
+        $this->expectExceptionObject(new \ValueError('"NotASportType" is not a valid backing value for enum App\\Domain\\Activity\\SportType\\SportType'));
 
         ImportSettings::fromArray(['sportTypesToImport' => ['NotASportType']]);
     }

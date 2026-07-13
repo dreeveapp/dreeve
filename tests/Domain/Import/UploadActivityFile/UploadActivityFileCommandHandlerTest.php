@@ -41,7 +41,7 @@ class UploadActivityFileCommandHandlerTest extends TestCase
             'content' => base64_encode('raw-fit-bytes'),
         ]);
 
-        $this->expectException(CannotUploadActivityFile::class);
+        $this->expectExceptionObject(new CannotUploadActivityFile('Activity files can only be uploaded when running in file import mode.'));
 
         try {
             $handler->handle($command);

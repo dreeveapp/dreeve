@@ -67,7 +67,7 @@ class MetricsSettingsTest extends TestCase
 
     public function testItThrowsForAnInvalidSportType(): void
     {
-        $this->expectException(InvalidEddingtonConfiguration::class);
+        $this->expectExceptionObject(new InvalidEddingtonConfiguration('"NotASportType" is not a valid sport type'));
 
         MetricsSettings::fromArray([
             'eddington' => [

@@ -18,7 +18,7 @@ class SlugTest extends TestCase
 
     public function testItShouldThrowWhenEmpty(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionObject(new \InvalidArgumentException('App\\Infrastructure\\ValueObject\\String\\Slug can not be empty'));
 
         Slug::fromString('');
     }

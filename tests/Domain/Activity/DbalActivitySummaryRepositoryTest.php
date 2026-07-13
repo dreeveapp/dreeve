@@ -38,7 +38,7 @@ class DbalActivitySummaryRepositoryTest extends ContainerTestCase
 
     public function testFindItShouldThrowWhenNotFound(): void
     {
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound('Activity "activity-1" not found'));
         $this->activitySummaryRepository->find(ActivityId::fromUnprefixed(1));
     }
 

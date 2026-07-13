@@ -142,7 +142,7 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
         $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
         $this->assertSame(self::TODAY, (string) $this->keyValueStore->find(Key::APP_LAST_BUILT_ON));
 
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound('KeyValue "forceRebuild" not found'));
         $this->keyValueStore->find(Key::FORCE_REBUILD);
     }
 
@@ -158,7 +158,7 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
             $commandTester->getDisplay(),
         );
 
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound('KeyValue "appLastBuiltOn" not found'));
         $this->keyValueStore->find(Key::APP_LAST_BUILT_ON);
     }
 
@@ -197,7 +197,7 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
 
         $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
 
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound('KeyValue "appLastBuiltOn" not found'));
         $this->keyValueStore->find(Key::APP_LAST_BUILT_ON);
     }
 

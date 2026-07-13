@@ -27,10 +27,9 @@ final class Version20260625171831 extends AbstractMigration
     {
         $gearMaintenanceConfigFile = dirname(__DIR__).'/config/app/gear-maintenance.yaml';
 
-        $this->skipIf(
-            !file_exists($gearMaintenanceConfigFile),
-            'No gear-maintenance.yaml found, nothing to migrate'
-        );
+        if (!file_exists($gearMaintenanceConfigFile)) {
+            return;
+        }
 
         $config = $this->migrateLegacyComponents(Yaml::parseFile($gearMaintenanceConfigFile));
 

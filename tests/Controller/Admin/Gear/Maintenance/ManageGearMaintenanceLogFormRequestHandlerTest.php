@@ -81,7 +81,7 @@ class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
         $this->client->loginUser($this->adminUser());
         $this->client->catchExceptions(false);
 
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound(sprintf('Gear maintenance log "%s" is no longer available', $log->getId())));
         $this->client->request('GET', '/admin/gear/maintenance-logs/'.$log->getId().'/delete');
     }
 
@@ -157,7 +157,7 @@ class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
         $this->client->loginUser($this->adminUser());
         $this->client->catchExceptions(false);
 
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound(sprintf('Gear maintenance log "%s" is no longer available', $log->getId())));
         $this->client->request('GET', '/admin/gear/maintenance-logs/'.$log->getId().'/edit');
     }
 
@@ -174,7 +174,7 @@ class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
         $this->client->loginUser($this->adminUser());
         $this->client->catchExceptions(false);
 
-        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionObject(new EntityNotFound(sprintf('Gear maintenance log "%s" is no longer available', $log->getId())));
         $this->client->request('GET', '/admin/gear/maintenance-logs/'.$log->getId().'/edit');
     }
 

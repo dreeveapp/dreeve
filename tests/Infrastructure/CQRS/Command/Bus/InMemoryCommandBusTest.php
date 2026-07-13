@@ -19,8 +19,7 @@ class InMemoryCommandBusTest extends KernelTestCase
             new RunAnOperationCommandHandler(),
         ], eventBus: new SpyEventBus());
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('This is a test command and it is called');
+        $this->expectExceptionObject(new \RuntimeException('This is a test command and it is called'));
 
         $commandBus->dispatch(new RunAnOperation('test'));
     }
@@ -29,16 +28,14 @@ class InMemoryCommandBusTest extends KernelTestCase
     {
         $commandBus = new InMemoryCommandBus(commandHandlers: [], eventBus: new SpyEventBus());
 
-        $this->expectException(NoHandlerForMessageException::class);
-        $this->expectExceptionMessage(RunAnOperation::class);
+        $this->expectExceptionObject(new NoHandlerForMessageException('App\\Tests\\Infrastructure\\CQRS\\Command\\Bus\\RunAnOperation\\RunAnOperation'));
 
         $commandBus->dispatch(new RunAnOperation('test'));
     }
 
     public function testDispatchWithoutCorrespondingCommand(): void
     {
-        $this->expectException(CanNotRegisterCQRSHandler::class);
-        $this->expectExceptionMessage('No corresponding object for CommandHandler "App\Tests\Infrastructure\CQRS\Command\Bus\RunOperationWithoutACommandCommandHandler" found. Expected namespace: App\Tests\Infrastructure\CQRS\Command\Bus\RunOperationWithoutACommand');
+        $this->expectExceptionObject(new CanNotRegisterCQRSHandler('No corresponding object for CommandHandler "App\\Tests\\Infrastructure\\CQRS\\Command\\Bus\\RunOperationWithoutACommandCommandHandler" found. Expected namespace: App\\Tests\\Infrastructure\\CQRS\\Command\\Bus\\RunOperationWithoutACommand'));
 
         $commandBus = new InMemoryCommandBus(commandHandlers: [
             new RunOperationWithoutACommandCommandHandler(),
@@ -48,8 +45,7 @@ class InMemoryCommandBusTest extends KernelTestCase
 
     public function testDispatchWithInvalidCommandName(): void
     {
-        $this->expectException(CanNotRegisterCQRSHandler::class);
-        $this->expectExceptionMessage('Object name cannot end with "Command"');
+        $this->expectExceptionObject(new CanNotRegisterCQRSHandler('Object name cannot end with "Command"'));
 
         $commandBus = new InMemoryCommandBus(commandHandlers: [
             new RunAnOperationCommandCommandHandler(),
@@ -59,8 +55,7 @@ class InMemoryCommandBusTest extends KernelTestCase
 
     public function testDispatchWithInvalidCommandHandlerName(): void
     {
-        $this->expectException(CanNotRegisterCQRSHandler::class);
-        $this->expectExceptionMessage('Fqcn "App\Tests\Infrastructure\CQRS\Command\Bus\RunOperationWithInvalidNameHandler" does not end with "CommandHandler"');
+        $this->expectExceptionObject(new CanNotRegisterCQRSHandler('Fqcn "App\\Tests\\Infrastructure\\CQRS\\Command\\Bus\\RunOperationWithInvalidNameHandler" does not end with "CommandHandler"'));
 
         $commandBus = new InMemoryCommandBus(commandHandlers: [
             new RunOperationWithInvalidNameHandler(),

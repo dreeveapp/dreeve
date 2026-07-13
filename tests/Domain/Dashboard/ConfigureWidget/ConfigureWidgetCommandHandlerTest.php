@@ -99,7 +99,7 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
             ['id' => 'dashboardWidget-trainingGoals', 'widget' => 'trainingGoals', 'width' => 33, 'config' => ['goals' => []]],
         ]);
 
-        $this->expectException(CouldNotProcessCommand::class);
+        $this->expectExceptionObject(new CouldNotProcessCommand('The unit "minute" is not valid for goal type "distance"'));
 
         $this->commandBus->dispatch(ConfigureWidget::fromPayload([
             'dashboardWidgetId' => 'dashboardWidget-trainingGoals',

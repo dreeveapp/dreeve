@@ -3956,6 +3956,21 @@
       visibility: visible;
     }
   }
+  .group-has-\[option\[value\=dateRangeBased\]\:checked\]\/max-hr\:block {
+    &:is(:where(.group\/max-hr):has(*:is(option[value=dateRangeBased]:checked)) *) {
+      display: block;
+    }
+  }
+  .group-has-\[option\[value\=dateRangeBased\]\:checked\]\/resting-hr\:block {
+    &:is(:where(.group\/resting-hr):has(*:is(option[value=dateRangeBased]:checked)) *) {
+      display: block;
+    }
+  }
+  .group-has-\[option\[value\=fixed\]\:checked\]\/resting-hr\:block {
+    &:is(:where(.group\/resting-hr):has(*:is(option[value=fixed]:checked)) *) {
+      display: block;
+    }
+  }
   .group-aria-expanded\:rotate-180 {
     &:is(:where(.group)[aria-expanded="true"] *) {
       rotate: 180deg;
