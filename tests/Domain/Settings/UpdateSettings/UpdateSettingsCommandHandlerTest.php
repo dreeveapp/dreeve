@@ -29,6 +29,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
                 'firstName' => 'Jane',
                 'lastName' => 'Doe',
                 'maxHeartRateFormula' => 'fox',
+                'restingHeartRateFormula' => 'heuristicAgeBased',
             ],
         ];
 

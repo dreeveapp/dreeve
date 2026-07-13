@@ -53,6 +53,7 @@ class UpdateAthleteSettingsCommandHandlerTest extends ContainerTestCase
                 // The weight history and heart rate zones are managed on the general settings form.
                 'weightHistory' => [['on' => '2020-01-01', 'weight' => 70]],
                 'heartRateZones' => ['mode' => 'absolute'],
+                'restingHeartRateFormula' => 'heuristicAgeBased',
                 'lastName' => 'Doe',
             ],
         ], $this->settingsRepository->find(SettingsGroup::GENERAL));
