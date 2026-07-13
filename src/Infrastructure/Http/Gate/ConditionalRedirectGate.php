@@ -25,10 +25,10 @@ abstract class ConditionalRedirectGate implements Gate
 
     abstract protected function redirectToRouteName(): string;
 
-    final public function handle(Request $request): ?Response
+    final public function handle(Request $request): GateDecision
     {
         if (!$this->shouldGuard()) {
-            return null;
+            return GateDecision::defer();
         }
 
         $target = $this->urlGenerator->generate($this->redirectToRouteName());
@@ -36,11 +36,11 @@ abstract class ConditionalRedirectGate implements Gate
         $path = $request->getPathInfo();
         foreach ([...$this->allowedPaths(), $target] as $allowed) {
             if ($this->matches($path, $allowed)) {
-                return null;
+                return GateDecision::allow();
             }
         }
 
-        return new RedirectResponse($target, Response::HTTP_FOUND);
+        return GateDecision::respond(new RedirectResponse($target, Response::HTTP_FOUND));
     }
 
     private function matches(string $path, string $allowed): bool

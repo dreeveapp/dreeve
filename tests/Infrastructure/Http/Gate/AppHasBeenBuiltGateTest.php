@@ -32,7 +32,7 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
             ->method('count')
             ->willReturn(1);
 
-        $this->assertNull($this->gate()->handle(Request::create('/dashboard')));
+        $this->assertFalse($this->gate()->handle(Request::create('/dashboard'))->hasBeenApplied());
     }
 
     public function testItRedirectsWhenNothingHasBeenBuiltYet(): void
@@ -44,7 +44,7 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
             ->willReturn(false);
         $this->activityIdRepository->expects($this->never())->method('count');
 
-        $response = $this->gate()->handle(Request::create('/dashboard'));
+        $response = $this->gate()->handle(Request::create('/dashboard'))->getResponse();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('/finish-setup', $response->getTargetUrl());
@@ -63,7 +63,7 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
             ->method('count')
             ->willReturn(0);
 
-        $response = $this->gate()->handle(Request::create('/dashboard'));
+        $response = $this->gate()->handle(Request::create('/dashboard'))->getResponse();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('/finish-setup', $response->getTargetUrl());
@@ -79,7 +79,10 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
             ->willReturn(false);
         $this->activityIdRepository->expects($this->never())->method('count');
 
-        $this->assertNull($this->gate()->handle(Request::create('/finish-setup')));
+        $decision = $this->gate()->handle(Request::create('/finish-setup'));
+
+        $this->assertTrue($decision->hasBeenApplied());
+        $this->assertNull($decision->getResponse());
     }
 
     #[DataProvider('provideExemptAdminPaths')]
@@ -92,7 +95,10 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
             ->willReturn(false);
         $this->activityIdRepository->expects($this->never())->method('count');
 
-        $this->assertNull($this->gate(ImportMode::FILES)->handle(Request::create($path)));
+        $decision = $this->gate(ImportMode::FILES)->handle(Request::create($path));
+
+        $this->assertTrue($decision->hasBeenApplied());
+        $this->assertNull($decision->getResponse());
     }
 
     #[DataProvider('provideExemptAdminPaths')]
@@ -105,7 +111,7 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
             ->willReturn(false);
         $this->activityIdRepository->expects($this->never())->method('count');
 
-        $response = $this->gate(ImportMode::STRAVA_API)->handle(Request::create($path));
+        $response = $this->gate(ImportMode::STRAVA_API)->handle(Request::create($path))->getResponse();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('/finish-setup', $response->getTargetUrl());

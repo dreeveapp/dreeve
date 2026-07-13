@@ -23,7 +23,7 @@ class AdminAllowedIpGateTest extends TestCase
     {
         $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'));
 
-        $this->assertNull($gate->handle($this->adminRequestFromIp('192.168.1.1')));
+        $this->assertFalse($gate->handle($this->adminRequestFromIp('192.168.1.1'))->hasBeenApplied());
     }
 
     public function testItPrefersTheCloudflareConnectingIpHeader(): void
@@ -41,7 +41,7 @@ class AdminAllowedIpGateTest extends TestCase
     {
         $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString(''));
 
-        $this->assertNull($gate->handle($this->adminRequestFromIp('10.0.0.1')));
+        $this->assertFalse($gate->handle($this->adminRequestFromIp('10.0.0.1'))->hasBeenApplied());
     }
 
     #[DataProvider('provideNonAdminPaths')]
@@ -52,7 +52,7 @@ class AdminAllowedIpGateTest extends TestCase
 
         $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'));
 
-        $this->assertNull($gate->handle($request));
+        $this->assertFalse($gate->handle($request)->hasBeenApplied());
     }
 
     public static function provideNonAdminPaths(): iterable

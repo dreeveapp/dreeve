@@ -32,11 +32,16 @@ final readonly class GateRequestListener implements EventSubscriberInterface
         }
 
         foreach ($this->gates as $gate) {
-            if ($response = $gate->handle($request)) {
-                $event->setResponse($response);
-
-                return;
+            $decision = $gate->handle($request);
+            if (!$decision->hasBeenApplied()) {
+                continue;
             }
+
+            if ($response = $decision->getResponse()) {
+                $event->setResponse($response);
+            }
+
+            return;
         }
     }
 

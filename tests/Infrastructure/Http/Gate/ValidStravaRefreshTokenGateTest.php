@@ -27,7 +27,7 @@ class ValidStravaRefreshTokenGateTest extends ContainerTestCase
 
         $gate = $this->gate(ImportMode::FILES);
 
-        $this->assertNull($gate->handle(Request::create('/dashboard')));
+        $this->assertFalse($gate->handle(Request::create('/dashboard'))->hasBeenApplied());
     }
 
     public function testItPassesThroughWhenAStravaApiActivityHasBeenImported(): void
@@ -40,7 +40,7 @@ class ValidStravaRefreshTokenGateTest extends ContainerTestCase
 
         $gate = $this->gate(ImportMode::STRAVA_API);
 
-        $this->assertNull($gate->handle(Request::create('/dashboard')));
+        $this->assertFalse($gate->handle(Request::create('/dashboard'))->hasBeenApplied());
     }
 
     public function testItRedirectsWhenTheRefreshTokenCanNotBeVerified(): void
@@ -56,7 +56,7 @@ class ValidStravaRefreshTokenGateTest extends ContainerTestCase
 
         $gate = $this->gate(ImportMode::STRAVA_API);
 
-        $response = $gate->handle(Request::create('/dashboard'));
+        $response = $gate->handle(Request::create('/dashboard'))->getResponse();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('/strava-oauth', $response->getTargetUrl());
@@ -75,7 +75,7 @@ class ValidStravaRefreshTokenGateTest extends ContainerTestCase
 
         $gate = $this->gate(ImportMode::STRAVA_API);
 
-        $this->assertNull($gate->handle(Request::create('/dashboard')));
+        $this->assertFalse($gate->handle(Request::create('/dashboard'))->hasBeenApplied());
     }
 
     public function testItNeverRedirectsTheOAuthTargetItself(): void
@@ -91,7 +91,10 @@ class ValidStravaRefreshTokenGateTest extends ContainerTestCase
 
         $gate = $this->gate(ImportMode::STRAVA_API);
 
-        $this->assertNull($gate->handle(Request::create('/strava-oauth')));
+        $decision = $gate->handle(Request::create('/strava-oauth'));
+
+        $this->assertTrue($decision->hasBeenApplied());
+        $this->assertNull($decision->getResponse());
     }
 
     private function gate(ImportMode $importMode): ValidStravaRefreshTokenGate

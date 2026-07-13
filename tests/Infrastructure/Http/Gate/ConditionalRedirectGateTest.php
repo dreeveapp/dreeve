@@ -12,19 +12,21 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ConditionalRedirectGateTest extends TestCase
 {
-    public function testItPassesThroughWhenNotGuarding(): void
+    public function testItDefersWhenNotGuarding(): void
     {
         $gate = $this->gate(shouldGuard: false);
 
-        $this->assertNull($gate->handle(Request::create('/anything')));
+        $this->assertFalse($gate->handle(Request::create('/anything'))->hasBeenApplied());
     }
 
     public function testItRedirectsANonAllowedPath(): void
     {
         $gate = $this->gate(shouldGuard: true);
 
-        $response = $gate->handle(Request::create('/dashboard'));
+        $decision = $gate->handle(Request::create('/dashboard'));
 
+        $this->assertTrue($decision->hasBeenApplied());
+        $response = $decision->getResponse();
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('/gate-target', $response->getTargetUrl());
         $this->assertSame(Response::HTTP_FOUND, $response->getStatusCode());
@@ -35,7 +37,12 @@ class ConditionalRedirectGateTest extends TestCase
     {
         $gate = $this->gate(shouldGuard: true);
 
-        $this->assertNull($gate->handle(Request::create($path)));
+        $decision = $gate->handle(Request::create($path));
+
+        // The gate has been applied: it keeps this path open, so the gates that follow are no
+        // longer consulted. They would redirect the user away from it.
+        $this->assertTrue($decision->hasBeenApplied());
+        $this->assertNull($decision->getResponse());
     }
 
     public static function provideAllowedPaths(): iterable
@@ -51,7 +58,7 @@ class ConditionalRedirectGateTest extends TestCase
         $gate = $this->gate(shouldGuard: true);
 
         // '/allowed' must not match '/allowedish'.
-        $response = $gate->handle(Request::create('/allowedish'));
+        $response = $gate->handle(Request::create('/allowedish'))->getResponse();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('/gate-target', $response->getTargetUrl());

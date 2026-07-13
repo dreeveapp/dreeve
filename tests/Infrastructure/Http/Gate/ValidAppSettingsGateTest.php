@@ -31,7 +31,7 @@ class ValidAppSettingsGateTest extends ContainerTestCase
                 ],
             ]));
 
-        $this->assertNull($this->gate()->handle(Request::create('/dashboard')));
+        $this->assertFalse($this->gate()->handle(Request::create('/dashboard'))->hasBeenApplied());
     }
 
     public function testItRedirectsWhenTheAthleteHasNotBeenConfigured(): void
@@ -41,7 +41,7 @@ class ValidAppSettingsGateTest extends ContainerTestCase
             ->method('general')
             ->willThrowException(AthleteHasNotBeenConfigured::because('nope'));
 
-        $response = $this->gate()->handle(Request::create('/dashboard'));
+        $response = $this->gate()->handle(Request::create('/dashboard'))->getResponse();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('/admin/settings/athlete', $response->getTargetUrl());
@@ -56,7 +56,10 @@ class ValidAppSettingsGateTest extends ContainerTestCase
             ->method('general')
             ->willThrowException(AthleteHasNotBeenConfigured::because('nope'));
 
-        $this->assertNull($this->gate()->handle(Request::create($path)));
+        $decision = $this->gate()->handle(Request::create($path));
+
+        $this->assertTrue($decision->hasBeenApplied());
+        $this->assertNull($decision->getResponse());
     }
 
     public static function provideExemptPaths(): iterable
@@ -75,7 +78,7 @@ class ValidAppSettingsGateTest extends ContainerTestCase
             ->method('general')
             ->willThrowException(AthleteHasNotBeenConfigured::because('nope'));
 
-        $response = $this->gate()->handle(Request::create($path));
+        $response = $this->gate()->handle(Request::create($path))->getResponse();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('/admin/settings/athlete', $response->getTargetUrl());

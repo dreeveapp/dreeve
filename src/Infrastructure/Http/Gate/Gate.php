@@ -6,10 +6,9 @@ namespace App\Infrastructure\Http\Gate;
 
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 #[AutoconfigureTag('app.http.gate')]
 interface Gate
 {
-    public function handle(Request $request): ?Response;
+    public function handle(Request $request): GateDecision;
 }

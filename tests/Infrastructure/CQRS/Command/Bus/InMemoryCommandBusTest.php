@@ -28,7 +28,7 @@ class InMemoryCommandBusTest extends KernelTestCase
     {
         $commandBus = new InMemoryCommandBus(commandHandlers: [], eventBus: new SpyEventBus());
 
-        $this->expectExceptionObject(new NoHandlerForMessageException('App\\Tests\\Infrastructure\\CQRS\\Command\\Bus\\RunAnOperation\\RunAnOperation'));
+        $this->expectExceptionObject(new NoHandlerForMessageException(RunAnOperation::class));
 
         $commandBus->dispatch(new RunAnOperation('test'));
     }

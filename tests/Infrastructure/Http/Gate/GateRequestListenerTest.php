@@ -3,12 +3,12 @@
 namespace App\Tests\Infrastructure\Http\Gate;
 
 use App\Infrastructure\Http\Gate\Gate;
+use App\Infrastructure\Http\Gate\GateDecision;
 use App\Infrastructure\Http\Gate\GateRequestListener;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
@@ -18,9 +18,9 @@ class GateRequestListenerTest extends TestCase
     {
         $redirect = new RedirectResponse('/gated');
         $listener = new GateRequestListener([
-            $this->gate(null),
-            $this->gate($redirect),
-            $this->gate(new RedirectResponse('/never-reached')),
+            $this->gate(GateDecision::defer()),
+            $this->gate(GateDecision::respond($redirect)),
+            $this->gate(GateDecision::respond(new RedirectResponse('/never-reached'))),
         ]);
 
         $event = $this->mainRequest(Request::create('/dashboard'));
@@ -34,9 +34,9 @@ class GateRequestListenerTest extends TestCase
         /** @var \ArrayObject<int, string> $calls */
         $calls = new \ArrayObject();
         $listener = new GateRequestListener([
-            $this->recordingGate($calls, 'first', null),
-            $this->recordingGate($calls, 'second', new RedirectResponse('/gated')),
-            $this->recordingGate($calls, 'third', new RedirectResponse('/never-reached')),
+            $this->recordingGate($calls, 'first', GateDecision::defer()),
+            $this->recordingGate($calls, 'second', GateDecision::respond(new RedirectResponse('/gated'))),
+            $this->recordingGate($calls, 'third', GateDecision::respond(new RedirectResponse('/never-reached'))),
         ]);
 
         $event = $this->mainRequest(Request::create('/dashboard'));
@@ -47,9 +47,27 @@ class GateRequestListenerTest extends TestCase
         $this->assertSame('/gated', $event->getResponse()?->getTargetUrl());
     }
 
+    public function testItStopsAtAGateThatAllowsTheRequest(): void
+    {
+        /** @var \ArrayObject<int, string> $calls */
+        $calls = new \ArrayObject();
+        $listener = new GateRequestListener([
+            $this->recordingGate($calls, 'first', GateDecision::allow()),
+            $this->recordingGate($calls, 'second', GateDecision::respond(new RedirectResponse('/never-reached'))),
+        ]);
+
+        $event = $this->mainRequest(Request::create('/admin/settings/athlete'));
+        $listener->onKernelRequest($event);
+
+        // The first gate is guarding and keeps this path open. The gates behind it must not
+        // redirect the user away from it.
+        $this->assertSame(['first'], $calls->getArrayCopy());
+        $this->assertNull($event->getResponse());
+    }
+
     public function testItLetsTheRequestThroughWhenNoGateIntercepts(): void
     {
-        $listener = new GateRequestListener([$this->gate(null), $this->gate(null)]);
+        $listener = new GateRequestListener([$this->gate(GateDecision::defer()), $this->gate(GateDecision::defer())]);
 
         $event = $this->mainRequest(Request::create('/dashboard'));
         $listener->onKernelRequest($event);
@@ -60,7 +78,7 @@ class GateRequestListenerTest extends TestCase
     #[DataProvider('provideAlwaysOpenPaths')]
     public function testItNeverGatesAlwaysOpenPaths(string $path): void
     {
-        $listener = new GateRequestListener([$this->gate(new RedirectResponse('/gated'))]);
+        $listener = new GateRequestListener([$this->gate(GateDecision::respond(new RedirectResponse('/gated')))]);
 
         $event = $this->mainRequest(Request::create($path));
         $listener->onKernelRequest($event);
@@ -81,7 +99,7 @@ class GateRequestListenerTest extends TestCase
 
     public function testItDoesNothingForSubRequests(): void
     {
-        $listener = new GateRequestListener([$this->gate(new RedirectResponse('/gated'))]);
+        $listener = new GateRequestListener([$this->gate(GateDecision::respond(new RedirectResponse('/gated')))]);
 
         $event = new RequestEvent(
             kernel: $this->createStub(HttpKernelInterface::class),
@@ -93,16 +111,16 @@ class GateRequestListenerTest extends TestCase
         $this->assertNull($event->getResponse());
     }
 
-    private function gate(?Response $response): Gate
+    private function gate(GateDecision $decision): Gate
     {
-        return new readonly class($response) implements Gate {
-            public function __construct(private ?Response $response)
+        return new readonly class($decision) implements Gate {
+            public function __construct(private GateDecision $decision)
             {
             }
 
-            public function handle(Request $request): ?Response
+            public function handle(Request $request): GateDecision
             {
-                return $this->response;
+                return $this->decision;
             }
         };
     }
@@ -110,24 +128,24 @@ class GateRequestListenerTest extends TestCase
     /**
      * @param \ArrayObject<int, string> $calls
      */
-    private function recordingGate(\ArrayObject $calls, string $name, ?Response $response): Gate
+    private function recordingGate(\ArrayObject $calls, string $name, GateDecision $decision): Gate
     {
-        return new readonly class($calls, $name, $response) implements Gate {
+        return new readonly class($calls, $name, $decision) implements Gate {
             /**
              * @param \ArrayObject<int, string> $calls
              */
             public function __construct(
                 private \ArrayObject $calls,
                 private string $name,
-                private ?Response $response,
+                private GateDecision $decision,
             ) {
             }
 
-            public function handle(Request $request): ?Response
+            public function handle(Request $request): GateDecision
             {
                 $this->calls[] = $this->name;
 
-                return $this->response;
+                return $this->decision;
             }
         };
     }
