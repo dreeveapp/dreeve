@@ -171,115 +171,115 @@ Model: Modell
 'Number of new activities to process per import': 'Anzahl der pro Import zu verarbeitenden neuen Aktivitäten'
 'Number of widgets of this type you already have configured.': 'Anzahl der bereits konfigurierten Widgets dieses Typs.'
 'Only required for the Azure OpenAI provider.': 'Nur für den Azure OpenAI-Anbieter erforderlich.'
-'Only required for the Ollama provider.': 'Only required for the Ollama provider.'
-'Only required for the OpenAI-like provider.': 'Only required for the OpenAI-like provider.'
-'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.'
-'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.'
+'Only required for the Ollama provider.': 'Nur für den Ollama-Anbieter erforderlich.'
+'Only required for the OpenAI-like provider.': 'Nur für OpenAI-ähnliche Anbieter erforderlich.'
+'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optionales YAML für datumsbereichs- und sportartspezifische Zonen. Leer lassen, es sei denn, du weißt, dass du es brauchst.'
+'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': Optionaler Link zu deinem Profilbild, das in der Navigationsleiste angezeigt wird. Ein quadratisches Bild wird empfohlen. Leer lassen, um es zu deaktivieren.'
 'Optional subtitle': 'Optionaler Untertitel'
-'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.': 'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.'
-'Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date.': 'Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date.'
-'Optional. Leave empty to always apply this goal.': 'Optional. Leave empty to always apply this goal.'
-'Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge.': 'Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge.'
-'Optional. Your current Zwift racing score (between 0 and 1000).': 'Optional. Your current Zwift racing score (between 0 and 1000).'
-'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.': 'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.'
-'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.': 'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.'
+'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.': 'Optionaler Untertitel zur Anzeige in der Navigationsleiste. Nützlich zur Unterscheidung mehrerer Instanzen der App. Leer lassen, um es zu deaktivieren.'
+'Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date.': 'Optional. Aktivitäten, die vor diesem Datum aufgezeichnet wurden, werden nicht importiert. Leer lassen zur Deaktivierung. ⚠️ Eine Änderung dieser Einstellung, nachdem Aktivitäten importiert wurden, löscht Aktivitäten, die vor diesem Datum aufgezeichnet wurden.'
+'Optional. Leave empty to always apply this goal.': 'Optional. Leer lassen, um dieses Ziel immer anzuwenden.'
+'Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge.': 'Optional. Dein aktuelles Zwift-Level (1 oder höher). Leer lassen, um das Zwift-Abzeichen auszublenden.'
+'Optional. Your current Zwift racing score (between 0 and 1000).': 'Optional. Dein aktueller Zwift Racing Score (zwischen 0 und 1000).'
+'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.': 'PHP-Datumsformat für normale Daten, z. B. d-m-Y ergibt 01-01-2025.'
+'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.': 'PHP-Datumsformat für kurze Daten, z. B. d-m-y ergibt 01-01-25.'
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Teile, deren Wartung du verfolgst, z. B. Ketten, Kassetten, Bremsbeläge ...'
 Password: Passwort
 'Performed on': 'Durchgeführt am'
-'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
+'Photos of the selected sport types are excluded from the photo gallery.': ''Fotos der ausgewählten Sportarten werden von der Fotogalerie ausgeschlossen.'
 'Processed on': 'Verarbeitet am'
-'Profile picture URL': 'Profile picture URL'
-Provider: Provider
-'Rebuild pending': 'Rebuild pending'
+'Profile picture URL': 'Profilbild-URL'
+Provider: Anbieter
+'Rebuild pending': 'Neuerstellung ausstehend'
 'Recording device management': 'Verwaltung der Aufzeichnungsgeräte'
 'Recording devices will appear here once activities have been imported.': 'Aufzeichnungsgeräte werden hier angezeigt, sobald Aktivitäten importiert wurden.'
 'Register maintenance': 'Wartung erfassen'
 'Remember me for 7 days': 'Für 7 Tage angemeldet bleiben'
 Remove: Entfernen
-'Remove Eddington': 'Remove Eddington'
-'Remove challenge': 'Remove challenge'
-'Remove command': 'Remove command'
-'Remove goal': 'Remove goal'
+'Remove Eddington': 'Eddington entfernen'
+'Remove challenge': 'Herausforderung entfernen'
+'Remove command': 'Befehl entfernen'
+'Remove goal': 'Ziel entfernen'
 'Remove task': 'Aufgabe entfernen'
-'Remove widget': 'Remove widget'
-Removing...: Removing...
-"Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
-'Reset dashboard to default': 'Reset dashboard to default'
-'Reset to default': 'Reset to default'
-Resetting...: Resetting...
-'Resting heart rate (bpm)': 'Resting heart rate (bpm)'
-'Resting heart rate formula': 'Resting heart rate formula'
-'Restrict to date range': 'Restrict to date range'
+'Remove widget': 'Widget entfernen'
+Removing...: Entfernen...
+"Reorder widgets and set each widget's width.": "Widgets neu anordnen und die Breite jedes Widgets festlegen."
+'Reset dashboard to default': 'Dashboard auf Standard zurücksetzen'
+'Reset to default': 'Auf Standard zurücksetzen'
+Resetting...: Wird zurückgeseztzt...
+'Resting heart rate (bpm)': 'Ruhepuls (bpm)'
+'Resting heart rate formula': 'Ruhepuls-Formel'
+'Restrict to date range': 'Auf Datumsbereich beschränken'
 Retired: Ausgemustert
 'Return to app': 'Zurück zur App'
-Ride: Ride
+Ride: Fahrt
 Save: Speichern
 'Save settings': 'Einstellungen speichern'
 Saved: gespeichert
 Saving...: 'Wird gespeichert...'
-'Scheduled actions the daemon runs at regular intervals.': 'Scheduled actions the daemon runs at regular intervals.'
+'Scheduled actions the daemon runs at regular intervals.': 'Geplante Aktionen, die der Daemon in regelmäßigen Abständen ausführt.'
 'Select a component first...': 'Wähle zuerst eine Komponente aus...'
 'Select a component…': 'Komponente auswählen…'
-'Select at least one sport type.': 'Select at least one sport type.'
+'Select at least one sport type.': 'Wähle mindestens eine Sportart aus.'
 'Select the serviced gear…': 'Gewartete Ausrüstung auswählen…'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sends a notification when a new app version is available. Requires a configured notification service.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sends a notification when gear maintenance is due. Requires a configured notification service.'
-Settings: Settings
-'Short date format': 'Short date format'
-'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.'
-'Show in dashboard widget': 'Show in dashboard widget'
-'Show in navigation bar': 'Show in navigation bar'
-'Show last X years by default': 'Show last X years by default'
+Settings: Einstellungen
+'Short date format': 'kurzes Datumsformat'
+'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Kurzbefehle, die ein Benutzer im Trainingsassistenten auswählen kann. Dem Befehl keinen Schrägstrich voranstellen.'
+'Show in dashboard widget': 'Im Dashboard-Widget anzeigen'
+'Show in navigation bar': 'In der Navigationsleiste anzeigen'
+'Show last X years by default': 'Standardmäßig letzte X Jahre anzeigen'
 'Show password': 'Passwort anzeigen'
-'Show the workout assistant in the UI.': 'Show the workout assistant in the UI.'
+'Show the workout assistant in the UI.': 'Den Trainingsassistenten in der Benutzeroberfläche anzeigen.'
 'Showing {first} - {last} of {total}': 'Zeige {first} - {last} von {total}'
 'Sign in': Anmelden
 'Sign in to the admin panel': 'Im Adminbereich anmelden'
 'Sign out': Abmelden
 'Signing in...': 'Anmeldung läuft...'
-'Skip activities recorded before': 'Skip activities recorded before'
-Skipped: Skipped
+'Skip activities recorded before': 'Aktivitäten überspringen, die aufgezeichnet wurden vor'
+Skipped: Übersprungen
 Source: Quelle
 'Sport type': Sportart
-'Sport types sorting order': 'Sport types sorting order'
-'Sport types to import': 'Sport types to import'
-'Sport types to include': 'Sport types to include'
-'Strava API credentials.': 'Strava API credentials.'
-'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.'
-'Strava activity IDs to skip during import.': 'Strava activity IDs to skip during import.'
-'Strava client ID': 'Strava client ID'
-'Strava client secret': 'Strava client secret'
-'Strava import': 'Strava import'
-'Strava refresh token': 'Strava refresh token'
-Subtitle: Subtitle
+'Sport types sorting order': 'Sortierreihenfolge der Sportarten'
+'Sport types to import': 'Zu importierende Sportarten'
+'Sport types to include': 'Einzubeziehende Sportarten'
+'Strava API credentials.': 'Strava-API-Zugangsdaten.'
+'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': 'Die Strava-API hat Ratenbegrenzungen, daher deckeln wir die Anzahl der neuen Aktivitäten, die pro Import verarbeitet werden. 250 ist ein sicherer Wert.'
+'Strava activity IDs to skip during import.': 'Strava-Aktivitäts-IDs, die beim Import übersprungen werden sollen.'
+'Strava client ID': 'Strava-Client-ID'
+'Strava client secret': 'Strava-Client-Secret'
+'Strava import': 'Strava-Import'
+'Strava refresh token': 'Strava-Refresh-Token'
+Subtitle: Untertitel
 Success: Erfolgreich
 'Supported types': 'Unterstützte Typen'
 Task: Aufgabe
 'Task name': Aufgabenname
 Tasks: Aufgaben
-'The URL the app is hosted on.': 'The URL the app is hosted on.'
-'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
-'The formula used to calculate your resting heart rate. The default is an age-based estimate.': 'The formula used to calculate your resting heart rate. The default is an age-based estimate.'
-'The last zone has no upper bound.': 'The last zone has no upper bound.'
-'The locale used to render the app.': 'The locale used to render the app.'
+'The URL the app is hosted on.': 'Die URL, unter der die App gehostet wird.'
+'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'Die Formel zur Berechnung deiner maximalen Herzfrequenz. Der Standardwert ist Fox (220 − Alter).'
+'The formula used to calculate your resting heart rate. The default is an age-based estimate.': 'Die Formel zur Berechnung deines Ruhepulses. Der Standardwert ist eine altersbasierte Schätzung.'
+'The last zone has no upper bound.': 'Die letzte Zone hat keine Obergrenze.'
+'The locale used to render the app.': 'Die für die Anzeige der App verwendete Spracheinstellung.'
 "The name is derived from the device recorded on your activities and can't be edited.": 'Der Name wird aus dem Gerät abgeleitet, das bei deinen Aktivitäten aufgezeichnet wurde, und kann nicht bearbeitet werden.'
-'The unit system used to render distances, elevations, temperatures, etc.': 'The unit system used to render distances, elevations, temperatures, etc.'
-'This action cannot be undone.': 'This action cannot be undone.'
+'The unit system used to render distances, elevations, temperatures, etc.': 'Das Einheitensystem für Entfernungen, Höhen, Temperaturen usw.'
+'This action cannot be undone.': 'Diese Aktion kann nicht rückgängig gemacht werden.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Diese Komponente ist an mehreren Ausrüstungen montiert. Wähle die aus, die du gewartet hast.'
 "This value is imported from Strava and can't be edited here.": 'Dieser Wert wird von Strava importiert und kann hier nicht bearbeitet werden.'
-'This widget still needs to be configured.': 'This widget still needs to be configured.'
-'This will discard your current dashboard layout and restore the default widgets.': 'This will discard your current dashboard layout and restore the default widgets.'
-'Time format': 'Time format'
-To: To
-'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.': 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.'
+'This widget still needs to be configured.': 'Dieses Widget muss noch konfiguriert werden.'
+'This will discard your current dashboard layout and restore the default widgets.': 'Dadurch wird dein aktuelles Dashboard-Layout verworfen und die Standard-Widgets werden wiederhergestellt.'
+'Time format': 'Zeitformat'
+To: bis
+'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.': 'Token zur Validierung eingehender Strava-Webhook-Anfragen. Erforderlich, wenn Webhooks aktiviert sind.'
 'Total size exceeds {max} MB': 'Gesamtgröße überschreitet {max} MB'
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Verfolge die Nutzung deiner Ausrüstung anhand deiner Aktivitäten und behalte nutzungs- sowie zeitbasierte Wartungen im Blick.'
 'Turn gear maintenance tracking on or off.': 'Wartungsverfolgung für Ausrüstung ein- oder ausschalten.'
-'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Turns on the AI-powered workout assistant, which can then be used from the command line.'
-Type: Type
+'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Schaltet den KI-gestützten Trainingsassistenten ein, der dann über die Befehlszeile verwendet werden kann.'
+Type: Typ
 URL: URL
-Unit: Unit
-'Unit system': 'Unit system'
+Unit: Einheit
+'Unit system': 'Einheitensystem'
 'Unsupported file type': 'Nicht unterstützter Dateityp'
 'Upload activity files': 'Aktivitätsdateien hochladen'
 'Upload failed': 'Upload fehlgeschlagen'
@@ -287,24 +287,24 @@ Unit: Unit
 Uploaded: Hochgeladen
 Uploading...: 'Wird hochgeladen...'
 Username: Benutzername
-'Verify token': 'Verify token'
+'Verify token': 'Token verifizieren'
 Version: Version
 Webhooks: Webhooks
-'What is my FTP?': 'What is my FTP?'
-'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
+'What is my FTP?': 'Was ist meine FTP?'
+'When disabled, gear marked as retired is left out of the chart.': 'Wenn deaktiviert, wird als ausgemustert markierte Ausrüstung nicht im Diagramm angezeigt.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Wenn aktiviert, wird als ausgemustert markierte Ausrüstung übersprungen. Ihre Komponenten erhöhen die Nutzung nicht und es wird keine Wartung dafür verfolgt.'
-'You can add it back to your dashboard again later.': 'You can add it back to your dashboard again later.'
+'You can add it back to your dashboard again later.': 'Du kannst es später wieder zu deinem Dashboard hinzufügen.'
 'You can also copy files straight into the {watchFolder} folder.': 'Du kannst Dateien auch direkt in den Ordner {watchFolder} kopieren.'
 'You can select up to {max} images': 'Du kannst bis zu {max} Bilder auswählen.'
 "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": 'Du importierst derzeit über die Strava-API. Setze {importMode}, um Aktivitätsdateien direkt hochzuladen, ohne von der Strava-API abhängig zu sein.'
-'Your birthday. Needed to calculate heart rate zones.': 'Your birthday. Needed to calculate heart rate zones.'
-'Your changes have been saved.': 'Your changes have been saved.'
-'Your gender. Used to determine activity training load.': 'Your gender. Used to determine activity training load.'
-'Your measured max heart rate, applied from the given date onwards.': 'Your measured max heart rate, applied from the given date onwards.'
-'Your measured resting heart rate, applied from the given date onwards.': 'Your measured resting heart rate, applied from the given date onwards.'
+'Your birthday. Needed to calculate heart rate zones.': 'Dein Geburtstag. Wird benötigt, um die Herzfrequenzzonen zu berechnen.'
+'Your changes have been saved.': 'Deine Änderungen wurden gespeichert.'
+'Your gender. Used to determine activity training load.': 'Dein Geschlecht. Wird verwendet, um die Trainingsbelastung der Aktivität zu bestimmen.'
+'Your measured max heart rate, applied from the given date onwards.': 'Deine gemessene maximale Herzfrequenz, angewendet ab dem angegebenen Datum.'
+'Your measured resting heart rate, applied from the given date onwards.': 'Dein gemessener Ruhepuls, angewendet ab dem angegebenen Datum.'
 Zone: Zone
 Zwift: Zwift
-'Zwift level': 'Zwift level'
+'Zwift level': 'Zwift-Level'
 'Zwift racing score': 'Zwift Rennwert'
 'active days': 'aktive Tage'
 'calendar days': Kalendertage
@@ -318,6 +318,6 @@ minutes: minutes
 '{count} files ready to upload': '{count} Dateien zum Hochladen bereit'
 '{count} files uploaded': '{count} Dateien hochgeladen'
 '{count} images selected': '{count} Bilder ausgewählt'
-'{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.'
+'{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr}-Benachrichtigungsdienst-URLs (z. B. discord://token@id, telegram://token@telegram/?channels=channel). Leer lassen, um Benachrichtigungen vollständig zu deaktivieren.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & Drop{strongClose} oder {strongOpen}Durchsuchen{strongClose}, um Dateien auszuwählen'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & drop{strongClose} oder {strongOpen}Durchsuchen{strongClose}, um Bilder auszuwählen'
