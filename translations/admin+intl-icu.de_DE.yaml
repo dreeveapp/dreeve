@@ -36,7 +36,7 @@ Admin: Admin
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Stellt außerdem den Trainingsassistenten in der Weboberfläche zur Verfügung. Erfordert die Aktivierung der oben genannten KI-Integration. Seien Sie vorsichtig, wenn Sie diese Option aktivieren, falls Ihre App öffentlich zugänglich ist.'
 'App URL': 'App URL'
 'App subtitle': 'App Untertitel'
-'App update available notification': 'App update available notification'
+'App update available notification': 'Benachrichtigung über App-Update'
 Appearance: Darstellung
 'Are you sure you want to delete the {component} component?': 'Möchtest du die Komponente {component} wirklich löschen?'
 'Are you sure you want to delete {name}?': 'Möchtest du {name} wirklich löschen?'
@@ -108,7 +108,7 @@ Filename: Dateiname
 'First name': 'Vorname'
 'Fixed value': 'Fester Wert'
 From: Von
-'Gear maintenance notification': 'Gear maintenance notification'
+'Gear maintenance notification': 'Benachrichtigung zur Ausrüstungswartung'
 'Gear management': 'Ausrüstungsverwaltung'
 'Gear will appear here once you add them.': 'Ausrüstung wird hier angezeigt, sobald du sie hinzufügst.'
 Gender: Geschlecht
@@ -127,16 +127,16 @@ General: Generell
 Image: Bild
 Images: Bilder
 Import: Import
-'Import data & build app': 'Import data & build app'
+'Import data & build app': 'Daten importieren & App erstellen'
 'Import segment details': 'Segmentdetails importieren'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Segmentdetails importieren, damit Segmentkarten angezeigt werden können. Dies erfordert einen zusätzlichen Strava-API-Aufruf pro Segment und erhöht die Importzeit erheblich.'
 'Imported files will appear here once you upload them.': 'Importierte Dateien werden hier angezeigt, sobald du sie hochlädst.'
 'Imported from Strava': 'Von Strava importiert'
-'Imports new Strava activities and rebuilds the app.': 'Imports new Strava activities and rebuilds the app.'
+'Imports new Strava activities and rebuilds the app.': 'Importiert neue Strava-Aktivitäten und erstellt die App neu.'
 'Include retired gear': 'Ausgemusterte Ausrüstung einbeziehen'
 Info: Info
 Integrations: Integrationen
-'Intro text': 'Intro text'
+'Intro text': 'Einleitungstext'
 'Invalid CSRF token.': 'Ungültiger CSRF token.'
 Label: Bezeichnung
 'Last name': 'Nachname'
@@ -186,7 +186,7 @@ Model: Modell
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Teile, deren Wartung du verfolgst, z. B. Ketten, Kassetten, Bremsbeläge ...'
 Password: Passwort
 'Performed on': 'Durchgeführt am'
-'Photos of the selected sport types are excluded from the photo gallery.': ''Fotos der ausgewählten Sportarten werden von der Fotogalerie ausgeschlossen.'
+'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos der ausgewählten Sportarten werden von der Fotogalerie ausgeschlossen.'
 'Processed on': 'Verarbeitet am'
 'Profile picture URL': 'Profilbild-URL'
 Provider: Anbieter
@@ -222,8 +222,8 @@ Saving...: 'Wird gespeichert...'
 'Select a component…': 'Komponente auswählen…'
 'Select at least one sport type.': 'Wähle mindestens eine Sportart aus.'
 'Select the serviced gear…': 'Gewartete Ausrüstung auswählen…'
-'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sends a notification when a new app version is available. Requires a configured notification service.'
-'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sends a notification when gear maintenance is due. Requires a configured notification service.'
+'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sendet eine Benachrichtigung, wenn eine neue App-Version verfügbar ist. Erfordert einen konfigurierten Benachrichtigungsdienst.'
+'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sendet eine Benachrichtigung, wenn eine Ausrüstungswartung fällig ist. Erfordert einen konfigurierten Benachrichtigungsdienst.'
 Settings: Einstellungen
 'Short date format': 'kurzes Datumsformat'
 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Kurzbefehle, die ein Benutzer im Trainingsassistenten auswählen kann. Dem Befehl keinen Schrägstrich voranstellen.'
