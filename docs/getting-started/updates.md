@@ -1,17 +1,22 @@
 # Updates
 
-When a new version of the app is released, you need to pull the latest Docker image:
+When a new version of the app is released, pull the latest Docker image:
 
 ```bash
-> docker compose pull # if available pull a new image
-> docker compose up -d # start a new container using the compose config and the new pulled image.
+> docker compose pull # if available, pull a new image
+> docker compose up -d # start new containers using the compose config and the newly pulled image
 ```
 
-After that, run the import and build commands again to apply the changes:
-
+After that, run an import and build to regenerate the app with the new version:
 
 ```bash
-> docker compose exec app bin/console app:data:import
-> docker compose exec app bin/console app:data:build
+# In files mode (the default)
+> docker compose exec app bin/console app:cron:run-file-import --import --build
+
+# In stravaApi mode
+> docker compose exec app bin/console app:cron:run-strava-import --import --build
 ```
 
+> [!WARNING]
+> * **Backup before updates**: always back up your Docker volumes, in particular `storage/database`, before upgrading.
+> * **Check the release notes**: check the [changelog](/changelog.md) to see whether there are any breaking changes.

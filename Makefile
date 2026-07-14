@@ -85,7 +85,7 @@ app-build-assets:
 	@make dcr cmd="npx @tailwindcss/cli -i public/css/tailwind.css -o public/css/tailwind.output.css"
 	@make dcr cmd="node_modules/.bin/webpack --config webpack.config.js"
 
-app-run-docs:
+app-serve-docs:
 	docsify serve docs
 
 # Ollama models

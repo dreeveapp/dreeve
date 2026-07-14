@@ -11,5 +11,7 @@ Run the following commands to setup the project on your local machine
 Everytime you make changes to the app, you need to build the html files again
 
 ```bash
-> make console arg="app:data:build"
+> make console arg="app:cron:run-file-import --build"
 ```
+
+(In `stravaApi` mode, use `app:cron:run-strava-import --build`.)

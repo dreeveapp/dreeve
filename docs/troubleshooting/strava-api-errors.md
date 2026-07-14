@@ -77,5 +77,6 @@ Strava API threw error: Server Error: 'GET https://www.strava.com/api/v3/activit
 Try accessing the activity in a browser by copying the ID from the error message and navigating to: https://www.strava.com/activities/[activityid].
 If the activity is accessible, then it's likely corrupted on Strava's end. You have two options:
 
-1. **Update the activity** — for example, by changing the private note or title — then try importing it again.
-2. **Skip the activity from being imported** — add its ID to the `activitiesToSkipDuringImport` list in your `config.yaml` file.
+1. **Update the activity**: for example, by changing the private note or title. Then try importing it again.
+2. **Skip the activity from being imported**: add its ID to **Activities to skip during import** under
+   [Settings → Import](/admin/settings.md#import).

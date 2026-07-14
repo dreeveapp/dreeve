@@ -1,28 +1,11 @@
 # Prerequisites
 
+Dreeve is self-hosted: it runs on your own machine and your data stays there. To get started you need:
+
+* <a href="https://docs.docker.com/engine/install/">Docker</a> with <a href="https://docs.docker.com/compose/install/">Docker Compose</a>.
+* Activity files (`.fit`, `.tcx` or `.gpx`) exported from your watch, bike computer or another platform.
+
+That's it.
+
 > [!NOTE]
-> **Note** To run this application, you'll need <a href="https://docs.docker.com/engine/install/">Docker</a> with <a href="https://docs.docker.com/compose/install/">Docker Compose</a>.
-
-Since this app is called <i>Dreeve</i>, it obviously requires a Strava account.
-In addition, there are a few other things you'll need to set up before you can start using the app.
-Most importantly, you'll need a `Strava client ID` and `Strava client Secret`
-
-* Navigate to your [Strava API settings page](https://www.strava.com/settings/api).
-* Copy the `client ID` and `client secret`, you'll need these during the [installation](/getting-started/installation.md)
-* Make sure the `Website` and `Authorization Callback Domain` are set to the url you will host your app on.
-  You can configure these by clicking the __Edit__ button on the top right-hand side of the page.
-* Make sure to add an App Icon. You can find this setting at the bottom of the API settings page.
-
-> [!IMPORTANT]
-> **Important** Do not include a port number in the _Authorization Callback Domain_ field.
-
-
-![Strava API settings page](../assets/images/strava-api-settings.png)
-
-## Map visibility
-
-To view maps of your activities in the app, make sure your Strava map visibility settings are configured correctly.
-Go to your [Strava account settings](https://www.strava.com/settings/privacy) 
-and make sure <i>Hide your activity maps from others completely</i> is not enabled.
-
-![Strava API privacy settings](../assets/images/strava-privacy-settings.png)
+> **Note** Strava is a fully supported activity source as well, all documented on the [Strava import](/importing/strava-import.md) page.

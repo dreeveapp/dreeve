@@ -1,7 +1,7 @@
 # Logs
 
 In addition to the default Docker logs, Dreeve maintains its own application logs.
-There are two types of logs, each stored in `storage/files/logs` with a 5-day rotation policy. 
+There are several types of logs, each stored in `storage/files/logs` with a 5-day rotation policy. 
 These logs can help diagnose and troubleshoot issues.
 
 ## Strava API logs

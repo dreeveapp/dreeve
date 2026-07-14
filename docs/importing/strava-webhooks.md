@@ -18,32 +18,25 @@ These will trigger the import and build processes in the background. It may take
 > **Important** Processing Strava webhooks requires the daemon Docker container to be configured. See the compose file [here](/getting-started/installation.md) for information about setting it up. 
 
 > [!TIP]
-> **Tip** If you're hosting your Dreeve instance on Cloudflare, make sure to disable "Bot Fight Mode".
-Cloudflare can incorrectly flag Strava’s requests as bot traffic, causing the webhook integration to fail.
-This includes hosting through a Cloudflare Tunnel.
+> **Tip**  If you're hosting your Dreeve instance on Cloudflare, make sure to disable "Bot Fight Mode". 
+> Cloudflare can incorrectly flag Strava’s requests as bot traffic, 
+> causing the webhook integration to fail. This includes hosting through a Cloudflare Tunnel.
 
 ## Enable Strava webbooks
 
-To start using webhooks, you first need to configure them in `config.yaml`.
+Webhooks are configured in the admin panel, under **Settings → Import**, in the
+*Webhooks* section.
 
-```yaml
-import:
-  webhooks:
-    enabled: true
-    # Will be used by Strava's validation request for security.
-    verifyToken: 'a-secret-token-chosen-by-you'
-    # This value defines how frequently the system checks for new webhook events. It must be a number between 1 and 60.
-    #
-    # Lower values (closer to 1) process activities more quickly, so updates appear in SFS sooner.
-    # However, multiple consecutive activity updates may trigger several imports, increasing your Strava API usage.
-    # 
-    # Higher values (closer to 60) slow down processing, meaning updates may take longer to appear in SFS.
-    # The benefit is that multiple updates are more likely to be grouped into a single import, reducing Strava API calls.    
-    checkIntervalInMinutes: 1
-```
+| Setting | Notes |
+|---|---|
+| **Enable Strava webhooks** | Turns the integration on. |
+| **Verify token** | A secret you choose. Strava sends it back in its validation request, so Dreeve can confirm the request really came from Strava. |
+| **Check interval in minutes** | How often Dreeve processes queued webhook events. Must be between 1 and 60. |
 
-> [!IMPORTANT]
-> **Important** Do not forget to restart your container after enabling the webhooks
+Choosing a check interval is a trade-off. **Lower values** (closer to `1`) mean activities show up in Dreeve
+sooner, but several consecutive updates to an activity can each trigger their own import, using more of your
+Strava API calls. **Higher values** (closer to `60`) mean updates take longer to appear, but multiple updates
+are more likely to be batched into a single import, spending fewer API calls.
 
 ## Configure a webhook subscription
 

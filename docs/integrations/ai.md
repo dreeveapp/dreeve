@@ -1,9 +1,10 @@
-# AI integration
+# AI assistant
 
-To start using the AI features in **Dreeve**, you first need to properly configure the integration.
+Dreeve ships with an AI-powered workout assistant. To use it, you configure an AI provider under
+**Settings → Integrations**.
 
 > [!WARNING]
-> **Warning** Use caution when enabling this feature if your app is publicly accessible
+> **Warning** Use caution when enabling this feature if your app is publicly accessible.
 
 > [!IMPORTANT]
 > **Important** Dreeve uses the <a href="https://docs.neuron-ai.dev">Neuron AI</a> library to interface with AI models.
@@ -11,23 +12,8 @@ To start using the AI features in **Dreeve**, you first need to properly configu
 
 ## Cloud providers
 
-To use a cloud-based AI provider, you will need:
-
-* An API key
-* The name of the model you want to use
-
-Once you have this information, update your `config.yaml` file:
-
-```yaml
-integrations:
-  ai:
-    enabled: true
-    enableUI: false
-    provider: 'PROVIDER-YOU-CHOOSE'
-    configuration:
-      key: 'YOUR-API-KEY'
-      model: 'MODEL-NAME'
-```
+To use a cloud-based AI provider you need an API key and the name of the model you want. Configure the key in the
+`AI_API_KEY` environment variable, then pick the provider and enter the model name in the settings.
 
 ## Locally hosted Ollama
 
@@ -62,17 +48,7 @@ Next, download the model you want to use. For example, to run `llama3.2`:
 > docker compose exec ollama ollama pull llama3.2
 ```
 
-Finally, configure the AI integration in your `config.yaml` file:
-
-```yaml
-integrations:
-  ai:
-    enabled: true
-    provider: 'ollama'
-    configuration:
-      url: 'http://host.docker.internal:11434/api'
-      model: 'MODEL-NAME'
-```
+Finally, enable the integration, choose the `ollama` provider, and set the model to the one you pulled.
 
 > [!IMPORTANT]
 > **Important** Make sure you're running the latest version of Ollama. Streaming responses with tooling has been <a href="https://ollama.com/blog/streaming-tool">added on May 28, 2025.</a>
@@ -81,26 +57,17 @@ integrations:
 
 [OpenRouter](https://openrouter.ai) provides access to hundreds of models (OpenAI, Anthropic, Google and more) through a single API key, including free-tier models. This makes it easy to get started or test different models.
 
-To use OpenRouter, configure the `openAILike` provider in your `config.yaml`:
+To use OpenRouter, pick the **openAILike** provider under **Settings → Integrations** and set:
 
-```yaml
-integrations:
-  ai:
-    enabled: true
-    enableUI: true
-    provider: 'openAILike'
-    configuration:
-      baseUri: 'https://openrouter.ai/api/v1'
-      key: 'YOUR-OPENROUTER-API-KEY'
-      model: 'anthropic/claude-sonnet-4.5'  # See openrouter.ai/models for all available models
-```
+* **Base URI**: `https://openrouter.ai/api/v1`
+* **Model**: e.g. `anthropic/claude-sonnet-4.5`. See [openrouter.ai/models](https://openrouter.ai/models).
+
+and put your OpenRouter API key in `AI_API_KEY` in your `.env`.
 
 > [!TIP]
 > OpenRouter offers [free models](https://openrouter.ai/collections/free) which are great for testing without any cost.
 
 ## Your AI workout assistant
-
-The first available AI feature is an AI-powered workout assistant named **Mark**.
 
 ### Via the CLI
 
@@ -118,25 +85,17 @@ This will prompt you with a message like the following:
 
 ### Pre-defining chat commands
 
-The app allows you to pre-define chat commands that can be used by the AI assistant.
-This is useful for questions that might be asked frequently, such as 
+The app allows you to pre-define chat commands that can be used by the AI assistant. This is useful for questions that might be asked frequently, such as
 
 > Please analyze my most recent ride with regard to aspects such as heart rate, power (if available). Please give me an assessment of my performance level and possible improvements for future training sessions?
 
-To pre-define a chat command, add it to the `config.yaml` file under the `integration.ai.agent.commands` section:
+Each command has a **name** and the **message** it expands to. For example:
 
-```yaml
-integrations:
-  ai:
-    # Other AI configuration options
-    agent:
-      commands:
-        - command: 'analyse-last-workout'
-          message: 'You are my bike trainer. Please analyze my most recent ride with regard to aspects such as heart rate, power (if available). Please give me an assessment of my performance level and possible improvements for future training sessions.'
-        - command: 'compare-last-two-weeks'
-          message:  'You are my bike trainer. Please compare my workouts and performance of the last 7 days with the 7 days before and give a short assessment.'
-```
+| Command | Message |
+|---|---|
+| `analyse-last-workout` | *You are my bike trainer. Please analyze my most recent ride with regard to aspects such as heart rate, power (if available). Please give me an assessment of my performance level and possible improvements for future training sessions.* |
+| `compare-last-two-weeks` | *You are my bike trainer. Please compare my workouts and performance of the last 7 days with the 7 days before and give a short assessment.* |
 
-This config will allow you to use the commands `/analyse-last-workout` and `/compare-last-two-weeks` in your chat with the AI assistant:
+You can then use `/analyse-last-workout` and `/compare-last-two-weeks` in your chat with the AI assistant:
 
 ![Mark chat commands](../assets/images/mark-chat-commands.png)

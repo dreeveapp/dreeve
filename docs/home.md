@@ -19,22 +19,21 @@
 
 ## Key Features
 
-* **Dashboard** – See all your stats and charts at a glance
+* **Import activity files** - Drop FIT/TCX/GPX files in a watch folder or upload them in the browser
+* **Strava import** - Prefer to import from Strava? That works too
+* **Admin panel** - Manage activities, gear and every setting from your browser
+* **Dashboard** - See all your stats and charts at a glance
 * **Activities** -  Browse a detailed list of everything you've done
 * **Monthly View** - Monthly stats with an interactive calendar
 * **Gear stats** - Track how much you've used each bike, shoe, etc.
-* **Track gear** - Track custom gear setups
-* **Maintenance Tracking** - Keep tabs on gear wear and tear ([instructions](https://docs.dreeve.app/#/configuration/gear-maintenance))
+* **Maintenance Tracking** - Keep tabs on gear wear and tear
 * **Eddington** - For your distance milestones
 * **Segments & Efforts** - Dive into your segment history and times
 * **Heatmap** - Visualize where you’ve been active the most
 * **Milestones** - A timeline view of your key achievements and milestones over time
-* **Strava Rewind** - A fun way to look back on your year in motion
+* **Rewind** - A fun way to look back on your year in motion
+* **Challenges** - See which Strava challenges you've conquered
 * **Activity Photos** - Relive your moments with a photo archive
+* **AI workout assistant** - Get personalized workout suggestions and insights powered by AI
 * **User badges** - Shareable badges you can embed on your website, blog, or forum profiles
 * **PWA support** - Use it like a native app on your phone
-
-> [!WARNING]
-> * **Backup before updates**: Always backup your Docker volumes before upgrading.
-> * **Stay up-to-date**: Make sure you're running the latest version for the best experience.
-> * **Check the release notes**: Always check the release notes to verify if there are any breaking changes.

@@ -1,4 +1,8 @@
-# Shoutrrr notifications
+# Notification issues
+
+> [!NOTE]
+> **Note** This page is about diagnosing notifications that *don't work*. For setting them up in the first
+> place, see [Notifications](/integrations/notifications.md).
 
 When configuring Shoutrrr services, you may encounter errors like:
 
@@ -16,33 +20,3 @@ docker compose exec app shoutrrr send -v --url="generic://https://example.com" -
 
 This command allows you to send a test notification and inspect the exact response from the service, 
 making it easier to identify what’s going wrong.
-
-## Using ntfy.sh with an authentication token
-
-If you are:
-
-- Running a locally hosted NTFY server
-- Requiring authentication to send notifications
-- Using an authentication token
-
-You may notice that the [Shoutrrr](https://shoutrrr.nickfedor.com/v0.12.0/services/push/ntfy/) documentation
-does not clearly explain how to format the notification URL in this scenario. Use the following format: 
-
-```
-ntfy://:authentication-token@my-notify-server.com/topic-name
-```
-
-> [!IMPORTANT]
-> **Important** Make sure to include the colon (:) before the authentication token.
-Omitting the colon will cause authentication to fail.
-
-
-```yaml
-integrations:
-  notifications:
-    services:
-      - 'ntfy://:tk_sdu7lm0oiefvieqxe1i4852j02gzu@ntfy.yourhost.com/statsforstrava'
-```
-
-> [!NOTE]
-> Big thanks to [dschoepel](https://github.com/dschoepel) for figuring this out and sharing the solution.
