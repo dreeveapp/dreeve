@@ -10,6 +10,7 @@ use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\Daemon\Cron\CronActionId;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\Finder\Finder;
@@ -346,9 +347,13 @@ final class Version20260706053720 extends AbstractMigration
             if (!empty($current[$to])) {
                 continue;
             }
-            if (isset($athlete[$from]) && '' !== (string) $athlete[$from]) {
-                $current[$to] = $athlete[$from];
+            if (!isset($athlete[$from]) || '' === (string) $athlete[$from]) {
+                continue;
             }
+            // The legacy birthday can be a full datetime, the date input only accepts Y-m-d.
+            $current[$to] = 'birthday' === $to
+                ? SerializableDateTime::fromString((string) $athlete[$from])->format('Y-m-d')
+                : $athlete[$from];
         }
         if ([] === $current) {
             return $subtree;
