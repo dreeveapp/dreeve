@@ -1,5 +1,9 @@
 # Updates
 
+> [!NOTE]
+> Coming from **Statistics for Strava v4**? That upgrade needs a few manual steps, follow
+> [Migrating from v4 to v5](/getting-started/migrating-from-v4.md) instead of the instructions below.
+
 When a new version of the app is released, pull the latest Docker image:
 
 ```bash

@@ -3,6 +3,7 @@
   - [Prerequisites](getting-started/prerequisites.md "Dreeve | Prerequisites")
   - [Installation](getting-started/installation.md "Dreeve | Installation")
   - [Updates](getting-started/updates.md "Dreeve | Updates")
+  - [Migrating from v4 to v5](getting-started/migrating-from-v4.md "Dreeve | Migrating from v4 to v5")
 
 - Importing activities
 
