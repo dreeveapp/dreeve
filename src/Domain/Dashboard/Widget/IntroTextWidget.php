@@ -21,7 +21,7 @@ final readonly class IntroTextWidget implements Widget
 
     public function getLabel(): string
     {
-        return $this->translator->trans('Intro text');
+        return $this->translator->trans('Intro text', domain: 'admin');
     }
 
     public function getTemplateName(): string

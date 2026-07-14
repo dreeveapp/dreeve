@@ -20,18 +20,18 @@ enum CronActionId: string implements TranslatableWithDescription
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
         return match ($this) {
-            self::RUN_STRAVA_IMPORT_AND_BUILD_APP => $translator->trans('Import data & build app', locale: $locale),
-            self::GEAR_MAINTENANCE_NOTIFICATION => $translator->trans('Gear maintenance notification', locale: $locale),
-            self::APP_UPDATE_AVAILABLE_NOTIFICATION => $translator->trans('App update available notification', locale: $locale),
+            self::RUN_STRAVA_IMPORT_AND_BUILD_APP => $translator->trans('Import data & build app', domain: 'admin', locale: $locale),
+            self::GEAR_MAINTENANCE_NOTIFICATION => $translator->trans('Gear maintenance notification', domain: 'admin', locale: $locale),
+            self::APP_UPDATE_AVAILABLE_NOTIFICATION => $translator->trans('App update available notification', domain: 'admin', locale: $locale),
         };
     }
 
     public function transDescription(TranslatorInterface $translator, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
         return match ($this) {
-            self::RUN_STRAVA_IMPORT_AND_BUILD_APP => $translator->trans('Imports new Strava activities and rebuilds the app.', locale: $locale),
-            self::GEAR_MAINTENANCE_NOTIFICATION => $translator->trans('Sends a notification when gear maintenance is due. Requires a configured notification service.', locale: $locale),
-            self::APP_UPDATE_AVAILABLE_NOTIFICATION => $translator->trans('Sends a notification when a new app version is available. Requires a configured notification service.', locale: $locale),
+            self::RUN_STRAVA_IMPORT_AND_BUILD_APP => $translator->trans('Imports new Strava activities and rebuilds the app.', domain: 'admin', locale: $locale),
+            self::GEAR_MAINTENANCE_NOTIFICATION => $translator->trans('Sends a notification when gear maintenance is due. Requires a configured notification service.', domain: 'admin', locale: $locale),
+            self::APP_UPDATE_AVAILABLE_NOTIFICATION => $translator->trans('Sends a notification when a new app version is available. Requires a configured notification service.', domain: 'admin', locale: $locale),
         };
     }
 

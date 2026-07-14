@@ -10,7 +10,6 @@
 'A:C optimal in': 'A:C optimal in'
 'ATL (Fatigue)': 'ATL (Fadiga)'
 'Accumulated fatigue': 'Accumulated fatigue'
-Active: Active
 'Active days': 'Dias activo'
 Activities: Atividades
 Activity: Activity
@@ -26,7 +25,6 @@ Afternoon: Tarde
 All: All
 'All time': 'Desde sempre'
 'Alpine Ski': 'Esqui Alpino'
-'App update available notification': 'App update available notification'
 Apr: Abr
 'Ask Mark something...': 'Ask Mark something...'
 'Athlete profile': 'Athlete profile'
@@ -138,7 +136,6 @@ GAP: GAP
 Gear: Equipamento
 'Gear "{gearId}" is referenced in your maintenance config file, but was not imported from Strava. Please check that the gear exists and is correctly synced.': 'Equipamento "{gearId}" está referenciado no ficheiro de configuração, mas não foi importado do Strava. Por favor verifique se o equipamento existe e foi corretamente sincronizado.'
 'Gear maintenance': 'Manutenção de equipamento'
-'Gear maintenance notification': 'Gear maintenance notification'
 'Gear stats': 'Estatísticas do equipamento'
 "Gear that hasn't been used in the last three months, is disabled by default.": 'Equipamento não utilizado nos últimos três meses é desativado por defeito.'
 'Gear that is retired is disabled by default.': 'Equipamento reformado é desativado por defeito.'
@@ -174,13 +171,10 @@ History: Histórico
 'Ice Skate': 'Patinagem no Gelo'
 Id: Id
 Imperial: Imperial
-'Import data & build app': 'Import data & build app'
-'Imports new Strava activities and rebuilds the app.': 'Imports new Strava activities and rebuilds the app.'
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉."
 'Individual thresholds vary based on fitness level.': 'Thresholds individuais variam consoante o nível de forma.'
 'Inline Skate': 'Patinagem em Linha'
 Intensity: Intensity
-'Intro text': 'Intro text'
 'It looks like no valid gear is attached to any of the components. Please check your config file.': 'Parece que nenhum equipamento válido está associado a nenhum dos componentes. Por favor verificar o ficheiro de configuração.'
 Jan: Jan
 Jul: Jul
@@ -307,7 +301,6 @@ Ranking: Ranking
 'Rest days': 'Dias de descanso'
 'Rest days in last 7 days': 'Descanso nos últimos 7 dias'
 'Rest days vs. active days': 'Dias de descanso vs. Dias activo'
-Retired: Retired
 'Retired gear': 'Retired gear'
 Rewind: Rewind
 'Rewind comparisons are only available on larger screens.': 'Comparações Rewind apenas estão disponíveis em ecrãs maiores.'
@@ -325,8 +318,6 @@ Search: Pesquisar
 'Search activity...': 'Pesquisar atividade...'
 'Search segment...': 'Pesquisar segmento...'
 Segments: Segmentos
-'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sends a notification when a new app version is available. Requires a configured notification service.'
-'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sends a notification when gear maintenance is due. Requires a configured notification service.'
 Sep: Set
 'Show information': 'Mostrar informação'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.'

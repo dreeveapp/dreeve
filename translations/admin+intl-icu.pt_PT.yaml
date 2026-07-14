@@ -2,6 +2,7 @@
 AI: AI
 AM/PM: AM/PM
 'API key': 'API key'
+Active: Active
 'Activities excluded from peak power outputs': 'Activities excluded from peak power outputs'
 'Activities to skip during import': 'Activities to skip during import'
 'Activities will appear here once they are imported.': 'Activities will appear here once they are imported.'
@@ -35,6 +36,7 @@ Admin: Admin
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.'
 'App URL': 'App URL'
 'App subtitle': 'App subtitle'
+'App update available notification': 'App update available notification'
 Appearance: Appearance
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
 'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
@@ -106,6 +108,7 @@ Filename: Filename
 'First name': 'First name'
 'Fixed value': 'Fixed value'
 From: From
+'Gear maintenance notification': 'Gear maintenance notification'
 'Gear management': 'Gear management'
 'Gear will appear here once you add them.': 'Gear will appear here once you add them.'
 Gender: Gender
@@ -124,13 +127,16 @@ General: General
 Image: Image
 Images: Images
 Import: Import
+'Import data & build app': 'Import data & build app'
 'Import segment details': 'Import segment details'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
 'Imported files will appear here once you upload them.': 'Imported files will appear here once you upload them.'
 'Imported from Strava': 'Imported from Strava'
+'Imports new Strava activities and rebuilds the app.': 'Imports new Strava activities and rebuilds the app.'
 'Include retired gear': 'Include retired gear'
 Info: Info
 Integrations: Integrations
+'Intro text': 'Intro text'
 'Invalid CSRF token.': 'Invalid CSRF token.'
 Label: Label
 'Last name': 'Last name'
@@ -204,6 +210,7 @@ Resetting...: Resetting...
 'Resting heart rate (bpm)': 'Resting heart rate (bpm)'
 'Resting heart rate formula': 'Resting heart rate formula'
 'Restrict to date range': 'Restrict to date range'
+Retired: Retired
 'Return to app': 'Return to app'
 Ride: Ride
 Save: Save
@@ -215,6 +222,8 @@ Saving...: Saving...
 'Select a component…': 'Select a component…'
 'Select at least one sport type.': 'Select at least one sport type.'
 'Select the serviced gear…': 'Select the serviced gear…'
+'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sends a notification when a new app version is available. Requires a configured notification service.'
+'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sends a notification when gear maintenance is due. Requires a configured notification service.'
 Settings: Settings
 'Short date format': 'Short date format'
 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.'

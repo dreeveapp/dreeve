@@ -20,8 +20,8 @@ enum GearStatus: string implements TranslatableInterface
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
         return match ($this) {
-            self::ACTIVE => $translator->trans('Active', locale: $locale),
-            self::RETIRED => $translator->trans('Retired', locale: $locale),
+            self::ACTIVE => $translator->trans('Active', domain: 'admin', locale: $locale),
+            self::RETIRED => $translator->trans('Retired', domain: 'admin', locale: $locale),
         };
     }
 }
