@@ -24,7 +24,7 @@ and challenges, none of which is present in an activity file.
 ## Import is always followed by a build
 
 **Dreeve's frontend is pre-rendered static HTML.** Importing an activity writes it to the database, but it does
-*not* make it show up. The pages are only regenerated when a **build** runs.
+*not* make it show up in the app. The pages are only regenerated when a **build** runs.
 
 ```bash
 # Import new activities, then rebuild the app

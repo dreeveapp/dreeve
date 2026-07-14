@@ -23,8 +23,7 @@ it is processed.
 Go to `/admin/upload` in the admin panel and drag your files in. This is the easiest route if the machine
 running Dreeve isn't the machine your files are on. Uploaded files go through the same pipeline as the "watch folder" approach.
 
-![Drag-and-drop upload zone](https://placehold.co/1200x700?text=/admin/upload)
-<!-- TODO: replace with a real screenshot at assets/images/admin/upload.png -->
+![Drag-and-drop upload zone](../assets/images/file-upload.png)
 
 ### Duplicate detection
 
@@ -51,5 +50,4 @@ Every processed file is recorded at `/admin/file-imports`, with one of three out
 | `skipped` | The activity was already in your database. |
 | `failed` | The file could not be parsed. The row carries the error message. |
 
-![File import log](https://placehold.co/1200x700?text=/admin/file-imports)
-<!-- TODO: replace with a real screenshot at assets/images/admin/file-imports.png -->
+![File import log](../assets/images/file-imports.png)
