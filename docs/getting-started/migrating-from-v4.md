@@ -8,7 +8,8 @@ affect every existing installation:
 * **Strava is no longer required.** The new default import mode is `files`, where you supply `.fit`, `.tcx` or
   `.gpx` files yourself. Importing from Strava is still fully supported.
 
-Your activities, gear and history are kept. Nothing has to be re-imported.
+Your activities, gear and history are kept. Nothing has to be re-imported. Images and gear purchase prices are the
+exception: they need to be re-uploaded and re-entered, see [step 6](#_6-re-upload-your-images-and-re-enter-your-purchase-prices).
 
 > [!WARNING]
 > **Back up first.** Make a copy of `storage/database` **and** of your `config` directory before you start.
@@ -116,7 +117,17 @@ everything is edited in the admin panel.
 > docker compose up -d
 ```
 
-### 6. Run an import and build
+### 6. Re-upload your images and re-enter your purchase prices
+
+Two things are **not** carried over by the migration and have to be set up again in the admin panel:
+
+* **Images.** Every image you referenced from YAML (`imgSrc` on gear maintenance components and on gear) is
+  dropped.  Upload the images again in the admin panel.
+* **Purchase prices.** The prices you configured under `gear` in `config.yaml` (on gear, custom gear and
+  recording devices) are not migrated. Enter them again in the admin panel, on the gear or recording device
+  settings pages.
+
+### 7. Run an import and build
 
 ```bash
 # In stravaApi mode
@@ -128,14 +139,16 @@ everything is edited in the admin panel.
 
 ### Where did my configuration go?
 
-| v4                                            | v5                                                    |
-|-----------------------------------------------|-------------------------------------------------------|
-| `config.yaml` → `general`, `appearance`, `metrics`, `zwift`, `import` | Admin panel → Settings                        |
-| `config.yaml` → `dashboard`                   | Admin panel → Dashboard                               |
-| `config.yaml` → `integrations` (AI, notifications) | Admin panel → Settings → Integrations             |
-| `config.yaml` → `daemon` (cron schedules)     | Admin panel → Settings → Daemon                       |
-| `gear-maintenance.yaml`                       | Admin panel → Gear maintenance                        |
-| Custom gear in YAML                           | Admin panel → Gear                                    |
+| v4                                            | v5                                    |
+|-----------------------------------------------|---------------------------------------|
+| `config.yaml` → `general`, `appearance`, `metrics`, `zwift`, `import` | Admin panel → Settings                |
+| `config.yaml` → `dashboard`                   | Admin panel → Dashboard               |
+| `config.yaml` → `integrations` (AI, notifications) | Admin panel → Settings → Integrations |
+| `config.yaml` → `daemon` (cron schedules)     | Admin panel → Settings → Daemon       |
+| `gear-maintenance.yaml`                       | Admin panel → Gear → Gear maintenance       |
+| Custom gear in YAML                           | Admin panel → Gear                    |
+| `config.yaml` → `gear` (purchase prices)      | Admin panel → Gear, **not migrated**  |
+| `imgSrc` images in YAML                       | Admin panel, re-uploaded, **not migrated** |
 
 ### Other things worth knowing
 
