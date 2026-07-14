@@ -1,6 +1,15 @@
 # FAQ
 
 <details>
+<summary>Is Dreeve the same app as "Statistics for Strava"?</summary>
+
+Yes. Dreeve was formerly called "Statistics for Strava" and was renamed as the app grew beyond Strava into a
+general dashboard for your sports and fitness data. It's the same app, by the same maintainer, 
+but the repository moved to [dreeveapp/dreeve](https://github.com/dreeveapp/dreeve).
+
+</details>
+
+<details>
 <summary>Do I need a Strava account?</summary>
 
 No. Dreeve's default mode is `files`: you supply `.fit`, `.tcx` or `.gpx` files and everything is parsed

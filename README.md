@@ -15,6 +15,8 @@
 
 <h4 align="center">Dreeve is a self-hosted, open-source dashboard for your sports and fitness data.</h4>
 
+<p align="center"><i>Dreeve was formerly known as "Statistics for Strava".</i></p>
+
 <p align="center">
   <a href="#-showcase">Showcase</a> •
   <a href="#-documentation">Docs</a> •
