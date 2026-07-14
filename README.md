@@ -15,7 +15,7 @@
 
 <h4 align="center">Dreeve is a self-hosted, open-source dashboard for your sports and fitness data.</h4>
 
-<p align="center"><i>Dreeve was formerly known as "Statistics for Strava".</i></p>
+<p align="center"><i>Formerly known as "Statistics for Strava".</i></p>
 
 <p align="center">
   <a href="#-showcase">Showcase</a> •
@@ -28,9 +28,6 @@
 </p>
 
 ## 📸 Showcase
-
-> [!NOTE]
-> This app is in no way affiliated with or part of the official Strava software suite.
 
 https://github.com/user-attachments/assets/81554f32-31be-4899-afd6-681ce3e7bcb6
 

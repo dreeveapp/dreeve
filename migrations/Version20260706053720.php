@@ -65,6 +65,9 @@ final class Version20260706053720 extends AbstractMigration
             return [];
         }
 
+        $this->write('Detected valid configuration files:');
+        $this->write('  * config.yaml');
+
         $finder = Finder::create()
             ->in($basePath)
             ->depth('== 0')
@@ -76,6 +79,7 @@ final class Version20260706053720 extends AbstractMigration
         foreach ($finder as $file) {
             try {
                 $config = array_replace_recursive($config, Yaml::parseFile($file->getRealPath()));
+                $this->write('  * '.$file->getFilename());
             } catch (ParseException) {
             }
         }

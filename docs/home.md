@@ -4,7 +4,7 @@
 
 <h4 class="text-center">Dreeve is a self-hosted, open-source dashboard for your sports and fitness data</h4>
 
-<p class="text-center"><i>Dreeve was formerly known as "Statistics for Strava".</i></p>
+<p class="text-center">Formerly known as "Statistics for Strava".</p>
 
 <div class="text-center">
 <a href="https://raw.githubusercontent.com/dreeveapp/dreeve/refs/heads/master/LICENSE"><img src="https://img.shields.io/github/license/dreeveapp/dreeve?color=428f7e&logo=open%20source%20initiative&logoColor=white" alt="License"></a>
