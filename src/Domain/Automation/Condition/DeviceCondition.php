@@ -24,7 +24,7 @@ final readonly class DeviceCondition implements Condition
     public function getDefaultConfiguration(): RuleConfiguration
     {
         return RuleConfiguration::fromConfig([
-            'operator' => EqualityOperator::IS->value,
+            'operator' => MatchOperator::IS->value,
             'deviceId' => '',
         ]);
     }
@@ -32,7 +32,7 @@ final readonly class DeviceCondition implements Condition
     public function guardValidConfiguration(RuleConfiguration $configuration): void
     {
         $operator = $configuration->get('operator');
-        if (!is_string($operator) || null === EqualityOperator::tryFrom($operator)) {
+        if (!is_string($operator) || !MatchOperator::tryFrom($operator)?->isForSingleValue()) {
             throw new InvalidAutomationRule(sprintf('Invalid device operator "%s".', is_scalar($operator) ? (string) $operator : ''));
         }
 
@@ -52,6 +52,6 @@ final readonly class DeviceCondition implements Condition
         $activityMatchesDevice = null !== $deviceName
             && (string) RecordingDeviceId::fromName($deviceName) === (string) RecordingDeviceId::fromUnprefixed($deviceId);
 
-        return EqualityOperator::from($operator)->isSatisfiedBy($activityMatchesDevice);
+        return MatchOperator::from($operator)->isSatisfiedBy($activityMatchesDevice);
     }
 }
