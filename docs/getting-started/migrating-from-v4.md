@@ -1,6 +1,6 @@
 # Migrating from v4 to v5
 
-v5 is the release where "Statistics for Strava" became **Dreeve**. Next to the rename, two things changed that
+v5 introduces a complete rebranding from "Statistics for Strava" to **Dreeve**. Next to the rename, two things changed that
 affect every existing installation:
 
 * **Configuration moved out of `config.yaml` and into the admin panel.** Your settings now live in the database
@@ -8,13 +8,20 @@ affect every existing installation:
 * **Strava is no longer required.** The new default import mode is `files`, where you supply `.fit`, `.tcx` or
   `.gpx` files yourself. Importing from Strava is still fully supported.
 
-Your activities, gear and history are kept. Nothing has to be re-imported. Images and gear purchase prices are the
-exception: they need to be re-uploaded and re-entered, see [step 6](#_6-re-upload-your-images-and-re-enter-your-purchase-prices).
-
 > [!WARNING]
 > **Back up first.** Make a copy of `storage/database` **and** of your `config` directory before you start.
 
-### 1. Keep your config directory mounted
+> [!NOTE]
+> Your activities, gear and history are kept. Nothing has to be re-imported. Images and gear purchase prices are the
+> exception: they need to be re-uploaded and re-entered, see [step 6](#_6-re-upload-your-images-and-re-enter-your-purchase-prices).
+
+### 1. Stop your containers
+
+```bash
+> docker compose stop
+```
+
+### 2. Keep your config directory mounted
 
 On its first start, v5 reads your `config.yaml` and `gear-maintenance.yaml` and writes every setting into the
 database.
@@ -22,7 +29,7 @@ database.
 So for now, **do not delete `config.yaml` and do not remove the `./config` volume**. You clean those up in
 [step 5](#_5-clean-up-the-old-configuration), after the migration has run.
 
-### 2. Update docker-compose.yml
+### 3. Update docker-compose.yml
 
 The Docker image was renamed. Point both containers at the new one:
 
@@ -48,7 +55,7 @@ lives on the [installation](/getting-started/installation.md) page.
 > [!NOTE]
 > In v4, the daemon container was optional. This is no longer the case.
 
-### 3. Add the new environment variables
+### 4. Add the new environment variables
 
 Add these to your `.env`:
 
@@ -68,12 +75,10 @@ ADMIN_USERNAME=admin
 ADMIN_PASSWORD_HASH=''
 ```
 
-`APP_URL` and `APP_SECRET` have no defaults; the app will not boot without them.
-
 Your `STRAVA_CLIENT_ID`, `STRAVA_CLIENT_SECRET` and `STRAVA_REFRESH_TOKEN` stay exactly as they are, and
 `PUID`, `PGID`, `PROXY_HOST` and `PROXY_PORT` are unchanged too.
 
-### 4. Pull the new image and migrate
+### 5. Pull the new image and migrate
 
 ```bash
 > docker compose pull
@@ -100,7 +105,7 @@ Now generate your admin password hash, put it in `.env`, and recreate the contai
 
 Log in at `/admin` and verify that your settings were migrated correctly.
 
-### 5. Clean up the old configuration
+### 6. Clean up the old configuration
 
 Once you have confirmed your settings are in the admin panel, the YAML files have done their job. Remove the
 config volume from **both** containers in `docker-compose.yml`:
@@ -117,7 +122,7 @@ everything is edited in the admin panel.
 > docker compose up -d
 ```
 
-### 6. Re-upload your images and re-enter your purchase prices
+### 7. Re-upload your images and re-enter your purchase prices
 
 Two things are **not** carried over by the migration and have to be set up again in the admin panel:
 
@@ -127,7 +132,7 @@ Two things are **not** carried over by the migration and have to be set up again
   recording devices) are not migrated. Enter them again in the admin panel, on the gear or recording device
   settings pages.
 
-### 7. Run an import and build
+### 8. Run an import and build
 
 ```bash
 # In stravaApi mode
