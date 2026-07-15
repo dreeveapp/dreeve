@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Automation;
 
+use App\Domain\Automation\Action\ConfiguredAction\ConfiguredActions;
+use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredConditions;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,10 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'AutomationRule')]
 final readonly class AutomationRule
 {
-    /**
-     * @param list<array{type: string, config: array<string, mixed>}> $conditions
-     * @param list<array{type: string, config: array<string, mixed>}> $actions
-     */
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string', unique: true)]
         private AutomationRuleId $automationRuleId,
@@ -25,25 +23,21 @@ final readonly class AutomationRule
         #[ORM\Column(type: 'integer')]
         private int $sortOrder,
         #[ORM\Column(type: 'json')]
-        private array $conditions,
+        private ConfiguredConditions $conditions,
         #[ORM\Column(type: 'json')]
-        private array $actions,
+        private ConfiguredActions $actions,
         #[ORM\Column(type: 'datetime_immutable')]
         private SerializableDateTime $createdOn,
     ) {
     }
 
-    /**
-     * @param list<array{type: string, config: array<string, mixed>}> $conditions
-     * @param list<array{type: string, config: array<string, mixed>}> $actions
-     */
     public static function create(
         AutomationRuleId $automationRuleId,
         string $label,
         bool $isEnabled,
         int $sortOrder,
-        array $conditions,
-        array $actions,
+        ConfiguredConditions $conditions,
+        ConfiguredActions $actions,
         SerializableDateTime $createdOn,
     ): self {
         return new self(
@@ -57,17 +51,13 @@ final readonly class AutomationRule
         );
     }
 
-    /**
-     * @param list<array{type: string, config: array<string, mixed>}> $conditions
-     * @param list<array{type: string, config: array<string, mixed>}> $actions
-     */
     public static function fromState(
         AutomationRuleId $automationRuleId,
         string $label,
         bool $isEnabled,
         int $sortOrder,
-        array $conditions,
-        array $actions,
+        ConfiguredConditions $conditions,
+        ConfiguredActions $actions,
         SerializableDateTime $createdOn,
     ): self {
         return new self(
@@ -122,36 +112,24 @@ final readonly class AutomationRule
         ]);
     }
 
-    /**
-     * @return list<array{type: string, config: array<string, mixed>}>
-     */
-    public function getConditions(): array
+    public function getConditions(): ConfiguredConditions
     {
         return $this->conditions;
     }
 
-    /**
-     * @param list<array{type: string, config: array<string, mixed>}> $conditions
-     */
-    public function withConditions(array $conditions): self
+    public function withConditions(ConfiguredConditions $conditions): self
     {
         return clone ($this, [
             'conditions' => $conditions,
         ]);
     }
 
-    /**
-     * @return list<array{type: string, config: array<string, mixed>}>
-     */
-    public function getActions(): array
+    public function getActions(): ConfiguredActions
     {
         return $this->actions;
     }
 
-    /**
-     * @param list<array{type: string, config: array<string, mixed>}> $actions
-     */
-    public function withActions(array $actions): self
+    public function withActions(ConfiguredActions $actions): self
     {
         return clone ($this, [
             'actions' => $actions,
