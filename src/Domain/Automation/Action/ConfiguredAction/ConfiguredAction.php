@@ -7,9 +7,32 @@ namespace App\Domain\Automation\Action\ConfiguredAction;
 use App\Domain\Automation\Action\ActionType;
 use App\Domain\Automation\RuleConfiguration;
 
-interface ConfiguredAction extends \JsonSerializable
+final readonly class ConfiguredAction implements \JsonSerializable
 {
-    public function getType(): ActionType;
+    public function __construct(
+        private ActionType $type,
+        private RuleConfiguration $configuration,
+    ) {
+    }
 
-    public function getConfiguration(): RuleConfiguration;
+    public function getType(): ActionType
+    {
+        return $this->type;
+    }
+
+    public function getConfiguration(): RuleConfiguration
+    {
+        return $this->configuration;
+    }
+
+    /**
+     * @return array{type: string, config: RuleConfiguration}
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'type' => $this->type->value,
+            'config' => $this->configuration,
+        ];
+    }
 }

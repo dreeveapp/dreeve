@@ -4,14 +4,27 @@ declare(strict_types=1);
 
 namespace App\Domain\Automation;
 
-final class RuleConfiguration
+final class RuleConfiguration implements \JsonSerializable
 {
-    /** @var array<string, mixed> */
-    private array $configuration = [];
+    /**
+     * @param array<string, mixed> $configuration
+     */
+    private function __construct(
+        private array $configuration = [],
+    ) {
+    }
 
     public static function empty(): self
     {
         return new self();
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    public static function fromConfig(array $config): self
+    {
+        return new self($config);
     }
 
     /**
@@ -32,21 +45,19 @@ final class RuleConfiguration
         return $this->configuration[$key] ?? $default;
     }
 
-    public function exists(string $key): bool
-    {
-        return array_key_exists($key, $this->configuration);
-    }
-
-    public function isEmpty(): bool
-    {
-        return [] === $this->configuration;
-    }
-
     /**
      * @return array<string, mixed>
      */
     public function toArray(): array
     {
         return $this->configuration;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

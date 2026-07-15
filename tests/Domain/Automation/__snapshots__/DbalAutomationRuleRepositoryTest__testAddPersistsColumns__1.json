@@ -1,0 +1,11 @@
+[
+    {
+        "automationRuleId": "automationRule-1",
+        "label": "My rule",
+        "isEnabled": 1,
+        "sortOrder": 0,
+        "conditions": "[{\"type\":\"distance\",\"config\":{\"minKm\":10}}]",
+        "actions": "[{\"type\":\"markAsCommute\",\"config\":{\"isCommute\":true}}]",
+        "createdOn": "2023-10-17 16:15:04"
+    }
+]
