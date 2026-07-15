@@ -54,8 +54,8 @@ final readonly class SportTypeCondition implements Condition
         $sportTypes = $configuration->get('sportTypes');
         assert(is_string($operator) && is_array($sportTypes));
 
-        $activityIsOneOfSportTypes = in_array($activity->getSportType()->value, $sportTypes, true);
-
-        return MatchOperator::from($operator)->isSatisfiedBy($activityIsOneOfSportTypes);
+        return MatchOperator::from($operator)->isSatisfiedBy(
+            in_array($activity->getSportType()->value, $sportTypes, true)
+        );
     }
 }
