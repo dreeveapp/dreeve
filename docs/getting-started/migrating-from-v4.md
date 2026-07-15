@@ -13,7 +13,7 @@ affect every existing installation:
 
 > [!NOTE]
 > Your activities, gear and history are kept. Nothing has to be re-imported. Images and gear purchase prices are the
-> exception: they need to be re-uploaded and re-entered, see [step 6](#_6-re-upload-your-images-and-re-enter-your-purchase-prices).
+> exception: they need to be re-uploaded and re-entered, see [step 7](#_7-re-upload-your-images-and-re-enter-your-purchase-prices).
 
 ### 1. Stop your containers
 
@@ -27,7 +27,7 @@ On its first start, v5 reads your `config.yaml` and `gear-maintenance.yaml` and 
 database.
 
 So for now, **do not delete `config.yaml` and do not remove the `./config` volume**. You clean those up in
-[step 5](#_5-clean-up-the-old-configuration), after the migration has run.
+[step 6](#_6-clean-up-the-old-configuration), after the migration has run.
 
 ### 3. Update docker-compose.yml
 
@@ -70,7 +70,7 @@ APP_URL=http://localhost:8080
 # Used to sign the admin session cookie. Set it to any long random string.
 APP_SECRET=change-me-to-a-long-random-string
 
-# Admin panel credentials. Leave the hash empty for now, you generate it in step 4.
+# Admin panel credentials. Leave the hash empty for now, you generate it in step 5.
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD_HASH=''
 ```
@@ -142,7 +142,7 @@ Two things are **not** carried over by the migration and have to be set up again
 > docker compose exec app bin/console app:cron:run-file-import --import --build
 ```
 
-### Where did my configuration go?
+## Where did my configuration go?
 
 | v4                                            | v5                                    |
 |-----------------------------------------------|---------------------------------------|
@@ -155,7 +155,7 @@ Two things are **not** carried over by the migration and have to be set up again
 | `config.yaml` → `gear` (purchase prices)      | Admin panel → Gear, **not migrated**  |
 | `imgSrc` images in YAML                       | Admin panel, re-uploaded, **not migrated** |
 
-### Other things worth knowing
+## Other things worth knowing
 
 * **The database file was renamed** from `strava.db` to `dreeve.db`. An existing `strava.db` keeps working, you
   do not have to rename anything.
