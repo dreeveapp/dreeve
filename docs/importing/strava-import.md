@@ -10,11 +10,12 @@ To use it, set:
 IMPORT_MODE=stravaApi
 ```
 
-> [!NOTE]
-> **Note** `stravaApi` and `files` are mutually exclusive. See [Importing activities](/importing/overview.md)
-> if you haven't picked a mode yet.
-
 ## Prerequisites
+
+> [!WARNING]
+> **Paid Strava subscription required.** As of June 1st, 2026 Strava requires an active paying
+> subscription to use the Strava API. Without one you will not be able to import your activities in
+> `stravaApi` mode. If you don't have a subscription, use the default [`files` mode](/importing/file-import.md) instead.
 
 You need a Strava account, and a **Strava API application** to get a `client ID` and `client secret`.
 

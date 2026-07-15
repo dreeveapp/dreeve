@@ -1,5 +1,7 @@
 # FAQ
 
+## General
+
 <details>
 <summary>Is Dreeve the same app as "Statistics for Strava"?</summary>
 
@@ -9,15 +11,7 @@ but the repository moved to [dreeveapp/dreeve](https://github.com/dreeveapp/dree
 
 </details>
 
-<details>
-<summary>Do I need a Strava account?</summary>
-
-No. Dreeve's default mode is `files`: you supply `.fit`, `.tcx` or `.gpx` files and everything is parsed
-locally. No Strava account, no API application, no keys, no rate limits.
-
-Strava import is fully supported if you want it, see [Importing activities](/importing/overview.md).
-
-</details>
+## Importing & activities
 
 <details>
 <summary>Can I use both import modes at once?</summary>
@@ -46,12 +40,15 @@ failed. The raw file data is stored in the database though.
 
 </details>
 
-<details>
-<summary>I can't log in to the admin panel</summary>
+## Strava import
 
-The usual cause is an unescaped `$` in `ADMIN_PASSWORD_HASH`. Docker Compose treats `$` as the start of a
-variable and silently mangles the hash, so you get a password that can never match. Every `$` must be doubled.
-See [Admin password](/getting-started/installation.md#admin-password).
+<details>
+<summary>Do I need a Strava account?</summary>
+
+No. Dreeve's default mode is `files`: you supply `.fit`, `.tcx` or `.gpx` files and everything is parsed
+locally. No Strava account, no API application, no keys, no rate limits.
+
+Strava import is fully supported if you want it, see [Importing activities](/importing/overview.md).
 
 </details>
 
@@ -79,5 +76,26 @@ If you hit the daily rate limit, the app will automatically import the remaining
 
 No, the app only supports one Strava account at a time. If you want to use multiple Strava accounts,
 you will need to run multiple instances of the app, each with its own Strava client ID and secret.
+
+</details>
+
+## Admin panel
+
+<details>
+<summary>How do I get to the admin panel?</summary>
+
+The **Admin panel** link lives in the frontend app. Click your **profile picture** in the top-right corner to
+open the dropdown menu, then choose **Admin panel**.
+
+![Admin panel link](../assets/images/admin-panel-link.png)
+
+</details>
+
+<details>
+<summary>I can't log in to the admin panel</summary>
+
+The usual cause is an unescaped `$` in `ADMIN_PASSWORD_HASH`. Docker Compose treats `$` as the start of a
+variable and silently mangles the hash, so you get a password that can never match. Every `$` must be doubled.
+See [Admin password](/getting-started/installation.md#admin-password).
 
 </details>
