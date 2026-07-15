@@ -10,6 +10,8 @@ enum MatchOperator: string
     case IS_NOT = 'isNot';
     case IS_ONE_OF = 'isOneOf';
     case IS_NONE_OF = 'isNoneOf';
+    case WITHIN = 'within';
+    case OUTSIDE = 'outside';
 
     public function isForSingleValue(): bool
     {
@@ -27,11 +29,19 @@ enum MatchOperator: string
         };
     }
 
+    public function isForProximity(): bool
+    {
+        return match ($this) {
+            self::WITHIN, self::OUTSIDE => true,
+            default => false,
+        };
+    }
+
     public function isSatisfiedBy(bool $matches): bool
     {
         return match ($this) {
-            self::IS, self::IS_ONE_OF => $matches,
-            self::IS_NOT, self::IS_NONE_OF => !$matches,
+            self::IS, self::IS_ONE_OF, self::WITHIN => $matches,
+            self::IS_NOT, self::IS_NONE_OF, self::OUTSIDE => !$matches,
         };
     }
 }
