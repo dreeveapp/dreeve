@@ -8,12 +8,18 @@ use App\Domain\Activity\Activity;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class DeviceCondition implements Condition
 {
-    public function getLabel(): string
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return 'Recording device';
+        return $translator->trans('Recording device', domain: 'admin', locale: $locale);
+    }
+
+    public function getPriority(): int
+    {
+        return 10;
     }
 
     public function getTemplateName(): string

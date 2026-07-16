@@ -8,6 +8,7 @@ export const Events = Object.freeze({
     SIDEBAR_RESIZED:            'sidebar:resized',
     NAVIGATION_CLICKED:         'navigation:clicked',
     DATA_TABLE_CLUSTER_CHANGED: 'dataTable:clusterChanged',
+    REPEATER_CHANGED:           'repeater:changed',
 });
 
 class EventBus {

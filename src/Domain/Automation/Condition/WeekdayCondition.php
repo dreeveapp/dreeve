@@ -7,12 +7,18 @@ namespace App\Domain\Automation\Condition;
 use App\Domain\Activity\Activity;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class WeekdayCondition implements Condition
 {
-    public function getLabel(): string
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return 'Weekday';
+        return $translator->trans('Weekday', domain: 'admin', locale: $locale);
+    }
+
+    public function getPriority(): int
+    {
+        return 40;
     }
 
     public function getTemplateName(): string

@@ -6,12 +6,18 @@ namespace App\Domain\Automation\Action;
 
 use App\Domain\Activity\Activity;
 use App\Domain\Automation\RuleConfiguration;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class SetDescriptionAction implements Action
 {
-    public function getLabel(): string
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return 'Set description';
+        return $translator->trans('Set description', domain: 'admin', locale: $locale);
+    }
+
+    public function getPriority(): int
+    {
+        return 60;
     }
 
     public function getTemplateName(): string

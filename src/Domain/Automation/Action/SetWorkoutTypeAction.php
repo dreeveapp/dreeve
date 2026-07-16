@@ -8,12 +8,18 @@ use App\Domain\Activity\Activity;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class SetWorkoutTypeAction implements Action
 {
-    public function getLabel(): string
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return 'Set workout type';
+        return $translator->trans('Set workout type', domain: 'admin', locale: $locale);
+    }
+
+    public function getPriority(): int
+    {
+        return 40;
     }
 
     public function getTemplateName(): string

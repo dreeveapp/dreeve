@@ -6,14 +6,20 @@ namespace App\Domain\Automation\Condition;
 
 use App\Domain\Activity\Activity;
 use App\Domain\Automation\RuleConfiguration;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class StartsNearCondition implements Condition
 {
     use MatchesCoordinateWithinRadius;
 
-    public function getLabel(): string
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return 'Starts near';
+        return $translator->trans('Starts near', domain: 'admin', locale: $locale);
+    }
+
+    public function getPriority(): int
+    {
+        return 60;
     }
 
     public function getTemplateName(): string

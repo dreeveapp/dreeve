@@ -37,10 +37,10 @@ class ActionsTest extends TestCase
         $this->actions->get(ActionType::ASSIGN_GEAR);
     }
 
-    public function testAllIsSortedByLabel(): void
+    public function testAllIsSortedByPriority(): void
     {
         $this->assertSame(
-            [ActionType::SET_DESCRIPTION->value, ActionType::SET_NAME->value],
+            [ActionType::SET_NAME->value, ActionType::SET_DESCRIPTION->value],
             array_keys($this->actions->all())
         );
     }

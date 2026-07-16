@@ -8,12 +8,18 @@ use App\Domain\Activity\Activity;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class SetSportTypeAction implements Action
 {
-    public function getLabel(): string
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return 'Set sport type';
+        return $translator->trans('Set sport type', domain: 'admin', locale: $locale);
+    }
+
+    public function getPriority(): int
+    {
+        return 30;
     }
 
     public function getTemplateName(): string

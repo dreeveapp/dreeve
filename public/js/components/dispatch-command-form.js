@@ -1,4 +1,5 @@
 import {dispatchCommand} from "../utils";
+import {eventBus, Events} from "../core/event-bus";
 
 // Turns a field name into its path segments:
 //   "label"            -> ["label"]
@@ -46,7 +47,8 @@ const assign = (target, segments, value) => {
 };
 
 const INDEX_TOKEN = '__index__';
-const INDEXED_ATTRIBUTES = ['name', 'id', 'for'];
+const INDEXED_ATTRIBUTES = ['name', 'id', 'for', 'data-dependent-on'];
+const INDEXED_SELECTOR = INDEXED_ATTRIBUTES.map((attribute) => `[${attribute}]`).join(', ');
 
 class Repeater {
     constructor(root) {
@@ -55,6 +57,7 @@ class Repeater {
         this.template = root.querySelector('[data-repeater-template]');
         this.addButton = root.querySelector('[data-repeater-add]');
         this.min = parseInt(root.getAttribute('data-repeater-min') ?? '0', 10) || 0;
+        this.indexedAttributes = new WeakMap();
     }
 
     init() {
@@ -85,13 +88,17 @@ class Repeater {
     addRow(data) {
         const row = this.template.content.firstElementChild.cloneNode(true);
 
-        row.querySelectorAll('[name], [id], [for]').forEach((field) => {
+        row.querySelectorAll(INDEXED_SELECTOR).forEach((element) => {
+            const templates = {};
             INDEXED_ATTRIBUTES.forEach((attribute) => {
-                const value = field.getAttribute(attribute);
+                const value = element.getAttribute(attribute);
                 if (null !== value && value.includes(INDEX_TOKEN)) {
-                    field.dataset[`${attribute}Template`] = value;
+                    templates[attribute] = value;
                 }
             });
+            if (Object.keys(templates).length > 0) {
+                this.indexedAttributes.set(element, templates);
+            }
         });
 
         if (data) {
@@ -125,16 +132,19 @@ class Repeater {
 
         const removable = rows.length > this.min;
         rows.forEach((row, index) => {
-            row.querySelectorAll('[data-name-template], [data-id-template], [data-for-template]').forEach((field) => {
-                INDEXED_ATTRIBUTES.forEach((attribute) => {
-                    const template = field.dataset[`${attribute}Template`];
-                    if (template) {
-                        field.setAttribute(attribute, template.replaceAll(INDEX_TOKEN, index));
-                    }
+            row.querySelectorAll(INDEXED_SELECTOR).forEach((element) => {
+                const templates = this.indexedAttributes.get(element);
+                if (!templates) {
+                    return;
+                }
+                Object.entries(templates).forEach(([attribute, template]) => {
+                    element.setAttribute(attribute, template.replaceAll(INDEX_TOKEN, index));
                 });
             });
             row.querySelector('[data-repeater-remove]')?.classList.toggle('hidden', !removable);
         });
+
+        eventBus.emit(Events.REPEATER_CHANGED, {repeater: this.root});
     }
 }
 

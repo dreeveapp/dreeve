@@ -1,0 +1,83 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block main %}
+    {% autoescape false %}
+    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h3 class="text-lg font-semibold">{{ "Automation rules"|trans({}, 'admin') }}</h3>
+                <p class="mt-1 text-sm text-gray-500">
+                    {{ "Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom; the first one that matches wins."|trans({}, 'admin') }}
+                </p>
+            </div>
+            <a href="{{ relativeUrl(path('admin_add_automation_rule')) }}" type="button" class="btn--add">
+                <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                </svg>
+                <span>{{ "Add rule"|trans({}, 'admin') }}</span>
+            </a>
+        </div>
+
+        {% if automationRules.isEmpty() %}
+            <div class="flex flex-col items-center justify-center gap-1 py-12 px-4 text-center">
+                <span class="text-sm font-medium text-gray-800">{{ "No automation rules yet."|trans({}, 'admin') }}</span>
+                <span class="text-xs text-gray-500">{{ "Add a rule to start automating your imports."|trans({}, 'admin') }}</span>
+            </div>
+        {% else %}
+            <div class="flex items-center justify-end mb-2">
+                <span class="text-xs text-gray-400" data-sort-status role="status" aria-live="polite"></span>
+            </div>
+            <div class="flex flex-col gap-2" data-sortable-list data-save-order-command="{{ saveOrderCommand }}">
+                {% for rule in automationRules %}
+                    <div class="flex items-start gap-3 rounded-lg border border-gray-200 bg-white p-3 shadow-xs" data-sort-item data-sort-id="{{ rule.getId() }}">
+                        <span class="mt-1 shrink-0 text-gray-400 cursor-grab active:cursor-grabbing" data-drag-handle title="{{ "Drag to reorder"|trans({}, 'admin') }}">
+                            <svg class="size-4.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"/>
+                            </svg>
+                        </span>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center gap-2">
+                                <span class="font-medium text-gray-800 truncate">{{ rule.getLabel() }}</span>
+                                {% if rule.isEnabled() %}
+                                    <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xxs font-medium text-green-700">{{ "Enabled"|trans({}, 'admin') }}</span>
+                                {% else %}
+                                    <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xxs font-medium text-gray-500">{{ "Disabled"|trans({}, 'admin') }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="mt-2 flex flex-col gap-1.5 text-xs text-gray-600 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1">
+                                <div class="flex flex-wrap items-center gap-1">
+                                    <span class="text-xxs font-semibold tracking-wide uppercase text-gray-400">{{ "If"|trans({}, 'admin') }}</span>
+                                    {% for condition in rule.getConditions() %}
+                                        <span class="font-bold">{{ conditions[condition.getType().value] ? conditions[condition.getType().value]|trans : condition.getType().value }}</span>
+                                        {% if not loop.last %}<span class="text-gray-400">{{ "and"|trans({}, 'admin') }}</span>{% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="flex flex-wrap items-center gap-1">
+                                    <span class="text-xxs font-semibold uppercase tracking-wide text-gray-400">{{ "then"|trans({}, 'admin') }}</span>
+                                    {% for action in rule.getActions() %}
+                                        <span class="font-bold">{{ actions[action.getType().value] ? actions[action.getType().value]|trans : action.getType().value }}</span>
+                                        {% if not loop.last %}<span class="text-gray-400">{{ "and"|trans({}, 'admin') }}</span>{% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inline-flex shrink-0 items-center gap-2">
+                            <a href="{{ relativeUrl(path('admin_edit_automation_rule', {id: rule.getId()})) }}" class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-primary" title="{{ "Edit"|trans({}, 'admin') }}">
+                                <span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span>
+                                <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                                </svg>
+                            </a>
+                            <a href="{{ relativeUrl(path('admin_delete_automation_rule', {id: rule.getId()})) }}" class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600" title="{{ "Delete"|trans({}, 'admin') }}">
+                                <span class="sr-only">{{ "Delete"|trans({}, 'admin') }}</span>
+                                <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    {% endautoescape %}
+{% endblock main %}

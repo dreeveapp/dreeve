@@ -10,14 +10,20 @@ use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class EndsNearCondition implements Condition
 {
     use MatchesCoordinateWithinRadius;
 
-    public function getLabel(): string
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return 'Ends near';
+        return $translator->trans('Ends near', domain: 'admin', locale: $locale);
+    }
+
+    public function getPriority(): int
+    {
+        return 70;
     }
 
     public function getTemplateName(): string

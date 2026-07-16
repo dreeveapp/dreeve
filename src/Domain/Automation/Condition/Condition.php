@@ -7,11 +7,12 @@ namespace App\Domain\Automation\Condition;
 use App\Domain\Activity\Activity;
 use App\Domain\Automation\RuleConfiguration;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 #[AutoconfigureTag('app.automation_rule.condition')]
-interface Condition
+interface Condition extends TranslatableInterface
 {
-    public function getLabel(): string;
+    public function getPriority(): int;
 
     public function getTemplateName(): string;
 

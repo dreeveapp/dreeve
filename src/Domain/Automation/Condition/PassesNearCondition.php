@@ -10,14 +10,20 @@ use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class PassesNearCondition implements Condition
 {
     use MatchesCoordinateWithinRadius;
 
-    public function getLabel(): string
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return 'Passes near';
+        return $translator->trans('Passes near', domain: 'admin', locale: $locale);
+    }
+
+    public function getPriority(): int
+    {
+        return 80;
     }
 
     public function getTemplateName(): string

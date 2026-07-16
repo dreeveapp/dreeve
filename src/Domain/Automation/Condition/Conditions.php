@@ -40,7 +40,7 @@ final class Conditions
     public function all(): array
     {
         $conditions = $this->conditions;
-        uasort($conditions, static fn (Condition $a, Condition $b): int => strcasecmp($a->getLabel(), $b->getLabel()));
+        uasort($conditions, static fn (Condition $a, Condition $b): int => $a->getPriority() <=> $b->getPriority());
 
         return $conditions;
     }

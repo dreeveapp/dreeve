@@ -1,3 +1,5 @@
+import {eventBus, Events} from "../core/event-bus";
+
 const SELECTOR = '[data-dependent-on][data-visible-when]';
 
 const controllerValueOf = (controller) => {
@@ -23,15 +25,15 @@ const isVisible = (field) => {
 };
 
 export default function initDependentFormInputs(rootNode = document) {
-    const fields = Array.from(rootNode.querySelectorAll(SELECTOR));
-    if (0 === fields.length) {
-        return;
-    }
-
-    const visibility = new WeakMap();
     const originalDisabled = new WeakMap();
 
     const apply = () => {
+        const fields = Array.from(rootNode.querySelectorAll(SELECTOR));
+        if (0 === fields.length) {
+            return;
+        }
+
+        const visibility = new WeakMap();
         fields.forEach((field) => visibility.set(field, isVisible(field)));
         fields.forEach((field) => field.classList.toggle('hidden', !visibility.get(field)));
 
@@ -60,14 +62,8 @@ export default function initDependentFormInputs(rootNode = document) {
         });
     };
 
-    const controllers = new Set();
-    fields.forEach((field) => {
-        const controller = document.getElementById(field.getAttribute('data-dependent-on'));
-        if (controller) {
-            controllers.add(controller);
-        }
-    });
-    controllers.forEach((controller) => controller.addEventListener('change', apply));
+    rootNode.addEventListener('change', apply);
+    eventBus.on(Events.REPEATER_CHANGED, apply);
 
     apply();
 }

@@ -1,7 +1,10 @@
+import {dispatchCommand} from "../utils";
+
 class SortableList {
     constructor(list) {
         this.list = list;
         this.dragged = null;
+        this.orderBeforeDrag = null;
     }
 
     init() {
@@ -26,6 +29,7 @@ class SortableList {
             }
             this.dragged.classList.add('opacity-40');
             event.dataTransfer.effectAllowed = 'move';
+            this.orderBeforeDrag = this.currentOrder();
         });
 
         this.list.addEventListener('dragend', () => {
@@ -35,6 +39,11 @@ class SortableList {
             this.dragged.classList.remove('opacity-40');
             this.dragged.removeAttribute('draggable');
             this.dragged = null;
+
+            const order = this.currentOrder();
+            if (order.join(',') !== (this.orderBeforeDrag ?? []).join(',')) {
+                this.onReorder(order);
+            }
         });
 
         this.list.addEventListener('dragover', (event) => {
@@ -55,8 +64,45 @@ class SortableList {
             }
         });
     }
+
+    currentOrder() {
+        return Array.from(this.list.querySelectorAll('[data-sort-item]'))
+            .map((item) => item.getAttribute('data-sort-id'))
+            .filter((id) => null !== id && '' !== id);
+    }
+
+    onReorder(_order) {}
+}
+
+class PersistableSortableList extends SortableList {
+    constructor(list) {
+        super(list);
+        this.command = list.getAttribute('data-save-order-command');
+        this.status = list.querySelector('[data-sort-status]');
+    }
+
+    async onReorder(order) {
+        this.setStatus('saving', 'Saving...');
+        try {
+            await dispatchCommand(this.command, {order});
+            this.setStatus('success', 'Saved');
+        } catch (error) {
+            this.setStatus('error', error.message);
+        }
+    }
+
+    setStatus(state, message) {
+        if (!this.status) {
+            return;
+        }
+        this.status.textContent = message;
+        this.status.dataset.status = state;
+    }
 }
 
 export default function initSortableLists(rootNode = document) {
-    rootNode.querySelectorAll('[data-sortable-list]').forEach((list) => new SortableList(list).init());
+    rootNode.querySelectorAll('[data-sortable-list]').forEach((list) => {
+        const ListClass = list.hasAttribute('data-save-order-command') ? PersistableSortableList : SortableList;
+        new ListClass(list).init();
+    });
 }

@@ -1,0 +1,120 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block main %}
+    {% autoescape false %}
+    {% set rule = automationRule is defined ? automationRule : null %}
+    {% set overviewUrl = relativeUrl(path('admin_manage_automation_rules_overview')) %}
+    {% set initialConditions = rule ? rule.getConditions()|json_encode : '[]' %}
+    {% set initialActions = rule ? rule.getActions()|json_encode : '[]' %}
+    <div class="modal-like-form">
+        <div class="w-full max-w-3xl overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">
+                    {{ rule ? "Edit automation rule"|trans({}, 'admin') : "Add automation rule"|trans({}, 'admin') }}
+                </h3>
+                <a href="{{ overviewUrl }}" aria-label="{{ "Close"|trans({}, 'admin') }}"
+                   class="grid place-items-center size-8 rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900">
+                    <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                    </svg>
+                </a>
+            </div>
+            <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ overviewUrl }}" class="flex flex-col gap-4">
+                {% if rule %}
+                    <input type="hidden" name="automationRuleId" value="{{ rule.getId() }}">
+                {% endif %}
+                <div data-form-error class="form-error hidden" role="alert"></div>
+                <div>
+                    <label for="rule-label">{{ "Name"|trans }}</label>
+                    <input type="text" id="rule-label" name="label" required value="{{ rule ? rule.getLabel() }}"
+                           placeholder="{{ "eg: Commuter bike on short rides"|trans({}, 'admin') }}">
+                </div>
+                <div class="flex items-start gap-2">
+                    <input type="hidden" name="enabled" value="false">
+                    <input type="checkbox" id="rule-enabled" name="enabled" value="true" {{ (rule is null or rule.isEnabled()) ? 'checked' }} class="mt-0.5">
+                    <div>
+                        <label for="rule-enabled" class="mt-0!">{{ "Enabled"|trans({}, 'admin') }}</label>
+                    </div>
+                </div>
+                <div data-repeater data-repeater-min="1" class="rounded-lg border border-gray-200 p-3">
+                    <label class="mt-0!">{{ "If all of these match"|trans({}, 'admin') }}</label>
+                    <p class="mt-0.5 text-xxs text-gray-500">{{ "Conditions are combined with AND."|trans({}, 'admin') }}</p>
+                    <div class="mt-2 flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ initialConditions|e('html_attr') }}"></div>
+                    <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
+                        <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                        </svg>
+                        <span>{{ "Add condition"|trans({}, 'admin') }}</span>
+                    </button>
+                    <template data-repeater-template>
+                        <div class="flex flex-col gap-2 p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater-item>
+                            <div class="flex items-center gap-2">
+                                <select id="condition-__index__-type" name="conditions[__index__][type]" data-repeater-field="type" class="mt-0 flex-1">
+                                    {% for type, condition in conditions %}
+                                        <option value="{{ type }}">{{ condition|trans }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="button" data-repeater-remove
+                                        class="grid place-items-center size-9 shrink-0 rounded-lg border border-gray-200 bg-white text-gray-400 transition-colors hover:text-red-600 hover:border-red-200"
+                                        aria-label="{{ "Remove condition"|trans({}, 'admin') }}">
+                                    <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            {% for type, condition in conditions %}
+                                <div data-dependent-on="condition-__index__-type" data-visible-when="{{ type }}" class="hidden">
+                                    {% include 'html/admin/page/settings/automation-rules/rule-config/' ~ condition.getTemplateName() ~ '.html.twig' with {
+                                        namePrefix: 'conditions[__index__][config]',
+                                    } %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </template>
+                </div>
+                <div data-repeater data-repeater-min="1" class="rounded-lg border border-gray-200 p-3">
+                    <label class="mt-0!">{{ "Then do this"|trans({}, 'admin') }}</label>
+                    <div class="mt-2 flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ initialActions|e('html_attr') }}"></div>
+                    <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
+                        <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                        </svg>
+                        <span>{{ "Add action"|trans({}, 'admin') }}</span>
+                    </button>
+                    <template data-repeater-template>
+                        <div class="flex flex-col gap-2 p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater-item>
+                            <div class="flex items-center gap-2">
+                                <select id="action-__index__-type" name="actions[__index__][type]" data-repeater-field="type" class="mt-0 flex-1">
+                                    {% for type, action in actions %}
+                                        <option value="{{ type }}">{{ action|trans }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="button" data-repeater-remove
+                                        class="grid place-items-center size-9 shrink-0 rounded-lg border border-gray-200 bg-white text-gray-400 transition-colors hover:text-red-600 hover:border-red-200"
+                                        aria-label="{{ "Remove action"|trans({}, 'admin') }}">
+                                    <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            {% for type, action in actions %}
+                                <div data-dependent-on="action-__index__-type" data-visible-when="{{ type }}" class="hidden">
+                                    {% include 'html/admin/page/settings/automation-rules/rule-config/' ~ action.getTemplateName() ~ '.html.twig' with {
+                                        namePrefix: 'actions[__index__][config]',
+                                    } %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </template>
+                </div>
+                <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
+                    <a href="{{ overviewUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>
+                    <button type="submit" data-has-loading-state class="group btn--primary">
+                        <span class="label">{{ "Save"|trans({}, 'admin') }}</span>
+                        <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endautoescape %}
+{% endblock main %}

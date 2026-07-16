@@ -7,12 +7,18 @@ namespace App\Domain\Automation\Condition;
 use App\Domain\Activity\Activity;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class DistanceCondition implements Condition
 {
-    public function getLabel(): string
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return 'Distance';
+        return $translator->trans('Distance', domain: 'admin', locale: $locale);
+    }
+
+    public function getPriority(): int
+    {
+        return 30;
     }
 
     public function getTemplateName(): string

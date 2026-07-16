@@ -1,0 +1,19 @@
+<div class="grid gap-2 sm:grid-cols-2">
+    <div>
+        <label class="mt-0! text-xs">{{ "Operator"|trans({}, 'admin') }}</label>
+        <select name="{{ namePrefix }}[operator]" data-repeater-field="config.operator" class="mt-0">
+            {% for operator in enum('App\\Domain\\Automation\\Condition\\MatchOperator').cases()|filter(o => o.isForSingleValue()) %}
+                <option value="{{ operator.value }}">{{ operator|trans }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label class="mt-0! text-xs">{{ "Recording device"|trans({}, 'admin') }}</label>
+        <select name="{{ namePrefix }}[deviceId]" data-repeater-field="config.deviceId" class="mt-0">
+            <option value="">{{ "Select device..."|trans({}, 'admin') }}</option>
+            {% for device in recordingDevices %}
+                <option value="{{ device.getId().toUnprefixedString() }}">{{ device.getName() }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>

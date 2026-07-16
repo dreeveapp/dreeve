@@ -6,12 +6,18 @@ namespace App\Domain\Automation\Action;
 
 use App\Domain\Activity\Activity;
 use App\Domain\Automation\RuleConfiguration;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class MarkAsCommuteAction implements Action
 {
-    public function getLabel(): string
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return 'Mark as commute';
+        return $translator->trans('Mark as commute', domain: 'admin', locale: $locale);
+    }
+
+    public function getPriority(): int
+    {
+        return 20;
     }
 
     public function getTemplateName(): string

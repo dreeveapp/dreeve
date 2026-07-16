@@ -8,12 +8,18 @@ use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityName;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class SetNameAction implements Action
 {
-    public function getLabel(): string
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return 'Set name';
+        return $translator->trans('Set name', domain: 'admin', locale: $locale);
+    }
+
+    public function getPriority(): int
+    {
+        return 50;
     }
 
     public function getTemplateName(): string

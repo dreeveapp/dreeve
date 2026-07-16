@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Automation\Condition;
 
-enum MatchOperator: string
+use Symfony\Contracts\Translation\TranslatableInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
+enum MatchOperator: string implements TranslatableInterface
 {
     case IS = 'is';
     case IS_NOT = 'isNot';
@@ -12,6 +15,18 @@ enum MatchOperator: string
     case IS_NONE_OF = 'isNoneOf';
     case WITHIN = 'within';
     case OUTSIDE = 'outside';
+
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
+    {
+        return match ($this) {
+            self::IS => $translator->trans('is', domain: 'admin', locale: $locale),
+            self::IS_NOT => $translator->trans('is not', domain: 'admin', locale: $locale),
+            self::IS_ONE_OF => $translator->trans('is one of', domain: 'admin', locale: $locale),
+            self::IS_NONE_OF => $translator->trans('is none of', domain: 'admin', locale: $locale),
+            self::WITHIN => $translator->trans('within radius', domain: 'admin', locale: $locale),
+            self::OUTSIDE => $translator->trans('outside radius', domain: 'admin', locale: $locale),
+        };
+    }
 
     public function isForSingleValue(): bool
     {

@@ -1,0 +1,19 @@
+<div>
+    <label class="mt-0! text-xs">{{ "Operator"|trans({}, 'admin') }}</label>
+    <select name="{{ namePrefix }}[operator]" data-repeater-field="config.operator" class="mt-0">
+        {% for operator in enum('App\\Domain\\Automation\\Condition\\MatchOperator').cases()|filter(o => o.isForSet()) %}
+            <option value="{{ operator.value }}">{{ operator|trans }}</option>
+        {% endfor %}
+    </select>
+</div>
+<div class="mt-2" data-required-checkbox-group="{{ "Select at least one sport type."|trans({}, 'admin') }}">
+    <label class="mt-0! text-xs">{{ "Sport types"|trans({}, 'admin') }}</label>
+    <div class="mt-1 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-3">
+        {% for sportType in enum('App\\Domain\\Activity\\SportType\\SportType').cases() %}
+            <label class="flex items-center gap-2 text-sm cursor-pointer min-w-0">
+                <input type="checkbox" name="{{ namePrefix }}[sportTypes][]" value="{{ sportType.value }}" data-repeater-field="config.sportTypes">
+                <span class="truncate min-w-0">{{ sportType|trans }}</span>
+            </label>
+        {% endfor %}
+    </div>
+</div>

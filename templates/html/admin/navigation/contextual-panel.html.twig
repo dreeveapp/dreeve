@@ -56,6 +56,7 @@
         {% set inIntegrations = isActiveNavItem({'/admin/settings/integrations': false}) %}
         {% set inDaemon = isActiveNavItem({'/admin/settings/daemon': false}) %}
         {% set inDashboard = isActiveNavItem({'/admin/settings/dashboard': false}) %}
+        {% set inAutomationRules = isActiveNavItem({'/admin/settings/automation-rules': false}) %}
         <nav class="contextual-panel" aria-label="{{ "Settings"|trans({}, 'admin') }}">
             <p class="px-2 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
                 {{ "Settings"|trans({}, 'admin') }}
@@ -76,6 +77,13 @@
                         {{ "Dashboard"|trans }}
                     </a>
                 </li>
+                {% if importMode.isFiles() %}
+                    <li>
+                        <a href="{{ relativeUrl(path('admin_manage_automation_rules_overview')) }}" {{ inAutomationRules ? 'aria-selected="true"' : '' }}>
+                            {{ "Automation rules"|trans({}, 'admin') }}
+                        </a>
+                    </li>
+                {% endif %}
                 {% if importMode.isStravaApi() %}
                     <li>
                         <a href="{{ relativeUrl(path('admin_settings', {'group': 'import'})) }}" {{ inImport ? 'aria-selected="true"' : '' }}>

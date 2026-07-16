@@ -1,0 +1,8 @@
+<div>
+    <label class="mt-0! text-xs">{{ "Workout type"|trans({}, 'admin') }}</label>
+    <select name="{{ namePrefix }}[workoutType]" data-repeater-field="config.workoutType" class="mt-0">
+        {% for workoutType in enum('App\\Domain\\Activity\\WorkoutType').cases() %}
+            <option value="{{ workoutType.value }}">{{ workoutType|trans }}</option>
+        {% endfor %}
+    </select>
+</div>

@@ -41,7 +41,7 @@ final class Actions
     public function all(): array
     {
         $actions = $this->actions;
-        uasort($actions, static fn (Action $a, Action $b): int => strcasecmp($a->getLabel(), $b->getLabel()));
+        uasort($actions, static fn (Action $a, Action $b): int => $a->getPriority() <=> $b->getPriority());
 
         return $actions;
     }

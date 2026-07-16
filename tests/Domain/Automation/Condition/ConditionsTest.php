@@ -37,11 +37,10 @@ class ConditionsTest extends TestCase
         $this->conditions->get(ConditionType::SPORT_TYPE);
     }
 
-    public function testAllIsSortedByLabel(): void
+    public function testAllIsSortedByPriority(): void
     {
-        // 'Distance' sorts before 'Recorded with device'.
         $this->assertSame(
-            [ConditionType::DISTANCE->value, ConditionType::DEVICE->value],
+            [ConditionType::DEVICE->value, ConditionType::DISTANCE->value],
             array_keys($this->conditions->all())
         );
     }

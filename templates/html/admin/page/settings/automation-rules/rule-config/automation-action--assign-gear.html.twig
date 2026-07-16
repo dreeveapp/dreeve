@@ -1,0 +1,11 @@
+<div>
+    <label class="mt-0! text-xs">{{ "Gear"|trans }}</label>
+    <select name="{{ namePrefix }}[gearId]" data-repeater-field="config.gearId" class="mt-0">
+        <option value="">{{ "Select gear..."|trans({}, 'admin') }}</option>
+        {% for gear in gears %}
+            {% if not gear.isRetired() %}
+                <option value="{{ gear.getId() }}">{{ gear.getName() }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+</div>

@@ -1,0 +1,16 @@
+<div class="grid gap-2 sm:grid-cols-2">
+    <div>
+        <label class="mt-0! text-xs">{{ "The activity started"|trans({}, 'admin') }}</label>
+        <select name="{{ namePrefix }}[operator]" data-repeater-field="config.operator" class="mt-0">
+            <option value="lt">{{ "before"|trans({}, 'admin') }}</option>
+            <option value="lte">{{ "at or before"|trans({}, 'admin') }}</option>
+            <option value="gt">{{ "after"|trans({}, 'admin') }}</option>
+            <option value="gte">{{ "at or after"|trans({}, 'admin') }}</option>
+            <option value="eq">{{ "exactly at"|trans({}, 'admin') }}</option>
+        </select>
+    </div>
+    <div>
+        <label class="mt-0! text-xs">{{ "Time of day"|trans({}, 'admin') }}</label>
+        <input type="time" name="{{ namePrefix }}[time]" data-repeater-field="config.time" required class="mt-0">
+    </div>
+</div>

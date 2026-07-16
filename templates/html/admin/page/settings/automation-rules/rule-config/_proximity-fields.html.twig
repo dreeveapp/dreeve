@@ -1,0 +1,25 @@
+<div class="grid gap-2 sm:grid-cols-2">
+    <div>
+        <label class="mt-0! text-xs">{{ "Match"|trans({}, 'admin') }}</label>
+        <select name="{{ namePrefix }}[operator]" data-repeater-field="config.operator" class="mt-0">
+            {% for operator in enum('App\\Domain\\Automation\\Condition\\MatchOperator').cases()|filter(o => o.isForProximity()) %}
+                <option value="{{ operator.value }}">{{ operator|trans }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label class="mt-0! text-xs">{{ "Radius (km)"|trans({}, 'admin') }}</label>
+        <input type="number" step="0.1" min="0.1" name="{{ namePrefix }}[radius]" data-repeater-field="config.radius"
+               required placeholder="1" class="mt-0">
+    </div>
+    <div>
+        <label class="mt-0! text-xs">{{ "Latitude"|trans({}, 'admin') }}</label>
+        <input type="number" step="any" min="-90" max="90" name="{{ namePrefix }}[latitude]" data-repeater-field="config.latitude"
+               required placeholder="51.0543" class="mt-0">
+    </div>
+    <div>
+        <label class="mt-0! text-xs">{{ "Longitude"|trans({}, 'admin') }}</label>
+        <input type="number" step="any" min="-180" max="180" name="{{ namePrefix }}[longitude]" data-repeater-field="config.longitude"
+               required placeholder="3.7174" class="mt-0">
+    </div>
+</div>
