@@ -29,23 +29,23 @@
     </div>
     <div class="hidden lg:grid lg:grid-cols-2 mb-4 gap-4 sticky top-15 z-1001">
         <div class="flex gap-x-2 justify-center items-center p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-            <div class="text-gray-500">{{ "compare"|trans }}</div>
-            <div>
+            <div class="text-gray-500 text-sm">{{ "compare"|trans }}</div>
+            <div class="filter-dropdown">
                 <button id="dropdownRewindOptionButton" data-dropdown="dropdownRewindOption"
-                        class="font-medium rounded-lg text-sm px-3 py-2 inline-flex items-center justify-between cursor-pointer w-fit text-primary border border-primary bg-primary-soft hover:bg-primary/20"
+                        class="text-primary border border-primary bg-primary-soft hover:bg-primary/20"
                         type="button">
                     {% if rewindItemsLeftIsAllTimeRewind %}
                         {{ allTimeLabel }}
                     {% else %}
                         {{ "Rewind"|trans }} {{ activeRewindOptionLeft }}
                     {% endif %}
-                    <svg class="size-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                          viewBox="0 0 10 6">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="m1 1 4 4 4-4"/>
                     </svg>
                 </button>
-                <div id="dropdownRewindOption" class="z-1002 px-1 py-2 text-sm w-fit hidden bg-white rounded-lg shadow-sm text-gray-500 border border-gray-200">
+                <div id="dropdownRewindOption">
                     <ul aria-labelledby="dropdownRewindOptionButton">
                         {% for rewindOption in availableRewindOptions|filter(rewindOption => rewindOption != activeRewindOptionLeft) %}
                             <li>
@@ -53,7 +53,7 @@
                                 {% if rewindOption != activeRewindOptionRight  %}
                                     {% set url = relativeUrl('rewind/' ~ rewindOption ~ '/compare/' ~ activeRewindOptionRight) %}
                                 {% endif %}
-                                <a href="#" data-router-navigate="{{ url }}" class="block px-4 py-2 hover:bg-gray-100 ">
+                                <a href="#" data-router-navigate="{{ url }}" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">
                                     {% if rewindOption == constant('App\\Domain\\Rewind\\FindAvailableRewindOptions\\FindAvailableRewindOptions::ALL_TIME')  %}
                                         {{ allTimeLabel }}
                                     {% else %}
@@ -67,28 +67,27 @@
             </div>
         </div>
         <div class="flex gap-x-2 justify-center items-center p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-            <div class="text-gray-500">{{ "to"|trans }}</div>
-            <div>
+            <div class="text-gray-500 text-sm">{{ "to"|trans }}</div>
+            <div class="filter-dropdown">
                 <button id="dropdownRewindOptionCompareToButton" data-dropdown="dropdownRewindOptionCompareTo"
-                        class="font-medium rounded-lg text-sm px-3 py-2 inline-flex items-center justify-between cursor-pointer w-fit text-primary border border-primary bg-primary-soft hover:bg-primary/20"
+                        class="text-primary border border-primary bg-primary-soft hover:bg-primary/20"
                         type="button">
                     {% if rewindItemsRightIsAllTimeRewind %}
                         {{ allTimeLabel }}
                     {% else %}
                         {{ "Rewind"|trans }} {{ activeRewindOptionRight }}
                     {% endif %}
-                    <svg class="size-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                         viewBox="0 0 10 6">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="m1 1 4 4 4-4"/>
                     </svg>
                 </button>
-                <div id="dropdownRewindOptionCompareTo" class="z-1002 px-1 py-2 text-sm w-fit hidden bg-white rounded-lg shadow-sm text-gray-500 border border-gray-200">
+                <div id="dropdownRewindOptionCompareTo">
                     <ul aria-labelledby="dropdownRewindOptionCompareToButton">
                         {% if availableRewindOptionsToCompareWith is not empty %}
                             {% for rewindOption in availableRewindOptionsToCompareWith %}
                                 <li>
-                                    <a href="#" data-router-navigate="{{ relativeUrl('rewind/' ~ activeRewindOptionLeft ~ '/compare/' ~ rewindOption) }}" class="block px-4 py-2 hover:bg-gray-100 ">
+                                    <a href="#" data-router-navigate="{{ relativeUrl('rewind/' ~ activeRewindOptionLeft ~ '/compare/' ~ rewindOption) }}" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">
                                         {% if rewindOption == constant('App\\Domain\\Rewind\\FindAvailableRewindOptions\\FindAvailableRewindOptions::ALL_TIME')  %}
                                             {{ allTimeLabel }}
                                         {% else %}
@@ -99,7 +98,7 @@
                             {% endfor %}
                         {% else %}
                             <li>
-                                <span class="block px-4 py-2 hover:bg-gray-100 ">{{ "No other options to compare with"|trans }}</span>
+                                <span class="block px-4 py-2 text-gray-500 hover:bg-gray-100">{{ "No other options to compare with"|trans }}</span>
                             </li>
                         {% endif %}
                     </ul>

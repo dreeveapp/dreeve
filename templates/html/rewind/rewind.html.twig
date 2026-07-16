@@ -15,26 +15,26 @@
     {% if availableRewindOptions|length > 2 %}
         <div class="mb-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
             <div class="flex gap-x-2">
-                <div>
+                <div class="filter-dropdown">
                     <button id="dropdownRewindOptionButton" data-dropdown="dropdownRewindOption"
-                            class="font-medium rounded-lg text-sm px-3 py-2 inline-flex items-center justify-between cursor-pointer w-fit text-primary border border-primary bg-primary-soft hover:bg-primary/20"
+                            class="text-primary border border-primary bg-primary-soft hover:bg-primary/20"
                             type="button">
                         {% if isAllTimeRewind %}
                             {{ allTimeLabel }}
                         {% else %}
                             {{ "Rewind"|trans }} {{ activeRewindOption }}
                         {% endif %}
-                        <svg class="size-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                              viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="m1 1 4 4 4-4"/>
                         </svg>
                     </button>
-                    <div id="dropdownRewindOption" class="z-1002 px-1 py-2 text-sm w-fit hidden bg-white rounded-lg shadow-sm text-gray-500 border border-gray-200">
+                    <div id="dropdownRewindOption">
                         <ul aria-labelledby="dropdownRewindOptionButton">
                             {% for rewindOption in availableRewindOptions|filter(rewindOption => rewindOption != activeRewindOption) %}
                                 <li>
-                                    <a href="#" data-router-navigate="{{ relativeUrl('rewind/' ~ rewindOption) }}" class="block px-4 py-2 hover:bg-gray-100 ">
+                                    <a href="#" data-router-navigate="{{ relativeUrl('rewind/' ~ rewindOption) }}" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">
                                         {% if rewindOption == constant('App\\Domain\\Rewind\\FindAvailableRewindOptions\\FindAvailableRewindOptions::ALL_TIME')  %}
                                             {{ allTimeLabel }}
                                         {% else %}
@@ -46,22 +46,22 @@
                         </ul>
                     </div>
                 </div>
-                <div class="hidden lg:block">
+                <div class="hidden lg:block filter-dropdown">
                     <button id="dropdownRewindOptionCompareToButton" data-dropdown="dropdownRewindOptionCompareTo"
-                            class="font-medium rounded-lg text-sm px-3 py-2 inline-flex items-center justify-between cursor-pointer w-fit text-primary border border-primary bg-primary-soft hover:bg-primary/20"
+                            class="text-primary border border-primary hover:bg-primary/20"
                             type="button">
                         {{ "Compare to"|trans }}
-                        <svg class="size-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                              viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="m1 1 4 4 4-4"/>
                         </svg>
                     </button>
-                    <div id="dropdownRewindOptionCompareTo" class="z-1002 px-1 py-2 text-sm w-fit hidden bg-white rounded-lg shadow-sm text-gray-500 border border-gray-200">
+                    <div id="dropdownRewindOptionCompareTo">
                         <ul aria-labelledby="dropdownRewindOptionCompareToButton">
                             {% for rewindOption in availableRewindOptions|filter(rewindOption => rewindOption != activeRewindOption) %}
                                 <li>
-                                    <a href="#" data-router-navigate="{{ relativeUrl('rewind/' ~ activeRewindOption ~ '/compare/' ~ rewindOption) }}" class="block px-4 py-2 hover:bg-gray-100 ">
+                                    <a href="#" data-router-navigate="{{ relativeUrl('rewind/' ~ activeRewindOption ~ '/compare/' ~ rewindOption) }}" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">
                                         {% if rewindOption == constant('App\\Domain\\Rewind\\FindAvailableRewindOptions\\FindAvailableRewindOptions::ALL_TIME')  %}
                                             {{ allTimeLabel }}
                                         {% else %}
