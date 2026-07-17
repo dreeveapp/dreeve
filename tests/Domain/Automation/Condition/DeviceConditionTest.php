@@ -7,6 +7,7 @@ namespace App\Tests\Domain\Automation\Condition;
 use App\Domain\Automation\Condition\DeviceCondition;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
+use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -85,6 +86,6 @@ class DeviceConditionTest extends TestCase
     {
         parent::setUp();
 
-        $this->condition = new DeviceCondition();
+        $this->condition = new DeviceCondition($this->createStub(RecordingDeviceRepository::class));
     }
 }

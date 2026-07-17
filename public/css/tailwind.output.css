@@ -1058,9 +1058,6 @@
   .z-1001 {
     z-index: 1001;
   }
-  .z-1002 {
-    z-index: 1002;
-  }
   .z-1100 {
     z-index: 1100;
   }
@@ -1109,11 +1106,11 @@
   .mx-auto {
     margin-inline: auto;
   }
+  .my-1 {
+    margin-block: var(--spacing);
+  }
   .my-4 {
     margin-block: calc(var(--spacing) * 4);
-  }
-  .ms-3 {
-    margin-inline-start: calc(var(--spacing) * 3);
   }
   .ms-auto {
     margin-inline-start: auto;
@@ -2011,9 +2008,6 @@
   .w-auto {
     width: auto;
   }
-  .w-fit {
-    width: fit-content;
-  }
   .w-full {
     width: 100%;
   }
@@ -2765,6 +2759,9 @@
   }
   .border-gray-300 {
     border-color: var(--color-gray-300);
+  }
+  .border-green-600 {
+    border-color: var(--color-green-600);
   }
   .border-primary {
     border-color: var(--color-primary);
@@ -3660,6 +3657,9 @@
   .ring-gray-200 {
     --tw-ring-color: var(--color-gray-200);
   }
+  .ring-green-600 {
+    --tw-ring-color: var(--color-green-600);
+  }
   .ring-primary\/20 {
     --tw-ring-color: color-mix(in srgb, #F26722 20%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -4199,14 +4199,11 @@
     .sm\:flex-row {
       flex-direction: row;
     }
-    .sm\:flex-wrap {
-      flex-wrap: wrap;
-    }
     .sm\:items-center {
       align-items: center;
     }
-    .sm\:gap-x-1 {
-      column-gap: var(--spacing);
+    .sm\:items-end {
+      align-items: flex-end;
     }
     :where(.sm\:divide-x > :not(:last-child)) {
       --tw-divide-x-reverse: 0;

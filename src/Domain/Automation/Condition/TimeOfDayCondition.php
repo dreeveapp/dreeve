@@ -16,6 +16,14 @@ final readonly class TimeOfDayCondition implements Condition
         return $translator->trans('Time of day', domain: 'admin', locale: $locale);
     }
 
+    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    {
+        return $translator->trans('Time of day {operator} {time}', [
+            'operator' => ComparisonOperator::from($configuration->getString('operator'))->trans($translator),
+            'time' => $configuration->getString('time'),
+        ], 'admin');
+    }
+
     public function getPriority(): int
     {
         return 50;
@@ -49,9 +57,8 @@ final readonly class TimeOfDayCondition implements Condition
 
     public function matches(Activity $activity, RuleConfiguration $configuration): bool
     {
-        $operator = $configuration->get('operator');
-        $time = $configuration->get('time');
-        assert(is_string($operator) && is_string($time));
+        $operator = $configuration->getString('operator');
+        $time = $configuration->getString('time');
 
         $startDate = $activity->getStartDate();
         $activityMinutes = 60 * (int) $startDate->format('H') + (int) $startDate->format('i');

@@ -15,6 +15,11 @@ final readonly class MarkAsCommuteAction implements Action
         return $translator->trans('Mark as commute', domain: 'admin', locale: $locale);
     }
 
+    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    {
+        return $translator->trans('Mark as commute', domain: 'admin');
+    }
+
     public function getPriority(): int
     {
         return 20;
@@ -27,9 +32,7 @@ final readonly class MarkAsCommuteAction implements Action
 
     public function getDefaultConfiguration(): RuleConfiguration
     {
-        return RuleConfiguration::fromConfig([
-            'isCommute' => true,
-        ]);
+        return RuleConfiguration::empty();
     }
 
     public function guardValidConfiguration(RuleConfiguration $configuration): void
@@ -38,6 +41,6 @@ final readonly class MarkAsCommuteAction implements Action
 
     public function applyTo(Activity $activity, RuleConfiguration $configuration): Activity
     {
-        return $activity->withCommute((bool) $configuration->get('isCommute'));
+        return $activity->withCommute(true);
     }
 }

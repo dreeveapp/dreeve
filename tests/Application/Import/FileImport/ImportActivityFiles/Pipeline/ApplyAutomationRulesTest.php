@@ -11,6 +11,7 @@ use App\Domain\Automation\Action\ActionType;
 use App\Domain\Automation\Action\ConfiguredAction\ConfiguredAction;
 use App\Domain\Automation\Action\ConfiguredAction\ConfiguredActions;
 use App\Domain\Automation\AutomationRuleEngine;
+use App\Domain\Automation\AutomationRuleMatcher;
 use App\Domain\Automation\Condition\Conditions;
 use App\Domain\Automation\Condition\ConditionType;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredCondition;
@@ -68,7 +69,7 @@ class ApplyAutomationRulesTest extends ContainerTestCase
         $this->applyAutomationRules = new ApplyAutomationRules(
             new AutomationRuleEngine(
                 $this->repository,
-                new Conditions([new DistanceCondition()]),
+                new AutomationRuleMatcher(new Conditions([new DistanceCondition()])),
                 new Actions([new SetNameAction()]),
             ),
         );

@@ -16,6 +16,14 @@ final readonly class DistanceCondition implements Condition
         return $translator->trans('Distance', domain: 'admin', locale: $locale);
     }
 
+    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    {
+        return $translator->trans('Distance {operator} {value} km', [
+            'operator' => ComparisonOperator::from($configuration->getString('operator'))->trans($translator),
+            'value' => (string) (float) $configuration->getNumber('value'),
+        ], 'admin');
+    }
+
     public function getPriority(): int
     {
         return 30;
@@ -49,9 +57,8 @@ final readonly class DistanceCondition implements Condition
 
     public function matches(Activity $activity, RuleConfiguration $configuration): bool
     {
-        $operator = $configuration->get('operator');
-        $value = $configuration->get('value');
-        assert(is_string($operator) && (is_int($value) || is_float($value)));
+        $operator = $configuration->getString('operator');
+        $value = $configuration->getNumber('value');
 
         return ComparisonOperator::from($operator)->isSatisfiedBy(
             actual: $activity->getDistance()->toFloat(),

@@ -32,6 +32,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('No automation rules yet.', $crawler->filter('body')->text());
         $this->assertCount(0, $crawler->filter('[data-sortable-list]'));
+        $this->assertCount(0, $crawler->filter('a[href*="automation-rules/test"]'));
     }
 
     public function testItRendersTheRulesWithTheirConditionsActionsAndState(): void
@@ -71,6 +72,8 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $crawler = $this->client->request('GET', '/admin/settings/automation-rules');
 
         $this->assertResponseIsSuccessful();
+
+        $this->assertCount(1, $crawler->filter('a[href*="automation-rules/test"]'));
 
         $list = $crawler->filter('[data-sortable-list]');
         $this->assertCount(1, $list);

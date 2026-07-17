@@ -45,6 +45,43 @@ final class RuleConfiguration implements \JsonSerializable
         return $this->configuration[$key] ?? $default;
     }
 
+    public function getString(string $key): string
+    {
+        if (!array_key_exists($key, $this->configuration)) {
+            throw new \InvalidArgumentException(sprintf('Configuration value %s is missing', $key));
+        }
+        if (!is_string($this->configuration[$key])) {
+            throw new \InvalidArgumentException(sprintf('Configuration value %s is not a string', $key));
+        }
+
+        return $this->configuration[$key];
+    }
+
+    public function getNumber(string $key): int|float
+    {
+        if (!array_key_exists($key, $this->configuration)) {
+            throw new \InvalidArgumentException(sprintf('Configuration value %s is missing', $key));
+        }
+        if (!is_int($this->configuration[$key]) && !is_float($this->configuration[$key])) {
+            throw new \InvalidArgumentException(sprintf('Configuration value %s is not a number', $key));
+        }
+
+        return $this->configuration[$key];
+    }
+
+    /**
+     * @return array<int, mixed>
+     */
+    public function getArray(string $key): array
+    {
+        $value = $this->configuration[$key] ?? [];
+        if (!is_array($value)) {
+            throw new \InvalidArgumentException(sprintf('Configuration value %s is not an array', $key));
+        }
+
+        return array_values($value);
+    }
+
     /**
      * @return array<string, mixed>
      */

@@ -13,10 +13,10 @@ class MarkAsCommuteActionTest extends TestCase
 {
     private MarkAsCommuteAction $action;
 
-    public function testDefaultConfiguration(): void
+    public function testDefaultConfigurationIsEmpty(): void
     {
         $this->assertSame(
-            ['isCommute' => true],
+            [],
             $this->action->getDefaultConfiguration()->toArray()
         );
     }
@@ -25,24 +25,15 @@ class MarkAsCommuteActionTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['isCommute' => false]));
+        $this->action->guardValidConfiguration(RuleConfiguration::empty());
     }
 
-    public function testApplyToMarksActivityAsCommute(): void
+    public function testApplyToAlwaysMarksActivityAsCommute(): void
     {
-        $activity = ActivityBuilder::fromDefaults()->build();
+        $activity = ActivityBuilder::fromDefaults()->withIsCommute(false)->build();
 
         $this->assertTrue(
-            $this->action->applyTo($activity, RuleConfiguration::fromConfig(['isCommute' => true]))->isCommute()
-        );
-    }
-
-    public function testApplyToUnmarksActivityAsCommute(): void
-    {
-        $activity = ActivityBuilder::fromDefaults()->build();
-
-        $this->assertFalse(
-            $this->action->applyTo($activity, RuleConfiguration::fromConfig(['isCommute' => false]))->isCommute()
+            $this->action->applyTo($activity, RuleConfiguration::empty())->isCommute()
         );
     }
 

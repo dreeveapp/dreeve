@@ -43,6 +43,13 @@ abstract readonly class Identifier extends NonEmptyStringLiteral implements \Jso
         return static::fromUnprefixed($unprefixed);
     }
 
+    public static function fromPrefixedOrUnprefixed(string $value): static
+    {
+        return str_starts_with($value, static::getPrefix())
+            ? static::fromString($value)
+            : static::fromUnprefixed($value);
+    }
+
     public static function random(): static
     {
         return static::fromString(static::getPrefix().new RandomUuidFactory()->random());

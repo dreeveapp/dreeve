@@ -17,6 +17,17 @@ final readonly class SportTypeCondition implements Condition
         return $translator->trans('Sport type', domain: 'admin', locale: $locale);
     }
 
+    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    {
+        return $translator->trans('Sport type {operator} {sportTypes}', [
+            'operator' => MatchOperator::from($configuration->getString('operator'))->trans($translator),
+            'sportTypes' => implode(', ', array_map(
+                static fn (mixed $sportType): string => SportType::from((string) $sportType)->trans($translator),
+                $configuration->getArray('sportTypes'),
+            )),
+        ], 'admin');
+    }
+
     public function getPriority(): int
     {
         return 20;
@@ -56,9 +67,8 @@ final readonly class SportTypeCondition implements Condition
 
     public function matches(Activity $activity, RuleConfiguration $configuration): bool
     {
-        $operator = $configuration->get('operator');
-        $sportTypes = $configuration->get('sportTypes');
-        assert(is_string($operator) && is_array($sportTypes));
+        $operator = $configuration->getString('operator');
+        $sportTypes = $configuration->getArray('sportTypes');
 
         return MatchOperator::from($operator)->isSatisfiedBy(
             in_array($activity->getSportType()->value, $sportTypes, true)

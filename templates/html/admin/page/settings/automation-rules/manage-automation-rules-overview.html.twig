@@ -9,18 +9,25 @@
                     {{ "Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom; the first one that matches wins."|trans({}, 'admin') }}
                 </p>
             </div>
-            <a href="{{ relativeUrl(path('admin_add_automation_rule')) }}" type="button" class="btn--add">
-                <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
-                </svg>
-                <span>{{ "Add rule"|trans({}, 'admin') }}</span>
-            </a>
+            <div class="flex items-center gap-2">
+                {% if not automationRules.isEmpty() %}
+                    <a href="{{ relativeUrl(path('admin_test_automation_rules')) }}" type="button" class="btn--secondary">
+                        <span>{{ "Test rules"|trans({}, 'admin') }}</span>
+                    </a>
+                {% endif %}
+                <a href="{{ relativeUrl(path('admin_add_automation_rule')) }}" type="button" class="btn--add">
+                    <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                    </svg>
+                    <span>{{ "Add rule"|trans({}, 'admin') }}</span>
+                </a>
+            </div>
         </div>
 
         {% if automationRules.isEmpty() %}
             <div class="flex flex-col items-center justify-center gap-1 py-12 px-4 text-center">
                 <span class="text-sm font-medium text-gray-800">{{ "No automation rules yet."|trans({}, 'admin') }}</span>
-                <span class="text-xs text-gray-500">{{ "Add a rule to start automating your imports."|trans({}, 'admin') }}</span>
+                <span class="text-xs text-gray-500">{{ "Add a rule to start automating your activity details."|trans({}, 'admin') }}</span>
             </div>
         {% else %}
             <div class="flex items-center justify-end mb-2">
@@ -43,22 +50,10 @@
                                     <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xxs font-medium text-gray-500">{{ "Disabled"|trans({}, 'admin') }}</span>
                                 {% endif %}
                             </div>
-                            <div class="mt-2 flex flex-col gap-1.5 text-xs text-gray-600 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1">
-                                <div class="flex flex-wrap items-center gap-1">
-                                    <span class="text-xxs font-semibold tracking-wide uppercase text-gray-400">{{ "If"|trans({}, 'admin') }}</span>
-                                    {% for condition in rule.getConditions() %}
-                                        <span class="font-bold">{{ conditions[condition.getType().value] ? conditions[condition.getType().value]|trans : condition.getType().value }}</span>
-                                        {% if not loop.last %}<span class="text-gray-400">{{ "and"|trans({}, 'admin') }}</span>{% endif %}
-                                    {% endfor %}
-                                </div>
-                                <div class="flex flex-wrap items-center gap-1">
-                                    <span class="text-xxs font-semibold uppercase tracking-wide text-gray-400">{{ "then"|trans({}, 'admin') }}</span>
-                                    {% for action in rule.getActions() %}
-                                        <span class="font-bold">{{ actions[action.getType().value] ? actions[action.getType().value]|trans : action.getType().value }}</span>
-                                        {% if not loop.last %}<span class="text-gray-400">{{ "and"|trans({}, 'admin') }}</span>{% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
+                            {% include 'html/admin/page/settings/automation-rules/_rule-summary.html.twig' with {
+                                conditions: rule.getConditions(),
+                                actions: rule.getActions(),
+                            } only %}
                         </div>
                         <div class="inline-flex shrink-0 items-center gap-2">
                             <a href="{{ relativeUrl(path('admin_edit_automation_rule', {id: rule.getId()})) }}" class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-primary" title="{{ "Edit"|trans({}, 'admin') }}">

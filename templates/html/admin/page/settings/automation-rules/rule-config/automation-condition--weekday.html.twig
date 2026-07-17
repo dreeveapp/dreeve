@@ -1,12 +1,3 @@
-{% set weekdayNames = {
-    '1': 'Monday'|trans({}, 'admin'),
-    '2': 'Tuesday'|trans({}, 'admin'),
-    '3': 'Wednesday'|trans({}, 'admin'),
-    '4': 'Thursday'|trans({}, 'admin'),
-    '5': 'Friday'|trans({}, 'admin'),
-    '6': 'Saturday'|trans({}, 'admin'),
-    '7': 'Sunday'|trans({}, 'admin'),
-} %}
 <div>
     <label class="mt-0! text-xs">{{ "Operator"|trans({}, 'admin') }}</label>
     <select name="{{ namePrefix }}[operator]" data-repeater-field="config.operator" class="mt-0">
@@ -18,10 +9,10 @@
 <div class="mt-2" data-required-checkbox-group="{{ "Select at least one weekday."|trans({}, 'admin') }}">
     <label class="mt-0! text-xs">{{ "Weekdays"|trans({}, 'admin') }}</label>
     <div class="mt-1 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-4">
-        {% for value, name in weekdayNames %}
+        {% for weekday in enum('App\\Domain\\Automation\\Condition\\WeekDay').cases() %}
             <label class="flex items-center gap-2 text-sm cursor-pointer min-w-0">
-                <input type="checkbox" name="{{ namePrefix }}[weekdays][]" value="{{ value }}" data-repeater-field="config.weekdays">
-                <span class="truncate min-w-0">{{ name }}</span>
+                <input type="checkbox" name="{{ namePrefix }}[weekdays][]" value="{{ weekday.value }}" data-repeater-field="config.weekdays">
+                <span class="truncate min-w-0">{{ weekday|trans }}</span>
             </label>
         {% endfor %}
     </div>

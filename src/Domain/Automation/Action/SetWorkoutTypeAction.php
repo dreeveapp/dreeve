@@ -17,6 +17,13 @@ final readonly class SetWorkoutTypeAction implements Action
         return $translator->trans('Set workout type', domain: 'admin', locale: $locale);
     }
 
+    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    {
+        return $translator->trans('Set workout type to {workoutType}', [
+            'workoutType' => WorkoutType::from($configuration->getString('workoutType'))->trans($translator),
+        ], 'admin');
+    }
+
     public function getPriority(): int
     {
         return 40;
@@ -44,8 +51,7 @@ final readonly class SetWorkoutTypeAction implements Action
 
     public function applyTo(Activity $activity, RuleConfiguration $configuration): Activity
     {
-        $workoutType = $configuration->get('workoutType');
-        assert(is_string($workoutType));
+        $workoutType = $configuration->getString('workoutType');
 
         return $activity->withWorkoutType(WorkoutType::from($workoutType));
     }

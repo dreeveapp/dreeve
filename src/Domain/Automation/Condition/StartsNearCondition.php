@@ -17,6 +17,15 @@ final readonly class StartsNearCondition implements Condition
         return $translator->trans('Starts near', domain: 'admin', locale: $locale);
     }
 
+    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    {
+        return $translator->trans(
+            id: 'Starts {operator} {radius} km of {latitude}, {longitude}',
+            parameters: $this->proximityDescriptionParameters($configuration, $translator),
+            domain: 'admin',
+        );
+    }
+
     public function getPriority(): int
     {
         return 60;

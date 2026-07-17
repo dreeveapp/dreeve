@@ -8,9 +8,23 @@ use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\GeoMath;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 trait MatchesCoordinateWithinRadius
 {
+    /**
+     * @return array<string, string>
+     */
+    private function proximityDescriptionParameters(RuleConfiguration $configuration, TranslatorInterface $translator): array
+    {
+        return [
+            'operator' => MatchOperator::from($configuration->getString('operator'))->trans($translator),
+            'radius' => (string) (float) $configuration->getNumber('radius'),
+            'latitude' => (string) (float) $configuration->getNumber('latitude'),
+            'longitude' => (string) (float) $configuration->getNumber('longitude'),
+        ];
+    }
+
     public function getDefaultConfiguration(): RuleConfiguration
     {
         return RuleConfiguration::fromConfig([
@@ -50,14 +64,10 @@ trait MatchesCoordinateWithinRadius
             return false;
         }
 
-        $operator = $configuration->get('operator');
-        $latitude = $configuration->get('latitude');
-        $longitude = $configuration->get('longitude');
-        $radius = $configuration->get('radius');
-        assert(is_string($operator)
-            && (is_int($latitude) || is_float($latitude))
-            && (is_int($longitude) || is_float($longitude))
-            && (is_int($radius) || is_float($radius)));
+        $operator = $configuration->getString('operator');
+        $latitude = $configuration->getNumber('latitude');
+        $longitude = $configuration->getNumber('longitude');
+        $radius = $configuration->getNumber('radius');
 
         $distanceInMeters = GeoMath::haversineDistance(
             lat1: (float) $latitude,

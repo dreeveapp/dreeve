@@ -15,6 +15,13 @@ final readonly class SetDescriptionAction implements Action
         return $translator->trans('Set description', domain: 'admin', locale: $locale);
     }
 
+    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    {
+        return $translator->trans('Set description to {description}', [
+            'description' => $configuration->getString('description'),
+        ], 'admin');
+    }
+
     public function getPriority(): int
     {
         return 60;
@@ -38,8 +45,7 @@ final readonly class SetDescriptionAction implements Action
 
     public function applyTo(Activity $activity, RuleConfiguration $configuration): Activity
     {
-        $description = $configuration->get('description');
-        assert(is_string($description));
+        $description = $configuration->getString('description');
 
         return $activity->withDescription($description);
     }

@@ -17,6 +17,13 @@ final readonly class SetSportTypeAction implements Action
         return $translator->trans('Set sport type', domain: 'admin', locale: $locale);
     }
 
+    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    {
+        return $translator->trans('Set sport type to {sportType}', [
+            'sportType' => SportType::from($configuration->getString('sportType'))->trans($translator),
+        ], 'admin');
+    }
+
     public function getPriority(): int
     {
         return 30;
@@ -44,8 +51,7 @@ final readonly class SetSportTypeAction implements Action
 
     public function applyTo(Activity $activity, RuleConfiguration $configuration): Activity
     {
-        $sportType = $configuration->get('sportType');
-        assert(is_string($sportType));
+        $sportType = $configuration->getString('sportType');
 
         return $activity->withSportType(SportType::from($sportType));
     }

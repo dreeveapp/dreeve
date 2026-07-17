@@ -31,4 +31,12 @@ class IdentifierTest extends TestCase
         $identifier = DummyIdentifier::fromString('dummy-dummy-test');
         $this->assertEquals('dummy-test', $identifier->toUnprefixedString());
     }
+
+    public function testFromPrefixedOrUnprefixed(): void
+    {
+        $this->assertEquals(
+            DummyIdentifier::fromPrefixedOrUnprefixed('test'),
+            DummyIdentifier::fromPrefixedOrUnprefixed('dummy-test')
+        );
+    }
 }

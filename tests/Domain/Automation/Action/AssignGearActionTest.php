@@ -8,11 +8,13 @@ use App\Domain\Automation\Action\AssignGearAction;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Gear\GearId;
+use App\Domain\Gear\GearRepository;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use PHPUnit\Framework\TestCase;
 
 class AssignGearActionTest extends TestCase
 {
+    private GearRepository $gearRepository;
     private AssignGearAction $action;
 
     public function testDefaultConfiguration(): void
@@ -56,6 +58,7 @@ class AssignGearActionTest extends TestCase
     {
         parent::setUp();
 
-        $this->action = new AssignGearAction();
+        $this->gearRepository = $this->createStub(GearRepository::class);
+        $this->action = new AssignGearAction($this->gearRepository);
     }
 }

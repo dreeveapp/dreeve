@@ -59,3 +59,21 @@ To assign your commuter bike to short rides recorded with a specific device:
 3. Add conditions: **Recording device** _is_ `garmin-edge-130`, and **Distance** _less than_ `10`.
 4. Add actions: **Assign gear** → your commuter bike, and **Mark as commute**.
 5. Save. The next matching file import is tagged automatically.
+
+## Testing rules
+
+Not sure a rule will fire the way you expect? Use **Test rules** (top-right of the **Automation rules**
+overview) to dry-run your rules against an **existing** activity — nothing is saved, and the activity is
+never modified.
+
+Enter an activity id and the page shows, for every rule:
+
+* each condition with a **✓** (matched) or **✗** (did not match) against that activity, so you can see
+  exactly *why* a rule did or didn't apply;
+* the **winning** rule (the first enabled rule whose conditions all match) highlighted with an **Applies**
+  badge;
+* rules after the winner marked **Skipped**, mirroring the first-match-wins order used during import;
+* each rule's actions with the value they would set (e.g. _Set name (Morning commute)_,
+  _Assign gear (Gravel bike)_).
+
+It's the quickest way to debug a rule that isn't behaving, without re-importing anything.

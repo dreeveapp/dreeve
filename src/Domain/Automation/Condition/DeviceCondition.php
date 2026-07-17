@@ -8,13 +8,36 @@ use App\Domain\Activity\Activity;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
+use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
+use App\Infrastructure\Exception\EntityNotFound;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class DeviceCondition implements Condition
 {
+    public function __construct(
+        private RecordingDeviceRepository $recordingDeviceRepository,
+    ) {
+    }
+
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
         return $translator->trans('Recording device', domain: 'admin', locale: $locale);
+    }
+
+    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    {
+        $deviceId = $configuration->getString('deviceId');
+
+        try {
+            $device = $this->recordingDeviceRepository->find(RecordingDeviceId::fromUnprefixed($deviceId))->getName();
+        } catch (EntityNotFound) {
+            $device = $deviceId;
+        }
+
+        return $translator->trans('Recording device {operator} {device}', [
+            'operator' => MatchOperator::from($configuration->getString('operator'))->trans($translator),
+            'device' => $device,
+        ], 'admin');
     }
 
     public function getPriority(): int
@@ -50,9 +73,8 @@ final readonly class DeviceCondition implements Condition
 
     public function matches(Activity $activity, RuleConfiguration $configuration): bool
     {
-        $operator = $configuration->get('operator');
-        $deviceId = $configuration->get('deviceId');
-        assert(is_string($operator) && is_string($deviceId));
+        $operator = $configuration->getString('operator');
+        $deviceId = $configuration->getString('deviceId');
 
         $deviceName = $activity->getDeviceName();
         $activityMatchesDevice = null !== $deviceName

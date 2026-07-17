@@ -8,6 +8,7 @@ use App\Domain\Activity\Activity;
 use App\Domain\Automation\RuleConfiguration;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Contracts\Translation\TranslatableInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AutoconfigureTag('app.automation_rule.condition')]
 interface Condition extends TranslatableInterface
@@ -21,4 +22,6 @@ interface Condition extends TranslatableInterface
     public function guardValidConfiguration(RuleConfiguration $configuration): void;
 
     public function matches(Activity $activity, RuleConfiguration $configuration): bool;
+
+    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string;
 }

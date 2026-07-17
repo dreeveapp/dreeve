@@ -1,0 +1,79 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block main %}
+    {% autoescape false %}
+    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <div class="mb-4">
+            <h3 class="text-lg font-semibold">{{ "Test automation rules"|trans({}, 'admin') }}</h3>
+            <p class="mt-1 text-sm text-gray-500">
+                {{ "Enter an existing activity to preview which rule would apply and what it would change. Nothing is saved."|trans({}, 'admin') }}
+            </p>
+        </div>
+        <form method="GET" action="{{ relativeUrl(path('admin_test_automation_rules')) }}" class="flex flex-col gap-2 sm:flex-row sm:items-end">
+            <div class="flex-1">
+                <label for="activityId" class="block text-sm font-medium text-gray-700">{{ "Activity ID"|trans({}, 'admin') }}</label>
+                <input type="text" id="activityId" name="activityId" value="{{ activityId }}" placeholder="{{ "Activity ID"|trans({}, 'admin') }}" required>
+            </div>
+            <button type="submit" class="btn--add">
+                <span>{{ "Test rules"|trans({}, 'admin') }}</span>
+            </button>
+        </form>
+        {% if notFound %}
+            <div class="mt-4 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700" role="alert">
+                <svg class="size-5 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+                <span>{{ "No activity found for that ID."|trans({}, 'admin') }}</span>
+            </div>
+        {% endif %}
+        {% if dryRun %}
+            {% set activity = dryRun.getActivity() %}
+            <div class="mt-4 rounded-lg border border-gray-200 bg-gray-50 p-3">
+                <div class="flex items-center gap-2">
+                    <span class="font-medium text-gray-800 truncate">{{ activity.getName() }}</span>
+                    {% if dryRun.hasWinner() %}
+                        <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xxs font-medium text-green-700">{{ "A rule applies"|trans({}, 'admin') }}</span>
+                    {% else %}
+                        <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xxs font-medium text-gray-500">{{ "No rule applies"|trans({}, 'admin') }}</span>
+                    {% endif %}
+                </div>
+                <div class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-600">
+                    <span>{{ activity.getSportType()|trans }}</span>
+                    <span>{{ activity.getDistance()|renderMeasurement(0) }}</span>
+                    <span>{{ activity.getStartDate()|formatDate() }}</span>
+                    {% if activity.getGearName() %}<span>{{ activity.getGearName() }}</span>{% endif %}
+                    {% if activity.getDeviceName() %}<span>{{ activity.getDeviceName() }}</span>{% endif %}
+                </div>
+            </div>
+            {% if dryRun.getRuleResults() is empty %}
+                <div class="mt-4 flex flex-col items-center justify-center gap-1 py-12 px-4 text-center">
+                    <span class="text-sm font-medium text-gray-800">{{ "No automation rules yet."|trans({}, 'admin') }}</span>
+                    <span class="text-xs text-gray-500">{{ "Add a rule to start automating your activity details."|trans({}, 'admin') }}</span>
+                </div>
+            {% else %}
+                <div class="mt-4 flex flex-col gap-2">
+                    {% for result in dryRun.getRuleResults() %}
+                        <div class="rounded-lg border p-3 shadow-xs {{ result.isWinner() ? 'border-green-600 ring-1 ring-green-600 bg-white' : 'border-gray-200 bg-white' }} {{ not result.isWinner() ? 'opacity-60' }}">
+                            <div class="flex items-center gap-2">
+                                <span class="font-medium text-gray-800 truncate">{{ result.getLabel() }}</span>
+                                {% if result.isEnabled() %}
+                                    <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xxs font-medium text-green-600">{{ "Enabled"|trans({}, 'admin') }}</span>
+                                {% else %}
+                                    <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xxs font-medium text-gray-500">{{ "Disabled"|trans({}, 'admin') }}</span>
+                                {% endif %}
+                            </div>
+                            {% if not result.wasEvaluated() %}
+                                <p class="mt-1 text-xs italic text-gray-400">{{ "Skipped (an earlier rule already matched)."|trans({}, 'admin') }}</p>
+                            {% endif %}
+                            {% include 'html/admin/page/settings/automation-rules/_rule-summary.html.twig' with {
+                                conditions: result.getConditionResults(),
+                                actions: result.getConfiguredActions(),
+                                showConditionState: result.wasEvaluated(),
+                            } only %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+    {% endautoescape %}
+{% endblock main %}

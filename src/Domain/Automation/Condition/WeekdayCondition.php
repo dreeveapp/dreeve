@@ -16,6 +16,17 @@ final readonly class WeekdayCondition implements Condition
         return $translator->trans('Weekday', domain: 'admin', locale: $locale);
     }
 
+    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    {
+        return $translator->trans('Weekday {operator} {weekdays}', [
+            'operator' => MatchOperator::from($configuration->getString('operator'))->trans($translator),
+            'weekdays' => implode(', ', array_map(
+                fn (mixed $weekday): string => WeekDay::from((int) $weekday)->trans($translator),
+                $configuration->getArray('weekdays'),
+            )),
+        ], 'admin');
+    }
+
     public function getPriority(): int
     {
         return 40;
@@ -48,7 +59,7 @@ final readonly class WeekdayCondition implements Condition
 
         foreach ($weekdays as $weekday) {
             $isValidIsoWeekday = (is_int($weekday) || (is_string($weekday) && ctype_digit($weekday)))
-                && (int) $weekday >= 1 && (int) $weekday <= 7;
+                && null !== WeekDay::tryFrom((int) $weekday);
             if (!$isValidIsoWeekday) {
                 throw new InvalidAutomationRule(sprintf('Invalid weekday "%s", expected 1 (Monday) through 7 (Sunday).', is_scalar($weekday) ? (string) $weekday : ''));
             }
@@ -57,12 +68,11 @@ final readonly class WeekdayCondition implements Condition
 
     public function matches(Activity $activity, RuleConfiguration $configuration): bool
     {
-        $operator = $configuration->get('operator');
-        $weekdays = $configuration->get('weekdays');
-        assert(is_string($operator) && is_array($weekdays));
+        $operator = $configuration->getString('operator');
+        $weekdays = $configuration->getArray('weekdays');
 
-        $activityWeekday = (int) $activity->getStartDate()->format('N');
-        $activityIsOnAConfiguredWeekday = in_array($activityWeekday, array_map(static fn (mixed $weekday): int => (int) $weekday, $weekdays), true);
+        $activityWeekday = $activity->getStartDate()->getDayOfTheWeek();
+        $activityIsOnAConfiguredWeekday = in_array($activityWeekday, array_map('intval', $weekdays), true);
 
         return MatchOperator::from($operator)->isSatisfiedBy($activityIsOnAConfiguredWeekday);
     }

@@ -18,6 +18,11 @@ final readonly class SetNameAction implements Action
         return $translator->trans('Set name', domain: 'admin', locale: $locale);
     }
 
+    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    {
+        return $translator->trans('Set name', domain: 'admin', locale: $locale);
+    }
+
     public function getPriority(): int
     {
         return 10;

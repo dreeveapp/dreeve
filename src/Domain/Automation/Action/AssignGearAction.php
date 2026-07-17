@@ -8,13 +8,35 @@ use App\Domain\Activity\Activity;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Gear\GearId;
+use App\Domain\Gear\GearRepository;
+use App\Infrastructure\Exception\EntityNotFound;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class AssignGearAction implements Action
 {
+    public function __construct(
+        private GearRepository $gearRepository,
+    ) {
+    }
+
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
         return $translator->trans('Assign gear', domain: 'admin', locale: $locale);
+    }
+
+    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    {
+        $gearId = $configuration->getString('gearId');
+
+        try {
+            $gear = $this->gearRepository->find(GearId::fromString($gearId))->getName();
+        } catch (EntityNotFound) {
+            $gear = $gearId;
+        }
+
+        return $translator->trans('Assign gear {gear}', [
+            'gear' => $gear,
+        ], domain: 'admin');
     }
 
     public function getPriority(): int
@@ -44,8 +66,7 @@ final readonly class AssignGearAction implements Action
 
     public function applyTo(Activity $activity, RuleConfiguration $configuration): Activity
     {
-        $gearId = $configuration->get('gearId');
-        assert(is_string($gearId));
+        $gearId = $configuration->getString('gearId');
 
         return $activity->withGear(GearId::fromString($gearId));
     }
