@@ -1,7 +1,7 @@
 # Automation rules
 
 Automation rules let you automatically fill in details on newly imported activities, straight from the
-admin panel — no YAML required. Each rule is a list of **conditions** and a list of **actions**:
+admin panel, no YAML required. Each rule is a list of **conditions** and a list of **actions**:
 
 - **Tracked with device X → assign gear Y**
 - **Tracked with device Y _and_ shorter than 10 km → mark as commute**
@@ -14,13 +14,13 @@ admin panel — no YAML required. Each rule is a list of **conditions** and a li
 
 ## How it works
 
-* Rules run **only against newly imported activities**. They fill in blanks — gear, commute flag,
-  sport type, workout type, name and description — that the raw activity file doesn't already provide.
+* Rules run **only against newly imported activities**. They fill in blanks (gear, commute flag,
+  sport type, workout type, name and description) that the raw activity file doesn't already provide.
 * Rules are evaluated **top to bottom**. The **first** rule whose conditions **all** match fires its
   actions, and evaluation stops. Drag rules to change their order.
 * All conditions within a rule are combined with **AND**. A rule needs at least one condition and at
   least one action.
-* Only **enabled** rules run. Existing, already-imported activities are never touched — saving a rule
+* Only **enabled** rules run. Existing, already-imported activities are never touched; saving a rule
   only affects future imports.
 
 ## Conditions
@@ -63,7 +63,7 @@ To assign your commuter bike to short rides recorded with a specific device:
 ## Testing rules
 
 Not sure a rule will fire the way you expect? Use **Test rules** (top-right of the **Automation rules**
-overview) to dry-run your rules against an **existing** activity — nothing is saved, and the activity is
+overview) to dry-run your rules against an **existing** activity. Nothing is saved, and the activity is
 never modified.
 
 Enter an activity id and the page shows, for every rule:

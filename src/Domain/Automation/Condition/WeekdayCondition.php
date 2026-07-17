@@ -72,7 +72,7 @@ final readonly class WeekdayCondition implements Condition
         $weekdays = $configuration->getArray('weekdays');
 
         $activityWeekday = $activity->getStartDate()->getDayOfTheWeek();
-        $activityIsOnAConfiguredWeekday = in_array($activityWeekday, array_map('intval', $weekdays), true);
+        $activityIsOnAConfiguredWeekday = in_array($activityWeekday, array_map(intval(...), $weekdays), true);
 
         return MatchOperator::from($operator)->isSatisfiedBy($activityIsOnAConfiguredWeekday);
     }
