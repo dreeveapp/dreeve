@@ -83,6 +83,12 @@ class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Name my rides', $body);
         $this->assertStringContainsString('A rule applies', $body);
         $this->assertStringContainsString('Automated ride name', $body);
+
+        $matchedConditionPills = $crawler->filter('.rounded-full.bg-green-100')->reduce(
+            fn ($node): bool => str_contains($node->text(), 'is one of Ride'),
+        );
+        $this->assertCount(1, $matchedConditionPills);
+        $this->assertStringContainsString('Sport type', $matchedConditionPills->text());
     }
 
     public function testItRendersANotFoundErrorForAnUnknownActivityId(): void

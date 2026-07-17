@@ -17,9 +17,9 @@ final readonly class DeviceCondition implements Condition
         return $translator->trans('Recorded with device', domain: 'admin', locale: $locale);
     }
 
-    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): ?string
     {
-        return $translator->trans('Recorded with device', domain: 'admin', locale: $locale);
+        return (string) $configuration->get('deviceName');
     }
 
     public function getPriority(): int

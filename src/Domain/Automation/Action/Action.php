@@ -23,5 +23,5 @@ interface Action extends TranslatableInterface
 
     public function applyTo(Activity $activity, RuleConfiguration $configuration): Activity;
 
-    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string;
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): ?string;
 }

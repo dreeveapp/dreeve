@@ -21,27 +21,47 @@ final readonly class AutomationTwigExtension
     ) {
     }
 
-    #[AsTwigFunction('describe_condition')]
-    public function describeCondition(ConditionType $type, RuleConfiguration $configuration): string
+    #[AsTwigFunction('describe_condition_type')]
+    public function describeConditionType(ConditionType $type): string
     {
         if (!$this->conditions->has($type)) {
             return $type->value;
         }
 
-        return $this->conditions->get($type)->describe(
+        return $this->conditions->get($type)->trans($this->translator);
+    }
+
+    #[AsTwigFunction('describe_condition_value')]
+    public function describeConditionValue(ConditionType $type, RuleConfiguration $configuration): ?string
+    {
+        if (!$this->conditions->has($type)) {
+            return null;
+        }
+
+        return $this->conditions->get($type)->describeValue(
             translator: $this->translator,
             configuration: $configuration
         );
     }
 
-    #[AsTwigFunction('describe_action')]
-    public function describeAction(ActionType $type, RuleConfiguration $configuration): string
+    #[AsTwigFunction('describe_action_type')]
+    public function describeActionType(ActionType $type): string
     {
         if (!$this->actions->has($type)) {
             return $type->value;
         }
 
-        return $this->actions->get($type)->describe(
+        return $this->actions->get($type)->trans($this->translator);
+    }
+
+    #[AsTwigFunction('describe_action_value')]
+    public function describeActionValue(ActionType $type, RuleConfiguration $configuration): ?string
+    {
+        if (!$this->actions->has($type)) {
+            return null;
+        }
+
+        return $this->actions->get($type)->describeValue(
             translator: $this->translator,
             configuration: $configuration
         );

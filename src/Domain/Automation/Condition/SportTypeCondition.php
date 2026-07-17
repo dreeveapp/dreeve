@@ -17,15 +17,16 @@ final readonly class SportTypeCondition implements Condition
         return $translator->trans('Sport type', domain: 'admin', locale: $locale);
     }
 
-    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): string
     {
-        return $translator->trans('Sport type {operator} {sportTypes}', [
-            'operator' => MatchOperator::from($configuration->getString('operator'))->trans($translator),
-            'sportTypes' => implode(', ', array_map(
+        return sprintf(
+            '%s %s',
+            MatchOperator::from($configuration->getString('operator'))->trans($translator),
+            implode(', ', array_map(
                 static fn (mixed $sportType): string => SportType::from((string) $sportType)->trans($translator),
                 $configuration->getArray('sportTypes'),
             )),
-        ], 'admin');
+        );
     }
 
     public function getPriority(): int

@@ -24,7 +24,7 @@ final readonly class DeviceCondition implements Condition
         return $translator->trans('Recording device', domain: 'admin', locale: $locale);
     }
 
-    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): string
     {
         $deviceId = $configuration->getString('deviceId');
 
@@ -34,10 +34,11 @@ final readonly class DeviceCondition implements Condition
             $device = $deviceId;
         }
 
-        return $translator->trans('Recording device {operator} {device}', [
-            'operator' => MatchOperator::from($configuration->getString('operator'))->trans($translator),
-            'device' => $device,
-        ], 'admin');
+        return sprintf(
+            '%s %s',
+            MatchOperator::from($configuration->getString('operator'))->trans($translator),
+            $device,
+        );
     }
 
     public function getPriority(): int

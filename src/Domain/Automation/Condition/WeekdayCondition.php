@@ -16,15 +16,16 @@ final readonly class WeekdayCondition implements Condition
         return $translator->trans('Weekday', domain: 'admin', locale: $locale);
     }
 
-    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): string
     {
-        return $translator->trans('Weekday {operator} {weekdays}', [
-            'operator' => MatchOperator::from($configuration->getString('operator'))->trans($translator),
-            'weekdays' => implode(', ', array_map(
+        return sprintf(
+            '%s %s',
+            MatchOperator::from($configuration->getString('operator'))->trans($translator),
+            implode(', ', array_map(
                 fn (mixed $weekday): string => WeekDay::from((int) $weekday)->trans($translator),
                 $configuration->getArray('weekdays'),
             )),
-        ], 'admin');
+        );
     }
 
     public function getPriority(): int

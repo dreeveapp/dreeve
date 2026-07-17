@@ -15,9 +15,9 @@ final readonly class MarkAsCommuteAction implements Action
         return $translator->trans('Mark as commute', domain: 'admin', locale: $locale);
     }
 
-    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): ?string
     {
-        return $translator->trans('Mark as commute', domain: 'admin');
+        return null;
     }
 
     public function getPriority(): int

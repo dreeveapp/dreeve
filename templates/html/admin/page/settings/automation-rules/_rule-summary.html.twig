@@ -1,49 +1,53 @@
 {% autoescape false %}
 {% set showConditionState = showConditionState ?? false %}
-{% set isSingleLine = conditions|length == 1 and actions|length == 1 %}
+
+{% macro pill(typeLabel, valueLabel, variant) %}
+    {% set styles = {
+        neutral:   { chip: 'bg-gray-100 text-gray-600',   type: 'bg-gray-200/70 text-gray-700' },
+        matched:   { chip: 'bg-green-100 text-green-600', type: 'bg-green-200/60' },
+        unmatched: { chip: 'bg-red-100 text-red-600',     type: 'bg-red-200/60' },
+    }[variant] %}
+    <span class="inline-flex max-w-full items-center overflow-hidden rounded-full text-xxs font-medium {{ styles.chip }}">
+        <span class="shrink-0 px-2 py-0.5 font-semibold {{ styles.type }}">{{ typeLabel|e }}</span>
+        {% if valueLabel %}<span class="truncate px-2 py-0.5">{{ valueLabel|e }}</span>{% endif %}
+    </span>
+{% endmacro %}
 
 {% macro condition_item(condition, showConditionState) %}
-    {% set conditionLabel = describe_condition(condition.getType(), condition.getConfiguration()) %}
-    {% if showConditionState %}
-        <div class="mx-2 my-1 px-2 py-0.5 rounded-md font-semibold {{ condition.isMatched() ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100' }}">
-            {{ conditionLabel }}
-        </div>
-    {% else %}
-        <div class="mx-2 my-1 text-gray-600 font-semibold">{{ conditionLabel }}</div>
-    {% endif %}
+    {% set variant = showConditionState ? (condition.isMatched() ? 'matched' : 'unmatched') : 'neutral' %}
+    {{ _self.pill(
+        describe_condition_type(condition.getType()),
+        describe_condition_value(condition.getType(), condition.getConfiguration()),
+        variant
+    ) }}
 {% endmacro %}
 
 {% macro action_item(action) %}
-    <div class="mx-2 my-1 text-gray-600 font-semibold">{{ describe_action(action.getType(), action.getConfiguration()) }}</div>
+    {{ _self.pill(
+        describe_action_type(action.getType()),
+        describe_action_value(action.getType(), action.getConfiguration()),
+        'neutral'
+    ) }}
 {% endmacro %}
 
 {% import _self as summary %}
 
-{% if isSingleLine %}
-    <div class="mt-2 flex flex-wrap items-center text-xs">
-        <div class="text-xxs font-semibold tracking-wide uppercase text-gray-400">{{ "If"|trans({}, 'admin') }}</div>
-        {{ summary.condition_item(conditions|first, showConditionState) }}
-        <div class="text-xxs font-semibold uppercase tracking-wide text-gray-400">{{ "then"|trans({}, 'admin') }}</div>
-        {{ summary.action_item(actions|first) }}
-    </div>
-{% else %}
-    <div class="mt-2 flex flex-col gap-1.5 text-xs">
-        <div class="flex items-start gap-1">
-            <div class="w-7 shrink-0 py-1 text-xxs font-semibold tracking-wide uppercase text-gray-400">{{ "If"|trans({}, 'admin') }}</div>
-            <div class="flex flex-col">
-                {% for condition in conditions %}
-                    {{ summary.condition_item(condition, showConditionState) }}
-                {% endfor %}
-            </div>
-        </div>
-        <div class="flex items-start gap-1">
-            <div class="w-7 shrink-0 py-1 text-xxs font-semibold uppercase tracking-wide text-gray-400">{{ "then"|trans({}, 'admin') }}</div>
-            <div class="flex flex-col">
-                {% for action in actions %}
-                    {{ summary.action_item(action) }}
-                {% endfor %}
-            </div>
+<div class="mt-2 flex flex-col gap-1.5 text-xs">
+    <div class="flex items-start gap-1">
+        <div class="w-8 shrink-0 py-0.5 text-xxs font-semibold tracking-wide uppercase text-gray-400">{{ "If"|trans({}, 'admin') }}</div>
+        <div class="flex flex-wrap items-center gap-1.5">
+            {% for condition in conditions %}
+                {{ summary.condition_item(condition, showConditionState) }}
+            {% endfor %}
         </div>
     </div>
-{% endif %}
+    <div class="flex items-start gap-1">
+        <div class="w-8 shrink-0 py-0.5 text-xxs font-semibold uppercase tracking-wide text-gray-400">{{ "then"|trans({}, 'admin') }}</div>
+        <div class="flex flex-wrap items-center gap-1.5">
+            {% for action in actions %}
+                {{ summary.action_item(action) }}
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endautoescape %}

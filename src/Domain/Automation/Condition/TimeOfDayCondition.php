@@ -16,12 +16,13 @@ final readonly class TimeOfDayCondition implements Condition
         return $translator->trans('Time of day', domain: 'admin', locale: $locale);
     }
 
-    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): string
     {
-        return $translator->trans('Time of day {operator} {time}', [
-            'operator' => ComparisonOperator::from($configuration->getString('operator'))->trans($translator),
-            'time' => $configuration->getString('time'),
-        ], 'admin');
+        return sprintf(
+            '%s %s',
+            ComparisonOperator::from($configuration->getString('operator'))->trans($translator),
+            $configuration->getString('time'),
+        );
     }
 
     public function getPriority(): int

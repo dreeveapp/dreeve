@@ -16,9 +16,9 @@ final readonly class SetDescriptionAction implements Action
         return $translator->trans('Set description', domain: 'admin', locale: $locale);
     }
 
-    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): ?string
     {
-        return $translator->trans('Set description', domain: 'admin', locale: $locale);
+        return (string) $configuration->get('description');
     }
 
     public function getPriority(): int

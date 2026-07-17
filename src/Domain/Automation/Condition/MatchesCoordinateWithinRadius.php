@@ -12,17 +12,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 trait MatchesCoordinateWithinRadius
 {
-    /**
-     * @return array<string, string>
-     */
-    private function proximityDescriptionParameters(RuleConfiguration $configuration, TranslatorInterface $translator): array
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): string
     {
-        return [
-            'operator' => MatchOperator::from($configuration->getString('operator'))->trans($translator),
-            'radius' => (string) (float) $configuration->getNumber('radius'),
-            'latitude' => (string) (float) $configuration->getNumber('latitude'),
-            'longitude' => (string) (float) $configuration->getNumber('longitude'),
-        ];
+        return sprintf(
+            '%s %s km (%s, %s)',
+            MatchOperator::from($configuration->getString('operator'))->trans($translator),
+            (float) $configuration->getNumber('radius'),
+            (float) $configuration->getNumber('latitude'),
+            (float) $configuration->getNumber('longitude'),
+        );
     }
 
     public function getDefaultConfiguration(): RuleConfiguration

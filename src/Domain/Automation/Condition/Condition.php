@@ -23,5 +23,5 @@ interface Condition extends TranslatableInterface
 
     public function matches(Activity $activity, RuleConfiguration $configuration): bool;
 
-    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string;
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): ?string;
 }

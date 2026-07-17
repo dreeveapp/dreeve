@@ -24,19 +24,15 @@ final readonly class AssignGearAction implements Action
         return $translator->trans('Assign gear', domain: 'admin', locale: $locale);
     }
 
-    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): string
     {
         $gearId = $configuration->getString('gearId');
 
         try {
-            $gear = $this->gearRepository->find(GearId::fromString($gearId))->getName();
+            return $this->gearRepository->find(GearId::fromString($gearId))->getName();
         } catch (EntityNotFound) {
-            $gear = $gearId;
+            return $gearId;
         }
-
-        return $translator->trans('Assign gear {gear}', [
-            'gear' => $gear,
-        ], domain: 'admin');
     }
 
     public function getPriority(): int

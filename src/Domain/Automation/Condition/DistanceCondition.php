@@ -16,12 +16,13 @@ final readonly class DistanceCondition implements Condition
         return $translator->trans('Distance', domain: 'admin', locale: $locale);
     }
 
-    public function describe(TranslatorInterface $translator, RuleConfiguration $configuration): string
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): string
     {
-        return $translator->trans('Distance {operator} {value} km', [
-            'operator' => ComparisonOperator::from($configuration->getString('operator'))->trans($translator),
-            'value' => (string) (float) $configuration->getNumber('value'),
-        ], 'admin');
+        return sprintf(
+            '%s %s km',
+            ComparisonOperator::from($configuration->getString('operator'))->trans($translator),
+            (float) $configuration->getNumber('value'),
+        );
     }
 
     public function getPriority(): int
