@@ -2906,12 +2906,6 @@
   .bg-gray-200 {
     background-color: var(--color-gray-200);
   }
-  .bg-gray-200\/70 {
-    background-color: color-mix(in srgb, #E5E7EB 70%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-gray-200) 70%, transparent);
-    }
-  }
   .bg-gray-400 {
     background-color: var(--color-gray-400);
   }
@@ -2930,11 +2924,8 @@
   .bg-green-100 {
     background-color: var(--color-green-100);
   }
-  .bg-green-200\/60 {
-    background-color: color-mix(in srgb, #A7F3D0 60%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-green-200) 60%, transparent);
-    }
+  .bg-green-200 {
+    background-color: var(--color-green-200);
   }
   .bg-green-400 {
     background-color: var(--color-green-400);
@@ -2990,11 +2981,8 @@
       background-color: color-mix(in oklab, var(--color-red-100) 60%, transparent);
     }
   }
-  .bg-red-200\/60 {
-    background-color: color-mix(in srgb, #FECACA 60%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-red-200) 60%, transparent);
-    }
+  .bg-red-200 {
+    background-color: var(--color-red-200);
   }
   .bg-red-400 {
     background-color: var(--color-red-400);
@@ -4828,11 +4816,13 @@
     --color-blue-600: #478be6;
     --color-blue-800: #93c5fd;
     --color-green-100: #064E3B;
+    --color-green-200: #065F46;
     --color-green-600: #34D399;
     --color-green-700: #6EE7B7;
     --color-green-800: #A7F3D0;
     --color-red-50: #450a0a;
     --color-red-100: #7F1D1D;
+    --color-red-200: #991B1B;
     --color-red-300: #B91C1C;
     --color-red-600: #F87171;
     --color-red-700: #FCA5A5;
