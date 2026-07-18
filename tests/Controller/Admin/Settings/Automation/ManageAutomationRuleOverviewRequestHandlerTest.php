@@ -174,7 +174,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Weekday', $firstRule);
         $this->assertStringContainsString('is none of Monday, Saturday', $firstRule);
         $this->assertStringContainsString('Time of day', $firstRule);
-        $this->assertStringContainsString('less than 09:30', $firstRule);
+        $this->assertStringContainsString('before 09:30', $firstRule);
         $this->assertStringContainsString('Recording device', $firstRule);
         $this->assertStringContainsString('is Garmin Edge 530', $firstRule);
         $this->assertStringContainsString('Assign gear', $firstRule);

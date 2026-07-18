@@ -48,35 +48,28 @@
                     {% if activity.getDeviceName() %}<span>{{ activity.getDeviceName() }}</span>{% endif %}
                 </div>
             </div>
-            {% if dryRun.getRuleResults() is empty %}
-                <div class="mt-4 flex flex-col items-center justify-center gap-1 py-12 px-4 text-center">
-                    <span class="text-sm font-medium text-gray-800">{{ "No automation rules yet."|trans({}, 'admin') }}</span>
-                    <span class="text-xs text-gray-500">{{ "Add a rule to start automating your activity details."|trans({}, 'admin') }}</span>
-                </div>
-            {% else %}
-                <div class="mt-4 flex flex-col gap-2">
-                    {% for result in dryRun.getRuleResults() %}
-                        <div class="rounded-lg border p-3 shadow-xs {{ result.isWinner() ? 'border-green-600 ring-1 ring-green-600 bg-white' : 'border-gray-200 bg-white' }} {{ not result.isWinner() ? 'opacity-60' }}">
-                            <div class="flex items-center gap-2">
-                                <span class="font-medium text-gray-800 truncate">{{ result.getLabel() }}</span>
-                                {% if result.isEnabled() %}
-                                    <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xxs font-medium text-green-600">{{ "Enabled"|trans({}, 'admin') }}</span>
-                                {% else %}
-                                    <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xxs font-medium text-gray-500">{{ "Disabled"|trans({}, 'admin') }}</span>
-                                {% endif %}
-                            </div>
-                            {% if not result.wasEvaluated() %}
-                                <p class="mt-1 text-xs italic text-gray-400">{{ "Skipped (an earlier rule already matched)."|trans({}, 'admin') }}</p>
+            <div class="mt-4 flex flex-col gap-2">
+                {% for result in dryRun.getRuleResults() %}
+                    <div class="rounded-lg border p-3 shadow-xs {{ result.isWinner() ? 'border-green-600 ring-1 ring-green-600 bg-white' : 'border-gray-200 bg-white' }} {{ not result.isWinner() ? 'opacity-60' }}">
+                        <div class="flex items-center gap-2">
+                            <span class="font-medium text-gray-800 truncate">{{ result.getLabel() }}</span>
+                            {% if result.isEnabled() %}
+                                <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xxs font-medium text-green-600">{{ "Enabled"|trans({}, 'admin') }}</span>
+                            {% else %}
+                                <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xxs font-medium text-gray-500">{{ "Disabled"|trans({}, 'admin') }}</span>
                             {% endif %}
-                            {% include 'html/admin/page/settings/automation-rules/_rule-summary.html.twig' with {
-                                conditions: result.getConditionResults(),
-                                actions: result.getConfiguredActions(),
-                                showConditionState: result.wasEvaluated(),
-                            } only %}
                         </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
+                        {% if not result.wasEvaluated() %}
+                            <p class="mt-1 text-xs italic text-gray-400">{{ "Skipped (an earlier rule already matched)."|trans({}, 'admin') }}</p>
+                        {% endif %}
+                        {% include 'html/admin/page/settings/automation-rules/_rule-summary.html.twig' with {
+                            conditions: result.getConditionResults(),
+                            actions: result.getConfiguredActions(),
+                            showConditionState: result.wasEvaluated(),
+                        } only %}
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
     </div>
     {% endautoescape %}

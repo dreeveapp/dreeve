@@ -20,7 +20,7 @@ final readonly class TimeOfDayCondition implements Condition
     {
         return sprintf(
             '%s %s',
-            ComparisonOperator::from($configuration->getString('operator'))->trans($translator),
+            ComparisonOperator::from($configuration->getString('operator'))->transForTimeOfDay($translator),
             $configuration->getString('time'),
         );
     }
