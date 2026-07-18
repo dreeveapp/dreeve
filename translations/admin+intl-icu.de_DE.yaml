@@ -6,6 +6,7 @@ Active: Aktiv
 'Activities excluded from peak power outputs': 'Aktivitäten die von Maximalleistungswerten ausgeschlossen werden'
 'Activities to skip during import': 'Aktivitäten die beim Import übersprungen werden'
 'Activities will appear here once they are imported.': 'Aktivitäten werden hier angezeigt, sobald sie importiert wurden.'
+'Activity': 'Activity'
 'Activity ID': Aktivitäts-ID
 'Activity IDs to exclude when calculating peak power outputs.': 'Aktivität-IDs die bei der Berechnung der Maximalleistungswerten ausgeschlossen werden.'
 'Activity management': Aktivitätenverwaltung
@@ -222,6 +223,7 @@ Save: Speichern
 Saved: gespeichert
 Saving...: 'Wird gespeichert...'
 'Scheduled actions the daemon runs at regular intervals.': 'Geplante Aktionen, die der Daemon in regelmäßigen Abständen ausführt.'
+'Search by name, date or activity ID': 'Search by name, date or activity ID'
 'Select a component first...': 'Wähle zuerst eine Komponente aus...'
 'Select a component…': 'Komponente auswählen…'
 'Select at least one sport type.': 'Wähle mindestens eine Sportart aus.'

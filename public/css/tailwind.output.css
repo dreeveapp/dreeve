@@ -4583,6 +4583,78 @@
   }
 }
 @layer components {
+  .autoComplete_wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    & > ul {
+      position: absolute;
+      top: 100%;
+      right: 0px;
+      left: 0px;
+      z-index: 10;
+      margin-top: var(--spacing);
+      max-height: calc(var(--spacing) * 62);
+      list-style-type: none;
+      overflow-y: scroll;
+      border-radius: var(--radius-lg);
+      border-style: var(--tw-border-style);
+      border-width: 1px;
+      border-color: var(--color-gray-200);
+      background-color: var(--color-white);
+      padding: 0px;
+      --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+      transition-property: opacity;
+      transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+      transition-duration: var(--tw-duration, var(--default-transition-duration));
+      --tw-duration: 150ms;
+      transition-duration: 150ms;
+      --tw-ease: var(--ease-in-out);
+      transition-timing-function: var(--ease-in-out);
+      --tw-outline-style: none;
+      outline-style: none;
+      &:empty, &[hidden] {
+        display: block;
+        --tw-scale-x: 0%;
+        --tw-scale-y: 0%;
+        --tw-scale-z: 0%;
+        scale: var(--tw-scale-x) var(--tw-scale-y);
+        opacity: 0%;
+      }
+      & > li {
+        margin: var(--spacing);
+        overflow: hidden;
+        border-radius: var(--radius-lg);
+        background-color: var(--color-white);
+        padding: calc(var(--spacing) * 2);
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: var(--color-gray-900);
+        transition-property: all;
+        transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+        transition-duration: var(--tw-duration, var(--default-transition-duration));
+        --tw-duration: 200ms;
+        transition-duration: 200ms;
+        --tw-ease: var(--ease-in-out);
+        transition-timing-function: var(--ease-in-out);
+        & mark {
+          background-color: transparent;
+          --tw-font-weight: var(--font-weight-bold);
+          font-weight: var(--font-weight-bold);
+          color: var(--color-primary);
+        }
+        &:hover, &[aria-selected="true"] {
+          cursor: pointer;
+          background-color: color-mix(in srgb, #F26722 15%, transparent);
+          @supports (color: color-mix(in lab, red, red)) {
+            background-color: color-mix(in oklab, var(--color-primary) 15%, transparent);
+          }
+        }
+      }
+    }
+  }
   div.chat--wrapper div.message p {
     margin-bottom: calc(var(--spacing) * 3);
     &:last-child {
@@ -4717,76 +4789,10 @@
       font-weight: var(--font-weight-semibold);
     }
   }
-  .autoComplete_wrapper {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    & > ul {
-      position: absolute;
-      right: 0px;
-      bottom: calc(var(--spacing) * 15);
-      left: 0px;
-      z-index: 10;
-      max-height: calc(var(--spacing) * 62);
-      list-style-type: none;
-      overflow-y: scroll;
-      border-radius: var(--radius-lg);
-      border-style: var(--tw-border-style);
-      border-width: 1px;
-      border-color: var(--color-gray-200);
-      background-color: var(--color-white);
-      padding: 0px;
-      --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
-      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-      transition-property: opacity;
-      transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-      transition-duration: var(--tw-duration, var(--default-transition-duration));
-      --tw-duration: 150ms;
-      transition-duration: 150ms;
-      --tw-ease: var(--ease-in-out);
-      transition-timing-function: var(--ease-in-out);
-      --tw-outline-style: none;
-      outline-style: none;
-      &:empty, &[hidden] {
-        display: block;
-        --tw-scale-x: 0%;
-        --tw-scale-y: 0%;
-        --tw-scale-z: 0%;
-        scale: var(--tw-scale-x) var(--tw-scale-y);
-        opacity: 0%;
-      }
-      & > li {
-        margin: var(--spacing);
-        overflow: hidden;
-        border-radius: var(--radius-lg);
-        background-color: var(--color-white);
-        padding: calc(var(--spacing) * 2);
-        text-align: left;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        color: var(--color-gray-900);
-        transition-property: all;
-        transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-        transition-duration: var(--tw-duration, var(--default-transition-duration));
-        --tw-duration: 200ms;
-        transition-duration: 200ms;
-        --tw-ease: var(--ease-in-out);
-        transition-timing-function: var(--ease-in-out);
-        & mark {
-          background-color: transparent;
-          --tw-font-weight: var(--font-weight-bold);
-          font-weight: var(--font-weight-bold);
-          color: var(--color-primary);
-        }
-        &:hover, &[aria-selected="true"] {
-          cursor: pointer;
-          background-color: color-mix(in srgb, #F26722 15%, transparent);
-          @supports (color: color-mix(in lab, red, red)) {
-            background-color: color-mix(in oklab, var(--color-primary) 15%, transparent);
-          }
-        }
-      }
-    }
+  .autoComplete_wrapper:has(> input.message) > ul {
+    top: auto;
+    bottom: calc(var(--spacing) * 15);
+    margin-top: 0px;
   }
 }
 @layer base {

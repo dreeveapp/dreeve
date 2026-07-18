@@ -10,8 +10,12 @@
         </div>
         <form method="GET" action="{{ relativeUrl(path('admin_test_automation_rules')) }}" class="flex flex-col gap-2 sm:flex-row sm:items-end">
             <div class="flex-1">
-                <label for="activityId" class="block text-sm font-medium text-gray-700">{{ "Activity ID"|trans({}, 'admin') }}</label>
-                <input type="text" id="activityId" name="activityId" value="{{ activityId }}" placeholder="{{ "Activity ID"|trans({}, 'admin') }}" required>
+                <label for="activityId" class="block text-sm font-medium text-gray-700">{{ "Activity"|trans({}, 'admin') }}</label>
+                <input type="text" id="activityId" name="activityId" value="{{ activityId }}"
+                       placeholder="{{ "Search by name, date or activity ID"|trans({}, 'admin') }}"
+                       autocomplete="off" spellcheck="false"
+                       data-autocomplete-url="{{ relativeUrl(path('admin_activity_search')) }}"
+                       required>
             </div>
             <button type="submit" class="btn--add">
                 <span>{{ "Test rules"|trans({}, 'admin') }}</span>

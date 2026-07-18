@@ -15,4 +15,12 @@ interface ActivityOverviewRepository
     public function find(
         Pagination $pagination,
     ): Overview;
+
+    /**
+     * @return list<ActivityOverviewItem>
+     */
+    public function search(
+        string $query,
+        int $limit,
+    ): array;
 }

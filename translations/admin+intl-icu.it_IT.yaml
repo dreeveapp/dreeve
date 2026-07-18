@@ -6,6 +6,7 @@ Active: Active
 'Activities excluded from peak power outputs': 'Activities excluded from peak power outputs'
 'Activities to skip during import': 'Activities to skip during import'
 'Activities will appear here once they are imported.': 'Activities will appear here once they are imported.'
+'Activity': 'Activity'
 'Activity ID': 'Activity ID'
 'Activity IDs to exclude when calculating peak power outputs.': 'Activity IDs to exclude when calculating peak power outputs.'
 'Activity management': 'Activity management'
@@ -222,6 +223,7 @@ Save: Save
 Saved: Saved
 Saving...: Saving...
 'Scheduled actions the daemon runs at regular intervals.': 'Scheduled actions the daemon runs at regular intervals.'
+'Search by name, date or activity ID': 'Search by name, date or activity ID'
 'Select a component first...': 'Select a component first...'
 'Select a component…': 'Select a component…'
 'Select at least one sport type.': 'Select at least one sport type.'

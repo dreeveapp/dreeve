@@ -5,6 +5,7 @@ import initDependentSelects from "./components/dependent-select";
 import initDependentFormInputs from "./components/dependent-form-input";
 import initDropdowns from "./components/dropdown";
 import initRebuildStatus from "./components/rebuild-status";
+import initSearchAutocompletes from "./components/search-autocomplete";
 import initToasts from "./components/toast";
 import FileDropzoneUpload from "./features/file-upload/file-dropzone-upload";
 import {initImageDropZones} from "./features/file-upload/image-dropzone-upload";
@@ -22,6 +23,7 @@ initDependentSelects();
 initDependentFormInputs();
 initDropdowns(document);
 initRebuildStatus();
+initSearchAutocompletes();
 initToasts();
 
 new FileDropzoneUpload(document).init();

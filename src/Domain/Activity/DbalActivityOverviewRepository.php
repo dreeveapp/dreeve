@@ -44,6 +44,44 @@ final readonly class DbalActivityOverviewRepository extends DbalRepository imple
         );
     }
 
+    public function search(string $query, int $limit): array
+    {
+        $tokens = array_filter(preg_split('/\s+/', trim($query)) ?: []);
+        if ([] === $tokens) {
+            return [];
+        }
+
+        $queryBuilder = $this->connection->createQueryBuilder()
+            ->select(
+                'a.activityId',
+                'a.name',
+                'a.sportType',
+                'a.startDateTime',
+                'a.deviceName',
+                'a.isCommute',
+                'a.totalImageCount',
+                'g.name AS gearName',
+            )
+            ->from('Activity', 'a')
+            ->leftJoin('a', 'Gear', 'g', 'a.gearId = g.gearId')
+            ->orderBy('a.startDateTime', 'DESC')
+            ->setMaxResults($limit);
+
+        foreach (array_values($tokens) as $index => $token) {
+            $parameter = 'token'.$index;
+            $queryBuilder->andWhere(sprintf(
+                '(a.name LIKE :%1$s OR a.activityId LIKE :%1$s OR a.startDateTime LIKE :%1$s OR a.sportType LIKE :%1$s)',
+                $parameter
+            ));
+            $queryBuilder->setParameter($parameter, '%'.$token.'%');
+        }
+
+        return array_map(
+            $this->hydrate(...),
+            $queryBuilder->executeQuery()->fetchAllAssociative()
+        );
+    }
+
     /**
      * @param array<string, mixed> $result
      */
