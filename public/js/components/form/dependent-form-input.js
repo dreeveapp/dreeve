@@ -1,4 +1,4 @@
-import {eventBus, Events} from "../core/event-bus";
+import {eventBus, Events} from "../../core/event-bus";
 
 const SELECTOR = '[data-dependent-on][data-visible-when]';
 

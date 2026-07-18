@@ -1,5 +1,5 @@
-import autoComplete from "../../libraries/autocomplete";
-import {fetchJson} from "../utils";
+import autoComplete from "../../../libraries/autocomplete";
+import {fetchJson} from "../../utils";
 
 const initSearchAutocomplete = (input) => {
     const searchUrl = input.getAttribute('data-autocomplete-url');

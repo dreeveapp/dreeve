@@ -1,5 +1,5 @@
-import {dispatchCommand} from "../utils";
-import {eventBus, Events} from "../core/event-bus";
+import {dispatchCommand} from "../../utils";
+import {eventBus, Events} from "../../core/event-bus";
 
 // Turns a field name into its path segments:
 //   "label"            -> ["label"]
