@@ -119,6 +119,116 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         ];
     }
 
+    public function testSearchMapsRowToOverviewItem(): void
+    {
+        $this->gearRepository->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('99'))
+                ->withName('Trail Shoes')
+                ->build()
+        );
+
+        $this->activityRepository->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('42'))
+                ->withName('Morning Run')
+                ->withSportType(SportType::RUN)
+                ->withStartDateTime(SerializableDateTime::fromString('2026-06-04 10:00:00'))
+                ->withGearId(GearId::fromUnprefixed('99'))
+                ->withDeviceName('Garmin Forerunner')
+                ->withIsCommute(true)
+                ->withTotalImageCount(3)
+                ->build(),
+            ['raw' => 'data'],
+        ));
+
+        $this->assertEquals(
+            [
+                ActivityOverviewItem::fromState(
+                    activityId: ActivityId::fromUnprefixed('42'),
+                    name: ActivityName::fromString('Morning Run'),
+                    sportType: SportType::RUN,
+                    startDate: SerializableDateTime::fromString('2026-06-04 10:00:00'),
+                    gearName: 'Trail Shoes',
+                    deviceName: 'Garmin Forerunner',
+                    isCommute: true,
+                    totalImageCount: 3,
+                ),
+            ],
+            $this->activityOverviewRepository->search('Morning', 10)
+        );
+    }
+
+    #[DataProvider('provideSearchQueries')]
+    public function testSearchMatchesTokensAcrossFields(string $query, array $expectedNames): void
+    {
+        $this->seedSearchableActivities();
+
+        $this->assertSame(
+            $expectedNames,
+            array_map(
+                static fn (ActivityOverviewItem $item): string => (string) $item->getName(),
+                $this->activityOverviewRepository->search($query, 10)
+            )
+        );
+    }
+
+    public static function provideSearchQueries(): iterable
+    {
+        yield 'matches on name, case-insensitively, most recent first' => [
+            'morning',
+            ['Morning Swim', 'Morning Run'],
+        ];
+
+        yield 'matches on activity id' => [
+            '200',
+            ['Evening Ride'],
+        ];
+
+        yield 'matches on sport type' => [
+            'Swim',
+            ['Morning Swim'],
+        ];
+
+        yield 'matches on start date' => [
+            '2026-06-01',
+            ['Morning Run'],
+        ];
+
+        yield 'all tokens must match the same activity' => [
+            'morning run',
+            ['Morning Run'],
+        ];
+
+        yield 'tokens matching different activities yield nothing' => [
+            'morning ride',
+            [],
+        ];
+
+        yield 'a query without matches yields nothing' => [
+            'nonexistent',
+            [],
+        ];
+
+        yield 'a blank query yields nothing' => [
+            '   ',
+            [],
+        ];
+    }
+
+    public function testSearchRespectsTheLimit(): void
+    {
+        $this->seedSearchableActivities();
+
+        $this->assertSame(
+            ['Morning Swim'],
+            array_map(
+                static fn (ActivityOverviewItem $item): string => (string) $item->getName(),
+                $this->activityOverviewRepository->search('morning', 1)
+            )
+        );
+    }
+
     public function testFindReturnsAnEmptyOverviewWhenThereIsNoData(): void
     {
         $overview = $this->activityOverviewRepository->find(Pagination::fromOffsetAndLimit(0, 10));
@@ -150,6 +260,37 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('3'))
                 ->withName('Newest')
+                ->withStartDateTime(SerializableDateTime::fromString('2026-06-03 08:00:00'))
+                ->build(),
+            [],
+        ));
+    }
+
+    private function seedSearchableActivities(): void
+    {
+        $this->activityRepository->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('100'))
+                ->withName('Morning Run')
+                ->withSportType(SportType::RUN)
+                ->withStartDateTime(SerializableDateTime::fromString('2026-06-01 08:00:00'))
+                ->build(),
+            [],
+        ));
+        $this->activityRepository->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('200'))
+                ->withName('Evening Ride')
+                ->withSportType(SportType::RIDE)
+                ->withStartDateTime(SerializableDateTime::fromString('2026-06-02 08:00:00'))
+                ->build(),
+            [],
+        ));
+        $this->activityRepository->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('300'))
+                ->withName('Morning Swim')
+                ->withSportType(SportType::SWIM)
                 ->withStartDateTime(SerializableDateTime::fromString('2026-06-03 08:00:00'))
                 ->build(),
             [],
