@@ -49,7 +49,6 @@ final readonly class AutomationRuleDryRunner
             }
 
             $ruleResults[] = new RuleEvaluationResult(
-                automationRuleId: $rule->getId(),
                 label: $rule->getLabel(),
                 isEnabled: $rule->isEnabled(),
                 conditionResults: $conditionResults,

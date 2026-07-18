@@ -46,6 +46,13 @@ class StartsNearConditionTest extends TestCase
         $this->condition->guardValidConfiguration($this->config('within', 91.0, 4.0, 1.0));
     }
 
+    public function testGuardThrowsOnOutOfRangeLongitude(): void
+    {
+        $this->expectExceptionObject(new InvalidAutomationRule('A "longitude" between -180 and 180 is required.'));
+
+        $this->condition->guardValidConfiguration($this->config('within', 51.05, 180.5, 1.0));
+    }
+
     public function testGuardThrowsOnNonPositiveRadius(): void
     {
         $this->expectExceptionObject(new InvalidAutomationRule('A "radius" greater than 0 kilometer is required.'));

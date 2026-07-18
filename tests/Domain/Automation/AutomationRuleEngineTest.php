@@ -6,11 +6,14 @@ namespace App\Tests\Domain\Automation;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
+use App\Domain\Automation\Action\Actions;
 use App\Domain\Automation\Action\ActionType;
 use App\Domain\Automation\Action\ConfiguredAction\ConfiguredAction;
 use App\Domain\Automation\Action\ConfiguredAction\ConfiguredActions;
+use App\Domain\Automation\Action\SetNameAction;
 use App\Domain\Automation\AutomationRuleEngine;
 use App\Domain\Automation\AutomationRuleId;
+use App\Domain\Automation\AutomationRuleMatcher;
 use App\Domain\Automation\Condition\ConditionType;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredCondition;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredConditions;
@@ -325,6 +328,33 @@ class AutomationRuleEngineTest extends ContainerTestCase
         );
 
         $this->assertSame('Applied', $result->getName());
+    }
+
+    public function testActionsWithoutARegisteredServiceAreSkipped(): void
+    {
+        $this->saveRule(
+            id: '1',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::MARK_AS_COMMUTE, RuleConfiguration::fromConfig(['isCommute' => true])),
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Applied'])),
+            ]),
+        );
+
+        $engine = new AutomationRuleEngine(
+            $this->repository,
+            $this->getContainer()->get(AutomationRuleMatcher::class),
+            new Actions([new SetNameAction()]),
+        );
+
+        $result = $engine->apply(
+            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withIsCommute(false)->build()
+        );
+
+        $this->assertSame('Applied', $result->getName());
+        $this->assertFalse($result->isCommute());
     }
 
     private function saveRule(

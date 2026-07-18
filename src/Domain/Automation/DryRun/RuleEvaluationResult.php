@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Automation\DryRun;
 
 use App\Domain\Automation\Action\ConfiguredAction\ConfiguredActions;
-use App\Domain\Automation\AutomationRuleId;
 use App\Domain\Automation\Condition\ConditionEvaluationResult;
 
 final readonly class RuleEvaluationResult
@@ -14,7 +13,6 @@ final readonly class RuleEvaluationResult
      * @param list<ConditionEvaluationResult> $conditionResults
      */
     public function __construct(
-        private AutomationRuleId $automationRuleId,
         private string $label,
         private bool $isEnabled,
         private array $conditionResults,
@@ -23,11 +21,6 @@ final readonly class RuleEvaluationResult
         private bool $isWinner,
         private bool $wasEvaluated,
     ) {
-    }
-
-    public function getAutomationRuleId(): AutomationRuleId
-    {
-        return $this->automationRuleId;
     }
 
     public function getLabel(): string
