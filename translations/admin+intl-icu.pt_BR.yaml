@@ -7,7 +7,7 @@ Active: Ativo
 'Activities excluded from peak power outputs': 'Atividades excluídas dos picos de potência'
 'Activities to skip during import': 'Atividades a ignorar durante a importação'
 'Activities will appear here once they are imported.': 'As atividades aparecerão aqui assim que forem importadas.'
-Activity: Activity
+'Activity': 'Activity'
 'Activity ID': 'ID da atividade'
 'Activity IDs to exclude when calculating peak power outputs.': 'IDs de atividades a serem excluídos ao calcular os picos de potência.'
 'Activity management': 'Gerenciamento de atividades'

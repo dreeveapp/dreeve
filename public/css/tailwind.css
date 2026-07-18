@@ -1,5 +1,6 @@
 @import "tailwindcss" source(none);
 @import "../../node_modules/flowbite/src/themes/default.css";
+@import "./components/autocomplete.css";
 @import "./components/alert.css";
 @import "./components/chat.css";
 @import "./components/dark-mode.css";

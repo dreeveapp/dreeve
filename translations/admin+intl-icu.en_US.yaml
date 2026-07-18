@@ -7,7 +7,7 @@ Active: Active
 'Activities excluded from peak power outputs': 'Activities excluded from peak power outputs'
 'Activities to skip during import': 'Activities to skip during import'
 'Activities will appear here once they are imported.': 'Activities will appear here once they are imported.'
-Activity: Activity
+'Activity': 'Activity'
 'Activity ID': 'Activity ID'
 'Activity IDs to exclude when calculating peak power outputs.': 'Activity IDs to exclude when calculating peak power outputs.'
 'Activity management': 'Activity management'
