@@ -149,6 +149,12 @@ goes into your `.env` as:
 ADMIN_PASSWORD_HASH=$$2y$$13$$bHxkUSQsfOt1T.dqbu8g4u/H6EXruv.lPUrwi.4NEGdkrKslTDAqW
 ```
 
+Alternatively, you can keep the hash unescaped by wrapping it in **single quotes**:
+
+```bash
+ADMIN_PASSWORD_HASH='$2y$13$bHxkUSQsfOt1T.dqbu8g4u/H6EXruv.lP:Urwi.4NEGdkrKslTDAqW'
+```
+
 ## Running the application
 
 Now that `.env` is complete, recreate the containers so they pick up your password hash:

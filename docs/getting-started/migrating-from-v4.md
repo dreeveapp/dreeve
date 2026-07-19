@@ -44,13 +44,31 @@ services:
       - ./build:/var/www/build
       - ./storage/database:/var/www/storage/database
       - ./storage/files:/var/www/storage/files
-      # Only needed when you import files. Drop your .fit/.tcx/.gpx files in here.
+      # Only needed when you import files.
+      - ./watch:/var/www/watch
+    # ...
+
+  daemon:
+    image: robiningelbrecht/dreeve:latest
+    # image: ghcr.io/dreeveapp/dreeve:latest
+    volumes:
+      # The daemon mounts the same volumes as the app container,
+      # including the new watch volume.
+      - ./config:/var/www/config/app
+      - ./build:/var/www/build
+      - ./storage/database:/var/www/storage/database
+      - ./storage/files:/var/www/storage/files
+      # Only needed when you import files.
       - ./watch:/var/www/watch
     # ...
 ```
 
-Container names, the network name and the daemon container are unchanged apart from the image. A full example
-lives on the [installation](/getting-started/installation.md) page.
+Container names, the network name and the rest of the daemon container are unchanged apart from the image. A full
+example lives on the [installation](/getting-started/installation.md) page.
+
+> [!IMPORTANT]
+> The new `./watch` volume must be mounted on **both** the `app` and the `daemon` container. They share one
+> watch folder.
 
 > [!NOTE]
 > In v4, the daemon container was optional. This is no longer the case.
@@ -101,7 +119,8 @@ Now generate your admin password hash, put it in `.env`, and recreate the contai
 
 > [!CAUTION]
 > **Double every `$` in the hash** when you paste it into `.env`, otherwise Docker Compose eats it and you get a
-> password that can never match. See [Admin password](/getting-started/installation.md#admin-password).
+> password that can never match. Alternatively, keep the hash unescaped and wrap it in **single quotes**.
+> See [Admin password](/getting-started/installation.md#admin-password).
 
 Log in at `/admin` and verify that your settings were migrated correctly.
 
