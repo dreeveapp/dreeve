@@ -6,7 +6,7 @@
 
 <p class="text-center">Formerly known as "Statistics for Strava".</p>
 
-<div align="text-center">
+<div class="text-center">
 <a href="https://raw.githubusercontent.com/dreeveapp/dreeve/refs/heads/master/LICENSE"><img src="https://img.shields.io/github/license/dreeveapp/dreeve?color=428f7e&logo=open%20source%20initiative&logoColor=white" alt="License"></a>
 <a href="https://hub.docker.com/r/robiningelbrecht/dreeve"><img src="https://img.shields.io/docker/image-size/robiningelbrecht/dreeve?logo=docker&logoColor=white" alt="Docker Image Size"></a>
 <a href="https://hub.docker.com/r/robiningelbrecht/dreeve"><img src="https://img.shields.io/docker/v/robiningelbrecht/dreeve?sort=semver&logo=docker&logoColor=white" alt="Docker version"></a>
