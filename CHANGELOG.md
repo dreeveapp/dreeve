@@ -1,3 +1,84 @@
+# [v5.0.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.0.0) - 2026-07-19
+
+It has taken a while, but `v5.0.0` is finally here.
+This is the biggest release since the project began as Statistics for Strava.
+
+> [!WARNING]
+> **Back up first.** Make a copy of `storage/database` **and** of your `config` directory before you upgrade to this new version.
+> The migration guide will walk you through the upgrade process:: https://docs.dreeve.app/#/getting-started/migrating-from-v4
+
+Here are the three biggest changes:
+
+## 1. Welcome to `Dreeve`
+
+The project has been rebranded to `Dreeve`
+
+A `dreve` is the West-Flemish word (the birthplace of Dreeve's maintainer) for a country road lined with trees on both sides.
+the kind of road every cyclist and runner loves.
+
+## 2. No more Strava dependency
+
+You no longer need Strava to use Dreeve.
+
+The app allows you to upload raw FIT, TCX and GPX files.
+If you already use Strava, importing your activities from Strava is still fully supported.
+
+## 3. The admin panel
+
+Configuration is now much simpler.
+
+All settings have been moved from YAML configuration files into a built-in admin panel, 
+making Dreeve easier to configure and maintain.
+
+
+For detailed upgrade instructions, see the migration guide: https://docs.dreeve.app/#/getting-started/migrating-from-v4
+
+## Technical details
+* ISSUE #2174: Enable sqlite journal_mode=WAL by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2176
+* ISSUE #2177: Fix a bug where build crashes when an activity has no name by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2178
+* ISSUE #2179: Improve DuplicateActivityScanner to better detect duplicates by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2180
+* ISSUE #2173: Provide user authentication by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2175
+* ISSUE #2181: Allow to upload activity files via the admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2182
+* ISSUE #2183: Add an overview of all file imports to the admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2184
+* ISSUE #2187: Drop pre-calculated distanceInMeters on the Gear entity by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2188
+* ISSUE #2189: Persist gear purchase prices to database by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2190
+* Bump actions/checkout from 6 to 7 by @dependabot[bot] in https://github.com/dreeveapp/dreeve/pull/2192
+* ISSUE #2186: Allow to manage gear via the admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2191
+* ISSUE #2193: Allow to manage activities via the admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2194
+* ISSUE #2195: Allow to enable demo mode based on user auth instead of IP by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2196
+* ISSUE #2197: Remove all occurrences of Statistics for Strava by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2198
+* ISSUE #2199: Allow to manage devices via the admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2201
+* ISSUE #2197: Remove all occurrences of Statistics for Strava by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2203
+* ISSUE #2200: Move gear maintenance config to admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2202
+* ISSUE #2208: Show a (toast) succes message after submitting a form by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2209
+* ISSUE #2205: Show an indicator in the admin panel that changes still need to be processed by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2210
+* fix(i18n): translate remaining Italian locale strings by @franzudev in https://github.com/dreeveapp/dreeve/pull/2213
+* fix(notification): avoid unsupported Shoutrrr params for Telegram by @franzudev in https://github.com/dreeveapp/dreeve/pull/2214
+* German translation by @effectpears in https://github.com/dreeveapp/dreeve/pull/2207
+* ISSUE #2211: Move dashboard configuration to admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2212
+* ISSUE #2215: Move appUrl config to .env file by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2216
+* ISSUE #2217: Move "general" config from YAML to admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2218
+* ISSUE #2221: Use a CachedSettingsRepository when building static HTML files by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2222
+* ISSUE #2219: Move "appearance" config from YAML to admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2220
+* ISSUE #2219: Render sportTypesSortingOrder on appearance settings form by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2223
+* ISSUE #2225: Move 'import' config from YAML to admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2226
+* ISSUE #2227: Move 'metrics' config from YAML to admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2228
+* ISSUE #2230: Import fails on long activities: route WKT exceeds MAX_ARG_STRLEN in geosop call ('Failed to run geosop') by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2235
+* ISSUE #2233: When migrating settings to db, merge yaml files into one consolidated settings file by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2236
+* ISSUE #2229: Move 'integrations' config from YAML to admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2232
+* ISSUE #2237: Move 'Daemon' config from YAML to admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2238
+* ISSUE #2239: Clear cron locks when containers are restarted by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2240
+* ISSUE #2241: specific name for GPX download files by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2242
+* ISSUE #2224: Move translatables from admin panel to separate translation file by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2245
+* ISSUE #2243: Improve onboarding flow by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2246
+* ISSUE #2251: Harden database migrations and concurrency of containers by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2252
+* ISSUE #2243: Onboarding flow - bis by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2250
+* Update Brazilian Portuguese translation files by @gustavobim in https://github.com/dreeveapp/dreeve/pull/2254
+* #2255 Improvement of German Translation by @effectpears in https://github.com/dreeveapp/dreeve/pull/2256
+* ISSUE #2248: Rewrite documentation by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2257
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v4.8.8...v5.0.0
+
 # [v4.8.8](https://github.com/dreeveapp/dreeve/releases/tag/v4.8.8) - 2026-06-14
 
 ## Improvements
