@@ -116,7 +116,7 @@ class FitFileParserTest extends ActivityFileParserTestCase
         foreach ($document['files'][0]['messages'] as &$message) {
             if ('session' === $message['name']) {
                 $message['fields'] = [
-                    ['name' => 'sport', 'value' => 8], // tennis (unsupported)
+                    ['name' => 'sport', 'value' => 24], // driving (unsupported)
                     ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
                 ];
             }
@@ -126,7 +126,7 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
         $rawActivityFile = $this->rawFile('/tmp/activity.fit');
 
-        $this->expectExceptionObject(new CouldNotParseActivityFile('Unsupported FIT sport 8 (sub sport null)', $rawActivityFile));
+        $this->expectExceptionObject(new CouldNotParseActivityFile('Unsupported FIT sport 24 (sub sport null)', $rawActivityFile));
         $this->parser->parse($rawActivityFile);
     }
 
