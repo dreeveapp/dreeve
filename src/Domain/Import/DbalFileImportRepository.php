@@ -27,6 +27,15 @@ final readonly class DbalFileImportRepository extends DbalRepository implements 
         ]);
     }
 
+    public function delete(FileImportId $fileImportId): void
+    {
+        $sql = 'DELETE FROM FileImport WHERE fileImportId = :fileImportId';
+
+        $this->connection->executeStatement($sql, [
+            'fileImportId' => $fileImportId,
+        ]);
+    }
+
     public function deleteForActivity(ActivityId $activityId): void
     {
         $sql = 'DELETE FROM FileImport WHERE activityId = :activityId';
