@@ -80,12 +80,12 @@ export default class LeafletMap {
             const initialZoom = this.map.getZoom();
 
             chart.on('updateAxisPointer', (event) => {
-                if (!event.dataIndex || !event.dataIndex in coordinateMap) {
+                const coordinate = event.dataIndex === undefined ? undefined : coordinateMap[event.dataIndex];
+                if (!coordinate) {
                     marker.setStyle({opacity: 0, fillOpacity: 0});
                     return;
                 }
 
-                const coordinate = coordinateMap[event.dataIndex];
                 marker.setLatLng(coordinate);
                 marker.setStyle({opacity: 1, fillOpacity: 1});
 

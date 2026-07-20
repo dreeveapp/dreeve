@@ -41,6 +41,15 @@ class FitFileParserTest extends ActivityFileParserTestCase
         );
     }
 
+    public function testParseMergesRecordsSplitAcrossSameTimestamp(): void
+    {
+        $this->givenFitToolReturns(Json::encode($this->fitDocumentWithSplitRecords()));
+
+        $this->assertParsedFileMatchesSnapshot(
+            $this->parser->parse($this->rawFile('/tmp/activity.fit'))
+        );
+    }
+
     public function testParseRealFitFileThroughBinary(): void
     {
         $parser = new FitFileParser(
@@ -233,6 +242,63 @@ class FitFileParserTest extends ActivityFileParserTestCase
                 ],
             ]],
         ];
+    }
+
+    private function fitDocumentWithSplitRecords(): array
+    {
+        $lat45 = 2 ** 29; // 45 degrees in semicircles
+        $lng225 = 2 ** 28; // 22.5 degrees in semicircles
+
+        $document = $this->fitDocument();
+        $document['files'][0]['messages'] = array_values(array_filter(
+            $document['files'][0]['messages'],
+            static fn (array $message): bool => 'record' !== $message['name'],
+        ));
+
+        array_push(
+            $document['files'][0]['messages'],
+            // Second 0, split across two records; no GPS fix or altitude yet:
+            // back-filled from second 1 once known.
+            ['name' => 'record', 'fields' => [
+                ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS],
+                ['name' => 'distance', 'value' => 0.0],
+                ['name' => 'enhanced_speed', 'value' => 5.0],
+                ['name' => 'power', 'value' => 200],
+                ['name' => 'cadence', 'value' => 80],
+            ]],
+            ['name' => 'record', 'fields' => [
+                ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS],
+                ['name' => 'heart_rate', 'value' => 120],
+            ]],
+            // Second 1, no heart rate or cadence record at all: forward-filled.
+            ['name' => 'record', 'fields' => [
+                ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS + 1],
+                ['name' => 'distance', 'value' => 5.0],
+                ['name' => 'enhanced_speed', 'value' => 5.5],
+                ['name' => 'power', 'value' => 210],
+            ]],
+            ['name' => 'record', 'fields' => [
+                ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS + 1],
+                ['name' => 'position_lat', 'value' => $lat45],
+                ['name' => 'position_long', 'value' => $lng225],
+                ['name' => 'enhanced_altitude', 'value' => 100.0],
+            ]],
+            // Second 2, split across two records; no position: forward-filled.
+            ['name' => 'record', 'fields' => [
+                ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS + 2],
+                ['name' => 'distance', 'value' => 11.0],
+                ['name' => 'enhanced_speed', 'value' => 6.0],
+                ['name' => 'power', 'value' => 250],
+                ['name' => 'cadence', 'value' => 84],
+            ]],
+            ['name' => 'record', 'fields' => [
+                ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS + 2],
+                ['name' => 'heart_rate', 'value' => 130],
+                ['name' => 'enhanced_altitude', 'value' => 110.0],
+            ]],
+        );
+
+        return $document;
     }
 
     #[\Override]

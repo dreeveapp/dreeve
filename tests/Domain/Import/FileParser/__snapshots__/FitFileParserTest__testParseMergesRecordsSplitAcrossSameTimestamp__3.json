@@ -1,0 +1,58 @@
+[
+    {
+        "dataSize": 3,
+        "activityId": "activity-1",
+        "streamType": "altitude",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[100,100,110]"
+    },
+    {
+        "dataSize": 3,
+        "activityId": "activity-1",
+        "streamType": "cadence",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[80,80,84]"
+    },
+    {
+        "dataSize": 3,
+        "activityId": "activity-1",
+        "streamType": "distance",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[0,5,11]"
+    },
+    {
+        "dataSize": 3,
+        "activityId": "activity-1",
+        "streamType": "heartrate",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[120,120,130]"
+    },
+    {
+        "dataSize": 3,
+        "activityId": "activity-1",
+        "streamType": "latlng",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[[45,22.5],[45,22.5],[45,22.5]]"
+    },
+    {
+        "dataSize": 3,
+        "activityId": "activity-1",
+        "streamType": "time",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[0,1,2]"
+    },
+    {
+        "dataSize": 3,
+        "activityId": "activity-1",
+        "streamType": "velocity_smooth",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[5,5.5,6]"
+    },
+    {
+        "dataSize": 3,
+        "activityId": "activity-1",
+        "streamType": "watts",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[200,210,250]"
+    }
+]

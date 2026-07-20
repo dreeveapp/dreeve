@@ -139,7 +139,7 @@ final readonly class FitFileParser implements ActivityFileParser
         }
 
         $streamMap = $this->buildStreams(
-            records: $records,
+            records: $this->mergeRecordsByTimestamp($records),
             startTimestamp: $startTimestamp
         );
         $activityId = $this->activityIdFactory->random();
@@ -253,6 +253,40 @@ final readonly class FitFileParser implements ActivityFileParser
     }
 
     /**
+     * Some devices (e.g. Bosch eBike head units) split a single point in time
+     * across several "record" messages, each carrying only a subset of fields
+     * (one with speed/power, another with only heart rate, ...). Collapse
+     * consecutive records that share a timestamp into one logical record.
+     *
+     * @param list<array<string, mixed>> $records
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function mergeRecordsByTimestamp(array $records): array
+    {
+        $merged = [];
+        $previousTimestamp = null;
+
+        foreach ($records as $record) {
+            $timestamp = is_numeric($record['timestamp'] ?? null) ? (int) round((float) $record['timestamp']) : null;
+            if ([] === $merged || null === $timestamp || $timestamp !== $previousTimestamp) {
+                $merged[] = $record;
+                $previousTimestamp = $timestamp;
+                continue;
+            }
+
+            $target = array_key_last($merged);
+            foreach ($record as $field => $value) {
+                if (null !== $value) {
+                    $merged[$target][$field] = $value;
+                }
+            }
+        }
+
+        return $merged;
+    }
+
+    /**
      * @param list<array<string, mixed>> $records
      *
      * @return array<string, list<mixed>>
@@ -288,6 +322,25 @@ final readonly class FitFileParser implements ActivityFileParser
             $streams[StreamType::CADENCE->value][] = is_numeric($record['cadence'] ?? null) ? (int) round((float) $record['cadence']) : null;
             $streams[StreamType::WATTS->value][] = is_numeric($record['power'] ?? null) ? (int) round((float) $record['power']) : null;
             $streams[StreamType::TEMP->value][] = is_numeric($record['temperature'] ?? null) ? (int) round((float) $record['temperature']) : null;
+        }
+
+        // Devices that record fields at different rates (heart rate every other
+        // second, GPS twice per second but not every second, ...) leave holes
+        // that downstream would render as drops to zero, and holes in LAT_LNG
+        // Carry the last known value forward, then fill leading holes with the first known
+        // value so every sample is complete.
+        foreach ([StreamType::DISTANCE, StreamType::LAT_LNG, StreamType::ALTITUDE, StreamType::VELOCITY, StreamType::HEART_RATE, StreamType::CADENCE, StreamType::WATTS, StreamType::TEMP] as $streamType) {
+            $previous = null;
+            foreach ($streams[$streamType->value] as $i => $value) {
+                if (null === $value) {
+                    $streams[$streamType->value][$i] = $previous;
+                    continue;
+                }
+                if (null === $previous && $i > 0) {
+                    $streams[$streamType->value] = array_replace($streams[$streamType->value], array_fill(0, $i, $value));
+                }
+                $previous = $value;
+            }
         }
 
         return $streams;
