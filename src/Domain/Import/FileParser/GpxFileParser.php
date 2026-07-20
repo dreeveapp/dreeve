@@ -176,7 +176,10 @@ final readonly class GpxFileParser implements ActivityFileParser
                 foreach ($segment->trkpt ?? [] as $trackpoint) {
                     // Skip trackpoints without time (e.g. OsmAnd exports).
                     $rawTime = $this->stringChild($trackpoint, 'time');
-                    if (null === $rawTime || '' === $rawTime) {
+                    if (null === $rawTime) {
+                        continue;
+                    }
+                    if ('' === $rawTime) {
                         continue;
                     }
                     $time = SerializableDateTime::fromString($rawTime)->getTimestamp();
