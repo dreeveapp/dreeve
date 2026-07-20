@@ -477,6 +477,7 @@ Unspecified: 未指定
 'Very high': 非常高
 'View all': 查看全部
 'View details': 查看详情
+'View this month': 'View this month'
 'Virtual Rides': 虚拟骑行
 'Virtual Row': 虚拟划船
 'Virtual Runs': 虚拟跑步
@@ -542,6 +543,7 @@ days: 天
 'days to reach {n}': 'days to reach {n}'
 hours: 小时
 hrs: hrs
+humidity: humidity
 'last {numberOfDays} days': '最近{numberOfDays}天'
 max: max
 min: min
