@@ -107,7 +107,6 @@ class FileImportsRequestHandlerTest extends AdminWebTestCase
                 FileImportBuilder::fromDefaults()
                     ->withFileImportId(FileImportId::fromUnprefixed((string) $i))
                     ->withOriginalFilename(sprintf('activity-%d.fit', $i))
-                    ->withFileHash('hash-'.$i)
                     ->withStatus($failed ? FileImportStatus::FAILED : FileImportStatus::SUCCESS)
                     ->withErrorMessage($failed ? sprintf('Could not parse activity-%d.fit', $i) : null)
                     ->withImportedOn(SerializableDateTime::fromString(sprintf('2026-06-01 08:%02d:00', $i)))

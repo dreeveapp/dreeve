@@ -8,13 +8,10 @@ use App\Infrastructure\ValueObject\String\Path;
 
 final readonly class RawActivityFile
 {
-    private string $hash;
-
     private function __construct(
         private Path $filePath,
         private string $fileContents,
     ) {
-        $this->hash = hash('sha256', $this->fileContents);
     }
 
     public static function from(
@@ -35,10 +32,5 @@ final readonly class RawActivityFile
     public function getContents(): string
     {
         return $this->fileContents;
-    }
-
-    public function getHash(): string
-    {
-        return $this->hash;
     }
 }

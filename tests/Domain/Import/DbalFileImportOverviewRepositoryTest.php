@@ -41,7 +41,6 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
             FileImportBuilder::fromDefaults()
                 ->withFileImportId(FileImportId::fromUnprefixed('1'))
                 ->withOriginalFilename('morning-run.fit')
-                ->withFileHash('hash-1')
                 ->withFileContents('raw fit bytes')
                 ->withSource(ImportSource::GPX_FILE)
                 ->withStatus(FileImportStatus::FAILED)
@@ -133,7 +132,6 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
             FileImportBuilder::fromDefaults()
                 ->withFileImportId(FileImportId::fromUnprefixed('1'))
                 ->withOriginalFilename('oldest.fit')
-                ->withFileHash('hash-oldest')
                 ->withImportedOn(SerializableDateTime::fromString('2026-06-01 08:00:00'))
                 ->build()
         );
@@ -141,7 +139,6 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
             FileImportBuilder::fromDefaults()
                 ->withFileImportId(FileImportId::fromUnprefixed('2'))
                 ->withOriginalFilename('middle.fit')
-                ->withFileHash('hash-middle')
                 ->withImportedOn(SerializableDateTime::fromString('2026-06-02 08:00:00'))
                 ->build()
         );
@@ -149,7 +146,6 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
             FileImportBuilder::fromDefaults()
                 ->withFileImportId(FileImportId::fromUnprefixed('3'))
                 ->withOriginalFilename('newest.fit')
-                ->withFileHash('hash-newest')
                 ->withImportedOn(SerializableDateTime::fromString('2026-06-03 08:00:00'))
                 ->build()
         );

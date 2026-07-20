@@ -9,9 +9,7 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\DbalActivityRepository;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportType;
-use App\Domain\Import\DbalFileImportRepository;
 use App\Domain\Import\DuplicateActivityScanner;
-use App\Domain\Import\FileImportRepository;
 use App\Domain\Import\FileParser\RawActivityFile;
 use App\Infrastructure\ValueObject\String\ExternalReferenceId;
 use App\Infrastructure\ValueObject\String\Path;
@@ -24,24 +22,6 @@ class DuplicateActivityScannerTest extends ContainerTestCase
 {
     private DuplicateActivityScanner $duplicateActivityScanner;
     private ActivityRepository $activityRepository;
-    private FileImportRepository $fileImportRepository;
-
-    public function testItIsDuplicateWhenFileHashAlreadyImported(): void
-    {
-        $file = RawActivityFile::from(Path::fromString('ride.fit'), 'raw-fit-bytes');
-
-        $this->fileImportRepository->add(
-            FileImportBuilder::fromDefaults()
-                ->withFileHash($file->getHash())
-                ->build()
-        );
-
-        $this->assertTrue($this->duplicateActivityScanner->isDuplicate(
-            file: $file,
-            sportType: SportType::RIDE,
-            startDateTime: SerializableDateTime::fromString('2023-10-10'),
-        ));
-    }
 
     #[DataProvider('provideExistingActivityScenarios')]
     public function testItDetectsDuplicatesAgainstAnExistingActivity(
@@ -148,12 +128,8 @@ class DuplicateActivityScannerTest extends ContainerTestCase
         $this->activityRepository = new DbalActivityRepository(
             $this->getConnection(),
         );
-        $this->fileImportRepository = new DbalFileImportRepository(
-            $this->getConnection(),
-        );
         $this->duplicateActivityScanner = new DuplicateActivityScanner(
             $this->getConnection(),
-            $this->fileImportRepository,
         );
     }
 }

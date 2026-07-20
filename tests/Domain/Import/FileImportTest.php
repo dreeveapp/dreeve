@@ -33,7 +33,6 @@ class FileImportTest extends TestCase
 
         $this->assertEquals($fileImportId, $fileImport->getId());
         $this->assertSame('ride.fit', $fileImport->getOriginalFilename());
-        $this->assertSame($file->getHash(), $fileImport->getFileHash());
         $this->assertSame('raw-fit-bytes', $fileImport->getFileContents());
     }
 
@@ -46,7 +45,6 @@ class FileImportTest extends TestCase
         $fileImport = FileImport::fromState(
             fileImportId: $fileImportId,
             originalFilename: 'ride.tcx',
-            fileHash: 'the-hash',
             fileContents: 'raw-tcx-bytes',
             source: ImportSource::TCX_FILE,
             status: FileImportStatus::FAILED,
@@ -57,7 +55,6 @@ class FileImportTest extends TestCase
 
         $this->assertEquals($fileImportId, $fileImport->getId());
         $this->assertEquals('ride.tcx', $fileImport->getOriginalFilename());
-        $this->assertEquals('the-hash', $fileImport->getFileHash());
         $this->assertEquals('raw-tcx-bytes', $fileImport->getFileContents());
         $this->assertEquals(ImportSource::TCX_FILE, $fileImport->getSource());
         $this->assertEquals(FileImportStatus::FAILED, $fileImport->getStatus());

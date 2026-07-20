@@ -10,7 +10,5 @@ interface FileImportRepository
 {
     public function add(FileImport $fileImport): void;
 
-    public function existsForFileHash(string $fileHash): bool;
-
     public function deleteForActivity(ActivityId $activityId): void;
 }

@@ -11,7 +11,6 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\UniqueConstraint(name: 'UNIQ_FileImport_fileHash', columns: ['fileHash'])]
 final readonly class FileImport
 {
     private function __construct(
@@ -19,8 +18,6 @@ final readonly class FileImport
         private FileImportId $fileImportId,
         #[ORM\Column(type: 'string')]
         private string $originalFilename,
-        #[ORM\Column(type: 'string', nullable: true)]
-        private ?string $fileHash,
         #[ORM\Column(type: 'blob', nullable: true)]
         private ?string $fileContents,
         #[ORM\Column(type: 'string')]
@@ -48,7 +45,6 @@ final readonly class FileImport
         return new self(
             fileImportId: $fileImportId,
             originalFilename: $originalFilename,
-            fileHash: null,
             fileContents: null,
             source: $source,
             status: $status,
@@ -70,7 +66,6 @@ final readonly class FileImport
         return new self(
             fileImportId: $fileImportId,
             originalFilename: $file->getPath()->getFilename(),
-            fileHash: $file->getHash(),
             fileContents: $file->getContents(),
             source: $source,
             status: $status,
@@ -83,7 +78,6 @@ final readonly class FileImport
     public static function fromState(
         FileImportId $fileImportId,
         string $originalFilename,
-        ?string $fileHash,
         ?string $fileContents,
         ImportSource $source,
         FileImportStatus $status,
@@ -94,7 +88,6 @@ final readonly class FileImport
         return new self(
             fileImportId: $fileImportId,
             originalFilename: $originalFilename,
-            fileHash: $fileHash,
             fileContents: $fileContents,
             source: $source,
             status: $status,
@@ -112,11 +105,6 @@ final readonly class FileImport
     public function getOriginalFilename(): string
     {
         return $this->originalFilename;
-    }
-
-    public function getFileHash(): ?string
-    {
-        return $this->fileHash;
     }
 
     public function getFileContents(): ?string
