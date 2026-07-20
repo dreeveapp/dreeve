@@ -46,12 +46,6 @@
 		respond 404
 	}
 
-	# Serve /gear-maintenance/* from storage.
-	handle /gear-maintenance/* {
-		root * /var/www/storage
-		file_server
-	}
-
 	# Cache static assets.
 	handle /assets/* {
 		header {

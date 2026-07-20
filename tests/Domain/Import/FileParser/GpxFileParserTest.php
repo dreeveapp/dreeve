@@ -82,6 +82,73 @@ class GpxFileParserTest extends ActivityFileParserTestCase
         $this->parser->parse($rawActivityFile);
     }
 
+    public function testParseMovingTimeExcludesRecordingGaps(): void
+    {
+        $xml = <<<'XML'
+            <?xml version="1.0" encoding="UTF-8"?>
+            <gpx version="1.1" xmlns="http://www.topografix.com/GPX/1/1">
+              <trk>
+                <type>running</type>
+                <trkseg>
+                  <trkpt lat="45.0" lon="22.5">
+                    <time>2021-09-08T00:00:00Z</time>
+                  </trkpt>
+                  <trkpt lat="45.001" lon="22.501">
+                    <time>2021-09-08T00:00:10Z</time>
+                  </trkpt>
+                  <trkpt lat="45.002" lon="22.502">
+                    <time>2021-09-08T00:05:00Z</time>
+                  </trkpt>
+                  <trkpt lat="45.003" lon="22.503">
+                    <time>2021-09-08T00:05:10Z</time>
+                  </trkpt>
+                </trkseg>
+              </trk>
+            </gpx>
+            XML;
+
+        $parsed = $this->parser->parse(RawActivityFile::from(Path::fromString('gap.gpx'), $xml));
+
+        $this->assertSame(310, $parsed->getActivity()->getElapsedTimeInSeconds());
+        // The 290s recording gap must not count as moving time.
+        $this->assertSame(20, $parsed->getActivity()->getMovingTimeInSeconds());
+    }
+
+    public function testParseSportTypeComesFromFirstTrack(): void
+    {
+        $xml = <<<'XML'
+            <?xml version="1.0" encoding="UTF-8"?>
+            <gpx version="1.1" xmlns="http://www.topografix.com/GPX/1/1">
+              <trk>
+                <type>running</type>
+                <trkseg>
+                  <trkpt lat="45.0" lon="22.5">
+                    <time>2021-09-08T00:00:00Z</time>
+                  </trkpt>
+                  <trkpt lat="45.001" lon="22.501">
+                    <time>2021-09-08T00:00:10Z</time>
+                  </trkpt>
+                </trkseg>
+              </trk>
+              <trk>
+                <type>cycling</type>
+                <trkseg>
+                  <trkpt lat="45.002" lon="22.502">
+                    <time>2021-09-08T00:01:00Z</time>
+                  </trkpt>
+                  <trkpt lat="45.003" lon="22.503">
+                    <time>2021-09-08T00:01:10Z</time>
+                  </trkpt>
+                </trkseg>
+              </trk>
+            </gpx>
+            XML;
+
+        $parsed = $this->parser->parse(RawActivityFile::from(Path::fromString('multi-track.gpx'), $xml));
+
+        $this->assertSame(SportType::RUN, $parsed->getActivity()->getSportType());
+    }
+
     #[\Override]
     protected function setUp(): void
     {

@@ -43,7 +43,6 @@ class CaddyfileFileAccessTest extends TestCase
         yield 'static html is served' => ['/page.html', 200, null];
         yield 'manifest.json is served' => ['/manifest.json', 200, null];
         yield 'asset is served and cached' => ['/assets/app.css', 200, 'max-age=86400'];
-        yield 'gear-maintenance file is served' => ['/gear-maintenance/manual.pdf', 200, null];
         yield 'top-level image is served, cached immutably' => ['/files/sample.png', 200, 'immutable'];
         yield 'nested image is served (guards wildcard depth)' => ['/files/challenges/nested.png', 200, 'immutable'];
         yield 'extension match is case-insensitive' => ['/files/UPPER.PNG', 200, 'immutable'];
