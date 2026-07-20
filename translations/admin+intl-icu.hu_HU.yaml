@@ -38,6 +38,7 @@ Admin: Admin
 'App subtitle': 'App subtitle'
 'App update available notification': 'App update available notification'
 Appearance: Appearance
+'Are you sure you want to delete the import of {name}?': 'Are you sure you want to delete the import of {name}?'
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
 'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?'
@@ -75,6 +76,7 @@ Daemon: Daemon
 Delete: Delete
 'Delete activity': 'Delete activity'
 'Delete component': 'Delete component'
+'Delete file import': 'Delete file import'
 'Delete maintenance log': 'Delete maintenance log'
 Deleting...: Deleting...
 Description: Description
@@ -266,6 +268,7 @@ Tasks: Tasks
 'The unit system used to render distances, elevations, temperatures, etc.': 'The unit system used to render distances, elevations, temperatures, etc.'
 'This action cannot be undone.': 'This action cannot be undone.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'This component is fitted to multiple gears, pick the one you serviced.'
+'This only removes the import record, the imported activity is kept.': 'This only removes the import record, the imported activity is kept.'
 "This value is imported from Strava and can't be edited here.": "This value is imported from Strava and can't be edited here."
 'This widget still needs to be configured.': 'This widget still needs to be configured.'
 'This will discard your current dashboard layout and restore the default widgets.': 'This will discard your current dashboard layout and restore the default widgets.'

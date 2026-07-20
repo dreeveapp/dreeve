@@ -12,6 +12,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 final readonly class FileImportOverviewItem implements Item
 {
     private function __construct(
+        private FileImportId $fileImportId,
         private string $originalFilename,
         private ImportSource $source,
         private FileImportStatus $status,
@@ -23,6 +24,7 @@ final readonly class FileImportOverviewItem implements Item
     }
 
     public static function fromState(
+        FileImportId $fileImportId,
         string $originalFilename,
         ImportSource $source,
         FileImportStatus $status,
@@ -32,6 +34,7 @@ final readonly class FileImportOverviewItem implements Item
         ?string $activityName,
     ): self {
         return new self(
+            fileImportId: $fileImportId,
             originalFilename: $originalFilename,
             source: $source,
             status: $status,
@@ -40,6 +43,11 @@ final readonly class FileImportOverviewItem implements Item
             activityId: $activityId,
             activityName: $activityName,
         );
+    }
+
+    public function getFileImportId(): FileImportId
+    {
+        return $this->fileImportId;
     }
 
     public function getOriginalFilename(): string

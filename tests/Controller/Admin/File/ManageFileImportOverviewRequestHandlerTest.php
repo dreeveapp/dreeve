@@ -10,7 +10,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Import\FileImportBuilder;
 
-class FileImportsRequestHandlerTest extends AdminWebTestCase
+class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
 {
     public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
     {
@@ -56,7 +56,7 @@ class FileImportsRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('No files imported yet.', $crawler->filter('body')->text());
-        $this->assertCount(1, $crawler->filter('table.data-table tbody td[colspan="4"]'));
+        $this->assertCount(1, $crawler->filter('table.data-table tbody td[colspan="5"]'));
         $this->assertCount(0, $crawler->filter('[aria-label="Go to next page"]'));
     }
 
@@ -71,6 +71,7 @@ class FileImportsRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertCount(3, $crawler->filter('table.data-table tbody tr'));
+        $this->assertCount(3, $crawler->filter('table.data-table tbody a[href$="/delete"]'));
         $this->assertStringContainsString('activity-1.fit', $crawler->filter('table.data-table')->text());
         $this->assertStringNotContainsString('No files imported yet.', $crawler->filter('body')->text());
         $this->assertCount(0, $crawler->filter('[aria-label="Go to next page"]'));

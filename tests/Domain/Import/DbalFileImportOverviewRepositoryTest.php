@@ -55,6 +55,7 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             [
                 FileImportOverviewItem::fromState(
+                    fileImportId: FileImportId::fromUnprefixed('1'),
                     originalFilename: 'morning-run.fit',
                     source: ImportSource::GPX_FILE,
                     status: FileImportStatus::FAILED,

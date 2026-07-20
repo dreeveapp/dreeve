@@ -24,6 +24,9 @@
                             <th scope="col" class="text-left">
                                 {{ "Activity"|trans }}
                             </th>
+                            <th scope="col" class="narrow">
+                                <span class="sr-only">{{ "Delete"|trans({}, 'admin') }}</span>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -68,16 +71,28 @@
                                 <td class="whitespace-nowrap text-left">
                                     {% set activityId = fileImport.getActivityId() %}
                                     {% if activityId %}
-                                        <a class="font-medium text-blue-600 hover:underline" href="{{ relativeUrl('/activities#/activity/' ~ activityId ~ '.html') }}">
+                                        <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
+                                           title="{{ fileImport.getActivityName() }}"
+                                           href="{{ relativeUrl('/activities#/activity/' ~ activityId ~ '.html') }}">
                                             {{ fileImport.getActivityName() }}
                                         </a>
                                     {% endif %}
+                                </td>
+                                <td class="narrow whitespace-nowrap">
+                                    <a href="{{ relativeUrl(path('admin_delete_file_import', {fileImportId: fileImport.getFileImportId()})) }}"
+                                       class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600"
+                                       title="{{ "Delete"|trans({}, 'admin') }}">
+                                        <span class="sr-only">{{ "Delete"|trans({}, 'admin') }}</span>
+                                        <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                        </svg>
+                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}
                         {% if overview.isEmpty() %}
                             <tr>
-                                <td colspan="4">
+                                <td colspan="5">
                                     <div class="flex flex-col items-center justify-center gap-3 py-12 px-4 text-center">
                                         <span class="grid place-items-center size-12 rounded-full bg-gray-100 text-gray-400" aria-hidden="true">
                                             <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"
