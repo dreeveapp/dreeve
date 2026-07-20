@@ -38,6 +38,7 @@ Admin: Admin
 'App subtitle': 'Subtítulo do aplicativo'
 'App update available notification': 'Notificação de atualização do aplicativo disponível'
 Appearance: Aparência
+'Are you sure you want to delete the import of {name}?': 'Are you sure you want to delete the import of {name}?'
 'Are you sure you want to delete the {component} component?': 'Tem certeza de que deseja excluir o componente {component}?'
 'Are you sure you want to delete {name}?': 'Tem certeza de que deseja excluir {name}?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Tem certeza de que deseja excluir {task} no componente {component} para o equipamento {gear}, realizado em {date}?'
@@ -75,6 +76,7 @@ Daemon: Daemon
 Delete: Excluir
 'Delete activity': 'Excluir atividade'
 'Delete component': 'Excluir componente'
+'Delete file import': 'Delete file import'
 'Delete maintenance log': 'Excluir registro de manutenção'
 Deleting...: Excluindo...
 Description: Descrição
@@ -266,6 +268,7 @@ Tasks: Tarefas
 'The unit system used to render distances, elevations, temperatures, etc.': 'O sistema de unidades usado para renderizar distâncias, elevações, temperaturas, etc.'
 'This action cannot be undone.': 'Esta ação não pode ser desfeita.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Este componente está instalado em vários equipamentos, escolha aquele em que você fez a manutenção.'
+'This only removes the import record, the imported activity is kept.': 'This only removes the import record, the imported activity is kept.'
 "This value is imported from Strava and can't be edited here.": 'Este valor é importado do Strava e não pode ser editado aqui.'
 'This widget still needs to be configured.': 'Este widget ainda precisa ser configurado.'
 'This will discard your current dashboard layout and restore the default widgets.': 'Isso descartará o layout atual do seu painel e restaurará os widgets padrão.'

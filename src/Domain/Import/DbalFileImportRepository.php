@@ -12,13 +12,12 @@ final readonly class DbalFileImportRepository extends DbalRepository implements 
 {
     public function add(FileImport $fileImport): void
     {
-        $sql = 'INSERT INTO FileImport (fileImportId, originalFilename, fileHash, fileContents, source, status, errorMessage, activityId, importedOn)
-        VALUES (:fileImportId, :originalFilename, :fileHash, :fileContents, :source, :status, :errorMessage, :activityId, :importedOn)';
+        $sql = 'INSERT INTO FileImport (fileImportId, originalFilename, fileContents, source, status, errorMessage, activityId, importedOn)
+        VALUES (:fileImportId, :originalFilename, :fileContents, :source, :status, :errorMessage, :activityId, :importedOn)';
 
         $this->connection->executeStatement($sql, [
             'fileImportId' => (string) $fileImport->getId(),
             'originalFilename' => $fileImport->getOriginalFilename(),
-            'fileHash' => $fileImport->getFileHash(),
             'fileContents' => null !== $fileImport->getFileContents() ? (string) CompressedString::fromUncompressed($fileImport->getFileContents()) : null,
             'source' => $fileImport->getSource()->value,
             'status' => $fileImport->getStatus()->value,
@@ -28,15 +27,13 @@ final readonly class DbalFileImportRepository extends DbalRepository implements 
         ]);
     }
 
-    public function existsForFileHash(string $fileHash): bool
+    public function delete(FileImportId $fileImportId): void
     {
-        $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder->select('COUNT(*)')
-            ->from('FileImport')
-            ->andWhere('fileHash = :fileHash')
-            ->setParameter('fileHash', $fileHash);
+        $sql = 'DELETE FROM FileImport WHERE fileImportId = :fileImportId';
 
-        return (int) $queryBuilder->executeQuery()->fetchOne() > 0;
+        $this->connection->executeStatement($sql, [
+            'fileImportId' => $fileImportId,
+        ]);
     }
 
     public function deleteForActivity(ActivityId $activityId): void

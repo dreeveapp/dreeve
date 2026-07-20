@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
 #[AsController]
-final readonly class FileImportsRequestHandler
+final readonly class ManageFileImportOverviewRequestHandler
 {
     use PaginationFromRequest;
 

@@ -15,4 +15,6 @@ interface FileImportOverviewRepository
     public function find(
         Pagination $pagination,
     ): Overview;
+
+    public function findOneByFileImportId(FileImportId $fileImportId): FileImportOverviewItem;
 }

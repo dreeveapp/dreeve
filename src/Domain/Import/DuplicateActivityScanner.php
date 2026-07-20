@@ -14,7 +14,6 @@ final readonly class DuplicateActivityScanner
 {
     public function __construct(
         private Connection $connection,
-        private FileImportRepository $fileImportRepository,
     ) {
     }
 
@@ -23,11 +22,6 @@ final readonly class DuplicateActivityScanner
         SportType $sportType,
         SerializableDateTime $startDateTime,
     ): bool {
-        // Same file content already imported (file -> file).
-        if ($this->fileImportRepository->existsForFileHash($file->getHash())) {
-            return true;
-        }
-
         // Same activity already imported from Strava (strava -> file),
         // matched on the uploaded file's name.
         if ($this->existsStravaActivityForFilename($file->getPath()->getFilename())) {

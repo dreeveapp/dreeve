@@ -6,6 +6,7 @@ namespace App\Domain\Import;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ImportSource;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
@@ -36,12 +37,31 @@ final readonly class DbalFileImportOverviewRepository extends DbalRepository imp
         );
     }
 
+    public function findOneByFileImportId(FileImportId $fileImportId): FileImportOverviewItem
+    {
+        $result = $this->connection->createQueryBuilder()
+            ->select('fi.fileImportId', 'fi.originalFilename', 'fi.source', 'fi.status', 'fi.errorMessage', 'fi.activityId', 'fi.importedOn', 'a.name AS activityName')
+            ->from('FileImport', 'fi')
+            ->leftJoin('fi', 'Activity', 'a', 'a.activityId = fi.activityId')
+            ->andWhere('fi.fileImportId = :fileImportId')
+            ->setParameter('fileImportId', (string) $fileImportId)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if (false === $result) {
+            throw new EntityNotFound(sprintf('File import "%s" is no longer available', $fileImportId));
+        }
+
+        return $this->hydrate($result);
+    }
+
     /**
      * @param array<string, mixed> $result
      */
     private function hydrate(array $result): FileImportOverviewItem
     {
         return FileImportOverviewItem::fromState(
+            fileImportId: FileImportId::fromString($result['fileImportId']),
             originalFilename: $result['originalFilename'],
             source: ImportSource::from($result['source']),
             status: FileImportStatus::from($result['status']),

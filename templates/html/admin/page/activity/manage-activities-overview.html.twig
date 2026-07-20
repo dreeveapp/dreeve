@@ -41,7 +41,9 @@
                 {% for activity in overview %}
                     <tr class="group/row">
                         <td class="whitespace-nowrap text-left font-medium text-gray-800">
-                            {{ activity.getName() }}
+                            <span class="block max-w-100 truncate" title="{{ activity.getName() }}">
+                                {{ activity.getName() }}
+                            </span>
                         </td>
                         <td class="whitespace-nowrap text-left">
                             {{ activity.getSportType()|trans }}
