@@ -18,6 +18,12 @@
 <p align="center"><i>Formerly known as "Statistics for Strava".</i></p>
 
 <p align="center">
+  <b>Dreeve</b> • <i>/driːv/</i> • <i>noun</i><br>
+  A dreve is the West-Flemish word (the birthplace of Dreeve's maintainer) for a country road lined with trees on both sides.<br>
+  The kind of road every cyclist and runner loves.
+</p>
+
+<p align="center">
   <a href="#-showcase">Showcase</a> •
   <a href="#-documentation">Docs</a> •
   <a href="https://discord.gg/p4zpZyCHNc">Discord</a>
