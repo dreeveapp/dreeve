@@ -20,6 +20,23 @@ class PathTest extends TestCase
         self::assertEquals($expectedExtension, Path::fromString($path)->getExtension());
     }
 
+    #[DataProvider('provideBasenames')]
+    public function testItShouldReturnBasenamePreservingCase(string $path, string $expectedBasename): void
+    {
+        self::assertSame($expectedBasename, Path::fromString($path)->getBasename());
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideBasenames(): iterable
+    {
+        yield 'uppercase extension preserved' => ['watch/Ride_2026-07-02.FIT', 'Ride_2026-07-02.FIT'];
+        yield 'lowercase kept' => ['photo.jpg', 'photo.jpg'];
+        yield 'no directory' => ['ride.FIT', 'ride.FIT'];
+        yield 'mixed case name' => ['/var/data/MyRide.Gpx', 'MyRide.Gpx'];
+    }
+
     /**
      * @return iterable<string, array{string, string, string, string}>
      */
