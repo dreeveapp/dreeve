@@ -17,6 +17,7 @@
         <extensions>
           <gpxtpx:TrackPointExtension>
             <gpxtpx:cad>80</gpxtpx:cad>
+            <gpxtpx:atemp>21</gpxtpx:atemp>
           </gpxtpx:TrackPointExtension>
           <power>200</power>
         </extensions>
@@ -42,6 +43,7 @@
           <gpxtpx:TrackPointExtension>
             <gpxtpx:hr>140</gpxtpx:hr>
             <gpxtpx:cad>84</gpxtpx:cad>
+            <gpxtpx:atemp>23</gpxtpx:atemp>
           </gpxtpx:TrackPointExtension>
           <power>220</power>
         </extensions>

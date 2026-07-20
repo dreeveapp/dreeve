@@ -154,8 +154,11 @@ final readonly class TcxFileParser implements ActivityFileParser
             StreamType::HEART_RATE->value => [],
             StreamType::CADENCE->value => [],
             StreamType::WATTS->value => [],
+            StreamType::TEMP->value => [],
         ];
         $laps = [];
+
+        $hasNonZeroAltitude = $this->hasNonZeroAltitude($activityXml);
 
         $lapIndex = 0;
         foreach ($activityXml->Lap as $lap) {
@@ -172,6 +175,12 @@ final readonly class TcxFileParser implements ActivityFileParser
                     $lapTimes[] = $time;
 
                     $altitude = $this->floatChild($trackpoint, 'AltitudeMeters');
+                    // Suunto exports interleave spurious 0-altitudes between real
+                    // values; treat exact zeros as missing, but only when the file
+                    // has real altitude data (an all-zero file is kept as-is).
+                    if ($hasNonZeroAltitude && 0.0 === $altitude) {
+                        $altitude = null;
+                    }
                     $lapAltitudes[] = $altitude;
 
                     $distance = $this->floatChild($trackpoint, 'DistanceMeters');
@@ -183,7 +192,8 @@ final readonly class TcxFileParser implements ActivityFileParser
 
                     $latitude = $this->floatChild($trackpoint->Position, 'LatitudeDegrees');
                     $longitude = $this->floatChild($trackpoint->Position, 'LongitudeDegrees');
-                    $streams[StreamType::LAT_LNG->value][] = (null !== $latitude && null !== $longitude) ? [$latitude, $longitude] : null;
+                    // 0/0 ("null island") means no GPS fix (indoor rides, GPS not locked yet).
+                    $streams[StreamType::LAT_LNG->value][] = (null !== $latitude && null !== $longitude && (0.0 !== $latitude || 0.0 !== $longitude)) ? [$latitude, $longitude] : null;
 
                     $streams[StreamType::HEART_RATE->value][] = $this->intChild($trackpoint->HeartRateBpm, 'Value');
                     $streams[StreamType::CADENCE->value][] = $this->intChild($trackpoint, 'Cadence');
@@ -191,6 +201,7 @@ final readonly class TcxFileParser implements ActivityFileParser
                     $tpx = $this->extensionValues($trackpoint);
                     $streams[StreamType::VELOCITY->value][] = isset($tpx['Speed']) ? (float) $tpx['Speed'] : null;
                     $streams[StreamType::WATTS->value][] = isset($tpx['Watts']) ? (int) $tpx['Watts'] : null;
+                    $streams[StreamType::TEMP->value][] = isset($tpx['Temperature']) ? (int) round((float) $tpx['Temperature']) : null;
                 }
             }
 
@@ -334,6 +345,22 @@ final readonly class TcxFileParser implements ActivityFileParser
         }
 
         return $values;
+    }
+
+    private function hasNonZeroAltitude(\SimpleXMLElement $activityXml): bool
+    {
+        foreach ($activityXml->Lap as $lap) {
+            foreach ($lap->Track ?? [] as $track) {
+                foreach ($track->Trackpoint ?? [] as $trackpoint) {
+                    $altitude = $this->floatChild($trackpoint, 'AltitudeMeters');
+                    if (null !== $altitude && 0.0 !== $altitude) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     private function sumCalories(\SimpleXMLElement $activity): ?int

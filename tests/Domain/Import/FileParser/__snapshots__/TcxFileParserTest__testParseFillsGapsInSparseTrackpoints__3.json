@@ -37,6 +37,13 @@
     {
         "dataSize": 4,
         "activityId": "activity-1",
+        "streamType": "temp",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[20,20,20,22]"
+    },
+    {
+        "dataSize": 4,
+        "activityId": "activity-1",
         "streamType": "time",
         "createdOn": "2023-10-17 16:15:04",
         "data": "[0,10,20,30]"

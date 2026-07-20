@@ -153,6 +153,7 @@ final readonly class GpxFileParser implements ActivityFileParser
             StreamType::HEART_RATE->value => [],
             StreamType::CADENCE->value => [],
             StreamType::WATTS->value => [],
+            StreamType::TEMP->value => [],
         ];
         $laps = [];
 
@@ -184,6 +185,10 @@ final readonly class GpxFileParser implements ActivityFileParser
 
                     $latitude = isset($trackpoint['lat']) ? (float) $trackpoint['lat'] : null;
                     $longitude = isset($trackpoint['lon']) ? (float) $trackpoint['lon'] : null;
+                    if (0.0 === $latitude && 0.0 === $longitude) {
+                        $latitude = null;
+                        $longitude = null;
+                    }
                     $altitude = $this->sanitizeElevation($this->floatChild($trackpoint, 'ele'));
 
                     $instantSpeed = null;
@@ -212,6 +217,7 @@ final readonly class GpxFileParser implements ActivityFileParser
                     $streams[StreamType::HEART_RATE->value][] = $extensions['hr'];
                     $streams[StreamType::CADENCE->value][] = $extensions['cad'];
                     $streams[StreamType::WATTS->value][] = $extensions['power'];
+                    $streams[StreamType::TEMP->value][] = $extensions['temp'];
 
                     $segmentTimes[] = $time;
                     $segmentAltitudes[] = $altitude;
@@ -375,11 +381,11 @@ final readonly class GpxFileParser implements ActivityFileParser
     }
 
     /**
-     * @return array{hr: ?int, cad: ?int, power: ?int}
+     * @return array{hr: ?int, cad: ?int, power: ?int, temp: ?int}
      */
     private function extractExtensionValues(\SimpleXMLElement $trackpoint): array
     {
-        $values = ['hr' => null, 'cad' => null, 'power' => null];
+        $values = ['hr' => null, 'cad' => null, 'power' => null, 'temp' => null];
         if (!property_exists($trackpoint, 'extensions') || null === $trackpoint->extensions) {
             return $values;
         }
@@ -393,7 +399,7 @@ final readonly class GpxFileParser implements ActivityFileParser
     }
 
     /**
-     * @param array{hr: ?int, cad: ?int, power: ?int} $values
+     * @param array{hr: ?int, cad: ?int, power: ?int, temp: ?int} $values
      */
     private function collectExtensionValues(\SimpleXMLElement $element, array &$values): void
     {
@@ -409,6 +415,8 @@ final readonly class GpxFileParser implements ActivityFileParser
                     $values['cad'] = $intValue;
                 } elseif (in_array($tag, ['power', 'powerinwatts'], true)) {
                     $values['power'] = $intValue;
+                } elseif (in_array($tag, ['atemp', 'temp', 'temperature'], true)) {
+                    $values['temp'] = $intValue;
                 }
             }
 

@@ -283,7 +283,7 @@ final readonly class FitFileParser implements ActivityFileParser
 
             $latitude = is_numeric($record['position_lat'] ?? null) ? (float) $record['position_lat'] : null;
             $longitude = is_numeric($record['position_long'] ?? null) ? (float) $record['position_long'] : null;
-            $streams[StreamType::LAT_LNG->value][] = (null !== $latitude && null !== $longitude)
+            $streams[StreamType::LAT_LNG->value][] = (null !== $latitude && null !== $longitude && (0.0 !== $latitude || 0.0 !== $longitude))
                 ? [GeoMath::semicirclesToDegrees($latitude), GeoMath::semicirclesToDegrees($longitude)]
                 : null;
 
