@@ -39,6 +39,9 @@ final readonly class GpxFileParser implements ActivityFileParser
     private const float ELEVATION_MIN = -9999.99;
     private const float ELEVATION_MAX = 9999.99;
 
+    // Interval longer than this is treated as a recording gap rather than active time.
+    private const int MAX_RECORDING_GAP_IN_SECONDS = 60;
+
     public function __construct(
         private ActivityIdFactory $activityIdFactory,
         private ActivityLapIdFactory $activityLapIdFactory,
@@ -76,128 +79,14 @@ final readonly class GpxFileParser implements ActivityFileParser
             throw new CouldNotParseActivityFile(message: sprintf('No <trk> found in "%s"', $file->getPath()->getFilename()), activityFile: $file);
         }
 
-        $startTimestamp = null;
-        $cumulativeDistance = 0.0;
-
-        $streams = [
-            StreamType::TIME->value => [],
-            StreamType::DISTANCE->value => [],
-            StreamType::LAT_LNG->value => [],
-            StreamType::ALTITUDE->value => [],
-            StreamType::VELOCITY->value => [],
-            StreamType::HEART_RATE->value => [],
-            StreamType::CADENCE->value => [],
-            StreamType::WATTS->value => [],
-        ];
-        $laps = [];
-
-        $sportType = SportType::WORKOUT;
+        $sportType = $this->resolveSportType($xml);
         $deviceName = null;
         if (isset($xml['creator']) && '' !== (string) $xml['creator']) {
             $deviceName = (string) $xml['creator'];
         }
-        $calories = null;
+        $calories = $this->resolveCalories($xml);
 
-        $lapIndex = 0;
-        foreach ($xml->trk as $track) {
-            if (property_exists($track, 'type') && null !== $track->type && '' !== (string) $track->type) {
-                $sportType = GpxSportType::resolve((string) $track->type);
-            }
-            $trackCalories = $this->sumCalories($track);
-            if (null !== $trackCalories) {
-                $calories = ($calories ?? 0) + $trackCalories;
-            }
-
-            foreach ($track->trkseg ?? [] as $segment) {
-                // Cursors must not carry across segments.
-                $previousLatitude = null;
-                $previousLongitude = null;
-                $previousTime = null;
-
-                $segmentTimes = [];
-                $segmentSpeeds = [];
-                $segmentAltitudes = [];
-                $segmentHeartRates = [];
-                $segmentDistance = 0.0;
-
-                foreach ($segment->trkpt ?? [] as $trackpoint) {
-                    // Skip trackpoints without time (e.g. OsmAnd exports).
-                    if (!property_exists($trackpoint, 'time')) {
-                        continue;
-                    }
-                    if (null === $trackpoint->time) {
-                        continue;
-                    }
-                    if ('' === (string) $trackpoint->time) {
-                        continue;
-                    }
-                    $time = SerializableDateTime::fromString((string) $trackpoint->time)->getTimestamp();
-                    $startTimestamp ??= $time;
-
-                    $latitude = isset($trackpoint['lat']) ? (float) $trackpoint['lat'] : null;
-                    $longitude = isset($trackpoint['lon']) ? (float) $trackpoint['lon'] : null;
-                    $altitude = $this->sanitizeElevation(property_exists($trackpoint, 'ele') && null !== $trackpoint->ele ? (float) $trackpoint->ele : null);
-
-                    if (!in_array(null, [$previousLatitude, $previousLongitude, $latitude, $longitude], true)) {
-                        $delta = GeoMath::haversineDistance(
-                            lat1: $previousLatitude,
-                            lon1: $previousLongitude,
-                            lat2: $latitude,
-                            lon2: $longitude
-                        );
-                        $cumulativeDistance += $delta;
-                        $segmentDistance += $delta;
-                    }
-
-                    $instantSpeed = null;
-                    if (null !== $previousTime && $time > $previousTime && null !== $latitude && null !== $longitude && null !== $previousLatitude && null !== $previousLongitude) {
-                        $instantSpeed = GeoMath::haversineDistance(
-                            lat1: $previousLatitude,
-                            lon1: $previousLongitude,
-                            lat2: $latitude,
-                            lon2: $longitude
-                        ) / ($time - $previousTime);
-                    }
-
-                    $extensions = $this->extractExtensionValues($trackpoint);
-
-                    $streams[StreamType::TIME->value][] = $time - $startTimestamp;
-                    $streams[StreamType::DISTANCE->value][] = round($cumulativeDistance, 2);
-                    $streams[StreamType::LAT_LNG->value][] = (null !== $latitude && null !== $longitude) ? [$latitude, $longitude] : null;
-                    $streams[StreamType::ALTITUDE->value][] = $altitude;
-                    $streams[StreamType::VELOCITY->value][] = $instantSpeed;
-                    $streams[StreamType::HEART_RATE->value][] = $extensions['hr'];
-                    $streams[StreamType::CADENCE->value][] = $extensions['cad'];
-                    $streams[StreamType::WATTS->value][] = $extensions['power'];
-
-                    $segmentTimes[] = $time;
-                    $segmentAltitudes[] = $altitude;
-                    if (null !== $instantSpeed) {
-                        $segmentSpeeds[] = $instantSpeed;
-                    }
-                    if (null !== $extensions['hr']) {
-                        $segmentHeartRates[] = $extensions['hr'];
-                    }
-
-                    $previousLatitude = $latitude;
-                    $previousLongitude = $longitude;
-                    $previousTime = $time;
-                }
-
-                if (count($segmentTimes) < 2) {
-                    continue;
-                }
-
-                $laps[] = $this->buildLap(
-                    index: $lapIndex++,
-                    times: $segmentTimes,
-                    distance: $segmentDistance,
-                    speeds: $segmentSpeeds,
-                    heartRates: $segmentHeartRates,
-                    elevationGain: $this->elevationGain($segmentAltitudes),
-                );
-            }
-        }
+        [$laps, $streams, $startTimestamp] = $this->parseTracksAndStreams($xml);
 
         if (null === $startTimestamp) {
             throw new CouldNotParseActivityFile(message: sprintf('No trackpoints with a timestamp found in "%s"', $file->getPath()->getFilename()), activityFile: $file);
@@ -249,6 +138,136 @@ final readonly class GpxFileParser implements ActivityFileParser
             streams: $this->buildActivityStreams($streams, $activityId),
             laps: $activityLaps,
         );
+    }
+
+    /**
+     * @return array{list<array<string, mixed>>, array<string, list<mixed>>, ?int}
+     */
+    private function parseTracksAndStreams(\SimpleXMLElement $xml): array
+    {
+        $startTimestamp = null;
+        $cumulativeDistance = 0.0;
+        $streams = [
+            StreamType::TIME->value => [],
+            StreamType::DISTANCE->value => [],
+            StreamType::LAT_LNG->value => [],
+            StreamType::ALTITUDE->value => [],
+            StreamType::VELOCITY->value => [],
+            StreamType::HEART_RATE->value => [],
+            StreamType::CADENCE->value => [],
+            StreamType::WATTS->value => [],
+        ];
+        $laps = [];
+
+        $lapIndex = 0;
+        foreach ($xml->trk as $track) {
+            foreach ($track->trkseg ?? [] as $segment) {
+                // Cursors must not carry across segments.
+                $previousLatitude = null;
+                $previousLongitude = null;
+                $previousTime = null;
+
+                $segmentTimes = [];
+                $segmentSpeeds = [];
+                $segmentAltitudes = [];
+                $segmentHeartRates = [];
+                $segmentDistance = 0.0;
+
+                foreach ($segment->trkpt ?? [] as $trackpoint) {
+                    // Skip trackpoints without time (e.g. OsmAnd exports).
+                    $rawTime = $this->stringChild($trackpoint, 'time');
+                    if (null === $rawTime || '' === $rawTime) {
+                        continue;
+                    }
+                    $time = SerializableDateTime::fromString($rawTime)->getTimestamp();
+                    $startTimestamp ??= $time;
+
+                    $latitude = isset($trackpoint['lat']) ? (float) $trackpoint['lat'] : null;
+                    $longitude = isset($trackpoint['lon']) ? (float) $trackpoint['lon'] : null;
+                    $altitude = $this->sanitizeElevation($this->floatChild($trackpoint, 'ele'));
+
+                    $instantSpeed = null;
+                    if (!in_array(null, [$previousLatitude, $previousLongitude, $latitude, $longitude], true)) {
+                        $delta = GeoMath::haversineDistance(
+                            lat1: $previousLatitude,
+                            lon1: $previousLongitude,
+                            lat2: $latitude,
+                            lon2: $longitude
+                        );
+                        $cumulativeDistance += $delta;
+                        $segmentDistance += $delta;
+
+                        if (null !== $previousTime && $time > $previousTime) {
+                            $instantSpeed = $delta / ($time - $previousTime);
+                        }
+                    }
+
+                    $extensions = $this->extractExtensionValues($trackpoint);
+
+                    $streams[StreamType::TIME->value][] = $time - $startTimestamp;
+                    $streams[StreamType::DISTANCE->value][] = round($cumulativeDistance, 2);
+                    $streams[StreamType::LAT_LNG->value][] = (null !== $latitude && null !== $longitude) ? [$latitude, $longitude] : null;
+                    $streams[StreamType::ALTITUDE->value][] = $altitude;
+                    $streams[StreamType::VELOCITY->value][] = $instantSpeed;
+                    $streams[StreamType::HEART_RATE->value][] = $extensions['hr'];
+                    $streams[StreamType::CADENCE->value][] = $extensions['cad'];
+                    $streams[StreamType::WATTS->value][] = $extensions['power'];
+
+                    $segmentTimes[] = $time;
+                    $segmentAltitudes[] = $altitude;
+                    if (null !== $instantSpeed) {
+                        $segmentSpeeds[] = $instantSpeed;
+                    }
+                    if (null !== $extensions['hr']) {
+                        $segmentHeartRates[] = $extensions['hr'];
+                    }
+
+                    $previousLatitude = $latitude;
+                    $previousLongitude = $longitude;
+                    $previousTime = $time;
+                }
+
+                if (count($segmentTimes) < 2) {
+                    continue;
+                }
+
+                $laps[] = $this->buildLap(
+                    index: $lapIndex++,
+                    times: $segmentTimes,
+                    distance: $segmentDistance,
+                    speeds: $segmentSpeeds,
+                    heartRates: $segmentHeartRates,
+                    elevationGain: $this->elevationGain($segmentAltitudes),
+                    activeSeconds: $this->activeSeconds($segmentTimes),
+                );
+            }
+        }
+
+        return [$laps, $streams, $startTimestamp];
+    }
+
+    private function resolveSportType(\SimpleXMLElement $xml): SportType
+    {
+        foreach ($xml->trk as $track) {
+            $type = $this->stringChild($track, 'type');
+            if (null !== $type && '' !== $type) {
+                return GpxSportType::resolve($type);
+            }
+        }
+
+        return SportType::WORKOUT;
+    }
+
+    private function resolveCalories(\SimpleXMLElement $xml): ?int
+    {
+        $calories = null;
+        foreach ($xml->trk as $track) {
+            if (null !== ($trackCalories = $this->sumCalories($track))) {
+                $calories = ($calories ?? 0) + $trackCalories;
+            }
+        }
+
+        return $calories;
     }
 
     /**
@@ -315,22 +334,53 @@ final readonly class GpxFileParser implements ActivityFileParser
      *
      * @return array<string, mixed>
      */
-    private function buildLap(int $index, array $times, float $distance, array $speeds, array $heartRates, float $elevationGain): array
+    private function buildLap(int $index, array $times, float $distance, array $speeds, array $heartRates, float $elevationGain, int $activeSeconds): array
     {
         $elapsed = [] !== $times ? max($times) - min($times) : 0;
+        // Elapsed time keeps the segment's full duration. Moving time is capped at the active time.
+        $movingTime = min($elapsed, $activeSeconds);
 
         return [
-            'id' => $index + 1,
             'lap_index' => $index + 1,
             'name' => sprintf('Lap %d', $index + 1),
             'elapsed_time' => $elapsed,
-            'moving_time' => $elapsed,
+            'moving_time' => $movingTime,
             'distance' => $distance,
-            'average_speed' => $elapsed > 0 ? $distance / $elapsed : 0.0,
+            'average_speed' => $movingTime > 0 ? $distance / $movingTime : 0.0,
             'max_speed' => [] !== $speeds ? max($speeds) : 0.0,
             'total_elevation_gain' => $elevationGain,
             'average_heartrate' => [] !== $heartRates ? array_sum($heartRates) / count($heartRates) : null,
         ];
+    }
+
+    /**
+     * @param list<int> $timestamps
+     */
+    private function activeSeconds(array $timestamps): int
+    {
+        $active = 0;
+        $previous = null;
+        foreach ($timestamps as $time) {
+            if (null !== $previous) {
+                $delta = $time - $previous;
+                if ($delta > 0 && $delta <= self::MAX_RECORDING_GAP_IN_SECONDS) {
+                    $active += $delta;
+                }
+            }
+            $previous = $time;
+        }
+
+        return $active;
+    }
+
+    private function stringChild(\SimpleXMLElement $parent, string $child): ?string
+    {
+        return property_exists($parent, $child) && null !== $parent->{$child} ? (string) $parent->{$child} : null;
+    }
+
+    private function floatChild(\SimpleXMLElement $parent, string $child): ?float
+    {
+        return null !== ($value = $this->stringChild($parent, $child)) ? (float) $value : null;
     }
 
     /**
