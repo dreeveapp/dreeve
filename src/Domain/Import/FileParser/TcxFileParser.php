@@ -76,63 +76,9 @@ final readonly class TcxFileParser implements ActivityFileParser
         }
 
         $sportType = SportTypeName::tryResolve((string) $activityXml['Sport']) ?? SportType::WORKOUT;
-        $deviceName = property_exists($activityXml->Creator, 'Name') && null !== $activityXml->Creator->Name ? (string) $activityXml->Creator->Name : null;
+        $deviceName = $this->stringChild($activityXml->Creator, 'Name');
 
-        $startTimestamp = null;
-        $streams = [
-            StreamType::TIME->value => [],
-            StreamType::DISTANCE->value => [],
-            StreamType::LAT_LNG->value => [],
-            StreamType::ALTITUDE->value => [],
-            StreamType::VELOCITY->value => [],
-            StreamType::HEART_RATE->value => [],
-            StreamType::CADENCE->value => [],
-            StreamType::WATTS->value => [],
-        ];
-        $laps = [];
-
-        foreach ($activityXml->Lap as $lapIndex => $lap) {
-            $lapStart = isset($lap['StartTime']) ? SerializableDateTime::fromString((string) $lap['StartTime'])->getTimestamp() : null;
-            $lapAltitudes = [];
-            $lapTimes = [];
-            $lapDistances = [];
-
-            foreach ($lap->Track->Trackpoint ?? [] as $trackpoint) {
-                $time = property_exists($trackpoint, 'Time') && null !== $trackpoint->Time ? SerializableDateTime::fromString((string) $trackpoint->Time)->getTimestamp() : null;
-                $startTimestamp ??= $time;
-                $lapTimes[] = $time;
-
-                $altitude = property_exists($trackpoint, 'AltitudeMeters') && null !== $trackpoint->AltitudeMeters ? (float) $trackpoint->AltitudeMeters : null;
-                $lapAltitudes[] = $altitude;
-
-                $distance = property_exists($trackpoint, 'DistanceMeters') && null !== $trackpoint->DistanceMeters ? (float) $trackpoint->DistanceMeters : null;
-                $lapDistances[] = $distance;
-
-                $streams[StreamType::TIME->value][] = (null !== $time && null !== $startTimestamp) ? $time - $startTimestamp : null;
-                $streams[StreamType::DISTANCE->value][] = $distance;
-                $streams[StreamType::ALTITUDE->value][] = $altitude;
-
-                $latitude = property_exists($trackpoint->Position, 'LatitudeDegrees') && null !== $trackpoint->Position->LatitudeDegrees ? (float) $trackpoint->Position->LatitudeDegrees : null;
-                $longitude = property_exists($trackpoint->Position, 'LongitudeDegrees') && null !== $trackpoint->Position->LongitudeDegrees ? (float) $trackpoint->Position->LongitudeDegrees : null;
-                $streams[StreamType::LAT_LNG->value][] = (null !== $latitude && null !== $longitude) ? [$latitude, $longitude] : null;
-
-                $streams[StreamType::HEART_RATE->value][] = property_exists($trackpoint->HeartRateBpm, 'Value') && null !== $trackpoint->HeartRateBpm->Value ? (int) $trackpoint->HeartRateBpm->Value : null;
-                $streams[StreamType::CADENCE->value][] = property_exists($trackpoint, 'Cadence') && null !== $trackpoint->Cadence ? (int) $trackpoint->Cadence : null;
-
-                $tpx = $this->extensionValues($trackpoint);
-                $streams[StreamType::VELOCITY->value][] = isset($tpx['Speed']) ? (float) $tpx['Speed'] : null;
-                $streams[StreamType::WATTS->value][] = isset($tpx['Watts']) ? (int) $tpx['Watts'] : null;
-            }
-
-            $laps[] = $this->buildLap(
-                (int) $lapIndex,
-                $lap,
-                $lapStart,
-                $this->elevationGain($lapAltitudes),
-                $this->activeSeconds($lapTimes),
-                $this->trackpointDistance($lapDistances),
-            );
-        }
+        [$laps, $streams, $startTimestamp] = $this->parseLapsAndStreams($activityXml);
 
         if (null === $startTimestamp) {
             throw new CouldNotParseActivityFile(message: sprintf('No trackpoints with a timestamp found in "%s"', $file->getPath()->getFilename()), activityFile: $file);
@@ -197,6 +143,73 @@ final readonly class TcxFileParser implements ActivityFileParser
     }
 
     /**
+     * @return array{list<array<string, mixed>>, array<string, list<mixed>>, ?int}
+     */
+    private function parseLapsAndStreams(\SimpleXMLElement $activityXml): array
+    {
+        $startTimestamp = null;
+        $streams = [
+            StreamType::TIME->value => [],
+            StreamType::DISTANCE->value => [],
+            StreamType::LAT_LNG->value => [],
+            StreamType::ALTITUDE->value => [],
+            StreamType::VELOCITY->value => [],
+            StreamType::HEART_RATE->value => [],
+            StreamType::CADENCE->value => [],
+            StreamType::WATTS->value => [],
+        ];
+        $laps = [];
+
+        $lapIndex = 0;
+        foreach ($activityXml->Lap as $lap) {
+            $lapAltitudes = [];
+            $lapTimes = [];
+            $lapDistances = [];
+
+            // A lap can contain multiple <Track> elements (e.g. one per pause/resume).
+            foreach ($lap->Track ?? [] as $track) {
+                foreach ($track->Trackpoint ?? [] as $trackpoint) {
+                    $rawTime = $this->stringChild($trackpoint, 'Time');
+                    $time = null !== $rawTime ? SerializableDateTime::fromString($rawTime)->getTimestamp() : null;
+                    $startTimestamp ??= $time;
+                    $lapTimes[] = $time;
+
+                    $altitude = $this->floatChild($trackpoint, 'AltitudeMeters');
+                    $lapAltitudes[] = $altitude;
+
+                    $distance = $this->floatChild($trackpoint, 'DistanceMeters');
+                    $lapDistances[] = $distance;
+
+                    $streams[StreamType::TIME->value][] = (null !== $time && null !== $startTimestamp) ? $time - $startTimestamp : null;
+                    $streams[StreamType::DISTANCE->value][] = $distance;
+                    $streams[StreamType::ALTITUDE->value][] = $altitude;
+
+                    $latitude = $this->floatChild($trackpoint->Position, 'LatitudeDegrees');
+                    $longitude = $this->floatChild($trackpoint->Position, 'LongitudeDegrees');
+                    $streams[StreamType::LAT_LNG->value][] = (null !== $latitude && null !== $longitude) ? [$latitude, $longitude] : null;
+
+                    $streams[StreamType::HEART_RATE->value][] = $this->intChild($trackpoint->HeartRateBpm, 'Value');
+                    $streams[StreamType::CADENCE->value][] = $this->intChild($trackpoint, 'Cadence');
+
+                    $tpx = $this->extensionValues($trackpoint);
+                    $streams[StreamType::VELOCITY->value][] = isset($tpx['Speed']) ? (float) $tpx['Speed'] : null;
+                    $streams[StreamType::WATTS->value][] = isset($tpx['Watts']) ? (int) $tpx['Watts'] : null;
+                }
+            }
+
+            $laps[] = $this->buildLap(
+                $lapIndex++,
+                $lap,
+                $this->elevationGain($lapAltitudes),
+                $this->activeSeconds($lapTimes),
+                $this->trackpointDistance($lapDistances),
+            );
+        }
+
+        return [$laps, $streams, $startTimestamp];
+    }
+
+    /**
      * @param array<string, list<mixed>> $streamMap
      */
     private function buildActivityStreams(array $streamMap, ActivityId $activityId): ActivityStreams
@@ -256,31 +269,29 @@ final readonly class TcxFileParser implements ActivityFileParser
     /**
      * @return array<string, mixed>
      */
-    private function buildLap(int $index, \SimpleXMLElement $lap, ?int $lapStart, float $elevationGain, int $activeSeconds, ?float $trackpointDistance): array
+    private function buildLap(int $index, \SimpleXMLElement $lap, float $elevationGain, int $activeSeconds, ?float $trackpointDistance): array
     {
-        $hasTotalTime = property_exists($lap, 'TotalTimeSeconds') && null !== $lap->TotalTimeSeconds;
-        $totalTimeSeconds = $hasTotalTime ? (int) round((float) $lap->TotalTimeSeconds) : 0;
+        $totalTime = $this->floatChild($lap, 'TotalTimeSeconds');
+        $totalTimeSeconds = null !== $totalTime ? (int) round($totalTime) : 0;
 
         // Elapsed time keeps the file's reported total (including pauses/gaps). Moving time is
         // capped at the active time so a recording gap (e.g. two merged rides) can never inflate it.
-        $movingTime = $hasTotalTime ? min($totalTimeSeconds, $activeSeconds) : 0;
+        $movingTime = null !== $totalTime ? min($totalTimeSeconds, $activeSeconds) : 0;
 
         // Prefer the recorded cumulative-distance stream; the lap summary field can be wrong in
         // merged files. Fall back to the summary when trackpoints carry no distance.
-        $distance = $trackpointDistance ?? (property_exists($lap, 'DistanceMeters') && null !== $lap->DistanceMeters ? (float) $lap->DistanceMeters : 0.0);
+        $distance = $trackpointDistance ?? $this->floatChild($lap, 'DistanceMeters') ?? 0.0;
 
         return [
-            'id' => $index + 1,
             'lap_index' => $index + 1,
             'name' => sprintf('Lap %d', $index + 1),
             'elapsed_time' => $totalTimeSeconds,
             'moving_time' => $movingTime,
             'distance' => $distance,
             'average_speed' => $movingTime > 0 ? $distance / $movingTime : 0.0,
-            'max_speed' => property_exists($lap, 'MaximumSpeed') && null !== $lap->MaximumSpeed ? (float) $lap->MaximumSpeed : 0.0,
+            'max_speed' => $this->floatChild($lap, 'MaximumSpeed') ?? 0.0,
             'total_elevation_gain' => $elevationGain,
-            'average_heartrate' => property_exists($lap->AverageHeartRateBpm, 'Value') && null !== $lap->AverageHeartRateBpm->Value ? (int) $lap->AverageHeartRateBpm->Value : null,
-            'start_date' => null !== $lapStart ? SerializableDateTime::fromTimestamp($lapStart)->format(\DateTimeInterface::ATOM) : null,
+            'average_heartrate' => $this->intChild($lap->AverageHeartRateBpm, 'Value'),
         ];
     }
 
@@ -359,13 +370,28 @@ final readonly class TcxFileParser implements ActivityFileParser
         $calories = 0;
         $found = false;
         foreach ($activity->Lap as $lap) {
-            if (property_exists($lap, 'Calories') && null !== $lap->Calories) {
-                $calories += (int) $lap->Calories;
+            if (null !== ($lapCalories = $this->intChild($lap, 'Calories'))) {
+                $calories += $lapCalories;
                 $found = true;
             }
         }
 
         return $found ? $calories : null;
+    }
+
+    private function stringChild(\SimpleXMLElement $parent, string $child): ?string
+    {
+        return property_exists($parent, $child) && null !== $parent->{$child} ? (string) $parent->{$child} : null;
+    }
+
+    private function floatChild(\SimpleXMLElement $parent, string $child): ?float
+    {
+        return null !== ($value = $this->stringChild($parent, $child)) ? (float) $value : null;
+    }
+
+    private function intChild(\SimpleXMLElement $parent, string $child): ?int
+    {
+        return null !== ($value = $this->stringChild($parent, $child)) ? (int) $value : null;
     }
 
     /**
