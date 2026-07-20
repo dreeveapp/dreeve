@@ -15,10 +15,10 @@ After that, run an import and build to regenerate the app with the new version:
 
 ```bash
 # In files mode (the default)
-> docker compose exec app bin/console app:cron:run-file-import --import --build
+> docker compose exec app bin/console app:cron:run-file-import --build
 
 # In stravaApi mode
-> docker compose exec app bin/console app:cron:run-strava-import --import --build
+> docker compose exec app bin/console app:cron:run-strava-import --build
 ```
 
 > [!WARNING]
