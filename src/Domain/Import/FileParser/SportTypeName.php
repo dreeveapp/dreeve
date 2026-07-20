@@ -2,31 +2,48 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Import\FileParser\Tcx;
+namespace App\Domain\Import\FileParser;
 
 use App\Domain\Activity\SportType\SportType;
 
-final class TcxSportType
+/**
+ * Resolves free-form sport names found in activity files.
+ */
+final class SportTypeName
 {
     /**
      * @var array<string, SportType>
      */
     private const array ALIASES = [
         'running' => SportType::RUN,
-        'biking' => SportType::RIDE,
-        'cycling' => SportType::RIDE,
-        'walking' => SportType::WALK,
-        'hiking' => SportType::HIKE,
-        'swimming' => SportType::SWIM,
+        'streetrunning' => SportType::RUN,
+        'trackrunning' => SportType::RUN,
         'trailrunning' => SportType::TRAIL_RUN,
+        'treadmill' => SportType::VIRTUAL_RUN,
         'treadmillrunning' => SportType::VIRTUAL_RUN,
         'indoorrunning' => SportType::VIRTUAL_RUN,
+        'virtualrunning' => SportType::VIRTUAL_RUN,
+        'biking' => SportType::RIDE,
+        'cycling' => SportType::RIDE,
+        'roadbiking' => SportType::RIDE,
+        'roadcycling' => SportType::RIDE,
         'mountainbiking' => SportType::MOUNTAIN_BIKE_RIDE,
         'gravelbiking' => SportType::GRAVEL_RIDE,
         'gravelcycling' => SportType::GRAVEL_RIDE,
         'indoorcycling' => SportType::VIRTUAL_RIDE,
+        'spinning' => SportType::VIRTUAL_RIDE,
+        'virtualcycling' => SportType::VIRTUAL_RIDE,
         'ebiking' => SportType::E_BIKE_RIDE,
         'handcycling' => SportType::HAND_CYCLE,
+        'walking' => SportType::WALK,
+        'casualwalking' => SportType::WALK,
+        'speedwalking' => SportType::WALK,
+        'hiking' => SportType::HIKE,
+        'swimming' => SportType::SWIM,
+        'lapswimming' => SportType::SWIM,
+        'poolswimming' => SportType::SWIM,
+        'openwaterswimming' => SportType::SWIM,
+        'rowing' => SportType::ROWING,
         'indoorrowing' => SportType::VIRTUAL_ROW,
         'standuppaddleboarding' => SportType::STAND_UP_PADDLING,
         'sup' => SportType::STAND_UP_PADDLING,
@@ -36,6 +53,7 @@ final class TcxSportType
         'crosscountryskiing' => SportType::NORDIC_SKI,
         'alpineskiing' => SportType::ALPINE_SKI,
         'downhillskiing' => SportType::ALPINE_SKI,
+        'resortskiingsnowboarding' => SportType::ALPINE_SKI,
         'backcountryskiing' => SportType::BACK_COUNTRY_SKI,
         'snowboarding' => SportType::SNOWBOARD,
         'snowshoeing' => SportType::SNOWSHOE,
@@ -53,9 +71,12 @@ final class TcxSportType
         'surfing' => SportType::SURFING,
     ];
 
-    public static function resolve(string $tcxSport): SportType
+    public static function tryResolve(string $name): ?SportType
     {
-        $normalized = strtolower((string) preg_replace('/[^a-zA-Z0-9]/', '', $tcxSport));
+        $normalized = strtolower((string) preg_replace('/[^a-zA-Z0-9]/', '', $name));
+        if ('' === $normalized) {
+            return null;
+        }
 
         if (isset(self::ALIASES[$normalized])) {
             return self::ALIASES[$normalized];
@@ -68,6 +89,6 @@ final class TcxSportType
             }
         }
 
-        return SportType::WORKOUT;
+        return null;
     }
 }

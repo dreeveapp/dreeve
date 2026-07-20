@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Domain\Import\FileParser\Tcx;
+namespace App\Tests\Domain\Import\FileParser;
 
 use App\Domain\Activity\SportType\SportType;
-use App\Domain\Import\FileParser\Tcx\TcxSportType;
+use App\Domain\Import\FileParser\SportTypeName;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class TcxSportTypeTest extends TestCase
+class SportTypeNameTest extends TestCase
 {
-    #[DataProvider('provideSportMappings')]
-    public function testResolve(string $tcxSport, SportType $expectedSportType): void
+    #[DataProvider('provideSportNames')]
+    public function testTryResolve(string $name, ?SportType $expectedSportType): void
     {
-        $this->assertSame($expectedSportType, TcxSportType::resolve($tcxSport));
+        $this->assertSame($expectedSportType, SportTypeName::tryResolve($name));
     }
 
-    public static function provideSportMappings(): array
+    public static function provideSportNames(): array
     {
         return [
             // Official TCX schema values.
             'Running' => ['Running', SportType::RUN],
             'Biking' => ['Biking', SportType::RIDE],
-            'Other' => ['Other', SportType::WORKOUT],
+            'Other' => ['Other', null],
             // Non-standard values seen in the wild, in any casing or formatting.
             'running lowercase' => ['running', SportType::RUN],
             'cycling' => ['Cycling', SportType::RIDE],
@@ -31,13 +31,17 @@ class TcxSportTypeTest extends TestCase
             'hiking' => ['hiking', SportType::HIKE],
             'swimming' => ['Swimming', SportType::SWIM],
             'trail running with space' => ['Trail Running', SportType::TRAIL_RUN],
+            'trail running snake cased' => ['trail_running', SportType::TRAIL_RUN],
             'treadmill running' => ['Treadmill Running', SportType::VIRTUAL_RUN],
+            'road biking' => ['road_biking', SportType::RIDE],
             'mountain biking' => ['Mountain Biking', SportType::MOUNTAIN_BIKE_RIDE],
             'gravel cycling' => ['Gravel Cycling', SportType::GRAVEL_RIDE],
             'indoor cycling' => ['Indoor Cycling', SportType::VIRTUAL_RIDE],
             'e-biking' => ['E-Biking', SportType::E_BIKE_RIDE],
             'hand cycling' => ['Hand Cycling', SportType::HAND_CYCLE],
             'indoor rowing' => ['Indoor Rowing', SportType::VIRTUAL_ROW],
+            'lap swimming' => ['lap_swimming', SportType::SWIM],
+            'open water swimming' => ['open_water_swimming', SportType::SWIM],
             'stand up paddleboarding' => ['Stand Up Paddleboarding', SportType::STAND_UP_PADDLING],
             'windsurfing' => ['Windsurfing', SportType::WIND_SURF],
             'kitesurfing' => ['Kitesurfing', SportType::KITE_SURF],
@@ -45,6 +49,7 @@ class TcxSportTypeTest extends TestCase
             'cross country skiing' => ['Cross Country Skiing', SportType::NORDIC_SKI],
             'alpine skiing' => ['Alpine Skiing', SportType::ALPINE_SKI],
             'downhill skiing' => ['Downhill Skiing', SportType::ALPINE_SKI],
+            'resort skiing snowboarding' => ['resort_skiing_snowboarding', SportType::ALPINE_SKI],
             'backcountry skiing' => ['Backcountry Skiing', SportType::BACK_COUNTRY_SKI],
             'snowboarding' => ['Snowboarding', SportType::SNOWBOARD],
             'snowshoeing' => ['Snowshoeing', SportType::SNOWSHOE],
@@ -70,9 +75,9 @@ class TcxSportTypeTest extends TestCase
             'elliptical' => ['Elliptical', SportType::ELLIPTICAL],
             'golf' => ['Golf', SportType::GOLF],
             'tennis' => ['Tennis', SportType::TENNIS],
-            // Unknown values fall back to a generic workout.
-            'unknown' => ['SomethingElse', SportType::WORKOUT],
-            'empty' => ['', SportType::WORKOUT],
+            // Unknown values cannot be resolved.
+            'unknown' => ['SomethingElse', null],
+            'empty' => ['', null],
         ];
     }
 }

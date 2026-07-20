@@ -14,11 +14,11 @@ use App\Domain\Activity\Lap\ActivityLapIdFactory;
 use App\Domain\Activity\Lap\ActivityLaps;
 use App\Domain\Activity\Math;
 use App\Domain\Activity\Route\RouteGeography;
+use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStream;
 use App\Domain\Activity\Stream\ActivityStreams;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\WorldType;
-use App\Domain\Import\FileParser\Tcx\TcxSportType;
 use App\Domain\Import\SupportedFileExtension;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
@@ -75,7 +75,7 @@ final readonly class TcxFileParser implements ActivityFileParser
             throw new CouldNotParseActivityFile(message: sprintf('No <Activity> found in "%s"', $file->getPath()->getFilename()), activityFile: $file);
         }
 
-        $sportType = TcxSportType::resolve((string) $activityXml['Sport']);
+        $sportType = SportTypeName::tryResolve((string) $activityXml['Sport']) ?? SportType::WORKOUT;
         $deviceName = property_exists($activityXml->Creator, 'Name') && null !== $activityXml->Creator->Name ? (string) $activityXml->Creator->Name : null;
 
         $startTimestamp = null;
