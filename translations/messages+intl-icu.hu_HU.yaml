@@ -477,6 +477,7 @@ Unspecified: Meghatározatlan
 'Very high': 'Nagyon magas'
 'View all': 'Összes megtekintése'
 'View details': 'Részletek megtekintése'
+'View this month': 'View this month'
 'Virtual Rides': 'Virtuális kerékpározás'
 'Virtual Row': 'Virtuális evezés'
 'Virtual Runs': 'Virtuális futások'
@@ -542,6 +543,7 @@ days: napok
 'days to reach {n}': 'days to reach {n}'
 hours: órák
 hrs: h
+humidity: humidity
 'last {numberOfDays} days': 'utolsó {numberOfDays} nap'
 max: max
 min: min

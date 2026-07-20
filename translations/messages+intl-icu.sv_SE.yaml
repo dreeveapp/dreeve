@@ -477,6 +477,7 @@ Unspecified: Ospecificerad
 'Very high': 'Väldigt hög'
 'View all': 'Visa alla'
 'View details': 'Visa detaljer'
+'View this month': 'View this month'
 'Virtual Rides': 'Virtuell Cykling'
 'Virtual Row': 'Virtuell Rodd'
 'Virtual Runs': 'Virtuell Löpning'
@@ -542,6 +543,7 @@ days: dagar
 'days to reach {n}': 'days to reach {n}'
 hours: timmar
 hrs: tim
+humidity: humidity
 'last {numberOfDays} days': 'senaste {numberOfDays} dagarna'
 max: max
 min: min

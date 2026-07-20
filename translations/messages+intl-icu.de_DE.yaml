@@ -477,6 +477,7 @@ Unspecified: 'Nicht spezifiziert'
 'Very high': 'Sehr hoch'
 'View all': 'Alle anzeigen'
 'View details': 'Details anzeigen'
+'View this month': 'View this month'
 'Virtual Rides': 'Virtuelle Radfahrten'
 'Virtual Row': 'Virtuelles Rudern'
 'Virtual Runs': 'Virtuelle Läufe'
@@ -542,6 +543,7 @@ days: Tage
 'days to reach {n}': 'Tage bis zum Erreichen {n}'
 hours: Stunden
 hrs: h
+humidity: humidity
 'last {numberOfDays} days': 'letzten {numberOfDays} Tage'
 max: max
 min: min

@@ -477,6 +477,7 @@ Unspecified: Unspecified
 'Very high': 'Heel hoog'
 'View all': 'Bekijk alles'
 'View details': 'View details'
+'View this month': 'View this month'
 'Virtual Rides': 'Virtuele Ritten'
 'Virtual Row': 'Virtueel Roeien'
 'Virtual Runs': 'Virtual Runs'
@@ -542,6 +543,7 @@ days: days
 'days to reach {n}': 'days to reach {n}'
 hours: hours
 hrs: hrs
+humidity: humidity
 'last {numberOfDays} days': 'last {numberOfDays} days'
 max: max
 min: min
