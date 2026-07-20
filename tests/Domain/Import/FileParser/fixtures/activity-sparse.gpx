@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Garmin Edge 530"
+     xmlns="http://www.topografix.com/GPX/1/1"
+     xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1"
+     xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+  <metadata>
+    <name>Morning Ride</name>
+    <time>2021-09-08T00:00:00Z</time>
+  </metadata>
+  <trk>
+    <name>Morning Ride</name>
+    <type>cycling</type>
+    <trkseg>
+      <!-- No ele/hr yet: back-filled from the next trackpoint that has them. -->
+      <trkpt lat="45.0" lon="22.5">
+        <time>2021-09-08T00:00:00Z</time>
+        <extensions>
+          <gpxtpx:TrackPointExtension>
+            <gpxtpx:cad>80</gpxtpx:cad>
+          </gpxtpx:TrackPointExtension>
+          <power>200</power>
+        </extensions>
+      </trkpt>
+      <trkpt lat="45.001" lon="22.501">
+        <ele>110</ele>
+        <time>2021-09-08T00:00:10Z</time>
+        <extensions>
+          <gpxtpx:TrackPointExtension>
+            <gpxtpx:hr>130</gpxtpx:hr>
+          </gpxtpx:TrackPointExtension>
+        </extensions>
+      </trkpt>
+      <!-- No extensions at all: hr/cad/power forward-filled. -->
+      <trkpt lat="45.002" lon="22.502">
+        <ele>120</ele>
+        <time>2021-09-08T00:00:20Z</time>
+      </trkpt>
+      <trkpt lat="45.003" lon="22.503">
+        <ele>130</ele>
+        <time>2021-09-08T00:00:30Z</time>
+        <extensions>
+          <gpxtpx:TrackPointExtension>
+            <gpxtpx:hr>140</gpxtpx:hr>
+            <gpxtpx:cad>84</gpxtpx:cad>
+          </gpxtpx:TrackPointExtension>
+          <power>220</power>
+        </extensions>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Import\FileParser;
 
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Import\FileParser\ActivityStreamsMapper;
 use App\Domain\Import\FileParser\CouldNotParseActivityFile;
 use App\Domain\Import\FileParser\FitFileParser;
 use App\Domain\Import\FileParser\RawActivityFile;
@@ -56,7 +57,7 @@ class FitFileParserTest extends ActivityFileParserTestCase
             new IncrementingActivityIdFactory(),
             new IncrementingActivityLapIdFactory(),
             new SymfonyProcessFactory(),
-            PausedClock::fromString('2023-10-17 16:15:04'),
+            new ActivityStreamsMapper(PausedClock::fromString('2023-10-17 16:15:04')),
             SerializableTimezone::UTC(),
         );
 
@@ -310,7 +311,7 @@ class FitFileParserTest extends ActivityFileParserTestCase
             new IncrementingActivityIdFactory(),
             new IncrementingActivityLapIdFactory(),
             $this->processFactory = $this->createStub(ProcessFactory::class),
-            PausedClock::fromString('2023-10-17 16:15:04'),
+            new ActivityStreamsMapper(PausedClock::fromString('2023-10-17 16:15:04')),
             SerializableTimezone::UTC(),
         );
     }

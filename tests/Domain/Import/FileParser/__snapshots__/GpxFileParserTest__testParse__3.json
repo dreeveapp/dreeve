@@ -46,7 +46,7 @@
         "activityId": "activity-1",
         "streamType": "velocity_smooth",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[null,13.618501998204474]"
+        "data": "[13.618501998204474,13.618501998204474]"
     },
     {
         "dataSize": 2,

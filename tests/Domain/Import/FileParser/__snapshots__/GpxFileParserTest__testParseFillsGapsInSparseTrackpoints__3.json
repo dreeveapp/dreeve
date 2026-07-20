@@ -1,51 +1,58 @@
 [
     {
-        "dataSize": 3,
+        "dataSize": 4,
         "activityId": "activity-1",
         "streamType": "altitude",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[100,105,110]"
+        "data": "[110,110,120,130]"
     },
     {
-        "dataSize": 3,
+        "dataSize": 4,
         "activityId": "activity-1",
         "streamType": "cadence",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[80,81,82]"
+        "data": "[80,80,80,84]"
     },
     {
-        "dataSize": 3,
+        "dataSize": 4,
         "activityId": "activity-1",
         "streamType": "distance",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[0,25,50]"
+        "data": "[0,136.19,272.37,408.55]"
     },
     {
-        "dataSize": 3,
+        "dataSize": 4,
         "activityId": "activity-1",
         "streamType": "heartrate",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[120,125,130]"
+        "data": "[130,130,130,140]"
     },
     {
-        "dataSize": 3,
+        "dataSize": 4,
         "activityId": "activity-1",
         "streamType": "latlng",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[[45,22.5],[45.05,22.55],[45.1,22.6]]"
+        "data": "[[45,22.5],[45.001,22.501],[45.002,22.502],[45.003,22.503]]"
     },
     {
-        "dataSize": 3,
+        "dataSize": 4,
         "activityId": "activity-1",
         "streamType": "time",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[0,5,10]"
+        "data": "[0,10,20,30]"
     },
     {
-        "dataSize": 3,
+        "dataSize": 4,
         "activityId": "activity-1",
         "streamType": "velocity_smooth",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[5,5,5]"
+        "data": "[13.618501998204474,13.618501998204474,13.618422768328472,13.618343537894896]"
+    },
+    {
+        "dataSize": 4,
+        "activityId": "activity-1",
+        "streamType": "watts",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[200,200,200,220]"
     }
 ]

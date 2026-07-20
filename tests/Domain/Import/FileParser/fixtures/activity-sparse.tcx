@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TrainingCenterDatabase xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2" xmlns:ns3="http://www.garmin.com/xmlschemas/ActivityExtension/v2">
+  <Activities>
+    <Activity Sport="Biking">
+      <Id>2021-09-08T00:00:00Z</Id>
+      <Lap StartTime="2021-09-08T00:00:00Z">
+        <TotalTimeSeconds>30</TotalTimeSeconds>
+        <DistanceMeters>150</DistanceMeters>
+        <MaximumSpeed>6.0</MaximumSpeed>
+        <Calories>42</Calories>
+        <Track>
+          <!-- No Position/Altitude yet (GPS not locked): back-filled from the second trackpoint. -->
+          <Trackpoint>
+            <Time>2021-09-08T00:00:00Z</Time>
+            <DistanceMeters>0</DistanceMeters>
+            <HeartRateBpm><Value>120</Value></HeartRateBpm>
+            <Cadence>80</Cadence>
+            <Extensions>
+              <ns3:TPX>
+                <ns3:Speed>5.0</ns3:Speed>
+                <ns3:Watts>200</ns3:Watts>
+              </ns3:TPX>
+            </Extensions>
+          </Trackpoint>
+          <Trackpoint>
+            <Time>2021-09-08T00:00:10Z</Time>
+            <Position>
+              <LatitudeDegrees>45.1</LatitudeDegrees>
+              <LongitudeDegrees>22.6</LongitudeDegrees>
+            </Position>
+            <AltitudeMeters>110</AltitudeMeters>
+            <DistanceMeters>50</DistanceMeters>
+            <Cadence>82</Cadence>
+            <Extensions>
+              <ns3:TPX>
+                <ns3:Speed>6.0</ns3:Speed>
+              </ns3:TPX>
+            </Extensions>
+          </Trackpoint>
+          <!-- Tunnel: no Position; also no HeartRateBpm/Cadence/Speed: all forward-filled. -->
+          <Trackpoint>
+            <Time>2021-09-08T00:00:20Z</Time>
+            <DistanceMeters>100</DistanceMeters>
+            <Extensions>
+              <ns3:TPX>
+                <ns3:Watts>210</ns3:Watts>
+              </ns3:TPX>
+            </Extensions>
+          </Trackpoint>
+          <Trackpoint>
+            <Time>2021-09-08T00:00:30Z</Time>
+            <Position>
+              <LatitudeDegrees>45.2</LatitudeDegrees>
+              <LongitudeDegrees>22.7</LongitudeDegrees>
+            </Position>
+            <AltitudeMeters>130</AltitudeMeters>
+            <DistanceMeters>150</DistanceMeters>
+            <HeartRateBpm><Value>140</Value></HeartRateBpm>
+            <Cadence>84</Cadence>
+            <Extensions>
+              <ns3:TPX>
+                <ns3:Speed>5.5</ns3:Speed>
+                <ns3:Watts>220</ns3:Watts>
+              </ns3:TPX>
+            </Extensions>
+          </Trackpoint>
+        </Track>
+      </Lap>
+      <Creator>
+        <Name>Garmin Edge 530</Name>
+      </Creator>
+    </Activity>
+  </Activities>
+</TrainingCenterDatabase>

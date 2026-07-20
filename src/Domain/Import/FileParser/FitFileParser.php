@@ -14,8 +14,6 @@ use App\Domain\Activity\Lap\ActivityLapIdFactory;
 use App\Domain\Activity\Lap\ActivityLaps;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
-use App\Domain\Activity\Stream\ActivityStream;
-use App\Domain\Activity\Stream\ActivityStreams;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\WorldType;
 use App\Domain\Import\FileParser\Fit\FitManufacturer;
@@ -24,7 +22,6 @@ use App\Domain\Import\FileParser\Fit\FitSportType;
 use App\Domain\Import\SupportedFileExtension;
 use App\Infrastructure\Process\ProcessFactory;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\GeoMath;
 use App\Infrastructure\ValueObject\Geography\Latitude;
@@ -47,7 +44,7 @@ final readonly class FitFileParser implements ActivityFileParser
         private ActivityIdFactory $activityIdFactory,
         private ActivityLapIdFactory $activityLapIdFactory,
         private ProcessFactory $processFactory,
-        private Clock $clock,
+        private ActivityStreamsMapper $activityStreamsMapper,
         private ?SerializableTimezone $timezone,
     ) {
     }
@@ -185,35 +182,9 @@ final readonly class FitFileParser implements ActivityFileParser
 
         return ParsedActivityFile::create(
             activity: $activity,
-            streams: $this->buildActivityStreams($streamMap, $activityId),
+            streams: $this->activityStreamsMapper->fromStreamMap($streamMap, $activityId),
             laps: $this->buildActivityLaps($lapMessages, $activityId),
         );
-    }
-
-    /**
-     * @param array<string, list<mixed>> $streamMap
-     */
-    private function buildActivityStreams(array $streamMap, ActivityId $activityId): ActivityStreams
-    {
-        $createdOn = $this->clock->getCurrentDateTimeImmutable();
-
-        $streams = ActivityStreams::empty();
-        foreach ($streamMap as $type => $values) {
-            if (!$streamType = StreamType::tryFrom($type)) {
-                continue;
-            }
-            if ([] === array_filter($values, static fn (mixed $value): bool => null !== $value)) {
-                continue;
-            }
-            $streams->add(ActivityStream::create(
-                activityId: $activityId,
-                streamType: $streamType,
-                streamData: $values,
-                createdOn: $createdOn,
-            ));
-        }
-
-        return $streams;
     }
 
     /**
@@ -322,25 +293,6 @@ final readonly class FitFileParser implements ActivityFileParser
             $streams[StreamType::CADENCE->value][] = is_numeric($record['cadence'] ?? null) ? (int) round((float) $record['cadence']) : null;
             $streams[StreamType::WATTS->value][] = is_numeric($record['power'] ?? null) ? (int) round((float) $record['power']) : null;
             $streams[StreamType::TEMP->value][] = is_numeric($record['temperature'] ?? null) ? (int) round((float) $record['temperature']) : null;
-        }
-
-        // Devices that record fields at different rates (heart rate every other
-        // second, GPS twice per second but not every second, ...) leave holes
-        // that downstream would render as drops to zero, and holes in LAT_LNG
-        // Carry the last known value forward, then fill leading holes with the first known
-        // value so every sample is complete.
-        foreach ([StreamType::DISTANCE, StreamType::LAT_LNG, StreamType::ALTITUDE, StreamType::VELOCITY, StreamType::HEART_RATE, StreamType::CADENCE, StreamType::WATTS, StreamType::TEMP] as $streamType) {
-            $previous = null;
-            foreach ($streams[$streamType->value] as $i => $value) {
-                if (null === $value) {
-                    $streams[$streamType->value][$i] = $previous;
-                    continue;
-                }
-                if (null === $previous && $i > 0) {
-                    $streams[$streamType->value] = array_replace($streams[$streamType->value], array_fill(0, $i, $value));
-                }
-                $previous = $value;
-            }
         }
 
         return $streams;

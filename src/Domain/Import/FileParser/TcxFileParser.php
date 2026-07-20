@@ -15,12 +15,9 @@ use App\Domain\Activity\Lap\ActivityLaps;
 use App\Domain\Activity\Math;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
-use App\Domain\Activity\Stream\ActivityStream;
-use App\Domain\Activity\Stream\ActivityStreams;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\WorldType;
 use App\Domain\Import\SupportedFileExtension;
-use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
@@ -40,7 +37,7 @@ final readonly class TcxFileParser implements ActivityFileParser
     public function __construct(
         private ActivityIdFactory $activityIdFactory,
         private ActivityLapIdFactory $activityLapIdFactory,
-        private Clock $clock,
+        private ActivityStreamsMapper $activityStreamsMapper,
         private ?SerializableTimezone $timezone,
     ) {
     }
@@ -137,7 +134,7 @@ final readonly class TcxFileParser implements ActivityFileParser
 
         return ParsedActivityFile::create(
             activity: $activity,
-            streams: $this->buildActivityStreams($streams, $activityId),
+            streams: $this->activityStreamsMapper->fromStreamMap($streams, $activityId),
             laps: $activityLaps,
         );
     }
@@ -207,32 +204,6 @@ final readonly class TcxFileParser implements ActivityFileParser
         }
 
         return [$laps, $streams, $startTimestamp];
-    }
-
-    /**
-     * @param array<string, list<mixed>> $streamMap
-     */
-    private function buildActivityStreams(array $streamMap, ActivityId $activityId): ActivityStreams
-    {
-        $createdOn = $this->clock->getCurrentDateTimeImmutable();
-
-        $streams = ActivityStreams::empty();
-        foreach ($streamMap as $type => $values) {
-            if (!$streamType = StreamType::tryFrom($type)) {
-                continue;
-            }
-            if ([] === array_filter($values, static fn (mixed $value): bool => null !== $value)) {
-                continue;
-            }
-            $streams->add(ActivityStream::create(
-                activityId: $activityId,
-                streamType: $streamType,
-                streamData: $values,
-                createdOn: $createdOn,
-            ));
-        }
-
-        return $streams;
     }
 
     /**
