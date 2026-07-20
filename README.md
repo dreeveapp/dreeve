@@ -29,7 +29,7 @@
 
 ## 📸 Showcase
 
-https://github.com/user-attachments/assets/81554f32-31be-4899-afd6-681ce3e7bcb6
+https://github.com/user-attachments/assets/2789c961-f04f-4804-b6eb-88d45e62687c
 
 ### Key Features
 
