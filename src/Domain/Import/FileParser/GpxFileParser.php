@@ -91,13 +91,24 @@ final readonly class GpxFileParser implements ActivityFileParser
         $laps = [];
 
         $sportType = SportType::WORKOUT;
-        $deviceName = $this->resolveDeviceName($xml);
+        $deviceName = null;
+        if (isset($xml['creator']) && '' !== (string) $xml['creator']) {
+            $deviceName = (string) $xml['creator'];
+        }
         $calories = null;
 
         $lapIndex = 0;
         foreach ($xml->trk as $track) {
             if (property_exists($track, 'type') && null !== $track->type && '' !== (string) $track->type) {
-                $sportType = $this->mapSportType((string) $track->type);
+                $rawSportType = (string) $track->type;
+                $sportType = match ($rawSportType) {
+                    'running', 'run', '9' => SportType::RUN,
+                    'cycling', 'biking', 'ride', '1' => SportType::RIDE,
+                    'walking', 'walk' => SportType::WALK,
+                    'hiking', 'hike' => SportType::HIKE,
+                    'swimming', 'swim' => SportType::SWIM,
+                    default => SportType::tryFrom($rawSportType) ?? SportType::WORKOUT,
+                };
             }
             $trackCalories = $this->sumCalories($track);
             if (null !== $trackCalories) {
@@ -449,27 +460,6 @@ final readonly class GpxFileParser implements ActivityFileParser
         }
 
         return $gain;
-    }
-
-    private function resolveDeviceName(\SimpleXMLElement $xml): ?string
-    {
-        if (isset($xml['creator']) && '' !== (string) $xml['creator']) {
-            return (string) $xml['creator'];
-        }
-
-        return null;
-    }
-
-    private function mapSportType(string $type): SportType
-    {
-        return match (strtolower($type)) {
-            'running', 'run', '9' => SportType::RUN,
-            'cycling', 'biking', 'ride', '1' => SportType::RIDE,
-            'walking', 'walk' => SportType::WALK,
-            'hiking', 'hike' => SportType::HIKE,
-            'swimming', 'swim' => SportType::SWIM,
-            default => SportType::tryFrom($type) ?? SportType::WORKOUT,
-        };
     }
 
     /**
