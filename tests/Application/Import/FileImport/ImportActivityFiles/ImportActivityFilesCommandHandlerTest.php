@@ -61,6 +61,22 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->assertMatchesSnapshot($output, new ConsoleOutputSnapshotDriver());
     }
 
+    public function testHandleImportsFileWithUppercaseExtension(): void
+    {
+        $this->dropInWatchFolder('Ride_2026-07-02.TCX', $this->fixture('activity.tcx'));
+
+        $output = new SpyOutput();
+        $this->handler->handle(new ImportActivityFiles($output));
+
+        $fileImports = $this->getFileImports();
+        $this->assertCount(1, $fileImports);
+        $this->assertSame(FileImportStatus::SUCCESS->value, $fileImports[0]['status']);
+        $this->assertFalse(
+            $this->watchStorage->fileExists('watch/Ride_2026-07-02.TCX'),
+            'File with uppercase extension should be deleted after import',
+        );
+    }
+
     public function testHandleSkipsAlreadyImportedFile(): void
     {
         $bytes = $this->fixture('activity.tcx');

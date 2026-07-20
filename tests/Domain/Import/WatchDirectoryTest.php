@@ -77,6 +77,16 @@ class WatchDirectoryTest extends TestCase
         );
     }
 
+    public function testReadFilePreservesUppercaseExtension(): void
+    {
+        $this->filesystem->write('watch/Ride_2026-07-02.FIT', 'raw-fit-bytes');
+
+        $this->assertSame(
+            'raw-fit-bytes',
+            $this->watchDirectory->readFile(Path::fromString('/project/dir/watch/Ride_2026-07-02.FIT')),
+        );
+    }
+
     public function testWriteFile(): void
     {
         $this->watchDirectory->writeFile('ride.fit', 'raw-fit-bytes');
@@ -91,6 +101,15 @@ class WatchDirectoryTest extends TestCase
         $this->watchDirectory->deleteFile(Path::fromString('ride.fit'));
 
         $this->assertFalse($this->filesystem->fileExists('watch/ride.fit'));
+    }
+
+    public function testDeleteFilePreservesUppercaseExtension(): void
+    {
+        $this->filesystem->write('watch/Ride_2026-07-02.FIT', 'raw-fit-bytes');
+
+        $this->watchDirectory->deleteFile(Path::fromString('/project/dir/watch/Ride_2026-07-02.FIT'));
+
+        $this->assertFalse($this->filesystem->fileExists('watch/Ride_2026-07-02.FIT'));
     }
 
     public function testGetAbsolutePathFor(): void

@@ -43,7 +43,7 @@ final readonly class WatchDirectory
 
     public function readFile(Path $filePath): string
     {
-        return $this->defaultStorage->read(self::FOLDER_NAME.'/'.$filePath->getFilename());
+        return $this->defaultStorage->read(self::FOLDER_NAME.'/'.$filePath->getBasename());
     }
 
     public function writeFile(string $filename, string $contents): void
@@ -53,7 +53,7 @@ final readonly class WatchDirectory
 
     public function deleteFile(Path $filePath): void
     {
-        $this->defaultStorage->delete(self::FOLDER_NAME.'/'.$filePath->getFilename());
+        $this->defaultStorage->delete(self::FOLDER_NAME.'/'.$filePath->getBasename());
     }
 
     public function getAbsolutePathFor(StorageAttributes $file): Path

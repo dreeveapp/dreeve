@@ -25,4 +25,9 @@ final readonly class Path extends NonEmptyStringLiteral
     {
         return pathinfo((string) $this, PATHINFO_FILENAME);
     }
+
+    public function getBasename(): string
+    {
+        return pathinfo((string) $this, PATHINFO_BASENAME);
+    }
 }
