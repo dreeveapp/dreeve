@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Console\Daemon;
 
+use App\Application\AppVersion;
 use App\Application\RebuildStatus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\KeyValue\Key;
+use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Infrastructure\KeyValue\Value;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -69,11 +72,28 @@ trait HandlesImportAndBuild
         string $today,
     ): bool {
         try {
-            $appLastBuiltOn = (string) $keyValueStore->find(Key::APP_LAST_BUILT_ON);
+            $appLastBuildSnapshot = (string) $keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT);
         } catch (EntityNotFound) {
             return true;
         }
 
-        return $appLastBuiltOn !== $today || $rebuildStatus->isPending();
+        return $appLastBuildSnapshot !== $this->buildSnapshot($today)
+            || $rebuildStatus->isPending();
+    }
+
+    private function markAppAsBuilt(
+        KeyValueStore $keyValueStore,
+        string $today,
+    ): void {
+        $keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString($this->buildSnapshot($today)),
+        ));
+        $keyValueStore->clear(Key::FORCE_REBUILD);
+    }
+
+    private function buildSnapshot(string $today): string
+    {
+        return $today.'@'.AppVersion::getSemanticVersion();
     }
 }

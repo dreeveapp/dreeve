@@ -17,10 +17,7 @@ use App\Domain\Integration\Notification\SendNotification\SendNotification;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\DependencyInjection\Mutex\WithMutex;
 use App\Infrastructure\Doctrine\Migrations\RequiresUpToDateDatabaseSchema;
-use App\Infrastructure\KeyValue\Key;
-use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Logging\LoggableConsoleOutput;
 use App\Infrastructure\Mutex\LockIsAlreadyAcquired;
 use App\Infrastructure\Mutex\LockName;
@@ -120,11 +117,10 @@ final class RunFileImportAndBuildAppConsoleCommand extends Command
                     output: $output,
                 ));
 
-                $this->keyValueStore->save(KeyValue::fromState(
-                    key: Key::APP_LAST_BUILT_ON,
-                    value: Value::fromString($today),
-                ));
-                $this->keyValueStore->clear(Key::FORCE_REBUILD);
+                $this->markAppAsBuilt(
+                    keyValueStore: $this->keyValueStore,
+                    today: $today
+                );
             }
         } catch (AppIsNotReady $e) {
             $this->mutex->releaseLock();
