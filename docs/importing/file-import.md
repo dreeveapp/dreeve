@@ -33,7 +33,7 @@ and recorded in the import log as `skipped`.
 
 ## Running an import
 
-The [daemon](/importing/scheduling.md) container will detect the files and import every 5 minutes. To trigger a run yourself:
+The daemon container will detect the files and import every 5 minutes. To trigger a run yourself:
 
 ```bash
 > docker compose exec app bin/console app:cron:run-file-import --import --build

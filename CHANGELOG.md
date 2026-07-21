@@ -1,3 +1,23 @@
+# [v5.0.2](https://github.com/dreeveapp/dreeve/releases/tag/v5.0.2) - 2026-07-21
+
+## Improvements
+* Automatically trigger a new build after updating to a new version
+* Average heart rate is now calculated from the heart-rate stream when available
+
+## Bug fixes
+* Fixed an issue importing GPX files
+* Fixed the Training Goals configuration form, which incorrectly required a unit to be selected in all cases.
+* Fixed an issue where imported routes appeared as straight lines on the heatmap.
+
+## Technical details
+* ISSUE #2281: Automatically run a new build when a user updates to a new version by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2290
+* ISSUE #2292: Error importing gpx file from Strava by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2293
+* ISSUE #2288: Configure Training Goals screen always requires a unit by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2294
+* ISSUE #2285: Calculate average heart rate when stream is available by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2295
+* Fix imported routes collapsing to straight lines on heatmap by @cgtobi in https://github.com/dreeveapp/dreeve/pull/2291
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.0.1...v5.0.2
+
 # [v5.0.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.0.1) - 2026-07-20
 
 ## New features

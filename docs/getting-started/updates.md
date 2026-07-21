@@ -10,8 +10,8 @@ When a new version of the app is released, pull the latest Docker image:
 > docker compose pull # if available, pull a new image
 > docker compose up -d # start new containers using the compose config and the newly pulled image
 ```
-
-After that, run an import and build to regenerate the app with the new version:
+After that, wait a few minutes for the daemon container to update the app to the new version. 
+If you don't want to wait, you can trigger a build manually:
 
 ```bash
 # In files mode (the default)
