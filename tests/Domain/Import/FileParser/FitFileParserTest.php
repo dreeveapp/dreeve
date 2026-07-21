@@ -42,6 +42,15 @@ class FitFileParserTest extends ActivityFileParserTestCase
         );
     }
 
+    public function testParseDerivesSummaryMetricsFromStreamsWhenMissingFromSession(): void
+    {
+        $this->givenFitToolReturns(Json::encode($this->fitDocumentWithoutSessionSummaryMetrics()));
+
+        $this->assertParsedFileMatchesSnapshot(
+            $this->parser->parse($this->rawFile('/tmp/activity.fit'))
+        );
+    }
+
     public function testParseMergesRecordsSplitAcrossSameTimestamp(): void
     {
         $this->givenFitToolReturns(Json::encode($this->fitDocumentWithSplitRecords()));
@@ -68,7 +77,7 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
     public function testParsePrefersProductNameWhenManufacturerHasNoProductEnum(): void
     {
-        $document = $this->withFileId([
+        $document = $this->minimalFitDocument(fileIdFields: [
             ['name' => 'manufacturer', 'value' => 23],
             ['name' => 'product', 'value' => 999],
             ['name' => 'product_name', 'value' => 'Suunto Vertical'],
@@ -80,7 +89,7 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
     public function testParseFallsBackToManufacturerWhenProductNameMissing(): void
     {
-        $document = $this->withFileId([
+        $document = $this->minimalFitDocument(fileIdFields: [
             ['name' => 'manufacturer', 'value' => 123],
             ['name' => 'product', 'value' => 99],
         ]);
@@ -91,17 +100,11 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
     public function testParseTrailRunSubSport(): void
     {
-        $document = $this->fitDocument();
-        foreach ($document['files'][0]['messages'] as &$message) {
-            if ('session' === $message['name']) {
-                $message['fields'] = [
-                    ['name' => 'sport', 'value' => 1], // running
-                    ['name' => 'sub_sport', 'value' => 3], // trail
-                    ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
-                ];
-            }
-        }
-        unset($message);
+        $document = $this->minimalFitDocument(sessionFields: [
+            ['name' => 'sport', 'value' => 1], // running
+            ['name' => 'sub_sport', 'value' => 3], // trail
+            ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
+        ]);
         $this->givenFitToolReturns(Json::encode($document));
 
         $this->assertSame(SportType::TRAIL_RUN, $this->parser->parse($this->rawFile('/tmp/activity.fit'))->getActivity()->getSportType());
@@ -122,16 +125,10 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
     public function testParseUnsupportedSportThrows(): void
     {
-        $document = $this->fitDocument();
-        foreach ($document['files'][0]['messages'] as &$message) {
-            if ('session' === $message['name']) {
-                $message['fields'] = [
-                    ['name' => 'sport', 'value' => 24], // driving (unsupported)
-                    ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
-                ];
-            }
-        }
-        unset($message);
+        $document = $this->minimalFitDocument(sessionFields: [
+            ['name' => 'sport', 'value' => 24], // driving (unsupported)
+            ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
+        ]);
         $this->givenFitToolReturns(Json::encode($document));
 
         $rawActivityFile = $this->rawFile('/tmp/activity.fit');
@@ -140,22 +137,23 @@ class FitFileParserTest extends ActivityFileParserTestCase
         $this->parser->parse($rawActivityFile);
     }
 
-    /**
-     * @param list<array{name: string, value: mixed}> $fields
-     *
-     * @return array<string, mixed>
-     */
-    private function withFileId(array $fields): array
+    private function minimalFitDocument(array $fileIdFields = [], array $sessionFields = []): array
     {
-        $document = $this->fitDocument();
-        foreach ($document['files'][0]['messages'] as &$message) {
-            if ('file_id' === $message['name']) {
-                $message['fields'] = $fields;
-            }
-        }
-        unset($message);
-
-        return $document;
+        return [
+            'files' => [[
+                'profileVersion' => 2132,
+                'messages' => [
+                    ['name' => 'file_id', 'fields' => $fileIdFields],
+                    ['name' => 'session', 'fields' => [] !== $sessionFields ? $sessionFields : [
+                        ['name' => 'sport', 'value' => 2], // cycling
+                        ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
+                    ]],
+                    ['name' => 'record', 'fields' => [
+                        ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS],
+                    ]],
+                ],
+            ]],
+        ];
     }
 
     private function rawFile(string $path): RawActivityFile
@@ -239,6 +237,42 @@ class FitFileParserTest extends ActivityFileParserTestCase
                         ['name' => 'cadence', 'value' => 84],
                         ['name' => 'power', 'value' => 250],
                         ['name' => 'temperature', 'value' => 21],
+                    ]],
+                ],
+            ]],
+        ];
+    }
+
+    private function fitDocumentWithoutSessionSummaryMetrics(): array
+    {
+        return [
+            'files' => [[
+                'profileVersion' => 2132,
+                'messages' => [
+                    ['name' => 'file_id', 'fields' => [
+                        ['name' => 'product_name', 'value' => 'Edge 530'],
+                    ]],
+                    ['name' => 'session', 'fields' => [
+                        ['name' => 'sport', 'value' => 2], // cycling
+                        ['name' => 'sub_sport', 'value' => 7], // road
+                        ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
+                        ['name' => 'total_distance', 'value' => 50.0],
+                        ['name' => 'total_timer_time', 'value' => 10],
+                        ['name' => 'total_elapsed_time', 'value' => 12],
+                    ]],
+                    ['name' => 'record', 'fields' => [
+                        ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS],
+                        ['name' => 'distance', 'value' => 0.0],
+                        ['name' => 'heart_rate', 'value' => 120],
+                        ['name' => 'cadence', 'value' => 80],
+                        ['name' => 'power', 'value' => 200],
+                    ]],
+                    ['name' => 'record', 'fields' => [
+                        ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS + 10],
+                        ['name' => 'distance', 'value' => 50.0],
+                        ['name' => 'heart_rate', 'value' => 130],
+                        ['name' => 'cadence', 'value' => 84],
+                        ['name' => 'power', 'value' => 250],
                     ]],
                 ],
             ]],
