@@ -64,7 +64,7 @@ final readonly class EncodedPolyline extends NonEmptyStringLiteral
     }
 
     /**
-     * @return array<int, array<float, float>>
+     * @return array<int, array{float, float}>
      */
     public function decodeAndPairLngLat(): array
     {
@@ -75,7 +75,7 @@ final readonly class EncodedPolyline extends NonEmptyStringLiteral
     }
 
     /**
-     * @return array<int, array<float, float>>
+     * @return array<int, array{float, float}>
      */
     public function decodeAndPairLatLng(): array
     {

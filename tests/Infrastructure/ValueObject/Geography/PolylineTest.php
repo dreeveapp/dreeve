@@ -25,15 +25,19 @@ class PolylineTest extends TestCase
     {
         $coordinates = [
             [0.0, 0.0],
-            [1.0, 1.0],
-            [2.0, 2.0],
-            [3.0, 3.0],
+            [0.5, 0.5],
+            [1.0, 1.02],
+            [1.5, 1.5],
+            [2.2, 2.2],
+            [2.95, 3.0],
+            [3.5, 3.5],
+            [4.0, 4.0],
         ];
 
         self::assertSame(
             (string) EncodedPolyline::fromCoordinates([
                 [0.0, 0.0],
-                [3.0, 3.0],
+                [4.0, 4.0],
             ]),
             (string) Polyline::fromCoordinates($coordinates)->simplify(0.1)->encode(),
         );
@@ -43,32 +47,24 @@ class PolylineTest extends TestCase
     {
         $coordinates = [
             [0.0, 0.0],
+            [0.5, 0.0],
+            [1.0, 0.02],
             [1.0, 0.0],
+            [1.0, 0.5],
+            [1.02, 0.7],
             [1.0, 1.0],
-            [2.0, 1.0],
-        ];
-
-        self::assertSame(
-            (string) EncodedPolyline::fromCoordinates($coordinates),
-            (string) Polyline::fromCoordinates($coordinates)->simplify(0.1)->encode(),
-        );
-    }
-
-    public function testSimplifyWithLargeToleranceKeepsOnlyEndpoints(): void
-    {
-        $coordinates = [
-            [0.0, 0.0],
-            [1.0, 0.0],
-            [1.0, 1.0],
+            [1.5, 1.0],
             [2.0, 1.0],
         ];
 
         self::assertSame(
             (string) EncodedPolyline::fromCoordinates([
                 [0.0, 0.0],
+                [1.0, 0.0],
+                [1.0, 1.0],
                 [2.0, 1.0],
             ]),
-            (string) Polyline::fromCoordinates($coordinates)->simplify(10)->encode(),
+            (string) Polyline::fromCoordinates($coordinates)->simplify(0.1)->encode(),
         );
     }
 
@@ -92,7 +88,8 @@ class PolylineTest extends TestCase
 
         $decodedPoints = EncodedPolyline::fromString((string) $simplified->encode())->decodeAndPairLatLng();
 
-        self::assertGreaterThan(10, count($decodedPoints));
+        self::assertGreaterThan(40, count($decodedPoints));
+        self::assertLessThan(150, count($decodedPoints));
     }
 
     public function testEncodeReturnsEncodedPolyline(): void

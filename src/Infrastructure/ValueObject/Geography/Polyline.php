@@ -22,6 +22,10 @@ final readonly class Polyline
         return new self($coordinates);
     }
 
+    /**
+     * The tolerance is expressed in degrees, the same unit as the coordinates
+     * (0.0001° ≈ 11m on the ground).
+     */
     public function simplify(float $tolerance = 0.0001): self
     {
         $points = $this->coordinates;
