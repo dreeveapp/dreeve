@@ -39,6 +39,7 @@ final readonly class ActivityImportContext
         return match ($this->filePath->getExtension()) {
             'fit' => ImportSource::FIT_FILE,
             'tcx' => ImportSource::TCX_FILE,
+            'gpx' => ImportSource::GPX_FILE,
             default => throw new \RuntimeException(sprintf('Unknown file extension "%s"', $this->filePath->getExtension())),
         };
     }
