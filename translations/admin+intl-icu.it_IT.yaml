@@ -1,4 +1,5 @@
 24-hour: 24-hour
+'A rule applies': 'A rule applies'
 AI: AI
 AM/PM: AM/PM
 'API key': 'API key'
@@ -6,23 +7,29 @@ Active: Active
 'Activities excluded from peak power outputs': 'Activities excluded from peak power outputs'
 'Activities to skip during import': 'Activities to skip during import'
 'Activities will appear here once they are imported.': 'Activities will appear here once they are imported.'
-'Activity': 'Activity'
+Activity: Activity
 'Activity ID': 'Activity ID'
 'Activity IDs to exclude when calculating peak power outputs.': 'Activity IDs to exclude when calculating peak power outputs.'
 'Activity management': 'Activity management'
+'Activity name': 'Activity name'
 'Activity visibilities to import': 'Activity visibilities to import'
 'Add Eddington': 'Add Eddington'
 'Add FTP': 'Add FTP'
 'Add a component to start tracking maintenance.': 'Add a component to start tracking maintenance.'
+'Add a rule to start automating your activity details.': 'Add a rule to start automating your activity details.'
 'Add a widget': 'Add a widget'
+'Add action': 'Add action'
 'Add activity': 'Add activity'
+'Add automation rule': 'Add automation rule'
 'Add challenge': 'Add challenge'
 'Add command': 'Add command'
 'Add component': 'Add component'
+'Add condition': 'Add condition'
 'Add gear': 'Add gear'
 'Add goal': 'Add goal'
 'Add max heart rate': 'Add max heart rate'
 'Add resting heart rate': 'Add resting heart rate'
+'Add rule': 'Add rule'
 'Add service': 'Add service'
 'Add task': 'Add task'
 'Add weight': 'Add weight'
@@ -41,11 +48,15 @@ Admin: Admin
 Appearance: Appearance
 'Are you sure you want to delete the import of {name}?': 'Are you sure you want to delete the import of {name}?'
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
+'Are you sure you want to delete the {rule} rule?': 'Are you sure you want to delete the {rule} rule?'
 'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?'
 'Are you sure you want to remove the {widget} widget?': 'Are you sure you want to remove the {widget} widget?'
+'Assign gear': 'Assign gear'
 'Athlete settings': 'Athlete settings'
 'Attached to': 'Attached to'
+'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom; the first one that matches wins.': 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom; the first one that matches wins.'
+'Automation rules': 'Automation rules'
 'Back to app': 'Back to app'
 'Base URI': 'Base URI'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.'
@@ -62,6 +73,7 @@ Close: Close
 Command: Command
 Commute: Commute
 Component: Component
+'Conditions are combined with AND.': 'Conditions are combined with AND.'
 Config: Config
 Configure: Configure
 'Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget.': 'Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget.'
@@ -76,16 +88,21 @@ Daemon: Daemon
 'Define what needs doing and how often.': 'Define what needs doing and how often.'
 Delete: Delete
 'Delete activity': 'Delete activity'
+'Delete automation rule': 'Delete automation rule'
 'Delete component': 'Delete component'
 'Delete file import': 'Delete file import'
 'Delete maintenance log': 'Delete maintenance log'
 Deleting...: Deleting...
 Description: Description
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.'
+Disabled: Disabled
+Distance: Distance
+'Distance (km)': 'Distance (km)'
 'Drag to reorder': 'Drag to reorder'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Drag to set the order in which sport types are displayed throughout the app.'
 Edit: Edit
 'Edit activity': 'Edit activity'
+'Edit automation rule': 'Edit automation rule'
 'Edit component': 'Edit component'
 'Edit gear': 'Edit gear'
 'Edit maintenance log': 'Edit maintenance log'
@@ -94,6 +111,8 @@ Edit: Edit
 'Enable Strava webhooks': 'Enable Strava webhooks'
 Enabled: Enabled
 Endpoint: Endpoint
+'Ends near': 'Ends near'
+'Enter an existing activity to preview which rule would apply and what it would change. Nothing is saved.': 'Enter an existing activity to preview which rule would apply and what it would change. Nothing is saved.'
 'Enter your password': 'Enter your password'
 'Enter your username': 'Enter your username'
 Every: Every
@@ -110,6 +129,7 @@ Female: Female
 Filename: Filename
 'First name': 'First name'
 'Fixed value': 'Fixed value'
+Friday: Friday
 From: From
 'Gear "{gearId}" is attached to one of your components, but does not exist. It will be ignored.': 'L''attrezzatura "{gearId}" è collegata a uno dei tuoi componenti, ma non esiste. Verrà ignorata.'
 'Gear maintenance notification': 'Gear maintenance notification'
@@ -126,6 +146,8 @@ General: General
 'History of running FTP. Needed to calculate activity stress level.': 'History of running FTP. Needed to calculate activity stress level.'
 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.'
 'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'How often (in minutes, between 1 and 60) queued webhook events are processed.'
+If: If
+'If all of these match': 'If all of these match'
 "If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm.": "If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm."
 'Ignore retired gear': 'Ignore retired gear'
 Image: Image
@@ -144,15 +166,22 @@ Integrations: Integrations
 'Invalid CSRF token.': 'Invalid CSRF token.'
 Label: Label
 'Last name': 'Last name'
+Latitude: Latitude
 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.': 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.'
 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.'
 'Leave empty to include all sport types.': 'Leave empty to include all sport types.'
 Locale: Locale
 Log: Log
+Longitude: Longitude
 'Maintenance log': 'Maintenance log'
 'Maintenance logs will appear here once maintenance has been registered.': 'Maintenance logs will appear here once maintenance has been registered.'
 'Maintenance tasks': 'Maintenance tasks'
 Male: Male
+'Mark as commute': 'Mark as commute'
+Match: Match
+"Matches on the activity's finishing point.": "Matches on the activity's finishing point."
+"Matches on the activity's starting point.": "Matches on the activity's starting point."
+'Matches when any point of the route comes near the location.': 'Matches when any point of the route comes near the location.'
 'Max heart rate (bpm)': 'Max heart rate (bpm)'
 'Max heart rate formula': 'Max heart rate formula'
 Message: Message
@@ -160,13 +189,17 @@ Message: Message
 Metrics: Metrics
 Mode: Mode
 Model: Model
+Monday: Monday
 'More pages': 'More pages'
 'No activities imported yet.': 'No activities imported yet.'
+'No activity found for that ID.': 'No activity found for that ID.'
+'No automation rules yet.': 'No automation rules yet.'
 'No components yet.': 'No components yet.'
 'No files imported yet.': 'No files imported yet.'
 'No gears added yet.': 'No gears added yet.'
 'No maintenance logs yet.': 'No maintenance logs yet.'
 'No recording devices yet.': 'No recording devices yet.'
+'No rule applies': 'No rule applies'
 'No unit': 'No unit'
 'Normal date format': 'Normal date format'
 'Notification services': 'Notification services'
@@ -178,6 +211,7 @@ Model: Model
 'Only required for the Azure OpenAI provider.': 'Only required for the Azure OpenAI provider.'
 'Only required for the Ollama provider.': 'Only required for the Ollama provider.'
 'Only required for the OpenAI-like provider.': 'Only required for the OpenAI-like provider.'
+Operator: Operator
 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.'
 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.'
 'Optional subtitle': 'Optional subtitle'
@@ -189,21 +223,26 @@ Model: Model
 'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.': 'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.'
 'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.': 'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.'
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Parts you track maintenance for, eg: chains, cassettes, brake pads...'
+'Passes near': 'Passes near'
 Password: Password
 'Performed on': 'Performed on'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
 'Processed on': 'Processed on'
 'Profile picture URL': 'Profile picture URL'
 Provider: Provider
+'Radius (km)': 'Radius (km)'
 'Rebuild pending': 'Rebuild pending'
+'Recording device': 'Recording device'
 'Recording device management': 'Recording device management'
 'Recording devices will appear here once activities have been imported.': 'Recording devices will appear here once activities have been imported.'
 'Register maintenance': 'Register maintenance'
 'Remember me for 7 days': 'Remember me for 7 days'
 Remove: Remove
 'Remove Eddington': 'Remove Eddington'
+'Remove action': 'Remove action'
 'Remove challenge': 'Remove challenge'
 'Remove command': 'Remove command'
+'Remove condition': 'Remove condition'
 'Remove goal': 'Remove goal'
 'Remove task': 'Remove task'
 'Remove widget': 'Remove widget'
@@ -218,6 +257,7 @@ Resetting...: Resetting...
 Retired: Retired
 'Return to app': 'Return to app'
 Ride: Ride
+Saturday: Saturday
 Save: Save
 'Save settings': 'Save settings'
 Saved: Saved
@@ -227,9 +267,16 @@ Saving...: Saving...
 'Select a component first...': 'Select a component first...'
 'Select a component…': 'Select a component…'
 'Select at least one sport type.': 'Select at least one sport type.'
+'Select at least one weekday.': 'Select at least one weekday.'
+'Select device...': 'Select device...'
+'Select gear...': 'Select gear...'
 'Select the serviced gear…': 'Select the serviced gear…'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sends a notification when a new app version is available. Requires a configured notification service.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sends a notification when gear maintenance is due. Requires a configured notification service.'
+'Set description': 'Set description'
+'Set name': 'Set name'
+'Set sport type': 'Set sport type'
+'Set workout type': 'Set workout type'
 Settings: Settings
 'Short date format': 'Short date format'
 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.'
@@ -245,11 +292,14 @@ Settings: Settings
 'Signing in...': 'Signing in...'
 'Skip activities recorded before': 'Skip activities recorded before'
 Skipped: Skipped
+'Skipped (an earlier rule already matched).': 'Skipped (an earlier rule already matched).'
 Source: Source
 'Sport type': 'Sport type'
+'Sport types': 'Sport types'
 'Sport types sorting order': 'Sport types sorting order'
 'Sport types to import': 'Sport types to import'
 'Sport types to include': 'Sport types to include'
+'Starts near': 'Starts near'
 'Strava API credentials.': 'Strava API credentials.'
 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.'
 'Strava activity IDs to skip during import.': 'Strava activity IDs to skip during import.'
@@ -259,28 +309,38 @@ Source: Source
 'Strava refresh token': 'Strava refresh token'
 Subtitle: Subtitle
 Success: Success
+Sunday: Sunday
 'Supported types': 'Supported types'
 Task: Task
 'Task name': 'Task name'
 Tasks: Tasks
+'Test automation rules': 'Test automation rules'
+'Test rules': 'Test rules'
 'The URL the app is hosted on.': 'The URL the app is hosted on.'
+'The activity started': 'The activity started'
+'The activity will be marked as a commute.': 'The activity will be marked as a commute.'
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
 'The formula used to calculate your resting heart rate. The default is an age-based estimate.': 'The formula used to calculate your resting heart rate. The default is an age-based estimate.'
 'The last zone has no upper bound.': 'The last zone has no upper bound.'
 'The locale used to render the app.': 'The locale used to render the app.'
 "The name is derived from the device recorded on your activities and can't be edited.": "The name is derived from the device recorded on your activities and can't be edited."
 'The unit system used to render distances, elevations, temperatures, etc.': 'The unit system used to render distances, elevations, temperatures, etc.'
+'Then do this': 'Then do this'
 'This action cannot be undone.': 'This action cannot be undone.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'This component is fitted to multiple gears, pick the one you serviced.'
+'This only affects future imports. Already imported activities are left untouched. This action cannot be undone.': 'This only affects future imports. Already imported activities are left untouched. This action cannot be undone.'
 'This only removes the import record, the imported activity is kept.': 'This only removes the import record, the imported activity is kept.'
 "This value is imported from Strava and can't be edited here.": "This value is imported from Strava and can't be edited here."
 'This widget still needs to be configured.': 'This widget still needs to be configured.'
 'This will discard your current dashboard layout and restore the default widgets.': 'This will discard your current dashboard layout and restore the default widgets.'
+Thursday: Thursday
 'Time format': 'Time format'
+'Time of day': 'Time of day'
 To: To
 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.': 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.'
 'Total size exceeds {max} MB': 'Total size exceeds {max} MB'
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.'
+Tuesday: Tuesday
 'Turn gear maintenance tracking on or off.': 'Turn gear maintenance tracking on or off.'
 'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Turns on the AI-powered workout assistant, which can then be used from the command line.'
 Type: Type
@@ -298,9 +358,13 @@ Username: Username
 Version: Version
 Warning: Avviso
 Webhooks: Webhooks
+Wednesday: Wednesday
+Weekday: Weekday
+Weekdays: Weekdays
 'What is my FTP?': 'What is my FTP?'
 'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
+'Workout type': 'Workout type'
 'You can add it back to your dashboard again later.': 'You can add it back to your dashboard again later.'
 'You can also copy files straight into the {watchFolder} folder.': 'You can also copy files straight into the {watchFolder} folder.'
 'You can select up to {max} images': 'You can select up to {max} images'
@@ -315,14 +379,34 @@ Zwift: Zwift
 'Zwift level': 'Zwift level'
 'Zwift racing score': 'Zwift racing score'
 'active days': 'active days'
+after: after
+'at least': 'at least'
+'at most': 'at most'
+'at or after': 'at or after'
+'at or before': 'at or before'
+before: before
 'calendar days': 'calendar days'
 'discord://token@id': 'discord://token@id'
+'eg: Commuter bike on short rides': 'eg: Commuter bike on short rides'
+'eg: Imported automatically': 'eg: Imported automatically'
+'eg: Morning commute': 'eg: Morning commute'
+exactly: exactly
+'exactly at': 'exactly at'
 ftp: ftp
+'greater than': 'greater than'
 'hours used': 'hours used'
+is: is
+'is none of': 'is none of'
+'is not': 'is not'
+'is one of': 'is one of'
 'kilometers used': 'kilometers used'
+'less than': 'less than'
 'max {max} MB each': 'max {max} MB each'
 'miles used': 'miles used'
 minutes: minutes
+'outside radius': 'outside radius'
+then: then
+'within radius': 'within radius'
 '{count} files ready to upload': '{count} files ready to upload'
 '{count} files uploaded': '{count} files uploaded'
 '{count} images selected': '{count} images selected'
