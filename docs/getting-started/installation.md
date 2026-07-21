@@ -96,8 +96,13 @@ ADMIN_USERNAME=admin
 # See the "Admin password" section below.
 ADMIN_PASSWORD_HASH='replace-me'
 
-# Takes a comma-separated allowlist. When it is set, requests to /admin* from any other IP are rejected.
+# Takes a comma-separated allowlist. When it is set, requests to /admin* and to
+# the configuration API from any other IP are rejected.
 # ADMIN_ALLOWED_IPS=192.168.1.10,192.168.1.11
+
+# Enables the configuration API, which is off unless this is set.
+# Minimum 32 characters. See https://docs.dreeve.app/#/integrations/api
+# API_TOKEN=
 
 # Only needed when IMPORT_MODE=stravaApi.
 # See https://docs.dreeve.app/#/importing/strava-import

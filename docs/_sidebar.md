@@ -17,6 +17,7 @@
 
   - [AI assistant](integrations/ai.md "Dreeve | AI assistant")
   - [Notifications](integrations/notifications.md "Dreeve | Notifications")
+  - [Configuration API](integrations/api.md "Dreeve | Configuration API")
 
 - Troubleshooting
 
