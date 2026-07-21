@@ -55,7 +55,9 @@ final class Version20260721000000 extends AbstractMigration
             $this->connection->executeStatement(
                 'UPDATE Activity SET polyline = :polyline WHERE activityId = :activityId',
                 [
-                    'polyline' => (string) Polyline::fromCoordinates($coordinates)->simplify()->encode(),
+                    // Pin the tolerance explicitly so this historical migration stays frozen
+                    // against future changes to the Polyline::simplify() default.
+                    'polyline' => (string) Polyline::fromCoordinates($coordinates)->simplify(0.0001)->encode(),
                     'activityId' => $activityId,
                 ],
             );

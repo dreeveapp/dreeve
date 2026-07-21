@@ -18,6 +18,31 @@ class RouteGeographyAnalyzerTest extends TestCase
         );
     }
 
+    public function testAnalyzeForVeryDensePolyline(): void
+    {
+        $analyzer = new RouteGeographyAnalyzer();
+
+        // Build a very dense polyline that lies entirely within Belgium.
+        // The raw WKT for this many points exceeds the OS MAX_ARG_STRLEN (~128KB),
+        // which is passed to the geosop binary as a single CLI argument. Feeding the
+        // stored (high-fidelity) polyline straight into geosop therefore crashed the
+        // import with a GeometryEngineException ("Failed to run geosop") on long/high
+        // frequency activities (#2230). The analyzer must simplify its own geosop
+        // input so that country detection still succeeds regardless of route density.
+        $coordinates = [];
+        for ($i = 0; $i < 40000; ++$i) {
+            $coordinates[] = [
+                50.85 + ($i % 2) * 0.0001, // latitude
+                4.35 + $i * 0.00001,       // longitude
+            ];
+        }
+
+        $this->assertEquals(
+            ['BE'],
+            $analyzer->analyzeForPolyline(EncodedPolyline::fromCoordinates($coordinates)),
+        );
+    }
+
     public function testAnalyzeForInvalidPolyline(): void
     {
         $analyzer = new RouteGeographyAnalyzer();
