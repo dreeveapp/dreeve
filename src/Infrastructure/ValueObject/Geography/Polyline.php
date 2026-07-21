@@ -22,7 +22,7 @@ final readonly class Polyline
         return new self($coordinates);
     }
 
-    public function simplify(float $tolerance = 0.4): self
+    public function simplify(float $tolerance = 0.0001): self
     {
         $points = $this->coordinates;
 

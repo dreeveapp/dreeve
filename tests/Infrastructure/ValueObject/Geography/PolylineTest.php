@@ -72,6 +72,29 @@ class PolylineTest extends TestCase
         );
     }
 
+    public function testSimplifyWithDefaultToleranceKeepsGpsScaleRoute(): void
+    {
+        $centerLat = 51.2194;
+        $centerLng = 4.4025;
+        $radius = 0.03;
+        $numberOfPoints = 200;
+
+        $coordinates = [];
+        for ($i = 0; $i < $numberOfPoints; ++$i) {
+            $angle = 2 * M_PI * $i / $numberOfPoints;
+            $coordinates[] = [
+                $centerLat + $radius * sin($angle),
+                $centerLng + $radius * cos($angle),
+            ];
+        }
+
+        $simplified = Polyline::fromCoordinates($coordinates)->simplify();
+
+        $decodedPoints = EncodedPolyline::fromString((string) $simplified->encode())->decodeAndPairLatLng();
+
+        self::assertGreaterThan(10, count($decodedPoints));
+    }
+
     public function testEncodeReturnsEncodedPolyline(): void
     {
         $coordinates = [
