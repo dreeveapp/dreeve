@@ -57,6 +57,7 @@ Appearance: Appearance
 'Attached to': 'Attached to'
 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom; the first one that matches wins.': 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom; the first one that matches wins.'
 'Automation rules': 'Automation rules'
+'Automation rules are only available in file import mode': 'Automation rules are only available in file import mode'
 'Back to app': 'Back to app'
 'Base URI': 'Base URI'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.'
