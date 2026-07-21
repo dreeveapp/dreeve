@@ -19,6 +19,22 @@ class ConditionalRedirectGateTest extends TestCase
         $this->assertFalse($gate->handle(Request::create('/anything'))->hasBeenApplied());
     }
 
+    public function testItDefersForTheApiInsteadOfRedirecting(): void
+    {
+        // API clients need an actionable status code, not a 302 into the setup
+        // flow. Access-denying gates still apply, this only skips redirects.
+        $gate = $this->gate(shouldGuard: true);
+
+        $this->assertFalse($gate->handle(Request::create('/api/v1/config'))->hasBeenApplied());
+    }
+
+    public function testItStillRedirectsThePreBuiltApiUsedByTheFrontend(): void
+    {
+        $gate = $this->gate(shouldGuard: true);
+
+        $this->assertTrue($gate->handle(Request::create('/api/activity/1/metrics.json'))->hasBeenApplied());
+    }
+
     public function testItRedirectsANonAllowedPath(): void
     {
         $gate = $this->gate(shouldGuard: true);

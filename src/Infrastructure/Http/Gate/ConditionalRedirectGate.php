@@ -31,9 +31,16 @@ abstract class ConditionalRedirectGate implements Gate
             return GateDecision::defer();
         }
 
-        $target = $this->urlGenerator->generate($this->redirectToRouteName());
-
         $path = $request->getPathInfo();
+
+        // A machine client needs a status code it can act on, not a 302 to a
+        // setup page it cannot render. Only redirects are skipped: gates that
+        // deny access, such as AdminAllowedIpGate, still apply to the API.
+        if (str_starts_with($path, self::API_PATH_PREFIX)) {
+            return GateDecision::defer();
+        }
+
+        $target = $this->urlGenerator->generate($this->redirectToRouteName());
         foreach ([...$this->allowedPaths(), $target] as $allowed) {
             if ($this->matches($path, $allowed)) {
                 return GateDecision::allow();

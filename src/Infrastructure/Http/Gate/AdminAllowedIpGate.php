@@ -9,6 +9,10 @@ use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * Restricts the two ways of reaching configuration — the admin panel and the
+ * configuration API — to ADMIN_ALLOWED_IPS, so one setting covers both.
+ */
 #[AsTaggedItem(priority: 100)]
 final readonly class AdminAllowedIpGate implements Gate
 {
@@ -23,8 +27,7 @@ final readonly class AdminAllowedIpGate implements Gate
             return GateDecision::defer();
         }
 
-        $path = $request->getPathInfo();
-        if ('/admin' !== $path && !str_starts_with($path, '/admin/')) {
+        if (!$this->guardsPath($request->getPathInfo())) {
             return GateDecision::defer();
         }
 
@@ -35,5 +38,12 @@ final readonly class AdminAllowedIpGate implements Gate
         }
 
         throw new NotFoundHttpException('Not found');
+    }
+
+    private function guardsPath(string $path): bool
+    {
+        return '/admin' === $path
+            || str_starts_with($path, '/admin/')
+            || str_starts_with($path, self::API_PATH_PREFIX);
     }
 }

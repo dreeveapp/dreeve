@@ -37,6 +37,23 @@ class AdminAllowedIpGateTest extends TestCase
         $gate->handle($request);
     }
 
+    public function testItDeniesApiAccessFromADisallowedIp(): void
+    {
+        // ADMIN_ALLOWED_IPS covers both routes into configuration: the admin
+        // panel and the configuration API.
+        $this->expectExceptionObject(new NotFoundHttpException('Not found'));
+
+        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'));
+        $gate->handle($this->requestFromIp('/api/v1/config/athlete/weight-history', '10.0.0.1'));
+    }
+
+    public function testItAllowsApiAccessFromAnAllowedIp(): void
+    {
+        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'));
+
+        $this->assertFalse($gate->handle($this->requestFromIp('/api/v1/config', '192.168.1.1'))->hasBeenApplied());
+    }
+
     public function testItAllowsEveryoneWhenNoAllowListIsConfigured(): void
     {
         $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString(''));
@@ -59,11 +76,17 @@ class AdminAllowedIpGateTest extends TestCase
     {
         yield 'home' => ['/'];
         yield 'a path that merely starts with admin' => ['/administration'];
+        yield 'the pre-built api used by the frontend' => ['/api/activity/1/metrics.json'];
     }
 
     private function adminRequestFromIp(string $ipAddress): Request
     {
-        $request = Request::create('/admin/login');
+        return $this->requestFromIp('/admin/login', $ipAddress);
+    }
+
+    private function requestFromIp(string $path, string $ipAddress): Request
+    {
+        $request = Request::create($path);
         $request->server->set('REMOTE_ADDR', $ipAddress);
 
         return $request;
