@@ -25,6 +25,7 @@
 * **Strava import** - Prefer to import from Strava? That works too
 * **Admin panel** - Manage activities, gear and every setting from your browser
 * **Dashboard** - See all your stats and charts at a glance
+* **Automation rules** - Automatically fill in gear, commute flags, sport types and more
 * **Activities** -  Browse a detailed list of everything you've done
 * **Monthly View** - Monthly stats with an interactive calendar
 * **Gear stats** - Track how much you've used each bike, shoe, etc.

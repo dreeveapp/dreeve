@@ -33,10 +33,10 @@ https://github.com/user-attachments/assets/2789c961-f04f-4804-b6eb-88d45e62687c
 
 ### Key Features
 
-* **Import activity files** - Drop FIT/TCX/GPX files in a watch folder or upload them in the browser
-* **Strava import** - Prefer to import from Strava? That works too
+* **Import activities** - Use raw FIT/TCX/GPX files or connect your Strava account
 * **Admin panel** - Manage activities, gear and every setting from your browser
 * **Dashboard** - See all your stats and charts at a glance
+* **Automation rules** - Automatically fill in gear, commute flags, sport types and more
 * **Activities** -  Browse a detailed list of everything you've done
 * **Monthly View** - Monthly stats with an interactive calendar
 * **Gear stats** - Track how much you've used each bike, shoe, etc.
