@@ -11,6 +11,7 @@ use App\Domain\Automation\Condition\ConditionType;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredCondition;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredConditions;
 use App\Domain\Automation\RuleConfiguration;
+use App\Domain\Import\ImportMode;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Automation\AutomationRuleBuilder;
 
@@ -37,8 +38,39 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseRedirects('/admin/login');
     }
 
+    public function testItReturnsANotFoundWhenNotInFileImportModeOnAdd(): void
+    {
+        $this->withImportMode(ImportMode::STRAVA_API);
+        $this->client->loginUser($this->adminUser());
+
+        $this->client->request('GET', '/admin/settings/automation-rules/add');
+
+        $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testItReturnsANotFoundWhenNotInFileImportModeOnEdit(): void
+    {
+        $this->withImportMode(ImportMode::STRAVA_API);
+        $this->client->loginUser($this->adminUser());
+
+        $this->client->request('GET', '/admin/settings/automation-rules/'.AutomationRuleId::fromUnprefixed('1').'/edit');
+
+        $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testItReturnsANotFoundWhenNotInFileImportModeOnDelete(): void
+    {
+        $this->withImportMode(ImportMode::STRAVA_API);
+        $this->client->loginUser($this->adminUser());
+
+        $this->client->request('GET', '/admin/settings/automation-rules/'.AutomationRuleId::fromUnprefixed('1').'/delete');
+
+        $this->assertResponseStatusCodeSame(404);
+    }
+
     public function testItRendersTheAddForm(): void
     {
+        $this->withImportMode(ImportMode::FILES);
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/settings/automation-rules/add');
@@ -62,6 +94,8 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
 
     public function testItRendersTheEditFormPrefilledWithTheRule(): void
     {
+        $this->withImportMode(ImportMode::FILES);
+
         static::getContainer()->get(AutomationRuleRepository::class)->add(
             AutomationRuleBuilder::fromDefaults()
                 ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('42'))
@@ -96,6 +130,8 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
 
     public function testItRendersTheDeleteConfirmation(): void
     {
+        $this->withImportMode(ImportMode::FILES);
+
         static::getContainer()->get(AutomationRuleRepository::class)->add(
             AutomationRuleBuilder::fromDefaults()
                 ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('7'))

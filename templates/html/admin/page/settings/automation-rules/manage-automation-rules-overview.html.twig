@@ -2,6 +2,9 @@
 {% block main %}
     {% autoescape false %}
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+        {% embed 'html/admin/component/gated-panel.html.twig' with { 'locked': not importMode.isFiles() } %}
+            {% block lockTitle %}{% autoescape false %}{{ "Automation rules are only available in file import mode"|trans({}, 'admin') }}{% endautoescape %}{% endblock %}
+            {% block content %}{% autoescape false %}
         <div class="flex items-center justify-between mb-4">
             <div>
                 <h3 class="text-lg font-semibold">{{ "Automation rules"|trans({}, 'admin') }}</h3>
@@ -73,6 +76,8 @@
                 {% endfor %}
             </div>
         {% endif %}
+            {% endautoescape %}{% endblock %}
+        {% endembed %}
     </div>
     {% endautoescape %}
 {% endblock main %}

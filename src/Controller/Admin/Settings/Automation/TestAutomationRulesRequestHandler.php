@@ -10,6 +10,7 @@ use App\Domain\Automation\Action\Actions;
 use App\Domain\Automation\AutomationRuleRepository;
 use App\Domain\Automation\Condition\Conditions;
 use App\Domain\Automation\DryRun\AutomationRuleDryRunner;
+use App\Domain\Import\ImportMode;
 use App\Infrastructure\Exception\EntityNotFound;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,12 +29,17 @@ final readonly class TestAutomationRulesRequestHandler
         private AutomationRuleDryRunner $dryRunner,
         private Conditions $conditions,
         private Actions $actions,
+        private ImportMode $importMode,
     ) {
     }
 
     #[Route(path: '/admin/settings/automation-rules/test', name: 'admin_test_automation_rules', methods: ['GET'], priority: 20)]
     public function handle(Request $request): Response
     {
+        if (!$this->importMode->isFiles()) {
+            throw new NotFoundHttpException('Automation rules are only available in file import mode');
+        }
+
         if ($this->automationRuleRepository->findAll()->isEmpty()) {
             throw new NotFoundHttpException('There are no automation rules to test');
         }

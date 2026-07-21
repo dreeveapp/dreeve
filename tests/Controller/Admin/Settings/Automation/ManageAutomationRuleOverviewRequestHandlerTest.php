@@ -16,6 +16,7 @@ use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredConditions;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
+use App\Domain\Import\ImportMode;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Automation\AutomationRuleBuilder;
@@ -30,13 +31,31 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseRedirects('/admin/login');
     }
 
-    public function testItRendersTheEmptyState(): void
+    public function testRendersTheGatedPanelWhenNotInFileImportMode(): void
     {
+        $this->withImportMode(ImportMode::STRAVA_API);
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/settings/automation-rules');
 
         $this->assertResponseIsSuccessful();
+        $gatedPanel = $crawler->filter('[role="alert"][type="gated-panel"]');
+        $this->assertCount(1, $gatedPanel);
+        $this->assertStringContainsString(
+            'Automation rules are only available in file import mode',
+            $gatedPanel->text()
+        );
+    }
+
+    public function testItRendersTheEmptyState(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/settings/automation-rules');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(0, $crawler->filter('[role="alert"][type="gated-panel"]'));
         $this->assertStringContainsString('No automation rules yet.', $crawler->filter('body')->text());
         $this->assertCount(0, $crawler->filter('[data-sortable-list]'));
         $this->assertCount(0, $crawler->filter('a[href*="automation-rules/test"]'));
@@ -44,6 +63,8 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
 
     public function testItRendersTheRulesWithTheirConditionsActionsAndState(): void
     {
+        $this->withImportMode(ImportMode::FILES);
+
         $repository = static::getContainer()->get(AutomationRuleRepository::class);
         $repository->add(
             AutomationRuleBuilder::fromDefaults()
@@ -112,6 +133,8 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
 
     public function testItRendersAPillForEveryConditionAndActionType(): void
     {
+        $this->withImportMode(ImportMode::FILES);
+
         static::getContainer()->get(GearRepository::class)->add(
             GearBuilder::fromDefaults()->withName('Canyon Ultimate')->build()
         );

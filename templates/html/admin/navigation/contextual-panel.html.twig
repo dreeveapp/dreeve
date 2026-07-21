@@ -77,13 +77,11 @@
                         {{ "Dashboard"|trans }}
                     </a>
                 </li>
-                {% if importMode.isFiles() %}
-                    <li>
-                        <a href="{{ relativeUrl(path('admin_manage_automation_rules_overview')) }}" {{ inAutomationRules ? 'aria-selected="true"' : '' }}>
-                            {{ "Automation rules"|trans({}, 'admin') }}
-                        </a>
-                    </li>
-                {% endif %}
+                <li>
+                    <a href="{{ relativeUrl(path('admin_manage_automation_rules_overview')) }}" {{ inAutomationRules ? 'aria-selected="true"' : '' }}>
+                        {{ "Automation rules"|trans({}, 'admin') }}
+                    </a>
+                </li>
                 {% if importMode.isStravaApi() %}
                     <li>
                         <a href="{{ relativeUrl(path('admin_settings', {'group': 'import'})) }}" {{ inImport ? 'aria-selected="true"' : '' }}>
