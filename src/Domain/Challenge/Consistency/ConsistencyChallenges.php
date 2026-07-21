@@ -115,7 +115,7 @@ final class ConsistencyChallenges extends Collection
                 throw new InvalidDashboardLayout('Invalid Challenge configuration provided');
             }
 
-            foreach (['label', 'type', 'unit', 'goal', 'sportTypesToInclude'] as $requiredKey) {
+            foreach (['label', 'type', 'goal', 'sportTypesToInclude'] as $requiredKey) {
                 if (array_key_exists($requiredKey, $challengeConfig)) {
                     continue;
                 }
@@ -132,6 +132,13 @@ final class ConsistencyChallenges extends Collection
 
             if (!$type = ChallengeConsistencyType::tryFrom($challengeConfig['type'])) {
                 throw new InvalidDashboardLayout(sprintf('"%s" is not a valid type', $challengeConfig['type']));
+            }
+
+            if (in_array($type, ChallengeConsistencyType::simpleUnitRelated())) {
+                // These challenge types have no unit, any configured unit is ignored.
+                $challengeConfig['unit'] = ConsistencyChallenge::SIMPLE;
+            } elseif (empty($challengeConfig['unit'])) {
+                throw new InvalidDashboardLayout(sprintf('"unit" property is required for challenge type "%s"', $type->value));
             }
 
             if (!is_array($challengeConfig['sportTypesToInclude'])) {
@@ -160,11 +167,6 @@ final class ConsistencyChallenges extends Collection
                 ConsistencyChallenge::MINUTE,
             ])) {
                 throw new InvalidDashboardLayout(sprintf('The unit "%s" is not valid for challenge type "%s"', $challengeConfig['unit'], $type->value));
-            }
-
-            if (ChallengeConsistencyType::NUMBER_OF_ACTIVITIES === $type) {
-                // Hardcode the unit to a random value, it won't be used anyway.
-                $challengeConfig['unit'] = 'km';
             }
 
             if ($sportTypesToInclude->isEmpty()) {

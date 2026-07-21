@@ -99,6 +99,24 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->assertMatchesSnapshot($output, new ConsoleOutputSnapshotDriver());
     }
 
+    public function testHandleImportsGpxFileAndSkipsDuplicate(): void
+    {
+        $bytes = $this->fixture('activity.gpx');
+
+        $this->dropInWatchFolder('run1.gpx', $bytes);
+        $this->dropInWatchFolder('run2.gpx', $bytes);
+
+        $output = new SpyOutput();
+        $this->handler->handle(new ImportActivityFiles($output));
+
+        $fileImports = array_values($this->getFileImports());
+        $this->assertCount(2, $fileImports);
+        $this->assertSame(FileImportStatus::SUCCESS->value, $fileImports[0]['status']);
+        $this->assertSame(ImportSource::GPX_FILE->value, $fileImports[0]['source']);
+        $this->assertSame(FileImportStatus::SKIPPED->value, $fileImports[1]['status']);
+        $this->assertSame(ImportSource::GPX_FILE->value, $fileImports[1]['source']);
+    }
+
     public function testHandleSkipsUnsupportedFileType(): void
     {
         $this->dropInWatchFolder('notes.txt', 'just some text');

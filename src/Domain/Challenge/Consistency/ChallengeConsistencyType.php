@@ -37,4 +37,12 @@ enum ChallengeConsistencyType: string implements TranslatableInterface
     {
         return [self::DISTANCE, self::DISTANCE_IN_ONE_ACTIVITY, self::ELEVATION, self::ELEVATION_IN_ONE_ACTIVITY];
     }
+
+    /**
+     * @return ChallengeConsistencyType[]
+     */
+    public static function simpleUnitRelated(): array
+    {
+        return [self::NUMBER_OF_ACTIVITIES, self::CALORIES];
+    }
 }

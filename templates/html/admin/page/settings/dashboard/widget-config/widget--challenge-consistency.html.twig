@@ -45,6 +45,7 @@
                 <div>
                     <label class="mt-0!">{{ "Unit"|trans({}, 'admin') }}</label>
                     <select name="config[challenges][__index__][unit]" data-repeater-field="unit">
+                        <option value="">{{ "No unit"|trans({}, 'admin') }}</option>
                         {% for unit, unitLabel in unitLabels %}
                             <option value="{{ unit }}">{{ unitLabel }}</option>
                         {% endfor %}

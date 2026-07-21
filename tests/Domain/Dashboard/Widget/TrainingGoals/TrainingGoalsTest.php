@@ -53,6 +53,47 @@ class TrainingGoalsTest extends TestCase
         );
     }
 
+    public function testFromConfigWithUnitLessGoalTypes(): void
+    {
+        $this->assertEquals(
+            TrainingGoals::fromArray([
+                TrainingGoal::create(
+                    label: 'Activity count',
+                    type: TrainingGoalType::NUMBER_OF_ACTIVITIES,
+                    period: TrainingGoalPeriod::WEEKLY,
+                    goal: 5,
+                    unit: TrainingGoal::SIMPLE,
+                    sportTypesToInclude: SportTypes::fromArray([SportType::RIDE]),
+                ),
+                TrainingGoal::create(
+                    label: 'Calories',
+                    type: TrainingGoalType::CALORIES,
+                    period: TrainingGoalPeriod::WEEKLY,
+                    goal: 10000,
+                    unit: TrainingGoal::SIMPLE,
+                    sportTypesToInclude: SportTypes::fromArray([SportType::RIDE]),
+                ),
+            ]),
+            TrainingGoals::fromConfig([
+                'weekly' => [
+                    [
+                        'label' => 'Activity count',
+                        'type' => 'numberOfActivities',
+                        'unit' => '',
+                        'goal' => 5,
+                        'sportTypesToInclude' => ['Ride'],
+                    ],
+                    [
+                        'label' => 'Calories',
+                        'type' => 'calories',
+                        'goal' => 10000,
+                        'sportTypesToInclude' => ['Ride'],
+                    ],
+                ],
+            ])
+        );
+    }
+
     public function testFromConfigWithRestrictToDateRange(): void
     {
         $yml = self::getValidYml();
@@ -111,7 +152,11 @@ class TrainingGoalsTest extends TestCase
 
         $yml = self::getValidYml();
         unset($yml['weekly'][0]['unit']);
-        yield 'missing "unit" key' => [$yml, '"unit" property is required'];
+        yield 'missing "unit" key' => [$yml, '"unit" property is required for goal type "distance"'];
+
+        $yml = self::getValidYml();
+        $yml['weekly'][0]['unit'] = '';
+        yield 'empty "unit"' => [$yml, '"unit" property is required for goal type "distance"'];
 
         $yml = self::getValidYml();
         unset($yml['weekly'][0]['goal']);
