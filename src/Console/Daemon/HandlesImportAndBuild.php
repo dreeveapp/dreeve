@@ -37,11 +37,7 @@ trait HandlesImportAndBuild
         $runBuild = (bool) $input->getOption(self::BUILD_OPTION);
 
         if (!$runImport && !$runBuild) {
-            throw new InvalidOptionException(sprintf(
-                'At least one of --%s or --%s must be provided.',
-                self::IMPORT_OPTION,
-                self::BUILD_OPTION,
-            ));
+            throw new InvalidOptionException(sprintf('At least one of --%s or --%s must be provided.', self::IMPORT_OPTION, self::BUILD_OPTION));
         }
 
         return [self::IMPORT_OPTION => $runImport, self::BUILD_OPTION => $runBuild];
@@ -69,6 +65,7 @@ trait HandlesImportAndBuild
         if ($appLastBuildSnapshot !== $this->buildSnapshot($today)) {
             return true;
         }
+
         return $rebuildStatus->isPending();
     }
 
