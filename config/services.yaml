@@ -9,6 +9,7 @@ parameters:
     env(ADMIN_USERNAME): 'admin'
     env(ADMIN_PASSWORD_HASH): ''
     env(ADMIN_ALLOWED_IPS): ''
+    env(API_TOKEN): ''
     env(STRAVA_CLIENT_ID): 'replace-me'
     env(STRAVA_CLIENT_SECRET): 'replace-me'
     env(STRAVA_REFRESH_TOKEN): 'replace-me'
@@ -64,6 +65,10 @@ services:
     App\Infrastructure\Config\AdminAllowedIpAddresses:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:ADMIN_ALLOWED_IPS)%']
+
+    App\Infrastructure\Config\ApiToken:
+        factory: [ null, 'fromString' ]
+        arguments: ['%env(string:API_TOKEN)%']
 
     App\Infrastructure\Config\DemoMode:
         factory: [ null, 'fromString' ]

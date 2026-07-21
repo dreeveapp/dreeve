@@ -14,6 +14,13 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        api:
+            # Must be declared before `main`: firewalls match in order and `main`
+            # has no pattern, so it would otherwise swallow API requests.
+            pattern: ^/api/v1/
+            stateless: true
+            custom_authenticator: App\Infrastructure\Security\ApiTokenAuthenticator
+
         main:
             lazy: true
             provider: admin_provider
@@ -34,6 +41,7 @@ security:
     # Note: Only the *first* matching rule is applied.
     # The ^/admin/login PUBLIC_ACCESS rule must precede ^/admin to avoid a redirect loop.
     access_control:
+        - { path: ^/api/v1/, roles: ROLE_API }
         - { path: ^/admin/login, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
 
