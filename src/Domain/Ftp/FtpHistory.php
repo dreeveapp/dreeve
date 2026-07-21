@@ -11,9 +11,6 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final class FtpHistory implements SupportsAITooling
 {
-    private const string CYCLING_KEY = 'cycling';
-    private const string RUNNING_KEY = 'running';
-
     /** @var array<string, Ftp[]> */
     private array $ftps;
 
@@ -23,11 +20,11 @@ final class FtpHistory implements SupportsAITooling
     private function __construct(
         array $ftps,
     ) {
-        $this->ftps[self::CYCLING_KEY] = $this->mapFtpHistory(is_array($ftps[self::CYCLING_KEY] ?? null) ? $ftps[self::CYCLING_KEY] : [], self::CYCLING_KEY);
-        $this->ftps[self::RUNNING_KEY] = $this->mapFtpHistory(is_array($ftps[self::RUNNING_KEY] ?? null) ? $ftps[self::RUNNING_KEY] : [], self::RUNNING_KEY);
+        $this->ftps[FtpSport::CYCLING->value] = $this->mapFtpHistory(is_array($ftps[FtpSport::CYCLING->value] ?? null) ? $ftps[FtpSport::CYCLING->value] : [], FtpSport::CYCLING->value);
+        $this->ftps[FtpSport::RUNNING->value] = $this->mapFtpHistory(is_array($ftps[FtpSport::RUNNING->value] ?? null) ? $ftps[FtpSport::RUNNING->value] : [], FtpSport::RUNNING->value);
 
-        krsort($this->ftps[self::CYCLING_KEY]);
-        krsort($this->ftps[self::RUNNING_KEY]);
+        krsort($this->ftps[FtpSport::CYCLING->value]);
+        krsort($this->ftps[FtpSport::RUNNING->value]);
     }
 
     /**
@@ -60,8 +57,8 @@ final class FtpHistory implements SupportsAITooling
     public function findAll(ActivityType $activityType): Ftps
     {
         $ftps = match ($activityType) {
-            ActivityType::RIDE => $this->ftps[self::CYCLING_KEY],
-            ActivityType::RUN => $this->ftps[self::RUNNING_KEY],
+            ActivityType::RIDE => $this->ftps[FtpSport::CYCLING->value],
+            ActivityType::RUN => $this->ftps[FtpSport::RUNNING->value],
             default => throw new \RuntimeException(sprintf('ActivityType "%s" does not support FTP', $activityType->value)),
         };
 
@@ -75,8 +72,8 @@ final class FtpHistory implements SupportsAITooling
     {
         $on = SerializableDateTime::fromString($on->format('Y-m-d'));
         $ftps = match ($activityType) {
-            ActivityType::RIDE => $this->ftps[self::CYCLING_KEY],
-            ActivityType::RUN => $this->ftps[self::RUNNING_KEY],
+            ActivityType::RIDE => $this->ftps[FtpSport::CYCLING->value],
+            ActivityType::RUN => $this->ftps[FtpSport::RUNNING->value],
             default => throw new \RuntimeException(sprintf('ActivityType "%s" does not support FTP', $activityType->value)),
         };
 
@@ -110,10 +107,10 @@ final class FtpHistory implements SupportsAITooling
      */
     public static function fromArray(array $values): self
     {
-        if (!array_key_exists(self::CYCLING_KEY, $values) && !array_key_exists(self::RUNNING_KEY, $values)) {
+        if (!array_key_exists(FtpSport::CYCLING->value, $values) && !array_key_exists(FtpSport::RUNNING->value, $values)) {
             // This is still an old FTP history when we didn't
             // differentiate between cycling and running yet. Make sure it's BC.
-            $values[self::CYCLING_KEY] = $values;
+            $values[FtpSport::CYCLING->value] = $values;
         }
 
         /* @var array<string, array<string, int>> $values */
