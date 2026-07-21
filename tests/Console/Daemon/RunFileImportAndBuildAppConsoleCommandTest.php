@@ -4,6 +4,7 @@ namespace App\Tests\Console\Daemon;
 
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
+use App\Application\AppVersion;
 use App\Application\RebuildStatus;
 use App\Console\Daemon\RunFileImportAndBuildAppConsoleCommand;
 use App\Domain\Activity\ActivityIdRepository;
@@ -35,6 +36,7 @@ use Psr\Log\NullLogger;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
@@ -57,10 +59,26 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
 
         $command = $this->getCommandInApplication('app:cron:run-file-import');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName()]);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunFileImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+        ]);
 
         $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
-        $this->assertSame(self::TODAY, (string) $this->keyValueStore->find(Key::APP_LAST_BUILT_ON));
+        $this->assertSame(
+            self::TODAY.'@'.AppVersion::getSemanticVersion(),
+            (string) $this->keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT),
+        );
+    }
+
+    public function testThrowsWhenNoPhaseOptionsProvided(): void
+    {
+        $command = $this->getCommandInApplication('app:cron:run-file-import');
+        $commandTester = new CommandTester($command);
+
+        $this->expectExceptionObject(new InvalidOptionException('At least one of --import or --build must be provided.'));
+        $commandTester->execute(['command' => $command->getName()]);
     }
 
     public function testRunsWhenLastBuiltOnAPreviousDay(): void
@@ -71,31 +89,86 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
         ));
 
         $this->keyValueStore->save(KeyValue::fromState(
-            key: Key::APP_LAST_BUILT_ON,
-            value: Value::fromString('2025-12-03'),
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString('2025-12-03@'.AppVersion::getSemanticVersion()),
         ));
 
         $command = $this->getCommandInApplication('app:cron:run-file-import');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName()]);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunFileImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION => true,
+        ]);
 
         $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
-        $this->assertSame(self::TODAY, (string) $this->keyValueStore->find(Key::APP_LAST_BUILT_ON));
+        $this->assertSame(
+            self::TODAY.'@'.AppVersion::getSemanticVersion(),
+            (string) $this->keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT),
+        );
     }
 
     public function testSkipsWhenAlreadyBuiltTodayAndNoFiles(): void
     {
+        $this->markAppAsBuiltToday();
+
+        $command = $this->getCommandInApplication('app:cron:run-file-import');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunFileImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION => true,
+        ]);
+
+        $this->assertEmpty($this->commandBus->getDispatchedCommands());
+        $this->assertStringContainsString('No files left to process...', $commandTester->getDisplay());
+    }
+
+    public function testBuildOnlyIfRequiredSkipsWhenAlreadyBuiltToday(): void
+    {
+        $this->markAppAsBuiltToday();
+
+        $command = $this->getCommandInApplication('app:cron:run-file-import');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunFileImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION => true,
+        ]);
+
+        $this->assertEmpty($this->commandBus->getDispatchedCommands());
+        $this->assertStringContainsString('No files left to process...', $commandTester->getDisplay());
+    }
+
+    public function testBuildsWhenLastBuiltWithOlderAppVersionEvenIfAlreadyBuiltToday(): void
+    {
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()->build(),
+            [],
+        ));
+
         $this->keyValueStore->save(KeyValue::fromState(
-            key: Key::APP_LAST_BUILT_ON,
-            value: Value::fromString(self::TODAY),
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString(self::TODAY.'@v0.0.0'),
         ));
 
         $command = $this->getCommandInApplication('app:cron:run-file-import');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName()]);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunFileImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION => true,
+        ]);
 
-        $this->assertEmpty($this->commandBus->getDispatchedCommands());
-        $this->assertStringContainsString('No files left to process...', $commandTester->getDisplay());
+        $this->assertStringNotContainsString('No files left to process...', $commandTester->getDisplay());
+        $this->assertNotEmpty($this->commandBus->getDispatchedCommands());
+        $this->assertSame(
+            self::TODAY.'@'.AppVersion::getSemanticVersion(),
+            (string) $this->keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT),
+        );
     }
 
     public function testRunsWhenFilesArePresentEvenIfAlreadyBuiltToday(): void
@@ -105,15 +178,17 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
             [],
         ));
 
-        $this->keyValueStore->save(KeyValue::fromState(
-            key: Key::APP_LAST_BUILT_ON,
-            value: Value::fromString(self::TODAY),
-        ));
+        $this->markAppAsBuiltToday();
         $this->watchStorage->write('watch/ride.fit', 'raw-fit-bytes');
 
         $command = $this->getCommandInApplication('app:cron:run-file-import');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName()]);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunFileImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION => true,
+        ]);
 
         $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
     }
@@ -125,10 +200,7 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
             [],
         ));
 
-        $this->keyValueStore->save(KeyValue::fromState(
-            key: Key::APP_LAST_BUILT_ON,
-            value: Value::fromString(self::TODAY),
-        ));
+        $this->markAppAsBuiltToday();
         $this->keyValueStore->save(KeyValue::fromState(
             key: Key::FORCE_REBUILD,
             value: Value::fromString('1'),
@@ -136,11 +208,19 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
 
         $command = $this->getCommandInApplication('app:cron:run-file-import');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName()]);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunFileImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION => true,
+        ]);
 
         $this->assertStringNotContainsString('No files left to process...', $commandTester->getDisplay());
         $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
-        $this->assertSame(self::TODAY, (string) $this->keyValueStore->find(Key::APP_LAST_BUILT_ON));
+        $this->assertSame(
+            self::TODAY.'@'.AppVersion::getSemanticVersion(),
+            (string) $this->keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT),
+        );
 
         $this->expectExceptionObject(new EntityNotFound('KeyValue "forceRebuild" not found'));
         $this->keyValueStore->find(Key::FORCE_REBUILD);
@@ -150,7 +230,11 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
     {
         $command = $this->getCommandInApplication('app:cron:run-file-import');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName()]);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunFileImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+        ]);
 
         $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
         $this->assertStringContainsString(
@@ -158,8 +242,8 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
             $commandTester->getDisplay(),
         );
 
-        $this->expectExceptionObject(new EntityNotFound('KeyValue "appLastBuiltOn" not found'));
-        $this->keyValueStore->find(Key::APP_LAST_BUILT_ON);
+        $this->expectExceptionObject(new EntityNotFound('KeyValue "appLastBuildSnapshot" not found'));
+        $this->keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT);
     }
 
     public function testPostponesWhenLockIsAlreadyAcquired(): void
@@ -171,7 +255,11 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
 
         $command = $this->getCommandInApplication('app:cron:run-file-import');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName()]);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunFileImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+        ]);
 
         $this->assertEmpty($this->commandBus->getDispatchedCommands());
         $this->assertStringContainsString(
@@ -197,8 +285,8 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
 
         $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
 
-        $this->expectExceptionObject(new EntityNotFound('KeyValue "appLastBuiltOn" not found'));
-        $this->keyValueStore->find(Key::APP_LAST_BUILT_ON);
+        $this->expectExceptionObject(new EntityNotFound('KeyValue "appLastBuildSnapshot" not found'));
+        $this->keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT);
     }
 
     public function testBuildsOnlyWhenBuildOptionIsSet(): void
@@ -216,7 +304,10 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
         ]);
 
         $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
-        $this->assertSame(self::TODAY, (string) $this->keyValueStore->find(Key::APP_LAST_BUILT_ON));
+        $this->assertSame(
+            self::TODAY.'@'.AppVersion::getSemanticVersion(),
+            (string) $this->keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT),
+        );
     }
 
     public function testReturnsEarlyWhenImportModeIsStrava(): void
@@ -245,7 +336,11 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
         $application->addCommand($command);
 
         $commandTester = new CommandTester($application->find('app:cron:run-file-import'));
-        $commandTester->execute(['command' => $command->getName()]);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunFileImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+        ]);
 
         $this->assertStringContainsString(
             'Make sure the container has write permissions to "storage/database" and "storage/files" on the host system',
@@ -282,7 +377,11 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
 
         $thrown = null;
         try {
-            $commandTester->execute(['command' => $command->getName()]);
+            $commandTester->execute([
+                'command' => $command->getName(),
+                '--'.RunFileImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+                '--'.RunFileImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+            ]);
         } catch (\RuntimeException $e) {
             $thrown = $e;
         }
@@ -334,6 +433,14 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
             importMode: $importMode,
             rebuildStatus: new RebuildStatus($this->keyValueStore),
         );
+    }
+
+    private function markAppAsBuiltToday(): void
+    {
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString(self::TODAY.'@'.AppVersion::getSemanticVersion()),
+        ));
     }
 
     protected function getConsoleCommand(): Command

@@ -25,10 +25,7 @@ use App\Domain\Strava\Strava;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\DependencyInjection\Mutex\WithMutex;
 use App\Infrastructure\Doctrine\Migrations\RequiresUpToDateDatabaseSchema;
-use App\Infrastructure\KeyValue\Key;
-use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Logging\LoggableConsoleOutput;
 use App\Infrastructure\Mutex\LockIsAlreadyAcquired;
 use App\Infrastructure\Mutex\LockName;
@@ -75,7 +72,6 @@ final class RunStravaImportAndBuildAppConsoleCommand extends Command
     {
         $this->addArgument(self::RESTRICT_TO_ACTIVITY_IDS_ARGUMENT, InputArgument::OPTIONAL);
         $this->addImportAndBuildOptions();
-        $this->addIfRequiredOption();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -90,14 +86,14 @@ final class RunStravaImportAndBuildAppConsoleCommand extends Command
 
         $shouldImport = $this->resolvePhases($input)[self::IMPORT_OPTION];
         $today = $this->clock->getCurrentDateTimeImmutable()->format('Y-m-d');
-        $appNeedsToBeBuilt = $this->appNeedsToBeBuilt(
+        $buildWillRun = $this->buildIsRequired(
             input: $input,
             keyValueStore: $this->keyValueStore,
             rebuildStatus: $this->rebuildStatus,
             today: $today
         );
 
-        if (!$shouldImport && !$appNeedsToBeBuilt) {
+        if (!$shouldImport && !$buildWillRun) {
             $output->writeln('Nothing to build...');
 
             return Command::SUCCESS;
@@ -150,18 +146,17 @@ final class RunStravaImportAndBuildAppConsoleCommand extends Command
                     ]);
                 }
             }
-            if ($appNeedsToBeBuilt) {
+            if ($buildWillRun) {
                 $this->appStatusChecker->ensureIsReadyForBuild();
 
                 $this->commandBus->dispatch(new RunBuild(
                     output: $output,
                 ));
 
-                $this->keyValueStore->save(KeyValue::fromState(
-                    key: Key::APP_LAST_BUILT_ON,
-                    value: Value::fromString($today),
-                ));
-                $this->keyValueStore->clear(Key::FORCE_REBUILD);
+                $this->markAppAsBuilt(
+                    keyValueStore: $this->keyValueStore,
+                    today: $today
+                );
             }
         } catch (AppIsNotReady $e) {
             $this->mutex->releaseLock();

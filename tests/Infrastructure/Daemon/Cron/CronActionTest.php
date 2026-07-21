@@ -35,7 +35,7 @@ class CronActionTest extends TestCase
 
     public static function provideCommands(): iterable
     {
-        yield 'runStravaImportAndBuildApp' => [CronActionId::RUN_STRAVA_IMPORT_AND_BUILD_APP, 'bin/console app:cron:run-strava-import'];
+        yield 'runStravaImportAndBuildApp' => [CronActionId::RUN_STRAVA_IMPORT_AND_BUILD_APP, 'bin/console app:cron:run-strava-import --import --build'];
         yield 'gearMaintenanceNotification' => [CronActionId::GEAR_MAINTENANCE_NOTIFICATION, 'bin/console app:cron:gear-maintenance-notification'];
         yield 'appUpdateAvailableNotification' => [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, 'bin/console app:cron:app-update-available-notification'];
     }

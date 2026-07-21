@@ -103,7 +103,13 @@ final class SystemDaemon implements Daemon
                         cronActionId: 'runFileImport',
                         clock: $this->clock,
                         output: $this->getConsoleOutput(),
-                        command: sprintf('bin/console %s', RunFileImportAndBuildAppConsoleCommand::NAME)
+                        command: sprintf(
+                            'bin/console %s --%s --%s --%s',
+                            RunFileImportAndBuildAppConsoleCommand::NAME,
+                            RunFileImportAndBuildAppConsoleCommand::IMPORT_OPTION,
+                            RunFileImportAndBuildAppConsoleCommand::BUILD_OPTION,
+                            RunFileImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION,
+                        )
                     );
                     $process->start();
 
@@ -127,7 +133,7 @@ final class SystemDaemon implements Daemon
                             'bin/console %s --%s --%s',
                             RunStravaImportAndBuildAppConsoleCommand::NAME,
                             RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION,
-                            RunStravaImportAndBuildAppConsoleCommand::IF_REQUIRED_OPTION,
+                            RunStravaImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION,
                         )
                     );
                     $process->start();

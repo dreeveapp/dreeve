@@ -38,7 +38,12 @@ enum CronActionId: string implements TranslatableWithDescription
     public function command(): string
     {
         return match ($this) {
-            self::RUN_STRAVA_IMPORT_AND_BUILD_APP => sprintf('bin/console %s', RunStravaImportAndBuildAppConsoleCommand::NAME),
+            self::RUN_STRAVA_IMPORT_AND_BUILD_APP => sprintf(
+                'bin/console %s --%s --%s',
+                RunStravaImportAndBuildAppConsoleCommand::NAME,
+                RunStravaImportAndBuildAppConsoleCommand::IMPORT_OPTION,
+                RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION,
+            ),
             self::GEAR_MAINTENANCE_NOTIFICATION => sprintf('bin/console %s', GearMaintenanceNotificationConsoleCommand::NAME),
             self::APP_UPDATE_AVAILABLE_NOTIFICATION => sprintf('bin/console %s', AppUpdateAvailableNotificationCronAction::NAME),
         };

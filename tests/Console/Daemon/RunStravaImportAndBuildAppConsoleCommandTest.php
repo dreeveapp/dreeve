@@ -4,6 +4,8 @@ namespace App\Tests\Console\Daemon;
 
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
+use App\Application\AppVersion;
+use App\Application\Build\RunBuild\RunBuild;
 use App\Application\RebuildStatus;
 use App\Console\Daemon\RunStravaImportAndBuildAppConsoleCommand;
 use App\Domain\Activity\ActivityIdRepository;
@@ -33,6 +35,7 @@ use Psr\Log\NullLogger;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
@@ -49,7 +52,11 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
     {
         $command = $this->getCommandInApplication('app:cron:run-strava-import');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName()]);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunStravaImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+        ]);
 
         $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
     }
@@ -61,9 +68,20 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
         $commandTester->execute([
             'command' => $command->getName(),
             RunStravaImportAndBuildAppConsoleCommand::RESTRICT_TO_ACTIVITY_IDS_ARGUMENT => 'activity-1,activity-2',
+            '--'.RunStravaImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
         ]);
 
         $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
+    }
+
+    public function testThrowsWhenNoPhaseOptionsProvided(): void
+    {
+        $command = $this->getCommandInApplication('app:cron:run-strava-import');
+        $commandTester = new CommandTester($command);
+
+        $this->expectExceptionObject(new InvalidOptionException('At least one of --import or --build must be provided.'));
+        $commandTester->execute(['command' => $command->getName()]);
     }
 
     public function testImportsOnlyWhenImportOptionIsSet(): void
@@ -92,50 +110,43 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
 
     public function testBuildIfRequiredSkipsWhenAlreadyBuiltTodayAndNothingPending(): void
     {
-        $this->keyValueStore->save(KeyValue::fromState(
-            key: Key::APP_LAST_BUILT_ON,
-            value: Value::fromString(self::TODAY),
-        ));
+        $this->markAppAsBuiltToday();
 
         $command = $this->getCommandInApplication('app:cron:run-strava-import');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command' => $command->getName(),
             '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
-            '--'.RunStravaImportAndBuildAppConsoleCommand::IF_REQUIRED_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION => true,
         ]);
 
         $this->assertEmpty($this->commandBus->getDispatchedCommands());
         $this->assertStringContainsString('Nothing to build...', $commandTester->getDisplay());
     }
 
-    public function testBuildIfRequiredStillBuildsWhenImportingEvenIfNoRebuildIsRequired(): void
+    public function testOnlyIfRequiredStillImportsButSkipsBuildWhenNoRebuildIsRequired(): void
     {
-        // Already built today and nothing pending, so aRebuildIsRequired is false;
-        // the build must still happen because the import phase runs (--if-required alone
-        // enables both phases).
-        $this->keyValueStore->save(KeyValue::fromState(
-            key: Key::APP_LAST_BUILT_ON,
-            value: Value::fromString(self::TODAY),
-        ));
+        $this->markAppAsBuiltToday();
 
         $command = $this->getCommandInApplication('app:cron:run-strava-import');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command' => $command->getName(),
-            '--'.RunStravaImportAndBuildAppConsoleCommand::IF_REQUIRED_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION => true,
         ]);
 
-        $this->assertStringNotContainsString('Nothing to build...', $commandTester->getDisplay());
-        $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
+        $this->assertNotEmpty($this->commandBus->getDispatchedCommands());
+        $this->assertEmpty(array_filter(
+            $this->commandBus->getDispatchedCommands(),
+            static fn (object $dispatchedCommand): bool => $dispatchedCommand instanceof RunBuild,
+        ));
     }
 
     public function testBuildIfRequiredBuildsAndClearsForceRebuildWhenPending(): void
     {
-        $this->keyValueStore->save(KeyValue::fromState(
-            key: Key::APP_LAST_BUILT_ON,
-            value: Value::fromString(self::TODAY),
-        ));
+        $this->markAppAsBuiltToday();
         $this->keyValueStore->save(KeyValue::fromState(
             key: Key::FORCE_REBUILD,
             value: Value::fromString('1'),
@@ -146,22 +157,63 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
         $commandTester->execute([
             'command' => $command->getName(),
             '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
-            '--'.RunStravaImportAndBuildAppConsoleCommand::IF_REQUIRED_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION => true,
         ]);
 
         $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
-        $this->assertSame(self::TODAY, (string) $this->keyValueStore->find(Key::APP_LAST_BUILT_ON));
+        $this->assertSame(
+            self::TODAY.'@'.AppVersion::getSemanticVersion(),
+            (string) $this->keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT),
+        );
 
         $this->expectExceptionObject(new EntityNotFound('KeyValue "forceRebuild" not found'));
         $this->keyValueStore->find(Key::FORCE_REBUILD);
     }
 
-    public function testBuildAlwaysBuildsWithoutIfRequiredEvenWhenAlreadyBuiltToday(): void
+    public function testBuildIfRequiredBuildsWhenAppWasNeverBuiltBefore(): void
+    {
+        $command = $this->getCommandInApplication('app:cron:run-strava-import');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION => true,
+        ]);
+
+        $this->assertStringNotContainsString('Nothing to build...', $commandTester->getDisplay());
+        $this->assertNotEmpty($this->commandBus->getDispatchedCommands());
+        $this->assertSame(
+            self::TODAY.'@'.AppVersion::getSemanticVersion(),
+            (string) $this->keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT),
+        );
+    }
+
+    public function testBuildIfRequiredBuildsWhenLastBuiltWithOlderAppVersion(): void
     {
         $this->keyValueStore->save(KeyValue::fromState(
-            key: Key::APP_LAST_BUILT_ON,
-            value: Value::fromString(self::TODAY),
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString(self::TODAY.'@v0.0.0'),
         ));
+
+        $command = $this->getCommandInApplication('app:cron:run-strava-import');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION => true,
+        ]);
+
+        $this->assertStringNotContainsString('Nothing to build...', $commandTester->getDisplay());
+        $this->assertNotEmpty($this->commandBus->getDispatchedCommands());
+        $this->assertSame(
+            self::TODAY.'@'.AppVersion::getSemanticVersion(),
+            (string) $this->keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT),
+        );
+    }
+
+    public function testBuildAlwaysBuildsWithoutIfRequiredEvenWhenAlreadyBuiltToday(): void
+    {
+        $this->markAppAsBuiltToday();
 
         $command = $this->getCommandInApplication('app:cron:run-strava-import');
         $commandTester = new CommandTester($command);
@@ -199,7 +251,11 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
 
         $command = $this->getCommandInApplication('app:cron:run-strava-import');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName()]);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunStravaImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+        ]);
 
         $this->assertEmpty($this->commandBus->getDispatchedCommands());
         $this->assertStringContainsString(
@@ -230,7 +286,11 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
         $application->addCommand($command);
 
         $commandTester = new CommandTester($application->find('app:cron:run-strava-import'));
-        $commandTester->execute(['command' => $command->getName()]);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunStravaImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+        ]);
     }
 
     public function testReturnsEarlyWhenAppIsNotReady(): void
@@ -248,7 +308,11 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
         $application->addCommand($command);
 
         $commandTester = new CommandTester($application->find('app:cron:run-strava-import'));
-        $commandTester->execute(['command' => $command->getName()]);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunStravaImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+        ]);
 
         $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
         $this->assertEmpty($this->commandBus->getDispatchedCommands());
@@ -300,6 +364,14 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
             rebuildStatus: new RebuildStatus($this->keyValueStore),
             clock: PausedClock::fromString(self::TODAY),
         );
+    }
+
+    private function markAppAsBuiltToday(): void
+    {
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString(self::TODAY.'@'.AppVersion::getSemanticVersion()),
+        ));
     }
 
     protected function getConsoleCommand(): Command

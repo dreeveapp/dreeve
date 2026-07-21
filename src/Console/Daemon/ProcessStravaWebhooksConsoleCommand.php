@@ -82,6 +82,8 @@ final class ProcessStravaWebhooksConsoleCommand extends Command
         $input = new ArrayInput([
             'command' => RunStravaImportAndBuildAppConsoleCommand::NAME,
             RunStravaImportAndBuildAppConsoleCommand::RESTRICT_TO_ACTIVITY_IDS_ARGUMENT => implode(',', array_map(strval(...), $createOrUpdateActivityIds->toArray())),
+            '--'.RunStravaImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
         ]);
         $input->setInteractive(false);
 

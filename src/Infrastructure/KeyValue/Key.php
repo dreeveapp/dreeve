@@ -7,7 +7,7 @@ namespace App\Infrastructure\KeyValue;
 enum Key: string
 {
     case THEME = 'theme';
-    case APP_LAST_BUILT_ON = 'appLastBuiltOn';
+    case APP_LAST_BUILD_SNAPSHOT = 'appLastBuildSnapshot';
     case GEAR_MAINTENANCE = 'gearMaintenance';
     case DASHBOARD = 'dashboard';
     case FORCE_REBUILD = 'forceRebuild';
