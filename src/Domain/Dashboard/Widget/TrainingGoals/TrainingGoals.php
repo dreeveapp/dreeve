@@ -47,7 +47,7 @@ final class TrainingGoals extends Collection
                     throw new InvalidDashboardLayout('Invalid TrainingGoals configuration provided');
                 }
 
-                foreach (['label', 'type', 'unit', 'goal', 'sportTypesToInclude'] as $requiredKey) {
+                foreach (['label', 'type', 'goal', 'sportTypesToInclude'] as $requiredKey) {
                     if (array_key_exists($requiredKey, $goalConfig)) {
                         continue;
                     }
@@ -64,6 +64,13 @@ final class TrainingGoals extends Collection
 
                 if (!$type = TrainingGoalType::tryFrom($goalConfig['type'])) {
                     throw new InvalidDashboardLayout(sprintf('"%s" is not a valid goalType', $goalConfig['type']));
+                }
+
+                if (in_array($type, TrainingGoalType::simpleUnitRelated())) {
+                    // These goal types have no unit, any configured unit is ignored.
+                    $goalConfig['unit'] = TrainingGoal::SIMPLE;
+                } elseif (empty($goalConfig['unit'])) {
+                    throw new InvalidDashboardLayout(sprintf('"unit" property is required for goal type "%s"', $type->value));
                 }
 
                 if (!is_array($goalConfig['sportTypesToInclude'])) {
@@ -96,11 +103,6 @@ final class TrainingGoals extends Collection
                     TrainingGoal::MINUTE,
                 ])) {
                     throw new InvalidDashboardLayout(sprintf('The unit "%s" is not valid for goal type "%s"', $goalConfig['unit'], $type->value));
-                }
-
-                if (in_array($type, TrainingGoalType::simpleUnitRelated())) {
-                    // Hardcode the unit.
-                    $goalConfig['unit'] = TrainingGoal::SIMPLE;
                 }
 
                 $restrictToDateRange = null;

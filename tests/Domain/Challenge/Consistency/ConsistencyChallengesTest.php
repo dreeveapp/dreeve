@@ -136,7 +136,7 @@ class ConsistencyChallengesTest extends TestCase
                     label: 'A test',
                     type: ChallengeConsistencyType::NUMBER_OF_ACTIVITIES,
                     goal: 100,
-                    unit: ConsistencyChallenge::KILOMETER,
+                    unit: ConsistencyChallenge::SIMPLE,
                     sportTypesToInclude: SportTypes::fromArray([
                         SportType::RUN, SportType::TRAIL_RUN, SportType::VIRTUAL_RUN,
                     ]),
@@ -162,7 +162,7 @@ class ConsistencyChallengesTest extends TestCase
                     label: 'A test',
                     type: ChallengeConsistencyType::NUMBER_OF_ACTIVITIES,
                     goal: 100,
-                    unit: ConsistencyChallenge::KILOMETER,
+                    unit: ConsistencyChallenge::SIMPLE,
                     sportTypesToInclude: SportTypes::all(),
                 ),
             ])
@@ -192,7 +192,11 @@ class ConsistencyChallengesTest extends TestCase
 
         $yml = self::getValidYml();
         unset($yml[0]['unit']);
-        yield 'missing "unit" key' => [$yml, '"unit" property is required'];
+        yield 'missing "unit" key' => [$yml, '"unit" property is required for challenge type "distance"'];
+
+        $yml = self::getValidYml();
+        $yml[0]['unit'] = '';
+        yield 'empty "unit"' => [$yml, '"unit" property is required for challenge type "distance"'];
 
         $yml = self::getValidYml();
         unset($yml[0]['goal']);
