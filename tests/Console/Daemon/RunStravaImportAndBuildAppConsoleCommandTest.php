@@ -170,6 +170,24 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
         $this->keyValueStore->find(Key::FORCE_REBUILD);
     }
 
+    public function testBuildIfRequiredBuildsWhenAppWasNeverBuiltBefore(): void
+    {
+        $command = $this->getCommandInApplication('app:cron:run-strava-import');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION => true,
+        ]);
+
+        $this->assertStringNotContainsString('Nothing to build...', $commandTester->getDisplay());
+        $this->assertNotEmpty($this->commandBus->getDispatchedCommands());
+        $this->assertSame(
+            self::TODAY.'@'.AppVersion::getSemanticVersion(),
+            (string) $this->keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT),
+        );
+    }
+
     public function testBuildIfRequiredBuildsWhenLastBuiltWithOlderAppVersion(): void
     {
         $this->keyValueStore->save(KeyValue::fromState(
