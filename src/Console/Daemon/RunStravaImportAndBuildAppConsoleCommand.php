@@ -72,7 +72,6 @@ final class RunStravaImportAndBuildAppConsoleCommand extends Command
     {
         $this->addArgument(self::RESTRICT_TO_ACTIVITY_IDS_ARGUMENT, InputArgument::OPTIONAL);
         $this->addImportAndBuildOptions();
-        $this->addIfRequiredOption();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -87,14 +86,14 @@ final class RunStravaImportAndBuildAppConsoleCommand extends Command
 
         $shouldImport = $this->resolvePhases($input)[self::IMPORT_OPTION];
         $today = $this->clock->getCurrentDateTimeImmutable()->format('Y-m-d');
-        $appNeedsToBeBuilt = $this->appNeedsToBeBuilt(
+        $buildWillRun = $this->buildIsRequired(
             input: $input,
             keyValueStore: $this->keyValueStore,
             rebuildStatus: $this->rebuildStatus,
             today: $today
         );
 
-        if (!$shouldImport && !$appNeedsToBeBuilt) {
+        if (!$shouldImport && !$buildWillRun) {
             $output->writeln('Nothing to build...');
 
             return Command::SUCCESS;
@@ -147,7 +146,7 @@ final class RunStravaImportAndBuildAppConsoleCommand extends Command
                     ]);
                 }
             }
-            if ($appNeedsToBeBuilt) {
+            if ($buildWillRun) {
                 $this->appStatusChecker->ensureIsReadyForBuild();
 
                 $this->commandBus->dispatch(new RunBuild(

@@ -11,6 +11,7 @@ use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\KeyValue\Value;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -18,17 +19,13 @@ trait HandlesImportAndBuild
 {
     public const string IMPORT_OPTION = 'import';
     public const string BUILD_OPTION = 'build';
-    public const string IF_REQUIRED_OPTION = 'if-required';
+    public const string ONLY_IF_REQUIRED_OPTION = 'only-if-required';
 
     private function addImportAndBuildOptions(): void
     {
         $this->addOption(self::IMPORT_OPTION, null, InputOption::VALUE_NONE);
         $this->addOption(self::BUILD_OPTION, null, InputOption::VALUE_NONE);
-    }
-
-    private function addIfRequiredOption(): void
-    {
-        $this->addOption(self::IF_REQUIRED_OPTION, null, InputOption::VALUE_NONE);
+        $this->addOption(self::ONLY_IF_REQUIRED_OPTION, null, InputOption::VALUE_NONE);
     }
 
     /**
@@ -40,45 +37,39 @@ trait HandlesImportAndBuild
         $runBuild = (bool) $input->getOption(self::BUILD_OPTION);
 
         if (!$runImport && !$runBuild) {
-            $runImport = $runBuild = true;
+            throw new InvalidOptionException(sprintf(
+                'At least one of --%s or --%s must be provided.',
+                self::IMPORT_OPTION,
+                self::BUILD_OPTION,
+            ));
         }
 
         return [self::IMPORT_OPTION => $runImport, self::BUILD_OPTION => $runBuild];
     }
 
-    private function appNeedsToBeBuilt(
+    private function buildIsRequired(
         InputInterface $input,
         KeyValueStore $keyValueStore,
         RebuildStatus $rebuildStatus,
         string $today,
     ): bool {
-        $phases = $this->resolvePhases($input);
+        if (!$this->resolvePhases($input)[self::BUILD_OPTION]) {
+            return false;
+        }
 
-        // Build when the build phase is requested and either --if-required was not passed
-        // (always build), an import is running (fresh data), or a rebuild is actually required.
-        return $phases[self::BUILD_OPTION]
-            && (!$input->getOption(self::IF_REQUIRED_OPTION)
-                || $phases[self::IMPORT_OPTION]
-                || $this->aRebuildIsRequired(
-                    keyValueStore: $keyValueStore,
-                    rebuildStatus: $rebuildStatus,
-                    today: $today
-                ));
-    }
+        if (!$input->getOption(self::ONLY_IF_REQUIRED_OPTION)) {
+            return true;
+        }
 
-    private function aRebuildIsRequired(
-        KeyValueStore $keyValueStore,
-        RebuildStatus $rebuildStatus,
-        string $today,
-    ): bool {
         try {
             $appLastBuildSnapshot = (string) $keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT);
         } catch (EntityNotFound) {
             return true;
         }
-
-        return $appLastBuildSnapshot !== $this->buildSnapshot($today)
-            || $rebuildStatus->isPending();
+        if ($appLastBuildSnapshot !== $this->buildSnapshot($today)) {
+            return true;
+        }
+        return $rebuildStatus->isPending();
     }
 
     private function markAppAsBuilt(

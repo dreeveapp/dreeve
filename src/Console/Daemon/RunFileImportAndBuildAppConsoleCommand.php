@@ -78,14 +78,15 @@ final class RunFileImportAndBuildAppConsoleCommand extends Command
         $shouldBuild = $phases[self::BUILD_OPTION];
 
         $today = $this->clock->getCurrentDateTimeImmutable()->format('Y-m-d');
-        $watchDirectoryHasFiles = $this->watchDirectory->hasFilesThatCanBeProcessed();
-        $aRebuildIsRequired = $this->aRebuildIsRequired(
+        $importWillRun = $shouldImport && $this->watchDirectory->hasFilesThatCanBeProcessed();
+        $buildWillRun = ($shouldBuild && $importWillRun) || $this->buildIsRequired(
+            input: $input,
             keyValueStore: $this->keyValueStore,
             rebuildStatus: $this->rebuildStatus,
             today: $today
         );
 
-        if ($shouldImport && !$watchDirectoryHasFiles && !$aRebuildIsRequired) {
+        if (!$importWillRun && !$buildWillRun) {
             $output->writeln('No files left to process...');
 
             return Command::SUCCESS;
@@ -103,14 +104,14 @@ final class RunFileImportAndBuildAppConsoleCommand extends Command
         }
 
         try {
-            if ($shouldImport && $watchDirectoryHasFiles) {
+            if ($importWillRun) {
                 $this->appStatusChecker->ensureIsReadyForFileImport();
 
                 $this->commandBus->dispatch(new ImportActivityFiles($output));
                 $this->commandBus->dispatch(new CalculateActivityMetrics($output));
             }
 
-            if ($shouldBuild) {
+            if ($buildWillRun) {
                 $this->appStatusChecker->ensureIsReadyForBuild();
 
                 $this->commandBus->dispatch(new RunBuild(
