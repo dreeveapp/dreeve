@@ -110,6 +110,7 @@ Filename: Dateiname
 'First name': Vorname
 'Fixed value': 'Fester Wert'
 From: Von
+'Gear "{gearId}" is attached to one of your components, but does not exist. It will be ignored.': 'Die Ausrüstung "{gearId}" ist mit einer deiner Komponenten verknüpft, existiert aber nicht. Sie wird ignoriert.'
 'Gear maintenance notification': 'Benachrichtigung zur Ausrüstungswartung'
 'Gear management': Ausrüstungsverwaltung
 'Gear will appear here once you add them.': 'Ausrüstung wird hier angezeigt, sobald du sie hinzufügst.'
@@ -293,6 +294,7 @@ Uploading...: 'Wird hochgeladen...'
 Username: Benutzername
 'Verify token': 'Token verifizieren'
 Version: Version
+Warning: Warnung
 Webhooks: Webhooks
 'What is my FTP?': 'Was ist meine FTP?'
 'When disabled, gear marked as retired is left out of the chart.': 'Wenn deaktiviert, wird als ausgemustert markierte Ausrüstung nicht im Diagramm angezeigt.'

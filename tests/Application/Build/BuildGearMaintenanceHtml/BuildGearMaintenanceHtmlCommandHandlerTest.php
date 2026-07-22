@@ -20,7 +20,6 @@ use App\Tests\Application\BuildAppFilesTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class BuildGearMaintenanceHtmlCommandHandlerTest extends BuildAppFilesTestCase
@@ -121,7 +120,6 @@ class BuildGearMaintenanceHtmlCommandHandlerTest extends BuildAppFilesTestCase
             maintenanceTaskProgressCalculator: $this->getContainer()->get(MaintenanceTaskProgressCalculator::class),
             twig: $this->getContainer()->get(Environment::class),
             buildHtmlStorage: $fileStorage,
-            translator: $this->getContainer()->get(TranslatorInterface::class),
         )->handle(
             new BuildGearMaintenanceHtml()
         );

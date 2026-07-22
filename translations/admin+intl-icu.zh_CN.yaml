@@ -110,6 +110,7 @@ Filename: Filename
 'First name': 'First name'
 'Fixed value': 'Fixed value'
 From: From
+'Gear "{gearId}" is attached to one of your components, but does not exist. It will be ignored.': '装备"{gearId}"已关联到您的某个组件，但该装备不存在。该装备将被忽略。'
 'Gear maintenance notification': 'Gear maintenance notification'
 'Gear management': 'Gear management'
 'Gear will appear here once you add them.': 'Gear will appear here once you add them.'
@@ -293,6 +294,7 @@ Uploading...: Uploading...
 Username: Username
 'Verify token': 'Verify token'
 Version: Version
+Warning: 警告
 Webhooks: Webhooks
 'What is my FTP?': 'What is my FTP?'
 'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'

@@ -110,6 +110,7 @@ Filename: 'Nome do arquivo'
 'First name': Nome
 'Fixed value': 'Valor fixo'
 From: De
+'Gear "{gearId}" is attached to one of your components, but does not exist. It will be ignored.': 'O equipamento "{gearId}" está vinculado a um dos seus componentes, mas não existe. Ele será ignorado.'
 'Gear maintenance notification': 'Notificação de manutenção de equipamento'
 'Gear management': 'Gerenciamento de equipamento'
 'Gear will appear here once you add them.': 'Os equipamentos aparecerão aqui assim que você os adicionar.'
@@ -293,6 +294,7 @@ Uploading...: Enviando...
 Username: 'Nome de usuário'
 'Verify token': 'Token de verificação'
 Version: Versão
+Warning: Aviso
 Webhooks: Webhooks
 'What is my FTP?': 'Qual é o meu FTP?'
 'When disabled, gear marked as retired is left out of the chart.': 'Quando desativado, o equipamento marcado como aposentado é deixado fora do gráfico.'

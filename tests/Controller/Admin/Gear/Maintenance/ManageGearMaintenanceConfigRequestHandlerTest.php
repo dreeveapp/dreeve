@@ -42,6 +42,10 @@ class ManageGearMaintenanceConfigRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Some cool chain', $tableText);
         $this->assertStringContainsString('DI2 Battery', $tableText);
         $this->assertStringNotContainsString('No components yet.', $tableText);
+
+        $this->assertCount(1, $crawler->filter('.alert.alert--warning'));
+        $warningText = $crawler->filter('.alert.alert--warning')->text();
+        $this->assertStringContainsString('is attached to one of your components, but does not exist', $warningText);
     }
 
     public function testItRendersTheEmptyStateWhenThereAreNoComponents(): void
@@ -53,5 +57,6 @@ class ManageGearMaintenanceConfigRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('No components yet.', $crawler->filter('table.data-table')->text());
         $this->assertCount(1, $crawler->filter('table.data-table tbody td[colspan="5"]'));
+        $this->assertCount(0, $crawler->filter('.alert.alert--warning'));
     }
 }

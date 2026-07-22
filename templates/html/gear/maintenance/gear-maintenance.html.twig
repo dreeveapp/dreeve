@@ -19,19 +19,6 @@
                 <h3 class="mb-4 text-lg font-semibold">
                     {{ "Gear maintenance"|trans }}
                 </h3>
-                {% if errors is not empty %}
-                    <div class="alert alert--danger mb-4" role="alert">
-                        <span class="sr-only">Info</span>
-                        <div>
-                            <span class="font-medium">{{ "We detected following issues"|trans }}:</span>
-                            <ul class="mt-1.5 list-disc list-inside">
-                                {% for error in errors %}
-                                    <li>{{ error }}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                {% endif %}
                 <div class="relative overflow-x-auto">
                     <table class="w-full text-sm text-center text-gray-500">
                         <thead class="text-gray-500 text-xxs uppercase font-semibold bg-gray-50">

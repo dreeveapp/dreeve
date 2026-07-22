@@ -134,7 +134,6 @@ Fri: P
 Fri.: Fri.
 GAP: GAP
 Gear: Felszerelés
-'Gear "{gearId}" is referenced in your maintenance config file, but was not imported from Strava. Please check that the gear exists and is correctly synced.': 'A(z) „{gearId}" felszerelés szerepel a karbantartási konfigurációs fájlban, de nem lett importálva a Stravából. Ellenőrizd, hogy a felszerelés létezik és megfelelően szinkronizálva van.'
 'Gear maintenance': 'Felszerelés karbantartás'
 'Gear stats': 'Felszerelés statisztikák'
 "Gear that hasn't been used in the last three months, is disabled by default.": 'Az elmúlt három hónapban nem használt felszerelés alapértelmezés szerint le van tiltva.'
@@ -175,7 +174,6 @@ Imperial: Angolszász
 'Individual thresholds vary based on fitness level.': 'Az egyéni küszöbértékek a fitnesz szinttől függően változnak.'
 'Inline Skate': Görkorcsolya
 Intensity: Intenzitás
-'It looks like no valid gear is attached to any of the components. Please check your config file.': 'Úgy tűnik, hogy egyetlen komponenshez sem tartozik érvényes felszerelés. Kérjük, ellenőrizd a konfigurációs fájlt.'
 Jan: Jan
 Jul: Júl
 Jun: Jún

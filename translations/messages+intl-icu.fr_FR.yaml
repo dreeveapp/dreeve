@@ -134,7 +134,6 @@ Fri: Ven
 Fri.: Fri.
 GAP: GAP
 Gear: Matériel
-'Gear "{gearId}" is referenced in your maintenance config file, but was not imported from Strava. Please check that the gear exists and is correctly synced.': 'Le matériel "{gearId}" est référencé dans votre fichier de configuration de maintenance, mais n''a pas été importé depuis Strava. Veuillez vérifier que le matériel existe et est correctement synchronisé.'
 'Gear maintenance': 'Maintenance du matériel'
 'Gear stats': 'Statistiques du matériel'
 "Gear that hasn't been used in the last three months, is disabled by default.": "Le matériel qui n'a pas été utilisé au cours des trois derniers mois est désactivé par défaut."
@@ -175,7 +174,6 @@ Imperial: Impérial
 'Individual thresholds vary based on fitness level.': 'Les seuils individuels varient selon le niveau de forme physique.'
 'Inline Skate': 'Roller en ligne'
 Intensity: Intensité
-'It looks like no valid gear is attached to any of the components. Please check your config file.': "Il semble qu'aucun matériel valide ne soit attaché aux composants. Veuillez vérifier votre fichier de configuration."
 Jan: Jan
 Jul: Juil
 Jun: Juin

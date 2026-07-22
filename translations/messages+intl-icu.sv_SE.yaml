@@ -134,7 +134,6 @@ Fri: Fre
 Fri.: Fri.
 GAP: GAP
 Gear: Utrustning
-'Gear "{gearId}" is referenced in your maintenance config file, but was not imported from Strava. Please check that the gear exists and is correctly synced.': 'Utrusning "{gearId}" refereras i din underhållskonfigurationsfil, men importerades inte från Strava. Kontrollera att utrustningen finns och är korrekt synkroniserad..'
 'Gear maintenance': 'Utrustning underhåll'
 'Gear stats': 'Sammanställning av utrustning'
 "Gear that hasn't been used in the last three months, is disabled by default.": 'Utrustning som inte har använts under de senaste tre månaderna blir inaktiverad.'
@@ -175,7 +174,6 @@ Imperial: Imperial
 'Individual thresholds vary based on fitness level.': 'Individuella trösklar varierar beroende på hur vältränad du är.'
 'Inline Skate': Rullskridskor
 Intensity: Intensity
-'It looks like no valid gear is attached to any of the components. Please check your config file.': 'Det verkar som att ingen giltig utrustning är kopplad till någon av komponenterna. Kontrollera din konfigurationsfil.'
 Jan: Jan
 Jul: Jul
 Jun: Jun

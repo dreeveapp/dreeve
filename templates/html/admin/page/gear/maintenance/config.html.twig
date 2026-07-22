@@ -2,6 +2,19 @@
 {% block main %}
     {% autoescape false %}
     <div class="flex flex-col gap-4">
+        {% if warnings is not empty %}
+            <div class="alert alert--warning" role="alert">
+                <span class="sr-only">{{ "Warning"|trans({}, 'admin') }}</span>
+                <div>
+                    <span class="font-medium">{{ "We detected following issues"|trans }}:</span>
+                    <ul class="mt-1.5 list-disc list-inside">
+                        {% for warning in warnings %}
+                            <li>{{ warning }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
         <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
             <div class="mb-5">
                 <h3 class="text-lg font-semibold">{{ "Gear maintenance"|trans }}</h3>

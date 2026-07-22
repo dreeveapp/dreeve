@@ -110,6 +110,7 @@ Filename: Filename
 'First name': 'First name'
 'Fixed value': 'Fixed value'
 From: From
+'Gear "{gearId}" is attached to one of your components, but does not exist. It will be ignored.': 'Gear "{gearId}" is attached to one of your components, but does not exist. It will be ignored.'
 'Gear maintenance notification': 'Gear maintenance notification'
 'Gear management': 'Gear management'
 'Gear will appear here once you add them.': 'Gear will appear here once you add them.'
@@ -293,6 +294,7 @@ Uploading...: Uploading...
 Username: Username
 'Verify token': 'Verify token'
 Version: Version
+Warning: Warning
 Webhooks: Webhooks
 'What is my FTP?': 'What is my FTP?'
 'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
