@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityType;
 use App\Domain\Calendar\FindMonthlyStats\FindMonthlyStatsResponse;
 use App\Domain\Calendar\Month;
 use App\Domain\Dashboard\StatsContext;
+use App\Infrastructure\Theme\Theme;
 use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\Year;
 use App\Infrastructure\ValueObject\Time\Years;
@@ -87,6 +88,9 @@ final readonly class MonthlyStatsChart
                 'name' => (string) $year->toInt(),
                 'type' => 'line',
                 'smooth' => true,
+                'itemStyle' => [
+                    'color' => Theme::getColorForYear($year),
+                ],
                 'data' => $data,
             ];
         }

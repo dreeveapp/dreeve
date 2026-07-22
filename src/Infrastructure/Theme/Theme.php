@@ -9,6 +9,7 @@ use App\Domain\Gear\GearId;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\Time\Year;
 
 /**
  * @codeCoverageIgnore
@@ -58,5 +59,13 @@ final class Theme
     public static function getColorForGear(GearId $gearId): string
     {
         return self::getThemeConfig()['gear'][(string) $gearId] ?? throw new \RuntimeException(sprintf('color for gear "%s" not found', $gearId));
+    }
+
+    public static function getColorForYear(Year $year): string
+    {
+        $colors = self::defaultChartColors();
+        $yearsAgo = abs(((int) date('Y')) - $year->toInt());
+
+        return $colors[$yearsAgo % count($colors)];
     }
 }
