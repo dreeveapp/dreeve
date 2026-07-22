@@ -56,7 +56,7 @@ https://github.com/user-attachments/assets/2789c961-f04f-4804-b6eb-88d45e62687c
 
 **Dreeve** • */driːv/* • *noun*
 
-A `dreve` is the West-Flemish word (the birthplace of Dreeve's maintainer) for a country road lined with trees on both sides.
+A `dreeve` is the West-Flemish word (the birthplace of Dreeve's maintainer) for a country road lined with trees on both sides.
 The kind of road every cyclist and runner loves.
 
 ## 📖 Documentation

@@ -58,16 +58,13 @@
                             <p class="description mb-2">
                                 {{ "All sport types must belong to the same activity type."|trans({}, 'admin') }}
                             </p>
-                            <div class="mt-1 max-h-40 overflow-y-auto flex flex-col gap-1.5 rounded-lg border border-gray-200 p-2"
-                                 data-required-checkbox-group="{{ "Select at least one sport type."|trans({}, 'admin') }}">
-                                {% for sportType in enum('App\\Domain\\Activity\\SportType\\SportType').cases() %}
-                                    <label class="flex items-center gap-2 mt-0! text-sm font-normal cursor-pointer">
-                                        <input type="checkbox" name="data[eddington][__index__][sportTypesToInclude][]"
-                                               value="{{ sportType.value }}" data-repeater-field="sportTypesToInclude">
-                                        <span>{{ sportType|trans }}</span>
-                                    </label>
-                                {% endfor %}
-                            </div>
+                            {% include 'html/admin/component/checkbox-multiselect.html.twig' with {
+                                name: 'data[eddington][__index__][sportTypesToInclude][]',
+                                options: sportTypeOptions(),
+                                placeholder: "Select sport types"|trans({}, 'admin'),
+                                requiredMessage: "Select at least one sport type."|trans({}, 'admin'),
+                                repeaterField: 'sportTypesToInclude',
+                            } only %}
                         </div>
                     </div>
                 </template>

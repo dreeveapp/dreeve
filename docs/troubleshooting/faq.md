@@ -11,6 +11,16 @@ but the repository moved to [dreeveapp/dreeve](https://github.com/dreeveapp/dree
 
 </details>
 
+<details>
+<summary>What does "Dreeve" mean?</summary>
+
+**Dreeve** • */driːv/* • *noun*
+
+A `dreeve` is the West-Flemish word (the birthplace of Dreeve's maintainer) for a country road lined with trees
+on both sides. The kind of road every cyclist and runner loves.
+
+</details>
+
 ## Importing & activities
 
 <details>

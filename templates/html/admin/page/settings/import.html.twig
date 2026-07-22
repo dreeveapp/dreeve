@@ -68,15 +68,12 @@
                 <p class="description mb-2">
                     {{ "Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types."|trans({}, 'admin') }}
                 </p>
-                <div class="mt-1 max-h-40 overflow-y-auto flex flex-col gap-1.5 rounded-lg border border-gray-200 p-2">
-                    {% for sportType in enum('App\\Domain\\Activity\\SportType\\SportType').cases() %}
-                        <label class="flex items-center gap-2 mt-0! text-sm font-normal cursor-pointer">
-                            <input type="checkbox" name="data[sportTypesToImport][]"
-                                   value="{{ sportType.value }}" {{ sportType.value in sportTypesToImport ? 'checked' : '' }}>
-                            <span>{{ sportType|trans }}</span>
-                        </label>
-                    {% endfor %}
-                </div>
+                {% include 'html/admin/component/checkbox-multiselect.html.twig' with {
+                    name: 'data[sportTypesToImport][]',
+                    options: sportTypeOptions(),
+                    selected: sportTypesToImport,
+                    placeholder: "All sport types"|trans({}, 'admin'),
+                } only %}
             </div>
             <div class="mt-6">
                 <label class="mt-0!">{{ "Activity visibilities to import"|trans({}, 'admin') }}</label>

@@ -40,6 +40,7 @@ Admin: Admin
 'Advanced (per-date & per-sport-type overrides)': 'Advanced (per-date & per-sport-type overrides)'
 'Age-based estimate': 'Age-based estimate'
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'All associated maintenance tasks and logs will be removed. This action cannot be undone.'
+'All sport types': 'All sport types'
 'All sport types must belong to the same activity type.': 'All sport types must belong to the same activity type.'
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.'
 'App URL': 'App URL'
@@ -128,6 +129,7 @@ Female: Female
 'File upload': 'File upload'
 'File upload is only available in file import mode': 'File upload is only available in file import mode'
 Filename: Filename
+Filter: Filter
 'First name': 'First name'
 'Fixed value': 'Fixed value'
 Friday: Friday
@@ -201,6 +203,7 @@ Monday: Monday
 'No maintenance logs yet.': 'No maintenance logs yet.'
 'No recording devices yet.': 'No recording devices yet.'
 'No rule applies': 'No rule applies'
+'No sport types selected': 'No sport types selected'
 'No unit': 'No unit'
 'Normal date format': 'Normal date format'
 'Notification services': 'Notification services'
@@ -267,10 +270,12 @@ Saving...: Saving...
 'Search by name, date or activity ID': 'Search by name, date or activity ID'
 'Select a component first...': 'Select a component first...'
 'Select a component…': 'Select a component…'
+'Select all': 'Select all'
 'Select at least one sport type.': 'Select at least one sport type.'
 'Select at least one weekday.': 'Select at least one weekday.'
 'Select device...': 'Select device...'
 'Select gear...': 'Select gear...'
+'Select sport types': 'Select sport types'
 'Select the serviced gear…': 'Select the serviced gear…'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sends a notification when a new app version is available. Requires a configured notification service.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sends a notification when gear maintenance is due. Requires a configured notification service.'

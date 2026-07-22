@@ -71,15 +71,12 @@
                 <p class="description mb-2">
                     {{ "Photos of the selected sport types are excluded from the photo gallery."|trans({}, 'admin') }}
                 </p>
-                <div class="mt-1 max-h-40 overflow-y-auto flex flex-col gap-1.5 rounded-lg border border-gray-200 p-2">
-                    {% for sportType in enum('App\\Domain\\Activity\\SportType\\SportType').cases() %}
-                        <label class="flex items-center gap-2 mt-0! text-sm font-normal cursor-pointer">
-                            <input type="checkbox" name="data[photos][hidePhotosForSportTypes][]"
-                                   value="{{ sportType.value }}" {{ sportType.value in hidePhotosForSportTypes ? 'checked' : '' }}>
-                            <span>{{ sportType|trans }}</span>
-                        </label>
-                    {% endfor %}
-                </div>
+                {% include 'html/admin/component/checkbox-multiselect.html.twig' with {
+                    name: 'data[photos][hidePhotosForSportTypes][]',
+                    options: sportTypeOptions(),
+                    selected: hidePhotosForSportTypes,
+                    placeholder: "No sport types selected"|trans({}, 'admin'),
+                } only %}
             </div>
             <div class="mt-6">
                 <label class="mt-0!">{{ "Sport types sorting order"|trans({}, 'admin') }}</label>

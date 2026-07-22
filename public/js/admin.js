@@ -1,6 +1,7 @@
 import initPasswordToggle from "./components/form/password-toggle";
 import initFormLoadingState from "./components/form/form-loading-state";
 import initDispatchCommandForm from "./components/form/dispatch-command-form";
+import initCheckboxMultiselects from "./components/form/checkbox-multiselect";
 import initDependentSelects from "./components/form/dependent-select";
 import initDependentFormInputs from "./components/form/dependent-form-input";
 import initDropdowns from "./components/dropdown";
@@ -19,6 +20,7 @@ initCollapses();
 initPasswordToggle();
 initFormLoadingState();
 initDispatchCommandForm();
+initCheckboxMultiselects(document);
 initDependentSelects();
 initDependentFormInputs();
 initDropdowns(document);

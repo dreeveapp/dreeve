@@ -40,6 +40,7 @@ Admin: Admin
 'Advanced (per-date & per-sport-type overrides)': 'Erweiterte (Datums- & sportartspezifische Anpassung)'
 'Age-based estimate': 'Altersbasierte Schätzung'
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'Alle zugehörigen Wartungsaufgaben und Protokolle werden entfernt. Diese Aktion kann nicht rückgängig gemacht werden'
+'All sport types': 'All sport types'
 'All sport types must belong to the same activity type.': 'Alle Sportarten müssen demselben Aktivitätstyp angehören.'
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Stellt außerdem den Trainingsassistenten in der Weboberfläche zur Verfügung. Erfordert die Aktivierung der oben genannten KI-Integration. Seien Sie vorsichtig, wenn Sie diese Option aktivieren, falls Ihre App öffentlich zugänglich ist.'
 'App URL': 'App URL'
@@ -128,6 +129,7 @@ Female: Weiblich
 'File upload': 'Datei Upload'
 'File upload is only available in file import mode': 'Datei-Upload ist nur im Datei Import Modus verfügbar.'
 Filename: Dateiname
+Filter: Filter
 'First name': Vorname
 'Fixed value': 'Fester Wert'
 Friday: Friday
@@ -201,6 +203,7 @@ Monday: Monday
 'No maintenance logs yet.': 'Noch keine Wartungsprotokolle vorhanden.'
 'No recording devices yet.': 'Noch keine Aufzeichnungsgeräte vorhanden.'
 'No rule applies': 'No rule applies'
+'No sport types selected': 'No sport types selected'
 'No unit': 'No unit'
 'Normal date format': 'Normales Datumsformat'
 'Notification services': Benachrichtungsdienste
@@ -267,10 +270,12 @@ Saving...: 'Wird gespeichert...'
 'Search by name, date or activity ID': 'Search by name, date or activity ID'
 'Select a component first...': 'Wähle zuerst eine Komponente aus...'
 'Select a component…': 'Komponente auswählen…'
+'Select all': 'Select all'
 'Select at least one sport type.': 'Wähle mindestens eine Sportart aus.'
 'Select at least one weekday.': 'Select at least one weekday.'
 'Select device...': 'Select device...'
 'Select gear...': 'Select gear...'
+'Select sport types': 'Select sport types'
 'Select the serviced gear…': 'Gewartete Ausrüstung auswählen…'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sendet eine Benachrichtigung, wenn eine neue App-Version verfügbar ist. Erfordert einen konfigurierten Benachrichtigungsdienst.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sendet eine Benachrichtigung, wenn eine Ausrüstungswartung fällig ist. Erfordert einen konfigurierten Benachrichtigungsdienst.'

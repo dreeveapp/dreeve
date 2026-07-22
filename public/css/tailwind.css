@@ -3,6 +3,7 @@
 @import "./components/autocomplete.css";
 @import "./components/alert.css";
 @import "./components/chat.css";
+@import "./components/checkbox-multiselect.css";
 @import "./components/dark-mode.css";
 @import "./components/dashboard-layout.css";
 @import "./components/data-table.css";

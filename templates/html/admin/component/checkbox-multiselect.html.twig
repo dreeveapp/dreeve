@@ -1,0 +1,38 @@
+{% set selected = selected ?? [] %}
+{% set placeholder = placeholder ?? '' %}
+{% set requiredMessage = requiredMessage ?? null %}
+{% set repeaterField = repeaterField ?? null %}
+
+<div class="checkbox-multiselect" data-multiselect
+     data-multiselect-placeholder="{{ placeholder }}"
+     {% if requiredMessage %}data-multiselect-required="{{ requiredMessage }}"{% endif %}>
+    <div data-multiselect-trigger role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
+        <span data-multiselect-chips></span>
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+        </svg>
+    </div>
+    <div class="hidden" data-multiselect-panel>
+        <div class="p-2 pb-0">
+            <input type="text" class="mt-0!" data-multiselect-search autocomplete="off"
+                   placeholder="{{ "Filter"|trans({}, 'admin') }}">
+        </div>
+        <ul>
+            {% for option in options %}
+                <li>
+                    <label>
+                        <input type="checkbox" name="{{ name }}" value="{{ option.value }}"
+                               {{ option.value in selected ? 'checked' }}
+                               {% if repeaterField %}data-repeater-field="{{ repeaterField }}"{% endif %}>
+                        <span>{{ option.label }}</span>
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+        <div>
+            <button type="button" class="unstyled" data-multiselect-all>{{ "Select all"|trans({}, 'admin') }}</button>
+            <button type="button" class="unstyled" data-multiselect-clear>{{ "Clear"|trans({}, 'admin') }}</button>
+        </div>
+    </div>
+    <p class="hidden" data-multiselect-error></p>
+</div>

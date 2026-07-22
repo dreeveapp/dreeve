@@ -54,15 +54,12 @@
             </div>
             <div>
                 <label class="mt-0!">{{ "Sport types to include"|trans({}, 'admin') }}</label>
-                <div class="mt-1 max-h-40 overflow-y-auto flex flex-col gap-1.5 rounded-lg border border-gray-200 p-2">
-                    {% for sportType in enum('App\\Domain\\Activity\\SportType\\SportType').cases() %}
-                        <label class="flex items-center gap-2 mt-0! text-sm font-normal cursor-pointer">
-                            <input type="checkbox" name="config[challenges][__index__][sportTypesToInclude][]"
-                                   value="{{ sportType.value }}" data-repeater-field="sportTypesToInclude">
-                            <span>{{ sportType|trans }}</span>
-                        </label>
-                    {% endfor %}
-                </div>
+                {% include 'html/admin/component/checkbox-multiselect.html.twig' with {
+                    name: 'config[challenges][__index__][sportTypesToInclude][]',
+                    options: sportTypeOptions(),
+                    placeholder: "All sport types"|trans({}, 'admin'),
+                    repeaterField: 'sportTypesToInclude',
+                } only %}
                 <p class="mt-1 text-xxs text-gray-500">{{ "Leave empty to include all sport types."|trans({}, 'admin') }}</p>
             </div>
         </div>

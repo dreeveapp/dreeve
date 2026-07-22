@@ -10,7 +10,7 @@
                     <li role="presentation">
                         <a href="#" data-tabs-target="#ftpHistory{{ activityType }}{{ uniqueId }}" role="tab"
                            aria-controls="ftpHistory{{ activityType }}{{ uniqueId }}">
-                            {{ enum('App\\Domain\\Activity\\ActivityType').from(activityType)|trans }}
+                            {{ activityTypeFrom(activityType)|trans }}
                         </a>
                     </li>
                 {% endfor %}

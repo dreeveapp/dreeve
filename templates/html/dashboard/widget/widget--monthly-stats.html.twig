@@ -28,7 +28,7 @@
                             <li role="presentation">
                                 <a href="#" data-tabs-target="#monthlyStats{{ activityType }}{{ context.value }}{{ uniqueId }}" role="tab"
                                    aria-controls="monthlyStats{{ activityType }}{{ context.value }}{{ uniqueId }}">
-                                    {{ enum('App\\Domain\\Activity\\ActivityType').from(activityType)|trans }}
+                                    {{ activityTypeFrom(activityType)|trans }}
                                 </a>
                             </li>
                         {% endfor %}

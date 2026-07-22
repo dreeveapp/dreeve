@@ -1,5 +1,6 @@
 import {dispatchCommand} from "../../utils";
 import {eventBus, Events} from "../../core/event-bus";
+import {validateMultiselects} from "./checkbox-multiselect";
 
 // Turns a field name into its path segments:
 //   "label"            -> ["label"]
@@ -199,10 +200,11 @@ export default function initDispatchCommandForm(rootNode = document) {
         const errorBox = form.querySelector('[data-form-error]');
         const loadingButtons = form.querySelectorAll('button[data-has-loading-state]');
 
-        // Required checkbox groups aren't native-required fields, so the submit event fires even when
-        // they're empty (and the loading state has already been applied); gate on them here.
+        // Required checkbox groups and multiselects aren't native-required fields, so the submit
+        // event fires even when they're empty. Gate on them here.
         form.querySelectorAll('[data-required-checkbox-group]').forEach(syncCheckboxGroupValidity);
-        if (!form.reportValidity()) {
+        const multiselectsAreValid = validateMultiselects(form);
+        if (!form.reportValidity() || !multiselectsAreValid) {
             resetLoading(loadingButtons);
             return;
         }

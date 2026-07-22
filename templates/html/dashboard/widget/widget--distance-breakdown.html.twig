@@ -11,7 +11,7 @@
                     <li role="presentation">
                         <a href="#" data-tabs-target="#distanceBreakdown{{ activityType }}{{ uniqueId }}" role="tab"
                            aria-controls="distanceBreakdown{{ activityType }}{{ uniqueId }}">
-                            {{ enum('App\\Domain\\Activity\\ActivityType').from(activityType)|trans }}
+                            {{ activityTypeFrom(activityType)|trans }}
                         </a>
                     </li>
                 {% endfor %}
@@ -20,7 +20,7 @@
     {% endif %}
     <div id="distanceBreakdownActivityTypeTabContent{{ uniqueId }}">
         {% for activityType,distanceBreakdown in distanceBreakdowns %}
-            {% set sportTypes = enum('App\\Domain\\Activity\\ActivityType').from(activityType).getSportTypes() %}
+            {% set sportTypes = activityTypeFrom(activityType).getSportTypes() %}
             <div class="relative overflow-auto max-h-79" id="distanceBreakdown{{ activityType }}{{ uniqueId }}" role="tabpanel"
                  aria-labelledby="distanceBreakdown{{ activityType }}{{ uniqueId }}-tab">
                 <table class="data-table">
