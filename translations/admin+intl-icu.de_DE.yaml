@@ -4,32 +4,32 @@ AI: KI
 AM/PM: AM/PM
 'API key': API-Schlüssel
 Active: Aktiv
-'Activities excluded from peak power outputs': 'Aktivitäten die von Maximalleistungswerten ausgeschlossen werden'
-'Activities to skip during import': 'Aktivitäten die beim Import übersprungen werden'
+'Activities excluded from peak power outputs': 'Aktivitäten, die von Maximalleistungswerten ausgeschlossen werden'
+'Activities to skip during import': 'Aktivitäten, die beim Import übersprungen werden'
 'Activities will appear here once they are imported.': 'Aktivitäten werden hier angezeigt, sobald sie importiert wurden.'
-Activity: Activity
+Activity: Activität
 'Activity ID': Aktivitäts-ID
-'Activity IDs to exclude when calculating peak power outputs.': 'Aktivität-IDs die bei der Berechnung der Maximalleistungswerten ausgeschlossen werden.'
+'Activity IDs to exclude when calculating peak power outputs.': 'Aktivität-IDs, die bei der Berechnung der Maximalleistungswerte ausgeschlossen werden.'
 'Activity management': Aktivitätenverwaltung
-'Activity name': 'Activity name'
+'Activity name': 'Aktivitätsname'
 'Activity visibilities to import': 'Import der Aktivitätssichtbarkeit'
 'Add Eddington': 'Eddington hinzufügen'
 'Add FTP': 'FTP hinzufügen'
 'Add a component to start tracking maintenance.': 'Füge eine Komponente hinzu, um mit der Wartungsverfolgung zu beginnen.'
-'Add a rule to start automating your activity details.': 'Add a rule to start automating your activity details.'
+'Add a rule to start automating your activity details.': 'Füge eine Regel hinzu, um deine Aktivitätsdetails automatisch auszufüllen.'
 'Add a widget': 'Widget hinzufügen'
-'Add action': 'Add action'
+'Add action': 'Aktion hinzufügen'
 'Add activity': 'Aktivität hinzufügen'
-'Add automation rule': 'Add automation rule'
+'Add automation rule': 'Automatisierungsregel hinzufügen'
 'Add challenge': 'Herausforderung hinzufügen'
 'Add command': 'Befehl hinzufügen'
 'Add component': 'Komponente hinzufügen'
-'Add condition': 'Add condition'
+'Add condition': 'Bedingung hinzufügen'
 'Add gear': 'Ausrüstung hinzufügen'
 'Add goal': 'Ziel hinzufügen'
 'Add max heart rate': 'max. Herzfrequenz hinzufügen'
 'Add resting heart rate': 'Ruhepuls hinzufügen'
-'Add rule': 'Add rule'
+'Add rule': 'Regel hinzufügen'
 'Add service': 'Service hinzufügen'
 'Add task': 'Aufgabe hinzufügen'
 'Add weight': 'Gewicht hinzufügen'
@@ -40,26 +40,26 @@ Admin: Admin
 'Advanced (per-date & per-sport-type overrides)': 'Erweiterte (Datums- & sportartspezifische Anpassung)'
 'Age-based estimate': 'Altersbasierte Schätzung'
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'Alle zugehörigen Wartungsaufgaben und Protokolle werden entfernt. Diese Aktion kann nicht rückgängig gemacht werden'
-'All sport types': 'All sport types'
+'All sport types': 'Alle Sportarten'
 'All sport types must belong to the same activity type.': 'Alle Sportarten müssen demselben Aktivitätstyp angehören.'
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Stellt außerdem den Trainingsassistenten in der Weboberfläche zur Verfügung. Erfordert die Aktivierung der oben genannten KI-Integration. Seien Sie vorsichtig, wenn Sie diese Option aktivieren, falls Ihre App öffentlich zugänglich ist.'
-'App URL': 'App URL'
+'App URL': 'App-URL'
 'App subtitle': 'App Untertitel'
 'App update available notification': 'Benachrichtigung über App-Update'
 Appearance: Darstellung
 Apply: Anwenden
-'Are you sure you want to delete the import of {name}?': 'Are you sure you want to delete the import of {name}?'
+'Are you sure you want to delete the import of {name}?': 'Möchtest du den Import von {name} wirklich löschen?'
 'Are you sure you want to delete the {component} component?': 'Möchtest du die Komponente {component} wirklich löschen?'
-'Are you sure you want to delete the {rule} rule?': 'Are you sure you want to delete the {rule} rule?'
+'Are you sure you want to delete the {rule} rule?': 'Möchtest du die Regel {rule} wirklich löschen?'
 'Are you sure you want to delete {name}?': 'Möchtest du {name} wirklich löschen?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Möchtest du {task} an {component} für {gear}, durchgeführt am {date}, wirklich löschen?'
 'Are you sure you want to remove the {widget} widget?': 'Möchtest du das {widget} Widget entfernen?'
-'Assign gear': 'Assign gear'
+'Assign gear': 'Ausrüstung zuweisen'
 'Athlete settings': Athleteneinstellung
 'Attached to': 'Zugeordnet zu'
-'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom; the first one that matches wins.': 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom; the first one that matches wins.'
-'Automation rules': 'Automation rules'
-'Automation rules are only available in file import mode': 'Automation rules are only available in file import mode'
+'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom; the first one that matches wins.': 'Ausrüstung, Pendelstrecke, Sportart und mehr werden bei neu importierten Aktivitäten automatisch ausgefüllt. Die Regeln gelten von oben nach unten; die erste Übereinstimmung zählt.'
+'Automation rules': 'Automatisierunsregeln'
+'Automation rules are only available in file import mode': 'Automatisierungsregeln sind nur im Dateiimportmodus verfügbar.'
 'Back to app': 'Zurück zur App'
 'Base URI': 'Base URI'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Bevor Sie die App nutzen können, benötigen wir einige Informationen über Sie. Diese werden verwendet, um Ihre Herzfrequenzzonen und Ihre Trainingsbelastung zu berechnen. Alle weiteren Einstellungen können Sie später anpassen.'
@@ -72,40 +72,40 @@ Cancel: Abbrechen
 'Check interval (minutes)': 'Überprüfungsintervall (Minuten)'
 'Choose the order the metrics are shown in.': 'Wähle die Reihenfolge, in der die Metriken angezeigt werden.'
 Clear: Leeren
-'Clear filters': 'Clear filters'
+'Clear filters': 'Filter zurücksetzen'
 Close: Schließen
 Command: Befehl
 Commute: Pendeln
 Component: Komponente
-'Conditions are combined with AND.': 'Conditions are combined with AND.'
+'Conditions are combined with AND.': 'Die Bedingungen werden mit UND verknüpft.'
 Config: Konfiguration
 Configure: Konfigurieren
 'Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget.': 'Konfiguriere die zu berechnenden Eddington-Zahlen. Du kannst bis zu zwei in der Navigationsleiste und bis zu zwei im Dashboard-Widget anzeigen.'
 'Configure {widget}': '{widget} konfigurieren'
 'Configured via an environment variable and cannot be changed here.': 'Wird über eine Umgebungsvariable konfiguriert und kann hier nicht geändert werden.'
 'Configured via environment variables and cannot be changed here.': 'Wird über Umgebungsvariablen konfiguriert und kann hier nicht geändert werden.'
-'Cron expression': Cron-Ausdruck
-"Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron-Ausdruck, der angibt, wann die Aktion ausgeführt werden soll, z. B. führt '0 14 * * *' sie jeden Tag um 14:00 Uhr aus. Siehe crontab.guru für Hilfe.\""
+'Cron expression': 'Cron-Ausdruck'
+"Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron-Ausdruck, der angibt, wann die Aktion ausgeführt werden soll, z. B. führt '0 14 * * *' sie jeden Tag um 14:00 Uhr aus. Siehe crontab.guru für Hilfe."
 Daemon: Daemon
 'Dashboard layout': Dashboard-Layout
-'Date range based': Datumsbereichbasiert
+'Date range based': Nach Datumsbereich
 'Define what needs doing and how often.': 'Lege fest, was wie oft erledigt werden muss.'
 Delete: Löschen
 'Delete activity': 'Aktivität löschen'
-'Delete automation rule': 'Delete automation rule'
+'Delete automation rule': 'Automatisierungsregel löschen'
 'Delete component': 'Komponente löschen'
-'Delete file import': 'Delete file import'
+'Delete file import': 'Dateiimport löschen'
 'Delete maintenance log': 'Wartungsprotokoll löschen'
 Deleting...: 'wird gelöscht...'
 Description: Beschreibung
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Ausführliche Anleitungen findest du in {linkOpen}der Dokumentation{linkClose}.'
-Disabled: Disabled
-Distance: Distance
+Disabled: Deaktiviert
+Distance: Distanz
 'Drag to reorder': 'Ziehen zum Neuordnen'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Ziehen, um die Reihenfolge festzulegen, in der Sportarten in der gesamten App angezeigt werden.'
 Edit: Bearbeiten
 'Edit activity': 'Aktivität bearbeiten'
-'Edit automation rule': 'Edit automation rule'
+'Edit automation rule': 'Automatisierungsregel bearbeiten'
 'Edit component': 'Komponente bearbeiten'
 'Edit gear': 'Ausrüstung bearbeiten'
 'Edit maintenance log': 'Wartungsprotokoll bearbeiten'
@@ -114,8 +114,8 @@ Edit: Bearbeiten
 'Enable Strava webhooks': 'Strava webhooks aktivieren'
 Enabled: Aktiviert
 Endpoint: Endpunkt
-'Ends near': 'Ends near'
-'Enter an existing activity to preview which rule would apply and what it would change. Nothing is saved.': 'Enter an existing activity to preview which rule would apply and what it would change. Nothing is saved.'
+'Ends near': 'Verschleiß erreicht'
+'Enter an existing activity to preview which rule would apply and what it would change. Nothing is saved.': 'Wähle eine bestehende Aktivität aus, um eine Vorschau der anzuwendenden Regel und deren Auswirkungen zu erhalten. Es werden keine Daten gespeichert.'
 'Enter your password': 'Gib dein Passwort ein'
 'Enter your username': 'Gib deinen Benutzernamen ein'
 Every: Alle
@@ -133,14 +133,14 @@ Filename: Dateiname
 Filter: Filter
 'First name': Vorname
 'Fixed value': 'Fester Wert'
-Friday: Friday
+Friday: Freitag
 From: Von
 'Gear "{gearId}" is attached to one of your components, but does not exist. It will be ignored.': 'Die Ausrüstung "{gearId}" ist mit einer deiner Komponenten verknüpft, existiert aber nicht. Sie wird ignoriert.'
 'Gear maintenance notification': 'Benachrichtigung zur Ausrüstungswartung'
 'Gear management': Ausrüstungsverwaltung
 'Gear will appear here once you add them.': 'Ausrüstung wird hier angezeigt, sobald du sie hinzufügst.'
 Gender: Geschlecht
-General: Generell
+General: Allgemein
 'Go to first page': 'Zur ersten Seite'
 'Go to last page': 'Zur letzten Seite'
 'Go to next page': 'Zur nächsten Seite'
@@ -150,8 +150,8 @@ General: Generell
 'History of running FTP. Needed to calculate activity stress level.': 'Verlauf der Lauf-FTP. Wird benötigt, um das Belastungsniveau der Aktivität zu berechnen.'
 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'Gewichtsverlauf (in kg oder Pfund, abhängig vom eingestellten Einheitensystem). Wird benötigt, um die relative Leistung in W/kg zu berechnen.'
 'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'Wie oft (in Minuten, zwischen 1 und 60) in der Warteschlange stehende Webhook-Ereignisse verarbeitet werden.'
-If: If
-'If all of these match': 'If all of these match'
+If: Wenn
+'If all of these match': 'Wenn alle Bedingungen erfüllt sind'
 "If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm.": 'Wenn du dir bei deinen Zonen nicht sicher bist, lasse diese unverändert; die Standardwerte sind sinnvoll. Im relativen Modus sind die Zahlen Prozentsätze deiner maximalen Herzfrequenz; im absoluten Modus sind es tatsächliche Schläge pro Minute (bpm).'
 'Ignore retired gear': 'Ausgemusterte Ausrüstung ignorieren'
 Image: Bild
@@ -171,22 +171,22 @@ Integrations: Integrationen
 'Invalid CSRF token.': 'Ungültiger CSRF token.'
 Label: Bezeichnung
 'Last name': Nachname
-Latitude: Latitude
+Latitude: Breitengrad
 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.': 'Lasse alle abgewählt, um jede Sportart zu importieren. ⚠️ Wenn du dies einschränkst, nachdem Aktivitäten importiert wurden, werden Aktivitäten von ausgeschlossenen Sportarten gelöscht.'
 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Lasse alle abgewählt, um jede Sichtbarkeit zu importieren. ⚠️ Wenn du dies einschränkst, nachdem Aktivitäten importiert wurden, werden Aktivitäten von ausgeschlossenen Sichtbarkeiten gelöscht.'
 'Leave empty to include all sport types.': 'Leer lassen, um alle Sportarten einzubeziehen.'
 Locale: Sprache
 Log: Protokoll
-Longitude: Longitude
+Longitude: Längengrad
 'Maintenance log': Wartungsprotokoll
 'Maintenance logs will appear here once maintenance has been registered.': 'Wartungsprotokolle werden hier angezeigt, sobald eine Wartung erfasst wurde.'
 'Maintenance tasks': Wartungsaufgaben
 Male: Männlich
-'Mark as commute': 'Mark as commute'
-Match: Match
-"Matches on the activity's finishing point.": "Matches on the activity's finishing point."
-"Matches on the activity's starting point.": "Matches on the activity's starting point."
-'Matches when any point of the route comes near the location.': 'Matches when any point of the route comes near the location.'
+'Mark as commute': 'Als Pendelfahrt markieren'
+Match: Übereinstimmung
+"Matches on the activity's finishing point.": "Übereinstimmungen am Ende der Aktivität."
+"Matches on the activity's starting point.": "Übereinstimmungen am Beginn der Aktivität"
+'Matches when any point of the route comes near the location.': 'Übereinstimmung, wenn irgendein Punkt der Route in die Nähe des Punktes kommt.'
 'Max heart rate (bpm)': 'Max. herzfrequenz (bpm)'
 'Max heart rate formula': 'Formel für max. Herzfrequenz'
 Message: Nachricht
@@ -194,21 +194,21 @@ Message: Nachricht
 Metrics: Metriken
 Mode: Modus
 Model: Modell
-Monday: Monday
+Monday: Montag
 'More pages': 'Weitere Seiten'
 'No activities imported yet.': 'Noch keine Aktivitäten importiert.'
-'No activities match the current filters.': 'No activities match the current filters.'
-'No activity found for that ID.': 'No activity found for that ID.'
-'No automation rules yet.': 'No automation rules yet.'
+'No activities match the current filters.': 'Keine Aktivitäten entsprechen den aktuellen Filtern.'
+'No activity found for that ID.': 'Keine Aktivität für diese ID gefunden.'
+'No automation rules yet.': 'Keine Automatisierungsregel bisher.'
 'No components yet.': 'Noch keine Komponenten vorhanden'
-'No file imports match the current filters.': 'No file imports match the current filters.'
+'No file imports match the current filters.': 'Keine Dateiimporte entsprechen den aktuellen Filtern.'
 'No files imported yet.': 'Noch keine Dateien importiert'
 'No gears added yet.': 'Noch keine Ausrüstung hinzugefügt.'
 'No maintenance logs yet.': 'Noch keine Wartungsprotokolle vorhanden.'
 'No recording devices yet.': 'Noch keine Aufzeichnungsgeräte vorhanden.'
-'No rule applies': 'No rule applies'
-'No sport types selected': 'No sport types selected'
-'No unit': 'No unit'
+'No rule applies': 'Keine Regel trifft zu'
+'No sport types selected': 'Keine Sportarten ausgewählt'
+'No unit': 'keine Einheit'
 'Normal date format': 'Normales Datumsformat'
 'Notification services': Benachrichtungsdienste
 'Number of activities to display': 'Anzahl der anzuzeigenden Aktivitäten'
@@ -221,7 +221,7 @@ Monday: Monday
 'Only required for the OpenAI-like provider.': 'Nur für OpenAI-ähnliche Anbieter erforderlich.'
 Operator: Operator
 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optionales YAML für datumsbereichs- und sportartspezifische Zonen. Leer lassen, es sei denn, du weißt, dass du es brauchst.'
-'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': "Optionaler Link zu deinem Profilbild, das in der Navigationsleiste angezeigt wird. Ein quadratisches Bild wird empfohlen. Leer lassen, um es zu deaktivieren.'"
+'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': "Optionaler Link zu deinem Profilbild, das in der Navigationsleiste angezeigt wird. Ein quadratisches Bild wird empfohlen. Leer lassen, um es zu deaktivieren."
 'Optional subtitle': 'Optionaler Untertitel'
 'Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable.': 'Optionaler Untertitel zur Anzeige in der Navigationsleiste. Nützlich zur Unterscheidung mehrerer Instanzen der App. Leer lassen, um es zu deaktivieren.'
 'Optional. Any activity recorded before this date will not be imported. Leave empty to disable. ⚠️ Changing this after activities have been imported will delete activities recorded before this date.': 'Optional. Aktivitäten, die vor diesem Datum aufgezeichnet wurden, werden nicht importiert. Leer lassen zur Deaktivierung. ⚠️ Eine Änderung dieser Einstellung, nachdem Aktivitäten importiert wurden, löscht Aktivitäten, die vor diesem Datum aufgezeichnet wurden.'
@@ -240,17 +240,17 @@ Password: Passwort
 Provider: Anbieter
 Radius: Radius
 'Rebuild pending': 'Neuerstellung ausstehend'
-'Recording device': 'Recording device'
+'Recording device': 'Aufzeichnungsgerät'
 'Recording device management': 'Verwaltung der Aufzeichnungsgeräte'
 'Recording devices will appear here once activities have been imported.': 'Aufzeichnungsgeräte werden hier angezeigt, sobald Aktivitäten importiert wurden.'
 'Register maintenance': 'Wartung erfassen'
 'Remember me for 7 days': 'Für 7 Tage angemeldet bleiben'
 Remove: Entfernen
 'Remove Eddington': 'Eddington entfernen'
-'Remove action': 'Remove action'
+'Remove action': 'Aktion entfernen'
 'Remove challenge': 'Herausforderung entfernen'
 'Remove command': 'Befehl entfernen'
-'Remove condition': 'Remove condition'
+'Remove condition': 'Bedingung entfernen'
 'Remove goal': 'Ziel entfernen'
 'Remove task': 'Aufgabe entfernen'
 'Remove widget': 'Widget entfernen'
@@ -258,37 +258,37 @@ Removing...: Entfernen...
 "Reorder widgets and set each widget's width.": 'Widgets neu anordnen und die Breite jedes Widgets festlegen.'
 'Reset dashboard to default': 'Dashboard auf Standard zurücksetzen'
 'Reset to default': 'Auf Standard zurücksetzen'
-Resetting...: 'Wird zurückgeseztzt...'
+Resetting...: 'Wird zurückgesetzt...'
 'Resting heart rate (bpm)': 'Ruhepuls (bpm)'
 'Resting heart rate formula': Ruhepuls-Formel
 'Restrict to date range': 'Auf Datumsbereich beschränken'
 Retired: Ausgemustert
 'Return to app': 'Zurück zur App'
-Ride: Fahrt
-Saturday: Saturday
+Ride: Radfahrt
+Saturday: Samstag
 Save: Speichern
 'Save settings': 'Einstellungen speichern'
 Saved: gespeichert
 Saving...: 'Wird gespeichert...'
 'Scheduled actions the daemon runs at regular intervals.': 'Geplante Aktionen, die der Daemon in regelmäßigen Abständen ausführt.'
-'Search by name, date or activity ID': 'Search by name, date or activity ID'
+'Search by name, date or activity ID': 'Nach Name, Datum oder Aktivitäts-ID suchen''
 'Select a component first...': 'Wähle zuerst eine Komponente aus...'
 'Select a component…': 'Komponente auswählen…'
-'Select all': 'Select all'
+'Select all': 'Alle auswählen'
 'Select at least one sport type.': 'Wähle mindestens eine Sportart aus.'
-'Select at least one weekday.': 'Select at least one weekday.'
-'Select device...': 'Select device...'
-'Select gear...': 'Select gear...'
-'Select sport types': 'Select sport types'
+'Select at least one weekday.': 'Wähle mindestens einen Wochentag.'
+'Select device...': 'Gerät auswählen...'
+'Select gear...': 'Ausrüstung auswählen...'
+'Select sport types': 'Sportarten auswählen'
 'Select the serviced gear…': 'Gewartete Ausrüstung auswählen…'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sendet eine Benachrichtigung, wenn eine neue App-Version verfügbar ist. Erfordert einen konfigurierten Benachrichtigungsdienst.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sendet eine Benachrichtigung, wenn eine Ausrüstungswartung fällig ist. Erfordert einen konfigurierten Benachrichtigungsdienst.'
-'Set description': 'Set description'
-'Set name': 'Set name'
-'Set sport type': 'Set sport type'
-'Set workout type': 'Set workout type'
+'Set description': 'Beschreibung festlegen'
+'Set name': 'Name festlegen'
+'Set sport type': 'Sportart festlegen'
+'Set workout type': 'Trainingstyp festlegen'
 Settings: Einstellungen
-'Short date format': 'kurzes Datumsformat'
+'Short date format': 'Kurzes Datumsformat'
 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Kurzbefehle, die ein Benutzer im Trainingsassistenten auswählen kann. Dem Befehl keinen Schrägstrich voranstellen.'
 'Show in dashboard widget': 'Im Dashboard-Widget anzeigen'
 'Show in navigation bar': 'In der Navigationsleiste anzeigen'
@@ -302,14 +302,14 @@ Settings: Einstellungen
 'Signing in...': 'Anmeldung läuft...'
 'Skip activities recorded before': 'Aktivitäten überspringen, die aufgezeichnet wurden vor'
 Skipped: Übersprungen
-'Skipped (an earlier rule already matched).': 'Skipped (an earlier rule already matched).'
+'Skipped (an earlier rule already matched).': 'Übersprungen (eine frühere Regel hat bereits gegriffen).'
 Source: Quelle
 'Sport type': Sportart
-'Sport types': 'Sport types'
+'Sport types': 'Sportarten'
 'Sport types sorting order': 'Sortierreihenfolge der Sportarten'
 'Sport types to import': 'Zu importierende Sportarten'
 'Sport types to include': 'Einzubeziehende Sportarten'
-'Starts near': 'Starts near'
+'Starts near': 'Beginnt in der Nähe'
 'Strava API credentials.': Strava-API-Zugangsdaten.
 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': 'Die Strava-API hat Ratenbegrenzungen, daher deckeln wir die Anzahl der neuen Aktivitäten, die pro Import verarbeitet werden. 250 ist ein sicherer Wert.'
 'Strava activity IDs to skip during import.': 'Strava-Aktivitäts-IDs, die beim Import übersprungen werden sollen.'
@@ -319,38 +319,38 @@ Source: Quelle
 'Strava refresh token': Strava-Refresh-Token
 Subtitle: Untertitel
 Success: Erfolgreich
-Sunday: Sunday
+Sunday: Sonntag
 'Supported types': 'Unterstützte Typen'
 Task: Aufgabe
 'Task name': Aufgabenname
 Tasks: Aufgaben
-'Test automation rules': 'Test automation rules'
-'Test rules': 'Test rules'
+'Test automation rules': 'Automatisierungsregeln testen'
+'Test rules': 'Regeln testen'
 'The URL the app is hosted on.': 'Die URL, unter der die App gehostet wird.'
-'The activity started': 'The activity started'
-'The activity will be marked as a commute.': 'The activity will be marked as a commute.'
+'The activity started': 'Die Aktivität begann'
+'The activity will be marked as a commute.': 'Die Aktivität wird als Pendelfahrt markiert.'
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'Die Formel zur Berechnung deiner maximalen Herzfrequenz. Der Standardwert ist Fox (220 − Alter).'
 'The formula used to calculate your resting heart rate. The default is an age-based estimate.': 'Die Formel zur Berechnung deines Ruhepulses. Der Standardwert ist eine altersbasierte Schätzung.'
 'The last zone has no upper bound.': 'Die letzte Zone hat keine Obergrenze.'
 'The locale used to render the app.': 'Die für die Anzeige der App verwendete Spracheinstellung.'
 "The name is derived from the device recorded on your activities and can't be edited.": 'Der Name wird aus dem Gerät abgeleitet, das bei deinen Aktivitäten aufgezeichnet wurde, und kann nicht bearbeitet werden.'
 'The unit system used to render distances, elevations, temperatures, etc.': 'Das Einheitensystem für Entfernungen, Höhen, Temperaturen usw.'
-'Then do this': 'Then do this'
+'Then do this': 'Dann ausführen'
 'This action cannot be undone.': 'Diese Aktion kann nicht rückgängig gemacht werden.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Diese Komponente ist an mehreren Ausrüstungen montiert. Wähle die aus, die du gewartet hast.'
-'This only affects future imports. Already imported activities are left untouched. This action cannot be undone.': 'This only affects future imports. Already imported activities are left untouched. This action cannot be undone.'
-'This only removes the import record, the imported activity is kept.': 'This only removes the import record, the imported activity is kept.'
+'This only affects future imports. Already imported activities are left untouched. This action cannot be undone.': 'Dies betrifft ausschließlich zukünftige Importe. Bereits importierte Aktivitäten bleiben unberührt. Diese Maßnahme kann nicht rückgängig gemacht werden.'
+'This only removes the import record, the imported activity is kept.': 'Dadurch wird lediglich der Importdatensatz entfernt, die importierte Aktivität bleibt erhalten.“'
 "This value is imported from Strava and can't be edited here.": 'Dieser Wert wird von Strava importiert und kann hier nicht bearbeitet werden.'
 'This widget still needs to be configured.': 'Dieses Widget muss noch konfiguriert werden.'
 'This will discard your current dashboard layout and restore the default widgets.': 'Dadurch wird dein aktuelles Dashboard-Layout verworfen und die Standard-Widgets werden wiederhergestellt.'
-Thursday: Thursday
+Thursday: Donnerstag
 'Time format': Zeitformat
-'Time of day': 'Time of day'
+'Time of day': 'Tageszeit'
 To: bis
 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.': 'Token zur Validierung eingehender Strava-Webhook-Anfragen. Erforderlich, wenn Webhooks aktiviert sind.'
 'Total size exceeds {max} MB': 'Gesamtgröße überschreitet {max} MB'
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Verfolge die Nutzung deiner Ausrüstung anhand deiner Aktivitäten und behalte nutzungs- sowie zeitbasierte Wartungen im Blick.'
-Tuesday: Tuesday
+Tuesday: Dienstag
 'Turn gear maintenance tracking on or off.': 'Wartungsverfolgung für Ausrüstung ein- oder ausschalten.'
 'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Schaltet den KI-gestützten Trainingsassistenten ein, der dann über die Befehlszeile verwendet werden kann.'
 Type: Typ
@@ -368,13 +368,13 @@ Username: Benutzername
 Version: Version
 Warning: Warnung
 Webhooks: Webhooks
-Wednesday: Wednesday
-Weekday: Weekday
-Weekdays: Weekdays
+Wednesday: Mittwoch
+Weekday: Wochentag
+Weekdays: Wochentage
 'What is my FTP?': 'Was ist meine FTP?'
 'When disabled, gear marked as retired is left out of the chart.': 'Wenn deaktiviert, wird als ausgemustert markierte Ausrüstung nicht im Diagramm angezeigt.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Wenn aktiviert, wird als ausgemustert markierte Ausrüstung übersprungen. Ihre Komponenten erhöhen die Nutzung nicht und es wird keine Wartung dafür verfolgt.'
-'Workout type': 'Workout type'
+'Workout type': 'Trainingstyp'
 'You can add it back to your dashboard again later.': 'Du kannst es später wieder zu deinem Dashboard hinzufügen.'
 'You can also copy files straight into the {watchFolder} folder.': 'Du kannst Dateien auch direkt in den Ordner {watchFolder} kopieren.'
 'You can select up to {max} images': 'Du kannst bis zu {max} Bilder auswählen.'
@@ -389,35 +389,35 @@ Zwift: Zwift
 'Zwift level': Zwift-Level
 'Zwift racing score': 'Zwift Rennwert'
 'active days': 'aktive Tage'
-after: after
-and: and
-'at least': 'at least'
-'at most': 'at most'
-'at or after': 'at or after'
-'at or before': 'at or before'
-before: before
+after: nach
+and: und
+'at least': 'mindestens'
+'at most': 'höchstens'
+'at or after': 'am oder nach'
+'at or before': 'am oder vor'
+before: vor
 'calendar days': Kalendertage
 'discord://token@id': 'discord://token@id'
-'eg: Commuter bike on short rides': 'eg: Commuter bike on short rides'
-'eg: Imported automatically': 'eg: Imported automatically'
-'eg: Morning commute': 'eg: Morning commute'
-exactly: exactly
-'exactly at': 'exactly at'
+'eg: Commuter bike on short rides': 'z.B.: Pendelfahrten auf kurzen Strecken'
+'eg: Imported automatically': 'z.B.: Automatisch importiert'
+'eg: Morning commute': 'z.B.: morgendliche Pendelfahrt'
+exactly: genau
+'exactly at': 'genau um'
 ftp: ftp
-'greater than': 'greater than'
+'greater than': 'größer as'
 'hours used': 'genutzte Stunden'
-is: is
+is: ist
 'is none of': 'is none of'
-'is not': 'is not'
-'is one of': 'is one of'
+'is not': 'ist nicht'
+'is one of': 'ist einer davon'
 'kilometers used': 'genutzte Kilometer'
-'less than': 'less than'
+'less than': 'kleiner als'
 'max {max} MB each': 'max {max} MB je Datei'
 'miles used': 'genutzte Meilen'
 minutes: Minuten
-'outside radius': 'outside radius'
+'outside radius': 'außerhalb des Radius'
 then: then
-'within radius': 'within radius'
+'within radius': 'innerhalb des Radius'
 '{count} files ready to upload': '{count} Dateien zum Hochladen bereit'
 '{count} files uploaded': '{count} Dateien hochgeladen'
 '{count} images selected': '{count} Bilder ausgewählt'
