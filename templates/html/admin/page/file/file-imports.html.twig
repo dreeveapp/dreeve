@@ -8,6 +8,34 @@
                 <h3 class="text-lg font-semibold mb-4">
                     {{ "File imports"|trans({}, 'admin') }}
                 </h3>
+                {% if not overview.isEmpty() or not filters.isEmpty() %}
+                    <form method="get" class="mb-4 flex flex-wrap items-end gap-3">
+                    <div>
+                        <label for="filter-status" class="mt-0! text-xs text-gray-500">{{ "Status"|trans }}</label>
+                        <select id="filter-status" name="filters[status]">
+                            <option value="">{{ "All"|trans }}</option>
+                            {% for status in statusOptions %}
+                                <option value="{{ status.value }}" {{ status == filters.getStatus() ? 'selected' }}>{{ status|trans }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label for="filter-source" class="mt-0! text-xs text-gray-500">{{ "Source"|trans({}, 'admin') }}</label>
+                        <select id="filter-source" name="filters[source]">
+                            <option value="">{{ "All"|trans }}</option>
+                            {% for source in sourceOptions %}
+                                <option value="{{ source.value }}" {{ source == filters.getSource() ? 'selected' }}>{{ source.label() }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn--primary">{{ "Apply"|trans({}, 'admin') }}</button>
+                    {% if not filters.isEmpty() %}
+                        <a href="{{ relativeUrl(path('admin_file_imports')) }}" type="button" class="btn--secondary">
+                            {{ "Clear filters"|trans({}, 'admin') }}
+                        </a>
+                    {% endif %}
+                </form>
+                {% endif %}
                 <div class="relative overflow-x-auto">
                     <table class="data-table">
                         <thead>
@@ -99,13 +127,22 @@
                                                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
                                         </span>
-                                        <div class="flex flex-col gap-1">
-                                            <span class="text-sm font-medium text-gray-800">{{ "No files imported yet."|trans({}, 'admin') }}</span>
-                                            <span class="text-xs text-gray-500">{{ "Imported files will appear here once you upload them."|trans({}, 'admin') }}</span>
-                                        </div>
-                                        <a href="{{ relativeUrl(path('admin_file_upload')) }}" type="button" class="btn--primary mt-1">
-                                            {{ "Upload files"|trans({}, 'admin') }}
-                                        </a>
+                                        {% if filters.isEmpty() %}
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-sm font-medium text-gray-800">{{ "No files imported yet."|trans({}, 'admin') }}</span>
+                                                <span class="text-xs text-gray-500">{{ "Imported files will appear here once you upload them."|trans({}, 'admin') }}</span>
+                                            </div>
+                                            <a href="{{ relativeUrl(path('admin_file_upload')) }}" type="button" class="btn--primary mt-1">
+                                                {{ "Upload files"|trans({}, 'admin') }}
+                                            </a>
+                                        {% else %}
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-sm font-medium text-gray-800">{{ "No file imports match the current filters."|trans({}, 'admin') }}</span>
+                                            </div>
+                                            <a href="{{ relativeUrl(path('admin_file_imports')) }}" class="btn--primary mt-1">
+                                                {{ "Clear filters"|trans({}, 'admin') }}
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </td>
                             </tr>

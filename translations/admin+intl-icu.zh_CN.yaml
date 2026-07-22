@@ -47,6 +47,7 @@ Admin: Admin
 'App subtitle': 'App subtitle'
 'App update available notification': 'App update available notification'
 Appearance: Appearance
+Apply: 应用
 'Are you sure you want to delete the import of {name}?': 'Are you sure you want to delete the import of {name}?'
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
 'Are you sure you want to delete the {rule} rule?': 'Are you sure you want to delete the {rule} rule?'
@@ -71,6 +72,7 @@ Cancel: Cancel
 'Check interval (minutes)': 'Check interval (minutes)'
 'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
 Clear: Clear
+'Clear filters': 'Clear filters'
 Close: Close
 Command: Command
 Commute: Commute
@@ -198,6 +200,7 @@ Monday: Monday
 'No activity found for that ID.': 'No activity found for that ID.'
 'No automation rules yet.': 'No automation rules yet.'
 'No components yet.': 'No components yet.'
+'No file imports match the current filters.': 'No file imports match the current filters.'
 'No files imported yet.': 'No files imported yet.'
 'No gears added yet.': 'No gears added yet.'
 'No maintenance logs yet.': 'No maintenance logs yet.'

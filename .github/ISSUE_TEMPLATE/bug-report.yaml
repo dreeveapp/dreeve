@@ -10,7 +10,7 @@ body:
         ## Before creating a bug report
   
         * Make sure you are running the latest version of the app
-        * Check the [documentation](https://docs.getsfs.app/) to see if your issue is already addressed in the troubleshooting section
+        * Check the [documentation](https://docs.dreeve.app/) to see if your issue is already addressed in the troubleshooting section
         * Search the [existing GitHub issues](https://github.com/dreeveapp/dreeve/issues?q=is:issue) to verify that your issue has not been addressed yet
         * Join our [Discord server](https://discord.gg/p4zpZyCHNc) to ask for help if you have trouble setting up the app
   - type: textarea
@@ -32,14 +32,6 @@ body:
     attributes:
       label: Provide your docker compose config
       description: Be sure to redact sensitive information
-      render: yml
-    validations:
-      required: true
-  - type: textarea
-    id: environment-config
-    attributes:
-      label: Environment configuration
-      description: Please run `docker compose exec app bin/console app:debug:environment --redact-sensitive-info` on your host machine and copy/paste the output here
       render: yml
     validations:
       required: true

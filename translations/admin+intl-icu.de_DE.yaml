@@ -47,6 +47,7 @@ Admin: Admin
 'App subtitle': 'App Untertitel'
 'App update available notification': 'Benachrichtigung über App-Update'
 Appearance: Darstellung
+Apply: Anwenden
 'Are you sure you want to delete the import of {name}?': 'Are you sure you want to delete the import of {name}?'
 'Are you sure you want to delete the {component} component?': 'Möchtest du die Komponente {component} wirklich löschen?'
 'Are you sure you want to delete the {rule} rule?': 'Are you sure you want to delete the {rule} rule?'
@@ -71,6 +72,7 @@ Cancel: Abbrechen
 'Check interval (minutes)': 'Überprüfungsintervall (Minuten)'
 'Choose the order the metrics are shown in.': 'Wähle die Reihenfolge, in der die Metriken angezeigt werden.'
 Clear: Leeren
+'Clear filters': 'Clear filters'
 Close: Schließen
 Command: Befehl
 Commute: Pendeln
@@ -198,6 +200,7 @@ Monday: Monday
 'No activity found for that ID.': 'No activity found for that ID.'
 'No automation rules yet.': 'No automation rules yet.'
 'No components yet.': 'Noch keine Komponenten vorhanden'
+'No file imports match the current filters.': 'No file imports match the current filters.'
 'No files imported yet.': 'Noch keine Dateien importiert'
 'No gears added yet.': 'Noch keine Ausrüstung hinzugefügt.'
 'No maintenance logs yet.': 'Noch keine Wartungsprotokolle vorhanden.'

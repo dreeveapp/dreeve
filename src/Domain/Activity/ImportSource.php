@@ -20,4 +20,12 @@ enum ImportSource: string
             self::GPX_FILE => 'GPX File',
         };
     }
+
+    /**
+     * @return ImportSource[]
+     */
+    public static function fileBasedSources(): array
+    {
+        return [self::FIT_FILE, self::TCX_FILE, self::GPX_FILE];
+    }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Import;
 
+use App\Controller\Admin\File\FileImportOverviewFilters;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
@@ -21,6 +22,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Request;
 
 class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
 {
@@ -50,7 +52,7 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
                 ->build()
         );
 
-        $overview = $this->fileImportOverviewRepository->find(Pagination::fromOffsetAndLimit(0, 10));
+        $overview = $this->fileImportOverviewRepository->find(Pagination::fromOffsetAndLimit(0, 10), self::filters());
 
         $this->assertEquals(
             [
@@ -78,7 +80,7 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
     ): void {
         $this->seedThreeFileImports();
 
-        $overview = $this->fileImportOverviewRepository->find($pagination);
+        $overview = $this->fileImportOverviewRepository->find($pagination, self::filters());
 
         $this->assertSame(
             $expectedFilenames,
@@ -120,11 +122,77 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
 
     public function testFindReturnsAnEmptyOverviewWhenThereIsNoData(): void
     {
-        $overview = $this->fileImportOverviewRepository->find(Pagination::fromOffsetAndLimit(0, 10));
+        $overview = $this->fileImportOverviewRepository->find(Pagination::fromOffsetAndLimit(0, 10), self::filters());
 
         $this->assertTrue($overview->isEmpty());
         $this->assertSame([], $overview->getItems());
         $this->assertEquals(0, $overview->getTotal());
+    }
+
+    #[DataProvider('provideFilterScenarios')]
+    public function testFindAppliesFilters(
+        array $filters,
+        Pagination $pagination,
+        array $expectedFilenames,
+        int $expectedTotal,
+    ): void {
+        $this->seedThreeFileImports();
+
+        $overview = $this->fileImportOverviewRepository->find($pagination, self::filters($filters));
+
+        $this->assertSame(
+            $expectedFilenames,
+            array_map(
+                static fn (FileImportOverviewItem $item): string => $item->getOriginalFilename(),
+                $overview->getItems()
+            )
+        );
+        $this->assertEquals($expectedTotal, $overview->getTotal());
+    }
+
+    public static function provideFilterScenarios(): iterable
+    {
+        yield 'a status filter narrows both the items and the total' => [
+            ['status' => 'success'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['newest.fit', 'middle.fit'],
+            2,
+        ];
+
+        yield 'a status filter combines with pagination while the total keeps reflecting the filter' => [
+            ['status' => 'success'],
+            Pagination::fromOffsetAndLimit(0, 1),
+            ['newest.fit'],
+            2,
+        ];
+
+        yield 'a source filter narrows the items' => [
+            ['source' => 'tcxFile'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['middle.fit'],
+            1,
+        ];
+
+        yield 'status and source filters combine' => [
+            ['status' => 'success', 'source' => 'fitFile'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['newest.fit'],
+            1,
+        ];
+
+        yield 'filters that match nothing yield an empty overview' => [
+            ['status' => 'failed', 'source' => 'fitFile'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            [],
+            0,
+        ];
+
+        yield 'an invalid filter value behaves as if no filter was applied' => [
+            ['status' => 'bogus'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['newest.fit', 'middle.fit', 'oldest.fit'],
+            3,
+        ];
     }
 
     private function seedThreeFileImports(): void
@@ -133,6 +201,8 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
             FileImportBuilder::fromDefaults()
                 ->withFileImportId(FileImportId::fromUnprefixed('1'))
                 ->withOriginalFilename('oldest.fit')
+                ->withSource(ImportSource::GPX_FILE)
+                ->withStatus(FileImportStatus::FAILED)
                 ->withImportedOn(SerializableDateTime::fromString('2026-06-01 08:00:00'))
                 ->build()
         );
@@ -140,6 +210,8 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
             FileImportBuilder::fromDefaults()
                 ->withFileImportId(FileImportId::fromUnprefixed('2'))
                 ->withOriginalFilename('middle.fit')
+                ->withSource(ImportSource::TCX_FILE)
+                ->withStatus(FileImportStatus::SUCCESS)
                 ->withImportedOn(SerializableDateTime::fromString('2026-06-02 08:00:00'))
                 ->build()
         );
@@ -147,9 +219,16 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
             FileImportBuilder::fromDefaults()
                 ->withFileImportId(FileImportId::fromUnprefixed('3'))
                 ->withOriginalFilename('newest.fit')
+                ->withSource(ImportSource::FIT_FILE)
+                ->withStatus(FileImportStatus::SUCCESS)
                 ->withImportedOn(SerializableDateTime::fromString('2026-06-03 08:00:00'))
                 ->build()
         );
+    }
+
+    private static function filters(array $filters = []): FileImportOverviewFilters
+    {
+        return FileImportOverviewFilters::fromRequest(new Request(query: ['filters' => $filters]));
     }
 
     #[\Override]

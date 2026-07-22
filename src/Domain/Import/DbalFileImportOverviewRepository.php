@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Import;
 
+use App\Controller\Admin\File\FileImportOverviewFilters;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ImportSource;
 use App\Infrastructure\Exception\EntityNotFound;
@@ -14,20 +15,39 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class DbalFileImportOverviewRepository extends DbalRepository implements FileImportOverviewRepository
 {
-    public function find(Pagination $pagination): Overview
+    public function find(Pagination $pagination, FileImportOverviewFilters $filters): Overview
     {
-        $results = $this->connection->createQueryBuilder()
+        $queryBuilder = $this->connection->createQueryBuilder()
             ->select('fi.fileImportId', 'fi.originalFilename', 'fi.source', 'fi.status', 'fi.errorMessage', 'fi.activityId', 'fi.importedOn', 'a.name AS activityName')
             ->from('FileImport', 'fi')
             ->leftJoin('fi', 'Activity', 'a', 'a.activityId = fi.activityId')
             ->orderBy('fi.importedOn', 'DESC')
             ->setFirstResult($pagination->getOffset())
-            ->setMaxResults($pagination->getLimit())
+            ->setMaxResults($pagination->getLimit());
+
+        $countQueryBuilder = $this->connection->createQueryBuilder()
+            ->select('COUNT(*)')
+            ->from('FileImport', 'fi');
+
+        foreach ([$queryBuilder, $countQueryBuilder] as $builder) {
+            if (($status = $filters->getStatus()) instanceof FileImportStatus) {
+                $builder
+                    ->andWhere('fi.status = :status')
+                    ->setParameter('status', $status->value);
+            }
+            if (($source = $filters->getSource()) instanceof ImportSource) {
+                $builder
+                    ->andWhere('fi.source = :source')
+                    ->setParameter('source', $source->value);
+            }
+        }
+
+        $results = $queryBuilder
             ->executeQuery()
             ->fetchAllAssociative();
 
-        $total = (int) $this->connection
-            ->executeQuery('SELECT COUNT(*) FROM FileImport')
+        $total = (int) $countQueryBuilder
+            ->executeQuery()
             ->fetchOne();
 
         return Overview::create(
