@@ -2,7 +2,10 @@
 
 namespace App\Tests\Controller\Admin\Gear\Maintenance;
 
+use App\Domain\Gear\GearId;
+use App\Domain\Gear\GearRepository;
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
 
 class ManageGearMaintenanceConfigRequestHandlerTest extends AdminWebTestCase
@@ -19,6 +22,11 @@ class ManageGearMaintenanceConfigRequestHandlerTest extends AdminWebTestCase
     public function testItRendersTheConfigReflectingTheCurrentSettings(): void
     {
         $this->importGearMaintenanceConfig();
+        $this->getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('g10130856'))
+                ->build()
+        );
 
         $this->client->loginUser($this->adminUser());
 
@@ -45,7 +53,8 @@ class ManageGearMaintenanceConfigRequestHandlerTest extends AdminWebTestCase
 
         $this->assertCount(1, $crawler->filter('.alert.alert--warning'));
         $warningText = $crawler->filter('.alert.alert--warning')->text();
-        $this->assertStringContainsString('is attached to one of your components, but does not exist', $warningText);
+        $this->assertStringContainsString('Gear "g1233776" is attached to one of your components, but does not exist', $warningText);
+        $this->assertStringNotContainsString('10130856', $warningText);
     }
 
     public function testItRendersTheEmptyStateWhenThereAreNoComponents(): void
