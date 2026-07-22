@@ -29,6 +29,7 @@ class DuplicateActivityScannerTest extends ContainerTestCase
         string $storedFilename,
         SportType $storedSportType,
         SerializableDateTime $storedStartDateTime,
+        array $storedRawData,
         string $incomingFilename,
         SportType $incomingSportType,
         SerializableDateTime $incomingStartDateTime,
@@ -40,7 +41,7 @@ class DuplicateActivityScannerTest extends ContainerTestCase
             ->withSportType($storedSportType)
             ->withStartDateTime($storedStartDateTime)
             ->build();
-        $this->activityRepository->add(ActivityWithRawData::fromState($activity, ['raw' => 'data']));
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, $storedRawData));
 
         $file = RawActivityFile::from(Path::fromString($incomingFilename), 'raw-fit-bytes');
 
@@ -53,15 +54,76 @@ class DuplicateActivityScannerTest extends ContainerTestCase
 
     public static function provideExistingActivityScenarios(): iterable
     {
-        yield 'strava activity with same filename, different sport type and start date' => [
+        yield 'strava activity with same filename and same UTC start instant' => [
             ImportSource::STRAVA_API,
             'ride.fit',
             SportType::RIDE,
             SerializableDateTime::fromString('2023-10-10'),
+            ['start_date' => '2024-01-01T10:00:00Z'],
             'ride.fit',
             SportType::RUN,
-            SerializableDateTime::fromString('2024-01-01'),
+            SerializableDateTime::fromString('2024-01-01 10:00:00', new \DateTimeZone('UTC')),
             true,
+        ];
+
+        yield 'strava activity with same filename but different start instant' => [
+            ImportSource::STRAVA_API,
+            'ride.fit',
+            SportType::RIDE,
+            SerializableDateTime::fromString('2023-10-10'),
+            ['start_date' => '2023-10-10T08:00:00Z'],
+            'ride.fit',
+            SportType::RUN,
+            SerializableDateTime::fromString('2024-01-01 10:00:00', new \DateTimeZone('UTC')),
+            false,
+        ];
+
+        yield 'strava activity with same filename and same instant in another timezone' => [
+            ImportSource::STRAVA_API,
+            'ride.fit',
+            SportType::RIDE,
+            SerializableDateTime::fromString('2023-10-10'),
+            ['start_date' => '2024-01-01T10:00:00Z'],
+            'ride.fit',
+            SportType::RUN,
+            SerializableDateTime::fromString('2024-01-01 11:00:00', new \DateTimeZone('Europe/Brussels')),
+            true,
+        ];
+
+        yield 'strava activity with same filename and start instant within tolerance' => [
+            ImportSource::STRAVA_API,
+            'ride.fit',
+            SportType::RIDE,
+            SerializableDateTime::fromString('2023-10-10'),
+            ['start_date' => '2024-01-01T10:00:30Z'],
+            'ride.fit',
+            SportType::RUN,
+            SerializableDateTime::fromString('2024-01-01 10:00:00', new \DateTimeZone('UTC')),
+            true,
+        ];
+
+        yield 'strava activity with same filename and start instant outside tolerance' => [
+            ImportSource::STRAVA_API,
+            'ride.fit',
+            SportType::RIDE,
+            SerializableDateTime::fromString('2023-10-10'),
+            ['start_date' => '2024-01-01T10:05:00Z'],
+            'ride.fit',
+            SportType::RUN,
+            SerializableDateTime::fromString('2024-01-01 10:00:00', new \DateTimeZone('UTC')),
+            false,
+        ];
+
+        yield 'strava activity with same filename but no start_date in raw data' => [
+            ImportSource::STRAVA_API,
+            'ride.fit',
+            SportType::RIDE,
+            SerializableDateTime::fromString('2023-10-10'),
+            ['raw' => 'data'],
+            'ride.fit',
+            SportType::RUN,
+            SerializableDateTime::fromString('2024-01-01 10:00:00', new \DateTimeZone('UTC')),
+            false,
         ];
 
         yield 'matching sport type and start date' => [
@@ -69,6 +131,7 @@ class DuplicateActivityScannerTest extends ContainerTestCase
             'other.fit',
             SportType::RIDE,
             SerializableDateTime::fromString('2023-10-10'),
+            ['raw' => 'data'],
             'ride.fit',
             SportType::RIDE,
             SerializableDateTime::fromString('2023-10-10'),
@@ -80,6 +143,7 @@ class DuplicateActivityScannerTest extends ContainerTestCase
             'other.fit',
             SportType::RIDE,
             SerializableDateTime::fromString('2023-10-10'),
+            ['raw' => 'data'],
             'ride.fit',
             SportType::RUN,
             SerializableDateTime::fromString('2023-10-10'),
@@ -91,6 +155,7 @@ class DuplicateActivityScannerTest extends ContainerTestCase
             'other.fit',
             SportType::RIDE,
             SerializableDateTime::fromString('2023-10-10'),
+            ['raw' => 'data'],
             'ride.fit',
             SportType::RIDE,
             SerializableDateTime::fromString('2024-01-01'),
@@ -102,6 +167,7 @@ class DuplicateActivityScannerTest extends ContainerTestCase
             'ride.fit',
             SportType::RIDE,
             SerializableDateTime::fromString('2023-10-10'),
+            ['raw' => 'data'],
             'ride.fit',
             SportType::RUN,
             SerializableDateTime::fromString('2024-01-01'),
