@@ -116,9 +116,11 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Tag commutes', $body);
         $this->assertStringContainsString('Assign the gravel bike', $body);
 
+        // Enabled/disabled badges.
         $this->assertStringContainsString('Enabled', $items->eq(0)->text());
         $this->assertStringContainsString('Disabled', $items->eq(1)->text());
 
+        // Condition/action labels come from the translatable components.
         $this->assertStringContainsString('Recording device', $items->eq(0)->text());
         $this->assertStringContainsString('is garmin-edge-530', $items->eq(0)->text());
         $this->assertStringContainsString('Mark as commute', $items->eq(0)->text());

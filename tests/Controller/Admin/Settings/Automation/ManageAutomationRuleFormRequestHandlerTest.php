@@ -81,8 +81,10 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $form = $crawler->filter('form[data-dispatch-command="add-automation-rule"]');
         $this->assertCount(1, $form);
 
+        // Add mode carries no id.
         $this->assertCount(0, $form->filter('input[type="hidden"][name="automationRuleId"]'));
 
+        // Both repeaters start empty and offer every registered condition/action type.
         $this->assertStringContainsString('[]', (string) $crawler->filter('[data-repeater-list]')->eq(0)->attr('data-repeater-initial'));
         $conditionOptions = $crawler->filter('select[name="conditions[__index__][type]"] option')->extract(['value']);
         $this->assertContains('device', $conditionOptions);
@@ -121,6 +123,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('automationRule-42', $form->filter('input[type="hidden"][name="automationRuleId"]')->attr('value'));
         $this->assertSame('Tag commutes', $form->filter('input[name="label"]')->attr('value'));
 
+        // The repeaters are seeded with the stored conditions/actions as JSON.
         $conditionsInitial = (string) $crawler->filter('[data-repeater-list]')->eq(0)->attr('data-repeater-initial');
         $this->assertStringContainsString('"type":"device"', $conditionsInitial);
         $this->assertStringContainsString('garmin-edge-530', $conditionsInitial);
