@@ -173,7 +173,7 @@ class AutomationRuleEngineTest extends ContainerTestCase
         $this->saveRule(
             id: '1',
             conditions: ConfiguredConditions::fromArray([
-                new ConfiguredCondition(ConditionType::PASSES_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.05, 'longitude' => 4.0, 'radius' => 1.0])),
+                new ConfiguredCondition(ConditionType::PASSES_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.05, 'longitude' => 4.0, 'radius' => 1000.0])),
             ]),
             actions: ConfiguredActions::fromArray([
                 new ConfiguredAction(ActionType::ASSIGN_GEAR, RuleConfiguration::fromConfig(['gearId' => 'gear-my-bike'])),
@@ -196,7 +196,7 @@ class AutomationRuleEngineTest extends ContainerTestCase
         $this->saveRule(
             id: 'near',
             conditions: ConfiguredConditions::fromArray([
-                new ConfiguredCondition(ConditionType::STARTS_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.05, 'longitude' => 4.0, 'radius' => 1.0])),
+                new ConfiguredCondition(ConditionType::STARTS_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.05, 'longitude' => 4.0, 'radius' => 1000.0])),
             ]),
             actions: ConfiguredActions::fromArray([
                 new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Started near home'])),
@@ -205,7 +205,7 @@ class AutomationRuleEngineTest extends ContainerTestCase
         $this->saveRule(
             id: 'away',
             conditions: ConfiguredConditions::fromArray([
-                new ConfiguredCondition(ConditionType::STARTS_NEAR, RuleConfiguration::fromConfig(['operator' => 'outside', 'latitude' => 51.05, 'longitude' => 4.0, 'radius' => 1.0])),
+                new ConfiguredCondition(ConditionType::STARTS_NEAR, RuleConfiguration::fromConfig(['operator' => 'outside', 'latitude' => 51.05, 'longitude' => 4.0, 'radius' => 1000.0])),
             ]),
             actions: ConfiguredActions::fromArray([
                 new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Started away'])),

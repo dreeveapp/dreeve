@@ -98,6 +98,8 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
             ['mi', UnitSystem::IMPERIAL, 'distance'],
             ['m', UnitSystem::METRIC, 'elevation'],
             ['ft', UnitSystem::IMPERIAL, 'elevation'],
+            ['m', UnitSystem::METRIC, 'proximity'],
+            ['ft', UnitSystem::IMPERIAL, 'proximity'],
         ];
     }
 }

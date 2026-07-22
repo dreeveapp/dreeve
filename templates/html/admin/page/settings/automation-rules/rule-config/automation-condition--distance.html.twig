@@ -8,7 +8,7 @@
         </select>
     </div>
     <div>
-        <label class="mt-0! text-xs">{{ "Distance (km)"|trans({}, 'admin') }}</label>
+        <label class="mt-0! text-xs">{{ "Distance"|trans({}, 'admin') }} ({{ renderUnitSymbol('distance') }})</label>
         <input type="number" step="0.1" min="0" name="{{ namePrefix }}[value]" data-repeater-field="config.value"
                required placeholder="10" class="mt-0">
     </div>

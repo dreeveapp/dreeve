@@ -7,7 +7,10 @@ namespace App\Tests\Domain\Automation\Condition;
 use App\Domain\Automation\Condition\DistanceCondition;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
+use App\Domain\Settings\AppearanceSettings;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
+use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -39,7 +42,7 @@ class DistanceConditionTest extends TestCase
 
     public function testGuardThrowsOnNegativeValue(): void
     {
-        $this->expectExceptionObject(new InvalidAutomationRule('A "value" of at least 0 kilometer is required.'));
+        $this->expectExceptionObject(new InvalidAutomationRule('A "value" of at least 0 is required.'));
 
         $this->condition->guardValidConfiguration($this->config('gte', -1.0));
     }
@@ -63,9 +66,28 @@ class DistanceConditionTest extends TestCase
         $this->assertFalse($this->condition->matches($activity, $this->config('eq', 40.0)));
     }
 
+    public function testMatchesInterpretsTheValueInMilesForImperialUnitSystem(): void
+    {
+        $condition = $this->conditionFor(UnitSystem::IMPERIAL);
+        $activity = ActivityBuilder::fromDefaults()->withDistance(Kilometer::from(16.1))->build();
+
+        $this->assertTrue($condition->matches($activity, $this->config('gte', 10.0)));
+        $this->assertFalse($condition->matches($activity, $this->config('gte', 12.0)));
+    }
+
     private function config(string $operator, float $value): RuleConfiguration
     {
         return RuleConfiguration::fromConfig(['operator' => $operator, 'value' => $value]);
+    }
+
+    private function conditionFor(UnitSystem $unitSystem): DistanceCondition
+    {
+        $settingsRepository = $this->createStub(SettingsRepository::class);
+        $settingsRepository
+            ->method('appearance')
+            ->willReturn(AppearanceSettings::fromArray(['unitSystem' => $unitSystem->value]));
+
+        return new DistanceCondition($settingsRepository);
     }
 
     #[\Override]
@@ -73,6 +95,6 @@ class DistanceConditionTest extends TestCase
     {
         parent::setUp();
 
-        $this->condition = new DistanceCondition();
+        $this->condition = $this->conditionFor(UnitSystem::METRIC);
     }
 }

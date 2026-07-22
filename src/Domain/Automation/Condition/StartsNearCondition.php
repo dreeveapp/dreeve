@@ -6,11 +6,17 @@ namespace App\Domain\Automation\Condition;
 
 use App\Domain\Activity\Activity;
 use App\Domain\Automation\RuleConfiguration;
+use App\Domain\Settings\SettingsRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class StartsNearCondition implements Condition
 {
     use MatchesCoordinateWithinRadius;
+
+    public function __construct(
+        private SettingsRepository $settingsRepository,
+    ) {
+    }
 
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {

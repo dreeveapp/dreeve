@@ -101,7 +101,6 @@ Description: Descrição
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Instruções detalhadas estão disponíveis {linkOpen}na documentação{linkClose}.'
 Disabled: Disabled
 Distance: Distance
-'Distance (km)': 'Distance (km)'
 'Drag to reorder': 'Arraste para reordenar'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Arraste para definir a ordem em que os tipos de esporte são exibidos em todo o aplicativo.'
 Edit: Editar
@@ -239,7 +238,7 @@ Password: Senha
 'Processed on': 'Processado em'
 'Profile picture URL': 'URL da foto do perfil'
 Provider: Provedor
-'Radius (km)': 'Radius (km)'
+Radius: Radius
 'Rebuild pending': 'Recompilação pendente'
 'Recording device': 'Recording device'
 'Recording device management': 'Gerenciamento de dispositivos de gravação'

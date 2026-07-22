@@ -7,10 +7,16 @@ namespace App\Domain\Automation\Condition;
 use App\Domain\Activity\Activity;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
+use App\Domain\Settings\SettingsRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class DistanceCondition implements Condition
 {
+    public function __construct(
+        private SettingsRepository $settingsRepository,
+    ) {
+    }
+
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
         return $translator->trans('Distance', domain: 'admin', locale: $locale);
@@ -19,9 +25,10 @@ final readonly class DistanceCondition implements Condition
     public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): string
     {
         return sprintf(
-            '%s %s km',
+            '%s %s %s',
             ComparisonOperator::from($configuration->getString('operator'))->trans($translator),
             (float) $configuration->getNumber('value'),
+            $this->settingsRepository->appearance()->getUnitSystem()->distanceSymbol(),
         );
     }
 
@@ -52,7 +59,7 @@ final readonly class DistanceCondition implements Condition
 
         $value = $configuration->get('value');
         if ((!is_int($value) && !is_float($value)) || $value < 0) {
-            throw new InvalidAutomationRule('A "value" of at least 0 kilometer is required.');
+            throw new InvalidAutomationRule('A "value" of at least 0 is required.');
         }
     }
 
@@ -62,7 +69,7 @@ final readonly class DistanceCondition implements Condition
         $value = $configuration->getNumber('value');
 
         return ComparisonOperator::from($operator)->isSatisfiedBy(
-            actual: $activity->getDistance()->toFloat(),
+            actual: $activity->getDistance()->toUnitSystem($this->settingsRepository->appearance()->getUnitSystem())->toFloat(),
             expected: (float) $value
         );
     }

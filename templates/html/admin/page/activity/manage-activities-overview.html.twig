@@ -86,10 +86,12 @@
                 <tbody>
                 {% for activity in overview %}
                     <tr class="group/row">
-                        <td class="whitespace-nowrap text-left font-medium text-gray-800">
-                            <span class="block max-w-100 truncate" title="{{ activity.getName() }}">
+                        <td class="whitespace-nowrap text-left">
+                            <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
+                               title="{{ activity.getName() }}"
+                               href="{{ relativeUrl('/activities#/activity/' ~ activity.getActivityId() ~ '.html') }}">
                                 {{ activity.getName() }}
-                            </span>
+                            </a>
                         </td>
                         <td class="whitespace-nowrap text-left">
                             {{ activity.getSportType()|trans }}

@@ -172,9 +172,9 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
                 ->withSortOrder(1)
                 ->withConditions(ConfiguredConditions::fromArray([
                     new ConfiguredCondition(ConditionType::DISTANCE, RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 10.0])),
-                    new ConfiguredCondition(ConditionType::STARTS_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.2, 'longitude' => 3.1, 'radius' => 1.5])),
-                    new ConfiguredCondition(ConditionType::ENDS_NEAR, RuleConfiguration::fromConfig(['operator' => 'outside', 'latitude' => 51.2, 'longitude' => 3.1, 'radius' => 1.5])),
-                    new ConfiguredCondition(ConditionType::PASSES_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.2, 'longitude' => 3.1, 'radius' => 2.0])),
+                    new ConfiguredCondition(ConditionType::STARTS_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.2, 'longitude' => 3.1, 'radius' => 500.0])),
+                    new ConfiguredCondition(ConditionType::ENDS_NEAR, RuleConfiguration::fromConfig(['operator' => 'outside', 'latitude' => 51.2, 'longitude' => 3.1, 'radius' => 500.0])),
+                    new ConfiguredCondition(ConditionType::PASSES_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.2, 'longitude' => 3.1, 'radius' => 250.0])),
                 ]))
                 ->withActions(ConfiguredActions::fromArray([
                     new ConfiguredAction(ActionType::SET_SPORT_TYPE, RuleConfiguration::fromConfig(['sportType' => 'Ride'])),
@@ -212,11 +212,11 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Distance', $secondRule);
         $this->assertStringContainsString('at least 10 km', $secondRule);
         $this->assertStringContainsString('Starts near', $secondRule);
-        $this->assertStringContainsString('within radius 1.5 km (51.2, 3.1)', $secondRule);
+        $this->assertStringContainsString('within radius 500 m (51.2, 3.1)', $secondRule);
         $this->assertStringContainsString('Ends near', $secondRule);
-        $this->assertStringContainsString('outside radius 1.5 km (51.2, 3.1)', $secondRule);
+        $this->assertStringContainsString('outside radius 500 m (51.2, 3.1)', $secondRule);
         $this->assertStringContainsString('Passes near', $secondRule);
-        $this->assertStringContainsString('within radius 2 km (51.2, 3.1)', $secondRule);
+        $this->assertStringContainsString('within radius 250 m (51.2, 3.1)', $secondRule);
         $this->assertStringContainsString('Set sport type', $secondRule);
         $this->assertStringContainsString('Rides', $secondRule);
         $this->assertStringContainsString('Set workout type', $secondRule);

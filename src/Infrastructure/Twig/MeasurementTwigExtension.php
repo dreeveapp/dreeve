@@ -90,6 +90,7 @@ final readonly class MeasurementTwigExtension
         return match ($unitName) {
             'distance' => $unitSystem->distanceSymbol(),
             'elevation' => $unitSystem->elevationSymbol(),
+            'proximity' => $unitSystem->proximitySymbol(),
             'pace' => $unitSystem->paceSymbol(),
             'speed' => $unitSystem->speedSymbol(),
             default => throw new \RuntimeException(sprintf('Invalid unitName "%s"', $unitName)),

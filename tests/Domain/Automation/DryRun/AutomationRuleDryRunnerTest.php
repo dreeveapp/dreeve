@@ -189,7 +189,7 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
         $this->saveRule(
             id: '1',
             conditions: ConfiguredConditions::fromArray([
-                new ConfiguredCondition(ConditionType::STARTS_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.05, 'longitude' => 4.0, 'radius' => 1.0])),
+                new ConfiguredCondition(ConditionType::STARTS_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.05, 'longitude' => 4.0, 'radius' => 1000.0])),
             ]),
             actions: $this->setName('Started near home'),
         );

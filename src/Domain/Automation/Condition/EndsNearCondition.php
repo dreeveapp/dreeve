@@ -6,6 +6,7 @@ namespace App\Domain\Automation\Condition;
 
 use App\Domain\Activity\Activity;
 use App\Domain\Automation\RuleConfiguration;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\Geography\Latitude;
@@ -15,6 +16,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final readonly class EndsNearCondition implements Condition
 {
     use MatchesCoordinateWithinRadius;
+
+    public function __construct(
+        private SettingsRepository $settingsRepository,
+    ) {
+    }
 
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {

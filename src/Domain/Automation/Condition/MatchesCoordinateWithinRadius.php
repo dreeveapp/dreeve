@@ -15,9 +15,10 @@ trait MatchesCoordinateWithinRadius
     public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): string
     {
         return sprintf(
-            '%s %s km (%s, %s)',
+            '%s %s %s (%s, %s)',
             MatchOperator::from($configuration->getString('operator'))->trans($translator),
             (float) $configuration->getNumber('radius'),
+            $this->settingsRepository->appearance()->getUnitSystem()->proximitySymbol(),
             (float) $configuration->getNumber('latitude'),
             (float) $configuration->getNumber('longitude'),
         );
@@ -29,7 +30,7 @@ trait MatchesCoordinateWithinRadius
             'operator' => MatchOperator::WITHIN->value,
             'latitude' => 0.0,
             'longitude' => 0.0,
-            'radius' => 1.0,
+            'radius' => 500.0,
         ]);
     }
 
@@ -52,7 +53,7 @@ trait MatchesCoordinateWithinRadius
 
         $radius = $configuration->get('radius');
         if ((!is_int($radius) && !is_float($radius)) || $radius <= 0) {
-            throw new InvalidAutomationRule('A "radius" greater than 0 kilometer is required.');
+            throw new InvalidAutomationRule('A "radius" greater than 0 is required.');
         }
     }
 
@@ -74,6 +75,8 @@ trait MatchesCoordinateWithinRadius
             lon2: $coordinate->getLongitude()->toFloat(),
         );
 
-        return MatchOperator::from($operator)->isSatisfiedBy($distanceInMeters <= (float) $radius * 1000.0);
+        $radiusInMeters = $this->settingsRepository->appearance()->getUnitSystem()->proximity((float) $radius)->toMeter()->toFloat();
+
+        return MatchOperator::from($operator)->isSatisfiedBy($distanceInMeters <= $radiusInMeters);
     }
 }

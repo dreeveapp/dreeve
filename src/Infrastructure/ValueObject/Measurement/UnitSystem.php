@@ -56,6 +56,20 @@ enum UnitSystem: string implements TranslatableInterface
         return $this->elevation(1)->getSymbol();
     }
 
+    public function proximity(float $value): Meter|Foot
+    {
+        if (UnitSystem::METRIC === $this) {
+            return Meter::from($value);
+        }
+
+        return Foot::from($value);
+    }
+
+    public function proximitySymbol(): string
+    {
+        return $this->proximity(1)->getSymbol();
+    }
+
     public function speed(float $value): KmPerHour|MilesPerHour
     {
         if (UnitSystem::METRIC === $this) {
