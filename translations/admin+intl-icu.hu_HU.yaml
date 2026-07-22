@@ -161,6 +161,7 @@ Import: Import
 'Import data & build app': 'Import data & build app'
 'Import segment details': 'Import segment details'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
+'Import source': 'Import source'
 'Imported files will appear here once you upload them.': 'Imported files will appear here once you upload them.'
 'Imported from Strava': 'Imported from Strava'
 'Imports new Strava activities and rebuilds the app.': 'Imports new Strava activities and rebuilds the app.'
@@ -197,6 +198,7 @@ Model: Model
 Monday: Monday
 'More pages': 'More pages'
 'No activities imported yet.': 'No activities imported yet.'
+'No activities match the current filters.': 'No activities match the current filters.'
 'No activity found for that ID.': 'No activity found for that ID.'
 'No automation rules yet.': 'No automation rules yet.'
 'No components yet.': 'No components yet.'

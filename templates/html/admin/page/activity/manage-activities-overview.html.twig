@@ -7,6 +7,52 @@
                 {{ "Activity management"|trans({}, 'admin') }}
             </h3>
         </div>
+        {% if not overview.isEmpty() or not filters.isEmpty() %}
+            <form method="get" class="mb-4 flex flex-wrap items-end gap-3">
+                <div>
+                    <label for="filter-sport-type" class="mt-0! text-xs text-gray-500">{{ "Sport type"|trans({}, 'admin') }}</label>
+                    <select id="filter-sport-type" name="filters[sportType]">
+                        <option value="">{{ "All"|trans }}</option>
+                        {% for sportType in sportTypeOptions %}
+                            <option value="{{ sportType.value }}" {{ sportType == filters.getSportType() ? 'selected' }}>{{ sportType|trans }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="filter-gear" class="mt-0! text-xs text-gray-500">{{ "Gear"|trans }}</label>
+                    <select id="filter-gear" name="filters[gear]">
+                        <option value="">{{ "All"|trans }}</option>
+                        {% for gear in gearOptions %}
+                            <option value="{{ gear.getId() }}" {{ gear.getId() == filters.getGearId() ? 'selected' }}>{{ gear.getName() }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="filter-device" class="mt-0! text-xs text-gray-500">{{ "Device"|trans }}</label>
+                    <select id="filter-device" name="filters[device]">
+                        <option value="">{{ "All"|trans }}</option>
+                        {% for device in deviceOptions %}
+                            <option value="{{ device.getName() }}" {{ device.getName() == filters.getDevice() ? 'selected' }}>{{ device.getName() }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="filter-import-source" class="mt-0! text-xs text-gray-500">{{ "Import source"|trans({}, 'admin') }}</label>
+                    <select id="filter-import-source" name="filters[importSource]">
+                        <option value="">{{ "All"|trans }}</option>
+                        {% for importSource in importSourceOptions %}
+                            <option value="{{ importSource.value }}" {{ importSource == filters.getImportSource() ? 'selected' }}>{{ importSource.label() }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn--primary">{{ "Apply"|trans({}, 'admin') }}</button>
+                {% if not filters.isEmpty() %}
+                    <a href="{{ relativeUrl(path('admin_manage_activity_overview')) }}" type="button" class="btn--secondary">
+                        {{ "Clear filters"|trans({}, 'admin') }}
+                    </a>
+                {% endif %}
+            </form>
+        {% endif %}
         <div class="relative overflow-x-auto">
             <table class="data-table">
                 <thead>
@@ -108,10 +154,19 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 9h6m-6 3h6m-6 3h6M6.996 9h.01m-.01 3h.01m-.01 3h.01M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/>
                                     </svg>
                                 </span>
-                                <div class="flex flex-col gap-1">
-                                    <span class="text-sm font-medium text-gray-800">{{ "No activities imported yet."|trans({}, 'admin') }}</span>
-                                    <span class="text-xs text-gray-500">{{ "Activities will appear here once they are imported."|trans({}, 'admin') }}</span>
-                                </div>
+                                {% if filters.isEmpty() %}
+                                    <div class="flex flex-col gap-1">
+                                        <span class="text-sm font-medium text-gray-800">{{ "No activities imported yet."|trans({}, 'admin') }}</span>
+                                        <span class="text-xs text-gray-500">{{ "Activities will appear here once they are imported."|trans({}, 'admin') }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="flex flex-col gap-1">
+                                        <span class="text-sm font-medium text-gray-800">{{ "No activities match the current filters."|trans({}, 'admin') }}</span>
+                                    </div>
+                                    <a href="{{ relativeUrl(path('admin_manage_activity_overview')) }}" class="btn--primary mt-1">
+                                        {{ "Clear filters"|trans({}, 'admin') }}
+                                    </a>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>

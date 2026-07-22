@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
+use App\Controller\Admin\Activity\ActivityOverviewFilters;
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Gear\GearId;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
@@ -12,9 +14,9 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class DbalActivityOverviewRepository extends DbalRepository implements ActivityOverviewRepository
 {
-    public function find(Pagination $pagination): Overview
+    public function find(Pagination $pagination, ActivityOverviewFilters $filters): Overview
     {
-        $results = $this->connection->createQueryBuilder()
+        $queryBuilder = $this->connection->createQueryBuilder()
             ->select(
                 'a.activityId',
                 'a.name',
@@ -29,12 +31,41 @@ final readonly class DbalActivityOverviewRepository extends DbalRepository imple
             ->leftJoin('a', 'Gear', 'g', 'a.gearId = g.gearId')
             ->orderBy('a.startDateTime', 'DESC')
             ->setFirstResult($pagination->getOffset())
-            ->setMaxResults($pagination->getLimit())
+            ->setMaxResults($pagination->getLimit());
+
+        $countQueryBuilder = $this->connection->createQueryBuilder()
+            ->select('COUNT(*)')
+            ->from('Activity', 'a');
+
+        foreach ([$queryBuilder, $countQueryBuilder] as $builder) {
+            if (($sportType = $filters->getSportType()) instanceof SportType) {
+                $builder
+                    ->andWhere('a.sportType = :sportType')
+                    ->setParameter('sportType', $sportType->value);
+            }
+            if (($gearId = $filters->getGearId()) instanceof GearId) {
+                $builder
+                    ->andWhere('a.gearId = :gearId')
+                    ->setParameter('gearId', (string) $gearId);
+            }
+            if (null !== $device = $filters->getDevice()) {
+                $builder
+                    ->andWhere('a.deviceName = :deviceName')
+                    ->setParameter('deviceName', $device);
+            }
+            if (($importSource = $filters->getImportSource()) instanceof ImportSource) {
+                $builder
+                    ->andWhere('a.importSource = :importSource')
+                    ->setParameter('importSource', $importSource->value);
+            }
+        }
+
+        $results = $queryBuilder
             ->executeQuery()
             ->fetchAllAssociative();
 
-        $total = (int) $this->connection
-            ->executeQuery('SELECT COUNT(*) FROM Activity')
+        $total = (int) $countQueryBuilder
+            ->executeQuery()
             ->fetchOne();
 
         return Overview::create(

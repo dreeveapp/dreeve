@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Activity;
 
+use App\Controller\Admin\Activity\ActivityOverviewFilters;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ActivityOverviewItem;
@@ -12,6 +13,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\DbalActivityOverviewRepository;
 use App\Domain\Activity\DbalActivityRepository;
+use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\DbalGearRepository;
 use App\Domain\Gear\GearId;
@@ -21,6 +23,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Request;
 
 class DbalActivityOverviewRepositoryTest extends ContainerTestCase
 {
@@ -51,7 +54,10 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
             ['raw' => 'data'],
         ));
 
-        $overview = $this->activityOverviewRepository->find(Pagination::fromOffsetAndLimit(0, 10));
+        $overview = $this->activityOverviewRepository->find(
+            Pagination::fromOffsetAndLimit(0, 10),
+            ActivityOverviewFilters::fromRequest(new Request())
+        );
 
         $this->assertEquals(
             [
@@ -79,7 +85,7 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
     ): void {
         $this->seedThreeActivities();
 
-        $overview = $this->activityOverviewRepository->find($pagination);
+        $overview = $this->activityOverviewRepository->find($pagination, ActivityOverviewFilters::fromRequest(new Request()));
 
         $this->assertSame(
             $expectedNames,
@@ -231,11 +237,97 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
 
     public function testFindReturnsAnEmptyOverviewWhenThereIsNoData(): void
     {
-        $overview = $this->activityOverviewRepository->find(Pagination::fromOffsetAndLimit(0, 10));
+        $overview = $this->activityOverviewRepository->find(
+            Pagination::fromOffsetAndLimit(0, 10),
+            ActivityOverviewFilters::fromRequest(new Request())
+        );
 
         $this->assertTrue($overview->isEmpty());
         $this->assertSame([], $overview->getItems());
         $this->assertEquals(0, $overview->getTotal());
+    }
+
+    #[DataProvider('provideFilterScenarios')]
+    public function testFindAppliesFilters(
+        array $filters,
+        Pagination $pagination,
+        array $expectedNames,
+        int $expectedTotal,
+    ): void {
+        $this->seedThreeActivities();
+
+        $overview = $this->activityOverviewRepository->find(
+            $pagination,
+            ActivityOverviewFilters::fromRequest(new Request(query: ['filters' => $filters]))
+        );
+
+        $this->assertSame(
+            $expectedNames,
+            array_map(
+                static fn (ActivityOverviewItem $item): string => (string) $item->getName(),
+                $overview->getItems()
+            )
+        );
+        $this->assertEquals($expectedTotal, $overview->getTotal());
+    }
+
+    public static function provideFilterScenarios(): iterable
+    {
+        yield 'a sport type filter narrows both the items and the total' => [
+            ['sportType' => 'Run'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['Newest', 'Oldest'],
+            2,
+        ];
+
+        yield 'a sport type filter combines with pagination while the total keeps reflecting the filter' => [
+            ['sportType' => 'Run'],
+            Pagination::fromOffsetAndLimit(0, 1),
+            ['Newest'],
+            2,
+        ];
+
+        yield 'a gear filter narrows the items' => [
+            ['gear' => 'gear-99'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['Oldest'],
+            1,
+        ];
+
+        yield 'a device filter narrows the items' => [
+            ['device' => 'Wahoo Elemnt'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['Middle'],
+            1,
+        ];
+
+        yield 'an import source filter narrows the items' => [
+            ['importSource' => 'stravaApi'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['Oldest'],
+            1,
+        ];
+
+        yield 'filters combine' => [
+            ['sportType' => 'Run', 'importSource' => 'gpxFile'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['Newest'],
+            1,
+        ];
+
+        yield 'filters that match nothing yield an empty overview' => [
+            ['sportType' => 'Ride', 'gear' => 'gear-99'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            [],
+            0,
+        ];
+
+        yield 'an invalid filter value behaves as if no filter was applied' => [
+            ['sportType' => 'bogus'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['Newest', 'Middle', 'Oldest'],
+            3,
+        ];
     }
 
     private function seedThreeActivities(): void
@@ -244,6 +336,10 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
                 ->withName('Oldest')
+                ->withSportType(SportType::RUN)
+                ->withGearId(GearId::fromUnprefixed('99'))
+                ->withDeviceName('Garmin Forerunner')
+                ->withImportSource(ImportSource::STRAVA_API)
                 ->withStartDateTime(SerializableDateTime::fromString('2026-06-01 08:00:00'))
                 ->build(),
             [],
@@ -252,6 +348,10 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('2'))
                 ->withName('Middle')
+                ->withSportType(SportType::RIDE)
+                ->withGearId(GearId::fromUnprefixed('100'))
+                ->withDeviceName('Wahoo Elemnt')
+                ->withImportSource(ImportSource::FIT_FILE)
                 ->withStartDateTime(SerializableDateTime::fromString('2026-06-02 08:00:00'))
                 ->build(),
             [],
@@ -260,6 +360,8 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('3'))
                 ->withName('Newest')
+                ->withSportType(SportType::RUN)
+                ->withImportSource(ImportSource::GPX_FILE)
                 ->withStartDateTime(SerializableDateTime::fromString('2026-06-03 08:00:00'))
                 ->build(),
             [],

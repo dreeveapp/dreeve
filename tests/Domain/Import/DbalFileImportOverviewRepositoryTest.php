@@ -52,7 +52,10 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
                 ->build()
         );
 
-        $overview = $this->fileImportOverviewRepository->find(Pagination::fromOffsetAndLimit(0, 10), self::filters());
+        $overview = $this->fileImportOverviewRepository->find(
+            Pagination::fromOffsetAndLimit(0, 10),
+            FileImportOverviewFilters::fromRequest(new Request())
+        );
 
         $this->assertEquals(
             [
@@ -80,7 +83,7 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
     ): void {
         $this->seedThreeFileImports();
 
-        $overview = $this->fileImportOverviewRepository->find($pagination, self::filters());
+        $overview = $this->fileImportOverviewRepository->find($pagination, FileImportOverviewFilters::fromRequest(new Request()));
 
         $this->assertSame(
             $expectedFilenames,
@@ -122,7 +125,10 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
 
     public function testFindReturnsAnEmptyOverviewWhenThereIsNoData(): void
     {
-        $overview = $this->fileImportOverviewRepository->find(Pagination::fromOffsetAndLimit(0, 10), self::filters());
+        $overview = $this->fileImportOverviewRepository->find(
+            Pagination::fromOffsetAndLimit(0, 10),
+            FileImportOverviewFilters::fromRequest(new Request())
+        );
 
         $this->assertTrue($overview->isEmpty());
         $this->assertSame([], $overview->getItems());
@@ -138,7 +144,10 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
     ): void {
         $this->seedThreeFileImports();
 
-        $overview = $this->fileImportOverviewRepository->find($pagination, self::filters($filters));
+        $overview = $this->fileImportOverviewRepository->find(
+            $pagination,
+            FileImportOverviewFilters::fromRequest(new Request(query: ['filters' => $filters]))
+        );
 
         $this->assertSame(
             $expectedFilenames,
@@ -224,11 +233,6 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
                 ->withImportedOn(SerializableDateTime::fromString('2026-06-03 08:00:00'))
                 ->build()
         );
-    }
-
-    private static function filters(array $filters = []): FileImportOverviewFilters
-    {
-        return FileImportOverviewFilters::fromRequest(new Request(query: ['filters' => $filters]));
     }
 
     #[\Override]

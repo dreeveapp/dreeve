@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
+use App\Controller\Admin\Activity\ActivityOverviewFilters;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
 
@@ -14,6 +15,7 @@ interface ActivityOverviewRepository
      */
     public function find(
         Pagination $pagination,
+        ActivityOverviewFilters $filters,
     ): Overview;
 
     /**
