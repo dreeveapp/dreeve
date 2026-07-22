@@ -20,12 +20,7 @@
 {% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': breadcrumbs} %}
 {% autoescape false %}
     <div class="flex lg:hidden p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-        <div class="flex w-full p-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50"
-             role="alert">
-            <svg class="shrink-0 inline size-4 me-3 mt-0.5" aria-hidden="true"
-                 xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-            </svg>
+        <div class="alert alert--warning w-full" role="alert">
             <span class="sr-only">Info</span>
             <div>
                 {{ "Rewind comparisons are only available on larger screens."|trans }}

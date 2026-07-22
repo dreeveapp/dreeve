@@ -1,0 +1,25 @@
+@layer components {
+    .alert {
+        @apply flex items-start p-4 text-sm border rounded-lg;
+
+        &::before {
+            content: '';
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='currentColor' d='M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z'/%3E%3C/svg%3E");
+            mask-repeat: no-repeat;
+            mask-size: 100%;
+            @apply shrink-0 size-4 me-3 mt-0.5 bg-current;
+        }
+
+        &.alert--info {
+            @apply text-blue-800 border-blue-300 bg-blue-50;
+        }
+
+        &.alert--warning {
+            @apply text-yellow-800 border-yellow-300 bg-yellow-50;
+        }
+
+        &.alert--danger {
+            @apply text-red-800 border-red-300 bg-red-50;
+        }
+    }
+}
