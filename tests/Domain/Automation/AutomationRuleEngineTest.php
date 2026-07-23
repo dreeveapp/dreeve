@@ -61,7 +61,7 @@ class AutomationRuleEngineTest extends ContainerTestCase
         $this->assertSame(WorkoutType::RACE, $result->getWorkoutType());
     }
 
-    public function testOnlyTheFirstMatchingRuleIsApplied(): void
+    public function testProcessingStopsAtAMatchedRuleThatStopsProcessing(): void
     {
         $this->saveRule(
             id: 'first',
@@ -89,7 +89,115 @@ class AutomationRuleEngineTest extends ContainerTestCase
         );
 
         $this->assertSame('First', $result->getName());
-        $this->assertFalse($result->isCommute(), 'The second rule must never run once the first matched.');
+        $this->assertFalse($result->isCommute(), 'The second rule must never run once a matched rule stopped processing.');
+    }
+
+    public function testAllMatchingRulesApplyWhenTheyDoNotStopProcessing(): void
+    {
+        $this->saveRule(
+            id: 'first',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'First'])),
+                new ConfiguredAction(ActionType::MARK_AS_COMMUTE, RuleConfiguration::fromConfig(['isCommute' => true])),
+            ]),
+            stopProcessing: false,
+        );
+        $this->saveRule(
+            id: 'second',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Second'])),
+                new ConfiguredAction(ActionType::SET_DESCRIPTION, RuleConfiguration::fromConfig(['description' => 'From second rule'])),
+            ]),
+            sortOrder: 1,
+            stopProcessing: false,
+        );
+
+        $result = $this->engine->apply(
+            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withIsCommute(false)->build()
+        );
+
+        $this->assertSame('Second', $result->getName(), 'A later rule overwrites the value set by an earlier rule.');
+        $this->assertTrue($result->isCommute());
+        $this->assertSame('From second rule', $result->getDescription());
+    }
+
+    public function testConditionsAreEvaluatedAgainstTheOriginalActivity(): void
+    {
+        $this->saveRule(
+            id: 'changes-sport-type',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_SPORT_TYPE, RuleConfiguration::fromConfig(['sportType' => 'GravelRide'])),
+            ]),
+            stopProcessing: false,
+        );
+        $this->saveRule(
+            id: 'targets-original-sport-type',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Matched original sport type'])),
+            ]),
+            sortOrder: 1,
+            stopProcessing: false,
+        );
+        $this->saveRule(
+            id: 'targets-new-sport-type',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['GravelRide']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::MARK_AS_COMMUTE, RuleConfiguration::fromConfig(['isCommute' => true])),
+            ]),
+            sortOrder: 2,
+            stopProcessing: false,
+        );
+
+        $result = $this->engine->apply(
+            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withIsCommute(false)->build()
+        );
+
+        $this->assertSame(SportType::GRAVEL_RIDE, $result->getSportType());
+        $this->assertSame('Matched original sport type', $result->getName(), 'Later rules must still match on the original sport type.');
+        $this->assertFalse($result->isCommute(), 'A rule targeting the sport type set by an earlier rule must not match.');
+    }
+
+    public function testANonMatchingRuleDoesNotStopProcessing(): void
+    {
+        $this->saveRule(
+            id: 'non-matching',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Run']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Should not apply'])),
+            ]),
+        );
+        $this->saveRule(
+            id: 'matching',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Applied'])),
+            ]),
+            sortOrder: 1,
+        );
+
+        $result = $this->engine->apply(
+            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build()
+        );
+
+        $this->assertSame('Applied', $result->getName(), 'Only a rule that actually matched can stop processing.');
     }
 
     public function testDisabledRulesAreSkipped(): void
@@ -311,6 +419,7 @@ class AutomationRuleEngineTest extends ContainerTestCase
             'automationRuleId' => 'automationRule-1',
             'label' => 'Raw rule',
             'isEnabled' => 1,
+            'stopProcessing' => 1,
             'sortOrder' => 0,
             'conditions' => Json::encode([
                 ['type' => 'someRemovedCondition', 'config' => []],
@@ -363,12 +472,14 @@ class AutomationRuleEngineTest extends ContainerTestCase
         ConfiguredActions $actions,
         int $sortOrder = 0,
         bool $enabled = true,
+        bool $stopProcessing = true,
     ): void {
         $this->repository->add(
             AutomationRuleBuilder::fromDefaults()
                 ->withAutomationRuleId(AutomationRuleId::fromUnprefixed($id))
                 ->withSortOrder($sortOrder)
                 ->withIsEnabled($enabled)
+                ->withStopProcessing($stopProcessing)
                 ->withConditions($conditions)
                 ->withActions($actions)
                 ->build()

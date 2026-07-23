@@ -11,11 +11,12 @@ final readonly class AutomationRuleDryRun
 {
     /**
      * @param list<RuleEvaluationResult> $ruleResults
+     * @param list<AutomationRuleId>     $appliedRuleIds
      */
     public function __construct(
         private Activity $activity,
         private array $ruleResults,
-        private ?AutomationRuleId $winningRuleId,
+        private array $appliedRuleIds,
     ) {
     }
 
@@ -32,13 +33,21 @@ final readonly class AutomationRuleDryRun
         return $this->ruleResults;
     }
 
-    public function getWinningRuleId(): ?AutomationRuleId
+    /**
+     * @return list<AutomationRuleId>
+     */
+    public function getAppliedRuleIds(): array
     {
-        return $this->winningRuleId;
+        return $this->appliedRuleIds;
     }
 
-    public function hasWinner(): bool
+    public function hasAppliedRules(): bool
     {
-        return $this->winningRuleId instanceof AutomationRuleId;
+        return [] !== $this->appliedRuleIds;
+    }
+
+    public function countAppliedRules(): int
+    {
+        return count($this->appliedRuleIds);
     }
 }

@@ -35,6 +35,14 @@
                         <label for="rule-enabled" class="mt-0!">{{ "Enabled"|trans({}, 'admin') }}</label>
                     </div>
                 </div>
+                <div class="flex items-start gap-2">
+                    <input type="hidden" name="stopProcessing" value="false">
+                    <input type="checkbox" id="rule-stop-processing" name="stopProcessing" value="true" {{ (rule is null or rule.stopProcessing()) ? 'checked' }} class="mt-0.5">
+                    <div>
+                        <label for="rule-stop-processing" class="mt-0!">{{ "Stop processing further rules when this rule matches"|trans({}, 'admin') }}</label>
+                        <p class="mt-0.5 text-xxs text-gray-500">{{ "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes."|trans({}, 'admin') }}</p>
+                    </div>
+                </div>
                 <div data-repeater data-repeater-min="1" class="rounded-lg border border-gray-200 p-3">
                     <label class="mt-0!">{{ "If all of these match"|trans({}, 'admin') }}</label>
                     <p class="mt-0.5 text-xxs text-gray-500">{{ "Conditions are combined with AND."|trans({}, 'admin') }}</p>

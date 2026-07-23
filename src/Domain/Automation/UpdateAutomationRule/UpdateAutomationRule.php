@@ -26,6 +26,7 @@ final readonly class UpdateAutomationRule extends DomainCommand implements Deser
         private AutomationRuleId $automationRuleId,
         private string $label,
         private bool $isEnabled,
+        private bool $stopProcessing,
         private array $conditions,
         private array $actions,
     ) {
@@ -41,6 +42,7 @@ final readonly class UpdateAutomationRule extends DomainCommand implements Deser
             automationRuleId: AutomationRuleId::fromString(trim($payload['automationRuleId'])),
             label: self::parseLabel($payload),
             isEnabled: self::parseIsEnabled($payload),
+            stopProcessing: self::parseStopProcessing($payload),
             conditions: self::parseConditions($payload),
             actions: self::parseActions($payload),
         );
@@ -59,6 +61,11 @@ final readonly class UpdateAutomationRule extends DomainCommand implements Deser
     public function isEnabled(): bool
     {
         return $this->isEnabled;
+    }
+
+    public function stopProcessing(): bool
+    {
+        return $this->stopProcessing;
     }
 
     /**

@@ -71,6 +71,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
                 ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('1'))
                 ->withLabel('Tag commutes')
                 ->withIsEnabled(true)
+                ->withStopProcessing(false)
                 ->withSortOrder(0)
                 ->withConditions(ConfiguredConditions::fromArray([
                     new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceId' => 'garmin-edge-530'])),
@@ -119,6 +120,12 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         // Enabled/disabled badges.
         $this->assertStringContainsString('Enabled', $items->eq(0)->text());
         $this->assertStringContainsString('Disabled', $items->eq(1)->text());
+
+        // Every rule shows what happens after it matches: stop (the default) or continue.
+        $this->assertStringContainsString('Continues to next rules', $items->eq(0)->text());
+        $this->assertStringNotContainsString('Stops after match', $items->eq(0)->text());
+        $this->assertStringContainsString('Stops after match', $items->eq(1)->text());
+        $this->assertStringNotContainsString('Continues to next rules', $items->eq(1)->text());
 
         // Condition/action labels come from the translatable components.
         $this->assertStringContainsString('Recording device', $items->eq(0)->text());

@@ -19,13 +19,14 @@ final readonly class DbalAutomationRuleRepository extends DbalRepository impleme
 {
     public function add(AutomationRule $automationRule): void
     {
-        $sql = 'INSERT INTO AutomationRule (automationRuleId, label, isEnabled, sortOrder, conditions, actions, createdOn)
-                VALUES (:automationRuleId, :label, :isEnabled, :sortOrder, :conditions, :actions, :createdOn)';
+        $sql = 'INSERT INTO AutomationRule (automationRuleId, label, isEnabled, stopProcessing, sortOrder, conditions, actions, createdOn)
+                VALUES (:automationRuleId, :label, :isEnabled, :stopProcessing, :sortOrder, :conditions, :actions, :createdOn)';
 
         $this->connection->executeStatement($sql, [
             'automationRuleId' => $automationRule->getId(),
             'label' => $automationRule->getLabel(),
             'isEnabled' => (int) $automationRule->isEnabled(),
+            'stopProcessing' => (int) $automationRule->stopProcessing(),
             'sortOrder' => $automationRule->getSortOrder(),
             'conditions' => Json::encode($automationRule->getConditions()),
             'actions' => Json::encode($automationRule->getActions()),
@@ -38,6 +39,7 @@ final readonly class DbalAutomationRuleRepository extends DbalRepository impleme
         $sql = 'UPDATE AutomationRule SET
                     label = :label,
                     isEnabled = :isEnabled,
+                    stopProcessing = :stopProcessing,
                     sortOrder = :sortOrder,
                     conditions = :conditions,
                     actions = :actions
@@ -47,6 +49,7 @@ final readonly class DbalAutomationRuleRepository extends DbalRepository impleme
             'automationRuleId' => $automationRule->getId(),
             'label' => $automationRule->getLabel(),
             'isEnabled' => (int) $automationRule->isEnabled(),
+            'stopProcessing' => (int) $automationRule->stopProcessing(),
             'sortOrder' => $automationRule->getSortOrder(),
             'conditions' => Json::encode($automationRule->getConditions()),
             'actions' => Json::encode($automationRule->getActions()),
@@ -108,6 +111,7 @@ final readonly class DbalAutomationRuleRepository extends DbalRepository impleme
             automationRuleId: AutomationRuleId::fromString($result['automationRuleId']),
             label: (string) $result['label'],
             isEnabled: (bool) $result['isEnabled'],
+            stopProcessing: (bool) $result['stopProcessing'],
             sortOrder: (int) $result['sortOrder'],
             conditions: $this->hydrateConditions($result['conditions']),
             actions: $this->hydrateActions($result['actions']),

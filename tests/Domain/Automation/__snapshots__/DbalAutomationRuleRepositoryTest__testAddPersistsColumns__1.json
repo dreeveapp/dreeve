@@ -3,6 +3,7 @@
         "automationRuleId": "automationRule-1",
         "label": "My rule",
         "isEnabled": 1,
+        "stopProcessing": 1,
         "sortOrder": 0,
         "conditions": "[{\"type\":\"distance\",\"config\":{\"minKm\":10}}]",
         "actions": "[{\"type\":\"markAsCommute\",\"config\":{\"isCommute\":true}}]",

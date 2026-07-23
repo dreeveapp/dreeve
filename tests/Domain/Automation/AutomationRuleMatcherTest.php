@@ -6,7 +6,6 @@ namespace App\Tests\Domain\Automation;
 
 use App\Domain\Automation\AutomationRuleId;
 use App\Domain\Automation\AutomationRuleMatcher;
-use App\Domain\Automation\AutomationRules;
 use App\Domain\Automation\Condition\Conditions;
 use App\Domain\Automation\Condition\ConditionType;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredCondition;
@@ -22,48 +21,39 @@ class AutomationRuleMatcherTest extends TestCase
 {
     private AutomationRuleMatcher $matcher;
 
-    public function testFirstMatchingReturnsTheFirstEnabledAllMatchingRule(): void
+    public function testMatchesWhenAllConditionsMatch(): void
     {
         $activity = ActivityBuilder::fromDefaults()
             ->withDeviceName('Garmin')
             ->withDistance(Kilometer::from(80.0))
             ->build();
 
-        $disabledButMatching = $this->rule('1', enabled: false, conditions: $this->deviceIs('Garmin'));
-        $winner = $this->rule('2', conditions: $this->deviceIs('Garmin'));
-        $alsoMatching = $this->rule('3', conditions: $this->deviceIs('Garmin'));
+        $rule = $this->rule('1', conditions: ConfiguredConditions::fromArray([
+            new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['deviceName' => 'Garmin'])),
+            new ConfiguredCondition(ConditionType::DISTANCE, RuleConfiguration::fromConfig(['minKm' => 50])),
+        ]));
 
-        $match = $this->matcher->firstMatching(
-            AutomationRules::fromArray([$disabledButMatching, $winner, $alsoMatching]),
-            $activity,
-        );
-
-        $this->assertNotNull($match);
-        $this->assertSame((string) AutomationRuleId::fromUnprefixed('2'), (string) $match->getId());
+        $this->assertTrue($this->matcher->matches($rule, $activity));
     }
 
-    public function testFirstMatchingReturnsNullWhenNoRuleMatches(): void
+    public function testDoesNotMatchWhenAConditionFails(): void
     {
         $activity = ActivityBuilder::fromDefaults()->withDeviceName('Wahoo')->build();
 
-        $match = $this->matcher->firstMatching(
-            AutomationRules::fromArray([$this->rule('1', conditions: $this->deviceIs('Garmin'))]),
+        $this->assertFalse($this->matcher->matches(
+            $this->rule('1', conditions: $this->deviceIs('Garmin')),
             $activity,
-        );
-
-        $this->assertNull($match);
+        ));
     }
 
     public function testARuleWithoutConditionsNeverMatches(): void
     {
         $activity = ActivityBuilder::fromDefaults()->build();
 
-        $match = $this->matcher->firstMatching(
-            AutomationRules::fromArray([$this->rule('1', conditions: ConfiguredConditions::empty())]),
+        $this->assertFalse($this->matcher->matches(
+            $this->rule('1', conditions: ConfiguredConditions::empty()),
             $activity,
-        );
-
-        $this->assertNull($match);
+        ));
     }
 
     public function testEvaluateConditionsReportsEveryConditionWithoutShortCircuiting(): void
@@ -99,8 +89,8 @@ class AutomationRuleMatcherTest extends TestCase
 
         $this->assertCount(0, $this->matcher->evaluateConditions($rule, $activity));
 
-        $this->assertNull(
-            $this->matcher->firstMatching(AutomationRules::fromArray([$rule]), $activity),
+        $this->assertFalse(
+            $this->matcher->matches($rule, $activity),
             'A rule with only unregistered condition types has no condition to satisfy, so it never matches.',
         );
     }
@@ -112,11 +102,10 @@ class AutomationRuleMatcherTest extends TestCase
         ]);
     }
 
-    private function rule(string $id, ConfiguredConditions $conditions, bool $enabled = true): \App\Domain\Automation\AutomationRule
+    private function rule(string $id, ConfiguredConditions $conditions): \App\Domain\Automation\AutomationRule
     {
         return AutomationRuleBuilder::fromDefaults()
             ->withAutomationRuleId(AutomationRuleId::fromUnprefixed($id))
-            ->withIsEnabled($enabled)
             ->withConditions($conditions)
             ->build();
     }

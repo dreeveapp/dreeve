@@ -18,17 +18,28 @@ final readonly class AutomationRuleEngine
 
     public function apply(Activity $activity): Activity
     {
-        $rule = $this->matcher->firstMatching($this->automationRuleRepository->findAll(), $activity);
-        if (!$rule instanceof AutomationRule) {
-            return $activity;
-        }
+        // Conditions are always evaluated against the activity as it entered the engine,
+        // so earlier rules cannot influence which later rules match.
+        $originalActivity = $activity;
 
-        foreach ($rule->getActions() as $configuredAction) {
-            if (!$this->actions->has($configuredAction->getType())) {
+        foreach ($this->automationRuleRepository->findAll() as $rule) {
+            if (!$rule->isEnabled()) {
                 continue;
             }
-            $activity = $this->actions->get($configuredAction->getType())
-                ->applyTo($activity, $configuredAction->getConfiguration());
+            if (!$this->matcher->matches($rule, $originalActivity)) {
+                continue;
+            }
+            foreach ($rule->getActions() as $configuredAction) {
+                if (!$this->actions->has($configuredAction->getType())) {
+                    continue;
+                }
+                $activity = $this->actions->get($configuredAction->getType())
+                    ->applyTo($activity, $configuredAction->getConfiguration());
+            }
+
+            if ($rule->stopProcessing()) {
+                break;
+            }
         }
 
         return $activity;

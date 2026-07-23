@@ -19,7 +19,7 @@ final class Version20260715125514 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE AutomationRule (automationRuleId VARCHAR(255) NOT NULL, label VARCHAR(255) NOT NULL, isEnabled BOOLEAN NOT NULL, sortOrder INTEGER NOT NULL, conditions CLOB NOT NULL, actions CLOB NOT NULL, createdOn DATETIME NOT NULL, PRIMARY KEY (automationRuleId))');
+        $this->addSql('CREATE TABLE AutomationRule (automationRuleId VARCHAR(255) NOT NULL, label VARCHAR(255) NOT NULL, isEnabled BOOLEAN NOT NULL, stopProcessing BOOLEAN NOT NULL, sortOrder INTEGER NOT NULL, conditions CLOB NOT NULL, actions CLOB NOT NULL, createdOn DATETIME NOT NULL, PRIMARY KEY (automationRuleId))');
     }
 
     public function down(Schema $schema): void

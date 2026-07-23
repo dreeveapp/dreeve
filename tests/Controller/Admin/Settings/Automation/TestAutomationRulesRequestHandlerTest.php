@@ -100,6 +100,8 @@ class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
         $body = $crawler->filter('body')->text();
         $this->assertStringContainsString('Name my rides', $body);
         $this->assertStringContainsString('A rule applies', $body);
+        $this->assertStringContainsString('Applied', $body);
+        $this->assertStringContainsString('Stops here', $body);
         $this->assertStringContainsString('Automated ride name', $body);
 
         $matchedConditionPills = $crawler->filter('.rounded-full.bg-green-100')->reduce(

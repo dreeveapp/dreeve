@@ -84,6 +84,9 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         // Add mode carries no id.
         $this->assertCount(0, $form->filter('input[type="hidden"][name="automationRuleId"]'));
 
+        // New rules stop processing after a match by default.
+        $this->assertCount(1, $form->filter('input[type="checkbox"][name="stopProcessing"][checked]'));
+
         // Both repeaters start empty and offer every registered condition/action type.
         $this->assertStringContainsString('[]', (string) $crawler->filter('[data-repeater-list]')->eq(0)->attr('data-repeater-initial'));
         $conditionOptions = $crawler->filter('select[name="conditions[__index__][type]"] option')->extract(['value']);
@@ -102,6 +105,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
             AutomationRuleBuilder::fromDefaults()
                 ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('42'))
                 ->withLabel('Tag commutes')
+                ->withStopProcessing(false)
                 ->withConditions(ConfiguredConditions::fromArray([
                     new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceId' => 'garmin-edge-530'])),
                 ]))
@@ -122,6 +126,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $form);
         $this->assertSame('automationRule-42', $form->filter('input[type="hidden"][name="automationRuleId"]')->attr('value'));
         $this->assertSame('Tag commutes', $form->filter('input[name="label"]')->attr('value'));
+        $this->assertCount(0, $form->filter('input[type="checkbox"][name="stopProcessing"][checked]'));
 
         // The repeaters are seeded with the stored conditions/actions as JSON.
         $conditionsInitial = (string) $crawler->filter('[data-repeater-list]')->eq(0)->attr('data-repeater-initial');

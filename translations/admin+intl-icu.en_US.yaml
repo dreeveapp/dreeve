@@ -47,6 +47,7 @@ Admin: Admin
 'App subtitle': 'App subtitle'
 'App update available notification': 'App update available notification'
 Appearance: Appearance
+Applied: Applied
 Apply: Apply
 'Are you sure you want to delete the import of {name}?': 'Are you sure you want to delete the import of {name}?'
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
@@ -57,7 +58,7 @@ Apply: Apply
 'Assign gear': 'Assign gear'
 'Athlete settings': 'Athlete settings'
 'Attached to': 'Attached to'
-'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom; the first one that matches wins.': 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom; the first one that matches wins.'
+'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom.': 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom.'
 'Automation rules': 'Automation rules'
 'Automation rules are only available in file import mode': 'Automation rules are only available in file import mode'
 'Back to app': 'Back to app'
@@ -84,6 +85,7 @@ Configure: Configure
 'Configure {widget}': 'Configure {widget}'
 'Configured via an environment variable and cannot be changed here.': 'Configured via an environment variable and cannot be changed here.'
 'Configured via environment variables and cannot be changed here.': 'Configured via environment variables and cannot be changed here.'
+'Continues to next rules': 'Continues to next rules'
 'Cron expression': 'Cron expression'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."
 Daemon: Daemon
@@ -115,7 +117,7 @@ Edit: Edit
 Enabled: Enabled
 Endpoint: Endpoint
 'Ends near': 'Ends near'
-'Enter an existing activity to preview which rule would apply and what it would change. Nothing is saved.': 'Enter an existing activity to preview which rule would apply and what it would change. Nothing is saved.'
+'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.': 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.'
 'Enter your password': 'Enter your password'
 'Enter your username': 'Enter your username'
 Every: Every
@@ -302,7 +304,7 @@ Settings: Settings
 'Signing in...': 'Signing in...'
 'Skip activities recorded before': 'Skip activities recorded before'
 Skipped: Skipped
-'Skipped (an earlier rule already matched).': 'Skipped (an earlier rule already matched).'
+'Skipped (an earlier rule stopped processing).': 'Skipped (an earlier rule stopped processing).'
 Source: Source
 'Sport type': 'Sport type'
 'Sport types': 'Sport types'
@@ -310,6 +312,9 @@ Source: Source
 'Sport types to import': 'Sport types to import'
 'Sport types to include': 'Sport types to include'
 'Starts near': 'Starts near'
+'Stop processing further rules when this rule matches': 'Stop processing further rules when this rule matches'
+'Stops after match': 'Stops after match'
+'Stops here': 'Stops here'
 'Strava API credentials.': 'Strava API credentials.'
 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.'
 'Strava activity IDs to skip during import.': 'Strava activity IDs to skip during import.'
@@ -372,6 +377,7 @@ Wednesday: Wednesday
 Weekday: Weekday
 Weekdays: Weekdays
 'What is my FTP?': 'What is my FTP?'
+"When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes."
 'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
 'Workout type': 'Workout type'
@@ -390,7 +396,6 @@ Zwift: Zwift
 'Zwift racing score': 'Zwift racing score'
 'active days': 'active days'
 after: after
-and: and
 'at least': 'at least'
 'at most': 'at most'
 'at or after': 'at or after'
@@ -421,6 +426,7 @@ then: then
 '{count} files ready to upload': '{count} files ready to upload'
 '{count} files uploaded': '{count} files uploaded'
 '{count} images selected': '{count} images selected'
+'{count} rules apply': '{count} rules apply'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images'

@@ -30,6 +30,7 @@ class AutomationRuleTest extends TestCase
             ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('42'))
             ->withLabel('Tag commutes')
             ->withIsEnabled(false)
+            ->withStopProcessing(false)
             ->withSortOrder(3)
             ->withConditions($conditions)
             ->withActions($actions)
@@ -39,6 +40,7 @@ class AutomationRuleTest extends TestCase
         $this->assertSame('automationRule-42', (string) $rule->getId());
         $this->assertSame('Tag commutes', $rule->getLabel());
         $this->assertFalse($rule->isEnabled());
+        $this->assertFalse($rule->stopProcessing());
         $this->assertSame(3, $rule->getSortOrder());
         $this->assertSame($conditions, $rule->getConditions());
         $this->assertSame($actions, $rule->getActions());
@@ -56,14 +58,17 @@ class AutomationRuleTest extends TestCase
         $updated = $rule
             ->withLabel('Updated')
             ->withIsEnabled(false)
+            ->withStopProcessing(false)
             ->withSortOrder(9);
 
         $this->assertSame('Original', $rule->getLabel());
         $this->assertTrue($rule->isEnabled());
+        $this->assertTrue($rule->stopProcessing());
         $this->assertSame(1, $rule->getSortOrder());
 
         $this->assertSame('Updated', $updated->getLabel());
         $this->assertFalse($updated->isEnabled());
+        $this->assertFalse($updated->stopProcessing());
         $this->assertSame(9, $updated->getSortOrder());
         $this->assertSame((string) $rule->getId(), (string) $updated->getId());
     }

@@ -36,6 +36,7 @@ final readonly class UpdateAutomationRuleCommandHandler implements CommandHandle
             $automationRule
                 ->withLabel($command->getLabel())
                 ->withIsEnabled($command->isEnabled())
+                ->withStopProcessing($command->stopProcessing())
                 ->withConditions($conditions)
                 ->withActions($actions),
         );

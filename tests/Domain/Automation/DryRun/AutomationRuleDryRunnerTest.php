@@ -57,30 +57,56 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
         $this->assertFalse($conditions[1]->isMatched());
 
         $this->assertFalse($result->allConditionsMatched());
-        $this->assertFalse($dryRun->hasWinner());
+        $this->assertFalse($dryRun->hasAppliedRules());
     }
 
-    public function testTheFirstEnabledMatchingRuleWinsAndLaterRulesAreNotEvaluated(): void
+    public function testProcessingStopsAtAMatchedRuleThatStopsProcessing(): void
     {
         $this->saveRule(id: 'first', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('First'));
         $this->saveRule(id: 'second', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('Second'), sortOrder: 1);
 
         $dryRun = $this->dryRunner->run(ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build());
 
-        $this->assertTrue($dryRun->hasWinner());
-        $this->assertSame((string) AutomationRuleId::fromUnprefixed('first'), (string) $dryRun->getWinningRuleId());
+        $this->assertTrue($dryRun->hasAppliedRules());
+        $this->assertSame(1, $dryRun->countAppliedRules());
+        $this->assertSame((string) AutomationRuleId::fromUnprefixed('first'), (string) $dryRun->getAppliedRuleIds()[0]);
 
         [$first, $second] = $dryRun->getRuleResults();
 
-        $this->assertTrue($first->isWinner());
+        $this->assertTrue($first->wasApplied());
+        $this->assertTrue($first->stoppedProcessing());
         $this->assertTrue($first->wasEvaluated());
         $this->assertTrue($first->allConditionsMatched());
 
-        $this->assertFalse($second->isWinner());
-        $this->assertFalse($second->wasEvaluated(), 'Rules after the winner would never run for this activity.');
+        $this->assertFalse($second->wasApplied());
+        $this->assertFalse($second->wasEvaluated(), 'Rules after the stop point would never run for this activity.');
     }
 
-    public function testADisabledRuleNeverWinsEvenWhenItsConditionsMatch(): void
+    public function testMultipleRulesApplyUntilARuleStopsProcessing(): void
+    {
+        $this->saveRule(id: 'first', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('First'), stopProcessing: false);
+        $this->saveRule(id: 'second', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('Second'), sortOrder: 1);
+        $this->saveRule(id: 'third', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('Third'), sortOrder: 2);
+
+        $dryRun = $this->dryRunner->run(ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build());
+
+        $this->assertSame(2, $dryRun->countAppliedRules());
+        $this->assertSame(
+            ['automationRule-first', 'automationRule-second'],
+            array_map(strval(...), $dryRun->getAppliedRuleIds()),
+        );
+
+        [$first, $second, $third] = $dryRun->getRuleResults();
+
+        $this->assertTrue($first->wasApplied());
+        $this->assertFalse($first->stoppedProcessing(), 'A rule that continues processing does not stop the run.');
+        $this->assertTrue($second->wasApplied());
+        $this->assertTrue($second->stoppedProcessing());
+        $this->assertFalse($third->wasApplied());
+        $this->assertFalse($third->wasEvaluated(), 'Rules after the stop point would never run for this activity.');
+    }
+
+    public function testADisabledRuleIsNeverAppliedEvenWhenItsConditionsMatch(): void
     {
         $this->saveRule(id: 'disabled', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('From disabled rule'), enabled: false);
         $this->saveRule(id: 'enabled', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('From enabled rule'), sortOrder: 1);
@@ -90,25 +116,26 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
         [$disabled, $enabled] = $dryRun->getRuleResults();
 
         $this->assertTrue($disabled->allConditionsMatched(), 'Its conditions still match…');
-        $this->assertFalse($disabled->isWinner(), '…but a disabled rule never wins.');
+        $this->assertFalse($disabled->wasApplied(), '…but a disabled rule is never applied.');
+        $this->assertFalse($disabled->stoppedProcessing(), 'A disabled rule cannot stop processing either.');
         $this->assertTrue($disabled->wasEvaluated());
-        $this->assertTrue($enabled->isWinner());
-        $this->assertSame((string) AutomationRuleId::fromUnprefixed('enabled'), (string) $dryRun->getWinningRuleId());
+        $this->assertTrue($enabled->wasApplied());
+        $this->assertSame((string) AutomationRuleId::fromUnprefixed('enabled'), (string) $dryRun->getAppliedRuleIds()[0]);
     }
 
-    public function testThereIsNoWinnerWhenNoRuleMatches(): void
+    public function testNoRulesAreAppliedWhenNoRuleMatches(): void
     {
         $this->saveRule(id: '1', conditions: $this->sportTypeIsOneOf('Run'), actions: $this->setName('Should not apply'));
 
         $dryRun = $this->dryRunner->run(ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build());
 
-        $this->assertFalse($dryRun->hasWinner());
-        $this->assertNull($dryRun->getWinningRuleId());
+        $this->assertFalse($dryRun->hasAppliedRules());
+        $this->assertSame([], $dryRun->getAppliedRuleIds());
 
         $result = $dryRun->getRuleResults()[0];
-        $this->assertFalse($result->isWinner());
+        $this->assertFalse($result->wasApplied());
         $this->assertFalse($result->allConditionsMatched());
-        $this->assertTrue($result->wasEvaluated(), 'Without a winner, every rule is evaluated.');
+        $this->assertTrue($result->wasEvaluated(), 'Without a stop point, every rule is evaluated.');
     }
 
     public function testARuleWithoutConditionsNeverMatches(): void
@@ -120,8 +147,8 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
         $result = $dryRun->getRuleResults()[0];
         $this->assertEmpty($result->getConditionResults());
         $this->assertFalse($result->allConditionsMatched());
-        $this->assertFalse($result->isWinner());
-        $this->assertFalse($dryRun->hasWinner());
+        $this->assertFalse($result->wasApplied());
+        $this->assertFalse($dryRun->hasAppliedRules());
     }
 
     public function testAllConditionsMustMatchForARuleToMatch(): void
@@ -138,8 +165,8 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
         $longRide = ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withDistance(Kilometer::from(80.0))->build();
         $shortRide = ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withDistance(Kilometer::from(10.0))->build();
 
-        $this->assertTrue($this->dryRunner->run($longRide)->hasWinner());
-        $this->assertFalse($this->dryRunner->run($shortRide)->hasWinner(), 'One failing condition means the rule does not match.');
+        $this->assertTrue($this->dryRunner->run($longRide)->hasAppliedRules());
+        $this->assertFalse($this->dryRunner->run($shortRide)->hasAppliedRules(), 'One failing condition means the rule does not match.');
     }
 
     public function testMatchesOnDeviceCondition(): void
@@ -158,8 +185,8 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
         $matching = ActivityBuilder::fromDefaults()->withDeviceName('Garmin Edge 130')->build();
         $other = ActivityBuilder::fromDefaults()->withDeviceName('Wahoo Elemnt')->build();
 
-        $this->assertTrue($this->dryRunner->run($matching)->getRuleResults()[0]->isWinner());
-        $this->assertFalse($this->dryRunner->run($other)->hasWinner());
+        $this->assertTrue($this->dryRunner->run($matching)->getRuleResults()[0]->wasApplied());
+        $this->assertFalse($this->dryRunner->run($other)->hasAppliedRules());
     }
 
     public function testMatchesOnWeekdayAndTimeOfDay(): void
@@ -176,7 +203,7 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
         $tuesdayMorning = ActivityBuilder::fromDefaults()->withStartDateTime(SerializableDateTime::fromString('2023-10-10 07:30:00'))->build();
         $tuesdayAfternoon = ActivityBuilder::fromDefaults()->withStartDateTime(SerializableDateTime::fromString('2023-10-10 15:30:00'))->build();
 
-        $this->assertTrue($this->dryRunner->run($tuesdayMorning)->hasWinner());
+        $this->assertTrue($this->dryRunner->run($tuesdayMorning)->hasAppliedRules());
 
         $afternoon = $this->dryRunner->run($tuesdayAfternoon)->getRuleResults()[0];
         $this->assertFalse($afternoon->allConditionsMatched());
@@ -197,11 +224,11 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
         $near = ActivityBuilder::fromDefaults()->withStartingCoordinate(Coordinate::createFromLatAndLng(Latitude::fromString('51.055'), Longitude::fromString('4.0')))->build();
         $far = ActivityBuilder::fromDefaults()->withStartingCoordinate(Coordinate::createFromLatAndLng(Latitude::fromString('51.10'), Longitude::fromString('4.0')))->build();
 
-        $this->assertTrue($this->dryRunner->run($near)->hasWinner());
-        $this->assertFalse($this->dryRunner->run($far)->hasWinner());
+        $this->assertTrue($this->dryRunner->run($near)->hasAppliedRules());
+        $this->assertFalse($this->dryRunner->run($far)->hasAppliedRules());
     }
 
-    public function testTheWinnersConfiguredActionsAreExposed(): void
+    public function testTheAppliedRulesConfiguredActionsAreExposed(): void
     {
         $this->saveRule(
             id: '1',
@@ -222,17 +249,17 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
         $this->assertSame(ActionType::MARK_AS_COMMUTE, $actions[1]->getType());
     }
 
-    public function testConfiguredActionsAreExposedForEveryRuleNotJustTheWinner(): void
+    public function testConfiguredActionsAreExposedForEveryRuleNotJustTheAppliedOnes(): void
     {
-        $this->saveRule(id: 'winner', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('Winner'));
-        $this->saveRule(id: 'loser', conditions: $this->sportTypeIsOneOf('Run'), actions: $this->setName('Loser'), sortOrder: 1);
+        $this->saveRule(id: 'applied', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('Applied'));
+        $this->saveRule(id: 'not-applied', conditions: $this->sportTypeIsOneOf('Run'), actions: $this->setName('Not applied'), sortOrder: 1);
 
         $dryRun = $this->dryRunner->run(ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build());
 
-        [$winner, $loser] = $dryRun->getRuleResults();
-        $this->assertCount(1, $winner->getConfiguredActions());
-        $this->assertFalse($loser->isWinner());
-        $this->assertCount(1, $loser->getConfiguredActions(), 'Configured actions are available for non-winning rules too.');
+        [$applied, $notApplied] = $dryRun->getRuleResults();
+        $this->assertCount(1, $applied->getConfiguredActions());
+        $this->assertFalse($notApplied->wasApplied());
+        $this->assertCount(1, $notApplied->getConfiguredActions(), 'Configured actions are available for rules that were not applied too.');
     }
 
     public function testUnregisteredStoredConditionTypesAreIgnoredWhileKnownOnesStillMatch(): void
@@ -241,6 +268,7 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
             'automationRuleId' => 'automationRule-1',
             'label' => 'Raw rule',
             'isEnabled' => 1,
+            'stopProcessing' => 1,
             'sortOrder' => 0,
             'conditions' => Json::encode([
                 ['type' => 'someRemovedCondition', 'config' => []],
@@ -257,7 +285,7 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
         $result = $dryRun->getRuleResults()[0];
         $this->assertCount(1, $result->getConditionResults(), 'The unregistered condition type is ignored.');
         $this->assertSame(ConditionType::SPORT_TYPE, $result->getConditionResults()[0]->getType());
-        $this->assertTrue($result->isWinner());
+        $this->assertTrue($result->wasApplied());
     }
 
     private function sportTypeIsOneOf(string ...$sportTypes): ConfiguredConditions
@@ -280,12 +308,14 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
         ConfiguredActions $actions,
         int $sortOrder = 0,
         bool $enabled = true,
+        bool $stopProcessing = true,
     ): void {
         $this->repository->add(
             AutomationRuleBuilder::fromDefaults()
                 ->withAutomationRuleId(AutomationRuleId::fromUnprefixed($id))
                 ->withSortOrder($sortOrder)
                 ->withIsEnabled($enabled)
+                ->withStopProcessing($stopProcessing)
                 ->withConditions($conditions)
                 ->withActions($actions)
                 ->build()

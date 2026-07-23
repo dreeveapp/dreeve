@@ -15,15 +15,21 @@ final readonly class AutomationRuleMatcher
     ) {
     }
 
-    public function firstMatching(AutomationRules $rules, Activity $activity): ?AutomationRule
+    public function matches(AutomationRule $rule, Activity $activity): bool
     {
-        foreach ($rules as $rule) {
-            if ($rule->isEnabled() && $this->conditionsMatch($rule, $activity)) {
-                return $rule;
+        $matchedAtLeastOne = false;
+        foreach ($rule->getConditions() as $configuredCondition) {
+            if (!$this->conditions->has($configuredCondition->getType())) {
+                continue;
             }
+            if (!$this->conditions->get($configuredCondition->getType())
+                ->matches($activity, $configuredCondition->getConfiguration())) {
+                return false;
+            }
+            $matchedAtLeastOne = true;
         }
 
-        return null;
+        return $matchedAtLeastOne;
     }
 
     /**
@@ -46,22 +52,5 @@ final readonly class AutomationRuleMatcher
         }
 
         return $conditionResults;
-    }
-
-    private function conditionsMatch(AutomationRule $rule, Activity $activity): bool
-    {
-        $matchedAtLeastOne = false;
-        foreach ($rule->getConditions() as $configuredCondition) {
-            if (!$this->conditions->has($configuredCondition->getType())) {
-                continue;
-            }
-            if (!$this->conditions->get($configuredCondition->getType())
-                ->matches($activity, $configuredCondition->getConfiguration())) {
-                return false;
-            }
-            $matchedAtLeastOne = true;
-        }
-
-        return $matchedAtLeastOne;
     }
 }

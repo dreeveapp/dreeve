@@ -32,6 +32,14 @@ trait ParsesAutomationRulePayload
 
     /**
      * @param array<string, mixed> $payload
+     */
+    private static function parseStopProcessing(array $payload): bool
+    {
+        return filter_var($payload['stopProcessing'] ?? true, FILTER_VALIDATE_BOOLEAN);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
      *
      * @return list<array{type: ConditionType, config: array<string, mixed>}>
      */

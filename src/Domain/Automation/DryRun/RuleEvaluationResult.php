@@ -18,7 +18,8 @@ final readonly class RuleEvaluationResult
         private array $conditionResults,
         private ConfiguredActions $configuredActions,
         private bool $allConditionsMatched,
-        private bool $isWinner,
+        private bool $wasApplied,
+        private bool $stoppedProcessing,
         private bool $wasEvaluated,
     ) {
     }
@@ -51,9 +52,14 @@ final readonly class RuleEvaluationResult
         return $this->allConditionsMatched;
     }
 
-    public function isWinner(): bool
+    public function wasApplied(): bool
     {
-        return $this->isWinner;
+        return $this->wasApplied;
+    }
+
+    public function stoppedProcessing(): bool
+    {
+        return $this->stoppedProcessing;
     }
 
     public function wasEvaluated(): bool

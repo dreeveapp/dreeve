@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Automation\DryRun;
 
 use App\Domain\Activity\Activity;
-use App\Domain\Automation\AutomationRuleId;
 use App\Domain\Automation\AutomationRuleMatcher;
 use App\Domain\Automation\AutomationRuleRepository;
 use App\Domain\Automation\Condition\ConditionEvaluationResult;
@@ -20,16 +19,11 @@ final readonly class AutomationRuleDryRunner
 
     public function run(Activity $activity): AutomationRuleDryRun
     {
-        $rules = $this->automationRuleRepository->findAll();
-        $winningRuleId = $this->matcher->firstMatching(
-            rules: $rules,
-            activity: $activity
-        )?->getId();
-
         $ruleResults = [];
-        $reachedWinner = false;
+        $appliedRuleIds = [];
+        $stopped = false;
 
-        foreach ($rules as $rule) {
+        foreach ($this->automationRuleRepository->findAll() as $rule) {
             $conditionResults = $this->matcher->evaluateConditions(
                 rule: $rule,
                 activity: $activity
@@ -42,10 +36,15 @@ final readonly class AutomationRuleDryRunner
                     true,
                 );
 
-            $isWinner = $winningRuleId instanceof AutomationRuleId && (string) $rule->getId() === (string) $winningRuleId;
-            $wasEvaluated = !$reachedWinner;
-            if ($isWinner) {
-                $reachedWinner = true;
+            $wasEvaluated = !$stopped;
+            $wasApplied = $wasEvaluated && $rule->isEnabled() && $this->matcher->matches($rule, $activity);
+            $stoppedProcessing = $wasApplied && $rule->stopProcessing();
+
+            if ($wasApplied) {
+                $appliedRuleIds[] = $rule->getId();
+            }
+            if ($stoppedProcessing) {
+                $stopped = true;
             }
 
             $ruleResults[] = new RuleEvaluationResult(
@@ -54,7 +53,8 @@ final readonly class AutomationRuleDryRunner
                 conditionResults: $conditionResults,
                 configuredActions: $rule->getActions(),
                 allConditionsMatched: $allConditionsMatched,
-                isWinner: $isWinner,
+                wasApplied: $wasApplied,
+                stoppedProcessing: $stoppedProcessing,
                 wasEvaluated: $wasEvaluated,
             );
         }
@@ -62,7 +62,7 @@ final readonly class AutomationRuleDryRunner
         return new AutomationRuleDryRun(
             activity: $activity,
             ruleResults: $ruleResults,
-            winningRuleId: $winningRuleId
+            appliedRuleIds: $appliedRuleIds
         );
     }
 }

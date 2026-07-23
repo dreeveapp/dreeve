@@ -92,6 +92,7 @@ class DbalAutomationRuleRepositoryTest extends ContainerTestCase
             $rule
                 ->withLabel('After')
                 ->withIsEnabled(false)
+                ->withStopProcessing(false)
                 ->withConditions(ConfiguredConditions::fromArray([
                     new ConfiguredCondition(ConditionType::DISTANCE, RuleConfiguration::fromConfig(['minKm' => 5])),
                 ]))
@@ -100,6 +101,7 @@ class DbalAutomationRuleRepositoryTest extends ContainerTestCase
         $updated = $this->repository->find($rule->getId());
         $this->assertSame('After', $updated->getLabel());
         $this->assertFalse($updated->isEnabled());
+        $this->assertFalse($updated->stopProcessing());
         $this->assertSame(
             '[{"type":"distance","config":{"minKm":5}}]',
             Json::encode($updated->getConditions())
@@ -140,6 +142,7 @@ class DbalAutomationRuleRepositoryTest extends ContainerTestCase
             'automationRuleId' => 'automationRule-1',
             'label' => 'Stale rule',
             'isEnabled' => 1,
+            'stopProcessing' => 1,
             'sortOrder' => 0,
             'conditions' => Json::encode([
                 ['type' => 'someRemovedCondition', 'config' => []],

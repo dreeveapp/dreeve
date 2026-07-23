@@ -14,7 +14,7 @@
 Activities: Aktivitäten
 Activity: Aktivität
 'Activity count': 'Anzahl der Aktivitäten'
-'Activity heatmap': 'Aktivitäts-Heatmap'
+'Activity heatmap': Aktivitäts-Heatmap
 'Activity locations': Orte
 'Activity start times': 'Startzeiten der Aktivitäten'
 'Acute Training Load (Fatigue) - 7-day exponentially weighted average of your daily training load. Represents short-term fatigue.': 'Akute Trainingsbelastung (Ermüdung) - 7-tägiger exponentiell gewichteter Durchschnitt deiner täglichen Trainingsbelastung. Stellt die kurzfristige Ermüdung dar.'
@@ -368,7 +368,7 @@ Tennis: Tennis
 "That's a full month of non-stop activity": 'Das entspricht einem Monat Aktivität am Stück'
 "That's a full month without a rest day": 'Das ist ein ganzer Monat ohne Ruhetag'
 "That's a full quarter of daily activity": 'Das ist ein ganzes Quartal tägliche Aktivität'
-"That's a full week of daily activity": "Das ist eine ganze Woche tägliche Aktivität"
+"That's a full week of daily activity": 'Das ist eine ganze Woche tägliche Aktivität'
 "That's a full week of non-stop movement": 'Das ist eine ganze Woche Bewegung am Stück'
 "That's a full year of daily activity": 'Das ist ein ganzes Jahr tägliche Aktivität'
 "That's about 3.5 months of continuous movement": 'Das sind fast 3,5 Monate ununterbrochene Bewegung'
@@ -470,7 +470,7 @@ Tue: Di
 Tue.: Di.
 Unspecified: 'Nicht spezifiziert'
 'Updated on': 'Aktualisiert am'
-'User badge': 'Benutzerabzeichen'
+'User badge': Benutzerabzeichen
 'Velo Mobiles': Velomobil
 'Very high': 'Sehr hoch'
 'View all': 'Alle anzeigen'

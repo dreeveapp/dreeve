@@ -17,6 +17,7 @@ class AddAutomationRuleTest extends TestCase
         $command = AddAutomationRule::fromPayload([
             'label' => 'Tag commutes',
             'enabled' => true,
+            'stopProcessing' => false,
             'conditions' => [
                 ['type' => 'device', 'config' => ['deviceName' => 'Garmin']],
             ],
@@ -27,6 +28,7 @@ class AddAutomationRuleTest extends TestCase
 
         $this->assertSame('Tag commutes', $command->getLabel());
         $this->assertTrue($command->isEnabled());
+        $this->assertFalse($command->stopProcessing());
         $this->assertSame(
             [['type' => ConditionType::DEVICE, 'config' => ['deviceName' => 'Garmin']]],
             $command->getConditions()
@@ -49,6 +51,27 @@ class AddAutomationRuleTest extends TestCase
         $command = AddAutomationRule::fromPayload(['enabled' => false] + $this->validPayload());
 
         $this->assertFalse($command->isEnabled());
+    }
+
+    public function testStopProcessingDefaultsToTrue(): void
+    {
+        $command = AddAutomationRule::fromPayload($this->validPayload());
+
+        $this->assertTrue($command->stopProcessing());
+    }
+
+    public function testStopProcessingCanBeDisabled(): void
+    {
+        $command = AddAutomationRule::fromPayload(['stopProcessing' => 'false'] + $this->validPayload());
+
+        $this->assertFalse($command->stopProcessing());
+    }
+
+    public function testStopProcessingCanBeEnabledExplicitly(): void
+    {
+        $command = AddAutomationRule::fromPayload(['stopProcessing' => 'true'] + $this->validPayload());
+
+        $this->assertTrue($command->stopProcessing());
     }
 
     public function testLabelIsTrimmed(): void

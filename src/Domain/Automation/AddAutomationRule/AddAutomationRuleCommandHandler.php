@@ -38,6 +38,7 @@ final readonly class AddAutomationRuleCommandHandler implements CommandHandler
             automationRuleId: AutomationRuleId::random(),
             label: $command->getLabel(),
             isEnabled: $command->isEnabled(),
+            stopProcessing: $command->stopProcessing(),
             sortOrder: $this->automationRuleRepository->findAll()->count(),
             conditions: $conditions,
             actions: $actions,

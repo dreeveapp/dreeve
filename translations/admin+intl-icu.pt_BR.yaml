@@ -47,6 +47,7 @@ Admin: Admin
 'App subtitle': 'Subtítulo do aplicativo'
 'App update available notification': 'Notificação de atualização do aplicativo disponível'
 Appearance: Aparência
+Applied: Applied
 Apply: Aplicar
 'Are you sure you want to delete the import of {name}?': 'Are you sure you want to delete the import of {name}?'
 'Are you sure you want to delete the {component} component?': 'Tem certeza de que deseja excluir o componente {component}?'
@@ -57,7 +58,7 @@ Apply: Aplicar
 'Assign gear': 'Assign gear'
 'Athlete settings': 'Configurações do atleta'
 'Attached to': 'Vinculado a'
-'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom; the first one that matches wins.': 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom; the first one that matches wins.'
+'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom.': 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom.'
 'Automation rules': 'Automation rules'
 'Automation rules are only available in file import mode': 'Automation rules are only available in file import mode'
 'Back to app': 'Voltar para o aplicativo'
@@ -84,6 +85,7 @@ Configure: Configurar
 'Configure {widget}': 'Configurar {widget}'
 'Configured via an environment variable and cannot be changed here.': 'Configurado por meio de uma variável de ambiente e não pode ser alterado aqui.'
 'Configured via environment variables and cannot be changed here.': 'Configurado por meio de variáveis de ambiente e não pode ser alterado aqui.'
+'Continues to next rules': 'Continues to next rules'
 'Cron expression': 'Expressão Cron'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Expressão Cron especificando quando a ação deve ser executada, ex. '0 14 * * *' executa todos os dias às 14:00. Consulte crontab.guru para obter ajuda."
 Daemon: Daemon
@@ -115,7 +117,7 @@ Edit: Editar
 Enabled: Ativado
 Endpoint: Endpoint
 'Ends near': 'Ends near'
-'Enter an existing activity to preview which rule would apply and what it would change. Nothing is saved.': 'Enter an existing activity to preview which rule would apply and what it would change. Nothing is saved.'
+'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.': 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.'
 'Enter your password': 'Digite sua senha'
 'Enter your username': 'Digite seu nome de usuário'
 Every: 'A cada'
@@ -302,7 +304,7 @@ Settings: Configurações
 'Signing in...': Entrando...
 'Skip activities recorded before': 'Ignorar atividades registradas antes de'
 Skipped: Ignorado
-'Skipped (an earlier rule already matched).': 'Skipped (an earlier rule already matched).'
+'Skipped (an earlier rule stopped processing).': 'Skipped (an earlier rule stopped processing).'
 Source: Fonte
 'Sport type': 'Tipo de esporte'
 'Sport types': 'Sport types'
@@ -310,6 +312,9 @@ Source: Fonte
 'Sport types to import': 'Tipos de esporte a importar'
 'Sport types to include': 'Tipos de esporte a incluir'
 'Starts near': 'Starts near'
+'Stop processing further rules when this rule matches': 'Stop processing further rules when this rule matches'
+'Stops after match': 'Stops after match'
+'Stops here': 'Stops here'
 'Strava API credentials.': 'Credenciais da API do Strava.'
 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': 'A API do Strava tem limites de taxa, então limitamos o número de novas atividades processadas por importação. 250 é um número seguro.'
 'Strava activity IDs to skip during import.': 'IDs de atividades do Strava para ignorar durante a importação.'
@@ -372,6 +377,7 @@ Wednesday: Wednesday
 Weekday: Weekday
 Weekdays: Weekdays
 'What is my FTP?': 'Qual é o meu FTP?'
+"When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes."
 'When disabled, gear marked as retired is left out of the chart.': 'Quando desativado, o equipamento marcado como aposentado é deixado fora do gráfico.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Quando ativado, o equipamento marcado como aposentado é ignorado. Seus componentes não aumentarão o uso e nenhuma manutenção será registrada para eles.'
 'Workout type': 'Workout type'
@@ -390,7 +396,6 @@ Zwift: Zwift
 'Zwift racing score': 'Pontuação de corrida do Zwift'
 'active days': 'dias ativos'
 after: after
-and: and
 'at least': 'at least'
 'at most': 'at most'
 'at or after': 'at or after'
@@ -421,6 +426,7 @@ then: then
 '{count} files ready to upload': '{count} arquivos prontos para enviar'
 '{count} files uploaded': '{count} arquivos enviados'
 '{count} images selected': '{count} imagens selecionadas'
+'{count} rules apply': '{count} rules apply'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': 'URLs de serviços de notificação {shoutrrr} (ex. discord://token@id, telegram://token@telegram/?channels=canal). Deixe vazio para desativar as notificações totalmente.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Arraste e solte{strongClose} ou {strongOpen}navegue{strongClose} para escolher os arquivos'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Arraste e solte{strongClose} ou {strongOpen}navegue{strongClose} para escolher imagens'

@@ -9,7 +9,7 @@
             <div>
                 <h3 class="text-lg font-semibold">{{ "Automation rules"|trans({}, 'admin') }}</h3>
                 <p class="mt-1 text-sm text-gray-500">
-                    {{ "Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom; the first one that matches wins."|trans({}, 'admin') }}
+                    {{ "Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom."|trans({}, 'admin') }}
                 </p>
             </div>
             <div class="flex items-center gap-2">
@@ -52,22 +52,11 @@
                                 {% else %}
                                     <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xxs font-medium text-gray-500">{{ "Disabled"|trans({}, 'admin') }}</span>
                                 {% endif %}
-                            </div>
-                            <div class="mt-2 flex flex-col gap-1.5 text-xs text-gray-600 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1">
-                                <div class="flex flex-wrap items-center gap-1">
-                                    <span class="text-xxs font-semibold tracking-wide uppercase text-gray-400">{{ "If"|trans({}, 'admin') }}</span>
-                                    {% for condition in rule.getConditions() %}
-                                        <span class="font-bold">{{ conditions[condition.getType().value] ? conditions[condition.getType().value]|trans : condition.getType().value }}</span>
-                                        {% if not loop.last %}<span class="text-gray-400">{{ "and"|trans({}, 'admin') }}</span>{% endif %}
-                                    {% endfor %}
-                                </div>
-                                <div class="flex flex-wrap items-center gap-1">
-                                    <span class="text-xxs font-semibold uppercase tracking-wide text-gray-400">{{ "then"|trans({}, 'admin') }}</span>
-                                    {% for action in rule.getActions() %}
-                                        <span class="font-bold">{{ actions[action.getType().value] ? actions[action.getType().value]|trans : action.getType().value }}</span>
-                                        {% if not loop.last %}<span class="text-gray-400">{{ "and"|trans({}, 'admin') }}</span>{% endif %}
-                                    {% endfor %}
-                                </div>
+                                {% if rule.stopProcessing() %}
+                                    <span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xxs font-medium text-amber-600">{{ "Stops after match"|trans({}, 'admin') }}</span>
+                                {% else %}
+                                    <span class="inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-xxs font-medium text-blue-600">{{ "Continues to next rules"|trans({}, 'admin') }}</span>
+                                {% endif %}
                             </div>
                             {% include 'html/admin/page/settings/automation-rules/_rule-summary.html.twig' with {
                                 conditions: rule.getConditions(),

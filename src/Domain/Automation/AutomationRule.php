@@ -20,6 +20,8 @@ final readonly class AutomationRule
         private string $label,
         #[ORM\Column(type: 'boolean')]
         private bool $isEnabled,
+        #[ORM\Column(type: 'boolean')]
+        private bool $stopProcessing,
         #[ORM\Column(type: 'integer')]
         private int $sortOrder,
         #[ORM\Column(type: 'json')]
@@ -35,6 +37,7 @@ final readonly class AutomationRule
         AutomationRuleId $automationRuleId,
         string $label,
         bool $isEnabled,
+        bool $stopProcessing,
         int $sortOrder,
         ConfiguredConditions $conditions,
         ConfiguredActions $actions,
@@ -44,6 +47,7 @@ final readonly class AutomationRule
             automationRuleId: $automationRuleId,
             label: $label,
             isEnabled: $isEnabled,
+            stopProcessing: $stopProcessing,
             sortOrder: $sortOrder,
             conditions: $conditions,
             actions: $actions,
@@ -55,6 +59,7 @@ final readonly class AutomationRule
         AutomationRuleId $automationRuleId,
         string $label,
         bool $isEnabled,
+        bool $stopProcessing,
         int $sortOrder,
         ConfiguredConditions $conditions,
         ConfiguredActions $actions,
@@ -64,6 +69,7 @@ final readonly class AutomationRule
             automationRuleId: $automationRuleId,
             label: $label,
             isEnabled: $isEnabled,
+            stopProcessing: $stopProcessing,
             sortOrder: $sortOrder,
             conditions: $conditions,
             actions: $actions,
@@ -97,6 +103,18 @@ final readonly class AutomationRule
     {
         return clone ($this, [
             'isEnabled' => $isEnabled,
+        ]);
+    }
+
+    public function stopProcessing(): bool
+    {
+        return $this->stopProcessing;
+    }
+
+    public function withStopProcessing(bool $stopProcessing): self
+    {
+        return clone ($this, [
+            'stopProcessing' => $stopProcessing,
         ]);
     }
 

@@ -5,7 +5,7 @@
         <div class="mb-4">
             <h3 class="text-lg font-semibold">{{ "Test automation rules"|trans({}, 'admin') }}</h3>
             <p class="mt-1 text-sm text-gray-500">
-                {{ "Enter an existing activity to preview which rule would apply and what it would change. Nothing is saved."|trans({}, 'admin') }}
+                {{ "Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved."|trans({}, 'admin') }}
             </p>
         </div>
         <form method="GET" action="{{ relativeUrl(path('admin_test_automation_rules')) }}" class="flex flex-col gap-2 sm:flex-row sm:items-end">
@@ -34,7 +34,9 @@
             <div class="mt-4 rounded-lg border border-gray-200 bg-gray-50 p-3">
                 <div class="flex items-center gap-2">
                     <span class="font-medium text-gray-800 truncate">{{ activity.getName() }}</span>
-                    {% if dryRun.hasWinner() %}
+                    {% if dryRun.countAppliedRules() > 1 %}
+                        <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xxs font-medium text-green-600">{{ "{count} rules apply"|trans({'{count}': dryRun.countAppliedRules()}, 'admin') }}</span>
+                    {% elseif dryRun.hasAppliedRules() %}
                         <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xxs font-medium text-green-600">{{ "A rule applies"|trans({}, 'admin') }}</span>
                     {% else %}
                         <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xxs font-medium text-gray-500">{{ "No rule applies"|trans({}, 'admin') }}</span>
@@ -50,7 +52,7 @@
             </div>
             <div class="mt-4 flex flex-col gap-2">
                 {% for result in dryRun.getRuleResults() %}
-                    <div class="rounded-lg border p-3 shadow-xs {{ result.isWinner() ? 'border-green-600 ring-1 ring-green-600 bg-white' : 'border-gray-200 bg-white' }} {{ not result.isWinner() ? 'opacity-60' }}">
+                    <div class="rounded-lg border p-3 shadow-xs {{ result.wasApplied() ? 'border-green-600 ring-1 ring-green-600 bg-white' : 'border-gray-200 bg-white' }} {{ not result.wasApplied() ? 'opacity-60' }}">
                         <div class="flex items-center gap-2">
                             <span class="font-medium text-gray-800 truncate">{{ result.getLabel() }}</span>
                             {% if result.isEnabled() %}
@@ -58,9 +60,15 @@
                             {% else %}
                                 <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xxs font-medium text-gray-500">{{ "Disabled"|trans({}, 'admin') }}</span>
                             {% endif %}
+                            {% if result.wasApplied() %}
+                                <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xxs font-medium text-green-600">{{ "Applied"|trans({}, 'admin') }}</span>
+                            {% endif %}
+                            {% if result.stoppedProcessing() %}
+                                <span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xxs font-medium text-amber-600">{{ "Stops here"|trans({}, 'admin') }}</span>
+                            {% endif %}
                         </div>
                         {% if not result.wasEvaluated() %}
-                            <p class="mt-1 text-xs italic text-gray-400">{{ "Skipped (an earlier rule already matched)."|trans({}, 'admin') }}</p>
+                            <p class="mt-1 text-xs italic text-gray-400">{{ "Skipped (an earlier rule stopped processing)."|trans({}, 'admin') }}</p>
                         {% endif %}
                         {% include 'html/admin/page/settings/automation-rules/_rule-summary.html.twig' with {
                             conditions: result.getConditionResults(),

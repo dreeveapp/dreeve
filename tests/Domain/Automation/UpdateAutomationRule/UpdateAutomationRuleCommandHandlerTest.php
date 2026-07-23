@@ -39,6 +39,7 @@ class UpdateAutomationRuleCommandHandlerTest extends ContainerTestCase
             'automationRuleId' => 'automationRule-1',
             'label' => 'After',
             'enabled' => false,
+            'stopProcessing' => false,
             'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
             'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
         ]));
@@ -46,6 +47,7 @@ class UpdateAutomationRuleCommandHandlerTest extends ContainerTestCase
         $rule = $this->repository->find(AutomationRuleId::fromUnprefixed('1'));
         $this->assertSame('After', $rule->getLabel());
         $this->assertFalse($rule->isEnabled());
+        $this->assertFalse($rule->stopProcessing());
         // sortOrder is preserved by the update.
         $this->assertSame(3, $rule->getSortOrder());
         $this->assertSame('[{"type":"device","config":{"deviceName":"Garmin"}}]', Json::encode($rule->getConditions()));

@@ -18,6 +18,7 @@ class UpdateAutomationRuleTest extends TestCase
             'automationRuleId' => 'automationRule-42',
             'label' => 'Tag commutes',
             'enabled' => false,
+            'stopProcessing' => false,
             'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
             'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
         ]);
@@ -25,6 +26,7 @@ class UpdateAutomationRuleTest extends TestCase
         $this->assertSame('automationRule-42', (string) $command->getAutomationRuleId());
         $this->assertSame('Tag commutes', $command->getLabel());
         $this->assertFalse($command->isEnabled());
+        $this->assertFalse($command->stopProcessing());
         $this->assertSame(
             [['type' => ConditionType::DEVICE, 'config' => ['deviceName' => 'Garmin']]],
             $command->getConditions()
@@ -45,6 +47,18 @@ class UpdateAutomationRuleTest extends TestCase
         ]);
 
         $this->assertSame('automationRule-42', (string) $command->getAutomationRuleId());
+    }
+
+    public function testStopProcessingDefaultsToTrue(): void
+    {
+        $command = UpdateAutomationRule::fromPayload([
+            'automationRuleId' => 'automationRule-42',
+            'label' => 'Tag commutes',
+            'conditions' => [['type' => 'device']],
+            'actions' => [['type' => 'setName']],
+        ]);
+
+        $this->assertTrue($command->stopProcessing());
     }
 
     public function testThrowsOnMissingAutomationRuleId(): void

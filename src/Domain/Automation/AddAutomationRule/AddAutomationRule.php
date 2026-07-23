@@ -23,6 +23,7 @@ final readonly class AddAutomationRule extends DomainCommand implements Deserial
     private function __construct(
         private string $label,
         private bool $isEnabled,
+        private bool $stopProcessing,
         private array $conditions,
         private array $actions,
     ) {
@@ -33,6 +34,7 @@ final readonly class AddAutomationRule extends DomainCommand implements Deserial
         return new self(
             label: self::parseLabel($payload),
             isEnabled: self::parseIsEnabled($payload),
+            stopProcessing: self::parseStopProcessing($payload),
             conditions: self::parseConditions($payload),
             actions: self::parseActions($payload),
         );
@@ -46,6 +48,11 @@ final readonly class AddAutomationRule extends DomainCommand implements Deserial
     public function isEnabled(): bool
     {
         return $this->isEnabled;
+    }
+
+    public function stopProcessing(): bool
+    {
+        return $this->stopProcessing;
     }
 
     /**

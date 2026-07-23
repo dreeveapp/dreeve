@@ -29,6 +29,7 @@ class AddAutomationRuleCommandHandlerTest extends ContainerTestCase
         $this->handler->handle(AddAutomationRule::fromPayload([
             'label' => 'Tag commutes',
             'enabled' => false,
+            'stopProcessing' => false,
             'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
             'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
         ]));
@@ -39,6 +40,7 @@ class AddAutomationRuleCommandHandlerTest extends ContainerTestCase
         $rule = $rules->getFirst();
         $this->assertSame('Tag commutes', $rule->getLabel());
         $this->assertFalse($rule->isEnabled());
+        $this->assertFalse($rule->stopProcessing());
         $this->assertSame(0, $rule->getSortOrder());
         $this->assertSame('[{"type":"device","config":{"deviceName":"Garmin"}}]', Json::encode($rule->getConditions()));
         $this->assertSame('[{"type":"setName","config":{"name":"Commute"}}]', Json::encode($rule->getActions()));

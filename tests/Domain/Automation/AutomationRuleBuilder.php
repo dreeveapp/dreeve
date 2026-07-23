@@ -15,6 +15,7 @@ final class AutomationRuleBuilder
     private AutomationRuleId $automationRuleId;
     private string $label = 'My rule';
     private bool $isEnabled = true;
+    private bool $stopProcessing = true;
     private int $sortOrder = 0;
     private ConfiguredConditions $conditions;
     private ConfiguredActions $actions;
@@ -39,6 +40,7 @@ final class AutomationRuleBuilder
             automationRuleId: $this->automationRuleId,
             label: $this->label,
             isEnabled: $this->isEnabled,
+            stopProcessing: $this->stopProcessing,
             sortOrder: $this->sortOrder,
             conditions: $this->conditions,
             actions: $this->actions,
@@ -63,6 +65,13 @@ final class AutomationRuleBuilder
     public function withIsEnabled(bool $isEnabled): self
     {
         $this->isEnabled = $isEnabled;
+
+        return $this;
+    }
+
+    public function withStopProcessing(bool $stopProcessing): self
+    {
+        $this->stopProcessing = $stopProcessing;
 
         return $this;
     }
