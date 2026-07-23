@@ -44,6 +44,7 @@
                         {% endblock %}
                     {% endembed %}
                     {% embed 'html/admin/component/strava-disabled-form-input.html.twig' with {
+                        isReadOnly: gearIsReadOnly,
                         label: 'Gear'|trans,
                         for: 'activity-gear', name: 'gearId', value: activity.getGearId(),
                     } %}

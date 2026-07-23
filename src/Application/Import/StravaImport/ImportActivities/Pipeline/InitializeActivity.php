@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
+use App\Domain\Gear\GearRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
@@ -22,6 +23,7 @@ final readonly class InitializeActivity implements ActivityImportStep
 {
     public function __construct(
         private ActivityRepository $activityRepository,
+        private GearRepository $gearRepository,
     ) {
     }
 
@@ -35,6 +37,13 @@ final readonly class InitializeActivity implements ActivityImportStep
         try {
             $activity = $this->activityRepository->find($activityId);
             $gearId = GearId::fromOptionalUnprefixed($rawStravaData['gear_id'] ?? null);
+            if (!$gearId instanceof GearId
+                && ($currentGearId = $activity->getGearId()) instanceof GearId && $this->isCustomGear($currentGearId)) {
+                // Custom gear does not exist in Strava. When the Strava payload does not reference
+                // any gear, keep the manual assignment instead of emptying it. A gear assigned
+                // in Strava always wins.
+                $gearId = $currentGearId;
+            }
 
             $activity = $activity
                 ->withName(ActivityName::fromString($rawStravaData['name']))
@@ -63,5 +72,14 @@ final readonly class InitializeActivity implements ActivityImportStep
         $activity = Activity::createFromRawStravaData($rawStravaData);
 
         return $context->withActivity($activity);
+    }
+
+    private function isCustomGear(GearId $gearId): bool
+    {
+        try {
+            return $this->gearRepository->find($gearId)->getType()->isCustom();
+        } catch (EntityNotFound) {
+            return false;
+        }
     }
 }

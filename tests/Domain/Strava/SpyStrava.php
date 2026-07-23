@@ -89,6 +89,14 @@ class SpyStrava extends Strava
         $this->returnActivityWithoutSegmentEfforts = true;
     }
 
+    public function emptyGearIdOnActivities(): void
+    {
+        foreach ($this->activities as &$activity) {
+            $activity['gear_id'] = null;
+        }
+        unset($activity);
+    }
+
     #[\Override]
     public function getRateLimit(): ?StravaRateLimits
     {

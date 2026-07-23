@@ -13,4 +13,9 @@ enum GearType: string
     {
         return self::IMPORTED === $this;
     }
+
+    public function isCustom(): bool
+    {
+        return self::CUSTOM === $this;
+    }
 }

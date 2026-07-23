@@ -23,6 +23,7 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Gear\GearType;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
@@ -255,6 +256,104 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
         $this->importActivitiesCommandHandler->handle(new ImportActivities($output, null));
 
         $this->assertMatchesTextSnapshot($output);
+    }
+
+    public function testHandleKeepsManuallyAssignedCustomGearWhenStravaHasNoGear(): void
+    {
+        $output = new SpyOutput();
+        $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
+        $this->strava->emptyGearIdOnActivities();
+
+        $this->getContainer()->get(GearRepository::class)->add(GearBuilder::fromDefaults()
+            ->withGearId(GearId::fromUnprefixed('custom-one'))
+            ->withGearType(GearType::CUSTOM)
+            ->build()
+        );
+
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed(4))
+                ->withGearId(GearId::fromUnprefixed('custom-one'))
+                ->build(), []
+        ));
+
+        $this->importActivitiesCommandHandler->handle(new ImportActivities($output, null));
+
+        $this->assertEquals(
+            GearId::fromUnprefixed('custom-one'),
+            $this->getContainer()->get(ActivityRepository::class)->find(ActivityId::fromUnprefixed(4))->getGearId()
+        );
+    }
+
+    public function testHandleOverwritesCustomGearWhenStravaHasGear(): void
+    {
+        $output = new SpyOutput();
+        $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
+
+        $this->getContainer()->get(GearRepository::class)->add(GearBuilder::fromDefaults()
+            ->withGearId(GearId::fromUnprefixed('custom-one'))
+            ->withGearType(GearType::CUSTOM)
+            ->build()
+        );
+
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed(4))
+                ->withGearId(GearId::fromUnprefixed('custom-one'))
+                ->build(), []
+        ));
+
+        $this->importActivitiesCommandHandler->handle(new ImportActivities($output, null));
+
+        // A gear assigned in Strava always wins over a manually assigned custom gear.
+        $this->assertEquals(
+            GearId::fromUnprefixed('b12659861'),
+            $this->getContainer()->get(ActivityRepository::class)->find(ActivityId::fromUnprefixed(4))->getGearId()
+        );
+    }
+
+    public function testHandleOverwritesImportedGearFromStravaPayload(): void
+    {
+        $output = new SpyOutput();
+        $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
+
+        $this->getContainer()->get(GearRepository::class)->add(GearBuilder::fromDefaults()
+            ->withGearId(GearId::fromUnprefixed('b12659743'))
+            ->build()
+        );
+
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed(4))
+                ->withGearId(GearId::fromUnprefixed('b12659743'))
+                ->build(), []
+        ));
+
+        $this->importActivitiesCommandHandler->handle(new ImportActivities($output, null));
+
+        $this->assertEquals(
+            GearId::fromUnprefixed('b12659861'),
+            $this->getContainer()->get(ActivityRepository::class)->find(ActivityId::fromUnprefixed(4))->getGearId()
+        );
+    }
+
+    public function testHandleEmptiesGearWhenAssignedGearDoesNotExist(): void
+    {
+        $output = new SpyOutput();
+        $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
+        $this->strava->emptyGearIdOnActivities();
+
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed(4))
+                ->withGearId(GearId::fromUnprefixed('does-not-exist'))
+                ->build(), []
+        ));
+
+        $this->importActivitiesCommandHandler->handle(new ImportActivities($output, null));
+        $this->assertNull(
+            $this->getContainer()->get(ActivityRepository::class)->find(ActivityId::fromUnprefixed(4))->getGearId()
+        );
     }
 
     public function testHandleWhenNoSegmentEffortsDefined(): void
