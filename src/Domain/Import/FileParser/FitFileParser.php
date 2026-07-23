@@ -271,10 +271,7 @@ final readonly class FitFileParser implements ActivityFileParser
      * strap stores its samples and the watch downloads them afterwards into
      * "hr" messages, while the "record" messages only carry the (far less
      * accurate) wrist reading. Each hr message batches filtered_bpm samples
-     * paired with event_timestamp values, a seconds-since-strap-power-on clock
-     * that is anchored to wall clock time by the hr messages that also carry a
-     * "timestamp". Mirrors Garmin's reference implementation
-     * (HrMesgUtils.expandHeartRates in the FIT SDK).
+     * paired with event_timestamp values.
      *
      * @param list<array<string, mixed>> $hrMessages
      *
