@@ -292,18 +292,30 @@ final readonly class FitFileParser implements ActivityFileParser
                 $anchorTimestamp = (float) $hrMessage['timestamp'] + (is_numeric($hrMessage['fractional_timestamp'] ?? null) ? (float) $hrMessage['fractional_timestamp'] : 0.0);
                 $anchorEventTimestamp = (float) $eventTimestamps[0];
             }
-
-            if (null === $anchorTimestamp || null === $anchorEventTimestamp || count($eventTimestamps) !== count($bpms)) {
+            if (null === $anchorTimestamp) {
+                continue;
+            }
+            if (null === $anchorEventTimestamp) {
+                continue;
+            }
+            if (count($eventTimestamps) !== count($bpms)) {
                 continue;
             }
 
             foreach ($eventTimestamps as $index => $eventTimestamp) {
                 $bpm = $bpms[$index];
-                if (!is_numeric($eventTimestamp) || !is_numeric($bpm)) {
+                if (!is_numeric($eventTimestamp)) {
+                    continue;
+                }
+                if (!is_numeric($bpm)) {
                     continue;
                 }
                 $bpm = (int) round((float) $bpm);
-                if ($bpm <= 0 || $bpm >= 255) {
+                if ($bpm <= 0) {
+                    // 0xFF is the FIT "invalid" sentinel for uint8 fields.
+                    continue;
+                }
+                if ($bpm >= 255) {
                     // 0xFF is the FIT "invalid" sentinel for uint8 fields.
                     continue;
                 }
@@ -317,7 +329,7 @@ final readonly class FitFileParser implements ActivityFileParser
 
                 // Carry the previous sample forward across gaps in 250ms increments, capped at 5s.
                 if ([] !== $samples) {
-                    [$previousTimestamp, $previousBpm] = $samples[array_key_last($samples)];
+                    [$previousTimestamp, $previousBpm] = array_last($samples);
                     $gap = $timestamp - $previousTimestamp;
                     for ($step = 1; $gap > 0.25 && $step <= 20; ++$step) {
                         $samples[] = [$previousTimestamp + $step * 0.25, $previousBpm];
