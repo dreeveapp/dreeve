@@ -64,81 +64,14 @@ class TcxFileParserTest extends ActivityFileParserTestCase
 
     public function testParseUnknownSportDefaultsToWorkout(): void
     {
-        $xml = <<<'XML'
-            <?xml version="1.0" encoding="UTF-8"?>
-            <TrainingCenterDatabase xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2">
-              <Activities>
-                <Activity Sport="Other">
-                  <Id>2021-09-08T00:00:00Z</Id>
-                  <Lap StartTime="2021-09-08T00:00:00Z">
-                    <Track>
-                      <Trackpoint>
-                        <Time>2021-09-08T00:00:00Z</Time>
-                        <Position><LatitudeDegrees>45.0</LatitudeDegrees><LongitudeDegrees>22.5</LongitudeDegrees></Position>
-                      </Trackpoint>
-                    </Track>
-                  </Lap>
-                </Activity>
-              </Activities>
-            </TrainingCenterDatabase>
-            XML;
-
-        $parsed = $this->parser->parse(RawActivityFile::from(Path::fromString('other-sport.tcx'), $xml));
+        $parsed = $this->parser->parse($this->rawFileFromFixture('activity-other-sport.tcx'));
 
         $this->assertSame(SportType::WORKOUT, $parsed->getActivity()->getSportType());
     }
 
     public function testParseMultipleLapsAndTracks(): void
     {
-        $xml = <<<'XML'
-            <?xml version="1.0" encoding="UTF-8"?>
-            <TrainingCenterDatabase xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2">
-              <Activities>
-                <Activity Sport="Running">
-                  <Id>2021-09-08T00:00:00Z</Id>
-                  <Lap StartTime="2021-09-08T00:00:00Z">
-                    <TotalTimeSeconds>20</TotalTimeSeconds>
-                    <Track>
-                      <Trackpoint>
-                        <Time>2021-09-08T00:00:00Z</Time>
-                        <AltitudeMeters>0</AltitudeMeters>
-                        <DistanceMeters>0</DistanceMeters>
-                      </Trackpoint>
-                      <Trackpoint>
-                        <Time>2021-09-08T00:00:10Z</Time>
-                        <AltitudeMeters>0</AltitudeMeters>
-                        <DistanceMeters>30</DistanceMeters>
-                      </Trackpoint>
-                    </Track>
-                    <Track>
-                      <Trackpoint>
-                        <Time>2021-09-08T00:00:20Z</Time>
-                        <AltitudeMeters>0</AltitudeMeters>
-                        <DistanceMeters>60</DistanceMeters>
-                      </Trackpoint>
-                    </Track>
-                  </Lap>
-                  <Lap StartTime="2021-09-08T00:00:30Z">
-                    <TotalTimeSeconds>10</TotalTimeSeconds>
-                    <Track>
-                      <Trackpoint>
-                        <Time>2021-09-08T00:00:30Z</Time>
-                        <AltitudeMeters>0</AltitudeMeters>
-                        <DistanceMeters>60</DistanceMeters>
-                      </Trackpoint>
-                      <Trackpoint>
-                        <Time>2021-09-08T00:00:40Z</Time>
-                        <AltitudeMeters>0</AltitudeMeters>
-                        <DistanceMeters>100</DistanceMeters>
-                      </Trackpoint>
-                    </Track>
-                  </Lap>
-                </Activity>
-              </Activities>
-            </TrainingCenterDatabase>
-            XML;
-
-        $parsed = $this->parser->parse(RawActivityFile::from(Path::fromString('multi-lap.tcx'), $xml));
+        $parsed = $this->parser->parse($this->rawFileFromFixture('activity-multi-lap.tcx'));
 
         $laps = $parsed->getLaps()->toArray();
         $this->assertCount(2, $laps);

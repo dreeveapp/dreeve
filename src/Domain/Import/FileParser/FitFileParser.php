@@ -70,6 +70,8 @@ final readonly class FitFileParser implements ActivityFileParser
         $records = [];
         /** @var list<array<string, mixed>> $lapMessages */
         $lapMessages = [];
+        /** @var list<array<string, mixed>> $hrMessages */
+        $hrMessages = [];
         /** @var array<string, mixed>|null $session */
         $session = null;
         $productName = null;
@@ -78,7 +80,7 @@ final readonly class FitFileParser implements ActivityFileParser
 
         $messages = Json::decodeLazy(
             json: $output,
-            pointer: '/files/0/messages',
+            pointer: '/files/-/messages',
         );
 
         $hasMessages = false;
@@ -91,6 +93,9 @@ final readonly class FitFileParser implements ActivityFileParser
                     break;
                 case 'lap':
                     $lapMessages[] = $fields;
+                    break;
+                case 'hr':
+                    $hrMessages[] = $fields;
                     break;
                 case 'session':
                     $session ??= $fields;
@@ -137,7 +142,10 @@ final readonly class FitFileParser implements ActivityFileParser
         }
 
         $streamMap = $this->buildStreams(
-            records: $this->mergeRecordsByTimestamp($records),
+            records: $this->mergeStrapHeartRate(
+                records: $this->mergeRecordsByTimestamp($records),
+                strapHrSamples: $this->expandStrapHeartRateSamples($hrMessages),
+            ),
             startTimestamp: $startTimestamp
         );
         $activityId = $this->activityIdFactory->random();
@@ -256,6 +264,130 @@ final readonly class FitFileParser implements ActivityFileParser
         }
 
         return $merged;
+    }
+
+    /**
+     * Chest straps cannot broadcast heart rate through water. During swims the
+     * strap stores its samples and the watch downloads them afterwards into
+     * "hr" messages, while the "record" messages only carry the (far less
+     * accurate) wrist reading. Each hr message batches filtered_bpm samples
+     * paired with event_timestamp values, a seconds-since-strap-power-on clock
+     * that is anchored to wall clock time by the hr messages that also carry a
+     * "timestamp". Mirrors Garmin's reference implementation
+     * (HrMesgUtils.expandHeartRates in the FIT SDK).
+     *
+     * @param list<array<string, mixed>> $hrMessages
+     *
+     * @return list<array{float, int}> chronological [timestamp in seconds since the FIT epoch, bpm] pairs
+     */
+    private function expandStrapHeartRateSamples(array $hrMessages): array
+    {
+        $anchorTimestamp = null;
+        $anchorEventTimestamp = null;
+        /** @var list<array{float, int}> $samples */
+        $samples = [];
+
+        foreach ($hrMessages as $hrMessage) {
+            $eventTimestamps = array_values(is_array($hrMessage['event_timestamp'] ?? null) ? $hrMessage['event_timestamp'] : [$hrMessage['event_timestamp'] ?? null]);
+            $bpms = array_values(is_array($hrMessage['filtered_bpm'] ?? null) ? $hrMessage['filtered_bpm'] : [$hrMessage['filtered_bpm'] ?? null]);
+
+            if (is_numeric($hrMessage['timestamp'] ?? null) && 1 === count($eventTimestamps) && is_numeric($eventTimestamps[0] ?? null)) {
+                $anchorTimestamp = (float) $hrMessage['timestamp'] + (is_numeric($hrMessage['fractional_timestamp'] ?? null) ? (float) $hrMessage['fractional_timestamp'] : 0.0);
+                $anchorEventTimestamp = (float) $eventTimestamps[0];
+            }
+
+            if (null === $anchorTimestamp || null === $anchorEventTimestamp || count($eventTimestamps) !== count($bpms)) {
+                continue;
+            }
+
+            foreach ($eventTimestamps as $index => $eventTimestamp) {
+                $bpm = $bpms[$index];
+                if (!is_numeric($eventTimestamp) || !is_numeric($bpm)) {
+                    continue;
+                }
+                $bpm = (int) round((float) $bpm);
+                if ($bpm <= 0 || $bpm >= 255) {
+                    // 0xFF is the FIT "invalid" sentinel for uint8 fields.
+                    continue;
+                }
+                $eventTimestamp = (float) $eventTimestamp;
+                if ($eventTimestamp < $anchorEventTimestamp) {
+                    // The 32 bit event_timestamp counter has a 1/1024s resolution, so it wraps every 2^32/1024 seconds.
+                    $eventTimestamp += 4194304.0;
+                }
+
+                $timestamp = $anchorTimestamp + ($eventTimestamp - $anchorEventTimestamp);
+
+                // Carry the previous sample forward across gaps in 250ms increments, capped at 5s.
+                if ([] !== $samples) {
+                    [$previousTimestamp, $previousBpm] = $samples[array_key_last($samples)];
+                    $gap = $timestamp - $previousTimestamp;
+                    for ($step = 1; $gap > 0.25 && $step <= 20; ++$step) {
+                        $samples[] = [$previousTimestamp + $step * 0.25, $previousBpm];
+                        $gap -= 0.25;
+                    }
+                }
+
+                $samples[] = [$timestamp, $bpm];
+            }
+        }
+
+        return $samples;
+    }
+
+    /**
+     * Overwrite the (wrist based) heart_rate of each record with the average
+     * of the strap samples taken between the previous record and this one.
+     * Records without nearby strap samples keep their wrist reading. Mirrors
+     * Garmin's reference implementation (HrMesgUtils.mergeHeartRates in the
+     * FIT SDK).
+     *
+     * @param list<array<string, mixed>> $records
+     * @param list<array{float, int}>    $strapHrSamples
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function mergeStrapHeartRate(array $records, array $strapHrSamples): array
+    {
+        if ([] === $strapHrSamples) {
+            return $records;
+        }
+
+        $sampleIndex = 0;
+        $countSamples = count($strapHrSamples);
+        $rangeStart = null;
+
+        foreach ($records as $key => $record) {
+            if (!is_numeric($record['timestamp'] ?? null)) {
+                continue;
+            }
+            $rangeEnd = (float) $record['timestamp'];
+            if (null === $rangeStart || $rangeStart >= $rangeEnd) {
+                $rangeStart = $rangeEnd - 1.0;
+                $sampleIndex = max(0, $sampleIndex - 1);
+            }
+
+            $sum = 0;
+            $count = 0;
+            while ($sampleIndex < $countSamples) {
+                [$timestamp, $bpm] = $strapHrSamples[$sampleIndex];
+                if ($timestamp > $rangeEnd) {
+                    break;
+                }
+                if ($timestamp > $rangeStart) {
+                    $sum += $bpm;
+                    ++$count;
+                }
+                ++$sampleIndex;
+            }
+
+            if ($count > 0) {
+                $records[$key]['heart_rate'] = (int) round($sum / $count);
+            }
+            $rangeStart = $rangeEnd;
+        }
+
+        return $records;
     }
 
     /**

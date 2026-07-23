@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" xmlns="http://www.topografix.com/GPX/1/1">
+  <trk>
+    <type>running</type>
+    <trkseg>
+      <trkpt lat="45.0" lon="22.5">
+        <time>2021-09-08T00:00:00Z</time>
+      </trkpt>
+      <trkpt lat="45.001" lon="22.501">
+        <time>2021-09-08T00:00:10Z</time>
+      </trkpt>
+      <trkpt lat="45.002" lon="22.502">
+        <time>2021-09-08T00:05:00Z</time>
+      </trkpt>
+      <trkpt lat="45.003" lon="22.503">
+        <time>2021-09-08T00:05:10Z</time>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>

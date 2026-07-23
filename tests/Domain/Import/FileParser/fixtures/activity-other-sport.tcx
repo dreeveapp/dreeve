@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TrainingCenterDatabase xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2">
+  <Activities>
+    <Activity Sport="Other">
+      <Id>2021-09-08T00:00:00Z</Id>
+      <Lap StartTime="2021-09-08T00:00:00Z">
+        <Track>
+          <Trackpoint>
+            <Time>2021-09-08T00:00:00Z</Time>
+            <Position><LatitudeDegrees>45.0</LatitudeDegrees><LongitudeDegrees>22.5</LongitudeDegrees></Position>
+          </Trackpoint>
+        </Track>
+      </Lap>
+    </Activity>
+  </Activities>
+</TrainingCenterDatabase>

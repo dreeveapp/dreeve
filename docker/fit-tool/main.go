@@ -184,13 +184,21 @@ func isInvalid(raw any, bt basetype.BaseType) bool {
 }
 
 // sanitize replaces non-finite floats (the FIT "invalid" sentinel) with nil so
-// the result is always valid JSON, recursing into float slices.
+// the result is always valid JSON, recursing into float slices. Byte slices
+// (e.g. the hr message's filtered_bpm samples) are widened to number slices
+// because encoding/json would otherwise emit []uint8 as a base64 string.
 func sanitize(v any) any {
 	switch x := v.(type) {
 	case float64:
 		return finiteOrNil(x)
 	case float32:
 		return finiteOrNil(float64(x))
+	case []uint8:
+		out := make([]any, len(x))
+		for i, e := range x {
+			out[i] = e
+		}
+		return out
 	case []float64:
 		out := make([]any, len(x))
 		for i, e := range x {

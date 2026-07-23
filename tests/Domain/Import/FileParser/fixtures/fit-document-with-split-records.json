@@ -1,0 +1,104 @@
+{
+    "files": [
+        {
+            "profileVersion": 2132,
+            "messages": [
+                {
+                    "name": "file_id",
+                    "fields": [
+                        {"name": "product_name", "value": "Edge 530"}
+                    ]
+                },
+                {
+                    "name": "session",
+                    "fields": [
+                        {"name": "sport", "value": 2},
+                        {"name": "sub_sport", "value": 7},
+                        {"name": "start_time", "value": 1000000000},
+                        {"name": "start_position_lat", "value": 536870912},
+                        {"name": "start_position_long", "value": 268435456},
+                        {"name": "total_distance", "value": 50.0},
+                        {"name": "total_ascent", "value": 10},
+                        {"name": "total_timer_time", "value": 10},
+                        {"name": "total_elapsed_time", "value": 12},
+                        {"name": "enhanced_avg_speed", "value": 5.0},
+                        {"name": "enhanced_max_speed", "value": 6.0},
+                        {"name": "avg_heart_rate", "value": 125},
+                        {"name": "max_heart_rate", "value": 140},
+                        {"name": "avg_cadence", "value": 82},
+                        {"name": "avg_power", "value": 205},
+                        {"name": "max_power", "value": 300},
+                        {"name": "total_calories", "value": 42},
+                        {"name": "total_work", "value": 210000}
+                    ]
+                },
+                {
+                    "name": "lap",
+                    "fields": [
+                        {"name": "start_time", "value": 1000000000},
+                        {"name": "total_distance", "value": 50.0},
+                        {"name": "total_timer_time", "value": 10},
+                        {"name": "total_elapsed_time", "value": 12},
+                        {"name": "enhanced_avg_speed", "value": 5.0},
+                        {"name": "enhanced_max_speed", "value": 6.0},
+                        {"name": "total_ascent", "value": 10},
+                        {"name": "avg_heart_rate", "value": 125}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "value": 1000000000},
+                        {"name": "distance", "value": 0.0},
+                        {"name": "enhanced_speed", "value": 5.0},
+                        {"name": "power", "value": 200},
+                        {"name": "cadence", "value": 80}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "value": 1000000000},
+                        {"name": "heart_rate", "value": 120}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "value": 1000000001},
+                        {"name": "distance", "value": 5.0},
+                        {"name": "enhanced_speed", "value": 5.5},
+                        {"name": "power", "value": 210}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "value": 1000000001},
+                        {"name": "position_lat", "value": 536870912},
+                        {"name": "position_long", "value": 268435456},
+                        {"name": "enhanced_altitude", "value": 100.0}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "value": 1000000002},
+                        {"name": "distance", "value": 11.0},
+                        {"name": "enhanced_speed", "value": 6.0},
+                        {"name": "power", "value": 250},
+                        {"name": "cadence", "value": 84}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "value": 1000000002},
+                        {"name": "heart_rate", "value": 130},
+                        {"name": "enhanced_altitude", "value": 110.0}
+                    ]
+                }
+            ]
+        }
+    ]
+}

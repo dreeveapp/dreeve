@@ -35,7 +35,7 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
     public function testParse(): void
     {
-        $this->givenFitToolReturns(Json::encode($this->fitDocument()));
+        $this->givenFitToolReturnsFixture('fit-document.json');
 
         $this->assertParsedFileMatchesSnapshot(
             $this->parser->parse($this->rawFile('/tmp/activity.fit'))
@@ -44,7 +44,7 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
     public function testParseDerivesSummaryMetricsFromStreamsWhenMissingFromSession(): void
     {
-        $this->givenFitToolReturns(Json::encode($this->fitDocumentWithoutSessionSummaryMetrics()));
+        $this->givenFitToolReturnsFixture('fit-document-without-session-summary-metrics.json');
 
         $this->assertParsedFileMatchesSnapshot(
             $this->parser->parse($this->rawFile('/tmp/activity.fit'))
@@ -53,7 +53,7 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
     public function testParseMergesRecordsSplitAcrossSameTimestamp(): void
     {
-        $this->givenFitToolReturns(Json::encode($this->fitDocumentWithSplitRecords()));
+        $this->givenFitToolReturnsFixture('fit-document-with-split-records.json');
 
         $this->assertParsedFileMatchesSnapshot(
             $this->parser->parse($this->rawFile('/tmp/activity.fit'))
@@ -72,6 +72,47 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
         $this->assertParsedFileMatchesSnapshot(
             $parser->parse($this->rawFileFromFixture('activity.fit'))
+        );
+    }
+
+    public function testParseRealPoolSwimWithStrapHeartRateThroughBinary(): void
+    {
+        $parser = new FitFileParser(
+            new IncrementingActivityIdFactory(),
+            new IncrementingActivityLapIdFactory(),
+            new SymfonyProcessFactory(),
+            new ActivityStreamsMapper(PausedClock::fromString('2023-10-17 16:15:04')),
+            SerializableTimezone::UTC(),
+        );
+
+        $this->assertParsedFileMatchesSnapshot(
+            $parser->parse($this->rawFileFromFixture('activity-pool-swim-with-hr-mesgs.fit'))
+        );
+    }
+
+    public function testParseMergesStrapHeartRateFromHrMessages(): void
+    {
+        // The records carry wrist readings of 120 and 130 bpm; the strap
+        // samples in the chained hr messages should replace them with 96 and
+        // 98 bpm.
+        $this->givenFitToolReturnsFixture('fit-document-with-hr-mesgs.json');
+
+        $this->assertParsedFileMatchesSnapshot(
+            $this->parser->parse($this->rawFile('/tmp/activity.fit'))
+        );
+    }
+
+    public function testParseIgnoresStrapHeartRateWithoutAnchor(): void
+    {
+        $document = $this->fitDocumentFromFixture('fit-document-with-hr-mesgs.json');
+        // Strip the anchor hr message; without it the event_timestamp clock
+        // cannot be mapped to wall clock time and the wrist readings are kept.
+        array_shift($document['files'][1]['messages']);
+
+        $this->givenFitToolReturns(Json::encode($document));
+
+        $this->assertParsedFileMatchesSnapshot(
+            $this->parser->parse($this->rawFile('/tmp/activity.fit'))
         );
     }
 
@@ -172,168 +213,14 @@ class FitFileParserTest extends ActivityFileParserTestCase
             ->willReturn($process);
     }
 
-    private function fitDocument(): array
+    private function givenFitToolReturnsFixture(string $fixture): void
     {
-        $lat45 = 2 ** 29; // 45 degrees in semicircles
-        $lng225 = 2 ** 28; // 22.5 degrees in semicircles
-
-        return [
-            'files' => [[
-                'profileVersion' => 2132,
-                'messages' => [
-                    ['name' => 'file_id', 'fields' => [
-                        ['name' => 'product_name', 'value' => 'Edge 530'],
-                    ]],
-                    ['name' => 'session', 'fields' => [
-                        ['name' => 'sport', 'value' => 2], // cycling
-                        ['name' => 'sub_sport', 'value' => 7], // road
-                        ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
-                        ['name' => 'start_position_lat', 'value' => $lat45],
-                        ['name' => 'start_position_long', 'value' => $lng225],
-                        ['name' => 'total_distance', 'value' => 50.0],
-                        ['name' => 'total_ascent', 'value' => 10],
-                        ['name' => 'total_timer_time', 'value' => 10],
-                        ['name' => 'total_elapsed_time', 'value' => 12],
-                        ['name' => 'enhanced_avg_speed', 'value' => 5.0],
-                        ['name' => 'enhanced_max_speed', 'value' => 6.0],
-                        ['name' => 'avg_heart_rate', 'value' => 125],
-                        ['name' => 'max_heart_rate', 'value' => 140],
-                        ['name' => 'avg_cadence', 'value' => 82],
-                        ['name' => 'avg_power', 'value' => 205],
-                        ['name' => 'max_power', 'value' => 300],
-                        ['name' => 'total_calories', 'value' => 42],
-                        ['name' => 'total_work', 'value' => 210000],
-                    ]],
-                    ['name' => 'lap', 'fields' => [
-                        ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
-                        ['name' => 'total_distance', 'value' => 50.0],
-                        ['name' => 'total_timer_time', 'value' => 10],
-                        ['name' => 'total_elapsed_time', 'value' => 12],
-                        ['name' => 'enhanced_avg_speed', 'value' => 5.0],
-                        ['name' => 'enhanced_max_speed', 'value' => 6.0],
-                        ['name' => 'total_ascent', 'value' => 10],
-                        ['name' => 'avg_heart_rate', 'value' => 125],
-                    ]],
-                    ['name' => 'record', 'fields' => [
-                        ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS],
-                        ['name' => 'distance', 'value' => 0.0],
-                        ['name' => 'position_lat', 'value' => 0],
-                        ['name' => 'position_long', 'value' => 0],
-                        ['name' => 'enhanced_altitude', 'value' => 100.0],
-                        ['name' => 'enhanced_speed', 'value' => 5.0],
-                        ['name' => 'heart_rate', 'value' => 120],
-                        ['name' => 'cadence', 'value' => 80],
-                        ['name' => 'power', 'value' => 200],
-                        ['name' => 'temperature', 'value' => 20],
-                    ]],
-                    ['name' => 'record', 'fields' => [
-                        ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS + 10],
-                        ['name' => 'distance', 'value' => 50.0],
-                        ['name' => 'position_lat', 'value' => $lat45],
-                        ['name' => 'position_long', 'value' => $lng225],
-                        ['name' => 'enhanced_altitude', 'value' => 110.0],
-                        ['name' => 'enhanced_speed', 'value' => 6.0],
-                        ['name' => 'heart_rate', 'value' => 130],
-                        ['name' => 'cadence', 'value' => 84],
-                        ['name' => 'power', 'value' => 250],
-                        ['name' => 'temperature', 'value' => 21],
-                    ]],
-                ],
-            ]],
-        ];
+        $this->givenFitToolReturns((string) file_get_contents(__DIR__.'/fixtures/'.$fixture));
     }
 
-    private function fitDocumentWithoutSessionSummaryMetrics(): array
+    private function fitDocumentFromFixture(string $fixture): array
     {
-        return [
-            'files' => [[
-                'profileVersion' => 2132,
-                'messages' => [
-                    ['name' => 'file_id', 'fields' => [
-                        ['name' => 'product_name', 'value' => 'Edge 530'],
-                    ]],
-                    ['name' => 'session', 'fields' => [
-                        ['name' => 'sport', 'value' => 2], // cycling
-                        ['name' => 'sub_sport', 'value' => 7], // road
-                        ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
-                        ['name' => 'total_distance', 'value' => 50.0],
-                        ['name' => 'total_timer_time', 'value' => 10],
-                        ['name' => 'total_elapsed_time', 'value' => 12],
-                    ]],
-                    ['name' => 'record', 'fields' => [
-                        ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS],
-                        ['name' => 'distance', 'value' => 0.0],
-                        ['name' => 'heart_rate', 'value' => 120],
-                        ['name' => 'cadence', 'value' => 80],
-                        ['name' => 'power', 'value' => 200],
-                    ]],
-                    ['name' => 'record', 'fields' => [
-                        ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS + 10],
-                        ['name' => 'distance', 'value' => 50.0],
-                        ['name' => 'heart_rate', 'value' => 130],
-                        ['name' => 'cadence', 'value' => 84],
-                        ['name' => 'power', 'value' => 250],
-                    ]],
-                ],
-            ]],
-        ];
-    }
-
-    private function fitDocumentWithSplitRecords(): array
-    {
-        $lat45 = 2 ** 29; // 45 degrees in semicircles
-        $lng225 = 2 ** 28; // 22.5 degrees in semicircles
-
-        $document = $this->fitDocument();
-        $document['files'][0]['messages'] = array_values(array_filter(
-            $document['files'][0]['messages'],
-            static fn (array $message): bool => 'record' !== $message['name'],
-        ));
-
-        array_push(
-            $document['files'][0]['messages'],
-            // Second 0, split across two records; no GPS fix or altitude yet:
-            // back-filled from second 1 once known.
-            ['name' => 'record', 'fields' => [
-                ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS],
-                ['name' => 'distance', 'value' => 0.0],
-                ['name' => 'enhanced_speed', 'value' => 5.0],
-                ['name' => 'power', 'value' => 200],
-                ['name' => 'cadence', 'value' => 80],
-            ]],
-            ['name' => 'record', 'fields' => [
-                ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS],
-                ['name' => 'heart_rate', 'value' => 120],
-            ]],
-            // Second 1, no heart rate or cadence record at all: forward-filled.
-            ['name' => 'record', 'fields' => [
-                ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS + 1],
-                ['name' => 'distance', 'value' => 5.0],
-                ['name' => 'enhanced_speed', 'value' => 5.5],
-                ['name' => 'power', 'value' => 210],
-            ]],
-            ['name' => 'record', 'fields' => [
-                ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS + 1],
-                ['name' => 'position_lat', 'value' => $lat45],
-                ['name' => 'position_long', 'value' => $lng225],
-                ['name' => 'enhanced_altitude', 'value' => 100.0],
-            ]],
-            // Second 2, split across two records; no position: forward-filled.
-            ['name' => 'record', 'fields' => [
-                ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS + 2],
-                ['name' => 'distance', 'value' => 11.0],
-                ['name' => 'enhanced_speed', 'value' => 6.0],
-                ['name' => 'power', 'value' => 250],
-                ['name' => 'cadence', 'value' => 84],
-            ]],
-            ['name' => 'record', 'fields' => [
-                ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS + 2],
-                ['name' => 'heart_rate', 'value' => 130],
-                ['name' => 'enhanced_altitude', 'value' => 110.0],
-            ]],
-        );
-
-        return $document;
+        return Json::decode((string) file_get_contents(__DIR__.'/fixtures/'.$fixture));
     }
 
     #[\Override]
