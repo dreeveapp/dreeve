@@ -67,7 +67,7 @@
                         </td>
                         <td class="whitespace-nowrap">
                             {% set isActive = gear.getStatus().isActive() %}
-                            <span class="pill {{ isActive ? 'pill--success' : 'pill--neutral' }}">
+                            <span class="pill {{ isActive ? 'pill--success' : 'pill--neutral' }} text-xs">
                                 <span class="size-1.5 rounded-full bg-current"></span>
                                 {{ gear.getStatus()|trans }}
                             </span>
