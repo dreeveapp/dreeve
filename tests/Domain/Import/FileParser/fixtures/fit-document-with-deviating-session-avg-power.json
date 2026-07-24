@@ -1,0 +1,59 @@
+{
+    "files": [
+        {
+            "profileVersion": 2132,
+            "messages": [
+                {
+                    "name": "file_id",
+                    "fields": [
+                        {"name": "product_name", "value": "Bosch eBike"}
+                    ]
+                },
+                {
+                    "name": "session",
+                    "fields": [
+                        {"name": "sport", "value": 2},
+                        {"name": "start_time", "value": 1000000000},
+                        {"name": "total_distance", "value": 100.0},
+                        {"name": "total_timer_time", "value": 30},
+                        {"name": "total_elapsed_time", "value": 32},
+                        {"name": "avg_power", "value": 225},
+                        {"name": "max_power", "value": 250}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "value": 1000000000},
+                        {"name": "distance", "value": 0.0},
+                        {"name": "power", "value": 200}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "value": 1000000010},
+                        {"name": "distance", "value": 50.0},
+                        {"name": "power", "value": 250}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "value": 1000000020},
+                        {"name": "distance", "value": 80.0},
+                        {"name": "power", "value": 0}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "value": 1000000030},
+                        {"name": "distance", "value": 100.0},
+                        {"name": "power", "value": 0}
+                    ]
+                }
+            ]
+        }
+    ]
+}
