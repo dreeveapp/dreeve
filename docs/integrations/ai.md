@@ -10,12 +10,16 @@ Dreeve ships with an AI-powered workout assistant. To use it, you configure an A
 > **Important** Dreeve uses the <a href="https://docs.neuron-ai.dev">Neuron AI</a> library to interface with AI models.
 > Only providers supported by Neuron AI are compatible. See the full list of <a href="https://docs.neuron-ai.dev/providers/ai-provider">supported providers</a>
 
-## Cloud providers
+## Configuring an AI provider
+
+<!-- tabs:start -->
+
+#### **Cloud providers**
 
 To use a cloud-based AI provider you need an API key and the name of the model you want. Configure the key in the
 `AI_API_KEY` environment variable, then pick the provider and enter the model name in the settings.
 
-## Locally hosted Ollama
+#### **Locally hosted Ollama**
 
 You can also run a local model using Ollama. Start by configuring a Docker container for Ollama:
 
@@ -53,7 +57,7 @@ Finally, enable the integration, choose the `ollama` provider, and set the model
 > [!IMPORTANT]
 > **Important** Make sure you're running the latest version of Ollama. Streaming responses with tooling has been <a href="https://ollama.com/blog/streaming-tool">added on May 28, 2025.</a>
 
-## OpenRouter
+#### **OpenRouter**
 
 [OpenRouter](https://openrouter.ai) provides access to hundreds of models (OpenAI, Anthropic, Google and more) through a single API key, including free-tier models. This makes it easy to get started or test different models.
 
@@ -67,9 +71,17 @@ and put your OpenRouter API key in `AI_API_KEY` in your `.env`.
 > [!TIP]
 > OpenRouter offers [free models](https://openrouter.ai/collections/free) which are great for testing without any cost.
 
+<!-- tabs:end -->
+
 ## Your AI workout assistant
 
-### Via the CLI
+<!-- tabs:start -->
+
+#### **Via the UI**
+
+[Virtual AI assistant](https://www.youtube.com/embed/d1r8ISbRL5o ':include :type=iframe width=100% height=400px title="Dreeve" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen')
+
+#### **Via the CLI**
 
 ```bash
 > docker compose exec app bin/console app:ai:agent-chat
@@ -79,9 +91,7 @@ This will prompt you with a message like the following:
 
 ![Mark example](../assets/images/mark-example.png) 
 
-### Via the UI
-
-[Virtual AI assistant](https://www.youtube.com/embed/d1r8ISbRL5o ':include :type=iframe width=100% height=400px title="Dreeve" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen')
+<!-- tabs:end -->
 
 ### Pre-defining chat commands
 

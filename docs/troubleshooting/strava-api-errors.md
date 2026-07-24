@@ -3,7 +3,9 @@
 During the authorization process with Strava, as well as when using the API, you may encounter various errors 
 Below is a list of common issues and their solutions.
 
-## Invalid permissions
+<!-- tabs:start -->
+
+#### **Invalid permissions**
 
 When you attempt to access Strava data without the necessary permissions, 
 you may receive an error message indicating that the required permissions are missing.
@@ -26,7 +28,7 @@ When you have done so, restart your Docker container to apply the changes.
 }
 ```
 
-## Invalid client_id
+#### **Invalid client_id**
 
 When you encounter an error related to the `client_id`, 
 it usually means that the client ID provided in your `.env` file is incorrect, 
@@ -46,7 +48,7 @@ Make sure that you have done both of these steps correctly.
 }
 ```
 
-## Invalid redirect_uri
+#### **Invalid redirect_uri**
 
 If you receive an error regarding the `redirect_uri`, this probably means that you misconfigured 
 the `Website` and `Authorization Callback Domain` in your Strava application settings. 
@@ -65,7 +67,7 @@ Ensure that the `Website` and `Authorization Callback Domain` match the URL/doma
 }
 ```
 
-## 500 Internal Server Error
+#### **500 Internal Server Error**
 
 If you receive an error like the following:
 
@@ -80,3 +82,5 @@ If the activity is accessible, then it's likely corrupted on Strava's end. You h
 1. **Update the activity**: for example, by changing the private note or title. Then try importing it again.
 2. **Skip the activity from being imported**: add its ID to **Activities to skip during import** under
    [Settings → Import](/admin/settings.md#import).
+
+<!-- tabs:end -->

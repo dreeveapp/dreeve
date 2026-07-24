@@ -35,4 +35,4 @@
 
   - [Feature requests](community/feature-requests.md "Dreeve | Feature requests")
 
-- [Changelog](changelog.md "Dreeve | Changelog")
+- <a href="#/changelog" title="Dreeve | Changelog" data-nosearch>Changelog</a>

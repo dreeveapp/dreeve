@@ -26,14 +26,23 @@ and challenges, none of which is present in an activity file.
 **Dreeve's frontend is pre-rendered static HTML.** Importing an activity writes it to the database, but it does
 *not* make it show up in the app. The pages are only regenerated when a **build** runs.
 
-```bash
-# Import new activities, then rebuild the app
-# In files mode (the default)
-> docker compose exec app bin/console app:cron:run-file-import --import --build
+To import new activities and then rebuild the app:
 
-# In stravaApi mode
+<!-- tabs:start -->
+
+#### **Files mode**
+
+```bash
+> docker compose exec app bin/console app:cron:run-file-import --import --build
+```
+
+#### **Strava API mode**
+
+```bash
 > docker compose exec app bin/console app:cron:run-strava-import --import --build
 ```
+
+<!-- tabs:end -->
 
 > [!NOTE]
 > The same applies after changing settings in the admin panel: a build has to run before you see the effect.

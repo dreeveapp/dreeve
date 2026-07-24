@@ -89,7 +89,9 @@ docker compose exec app bin/console app:strava:webhooks-unsubscribe 123456
 
 ## Troubleshooting tips
 
-### Not verifiable
+<!-- tabs:start -->
+
+#### **Not verifiable**
 
 If you get the following error when trying to create a webhook subscription
 
@@ -116,7 +118,7 @@ be sure to:
 curl -X GET 'https://your-instance.com/strava/webhook?hub.verify_token=test&hub.challenge=15f7d1a91c1f40f8a748fd134752feb3&hub.mode=subscribe'
 ```
 
-### GET to callback URL does not return 200
+#### **Callback URL does not return 200**
 
 If you get the following error when trying to create a webhook subscription
 
@@ -137,3 +139,5 @@ be sure to:
 
 * If hosted on Cloudflare, disable Cloudflare's Bot Fight Mode (as referenced in the docs, above)
 * If running authentication middlware (Authelia, etc.), ensure the URL and request parameters are configured to bypass authentication.
+
+<!-- tabs:end -->

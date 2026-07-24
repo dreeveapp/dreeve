@@ -12,18 +12,22 @@ This is Dreeve's default mode (`IMPORT_MODE=files`).
 
 ## Uploading files
 
-### The watch folder
+<!-- tabs:start -->
+
+#### **Watch folder**
 
 Drop files into the `watch/` folder that you mounted in your
 [docker-compose.yml](/getting-started/installation.md#docker-composeyml). On the next import run, everything in
 it is processed.
 
-### Upload in the browser
+#### **Browser upload**
 
 Go to `/admin/upload` in the admin panel and drag your files in. This is the easiest route if the machine
 running Dreeve isn't the machine your files are on. Uploaded files go through the same pipeline as the "watch folder" approach.
 
 ![Drag-and-drop upload zone](../assets/images/file-upload.png)
+
+<!-- tabs:end -->
 
 ### Duplicate detection
 

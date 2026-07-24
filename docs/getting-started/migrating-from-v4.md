@@ -146,13 +146,21 @@ Two things are **not** carried over by the migration and have to be set up again
 
 ### 8. Run an import and build
 
-```bash
-# In stravaApi mode
-> docker compose exec app bin/console app:cron:run-strava-import --import --build
+<!-- tabs:start -->
 
-# In files mode
+#### **Files mode**
+
+```bash
 > docker compose exec app bin/console app:cron:run-file-import --import --build
 ```
+
+#### **Strava API mode**
+
+```bash
+> docker compose exec app bin/console app:cron:run-strava-import --import --build
+```
+
+<!-- tabs:end -->
 
 ## Where did my configuration go?
 

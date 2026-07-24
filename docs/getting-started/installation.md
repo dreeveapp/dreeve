@@ -134,10 +134,15 @@ The command that generates the hash runs *inside* the container, so start the co
 Use the **interactive prompt**.
 
 > [!CAUTION]
-> **Caution: you must double every `$` in the hash.** Docker Compose performs variable interpolation on
-> `.env` values, so it reads `$bHxkUSQsf...` as a variable, finds nothing, and silently drops it.
+> **Caution: the `$` characters in the hash need special treatment.** Docker Compose performs variable
+> interpolation on `.env` values, so it reads `$bHxkUSQsf...` as a variable, finds nothing, and silently
+> drops it. Store the hash using one of the two notations below.
 
-So a hash of:
+<!-- tabs:start -->
+
+#### **Double every $**
+
+A hash of:
 
 ```
 $2y$13$bHxkUSQsfOt1T.dqbu8g4u/H6EXruv.lPUrwi.4NEGdkrKslTDAqW
@@ -149,11 +154,15 @@ goes into your `.env` as:
 ADMIN_PASSWORD_HASH=$$2y$$13$$bHxkUSQsfOt1T.dqbu8g4u/H6EXruv.lPUrwi.4NEGdkrKslTDAqW
 ```
 
-Alternatively, you can keep the hash unescaped by wrapping it in **single quotes**:
+#### **Single quotes**
+
+Keep the hash unescaped by wrapping it in single quotes:
 
 ```bash
-ADMIN_PASSWORD_HASH='$2y$13$bHxkUSQsfOt1T.dqbu8g4u/H6EXruv.lP:Urwi.4NEGdkrKslTDAqW'
+ADMIN_PASSWORD_HASH='$2y$13$bHxkUSQsfOt1T.dqbu8g4u/H6EXruv.lPUrwi.4NEGdkrKslTDAqW'
 ```
+
+<!-- tabs:end -->
 
 ## Running the application
 
