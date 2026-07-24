@@ -7,8 +7,8 @@ namespace App\Tests\Domain\Gear;
 use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearType;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Time\Seconds;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Money\Money;
 

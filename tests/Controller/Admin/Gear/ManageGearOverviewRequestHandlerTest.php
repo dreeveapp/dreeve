@@ -4,7 +4,7 @@ namespace App\Tests\Controller\Admin\Gear;
 
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Length\Meter;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
 

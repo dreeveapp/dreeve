@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Milestone;
 
-use App\Infrastructure\ValueObject\Measurement\Unit;
+use App\Infrastructure\Measurement\Unit;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class PreviousMilestone implements \JsonSerializable

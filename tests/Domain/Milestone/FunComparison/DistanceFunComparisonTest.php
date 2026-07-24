@@ -3,7 +3,7 @@
 namespace App\Tests\Domain\Milestone\FunComparison;
 
 use App\Domain\Milestone\FunComparison\DistanceFunComparison;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Kilometer;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\IdentityTranslator;

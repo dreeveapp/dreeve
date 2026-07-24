@@ -6,10 +6,10 @@ namespace App\Domain\Dashboard\Widget\DistanceBreakdown;
 
 use App\Domain\Activity\Activities;
 use App\Domain\Activity\Activity;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Time\Seconds;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\Time\Seconds;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 
 final readonly class DistanceBreakdown
 {

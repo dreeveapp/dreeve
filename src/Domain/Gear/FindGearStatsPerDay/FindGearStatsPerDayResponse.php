@@ -6,7 +6,7 @@ namespace App\Domain\Gear\FindGearStatsPerDay;
 
 use App\Domain\Gear\GearId;
 use App\Infrastructure\CQRS\Query\Response;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final class FindGearStatsPerDayResponse implements Response

@@ -6,7 +6,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStream;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamTypes;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\UnitSystem;
 use PHPUnit\Framework\TestCase;
 
 class CombinedActivityStreamTest extends TestCase

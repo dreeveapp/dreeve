@@ -7,12 +7,12 @@ namespace App\Domain\Segment\SegmentEffort;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Integration\AI\SupportsAITooling;
 use App\Domain\Segment\SegmentId;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
+use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
+use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\Velocity\KmPerHour;
-use App\Infrastructure\ValueObject\Measurement\Velocity\MetersPerSecond;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPer100Meter;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\ORM\Mapping as ORM;
 

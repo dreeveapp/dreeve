@@ -3,7 +3,7 @@
 namespace App\Tests\Domain\Milestone\FunComparison;
 
 use App\Domain\Milestone\FunComparison\MovingTimeFunComparison;
-use App\Infrastructure\ValueObject\Measurement\Time\Hour;
+use App\Infrastructure\Measurement\Time\Hour;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\IdentityTranslator;

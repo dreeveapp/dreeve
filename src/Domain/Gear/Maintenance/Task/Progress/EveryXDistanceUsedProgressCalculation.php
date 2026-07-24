@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Gear\Maintenance\Task\Progress;
 
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Length\Meter;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 

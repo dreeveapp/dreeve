@@ -8,8 +8,8 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStream;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamTypes;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 
 final class CombinedActivityStreamBuilder
 {

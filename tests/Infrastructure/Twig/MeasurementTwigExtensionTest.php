@@ -4,12 +4,12 @@ namespace App\Tests\Infrastructure\Twig;
 
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Measurement\Length\Foot;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Unit;
+use App\Infrastructure\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\Twig\MeasurementTwigExtension;
-use App\Infrastructure\ValueObject\Measurement\Length\Foot;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Unit;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPerKm;
 use App\Tests\ContainerTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 

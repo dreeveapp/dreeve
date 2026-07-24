@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Stream\CombinedStream;
 
 use App\Domain\Activity\Stream\StreamType;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\UnitSystem;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

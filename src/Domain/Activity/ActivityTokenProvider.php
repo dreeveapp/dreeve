@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace App\Domain\Activity;
 
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Measurement\ProvideMeasurementFormats;
 use App\Infrastructure\Tokenizer\Token;
 use App\Infrastructure\Tokenizer\TokenDefinition;
 use App\Infrastructure\Tokenizer\TokenizerContext;
 use App\Infrastructure\Tokenizer\TokenProvider;
-use App\Infrastructure\ValueObject\Measurement\Unit;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class ActivityTokenProvider implements TokenProvider
 {
+    use ProvideMeasurementFormats;
+
     private const string PREFIX = 'activity';
 
     public function __construct(
@@ -129,12 +131,12 @@ final readonly class ActivityTokenProvider implements TokenProvider
             'start-date' => $activity->getStartDate()->translatedFormat(
                 $token->getModifier() ?? (string) $this->settingsRepository->appearance()->getDateAndTimeFormat()->getDateFormatShort()
             ),
-            'distance' => $this->renderUnit($activity->getDistance()->toUnitSystem($unitSystem), precision: 1),
-            'elevation' => $this->renderUnit($activity->getElevation()->toUnitSystem($unitSystem), precision: 0),
+            'distance' => $this->formatUnitWithSymbol($activity->getDistance()->toUnitSystem($unitSystem), precision: 1),
+            'elevation' => $this->formatUnitWithSymbol($activity->getElevation()->toUnitSystem($unitSystem), precision: 0),
             'moving-time' => $activity->getMovingTimeFormatted(),
             'elapsed-time' => $activity->getElapsedTimeFormatted(),
-            'average-speed' => $this->renderUnit($activity->getAverageSpeed()->toUnitSystem($unitSystem), precision: 1),
-            'max-speed' => $this->renderUnit($activity->getMaxSpeed()->toUnitSystem($unitSystem), precision: 1),
+            'average-speed' => $this->formatUnitWithSymbol($activity->getAverageSpeed()->toUnitSystem($unitSystem), precision: 1),
+            'max-speed' => $this->formatUnitWithSymbol($activity->getMaxSpeed()->toUnitSystem($unitSystem), precision: 1),
             'average-heart-rate' => null !== $activity->getAverageHeartRate() ? (string) $activity->getAverageHeartRate() : null,
             'max-heart-rate' => null !== $activity->getMaxHeartRate() ? (string) $activity->getMaxHeartRate() : null,
             'average-power' => null !== $activity->getAveragePower() ? (string) $activity->getAveragePower() : null,
@@ -144,17 +146,5 @@ final readonly class ActivityTokenProvider implements TokenProvider
             'device-name' => $activity->getDeviceName(),
             default => null,
         };
-    }
-
-    private function renderUnit(Unit $unit, int $precision): string
-    {
-        $value = $unit->toFloat();
-        $precision = $value < 100 ? $precision : 0;
-
-        return sprintf(
-            '%s %s',
-            number_format(round($value, $precision), $precision, '.', "\u{00A0}"),
-            $unit->getSymbol()
-        );
     }
 }

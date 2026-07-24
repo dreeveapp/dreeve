@@ -7,8 +7,8 @@ namespace App\Tests\Domain\Activity\Lap;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\Lap\ActivityLap;
 use App\Domain\Activity\Lap\ActivityLapId;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Velocity\MetersPerSecond;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
 
 final class ActivityLapBuilder
 {

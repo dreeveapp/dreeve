@@ -7,9 +7,9 @@ namespace App\Domain\Gear;
 use App\Domain\Activity\Activities;
 use App\Domain\Calendar\Month;
 use App\Domain\Calendar\Months;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Serialization\Escape;
 use App\Infrastructure\Theme\Theme;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 
 final readonly class DistancePerMonthPerGearChart
 {

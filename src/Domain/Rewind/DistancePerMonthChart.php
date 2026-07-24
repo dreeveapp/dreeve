@@ -6,9 +6,9 @@ namespace App\Domain\Rewind;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Calendar\Month;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Theme\Theme;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

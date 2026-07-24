@@ -7,7 +7,7 @@ namespace App\Tests\Domain\Activity\BestEffort;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\BestEffort\ActivityBestEffort;
 use App\Domain\Activity\SportType\SportType;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Length\Meter;
 
 final class ActivityBestEffortBuilder
 {

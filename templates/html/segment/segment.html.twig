@@ -131,9 +131,9 @@
                                     </td>
                                     <td>
                                         {% set velocityPreference = activity.getSportType().getVelocityDisplayPreference() %}
-                                        {% if velocityPreference is instanceof('App\\Infrastructure\\ValueObject\\Measurement\\Velocity\\SecPer100Meter') %}
+                                        {% if velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPer100Meter') %}
                                             {{ segmentEffort.getPaceInSecPer100Meter()|formatPace }}<span class="text-xxs ml-px">/100m</span>
-                                        {% elseif velocityPreference is instanceof('App\\Infrastructure\\ValueObject\\Measurement\\Velocity\\SecPerKm') %}
+                                        {% elseif velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPerKm') %}
                                             {{ segmentEffort.getPaceInSecPerKm()|formatPace }}<span class="text-xxs ml-px">{{ renderUnitSymbol('pace') }}</span>
                                         {% else %}
                                             {{ segmentEffort.getAverageSpeed()|renderMeasurement(1) }}

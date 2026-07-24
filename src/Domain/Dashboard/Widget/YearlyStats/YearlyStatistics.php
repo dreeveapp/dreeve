@@ -6,11 +6,11 @@ namespace App\Domain\Dashboard\Widget\YearlyStats;
 
 use App\Domain\Activity\ActivityType;
 use App\Domain\Dashboard\Widget\YearlyStats\FindYearlyStats\FindYearlyStatsResponse;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Time\Hour;
+use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Time\Hour;
-use App\Infrastructure\ValueObject\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Time\Years;
 
 final readonly class YearlyStatistics

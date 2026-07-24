@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Stream\CombinedStream;
 
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Theme\Theme;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class CombinedStreamProfileCharts

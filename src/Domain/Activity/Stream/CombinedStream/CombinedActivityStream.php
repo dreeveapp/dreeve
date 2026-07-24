@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Stream\CombinedStream;
 
 use App\Domain\Activity\ActivityId;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\UnitSystem;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]

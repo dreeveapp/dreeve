@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Milestone\Context;
 
-use App\Infrastructure\ValueObject\Measurement\Unit;
+use App\Infrastructure\Measurement\Unit;
 
 final readonly class ActivityRecordContext implements MilestoneContext
 {

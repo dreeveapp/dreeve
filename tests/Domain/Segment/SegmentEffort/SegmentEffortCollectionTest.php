@@ -3,7 +3,7 @@
 namespace App\Tests\Domain\Segment\SegmentEffort;
 
 use App\Domain\Segment\SegmentEffort\SegmentEfforts;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Kilometer;
 use PHPUnit\Framework\TestCase;
 
 class SegmentEffortCollectionTest extends TestCase

@@ -11,9 +11,9 @@ use App\Domain\Activity\ActivityTypes;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Activity\SportType\SportTypes;
+use App\Infrastructure\Measurement\Length\ConvertableToMeter;
+use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Time\Clock\Clock;
-use App\Infrastructure\ValueObject\Measurement\Length\ConvertableToMeter;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 

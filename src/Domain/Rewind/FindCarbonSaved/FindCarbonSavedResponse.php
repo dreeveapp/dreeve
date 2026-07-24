@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Rewind\FindCarbonSaved;
 
 use App\Infrastructure\CQRS\Query\Response;
-use App\Infrastructure\ValueObject\Measurement\Mass\Kilogram;
+use App\Infrastructure\Measurement\Mass\Kilogram;
 
 final readonly class FindCarbonSavedResponse implements Response
 {

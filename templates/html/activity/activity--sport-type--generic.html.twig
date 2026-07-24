@@ -380,9 +380,9 @@
                                     <div class="text-xxs uppercase text-gray-400 tracking-wider">{{ "Speed"|trans }}</div>
                                     <div class="text-sm font-bold text-gray-900">
                                         {% set velocityPreference = activity.getSportType().getVelocityDisplayPreference() %}
-                                        {% if velocityPreference is instanceof('App\\Infrastructure\\ValueObject\\Measurement\\Velocity\\SecPer100Meter') %}
+                                        {% if velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPer100Meter') %}
                                             {{ segmentEffort.getPaceInSecPer100Meter()|formatPace }}/100m
-                                        {% elseif velocityPreference is instanceof('App\\Infrastructure\\ValueObject\\Measurement\\Velocity\\SecPerKm') %}
+                                        {% elseif velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPerKm') %}
                                             {{ segmentEffort.getPaceInSecPerKm()|formatPace }}{{ renderUnitSymbol('pace') }}
                                         {% else %}
                                             {{ segmentEffort.getAverageSpeed()|renderMeasurement(1) }}

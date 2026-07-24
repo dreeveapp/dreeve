@@ -13,7 +13,7 @@ use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\Console\Output\OutputInterface;

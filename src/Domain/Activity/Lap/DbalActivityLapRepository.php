@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Lap;
 
 use App\Domain\Activity\ActivityId;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
 use App\Infrastructure\Repository\DbalRepository;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Velocity\MetersPerSecond;
 
 final readonly class DbalActivityLapRepository extends DbalRepository implements ActivityLapRepository
 {

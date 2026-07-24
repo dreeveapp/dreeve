@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Athlete\Weight;
 
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

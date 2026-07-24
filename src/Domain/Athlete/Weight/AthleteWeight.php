@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Athlete\Weight;
 
-use App\Infrastructure\ValueObject\Measurement\Mass\Kilogram;
-use App\Infrastructure\ValueObject\Measurement\Mass\Weight;
+use App\Infrastructure\Measurement\Mass\Kilogram;
+use App\Infrastructure\Measurement\Mass\Weight;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class AthleteWeight

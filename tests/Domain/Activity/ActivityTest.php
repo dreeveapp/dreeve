@@ -3,11 +3,11 @@
 namespace App\Tests\Domain\Activity;
 
 use App\Domain\Activity\WorldType;
+use App\Infrastructure\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
-use App\Infrastructure\ValueObject\Measurement\Velocity\KmPerHour;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPer100Meter;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 

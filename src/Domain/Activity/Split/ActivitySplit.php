@@ -6,12 +6,12 @@ namespace App\Domain\Activity\Split;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Integration\AI\SupportsAITooling;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
+use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
+use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
-use App\Infrastructure\ValueObject\Measurement\Velocity\MetersPerSecond;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPer100Meter;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPerKm;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]

@@ -2,8 +2,8 @@
 
 namespace App\Domain\Integration\Weather\OpenMeteo;
 
-use App\Infrastructure\ValueObject\Measurement\Temperature\Celsius;
-use App\Infrastructure\ValueObject\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\Measurement\Temperature\Celsius;
+use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class Weather implements \JsonSerializable

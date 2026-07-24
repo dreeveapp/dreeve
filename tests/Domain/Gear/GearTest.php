@@ -2,10 +2,10 @@
 
 namespace App\Tests\Domain\Gear;
 
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Time\Seconds;
-use App\Infrastructure\ValueObject\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Time\Seconds;
+use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
 

@@ -6,8 +6,8 @@ namespace App\Domain\Rewind\FindTotalsPerMonth;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\CQRS\Query\Response;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Meter;
 
 final readonly class FindTotalsPerMonthResponse implements Response
 {

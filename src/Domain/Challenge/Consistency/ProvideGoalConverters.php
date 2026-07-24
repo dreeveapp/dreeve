@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domain\Challenge\Consistency;
 
-use App\Infrastructure\ValueObject\Measurement\Length\Foot;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Length\Mile;
-use App\Infrastructure\ValueObject\Measurement\Time\Hour;
-use App\Infrastructure\ValueObject\Measurement\Time\Minute;
-use App\Infrastructure\ValueObject\Measurement\Time\Seconds;
-use App\Infrastructure\ValueObject\Measurement\Unit;
+use App\Infrastructure\Measurement\Length\Foot;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Length\Mile;
+use App\Infrastructure\Measurement\Time\Hour;
+use App\Infrastructure\Measurement\Time\Minute;
+use App\Infrastructure\Measurement\Time\Seconds;
+use App\Infrastructure\Measurement\Unit;
 
 trait ProvideGoalConverters
 {

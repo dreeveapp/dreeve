@@ -6,8 +6,8 @@ namespace App\Domain\Dashboard\Widget\TrainingGoals;
 
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Challenge\Consistency\ProvideGoalConverters;
-use App\Infrastructure\ValueObject\Measurement\ProvideUnitFromScalar;
-use App\Infrastructure\ValueObject\Measurement\Unit;
+use App\Infrastructure\Measurement\ProvideUnitFromScalar;
+use App\Infrastructure\Measurement\Unit;
 use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 

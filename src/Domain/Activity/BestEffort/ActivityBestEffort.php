@@ -6,9 +6,9 @@ namespace App\Domain\Activity\BestEffort;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\SportType\SportType;
+use App\Infrastructure\Measurement\Length\ConvertableToMeter;
+use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
-use App\Infrastructure\ValueObject\Measurement\Length\ConvertableToMeter;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]

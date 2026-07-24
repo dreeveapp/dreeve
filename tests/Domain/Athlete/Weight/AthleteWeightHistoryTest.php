@@ -5,9 +5,9 @@ namespace App\Tests\Domain\Athlete\Weight;
 use App\Domain\Athlete\Weight\AthleteWeight;
 use App\Domain\Athlete\Weight\AthleteWeightHistory;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\ValueObject\Measurement\Mass\Kilogram;
-use App\Infrastructure\ValueObject\Measurement\Mass\Pound;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Mass\Kilogram;
+use App\Infrastructure\Measurement\Mass\Pound;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use PHPUnit\Framework\TestCase;
 

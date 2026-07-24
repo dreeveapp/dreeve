@@ -6,10 +6,10 @@ namespace App\Tests\Domain\Activity\Split;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\Split\ActivitySplit;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
-use App\Infrastructure\ValueObject\Measurement\Velocity\MetersPerSecond;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPerKm;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
+use App\Infrastructure\Measurement\Velocity\SecPerKm;
 
 final class ActivitySplitBuilder
 {

@@ -6,7 +6,7 @@ namespace App\Domain\Dashboard\Widget\AthleteProfile\FindAthleteProfileMetrics;
 
 use App\Domain\Activity\ActivityIds;
 use App\Infrastructure\CQRS\Query\Response;
-use App\Infrastructure\ValueObject\Measurement\Time\Hour;
+use App\Infrastructure\Measurement\Time\Hour;
 
 final readonly class FindAthleteProfileMetricsResponse implements Response
 {

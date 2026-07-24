@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Domain\Activity\SportType;
 
 use App\Domain\Activity\ActivityType;
-use App\Infrastructure\ValueObject\Measurement\Velocity\KmPerHour;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPer100Meter;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPerKm;
-use App\Infrastructure\ValueObject\Measurement\Velocity\Velocity;
+use App\Infrastructure\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
+use App\Infrastructure\Measurement\Velocity\SecPerKm;
+use App\Infrastructure\Measurement\Velocity\Velocity;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
