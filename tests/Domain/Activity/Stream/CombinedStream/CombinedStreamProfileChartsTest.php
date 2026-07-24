@@ -4,7 +4,7 @@ namespace App\Tests\Domain\Activity\Stream\CombinedStream;
 
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamProfileCharts;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Tests\ContainerTestCase;
 use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Contracts\Translation\TranslatorInterface;

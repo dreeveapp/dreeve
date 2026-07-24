@@ -9,8 +9,8 @@ use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Settings\AppearanceSettings;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use PHPUnit\Framework\TestCase;
 

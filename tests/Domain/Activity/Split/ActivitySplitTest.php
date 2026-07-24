@@ -3,7 +3,7 @@
 namespace App\Tests\Domain\Activity\Split;
 
 use App\Domain\Activity\Split\ActivitySplit;
-use App\Infrastructure\ValueObject\Measurement\Velocity\MetersPerSecond;
+use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

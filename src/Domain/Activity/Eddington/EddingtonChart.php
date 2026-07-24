@@ -2,7 +2,7 @@
 
 namespace App\Domain\Activity\Eddington;
 
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\UnitSystem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class EddingtonChart

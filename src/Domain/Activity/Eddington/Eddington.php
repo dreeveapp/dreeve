@@ -4,7 +4,7 @@ namespace App\Domain\Activity\Eddington;
 
 use App\Domain\Activity\Activities;
 use App\Domain\Activity\Eddington\Config\EddingtonConfigItem;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final class Eddington

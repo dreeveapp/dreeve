@@ -9,8 +9,8 @@ use App\Infrastructure\Config\Leaflet\HeatmapConfig;
 use App\Infrastructure\Config\Leaflet\LeafletConfig;
 use App\Infrastructure\Config\Photos\HidePhotosForSportTypes;
 use App\Infrastructure\Localisation\Locale;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Time\Format\DateAndTimeFormat;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 
 final readonly class AppearanceSettings
 {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\RecordingDevice;
 
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Time\Seconds;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Time\Seconds;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Money;
 

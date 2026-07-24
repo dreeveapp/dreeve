@@ -1,7 +1,7 @@
 {% extends "html/admin/page/template.html.twig" %}
 
 {% block main %}
-    {% set unitSystemOptions = enum('App\\Infrastructure\\ValueObject\\Measurement\\UnitSystem').cases() %}
+    {% set unitSystemOptions = enum('App\\Infrastructure\\Measurement\\UnitSystem').cases() %}
     {% set localeOptions = enum('App\\Infrastructure\\Localisation\\Locale').cases() %}
     {% set timeFormatOptions = enum('App\\Infrastructure\\Time\\Format\\TimeFormat').cases() %}
     {% set dateFormat = settings.dateFormat ?? {} %}

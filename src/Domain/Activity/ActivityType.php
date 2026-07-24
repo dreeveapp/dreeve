@@ -6,9 +6,9 @@ namespace App\Domain\Activity;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Length\Mile;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Length\Mile;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -101,7 +101,7 @@ enum ActivityType: string implements TranslatableInterface
     }
 
     /**
-     * @return \App\Infrastructure\ValueObject\Measurement\Length\ConvertableToMeter[]
+     * @return \App\Infrastructure\Measurement\Length\ConvertableToMeter[]
      */
     public function getDistancesForBestEffortCalculation(): array
     {

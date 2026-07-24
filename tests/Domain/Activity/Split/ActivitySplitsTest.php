@@ -3,7 +3,7 @@
 namespace App\Tests\Domain\Activity\Split;
 
 use App\Domain\Activity\Split\ActivitySplits;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPerKm;
+use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use PHPUnit\Framework\TestCase;
 
 class ActivitySplitsTest extends TestCase

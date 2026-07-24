@@ -7,7 +7,7 @@ namespace App\Tests\Domain\Settings;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Settings\AthleteHasNotBeenConfigured;
 use App\Domain\Settings\GeneralSettings;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use PHPUnit\Framework\TestCase;
 

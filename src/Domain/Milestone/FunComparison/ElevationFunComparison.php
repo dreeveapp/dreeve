@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Milestone\FunComparison;
 
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Length\Meter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 enum ElevationFunComparison: string implements FunComparison

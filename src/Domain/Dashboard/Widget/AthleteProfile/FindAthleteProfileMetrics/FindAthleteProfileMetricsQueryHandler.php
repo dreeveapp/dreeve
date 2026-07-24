@@ -7,7 +7,7 @@ use App\Domain\Activity\ActivityIds;
 use App\Infrastructure\CQRS\Query\Query;
 use App\Infrastructure\CQRS\Query\QueryHandler;
 use App\Infrastructure\CQRS\Query\Response;
-use App\Infrastructure\ValueObject\Measurement\Time\Seconds;
+use App\Infrastructure\Measurement\Time\Seconds;
 use Doctrine\DBAL\Connection;
 
 final readonly class FindAthleteProfileMetricsQueryHandler implements QueryHandler

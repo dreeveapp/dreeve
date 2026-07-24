@@ -8,7 +8,7 @@ use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Calendar\Months;
 use App\Domain\Challenge\Consistency\FindConsistencyMetricsPerMonth\FindConsistencyMetricsPerMonth;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\ValueObject\Measurement\Unit;
+use App\Infrastructure\Measurement\Unit;
 
 final readonly class ConsistencyChallengeCalculator
 {

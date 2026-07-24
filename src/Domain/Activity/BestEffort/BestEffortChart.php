@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Activity\BestEffort;
 
 use App\Domain\Activity\ActivityType;
+use App\Infrastructure\Measurement\Length\ConvertableToMeter;
+use App\Infrastructure\Measurement\Unit;
 use App\Infrastructure\Theme\Theme;
-use App\Infrastructure\ValueObject\Measurement\Length\ConvertableToMeter;
-use App\Infrastructure\ValueObject\Measurement\Unit;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class BestEffortChart

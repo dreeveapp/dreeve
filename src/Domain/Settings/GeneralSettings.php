@@ -13,7 +13,7 @@ use App\Domain\Athlete\MaxHeartRate\MaxHeartRateFormulas;
 use App\Domain\Athlete\RestingHeartRate\RestingHeartRateFormulas;
 use App\Domain\Athlete\Weight\AthleteWeightHistory;
 use App\Domain\Ftp\FtpHistory;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\UnitSystem;
 
 final readonly class GeneralSettings
 {

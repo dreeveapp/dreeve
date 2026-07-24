@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Domain\Activity;
 
 use App\Domain\Activity\SportType\SportType;
+use App\Infrastructure\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\Measurement\Velocity\Pace;
+use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
+use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
-use App\Infrastructure\ValueObject\Measurement\Velocity\KmPerHour;
-use App\Infrastructure\ValueObject\Measurement\Velocity\Pace;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPer100Meter;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPerKm;
 
 final readonly class VelocityDistributionChart
 {

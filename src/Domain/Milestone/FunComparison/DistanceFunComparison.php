@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Milestone\FunComparison;
 
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Kilometer;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 enum DistanceFunComparison: string implements FunComparison

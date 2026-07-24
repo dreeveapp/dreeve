@@ -9,9 +9,9 @@ use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\WorldType;
 use App\Domain\Zwift\FindZwiftStatsPerWorld\FindZwiftStatsPerWorld;
 use App\Domain\Zwift\FindZwiftStatsPerWorld\FindZwiftStatsPerWorldQueryHandler;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Time\Seconds;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Time\Seconds;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 

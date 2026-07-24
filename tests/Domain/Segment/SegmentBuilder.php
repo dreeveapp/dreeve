@@ -7,9 +7,9 @@ namespace App\Tests\Domain\Segment;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Segment\Segment;
 use App\Domain\Segment\SegmentId;
+use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
 use App\Infrastructure\ValueObject\String\Name;
 
 final class SegmentBuilder

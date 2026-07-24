@@ -13,10 +13,10 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Activity\WorldType;
 use App\Domain\Gear\GearId;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\ValueObject\String\ExternalReferenceId;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 

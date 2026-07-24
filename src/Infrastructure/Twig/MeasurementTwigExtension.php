@@ -5,18 +5,22 @@ declare(strict_types=1);
 namespace App\Infrastructure\Twig;
 
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Measurement\Imperial;
+use App\Infrastructure\Measurement\Metric;
+use App\Infrastructure\Measurement\ProvideMeasurementFormats;
+use App\Infrastructure\Measurement\Time\Seconds;
+use App\Infrastructure\Measurement\Unit;
+use App\Infrastructure\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Velocity\Pace;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
-use App\Infrastructure\ValueObject\Measurement\Imperial;
-use App\Infrastructure\ValueObject\Measurement\Metric;
-use App\Infrastructure\ValueObject\Measurement\Time\Seconds;
-use App\Infrastructure\ValueObject\Measurement\Unit;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
-use App\Infrastructure\ValueObject\Measurement\Velocity\Pace;
 use Twig\Attribute\AsTwigFilter;
 use Twig\Attribute\AsTwigFunction;
 
 final readonly class MeasurementTwigExtension
 {
+    use ProvideMeasurementFormats {
+        formatNumber as private formatNumberFromTrait;
+    }
     use ProvideTimeFormats;
 
     public function __construct(
@@ -44,7 +48,7 @@ final readonly class MeasurementTwigExtension
         $convertedMeasurement = $this->convertMeasurement($measurement);
         $measurementInScalar = $convertedMeasurement->toFloat();
 
-        return self::formatNumber($measurementInScalar, $precision);
+        return $this->formatNumber($measurementInScalar, $precision);
     }
 
     #[AsTwigFilter('renderMeasurement')]
@@ -52,7 +56,7 @@ final readonly class MeasurementTwigExtension
     {
         $convertedMeasurement = $this->convertMeasurement($measurement);
         $measurementInScalar = $convertedMeasurement->toFloat();
-        $formattedNumber = self::formatNumber($measurementInScalar, $precision);
+        $formattedNumber = $this->formatNumber($measurementInScalar, $precision);
 
         if (!$symbolSuffix) {
             if ('' === $convertedMeasurement->getSymbol()) {
@@ -100,13 +104,7 @@ final readonly class MeasurementTwigExtension
     #[AsTwigFilter('formatNumber')]
     public function formatNumber(?float $number, int $precision): string
     {
-        if (is_null($number)) {
-            return '0';
-        }
-
-        $precision = $number < 100 ? $precision : 0;
-
-        return number_format(round($number, $precision), $precision, '.', "\u{00A0}");
+        return $this->formatNumberFromTrait($number, $precision);
     }
 
     #[AsTwigFilter('formatSeconds')]

@@ -6,13 +6,13 @@ namespace App\Domain\Segment;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\String\Name;
 
 final readonly class DbalSegmentRepository extends DbalRepository implements SegmentRepository

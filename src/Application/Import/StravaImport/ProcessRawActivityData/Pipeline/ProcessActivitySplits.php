@@ -6,9 +6,9 @@ use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Split\ActivitySplit;
 use App\Domain\Activity\Split\ActivitySplitRepository;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
-use App\Infrastructure\ValueObject\Measurement\Velocity\MetersPerSecond;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final readonly class ProcessActivitySplits implements ProcessRawDataStep

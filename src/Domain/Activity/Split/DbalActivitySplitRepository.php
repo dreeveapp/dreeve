@@ -7,11 +7,11 @@ namespace App\Domain\Activity\Split;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\SportType\SportType;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
+use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\Repository\DbalRepository;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
-use App\Infrastructure\ValueObject\Measurement\Velocity\MetersPerSecond;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPerKm;
 use Doctrine\DBAL\ArrayParameterType;
 
 final readonly class DbalActivitySplitRepository extends DbalRepository implements ActivitySplitRepository

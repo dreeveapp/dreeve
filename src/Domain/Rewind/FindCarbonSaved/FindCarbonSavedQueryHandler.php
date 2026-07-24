@@ -7,8 +7,8 @@ namespace App\Domain\Rewind\FindCarbonSaved;
 use App\Infrastructure\CQRS\Query\Query;
 use App\Infrastructure\CQRS\Query\QueryHandler;
 use App\Infrastructure\CQRS\Query\Response;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Mass\Kilogram;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Mass\Kilogram;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Athlete\Weight;
 
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\ValueObject\Measurement\Mass\Kilogram;
-use App\Infrastructure\ValueObject\Measurement\Mass\Pound;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Mass\Kilogram;
+use App\Infrastructure\Measurement\Mass\Pound;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final class AthleteWeightHistory

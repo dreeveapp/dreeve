@@ -11,7 +11,7 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\WorldType;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\String\CompressedString;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use Spatie\Snapshots\MatchesSnapshots;

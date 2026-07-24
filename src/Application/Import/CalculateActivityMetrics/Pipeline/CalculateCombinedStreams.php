@@ -16,11 +16,11 @@ use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Console\ProgressIndicator;
 use App\Infrastructure\DependencyInjection\Mutex\WithMutex;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Velocity\MetersPerSecond;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 

@@ -6,7 +6,7 @@ namespace App\Domain\Activity\Eddington;
 
 use App\Domain\Activity\EnrichedActivities;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\UnitSystem;
 
 final readonly class EddingtonCalculator
 {

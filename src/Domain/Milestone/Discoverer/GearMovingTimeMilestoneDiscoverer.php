@@ -11,7 +11,7 @@ use App\Domain\Milestone\MilestoneCategory;
 use App\Domain\Milestone\MilestoneIdFactory;
 use App\Domain\Milestone\Milestones;
 use App\Domain\Milestone\PreviousMilestone;
-use App\Infrastructure\ValueObject\Measurement\Time\Hour;
+use App\Infrastructure\Measurement\Time\Hour;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\Connection;
 

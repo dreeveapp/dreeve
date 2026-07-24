@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Milestone\FunComparison;
 
-use App\Infrastructure\ValueObject\Measurement\Time\Hour;
+use App\Infrastructure\Measurement\Time\Hour;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 enum MovingTimeFunComparison: string implements FunComparison

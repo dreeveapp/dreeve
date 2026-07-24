@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Split;
 
+use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\ValueObject\Collection;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPerKm;
 
 /**
  * @extends Collection<ActivitySplit>

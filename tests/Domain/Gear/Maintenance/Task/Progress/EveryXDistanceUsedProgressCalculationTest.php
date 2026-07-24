@@ -11,7 +11,7 @@ use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Domain\Gear\Maintenance\Task\Progress\EveryXDistanceUsedProgressCalculation;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgress;
 use App\Domain\Gear\Maintenance\Task\Progress\ProgressCalculationContext;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;

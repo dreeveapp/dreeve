@@ -8,8 +8,8 @@ use App\Domain\Dashboard\Widget\AthleteProfile\FindAthleteProfileMetrics\FindAth
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
+use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;

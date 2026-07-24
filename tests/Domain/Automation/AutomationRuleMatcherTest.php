@@ -11,7 +11,7 @@ use App\Domain\Automation\Condition\ConditionType;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredCondition;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredConditions;
 use App\Domain\Automation\RuleConfiguration;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Automation\Fixture\DeviceCondition;
 use App\Tests\Domain\Automation\Fixture\DistanceCondition;

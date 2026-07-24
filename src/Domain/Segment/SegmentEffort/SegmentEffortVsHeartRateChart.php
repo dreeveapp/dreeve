@@ -3,9 +3,9 @@
 namespace App\Domain\Segment\SegmentEffort;
 
 use App\Domain\Activity\SportType\SportType;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPer100Meter;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPerKm;
+use App\Infrastructure\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
+use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class SegmentEffortVsHeartRateChart

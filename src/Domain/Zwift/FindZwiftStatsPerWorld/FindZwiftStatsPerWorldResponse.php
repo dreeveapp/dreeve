@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Zwift\FindZwiftStatsPerWorld;
 
 use App\Infrastructure\CQRS\Query\Response;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Time\Seconds;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Time\Seconds;
 
 final readonly class FindZwiftStatsPerWorldResponse implements Response
 {

@@ -7,8 +7,8 @@ namespace App\Domain\Segment\SegmentEffort;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Segment\SegmentId;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Repository\DbalRepository;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\Connection;
 

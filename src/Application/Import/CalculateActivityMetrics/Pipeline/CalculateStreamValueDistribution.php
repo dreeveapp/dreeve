@@ -13,10 +13,10 @@ use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Console\ProgressIndicator;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
-use App\Infrastructure\ValueObject\Measurement\Velocity\MetersPerSecond;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPer100Meter;
-use App\Infrastructure\ValueObject\Measurement\Velocity\SecPerKm;
+use App\Infrastructure\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
+use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
+use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 

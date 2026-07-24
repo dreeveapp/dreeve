@@ -6,8 +6,8 @@ namespace App\Tests\Domain\Settings;
 
 use App\Domain\Settings\AppearanceSettings;
 use App\Infrastructure\Localisation\Locale;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Time\Format\TimeFormat;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use PHPUnit\Framework\TestCase;
 
 class AppearanceSettingsTest extends TestCase

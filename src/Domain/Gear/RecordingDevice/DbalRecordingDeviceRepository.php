@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Gear\RecordingDevice;
 
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Repository\DbalRepository;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Time\Seconds;
 use Money\Currency;
 use Money\Money;
 

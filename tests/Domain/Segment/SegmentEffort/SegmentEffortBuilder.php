@@ -8,7 +8,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Segment\SegmentEffort\SegmentEffort;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentId;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final class SegmentEffortBuilder

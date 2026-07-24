@@ -28,7 +28,7 @@
                         {% for calculatedAchievement in calculatedAchievements %}
                             <td class="px-3 py-2 border border-gray-100">
                                 {% set actualValue = calculatedAchievement.actualValue %}
-                                {% if calculatedAchievement.actualValue is instanceof('App\\Infrastructure\\ValueObject\\Measurement\\Unit') %}
+                                {% if calculatedAchievement.actualValue is instanceof('App\\Infrastructure\\Measurement\\Unit') %}
                                     {% set actualValue = calculatedAchievement.actualValue.toFloat()|formatNumber(0) ~ calculatedAchievement.actualValue.getSymbol() %}
                                 {% endif %}
 

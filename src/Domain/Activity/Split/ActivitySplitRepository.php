@@ -6,7 +6,7 @@ namespace App\Domain\Activity\Split;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\UnitSystem;
 
 interface ActivitySplitRepository
 {

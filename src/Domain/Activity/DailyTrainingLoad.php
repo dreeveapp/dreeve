@@ -4,7 +4,7 @@ namespace App\Domain\Activity;
 
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\ValueObject\Measurement\Time\Seconds;
+use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final class DailyTrainingLoad

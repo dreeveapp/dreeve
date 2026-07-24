@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Ftp;
 
-use App\Infrastructure\ValueObject\Measurement\Mass\Kilogram;
+use App\Infrastructure\Measurement\Mass\Kilogram;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final class Ftp

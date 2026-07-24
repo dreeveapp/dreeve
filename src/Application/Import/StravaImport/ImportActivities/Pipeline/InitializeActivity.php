@@ -10,12 +10,12 @@ use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
-use App\Infrastructure\ValueObject\Measurement\Velocity\MetersPerSecond;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
 #[AsTaggedItem(priority: 100)]

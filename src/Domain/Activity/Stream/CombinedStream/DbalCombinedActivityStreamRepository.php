@@ -9,9 +9,9 @@ use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use Doctrine\DBAL\ArrayParameterType;
 
 final readonly class DbalCombinedActivityStreamRepository extends DbalRepository implements CombinedActivityStreamRepository

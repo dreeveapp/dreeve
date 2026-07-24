@@ -7,14 +7,17 @@ namespace App\Domain\Activity\Route;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\ProvideMeasurementFormats;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Serialization\Escape;
 use App\Infrastructure\Time\Format\DateAndTimeFormat;
-use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class Route implements \JsonSerializable
 {
+    use ProvideMeasurementFormats;
+
     /**
      * @param array<int, array<float, float>> $coordinates
      */
@@ -140,9 +143,7 @@ final readonly class Route implements \JsonSerializable
         if (!is_null($this->unitSystem)) {
             $distance = $distance->toUnitSystem($this->unitSystem);
         }
-        $distanceInScalar = $distance->toFloat();
-        $precision = $distanceInScalar < 100 ? 1 : 0;
-        $distance = number_format(round($distanceInScalar, $precision), $precision, '.', "\u{00A0}").$distance->getSymbol();
+        $distance = $this->formatNumber($distance->toFloat(), 1).$distance->getSymbol();
 
         $startDate = is_null($this->dateAndTimeFormat) ?
             $this->getOn()->format('d-m-Y') :

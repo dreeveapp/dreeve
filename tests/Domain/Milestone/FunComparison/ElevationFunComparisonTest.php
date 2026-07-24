@@ -3,7 +3,7 @@
 namespace App\Tests\Domain\Milestone\FunComparison;
 
 use App\Domain\Milestone\FunComparison\ElevationFunComparison;
-use App\Infrastructure\ValueObject\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Length\Meter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\IdentityTranslator;
