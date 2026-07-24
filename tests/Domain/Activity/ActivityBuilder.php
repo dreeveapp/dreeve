@@ -35,12 +35,12 @@ final class ActivityBuilder
     private ?Coordinate $startingCoordinate = null;
     private int $calories;
     private ?int $averagePower = null;
-    private readonly ?int $maxPower;
+    private ?int $maxPower;
     private KmPerHour $averageSpeed;
-    private readonly KmPerHour $maxSpeed;
+    private KmPerHour $maxSpeed;
     private ?int $averageHeartRate = null;
-    private readonly ?int $maxHeartRate;
-    private readonly ?int $averageCadence;
+    private ?int $maxHeartRate;
+    private ?int $averageCadence;
     private int $movingTimeInSeconds = 10;
     private int $elapsedTimeInSeconds = 10;
     private int $totalImageCount = 0;
@@ -52,7 +52,7 @@ final class ActivityBuilder
     private readonly ?string $weather;
     private ?GearId $gearId = null;
     private bool $isCommute;
-    private readonly ?WorkoutType $workoutType;
+    private ?WorkoutType $workoutType;
 
     private function __construct()
     {
@@ -288,6 +288,41 @@ final class ActivityBuilder
     public function withExternalReferenceId(?ExternalReferenceId $externalReferenceId): self
     {
         $this->externalReferenceId = $externalReferenceId;
+
+        return $this;
+    }
+
+    public function withMaxPower(int $maxPower): self
+    {
+        $this->maxPower = $maxPower;
+
+        return $this;
+    }
+
+    public function withMaxSpeed(KmPerHour $maxSpeed): self
+    {
+        $this->maxSpeed = $maxSpeed;
+
+        return $this;
+    }
+
+    public function withMaxHeartRate(int $maxHeartRate): self
+    {
+        $this->maxHeartRate = $maxHeartRate;
+
+        return $this;
+    }
+
+    public function withAverageCadence(int $averageCadence): self
+    {
+        $this->averageCadence = $averageCadence;
+
+        return $this;
+    }
+
+    public function withWorkoutType(WorkoutType $workoutType): self
+    {
+        $this->workoutType = $workoutType;
 
         return $this;
     }
