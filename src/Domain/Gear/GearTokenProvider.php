@@ -57,7 +57,7 @@ final readonly class GearTokenProvider implements TokenProvider
         if (!($activity = $context->get(Activity::class)) instanceof Activity) {
             return null;
         }
-        if (!$gearId = $activity->getGearId()) {
+        if (!($gearId = $activity->getGearId()) instanceof GearId) {
             return null;
         }
 
