@@ -40,6 +40,7 @@ final readonly class FitFileParser implements ActivityFileParser
     // Seconds between the Unix epoch and the FIT epoch (1989-12-31 00:00:00 UTC).
     // FIT timestamps are stored as seconds since the FIT epoch.
     private const int FIT_EPOCH_OFFSET = 631065600;
+    private const float MAX_AVG_POWER_DEVIANCE = 0.1;
 
     public function __construct(
         private ActivityIdFactory $activityIdFactory,
@@ -169,7 +170,10 @@ final readonly class FitFileParser implements ActivityFileParser
             startingCoordinate: $this->resolveStartingCoordinate($session, $streamMap),
             calories: is_numeric($session['total_calories'] ?? null) ? (int) round((float) $session['total_calories']) : null,
             kilojoules: null !== $work ? (int) round($work / 1000) : null,
-            averagePower: is_numeric($session['avg_power'] ?? null) ? (int) round((float) $session['avg_power']) : Math::average($streamMap[StreamType::WATTS->value]),
+            averagePower: $this->resolveAveragePower(
+                session: $session,
+                wattsStream: $streamMap[StreamType::WATTS->value]
+            ),
             maxPower: is_numeric($session['max_power'] ?? null) ? (int) round((float) $session['max_power']) : Math::max($streamMap[StreamType::WATTS->value]),
             averageSpeed: MetersPerSecond::fromOptional(is_numeric($session['enhanced_avg_speed'] ?? $session['avg_speed'] ?? null) ? (float) ($session['enhanced_avg_speed'] ?? $session['avg_speed'] ?? null) : null)->toKmPerHour(),
             maxSpeed: MetersPerSecond::fromOptional(is_numeric($session['enhanced_max_speed'] ?? $session['max_speed'] ?? null) ? (float) ($session['enhanced_max_speed'] ?? $session['max_speed'] ?? null) : null)->toKmPerHour(),
@@ -438,6 +442,28 @@ final readonly class FitFileParser implements ActivityFileParser
         }
 
         return $streams;
+    }
+
+    /**
+     * @param array<string, mixed> $session
+     * @param list<mixed>          $wattsStream
+     */
+    private function resolveAveragePower(array $session, array $wattsStream): ?int
+    {
+        $sessionAverage = is_numeric($session['avg_power'] ?? null) ? (int) round((float) $session['avg_power']) : null;
+        $streamAverage = Math::average($wattsStream);
+
+        if (null === $streamAverage || null === $sessionAverage) {
+            return $sessionAverage ?? $streamAverage;
+        }
+
+        // Some head units (e.g. Bosch) exclude zero-power samples from the session
+        // average. When it deviates too far from the stream average, trust the stream.
+        if (abs($sessionAverage - $streamAverage) / max($streamAverage, 1) > self::MAX_AVG_POWER_DEVIANCE) {
+            return $streamAverage;
+        }
+
+        return $sessionAverage;
     }
 
     /**
