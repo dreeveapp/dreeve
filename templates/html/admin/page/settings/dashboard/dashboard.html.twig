@@ -86,7 +86,7 @@
                         </svg>
                         <span class="flex-1 truncate">{{ widget.getLabel() }}</span>
                         {% if configuredWidgetCountPerType[name] is defined %}
-                            <span class="shrink-0 inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-gray-100 text-xxs font-semibold text-gray-500" title="{{ "Number of widgets of this type you already have configured."|trans({}, 'admin') }}">{{ configuredWidgetCountPerType[name] }}</span>
+                            <span class="shrink-0 pill pill--neutral justify-center min-w-5 h-5 px-1.5 font-semibold" title="{{ "Number of widgets of this type you already have configured."|trans({}, 'admin') }}">{{ configuredWidgetCountPerType[name] }}</span>
                         {% endif %}
                     </button>
                 </form>

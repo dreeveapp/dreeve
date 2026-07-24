@@ -97,7 +97,7 @@
                                     {% for gearId in component.getAttachedTo() %}
                                         {% set gear = gears.getByGearId(gearId) %}
                                         {% if gear %}
-                                            <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{{ gear.getName() }}</span>
+                                            <span class="pill pill--neutral">{{ gear.getName() }}</span>
                                         {% endif %}
                                     {% endfor %}
                                 </div>

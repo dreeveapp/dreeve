@@ -46,14 +46,14 @@
                             <div class="flex items-center gap-2">
                                 <span class="font-medium text-gray-800 truncate">{{ rule.getLabel() }}</span>
                                 {% if rule.isEnabled() %}
-                                    <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xxs font-medium text-green-600">{{ "Enabled"|trans({}, 'admin') }}</span>
+                                    <span class="pill pill--success">{{ "Enabled"|trans({}, 'admin') }}</span>
                                 {% else %}
-                                    <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xxs font-medium text-gray-500">{{ "Disabled"|trans({}, 'admin') }}</span>
+                                    <span class="pill pill--neutral">{{ "Disabled"|trans({}, 'admin') }}</span>
                                 {% endif %}
                                 {% if rule.stopProcessing() %}
-                                    <span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xxs font-medium text-amber-600">{{ "Stops after match"|trans({}, 'admin') }}</span>
+                                    <span class="pill pill--warning">{{ "Stops after match"|trans({}, 'admin') }}</span>
                                 {% else %}
-                                    <span class="inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-xxs font-medium text-blue-600">{{ "Continues to next rules"|trans({}, 'admin') }}</span>
+                                    <span class="pill pill--info">{{ "Continues to next rules"|trans({}, 'admin') }}</span>
                                 {% endif %}
                             </div>
                             {% include 'html/admin/page/settings/automation-rules/_rule-summary.html.twig' with {

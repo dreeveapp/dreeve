@@ -104,7 +104,7 @@ class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Stops here', $body);
         $this->assertStringContainsString('Automated ride name', $body);
 
-        $matchedConditionPills = $crawler->filter('.rounded-full.bg-green-100')->reduce(
+        $matchedConditionPills = $crawler->filter('.rounded-full.pill--success')->reduce(
             fn ($node): bool => str_contains($node->text(), 'is one of Ride'),
         );
         $this->assertCount(1, $matchedConditionPills);

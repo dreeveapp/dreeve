@@ -30,7 +30,6 @@
     --color-amber-100: oklch(96.2% 0.059 95.617);
     --color-amber-500: oklch(76.9% 0.188 70.08);
     --color-amber-600: oklch(66.6% 0.179 58.318);
-    --color-amber-800: oklch(47.3% 0.137 46.201);
     --color-yellow-50: #FFFBEB;
     --color-yellow-100: #FEF3C7;
     --color-yellow-200: #FDE68A;
@@ -2835,9 +2834,6 @@
   .bg-amber-100 {
     background-color: var(--color-amber-100);
   }
-  .bg-amber-500 {
-    background-color: var(--color-amber-500);
-  }
   .bg-black\/0 {
     background-color: color-mix(in srgb, #000000 0%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -2915,9 +2911,6 @@
   }
   .bg-green-400 {
     background-color: var(--color-green-400);
-  }
-  .bg-green-500 {
-    background-color: var(--color-green-500);
   }
   .bg-green-600 {
     background-color: var(--color-green-600);
@@ -3472,12 +3465,6 @@
   }
   .text-amber-500 {
     color: var(--color-amber-500);
-  }
-  .text-amber-600 {
-    color: var(--color-amber-600);
-  }
-  .text-amber-800 {
-    color: var(--color-amber-800);
   }
   .text-blue-600 {
     color: var(--color-blue-600);
@@ -5917,6 +5904,37 @@ table.data-table {
     @media (width >= 48rem) {
       padding: calc(var(--spacing) * 5);
     }
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    column-gap: calc(var(--spacing) * 1.5);
+    border-radius: calc(infinity * 1px);
+    padding-inline: calc(var(--spacing) * 2);
+    padding-block: calc(var(--spacing) * 0.5);
+    font-size: var(--text-xxs);
+    --tw-font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium);
+  }
+  .pill--info {
+    background-color: var(--color-blue-100);
+    color: var(--color-blue-600);
+  }
+  .pill--success {
+    background-color: var(--color-green-100);
+    color: var(--color-green-600);
+  }
+  .pill--warning {
+    background-color: var(--color-amber-100);
+    color: var(--color-amber-600);
+  }
+  .pill--danger {
+    background-color: var(--color-red-100);
+    color: var(--color-red-800);
+  }
+  .pill--neutral {
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-600);
   }
   div[data-popover][role="tooltip"] {
     visibility: hidden;

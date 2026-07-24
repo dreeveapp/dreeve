@@ -136,7 +136,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Assign gear', $items->eq(1)->text());
         $this->assertStringContainsString('gear-1', $items->eq(1)->text());
 
-        $distancePill = $items->eq(1)->filter('.rounded-full.text-gray-600')->eq(0);
+        $distancePill = $items->eq(1)->filter('.rounded-full.pill--neutral')->eq(0);
         $this->assertCount(2, $distancePill->children());
     }
 
@@ -231,7 +231,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Set description', $secondRule);
         $this->assertStringContainsString('Added by automation', $secondRule);
 
-        $markAsCommutePill = $items->eq(0)->filter('.rounded-full.text-gray-600')->reduce(
+        $markAsCommutePill = $items->eq(0)->filter('.rounded-full.pill--neutral')->reduce(
             fn ($node): bool => str_contains($node->text(), 'Mark as commute'),
         );
         $this->assertCount(1, $markAsCommutePill);
