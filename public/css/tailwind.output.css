@@ -4188,17 +4188,11 @@
     .sm\:flex-row {
       flex-direction: row;
     }
-    .sm\:flex-wrap {
-      flex-wrap: wrap;
-    }
     .sm\:items-center {
       align-items: center;
     }
     .sm\:items-end {
       align-items: flex-end;
-    }
-    .sm\:gap-x-1 {
-      column-gap: var(--spacing);
     }
     :where(.sm\:divide-x > :not(:last-child)) {
       --tw-divide-x-reverse: 0;
@@ -5035,9 +5029,9 @@
       --color-primary-soft: color-mix(in oklch, var(--color-primary) 10%, transparent);
     }
     --color-amber-100: #78350F;
-    --color-amber-800: #FDE68A;
-    --color-amber-600: #FBBF24;
     --color-amber-500: #FBBF24;
+    --color-amber-600: #FBBF24;
+    --color-amber-800: #FDE68A;
     --color-blue-50: #1e3a8a;
     --color-blue-300: #1e40af;
     --color-blue-600: #478be6;

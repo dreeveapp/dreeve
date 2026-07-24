@@ -23,7 +23,7 @@ affect every existing installation:
 
 ### 2. Keep your config directory mounted
 
-On its first start, v5 reads your `config.yaml` and `gear-maintenance.yaml` and writes every setting into the
+On its first start, `v5` reads your `config.yaml` and `gear-maintenance.yaml` and writes every setting into the
 database.
 
 So for now, **do not delete `config.yaml` and do not remove the `./config` volume**. You clean those up in
@@ -31,47 +31,40 @@ So for now, **do not delete `config.yaml` and do not remove the `./config` volum
 
 ### 3. Update docker-compose.yml
 
-The Docker image was renamed. Point both containers at the new one:
+> [!NOTE]
+> In v4, the daemon container was optional. This is no longer the case.
+
+**Point both containers at the new image**
+
+The Docker image was renamed. Change the `image:` line on **both** the `app` and the `daemon` container:
 
 ```yml
 services:
   app:
     image: robiningelbrecht/dreeve:latest
-    # image: ghcr.io/dreeveapp/dreeve:latest
-    volumes:
-      # Keep this one for now, it is removed in step 5.
-      - ./config:/var/www/config/app
-      - ./build:/var/www/build
-      - ./storage/database:/var/www/storage/database
-      - ./storage/files:/var/www/storage/files
-      # Only needed when you import files.
-      - ./watch:/var/www/watch
-    # ...
+    # or: ghcr.io/dreeveapp/dreeve:latest
 
   daemon:
     image: robiningelbrecht/dreeve:latest
-    # image: ghcr.io/dreeveapp/dreeve:latest
-    volumes:
-      # The daemon mounts the same volumes as the app container,
-      # including the new watch volume.
-      - ./config:/var/www/config/app
-      - ./build:/var/www/build
-      - ./storage/database:/var/www/storage/database
-      - ./storage/files:/var/www/storage/files
-      # Only needed when you import files.
-      - ./watch:/var/www/watch
-    # ...
+    # or: ghcr.io/dreeveapp/dreeve:latest
 ```
 
-Container names, the network name and the rest of the daemon container are unchanged apart from the image. A full
-example lives on the [installation](/getting-started/installation.md) page.
+**Add the watch volume (only if you want to import files)**
+
+If you plan to use `IMPORT_MODE=files`, add the new `./watch` volume to **both** containers. If you stick to
+importing from Strava, skip this and move on to [step 4](#_4-add-the-new-environment-variables).
+
+```yml
+    volumes:
+      # ... keep your existing volumes as they are, and add:
+      - ./watch:/var/www/watch
+```
 
 > [!IMPORTANT]
-> The new `./watch` volume must be mounted on **both** the `app` and the `daemon` container. They share one
+> The `./watch` volume must be mounted on **both** the `app` and the `daemon` container. They share one
 > watch folder.
 
-> [!NOTE]
-> In v4, the daemon container was optional. This is no longer the case.
+A full example lives on the [installation](/getting-started/installation.md) page.
 
 ### 4. Add the new environment variables
 

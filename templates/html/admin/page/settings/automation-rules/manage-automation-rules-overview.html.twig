@@ -1,6 +1,9 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
     {% autoescape false %}
+    {% if importMode.isFiles() and not automationRules.isEmpty() %}
+        {% include 'html/admin/page/settings/automation-rules/_sub-menu.html.twig' with {activeMenuItem: 'rules'} only %}
+    {% endif %}
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         {% embed 'html/admin/component/gated-panel.html.twig' with { 'locked': not importMode.isFiles() } %}
             {% block lockTitle %}{% autoescape false %}{{ "Automation rules are only available in file import mode"|trans({}, 'admin') }}{% endautoescape %}{% endblock %}
@@ -13,11 +16,6 @@
                 </p>
             </div>
             <div class="flex items-center gap-2">
-                {% if not automationRules.isEmpty() %}
-                    <a href="{{ relativeUrl(path('admin_test_automation_rules')) }}" type="button" class="btn--secondary">
-                        <span>{{ "Test rules"|trans({}, 'admin') }}</span>
-                    </a>
-                {% endif %}
                 <a href="{{ relativeUrl(path('admin_add_automation_rule')) }}" type="button" class="btn--add">
                     <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>

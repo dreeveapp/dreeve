@@ -1,0 +1,14 @@
+{% autoescape false %}
+<ul class="tabs tabs--menu-item">
+    <li>
+        <a href="{{ relativeUrl(path('admin_manage_automation_rules_overview')) }}" class="{{ activeMenuItem == 'rules' ? 'active' : '' }}">
+            {{ "Rules"|trans({}, 'admin') }}
+        </a>
+    </li>
+    <li>
+        <a href="{{ relativeUrl(path('admin_test_automation_rules')) }}" class="{{ activeMenuItem == 'test' ? 'active' : '' }}">
+            {{ "Test rules"|trans({}, 'admin') }}
+        </a>
+    </li>
+</ul>
+{% endautoescape %}

@@ -1,6 +1,7 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
     {% autoescape false %}
+    {% include 'html/admin/page/settings/automation-rules/_sub-menu.html.twig' with {activeMenuItem: 'test'} only %}
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <div class="mb-4">
             <h3 class="text-lg font-semibold">{{ "Test automation rules"|trans({}, 'admin') }}</h3>
