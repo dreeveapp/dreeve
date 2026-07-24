@@ -23,6 +23,7 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\Tokenizer\Tokenizer;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\Geography\Latitude;
@@ -455,7 +456,7 @@ class AutomationRuleEngineTest extends ContainerTestCase
         $engine = new AutomationRuleEngine(
             $this->repository,
             $this->getContainer()->get(AutomationRuleMatcher::class),
-            new Actions([new SetNameAction()]),
+            new Actions([new SetNameAction(new Tokenizer([]))]),
         );
 
         $result = $engine->apply(
