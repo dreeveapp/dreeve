@@ -122,7 +122,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Disabled', $items->eq(1)->text());
 
         // Every rule shows what happens after it matches: stop (the default) or continue.
-        $this->assertStringContainsString('Continues to next rules', $items->eq(0)->text());
+        $this->assertStringContainsString('Continues to next rule', $items->eq(0)->text());
         $this->assertStringNotContainsString('Stops after match', $items->eq(0)->text());
         $this->assertStringContainsString('Stops after match', $items->eq(1)->text());
         $this->assertStringNotContainsString('Continues to next rules', $items->eq(1)->text());

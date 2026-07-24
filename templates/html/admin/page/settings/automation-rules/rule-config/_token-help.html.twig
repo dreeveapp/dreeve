@@ -3,7 +3,7 @@
     <p class="mt-0.5 text-xxs text-gray-500">{{ "Tokens are replaced with the activity's values when the rule runs."|trans({}, 'admin') }}</p>
     <ul class="mt-1 space-y-0.5 text-xxs text-gray-500">
         {% for definition in available_tokens() %}
-            <li><code>{{ definition.exampleTokenString }}</code> &mdash; {{ definition|trans }}</li>
+            <li><code>{{ definition.exampleTokenString }}</code> - {{ definition|trans }}</li>
         {% endfor %}
     </ul>
 </details>

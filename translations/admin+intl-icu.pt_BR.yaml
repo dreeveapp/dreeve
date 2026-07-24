@@ -86,7 +86,7 @@ Configure: Configurar
 'Configure {widget}': 'Configurar {widget}'
 'Configured via an environment variable and cannot be changed here.': 'Configurado por meio de uma variável de ambiente e não pode ser alterado aqui.'
 'Configured via environment variables and cannot be changed here.': 'Configurado por meio de variáveis de ambiente e não pode ser alterado aqui.'
-'Continues to next rules': 'Continues to next rules'
+'Continues to next rule': 'Continues to next rule'
 'Cron expression': 'Expressão Cron'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Expressão Cron especificando quando a ação deve ser executada, ex. '0 14 * * *' executa todos os dias às 14:00. Consulte crontab.guru para obter ajuda."
 Daemon: Daemon

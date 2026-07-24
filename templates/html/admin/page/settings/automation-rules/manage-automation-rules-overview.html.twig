@@ -51,9 +51,9 @@
                                     <span class="pill pill--neutral">{{ "Disabled"|trans({}, 'admin') }}</span>
                                 {% endif %}
                                 {% if rule.stopProcessing() %}
-                                    <span class="pill pill--warning">{{ "Stops after match"|trans({}, 'admin') }}</span>
+                                    <span class="pill pill--warning ml-auto shrink-0">{{ "Stops after match"|trans({}, 'admin') }}</span>
                                 {% else %}
-                                    <span class="pill pill--info">{{ "Continues to next rules"|trans({}, 'admin') }}</span>
+                                    <span class="pill pill--info ml-auto shrink-0">{{ "Continues to next rule"|trans({}, 'admin') }}</span>
                                 {% endif %}
                             </div>
                             {% include 'html/admin/page/settings/automation-rules/_rule-summary.html.twig' with {
