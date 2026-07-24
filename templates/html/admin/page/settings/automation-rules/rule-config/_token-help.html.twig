@@ -1,0 +1,9 @@
+<details class="mt-1">
+    <summary class="cursor-pointer text-xxs text-gray-500">{{ "Available tokens"|trans({}, 'admin') }}</summary>
+    <p class="mt-0.5 text-xxs text-gray-500">{{ "Tokens are replaced with the activity's values when the rule runs."|trans({}, 'admin') }}</p>
+    <ul class="mt-1 space-y-0.5 text-xxs text-gray-500">
+        {% for definition in available_tokens() %}
+            <li><code>{{ definition.exampleTokenString }}</code> &mdash; {{ definition|trans }}</li>
+        {% endfor %}
+    </ul>
+</details>

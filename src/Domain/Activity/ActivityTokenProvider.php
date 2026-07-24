@@ -119,7 +119,7 @@ final readonly class ActivityTokenProvider implements TokenProvider
 
     public function resolve(Token $token, TokenizerContext $context): ?string
     {
-        if (!$activity = $context->get(Activity::class)) {
+        if (!($activity = $context->get(Activity::class)) instanceof Activity) {
             return null;
         }
 
