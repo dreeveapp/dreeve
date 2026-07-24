@@ -97,7 +97,7 @@ you will need to run multiple instances of the app, each with its own Strava cli
 The **Admin panel** link lives in the frontend app. Click your **profile picture** in the top-right corner to
 open the dropdown menu, then choose **Admin panel**.
 
-![Admin panel link](../assets/images/admin-panel-link.png)
+![Admin panel link](../assets/images/admin-panel-link.png "The Admin panel link in the profile dropdown")
 
 </details>
 

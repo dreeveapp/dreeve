@@ -28,7 +28,7 @@ You need a Strava account, and a **Strava API application** to get a `client ID`
 > [!IMPORTANT]
 > **Important** Do not include a port number in the _Authorization Callback Domain_ field.
 
-![Strava API settings page](../assets/images/strava-api-settings.png)
+![Strava API settings page](../assets/images/strava-api-settings.png "The Strava API settings page")
 
 ### Map visibility
 
@@ -36,7 +36,7 @@ To see maps of your activities in the app, your Strava map visibility settings h
 Go to your [Strava account settings](https://www.strava.com/settings/privacy)
 and make sure <i>Hide your activity maps from others completely</i> is **not** enabled.
 
-![Strava API privacy settings](../assets/images/strava-privacy-settings.png)
+![Strava API privacy settings](../assets/images/strava-privacy-settings.png "Strava's map visibility privacy settings")
 
 ## Configuration
 
@@ -63,7 +63,7 @@ The app needs this token to be able to access your data and import it into your 
 
 Navigate to http://localhost:8080/. You should see this page, just follow the steps to complete the setup.
 
-![Strava Authorization](../assets/images/strava-oauth.png)
+![Strava Authorization](../assets/images/strava-oauth.png "The Strava authorization flow")
 
 ## Importing
 

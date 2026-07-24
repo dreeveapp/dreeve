@@ -52,7 +52,7 @@ docker compose exec app bin/console app:strava:webhooks-create
 
 If everything is configured correctly, you should see an output similar to:
 
-![Strava webhook subscription](../assets/images/strava-webhook-create-subscription.png)
+![Strava webhook subscription](../assets/images/strava-webhook-create-subscription.png "Output of the webhooks-create command")
 
 At this point, Strava will begin sending notifications to your Dreeve instance
 All incoming webhooks will be logged to a separate log file located at `storage/files/logs`
@@ -67,7 +67,7 @@ docker compose exec app bin/console app:strava:webhooks-view
 
 This should display:
 
-![Strava view webhook subscription](../assets/images/strava-webhook-subscriptions.png)
+![Strava view webhook subscription](../assets/images/strava-webhook-subscriptions.png "Output of the webhooks-view command")
 
 ## Unsubscribe from webhooks
 

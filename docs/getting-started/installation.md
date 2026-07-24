@@ -175,4 +175,4 @@ Now that `.env` is complete, recreate the containers so they pick up your passwo
 The docker container is now running; navigate to http://localhost:8080/ to access and set up the app.
 You should be redirected to the admin panel login page.
 
-![Login form](../assets/images/login.png)
+![Login form](../assets/images/login.png "The admin panel login page")

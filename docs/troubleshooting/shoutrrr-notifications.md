@@ -6,7 +6,7 @@
 
 When configuring Shoutrrr services, you may encounter errors like:
 
-![Shoutrrr error](../assets/images/shoutrrr-notifications-error.png)
+![Shoutrrr error](../assets/images/shoutrrr-notifications-error.png "A failed Shoutrrr notification")
 
 This indicates that Shoutrrr attempted to send a notification to one of your configured services,
 but the request failed most likely due to a misconfiguration on your end. 

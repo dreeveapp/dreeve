@@ -89,7 +89,7 @@ and put your OpenRouter API key in `AI_API_KEY` in your `.env`.
 
 This will prompt you with a message like the following:
 
-![Mark example](../assets/images/mark-example.png) 
+![Mark example](../assets/images/mark-example.png "The AI workout assistant in the CLI")
 
 <!-- tabs:end -->
 
@@ -108,4 +108,4 @@ Each command has a **name** and the **message** it expands to. For example:
 
 You can then use `/analyse-last-workout` and `/compare-last-two-weeks` in your chat with the AI assistant:
 
-![Mark chat commands](../assets/images/mark-chat-commands.png)
+![Mark chat commands](../assets/images/mark-chat-commands.png "Using a pre-defined chat command")
