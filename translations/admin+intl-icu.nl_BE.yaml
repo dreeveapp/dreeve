@@ -354,7 +354,10 @@ Tasks: Tasks
 'The max speed': 'The max speed'
 'The moving time': 'The moving time'
 "The name is derived from the device recorded on your activities and can't be edited.": "The name is derived from the device recorded on your activities and can't be edited."
+'The name of the gear assigned to the activity': 'The name of the gear assigned to the activity'
+'The number of activities recorded with the gear': 'The number of activities recorded with the gear'
 'The start date, optionally with a custom PHP date format': 'The start date, optionally with a custom PHP date format'
+'The total distance ridden with the gear': 'The total distance ridden with the gear'
 'The unit system used to render distances, elevations, temperatures, etc.': 'The unit system used to render distances, elevations, temperatures, etc.'
 'The workout type': 'The workout type'
 'Then do this': 'Then do this'
