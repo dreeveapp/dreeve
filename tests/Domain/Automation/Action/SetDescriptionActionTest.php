@@ -32,6 +32,14 @@ class SetDescriptionActionTest extends TestCase
         $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['description' => '']));
     }
 
+    public function testGuardPassesWhenDescriptionIsNotAString(): void
+    {
+        $this->expectNotToPerformAssertions();
+
+        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig([]));
+        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['description' => 3]));
+    }
+
     public function testGuardPassesForValidTokens(): void
     {
         $this->expectNotToPerformAssertions();
