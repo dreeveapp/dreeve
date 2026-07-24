@@ -53,9 +53,6 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
     public function testParseUsesStreamAveragePowerWhenSessionValueDeviatesTooMuch(): void
     {
-        // The device (e.g. Bosch) excluded the zero-power samples from its session
-        // average (225 = avg of 200 and 250); the stream average including the two
-        // zero samples is 113. The deviation exceeds 10%, so the stream wins.
         $this->givenFitToolReturnsFixture('fit-document-with-deviating-session-avg-power.json');
 
         $this->assertSame(113, $this->parser->parse($this->rawFile('/tmp/activity.fit'))->getActivity()->getAveragePower());
