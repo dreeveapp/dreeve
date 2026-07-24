@@ -36,7 +36,7 @@ So for now, **do not delete `config.yaml` and do not remove the `./config` volum
 
 **Point both containers at the new image**
 
-The Docker image was renamed. Change the `image:` line on **both** the `app` and the `daemon` container:
+The Docker image was renamed. Point **both** the `app` and the `daemon` container to the new image:
 
 ```yml
 services:
