@@ -1,22 +1,22 @@
 @import "tailwindcss" source(none);
 @import "../../node_modules/flowbite/src/themes/default.css";
-@import "./components/autocomplete.css";
 @import "./components/alert.css";
+@import "./components/autocomplete.css";
 @import "./components/chat.css";
 @import "./components/checkbox-multiselect.css";
-@import "./components/dark-mode.css";
-@import "./components/dashboard-layout.css";
 @import "./components/data-table.css";
 @import "./components/filter-dropdown.css";
-@import "./components/toast.css";
 @import "./components/form.css";
-@import "./components/leaflet.css";
 @import "./components/modal.css";
 @import "./components/pill.css";
 @import "./components/popover.css";
 @import "./components/scroll-to.css";
-@import "./components/sidebar.css";
 @import "./components/tabs.css";
+@import "./components/toast.css";
+@import "./layout/dashboard-layout.css";
+@import "./layout/sidebar.css";
+@import "./theme/dark-mode.css";
+@import "./vendor/leaflet.css";
 
 @source "../../templates/**/*.html.twig";
 @source "../../templates/**/*.svg";
