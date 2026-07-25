@@ -7,6 +7,7 @@ namespace App\Tests\Domain\Gear\AddGear;
 use App\Domain\Gear\AddGear\AddGear;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use Money\Money;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class AddGearTest extends TestCase
@@ -61,18 +62,6 @@ class AddGearTest extends TestCase
         $this->assertNull($command->getNewImage());
     }
 
-    public function testFromPayloadThrowsOnUnsupportedImageType(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Unsupported image file type.'));
-
-        AddGear::fromPayload([
-            'name' => 'My custom gear',
-            'localImagePath' => json_encode([
-                ['status' => 'new', 'filename' => 'gear.gif', 'content' => base64_encode('image-content')],
-            ]),
-        ]);
-    }
-
     public function testFromPayloadTrimsName(): void
     {
         $command = AddGear::fromPayload([
@@ -82,41 +71,50 @@ class AddGearTest extends TestCase
         $this->assertSame('My custom gear', $command->getName());
     }
 
-    public function testFromPayloadThrowsOnMissingName(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidPayloads')]
+    public function testFromPayloadThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "name" is required.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        AddGear::fromPayload([
-            'status' => 'active',
-        ]);
+        AddGear::fromPayload($payload);
     }
 
-    public function testFromPayloadThrowsOnEmptyName(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidPayloads(): iterable
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The name cannot be empty.'));
+        yield 'unsupported image type' => [
+            [
+                'name' => 'My custom gear',
+                'localImagePath' => json_encode([
+                    ['status' => 'new', 'filename' => 'gear.gif', 'content' => base64_encode('image-content')],
+                ]),
+            ],
+            'Unsupported image file type.',
+        ];
 
-        AddGear::fromPayload([
-            'name' => '   ',
-        ]);
-    }
+        yield 'missing name' => [
+            ['status' => 'active'],
+            'A "name" is required.',
+        ];
 
-    public function testFromPayloadThrowsOnInvalidStatus(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The status is invalid.'));
+        yield 'empty name' => [
+            ['name' => '   '],
+            'The name cannot be empty.',
+        ];
 
-        AddGear::fromPayload([
-            'name' => 'My custom gear',
-            'status' => 'not-a-status',
-        ]);
-    }
+        yield 'invalid status' => [
+            ['name' => 'My custom gear', 'status' => 'not-a-status'],
+            'The status is invalid.',
+        ];
 
-    public function testFromPayloadThrowsOnInvalidPurchasePrice(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The purchase price is invalid.'));
-
-        AddGear::fromPayload([
-            'name' => 'My custom gear',
-            'purchasePriceAmount' => 'not-a-number',
-        ]);
+        yield 'invalid purchase price' => [
+            ['name' => 'My custom gear', 'purchasePriceAmount' => 'not-a-number'],
+            'The purchase price is invalid.',
+        ];
     }
 }

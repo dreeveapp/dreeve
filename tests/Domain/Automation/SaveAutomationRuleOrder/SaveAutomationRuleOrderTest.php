@@ -6,6 +6,7 @@ namespace App\Tests\Domain\Automation\SaveAutomationRuleOrder;
 
 use App\Domain\Automation\SaveAutomationRuleOrder\SaveAutomationRuleOrder;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class SaveAutomationRuleOrderTest extends TestCase
@@ -31,31 +32,40 @@ class SaveAutomationRuleOrderTest extends TestCase
         $this->assertSame('automationRule-2', (string) $command->getOrderedIds()[0]);
     }
 
-    public function testThrowsWhenOrderIsMissing(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidPayloads')]
+    public function testItThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A non-empty "order" list is required.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        SaveAutomationRuleOrder::fromPayload([]);
+        SaveAutomationRuleOrder::fromPayload($payload);
     }
 
-    public function testThrowsWhenOrderIsEmpty(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidPayloads(): iterable
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A non-empty "order" list is required.'));
+        yield 'missing order' => [
+            [],
+            'A non-empty "order" list is required.',
+        ];
 
-        SaveAutomationRuleOrder::fromPayload(['order' => []]);
-    }
+        yield 'empty order' => [
+            ['order' => []],
+            'A non-empty "order" list is required.',
+        ];
 
-    public function testThrowsWhenOrderIsNotAList(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A non-empty "order" list is required.'));
+        yield 'order that is not a list' => [
+            ['order' => ['a' => 'automationRule-1']],
+            'A non-empty "order" list is required.',
+        ];
 
-        SaveAutomationRuleOrder::fromPayload(['order' => ['a' => 'automationRule-1']]);
-    }
-
-    public function testThrowsWhenAnEntryIsNotANonEmptyString(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Each "order" entry must be a non-empty string.'));
-
-        SaveAutomationRuleOrder::fromPayload(['order' => ['automationRule-1', '  ']]);
+        yield 'entry that is not a non-empty string' => [
+            ['order' => ['automationRule-1', '  ']],
+            'Each "order" entry must be a non-empty string.',
+        ];
     }
 }

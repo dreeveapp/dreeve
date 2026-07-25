@@ -6,6 +6,7 @@ namespace App\Tests\Domain\Dashboard\SaveDashboardLayout;
 
 use App\Domain\Dashboard\SaveDashboardLayout\SaveDashboardLayout;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class SaveDashboardLayoutTest extends TestCase
@@ -25,59 +26,60 @@ class SaveDashboardLayoutTest extends TestCase
         ], $command->getOrderedWidgets());
     }
 
-    public function testFromPayloadThrowsOnMissingLayout(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidPayloads')]
+    public function testFromPayloadThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A non-empty "layout" list is required.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        SaveDashboardLayout::fromPayload([]);
+        SaveDashboardLayout::fromPayload($payload);
     }
 
-    public function testFromPayloadThrowsOnEmptyLayout(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidPayloads(): iterable
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A non-empty "layout" list is required.'));
+        yield 'missing layout' => [
+            [],
+            'A non-empty "layout" list is required.',
+        ];
 
-        SaveDashboardLayout::fromPayload(['layout' => []]);
-    }
+        yield 'empty layout' => [
+            ['layout' => []],
+            'A non-empty "layout" list is required.',
+        ];
 
-    public function testFromPayloadThrowsWhenLayoutIsNotAList(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A non-empty "layout" list is required.'));
+        yield 'layout is not a list' => [
+            ['layout' => ['a' => ['id' => 'dashboardWidget-a', 'width' => 33]]],
+            'A non-empty "layout" list is required.',
+        ];
 
-        SaveDashboardLayout::fromPayload(['layout' => ['a' => ['id' => 'dashboardWidget-a', 'width' => 33]]]);
-    }
+        yield 'missing id' => [
+            ['layout' => [['width' => 33]]],
+            'Each layout item requires a non-empty "id".',
+        ];
 
-    public function testFromPayloadThrowsOnMissingId(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Each layout item requires a non-empty "id".'));
+        yield 'empty id' => [
+            ['layout' => [['id' => '  ', 'width' => 33]]],
+            'Each layout item requires a non-empty "id".',
+        ];
 
-        SaveDashboardLayout::fromPayload(['layout' => [['width' => 33]]]);
-    }
+        yield 'missing width' => [
+            ['layout' => [['id' => 'dashboardWidget-a']]],
+            'Each layout item requires a "width" that is one of [33, 50, 66, 100].',
+        ];
 
-    public function testFromPayloadThrowsOnEmptyId(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Each layout item requires a non-empty "id".'));
+        yield 'out of range width' => [
+            ['layout' => [['id' => 'dashboardWidget-a', 'width' => 42]]],
+            'Each layout item requires a "width" that is one of [33, 50, 66, 100].',
+        ];
 
-        SaveDashboardLayout::fromPayload(['layout' => [['id' => '  ', 'width' => 33]]]);
-    }
-
-    public function testFromPayloadThrowsOnMissingWidth(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Each layout item requires a "width" that is one of [33, 50, 66, 100].'));
-
-        SaveDashboardLayout::fromPayload(['layout' => [['id' => 'dashboardWidget-a']]]);
-    }
-
-    public function testFromPayloadThrowsOnOutOfRangeWidth(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Each layout item requires a "width" that is one of [33, 50, 66, 100].'));
-
-        SaveDashboardLayout::fromPayload(['layout' => [['id' => 'dashboardWidget-a', 'width' => 42]]]);
-    }
-
-    public function testFromPayloadThrowsWhenWidthIsNotAnInteger(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Each layout item requires a "width" that is one of [33, 50, 66, 100].'));
-
-        SaveDashboardLayout::fromPayload(['layout' => [['id' => 'dashboardWidget-a', 'width' => '33']]]);
+        yield 'width is not an integer' => [
+            ['layout' => [['id' => 'dashboardWidget-a', 'width' => '33']]],
+            'Each layout item requires a "width" that is one of [33, 50, 66, 100].',
+        ];
     }
 }

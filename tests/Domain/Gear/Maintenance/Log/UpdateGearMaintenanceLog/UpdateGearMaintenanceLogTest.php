@@ -8,6 +8,7 @@ use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogId;
 use App\Domain\Gear\Maintenance\Log\UpdateGearMaintenanceLog\UpdateGearMaintenanceLog;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class UpdateGearMaintenanceLogTest extends TestCase
@@ -26,41 +27,50 @@ class UpdateGearMaintenanceLogTest extends TestCase
         $this->assertEquals(SerializableDateTime::fromString('2025-01-01 00:00:00'), $command->getPerformedOn());
     }
 
-    public function testFromPayloadThrowsWhenGearMaintenanceLogIdMissing(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidPayloads')]
+    public function testFromPayloadThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "gearMaintenanceLogId" and "performedOn" are required.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        UpdateGearMaintenanceLog::fromPayload([
-            'performedOn' => '2025-01-01 00:00:00',
-        ]);
+        UpdateGearMaintenanceLog::fromPayload($payload);
     }
 
-    public function testFromPayloadThrowsWhenPerformedOnMissing(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidPayloads(): iterable
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "gearMaintenanceLogId" and "performedOn" are required.'));
+        yield 'gearMaintenanceLogId is missing' => [
+            [
+                'performedOn' => '2025-01-01 00:00:00',
+            ],
+            'A "gearMaintenanceLogId" and "performedOn" are required.',
+        ];
 
-        UpdateGearMaintenanceLog::fromPayload([
-            'gearMaintenanceLogId' => (string) GearMaintenanceLogId::fromUnprefixed('abc'),
-        ]);
-    }
+        yield 'performedOn is missing' => [
+            [
+                'gearMaintenanceLogId' => (string) GearMaintenanceLogId::fromUnprefixed('abc'),
+            ],
+            'A "gearMaintenanceLogId" and "performedOn" are required.',
+        ];
 
-    public function testFromPayloadThrowsWhenPerformedOnNotAString(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "gearMaintenanceLogId" and "performedOn" are required.'));
+        yield 'performedOn is not a string' => [
+            [
+                'gearMaintenanceLogId' => (string) GearMaintenanceLogId::fromUnprefixed('abc'),
+                'performedOn' => 12345,
+            ],
+            'A "gearMaintenanceLogId" and "performedOn" are required.',
+        ];
 
-        UpdateGearMaintenanceLog::fromPayload([
-            'gearMaintenanceLogId' => (string) GearMaintenanceLogId::fromUnprefixed('abc'),
-            'performedOn' => 12345,
-        ]);
-    }
-
-    public function testFromPayloadThrowsOnInvalidPerformedOn(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The "performedOn" is not a valid date.'));
-
-        UpdateGearMaintenanceLog::fromPayload([
-            'gearMaintenanceLogId' => (string) GearMaintenanceLogId::fromUnprefixed('abc'),
-            'performedOn' => 'not-a-date',
-        ]);
+        yield 'performedOn is not a valid date' => [
+            [
+                'gearMaintenanceLogId' => (string) GearMaintenanceLogId::fromUnprefixed('abc'),
+                'performedOn' => 'not-a-date',
+            ],
+            'The "performedOn" is not a valid date.',
+        ];
     }
 }

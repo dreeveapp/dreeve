@@ -8,6 +8,7 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\CreateGearMaintenanceComponent\CreateGearMaintenanceComponent;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use Money\Money;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class CreateGearMaintenanceComponentTest extends TestCase
@@ -53,56 +54,65 @@ class CreateGearMaintenanceComponentTest extends TestCase
         $this->assertSame('image-content', $command->getNewImage()->getContent());
     }
 
-    public function testFromPayloadThrowsOnUnsupportedImageType(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidPayloads')]
+    public function testFromPayloadThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Unsupported image file type.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        CreateGearMaintenanceComponent::fromPayload([
-            'label' => 'Chain',
-            'attachedTo' => ['b1'],
-            'localImagePath' => json_encode([
-                ['status' => 'new', 'filename' => 'chain.gif', 'content' => base64_encode('image-content')],
-            ]),
-            'maintenanceTasks' => [
-                ['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
-            ],
-        ]);
+        CreateGearMaintenanceComponent::fromPayload($payload);
     }
 
-    public function testFromPayloadThrowsOnMissingLabel(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidPayloads(): iterable
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A non-empty "label" is required.'));
-
-        CreateGearMaintenanceComponent::fromPayload([
-            'attachedTo' => ['b1'],
-            'maintenanceTasks' => [
-                ['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+        yield 'image file type is unsupported' => [
+            [
+                'label' => 'Chain',
+                'attachedTo' => ['b1'],
+                'localImagePath' => json_encode([
+                    ['status' => 'new', 'filename' => 'chain.gif', 'content' => base64_encode('image-content')],
+                ]),
+                'maintenanceTasks' => [
+                    ['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                ],
             ],
-        ]);
-    }
+            'Unsupported image file type.',
+        ];
 
-    public function testFromPayloadThrowsWithoutMaintenanceTasks(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('At least one maintenance task is required.'));
-
-        CreateGearMaintenanceComponent::fromPayload([
-            'label' => 'Chain',
-            'attachedTo' => ['b1'],
-            'maintenanceTasks' => [],
-        ]);
-    }
-
-    public function testFromPayloadThrowsOnDuplicateMaintenanceTaskIds(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Duplicate maintenance task ids found.'));
-
-        CreateGearMaintenanceComponent::fromPayload([
-            'label' => 'Chain',
-            'attachedTo' => ['b1'],
-            'maintenanceTasks' => [
-                ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
-                ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Replace', 'interval' => ['value' => 1000, 'unit' => 'km']],
+        yield 'label is missing' => [
+            [
+                'attachedTo' => ['b1'],
+                'maintenanceTasks' => [
+                    ['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                ],
             ],
-        ]);
+            'A non-empty "label" is required.',
+        ];
+
+        yield 'maintenanceTasks is empty' => [
+            [
+                'label' => 'Chain',
+                'attachedTo' => ['b1'],
+                'maintenanceTasks' => [],
+            ],
+            'At least one maintenance task is required.',
+        ];
+
+        yield 'maintenance task ids are duplicated' => [
+            [
+                'label' => 'Chain',
+                'attachedTo' => ['b1'],
+                'maintenanceTasks' => [
+                    ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                    ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Replace', 'interval' => ['value' => 1000, 'unit' => 'km']],
+                ],
+            ],
+            'Duplicate maintenance task ids found.',
+        ];
     }
 }

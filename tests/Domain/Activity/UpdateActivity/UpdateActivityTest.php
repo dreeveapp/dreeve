@@ -10,6 +10,7 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\UpdateActivity\UpdateActivity;
 use App\Domain\Gear\GearId;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class UpdateActivityTest extends TestCase
@@ -83,98 +84,68 @@ class UpdateActivityTest extends TestCase
         $this->assertSame('files/activities/gone.png', $removedImages[0]->getPath()->toLocalImagePath());
     }
 
-    public function testFromPayloadThrowsOnUnsupportedImageType(): void
+    #[DataProvider('provideInvalidImagePayloads')]
+    public function testFromPayloadThrowsOnInvalidImagePayload(mixed $images, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Unsupported image file type.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
         UpdateActivity::fromPayload([
             'activityId' => 'activity-1',
             'name' => 'My custom activity',
             'sportType' => 'Ride',
-            'images' => json_encode([
+            'images' => $images,
+        ]);
+    }
+
+    /**
+     * @return iterable<string, array{mixed, string}>
+     */
+    public static function provideInvalidImagePayloads(): iterable
+    {
+        yield 'new image with an unsupported file type' => [
+            json_encode([
                 ['status' => 'new', 'filename' => 'malware.php', 'content' => base64_encode('binary-content')],
             ]),
-        ]);
-    }
+            'Unsupported image file type.',
+        ];
 
-    public function testFromPayloadThrowsOnInvalidImageContent(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A new image has invalid "content".'));
-
-        UpdateActivity::fromPayload([
-            'activityId' => 'activity-1',
-            'name' => 'My custom activity',
-            'sportType' => 'Ride',
-            'images' => json_encode([
+        yield 'new image with invalid base64 content' => [
+            json_encode([
                 ['status' => 'new', 'filename' => 'photo.jpg', 'content' => 'not-valid-base64!!!'],
             ]),
-        ]);
-    }
+            'A new image has invalid "content".',
+        ];
 
-    public function testFromPayloadThrowsOnUnknownImageStatus(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Each image requires a valid "status".'));
-
-        UpdateActivity::fromPayload([
-            'activityId' => 'activity-1',
-            'name' => 'My custom activity',
-            'sportType' => 'Ride',
-            'images' => json_encode([
+        yield 'image with an unknown status' => [
+            json_encode([
                 ['status' => 'whatever'],
             ]),
-        ]);
-    }
+            'Each image requires a valid "status".',
+        ];
 
-    public function testFromPayloadThrowsWhenImagesIsNotAString(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The "images" field is invalid.'));
+        yield 'images is not a string' => [
+            ['not', 'a', 'string'],
+            'The "images" field is invalid.',
+        ];
 
-        UpdateActivity::fromPayload([
-            'activityId' => 'activity-1',
-            'name' => 'My custom activity',
-            'sportType' => 'Ride',
-            'images' => ['not', 'a', 'string'],
-        ]);
-    }
+        yield 'images does not decode to an array' => [
+            '123',
+            'The "images" field is invalid.',
+        ];
 
-    public function testFromPayloadThrowsWhenImagesDoesNotDecodeToAnArray(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The "images" field is invalid.'));
-
-        UpdateActivity::fromPayload([
-            'activityId' => 'activity-1',
-            'name' => 'My custom activity',
-            'sportType' => 'Ride',
-            'images' => '123',
-        ]);
-    }
-
-    public function testFromPayloadThrowsWhenNewImageIsMissingFilenameOrContent(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A new image requires a "filename" and "content".'));
-
-        UpdateActivity::fromPayload([
-            'activityId' => 'activity-1',
-            'name' => 'My custom activity',
-            'sportType' => 'Ride',
-            'images' => json_encode([
+        yield 'new image missing filename and content' => [
+            json_encode([
                 ['status' => 'new'],
             ]),
-        ]);
-    }
+            'A new image requires a "filename" and "content".',
+        ];
 
-    public function testFromPayloadThrowsWhenRemovedImageIsMissingPath(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A removed image requires a "path".'));
-
-        UpdateActivity::fromPayload([
-            'activityId' => 'activity-1',
-            'name' => 'My custom activity',
-            'sportType' => 'Ride',
-            'images' => json_encode([
+        yield 'removed image missing path' => [
+            json_encode([
                 ['status' => 'removed'],
             ]),
-        ]);
+            'A removed image requires a "path".',
+        ];
     }
 
     public function testFromPayloadWithEmptyOptionalFields(): void
@@ -194,25 +165,46 @@ class UpdateActivityTest extends TestCase
         $this->assertFalse($command->isCommute());
     }
 
-    public function testFromPayloadThrowsOnMissingSportType(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidScalarFieldPayloads')]
+    public function testFromPayloadThrowsOnInvalidScalarFieldPayload(array $payload, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A valid "sportType" is required.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        UpdateActivity::fromPayload([
-            'activityId' => 'activity-1',
-            'name' => 'My custom activity',
-        ]);
+        UpdateActivity::fromPayload($payload);
     }
 
-    public function testFromPayloadThrowsOnInvalidSportType(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidScalarFieldPayloads(): iterable
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A valid "sportType" is required.'));
+        yield 'missing sportType' => [
+            ['activityId' => 'activity-1', 'name' => 'My custom activity'],
+            'A valid "sportType" is required.',
+        ];
 
-        UpdateActivity::fromPayload([
-            'activityId' => 'activity-1',
-            'name' => 'My custom activity',
-            'sportType' => 'NotARealSport',
-        ]);
+        yield 'invalid sportType' => [
+            ['activityId' => 'activity-1', 'name' => 'My custom activity', 'sportType' => 'NotARealSport'],
+            'A valid "sportType" is required.',
+        ];
+
+        yield 'missing activityId' => [
+            ['name' => 'My custom activity'],
+            'An "activityId" and "name" are required.',
+        ];
+
+        yield 'missing name' => [
+            ['activityId' => 'activity-1'],
+            'An "activityId" and "name" are required.',
+        ];
+
+        yield 'empty name' => [
+            ['activityId' => 'activity-1', 'name' => '   ', 'sportType' => 'Ride'],
+            'The name cannot be empty.',
+        ];
     }
 
     public function testFromPayloadTrimsName(): void
@@ -224,34 +216,5 @@ class UpdateActivityTest extends TestCase
         ]);
 
         $this->assertEquals(ActivityName::fromString('My custom activity'), $command->getName());
-    }
-
-    public function testFromPayloadThrowsOnMissingActivityId(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('An "activityId" and "name" are required.'));
-
-        UpdateActivity::fromPayload([
-            'name' => 'My custom activity',
-        ]);
-    }
-
-    public function testFromPayloadThrowsOnMissingName(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('An "activityId" and "name" are required.'));
-
-        UpdateActivity::fromPayload([
-            'activityId' => 'activity-1',
-        ]);
-    }
-
-    public function testFromPayloadThrowsOnEmptyName(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The name cannot be empty.'));
-
-        UpdateActivity::fromPayload([
-            'activityId' => 'activity-1',
-            'name' => '   ',
-            'sportType' => 'Ride',
-        ]);
     }
 }

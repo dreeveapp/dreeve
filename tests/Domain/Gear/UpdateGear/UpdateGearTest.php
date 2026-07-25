@@ -8,6 +8,7 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\UpdateGear\UpdateGear;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use Money\Money;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class UpdateGearTest extends TestCase
@@ -81,53 +82,45 @@ class UpdateGearTest extends TestCase
         $this->assertSame('My custom gear', $command->getName());
     }
 
-    public function testFromPayloadThrowsOnMissingGearId(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidPayloads')]
+    public function testFromPayloadThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "gearId" and "name" are required.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        UpdateGear::fromPayload([
-            'name' => 'My custom gear',
-        ]);
+        UpdateGear::fromPayload($payload);
     }
 
-    public function testFromPayloadThrowsOnMissingName(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidPayloads(): iterable
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "gearId" and "name" are required.'));
+        yield 'missing gearId' => [
+            ['name' => 'My custom gear'],
+            'A "gearId" and "name" are required.',
+        ];
 
-        UpdateGear::fromPayload([
-            'gearId' => 'gear-1',
-        ]);
-    }
+        yield 'missing name' => [
+            ['gearId' => 'gear-1'],
+            'A "gearId" and "name" are required.',
+        ];
 
-    public function testFromPayloadThrowsOnEmptyName(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The name cannot be empty.'));
+        yield 'empty name' => [
+            ['gearId' => 'gear-1', 'name' => '   '],
+            'The name cannot be empty.',
+        ];
 
-        UpdateGear::fromPayload([
-            'gearId' => 'gear-1',
-            'name' => '   ',
-        ]);
-    }
+        yield 'invalid status' => [
+            ['gearId' => 'gear-1', 'name' => 'My custom gear', 'status' => 'not-a-status'],
+            'The status is invalid.',
+        ];
 
-    public function testFromPayloadThrowsOnInvalidStatus(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The status is invalid.'));
-
-        UpdateGear::fromPayload([
-            'gearId' => 'gear-1',
-            'name' => 'My custom gear',
-            'status' => 'not-a-status',
-        ]);
-    }
-
-    public function testFromPayloadThrowsOnInvalidPurchasePrice(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The purchase price is invalid.'));
-
-        UpdateGear::fromPayload([
-            'gearId' => 'gear-1',
-            'name' => 'My custom gear',
-            'purchasePriceAmount' => 'not-a-number',
-        ]);
+        yield 'invalid purchase price' => [
+            ['gearId' => 'gear-1', 'name' => 'My custom gear', 'purchasePriceAmount' => 'not-a-number'],
+            'The purchase price is invalid.',
+        ];
     }
 }

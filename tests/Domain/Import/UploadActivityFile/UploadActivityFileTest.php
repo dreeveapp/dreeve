@@ -6,6 +6,7 @@ namespace App\Tests\Domain\Import\UploadActivityFile;
 
 use App\Domain\Import\UploadActivityFile\UploadActivityFile;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class UploadActivityFileTest extends TestCase
@@ -31,51 +32,45 @@ class UploadActivityFileTest extends TestCase
         $this->assertSame('foo.gpx', $command->getFilename());
     }
 
-    public function testFromPayloadThrowsOnMissingFilename(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidPayloads')]
+    public function testFromPayloadThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "filename" and "content" are required.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        UploadActivityFile::fromPayload([
-            'content' => base64_encode('raw-fit-bytes'),
-        ]);
+        UploadActivityFile::fromPayload($payload);
     }
 
-    public function testFromPayloadThrowsOnMissingContent(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidPayloads(): iterable
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "filename" and "content" are required.'));
+        yield 'missing filename' => [
+            ['content' => base64_encode('raw-fit-bytes')],
+            'A "filename" and "content" are required.',
+        ];
 
-        UploadActivityFile::fromPayload([
-            'filename' => 'ride.fit',
-        ]);
-    }
+        yield 'missing content' => [
+            ['filename' => 'ride.fit'],
+            'A "filename" and "content" are required.',
+        ];
 
-    public function testFromPayloadThrowsOnUnsupportedExtension(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The file type is not supported.'));
+        yield 'unsupported extension' => [
+            ['filename' => 'notes.txt', 'content' => base64_encode('some text')],
+            'The file type is not supported.',
+        ];
 
-        UploadActivityFile::fromPayload([
-            'filename' => 'notes.txt',
-            'content' => base64_encode('some text'),
-        ]);
-    }
+        yield 'malformed base64 content' => [
+            ['filename' => 'ride.fit', 'content' => 'not-valid-base64!!!'],
+            'The file content must be valid, non-empty base64.',
+        ];
 
-    public function testFromPayloadThrowsOnMalformedContent(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The file content must be valid, non-empty base64.'));
-
-        UploadActivityFile::fromPayload([
-            'filename' => 'ride.fit',
-            'content' => 'not-valid-base64!!!',
-        ]);
-    }
-
-    public function testFromPayloadThrowsOnEmptyContent(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The file content must be valid, non-empty base64.'));
-
-        UploadActivityFile::fromPayload([
-            'filename' => 'ride.fit',
-            'content' => '',
-        ]);
+        yield 'empty content' => [
+            ['filename' => 'ride.fit', 'content' => ''],
+            'The file content must be valid, non-empty base64.',
+        ];
     }
 }

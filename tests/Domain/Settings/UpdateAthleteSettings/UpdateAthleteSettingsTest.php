@@ -6,40 +6,56 @@ namespace App\Tests\Domain\Settings\UpdateAthleteSettings;
 
 use App\Domain\Settings\UpdateAthleteSettings\UpdateAthleteSettings;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class UpdateAthleteSettingsTest extends TestCase
 {
-    public function testItThrowsWhenAthleteIsMissing(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidPayloads')]
+    public function testItThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('"athlete" must be an object.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        UpdateAthleteSettings::fromPayload([]);
+        UpdateAthleteSettings::fromPayload($payload);
     }
 
-    public function testItThrowsWhenAthleteIsNotAnArray(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidPayloads(): iterable
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('"athlete" must be an object.'));
+        yield 'athlete is missing' => [
+            [],
+            '"athlete" must be an object.',
+        ];
 
-        UpdateAthleteSettings::fromPayload(['athlete' => 'not-an-array']);
-    }
+        yield 'athlete is not an array' => [
+            ['athlete' => 'not-an-array'],
+            '"athlete" must be an object.',
+        ];
 
-    public function testItThrowsWhenBirthdayIsMissing(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "birthday" is required for the athlete in the general settings'));
+        yield 'birthday is missing' => [
+            ['athlete' => ['firstName' => 'Jane']],
+            'A "birthday" is required for the athlete in the general settings',
+        ];
 
-        UpdateAthleteSettings::fromPayload([
-            'athlete' => ['firstName' => 'Jane'],
-        ]);
-    }
+        yield 'maxHeartRateFormula is missing' => [
+            ['athlete' => ['birthday' => '1990-01-01']],
+            'A "maxHeartRateFormula" is required for the athlete in the general settings',
+        ];
 
-    public function testItThrowsWhenMaxHeartRateFormulaIsMissing(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "maxHeartRateFormula" is required for the athlete in the general settings'));
-
-        UpdateAthleteSettings::fromPayload([
-            'athlete' => ['birthday' => '1990-01-01'],
-        ]);
+        yield 'fixed resting heart rate is missing' => [
+            ['athlete' => [
+                'birthday' => '1990-01-01',
+                'maxHeartRateFormula' => 'fox',
+                'restingHeartRateFormula' => 'fixed',
+                'restingHeartRateFormulaFixedValue' => '',
+            ]],
+            'The resting heart rate formula needs a heart rate greater than zero',
+        ];
     }
 
     public function testItDeserializes(): void
@@ -71,17 +87,5 @@ class UpdateAthleteSettingsTest extends TestCase
             'maxHeartRateFormula' => ['2023-01-01' => 180],
             'restingHeartRateFormula' => 58,
         ], $command->getAthlete());
-    }
-
-    public function testItThrowsWhenTheFixedRestingHeartRateIsMissing(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The resting heart rate formula needs a heart rate greater than zero'));
-
-        UpdateAthleteSettings::fromPayload(['athlete' => [
-            'birthday' => '1990-01-01',
-            'maxHeartRateFormula' => 'fox',
-            'restingHeartRateFormula' => 'fixed',
-            'restingHeartRateFormulaFixedValue' => '',
-        ]]);
     }
 }

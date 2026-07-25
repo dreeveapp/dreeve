@@ -8,6 +8,8 @@ use App\Domain\Automation\Action\ActionType;
 use App\Domain\Automation\AddAutomationRule\AddAutomationRule;
 use App\Domain\Automation\Condition\ConditionType;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class AddAutomationRuleTest extends TestCase
@@ -41,42 +43,37 @@ class AddAutomationRuleTest extends TestCase
 
     public function testEnabledDefaultsToTrue(): void
     {
-        $command = AddAutomationRule::fromPayload($this->validPayloadWithout('enabled'));
+        $command = AddAutomationRule::fromPayload(self::validPayloadWithout('enabled'));
 
         $this->assertTrue($command->isEnabled());
     }
 
     public function testEnabledCanBeDisabled(): void
     {
-        $command = AddAutomationRule::fromPayload(['enabled' => false] + $this->validPayload());
+        $command = AddAutomationRule::fromPayload(['enabled' => false] + self::validPayload());
 
         $this->assertFalse($command->isEnabled());
     }
 
     public function testStopProcessingDefaultsToTrue(): void
     {
-        $command = AddAutomationRule::fromPayload($this->validPayload());
+        $command = AddAutomationRule::fromPayload(self::validPayload());
 
         $this->assertTrue($command->stopProcessing());
     }
 
-    public function testStopProcessingCanBeDisabled(): void
+    #[TestWith(data: ['false', false])]
+    #[TestWith(data: ['true', true])]
+    public function testStopProcessingCanBeToggledExplicitly(string $stopProcessing, bool $expectedStopProcessing): void
     {
-        $command = AddAutomationRule::fromPayload(['stopProcessing' => 'false'] + $this->validPayload());
+        $command = AddAutomationRule::fromPayload(['stopProcessing' => $stopProcessing] + self::validPayload());
 
-        $this->assertFalse($command->stopProcessing());
-    }
-
-    public function testStopProcessingCanBeEnabledExplicitly(): void
-    {
-        $command = AddAutomationRule::fromPayload(['stopProcessing' => 'true'] + $this->validPayload());
-
-        $this->assertTrue($command->stopProcessing());
+        $this->assertSame($expectedStopProcessing, $command->stopProcessing());
     }
 
     public function testLabelIsTrimmed(): void
     {
-        $command = AddAutomationRule::fromPayload(['label' => '  Trimmed  '] + $this->validPayload());
+        $command = AddAutomationRule::fromPayload(['label' => '  Trimmed  '] + self::validPayload());
 
         $this->assertSame('Trimmed', $command->getLabel());
     }
@@ -92,59 +89,62 @@ class AddAutomationRuleTest extends TestCase
         $this->assertSame([['type' => ConditionType::DEVICE, 'config' => []]], $command->getConditions());
     }
 
-    public function testThrowsOnMissingLabel(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidPayloads')]
+    public function testItThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A non-empty "label" is required.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        AddAutomationRule::fromPayload($this->validPayloadWithout('label'));
+        AddAutomationRule::fromPayload($payload);
     }
 
-    public function testThrowsOnEmptyConditions(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidPayloads(): iterable
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('At least one condition is required.'));
+        yield 'missing label' => [
+            self::validPayloadWithout('label'),
+            'A non-empty "label" is required.',
+        ];
 
-        AddAutomationRule::fromPayload(['conditions' => []] + $this->validPayload());
-    }
+        yield 'empty conditions' => [
+            ['conditions' => []] + self::validPayload(),
+            'At least one condition is required.',
+        ];
 
-    public function testThrowsOnEmptyActions(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('At least one action is required.'));
+        yield 'empty actions' => [
+            ['actions' => []] + self::validPayload(),
+            'At least one action is required.',
+        ];
 
-        AddAutomationRule::fromPayload(['actions' => []] + $this->validPayload());
-    }
+        yield 'invalid condition type' => [
+            ['conditions' => [['type' => 'nope']]] + self::validPayload(),
+            'Invalid condition type "nope".',
+        ];
 
-    public function testThrowsOnInvalidConditionType(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Invalid condition type "nope".'));
+        yield 'invalid action type' => [
+            ['actions' => [['type' => 'nope']]] + self::validPayload(),
+            'Invalid action type "nope".',
+        ];
 
-        AddAutomationRule::fromPayload(['conditions' => [['type' => 'nope']]] + $this->validPayload());
-    }
+        yield 'component without a type' => [
+            ['conditions' => [['config' => []]]] + self::validPayload(),
+            'Each component requires a non-empty "type".',
+        ];
 
-    public function testThrowsOnInvalidActionType(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Invalid action type "nope".'));
-
-        AddAutomationRule::fromPayload(['actions' => [['type' => 'nope']]] + $this->validPayload());
-    }
-
-    public function testThrowsWhenComponentHasNoType(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Each component requires a non-empty "type".'));
-
-        AddAutomationRule::fromPayload(['conditions' => [['config' => []]]] + $this->validPayload());
-    }
-
-    public function testThrowsWhenConfigIsNotAnObject(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A component "config" must be an object.'));
-
-        AddAutomationRule::fromPayload(['conditions' => [['type' => 'device', 'config' => 'nope']]] + $this->validPayload());
+        yield 'config that is not an object' => [
+            ['conditions' => [['type' => 'device', 'config' => 'nope']]] + self::validPayload(),
+            'A component "config" must be an object.',
+        ];
     }
 
     /**
      * @return array<string, mixed>
      */
-    private function validPayload(): array
+    private static function validPayload(): array
     {
         return [
             'label' => 'Tag commutes',
@@ -156,9 +156,9 @@ class AddAutomationRuleTest extends TestCase
     /**
      * @return array<string, mixed>
      */
-    private function validPayloadWithout(string $key): array
+    private static function validPayloadWithout(string $key): array
     {
-        $payload = $this->validPayload();
+        $payload = self::validPayload();
         unset($payload[$key]);
 
         return $payload;

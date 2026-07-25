@@ -9,6 +9,7 @@ use App\Domain\Gear\Maintenance\Log\AddGearMaintenanceLog\AddGearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class AddGearMaintenanceLogTest extends TestCase
@@ -26,57 +27,64 @@ class AddGearMaintenanceLogTest extends TestCase
         $this->assertEquals(SerializableDateTime::fromString('2025-01-01 00:00:00'), $command->getPerformedOn());
     }
 
-    public function testFromPayloadThrowsWhenGearIdMissing(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidPayloads')]
+    public function testFromPayloadThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "gearId", "maintenanceTaskId" and "performedOn" are required.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        AddGearMaintenanceLog::fromPayload([
-            'maintenanceTaskId' => 'chain-lubed',
-            'performedOn' => '2025-01-01 00:00:00',
-        ]);
+        AddGearMaintenanceLog::fromPayload($payload);
     }
 
-    public function testFromPayloadThrowsWhenGearIdNotAString(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidPayloads(): iterable
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "gearId", "maintenanceTaskId" and "performedOn" are required.'));
+        yield 'gearId is missing' => [
+            [
+                'maintenanceTaskId' => 'chain-lubed',
+                'performedOn' => '2025-01-01 00:00:00',
+            ],
+            'A "gearId", "maintenanceTaskId" and "performedOn" are required.',
+        ];
 
-        AddGearMaintenanceLog::fromPayload([
-            'gearId' => ['b1'],
-            'maintenanceTaskId' => 'chain-lubed',
-            'performedOn' => '2025-01-01 00:00:00',
-        ]);
-    }
+        yield 'gearId is not a string' => [
+            [
+                'gearId' => ['b1'],
+                'maintenanceTaskId' => 'chain-lubed',
+                'performedOn' => '2025-01-01 00:00:00',
+            ],
+            'A "gearId", "maintenanceTaskId" and "performedOn" are required.',
+        ];
 
-    public function testFromPayloadThrowsWhenGearIdEmpty(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The "gearId" and "maintenanceTaskId" cannot be empty.'));
+        yield 'gearId is empty' => [
+            [
+                'gearId' => '   ',
+                'maintenanceTaskId' => 'chain-lubed',
+                'performedOn' => '2025-01-01 00:00:00',
+            ],
+            'The "gearId" and "maintenanceTaskId" cannot be empty.',
+        ];
 
-        AddGearMaintenanceLog::fromPayload([
-            'gearId' => '   ',
-            'maintenanceTaskId' => 'chain-lubed',
-            'performedOn' => '2025-01-01 00:00:00',
-        ]);
-    }
+        yield 'maintenanceTaskId is empty' => [
+            [
+                'gearId' => 'b1',
+                'maintenanceTaskId' => '   ',
+                'performedOn' => '2025-01-01 00:00:00',
+            ],
+            'The "gearId" and "maintenanceTaskId" cannot be empty.',
+        ];
 
-    public function testFromPayloadThrowsWhenMaintenanceTaskIdEmpty(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The "gearId" and "maintenanceTaskId" cannot be empty.'));
-
-        AddGearMaintenanceLog::fromPayload([
-            'gearId' => 'b1',
-            'maintenanceTaskId' => '   ',
-            'performedOn' => '2025-01-01 00:00:00',
-        ]);
-    }
-
-    public function testFromPayloadThrowsOnInvalidPerformedOn(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The "performedOn" is not a valid date.'));
-
-        AddGearMaintenanceLog::fromPayload([
-            'gearId' => 'b1',
-            'maintenanceTaskId' => 'chain-lubed',
-            'performedOn' => 'not-a-date',
-        ]);
+        yield 'performedOn is not a valid date' => [
+            [
+                'gearId' => 'b1',
+                'maintenanceTaskId' => 'chain-lubed',
+                'performedOn' => 'not-a-date',
+            ],
+            'The "performedOn" is not a valid date.',
+        ];
     }
 }

@@ -12,6 +12,7 @@ use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTasks;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\ValueObject\String\Name;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ParsesGearMaintenanceComponentPayloadTest extends TestCase
@@ -26,25 +27,36 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
         );
     }
 
-    public function testParseLabelThrowsWhenMissing(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidLabelPayloads')]
+    public function testParseLabelThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A non-empty "label" is required.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        $this->parser->doParseLabel([]);
+        $this->parser->doParseLabel($payload);
     }
 
-    public function testParseLabelThrowsWhenNotAString(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidLabelPayloads(): iterable
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A non-empty "label" is required.'));
+        yield 'label is missing' => [
+            [],
+            'A non-empty "label" is required.',
+        ];
 
-        $this->parser->doParseLabel(['label' => ['nope']]);
-    }
+        yield 'label is not a string' => [
+            ['label' => ['nope']],
+            'A non-empty "label" is required.',
+        ];
 
-    public function testParseLabelThrowsWhenEmpty(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A non-empty "label" is required.'));
-
-        $this->parser->doParseLabel(['label' => '   ']);
+        yield 'label is empty' => [
+            ['label' => '   '],
+            'A non-empty "label" is required.',
+        ];
     }
 
     public function testParseAttachedTo(): void
@@ -55,32 +67,41 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
         );
     }
 
-    public function testParseAttachedToThrowsWhenMissing(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidAttachedToPayloads')]
+    public function testParseAttachedToThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('An "attachedTo" array is required.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        $this->parser->doParseAttachedTo([]);
+        $this->parser->doParseAttachedTo($payload);
     }
 
-    public function testParseAttachedToThrowsWhenNotAnArray(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidAttachedToPayloads(): iterable
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('An "attachedTo" array is required.'));
+        yield 'attachedTo is missing' => [
+            [],
+            'An "attachedTo" array is required.',
+        ];
 
-        $this->parser->doParseAttachedTo(['attachedTo' => 'b1']);
-    }
+        yield 'attachedTo is not an array' => [
+            ['attachedTo' => 'b1'],
+            'An "attachedTo" array is required.',
+        ];
 
-    public function testParseAttachedToThrowsWhenEntryNotAString(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Each "attachedTo" entry must be a non-empty string.'));
+        yield 'attachedTo entry is not a string' => [
+            ['attachedTo' => [123]],
+            'Each "attachedTo" entry must be a non-empty string.',
+        ];
 
-        $this->parser->doParseAttachedTo(['attachedTo' => [123]]);
-    }
-
-    public function testParseAttachedToThrowsWhenEntryEmpty(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Each "attachedTo" entry must be a non-empty string.'));
-
-        $this->parser->doParseAttachedTo(['attachedTo' => ['  ']]);
+        yield 'attachedTo entry is empty' => [
+            ['attachedTo' => ['  ']],
+            'Each "attachedTo" entry must be a non-empty string.',
+        ];
     }
 
     public function testParseMaintenanceTasksGeneratingMissingIds(): void
@@ -113,92 +134,100 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
         );
     }
 
-    public function testParseMaintenanceTasksThrowsWhenMissing(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidMaintenanceTaskPayloads')]
+    public function testParseMaintenanceTasksThrowsOnInvalidPayload(array $payload, bool $generateMissingIds, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('At least one maintenance task is required.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        $this->parser->doParseMaintenanceTasks([], generateMissingIds: true);
+        $this->parser->doParseMaintenanceTasks($payload, generateMissingIds: $generateMissingIds);
     }
 
-    public function testParseMaintenanceTasksThrowsWhenEmpty(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, bool, string}>
+     */
+    public static function provideInvalidMaintenanceTaskPayloads(): iterable
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('At least one maintenance task is required.'));
+        yield 'maintenanceTasks is missing' => [
+            [],
+            true,
+            'At least one maintenance task is required.',
+        ];
 
-        $this->parser->doParseMaintenanceTasks(['maintenanceTasks' => []], generateMissingIds: true);
-    }
+        yield 'maintenanceTasks is empty' => [
+            ['maintenanceTasks' => []],
+            true,
+            'At least one maintenance task is required.',
+        ];
 
-    public function testParseMaintenanceTasksThrowsWhenTaskNotAnObject(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Each maintenance task must be an object.'));
+        yield 'task is not an object' => [
+            ['maintenanceTasks' => ['nope']],
+            true,
+            'Each maintenance task must be an object.',
+        ];
 
-        $this->parser->doParseMaintenanceTasks(['maintenanceTasks' => ['nope']], generateMissingIds: true);
-    }
-
-    public function testParseMaintenanceTasksThrowsOnMissingLabel(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A non-empty "label" is required for each maintenance task.'));
-
-        $this->parser->doParseMaintenanceTasks([
-            'maintenanceTasks' => [
-                ['interval' => ['value' => 500, 'unit' => 'km']],
+        yield 'task label is missing' => [
+            [
+                'maintenanceTasks' => [
+                    ['interval' => ['value' => 500, 'unit' => 'km']],
+                ],
             ],
-        ], generateMissingIds: true);
-    }
+            true,
+            'A non-empty "label" is required for each maintenance task.',
+        ];
 
-    public function testParseMaintenanceTasksThrowsOnMissingInterval(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Each maintenance task requires an "interval" with "value" and "unit".'));
-
-        $this->parser->doParseMaintenanceTasks([
-            'maintenanceTasks' => [
-                ['label' => 'Lube'],
+        yield 'task interval is missing' => [
+            [
+                'maintenanceTasks' => [
+                    ['label' => 'Lube'],
+                ],
             ],
-        ], generateMissingIds: true);
-    }
+            true,
+            'Each maintenance task requires an "interval" with "value" and "unit".',
+        ];
 
-    public function testParseMaintenanceTasksThrowsOnNonNumericIntervalValue(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Each maintenance task requires an "interval" with "value" and "unit".'));
-
-        $this->parser->doParseMaintenanceTasks([
-            'maintenanceTasks' => [
-                ['label' => 'Lube', 'interval' => ['value' => 'soon', 'unit' => 'km']],
+        yield 'task interval value is not numeric' => [
+            [
+                'maintenanceTasks' => [
+                    ['label' => 'Lube', 'interval' => ['value' => 'soon', 'unit' => 'km']],
+                ],
             ],
-        ], generateMissingIds: true);
-    }
+            true,
+            'Each maintenance task requires an "interval" with "value" and "unit".',
+        ];
 
-    public function testParseMaintenanceTasksThrowsOnInvalidIntervalUnit(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Invalid interval unit "lightyears".'));
-
-        $this->parser->doParseMaintenanceTasks([
-            'maintenanceTasks' => [
-                ['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'lightyears']],
+        yield 'task interval unit is invalid' => [
+            [
+                'maintenanceTasks' => [
+                    ['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'lightyears']],
+                ],
             ],
-        ], generateMissingIds: true);
-    }
+            true,
+            'Invalid interval unit "lightyears".',
+        ];
 
-    public function testParseMaintenanceTasksThrowsWhenIdRequiredButMissing(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('An "id" is required for each maintenance task.'));
-
-        $this->parser->doParseMaintenanceTasks([
-            'maintenanceTasks' => [
-                ['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+        yield 'task id is required but missing' => [
+            [
+                'maintenanceTasks' => [
+                    ['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                ],
             ],
-        ], generateMissingIds: false);
-    }
+            false,
+            'An "id" is required for each maintenance task.',
+        ];
 
-    public function testParseMaintenanceTasksThrowsOnDuplicateIds(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('Duplicate maintenance task ids found.'));
-
-        $this->parser->doParseMaintenanceTasks([
-            'maintenanceTasks' => [
-                ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
-                ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Replace', 'interval' => ['value' => 1000, 'unit' => 'km']],
+        yield 'task ids are duplicated' => [
+            [
+                'maintenanceTasks' => [
+                    ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                    ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Replace', 'interval' => ['value' => 1000, 'unit' => 'km']],
+                ],
             ],
-        ], generateMissingIds: false);
+            false,
+            'Duplicate maintenance task ids found.',
+        ];
     }
 
     #[\Override]

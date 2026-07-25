@@ -6,6 +6,7 @@ namespace App\Tests\Domain\Settings;
 
 use App\Domain\Athlete\InvalidHeartRateFormula;
 use App\Domain\Settings\AthleteSettingsPayload;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class AthleteSettingsPayloadTest extends TestCase
@@ -88,66 +89,71 @@ class AthleteSettingsPayloadTest extends TestCase
         );
     }
 
-    public function testItThrowsWhenTheFixedRestingHeartRateIsEmpty(): void
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidPayloads')]
+    public function testItThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
     {
-        $this->expectExceptionObject(new InvalidHeartRateFormula('The resting heart rate formula needs a heart rate greater than zero'));
+        $this->expectExceptionObject(new InvalidHeartRateFormula($expectedExceptionMessage));
 
-        AthleteSettingsPayload::normalize([
-            'restingHeartRateFormula' => 'fixed',
-            'restingHeartRateFormulaFixedValue' => '',
-        ]);
+        AthleteSettingsPayload::normalize($payload);
     }
 
-    public function testItThrowsWhenTheDateRangesAreNotAList(): void
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidPayloads(): iterable
     {
-        $this->expectExceptionObject(new InvalidHeartRateFormula('Invalid date ranges provided for the max heart rate formula'));
-
-        AthleteSettingsPayload::normalize([
-            'maxHeartRateFormula' => 'dateRangeBased',
-            'maxHeartRateFormulaRanges' => 'lol',
-        ]);
-    }
-
-    public function testItThrowsWhenADateRangeIsNotAnArray(): void
-    {
-        $this->expectExceptionObject(new InvalidHeartRateFormula('Invalid date ranges provided for the resting heart rate formula'));
-
-        AthleteSettingsPayload::normalize([
-            'restingHeartRateFormula' => 'dateRangeBased',
-            'restingHeartRateFormulaRanges' => ['lol'],
-        ]);
-    }
-
-    public function testItThrowsWhenADateRangeHasNoDate(): void
-    {
-        $this->expectExceptionObject(new InvalidHeartRateFormula('Every date range of the max heart rate formula needs a date'));
-
-        AthleteSettingsPayload::normalize([
-            'maxHeartRateFormula' => 'dateRangeBased',
-            'maxHeartRateFormulaRanges' => [['on' => '', 'bpm' => '180']],
-        ]);
-    }
-
-    public function testItThrowsWhenADateRangeHasNoHeartRate(): void
-    {
-        $this->expectExceptionObject(new InvalidHeartRateFormula('The max heart rate formula needs a heart rate greater than zero'));
-
-        AthleteSettingsPayload::normalize([
-            'maxHeartRateFormula' => 'dateRangeBased',
-            'maxHeartRateFormulaRanges' => [['on' => '2023-01-01', 'bpm' => '']],
-        ]);
-    }
-
-    public function testItThrowsWhenADateIsUsedTwice(): void
-    {
-        $this->expectExceptionObject(new InvalidHeartRateFormula('The resting heart rate formula cannot contain the same date more than once'));
-
-        AthleteSettingsPayload::normalize([
-            'restingHeartRateFormula' => 'dateRangeBased',
-            'restingHeartRateFormulaRanges' => [
-                ['on' => '2023-01-01', 'bpm' => '58'],
-                ['on' => '2023-01-01', 'bpm' => '60'],
+        yield 'fixed resting heart rate is empty' => [
+            [
+                'restingHeartRateFormula' => 'fixed',
+                'restingHeartRateFormulaFixedValue' => '',
             ],
-        ]);
+            'The resting heart rate formula needs a heart rate greater than zero',
+        ];
+
+        yield 'date ranges are not a list' => [
+            [
+                'maxHeartRateFormula' => 'dateRangeBased',
+                'maxHeartRateFormulaRanges' => 'lol',
+            ],
+            'Invalid date ranges provided for the max heart rate formula',
+        ];
+
+        yield 'a date range is not an array' => [
+            [
+                'restingHeartRateFormula' => 'dateRangeBased',
+                'restingHeartRateFormulaRanges' => ['lol'],
+            ],
+            'Invalid date ranges provided for the resting heart rate formula',
+        ];
+
+        yield 'a date range has no date' => [
+            [
+                'maxHeartRateFormula' => 'dateRangeBased',
+                'maxHeartRateFormulaRanges' => [['on' => '', 'bpm' => '180']],
+            ],
+            'Every date range of the max heart rate formula needs a date',
+        ];
+
+        yield 'a date range has no heart rate' => [
+            [
+                'maxHeartRateFormula' => 'dateRangeBased',
+                'maxHeartRateFormulaRanges' => [['on' => '2023-01-01', 'bpm' => '']],
+            ],
+            'The max heart rate formula needs a heart rate greater than zero',
+        ];
+
+        yield 'a date is used twice' => [
+            [
+                'restingHeartRateFormula' => 'dateRangeBased',
+                'restingHeartRateFormulaRanges' => [
+                    ['on' => '2023-01-01', 'bpm' => '58'],
+                    ['on' => '2023-01-01', 'bpm' => '60'],
+                ],
+            ],
+            'The resting heart rate formula cannot contain the same date more than once',
+        ];
     }
 }
