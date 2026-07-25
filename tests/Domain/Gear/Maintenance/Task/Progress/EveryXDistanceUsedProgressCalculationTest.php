@@ -16,12 +16,14 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use Doctrine\DBAL\Connection;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class EveryXDistanceUsedProgressCalculationTest extends ContainerTestCase
 {
     private EveryXDistanceUsedProgressCalculation $calculation;
 
-    public function testCalculateForKilometers(): void
+    #[DataProvider('provideIntervalUnits')]
+    public function testCalculate(IntervalUnit $intervalUnit, MaintenanceTaskProgress $expectedProgress): void
     {
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
@@ -71,84 +73,25 @@ class EveryXDistanceUsedProgressCalculationTest extends ContainerTestCase
         ));
 
         $this->assertEquals(
-            MaintenanceTaskProgress::from(
-                25,
-                '250 km',
-            ),
+            $expectedProgress,
             $this->calculation->calculate(
                 ProgressCalculationContext::from(
                     gearIds: GearIds::fromArray([GearId::fromUnprefixed('test')]),
                     lastTaggedOn: SerializableDateTime::fromString('01-01-2025'),
-                    intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+                    intervalUnit: $intervalUnit,
                     intervalValue: 1000,
                 )
             )
         );
     }
 
-    public function testCalculateForMiles(): void
+    /**
+     * @return iterable<string, array{IntervalUnit, MaintenanceTaskProgress}>
+     */
+    public static function provideIntervalUnits(): iterable
     {
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('last-tagged'))
-                ->withStartDateTime(SerializableDateTime::fromString('2025-01-01 00:00:00'))
-                ->build(),
-            []
-        ));
-
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('include'))
-                ->withGearId(GearId::fromUnprefixed('test'))
-                ->withStartDateTime(SerializableDateTime::fromString('2025-01-01 01:00:00'))
-                ->withDistance(Kilometer::from(100))
-                ->build(),
-            []
-        ));
-
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('include-2'))
-                ->withGearId(GearId::fromUnprefixed('test'))
-                ->withStartDateTime(SerializableDateTime::fromString('2025-01-01 02:00:00'))
-                ->withDistance(Kilometer::from(150))
-                ->build(),
-            []
-        ));
-
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('1'))
-                ->withGearId(GearId::random())
-                ->withDistance(Kilometer::from(100))
-                ->build(),
-            []
-        ));
-
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('2'))
-                ->withGearId(GearId::fromUnprefixed('test'))
-                ->withStartDateTime(SerializableDateTime::fromString('2024-01-01 00:00:00'))
-                ->withDistance(Kilometer::from(100))
-                ->build(),
-            []
-        ));
-
-        $this->assertEquals(
-            MaintenanceTaskProgress::from(
-                16,
-                '155 mi',
-            ),
-            $this->calculation->calculate(
-                ProgressCalculationContext::from(
-                    gearIds: GearIds::fromArray([GearId::fromUnprefixed('test')]),
-                    lastTaggedOn: SerializableDateTime::fromString('01-01-2025'),
-                    intervalUnit: IntervalUnit::EVERY_X_MILES_USED,
-                    intervalValue: 1000,
-                )
-            )
-        );
+        yield 'kilometers' => [IntervalUnit::EVERY_X_KILOMETERS_USED, MaintenanceTaskProgress::from(25, '250 km')];
+        yield 'miles' => [IntervalUnit::EVERY_X_MILES_USED, MaintenanceTaskProgress::from(16, '155 mi')];
     }
 
     #[\Override]

@@ -4,82 +4,49 @@ namespace App\Tests\Domain\Activity\Split;
 
 use App\Domain\Activity\Split\ActivitySplits;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ActivitySplitsTest extends TestCase
 {
-    public function testGetOverallGapPaceCalculatesDistanceWeightedAverage(): void
+    /**
+     * @param list<array{int, ?int}> $splitSpecs List of [distanceInMeter, gapPaceInSecondsPerKm] pairs
+     */
+    #[DataProvider('provideSplits')]
+    public function testGetOverallGapPaceInSecondsPerKm(array $splitSpecs, ?float $expectedGapPace): void
     {
-        $splits = ActivitySplits::fromArray([
-            ActivitySplitBuilder::fromDefaults()
-                ->withDistanceInMeter(1000)
-                ->withGapPace(SecPerKm::from(300))
-                ->build(),
-            ActivitySplitBuilder::fromDefaults()
-                ->withSplitNumber(2)
-                ->withDistanceInMeter(1000)
-                ->withGapPace(SecPerKm::from(400))
-                ->build(),
-        ]);
+        $splits = [];
+        foreach ($splitSpecs as $index => [$distanceInMeter, $gapPace]) {
+            $builder = ActivitySplitBuilder::fromDefaults()
+                ->withSplitNumber($index + 1)
+                ->withDistanceInMeter($distanceInMeter);
+            if (null !== $gapPace) {
+                $builder = $builder->withGapPace(SecPerKm::from($gapPace));
+            }
+            $splits[] = $builder->build();
+        }
 
-        $overall = $splits->getOverallGapPaceInSecondsPerKm();
+        $overall = ActivitySplits::fromArray($splits)->getOverallGapPaceInSecondsPerKm();
+
+        if (null === $expectedGapPace) {
+            $this->assertNull($overall);
+
+            return;
+        }
 
         $this->assertNotNull($overall);
-        $this->assertEqualsWithDelta(350.0, $overall->toFloat(), 0.01);
+        $this->assertEqualsWithDelta($expectedGapPace, $overall->toFloat(), 0.01);
     }
 
-    public function testGetOverallGapPaceWithUnequalDistances(): void
+    /**
+     * @return iterable<string, array{list<array{int, ?int}>, ?float}>
+     */
+    public static function provideSplits(): iterable
     {
-        $splits = ActivitySplits::fromArray([
-            ActivitySplitBuilder::fromDefaults()
-                ->withDistanceInMeter(750)
-                ->withGapPace(SecPerKm::from(300))
-                ->build(),
-            ActivitySplitBuilder::fromDefaults()
-                ->withSplitNumber(2)
-                ->withDistanceInMeter(250)
-                ->withGapPace(SecPerKm::from(400))
-                ->build(),
-        ]);
-
-        $overall = $splits->getOverallGapPaceInSecondsPerKm();
-
-        $this->assertNotNull($overall);
-        $this->assertEqualsWithDelta(325.0, $overall->toFloat(), 0.01);
-    }
-
-    public function testGetOverallGapPaceSkipsSplitsWithoutGap(): void
-    {
-        $splits = ActivitySplits::fromArray([
-            ActivitySplitBuilder::fromDefaults()
-                ->withDistanceInMeter(1000)
-                ->withGapPace(SecPerKm::from(300))
-                ->build(),
-            ActivitySplitBuilder::fromDefaults()
-                ->withSplitNumber(2)
-                ->withDistanceInMeter(1000)
-                ->build(),
-        ]);
-
-        $overall = $splits->getOverallGapPaceInSecondsPerKm();
-
-        $this->assertNotNull($overall);
-        $this->assertEqualsWithDelta(300.0, $overall->toFloat(), 0.01);
-    }
-
-    public function testGetOverallGapPaceReturnsNullWhenNoSplitsHaveGap(): void
-    {
-        $splits = ActivitySplits::fromArray([
-            ActivitySplitBuilder::fromDefaults()
-                ->withDistanceInMeter(1000)
-                ->build(),
-        ]);
-
-        $this->assertNull($splits->getOverallGapPaceInSecondsPerKm());
-    }
-
-    public function testGetOverallGapPaceReturnsNullForEmptyCollection(): void
-    {
-        $this->assertNull(ActivitySplits::empty()->getOverallGapPaceInSecondsPerKm());
+        yield 'equal distances calculate distance weighted average' => [[[1000, 300], [1000, 400]], 350.0];
+        yield 'unequal distances calculate distance weighted average' => [[[750, 300], [250, 400]], 325.0];
+        yield 'splits without gap are skipped' => [[[1000, 300], [1000, null]], 300.0];
+        yield 'no splits have gap' => [[[1000, null]], null];
+        yield 'empty collection' => [[], null];
     }
 }

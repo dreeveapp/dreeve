@@ -20,6 +20,7 @@ use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Split\ActivitySplitBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\SpyOutput;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CalculateGapTest extends ContainerTestCase
 {
@@ -1073,7 +1074,8 @@ class CalculateGapTest extends ContainerTestCase
         $this->assertNull($finalizedSplit->getGapPaceInSecondsPerKm());
     }
 
-    public function testResolveGapPaceFallsBackToActualPaceForInvalidCalculatedGap(): void
+    #[DataProvider('provideResolveGapPaceScenarios')]
+    public function testResolveGapPace(float $calculatedGapPace, float $mappedDistanceInMeter, ?float $expectedGapPace): void
     {
         $split = ActivitySplitBuilder::fromDefaults()
             ->withDistanceInMeter(1000.0)
@@ -1081,115 +1083,34 @@ class CalculateGapTest extends ContainerTestCase
             ->build();
 
         $method = new \ReflectionMethod($this->calculateGap, 'resolveGapPace');
-        $gapPace = $method->invoke($this->calculateGap, $split, INF, 1000.0);
+        $gapPace = $method->invoke($this->calculateGap, $split, $calculatedGapPace, $mappedDistanceInMeter);
 
         $this->assertInstanceOf(SecPerKm::class, $gapPace);
         $this->assertEqualsWithDelta(
-            $split->getPaceInSecPerKm()->toFloat(),
+            $expectedGapPace ?? $split->getPaceInSecPerKm()->toFloat(),
             $gapPace->toFloat(),
             0.01,
         );
     }
 
-    public function testResolveGapPaceFallsBackToActualPaceForNanCalculatedGap(): void
+    /**
+     * A null expected GAP pace means "the actual pace of the split", which is
+     * 250 sec/km (1000 meter at 4 m/s).
+     *
+     * @return iterable<string, array{float, float, ?float}>
+     */
+    public static function provideResolveGapPaceScenarios(): iterable
     {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'resolveGapPace');
-        $gapPace = $method->invoke($this->calculateGap, $split, NAN, 1000.0);
-
-        $this->assertInstanceOf(SecPerKm::class, $gapPace);
-        $this->assertEqualsWithDelta(
-            $split->getPaceInSecPerKm()->toFloat(),
-            $gapPace->toFloat(),
-            0.01,
-        );
-    }
-
-    public function testResolveGapPaceFallsBackToActualPaceForZeroMappedDistance(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'resolveGapPace');
-        $gapPace = $method->invoke($this->calculateGap, $split, 200.0, 0.0);
-
-        $this->assertInstanceOf(SecPerKm::class, $gapPace);
-        $this->assertEqualsWithDelta(
-            $split->getPaceInSecPerKm()->toFloat(),
-            $gapPace->toFloat(),
-            0.01,
-        );
-    }
-
-    public function testResolveGapPacePreservesCalculatedGapInsideBounds(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'resolveGapPace');
-        $gapPace = $method->invoke($this->calculateGap, $split, 240.0, 1000.0);
-
-        $this->assertInstanceOf(SecPerKm::class, $gapPace);
-        $this->assertEqualsWithDelta(240.0, $gapPace->toFloat(), 0.01);
-    }
-
-    public function testResolveGapPaceFallsBackToActualPaceForNonPositiveCalculatedGap(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'resolveGapPace');
-        $zeroGapPace = $method->invoke($this->calculateGap, $split, 0.0, 1000.0);
-        $negativeGapPace = $method->invoke($this->calculateGap, $split, -1.0, 1000.0);
-
-        $this->assertInstanceOf(SecPerKm::class, $zeroGapPace);
-        $this->assertInstanceOf(SecPerKm::class, $negativeGapPace);
-        $this->assertEqualsWithDelta($split->getPaceInSecPerKm()->toFloat(), $zeroGapPace->toFloat(), 0.01);
-        $this->assertEqualsWithDelta($split->getPaceInSecPerKm()->toFloat(), $negativeGapPace->toFloat(), 0.01);
-    }
-
-    public function testResolveGapPacePreservesExactClampBoundaries(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'resolveGapPace');
-        $lowerBoundaryGapPace = $method->invoke($this->calculateGap, $split, $split->getPaceInSecPerKm()->toFloat() * 0.5, 1000.0);
-        $upperBoundaryGapPace = $method->invoke($this->calculateGap, $split, $split->getPaceInSecPerKm()->toFloat() * 1.6, 1000.0);
-
-        $this->assertInstanceOf(SecPerKm::class, $lowerBoundaryGapPace);
-        $this->assertInstanceOf(SecPerKm::class, $upperBoundaryGapPace);
-        $this->assertEqualsWithDelta($split->getPaceInSecPerKm()->toFloat() * 0.5, $lowerBoundaryGapPace->toFloat(), 0.01);
-        $this->assertEqualsWithDelta($split->getPaceInSecPerKm()->toFloat() * 1.6, $upperBoundaryGapPace->toFloat(), 0.01);
-    }
-
-    public function testResolveGapPaceClampsValuesOutsideBounds(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'resolveGapPace');
-        $belowLowerBoundaryGapPace = $method->invoke($this->calculateGap, $split, $split->getPaceInSecPerKm()->toFloat() * 0.49, 1000.0);
-        $aboveUpperBoundaryGapPace = $method->invoke($this->calculateGap, $split, $split->getPaceInSecPerKm()->toFloat() * 1.61, 1000.0);
-
-        $this->assertInstanceOf(SecPerKm::class, $belowLowerBoundaryGapPace);
-        $this->assertInstanceOf(SecPerKm::class, $aboveUpperBoundaryGapPace);
-        $this->assertEqualsWithDelta($split->getPaceInSecPerKm()->toFloat() * 0.5, $belowLowerBoundaryGapPace->toFloat(), 0.01);
-        $this->assertEqualsWithDelta($split->getPaceInSecPerKm()->toFloat() * 1.6, $aboveUpperBoundaryGapPace->toFloat(), 0.01);
+        yield 'infinite calculated gap falls back to actual pace' => [INF, 1000.0, null];
+        yield 'NAN calculated gap falls back to actual pace' => [NAN, 1000.0, null];
+        yield 'zero mapped distance falls back to actual pace' => [200.0, 0.0, null];
+        yield 'zero calculated gap falls back to actual pace' => [0.0, 1000.0, null];
+        yield 'negative calculated gap falls back to actual pace' => [-1.0, 1000.0, null];
+        yield 'calculated gap inside clamp bounds is preserved' => [240.0, 1000.0, 240.0];
+        yield 'exact lower clamp boundary is preserved' => [250.0 * 0.5, 1000.0, 250.0 * 0.5];
+        yield 'exact upper clamp boundary is preserved' => [250.0 * 1.6, 1000.0, 250.0 * 1.6];
+        yield 'below lower boundary clamps to 50% of actual pace' => [250.0 * 0.49, 1000.0, 250.0 * 0.5];
+        yield 'above upper boundary clamps to 160% of actual pace' => [250.0 * 1.61, 1000.0, 250.0 * 1.6];
     }
 
     public function testFinalizeSplitGapLeavesIncompleteSplitUnchanged(): void

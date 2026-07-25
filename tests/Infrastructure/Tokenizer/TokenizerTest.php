@@ -7,18 +7,17 @@ namespace App\Tests\Infrastructure\Tokenizer;
 use App\Infrastructure\Tokenizer\TokenDefinition;
 use App\Infrastructure\Tokenizer\Tokenizer;
 use App\Infrastructure\Tokenizer\TokenizerContext;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class TokenizerTest extends TestCase
 {
     private Tokenizer $tokenizer;
 
-    public function testReplace(): void
+    #[DataProvider('provideReplaceExpectations')]
+    public function testReplace(string $input, string $expectedResult): void
     {
-        $this->assertSame(
-            'Morning Ride was a good one',
-            $this->tokenizer->replace('[activity:name] was a good one', TokenizerContext::empty())
-        );
+        $this->assertSame($expectedResult, $this->tokenizer->replace($input, TokenizerContext::empty()));
     }
 
     public function testReplaceMultipleTokensInOneString(): void
@@ -32,45 +31,6 @@ class TokenizerTest extends TestCase
         );
     }
 
-    public function testReplacePassesModifierIncludingColons(): void
-    {
-        $this->assertSame(
-            'started at H:i',
-            $this->tokenizer->replace('started at [activity:start-date:H:i]', TokenizerContext::empty())
-        );
-    }
-
-    public function testReplaceLeavesUnknownKeyVerbatim(): void
-    {
-        $this->assertSame(
-            'test [activity:pizza]',
-            $this->tokenizer->replace('test [activity:pizza]', TokenizerContext::empty())
-        );
-    }
-
-    public function testReplaceLeavesUnresolvableTokenVerbatim(): void
-    {
-        $this->assertSame(
-            'Ridden with [gear:name]',
-            $this->tokenizer->replace('Ridden with [gear:name]', TokenizerContext::empty())
-        );
-    }
-
-    public function testReplaceLeavesModifierOnNonModifierTokenVerbatim(): void
-    {
-        $this->assertSame(
-            '[activity:name:foo]',
-            $this->tokenizer->replace('[activity:name:foo]', TokenizerContext::empty())
-        );
-    }
-
-    public function testReplaceIgnoresUnknownPrefixesAndNonTokenShapedText(): void
-    {
-        $text = '[foo:bar] [5x400m] [note: hello] []';
-
-        $this->assertSame($text, $this->tokenizer->replace($text, TokenizerContext::empty()));
-    }
-
     public function testReplaceWithoutProviders(): void
     {
         $tokenizer = new Tokenizer([]);
@@ -81,20 +41,13 @@ class TokenizerTest extends TestCase
         );
     }
 
-    public function testFindInvalidTokens(): void
+    /**
+     * @param list<string> $expectedResult
+     */
+    #[DataProvider('provideFindInvalidTokensExpectations')]
+    public function testFindInvalidTokens(string $input, array $expectedResult): void
     {
-        $this->assertSame(
-            ['[activity:pizza]', '[activity:name:foo]', '[gear:name:d-m-Y]'],
-            $this->tokenizer->findInvalidTokens('[activity:pizza] [activity:name:foo] [gear:name:d-m-Y]')
-        );
-    }
-
-    public function testFindInvalidTokensReturnsEmptyForValidText(): void
-    {
-        $this->assertSame(
-            [],
-            $this->tokenizer->findInvalidTokens('[activity:name] [activity:start-date:whatever H:i] [gear:name] [foo:bar] [5x400m] [note: hello] []')
-        );
+        $this->assertSame($expectedResult, $this->tokenizer->findInvalidTokens($input));
     }
 
     public function testFindInvalidTokensWithoutProviders(): void
@@ -128,6 +81,28 @@ class TokenizerTest extends TestCase
         $context->with(GearStub::withName('Canyon'));
 
         $this->assertNull($context->get(GearStub::class));
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideReplaceExpectations(): iterable
+    {
+        yield 'replaces resolvable token' => ['[activity:name] was a good one', 'Morning Ride was a good one'];
+        yield 'passes modifier including colons' => ['started at [activity:start-date:H:i]', 'started at H:i'];
+        yield 'leaves unknown key verbatim' => ['test [activity:pizza]', 'test [activity:pizza]'];
+        yield 'leaves unresolvable token verbatim' => ['Ridden with [gear:name]', 'Ridden with [gear:name]'];
+        yield 'leaves modifier on non-modifier token verbatim' => ['[activity:name:foo]', '[activity:name:foo]'];
+        yield 'ignores unknown prefixes and non-token-shaped text' => ['[foo:bar] [5x400m] [note: hello] []', '[foo:bar] [5x400m] [note: hello] []'];
+    }
+
+    /**
+     * @return iterable<string, array{string, list<string>}>
+     */
+    public static function provideFindInvalidTokensExpectations(): iterable
+    {
+        yield 'invalid tokens' => ['[activity:pizza] [activity:name:foo] [gear:name:d-m-Y]', ['[activity:pizza]', '[activity:name:foo]', '[gear:name:d-m-Y]']];
+        yield 'returns empty for valid text' => ['[activity:name] [activity:start-date:whatever H:i] [gear:name] [foo:bar] [5x400m] [note: hello] []', []];
     }
 
     #[\Override]

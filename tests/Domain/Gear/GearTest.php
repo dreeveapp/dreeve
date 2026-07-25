@@ -7,25 +7,23 @@ use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use Money\Money;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class GearTest extends TestCase
 {
-    public function testGetMovingTimeFormatted(): void
+    #[DataProvider('provideMovingTimeFormatted')]
+    public function testGetMovingTimeFormatted(?Meter $distanceInMeter, ?Seconds $movingTime, string $expectedResult): void
     {
-        $gear = GearBuilder::fromDefaults()
-            ->withDistanceInMeter(Meter::from(10000))
-            ->withMovingTime(Seconds::from(3661))
-            ->build();
+        $builder = GearBuilder::fromDefaults();
+        if (null !== $distanceInMeter) {
+            $builder = $builder->withDistanceInMeter($distanceInMeter);
+        }
+        if (null !== $movingTime) {
+            $builder = $builder->withMovingTime($movingTime);
+        }
 
-        $this->assertEquals('1h 1m', $gear->getMovingTimeFormatted());
-    }
-
-    public function testGetMovingTimeFormattedWithZero(): void
-    {
-        $gear = GearBuilder::fromDefaults()->build();
-
-        $this->assertEquals('0m', $gear->getMovingTimeFormatted());
+        $this->assertEquals($expectedResult, $builder->build()->getMovingTimeFormatted());
     }
 
     public function testGetMovingTimeInHours(): void
@@ -37,97 +35,108 @@ class GearTest extends TestCase
         $this->assertEquals(2.0, $gear->getMovingTimeInHours()->toFloat());
     }
 
-    public function testGetAverageDistance(): void
+    #[DataProvider('provideAverageDistance')]
+    public function testGetAverageDistance(Meter $distanceInMeter, ?int $numberOfActivities, Kilometer $expectedResult): void
     {
-        $gear = GearBuilder::fromDefaults()
-            ->withDistanceInMeter(Meter::from(30000))
-            ->withNumberOfActivities(3)
-            ->build();
+        $builder = GearBuilder::fromDefaults()->withDistanceInMeter($distanceInMeter);
+        if (null !== $numberOfActivities) {
+            $builder = $builder->withNumberOfActivities($numberOfActivities);
+        }
 
-        $this->assertEquals(Kilometer::from(10), $gear->getAverageDistance());
+        $this->assertEquals($expectedResult, $builder->build()->getAverageDistance());
     }
 
-    public function testGetAverageDistanceWithZeroActivities(): void
+    #[DataProvider('provideAverageSpeed')]
+    public function testGetAverageSpeed(Meter $distanceInMeter, ?Seconds $movingTime, KmPerHour $expectedResult): void
     {
-        $gear = GearBuilder::fromDefaults()
-            ->withDistanceInMeter(Meter::from(30000))
-            ->build();
+        $builder = GearBuilder::fromDefaults()->withDistanceInMeter($distanceInMeter);
+        if (null !== $movingTime) {
+            $builder = $builder->withMovingTime($movingTime);
+        }
 
-        $this->assertEquals(Kilometer::zero(), $gear->getAverageDistance());
+        $this->assertEquals($expectedResult, $builder->build()->getAverageSpeed());
     }
 
-    public function testGetAverageSpeed(): void
+    #[DataProvider('provideRelativeCostPerHour')]
+    public function testGetRelativeCostPerHour(?Seconds $movingTime, ?Money $purchasePrice, ?Money $expectedResult): void
     {
-        $gear = GearBuilder::fromDefaults()
-            ->withDistanceInMeter(Meter::from(10000))
-            ->withMovingTime(Seconds::from(3600))
-            ->build();
+        $builder = GearBuilder::fromDefaults()->withPurchasePrice($purchasePrice);
+        if (null !== $movingTime) {
+            $builder = $builder->withMovingTime($movingTime);
+        }
+        $gear = $builder->build();
 
-        $this->assertEquals(KmPerHour::from(10), $gear->getAverageSpeed());
+        if (null === $expectedResult) {
+            $this->assertNull($gear->getRelativeCostPerHour());
+
+            return;
+        }
+
+        $this->assertEquals($expectedResult, $gear->getRelativeCostPerHour());
     }
 
-    public function testGetAverageSpeedWithZeroMovingTime(): void
+    #[DataProvider('provideRelativeCostPerWorkout')]
+    public function testGetRelativeCostPerWorkout(?int $numberOfActivities, ?Money $purchasePrice, ?Money $expectedResult): void
     {
-        $gear = GearBuilder::fromDefaults()
-            ->withDistanceInMeter(Meter::from(10000))
-            ->build();
+        $builder = GearBuilder::fromDefaults()->withPurchasePrice($purchasePrice);
+        if (null !== $numberOfActivities) {
+            $builder = $builder->withNumberOfActivities($numberOfActivities);
+        }
+        $gear = $builder->build();
 
-        $this->assertEquals(KmPerHour::zero(), $gear->getAverageSpeed());
+        if (null === $expectedResult) {
+            $this->assertNull($gear->getRelativeCostPerWorkout());
+
+            return;
+        }
+
+        $this->assertEquals($expectedResult, $gear->getRelativeCostPerWorkout());
     }
 
-    public function testGetRelativeCostPerHour(): void
+    /**
+     * @return iterable<string, array{?Meter, ?Seconds, string}>
+     */
+    public static function provideMovingTimeFormatted(): iterable
     {
-        $gear = GearBuilder::fromDefaults()
-            ->withMovingTime(Seconds::from(7200))
-            ->withPurchasePrice(Money::EUR(10000))
-            ->build();
-
-        $this->assertEquals(Money::EUR(5000), $gear->getRelativeCostPerHour());
+        yield 'with moving time' => [Meter::from(10000), Seconds::from(3661), '1h 1m'];
+        yield 'with zero moving time' => [null, null, '0m'];
     }
 
-    public function testGetRelativeCostPerHourWithZeroMovingTime(): void
+    /**
+     * @return iterable<string, array{Meter, ?int, Kilometer}>
+     */
+    public static function provideAverageDistance(): iterable
     {
-        $gear = GearBuilder::fromDefaults()
-            ->withPurchasePrice(Money::EUR(10000))
-            ->build();
-
-        $this->assertEquals(Money::EUR(10000), $gear->getRelativeCostPerHour());
+        yield 'with activities' => [Meter::from(30000), 3, Kilometer::from(10)];
+        yield 'with zero activities' => [Meter::from(30000), null, Kilometer::zero()];
     }
 
-    public function testGetRelativeCostPerHourWithoutPurchasePrice(): void
+    /**
+     * @return iterable<string, array{Meter, ?Seconds, KmPerHour}>
+     */
+    public static function provideAverageSpeed(): iterable
     {
-        $gear = GearBuilder::fromDefaults()
-            ->withMovingTime(Seconds::from(7200))
-            ->build();
-
-        $this->assertNull($gear->getRelativeCostPerHour());
+        yield 'with moving time' => [Meter::from(10000), Seconds::from(3600), KmPerHour::from(10)];
+        yield 'with zero moving time' => [Meter::from(10000), null, KmPerHour::zero()];
     }
 
-    public function testGetRelativeCostPerWorkout(): void
+    /**
+     * @return iterable<string, array{?Seconds, ?Money, ?Money}>
+     */
+    public static function provideRelativeCostPerHour(): iterable
     {
-        $gear = GearBuilder::fromDefaults()
-            ->withNumberOfActivities(5)
-            ->withPurchasePrice(Money::EUR(10000))
-            ->build();
-
-        $this->assertEquals(Money::EUR(2000), $gear->getRelativeCostPerWorkout());
+        yield 'with moving time' => [Seconds::from(7200), Money::EUR(10000), Money::EUR(5000)];
+        yield 'with zero moving time' => [null, Money::EUR(10000), Money::EUR(10000)];
+        yield 'without purchase price' => [Seconds::from(7200), null, null];
     }
 
-    public function testGetRelativeCostPerWorkoutWithZeroActivities(): void
+    /**
+     * @return iterable<string, array{?int, ?Money, ?Money}>
+     */
+    public static function provideRelativeCostPerWorkout(): iterable
     {
-        $gear = GearBuilder::fromDefaults()
-            ->withPurchasePrice(Money::EUR(10000))
-            ->build();
-
-        $this->assertEquals(Money::EUR(10000), $gear->getRelativeCostPerWorkout());
-    }
-
-    public function testGetRelativeCostPerWorkoutWithoutPurchasePrice(): void
-    {
-        $gear = GearBuilder::fromDefaults()
-            ->withNumberOfActivities(5)
-            ->build();
-
-        $this->assertNull($gear->getRelativeCostPerWorkout());
+        yield 'with activities' => [5, Money::EUR(10000), Money::EUR(2000)];
+        yield 'with zero activities' => [null, Money::EUR(10000), Money::EUR(10000)];
+        yield 'without purchase price' => [5, null, null];
     }
 }

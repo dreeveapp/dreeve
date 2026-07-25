@@ -8,68 +8,38 @@ use PHPUnit\Framework\TestCase;
 
 class AdminAllowedIpAddressesTest extends TestCase
 {
-    public function testContainsListedIpAddress(): void
+    #[DataProvider('provideContainsExpectations')]
+    public function testContains(string $string, ?string $ipAddress, bool $expectedResult): void
     {
-        $allowed = AdminAllowedIpAddresses::fromString('192.168.1.1,10.0.0.1');
-
-        $this->assertTrue($allowed->contains('192.168.1.1'));
-        $this->assertTrue($allowed->contains('10.0.0.1'));
-        $this->assertFalse($allowed->contains('10.0.0.2'));
-        $this->assertFalse(AdminAllowedIpAddresses::fromString('192.168.1.1')->contains(null));
+        $this->assertSame($expectedResult, AdminAllowedIpAddresses::fromString($string)->contains($ipAddress));
     }
 
-    public function testTrimsWhitespaceAroundEntries(): void
+    public static function provideContainsExpectations(): iterable
     {
-        $allowed = AdminAllowedIpAddresses::fromString('  192.168.1.1 ,  10.0.0.1  ');
-
-        $this->assertTrue($allowed->contains('192.168.1.1'));
-        $this->assertTrue($allowed->contains('10.0.0.1'));
+        yield 'contains first listed ip address' => ['192.168.1.1,10.0.0.1', '192.168.1.1', true];
+        yield 'contains second listed ip address' => ['192.168.1.1,10.0.0.1', '10.0.0.1', true];
+        yield 'does not contain unlisted ip address' => ['192.168.1.1,10.0.0.1', '10.0.0.2', false];
+        yield 'does not contain null ip address' => ['192.168.1.1', null, false];
+        yield 'trims whitespace around entries, first entry' => ['  192.168.1.1 ,  10.0.0.1  ', '192.168.1.1', true];
+        yield 'trims whitespace around entries, second entry' => ['  192.168.1.1 ,  10.0.0.1  ', '10.0.0.1', true];
+        yield 'filters out empty entries, first entry' => ['192.168.1.1,,, ,10.0.0.1,', '192.168.1.1', true];
+        yield 'filters out empty entries, second entry' => ['192.168.1.1,,, ,10.0.0.1,', '10.0.0.1', true];
+        yield 'supports ipv6, exact match' => ['2001:db8::1', '2001:db8::1', true];
+        yield 'supports ipv6, different address' => ['2001:db8::1', '2001:db8::2', false];
+        yield 'ipv6 cidr range, laptop on the same /64' => ['2a02:a03f:e02e:c301::/64', '2a02:a03f:e02e:c301:d94e:9dce:b47e:2a47', true];
+        yield 'ipv6 cidr range, phone on the same /64' => ['2a02:a03f:e02e:c301::/64', '2a02:a03f:e02e:c301:1111:2222:3333:4444', true];
+        yield 'ipv6 cidr range, a different /64 prefix is not trusted' => ['2a02:a03f:e02e:c301::/64', '2a02:a03f:e02e:c302:d94e:9dce:b47e:2a47', false];
+        yield 'ipv4 cidr range, first address in range' => ['192.168.1.0/24', '192.168.1.1', true];
+        yield 'ipv4 cidr range, last address in range' => ['192.168.1.0/24', '192.168.1.254', true];
+        yield 'ipv4 cidr range, address outside range' => ['192.168.1.0/24', '192.168.2.1', false];
+        yield 'mixed plain and cidr, plain address' => ['10.0.0.5, 192.168.1.0/24', '10.0.0.5', true];
+        yield 'mixed plain and cidr, address within range' => ['10.0.0.5, 192.168.1.0/24', '192.168.1.42', true];
+        yield 'mixed plain and cidr, unlisted address' => ['10.0.0.5, 192.168.1.0/24', '10.0.0.6', false];
     }
 
     public function testFiltersOutEmptyEntries(): void
     {
-        $allowed = AdminAllowedIpAddresses::fromString('192.168.1.1,,, ,10.0.0.1,');
-
-        $this->assertFalse($allowed->isEmpty());
-        $this->assertTrue($allowed->contains('192.168.1.1'));
-        $this->assertTrue($allowed->contains('10.0.0.1'));
-    }
-
-    public function testSupportsIpv6(): void
-    {
-        $allowed = AdminAllowedIpAddresses::fromString('2001:db8::1');
-
-        $this->assertTrue($allowed->contains('2001:db8::1'));
-        $this->assertFalse($allowed->contains('2001:db8::2'));
-    }
-
-    public function testMatchesIpv6AddressesWithinACidrRange(): void
-    {
-        $allowed = AdminAllowedIpAddresses::fromString('2a02:a03f:e02e:c301::/64');
-
-        // Different devices on the same /64 (e.g. laptop and phone on the same home network).
-        $this->assertTrue($allowed->contains('2a02:a03f:e02e:c301:d94e:9dce:b47e:2a47'));
-        $this->assertTrue($allowed->contains('2a02:a03f:e02e:c301:1111:2222:3333:4444'));
-        // A different /64 prefix is not trusted.ip d
-        $this->assertFalse($allowed->contains('2a02:a03f:e02e:c302:d94e:9dce:b47e:2a47'));
-    }
-
-    public function testMatchesIpv4AddressesWithinACidrRange(): void
-    {
-        $allowed = AdminAllowedIpAddresses::fromString('192.168.1.0/24');
-
-        $this->assertTrue($allowed->contains('192.168.1.1'));
-        $this->assertTrue($allowed->contains('192.168.1.254'));
-        $this->assertFalse($allowed->contains('192.168.2.1'));
-    }
-
-    public function testMixesPlainAddressesAndCidrRanges(): void
-    {
-        $allowed = AdminAllowedIpAddresses::fromString('10.0.0.5, 192.168.1.0/24');
-
-        $this->assertTrue($allowed->contains('10.0.0.5'));
-        $this->assertTrue($allowed->contains('192.168.1.42'));
-        $this->assertFalse($allowed->contains('10.0.0.6'));
+        $this->assertFalse(AdminAllowedIpAddresses::fromString('192.168.1.1,,, ,10.0.0.1,')->isEmpty());
     }
 
     public function testIsNotEmptyWhenPopulated(): void

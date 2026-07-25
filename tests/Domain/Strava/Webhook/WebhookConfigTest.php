@@ -5,6 +5,7 @@ namespace App\Tests\Domain\Strava\Webhook;
 use App\Domain\Strava\Webhook\InvalidWebhookConfig;
 use App\Domain\Strava\Webhook\WebhookConfig;
 use Cron\CronExpression;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class WebhookConfigTest extends TestCase
@@ -45,33 +46,16 @@ class WebhookConfigTest extends TestCase
         ]);
     }
 
-    public function testItShouldThrowWhenCheckIntervalIsNotAnInteger(): void
+    #[TestWith(data: ['lol'], name: 'not an integer')]
+    #[TestWith(data: [0], name: 'lower than one')]
+    #[TestWith(data: [61], name: 'higher than sixty')]
+    public function testItShouldThrowWhenCheckIntervalIsInvalid(string|int $checkIntervalInMinutes): void
     {
         $this->expectExceptionObject(new InvalidWebhookConfig('"checkIntervalInMinutes" property must be valid integer between 1 and 60.'));
         WebhookConfig::fromArray([
             'enabled' => true,
             'verifyToken' => 'secret-token',
-            'checkIntervalInMinutes' => 'lol',
-        ]);
-    }
-
-    public function testItShouldThrowWhenCheckIntervalIsLowerThanOne(): void
-    {
-        $this->expectExceptionObject(new InvalidWebhookConfig('"checkIntervalInMinutes" property must be valid integer between 1 and 60.'));
-        WebhookConfig::fromArray([
-            'enabled' => true,
-            'verifyToken' => 'secret-token',
-            'checkIntervalInMinutes' => 0,
-        ]);
-    }
-
-    public function testItShouldThrowWhenCheckIntervalIsHigherThanSixty(): void
-    {
-        $this->expectExceptionObject(new InvalidWebhookConfig('"checkIntervalInMinutes" property must be valid integer between 1 and 60.'));
-        WebhookConfig::fromArray([
-            'enabled' => true,
-            'verifyToken' => 'secret-token',
-            'checkIntervalInMinutes' => 61,
+            'checkIntervalInMinutes' => $checkIntervalInMinutes,
         ]);
     }
 }
