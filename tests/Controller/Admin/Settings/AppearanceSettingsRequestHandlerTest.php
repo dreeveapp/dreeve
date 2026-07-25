@@ -13,28 +13,22 @@ class AppearanceSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseRedirects('/admin/login');
     }
 
-    public function testItRendersTheAppearanceSettingsForm(): void
+    public function testItRendersTheAppearanceSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/settings/appearance');
 
         $this->assertResponseIsSuccessful();
+
+        // The appearance settings form.
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"]'));
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="appearance"]'));
         $this->assertCount(1, $crawler->filter('select[name="data[unitSystem]"]'));
         $this->assertCount(1, $crawler->filter('select[name="data[locale]"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[dateFormat][short]"]'));
-    }
 
-    public function testItRendersTheSettingsNavigationWithAppearanceActive(): void
-    {
-        $this->client->loginUser($this->adminUser());
-
-        $crawler = $this->client->request('GET', '/admin/settings/appearance');
-
-        $this->assertResponseIsSuccessful();
-
+        // The settings navigation, with "Appearance" active.
         $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');
         $this->assertCount(1, $settingsPanel);
         $selectedLink = $settingsPanel->filter('a[aria-selected="true"]');

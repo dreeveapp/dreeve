@@ -13,28 +13,22 @@ class IntegrationsSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseRedirects('/admin/login');
     }
 
-    public function testItRendersTheIntegrationsSettingsForm(): void
+    public function testItRendersTheIntegrationsSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/settings/integrations');
 
         $this->assertResponseIsSuccessful();
+
+        // The integrations settings form.
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"]'));
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="integrations"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[ai][enabled]"]'));
         $this->assertCount(1, $crawler->filter('template[data-repeater-template] input[name="data[ai][agent][commands][__index__][command]"]'));
         $this->assertCount(1, $crawler->filter('template[data-repeater-template] input[name="data[notifications][services][]"]'));
-    }
 
-    public function testItRendersTheSettingsNavigationWithIntegrationsActive(): void
-    {
-        $this->client->loginUser($this->adminUser());
-
-        $crawler = $this->client->request('GET', '/admin/settings/integrations');
-
-        $this->assertResponseIsSuccessful();
-
+        // The settings navigation, with "Integrations" active.
         $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');
         $this->assertCount(1, $settingsPanel);
         $selectedLink = $settingsPanel->filter('a[aria-selected="true"]');

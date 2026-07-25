@@ -14,27 +14,21 @@ class ImportSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseRedirects('/admin/login');
     }
 
-    public function testItRendersTheImportSettingsForm(): void
+    public function testItRendersTheImportSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/settings/import');
 
         $this->assertResponseIsSuccessful();
+
+        // The import settings form.
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"]'));
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="import"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[numberOfNewActivitiesToProcessPerImport]"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[webhooks][verifyToken]"]'));
-    }
 
-    public function testItRendersTheSettingsNavigationWithImportActive(): void
-    {
-        $this->client->loginUser($this->adminUser());
-
-        $crawler = $this->client->request('GET', '/admin/settings/import');
-
-        $this->assertResponseIsSuccessful();
-
+        // The settings navigation, with "Strava import" active.
         $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');
         $this->assertCount(1, $settingsPanel);
         $selectedLink = $settingsPanel->filter('a[aria-selected="true"]');

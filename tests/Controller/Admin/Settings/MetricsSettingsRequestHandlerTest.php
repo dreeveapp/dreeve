@@ -14,27 +14,21 @@ class MetricsSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseRedirects('/admin/login');
     }
 
-    public function testItRendersTheMetricsSettingsForm(): void
+    public function testItRendersTheMetricsSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/settings/metrics');
 
         $this->assertResponseIsSuccessful();
+
+        // The metrics settings form.
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"]'));
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="metrics"]'));
         $this->assertCount(1, $crawler->filter('template[data-repeater-template] input[name="data[eddington][__index__][label]"]'));
         $this->assertCount(1, $crawler->filter('template[data-repeater-template] input[name="data[excludeActivitiesFromPeakPowerOutputs][]"]'));
-    }
 
-    public function testItSurfacesTheDefaultEddingtonConfigurationWhenNothingIsStored(): void
-    {
-        $this->client->loginUser($this->adminUser());
-
-        $crawler = $this->client->request('GET', '/admin/settings/metrics');
-
-        $this->assertResponseIsSuccessful();
-
+        // The default Eddington configuration is surfaced when nothing is stored.
         $initial = $crawler->filter('div[data-repeater]')->first()->filter('[data-repeater-list]')->attr('data-repeater-initial');
         $decoded = json_decode((string) $initial, true);
 
@@ -44,16 +38,8 @@ class MetricsSettingsRequestHandlerTest extends AdminWebTestCase
             EddingtonConfiguration::getDefaultConfig(),
             $decoded,
         );
-    }
 
-    public function testItRendersTheSettingsNavigationWithMetricsActive(): void
-    {
-        $this->client->loginUser($this->adminUser());
-
-        $crawler = $this->client->request('GET', '/admin/settings/metrics');
-
-        $this->assertResponseIsSuccessful();
-
+        // The settings navigation, with "Metrics" active.
         $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');
         $this->assertCount(1, $settingsPanel);
         $selectedLink = $settingsPanel->filter('a[aria-selected="true"]');

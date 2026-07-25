@@ -27,6 +27,15 @@ class DashboardSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('#addWidgetDropdown form[data-dispatch-command="add-widget"]')->count());
 
         $this->assertGreaterThan(0, $crawler->filter('a[href*="/admin/settings/dashboard/reset"]')->count());
+
+        // The settings navigation, with "Dashboard" active.
+        $this->assertCount(1, $crawler->filter('#drawer-navigation a[title="Settings"][aria-selected="true"]'));
+
+        $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');
+        $this->assertCount(1, $settingsPanel);
+        $selectedLink = $settingsPanel->filter('a[aria-selected="true"]');
+        $this->assertCount(1, $selectedLink);
+        $this->assertStringContainsString('Dashboard', $selectedLink->text());
     }
 
     public function testItRendersTheResetConfirmationPage(): void
@@ -37,22 +46,5 @@ class DashboardSettingsRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="reset-dashboard-layout-to-default"]'));
-    }
-
-    public function testItRendersTheSettingsNavigation(): void
-    {
-        $this->client->loginUser($this->adminUser());
-
-        $crawler = $this->client->request('GET', '/admin/settings/dashboard');
-
-        $this->assertResponseIsSuccessful();
-
-        $this->assertCount(1, $crawler->filter('#drawer-navigation a[title="Settings"][aria-selected="true"]'));
-
-        $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');
-        $this->assertCount(1, $settingsPanel);
-        $selectedLink = $settingsPanel->filter('a[aria-selected="true"]');
-        $this->assertCount(1, $selectedLink);
-        $this->assertStringContainsString('Dashboard', $selectedLink->text());
     }
 }

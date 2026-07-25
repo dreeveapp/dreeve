@@ -13,27 +13,21 @@ class ZwiftSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseRedirects('/admin/login');
     }
 
-    public function testItRendersTheZwiftSettingsForm(): void
+    public function testItRendersTheZwiftSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/settings/zwift');
 
         $this->assertResponseIsSuccessful();
+
+        // The Zwift settings form.
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"]'));
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="zwift"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[level]"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[racingScore]"]'));
-    }
 
-    public function testItRendersTheSettingsNavigationWithZwiftActive(): void
-    {
-        $this->client->loginUser($this->adminUser());
-
-        $crawler = $this->client->request('GET', '/admin/settings/zwift');
-
-        $this->assertResponseIsSuccessful();
-
+        // The settings navigation, with "Zwift" active.
         $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');
         $this->assertCount(1, $settingsPanel);
         $selectedLink = $settingsPanel->filter('a[aria-selected="true"]');

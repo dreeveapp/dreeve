@@ -14,25 +14,19 @@ class GeneralSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseRedirects('/admin/login');
     }
 
-    public function testItRendersTheGeneralSettingsForm(): void
+    public function testItRendersTheGeneralSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/settings/general');
 
         $this->assertResponseIsSuccessful();
+
+        // The general settings form.
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"]'));
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="general"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[athlete][birthday]"]'));
-    }
 
-    public function testItRendersTheWeightAndFtpHistoryEditors(): void
-    {
-        $this->client->loginUser($this->adminUser());
-
-        $crawler = $this->client->request('GET', '/admin/settings/general');
-
-        $this->assertResponseIsSuccessful();
         // Five repeaters: max heart rate ranges, resting heart rate ranges, weight, FTP cycling, FTP running.
         $this->assertCount(5, $crawler->filter('form[data-dispatch-command="update-settings"] [data-repeater]'));
 
@@ -42,29 +36,14 @@ class GeneralSettingsRequestHandlerTest extends AdminWebTestCase
             ->attr('data-repeater-initial');
         $this->assertStringContainsString('2020-01-01', $initial);
         $this->assertStringContainsString('"weight"', $initial);
-    }
 
-    public function testItRendersTheHeartRateZonesEditor(): void
-    {
-        $this->client->loginUser($this->adminUser());
-
-        $crawler = $this->client->request('GET', '/admin/settings/general');
-
-        $this->assertResponseIsSuccessful();
+        // The heart rate zones editor.
         $this->assertCount(1, $crawler->filter('select[name="data[athlete][heartRateZones][mode]"]'));
         // Five default zone rows, pre-filled since the baseline has no custom zones.
         $this->assertCount(5, $crawler->filter('input[name^="data[athlete][heartRateZones][zones]"][name$="[from]"]'));
         $this->assertCount(1, $crawler->filter('textarea[name="data[athlete][heartRateZones][advanced]"]'));
-    }
 
-    public function testItRendersTheSettingsNavigationWithGeneralActive(): void
-    {
-        $this->client->loginUser($this->adminUser());
-
-        $crawler = $this->client->request('GET', '/admin/settings/general');
-
-        $this->assertResponseIsSuccessful();
-
+        // The settings navigation, with "General" active.
         $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');
         $this->assertCount(1, $settingsPanel);
         $selectedLink = $settingsPanel->filter('a[aria-selected="true"]');
