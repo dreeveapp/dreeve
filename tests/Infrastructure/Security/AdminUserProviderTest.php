@@ -52,7 +52,7 @@ class AdminUserProviderTest extends TestCase
         $provider->loadUserByIdentifier('someone-else');
     }
 
-    public function testRefreshUser(): void
+    public function testRefreshUserAndSupportsClass(): void
     {
         $provider = new AdminUserProvider(
             AdminUserName::fromString('admin'),
@@ -65,6 +65,9 @@ class AdminUserProviderTest extends TestCase
         $this->assertEquals('admin', $user->getUserIdentifier());
         $this->assertEquals('hashed-password', $user->getPassword());
         $this->assertEquals(['ROLE_ADMIN'], $user->getRoles());
+
+        $this->assertTrue($provider->supportsClass(InMemoryUser::class));
+        $this->assertFalse($provider->supportsClass(UserInterface::class));
     }
 
     public function testRefreshUserItShouldThrowWhenUserIsNotSupported(): void
@@ -77,16 +80,5 @@ class AdminUserProviderTest extends TestCase
         $this->expectExceptionObject(new UnsupportedUserException(''));
 
         $provider->refreshUser($this->createStub(UserInterface::class));
-    }
-
-    public function testSupportsClass(): void
-    {
-        $provider = new AdminUserProvider(
-            AdminUserName::fromString('admin'),
-            AdminPasswordHash::fromString('hashed-password'),
-        );
-
-        $this->assertTrue($provider->supportsClass(InMemoryUser::class));
-        $this->assertFalse($provider->supportsClass(UserInterface::class));
     }
 }

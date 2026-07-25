@@ -3,42 +3,26 @@
 namespace App\Tests\Domain\Milestone\Context;
 
 use App\Domain\Milestone\Context\FirstActivityInCountryContext;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class FirstActivityInCountryContextTest extends TestCase
 {
-    public function testGetCountryNameForStandardCountryCode(): void
+    public function testGetters(): void
     {
         $context = new FirstActivityInCountryContext('be', 'Morning ride');
 
         $this->assertEquals('Belgium', $context->getCountryName());
-    }
-
-    public function testGetCountryNameForKosovo(): void
-    {
-        $context = new FirstActivityInCountryContext('xk', 'Ride in Kosovo');
-
-        $this->assertEquals('Kosovo', $context->getCountryName());
-    }
-
-    public function testGetCountryNameForUppercaseKosovo(): void
-    {
-        $context = new FirstActivityInCountryContext('XK', 'Ride in Kosovo');
-
-        $this->assertEquals('Kosovo', $context->getCountryName());
-    }
-
-    public function testGetCountryCode(): void
-    {
-        $context = new FirstActivityInCountryContext('be', 'Morning ride');
-
         $this->assertEquals('be', $context->getCountryCode());
+        $this->assertEquals('Morning ride', $context->getActivityName());
     }
 
-    public function testGetActivityName(): void
+    #[TestWith(data: ['xk'])]
+    #[TestWith(data: ['XK'])]
+    public function testGetCountryNameForKosovo(string $countryCode): void
     {
-        $context = new FirstActivityInCountryContext('be', 'Morning ride');
+        $context = new FirstActivityInCountryContext($countryCode, 'Ride in Kosovo');
 
-        $this->assertEquals('Morning ride', $context->getActivityName());
+        $this->assertEquals('Kosovo', $context->getCountryName());
     }
 }

@@ -13,6 +13,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
+use PHPUnit\Framework\Attributes\TestWith;
 
 class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
 {
@@ -68,7 +69,9 @@ class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Lube', $formText);
     }
 
-    public function testCannotDeleteALogWhoseGearWasDeleted(): void
+    #[TestWith(data: ['delete'])]
+    #[TestWith(data: ['edit'])]
+    public function testCannotManageALogWhoseGearWasDeleted(string $action): void
     {
         $this->importGearMaintenanceConfig();
         $log = GearMaintenanceLog::create(
@@ -82,7 +85,7 @@ class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
         $this->client->catchExceptions(false);
 
         $this->expectExceptionObject(new EntityNotFound(sprintf('Gear maintenance log "%s" is no longer available', $log->getId())));
-        $this->client->request('GET', '/admin/gear/maintenance-logs/'.$log->getId().'/delete');
+        $this->client->request('GET', '/admin/gear/maintenance-logs/'.$log->getId().'/'.$action);
     }
 
     public function testRendersTheRegisterForm(): void
@@ -142,23 +145,6 @@ class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Race bike', $formText);
         $this->assertStringContainsString('Some cool chain', $formText);
         $this->assertStringContainsString('Lube', $formText);
-    }
-
-    public function testCannotEditALogWhoseGearWasDeleted(): void
-    {
-        $this->importGearMaintenanceConfig();
-        $log = GearMaintenanceLog::create(
-            gearId: GearId::fromUnprefixed('g999'),
-            maintenanceTaskId: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
-            performedOn: SerializableDateTime::fromString('2025-01-01 00:00:00'),
-        );
-        static::getContainer()->get(GearMaintenanceLogRepository::class)->add($log);
-
-        $this->client->loginUser($this->adminUser());
-        $this->client->catchExceptions(false);
-
-        $this->expectExceptionObject(new EntityNotFound(sprintf('Gear maintenance log "%s" is no longer available', $log->getId())));
-        $this->client->request('GET', '/admin/gear/maintenance-logs/'.$log->getId().'/edit');
     }
 
     public function testCannotEditALogWhoseMaintenanceTaskWasDeleted(): void

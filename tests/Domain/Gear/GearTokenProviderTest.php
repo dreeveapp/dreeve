@@ -23,7 +23,7 @@ class GearTokenProviderTest extends TestCase
 {
     private GearRepository&MockObject $gearRepository;
 
-    public function testGetPrefix(): void
+    public function testGetPrefixAndTokenDefinitions(): void
     {
         $provider = $this->buildProvider(UnitSystem::METRIC);
         $this->gearRepository
@@ -31,14 +31,6 @@ class GearTokenProviderTest extends TestCase
             ->method('find');
 
         $this->assertSame('gear', $provider->getPrefix());
-    }
-
-    public function testGetTokenDefinitions(): void
-    {
-        $provider = $this->buildProvider(UnitSystem::METRIC);
-        $this->gearRepository
-            ->expects($this->never())
-            ->method('find');
 
         foreach ($provider->getTokenDefinitions() as $definition) {
             $this->assertStringStartsWith('[gear:', $definition->getTokenString());

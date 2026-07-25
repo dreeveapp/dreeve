@@ -21,7 +21,7 @@ class SegmentEffortTest extends TestCase
         );
     }
 
-    public function testGetPaceInSecPerKm(): void
+    public function testGetPace(): void
     {
         $segmentEffort = SegmentEffortBuilder::fromDefaults()
             ->withElapsedTimeInSeconds(1000)
@@ -31,14 +31,6 @@ class SegmentEffortTest extends TestCase
             SecPerKm::class,
             $segmentEffort->getPaceInSecPerKm()
         );
-    }
-
-    public function testGetPaceInSecPer100Meter(): void
-    {
-        $segmentEffort = SegmentEffortBuilder::fromDefaults()
-            ->withElapsedTimeInSeconds(1000)
-            ->build();
-
         $this->assertInstanceOf(
             SecPer100Meter::class,
             $segmentEffort->getPaceInSecPer100Meter()
