@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mimics a Huawei Health export (via Health Sync): no per-trackpoint Speed or
+     DistanceMeters, sparse AltitudeMeters and a zeroed lap MaximumSpeed. -->
+<TrainingCenterDatabase xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2" xmlns:ns3="http://www.garmin.com/xmlschemas/ActivityExtension/v2">
+  <Activities>
+    <Activity Sport="Running">
+      <Id>2021-09-08T00:00:00Z</Id>
+      <Lap StartTime="2021-09-08T00:00:00Z">
+        <TotalTimeSeconds>7</TotalTimeSeconds>
+        <DistanceMeters>35.0</DistanceMeters>
+        <Calories>12</Calories>
+        <MaximumSpeed>0.0</MaximumSpeed>
+        <AverageHeartRateBpm><Value>140</Value></AverageHeartRateBpm>
+        <MaximumHeartRateBpm><Value>151</Value></MaximumHeartRateBpm>
+        <Intensity>Active</Intensity>
+        <TriggerMethod>Manual</TriggerMethod>
+        <Track>
+          <Trackpoint>
+            <Time>2021-09-08T00:00:00Z</Time>
+            <Position><LatitudeDegrees>43.633000</LatitudeDegrees><LongitudeDegrees>3.917700</LongitudeDegrees></Position>
+            <AltitudeMeters>39.0</AltitudeMeters>
+            <Cadence>71</Cadence>
+          </Trackpoint>
+          <Trackpoint>
+            <Time>2021-09-08T00:00:01Z</Time>
+            <Position><LatitudeDegrees>43.633045</LatitudeDegrees><LongitudeDegrees>3.917700</LongitudeDegrees></Position>
+            <Cadence>72</Cadence>
+          </Trackpoint>
+          <Trackpoint>
+            <Time>2021-09-08T00:00:02Z</Time>
+            <Position><LatitudeDegrees>43.633090</LatitudeDegrees><LongitudeDegrees>3.917700</LongitudeDegrees></Position>
+            <Cadence>72</Cadence>
+          </Trackpoint>
+          <Trackpoint>
+            <Time>2021-09-08T00:00:03Z</Time>
+            <Position><LatitudeDegrees>43.633135</LatitudeDegrees><LongitudeDegrees>3.917700</LongitudeDegrees></Position>
+            <AltitudeMeters>41.5</AltitudeMeters>
+            <Cadence>73</Cadence>
+          </Trackpoint>
+          <Trackpoint>
+            <Time>2021-09-08T00:00:04Z</Time>
+            <Position><LatitudeDegrees>43.633180</LatitudeDegrees><LongitudeDegrees>3.917700</LongitudeDegrees></Position>
+            <Cadence>74</Cadence>
+          </Trackpoint>
+          <Trackpoint>
+            <Time>2021-09-08T00:00:05Z</Time>
+            <Position><LatitudeDegrees>43.633225</LatitudeDegrees><LongitudeDegrees>3.917700</LongitudeDegrees></Position>
+            <Cadence>74</Cadence>
+          </Trackpoint>
+          <Trackpoint>
+            <Time>2021-09-08T00:00:06Z</Time>
+            <Position><LatitudeDegrees>43.633270</LatitudeDegrees><LongitudeDegrees>3.917700</LongitudeDegrees></Position>
+            <AltitudeMeters>40.0</AltitudeMeters>
+            <Cadence>75</Cadence>
+          </Trackpoint>
+          <Trackpoint>
+            <Time>2021-09-08T00:00:07Z</Time>
+            <Position><LatitudeDegrees>43.633315</LatitudeDegrees><LongitudeDegrees>3.917700</LongitudeDegrees></Position>
+            <Cadence>75</Cadence>
+          </Trackpoint>
+        </Track>
+      </Lap>
+      <Creator xsi:type="Device_t" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <Name>HUAWEI WATCH GT 3</Name>
+      </Creator>
+    </Activity>
+  </Activities>
+</TrainingCenterDatabase>

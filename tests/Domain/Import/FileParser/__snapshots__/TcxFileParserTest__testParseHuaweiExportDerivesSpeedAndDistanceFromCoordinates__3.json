@@ -1,51 +1,44 @@
 [
     {
-        "dataSize": 3,
+        "dataSize": 8,
         "activityId": "activity-1",
         "streamType": "altitude",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[10,10,14.5]"
+        "data": "[39,39,39,41.5,41.5,41.5,40,40]"
     },
     {
-        "dataSize": 3,
+        "dataSize": 8,
         "activityId": "activity-1",
         "streamType": "cadence",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[80,82,84]"
+        "data": "[71,72,72,73,74,74,75,75]"
     },
     {
-        "dataSize": 3,
+        "dataSize": 8,
         "activityId": "activity-1",
         "streamType": "distance",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[0,25,50]"
+        "data": "[0,5,10.01,15.01,20.02,25.02,30.02,35.03]"
     },
     {
-        "dataSize": 3,
+        "dataSize": 8,
         "activityId": "activity-1",
-        "streamType": "heartrate",
+        "streamType": "latlng",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[120,125,130]"
+        "data": "[[43.633,3.9177],[43.633045,3.9177],[43.63309,3.9177],[43.633135,3.9177],[43.63318,3.9177],[43.633225,3.9177],[43.63327,3.9177],[43.633315,3.9177]]"
     },
     {
-        "dataSize": 3,
+        "dataSize": 8,
         "activityId": "activity-1",
         "streamType": "time",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[0,5,10]"
+        "data": "[0,1,2,3,4,5,6,7]"
     },
     {
-        "dataSize": 3,
+        "dataSize": 8,
         "activityId": "activity-1",
         "streamType": "velocity_smooth",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[4,6,5]"
-    },
-    {
-        "dataSize": 3,
-        "activityId": "activity-1",
-        "streamType": "watts",
-        "createdOn": "2023-10-17 16:15:04",
-        "data": "[200,225,250]"
+        "data": "[5,5,5.01,5,5.01,5,5,5.010000000000002]"
     }
 ]

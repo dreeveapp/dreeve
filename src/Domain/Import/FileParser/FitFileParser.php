@@ -30,7 +30,6 @@ use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\GeoMath;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
-use App\Infrastructure\ValueObject\Geography\Polyline;
 use App\Infrastructure\ValueObject\String\ExternalReferenceId;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\SerializableTimezone;
@@ -166,7 +165,7 @@ final readonly class FitFileParser implements ActivityFileParser
             name: ActivityName::from($startDateTime, $sportType),
             description: null,
             distance: Kilometer::from(round((is_numeric($session['total_distance'] ?? null) ? (float) $session['total_distance'] : 0.0) / 1000, 3)),
-            elevation: Meter::from(round(is_numeric($session['total_ascent'] ?? null) ? (float) $session['total_ascent'] : 0.0)),
+            elevation: Meter::from(round(is_numeric($session['total_ascent'] ?? null) ? (float) $session['total_ascent'] : StreamMath::elevationGain($streamMap[StreamType::ALTITUDE->value]))),
             startingCoordinate: $this->resolveStartingCoordinate($session, $streamMap),
             calories: is_numeric($session['total_calories'] ?? null) ? (int) round((float) $session['total_calories']) : null,
             kilojoules: null !== $work ? (int) round($work / 1000) : null,
@@ -175,8 +174,11 @@ final readonly class FitFileParser implements ActivityFileParser
                 wattsStream: $streamMap[StreamType::WATTS->value]
             ),
             maxPower: is_numeric($session['max_power'] ?? null) ? (int) round((float) $session['max_power']) : Math::max($streamMap[StreamType::WATTS->value]),
-            averageSpeed: MetersPerSecond::fromOptional(is_numeric($session['enhanced_avg_speed'] ?? $session['avg_speed'] ?? null) ? (float) ($session['enhanced_avg_speed'] ?? $session['avg_speed'] ?? null) : null)->toKmPerHour(),
-            maxSpeed: MetersPerSecond::fromOptional(is_numeric($session['enhanced_max_speed'] ?? $session['max_speed'] ?? null) ? (float) ($session['enhanced_max_speed'] ?? $session['max_speed'] ?? null) : null)->toKmPerHour(),
+            averageSpeed: $this->resolveAverageSpeed(
+                session: $session,
+                velocityStream: $streamMap[StreamType::VELOCITY->value]
+            )->toKmPerHour(),
+            maxSpeed: MetersPerSecond::fromOptional(is_numeric($session['enhanced_max_speed'] ?? $session['max_speed'] ?? null) ? (float) ($session['enhanced_max_speed'] ?? $session['max_speed'] ?? null) : Math::maxFloat($streamMap[StreamType::VELOCITY->value]))->toKmPerHour(),
             averageHeartRate: is_numeric($session['avg_heart_rate'] ?? null) ? (int) round((float) $session['avg_heart_rate']) : Math::average($streamMap[StreamType::HEART_RATE->value]),
             maxHeartRate: is_numeric($session['max_heart_rate'] ?? null) ? (int) round((float) $session['max_heart_rate']) : Math::max($streamMap[StreamType::HEART_RATE->value]),
             averageCadence: is_numeric($session['avg_cadence'] ?? null) ? (int) round((float) $session['avg_cadence']) : Math::average($streamMap[StreamType::CADENCE->value]),
@@ -185,7 +187,7 @@ final readonly class FitFileParser implements ActivityFileParser
             deviceName: $deviceName,
             totalImageCount: 0,
             localImagePaths: [],
-            polyline: $this->encodePolyline($streamMap),
+            polyline: StreamMath::encodePolyline($streamMap),
             routeGeography: RouteGeography::create([]),
             weather: null,
             gearId: null,
@@ -206,9 +208,21 @@ final readonly class FitFileParser implements ActivityFileParser
     private function buildActivityLaps(array $lapMessages, ActivityId $activityId): ActivityLaps
     {
         $averageSpeeds = array_map(
-            static fn (array $lap): float => is_numeric($lap['enhanced_avg_speed'] ?? $lap['avg_speed'] ?? null)
-                ? (float) ($lap['enhanced_avg_speed'] ?? $lap['avg_speed'] ?? null)
-                : 0.0,
+            static function (array $lap): float {
+                if (is_numeric($lap['enhanced_avg_speed'] ?? $lap['avg_speed'] ?? null)) {
+                    return (float) ($lap['enhanced_avg_speed'] ?? $lap['avg_speed']);
+                }
+
+                // Laps without a speed summary (e.g. Huawei Health exports) still
+                // carry distance and timer time; derive the average from those.
+                $totalDistance = is_numeric($lap['total_distance'] ?? null) ? (float) $lap['total_distance'] : null;
+                $totalTimerTime = is_numeric($lap['total_timer_time'] ?? null) ? (float) $lap['total_timer_time'] : null;
+                if (null !== $totalDistance && null !== $totalTimerTime && $totalTimerTime > 0.0) {
+                    return $totalDistance / $totalTimerTime;
+                }
+
+                return 0.0;
+            },
             $lapMessages
         );
         $minAverageSpeed = MetersPerSecond::from([] !== $averageSpeeds ? min($averageSpeeds) : 0.0);
@@ -445,6 +459,29 @@ final readonly class FitFileParser implements ActivityFileParser
     }
 
     /**
+     * Some exporters (e.g. Huawei Health via Health Sync) omit the session speed
+     * summaries entirely; fall back to the FIT-spec definition of avg_speed
+     * (total distance over timer time), then to the velocity stream.
+     *
+     * @param array<string, mixed> $session
+     * @param list<mixed>          $velocityStream
+     */
+    private function resolveAverageSpeed(array $session, array $velocityStream): MetersPerSecond
+    {
+        if (is_numeric($session['enhanced_avg_speed'] ?? $session['avg_speed'] ?? null)) {
+            return MetersPerSecond::from((float) ($session['enhanced_avg_speed'] ?? $session['avg_speed']));
+        }
+
+        $totalDistance = is_numeric($session['total_distance'] ?? null) ? (float) $session['total_distance'] : null;
+        $totalTimerTime = is_numeric($session['total_timer_time'] ?? null) ? (float) $session['total_timer_time'] : null;
+        if (null !== $totalDistance && null !== $totalTimerTime && $totalTimerTime > 0.0) {
+            return MetersPerSecond::from($totalDistance / $totalTimerTime);
+        }
+
+        return MetersPerSecond::fromOptional(Math::averageFloat($velocityStream));
+    }
+
+    /**
      * @param array<string, mixed> $session
      * @param list<mixed>          $wattsStream
      */
@@ -483,16 +520,7 @@ final readonly class FitFileParser implements ActivityFileParser
             );
         }
 
-        foreach ($streams[StreamType::LAT_LNG->value] ?? [] as $point) {
-            if (is_array($point)) {
-                return Coordinate::createFromLatAndLng(
-                    latitude: Latitude::fromString((string) $point[0]),
-                    longitude: Longitude::fromString((string) $point[1]),
-                );
-            }
-        }
-
-        return null;
+        return StreamMath::firstCoordinate($streams);
     }
 
     /**
@@ -511,23 +539,5 @@ final readonly class FitFileParser implements ActivityFileParser
         }
 
         return $map;
-    }
-
-    /**
-     * @param array<string, list<mixed>> $streamMap
-     */
-    private function encodePolyline(array $streamMap): ?string
-    {
-        /** @var array<int, array{float, float}> $coordinates */
-        $coordinates = array_values(array_filter(
-            $streamMap[StreamType::LAT_LNG->value] ?? [],
-            is_array(...),
-        ));
-
-        if ([] === $coordinates) {
-            return null;
-        }
-
-        return (string) Polyline::fromCoordinates($coordinates)->simplify()->encode();
     }
 }

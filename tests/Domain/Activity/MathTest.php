@@ -34,4 +34,26 @@ class MathTest extends TestCase
             Math::movingAverage($values, 5)
         );
     }
+
+    #[TestWith(data: [[], null])]
+    #[TestWith(data: [[null, null], null])]
+    #[TestWith(data: [[1.9, null, 2.9], 2.4])]
+    public function testAverageFloat(array $values, ?float $expectedResult): void
+    {
+        $this->assertSame(
+            $expectedResult,
+            Math::averageFloat($values)
+        );
+    }
+
+    #[TestWith(data: [[], null])]
+    #[TestWith(data: [[null, null], null])]
+    #[TestWith(data: [[1.9, null, 2.9, 2.4], 2.9])]
+    public function testMaxFloat(array $values, ?float $expectedResult): void
+    {
+        $this->assertSame(
+            $expectedResult,
+            Math::maxFloat($values)
+        );
+    }
 }

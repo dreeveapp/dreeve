@@ -21,19 +21,12 @@ use App\Domain\Import\SupportedFileExtension;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
-use App\Infrastructure\ValueObject\Geography\Coordinate;
-use App\Infrastructure\ValueObject\Geography\Latitude;
-use App\Infrastructure\ValueObject\Geography\Longitude;
-use App\Infrastructure\ValueObject\Geography\Polyline;
 use App\Infrastructure\ValueObject\String\ExternalReferenceId;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\SerializableTimezone;
 
 final readonly class TcxFileParser implements ActivityFileParser
 {
-    // Interval longer than this is treated as a recording gap rather than active time.
-    private const int MAX_RECORDING_GAP_IN_SECONDS = 60;
-
     public function __construct(
         private ActivityIdFactory $activityIdFactory,
         private ActivityLapIdFactory $activityLapIdFactory,
@@ -85,11 +78,22 @@ final readonly class TcxFileParser implements ActivityFileParser
         if ([] === $velocities) {
             // Files without per-trackpoint TPX/Speed (e.g. Polar exports) still carry
             // cumulative distance + time per trackpoint; derive velocity from those.
-            $streams[StreamType::VELOCITY->value] = $this->deriveVelocityStream(
+            $streams[StreamType::VELOCITY->value] = StreamMath::deriveVelocityStream(
                 $streams[StreamType::DISTANCE->value],
                 $streams[StreamType::TIME->value],
             );
             $velocities = array_filter($streams[StreamType::VELOCITY->value], static fn (mixed $v): bool => null !== $v);
+        }
+        if ([] === $velocities
+            && [] === array_filter($streams[StreamType::DISTANCE->value], static fn (mixed $v): bool => null !== $v)
+            && [] !== array_filter($streams[StreamType::LAT_LNG->value], is_array(...))) {
+            // Huawei Health exports carry neither speed nor distance per trackpoint;
+            // reconstruct the distance from the GPS track, like the GPX parser does.
+            $streams[StreamType::DISTANCE->value] = StreamMath::deriveDistanceStream($streams[StreamType::LAT_LNG->value]);
+            $streams[StreamType::VELOCITY->value] = StreamMath::deriveVelocityStream(
+                $streams[StreamType::DISTANCE->value],
+                $streams[StreamType::TIME->value],
+            );
         }
 
         $activityId = $this->activityIdFactory->random();
@@ -109,13 +113,13 @@ final readonly class TcxFileParser implements ActivityFileParser
             description: null,
             distance: Kilometer::from(round($activityLaps->sum(static fn (ActivityLap $lap): float => $lap->getDistance()->toFloat()) / 1000, 3)),
             elevation: Meter::from(round($activityLaps->sum(static fn (ActivityLap $lap): float => $lap->getElevationDifference()->toFloat()))),
-            startingCoordinate: $this->resolveStartingCoordinate($streams),
+            startingCoordinate: StreamMath::firstCoordinate($streams),
             calories: $this->sumCalories($activityXml),
             kilojoules: null,
             averagePower: Math::average($streams[StreamType::WATTS->value]),
             maxPower: Math::max($streams[StreamType::WATTS->value]),
-            averageSpeed: MetersPerSecond::fromOptional([] !== $velocities ? array_sum($velocities) / count($velocities) : null)->toKmPerHour(),
-            maxSpeed: MetersPerSecond::fromOptional([] !== $velocities ? max($velocities) : null)->toKmPerHour(),
+            averageSpeed: MetersPerSecond::fromOptional(Math::averageFloat($streams[StreamType::VELOCITY->value]))->toKmPerHour(),
+            maxSpeed: MetersPerSecond::fromOptional(Math::maxFloat($streams[StreamType::VELOCITY->value]))->toKmPerHour(),
             averageHeartRate: Math::average($streams[StreamType::HEART_RATE->value]),
             maxHeartRate: Math::max($streams[StreamType::HEART_RATE->value]),
             averageCadence: Math::average($streams[StreamType::CADENCE->value]),
@@ -124,7 +128,7 @@ final readonly class TcxFileParser implements ActivityFileParser
             deviceName: $deviceName,
             totalImageCount: 0,
             localImagePaths: [],
-            polyline: $this->encodePolyline($streams),
+            polyline: StreamMath::encodePolyline($streams),
             routeGeography: RouteGeography::create([]),
             weather: null,
             gearId: null,
@@ -206,11 +210,11 @@ final readonly class TcxFileParser implements ActivityFileParser
             }
 
             $laps[] = $this->buildLap(
-                $lapIndex++,
-                $lap,
-                $this->elevationGain($lapAltitudes),
-                $this->activeSeconds($lapTimes),
-                $this->trackpointDistance($lapDistances),
+                index: $lapIndex++,
+                lap: $lap,
+                elevationGain: StreamMath::elevationGain($lapAltitudes),
+                activeSeconds: StreamMath::activeSeconds($lapTimes),
+                trackpointDistance: $this->trackpointDistance($lapDistances),
             );
         }
 
@@ -278,29 +282,6 @@ final readonly class TcxFileParser implements ActivityFileParser
     }
 
     /**
-     * @param list<?int> $timestamps
-     */
-    private function activeSeconds(array $timestamps): int
-    {
-        $active = 0;
-        $previous = null;
-        foreach ($timestamps as $time) {
-            if (null === $time) {
-                continue;
-            }
-            if (null !== $previous) {
-                $delta = $time - $previous;
-                if ($delta > 0 && $delta <= self::MAX_RECORDING_GAP_IN_SECONDS) {
-                    $active += $delta;
-                }
-            }
-            $previous = $time;
-        }
-
-        return $active;
-    }
-
-    /**
      * @param list<?float> $distances
      */
     private function trackpointDistance(array $distances): ?float
@@ -311,23 +292,6 @@ final readonly class TcxFileParser implements ActivityFileParser
         }
 
         return $values[count($values) - 1] - $values[0];
-    }
-
-    /**
-     * @param array<string, list<mixed>> $streams
-     */
-    private function resolveStartingCoordinate(array $streams): ?Coordinate
-    {
-        foreach ($streams[StreamType::LAT_LNG->value] ?? [] as $point) {
-            if (is_array($point)) {
-                return Coordinate::createFromLatAndLng(
-                    Latitude::fromString((string) $point[0]),
-                    Longitude::fromString((string) $point[1]),
-                );
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -390,75 +354,5 @@ final readonly class TcxFileParser implements ActivityFileParser
     private function intChild(\SimpleXMLElement $parent, string $child): ?int
     {
         return null !== ($value = $this->stringChild($parent, $child)) ? (int) $value : null;
-    }
-
-    /**
-     * @param list<?float> $distances
-     * @param list<?int>   $times
-     *
-     * @return list<?float>
-     */
-    private function deriveVelocityStream(array $distances, array $times): array
-    {
-        $velocities = [];
-        $previousDistance = null;
-        $previousTime = null;
-
-        foreach ($distances as $index => $distance) {
-            $time = $times[$index] ?? null;
-            if (null === $distance || null === $time) {
-                $velocities[] = null;
-                continue;
-            }
-
-            if (null !== $previousDistance && null !== $previousTime && $time > $previousTime) {
-                $velocities[] = ($distance - $previousDistance) / ($time - $previousTime);
-            } else {
-                $velocities[] = null;
-            }
-
-            $previousDistance = $distance;
-            $previousTime = $time;
-        }
-
-        return $velocities;
-    }
-
-    /**
-     * @param list<?float> $altitudes
-     */
-    private function elevationGain(array $altitudes): float
-    {
-        $gain = 0.0;
-        $previous = null;
-        foreach ($altitudes as $altitude) {
-            if (null === $altitude) {
-                continue;
-            }
-            if (null !== $previous && $altitude > $previous) {
-                $gain += $altitude - $previous;
-            }
-            $previous = $altitude;
-        }
-
-        return $gain;
-    }
-
-    /**
-     * @param array<string, list<mixed>> $streamMap
-     */
-    private function encodePolyline(array $streamMap): ?string
-    {
-        /** @var array<int, array{float, float}> $coordinates */
-        $coordinates = array_values(array_filter(
-            $streamMap[StreamType::LAT_LNG->value] ?? [],
-            is_array(...),
-        ));
-
-        if ([] === $coordinates) {
-            return null;
-        }
-
-        return (string) Polyline::fromCoordinates($coordinates)->simplify()->encode();
     }
 }

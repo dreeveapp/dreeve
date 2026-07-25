@@ -54,6 +54,13 @@ class TcxFileParserTest extends ActivityFileParserTestCase
         );
     }
 
+    public function testParseHuaweiExportDerivesSpeedAndDistanceFromCoordinates(): void
+    {
+        $this->assertParsedFileMatchesSnapshot(
+            $this->parser->parse($this->rawFileFromFixture('activity-huawei.tcx'))
+        );
+    }
+
     public function testParseEmptyContentsThrows(): void
     {
         $rawActivityFile = RawActivityFile::from(Path::fromString('does-not-exist.tcx'), '');

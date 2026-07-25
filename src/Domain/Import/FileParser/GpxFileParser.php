@@ -22,11 +22,7 @@ use App\Domain\Import\SupportedFileExtension;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
-use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\GeoMath;
-use App\Infrastructure\ValueObject\Geography\Latitude;
-use App\Infrastructure\ValueObject\Geography\Longitude;
-use App\Infrastructure\ValueObject\Geography\Polyline;
 use App\Infrastructure\ValueObject\String\ExternalReferenceId;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\SerializableTimezone;
@@ -35,9 +31,6 @@ final readonly class GpxFileParser implements ActivityFileParser
 {
     private const float ELEVATION_MIN = -9999.99;
     private const float ELEVATION_MAX = 9999.99;
-
-    // Interval longer than this is treated as a recording gap rather than active time.
-    private const int MAX_RECORDING_GAP_IN_SECONDS = 60;
 
     public function __construct(
         private ActivityIdFactory $activityIdFactory,
@@ -107,7 +100,7 @@ final readonly class GpxFileParser implements ActivityFileParser
             description: null,
             distance: Kilometer::from(round($activityLaps->sum(static fn (ActivityLap $lap): float => $lap->getDistance()->toFloat()) / 1000, 3)),
             elevation: Meter::from(round($activityLaps->sum(static fn (ActivityLap $lap): float => $lap->getElevationDifference()->toFloat()))),
-            startingCoordinate: $this->resolveStartingCoordinate($streams),
+            startingCoordinate: StreamMath::firstCoordinate($streams),
             calories: $calories,
             kilojoules: null,
             averagePower: Math::average($streams[StreamType::WATTS->value]),
@@ -122,7 +115,7 @@ final readonly class GpxFileParser implements ActivityFileParser
             deviceName: $deviceName,
             totalImageCount: 0,
             localImagePaths: [],
-            polyline: $this->encodePolyline($streams),
+            polyline: StreamMath::encodePolyline($streams),
             routeGeography: RouteGeography::create([]),
             weather: null,
             gearId: null,
@@ -243,8 +236,8 @@ final readonly class GpxFileParser implements ActivityFileParser
                     distance: $segmentDistance,
                     speeds: $segmentSpeeds,
                     heartRates: $segmentHeartRates,
-                    elevationGain: $this->elevationGain($segmentAltitudes),
-                    activeSeconds: $this->activeSeconds($segmentTimes),
+                    elevationGain: StreamMath::elevationGain($segmentAltitudes),
+                    activeSeconds: StreamMath::activeSeconds($segmentTimes),
                 );
             }
         }
@@ -333,26 +326,6 @@ final readonly class GpxFileParser implements ActivityFileParser
         ];
     }
 
-    /**
-     * @param list<int> $timestamps
-     */
-    private function activeSeconds(array $timestamps): int
-    {
-        $active = 0;
-        $previous = null;
-        foreach ($timestamps as $time) {
-            if (null !== $previous) {
-                $delta = $time - $previous;
-                if ($delta > 0 && $delta <= self::MAX_RECORDING_GAP_IN_SECONDS) {
-                    $active += $delta;
-                }
-            }
-            $previous = $time;
-        }
-
-        return $active;
-    }
-
     private function stringChild(\SimpleXMLElement $parent, string $child): ?string
     {
         return property_exists($parent, $child) && null !== $parent->{$child} ? (string) $parent->{$child} : null;
@@ -361,23 +334,6 @@ final readonly class GpxFileParser implements ActivityFileParser
     private function floatChild(\SimpleXMLElement $parent, string $child): ?float
     {
         return null !== ($value = $this->stringChild($parent, $child)) ? (float) $value : null;
-    }
-
-    /**
-     * @param array<string, list<mixed>> $streams
-     */
-    private function resolveStartingCoordinate(array $streams): ?Coordinate
-    {
-        foreach ($streams[StreamType::LAT_LNG->value] ?? [] as $point) {
-            if (is_array($point)) {
-                return Coordinate::createFromLatAndLng(
-                    latitude: Latitude::fromString((string) $point[0]),
-                    longitude: Longitude::fromString((string) $point[1]),
-                );
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -465,43 +421,5 @@ final readonly class GpxFileParser implements ActivityFileParser
         }
 
         return null;
-    }
-
-    /**
-     * @param list<?float> $altitudes
-     */
-    private function elevationGain(array $altitudes): float
-    {
-        $gain = 0.0;
-        $previous = null;
-        foreach ($altitudes as $altitude) {
-            if (null === $altitude) {
-                continue;
-            }
-            if (null !== $previous && $altitude > $previous) {
-                $gain += $altitude - $previous;
-            }
-            $previous = $altitude;
-        }
-
-        return $gain;
-    }
-
-    /**
-     * @param array<string, list<mixed>> $streamMap
-     */
-    private function encodePolyline(array $streamMap): ?string
-    {
-        /** @var array<int, array{float, float}> $coordinates */
-        $coordinates = array_values(array_filter(
-            $streamMap[StreamType::LAT_LNG->value] ?? [],
-            is_array(...),
-        ));
-
-        if ([] === $coordinates) {
-            return null;
-        }
-
-        return (string) Polyline::fromCoordinates($coordinates)->simplify()->encode();
     }
 }

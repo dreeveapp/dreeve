@@ -4,14 +4,14 @@
         "activityId": "activity-1",
         "lapNumber": 1,
         "name": "Lap 1",
-        "elapsedTimeInSeconds": 12,
-        "movingTimeInSeconds": 10,
-        "distance": 50,
+        "elapsedTimeInSeconds": 7,
+        "movingTimeInSeconds": 7,
+        "distance": 35,
         "averageSpeed": 5,
         "minAverageSpeed": 5,
         "maxAverageSpeed": 5,
         "maxSpeed": 0,
-        "elevationDifference": 0,
-        "averageHeartRate": null
+        "elevationDifference": 2,
+        "averageHeartRate": 140
     }
 ]

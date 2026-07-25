@@ -21,10 +21,21 @@
                     ]
                 },
                 {
+                    "name": "lap",
+                    "fields": [
+                        {"name": "start_time", "value": 1000000000},
+                        {"name": "total_distance", "value": 50.0},
+                        {"name": "total_timer_time", "value": 10},
+                        {"name": "total_elapsed_time", "value": 12}
+                    ]
+                },
+                {
                     "name": "record",
                     "fields": [
                         {"name": "timestamp", "value": 1000000000},
                         {"name": "distance", "value": 0.0},
+                        {"name": "speed", "value": 4.0},
+                        {"name": "altitude", "value": 10.0},
                         {"name": "heart_rate", "value": 120},
                         {"name": "cadence", "value": 80},
                         {"name": "power", "value": 200}
@@ -33,8 +44,22 @@
                 {
                     "name": "record",
                     "fields": [
+                        {"name": "timestamp", "value": 1000000005},
+                        {"name": "distance", "value": 25.0},
+                        {"name": "speed", "value": 6.0},
+                        {"name": "altitude", "value": null},
+                        {"name": "heart_rate", "value": 125},
+                        {"name": "cadence", "value": 82},
+                        {"name": "power", "value": 225}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
                         {"name": "timestamp", "value": 1000000010},
                         {"name": "distance", "value": 50.0},
+                        {"name": "speed", "value": 5.0},
+                        {"name": "altitude", "value": 14.5},
                         {"name": "heart_rate", "value": 130},
                         {"name": "cadence", "value": 84},
                         {"name": "power", "value": 250}
