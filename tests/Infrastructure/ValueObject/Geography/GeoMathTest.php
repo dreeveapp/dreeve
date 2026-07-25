@@ -3,6 +3,7 @@
 namespace App\Tests\Infrastructure\ValueObject\Geography;
 
 use App\Infrastructure\ValueObject\Geography\GeoMath;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class GeoMathTest extends TestCase
@@ -60,29 +61,15 @@ class GeoMathTest extends TestCase
         );
     }
 
-    public function testSemicirclesToDegreesConvertsHalfCircle(): void
+    #[TestWith(data: [2 ** 31, 180.0])]
+    #[TestWith(data: [2 ** 30, 90.0])]
+    #[TestWith(data: [0, 0.0])]
+    public function testSemicirclesToDegrees(int $semicircles, float $expectedDegrees): void
     {
         self::assertEqualsWithDelta(
-            180.0,
-            GeoMath::semicirclesToDegrees(2 ** 31),
+            $expectedDegrees,
+            GeoMath::semicirclesToDegrees($semicircles),
             0.000001
-        );
-    }
-
-    public function testSemicirclesToDegreesConvertsQuarterCircle(): void
-    {
-        self::assertEqualsWithDelta(
-            90.0,
-            GeoMath::semicirclesToDegrees(2 ** 30),
-            0.000001
-        );
-    }
-
-    public function testSemicirclesToDegreesConvertsZero(): void
-    {
-        self::assertSame(
-            0.0,
-            GeoMath::semicirclesToDegrees(0)
         );
     }
 }

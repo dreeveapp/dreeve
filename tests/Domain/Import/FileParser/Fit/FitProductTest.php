@@ -6,6 +6,7 @@ namespace App\Tests\Domain\Import\FileParser\Fit;
 
 use App\Domain\Import\FileParser\Fit\FitProduct;
 use App\Infrastructure\Serialization\Json;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 
@@ -32,15 +33,19 @@ class FitProductTest extends TestCase
         $this->assertMatchesJsonSnapshot(Json::encode($names));
     }
 
-    public function testItSupportsOnlyGarminFamilyAndFavero(): void
+    #[TestWith(data: [1, true])]
+    #[TestWith(data: [13, true])]
+    #[TestWith(data: [15, true])]
+    #[TestWith(data: [89, true])]
+    #[TestWith(data: [263, true])]
+    #[TestWith(data: [0, false])]
+    #[TestWith(data: [23, false])]
+    #[TestWith(data: [32, false])]
+    #[TestWith(data: [123, false])]
+    #[TestWith(data: [294, false])]
+    public function testItSupportsOnlyGarminFamilyAndFavero(int $manufacturerId, bool $expectedIsSupported): void
     {
-        foreach ([1, 13, 15, 89, 263] as $manufacturerId) {
-            $this->assertTrue(FitProduct::supports($manufacturerId));
-        }
-
-        foreach ([0, 23, 32, 123, 294] as $manufacturerId) {
-            $this->assertFalse(FitProduct::supports($manufacturerId));
-        }
+        $this->assertEquals($expectedIsSupported, FitProduct::supports($manufacturerId));
     }
 
     public function testItReturnsNullForUnsupportedManufacturer(): void

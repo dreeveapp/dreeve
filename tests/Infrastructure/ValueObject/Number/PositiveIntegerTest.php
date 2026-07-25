@@ -3,21 +3,24 @@
 namespace App\Tests\Infrastructure\ValueObject\Number;
 
 use App\Infrastructure\ValueObject\Number\PositiveInteger;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class PositiveIntegerTest extends TestCase
 {
-    public function testFromInt(): void
+    #[TestWith(data: [0])]
+    #[TestWith(data: [33])]
+    public function testFromInt(int $value): void
     {
-        $this->assertEquals(0, PositiveInteger::fromInt(0)->getValue());
-        $this->assertEquals(33, PositiveInteger::fromInt(33)->getValue());
+        $this->assertEquals($value, PositiveInteger::fromInt($value)->getValue());
     }
 
-    public function testFromOptionalInt(): void
+    #[TestWith(data: [0, 0])]
+    #[TestWith(data: [33, 33])]
+    #[TestWith(data: [null, null])]
+    public function testFromOptionalInt(?int $value, ?int $expectedValue): void
     {
-        $this->assertEquals(0, PositiveInteger::fromOptionalInt(0)->getValue());
-        $this->assertEquals(33, PositiveInteger::fromOptionalInt(33)->getValue());
-        $this->assertNull(PositiveInteger::fromOptionalInt(null));
+        $this->assertEquals($expectedValue, PositiveInteger::fromOptionalInt($value)?->getValue());
     }
 
     public function testItShouldThrowWhenNegative(): void
@@ -26,12 +29,13 @@ class PositiveIntegerTest extends TestCase
         PositiveInteger::fromInt(-10);
     }
 
-    public function testFromOptionalString(): void
+    #[TestWith(data: [0, 0])]
+    #[TestWith(data: [33, 33])]
+    #[TestWith(data: [null, null])]
+    #[TestWith(data: ['', null])]
+    public function testFromOptionalString(string|int|null $value, ?int $expectedValue): void
     {
-        $this->assertEquals(0, PositiveInteger::fromOptionalString(0)->getValue());
-        $this->assertEquals(33, PositiveInteger::fromOptionalString(33)->getValue());
-        $this->assertNull(PositiveInteger::fromOptionalString(null));
-        $this->assertNull(PositiveInteger::fromOptionalString(''));
+        $this->assertEquals($expectedValue, PositiveInteger::fromOptionalString($value)?->getValue());
     }
 
     public function testFromOptionalStringWhenNotNumeric(): void
