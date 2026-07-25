@@ -15,7 +15,7 @@ class DbalActivityStreamRepositoryTest extends ContainerTestCase
 {
     private ActivityStreamRepository $activityStreamRepository;
 
-    public function testHasOneForActivityAndStreamType(): void
+    public function testHasOneAndFindByStreamType(): void
     {
         $stream = ActivityStreamBuilder::fromDefaults()->build();
         $this->activityStreamRepository->add($stream);
@@ -32,12 +32,6 @@ class DbalActivityStreamRepositoryTest extends ContainerTestCase
             activityId: $stream->getActivityId(),
             streamType: StreamType::CADENCE
         ));
-    }
-
-    public function testFindByStreamType(): void
-    {
-        $stream = ActivityStreamBuilder::fromDefaults()->build();
-        $this->activityStreamRepository->add($stream);
 
         $this->assertEquals(
             ActivityStreams::fromArray([$stream]),

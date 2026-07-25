@@ -58,45 +58,18 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
         $this->segmentRepository->find(SegmentId::fromUnprefixed('1'));
     }
 
-    public function testFindAll(): void
+    public function testFindAllAndCount(): void
     {
-        $segmentOne = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
-            ->withName(Name::fromString('A name'))
-            ->build();
-        $this->segmentRepository->add($segmentOne);
-        $this->getContainer()->get(SegmentEffortRepository::class)->add(
-            SegmentEffortBuilder::fromDefaults()
-            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(1))
-            ->withSegmentId($segmentOne->getId())
-            ->build()
-        );
-        $this->getContainer()->get(SegmentEffortRepository::class)->add(
-            SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(2))
-                ->withSegmentId($segmentOne->getId())
-                ->build()
-        );
-        $segmentTwo = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(2))
-            ->withName(Name::fromString('C name'))
-            ->build();
-        $this->segmentRepository->add($segmentTwo);
-        $segmentThree = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(3))
-            ->withName(Name::fromString('B name'))
-            ->build();
-        $this->segmentRepository->add($segmentThree);
-        $this->getContainer()->get(SegmentEffortRepository::class)->add(
-            SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(3))
-                ->withSegmentId($segmentThree->getId())
-                ->build()
-        );
+        [$segmentOne, $segmentTwo, $segmentThree] = $this->seedSegmentsWithEfforts();
 
         $this->assertEquals(
             Segments::fromArray([$segmentOne, $segmentThree, $segmentTwo]),
             $this->segmentRepository->findAll(Pagination::fromOffsetAndLimit(0, 100))
+        );
+
+        $this->assertEquals(
+            3,
+            $this->segmentRepository->count()
         );
     }
 
@@ -127,83 +100,9 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
         );
     }
 
-    public function testCount(): void
-    {
-        $segmentOne = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
-            ->withName(Name::fromString('A name'))
-            ->build();
-        $this->segmentRepository->add($segmentOne);
-        $this->getContainer()->get(SegmentEffortRepository::class)->add(
-            SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(1))
-                ->withSegmentId($segmentOne->getId())
-                ->build()
-        );
-        $this->getContainer()->get(SegmentEffortRepository::class)->add(
-            SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(2))
-                ->withSegmentId($segmentOne->getId())
-                ->build()
-        );
-        $segmentTwo = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(2))
-            ->withName(Name::fromString('C name'))
-            ->build();
-        $this->segmentRepository->add($segmentTwo);
-        $segmentThree = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(3))
-            ->withName(Name::fromString('B name'))
-            ->build();
-        $this->segmentRepository->add($segmentThree);
-        $this->getContainer()->get(SegmentEffortRepository::class)->add(
-            SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(3))
-                ->withSegmentId($segmentThree->getId())
-                ->build()
-        );
-
-        $this->assertEquals(
-            3,
-            $this->segmentRepository->count()
-        );
-    }
-
     public function testDeleteOrphaned(): void
     {
-        $segmentOne = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
-            ->withName(Name::fromString('A name'))
-            ->build();
-        $this->segmentRepository->add($segmentOne);
-        $this->getContainer()->get(SegmentEffortRepository::class)->add(
-            SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(1))
-                ->withSegmentId($segmentOne->getId())
-                ->build()
-        );
-        $this->getContainer()->get(SegmentEffortRepository::class)->add(
-            SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(2))
-                ->withSegmentId($segmentOne->getId())
-                ->build()
-        );
-        $segmentTwo = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(2))
-            ->withName(Name::fromString('C name'))
-            ->build();
-        $this->segmentRepository->add($segmentTwo);
-        $segmentThree = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(3))
-            ->withName(Name::fromString('B name'))
-            ->build();
-        $this->segmentRepository->add($segmentThree);
-        $this->getContainer()->get(SegmentEffortRepository::class)->add(
-            SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(3))
-                ->withSegmentId($segmentThree->getId())
-                ->build()
-        );
+        [$segmentOne, , $segmentThree] = $this->seedSegmentsWithEfforts();
 
         $this->segmentRepository->deleteOrphaned();
 
@@ -211,6 +110,50 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
             Segments::fromArray([$segmentOne, $segmentThree]),
             $this->segmentRepository->findAll(Pagination::fromOffsetAndLimit(0, 100))
         );
+    }
+
+    /**
+     * Seeds three segments of which one ($segmentTwo) has no efforts.
+     *
+     * @return array{\App\Domain\Segment\Segment, \App\Domain\Segment\Segment, \App\Domain\Segment\Segment}
+     */
+    private function seedSegmentsWithEfforts(): array
+    {
+        $segmentOne = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withName(Name::fromString('A name'))
+            ->build();
+        $this->segmentRepository->add($segmentOne);
+        $this->getContainer()->get(SegmentEffortRepository::class)->add(
+            SegmentEffortBuilder::fromDefaults()
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(1))
+                ->withSegmentId($segmentOne->getId())
+                ->build()
+        );
+        $this->getContainer()->get(SegmentEffortRepository::class)->add(
+            SegmentEffortBuilder::fromDefaults()
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(2))
+                ->withSegmentId($segmentOne->getId())
+                ->build()
+        );
+        $segmentTwo = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed(2))
+            ->withName(Name::fromString('C name'))
+            ->build();
+        $this->segmentRepository->add($segmentTwo);
+        $segmentThree = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed(3))
+            ->withName(Name::fromString('B name'))
+            ->build();
+        $this->segmentRepository->add($segmentThree);
+        $this->getContainer()->get(SegmentEffortRepository::class)->add(
+            SegmentEffortBuilder::fromDefaults()
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(3))
+                ->withSegmentId($segmentThree->getId())
+                ->build()
+        );
+
+        return [$segmentOne, $segmentTwo, $segmentThree];
     }
 
     #[\Override]

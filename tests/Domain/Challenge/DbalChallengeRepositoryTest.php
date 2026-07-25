@@ -63,7 +63,7 @@ class DbalChallengeRepositoryTest extends ContainerTestCase
         $this->assertEquals($newId, $updated->getId());
     }
 
-    public function testFindAll(): void
+    public function testFindAllAndCount(): void
     {
         $challengeOne = ChallengeBuilder::fromDefaults()
             ->withChallengeId(ChallengeId::fromUnprefixed('1'))
@@ -80,20 +80,6 @@ class DbalChallengeRepositoryTest extends ContainerTestCase
             Challenges::fromArray([$challengeTwo, $challengeOne]),
             $this->challengeRepository->findAll()
         );
-    }
-
-    public function testCount(): void
-    {
-        $challengeOne = ChallengeBuilder::fromDefaults()
-            ->withChallengeId(ChallengeId::fromUnprefixed('1'))
-            ->withCreatedOn(SerializableDateTime::fromString('2023-10-10 14:00:34'))
-            ->build();
-        $this->challengeRepository->add($challengeOne);
-        $challengeTwo = ChallengeBuilder::fromDefaults()
-            ->withChallengeId(ChallengeId::fromUnprefixed('2'))
-            ->withCreatedOn(SerializableDateTime::fromString('2023-10-10 15:00:34'))
-            ->build();
-        $this->challengeRepository->add($challengeTwo);
 
         $this->assertEquals(
             2,

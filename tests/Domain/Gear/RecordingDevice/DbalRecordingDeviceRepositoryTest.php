@@ -95,7 +95,7 @@ class DbalRecordingDeviceRepositoryTest extends ContainerTestCase
         );
     }
 
-    public function testFindAllReadsPurchasePriceFromTable(): void
+    public function testFindAndFindAllReadPurchasePriceFromTable(): void
     {
         $activityRepository = $this->getContainer()->get(ActivityRepository::class);
 
@@ -115,19 +115,24 @@ class DbalRecordingDeviceRepositoryTest extends ContainerTestCase
              VALUES ('recordingDevice-garmin-edge-530', 'Garmin Edge 530', 29950, 'EUR')"
         );
 
+        $expectedDevice = RecordingDevice::fromState(
+            id: RecordingDeviceId::fromName('Garmin Edge 530'),
+            name: 'Garmin Edge 530',
+            timeTracked: Seconds::from(3600),
+            distanceTracked: Meter::from(10000)->toKilometer(),
+            elevationTracked: Meter::from(100),
+            activityCount: 1,
+            purchasePrice: new Money(29950, new Currency('EUR')),
+        );
+
         $this->assertEquals(
-            RecordingDevices::fromArray([
-                RecordingDevice::fromState(
-                    id: RecordingDeviceId::fromName('Garmin Edge 530'),
-                    name: 'Garmin Edge 530',
-                    timeTracked: Seconds::from(3600),
-                    distanceTracked: Meter::from(10000)->toKilometer(),
-                    elevationTracked: Meter::from(100),
-                    activityCount: 1,
-                    purchasePrice: new Money(29950, new Currency('EUR')),
-                ),
-            ]),
+            RecordingDevices::fromArray([$expectedDevice]),
             $this->recordingDeviceRepository->findAll(),
+        );
+
+        $this->assertEquals(
+            $expectedDevice,
+            $this->recordingDeviceRepository->find(RecordingDeviceId::fromName('Garmin Edge 530')),
         );
     }
 
@@ -162,40 +167,6 @@ class DbalRecordingDeviceRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             RecordingDevices::empty(),
             $this->recordingDeviceRepository->findAll(),
-        );
-    }
-
-    public function testFind(): void
-    {
-        $activityRepository = $this->getContainer()->get(ActivityRepository::class);
-
-        $activityRepository->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('1'))
-                ->withDeviceName('Garmin Edge 530')
-                ->withDistance(Kilometer::from(10))
-                ->withElevation(Meter::from(100))
-                ->withMovingTimeInSeconds(3600)
-                ->build(),
-            []
-        ));
-
-        $this->getConnection()->executeStatement(
-            "INSERT INTO RecordingDevice (id, name, purchasePriceAmount, purchasePriceCurrency)
-             VALUES ('recordingDevice-garmin-edge-530', 'Garmin Edge 530', 29950, 'EUR')"
-        );
-
-        $this->assertEquals(
-            RecordingDevice::fromState(
-                id: RecordingDeviceId::fromName('Garmin Edge 530'),
-                name: 'Garmin Edge 530',
-                timeTracked: Seconds::from(3600),
-                distanceTracked: Meter::from(10000)->toKilometer(),
-                elevationTracked: Meter::from(100),
-                activityCount: 1,
-                purchasePrice: new Money(29950, new Currency('EUR')),
-            ),
-            $this->recordingDeviceRepository->find(RecordingDeviceId::fromName('Garmin Edge 530')),
         );
     }
 
