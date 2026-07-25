@@ -9,6 +9,7 @@ use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class DeviceConditionTest extends TestCase
@@ -30,18 +31,12 @@ class DeviceConditionTest extends TestCase
         $this->condition->guardValidConfiguration($this->config('is', 'garmin-edge-130'));
     }
 
-    public function testGuardThrowsOnInvalidOperator(): void
+    #[DataProvider('provideInvalidConfigurations')]
+    public function testGuardThrowsOnInvalidConfiguration(string $operator, string $deviceId, string $expectedMessage): void
     {
-        $this->expectExceptionObject(new InvalidAutomationRule('Invalid device operator "nope".'));
+        $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
 
-        $this->condition->guardValidConfiguration($this->config('nope', 'garmin-edge-130'));
-    }
-
-    public function testGuardThrowsOnMissingDeviceId(): void
-    {
-        $this->expectExceptionObject(new InvalidAutomationRule('A "deviceId" is required.'));
-
-        $this->condition->guardValidConfiguration($this->config('is', '  '));
+        $this->condition->guardValidConfiguration($this->config($operator, $deviceId));
     }
 
     public function testMatchesNormalisingTypedAndPickedNames(): void
@@ -74,6 +69,15 @@ class DeviceConditionTest extends TestCase
         $this->assertFalse($this->condition->matches($garmin, $this->config('isNot', 'garmin-edge-130')));
         $this->assertTrue($this->condition->matches($wahoo, $this->config('isNot', 'garmin-edge-130')));
         $this->assertTrue($this->condition->matches($noDevice, $this->config('isNot', 'garmin-edge-130')));
+    }
+
+    /**
+     * @return iterable<string, array{string, string, string}>
+     */
+    public static function provideInvalidConfigurations(): iterable
+    {
+        yield 'invalid operator' => ['nope', 'garmin-edge-130', 'Invalid device operator "nope".'];
+        yield 'missing device id' => ['is', '  ', 'A "deviceId" is required.'];
     }
 
     private function config(string $operator, string $deviceId): RuleConfiguration

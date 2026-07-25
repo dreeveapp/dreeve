@@ -9,6 +9,7 @@ use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class TimeOfDayConditionTest extends TestCase
@@ -30,18 +31,12 @@ class TimeOfDayConditionTest extends TestCase
         $this->condition->guardValidConfiguration($this->config('lt', '08:30'));
     }
 
-    public function testGuardThrowsOnInvalidOperator(): void
+    #[DataProvider('provideInvalidConfigurations')]
+    public function testGuardThrowsOnInvalidConfiguration(string $operator, string $time, string $expectedMessage): void
     {
-        $this->expectExceptionObject(new InvalidAutomationRule('Invalid time of day operator "nope".'));
+        $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
 
-        $this->condition->guardValidConfiguration($this->config('nope', '08:30'));
-    }
-
-    public function testGuardThrowsOnMalformedTime(): void
-    {
-        $this->expectExceptionObject(new InvalidAutomationRule('Invalid time "25:00", expected HH:MM.'));
-
-        $this->condition->guardValidConfiguration($this->config('lt', '25:00'));
+        $this->condition->guardValidConfiguration($this->config($operator, $time));
     }
 
     public function testMatchesBeforeAConfiguredTime(): void
@@ -64,6 +59,15 @@ class TimeOfDayConditionTest extends TestCase
 
         $this->assertTrue($this->condition->matches($activity, $this->config('gt', '17:00')));
         $this->assertFalse($this->condition->matches($activity, $this->config('gt', '20:00')));
+    }
+
+    /**
+     * @return iterable<string, array{string, string, string}>
+     */
+    public static function provideInvalidConfigurations(): iterable
+    {
+        yield 'invalid operator' => ['nope', '08:30', 'Invalid time of day operator "nope".'];
+        yield 'malformed time' => ['lt', '25:00', 'Invalid time "25:00", expected HH:MM.'];
     }
 
     private function config(string $operator, string $time): RuleConfiguration

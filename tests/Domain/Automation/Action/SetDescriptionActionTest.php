@@ -11,6 +11,7 @@ use App\Infrastructure\Tokenizer\Tokenizer;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Infrastructure\Tokenizer\ActivityTokenProviderStub;
 use App\Tests\Infrastructure\Tokenizer\GearTokenProviderStub;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class SetDescriptionActionTest extends TestCase
@@ -25,11 +26,14 @@ class SetDescriptionActionTest extends TestCase
         );
     }
 
-    public function testGuardPassesForAnyConfiguration(): void
+    #[TestWith(data: [''])]
+    #[TestWith(data: ['[activity:name] on [activity:start-date:d-m-Y]'])]
+    #[TestWith(data: ['[5x400m] [note: hello] [foo:bar]'])]
+    public function testGuardPassesForValidConfiguration(string $description): void
     {
         $this->expectNotToPerformAssertions();
 
-        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['description' => '']));
+        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['description' => $description]));
     }
 
     public function testGuardPassesWhenDescriptionIsNotAString(): void
@@ -40,20 +44,6 @@ class SetDescriptionActionTest extends TestCase
         $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['description' => 3]));
     }
 
-    public function testGuardPassesForValidTokens(): void
-    {
-        $this->expectNotToPerformAssertions();
-
-        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['description' => '[activity:name] on [activity:start-date:d-m-Y]']));
-    }
-
-    public function testGuardPassesForNonTokenShapedText(): void
-    {
-        $this->expectNotToPerformAssertions();
-
-        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['description' => '[5x400m] [note: hello] [foo:bar]']));
-    }
-
     public function testGuardThrowsOnUnknownToken(): void
     {
         $this->expectExceptionObject(new InvalidAutomationRule('Unknown token(s): [activity:pizza].'));
@@ -61,31 +51,16 @@ class SetDescriptionActionTest extends TestCase
         $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['description' => 'Intervals: [activity:pizza]']));
     }
 
-    public function testApplyToSetsTheDescription(): void
+    #[TestWith(data: ['Felt great today', 'Felt great today'])]
+    #[TestWith(data: ['Started on [activity:start-date]', 'Started on default-format'])]
+    #[TestWith(data: ['Ridden with [gear:name]', 'Ridden with [gear:name]'])]
+    public function testApplyToSetsTheDescriptionReplacingResolvableTokens(string $configuredDescription, string $expectedDescription): void
     {
         $activity = ActivityBuilder::fromDefaults()->build();
 
-        $activity = $this->action->applyTo($activity, RuleConfiguration::fromConfig(['description' => 'Felt great today']));
+        $activity = $this->action->applyTo($activity, RuleConfiguration::fromConfig(['description' => $configuredDescription]));
 
-        $this->assertSame('Felt great today', $activity->getDescription());
-    }
-
-    public function testApplyToReplacesTokens(): void
-    {
-        $activity = ActivityBuilder::fromDefaults()->build();
-
-        $activity = $this->action->applyTo($activity, RuleConfiguration::fromConfig(['description' => 'Started on [activity:start-date]']));
-
-        $this->assertSame('Started on default-format', $activity->getDescription());
-    }
-
-    public function testApplyToLeavesUnresolvableTokenVerbatim(): void
-    {
-        $activity = ActivityBuilder::fromDefaults()->build();
-
-        $activity = $this->action->applyTo($activity, RuleConfiguration::fromConfig(['description' => 'Ridden with [gear:name]']));
-
-        $this->assertSame('Ridden with [gear:name]', $activity->getDescription());
+        $this->assertSame($expectedDescription, $activity->getDescription());
     }
 
     #[\Override]

@@ -14,6 +14,7 @@ use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class StartsNearConditionTest extends TestCase
@@ -35,32 +36,12 @@ class StartsNearConditionTest extends TestCase
         $this->condition->guardValidConfiguration($this->config('within', 51.05, 4.0, 1.0));
     }
 
-    public function testGuardThrowsOnInvalidOperator(): void
+    #[DataProvider('provideInvalidConfigurations')]
+    public function testGuardThrowsOnInvalidConfiguration(string $operator, float $latitude, float $longitude, float $radius, string $expectedMessage): void
     {
-        $this->expectExceptionObject(new InvalidAutomationRule('Invalid proximity operator "nope".'));
+        $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
 
-        $this->condition->guardValidConfiguration($this->config('nope', 51.05, 4.0, 1.0));
-    }
-
-    public function testGuardThrowsOnOutOfRangeLatitude(): void
-    {
-        $this->expectExceptionObject(new InvalidAutomationRule('A "latitude" between -90 and 90 is required.'));
-
-        $this->condition->guardValidConfiguration($this->config('within', 91.0, 4.0, 1.0));
-    }
-
-    public function testGuardThrowsOnOutOfRangeLongitude(): void
-    {
-        $this->expectExceptionObject(new InvalidAutomationRule('A "longitude" between -180 and 180 is required.'));
-
-        $this->condition->guardValidConfiguration($this->config('within', 51.05, 180.5, 1.0));
-    }
-
-    public function testGuardThrowsOnNonPositiveRadius(): void
-    {
-        $this->expectExceptionObject(new InvalidAutomationRule('A "radius" greater than 0 is required.'));
-
-        $this->condition->guardValidConfiguration($this->config('within', 51.05, 4.0, 0.0));
+        $this->condition->guardValidConfiguration($this->config($operator, $latitude, $longitude, $radius));
     }
 
     public function testMatchesWhenActivityStartsWithinTheRadius(): void
@@ -101,6 +82,17 @@ class StartsNearConditionTest extends TestCase
 
         $this->assertFalse($this->condition->matches($activity, $this->config('within', 51.05, 4.0, 1000.0)));
         $this->assertFalse($this->condition->matches($activity, $this->config('outside', 51.05, 4.0, 1000.0)));
+    }
+
+    /**
+     * @return iterable<string, array{string, float, float, float, string}>
+     */
+    public static function provideInvalidConfigurations(): iterable
+    {
+        yield 'invalid operator' => ['nope', 51.05, 4.0, 1.0, 'Invalid proximity operator "nope".'];
+        yield 'out of range latitude' => ['within', 91.0, 4.0, 1.0, 'A "latitude" between -90 and 90 is required.'];
+        yield 'out of range longitude' => ['within', 51.05, 180.5, 1.0, 'A "longitude" between -180 and 180 is required.'];
+        yield 'non-positive radius' => ['within', 51.05, 4.0, 0.0, 'A "radius" greater than 0 is required.'];
     }
 
     private function config(string $operator, float $latitude, float $longitude, float $radius): RuleConfiguration

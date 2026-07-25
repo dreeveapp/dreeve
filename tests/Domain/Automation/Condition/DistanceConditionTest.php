@@ -12,6 +12,7 @@ use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class DistanceConditionTest extends TestCase
@@ -33,37 +34,20 @@ class DistanceConditionTest extends TestCase
         $this->condition->guardValidConfiguration($this->config('gte', 10.0));
     }
 
-    public function testGuardThrowsOnInvalidOperator(): void
+    #[DataProvider('provideInvalidConfigurations')]
+    public function testGuardThrowsOnInvalidConfiguration(string $operator, float $value, string $expectedMessage): void
     {
-        $this->expectExceptionObject(new InvalidAutomationRule('Invalid distance operator "nope".'));
+        $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
 
-        $this->condition->guardValidConfiguration($this->config('nope', 10.0));
+        $this->condition->guardValidConfiguration($this->config($operator, $value));
     }
 
-    public function testGuardThrowsOnNegativeValue(): void
-    {
-        $this->expectExceptionObject(new InvalidAutomationRule('A "value" of at least 0 is required.'));
-
-        $this->condition->guardValidConfiguration($this->config('gte', -1.0));
-    }
-
-    public function testMatchesWhenActivityDistanceSatisfiesTheOperator(): void
+    #[DataProvider('provideMatchExpectations')]
+    public function testMatchesWhenActivityDistanceSatisfiesTheOperator(string $operator, float $value, bool $expectedToMatch): void
     {
         $activity = ActivityBuilder::fromDefaults()->withDistance(Kilometer::from(42.5))->build();
 
-        $this->assertTrue($this->condition->matches($activity, $this->config('gte', 40.0)));
-        $this->assertTrue($this->condition->matches($activity, $this->config('gt', 42.0)));
-        $this->assertTrue($this->condition->matches($activity, $this->config('lte', 42.5)));
-        $this->assertTrue($this->condition->matches($activity, $this->config('eq', 42.5)));
-    }
-
-    public function testDoesNotMatchWhenActivityDistanceFailsTheOperator(): void
-    {
-        $activity = ActivityBuilder::fromDefaults()->withDistance(Kilometer::from(42.5))->build();
-
-        $this->assertFalse($this->condition->matches($activity, $this->config('lt', 42.5)));
-        $this->assertFalse($this->condition->matches($activity, $this->config('gt', 42.5)));
-        $this->assertFalse($this->condition->matches($activity, $this->config('eq', 40.0)));
+        $this->assertSame($expectedToMatch, $this->condition->matches($activity, $this->config($operator, $value)));
     }
 
     public function testMatchesInterpretsTheValueInMilesForImperialUnitSystem(): void
@@ -73,6 +57,29 @@ class DistanceConditionTest extends TestCase
 
         $this->assertTrue($condition->matches($activity, $this->config('gte', 10.0)));
         $this->assertFalse($condition->matches($activity, $this->config('gte', 12.0)));
+    }
+
+    /**
+     * @return iterable<string, array{string, float, string}>
+     */
+    public static function provideInvalidConfigurations(): iterable
+    {
+        yield 'invalid operator' => ['nope', 10.0, 'Invalid distance operator "nope".'];
+        yield 'negative value' => ['gte', -1.0, 'A "value" of at least 0 is required.'];
+    }
+
+    /**
+     * @return iterable<string, array{string, float, bool}>
+     */
+    public static function provideMatchExpectations(): iterable
+    {
+        yield 'gte a smaller value' => ['gte', 40.0, true];
+        yield 'gt a smaller value' => ['gt', 42.0, true];
+        yield 'lte the exact distance' => ['lte', 42.5, true];
+        yield 'eq the exact distance' => ['eq', 42.5, true];
+        yield 'lt the exact distance' => ['lt', 42.5, false];
+        yield 'gt the exact distance' => ['gt', 42.5, false];
+        yield 'eq another value' => ['eq', 40.0, false];
     }
 
     private function config(string $operator, float $value): RuleConfiguration

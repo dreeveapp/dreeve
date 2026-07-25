@@ -11,6 +11,7 @@ use App\Infrastructure\Tokenizer\Tokenizer;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Infrastructure\Tokenizer\ActivityTokenProviderStub;
 use App\Tests\Infrastructure\Tokenizer\GearTokenProviderStub;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class SetNameActionTest extends TestCase
@@ -25,66 +26,35 @@ class SetNameActionTest extends TestCase
         );
     }
 
-    public function testGuardPassesForValidConfiguration(): void
+    #[TestWith(data: ['Morning Ride'])]
+    #[TestWith(data: ['[activity:name] on [activity:start-date:d-m-Y]'])]
+    #[TestWith(data: ['[5x400m] [note: hello] [foo:bar]'])]
+    public function testGuardPassesForValidConfiguration(string $name): void
     {
         $this->expectNotToPerformAssertions();
 
-        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['name' => 'Morning Ride']));
+        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['name' => $name]));
     }
 
-    public function testGuardPassesForValidTokens(): void
+    #[TestWith(data: ['   ', 'A "name" is required.'])]
+    #[TestWith(data: ['[activity:pizza] with [gear:name:foo]', 'Unknown token(s): [activity:pizza], [gear:name:foo].'])]
+    public function testGuardThrowsOnInvalidConfiguration(string $name, string $expectedMessage): void
     {
-        $this->expectNotToPerformAssertions();
+        $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
 
-        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['name' => '[activity:name] on [activity:start-date:d-m-Y]']));
+        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['name' => $name]));
     }
 
-    public function testGuardPassesForNonTokenShapedText(): void
-    {
-        $this->expectNotToPerformAssertions();
-
-        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['name' => '[5x400m] [note: hello] [foo:bar]']));
-    }
-
-    public function testGuardThrowsOnEmptyName(): void
-    {
-        $this->expectExceptionObject(new InvalidAutomationRule('A "name" is required.'));
-
-        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['name' => '   ']));
-    }
-
-    public function testGuardThrowsOnUnknownToken(): void
-    {
-        $this->expectExceptionObject(new InvalidAutomationRule('Unknown token(s): [activity:pizza], [gear:name:foo].'));
-
-        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['name' => '[activity:pizza] with [gear:name:foo]']));
-    }
-
-    public function testApplyToSetsTheName(): void
+    #[TestWith(data: ['Morning Ride', 'Morning Ride'])]
+    #[TestWith(data: ['Commute: [activity:name]', 'Commute: Morning Ride'])]
+    #[TestWith(data: ['Ridden with [gear:name]', 'Ridden with [gear:name]'])]
+    public function testApplyToSetsTheNameReplacingResolvableTokens(string $configuredName, string $expectedName): void
     {
         $activity = ActivityBuilder::fromDefaults()->build();
 
-        $activity = $this->action->applyTo($activity, RuleConfiguration::fromConfig(['name' => 'Morning Ride']));
+        $activity = $this->action->applyTo($activity, RuleConfiguration::fromConfig(['name' => $configuredName]));
 
-        $this->assertSame('Morning Ride', $activity->getName());
-    }
-
-    public function testApplyToReplacesTokens(): void
-    {
-        $activity = ActivityBuilder::fromDefaults()->build();
-
-        $activity = $this->action->applyTo($activity, RuleConfiguration::fromConfig(['name' => 'Commute: [activity:name]']));
-
-        $this->assertSame('Commute: Morning Ride', $activity->getName());
-    }
-
-    public function testApplyToLeavesUnresolvableTokenVerbatim(): void
-    {
-        $activity = ActivityBuilder::fromDefaults()->build();
-
-        $activity = $this->action->applyTo($activity, RuleConfiguration::fromConfig(['name' => 'Ridden with [gear:name]']));
-
-        $this->assertSame('Ridden with [gear:name]', $activity->getName());
+        $this->assertSame($expectedName, $activity->getName());
     }
 
     #[\Override]

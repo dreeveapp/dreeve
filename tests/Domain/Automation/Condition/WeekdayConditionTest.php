@@ -9,6 +9,7 @@ use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class WeekdayConditionTest extends TestCase
@@ -38,57 +39,50 @@ class WeekdayConditionTest extends TestCase
         $this->condition->guardValidConfiguration($this->config('isOneOf', ['1', '5']));
     }
 
-    public function testGuardThrowsOnInvalidOperator(): void
+    /**
+     * @param list<int> $weekdays
+     */
+    #[DataProvider('provideInvalidConfigurations')]
+    public function testGuardThrowsOnInvalidConfiguration(string $operator, array $weekdays, string $expectedMessage): void
     {
-        $this->expectExceptionObject(new InvalidAutomationRule('Invalid weekday operator "is".'));
+        $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
 
-        // "is" is a single-value operator, not valid for a set condition.
-        $this->condition->guardValidConfiguration($this->config('is', [1]));
+        $this->condition->guardValidConfiguration($this->config($operator, $weekdays));
     }
 
-    public function testGuardThrowsWhenNoWeekdaysSelected(): void
-    {
-        $this->expectExceptionObject(new InvalidAutomationRule('At least one weekday is required.'));
-
-        $this->condition->guardValidConfiguration($this->config('isOneOf', []));
-    }
-
-    public function testGuardThrowsOnOutOfRangeWeekday(): void
-    {
-        $this->expectExceptionObject(new InvalidAutomationRule('Invalid weekday "8", expected 1 (Monday) through 7 (Sunday).'));
-
-        $this->condition->guardValidConfiguration($this->config('isOneOf', [1, 8]));
-    }
-
-    public function testMatchesWhenActivityFallsOnAConfiguredWeekday(): void
+    /**
+     * @param list<int> $weekdays
+     */
+    #[DataProvider('provideMatchExpectations')]
+    public function testMatchesAnActivityAgainstTheConfiguredWeekdays(string $operator, array $weekdays, bool $expectedToMatch): void
     {
         // 2023-10-10 is a Tuesday (ISO weekday 2).
         $activity = ActivityBuilder::fromDefaults()
             ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
             ->build();
 
-        $this->assertTrue($this->condition->matches($activity, $this->config('isOneOf', [2, 4])));
+        $this->assertSame($expectedToMatch, $this->condition->matches($activity, $this->config($operator, $weekdays)));
     }
 
-    public function testDoesNotMatchWhenActivityFallsOnAnotherWeekday(): void
+    /**
+     * @return iterable<string, array{string, list<int>, string}>
+     */
+    public static function provideInvalidConfigurations(): iterable
     {
-        // 2023-10-10 is a Tuesday (ISO weekday 2).
-        $activity = ActivityBuilder::fromDefaults()
-            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
-            ->build();
-
-        $this->assertFalse($this->condition->matches($activity, $this->config('isOneOf', [6, 7])));
+        yield 'invalid operator "is", a single-value operator, not valid for a set condition' => ['is', [1], 'Invalid weekday operator "is".'];
+        yield 'no weekdays selected' => ['isOneOf', [], 'At least one weekday is required.'];
+        yield 'out of range weekday' => ['isOneOf', [1, 8], 'Invalid weekday "8", expected 1 (Monday) through 7 (Sunday).'];
     }
 
-    public function testIsNoneOfOperatorInvertsTheMatch(): void
+    /**
+     * @return iterable<string, array{string, list<int>, bool}>
+     */
+    public static function provideMatchExpectations(): iterable
     {
-        // 2023-10-10 is a Tuesday (ISO weekday 2).
-        $activity = ActivityBuilder::fromDefaults()
-            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
-            ->build();
-
-        $this->assertFalse($this->condition->matches($activity, $this->config('isNoneOf', [2, 4])));
-        $this->assertTrue($this->condition->matches($activity, $this->config('isNoneOf', [6, 7])));
+        yield 'isOneOf matches when the activity falls on a configured weekday' => ['isOneOf', [2, 4], true];
+        yield 'isOneOf does not match when the activity falls on another weekday' => ['isOneOf', [6, 7], false];
+        yield 'isNoneOf does not match on a configured weekday' => ['isNoneOf', [2, 4], false];
+        yield 'isNoneOf matches on another weekday' => ['isNoneOf', [6, 7], true];
     }
 
     /**

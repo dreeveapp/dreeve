@@ -9,6 +9,7 @@ use App\Domain\Automation\Condition\SportTypeCondition;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class SportTypeConditionTest extends TestCase
@@ -30,25 +31,15 @@ class SportTypeConditionTest extends TestCase
         $this->condition->guardValidConfiguration($this->config('isOneOf', [SportType::RIDE->value, SportType::RUN->value]));
     }
 
-    public function testGuardThrowsOnInvalidOperator(): void
+    /**
+     * @param list<string> $sportTypes
+     */
+    #[DataProvider('provideInvalidConfigurations')]
+    public function testGuardThrowsOnInvalidConfiguration(string $operator, array $sportTypes, string $expectedMessage): void
     {
-        $this->expectExceptionObject(new InvalidAutomationRule('Invalid sport type operator "nope".'));
+        $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
 
-        $this->condition->guardValidConfiguration($this->config('nope', [SportType::RIDE->value]));
-    }
-
-    public function testGuardThrowsWhenNoSportTypesSelected(): void
-    {
-        $this->expectExceptionObject(new InvalidAutomationRule('At least one sport type is required.'));
-
-        $this->condition->guardValidConfiguration($this->config('isOneOf', []));
-    }
-
-    public function testGuardThrowsOnInvalidSportType(): void
-    {
-        $this->expectExceptionObject(new InvalidAutomationRule('Invalid sport type "Flying".'));
-
-        $this->condition->guardValidConfiguration($this->config('isOneOf', [SportType::RIDE->value, 'Flying']));
+        $this->condition->guardValidConfiguration($this->config($operator, $sportTypes));
     }
 
     public function testMatchesWhenActivitySportTypeIsOneOfTheConfigured(): void
@@ -72,6 +63,16 @@ class SportTypeConditionTest extends TestCase
 
         $this->assertFalse($this->condition->matches($ride, $this->config('isNoneOf', [SportType::RIDE->value, SportType::RUN->value])));
         $this->assertTrue($this->condition->matches($walk, $this->config('isNoneOf', [SportType::RIDE->value, SportType::RUN->value])));
+    }
+
+    /**
+     * @return iterable<string, array{string, list<string>, string}>
+     */
+    public static function provideInvalidConfigurations(): iterable
+    {
+        yield 'invalid operator' => ['nope', [SportType::RIDE->value], 'Invalid sport type operator "nope".'];
+        yield 'no sport types selected' => ['isOneOf', [], 'At least one sport type is required.'];
+        yield 'invalid sport type' => ['isOneOf', [SportType::RIDE->value, 'Flying'], 'Invalid sport type "Flying".'];
     }
 
     /**
