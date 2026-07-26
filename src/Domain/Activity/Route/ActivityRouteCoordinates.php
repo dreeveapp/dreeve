@@ -66,10 +66,12 @@ final readonly class ActivityRouteCoordinates
             ->filterOnType(StreamType::LAT_LNG)?->getData() ?? [];
 
         foreach ($latLngStream as $point) {
-            if (!is_array($point) || !isset($point[0], $point[1])) {
+            if (!is_array($point)) {
                 continue;
             }
-
+            if (!isset($point[0], $point[1])) {
+                continue;
+            }
             yield $this->coordinate((float) $point[0], (float) $point[1]);
         }
     }
