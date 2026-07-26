@@ -4,21 +4,25 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Automation\Condition;
 
+use App\Domain\Activity\Route\ActivityRouteCoordinates;
+use App\Domain\Activity\Stream\DbalActivityStreamRepository;
+use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Automation\Condition\StartsNearCondition;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
-use App\Domain\Settings\AppearanceSettings;
+use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
+use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 
-class StartsNearConditionTest extends TestCase
+class StartsNearConditionTest extends ContainerTestCase
 {
+    private DbalActivityStreamRepository $activityStreamRepository;
     private StartsNearCondition $condition;
 
     public function testDefaultConfiguration(): void
@@ -33,7 +37,12 @@ class StartsNearConditionTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->condition->guardValidConfiguration($this->config('within', 51.05, 4.0, 1.0));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig([
+            'operator' => 'within',
+            'latitude' => 51.05,
+            'longitude' => 4.0,
+            'radius' => 1.0,
+        ]));
     }
 
     #[DataProvider('provideInvalidConfigurations')]
@@ -41,47 +50,104 @@ class StartsNearConditionTest extends TestCase
     {
         $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
 
-        $this->condition->guardValidConfiguration($this->config($operator, $latitude, $longitude, $radius));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig([
+            'operator' => $operator,
+            'latitude' => $latitude,
+            'longitude' => $longitude,
+            'radius' => $radius,
+        ]));
     }
 
     public function testMatchesWhenActivityStartsWithinTheRadius(): void
     {
-        $activity = ActivityBuilder::fromDefaults()->withStartingCoordinate($this->coordinate(51.055, 4.0))->build();
+        // The latlng stream is the most accurate source and takes precedence over the starting coordinate.
+        $activity = ActivityBuilder::fromDefaults()
+            ->withStartingCoordinate(Coordinate::createFromLatAndLng(Latitude::fromString('51.10'), Longitude::fromString('4.0')))
+            ->build();
+        $this->activityStreamRepository->add(ActivityStreamBuilder::fromDefaults()
+            ->withActivityId($activity->getId())
+            ->withStreamType(StreamType::LAT_LNG)
+            ->withData([[51.055, 4.0], [51.10, 4.0]])
+            ->build());
 
-        $this->assertTrue($this->condition->matches($activity, $this->config('within', 51.05, 4.0, 1000.0)));
+        $this->assertTrue($this->condition->matches($activity, RuleConfiguration::fromConfig([
+            'operator' => 'within',
+            'latitude' => 51.05,
+            'longitude' => 4.0,
+            'radius' => 1000.0,
+        ])));
     }
 
     public function testDoesNotMatchWhenActivityStartsOutsideTheRadius(): void
     {
-        $activity = ActivityBuilder::fromDefaults()->withStartingCoordinate($this->coordinate(51.10, 4.0))->build();
+        $activity = ActivityBuilder::fromDefaults()
+            ->withStartingCoordinate(Coordinate::createFromLatAndLng(Latitude::fromString('51.10'), Longitude::fromString('4.0')))
+            ->build();
 
-        $this->assertFalse($this->condition->matches($activity, $this->config('within', 51.05, 4.0, 1000.0)));
+        $this->assertFalse($this->condition->matches($activity, RuleConfiguration::fromConfig([
+            'operator' => 'within',
+            'latitude' => 51.05,
+            'longitude' => 4.0,
+            'radius' => 1000.0,
+        ])));
     }
 
     public function testOutsideOperatorInvertsTheMatch(): void
     {
-        $near = ActivityBuilder::fromDefaults()->withStartingCoordinate($this->coordinate(51.055, 4.0))->build();
-        $far = ActivityBuilder::fromDefaults()->withStartingCoordinate($this->coordinate(51.10, 4.0))->build();
+        $near = ActivityBuilder::fromDefaults()
+            ->withStartingCoordinate(Coordinate::createFromLatAndLng(Latitude::fromString('51.055'), Longitude::fromString('4.0')))
+            ->build();
+        $far = ActivityBuilder::fromDefaults()
+            ->withStartingCoordinate(Coordinate::createFromLatAndLng(Latitude::fromString('51.10'), Longitude::fromString('4.0')))
+            ->build();
+        $configuration = RuleConfiguration::fromConfig([
+            'operator' => 'outside',
+            'latitude' => 51.05,
+            'longitude' => 4.0,
+            'radius' => 1000.0,
+        ]);
 
-        $this->assertFalse($this->condition->matches($near, $this->config('outside', 51.05, 4.0, 1000.0)));
-        $this->assertTrue($this->condition->matches($far, $this->config('outside', 51.05, 4.0, 1000.0)));
+        $this->assertFalse($this->condition->matches($near, $configuration));
+        $this->assertTrue($this->condition->matches($far, $configuration));
     }
 
     public function testMatchesInterpretsTheRadiusInFeetForImperialUnitSystem(): void
     {
-        $activity = ActivityBuilder::fromDefaults()->withStartingCoordinate($this->coordinate(51.055, 4.0))->build();
-        $condition = $this->conditionFor(UnitSystem::IMPERIAL);
+        $activity = ActivityBuilder::fromDefaults()
+            ->withStartingCoordinate(Coordinate::createFromLatAndLng(Latitude::fromString('51.055'), Longitude::fromString('4.0')))
+            ->build();
+        $this->getContainer()->get(SettingsRepository::class)->save(SettingsGroup::APPEARANCE, ['unitSystem' => 'imperial']);
 
-        $this->assertFalse($condition->matches($activity, $this->config('within', 51.05, 4.0, 1000.0)));
-        $this->assertTrue($condition->matches($activity, $this->config('within', 51.05, 4.0, 2000.0)));
+        $this->assertFalse($this->condition->matches($activity, RuleConfiguration::fromConfig([
+            'operator' => 'within',
+            'latitude' => 51.05,
+            'longitude' => 4.0,
+            'radius' => 1000.0,
+        ])));
+        $this->assertTrue($this->condition->matches($activity, RuleConfiguration::fromConfig([
+            'operator' => 'within',
+            'latitude' => 51.05,
+            'longitude' => 4.0,
+            'radius' => 2000.0,
+        ])));
     }
 
     public function testDoesNotMatchWhenActivityHasNoStartingCoordinate(): void
     {
         $activity = ActivityBuilder::fromDefaults()->build();
 
-        $this->assertFalse($this->condition->matches($activity, $this->config('within', 51.05, 4.0, 1000.0)));
-        $this->assertFalse($this->condition->matches($activity, $this->config('outside', 51.05, 4.0, 1000.0)));
+        $this->assertFalse($this->condition->matches($activity, RuleConfiguration::fromConfig([
+            'operator' => 'within',
+            'latitude' => 51.05,
+            'longitude' => 4.0,
+            'radius' => 1000.0,
+        ])));
+        $this->assertFalse($this->condition->matches($activity, RuleConfiguration::fromConfig([
+            'operator' => 'outside',
+            'latitude' => 51.05,
+            'longitude' => 4.0,
+            'radius' => 1000.0,
+        ])));
     }
 
     /**
@@ -95,39 +161,15 @@ class StartsNearConditionTest extends TestCase
         yield 'non-positive radius' => ['within', 51.05, 4.0, 0.0, 'A "radius" greater than 0 is required.'];
     }
 
-    private function config(string $operator, float $latitude, float $longitude, float $radius): RuleConfiguration
-    {
-        return RuleConfiguration::fromConfig([
-            'operator' => $operator,
-            'latitude' => $latitude,
-            'longitude' => $longitude,
-            'radius' => $radius,
-        ]);
-    }
-
-    private function coordinate(float $latitude, float $longitude): Coordinate
-    {
-        return Coordinate::createFromLatAndLng(
-            Latitude::fromString((string) $latitude),
-            Longitude::fromString((string) $longitude),
-        );
-    }
-
-    private function conditionFor(UnitSystem $unitSystem): StartsNearCondition
-    {
-        $settingsRepository = $this->createStub(SettingsRepository::class);
-        $settingsRepository
-            ->method('appearance')
-            ->willReturn(AppearanceSettings::fromArray(['unitSystem' => $unitSystem->value]));
-
-        return new StartsNearCondition($settingsRepository);
-    }
-
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->condition = $this->conditionFor(UnitSystem::METRIC);
+        $this->activityStreamRepository = new DbalActivityStreamRepository($this->getConnection());
+        $this->condition = new StartsNearCondition(
+            $this->getContainer()->get(SettingsRepository::class),
+            new ActivityRouteCoordinates($this->activityStreamRepository)
+        );
     }
 }

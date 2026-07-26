@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Automation\Condition;
 
 use App\Domain\Activity\Activity;
+use App\Domain\Activity\Route\ActivityRouteCoordinates;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\ValueObject\Geography\Coordinate;
-use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
-use App\Infrastructure\ValueObject\Geography\Latitude;
-use App\Infrastructure\ValueObject\Geography\Longitude;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class PassesNearCondition implements Condition
@@ -19,6 +16,7 @@ final readonly class PassesNearCondition implements Condition
 
     public function __construct(
         private SettingsRepository $settingsRepository,
+        private ActivityRouteCoordinates $routeCoordinates,
     ) {
     }
 
@@ -39,48 +37,22 @@ final readonly class PassesNearCondition implements Condition
 
     public function matches(Activity $activity, RuleConfiguration $configuration): bool
     {
-        $polyline = $activity->getEncodedPolyline();
-        if (!$polyline instanceof EncodedPolyline) {
-            // A null polyline can never be located: no match for either operator.
-            return false;
-        }
-
         $operator = $configuration->get('operator');
         assert(is_string($operator));
 
-        if (MatchOperator::WITHIN === MatchOperator::from($operator)) {
-            // Passes near == any point sits within the radius; short-circuit on the first hit.
-            foreach ($this->coordinates($polyline) as $coordinate) {
-                if ($this->coordinateMatches($coordinate, $configuration)) {
-                    return true;
-                }
-            }
+        $isWithinOperator = MatchOperator::WITHIN === MatchOperator::from($operator);
+        $routeIsEmpty = true;
 
-            return false;
-        }
+        foreach ($this->routeCoordinates->all($activity) as $coordinate) {
+            $routeIsEmpty = false;
 
-        // "outside" == the route never comes near: every point must sit outside the radius.
-        foreach ($this->coordinates($polyline) as $coordinate) {
-            if (!$this->coordinateMatches($coordinate, $configuration)) {
-                return false;
+            // "passes near" needs one point within the radius, "outside" needs every point outside it.
+            if ($this->coordinateMatches($coordinate, $configuration) === $isWithinOperator) {
+                return $isWithinOperator;
             }
         }
 
-        return true;
-    }
-
-    /**
-     * @return iterable<Coordinate>
-     */
-    private function coordinates(EncodedPolyline $polyline): iterable
-    {
-        $points = $polyline->decode();
-        $counter = count($points);
-        for ($i = 0; $i + 1 < $counter; $i += 2) {
-            yield Coordinate::createFromLatAndLng(
-                Latitude::fromString((string) $points[$i]),
-                Longitude::fromString((string) $points[$i + 1]),
-            );
-        }
+        // A route that can never be located: no match for either operator.
+        return !$routeIsEmpty && !$isWithinOperator;
     }
 }

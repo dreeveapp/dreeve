@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Automation\Condition;
 
 use App\Domain\Activity\Activity;
+use App\Domain\Activity\Route\ActivityRouteCoordinates;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\ValueObject\Geography\Coordinate;
-use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
-use App\Infrastructure\ValueObject\Geography\Latitude;
-use App\Infrastructure\ValueObject\Geography\Longitude;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class EndsNearCondition implements Condition
@@ -19,6 +16,7 @@ final readonly class EndsNearCondition implements Condition
 
     public function __construct(
         private SettingsRepository $settingsRepository,
+        private ActivityRouteCoordinates $routeCoordinates,
     ) {
     }
 
@@ -39,25 +37,6 @@ final readonly class EndsNearCondition implements Condition
 
     public function matches(Activity $activity, RuleConfiguration $configuration): bool
     {
-        return $this->coordinateMatches($this->endingCoordinate($activity), $configuration);
-    }
-
-    private function endingCoordinate(Activity $activity): ?Coordinate
-    {
-        $polyline = $activity->getEncodedPolyline();
-        if (!$polyline instanceof EncodedPolyline) {
-            return null;
-        }
-
-        $points = $polyline->decode();
-        $pointCount = count($points);
-        if ($pointCount < 2) {
-            return null;
-        }
-
-        return Coordinate::createFromLatAndLng(
-            Latitude::fromString((string) $points[$pointCount - 2]),
-            Longitude::fromString((string) $points[$pointCount - 1]),
-        );
+        return $this->coordinateMatches($this->routeCoordinates->last($activity), $configuration);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Automation\Condition;
 
 use App\Domain\Activity\Activity;
+use App\Domain\Activity\Route\ActivityRouteCoordinates;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Settings\SettingsRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -15,6 +16,7 @@ final readonly class StartsNearCondition implements Condition
 
     public function __construct(
         private SettingsRepository $settingsRepository,
+        private ActivityRouteCoordinates $routeCoordinates,
     ) {
     }
 
@@ -35,6 +37,6 @@ final readonly class StartsNearCondition implements Condition
 
     public function matches(Activity $activity, RuleConfiguration $configuration): bool
     {
-        return $this->coordinateMatches($activity->getStartingCoordinate(), $configuration);
+        return $this->coordinateMatches($this->routeCoordinates->first($activity), $configuration);
     }
 }
