@@ -6,6 +6,7 @@ namespace App\Domain\Automation\Condition;
 
 enum ConditionType: string
 {
+    case NAME = 'name';
     case DEVICE = 'device';
     case SPORT_TYPE = 'sportType';
     case DISTANCE = 'distance';

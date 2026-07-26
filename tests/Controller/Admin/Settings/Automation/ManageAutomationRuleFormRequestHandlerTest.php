@@ -90,6 +90,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         // Both repeaters start empty and offer every registered condition/action type.
         $this->assertStringContainsString('[]', (string) $crawler->filter('[data-repeater-list]')->eq(0)->attr('data-repeater-initial'));
         $conditionOptions = $crawler->filter('select[name="conditions[__index__][type]"] option')->extract(['value']);
+        $this->assertContains('name', $conditionOptions);
         $this->assertContains('device', $conditionOptions);
         $this->assertContains('passesNear', $conditionOptions);
         $actionOptions = $crawler->filter('select[name="actions[__index__][type]"] option')->extract(['value']);

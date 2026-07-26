@@ -13,6 +13,8 @@ enum MatchOperator: string implements TranslatableInterface
     case IS_NOT = 'isNot';
     case IS_ONE_OF = 'isOneOf';
     case IS_NONE_OF = 'isNoneOf';
+    case CONTAINS = 'contains';
+    case DOES_NOT_CONTAIN = 'doesNotContain';
     case WITHIN = 'within';
     case OUTSIDE = 'outside';
 
@@ -23,6 +25,8 @@ enum MatchOperator: string implements TranslatableInterface
             self::IS_NOT => $translator->trans('is not', domain: 'admin', locale: $locale),
             self::IS_ONE_OF => $translator->trans('is one of', domain: 'admin', locale: $locale),
             self::IS_NONE_OF => $translator->trans('is none of', domain: 'admin', locale: $locale),
+            self::CONTAINS => $translator->trans('contains', domain: 'admin', locale: $locale),
+            self::DOES_NOT_CONTAIN => $translator->trans('does not contain', domain: 'admin', locale: $locale),
             self::WITHIN => $translator->trans('within radius', domain: 'admin', locale: $locale),
             self::OUTSIDE => $translator->trans('outside radius', domain: 'admin', locale: $locale),
         };
@@ -44,6 +48,14 @@ enum MatchOperator: string implements TranslatableInterface
         };
     }
 
+    public function isForText(): bool
+    {
+        return match ($this) {
+            self::CONTAINS, self::DOES_NOT_CONTAIN => true,
+            default => false,
+        };
+    }
+
     public function isForProximity(): bool
     {
         return match ($this) {
@@ -55,8 +67,8 @@ enum MatchOperator: string implements TranslatableInterface
     public function isSatisfiedBy(bool $matches): bool
     {
         return match ($this) {
-            self::IS, self::IS_ONE_OF, self::WITHIN => $matches,
-            self::IS_NOT, self::IS_NONE_OF, self::OUTSIDE => !$matches,
+            self::IS, self::IS_ONE_OF, self::CONTAINS, self::WITHIN => $matches,
+            self::IS_NOT, self::IS_NONE_OF, self::DOES_NOT_CONTAIN, self::OUTSIDE => !$matches,
         };
     }
 }

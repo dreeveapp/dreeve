@@ -424,10 +424,13 @@ after: nach
 'at or before': 'am oder vor'
 before: vor
 'calendar days': Kalendertage
+contains: contains
 'discord://token@id': 'discord://token@id'
+'does not contain': 'does not contain'
 'eg: Commuter bike on short rides': 'z.B.: Pendelfahrten auf kurzen Strecken'
 'eg: Imported automatically': 'z.B.: Automatisch importiert'
 'eg: Morning commute': 'z.B.: morgendliche Pendelfahrt'
+'eg: commute': 'eg: commute'
 exactly: genau
 'exactly at': 'genau um'
 ftp: ftp
