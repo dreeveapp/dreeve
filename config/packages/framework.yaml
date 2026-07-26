@@ -2,6 +2,10 @@
 framework:
     secret: '%env(APP_SECRET)%'
     session: true
+    # Without this, Dreeve can't tell requests came in over HTTPS from a reverse proxy,
+    # so it generates http:// redirects (e.g. the /admin login redirect) even behind TLS.
+    trusted_proxies: '%env(TRUSTED_PROXIES)%'
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port']
     assets:
         version_strategy: 'App\Infrastructure\Http\UuidAssetVersioningStrategy'
 

@@ -116,6 +116,17 @@ ADMIN_PASSWORD_HASH='replace-me'
 # PROXY_HOST=https://your-domain.com
 # The port on which the app will be served.
 # PROXY_PORT=8080
+
+# !! IMPORTANT If Dreeve sits behind your own TLS-terminating reverse proxy
+# (nginx, Traefik, Caddy, Cloudflare Tunnel, ...) instead of PROXY_HOST/PROXY_PORT above,
+# uncomment this so Dreeve knows the original request was HTTPS.
+# Without it, admin login redirects are generated as http:// even though your proxy
+# serves https://, and ADMIN_ALLOWED_IPS compares against your proxy's IP instead of
+# the real client IP.
+# REMOTE_ADDR is a Symfony-recognized placeholder: it trusts whichever IP the request
+# actually arrives from, which you need because Docker's port mapping hides your
+# proxy's real IP behind its own gateway address.
+# TRUSTED_PROXIES=127.0.0.1,REMOTE_ADDR
 ```
 
 ## Admin password

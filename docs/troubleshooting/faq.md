@@ -109,3 +109,17 @@ variable and silently mangles the hash, so you get a password that can never mat
 See [Admin password](/getting-started/installation.md#admin-password).
 
 </details>
+
+<details>
+<summary>Visiting /admin gives "Client sent an HTTP request to an HTTPS server"</summary>
+
+This happens when Dreeve sits behind your own TLS-terminating reverse proxy (nginx, Traefik, Caddy, Cloudflare
+Tunnel, ...) rather than being reached directly. Dreeve doesn't know the original request came in over HTTPS,
+so it redirects unauthenticated `/admin` requests to the login page using `http://` instead of `https://`. If
+your reverse proxy only accepts HTTPS on that host/port, following that redirect produces this exact error.
+
+Set `TRUSTED_PROXIES` in your `.env` (see [Installation](/getting-started/installation.md)) and recreate your
+containers. This also fixes `ADMIN_ALLOWED_IPS`, which has the same root cause: without it, Dreeve sees your
+reverse proxy's IP instead of the real client IP on every request.
+
+</details>

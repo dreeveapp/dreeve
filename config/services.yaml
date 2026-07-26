@@ -16,6 +16,7 @@ parameters:
     env(LOCK_DSN): 'flock'
     env(TZ): ''
     env(DATABASE_DIRECTORY): '%kernel.project_dir%/storage/database'
+    env(TRUSTED_PROXIES): '127.0.0.1,REMOTE_ADDR'
 
 services:
     # default configuration for services in *this* file
