@@ -16,6 +16,7 @@
 - Integrations
 
   - [AI assistant](integrations/ai.md "Dreeve | AI assistant")
+  - [Garmin Connect](integrations/garmin-connect.md "Dreeve | Garmin Connect")
   - [Notifications](integrations/notifications.md "Dreeve | Notifications")
 
 - Troubleshooting

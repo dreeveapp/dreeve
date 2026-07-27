@@ -27,6 +27,12 @@ running Dreeve isn't the machine your files are on. Uploaded files go through th
 
 ![Drag-and-drop upload zone](../assets/images/file-upload.png "The drag-and-drop upload zone at /admin/upload")
 
+#### **Garmin Connect**
+
+The [Garmin connector](/integrations/garmin-connect.md) is a separate container that pulls your
+activities out of Garmin Connect and drops them into the watch folder for you, so you never have to
+export anything by hand.
+
 <!-- tabs:end -->
 
 ### Duplicate detection
