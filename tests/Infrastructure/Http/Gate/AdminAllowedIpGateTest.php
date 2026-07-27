@@ -11,6 +11,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AdminAllowedIpGateTest extends TestCase
 {
+    /** @var string[] */
+    private array $originalTrustedProxies;
+    private int $originalTrustedHeaderSet;
+
     public function testItDeniesAdminAccessFromADisallowedIp(): void
     {
         $this->expectExceptionObject(new NotFoundHttpException('Not found'));
@@ -26,10 +30,23 @@ class AdminAllowedIpGateTest extends TestCase
         $this->assertFalse($gate->handle($this->adminRequestFromIp('192.168.1.1'))->hasBeenApplied());
     }
 
-    public function testItPrefersTheCloudflareConnectingIpHeader(): void
+    public function testItPrefersTheCloudflareConnectingIpHeaderWhenTheRequestComesFromATrustedProxy(): void
     {
+        Request::setTrustedProxies(['192.168.1.1'], Request::HEADER_X_FORWARDED_FOR);
+
         $request = $this->adminRequestFromIp('192.168.1.1');
         $request->headers->set('CF-Connecting-IP', '10.0.0.1');
+
+        $this->expectExceptionObject(new NotFoundHttpException('Not found'));
+
+        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'));
+        $gate->handle($request);
+    }
+
+    public function testItIgnoresASpoofedCloudflareConnectingIpHeader(): void
+    {
+        $request = $this->adminRequestFromIp('10.0.0.1');
+        $request->headers->set('CF-Connecting-IP', '192.168.1.1');
 
         $this->expectExceptionObject(new NotFoundHttpException('Not found'));
 
@@ -67,5 +84,20 @@ class AdminAllowedIpGateTest extends TestCase
         $request->server->set('REMOTE_ADDR', $ipAddress);
 
         return $request;
+    }
+
+    #[\Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->originalTrustedProxies = Request::getTrustedProxies();
+        $this->originalTrustedHeaderSet = Request::getTrustedHeaderSet();
+    }
+
+    #[\Override]
+    protected function tearDown(): void
+    {
+        Request::setTrustedProxies($this->originalTrustedProxies, $this->originalTrustedHeaderSet);
     }
 }

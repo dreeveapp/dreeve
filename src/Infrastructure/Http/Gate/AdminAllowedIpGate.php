@@ -28,7 +28,9 @@ final readonly class AdminAllowedIpGate implements Gate
             return GateDecision::defer();
         }
 
-        $clientIp = $request->headers->get('CF-Connecting-IP') ?? $request->getClientIp();
+        $clientIp = $request->isFromTrustedProxy()
+            ? $request->headers->get('CF-Connecting-IP') ?? $request->getClientIp()
+            : $request->getClientIp();
         if ($this->allowedIps->contains($clientIp)) {
             // Only the IP check passed, the other gates still get to decide.
             return GateDecision::defer();
