@@ -15,6 +15,11 @@ WORKDIR /var/www
 ENV APP_ENV=prod
 ENV APP_DEBUG=0
 
+# Trust reverse proxies in front of Dreeve, so the app knows the original request was HTTPS.
+# x-forwarded-for is deliberately excluded: it would make ADMIN_ALLOWED_IPS spoofable.
+ENV SYMFONY_TRUSTED_PROXIES=private_ranges
+ENV SYMFONY_TRUSTED_HEADERS=x-forwarded-proto,x-forwarded-port
+
 # hadolint ignore=DL3018
 RUN apk add --no-cache \
   bash \
