@@ -35,7 +35,6 @@ class CoordinatePicker {
         this.circle = null;
         this.isMounting = false;
         this.isDestroyed = false;
-        // Guards the field -> map -> field feedback loop.
         this.isWriting = false;
     }
 
