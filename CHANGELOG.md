@@ -1,3 +1,41 @@
+# [v5.1.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.1.0) - 2026-07-27
+
+## New features
+* Automatically populate activity fields based on an activity's properties using configurable rules.
+  This feature is available in the Admin panel → Settings → Automation rules
+
+## Improvements
+* Duplicate activities can now also be detected based on their sport type and/or start time
+* Added a sport type multi select dropdown
+* Yearly line charts now use the same colours throughout the app
+* Added filters to the file import overview to make it easier to find specific imports
+* FIT file imports now take heart-rate messages into account
+* Average power is now calculated when parsing FIT files
+
+## Bug fixes
+* Custom gear can now be assigned to activities imported from Strava
+* Fixed an issue that could cause speed data to be missing from activities
+* Added trusted proxy configuration to the Caddy setup
+* Resolved an issue that prevented notification services from working correctly
+
+## Technical details
+* ISSUE #2298: Let the duplicate detection also take sport type and/or start time into account by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2301
+* ISSUE #2258: Provide an activity rules engine to auto populate fields based on an activity's properties by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2259
+* ISSUE #2249: Sport type multiselect dropdown by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2299
+* ISSUE #2312: Use the same color to render yearly line charts throughout the app by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2313
+* ISSUE #2311: Add filters(s) to the file import overview by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2316
+* ISSUE #2304: The automation rule conditions should allow to use IMPERIAL unit system as well by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2317
+* #2318 Add German Translation by @effectpears in https://github.com/dreeveapp/dreeve/pull/2319
+* ISSUE #2323: Allow to assign custom gear even when the activity is imported from Strava by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2324
+* ISSUE #2321: FIT file importer needs to take into account HR messages by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2325
+* ISSUE #2330: Extract css for pills to separate component by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2331
+* ISSUE #2333: Calculate average power in FitFileParser by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2338
+* ISSUE #2336: Missing Speed in activities by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2339
+* ISSUE #2346: Add trusted proxies to Caddy file by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2350
+* ISSUE #2349: Shoutrrr & Gotify Not Working by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2351
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.0.2...v5.1.0
+
 # [v5.0.2](https://github.com/dreeveapp/dreeve/releases/tag/v5.0.2) - 2026-07-21
 
 ## Improvements
