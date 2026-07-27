@@ -1,4 +1,7 @@
 {% extends "html/admin/page/template.html.twig" %}
+{% block stylesheets %}
+    <link href="{{ relativeUrl(asset('libraries/leaflet/leaflet.min.css')) }}" rel="stylesheet"/>
+{% endblock %}
 {% block main %}
     {% autoescape false %}
     {% set rule = automationRule is defined ? automationRule : null %}

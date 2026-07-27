@@ -101,6 +101,14 @@ final readonly class MeasurementTwigExtension
         };
     }
 
+    #[AsTwigFunction('proximityToMeterFactor')]
+    public function getProximityToMeterFactor(): float
+    {
+        $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
+
+        return $unitSystem->proximity(1)->toMeter()->toFloat();
+    }
+
     #[AsTwigFilter('formatNumber')]
     public function formatNumber(?float $number, int $precision): string
     {

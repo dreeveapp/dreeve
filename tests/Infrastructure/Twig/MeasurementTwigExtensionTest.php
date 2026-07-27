@@ -54,6 +54,18 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
         $extension->getUnitSymbol('invalid');
     }
 
+    #[DataProvider(methodName: 'provideProximityToMeterFactors')]
+    public function testGetProximityToMeterFactor(float $expectedFactor, UnitSystem $unitSystem): void
+    {
+        $extension = $this->extensionFor($unitSystem);
+
+        $this->assertEqualsWithDelta(
+            $expectedFactor,
+            $extension->getProximityToMeterFactor(),
+            0.0001,
+        );
+    }
+
     public function testFormatNumber(): void
     {
         $extension = $this->extensionFor(UnitSystem::METRIC);
@@ -88,6 +100,14 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
             [Meter::from(10), UnitSystem::METRIC, Meter::from(10)],
             [Foot::from(9.998964), UnitSystem::IMPERIAL, Meter::from(3.048)],
             [Foot::from(10), UnitSystem::IMPERIAL, Foot::from(10)],
+        ];
+    }
+
+    public static function provideProximityToMeterFactors(): array
+    {
+        return [
+            [1.0, UnitSystem::METRIC],
+            [0.3048, UnitSystem::IMPERIAL],
         ];
     }
 

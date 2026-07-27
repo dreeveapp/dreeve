@@ -1,4 +1,5 @@
-<div class="grid gap-2 sm:grid-cols-2">
+{% set coordinatePickerOptions = { radiusToMeter: proximityToMeterFactor() } %}
+<div data-coordinate-picker='{{ coordinatePickerOptions|json_encode }}' class="grid gap-2 sm:grid-cols-2">
     <div>
         <label class="mt-0! text-xs">{{ "Match"|trans({}, 'admin') }}</label>
         <select name="{{ namePrefix }}[operator]" data-repeater-field="config.operator" class="mt-0">
@@ -10,16 +11,20 @@
     <div>
         <label class="mt-0! text-xs">{{ "Radius"|trans({}, 'admin') }} ({{ renderUnitSymbol('proximity') }})</label>
         <input type="number" step="1" min="1" name="{{ namePrefix }}[radius]" data-repeater-field="config.radius"
-               required placeholder="500" class="mt-0">
+               data-coordinate-picker-field="radius" required placeholder="500" class="mt-0">
     </div>
     <div>
         <label class="mt-0! text-xs">{{ "Latitude"|trans({}, 'admin') }}</label>
         <input type="number" step="any" min="-90" max="90" name="{{ namePrefix }}[latitude]" data-repeater-field="config.latitude"
-               required placeholder="48.0543" class="mt-0">
+               data-coordinate-picker-field="latitude" required placeholder="48.0543" class="mt-0">
     </div>
     <div>
         <label class="mt-0! text-xs">{{ "Longitude"|trans({}, 'admin') }}</label>
         <input type="number" step="any" min="-180" max="180" name="{{ namePrefix }}[longitude]" data-repeater-field="config.longitude"
-               required placeholder="5.7174" class="mt-0">
+               data-coordinate-picker-field="longitude" required placeholder="5.7174" class="mt-0">
+    </div>
+    <div class="sm:col-span-2">
+        <p class="mb-1 text-xxs text-gray-500">{{ "Click the map to set the location, or drag the marker to fine-tune it."|trans({}, 'admin') }}</p>
+        <div data-coordinate-picker-map class="h-64 w-full rounded-lg border border-gray-200 bg-gray-100"></div>
     </div>
 </div>

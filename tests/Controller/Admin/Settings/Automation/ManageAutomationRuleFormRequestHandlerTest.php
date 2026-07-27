@@ -96,6 +96,17 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $actionOptions = $crawler->filter('select[name="actions[__index__][type]"] option')->extract(['value']);
         $this->assertContains('assignGear', $actionOptions);
         $this->assertContains('setDescription', $actionOptions);
+
+        // Every proximity condition ships a coordinate picker wired to its own lat/lng/radius inputs.
+        $this->assertCount(3, $crawler->filter('[data-coordinate-picker]'));
+        $this->assertCount(3, $crawler->filter('[data-coordinate-picker-map]'));
+        $this->assertCount(3, $crawler->filter('[data-coordinate-picker-field="latitude"]'));
+        $this->assertCount(3, $crawler->filter('[data-coordinate-picker-field="longitude"]'));
+        $this->assertCount(3, $crawler->filter('[data-coordinate-picker-field="radius"]'));
+        $this->assertSame(
+            '{"radiusToMeter":1}',
+            $crawler->filter('[data-coordinate-picker]')->eq(0)->attr('data-coordinate-picker'),
+        );
     }
 
     public function testItRendersTheEditFormPrefilledWithTheRule(): void

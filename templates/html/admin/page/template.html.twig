@@ -13,6 +13,7 @@
         <meta name="rebuild-status-url" content="{{ relativeUrl(path('admin_rebuild_status')) }}">
         <link rel="icon" type="image/x-icon" href="{{ relativeUrl('assets/images/logo.svg') }}">
         <link href="{{ relativeUrl(asset('css/dist/tailwind.min.css')) }}" rel="stylesheet"/>
+        {% block stylesheets %}{% endblock %}
         <script>
             document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
         </script>
