@@ -2,6 +2,10 @@
 	http_port 8080
 	auto_https off
 
+	servers {
+		trusted_proxies static private_ranges
+	}
+
 	frankenphp {
 		num_threads 3
 		worker {
