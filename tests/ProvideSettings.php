@@ -97,10 +97,10 @@ trait ProvideSettings
             Value::fromString(Json::encode([
                 'notifications' => [
                     'services' => [
-                        // The deprecated ntfy config is folded into the services list by the migration.
                         'ntfy://admin:pass@ntfy.sh/el-test',
                         'ntfy://admin:admin@ntfy.sh/topic',
                         'discord://token@webhookid?thread_id=123456789',
+                        'gotify://gotify.example.com/AzyxWvUt-srqPon',
                         'telegram://token@telegram/?channels=channel',
                     ],
                 ],

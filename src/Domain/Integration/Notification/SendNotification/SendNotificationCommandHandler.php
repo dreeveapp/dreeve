@@ -25,7 +25,7 @@ final readonly class SendNotificationCommandHandler implements CommandHandler
 
         /** @var ShoutrrrUrl $configuredNotificationUrl */
         foreach ($this->settingsRepository->integrations()->getConfiguredNotificationUrls() as $configuredNotificationUrl) {
-            if (!$configuredNotificationUrl->isTelegramUrl()) {
+            if ($configuredNotificationUrl->isNtfyUrl()) {
                 $configuredNotificationUrl = $configuredNotificationUrl->withParams([
                     'click' => (string) $command->getActionUrl(),
                     'icon' => 'https://raw.githubusercontent.com/dreeveapp/dreeve/master/public/assets/images/manifest/icon-192.png',

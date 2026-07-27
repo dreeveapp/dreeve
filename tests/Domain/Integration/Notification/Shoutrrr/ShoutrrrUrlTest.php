@@ -18,6 +18,18 @@ class ShoutrrrUrlTest extends TestCase
             'ntfy://ntfy.sh/topic?click=the-click',
             (string) ShoutrrrUrl::fromString('ntfy://ntfy.sh/topic')->withParams(['click' => 'the-click'])
         );
+
+        $this->assertEquals(
+            'ntfy://ntfy.sh/topic?priority=5&click=the-click',
+            (string) ShoutrrrUrl::fromString('ntfy://ntfy.sh/topic?priority=5')->withParams(['click' => 'the-click'])
+        );
+    }
+
+    public function testIsNtfyUrl(): void
+    {
+        $this->assertTrue(ShoutrrrUrl::fromString('ntfy://ntfy.sh/topic')->isNtfyUrl());
+        $this->assertFalse(ShoutrrrUrl::fromString('gotify://gotify.example.com/token')->isNtfyUrl());
+        $this->assertFalse(ShoutrrrUrl::fromString('telegram://token@telegram/?channels=channel')->isNtfyUrl());
     }
 
     public function testFromDeprecatedNtfyConfig(): void
