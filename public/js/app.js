@@ -1,3 +1,4 @@
+import "./core/public-path";
 import {eventBus, Events} from "./core/event-bus";
 import {FilterStorage} from "./features/data-table/storage";
 import Router from "./core/router";
@@ -17,10 +18,6 @@ import MilestoneFilter from "./features/milestones/milestone-filter";
 import DarkModeManager from "./components/dark-mode";
 import initDropdowns from "./components/dropdown";
 import {initAccordions, initPopovers, initDrawers} from "flowbite";
-
-// Override webpack's compile-time publicPath so dynamic imports resolve under subpath deployments.
-const sfsBasePath = window.dreeve?.appUrl?.basePath?.replace(/^\/+|\/+$/g, '');
-__webpack_public_path__ = '/' + (sfsBasePath ? sfsBasePath + '/' : '') + 'js/dist/';
 
 const $main = document.querySelector("main");
 

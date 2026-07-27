@@ -1,3 +1,4 @@
+import "./core/public-path";
 import initPasswordToggle from "./components/form/password-toggle";
 import initFormLoadingState from "./components/form/form-loading-state";
 import initDispatchCommandForm from "./components/form/dispatch-command-form";
