@@ -2,7 +2,7 @@
 
 Dreeve imports anything dropped into its `watch/` folder. Getting your Garmin activities *into* that
 folder is what the **Garmin connector** does: it periodically lists new activities, downloads the
-original `.fit` files and drops them in. No manual exports, no Strava round-trip.
+original `.fit` files and drops them in. No manual exports.
 
 ```
 Garmin Connect → connector → watch/ → Dreeve imports it
@@ -10,7 +10,7 @@ Garmin Connect → connector → watch/ → Dreeve imports it
 
 The connector is a **separate container** from its own repository,
 [dreeveapp/dreeve-garmin-connector](https://github.com/dreeveapp/dreeve-garmin-connector). It is not
-part of Dreeve itself and Dreeve does not talk to it. It only writes files into the folder you
+part of Dreeve itself, it only writes files into the folder you
 already mount.
 
 > [!IMPORTANT]
@@ -76,7 +76,7 @@ A cycle runs immediately, then one every hour. Files land in the watch folder as
 `<activityId>.fit`, and the daemon container will import them, exactly as if you had
 dropped them there yourself.
 
-## Why the first day is slow
+## Why the first sync is slow
 
 A first run against a large history is probably hundreds of downloads, and asking for all of them at
 once is the most reliable way to get your Garmin account rate-limited. So a cycle downloads at most
@@ -89,12 +89,26 @@ on purpose. Fetch the status by running:
 > docker compose exec garmin-connector dreeve-garmin-connector status
 ```
 
-The `backlog` field is the number still queued, and it should fall every cycle.
+| Key | Meaning                                                                                                             |
+|---|---------------------------------------------------------------------------------------------------------------------|
+| `healthy` | `false` once authentication is broken, or when three `POLL_INTERVAL`s have passed without a completed cycle.        |
+| `cycles` | Cycles attempted since that start, successful or not.                                                               |
+| `lastSuccessfulSync` | End of the last cycle that completed. `null` until the first one does.                                              |
+| `nextRunAt` | When the next cycle is due, jitter and backoff included.                                                            |
+| `backoffSeconds` | How long the connector is currently backing off after a rate limit. `0` when all is well.                           |
+| `authentication` | `ok`, or the error Garmin returned. Anything else means the session is dead and `login` has to be run again.        |
+| `lastError` | The last failure message, cleared by the next successful cycle.                                                     |
+| `lastCycle` | What the last cycle did. `null` before the first one.                                                               |
+| `lastCycle.listed` | Activities Garmin returned for the window                                                                           |
+| `lastCycle.delivered` | Files written to the watch folder this cycle. Capped by `MAX_DOWNLOADS_PER_CYCLE`.                                  |
+| `lastCycle.failed` | Downloads that went wrong and will be retried.                                                                      |
+| `lastCycle.skipped` | Activities older than `SINCE`, so deliberately not fetched.                                                         |
+| `lastCycle.withoutFile` | Activities Garmin has no file for.                                                                                  |
+| `lastCycle.backlog` | Same as the top-level `backlog`.                                                                                    |
+| `backlog` | Activities still owed a download, whatever cycle they were listed in. This is the number to watch during a backfill. |
+| `activities` | The whole ledger counted by [status](#when-something-looks-wrong).           |
 
 ## Configuration
-
-Everything is an environment variable. Everything except `GARMIN_EMAIL` and `SINCE` has a sensible
-default.
 
 | Variable | Default        | What it does |
 |---|----------------|---|
@@ -121,8 +135,8 @@ default.
 | `UMASK` / `TZ` | -              | As usual. |
 
 > [!IMPORTANT]
-> **Important** Just like Dreeve itself, the `.env` file is read when the container is **created**.
-> After changing it, run `docker compose up -d --force-recreate` - restarting keeps the old values.
+> **Important** Just like Dreeve, the `.env` file is read when the container is **created**.
+> After changing it, run `docker compose up -d --force-recreate`.
 
 ## Commands
 
