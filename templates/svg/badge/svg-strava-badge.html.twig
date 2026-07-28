@@ -25,8 +25,9 @@
                     <text x="0" y="0" text-anchor="start">
                         <tspan x="0">{{ activity.getStartDate()|formatDate() }}</tspan>
                         <tspan x="65">{{ activity.getName()|ellipses(maxTitleLength)|escape('html') }}</tspan>
+                        {% set distance = activity.getDistanceInDisplayUnit() %}
                         <tspan x="305" text-anchor="middle">
-                            {{ activity.getDistance()|formatMeasurement(0) }}<tspan font-size="10px">{{ renderUnitSymbol('distance') }}</tspan>
+                            {{ distance|formatMeasurement(0) }}<tspan font-size="10px">{{ distance|measurementSymbol }}</tspan>
                         </tspan>
                         <tspan x="355" text-anchor="middle">{{ activity.getMovingTimeFormatted() }}</tspan>
                     </text>

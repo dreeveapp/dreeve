@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace App\Domain\Activity\SportType;
 
 use App\Domain\Activity\ActivityType;
+use App\Infrastructure\Measurement\Length\ConvertableToMeter;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\NauticalMile;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\Measurement\Velocity\Knot;
 use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\Measurement\Velocity\Velocity;
@@ -83,8 +88,21 @@ enum SportType: string implements TranslatableInterface
     case HAND_CYCLE = 'Handcycle';
     case WHEELCHAIR = 'Wheelchair';
 
+    public function usesNauticalUnits(): bool
+    {
+        return in_array($this, [
+            self::SAIL,
+            self::WIND_SURF,
+            self::KITE_SURF,
+        ]);
+    }
+
     public function getVelocityDisplayPreference(): Velocity
     {
+        if ($this->usesNauticalUnits()) {
+            return Knot::zero();
+        }
+
         if (ActivityType::RUN === self::getActivityType() || ActivityType::WALK === self::getActivityType()) {
             return SecPerKm::zero();
         }
@@ -93,6 +111,52 @@ enum SportType: string implements TranslatableInterface
             self::SWIM => SecPer100Meter::zero(),
             default => KmPerHour::zero(),
         };
+    }
+
+    public function getDistanceDisplayPreference(): ConvertableToMeter
+    {
+        if ($this->usesNauticalUnits()) {
+            return NauticalMile::zero();
+        }
+
+        return Kilometer::zero();
+    }
+
+    public function toDisplayDistance(Kilometer $distance): NauticalMile|Kilometer
+    {
+        if ($this->usesNauticalUnits()) {
+            return $distance->toNauticalMiles();
+        }
+
+        return $distance;
+    }
+
+    public function toDisplaySpeed(KmPerHour $speed): Knot|KmPerHour
+    {
+        if ($this->usesNauticalUnits()) {
+            return $speed->toKnots();
+        }
+
+        return $speed;
+    }
+
+    public function distanceSymbol(UnitSystem $unitSystem): string
+    {
+        return $this->toDisplayDistance(Kilometer::from(1))->toUnitSystem($unitSystem)->getSymbol();
+    }
+
+    public function speedSymbol(UnitSystem $unitSystem): string
+    {
+        return $this->toDisplaySpeed(KmPerHour::from(1))->toUnitSystem($unitSystem)->getSymbol();
+    }
+
+    public function getDistancePrecision(): int
+    {
+        if ($this->usesNauticalUnits()) {
+            return 2;
+        }
+
+        return $this->getActivityType()->getDistancePrecision();
     }
 
     public function getTemplateName(): string

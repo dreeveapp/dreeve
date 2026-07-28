@@ -24,6 +24,11 @@ final readonly class KmPerHour implements Unit, Metric, Velocity
         return MilesPerHour::from($this->value * Kilometer::FACTOR_TO_MILES);
     }
 
+    public function toKnots(): Knot
+    {
+        return Knot::from($this->value * Kilometer::FACTOR_TO_NAUTICAL_MILES);
+    }
+
     public function toMetersPerSecond(): MetersPerSecond
     {
         return MetersPerSecond::from(round($this->value * 0.2777777778, 3));

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Stream\CombinedStream;
 
+use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Theme\Theme;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -34,6 +35,7 @@ final readonly class CombinedStreamProfileCharts
         private array $grades,
         private int $maximumNumberOfDigitsOnYAxis,
         private UnitSystem $unitSystem,
+        private SportType $sportType,
         private TranslatorInterface $translator,
     ) {
     }
@@ -55,6 +57,7 @@ final readonly class CombinedStreamProfileCharts
         array $grades,
         int $maximumNumberOfDigitsOnYAxis,
         UnitSystem $unitSystem,
+        SportType $sportType,
         TranslatorInterface $translator,
     ): self {
         return new self(
@@ -65,6 +68,7 @@ final readonly class CombinedStreamProfileCharts
             grades: $grades,
             maximumNumberOfDigitsOnYAxis: $maximumNumberOfDigitsOnYAxis,
             unitSystem: $unitSystem,
+            sportType: $sportType,
             translator: $translator,
         );
     }
@@ -105,7 +109,7 @@ final readonly class CombinedStreamProfileCharts
                 throw new \RuntimeException('yAxisData data cannot be empty');
             }
 
-            $yAxisSuffix = $yAxisStreamType->getSuffix($this->unitSystem);
+            $yAxisSuffix = $yAxisStreamType->getSuffix($this->unitSystem, $this->sportType);
 
             [$min, $max] = [min($yAxisData), max($yAxisData)];
             $margin = ($max - $min) * 0.1;

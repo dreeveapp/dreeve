@@ -16,7 +16,7 @@ already mount.
 > [!IMPORTANT]
 > **Important** This uses Garmin's unofficial API. Garmin does not document or support it and has
 > changed the authentication flow before, so expect occasional breakage. Read
-> [Living with an unofficial API](/integrations/garmin-connect.md#living-with-an-unofficial-api)
+> [An unofficial API](/integrations/garmin-connect.md#an-unofficial-api)
 > before you rely on it.
 
 ## Setup
@@ -154,23 +154,7 @@ on purpose. Fetch the status by running:
 > docker compose exec garmin-connector dreeve-garmin-connector status
 ```
 
-## When something looks wrong
-
-Dreeve **deletes** files from `watch/` once it has imported them, so the folder can never answer
-"was this already fetched?". The connector therefore keeps its own record in
-`$STATE_DIR/ledger.json`, keyed by Garmin activity id.
-
-Every activity in it carries one of five statuses:
-
-| Status | Meaning |
-|---|---|
-| `delivered` | The file was written to the watch folder. Final. |
-| `no-file` | Garmin has no file for it - a manually entered activity, usually. Final. |
-| `skipped` | Older than `SINCE`. Final. |
-| `failed` | Something went wrong. Carries the error and an attempt count, and is retried. |
-| `pending` | Seen, not fetched yet. |
-
-## Living with an unofficial API
+## An unofficial API
 
 The connector is built on [cyberjunky/python-garminconnect](https://github.com/cyberjunky/python-garminconnect), which talks to
 the same endpoints Garmin's own mobile app does. Garmin neither documents nor supports this, and
