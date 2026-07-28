@@ -60,7 +60,10 @@ final readonly class AutomationRuleDryRunner
             foreach ($rule->getActions() as $configuredAction) {
                 $resolvedActions[] = new ConfiguredAction(
                     type: $configuredAction->getType(),
-                    configuration: $this->replaceTokens($configuredAction->getConfiguration(), $modifiedActivity),
+                    configuration: $this->replaceTokens(
+                        configuration: $configuredAction->getConfiguration(),
+                        activity: $modifiedActivity
+                    ),
                 );
                 if (!$wasApplied) {
                     continue;

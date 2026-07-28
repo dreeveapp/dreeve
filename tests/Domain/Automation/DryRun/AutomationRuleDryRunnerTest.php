@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Automation\DryRun;
 
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Automation\Action\Actions;
 use App\Domain\Automation\Action\ActionType;
 use App\Domain\Automation\Action\ConfiguredAction\ConfiguredAction;
 use App\Domain\Automation\Action\ConfiguredAction\ConfiguredActions;
 use App\Domain\Automation\AutomationRuleId;
+use App\Domain\Automation\AutomationRuleMatcher;
 use App\Domain\Automation\Condition\ConditionType;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredCondition;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredConditions;
@@ -18,6 +20,7 @@ use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\Tokenizer\Tokenizer;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
@@ -25,6 +28,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Automation\AutomationRuleBuilder;
+use App\Tests\Domain\Automation\Fixture\SetDescriptionAction;
 
 class AutomationRuleDryRunnerTest extends ContainerTestCase
 {
@@ -115,8 +119,8 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
 
         [$disabled, $enabled] = $dryRun->getRuleResults();
 
-        $this->assertTrue($disabled->allConditionsMatched(), 'Its conditions still match…');
-        $this->assertFalse($disabled->wasApplied(), '…but a disabled rule is never applied.');
+        $this->assertTrue($disabled->allConditionsMatched());
+        $this->assertFalse($disabled->wasApplied());
         $this->assertFalse($disabled->stoppedProcessing(), 'A disabled rule cannot stop processing either.');
         $this->assertTrue($disabled->wasEvaluated());
         $this->assertTrue($enabled->wasApplied());
@@ -207,8 +211,8 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
 
         $afternoon = $this->dryRunner->run($tuesdayAfternoon)->getRuleResults()[0];
         $this->assertFalse($afternoon->allConditionsMatched());
-        $this->assertTrue($afternoon->getConditionResults()[0]->isMatched(), 'Weekday matches…');
-        $this->assertFalse($afternoon->getConditionResults()[1]->isMatched(), '…but the time of day does not.');
+        $this->assertTrue($afternoon->getConditionResults()[0]->isMatched());
+        $this->assertFalse($afternoon->getConditionResults()[1]->isMatched());
     }
 
     public function testMatchesOnStartsNearProximity(): void
@@ -278,6 +282,40 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
             'Morning Ride to work',
             $applied->getConfiguredActions()->getFirst()->getConfiguration()->getString('name'),
             'A rule that was not applied does not change the activity later tokens resolve against.'
+        );
+    }
+
+    public function testAConfiguredActionWithoutARegisteredActionIsReportedButNeverApplied(): void
+    {
+        $this->saveRule(
+            id: '1',
+            conditions: $this->sportTypeIsOneOf('Ride'),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Renamed [activity:name]'])),
+                new ConfiguredAction(ActionType::SET_DESCRIPTION, RuleConfiguration::fromConfig(['description' => 'Still [activity:name]'])),
+            ]),
+        );
+
+        $dryRunner = new AutomationRuleDryRunner(
+            automationRuleRepository: $this->repository,
+            matcher: $this->getContainer()->get(AutomationRuleMatcher::class),
+            // Only "setDescription" is registered, "setName" has no action to apply.
+            actions: new Actions([new SetDescriptionAction()]),
+            tokenizer: $this->getContainer()->get(Tokenizer::class),
+        );
+
+        $result = $dryRunner->run(
+            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withName('Morning Ride')->build()
+        )->getRuleResults()[0];
+
+        $this->assertTrue($result->wasApplied());
+
+        $actions = iterator_to_array($result->getConfiguredActions());
+        $this->assertCount(2, $actions);
+        $this->assertSame('Renamed Morning Ride', $actions[0]->getConfiguration()->getString('name'));
+        $this->assertSame(
+            'Still Morning Ride',
+            $actions[1]->getConfiguration()->getString('description'),
         );
     }
 
