@@ -1,0 +1,67 @@
+name: Check Natural Earth version
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Extract current version from the build command
+        id: local
+        run: |
+          CURRENT=$(sed -n "s/.*NATURAL_EARTH_VERSION = '\([^']*\)'.*/\1/p" src/Console/BuildCountriesGeographyAssetConsoleCommand.php)
+          if [[ -z "$CURRENT" ]]; then
+            echo "::error::Failed to read NATURAL_EARTH_VERSION from BuildCountriesGeographyAssetConsoleCommand"
+            exit 1
+          fi
+          echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
+
+      - name: Get latest release tag from upstream
+        id: upstream
+        run: |
+          LATEST=$(curl -sS -H "Authorization: Bearer $GH_TOKEN" \
+            https://api.github.com/repos/nvkelso/natural-earth-vector/releases/latest | jq -r '.tag_name')
+          if [[ "$LATEST" == "null" || -z "$LATEST" ]]; then
+            echo "::error::Failed to fetch latest Natural Earth release tag"
+            exit 1
+          fi
+          echo "latest=$LATEST" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create issue
+        if: steps.local.outputs.current != steps.upstream.outputs.latest
+        run: |
+          ISSUE=$(gh issue list --search "Natural Earth ${{ steps.upstream.outputs.latest }}" --json number --jq '.[0].number')
+
+          if [[ -z "$ISSUE" ]]; then
+            ISSUE_LINK=$(gh issue create \
+            --title "$TITLE" \
+            --assignee "$ASSIGNEES" \
+            --label "$LABELS" \
+            --body "$BODY")
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TITLE: "New Natural Earth release available: ${{ steps.upstream.outputs.latest }}"
+          BODY: |
+            A new version of **Natural Earth** has been released. It provides the country boundaries
+            used to detect which countries an activity passed through.
+
+            - Current version: ${{ steps.local.outputs.current }}
+            - Latest version: ${{ steps.upstream.outputs.latest }}
+
+            Bump `NATURAL_EARTH_VERSION` in `src/Console/BuildCountriesGeographyAssetConsoleCommand.php`,
+            rebuild with `make build-countries-asset` and check which activities change country before
+            releasing — analysed activities are never re-analysed, so a border change only applies to
+            activities imported afterwards.
+
+            https://github.com/nvkelso/natural-earth-vector/releases/tag/${{ steps.upstream.outputs.latest }}
+          LABELS: tech debt
+          ASSIGNEES: robiningelbrecht

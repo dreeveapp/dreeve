@@ -41,6 +41,9 @@ download-database:
 download-assets:
 	scp -r $(user)@$(server):/home/docker/stacks/dreeve/storage/files ./storage/
 
+build-countries-asset:
+	@make dcr cmd="bin/console app:geography:build-countries-asset"
+
 # Database migration helpers.
 migrate-diff:
 	@make console arg="doctrine:migrations:diff"

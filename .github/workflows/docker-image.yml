@@ -26,6 +26,11 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-scripts --no-dev
 
+      - name: Build countries geography asset
+        run: |
+          touch .env
+          bin/console app:geography:build-countries-asset
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v4
         with:

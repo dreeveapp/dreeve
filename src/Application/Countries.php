@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Application;
 
+use App\Domain\Activity\Route\RouteGeography;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Intl\Countries as SymfonyCountries;
 use Symfony\Component\Translation\LocaleSwitcher;
 
 final readonly class Countries
 {
+    private const string PASSED_THROUGH_COUNTRIES_JSON_PATH = '$.'.RouteGeography::PASSED_TROUGH_COUNTRIES;
+
     /** @var string[] */
     private array $countriesKeyedByAlpha2codes;
 
@@ -25,6 +28,8 @@ final readonly class Countries
      */
     public function getUsedInActivities(): array
     {
+        $passedThroughCountries = self::PASSED_THROUGH_COUNTRIES_JSON_PATH;
+
         $results = $this->connection->executeQuery(
             <<<SQL
             SELECT DISTINCT countryCode
@@ -36,7 +41,7 @@ final readonly class Countries
 
                  SELECT value AS countryCode
                  FROM Activity,
-                     json_each(JSON_EXTRACT(routeGeography, '$.passed_trough_countries'))
+                     json_each(JSON_EXTRACT(routeGeography, '{$passedThroughCountries}'))
                  )
             WHERE countryCode IS NOT NULL
             SQL
@@ -50,6 +55,8 @@ final readonly class Countries
      */
     public function getUsedInPhotos(): array
     {
+        $passedThroughCountries = self::PASSED_THROUGH_COUNTRIES_JSON_PATH;
+
         $results = $this->connection->executeQuery(
             <<<SQL
             SELECT DISTINCT countryCode
@@ -60,8 +67,8 @@ final readonly class Countries
                  UNION ALL
 
                  SELECT value AS countryCode
-                 FROM Activity, 
-                     JSON_EACH(JSON_EXTRACT(routeGeography, '$.passed_trough_countries'))
+                 FROM Activity,
+                     JSON_EACH(JSON_EXTRACT(routeGeography, '{$passedThroughCountries}'))
                  WHERE totalImageCount > 0
                  )
             WHERE countryCode IS NOT NULL

@@ -1,13 +1,9 @@
 name: Setup CI environment
-description: Install geos, PHP 8.5 + xdebug, Go, build fit-tool, install Composer dependencies
+description: Install PHP 8.5 + xdebug, Go, build fit-tool, install Composer dependencies
 
 runs:
   using: composite
   steps:
-    - name: Install geos
-      run: sudo apt install -y geos-bin
-      shell: bash
-
     # https://github.com/marketplace/actions/setup-php-action
     - name: Setup PHP 8.5
       uses: shivammathur/setup-php@v2
@@ -49,4 +45,16 @@ runs:
 
     - name: Install dependencies
       run: composer install --prefer-dist
+      shell: bash
+
+    - name: Cache countries geography asset
+      id: countries-asset
+      uses: actions/cache@v5
+      with:
+        path: src/Domain/Activity/Route/assets/countries
+        key: ${{ runner.os }}-countries-asset-${{ hashFiles('src/Console/BuildCountriesGeographyAssetConsoleCommand.php') }}
+
+    - name: Build countries geography asset
+      if: steps.countries-asset.outputs.cache-hit != 'true'
+      run: bin/console app:geography:build-countries-asset
       shell: bash
