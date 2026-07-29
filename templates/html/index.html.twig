@@ -228,6 +228,7 @@
 <script>
     window.dreeve = {{ javascriptWindowConstants|raw }};
     window.dreeve.placeholderBrokenImage = "{{ relativeUrl('/assets/placeholder-broken.webp') }}";
+    window.dreeve.authStatusUrl = "{{ relativeUrl(path('auth_status')) }}";
 </script>
 <script src="{{ relativeUrl(asset('libraries/echarts/echarts.min.js')) }}"></script>
 <script src="{{ relativeUrl(asset('libraries/echarts/echarts.world.min.js')) }}"></script>

@@ -130,21 +130,15 @@ export default class HeatmapDrawer {
         };
 
         const places = [];
-        const countryFeatureGroups = new Map();
+        const countryBounds = new Map();
         const fitMapBoundsFeatureGroup = L.featureGroup();
         const mostActiveState = determineMostActiveState(routes);
 
         routes.forEach(route => {
-            const {countryCode, state} = route.startLocation;
-
-            if (!countryFeatureGroups.has(countryCode)) {
-                countryFeatureGroups.set(countryCode, L.featureGroup());
-            }
-
             const polyline = L.polyline(
                 route.coordinates,
                 {...this.defaultPolylineStyle, smoothFactor: 2.0}
-            ).addTo(countryFeatureGroups.get(countryCode));
+            ).addTo(this.mainFeatureGroup);
 
             this.routePolylines.push({
                 route: route,
@@ -152,16 +146,23 @@ export default class HeatmapDrawer {
                 coordinates: route.coordinates
             });
 
-            if (mostActiveState === state) {
+            // A route can pass through multiple countries, it needs to be included in each of them.
+            (route.countryCodes || []).forEach(countryCode => {
+                if (!countryBounds.has(countryCode)) {
+                    countryBounds.set(countryCode, L.latLngBounds([]));
+                }
+                countryBounds.get(countryCode).extend(polyline.getBounds());
+            });
+
+            if (mostActiveState === route.startLocation.state) {
                 L.polyline(route.coordinates).addTo(fitMapBoundsFeatureGroup);
             }
         });
 
-        countryFeatureGroups.forEach((featureGroup, countryCode) => {
-            featureGroup.addTo(this.mainFeatureGroup);
+        countryBounds.forEach((bounds, countryCode) => {
             places.push({
                 countryCode: countryCode,
-                bounds: featureGroup.getBounds()
+                bounds: bounds
             });
         });
         this.mainFeatureGroup.addTo(this.map);

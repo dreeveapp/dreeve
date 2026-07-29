@@ -157,9 +157,9 @@ final readonly class Route implements \JsonSerializable
             'distance' => $distance,
             'name' => Escape::forJsonEncode($this->getName()),
             'startLocation' => [
-                'countryCode' => $this->getRouteGeography()->getStartingPointCountryCode(),
                 'state' => $state ? Escape::forJsonEncode($state) : null,
             ],
+            'countryCodes' => $this->getRouteGeography()->getPassedThroughCountries(),
             'filterables' => [
                 'sportType' => $this->getSportType(),
                 'start-date' => $this->getOn()->getTimestamp() * 1000, // JS timestamp is in milliseconds,
