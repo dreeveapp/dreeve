@@ -31,6 +31,29 @@ jobs:
           touch .env
           bin/console app:geography:build-countries-asset
 
+      - name: Verify countries geography asset
+        run: |
+          ASSET_DIR=src/Domain/Activity/Route/assets/countries
+
+          if [[ ! -f "$ASSET_DIR/index.json" ]]; then
+            echo "::error::$ASSET_DIR/index.json is missing, refusing to build an image without country boundaries"
+            exit 1
+          fi
+
+          ENTRIES=$(jq 'length' "$ASSET_DIR/index.json")
+          COUNTRIES=$(find "$ASSET_DIR" -name '*.json' -not -name 'index.json' | wc -l)
+
+          if (( ENTRIES < 4000 )); then
+            echo "::error::index.json holds only $ENTRIES polygons, expected 4000+"
+            exit 1
+          fi
+          if (( COUNTRIES < 200 )); then
+            echo "::error::Only $COUNTRIES country files were generated, expected 200+"
+            exit 1
+          fi
+
+          echo "$COUNTRIES country files, $ENTRIES polygons indexed"
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v4
         with:
