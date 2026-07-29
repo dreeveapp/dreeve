@@ -64,7 +64,7 @@ final readonly class StreamMath
      */
     public static function encodePolyline(array $streamMap): ?string
     {
-        /** @var array<int, array{float, float}> $coordinates */
+        /** @var list<array{float, float}> $coordinates */
         $coordinates = array_values(array_filter(
             $streamMap[StreamType::LAT_LNG->value] ?? [],
             is_array(...),
@@ -74,7 +74,7 @@ final readonly class StreamMath
             return null;
         }
 
-        return (string) Polyline::fromCoordinates($coordinates)->simplify()->encode();
+        return (string) Polyline::fromLatLngCoordinates($coordinates)->simplify()->encode();
     }
 
     /**

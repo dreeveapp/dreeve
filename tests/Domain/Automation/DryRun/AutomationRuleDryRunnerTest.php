@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Automation\DryRun;
 
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Automation\Action\Actions;
 use App\Domain\Automation\Action\ActionType;
 use App\Domain\Automation\Action\ConfiguredAction\ConfiguredAction;
 use App\Domain\Automation\Action\ConfiguredAction\ConfiguredActions;
 use App\Domain\Automation\AutomationRuleId;
+use App\Domain\Automation\AutomationRuleMatcher;
 use App\Domain\Automation\Condition\ConditionType;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredCondition;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredConditions;
@@ -18,6 +20,7 @@ use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\Tokenizer\Tokenizer;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
@@ -25,6 +28,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Automation\AutomationRuleBuilder;
+use App\Tests\Domain\Automation\Fixture\SetDescriptionAction;
 
 class AutomationRuleDryRunnerTest extends ContainerTestCase
 {
@@ -115,8 +119,8 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
 
         [$disabled, $enabled] = $dryRun->getRuleResults();
 
-        $this->assertTrue($disabled->allConditionsMatched(), 'Its conditions still match…');
-        $this->assertFalse($disabled->wasApplied(), '…but a disabled rule is never applied.');
+        $this->assertTrue($disabled->allConditionsMatched());
+        $this->assertFalse($disabled->wasApplied());
         $this->assertFalse($disabled->stoppedProcessing(), 'A disabled rule cannot stop processing either.');
         $this->assertTrue($disabled->wasEvaluated());
         $this->assertTrue($enabled->wasApplied());
@@ -207,8 +211,8 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
 
         $afternoon = $this->dryRunner->run($tuesdayAfternoon)->getRuleResults()[0];
         $this->assertFalse($afternoon->allConditionsMatched());
-        $this->assertTrue($afternoon->getConditionResults()[0]->isMatched(), 'Weekday matches…');
-        $this->assertFalse($afternoon->getConditionResults()[1]->isMatched(), '…but the time of day does not.');
+        $this->assertTrue($afternoon->getConditionResults()[0]->isMatched());
+        $this->assertFalse($afternoon->getConditionResults()[1]->isMatched());
     }
 
     public function testMatchesOnStartsNearProximity(): void
@@ -234,32 +238,85 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
             id: '1',
             conditions: $this->sportTypeIsOneOf('Ride'),
             actions: ConfiguredActions::fromArray([
-                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Morning commute'])),
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Commute: [activity:name]'])),
+                new ConfiguredAction(ActionType::SET_DESCRIPTION, RuleConfiguration::fromConfig(['description' => 'Renamed to [activity:name] on [activity:start-date:d-m-Y]'])),
                 new ConfiguredAction(ActionType::MARK_AS_COMMUTE, RuleConfiguration::empty()),
             ]),
         );
 
         $actions = iterator_to_array(
-            $this->dryRunner->run(ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build())
-                ->getRuleResults()[0]->getConfiguredActions()
+            $this->dryRunner->run(
+                ActivityBuilder::fromDefaults()
+                    ->withSportType(SportType::RIDE)
+                    ->withName('Morning Ride')
+                    ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 07:30:00'))
+                    ->build()
+            )->getRuleResults()[0]->getConfiguredActions()
         );
 
-        $this->assertCount(2, $actions);
+        $this->assertCount(3, $actions);
         $this->assertSame(ActionType::SET_NAME, $actions[0]->getType());
-        $this->assertSame(ActionType::MARK_AS_COMMUTE, $actions[1]->getType());
+        $this->assertSame(ActionType::SET_DESCRIPTION, $actions[1]->getType());
+        $this->assertSame(ActionType::MARK_AS_COMMUTE, $actions[2]->getType());
+
+        $this->assertSame('Commute: Morning Ride', $actions[0]->getConfiguration()->getString('name'), 'Tokens are replaced with the actual values.');
+        $this->assertSame(
+            'Renamed to Commute: Morning Ride on 10-10-2023',
+            $actions[1]->getConfiguration()->getString('description'),
+            'An action sees the activity as the previous action left it.'
+        );
     }
 
     public function testConfiguredActionsAreExposedForEveryRuleNotJustTheAppliedOnes(): void
     {
-        $this->saveRule(id: 'applied', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('Applied'));
-        $this->saveRule(id: 'not-applied', conditions: $this->sportTypeIsOneOf('Run'), actions: $this->setName('Not applied'), sortOrder: 1);
+        $this->saveRule(id: 'not-applied', conditions: $this->sportTypeIsOneOf('Run'), actions: $this->setName('Not applied'), stopProcessing: false);
+        $this->saveRule(id: 'applied', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('[activity:name] to work'), sortOrder: 1);
 
-        $dryRun = $this->dryRunner->run(ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build());
+        $dryRun = $this->dryRunner->run(ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withName('Morning Ride')->build());
 
-        [$applied, $notApplied] = $dryRun->getRuleResults();
-        $this->assertCount(1, $applied->getConfiguredActions());
+        [$notApplied, $applied] = $dryRun->getRuleResults();
         $this->assertFalse($notApplied->wasApplied());
         $this->assertCount(1, $notApplied->getConfiguredActions(), 'Configured actions are available for rules that were not applied too.');
+        $this->assertCount(1, $applied->getConfiguredActions());
+        $this->assertSame(
+            'Morning Ride to work',
+            $applied->getConfiguredActions()->getFirst()->getConfiguration()->getString('name'),
+            'A rule that was not applied does not change the activity later tokens resolve against.'
+        );
+    }
+
+    public function testAConfiguredActionWithoutARegisteredActionIsReportedButNeverApplied(): void
+    {
+        $this->saveRule(
+            id: '1',
+            conditions: $this->sportTypeIsOneOf('Ride'),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Renamed [activity:name]'])),
+                new ConfiguredAction(ActionType::SET_DESCRIPTION, RuleConfiguration::fromConfig(['description' => 'Still [activity:name]'])),
+            ]),
+        );
+
+        $dryRunner = new AutomationRuleDryRunner(
+            automationRuleRepository: $this->repository,
+            matcher: $this->getContainer()->get(AutomationRuleMatcher::class),
+            // Only "setDescription" is registered, "setName" has no action to apply.
+            actions: new Actions([new SetDescriptionAction()]),
+            tokenizer: $this->getContainer()->get(Tokenizer::class),
+        );
+
+        $result = $dryRunner->run(
+            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withName('Morning Ride')->build()
+        )->getRuleResults()[0];
+
+        $this->assertTrue($result->wasApplied());
+
+        $actions = iterator_to_array($result->getConfiguredActions());
+        $this->assertCount(2, $actions);
+        $this->assertSame('Renamed Morning Ride', $actions[0]->getConfiguration()->getString('name'));
+        $this->assertSame(
+            'Still Morning Ride',
+            $actions[1]->getConfiguration()->getString('description'),
+        );
     }
 
     public function testUnregisteredStoredConditionTypesAreIgnoredWhileKnownOnesStillMatch(): void

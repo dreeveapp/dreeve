@@ -11,6 +11,11 @@ flysystem:
             options:
                 directory: '%kernel.project_dir%/storage/files'
                 lock: 0
+        countries-geography.storage:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/src/Domain/Activity/Route/assets/countries'
+                lock: 0
         database.storage:
             adapter: 'local'
             options:

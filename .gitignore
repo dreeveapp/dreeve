@@ -8,6 +8,7 @@
 node_modules
 /src/Entity
 /src/Repository
+/src/Domain/Activity/Route/assets/countries/
 .idea
 config/reference.php
 poc/

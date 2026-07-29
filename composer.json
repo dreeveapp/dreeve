@@ -30,7 +30,6 @@
         "ext-uri": "*",
         "ext-zstd": "*",
         "adrenalinkin/doctrine-naming-strategy": "^3.0",
-        "brick/geo": "^0.13.1",
         "doctrine/dbal": "^4",
         "doctrine/doctrine-bundle": "^3.1",
         "doctrine/doctrine-migrations-bundle": "^3.3",

@@ -38,6 +38,14 @@ Please see the troubleshooting guide for steps to resolve the issue: https://doc
         ]);
     }
 
+    public static function decodeLazyFromFile(string $filePath, string $pointer): Items
+    {
+        return Items::fromFile($filePath, [
+            'decoder' => new ExtJsonDecoder(true),
+            'pointer' => $pointer,
+        ]);
+    }
+
     public static function encodeAndDecode(mixed $value, int $depth = 512): mixed
     {
         return self::decode(self::encode($value, $depth));

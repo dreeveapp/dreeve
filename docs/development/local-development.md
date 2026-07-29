@@ -5,6 +5,7 @@ Run the following commands to setup the project on your local machine
 ```bash
 > git clone git@github.com:your-name/your-fork.git
 > make composer arg="install --no-scripts"
+> make build-countries-asset
 > make up
 ```
 

@@ -43,6 +43,7 @@
         </include>
         <exclude>
             <file>src/Kernel.php</file>
+            <file>src/Console/BuildCountriesGeographyAssetConsoleCommand.php</file>
             <file>src/Console/ExtractTranslationsConsoleCommand.php</file>
             <file>src/Infrastructure/DependencyInjection/AppExpressionLanguageProvider.php</file>
             <file>src/Infrastructure/Eventing/DomainEvent.php</file>

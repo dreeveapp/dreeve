@@ -7,7 +7,7 @@ namespace App\Infrastructure\ValueObject\Geography;
 final readonly class Polyline
 {
     /**
-     * @param array<int, array{float, float}> $coordinates
+     * @param list<array{float, float}> $coordinates
      */
     private function __construct(
         private array $coordinates,
@@ -15,11 +15,24 @@ final readonly class Polyline
     }
 
     /**
-     * @param array<int, array{float, float}> $coordinates
+     * @param list<array{float, float}> $coordinates
      */
-    public static function fromCoordinates(array $coordinates): self
+    public static function fromLatLngCoordinates(array $coordinates): self
     {
         return new self($coordinates);
+    }
+
+    public static function fromEncodedPolyline(EncodedPolyline $polyline): self
+    {
+        return new self(array_values($polyline->decodeAndPairLatLng()));
+    }
+
+    /**
+     * @return list<array{float, float}>
+     */
+    public function getLatLngCoordinates(): array
+    {
+        return $this->coordinates;
     }
 
     /**
@@ -42,15 +55,102 @@ final readonly class Polyline
         return new self($points);
     }
 
+    public function sanitize(): self
+    {
+        $sanitized = [];
+        foreach ($this->coordinates as [$latitude, $longitude]) {
+            if (!is_finite($latitude)) {
+                continue;
+            }
+            if (!is_finite($longitude)) {
+                continue;
+            }
+            if (abs($latitude) > 90) {
+                continue;
+            }
+            if (abs($longitude) > 180) {
+                $longitude = fmod($longitude + 180, 360) - 180;
+            }
+            $sanitized[] = [$latitude, $longitude];
+        }
+
+        return new self($sanitized);
+    }
+
+    public function densify(float $maxStepInDegrees = 0.002, int $maxCoordinates = 25000): self
+    {
+        if (count($this->coordinates) < 2) {
+            return $this;
+        }
+
+        $length = 0.0;
+        foreach ($this->coordinates as $index => [$latitude, $longitude]) {
+            if (0 === $index) {
+                continue;
+            }
+            [$previousLatitude, $previousLongitude] = $this->coordinates[$index - 1];
+            $length += hypot($this->shortestLongitudeDelta($previousLongitude, $longitude), $latitude - $previousLatitude);
+        }
+
+        $step = max($maxStepInDegrees, $length / $maxCoordinates);
+
+        $densified = [$this->coordinates[0]];
+        foreach ($this->coordinates as $index => [$latitude, $longitude]) {
+            if (0 === $index) {
+                continue;
+            }
+            [$previousLatitude, $previousLongitude] = $this->coordinates[$index - 1];
+            $deltaLongitude = $this->shortestLongitudeDelta($previousLongitude, $longitude);
+            $deltaLatitude = $latitude - $previousLatitude;
+
+            $steps = (int) ceil(hypot($deltaLongitude, $deltaLatitude) / $step);
+            for ($i = 1; $i < $steps; ++$i) {
+                $densified[] = [
+                    $previousLatitude + $deltaLatitude * $i / $steps,
+                    $this->wrapLongitude($previousLongitude + $deltaLongitude * $i / $steps),
+                ];
+            }
+            $densified[] = [$latitude, $longitude];
+        }
+
+        return new self($densified);
+    }
+
     public function encode(): EncodedPolyline
     {
         return EncodedPolyline::fromCoordinates($this->coordinates);
     }
 
+    private function shortestLongitudeDelta(float $from, float $to): float
+    {
+        $delta = $to - $from;
+
+        if ($delta > 180) {
+            return $delta - 360;
+        }
+        if ($delta < -180) {
+            return $delta + 360;
+        }
+
+        return $delta;
+    }
+
+    private function wrapLongitude(float $longitude): float
+    {
+        if ($longitude > 180) {
+            return $longitude - 360;
+        }
+        if ($longitude < -180) {
+            return $longitude + 360;
+        }
+
+        return $longitude;
+    }
+
     /**
-     * @param array<int, array{float, float}> $coordinates
+     * @param list<array{float, float}> $coordinates
      *
-     * @return array<int, array{float, float}>
+     * @return list<array{float, float}>
      */
     private function simplifyDouglasPeucker(array $coordinates, float $sqTolerance): array
     {

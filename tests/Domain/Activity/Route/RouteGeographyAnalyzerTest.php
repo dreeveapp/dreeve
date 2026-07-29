@@ -4,27 +4,127 @@ namespace App\Tests\Domain\Activity\Route;
 
 use App\Domain\Activity\Route\RouteGeographyAnalyzer;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class RouteGeographyAnalyzerTest extends TestCase
 {
+    private RouteGeographyAnalyzer $analyzer;
+
+    public function testAnalyzeForPolylineCrossingTheCzechPolishBorder(): void
+    {
+        $this->assertEquals(
+            ['CZ', 'PL'],
+            $this->analyzer->analyzeForPolyline($this->fixture('route-pl-cz'))
+        );
+    }
+
     public function testAnalyzeForPolyline(): void
     {
-        $analyzer = new RouteGeographyAnalyzer();
-
         $this->assertEquals(
             ['BE', 'NL'],
-            $analyzer->analyzeForPolyline(EncodedPolyline::fromString('qr{yH}ftUFpAl@\pG}AbEwBgBi\pBaJC}En@q@JlAiDdPbBp\hF~s@Of^tGx@`IfCYJtBfBFr@_Bb`@jHxAZj@qGfIqE`JsCnK_BlM_@bO^n]YlEq@hC`BjD`@vE[fEk@rBgAbPeEdb@[bAC|CiAlMF`rAtAlQDtIdCrTtIre@tCvMn@bBb@DhAlBwAsBjApDM`@kAp@?fB`BdBpCrF~ClEpEbEv_@vRlItF~D_OfAiC|AaM~@SdGbGjAgAfBm@jE{IfFwPhCyGlDcF~By@pBDXf@pA\LbDN\~CbBhQ`O~M~CpBu@pFeIdNiEfGdAbASrEyClCB~BhBrAX|L[zFwA`@~Bb@rI`AtChB|@vF[fAl@VnCnBDdMcDlJnAtEaBdl@{JdTyElTKxIZHlAa@bPZhA~c@}BxAoDf@WrEvH`BRl@jBf@F|D]lAy@jP{Tj@W^cARAzGlFjMvKzS~QbIpC_@tCBx@~BfBzGdMrC`ItDjHj@NrA{BvAsAj@GfEhNBtGVnAZl@j@Nr@i@|ElL|D~GfElF~EjEvF|C~tCzmApAoJ|HpDhLnC|NvAnCgArB`AhABhLu@vAcAImDV[~Lk@n^iEbGpAhHqAfjG|lHRz@`AnAvBs@hAnAdA`@bMx@zJiCt@}@tBZf]}GhReAzLHVfGtAtJTdEu@xj@X`MCjGfGpq@MpEwApMIzWg@xDj@pA~BvPn@dLpE|Tr@~QtBhK`BxFdElIfCrOnAzLn@fWhDr\pAxHdIj[rCbZfBhFdDdFhJ`TrOvk@nBs@n@`DT`GdEpR~CjLvG|Q~A~BvOjZdBjAr@hDpFrLfKhRpApEfBzPfAtEbNtXD~@SR\hBfBvBbLlSrFzG`NbNhb@~^pF|FdGtIn[jj@pDjE~DxBrQnEjM^dCrAz@fBdHdYtDzLbHjH~MfPbJbOdCnHhD~FnA`@jPnNtCe@nJ`MxC`CU`Fb@x@p@~DbQnJ`BlBf@pBDbCm@va@PlEbAxEpLxz@jApF|d@pkA`Vbo@~Prf@pB|Djr@|lBnEtKpHdKbiAtvAVLn@u@z@Zn@i@~BnCjCbDeAzCHn@hmAt{ApAtAt@aAZVheBrwB|FdIf@YNs@vL_I~@OlBbClDlCrC`DxJfBrOdGl@t@nDhKvCxElOo@|JgCnCtC`GvBvDjEzChBz@rAFzAl@JbAzAvC_EjAeFv@eBzA}B`By@nBB`QdE~QaDzPwE~QPd@`@_@vDBnE`BbNhPj[n@PbAuDzA`@t@mAdDpEhC{E`CnC')),
+            $this->analyzer->analyzeForPolyline($this->fixture('route-be-nl'))
+        );
+    }
+
+    public function testAnalyzeForPolylineIsIndependentOfDirection(): void
+    {
+        $reversed = array_reverse($this->fixture('route-pl-cz')->decodeAndPairLatLng());
+
+        $this->assertEquals(
+            ['CZ', 'PL'],
+            $this->analyzer->analyzeForPolyline(EncodedPolyline::fromCoordinates($reversed))
+        );
+    }
+
+    public function testAnalyzeForPolylineThatOnlyTransitsACountryBetweenTwoCoordinates(): void
+    {
+        $this->assertEquals(
+            ['CZ', 'PL'],
+            $this->analyzer->analyzeForPolyline(EncodedPolyline::fromCoordinates([
+                [50.28, 16.46],
+                [50.32, 16.38],
+            ]))
+        );
+    }
+
+    public function testAnalyzeForPolylineInsideAnEnclave(): void
+    {
+        $this->assertEquals(
+            ['LS'],
+            $this->analyzer->analyzeForPolyline(EncodedPolyline::fromCoordinates([
+                [-29.52, 28.61],
+                [-29.29, 29.07],
+            ]))
+        );
+    }
+
+    public function testAnalyzeForPolylineThatStaysInOneCountry(): void
+    {
+        $this->assertEquals(
+            ['PL'],
+            $this->analyzer->analyzeForPolyline(EncodedPolyline::fromCoordinates([
+                [52.2297, 21.0122],
+                [52.2500, 21.0500],
+                [52.2700, 21.0300],
+            ]))
+        );
+    }
+
+    #[TestWith([[[35.6762, 139.6503], [35.6800, 139.6600]], ['JP'], 'Tokyo'])]
+    #[TestWith([[[-33.8688, 151.2093], [-33.8600, 151.2200]], ['AU'], 'Sydney'])]
+    #[TestWith([[[39.7392, -104.9903], [39.7500, -104.9800]], ['US'], 'Denver'])]
+    public function testAnalyzeForPolylineOutsideTheLongitudeBandOfLatitude(array $coordinates, array $expected, string $description): void
+    {
+        $this->assertEquals(
+            $expected,
+            $this->analyzer->analyzeForPolyline(EncodedPolyline::fromCoordinates($coordinates)),
+            $description
+        );
+    }
+
+    public function testAnalyzeForPolylineCrossingTheAntimeridian(): void
+    {
+        $this->assertEquals(
+            ['FJ'],
+            $this->analyzer->analyzeForPolyline(EncodedPolyline::fromCoordinates([
+                [-16.98, 179.98],
+                [-17.46, -179.14],
+            ]))
+        );
+    }
+
+    public function testAnalyzeForPolylineInTheMiddleOfTheOcean(): void
+    {
+        $this->assertEquals(
+            [],
+            $this->analyzer->analyzeForPolyline(EncodedPolyline::fromCoordinates([
+                [0.0, -30.0],
+                [0.1, -30.1],
+            ]))
         );
     }
 
     public function testAnalyzeForInvalidPolyline(): void
     {
-        $analyzer = new RouteGeographyAnalyzer();
-
         $this->assertEquals(
             [],
-            $analyzer->analyzeForPolyline(EncodedPolyline::fromString('}ftUqr{yH'))
+            $this->analyzer->analyzeForPolyline(EncodedPolyline::fromString('}ftUqr{yH'))
         );
+    }
+
+    private function fixture(string $name): EncodedPolyline
+    {
+        return EncodedPolyline::fromString(trim(
+            file_get_contents(__DIR__.'/fixtures/'.$name.'.txt') ?: ''
+        ));
+    }
+
+    #[\Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->analyzer = new RouteGeographyAnalyzer();
     }
 }
