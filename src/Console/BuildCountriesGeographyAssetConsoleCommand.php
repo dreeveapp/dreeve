@@ -21,12 +21,11 @@ final class BuildCountriesGeographyAssetConsoleCommand extends Command
     private const string NATURAL_EARTH_VERSION = 'v5.1.2';
     private const string SOURCE_URL = 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/'
         .self::NATURAL_EARTH_VERSION.'/geojson/ne_10m_admin_0_countries.geojson';
-    private const string TARGET_DIRECTORY = 'src/Domain/Activity/Route/assets/countries';
 
     public function __construct(
         private readonly KernelProjectDir $kernelProjectDir,
         private readonly Client $client,
-        private readonly FilesystemOperator $defaultStorage,
+        private readonly FilesystemOperator $countriesGeographyStorage,
     ) {
         parent::__construct();
     }
@@ -49,7 +48,9 @@ final class BuildCountriesGeographyAssetConsoleCommand extends Command
 
     private function build(string $source, OutputInterface $output): void
     {
-        $this->defaultStorage->deleteDirectory(self::TARGET_DIRECTORY);
+        foreach ($this->countriesGeographyStorage->listContents('') as $staleFile) {
+            $this->countriesGeographyStorage->delete($staleFile->path());
+        }
 
         /** @var array<string, list<string>> $encodedPolygonsPerCountry */
         $encodedPolygonsPerCountry = [];
@@ -88,19 +89,21 @@ final class BuildCountriesGeographyAssetConsoleCommand extends Command
         usort($index, fn (array $a, array $b): int => [$a['countryCode'], $a['polygonIndex']] <=> [$b['countryCode'], $b['polygonIndex']]);
 
         $totalPolygons = 0;
-        $bytes = 0;
         foreach ($encodedPolygonsPerCountry as $countryCode => $encodedPolygons) {
             $totalPolygons += count($encodedPolygons);
             // Each element is already a complete JSON array, so this is the encoding of the list.
-            $contents = '['.implode(',', $encodedPolygons).']';
-            $bytes += strlen($contents);
-
-            $this->defaultStorage->write(sprintf('%s/%s.json', self::TARGET_DIRECTORY, $countryCode), $contents);
+            $this->countriesGeographyStorage->write(
+                $countryCode.'.json',
+                '['.implode(',', $encodedPolygons).']'
+            );
         }
 
-        $contents = Json::encode($index);
-        $bytes += strlen($contents);
-        $this->defaultStorage->write(self::TARGET_DIRECTORY.'/index.json', $contents);
+        $this->countriesGeographyStorage->write('index.json', Json::encode($index));
+
+        $bytes = 0;
+        foreach ($this->countriesGeographyStorage->listContents('') as $file) {
+            $bytes += $this->countriesGeographyStorage->fileSize($file->path());
+        }
 
         $output->writeln(sprintf(
             '=> Wrote %d countries, %d polygons, %d vertices (%.1f MB)',
