@@ -56,7 +56,7 @@ final class RouteGeographyAnalyzer
 
             foreach ($polygonIndexes as $polygonIndex) {
                 if (!$rings = $polygons[$polygonIndex] ?? null) {
-                    continue;
+                    continue; // @codeCoverageIgnore
                 }
                 $pruned = Polygon::fromLngLatRings($rings)->pruned($routeBounds);
                 if (!$pruned?->containsAnyOf($coordinates)) {
@@ -108,7 +108,7 @@ final class RouteGeographyAnalyzer
         $path = $this->assetsDirectory.'/'.$fileName;
 
         if (!is_file($path) || false === $contents = file_get_contents($path)) {
-            throw new \RuntimeException(sprintf(  /* @codeCoverageIgnore */ 'Country boundary asset "%s" is missing or unreadable. Rebuild it with "make build-countries-asset".', $path));
+            throw new \RuntimeException(sprintf('Country boundary asset "%s" is missing or unreadable. Rebuild it with "make build-countries-asset".', $path)); // @codeCoverageIgnore
         }
 
         return $contents;

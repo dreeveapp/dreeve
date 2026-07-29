@@ -1,0 +1,10 @@
+{
+  "meta": {
+    "version": 1
+  },
+  "items": [
+    {"id": 1, "attributes": {"name": "first"}},
+    {"id": 2, "attributes": {"name": "second"}},
+    {"id": 3, "attributes": {"name": "third"}}
+  ]
+}
