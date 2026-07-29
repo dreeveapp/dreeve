@@ -7,6 +7,7 @@ twig:
     globals:
         appName: '@App\Application\AppName'
         rebuildStatus: '@App\Application\RebuildStatus'
+        activityPageBuildStatus: '@App\Application\Build\ActivityPageBuildStatus'
         appVersion: '@App\Application\AppVersion'
         importMode: '@App\Domain\Import\ImportMode'
         enrichedActivities: '@App\Domain\Activity\EnrichedActivities'

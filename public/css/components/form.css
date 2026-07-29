@@ -22,7 +22,7 @@
             }
         }
 
-        input:where([type="text"], [type="number"], [type="date"], [type="password"], [type="email"], [type="search"], [type="url"]):not(.unstyled),
+        input:where([type="text"], [type="number"], [type="date"], [type="datetime-local"], [type="password"], [type="email"], [type="search"], [type="url"]):not(.unstyled),
         textarea:not(.unstyled),
         select:not(.unstyled) {
             @apply mt-1 block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary;

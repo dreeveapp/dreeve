@@ -2,12 +2,16 @@
 
 namespace App\Tests\Controller\Admin\File;
 
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportRepository;
 use App\Domain\Import\FileImportStatus;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Import\FileImportBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -181,6 +185,57 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
             'filters%5Bstatus%5D=failed',
             (string) $crawler->filter('[aria-label="Go to next page"]')->attr('href')
         );
+    }
+
+    public function testLinksToTheDetailPageOnlyOnceItHasBeenBuilt(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+
+        $activityRepository = static::getContainer()->get(ActivityRepository::class);
+        $fileImportRepository = static::getContainer()->get(FileImportRepository::class);
+
+        foreach ([1, 2] as $i) {
+            $activityId = ActivityId::fromUnprefixed((string) $i);
+            $activityRepository->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId($activityId)
+                    ->withName(sprintf('Activity %d', $i))
+                    ->build(),
+                [],
+            ));
+            $fileImportRepository->add(
+                FileImportBuilder::fromDefaults()
+                    ->withFileImportId(FileImportId::fromUnprefixed((string) $i))
+                    ->withOriginalFilename(sprintf('activity-%d.fit', $i))
+                    ->withActivityId($activityId)
+                    ->build()
+            );
+        }
+
+        // Only the first activity made it into a build, the second one was imported afterwards.
+        static::getContainer()->get('build_html.storage')->write(
+            'activity/'.ActivityId::fromUnprefixed('1').'.html',
+            'I am the activity page'
+        );
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/file-imports');
+
+        $this->assertResponseIsSuccessful();
+
+        $detailLinks = $crawler->filter('table.data-table tbody a[href*="#/activity/"]');
+        $this->assertCount(1, $detailLinks);
+        $this->assertStringContainsString(
+            '/activities#/activity/'.ActivityId::fromUnprefixed('1').'.html',
+            $detailLinks->first()->attr('href')
+        );
+        $this->assertSame('Activity 1', trim($detailLinks->first()->text()));
+
+        $pendingPills = $crawler->filter('table.data-table tbody span.pill');
+        $this->assertCount(1, $pendingPills);
+        $this->assertSame('Pending build', trim($pendingPills->first()->text()));
+        $this->assertStringContainsString('Activity 2', $crawler->filter('table.data-table')->text());
     }
 
     private function seedFileImports(int $count): void

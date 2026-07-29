@@ -107,6 +107,7 @@ Disabled: Deaktiviert
 Distance: Distanz
 'Drag to reorder': 'Ziehen zum Neuordnen'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Ziehen, um die Reihenfolge festzulegen, in der Sportarten in der gesamten App angezeigt werden.'
+Duration: Duration
 Edit: Bearbeiten
 'Edit activity': 'Aktivität bearbeiten'
 'Edit automation rule': 'Automatisierungsregel bearbeiten'
@@ -153,6 +154,7 @@ General: Allgemein
 'History of cycling FTP. Needed to calculate activity stress level.': 'Verlauf der Radfahr-FTP. Wird benötigt, um das Belastungsniveau der Aktivität zu berechnen.'
 'History of running FTP. Needed to calculate activity stress level.': 'Verlauf der Lauf-FTP. Wird benötigt, um das Belastungsniveau der Aktivität zu berechnen.'
 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'Gewichtsverlauf (in kg oder Pfund, abhängig vom eingestellten Einheitensystem). Wird benötigt, um die relative Leistung in W/kg zu berechnen.'
+Hours: Hours
 'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'Wie oft (in Minuten, zwischen 1 und 60) in der Warteschlange stehende Webhook-Ereignisse verarbeitet werden.'
 If: Wenn
 'If all of these match': 'Wenn alle Bedingungen erfüllt sind'
@@ -161,6 +163,7 @@ If: Wenn
 Image: Bild
 Images: Bilder
 Import: Import
+'Import activities': 'Import activities'
 'Import data & build app': 'Daten importieren & App erstellen'
 'Import segment details': 'Segmentdetails importieren'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Segmentdetails importieren, damit Segmentkarten angezeigt werden können. Dies erfordert einen zusätzlichen Strava-API-Aufruf pro Segment und erhöht die Importzeit erheblich.'
@@ -196,6 +199,7 @@ Match: Übereinstimmung
 Message: Nachricht
 'Metric display order': 'Anzeigereihenfolge der Metriken'
 Metrics: Metriken
+Minutes: Minutes
 Mode: Modus
 Model: Modell
 Monday: Montag
@@ -237,6 +241,7 @@ Operator: Operator
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Teile, deren Wartung du verfolgst, z. B. Ketten, Kassetten, Bremsbeläge ...'
 'Passes near': 'Passes near'
 Password: Passwort
+'Pending build': 'Pending build'
 'Performed on': 'Durchgeführt am'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos der ausgewählten Sportarten werden von der Fotogalerie ausgeschlossen.'
 'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
@@ -278,6 +283,7 @@ Saved: gespeichert
 Saving...: 'Wird gespeichert...'
 'Scheduled actions the daemon runs at regular intervals.': 'Geplante Aktionen, die der Daemon in regelmäßigen Abständen ausführt.'
 'Search by name, date or activity ID': 'Nach Name, Datum oder Aktivitäts-ID suchen'
+Seconds: Seconds
 'Select a component first...': 'Wähle zuerst eine Komponente aus...'
 'Select a component…': 'Komponente auswählen…'
 'Select all': 'Alle auswählen'
@@ -317,6 +323,7 @@ Source: Quelle
 'Sport types sorting order': 'Sortierreihenfolge der Sportarten'
 'Sport types to import': 'Zu importierende Sportarten'
 'Sport types to include': 'Einzubeziehende Sportarten'
+'Start date and time': 'Start date and time'
 'Starts near': 'Beginnt in der Nähe'
 'Stop processing further rules when this rule matches': 'Stop processing further rules when this rule matches'
 'Stops after match': 'Stops after match'
@@ -367,6 +374,7 @@ Tasks: Aufgaben
 'The workout type': 'The workout type'
 'Then do this': 'Dann ausführen'
 'This action cannot be undone.': 'Diese Aktion kann nicht rückgängig gemacht werden.'
+'This activity shows up on the app after the next build.': 'This activity shows up on the app after the next build.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Diese Komponente ist an mehreren Ausrüstungen montiert. Wähle die aus, die du gewartet hast.'
 'This only affects future imports. Already imported activities are left untouched. This action cannot be undone.': 'Dies betrifft ausschließlich zukünftige Importe. Bereits importierte Aktivitäten bleiben unberührt. Diese Maßnahme kann nicht rückgängig gemacht werden.'
 'This only removes the import record, the imported activity is kept.': 'Dadurch wird lediglich der Importdatensatz entfernt, die importierte Aktivität bleibt erhalten.“'
@@ -408,7 +416,7 @@ Weekdays: Wochentage
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Wenn aktiviert, wird als ausgemustert markierte Ausrüstung übersprungen. Ihre Komponenten erhöhen die Nutzung nicht und es wird keine Wartung dafür verfolgt.'
 'Workout type': Trainingstyp
 'You can add it back to your dashboard again later.': 'Du kannst es später wieder zu deinem Dashboard hinzufügen.'
-'You can also copy files straight into the {watchFolder} folder.': 'Du kannst Dateien auch direkt in den Ordner {watchFolder} kopieren.'
+'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.'
 'You can select up to {max} images': 'Du kannst bis zu {max} Bilder auswählen.'
 "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": 'Du importierst derzeit über die Strava-API. Setze {importMode}, um Aktivitätsdateien direkt hochzuladen, ohne von der Strava-API abhängig zu sein.'
 'Your birthday. Needed to calculate heart rate zones.': 'Dein Geburtstag. Wird benötigt, um die Herzfrequenzzonen zu berechnen.'

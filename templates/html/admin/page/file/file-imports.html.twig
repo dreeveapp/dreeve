@@ -98,12 +98,22 @@
                                 </td>
                                 <td class="whitespace-nowrap text-left">
                                     {% set activityId = fileImport.getActivityId() %}
-                                    {% if activityId %}
+                                    {% if activityId and activityPageBuildStatus.hasBeenBuilt(activityId) %}
                                         <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
                                            title="{{ fileImport.getActivityName() }}"
                                            href="{{ relativeUrl('/activities#/activity/' ~ activityId ~ '.html') }}">
                                             {{ fileImport.getActivityName() }}
                                         </a>
+                                    {% elseif activityId %}
+                                        <div class="flex items-center gap-2">
+                                            <span class="block max-w-100 truncate font-medium text-gray-800" title="{{ fileImport.getActivityName() }}">
+                                                {{ fileImport.getActivityName() }}
+                                            </span>
+                                            <span class="pill pill--neutral text-xs"
+                                                  title="{{ "This activity shows up on the app after the next build."|trans({}, 'admin') }}">
+                                                {{ "Pending build"|trans({}, 'admin') }}
+                                            </span>
+                                        </div>
                                     {% endif %}
                                 </td>
                                 <td class="narrow whitespace-nowrap">

@@ -130,15 +130,18 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
     public function update(ActivityWithRawData $activityWithRawData): void
     {
         $sql = 'UPDATE Activity SET
+                    startDateTime = :startDateTime,
                     name = :name,
                     description = :description,
                     deviceName = :deviceName,
                     sportType = :sportType,
                     activityType = :activityType,
+                    worldType = :worldType,
                     distance = :distance,
                     averageSpeed = :averageSpeed,
                     maxSpeed = :maxSpeed,
                     movingTimeInSeconds = :movingTimeInSeconds,
+                    elapsedTimeInSeconds = :elapsedTimeInSeconds,
                     elevation = :elevation,
                     polyline = :polyline,
                     startingCoordinateLatitude = :startingCoordinateLatitude,
@@ -155,8 +158,10 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
         $activity = $activityWithRawData->getActivity();
         $this->connection->executeStatement($sql, [
             'activityId' => $activity->getId(),
+            'startDateTime' => $activity->getStartDate(),
             'sportType' => $activity->getSportType()->value,
             'activityType' => $activity->getSportType()->getActivityType()->value,
+            'worldType' => $activity->getWorldType()->value,
             'name' => $activity->getOriginalName(),
             'description' => $activity->getDescription(),
             'deviceName' => $activity->getDeviceName(),
@@ -165,6 +170,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'averageSpeed' => $activity->getAverageSpeed()->toFloat(),
             'maxSpeed' => $activity->getMaxSpeed()->toFloat(),
             'movingTimeInSeconds' => $activity->getMovingTimeInSeconds(),
+            'elapsedTimeInSeconds' => $activity->getElapsedTimeInSeconds(),
             'polyline' => $activity->getEncodedPolyline(),
             'startingCoordinateLatitude' => $activity->getStartingCoordinate()?->getLatitude()->toFloat(),
             'startingCoordinateLongitude' => $activity->getStartingCoordinate()?->getLongitude()->toFloat(),
