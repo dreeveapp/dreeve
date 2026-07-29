@@ -239,6 +239,7 @@ Operator: Operator
 Password: Senha
 'Performed on': 'Realizado em'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos dos tipos de esporte selecionados são excluídas da galeria de fotos.'
+'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
 'Processed on': 'Processado em'
 'Profile picture URL': 'URL da foto do perfil'
 Provider: Provedor
@@ -290,6 +291,7 @@ Saving...: Salvando...
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Envia uma notificação quando a manutenção do equipamento está vencida. Requer um serviço de notificação configurado.'
 'Set description': 'Set description'
 'Set name': 'Set name'
+'Set recording device': 'Set recording device'
 'Set sport type': 'Set sport type'
 'Set workout type': 'Set workout type'
 Settings: Configurações
@@ -298,6 +300,7 @@ Settings: Configurações
 'Show in dashboard widget': 'Mostrar no widget do painel'
 'Show in navigation bar': 'Mostrar na barra de navegação'
 'Show last X years by default': 'Mostrar últimos X anos por padrão'
+'Show options': 'Show options'
 'Show password': 'Mostrar senha'
 'Show the workout assistant in the UI.': 'Exibir o assistente de treino na interface de usuário (UI).'
 'Showing {first} - {last} of {total}': 'Mostrando de {first} a {last} de {total}'

@@ -239,6 +239,7 @@ Operator: Operator
 Password: Password
 'Performed on': 'Performed on'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
+'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
 'Processed on': 'Processed on'
 'Profile picture URL': 'Profile picture URL'
 Provider: Provider
@@ -290,6 +291,7 @@ Saving...: Saving...
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sends a notification when gear maintenance is due. Requires a configured notification service.'
 'Set description': 'Set description'
 'Set name': 'Set name'
+'Set recording device': 'Set recording device'
 'Set sport type': 'Set sport type'
 'Set workout type': 'Set workout type'
 Settings: Settings
@@ -298,6 +300,7 @@ Settings: Settings
 'Show in dashboard widget': 'Show in dashboard widget'
 'Show in navigation bar': 'Show in navigation bar'
 'Show last X years by default': 'Show last X years by default'
+'Show options': 'Show options'
 'Show password': 'Show password'
 'Show the workout assistant in the UI.': 'Show the workout assistant in the UI.'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'

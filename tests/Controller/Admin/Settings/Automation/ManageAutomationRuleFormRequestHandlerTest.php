@@ -2,6 +2,9 @@
 
 namespace App\Tests\Controller\Admin\Settings\Automation;
 
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Automation\Action\ActionType;
 use App\Domain\Automation\Action\ConfiguredAction\ConfiguredAction;
 use App\Domain\Automation\Action\ConfiguredAction\ConfiguredActions;
@@ -13,6 +16,7 @@ use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredConditions;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Import\ImportMode;
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Automation\AutomationRuleBuilder;
 
 class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
@@ -97,6 +101,13 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->assertContains('assignGear', $actionOptions);
         $this->assertContains('setDescription', $actionOptions);
 
+        // The set device action ships a combobox around a plain, submittable text input.
+        $this->assertCount(1, $crawler->filter('[data-combobox]'));
+        $this->assertCount(1, $crawler->filter('[data-combobox] input[type="text"][name="actions[__index__][config][deviceName]"][data-repeater-field="config.deviceName"][required]'));
+        // Without recorded devices there is nothing to pick from.
+        $this->assertCount(0, $crawler->filter('[data-combobox-toggle]'));
+        $this->assertCount(0, $crawler->filter('[data-combobox-panel]'));
+
         // Every proximity condition ships a coordinate picker wired to its own lat/lng/radius inputs.
         $this->assertCount(3, $crawler->filter('[data-coordinate-picker]'));
         $this->assertCount(3, $crawler->filter('[data-coordinate-picker-map]'));
@@ -106,6 +117,30 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame(
             '{"radiusToMeter":1}',
             $crawler->filter('[data-coordinate-picker]')->eq(0)->attr('data-coordinate-picker'),
+        );
+    }
+
+    public function testItRendersTheRecordedDevicesAsComboboxOptions(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withDeviceName('Garmin Edge 530')
+                ->build(),
+            []
+        ));
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/settings/automation-rules/add');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(1, $crawler->filter('[data-combobox-toggle]'));
+        $this->assertSame(
+            ['Garmin Edge 530'],
+            $crawler->filter('[data-combobox-option]')->extract(['data-combobox-option'])
         );
     }
 

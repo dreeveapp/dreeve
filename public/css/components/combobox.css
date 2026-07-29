@@ -1,0 +1,44 @@
+@layer components {
+    body.admin {
+        .combobox {
+            @apply relative;
+
+            & [data-combobox-input] {
+                @apply mt-0;
+            }
+
+            &:has([data-combobox-toggle]) [data-combobox-input] {
+                @apply pe-9;
+            }
+
+            & [data-combobox-toggle] {
+                @apply absolute inset-y-0 end-0 grid w-9 cursor-pointer place-items-center text-gray-500;
+
+                & > svg {
+                    @apply size-2.5 transition-transform duration-200;
+                }
+            }
+
+            &:has([data-combobox-panel].block) [data-combobox-toggle] > svg {
+                @apply rotate-180;
+            }
+
+            & [data-combobox-panel] {
+                @apply z-1002 w-full max-w-[calc(100vw-2rem)] rounded-lg border border-gray-200 bg-white shadow-xs;
+
+                & > ul {
+                    @apply flex max-h-48 flex-col gap-0.5 overflow-y-auto p-2 text-sm text-gray-700;
+
+                    & button {
+                        @apply w-full cursor-pointer rounded-xs p-1.5 text-start text-sm font-normal;
+                        @apply hover:bg-gray-100 focus:bg-gray-100 focus:outline-none;
+
+                        &[aria-selected="true"] {
+                            @apply font-medium text-primary;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,32 @@
+{% set value = value ?? '' %}
+{% set options = options ?? [] %}
+{% set placeholder = placeholder ?? '' %}
+{% set required = required ?? false %}
+{% set repeaterField = repeaterField ?? null %}
+{% set id = id ?? null %}
+
+<div class="combobox" data-combobox>
+    <input type="text" data-combobox-input autocomplete="off" role="combobox" aria-haspopup="listbox"
+           aria-expanded="false" aria-autocomplete="list"
+           {% if id %}id="{{ id }}"{% endif %}
+           name="{{ name }}" value="{{ value }}" placeholder="{{ placeholder }}" {{ required ? 'required' }}
+           {% if repeaterField %}data-repeater-field="{{ repeaterField }}"{% endif %}>
+    {% if options|length > 0 %}
+        <button type="button" class="unstyled" tabindex="-1" data-combobox-toggle
+                aria-label="{{ "Show options"|trans({}, 'admin') }}">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+            </svg>
+        </button>
+        <div class="hidden" data-combobox-panel>
+            <ul role="listbox">
+                {% for option in options %}
+                    <li>
+                        <button type="button" class="unstyled" role="option"
+                                data-combobox-option="{{ option.value }}">{{ option.label }}</button>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
