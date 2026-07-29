@@ -7,9 +7,11 @@
         "distance": "6.1km",
         "name": "Night Ride",
         "startLocation": {
-            "countryCode": "be",
             "state": "West-Vlaanderen"
         },
+        "countryCodes": [
+            "be"
+        ],
         "filterables": {
             "sportType": "Ride",
             "start-date": 1693947938000,

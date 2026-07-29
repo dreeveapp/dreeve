@@ -60,6 +60,18 @@ class ActivityBasedRouteRepositoryTest extends ContainerTestCase
                 ->build(),
             rawData: []
         ));
+        $this->activityRepository->add(ActivityWithRawData::fromState(
+            activity: ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed(5))
+                ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 14:00:34'))
+                ->withPolyline('tqafAua~y^vG{D')
+                ->withRouteGeography(RouteGeography::create([
+                    'country_code' => 'PL',
+                    'passed_through_countries' => ['CZ', 'PL'],
+                ]))
+                ->build(),
+            rawData: []
+        ));
 
         $this->assertMatchesJsonSnapshot(Json::encode($this->routeRepository->findAll()));
     }
