@@ -1,3 +1,24 @@
+# [v5.1.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.1.1) - 2026-07-28
+
+We released a separate __Dreeve Garmin Connector__ container to automatically sync your Garmin FIT files
+to Dreeve's watch folder. Read all about it in the docs: https://docs.dreeve.app/#/integrations/garmin-connect
+
+## New features
+* Added a new automation rule action to automatically update an activity's recording device.
+
+## Improvements
+* Improved automation rule testing by rendering tokens with their actual values.
+* Reworked the route geography analyzer to improve accuracy.
+* Added an Edit link to the activity detail page for logged-in users.
+
+## Technical details
+* ISSUE #2362: Render automation rule tokens during testing by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2364
+* ISSUE #2361: Rework RouteGeographyAnalyzer by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2366
+* ISSUE #2314: Add an automation rule action to update the recording device by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2367
+* ISSUE #2363: Add an edit link on the activity detail page when logged in by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2368
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.1.0...v5.1.1
+
 # [v5.1.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.1.0) - 2026-07-27
 
 ## New features
@@ -7,7 +28,7 @@
 ## Improvements
 * Duplicate activities can now also be detected based on their sport type and/or start time
 * Added a sport type multi select dropdown
-* Yearly line charts now use the same colours throughout the app
+* Yearly line charts now use the same colors throughout the app
 * Added filters to the file import overview to make it easier to find specific imports
 * FIT file imports now take heart-rate messages into account
 * Average power is now calculated when parsing FIT files
