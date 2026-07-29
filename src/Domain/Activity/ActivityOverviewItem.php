@@ -15,6 +15,7 @@ final readonly class ActivityOverviewItem implements Item
         private ActivityName $name,
         private SportType $sportType,
         private SerializableDateTime $startDate,
+        private ImportSource $importSource,
         private ?string $gearName,
         private ?string $deviceName,
         private bool $isCommute,
@@ -27,6 +28,7 @@ final readonly class ActivityOverviewItem implements Item
         ActivityName $name,
         SportType $sportType,
         SerializableDateTime $startDate,
+        ImportSource $importSource,
         ?string $gearName,
         ?string $deviceName,
         bool $isCommute,
@@ -37,6 +39,7 @@ final readonly class ActivityOverviewItem implements Item
             name: $name,
             sportType: $sportType,
             startDate: $startDate,
+            importSource: $importSource,
             gearName: $gearName,
             deviceName: $deviceName,
             isCommute: $isCommute,
@@ -62,6 +65,11 @@ final readonly class ActivityOverviewItem implements Item
     public function getStartDate(): SerializableDateTime
     {
         return $this->startDate;
+    }
+
+    public function getImportSource(): ImportSource
+    {
+        return $this->importSource;
     }
 
     public function getGearName(): ?string

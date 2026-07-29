@@ -46,6 +46,7 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
                 ->withName('Morning Run')
                 ->withSportType(SportType::RUN)
                 ->withStartDateTime(SerializableDateTime::fromString('2026-06-04 10:00:00'))
+                ->withImportSource(ImportSource::MANUAL)
                 ->withGearId(GearId::fromUnprefixed('99'))
                 ->withDeviceName('Garmin Forerunner')
                 ->withIsCommute(true)
@@ -66,6 +67,7 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
                     name: ActivityName::fromString('Morning Run'),
                     sportType: SportType::RUN,
                     startDate: SerializableDateTime::fromString('2026-06-04 10:00:00'),
+                    importSource: ImportSource::MANUAL,
                     gearName: 'Trail Shoes',
                     deviceName: 'Garmin Forerunner',
                     isCommute: true,
@@ -140,6 +142,7 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
                 ->withName('Morning Run')
                 ->withSportType(SportType::RUN)
                 ->withStartDateTime(SerializableDateTime::fromString('2026-06-04 10:00:00'))
+                ->withImportSource(ImportSource::MANUAL)
                 ->withGearId(GearId::fromUnprefixed('99'))
                 ->withDeviceName('Garmin Forerunner')
                 ->withIsCommute(true)
@@ -155,6 +158,7 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
                     name: ActivityName::fromString('Morning Run'),
                     sportType: SportType::RUN,
                     startDate: SerializableDateTime::fromString('2026-06-04 10:00:00'),
+                    importSource: ImportSource::MANUAL,
                     gearName: 'Trail Shoes',
                     deviceName: 'Garmin Forerunner',
                     isCommute: true,

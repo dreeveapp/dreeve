@@ -6,6 +6,26 @@
             <h3 class="text-lg font-semibold">
                 {{ "Activity management"|trans({}, 'admin') }}
             </h3>
+            {% if importMode.isFiles() %}
+                <div class="flex items-center gap-2">
+                    <a href="{{ relativeUrl(path('admin_file_upload')) }}" type="button" class="btn--add">
+                        <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01"/>
+                        </svg>
+                        <span>
+                            {{ "Import activities"|trans({}, 'admin') }}
+                        </span>
+                    </a>
+                    <a href="{{ relativeUrl(path('admin_add_activity')) }}" type="button" class="btn--add">
+                        <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                        </svg>
+                        <span>
+                            {{ "Add activity"|trans({}, 'admin') }}
+                        </span>
+                    </a>
+                </div>
+            {% endif %}
         </div>
         {% if not overview.isEmpty() or not filters.isEmpty() %}
             <form method="get" class="mb-4 flex flex-wrap items-end gap-3">
@@ -67,6 +87,9 @@
                         {{ "Date"|trans }}
                     </th>
                     <th scope="col" class="text-left">
+                        {{ "Import source"|trans({}, 'admin') }}
+                    </th>
+                    <th scope="col" class="text-left">
                         {{ "Gear"|trans }}
                     </th>
                     <th scope="col" class="text-left">
@@ -87,17 +110,34 @@
                 {% for activity in overview %}
                     <tr class="group/row">
                         <td class="whitespace-nowrap text-left">
-                            <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
-                               title="{{ activity.getName() }}"
-                               href="{{ relativeUrl('/activities#/activity/' ~ activity.getActivityId() ~ '.html') }}">
-                                {{ activity.getName() }}
-                            </a>
+                            {% if activityPageBuildStatus.hasBeenBuilt(activity.getActivityId()) %}
+                                <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
+                                   title="{{ activity.getName() }}"
+                                   href="{{ relativeUrl('/activities#/activity/' ~ activity.getActivityId() ~ '.html') }}">
+                                    {{ activity.getName() }}
+                                </a>
+                            {% else %}
+                                <div class="flex items-center gap-2">
+                                    <span class="block max-w-100 truncate font-medium text-gray-800" title="{{ activity.getName() }}">
+                                        {{ activity.getName() }}
+                                    </span>
+                                    <span class="pill pill--neutral text-xs"
+                                          title="{{ "This activity shows up on the app after the next build."|trans({}, 'admin') }}">
+                                        {{ "Pending build"|trans({}, 'admin') }}
+                                    </span>
+                                </div>
+                            {% endif %}
                         </td>
                         <td class="whitespace-nowrap text-left">
                             {{ activity.getSportType()|trans }}
                         </td>
                         <td class="whitespace-nowrap text-left">
                             {{ activity.getStartDate()|formatDate() }}
+                        </td>
+                        <td class="whitespace-nowrap text-left">
+                            <span class="pill pill--neutral text-xs">
+                                {{ activity.getImportSource().label() }}
+                            </span>
                         </td>
                         <td class="whitespace-nowrap text-left">
                             {% if activity.getGearName() %}
@@ -149,7 +189,7 @@
                 {% endfor %}
                 {% if overview.isEmpty() %}
                     <tr>
-                        <td colspan="8">
+                        <td colspan="9">
                             <div class="flex flex-col items-center justify-center gap-3 py-12 px-4 text-center">
                                 <span class="grid place-items-center size-12 rounded-full bg-gray-100 text-gray-400" aria-hidden="true">
                                     <svg class="size-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -161,6 +201,11 @@
                                         <span class="text-sm font-medium text-gray-800">{{ "No activities imported yet."|trans({}, 'admin') }}</span>
                                         <span class="text-xs text-gray-500">{{ "Activities will appear here once they are imported."|trans({}, 'admin') }}</span>
                                     </div>
+                                    {% if importMode.isFiles() %}
+                                        <a href="{{ relativeUrl(path('admin_add_activity')) }}" class="btn--primary mt-1">
+                                            {{ "Add activity"|trans({}, 'admin') }}
+                                        </a>
+                                    {% endif %}
                                 {% else %}
                                     <div class="flex flex-col gap-1">
                                         <span class="text-sm font-medium text-gray-800">{{ "No activities match the current filters."|trans({}, 'admin') }}</span>

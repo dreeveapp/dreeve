@@ -9,6 +9,7 @@ use App\Domain\Activity\Eddington\Eddington;
 use App\Domain\Activity\EnrichedActivities;
 use App\Domain\Activity\Stream\StreamBasedActivityHeartRateRepository;
 use App\Domain\Activity\Stream\StreamBasedActivityPowerRepository;
+use App\Domain\Import\ImportMode;
 use App\Infrastructure\Twig\HtmlTwigExtension;
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
@@ -21,8 +22,18 @@ abstract class ContainerTestCase extends KernelTestCase
 
     protected static ?Connection $ourDbalConnection = null;
 
+    private ?string $originalImportMode = null;
+
+    protected function importMode(): ImportMode
+    {
+        return ImportMode::STRAVA_API;
+    }
+
     protected function setUp(): void
     {
+        $this->originalImportMode = $_ENV['IMPORT_MODE'] ?? null;
+        $_SERVER['IMPORT_MODE'] = $_ENV['IMPORT_MODE'] = $this->importMode()->value;
+
         parent::setUp();
 
         if (!self::$ourDbalConnection instanceof Connection) {
@@ -64,6 +75,18 @@ abstract class ContainerTestCase extends KernelTestCase
 
         // Seed settings.
         $this->provideSettings();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        if (null === $this->originalImportMode) {
+            unset($_SERVER['IMPORT_MODE'], $_ENV['IMPORT_MODE']);
+
+            return;
+        }
+        $_SERVER['IMPORT_MODE'] = $_ENV['IMPORT_MODE'] = $this->originalImportMode;
     }
 
     protected function getConnection(): Connection

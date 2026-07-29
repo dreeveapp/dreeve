@@ -99,7 +99,13 @@
                     </div>
                 </form>
                 <div class="mt-6 text-xs text-gray-500">
-                    {{ "You can also copy files straight into the {watchFolder} folder."|trans({'{watchFolder}': codeOpen ~ 'watch' ~ codeClose}, 'admin') }}
+                    {% set linkOpen = '<a href="' ~ relativeUrl(path('admin_add_activity')) ~ '" class="font-medium text-blue-600 hover:underline">' %}
+                    {% set linkClose = '</a>' %}
+                    {{ "You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}."|trans({
+                        '{watchFolder}': codeOpen ~ 'watch' ~ codeClose,
+                        '{linkOpen}': linkOpen,
+                        '{linkClose}': linkClose
+                    }, 'admin') }}
                 </div>
             {% endautoescape %}{% endblock %}
         {% endembed %}

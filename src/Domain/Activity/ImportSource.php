@@ -10,6 +10,7 @@ enum ImportSource: string
     case FIT_FILE = 'fitFile';
     case TCX_FILE = 'tcxFile';
     case GPX_FILE = 'gpxFile';
+    case MANUAL = 'manual';
 
     public function label(): string
     {
@@ -18,6 +19,7 @@ enum ImportSource: string
             self::FIT_FILE => 'FIT File',
             self::TCX_FILE => 'TCX File',
             self::GPX_FILE => 'GPX File',
+            self::MANUAL => 'Manual',
         };
     }
 

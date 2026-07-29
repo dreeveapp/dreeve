@@ -1,0 +1,123 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block main %}
+    {% autoescape false %}
+    {% set activity = activity is defined ? activity : null %}
+    {% set overviewUrl = relativeUrl(path('admin_manage_activity_overview')) %}
+    {% set distance = activity ? (activity.getDistance()|convertMeasurement).toFloat()|round(2) : 0 %}
+    {% set elevation = activity ? (activity.getElevation()|convertMeasurement).toFloat()|round : 0 %}
+    {% set durationInSeconds = activity ? activity.getMovingTimeInSeconds() : 0 %}
+    <div class="modal-like-form">
+        <div class="w-full max-w-3xl overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">
+                    {{ activity ? "Edit activity"|trans({}, 'admin') : "Add activity"|trans({}, 'admin') }}
+                </h3>
+                <a href="{{ overviewUrl }}" aria-label="{{ "Close"|trans({}, 'admin') }}"
+                   class="grid place-items-center size-8 rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900">
+                    <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                    </svg>
+                </a>
+            </div>
+            <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ overviewUrl }}" class="flex flex-col gap-4">
+                {% if activity %}
+                    <input type="hidden" name="activityId" value="{{ activity.getId() }}">
+                {% endif %}
+                <div data-form-error class="form-error hidden" role="alert"></div>
+                <div>
+                    <label for="activity-name">{{ "Name"|trans }}</label>
+                    <input type="text" id="activity-name" name="name" required value="{{ activity ? activity.getOriginalName() }}">
+                </div>
+                <div>
+                    <label for="activity-description">{{ "Description"|trans({}, 'admin') }}</label>
+                    <textarea id="activity-description" name="description" rows="3">{{ activity ? activity.getDescription() }}</textarea>
+                </div>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    <div>
+                        <label for="activity-sport-type">{{ "Sport type"|trans({}, 'admin') }}</label>
+                        <select id="activity-sport-type" name="sportType" required>
+                            {% for sportType in sportTypes %}
+                                <option value="{{ sportType.value }}" {{ activity and sportType == activity.getSportType() ? 'selected' }}>{{ sportType|trans }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label for="activity-workout-type">{{ "Workout type"|trans }}</label>
+                        <select id="activity-workout-type" name="workoutType">
+                            <option value="">{{ "None"|trans }}</option>
+                            {% for workoutType in workoutTypes %}
+                                <option value="{{ workoutType.value }}" {{ activity and workoutType == activity.getWorkoutType() ? 'selected' }}>{{ workoutType|trans }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label for="activity-start-date-time">{{ "Start date and time"|trans({}, 'admin') }}</label>
+                        <input type="datetime-local" id="activity-start-date-time" name="startDateTime" required
+                               value="{{ activity ? activity.getStartDate().format('Y-m-d\\TH:i') }}">
+                    </div>
+                </div>
+                <div>
+                    <label>{{ "Duration"|trans({}, 'admin') }}</label>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div>
+                            <input type="number" min="0" step="1" id="activity-duration-hours" name="duration[hours]" value="{{ durationInSeconds // 3600 }}" required>
+                            <span class="description">{{ "Hours"|trans({}, 'admin') }}</span>
+                        </div>
+                        <div>
+                            <input type="number" min="0" max="59" step="1" id="activity-duration-minutes" name="duration[minutes]" value="{{ (durationInSeconds // 60) % 60 }}" required>
+                            <span class="description">{{ "Minutes"|trans({}, 'admin') }}</span>
+                        </div>
+                        <div>
+                            <input type="number" min="0" max="59" step="1" id="activity-duration-seconds" name="duration[seconds]" value="{{ durationInSeconds % 60 }}" required>
+                            <span class="description">{{ "Seconds"|trans({}, 'admin') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="activity-distance">{{ "Distance"|trans }} ({{ renderUnitSymbol('distance') }})</label>
+                        <input type="number" min="0" step="0.01" id="activity-distance" name="distance" value="{{ distance }}" required>
+                    </div>
+                    <div>
+                        <label for="activity-elevation">{{ "Elevation"|trans }} ({{ renderUnitSymbol('elevation') }})</label>
+                        <input type="number" min="0" step="1" id="activity-elevation" name="elevation" value="{{ elevation }}">
+                    </div>
+                </div>
+                <div>
+                    <label for="activity-gear">{{ "Gear"|trans }}</label>
+                    <select id="activity-gear" name="gearId">
+                        <option value="">{{ "None"|trans }}</option>
+                        {% for gear in gears %}
+                            <option value="{{ gear.getId() }}" {{ activity and activity.getGearId() and gear.getId().matches(activity.getGearId()) ? 'selected' }}>{{ gear.getName() }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="hidden" name="isCommute" value="false">
+                    <input type="checkbox" id="activity-is-commute" name="isCommute" value="true" {{ activity and activity.isCommute() ? 'checked' }}>
+                    <label for="activity-is-commute" class="flex items-center gap-1.5 mt-0!">
+                        {{ "Commute"|trans({}, 'admin') }}
+                    </label>
+                </div>
+                <div>
+                    <label>{{ "Images"|trans({}, 'admin') }}</label>
+                    {% set existingImages = [] %}
+                    {% if activity %}
+                        {% for path in activity.getLocalImagePaths() %}
+                            {% set existingImages = existingImages|merge([{ url: securedImageUrl(path), name: path|split('/')|last, path: path }]) %}
+                        {% endfor %}
+                    {% endif %}
+                    {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'images', maxImages: 5, existingImages: existingImages } %}
+                </div>
+                <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
+                    <a href="{{ overviewUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>
+                    <button type="submit" data-has-loading-state class="group btn--primary">
+                        <span class="label">{{ "Save"|trans({}, 'admin') }}</span>
+                        <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endautoescape %}
+{% endblock main %}

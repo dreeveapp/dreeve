@@ -5,6 +5,7 @@ namespace App\Tests\Controller\Admin\Activity;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
@@ -36,7 +37,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertCount(1, $crawler->filter('table.data-table'));
         $this->assertStringContainsString('No activities imported yet.', $crawler->filter('body')->text());
-        $this->assertCount(1, $crawler->filter('table.data-table tbody td[colspan="8"]'));
+        $this->assertCount(1, $crawler->filter('table.data-table tbody td[colspan="9"]'));
         $this->assertCount(0, $crawler->filter('table.data-table tbody a[title="Edit"]'));
         $this->assertCount(0, $crawler->filter('[aria-label="Go to next page"]'));
     }
@@ -75,6 +76,37 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $gearOption);
         $this->assertSame((string) GearId::fromUnprefixed('99'), $gearOption->attr('value'));
         $this->assertSame('Trail Shoes', $gearOption->text());
+    }
+
+    public function testLinksToTheDetailPageOnlyOnceItHasBeenBuilt(): void
+    {
+        $this->seedActivities(2);
+        $this->markAppAsBuilt();
+        // Only the first activity made it into a build, the second one was added afterwards.
+        static::getContainer()->get('build_html.storage')->write(
+            'activity/'.ActivityId::fromUnprefixed('1').'.html',
+            'I am the activity page'
+        );
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/activities');
+
+        $this->assertResponseIsSuccessful();
+
+        $detailLinks = $crawler->filter('table.data-table tbody a[href*="#/activity/"]');
+        $this->assertCount(1, $detailLinks);
+        $this->assertStringContainsString(
+            '/activities#/activity/'.ActivityId::fromUnprefixed('1').'.html',
+            $detailLinks->first()->attr('href')
+        );
+        $this->assertSame('Activity 1', trim($detailLinks->first()->text()));
+
+        // The unbuilt one renders as plain text with an explanatory pill instead.
+        $pendingPills = $crawler->filter('table.data-table tbody td:first-child span.pill');
+        $this->assertCount(1, $pendingPills);
+        $this->assertSame('Pending build', trim($pendingPills->first()->text()));
+        $this->assertStringContainsString('Activity 2', $crawler->filter('table.data-table')->text());
     }
 
     #[DataProvider('provideSportTypeFilterScenarios')]
@@ -166,6 +198,45 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
             '/admin/activities/'.ActivityId::fromUnprefixed('1').'/delete',
             $deleteLinks->first()->attr('href')
         );
+    }
+
+    public function testShowsTheImportSourceOfEveryActivity(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+
+        $this->seedActivities(1);
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('99'))
+                ->withImportSource(ImportSource::MANUAL)
+                ->withStartDateTime(SerializableDateTime::fromString('2026-07-01 08:00:00'))
+                ->build(),
+            [],
+        ));
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/activities');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame(
+            ['Manual', 'Strava API'],
+            $crawler->filter('table.data-table tbody tr td:nth-child(4)')->each(fn ($cell) => trim($cell->text())),
+        );
+    }
+
+    public function testShowsImportAndAddButtonsInFilesMode(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+
+        $this->seedActivities(1);
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/activities');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringContainsString('/admin/upload', (string) $crawler->filter('a:contains("Import activities")')->attr('href'));
+        $this->assertStringContainsString('/admin/activities/add', (string) $crawler->filter('a:contains("Add activity")')->attr('href'));
     }
 
     #[\Override]

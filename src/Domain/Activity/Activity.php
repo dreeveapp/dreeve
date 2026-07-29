@@ -265,6 +265,13 @@ final class Activity implements SupportsAITooling
         return $this->startDateTime;
     }
 
+    public function withStartDateTime(SerializableDateTime $startDateTime): self
+    {
+        return clone ($this, [
+            'startDateTime' => $startDateTime,
+        ]);
+    }
+
     public function getSportType(): SportType
     {
         return $this->sportType;
@@ -273,6 +280,13 @@ final class Activity implements SupportsAITooling
     public function getWorldType(): WorldType
     {
         return $this->worldType;
+    }
+
+    public function withWorldType(WorldType $worldType): self
+    {
+        return clone ($this, [
+            'worldType' => $worldType,
+        ]);
     }
 
     public function getImportSource(): ImportSource
@@ -577,6 +591,13 @@ final class Activity implements SupportsAITooling
     public function getElapsedTimeInSeconds(): int
     {
         return $this->elapsedTimeInSeconds;
+    }
+
+    public function withElapsedTimeInSeconds(int $elapsedTimeInSeconds): self
+    {
+        return clone ($this, [
+            'elapsedTimeInSeconds' => $elapsedTimeInSeconds,
+        ]);
     }
 
     public function getElapsedTimeFormatted(): string
