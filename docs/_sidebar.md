@@ -2,6 +2,7 @@
 
   - [Prerequisites](getting-started/prerequisites.md "Dreeve | Prerequisites")
   - [Installation](getting-started/installation.md "Dreeve | Installation")
+  - [Installation on Kubernetes](getting-started/installation-on-k8s.md "Dreeve | Installation on Kubernetes")
   - [Updates](getting-started/updates.md "Dreeve | Updates")
   - [Migrating from v4 to v5](getting-started/migrating-from-v4.md "Dreeve | Migrating from v4 to v5")
 

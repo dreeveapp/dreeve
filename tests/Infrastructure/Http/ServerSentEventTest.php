@@ -21,8 +21,6 @@ class ServerSentEventTest extends TestCase
             'event: error
 data: WAW ERROR
 
-
-
 ',
             $output
         );

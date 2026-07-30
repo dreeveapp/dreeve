@@ -16,7 +16,7 @@ final class ServerSentEvent extends ServerEvent
         ?string $comment = null,
     ) {
         parent::__construct(
-            data: str_replace("\n", '\\n', $data)."\n\n",
+            data: str_replace("\n", '\\n', $data),
             type: $type,
             retry: $retry,
             id: $id,

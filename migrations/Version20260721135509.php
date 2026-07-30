@@ -41,7 +41,7 @@ final class Version20260721135509 extends AbstractMigration
                 continue;
             }
 
-            /** @var array<int, array{float, float}> $coordinates */
+            /** @var list<array{float, float}> $coordinates */
             $coordinates = array_values(array_filter(
                 is_array($latLngStream) ? $latLngStream : [],
                 is_array(...),
@@ -54,7 +54,7 @@ final class Version20260721135509 extends AbstractMigration
             $this->addSql(
                 'UPDATE Activity SET polyline = :polyline WHERE activityId = :activityId',
                 [
-                    'polyline' => (string) Polyline::fromCoordinates($coordinates)->simplify()->encode(),
+                    'polyline' => (string) Polyline::fromLatLngCoordinates($coordinates)->simplify()->encode(),
                     'activityId' => $result['activityId'],
                 ]
             );
