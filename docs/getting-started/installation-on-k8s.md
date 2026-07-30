@@ -12,7 +12,7 @@
 > [!WARNING]
 > **Set your storage class.** The manifests below use
 > `storageClassName: CHANGE-ME` on every PersistentVolumeClaim. Replace it
-> with a class that exists on **your** cluster — check with
+> with a class that exists on **your** cluster - check with
 > `kubectl get storageclass`. Common examples: `longhorn`,
 > `rook-ceph-block`, `openebs-lvmpv`, `local-path`, or your cloud
 > provider's default.
@@ -42,7 +42,7 @@ stringData:
   # From your Strava API application settings
   STRAVA_CLIENT_ID: "CHANGE-ME"
   STRAVA_CLIENT_SECRET: "CHANGE-ME"
-  # Obtained on first launch via the app's OAuth flow — NOT the refresh
+  # Obtained on first launch via the app's OAuth flow - NOT the refresh
   # token shown on the Strava API settings page. The app rotates it on
   # first run and persists it in the database volume thereafter.
   STRAVA_REFRESH_TOKEN: "CHANGE-ME"
@@ -55,7 +55,7 @@ stringData:
   # Generate a long random string
   APP_SECRET: "CHANGE-ME"
   ADMIN_USERNAME: "admin"
-  # bcrypt hash — generate per the Dreeve docs
+  # bcrypt hash - generate per the Dreeve docs
   ADMIN_PASSWORD_HASH: "CHANGE-ME"
 ---
 # Replaces the bind-mounted php.ini from the compose setup. Large
@@ -70,7 +70,7 @@ data:
     memory_limit = 4G
 ---
 # ---------------------------------------------------------------------
-# PersistentVolumeClaims — one per compose bind mount.
+# PersistentVolumeClaims - one per compose bind mount.
 # RWO is fine because app + daemon run in the SAME pod (see Deployment),
 # so they always share the node and the volume attachment.
 # ---------------------------------------------------------------------
@@ -123,7 +123,7 @@ spec:
       storage: 1Gi
 ---
 # ---------------------------------------------------------------------
-# Deployment — app (Caddy/PHP web) + daemon as two containers in one
+# Deployment - app (Caddy/PHP web) + daemon as two containers in one
 # pod. They share the same SQLite database, so co-locating them avoids
 # RWX volumes and SQLite lock corruption. Recreate strategy ensures a
 # rolling update never runs two copies against the same database.
@@ -238,7 +238,7 @@ spec:
       targetPort: 8080
 ---
 # ---------------------------------------------------------------------
-# Ingress — ingress-nginx example. TLS terminates here; the pod speaks
+# Ingress - ingress-nginx example. TLS terminates here; the pod speaks
 # plain HTTP on 8080, which matches PROXY_HOST=https + PROXY_PORT=80
 # in the Secret above.
 # ---------------------------------------------------------------------
@@ -283,7 +283,7 @@ Within about 30 seconds the pod should report `2/2 Running`.
 ## First run: import and build
 
 Dreeve's first-run flow asks you to import your data and build the static
-site. The compose commands translate directly to `kubectl exec` — the `-c
+site. The compose commands translate directly to `kubectl exec` - the `-c
 app` flag matters because the pod has two containers:
 
 ```bash
@@ -291,7 +291,7 @@ kubectl -n dreeve exec deploy/dreeve -c app -- bin/console app:data:import
 kubectl -n dreeve exec deploy/dreeve -c app -- bin/console app:data:build
 ```
 
-Using `deploy/dreeve` saves looking up the pod name — kubectl resolves it to
+Using `deploy/dreeve` saves looking up the pod name - kubectl resolves it to
 the running pod.
 
 ## Operational notes
@@ -304,7 +304,7 @@ the running pod.
   for the same reason.
 - **Upgrades.** `kubectl -n dreeve rollout restart deploy/dreeve` pulls the
   latest image (`imagePullPolicy: Always`). Pin a version tag instead of
-  `latest` if you prefer deliberate upgrades — and snapshot or back up the
+  `latest` if you prefer deliberate upgrades - and snapshot or back up the
   database PVC before major version jumps.
 - **Backups.** Everything that matters lives in the four PVCs, with the
   database volume being the critical one. SQLite snapshots taken at the
