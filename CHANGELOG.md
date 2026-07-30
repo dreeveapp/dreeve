@@ -1,3 +1,13 @@
+# [v5.1.3](https://github.com/dreeveapp/dreeve/releases/tag/v5.1.3) - 2026-07-29
+
+This release fixes a critical bug in the v4 -> v5 migration path.
+
+## Bug fixes
+* ISSUE #2376: [gear:number-of-activities] token is not resolved in automation rules by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2377
+* ISSUE #2380: v5 Migration Error - Polylines by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2377
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.1.2...v5.1.3
+
 # [v5.1.2](https://github.com/dreeveapp/dreeve/releases/tag/v5.1.2) - 2026-07-29
 
 ## New features
