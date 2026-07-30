@@ -43,6 +43,20 @@ class DbalGearRepositoryTest extends ContainerTestCase
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
                 ->withGearId(GearId::fromUnprefixed(1))
                 ->withDistance(Kilometer::from(5))
+                ->withElevation(Meter::from(50))
+                ->withMovingTimeInSeconds(1800)
+                ->withCalories(400)
+                ->build(),
+            []
+        ));
+        $activityRepository->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('2'))
+                ->withGearId(GearId::fromUnprefixed(1))
+                ->withDistance(Kilometer::from(15))
+                ->withElevation(Meter::from(150))
+                ->withMovingTimeInSeconds(3600)
+                ->withCalories(600)
                 ->build(),
             []
         ));
@@ -50,8 +64,13 @@ class DbalGearRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed(1))
-                ->withDistanceInMeter(Meter::from(5000))
-                ->build(),
+                ->withDistanceInMeter(Meter::from(20000))
+                ->withMovingTime(Seconds::from(5400))
+                ->withElevation(Meter::from(200))
+                ->withNumberOfActivities(2)
+                ->withTotalCalories(1000)
+                ->build()
+                ->withActivityTypes(ActivityTypes::fromArray([ActivityType::RIDE])),
             $this->gearRepository->find($gear->getId())
         );
     }
