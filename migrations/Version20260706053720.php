@@ -330,9 +330,9 @@ final class Version20260706053720 extends AbstractMigration
     }
 
     /**
-     * @param array<string, mixed> $subtree
+     * @param array<string|int, mixed> $subtree
      *
-     * @return array<string, mixed>
+     * @return array<string|int, mixed>
      */
     private function applyStoredAthlete(array $subtree): array
     {
@@ -368,9 +368,9 @@ final class Version20260706053720 extends AbstractMigration
     }
 
     /**
-     * @param array<string, mixed> $subtree
+     * @param array<string|int, mixed> $subtree
      *
-     * @return array<string, mixed>
+     * @return array<string|int, mixed>
      */
     private function normalizeAthleteHistories(array $subtree): array
     {

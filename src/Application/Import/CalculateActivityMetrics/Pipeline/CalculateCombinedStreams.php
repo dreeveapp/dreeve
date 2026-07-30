@@ -82,7 +82,7 @@ final readonly class CalculateCombinedStreams implements CalculateActivityMetric
                 }
             }
 
-            /** @var array<int, array{0: CombinedStreamType, 1: ActivityStream}> $otherStreams */
+            /** @var array<int, array{0: CombinedStreamType, 1: array<int, int|float>}> $otherStreams */
             $otherStreams = [];
             foreach (CombinedStreamTypes::othersFor($activity->getSportType()->getActivityType()) as $combinedStreamType) {
                 if (!($stream = $streams->filterOnType($combinedStreamType->getStreamType())) instanceof ActivityStream) {
@@ -159,8 +159,6 @@ final readonly class CalculateCombinedStreams implements CalculateActivityMetric
                 }
 
                 foreach ($otherStreams as $otherStream) {
-                    /** @var CombinedStreamType $combinedStreamType */
-                    /** @var array<int|float> $streamData */
                     [$combinedStreamType, $streamData] = $otherStream;
                     $value = $streamData[$i] ?? 0;
 

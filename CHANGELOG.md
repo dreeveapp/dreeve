@@ -1,3 +1,29 @@
+# [v5.1.3](https://github.com/dreeveapp/dreeve/releases/tag/v5.1.3) - 2026-07-29
+
+This release fixes a critical bug in the v4 -> v5 migration path.
+
+## Bug fixes
+* ISSUE #2376: [gear:number-of-activities] token is not resolved in automation rules by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2377
+* ISSUE #2380: v5 Migration Error - Polylines by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2377
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.1.2...v5.1.3
+
+# [v5.1.2](https://github.com/dreeveapp/dreeve/releases/tag/v5.1.2) - 2026-07-29
+
+## New features
+* Allow to manually add an activity
+* Added an "average power" condition for the automation rules
+
+## Bug fixes
+* Fixed an issue where root-owned directory crashed the app
+
+## Technical details
+* ISSUE #2335: Allow to manually add an activity by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2371
+* ISSUE #2370: Add an automation rule condition for average power @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2373
+* ISSUE #2372: src/Domain/Activity/Route/assets is root-owned 0700, crashes non-root deployments by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2373
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.1.1...v5.1.2
+
 # [v5.1.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.1.1) - 2026-07-28
 
 We released a separate __Dreeve Garmin Connector__ container to automatically sync your Garmin FIT files

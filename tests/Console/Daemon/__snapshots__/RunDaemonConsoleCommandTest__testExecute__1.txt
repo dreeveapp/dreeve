@@ -1,11 +1,11 @@
 
-Dreevev5.1.1|DAEMON
+Dreevev5.1.3|DAEMON
 
 Startedon0811202514:47:03
 
 
 
-Runtime:PHP8.5.x(cli)Symfony8.1.1Linux
+Runtime:PHP8.5.x(cli)Symfony8.1.2Linux
 
 Configuredimportmode:stravaApi
 

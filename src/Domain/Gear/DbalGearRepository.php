@@ -77,7 +77,15 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
     public function find(GearId $gearId): Gear
     {
         $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder->select('Gear.*', 'SUM(Activity.distance) AS totalDistance')
+        $queryBuilder->select(
+            'Gear.*',
+            'SUM(Activity.distance) AS totalDistance',
+            'SUM(Activity.movingTimeInSeconds) AS totalMovingTime',
+            'SUM(Activity.elevation) AS totalElevation',
+            'SUM(Activity.calories) AS totalCalories',
+            'COUNT(Activity.activityId) AS numberOfActivities',
+            'GROUP_CONCAT(DISTINCT Activity.activityType) AS activityTypes',
+        )
             ->from('Gear')
             ->leftJoin('Gear', 'Activity', 'Activity', 'Activity.gearId = Gear.gearId')
             ->andWhere('Gear.gearId = :gearId')

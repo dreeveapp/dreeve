@@ -2,6 +2,7 @@
 
   - [Prerequisites](getting-started/prerequisites.md "Dreeve | Prerequisites")
   - [Installation](getting-started/installation.md "Dreeve | Installation")
+  - [Installation on Kubernetes](getting-started/installation-on-k8s.md "Dreeve | Installation on Kubernetes")
   - [Updates](getting-started/updates.md "Dreeve | Updates")
   - [Migrating from v4 to v5](getting-started/migrating-from-v4.md "Dreeve | Migrating from v4 to v5")
 
@@ -17,6 +18,7 @@
 
   - [AI assistant](integrations/ai.md "Dreeve | AI assistant")
   - [Garmin Connect](integrations/garmin-connect.md "Dreeve | Garmin Connect")
+  - [Polar Flow](integrations/polar-flow.md "Dreeve | Polar Flow")
   - [Notifications](integrations/notifications.md "Dreeve | Notifications")
 
 - Troubleshooting
