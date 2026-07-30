@@ -96,6 +96,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $conditionOptions = $crawler->filter('select[name="conditions[__index__][type]"] option')->extract(['value']);
         $this->assertContains('name', $conditionOptions);
         $this->assertContains('device', $conditionOptions);
+        $this->assertContains('averagePower', $conditionOptions);
         $this->assertContains('passesNear', $conditionOptions);
         $actionOptions = $crawler->filter('select[name="actions[__index__][type]"] option')->extract(['value']);
         $this->assertContains('assignGear', $actionOptions);

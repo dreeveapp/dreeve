@@ -161,6 +161,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
                 ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('1'))
                 ->withSortOrder(0)
                 ->withConditions(ConfiguredConditions::fromArray([
+                    new ConfiguredCondition(ConditionType::NAME, RuleConfiguration::fromConfig(['operator' => 'contains', 'value' => 'commute'])),
                     new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride', 'Run']])),
                     new ConfiguredCondition(ConditionType::WEEKDAY, RuleConfiguration::fromConfig(['operator' => 'isNoneOf', 'weekdays' => [1, 6]])),
                     new ConfiguredCondition(ConditionType::TIME_OF_DAY, RuleConfiguration::fromConfig(['operator' => 'lt', 'time' => '09:30'])),
@@ -179,6 +180,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
                 ->withSortOrder(1)
                 ->withConditions(ConfiguredConditions::fromArray([
                     new ConfiguredCondition(ConditionType::DISTANCE, RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 10.0])),
+                    new ConfiguredCondition(ConditionType::AVERAGE_POWER, RuleConfiguration::fromConfig(['operator' => 'gt', 'value' => 200])),
                     new ConfiguredCondition(ConditionType::STARTS_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.2, 'longitude' => 3.1, 'radius' => 500.0])),
                     new ConfiguredCondition(ConditionType::ENDS_NEAR, RuleConfiguration::fromConfig(['operator' => 'outside', 'latitude' => 51.2, 'longitude' => 3.1, 'radius' => 500.0])),
                     new ConfiguredCondition(ConditionType::PASSES_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.2, 'longitude' => 3.1, 'radius' => 250.0])),
@@ -201,6 +203,8 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(2, $items);
 
         $firstRule = $items->eq(0)->text();
+        $this->assertStringContainsString('Activity name', $firstRule);
+        $this->assertStringContainsString('contains "commute"', $firstRule);
         $this->assertStringContainsString('Sport type', $firstRule);
         $this->assertStringContainsString('is one of Rides, Runs', $firstRule);
         $this->assertStringContainsString('Weekday', $firstRule);
@@ -218,6 +222,8 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $secondRule = $items->eq(1)->text();
         $this->assertStringContainsString('Distance', $secondRule);
         $this->assertStringContainsString('at least 10 km', $secondRule);
+        $this->assertStringContainsString('Average power', $secondRule);
+        $this->assertStringContainsString('greater than 200 w', $secondRule);
         $this->assertStringContainsString('Starts near', $secondRule);
         $this->assertStringContainsString('within radius 500 m (51.2, 3.1)', $secondRule);
         $this->assertStringContainsString('Ends near', $secondRule);

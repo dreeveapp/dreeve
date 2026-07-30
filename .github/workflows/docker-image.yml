@@ -33,7 +33,8 @@ jobs:
 
       - name: Verify countries geography asset
         run: |
-          ASSET_DIR=src/Domain/Activity/Route/assets/countries
+          ASSET_ROOT=src/Domain/Activity/Route/assets
+          ASSET_DIR="$ASSET_ROOT/countries"
 
           if [[ ! -f "$ASSET_DIR/index.json" ]]; then
             echo "::error::$ASSET_DIR/index.json is missing, refusing to build an image without country boundaries"
@@ -49,6 +50,13 @@ jobs:
           fi
           if (( COUNTRIES < 200 )); then
             echo "::error::Only $COUNTRIES country files were generated, expected 200+"
+            exit 1
+          fi
+
+          UNREADABLE=$(find "$ASSET_ROOT" \( -type d ! -perm -o+rx \) -o \( -type f ! -perm -o+r \))
+          if [[ -n "$UNREADABLE" ]]; then
+            echo "::error::These asset paths are not readable, which breaks non-root deployments:"
+            echo "$UNREADABLE"
             exit 1
           fi
 
