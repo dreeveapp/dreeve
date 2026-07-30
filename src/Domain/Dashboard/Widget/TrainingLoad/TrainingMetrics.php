@@ -7,19 +7,19 @@ namespace App\Domain\Dashboard\Widget\TrainingLoad;
 final class TrainingMetrics
 {
     /** @var array<string, int|float> */
-    private array $atlValues = [];
+    private array $atlValues;
     /** @var array<string, int|float> */
-    private array $ctlValues = [];
+    private array $ctlValues;
     /** @var array<string, int|float> */
-    private array $tsbValues = [];
+    private array $tsbValues;
     /** @var array<string, int|float|null> */
-    private array $trimpValues = [];
+    private array $trimpValues;
     /** @var array<string, int|float|null> */
-    private array $monotonyValues = [];
+    private array $monotonyValues;
     /** @var array<string, int|float|null> */
-    private array $strainValues = [];
+    private array $strainValues;
     /** @var array<string, int|float> */
-    private array $acRatioValues = [];
+    private array $acRatioValues;
 
     private function __construct(
         /** @var array<string, int> */

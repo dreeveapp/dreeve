@@ -20,6 +20,5 @@ return RectorConfig::configure()
     )
     ->withSkip([
         OrdSingleByteRector::class,
-        CombineIfRector::class,
         ThrowWithPreviousExceptionRector::class,
     ]);
