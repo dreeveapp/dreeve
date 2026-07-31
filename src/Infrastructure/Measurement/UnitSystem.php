@@ -79,11 +79,6 @@ enum UnitSystem: string implements TranslatableInterface
         return MilesPerHour::from($value);
     }
 
-    public function speedSymbol(): string
-    {
-        return $this->speed(1)->getSymbol();
-    }
-
     public function weight(float $value): Kilogram|Pound
     {
         if (UnitSystem::METRIC === $this) {
