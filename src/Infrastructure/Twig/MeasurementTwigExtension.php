@@ -78,6 +78,12 @@ final readonly class MeasurementTwigExtension
         );
     }
 
+    #[AsTwigFilter('measurementSymbol')]
+    public function measurementSymbol(Unit $measurement): string
+    {
+        return $this->convertMeasurement($measurement)->getSymbol();
+    }
+
     #[AsTwigFilter('formatPace')]
     public function formatPace(Pace $pace): string
     {
@@ -96,7 +102,6 @@ final readonly class MeasurementTwigExtension
             'elevation' => $unitSystem->elevationSymbol(),
             'proximity' => $unitSystem->proximitySymbol(),
             'pace' => $unitSystem->paceSymbol(),
-            'speed' => $unitSystem->speedSymbol(),
             default => throw new \RuntimeException(sprintf('Invalid unitName "%s"', $unitName)),
         };
     }

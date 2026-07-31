@@ -14,6 +14,7 @@ use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Console\ProgressIndicator;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Velocity\Knot;
 use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
 use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
@@ -86,6 +87,10 @@ final readonly class CalculateStreamValueDistribution implements CalculateActivi
                         ),
                         $velocityUnitPreference instanceof SecPerKm => array_map(
                             fn (float $item): int => (int) round(MetersPerSecond::from($item)->toSecPerKm()->toUnitSystem($unitSystem)->toFloat()),
+                            $filteredValues
+                        ),
+                        $velocityUnitPreference instanceof Knot => array_map(
+                            fn (float $item): int => (int) round(MetersPerSecond::from($item)->toKmPerHour()->toKnots()->toFloat()),
                             $filteredValues
                         ),
                         UnitSystem::IMPERIAL === $unitSystem => array_map(

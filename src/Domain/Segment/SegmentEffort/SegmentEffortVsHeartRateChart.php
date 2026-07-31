@@ -62,7 +62,7 @@ final readonly class SegmentEffortVsHeartRateChart
         $velocityUnit = match (true) {
             $preference instanceof SecPer100Meter => '/'.SecPerKm::zero()->getSymbol(),
             $preference instanceof SecPerKm => $this->unitSystem->paceSymbol(),
-            default => $this->unitSystem->speedSymbol(),
+            default => $this->sportType->speedSymbol($this->unitSystem),
         };
 
         $data = [];
@@ -70,7 +70,7 @@ final readonly class SegmentEffortVsHeartRateChart
             $velocity = match (true) {
                 $preference instanceof SecPer100Meter => round($effort->getPaceInSecPer100Meter()->toFloat(), 1),
                 $preference instanceof SecPerKm => round($effort->getPaceInSecPerKm()->toFloat()),
-                default => round($effort->getAverageSpeed()->toUnitSystem($this->unitSystem)->toFloat(), 1),
+                default => round($this->sportType->toDisplaySpeed($effort->getAverageSpeed())->toUnitSystem($this->unitSystem)->toFloat(), 1),
             };
             $heartRate = $effort->getAverageHeartRate();
 

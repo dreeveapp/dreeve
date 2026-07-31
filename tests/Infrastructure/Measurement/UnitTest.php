@@ -6,13 +6,16 @@ use App\Infrastructure\Measurement\Length\Foot;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Length\Mile;
+use App\Infrastructure\Measurement\Length\NauticalMile;
 use App\Infrastructure\Measurement\Mass\Gram;
 use App\Infrastructure\Measurement\Mass\Kilogram;
 use App\Infrastructure\Measurement\Mass\Pound;
 use App\Infrastructure\Measurement\Temperature\Celsius;
 use App\Infrastructure\Measurement\Temperature\Fahrenheit;
 use App\Infrastructure\Measurement\Unit;
+use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\Measurement\Velocity\Knot;
 use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
 use App\Infrastructure\Measurement\Velocity\MilesPerHour;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
@@ -69,6 +72,30 @@ class UnitTest extends TestCase
             [SecPerKm::from(62.5), MetersPerSecond::from(16)->toSecPerKm()],
             [MetersPerSecond::from(125), SecPerKm::from(8)->toMetersPerSecond()],
             [MetersPerSecond::from(3.417), KmPerHour::from(12.3)->toMetersPerSecond()],
+            [NauticalMile::from(0.5399568), Kilometer::from(1)->toNauticalMiles()],
+            [Kilometer::from(1.852), NauticalMile::from(1)->toKilometer()],
+            [Meter::from(1852), NauticalMile::from(1)->toMeter()],
+            [Knot::from(0.5399568), KmPerHour::from(1)->toKnots()],
+            [KmPerHour::from(1.852), Knot::from(1)->toKmPerHour()],
+        ];
+    }
+
+    #[DataProvider(methodName: 'provideNauticalMeasurements')]
+    public function testNauticalUnitsAreNeverConverted(NauticalMile|Knot $measurement): void
+    {
+        foreach (UnitSystem::cases() as $unitSystem) {
+            $this->assertSame(
+                $measurement,
+                $measurement->toUnitSystem($unitSystem)
+            );
+        }
+    }
+
+    public static function provideNauticalMeasurements(): array
+    {
+        return [
+            [NauticalMile::from(10)],
+            [Knot::from(10)],
         ];
     }
 
@@ -108,6 +135,8 @@ class UnitTest extends TestCase
             [MetersPerSecond::from(300)],
             [SecPerKm::from(300)],
             [SecPerMile::from(150)],
+            [NauticalMile::from(100)],
+            [Knot::from(30)],
         ];
     }
 }

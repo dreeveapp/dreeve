@@ -52,7 +52,8 @@ final readonly class CalculateCombinedStreams implements CalculateActivityMetric
         $activityWithCombinedStreamCalculatedCount = 0;
         foreach ($activityIdsThatNeedCombining as $activityId) {
             $activity = $this->activityRepository->find($activityId);
-            $activityType = $activity->getSportType()->getActivityType();
+            $sportType = $activity->getSportType();
+            $activityType = $sportType->getActivityType();
 
             $streams = $this->activityStreamRepository->findByActivityId($activityId);
             if (!($timeStream = $streams->filterOnType(StreamType::TIME)) instanceof ActivityStream) {
@@ -140,7 +141,9 @@ final readonly class CalculateCombinedStreams implements CalculateActivityMetric
                 ];
 
                 if ($hasDistanceData) {
-                    $distance = Meter::from($distanceData[$i] ?? 0)->toKilometer()->toUnitSystem($unitSystem)->toFloat();
+                    $distance = $sportType->toDisplayDistance(
+                        Meter::from($distanceData[$i] ?? 0)->toKilometer()
+                    )->toUnitSystem($unitSystem)->toFloat();
                     $combinedPoint[] = match ($activityType) {
                         ActivityType::RIDE => $distance < 1 ? round($distance, 1) : round($distance),
                         default => round($distance, 1),
@@ -162,7 +165,7 @@ final readonly class CalculateCombinedStreams implements CalculateActivityMetric
                     if (0 !== $value && 0.0 !== $value) {
                         $value = match ($combinedStreamType) {
                             CombinedStreamType::ALTITUDE => round(Meter::from($value)->toUnitSystem($unitSystem)->toFloat(), 2),
-                            CombinedStreamType::VELOCITY => round(MetersPerSecond::from($value)->toKmPerHour()->toUnitSystem($unitSystem)->toFloat(), 1),
+                            CombinedStreamType::VELOCITY => round($sportType->toDisplaySpeed(MetersPerSecond::from($value)->toKmPerHour())->toUnitSystem($unitSystem)->toFloat(), 1),
                             CombinedStreamType::PACE => MetersPerSecond::from($value)->toSecPerKm()->toUnitSystem($unitSystem)->toInt(),
                             CombinedStreamType::STEPS_PER_MINUTE => $value * 2,
                             CombinedStreamType::WATTS => round($value),

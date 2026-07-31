@@ -31,7 +31,7 @@ use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\Measurement\Velocity\Pace;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\DataTableRow;
 use App\Infrastructure\ValueObject\String\Slug;
@@ -158,8 +158,8 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                 if (!is_null($velocityDistributionChart)) {
                     $distributionCharts[] = [
                         'title' => match (true) {
-                            $velocityUnitPreference instanceof KmPerHour => $this->translator->trans('Speed'),
-                            default => $this->translator->trans('Pace'),
+                            $velocityUnitPreference instanceof Pace => $this->translator->trans('Pace'),
+                            default => $this->translator->trans('Speed'),
                         },
                         'data' => Json::encode($velocityDistributionChart),
                     ];
@@ -215,10 +215,11 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                     items: array_reverse($items),
                     topXAxisData: $times,
                     bottomXAxisData: $distances,
-                    bottomXAxisSuffix: $unitSystem->distanceSymbol(),
+                    bottomXAxisSuffix: $activity->getSportType()->distanceSymbol($unitSystem),
                     grades: $grades,
                     maximumNumberOfDigitsOnYAxis: $maximumNumberOfDigits,
                     unitSystem: $unitSystem,
+                    sportType: $activity->getSportType(),
                     translator: $this->translator,
                 );
                 $profileChart = $combinedCharts->build();

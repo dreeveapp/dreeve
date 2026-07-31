@@ -5,9 +5,13 @@ namespace App\Tests\Infrastructure\Twig;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Foot;
+use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Length\NauticalMile;
 use App\Infrastructure\Measurement\Unit;
 use App\Infrastructure\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\Measurement\Velocity\Knot;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\Twig\MeasurementTwigExtension;
 use App\Tests\ContainerTestCase;
@@ -33,6 +37,17 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
         $this->assertEquals(
             '10:00',
             $extension->formatPace(SecPerKm::from(600))
+        );
+    }
+
+    #[DataProvider(methodName: 'provideMeasurementSymbols')]
+    public function testMeasurementSymbol(string $expectedUnitSymbol, UnitSystem $unitSystem, Unit $measurement): void
+    {
+        $extension = $this->extensionFor($unitSystem);
+
+        $this->assertEquals(
+            $expectedUnitSymbol,
+            $extension->measurementSymbol($measurement)
         );
     }
 
@@ -103,6 +118,21 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
         ];
     }
 
+    public static function provideMeasurementSymbols(): array
+    {
+        return [
+            ['km', UnitSystem::METRIC, Kilometer::from(10)],
+            ['mi', UnitSystem::IMPERIAL, Kilometer::from(10)],
+            ['km/h', UnitSystem::METRIC, KmPerHour::from(10)],
+            ['mph', UnitSystem::IMPERIAL, KmPerHour::from(10)],
+            // Nautical units are unit system agnostic, they never get converted.
+            ['NM', UnitSystem::METRIC, NauticalMile::from(10)],
+            ['NM', UnitSystem::IMPERIAL, NauticalMile::from(10)],
+            ['kn', UnitSystem::METRIC, Knot::from(10)],
+            ['kn', UnitSystem::IMPERIAL, Knot::from(10)],
+        ];
+    }
+
     public static function provideProximityToMeterFactors(): array
     {
         return [
@@ -120,6 +150,8 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
             ['ft', UnitSystem::IMPERIAL, 'elevation'],
             ['m', UnitSystem::METRIC, 'proximity'],
             ['ft', UnitSystem::IMPERIAL, 'proximity'],
+            ['/km', UnitSystem::METRIC, 'pace'],
+            ['/mi', UnitSystem::IMPERIAL, 'pace'],
         ];
     }
 }

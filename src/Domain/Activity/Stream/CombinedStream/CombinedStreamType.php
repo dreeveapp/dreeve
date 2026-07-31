@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Stream\CombinedStream;
 
+use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Measurement\UnitSystem;
 use Symfony\Contracts\Translation\TranslatableInterface;
@@ -48,7 +49,7 @@ enum CombinedStreamType: string implements TranslatableInterface
         };
     }
 
-    public function getSuffix(UnitSystem $unitSystem): string
+    public function getSuffix(UnitSystem $unitSystem, SportType $sportType): string
     {
         return match ($this) {
             CombinedStreamType::HEART_RATE => 'bpm',
@@ -57,7 +58,7 @@ enum CombinedStreamType: string implements TranslatableInterface
             CombinedStreamType::WATTS => 'watt',
             CombinedStreamType::PACE => $unitSystem->paceSymbol(),
             CombinedStreamType::ALTITUDE => $unitSystem->elevationSymbol(),
-            CombinedStreamType::VELOCITY => $unitSystem->speedSymbol(),
+            CombinedStreamType::VELOCITY => $sportType->speedSymbol($unitSystem),
             default => throw new \RuntimeException('Suffix not supported for '.$this->value),
         };
     }

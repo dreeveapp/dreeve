@@ -74,6 +74,8 @@ final readonly class FitFileParser implements ActivityFileParser
         $hrMessages = [];
         /** @var array<string, mixed>|null $session */
         $session = null;
+        /** @var array<string, mixed>|null $workout */
+        $workout = null;
         $productName = null;
         $manufacturerId = null;
         $productId = null;
@@ -99,6 +101,9 @@ final readonly class FitFileParser implements ActivityFileParser
                     break;
                 case 'session':
                     $session ??= $fields;
+                    break;
+                case 'workout':
+                    $workout ??= $fields;
                     break;
                 case 'file_id':
                     $manufacturerId ??= is_numeric($fields['manufacturer'] ?? null) ? (int) round((float) $fields['manufacturer']) : null;
@@ -151,6 +156,10 @@ final readonly class FitFileParser implements ActivityFileParser
         $activityId = $this->activityIdFactory->random();
         $work = is_numeric($session['total_work'] ?? null) ? (float) $session['total_work'] : null;
         $startDateTime = SerializableDateTime::fromTimestamp(self::FIT_EPOCH_OFFSET + $startTimestamp)->toTimezone($this->timezone ?? SerializableTimezone::UTC());
+        $workout ??= [];
+        $workoutName = is_string($workout['wkt_name'] ?? null) ? trim($workout['wkt_name']) : '';
+        $workoutDescription = is_string($workout['wkt_description'] ?? null) ? trim($workout['wkt_description']) : '';
+        $activityName = '' !== $workoutName ? ActivityName::fromString($workoutName) : ActivityName::from($startDateTime, $sportType);
 
         $activity = Activity::fromState(
             activityId: $activityId,
@@ -158,12 +167,12 @@ final readonly class FitFileParser implements ActivityFileParser
             sportType: $sportType,
             worldType: WorldType::fromDeviceAndActivityName(
                 deviceName: $deviceName,
-                activityName: ''
+                activityName: (string) $activityName
             ),
             importSource: ImportSource::FIT_FILE,
             externalReferenceId: ExternalReferenceId::fromString($file->getPath()->getFilename()),
-            name: ActivityName::from($startDateTime, $sportType),
-            description: null,
+            name: $activityName,
+            description: '' !== $workoutDescription ? $workoutDescription : null,
             distance: Kilometer::from(round((is_numeric($session['total_distance'] ?? null) ? (float) $session['total_distance'] : 0.0) / 1000, 3)),
             elevation: Meter::from(round(is_numeric($session['total_ascent'] ?? null) ? (float) $session['total_ascent'] : StreamMath::elevationGain($streamMap[StreamType::ALTITUDE->value]))),
             startingCoordinate: $this->resolveStartingCoordinate($session, $streamMap),

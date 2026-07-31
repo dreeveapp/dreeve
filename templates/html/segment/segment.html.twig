@@ -136,7 +136,7 @@
                                         {% elseif velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPerKm') %}
                                             {{ segmentEffort.getPaceInSecPerKm()|formatPace }}<span class="text-xxs ml-px">{{ renderUnitSymbol('pace') }}</span>
                                         {% else %}
-                                            {{ segmentEffort.getAverageSpeed()|renderMeasurement(1) }}
+                                            {{ activity.getSportType().toDisplaySpeed(segmentEffort.getAverageSpeed())|renderMeasurement(1) }}
                                         {% endif %}
                                     </td>
                                     <td>

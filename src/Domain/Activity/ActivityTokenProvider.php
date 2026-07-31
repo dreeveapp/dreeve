@@ -131,12 +131,12 @@ final readonly class ActivityTokenProvider implements TokenProvider
             'start-date' => $activity->getStartDate()->translatedFormat(
                 $token->getModifier() ?? (string) $this->settingsRepository->appearance()->getDateAndTimeFormat()->getDateFormatShort()
             ),
-            'distance' => $this->formatUnitWithSymbol($activity->getDistance()->toUnitSystem($unitSystem), precision: 1),
+            'distance' => $this->formatUnitWithSymbol($activity->getDistanceInDisplayUnit()->toUnitSystem($unitSystem), precision: 1),
             'elevation' => $this->formatUnitWithSymbol($activity->getElevation()->toUnitSystem($unitSystem), precision: 0),
             'moving-time' => $activity->getMovingTimeFormatted(),
             'elapsed-time' => $activity->getElapsedTimeFormatted(),
-            'average-speed' => $this->formatUnitWithSymbol($activity->getAverageSpeed()->toUnitSystem($unitSystem), precision: 1),
-            'max-speed' => $this->formatUnitWithSymbol($activity->getMaxSpeed()->toUnitSystem($unitSystem), precision: 1),
+            'average-speed' => $this->formatUnitWithSymbol($activity->getAverageSpeedInDisplayUnit()->toUnitSystem($unitSystem), precision: 1),
+            'max-speed' => $this->formatUnitWithSymbol($activity->getMaxSpeedInDisplayUnit()->toUnitSystem($unitSystem), precision: 1),
             'average-heart-rate' => null !== $activity->getAverageHeartRate() ? (string) $activity->getAverageHeartRate() : null,
             'max-heart-rate' => null !== $activity->getMaxHeartRate() ? (string) $activity->getMaxHeartRate() : null,
             'average-power' => null !== $activity->getAveragePower() ? (string) $activity->getAveragePower() : null,

@@ -43,7 +43,7 @@
             </thead>
             <tbody>
             {% for activity in mostRecentActivities %}
-                {% set activityType =  activity.getSportType().getActivityType() %}
+                {% set sportType = activity.getSportType() %}
                 <tr class="group/row">
                     <td class="narrow whitespace-nowrap">
                         {{ activity.getStartDate()|formatDate() }}
@@ -52,7 +52,7 @@
                         {{ activity|activityLink(ellipses: 30) }}
                     </td>
                     <td>
-                        {{ activity.getDistance()|renderMeasurement(activityType.getDistancePrecision()) }}
+                        {{ activity.getDistanceInDisplayUnit()|renderMeasurement(sportType.getDistancePrecision()) }}
                     </td>
                     <td>
                         {{ activity.getElevation()|renderMeasurement(0) }}
@@ -61,13 +61,13 @@
                         {{ activity.getMovingTimeFormatted() }}
                     </td>
                     <td>
-                        {% set velocityPreference = activity.getSportType().getVelocityDisplayPreference() %}
+                        {% set velocityPreference = sportType.getVelocityDisplayPreference() %}
                         {% if velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPer100Meter') %}
                             {{ activity.getPaceInSecPer100Meter()|formatPace }}<span class="text-xxs ml-px">/100m</span>
                         {% elseif velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPerKm') %}
                             {{ activity.getPaceInSecPerKm()|formatPace }}<span class="text-xxs ml-px">{{ renderUnitSymbol('pace') }}</span>
                         {% else %}
-                            {{ activity.getAverageSpeed()|renderMeasurement(1) }}
+                            {{ activity.getAverageSpeedInDisplayUnit()|renderMeasurement(1) }}
                         {% endif %}
                     </td>
                     <td>

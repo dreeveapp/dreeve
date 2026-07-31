@@ -1,0 +1,674 @@
+{
+    "Ride": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "MountainBikeRide": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "GravelRide": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "EBikeRide": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "EMountainBikeRide": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "VirtualRide": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "Velomobile": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "Run": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "TrailRun": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "VirtualRun": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "Walk": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "Hike": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "Canoeing": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "Kayaking": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "Kitesurf": {
+        "metric": {
+            "distance": "NM",
+            "speed": "kn",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "NM",
+            "speed": "kn",
+            "distancePrecision": 2
+        }
+    },
+    "Rowing": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "StandUpPaddling": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "Surfing": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "Swim": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
+    "Windsurf": {
+        "metric": {
+            "distance": "NM",
+            "speed": "kn",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "NM",
+            "speed": "kn",
+            "distancePrecision": 2
+        }
+    },
+    "BackcountrySki": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "AlpineSki": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "NordicSki": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "IceSkate": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Snowboard": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Snowshoe": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Skateboard": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "InlineSkate": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "RollerSki": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Badminton": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Pickleball": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Racquetball": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Squash": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "TableTennis": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Tennis": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Padel": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Crossfit": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "WeightTraining": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Workout": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "StairStepper": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "VirtualRow": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "HighIntensityIntervalTraining": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Elliptical": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Dance": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Pilates": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Yoga": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "PhysicalTherapy": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Golf": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "RockClimbing": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Sail": {
+        "metric": {
+            "distance": "NM",
+            "speed": "kn",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "NM",
+            "speed": "kn",
+            "distancePrecision": 2
+        }
+    },
+    "Basketball": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Soccer": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Volleyball": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Cricket": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Handcycle": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
+    "Wheelchair": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    }
+}

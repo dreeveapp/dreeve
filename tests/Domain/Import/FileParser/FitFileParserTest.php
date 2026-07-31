@@ -51,6 +51,15 @@ class FitFileParserTest extends ActivityFileParserTestCase
         );
     }
 
+    public function testParseUsesWorkoutNameAndDescription(): void
+    {
+        $this->givenFitToolReturnsFixture('fit-document-with-workout.json');
+
+        $this->assertParsedFileMatchesSnapshot(
+            $this->parser->parse($this->rawFile('/tmp/activity.fit'))
+        );
+    }
+
     public function testParseUsesStreamAveragePowerWhenSessionValueDeviatesTooMuch(): void
     {
         $this->givenFitToolReturnsFixture('fit-document-with-deviating-session-avg-power.json');

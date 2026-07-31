@@ -14,6 +14,7 @@ final readonly class Kilometer implements ConvertableToMeter, Metric
     use ProvideMeasurementUnit;
 
     public const float FACTOR_TO_MILES = 0.621371;
+    public const float FACTOR_TO_NAUTICAL_MILES = 0.5399568;
 
     public function getSymbol(): string
     {
@@ -23,6 +24,11 @@ final readonly class Kilometer implements ConvertableToMeter, Metric
     public function toMiles(): Mile
     {
         return Mile::from($this->value * self::FACTOR_TO_MILES);
+    }
+
+    public function toNauticalMiles(): NauticalMile
+    {
+        return NauticalMile::from($this->value * self::FACTOR_TO_NAUTICAL_MILES);
     }
 
     public function toUnitSystem(UnitSystem $unitSystem): Kilometer|Mile

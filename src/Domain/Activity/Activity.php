@@ -16,8 +16,10 @@ use App\Domain\Zwift\ZwiftMap;
 use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Length\NauticalMile;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\Measurement\Velocity\Knot;
 use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
 use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
@@ -473,6 +475,11 @@ final class Activity implements SupportsAITooling
         ]);
     }
 
+    public function getDistanceInDisplayUnit(): NauticalMile|Kilometer
+    {
+        return $this->getSportType()->toDisplayDistance($this->getDistance());
+    }
+
     public function getElevation(): Meter
     {
         return $this->elevation;
@@ -517,6 +524,11 @@ final class Activity implements SupportsAITooling
         ]);
     }
 
+    public function getAverageSpeedInDisplayUnit(): Knot|KmPerHour
+    {
+        return $this->getSportType()->toDisplaySpeed($this->getAverageSpeed());
+    }
+
     public function getPaceInSecPerKm(): SecPerKm
     {
         return $this->getAverageSpeed()->toMetersPerSecond()->toSecPerKm();
@@ -537,6 +549,11 @@ final class Activity implements SupportsAITooling
         return clone ($this, [
             'maxSpeed' => $maxSpeed,
         ]);
+    }
+
+    public function getMaxSpeedInDisplayUnit(): Knot|KmPerHour
+    {
+        return $this->getSportType()->toDisplaySpeed($this->getMaxSpeed());
     }
 
     public function getAverageHeartRate(): ?int
