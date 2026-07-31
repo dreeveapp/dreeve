@@ -10,8 +10,5 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag('app.html_page')]
 interface Page extends Cacheable
 {
-    /**
-     * The path this page is served at: 'photos' is served at /api/photos and prunes build/html/photos.html.
-     */
     public function getPath(): string;
 }

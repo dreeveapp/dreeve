@@ -17,9 +17,9 @@ final readonly class CacheableRenderer
         $cacheability = $cacheable->getCacheability();
 
         return $this->renderCache->get(
-            $cacheable->getCacheKey().$this->cacheContextRegistry->buildCacheKeySegments($cacheability->getCacheContexts()),
-            $cacheability,
-            fn (): ?string => $cacheable->render(),
+            cacheKey: $cacheable->getCacheKey().$this->cacheContextRegistry->buildCacheKeySegments($cacheability->getCacheContexts()),
+            cacheability: $cacheability,
+            callback: fn (): ?string => $cacheable->render(),
         );
     }
 }
