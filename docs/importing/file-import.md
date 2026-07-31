@@ -10,22 +10,6 @@ This is Dreeve's default mode (`IMPORT_MODE=files`).
 | `.tcx` | Contains streams and laps. |
 | `.gpx` | Route data. Contains the least detail of the three. |
 
-### Activity name and description
-
-Activity files don't carry a title the way a Strava activity does, so Dreeve generates one from the
-time of day and the sport type: `Morning Ride`, `Evening Trail Run`, ...
-
-There is one exception. When a `.fit` file was recorded while following a structured workout, it
-contains that workout's name and description, and Dreeve uses those instead:
-
-| Workout | Activity |
-|---|---|
-| `wkt_name` | Name |
-| `wkt_description` | Description |
-
-Empty fields fall back to the generated name and an empty description. Automation rules still run
-afterwards, so a `Set name` or `Set description` action always takes precedence.
-
 ## Uploading files
 
 <!-- tabs:start -->

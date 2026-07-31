@@ -89,6 +89,57 @@ you will need to run multiple instances of the app, each with its own Strava cli
 
 </details>
 
+## Backup & restore
+
+<details>
+<summary>What do I need to back up?</summary>
+
+Only the **`storage/` directory**. That's it.
+
+It holds the SQLite database (`storage/database/dreeve.db`) and the images and files the app generates
+(`storage/files/`). Your original `.fit`, `.tcx` and `.gpx` files are stored **inside the database**, so there is
+nothing else to keep separately.
+
+Your `docker-compose.yml` and `.env` are configuration, not data, but keeping a copy makes a restore quicker.
+
+</details>
+
+<details>
+<summary>How do I make a backup?</summary>
+
+Stop the containers, then copy the whole directory:
+
+```bash
+> docker compose down
+> tar -czf dreeve-backup-$(date +%F).tar.gz storage/
+> docker compose up -d
+```
+
+</details>
+
+<details>
+<summary>How do I restore a backup?</summary>
+
+```bash
+# Stop the containers
+> docker compose down
+
+# Replace the storage directory with the one from your backup
+> rm -rf storage/
+> tar -xzf dreeve-backup-2026-01-01.tar.gz
+
+# Start again
+> docker compose up -d
+
+# Rebuild the frontend
+> docker compose exec app bin/console app:data:build
+```
+
+The frontend is pre-rendered static HTML that lives in `build/`, so run a build after restoring to regenerate it
+from the restored database. You do **not** need to re-import your activities.
+
+</details>
+
 ## Admin panel
 
 <details>
