@@ -10,9 +10,12 @@ use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
+use App\Infrastructure\Cache\CacheTag;
+use App\Infrastructure\Cache\InvalidatesCacheTags;
 use App\Infrastructure\CQRS\Command\RequiresRebuild;
 
 #[RequiresRebuild]
+#[InvalidatesCacheTags(CacheTag::SETTINGS)]
 final readonly class UpdateSettings extends DomainCommand implements DeserializableCommand
 {
     use ProvidesCommandName;

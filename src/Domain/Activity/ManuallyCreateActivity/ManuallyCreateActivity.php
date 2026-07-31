@@ -14,10 +14,13 @@ use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
+use App\Infrastructure\Cache\CacheTag;
+use App\Infrastructure\Cache\InvalidatesCacheTags;
 use App\Infrastructure\CQRS\Command\RequiresRebuild;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 #[RequiresRebuild]
+#[InvalidatesCacheTags(CacheTag::ACTIVITIES)]
 final readonly class ManuallyCreateActivity extends DomainCommand implements DeserializableCommand
 {
     use ProvideLocalImageFromDropZonePayload;
