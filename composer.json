@@ -46,6 +46,7 @@
         "react/child-process": "^0.6.7",
         "respect/validation": "^2.3",
         "symfony/asset": "8.1.*",
+        "symfony/cache": "8.1.*",
         "symfony/console": "8.1.*",
         "symfony/dotenv": "8.1.*",
         "symfony/expression-language": "8.1.*",
