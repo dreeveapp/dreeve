@@ -29,6 +29,14 @@ final readonly class CacheContextRegistry
     }
 
     /**
+     * @return iterable<CacheContext>
+     */
+    public function all(): iterable
+    {
+        return $this->cacheContexts;
+    }
+
+    /**
      * @param class-string<CacheContext> $cacheContextClassName
      */
     private function find(string $cacheContextClassName): CacheContext

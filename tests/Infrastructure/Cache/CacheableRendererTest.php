@@ -161,7 +161,6 @@ class CacheableRendererTest extends ContainerTestCase
         $this->rendererFor(demoModeIsEnabled: false, loggedIn: false)->render($cacheable);
         $this->rendererFor(demoModeIsEnabled: false, loggedIn: true)->render($cacheable);
 
-        // Everybody is trusted, so there is nothing to vary by and no entry to waste.
         $this->assertEquals(1, $cacheable->renderCount);
     }
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Cache;
+namespace App\Console\Daemon;
 
 use App\Infrastructure\Cache\RenderCache;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -11,9 +11,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'app:cache:render:clear-stale', description: 'Clear rendered pages left behind by a previous app version')]
-final class ClearStaleRenderCacheConsoleCommand extends Command
+#[AsCommand(name: PruneRenderCacheConsoleCommand::NAME, description: 'Delete expired rendered pages from the render cache')]
+final class PruneRenderCacheConsoleCommand extends Command
 {
+    public const string NAME = 'app:cache:render:prune';
+
     public function __construct(
         private readonly RenderCache $renderCache,
     ) {
@@ -24,13 +26,8 @@ final class ClearStaleRenderCacheConsoleCommand extends Command
     {
         $output = new SymfonyStyle($input, $output);
 
-        if (!$this->renderCache->clearWhenAppVersionChanged()) {
-            $output->writeln('Render cache is up to date with the current app version');
-
-            return Command::SUCCESS;
-        }
-
-        $output->writeln('Cleared the render cache of the previous app version');
+        $this->renderCache->prune();
+        $output->writeln('Pruned expired entries from the render cache');
 
         return Command::SUCCESS;
     }

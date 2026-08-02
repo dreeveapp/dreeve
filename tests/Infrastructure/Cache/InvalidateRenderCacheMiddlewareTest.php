@@ -25,7 +25,7 @@ class InvalidateRenderCacheMiddlewareTest extends ContainerTestCase
     {
         $cacheable = $this->renderAndCache(CacheTag::SETTINGS_APPEARANCE);
 
-        $this->handle(new CommandProvidingCacheTagsStub(CacheTag::SETTINGS_APPEARANCE));
+        $this->middleware->handle(new Envelope(new CommandProvidingCacheTagsStub(CacheTag::SETTINGS_APPEARANCE)), new StackMiddleware());
 
         $this->cacheableRenderer->render($cacheable);
         $this->assertEquals(2, $cacheable->renderCount);
@@ -35,7 +35,7 @@ class InvalidateRenderCacheMiddlewareTest extends ContainerTestCase
     {
         $cacheable = $this->renderAndCache(CacheTag::SETTINGS_APPEARANCE);
 
-        $this->handle(new CommandProvidingCacheTagsStub(CacheTag::SETTINGS_INTEGRATIONS));
+        $this->middleware->handle(new Envelope(new CommandProvidingCacheTagsStub(CacheTag::SETTINGS_INTEGRATIONS)), new StackMiddleware());
 
         $this->cacheableRenderer->render($cacheable);
         $this->assertEquals(1, $cacheable->renderCount);
@@ -45,22 +45,20 @@ class InvalidateRenderCacheMiddlewareTest extends ContainerTestCase
     {
         $cacheable = $this->renderAndCache(CacheTag::ACTIVITIES);
 
-        $this->handle(new RunAnOperation('test'));
+        $this->middleware->handle(new Envelope(new RunAnOperation('test')), new StackMiddleware());
 
         $this->cacheableRenderer->render($cacheable);
         $this->assertEquals(1, $cacheable->renderCount);
     }
 
-    // Uploading only drops a file in the watch directory, the activity does not exist yet. Invalidating
-    // here would throw away a good entry for no change; ImportActivityFiles does it once the file lands.
     public function testUploadingAnActivityFileInvalidatesNothing(): void
     {
         $cacheable = $this->renderAndCache(CacheTag::ACTIVITIES);
 
-        $this->handle(UploadActivityFile::fromPayload([
+        $this->middleware->handle(new Envelope(UploadActivityFile::fromPayload([
             'filename' => 'ride.tcx',
             'content' => base64_encode('<xml></xml>'),
-        ]));
+        ])), new StackMiddleware());
 
         $this->cacheableRenderer->render($cacheable);
         $this->assertEquals(1, $cacheable->renderCount);
@@ -72,11 +70,6 @@ class InvalidateRenderCacheMiddlewareTest extends ContainerTestCase
         $this->cacheableRenderer->render($cacheable);
 
         return $cacheable;
-    }
-
-    private function handle(object $command): void
-    {
-        $this->middleware->handle(new Envelope($command), new StackMiddleware());
     }
 
     #[\Override]

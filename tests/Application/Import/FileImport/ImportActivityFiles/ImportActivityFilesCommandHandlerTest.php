@@ -180,7 +180,6 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->dropInWatchFolder('notes.txt', 'just some text');
         $this->handler->handle(new ImportActivityFiles(new SpyOutput()));
 
-        // Finding nothing to import is the common case on a 5 minute cron, so it must not cost the cache.
         $this->cacheableRenderer->render($cacheable);
         $this->assertEquals(1, $cacheable->renderCount);
     }

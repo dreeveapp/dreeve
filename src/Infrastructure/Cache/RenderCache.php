@@ -6,11 +6,12 @@ namespace App\Infrastructure\Cache;
 
 use App\Application\AppVersion;
 use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
+use Symfony\Component\Cache\PruneableInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final readonly class RenderCache
 {
-    private const string APP_VERSION_CACHE_KEY = 'app-version';
+    private const string CHARACTERS_RESERVED_IN_A_CACHE_KEY = '/[{}()\/\\\\@:\s\x00-\x1F]+/';
 
     public function __construct(
         #[Autowire(service: 'render.cache')]
@@ -27,7 +28,11 @@ final readonly class RenderCache
             return Render::notCacheable($callback());
         }
 
-        $prefixedCacheKey = $this->buildCacheKey($cacheKey);
+        $prefixedCacheKey = (string) preg_replace(
+            self::CHARACTERS_RESERVED_IN_A_CACHE_KEY,
+            '_',
+            AppVersion::getSemanticVersion().'.'.$cacheKey
+        );
 
         $item = $this->cache->getItem($prefixedCacheKey);
         if ($item->isHit()) {
@@ -37,7 +42,6 @@ final readonly class RenderCache
             return Render::servedFromCache($cached, $prefixedCacheKey);
         }
 
-        // A render being null (a widget without data) must be cached too
         $rendered = $callback();
 
         $item->set($rendered);
@@ -64,30 +68,14 @@ final readonly class RenderCache
     public function clear(): void
     {
         $this->cache->clear();
-        $this->markAppVersion();
     }
 
-    public function clearWhenAppVersionChanged(): bool
+    public function prune(): void
     {
-        $item = $this->cache->getItem(self::APP_VERSION_CACHE_KEY);
-        if ($item->isHit() && $item->get() === AppVersion::getSemanticVersion()) {
-            return false;
+        if (!$this->cache instanceof PruneableInterface) {
+            return;
         }
 
-        $this->clear();
-
-        return true;
-    }
-
-    private function buildCacheKey(string $cacheKey): string
-    {
-        return AppVersion::getSemanticVersion().'.'.$cacheKey;
-    }
-
-    private function markAppVersion(): void
-    {
-        $item = $this->cache->getItem(self::APP_VERSION_CACHE_KEY);
-        $item->set(AppVersion::getSemanticVersion());
-        $this->cache->save($item);
+        $this->cache->prune();
     }
 }

@@ -21,7 +21,6 @@ final readonly class UpdateAthleteSettings extends DomainCommand implements Dese
 
     public function getCacheTagsToInvalidate(): CacheTags
     {
-        // It writes into the general settings blob, and until now invalidated nothing at all.
         return CacheTags::of(CacheTag::forSettingsGroup(SettingsGroup::GENERAL));
     }
 

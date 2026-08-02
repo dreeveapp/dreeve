@@ -2,6 +2,7 @@
 
 namespace App\Tests\Infrastructure\Http\Page;
 
+use App\Infrastructure\Cache\CacheContextRegistry;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Http\Page\PageRegistry;
 use App\Tests\ContainerTestCase;
@@ -14,9 +15,51 @@ class PageCacheContextGuardTest extends ContainerTestCase
 {
     use ProvideTestData;
 
-    // Cache contexts are opt-in, which is only safe as long as a page that does not declare one really
-    // does render the same for everybody. Without this, a template tweak silently serves an admin
-    // flavoured page to anonymous visitors, cached under the anonymous key.
+    public function testEveryPageHasAPathAndACacheKeyOfItsOwn(): void
+    {
+        /** @var PageRegistry $pageRegistry */
+        $pageRegistry = $this->getContainer()->get(PageRegistry::class);
+
+        $paths = [];
+        $cacheKeys = [];
+        foreach ($pageRegistry->all() as $page) {
+            $paths[] = $page->getPath();
+            $cacheKeys[] = $page->getCacheKey();
+        }
+
+        $this->assertNotEmpty($paths);
+        $this->assertEquals(array_unique($paths), $paths);
+        $this->assertEquals(array_unique($cacheKeys), $cacheKeys);
+    }
+
+    public function testEveryCacheContextHasAKeyOfItsOwn(): void
+    {
+        /** @var CacheContextRegistry $cacheContextRegistry */
+        $cacheContextRegistry = $this->getContainer()->get(CacheContextRegistry::class);
+
+        $keys = [];
+        foreach ($cacheContextRegistry->all() as $cacheContext) {
+            $keys[] = $cacheContext::getKey();
+        }
+
+        $this->assertNotEmpty($keys);
+        $this->assertEquals(array_unique($keys), $keys);
+    }
+
+    public function testEveryContextDeclaredByAPageResolvesThroughTheRealRegistry(): void
+    {
+        /** @var PageRegistry $pageRegistry */
+        $pageRegistry = $this->getContainer()->get(PageRegistry::class);
+        /** @var CacheContextRegistry $cacheContextRegistry */
+        $cacheContextRegistry = $this->getContainer()->get(CacheContextRegistry::class);
+
+        foreach ($pageRegistry->all() as $page) {
+            $this->assertIsString(
+                $cacheContextRegistry->buildCacheKeySegments($page->getCacheability()->getCacheContexts())
+            );
+        }
+    }
+
     public function testPagesNotVaryingByAuthenticationRenderIdenticallyForEveryVisitor(): void
     {
         $this->provideFullTestSet();

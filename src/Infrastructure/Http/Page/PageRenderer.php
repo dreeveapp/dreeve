@@ -28,8 +28,6 @@ final readonly class PageRenderer
             : $response->headers->set('X-Cache-Miss', $render->cacheKey ?? 'uncacheable');
 
         if (!$page->getCacheability()->getCacheContexts()->isEmpty()) {
-            // The render varies per visitor, so a user's own reverse proxy must never hand
-            // one visitor's variant to another.
             $response->headers->set('Cache-Control', 'private, no-store');
         }
 
