@@ -220,6 +220,7 @@ Monday: Montag
 'No unit': 'keine Einheit'
 'Normal date format': 'Normales Datumsformat'
 'Notification services': Benachrichtungsdienste
+'Notify when a build was successful': 'Benachrichtigen, wenn ein Build erfolgreich war'
 'Number of activities to display': 'Anzahl der anzuzeigenden Aktivitäten'
 'Number of challenges to display': 'Anzahl der anzuzeigenden Herausforderungen'
 'Number of milestones to display': 'Anzahl der anzuzeigenden Meilensteine'
@@ -294,6 +295,7 @@ Seconds: Seconds
 'Select gear...': 'Ausrüstung auswählen...'
 'Select sport types': 'Sportarten auswählen'
 'Select the serviced gear…': 'Gewartete Ausrüstung auswählen…'
+'Sends a notification after every successful import and build.': 'Sendet eine Benachrichtigung nach jedem erfolgreichen Import und Build.'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sendet eine Benachrichtigung, wenn eine neue App-Version verfügbar ist. Erfordert einen konfigurierten Benachrichtigungsdienst.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sendet eine Benachrichtigung, wenn eine Ausrüstungswartung fällig ist. Erfordert einen konfigurierten Benachrichtigungsdienst.'
 'Set description': 'Beschreibung festlegen'

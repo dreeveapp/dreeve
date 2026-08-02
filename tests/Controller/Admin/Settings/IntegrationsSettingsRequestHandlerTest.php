@@ -27,6 +27,8 @@ class IntegrationsSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('input[name="data[ai][enabled]"]'));
         $this->assertCount(1, $crawler->filter('template[data-repeater-template] input[name="data[ai][agent][commands][__index__][command]"]'));
         $this->assertCount(1, $crawler->filter('template[data-repeater-template] input[name="data[notifications][services][]"]'));
+        $this->assertCount(1, $crawler->filter('input[type="checkbox"][name="data[notifications][notifyOnSuccessfulBuild]"][checked]'));
+        $this->assertCount(1, $crawler->filter('input[type="hidden"][name="data[notifications][notifyOnSuccessfulBuild]"][value="0"]'));
 
         // The settings navigation, with "Integrations" active.
         $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');

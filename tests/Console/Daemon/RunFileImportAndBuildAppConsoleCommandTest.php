@@ -12,8 +12,12 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Import\ImportMode;
 use App\Domain\Import\WatchDirectory;
+use App\Domain\Integration\Notification\SendNotification\SendNotification;
+use App\Domain\Settings\KeyValueBasedSettingsRepository;
+use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\CQRS\Command\DomainCommand;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\FileSystem\PermissionChecker;
 use App\Infrastructure\KeyValue\Key;
@@ -70,6 +74,34 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
             self::TODAY.'@'.AppVersion::getSemanticVersion(),
             (string) $this->keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT),
         );
+    }
+
+    public function testDoesNotSendANotificationWhenTheSuccessfulBuildNotificationIsDisabled(): void
+    {
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()->build(),
+            [],
+        ));
+
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: SettingsGroup::INTEGRATIONS->keyValueKey(),
+            value: Value::fromString(Json::encode(['notifications' => ['notifyOnSuccessfulBuild' => false]])),
+        ));
+
+        $command = $this->getCommandInApplication('app:cron:run-file-import');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunFileImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunFileImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+        ]);
+
+        $dispatchedCommands = $this->commandBus->getDispatchedCommands();
+        $this->assertNotEmpty($dispatchedCommands);
+        $this->assertEmpty(array_filter(
+            $dispatchedCommands,
+            static fn (DomainCommand $dispatchedCommand): bool => $dispatchedCommand instanceof SendNotification,
+        ));
     }
 
     public function testThrowsWhenNoPhaseOptionsProvided(): void
@@ -432,6 +464,7 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
             logger: $logger,
             importMode: $importMode,
             rebuildStatus: new RebuildStatus($this->keyValueStore),
+            settingsRepository: $this->getContainer()->get(KeyValueBasedSettingsRepository::class),
         );
     }
 

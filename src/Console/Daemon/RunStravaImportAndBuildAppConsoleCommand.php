@@ -20,6 +20,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Import\ImportMode;
 use App\Domain\Integration\Notification\SendNotification\SendNotification;
+use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\RateLimit\StravaRateLimits;
 use App\Domain\Strava\Strava;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
@@ -64,6 +65,7 @@ final class RunStravaImportAndBuildAppConsoleCommand extends Command
         private readonly KeyValueStore $keyValueStore,
         private readonly RebuildStatus $rebuildStatus,
         private readonly Clock $clock,
+        private readonly SettingsRepository $settingsRepository,
     ) {
         parent::__construct();
     }
@@ -172,12 +174,14 @@ final class RunStravaImportAndBuildAppConsoleCommand extends Command
         $this->mutex->releaseLock();
 
         $this->resourceUsage->stopTimer();
-        $this->commandBus->dispatch(new SendNotification(
-            title: 'Build successful',
-            message: sprintf('New import and build of your stats was successful in %ss', $this->resourceUsage->getRunTimeInSeconds()),
-            tags: ['+1'],
-            actionUrl: $this->appUrl
-        ));
+        if ($this->settingsRepository->integrations()->shouldNotifyOnSuccessfulBuild()) {
+            $this->commandBus->dispatch(new SendNotification(
+                title: 'Build successful',
+                message: sprintf('New import and build of your stats was successful in %ss', $this->resourceUsage->getRunTimeInSeconds()),
+                tags: ['+1'],
+                actionUrl: $this->appUrl
+            ));
+        }
 
         $output->writeln(sprintf(
             '<info>%s</info>',

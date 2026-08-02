@@ -31,6 +31,7 @@ final readonly class IntegrationsSettings
         private array $aiConfig,
         private ChatCommands $chatCommands,
         private ConfiguredNotificationUrls $configuredNotificationUrls,
+        private bool $notifyOnSuccessfulBuild,
     ) {
     }
 
@@ -79,6 +80,7 @@ final readonly class IntegrationsSettings
             aiConfig: $aiConfig,
             chatCommands: ChatCommands::fromArray($aiConfig['agent']['commands'] ?? []),
             configuredNotificationUrls: ConfiguredNotificationUrls::fromConfig($services),
+            notifyOnSuccessfulBuild: filter_var($notifications['notifyOnSuccessfulBuild'] ?? true, FILTER_VALIDATE_BOOLEAN),
         );
     }
 
@@ -100,6 +102,11 @@ final readonly class IntegrationsSettings
     public function getConfiguredNotificationUrls(): ConfiguredNotificationUrls
     {
         return $this->configuredNotificationUrls;
+    }
+
+    public function shouldNotifyOnSuccessfulBuild(): bool
+    {
+        return $this->notifyOnSuccessfulBuild;
     }
 
     public function getAIProvider(): AIProviderInterface

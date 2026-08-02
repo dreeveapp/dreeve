@@ -137,6 +137,7 @@ class ImportDataAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
             keyValueStore: $this->getContainer()->get(KeyValueStore::class),
             rebuildStatus: $this->getContainer()->get(RebuildStatus::class),
             clock: PausedClock::fromString(self::TODAY),
+            settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );
     }
 
@@ -162,6 +163,7 @@ class ImportDataAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
             logger: new NullLogger(),
             importMode: ImportMode::FILES,
             rebuildStatus: $this->getContainer()->get(RebuildStatus::class),
+            settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );
     }
 
