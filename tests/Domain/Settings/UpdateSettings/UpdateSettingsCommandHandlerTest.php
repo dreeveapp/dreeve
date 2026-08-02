@@ -7,17 +7,24 @@ namespace App\Tests\Domain\Settings\UpdateSettings;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Settings\UpdateSettings\UpdateSettings;
+use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableRenderer;
+use App\Infrastructure\Cache\CacheTag;
+use App\Infrastructure\Cache\CacheTags;
+use App\Infrastructure\Cache\RenderCache;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Tests\ContainerTestCase;
+use App\Tests\Infrastructure\Cache\CacheableStub;
 
 class UpdateSettingsCommandHandlerTest extends ContainerTestCase
 {
     private CommandBus $commandBus;
     private SettingsRepository $settingsRepository;
     private KeyValueStore $keyValueStore;
+    private CacheableRenderer $cacheableRenderer;
 
     public function testItUpdatesGeneralSettingsAndFlagsForceRebuild(): void
     {
@@ -144,6 +151,28 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
         $this->assertSame('1', (string) $this->keyValueStore->find(Key::FORCE_REBUILD));
     }
 
+    public function testItOnlyInvalidatesRendersOfTheGroupThatWasSaved(): void
+    {
+        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::SETTINGS_APPEARANCE)));
+        $this->cacheableRenderer->render($cacheable);
+
+        $this->commandBus->dispatch(UpdateSettings::fromPayload([
+            'group' => SettingsGroup::ZWIFT->value,
+            'data' => ['level' => 100, 'racingScore' => 511],
+        ]));
+
+        $this->cacheableRenderer->render($cacheable);
+        $this->assertEquals(1, $cacheable->renderCount);
+
+        $this->commandBus->dispatch(UpdateSettings::fromPayload([
+            'group' => SettingsGroup::APPEARANCE->value,
+            'data' => ['unitSystem' => 'imperial', 'locale' => 'nl_BE'],
+        ]));
+
+        $this->cacheableRenderer->render($cacheable);
+        $this->assertEquals(2, $cacheable->renderCount);
+    }
+
     public function testItRejectsInvalidIntegrationsSettings(): void
     {
         $this->expectExceptionObject(new CouldNotDeserializeCommand('commands must not start with a slash. (/ftp)'));
@@ -219,5 +248,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
         $this->commandBus = $this->getContainer()->get(CommandBus::class);
         $this->settingsRepository = $this->getContainer()->get(SettingsRepository::class);
         $this->keyValueStore = $this->getContainer()->get(KeyValueStore::class);
+        $this->cacheableRenderer = $this->getContainer()->get(CacheableRenderer::class);
+        $this->getContainer()->get(RenderCache::class)->clear();
     }
 }

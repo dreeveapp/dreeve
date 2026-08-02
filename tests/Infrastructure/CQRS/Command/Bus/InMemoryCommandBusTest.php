@@ -2,6 +2,7 @@
 
 namespace App\Tests\Infrastructure\CQRS\Command\Bus;
 
+use App\Infrastructure\Cache\RenderCache;
 use App\Infrastructure\CQRS\CanNotRegisterCQRSHandler;
 use App\Infrastructure\CQRS\Command\Bus\InMemoryCommandBus;
 use App\Tests\Infrastructure\CQRS\Command\Bus\RunAnOperation\RunAnOperation;
@@ -17,7 +18,7 @@ class InMemoryCommandBusTest extends KernelTestCase
     {
         $commandBus = new InMemoryCommandBus(commandHandlers: [
             new RunAnOperationCommandHandler(),
-        ], eventBus: new SpyEventBus());
+        ], eventBus: new SpyEventBus(), renderCache: $this->getContainer()->get(RenderCache::class));
 
         $this->expectExceptionObject(new \RuntimeException('This is a test command and it is called'));
 
@@ -26,7 +27,7 @@ class InMemoryCommandBusTest extends KernelTestCase
 
     public function testDispatchWhenNotRegistered(): void
     {
-        $commandBus = new InMemoryCommandBus(commandHandlers: [], eventBus: new SpyEventBus());
+        $commandBus = new InMemoryCommandBus(commandHandlers: [], eventBus: new SpyEventBus(), renderCache: $this->getContainer()->get(RenderCache::class));
 
         $this->expectExceptionObject(new NoHandlerForMessageException(RunAnOperation::class));
 
@@ -39,7 +40,7 @@ class InMemoryCommandBusTest extends KernelTestCase
 
         $commandBus = new InMemoryCommandBus(commandHandlers: [
             new RunOperationWithoutACommandCommandHandler(),
-        ], eventBus: new SpyEventBus());
+        ], eventBus: new SpyEventBus(), renderCache: $this->getContainer()->get(RenderCache::class));
         $commandBus->dispatch(new RunAnOperation('test'));
     }
 
@@ -49,7 +50,7 @@ class InMemoryCommandBusTest extends KernelTestCase
 
         $commandBus = new InMemoryCommandBus(commandHandlers: [
             new RunAnOperationCommandCommandHandler(),
-        ], eventBus: new SpyEventBus());
+        ], eventBus: new SpyEventBus(), renderCache: $this->getContainer()->get(RenderCache::class));
         $commandBus->dispatch(new RunAnOperation('test'));
     }
 
@@ -59,7 +60,7 @@ class InMemoryCommandBusTest extends KernelTestCase
 
         $commandBus = new InMemoryCommandBus(commandHandlers: [
             new RunOperationWithInvalidNameHandler(),
-        ], eventBus: new SpyEventBus());
+        ], eventBus: new SpyEventBus(), renderCache: $this->getContainer()->get(RenderCache::class));
         $commandBus->dispatch(new RunAnOperation('test'));
     }
 }

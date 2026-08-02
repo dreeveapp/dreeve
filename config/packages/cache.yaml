@@ -13,7 +13,17 @@ framework:
 
         # APCu (not recommended with heavy random-write workloads as memory fragmentation can cause perf issues)
         #app: cache.adapter.apcu
+        directory: '%kernel.project_dir%/build/cache'
 
-        # Namespaced pools use the above "app" backend by default
-        #pools:
-            #my.dedicated.cache: null
+        pools:
+            # An explicit tags pool makes Symfony wire the version stamped TagAwareAdapter instead of the
+            # symlink based FilesystemTagAwareAdapter. A lot of users run this app on NAS/SMB/NFS mounts,
+            # where symlinks are unreliable.
+            render.cache.tags:
+                adapter: cache.adapter.filesystem
+            render.cache:
+                adapter: cache.adapter.filesystem
+                tags: render.cache.tags
+                # Self healing safety net: anything we forget to tag corrects itself within a day,
+                # which is no worse than the nightly rebuild it replaces.
+                default_lifetime: 86400

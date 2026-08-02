@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Daemon;
 
 use App\Console\Daemon\ProcessStravaWebhooksConsoleCommand;
+use App\Console\Daemon\PruneRenderCacheConsoleCommand;
 use App\Console\Daemon\RunFileImportAndBuildAppConsoleCommand;
 use App\Console\Daemon\RunStravaImportAndBuildAppConsoleCommand;
 use App\Domain\Import\ImportMode;
@@ -30,6 +31,7 @@ final class SystemDaemon implements Daemon
     use ConsoleOutputAware;
 
     private const string CRON_EVERY_5_MINUTES = '*/5 * * * *';
+    private const string CRON_DAILY = '0 4 * * *';
 
     public function __construct(
         private readonly Clock $clock,
@@ -143,6 +145,24 @@ final class SystemDaemon implements Daemon
             );
         }
 
+        $extraConfiguredCronActionsOutput[] = sprintf('<info> - pruneRenderCache: %s</info>', self::CRON_DAILY);
+        $actions[] = new Action(
+            key: 'pruneRenderCache',
+            mutexTtl: 300,
+            expression: self::CRON_DAILY,
+            performer: function (): PromiseInterface {
+                $process = new CronProcess(
+                    cronActionId: 'pruneRenderCache',
+                    clock: $this->clock,
+                    output: $this->getConsoleOutput(),
+                    command: sprintf('bin/console %s', PruneRenderCacheConsoleCommand::NAME),
+                );
+                $process->start();
+
+                return resolve(true);
+            }
+        );
+
         $webhookConfig = $this->settingsRepository->import()->getWebhookConfig();
         if ($this->importMode->isStravaApi() && $webhookConfig->isEnabled()) {
             $extraConfiguredCronActionsOutput[] = sprintf('<info> - processStravaWebhooks: %s</info>', $webhookConfig->getCronExpression());
@@ -167,12 +187,6 @@ final class SystemDaemon implements Daemon
         \WyriHaximus\React\Cron::create(...$actions)->on('error', function (\Throwable $throwable): void {
             $this->getConsoleOutput()->writeln(sprintf('<error>%s</error>', $throwable->getMessage()));
         });
-
-        if ([] === $actions) {
-            $this->getConsoleOutput()->writeln(sprintf('<info>%s</info>', 'No cron items configured, shutting down cron...'));
-
-            return;
-        }
 
         $this->getConsoleOutput()->writeln(sprintf('<info>%s</info>', 'Cron configured'));
         $this->getConsoleOutput()->writeln([

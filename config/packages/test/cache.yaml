@@ -1,0 +1,9 @@
+framework:
+    cache:
+        pools:
+            render.cache.tags:
+                adapter: cache.adapter.array
+            render.cache:
+                adapter: cache.adapter.array
+                tags: render.cache.tags
+                default_lifetime: 86400

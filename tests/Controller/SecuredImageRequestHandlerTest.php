@@ -4,6 +4,7 @@ namespace App\Tests\Controller;
 
 use App\Controller\SecuredImageRequestHandler;
 use App\Infrastructure\Config\DemoMode;
+use App\Infrastructure\Security\TrustedVisitor;
 use App\Tests\ContainerTestCase;
 use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -91,8 +92,10 @@ class SecuredImageRequestHandlerTest extends ContainerTestCase
 
         return new SecuredImageRequestHandler(
             $this->fileStorage,
-            $security,
-            DemoMode::fromString($demoModeIsEnabled ? '1' : '0'),
+            new TrustedVisitor(
+                DemoMode::fromString($demoModeIsEnabled ? '1' : '0'),
+                $security,
+            ),
         );
     }
 

@@ -11,6 +11,9 @@ use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
 use App\Domain\Image\NewImage;
 use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
+use App\Infrastructure\Cache\CacheTag;
+use App\Infrastructure\Cache\CacheTags;
+use App\Infrastructure\Cache\InvalidatesCacheTags;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
@@ -18,7 +21,7 @@ use App\Infrastructure\CQRS\Command\RequiresRebuild;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 #[RequiresRebuild]
-final readonly class ManuallyCreateActivity extends DomainCommand implements DeserializableCommand
+final readonly class ManuallyCreateActivity extends DomainCommand implements DeserializableCommand, InvalidatesCacheTags
 {
     use ProvideLocalImageFromDropZonePayload;
     use ProvideManuallyAddedActivityPayload;
@@ -117,5 +120,10 @@ final readonly class ManuallyCreateActivity extends DomainCommand implements Des
     public function getNewImages(): array
     {
         return $this->newImages;
+    }
+
+    public function getCacheTagsToInvalidate(): CacheTags
+    {
+        return CacheTags::of(CacheTag::ACTIVITIES);
     }
 }

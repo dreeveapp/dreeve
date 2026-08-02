@@ -1,45 +1,43 @@
 Buildingapp...
 
 
-0%[>---------------------------]0/20-Initializing...
+0%[>---------------------------]0/19-Initializing...
 
-5%[=>--------------------------]1/20-Configuringlocale
+5%[=>--------------------------]1/19-Configuringlocale
 
-10%[==>-------------------------]2/20-Configuringthemecolors
+10%[==>-------------------------]2/19-Configuringthemecolors
 
-15%[====>-----------------------]3/20-BuildingManifest
+15%[====>-----------------------]3/19-BuildingManifest
 
-20%[=====>----------------------]4/20-Buildingindex
+21%[=====>----------------------]4/19-Buildingindex
 
-25%[=======>--------------------]5/20-Buildingdashboard
+26%[=======>--------------------]5/19-Buildingdashboard
 
-30%[========>-------------------]6/20-Buildingactivities
+31%[========>-------------------]6/19-Buildingactivities
 
-35%[=========>------------------]7/20-Buildinggpxfiles
+36%[==========>-----------------]7/19-Buildinggpxfiles
 
-40%[===========>----------------]8/20-Buildingmonthlystats
+42%[===========>----------------]8/19-Buildingmonthlystats
 
-45%[============>---------------]9/20-Buildinggearstats
+47%[=============>--------------]9/19-Buildinggearstats
 
-50%[==============>-------------]10/20-Buildinggearmaintenance
+52%[==============>-------------]10/19-Buildinggearmaintenance
 
-55%[===============>------------]11/20-Buildingrecordingdevices
+57%[================>-----------]11/19-Buildingrecordingdevices
 
-60%[================>-----------]12/20-Buildingeddington
+63%[=================>----------]12/19-Buildingeddington
 
-65%[==================>---------]13/20-Buildingmilestones
+68%[===================>--------]13/19-Buildingmilestones
 
-70%[===================>--------]14/20-Buildingsegments
+73%[====================>-------]14/19-Buildingsegments
 
-75%[=====================>------]15/20-Buildingheatmap
+78%[======================>-----]15/19-Buildingheatmap
 
-80%[======================>-----]16/20-Buildingbestefforts
+84%[=======================>----]16/19-Buildingbestefforts
 
-85%[=======================>----]17/20-Buildingrewind
+89%[=========================>--]17/19-Buildingrewind
 
-90%[=========================>--]18/20-Buildingchallenges
+94%[==========================>-]18/19-Buildingchallenges
 
-95%[==========================>-]19/20-Buildingphotos
-
-100%[============================]20/20-Buildingbadges
+100%[============================]19/19-Buildingbadges
 

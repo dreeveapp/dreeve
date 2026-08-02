@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Infrastructure\Config\DemoMode;
+use App\Infrastructure\Security\TrustedVisitor;
 use App\Infrastructure\ValueObject\String\Path;
 use League\Flysystem\FilesystemOperator;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[AsController]
 final readonly class SecuredImageRequestHandler
 {
     public function __construct(
         private FilesystemOperator $fileStorage,
-        private Security $security,
-        private DemoMode $demoMode,
+        private TrustedVisitor $trustedVisitor,
     ) {
     }
 
@@ -32,9 +29,7 @@ final readonly class SecuredImageRequestHandler
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $isTrusted = !$this->demoMode->isEnabled() || $this->security->getUser() instanceof UserInterface;
-
-        if (!$isTrusted) {
+        if (!$this->trustedVisitor->isTrusted()) {
             // Not a trusted visitor: serve an anonymized, stable random photo instead of the real one.
             $seed = Path::fromString($path)->getFilenameWithoutExtension();
             [$width, $height] = 0 === crc32($seed) % 2 ? [800, 1200] : [1200, 800];
