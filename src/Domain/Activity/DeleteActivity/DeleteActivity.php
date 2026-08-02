@@ -6,6 +6,7 @@ namespace App\Domain\Activity\DeleteActivity;
 
 use App\Domain\Activity\ActivityId;
 use App\Infrastructure\Cache\CacheTag;
+use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\InvalidatesCacheTags;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
@@ -14,8 +15,7 @@ use App\Infrastructure\CQRS\Command\DomainCommand;
 use App\Infrastructure\CQRS\Command\RequiresRebuild;
 
 #[RequiresRebuild]
-#[InvalidatesCacheTags(CacheTag::ACTIVITIES)]
-final readonly class DeleteActivity extends DomainCommand implements DeserializableCommand
+final readonly class DeleteActivity extends DomainCommand implements DeserializableCommand, InvalidatesCacheTags
 {
     use ProvidesCommandName;
 
@@ -38,5 +38,10 @@ final readonly class DeleteActivity extends DomainCommand implements Deserializa
     public function getActivityId(): ActivityId
     {
         return $this->activityId;
+    }
+
+    public function getCacheTagsToInvalidate(): CacheTags
+    {
+        return CacheTags::of(CacheTag::ACTIVITIES);
     }
 }

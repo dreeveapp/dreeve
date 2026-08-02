@@ -80,10 +80,15 @@ class ApiRequestHandlerTest extends ContainerTestCase
             $response->headers->get('Cache-Control'),
         );
         $this->assertStringContainsString('data-image', (string) $response->getContent());
-        $this->assertEquals('0', $response->headers->get('X-Cache-Hit'));
+        $this->assertFalse($response->headers->has('X-Cache-Hit'));
+        $this->assertStringContainsString('photos.trust=', (string) $response->headers->get('X-Cache-Miss'));
 
         $secondResponse = $this->apiRequestHandler->handle('photos');
-        $this->assertEquals('1', $secondResponse->headers->get('X-Cache-Hit'));
+        $this->assertFalse($secondResponse->headers->has('X-Cache-Miss'));
+        $this->assertEquals(
+            $response->headers->get('X-Cache-Miss'),
+            $secondResponse->headers->get('X-Cache-Hit'),
+        );
         $this->assertEquals($response->getContent(), $secondResponse->getContent());
     }
 

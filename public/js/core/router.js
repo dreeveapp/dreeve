@@ -39,9 +39,6 @@ export default class Router {
     }
 
     determineContentUrl(page) {
-        // Server rendered pages carry their content URL on the link itself. Deliberately an exact match
-        // and not determineActiveMenuLink()'s walk-up: a converted /gear must not hand its content URL
-        // to a still static /gear/maintenance. No attribute means the page is still a static build file.
         const link = document.querySelector(
             `a[data-router-navigate="${page}"][data-router-content-url]`
         );

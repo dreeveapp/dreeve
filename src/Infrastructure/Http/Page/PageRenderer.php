@@ -22,7 +22,10 @@ final readonly class PageRenderer
             content: $render->content ?? '',
             headers: ['Content-Type' => 'text/html; charset=UTF-8'],
         );
-        $response->headers->set('X-Cache-Hit', $render->wasServedFromCache ? '1' : '0');
+
+        $render->wasServedFromCache
+            ? $response->headers->set('X-Cache-Hit', $render->cacheKey)
+            : $response->headers->set('X-Cache-Miss', $render->cacheKey ?? 'uncacheable');
 
         if (!$page->getCacheability()->getCacheContexts()->isEmpty()) {
             // The render varies per visitor, so a user's own reverse proxy must never hand

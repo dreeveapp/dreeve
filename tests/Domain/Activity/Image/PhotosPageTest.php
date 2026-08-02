@@ -35,7 +35,7 @@ class PhotosPageTest extends ContainerTestCase
 
         $this->assertTrue($cacheability->isCacheable());
         $this->assertEquals(
-            [CacheTag::ACTIVITIES->value, CacheTag::SETTINGS->value],
+            [CacheTag::ACTIVITIES->value, CacheTag::SETTINGS_APPEARANCE->value],
             $cacheability->getCacheTags()->toTagStrings()
         );
         $this->assertEquals(

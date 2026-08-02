@@ -14,6 +14,7 @@ use App\Domain\Image\NewImage;
 use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
 use App\Domain\Image\RemovedImage;
 use App\Infrastructure\Cache\CacheTag;
+use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\InvalidatesCacheTags;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
@@ -23,8 +24,7 @@ use App\Infrastructure\CQRS\Command\RequiresRebuild;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 #[RequiresRebuild]
-#[InvalidatesCacheTags(CacheTag::ACTIVITIES)]
-final readonly class UpdateManuallyAddedActivity extends DomainCommand implements DeserializableCommand
+final readonly class UpdateManuallyAddedActivity extends DomainCommand implements DeserializableCommand, InvalidatesCacheTags
 {
     use ProvideLocalImageFromDropZonePayload;
     use ProvideManuallyAddedActivityPayload;
@@ -145,5 +145,10 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
     public function getRemovedImages(): array
     {
         return $this->removedImages;
+    }
+
+    public function getCacheTagsToInvalidate(): CacheTags
+    {
+        return CacheTags::of(CacheTag::ACTIVITIES);
     }
 }

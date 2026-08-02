@@ -24,19 +24,20 @@ final readonly class RenderCache
     public function get(string $cacheKey, Cacheability $cacheability, \Closure $callback): Render
     {
         if (!$cacheability->isCacheable()) {
-            return Render::freshlyRendered($callback());
+            return Render::notCacheable($callback());
         }
 
-        $item = $this->cache->getItem($this->buildCacheKey($cacheKey));
+        $prefixedCacheKey = $this->buildCacheKey($cacheKey);
+
+        $item = $this->cache->getItem($prefixedCacheKey);
         if ($item->isHit()) {
             /** @var string|null $cached */
             $cached = $item->get();
 
-            return Render::servedFromCache($cached);
+            return Render::servedFromCache($cached, $prefixedCacheKey);
         }
 
-        // A render legitimately being null (a widget without data) must be cached too, otherwise
-        // the cheapest looking renders are the ones re-running their queries on every request.
+        // A render being null (a widget without data) must be cached too
         $rendered = $callback();
 
         $item->set($rendered);
@@ -48,7 +49,7 @@ final readonly class RenderCache
         }
         $this->cache->save($item);
 
-        return Render::freshlyRendered($rendered);
+        return Render::freshlyRendered($rendered, $prefixedCacheKey);
     }
 
     public function invalidateTags(CacheTag ...$cacheTags): void

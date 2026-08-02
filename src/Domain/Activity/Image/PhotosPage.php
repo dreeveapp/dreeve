@@ -34,8 +34,12 @@ final readonly class PhotosPage implements Page
 
     public function getCacheability(): Cacheability
     {
+        // The appearance settings this render reads: photos.hidePhotosForSportTypes (grid contents,
+        // photo count and filter options), sportTypesSortingOrder (filter order), dateFormat.short
+        // (the per photo date) and locale (every translated string, sport type label, country name
+        // and Carbon formatted date part).
         return Cacheability::for(
-            cacheTags: CacheTags::of(CacheTag::ACTIVITIES, CacheTag::SETTINGS),
+            cacheTags: CacheTags::of(CacheTag::ACTIVITIES, CacheTag::SETTINGS_APPEARANCE),
             cacheContexts: CacheContexts::of(TrustedVisitorCacheContext::class),
         );
     }

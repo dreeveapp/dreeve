@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Import\UploadActivityFile;
 
 use App\Domain\Import\SupportedFileExtension;
-use App\Infrastructure\Cache\CacheTag;
-use App\Infrastructure\Cache\InvalidatesCacheTags;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -16,7 +14,6 @@ use App\Infrastructure\CQRS\Command\SuppressesFlashMessage;
 use App\Infrastructure\ValueObject\String\Path;
 
 #[RequiresRebuild]
-#[InvalidatesCacheTags(CacheTag::ACTIVITIES)]
 #[SuppressesFlashMessage]
 final readonly class UploadActivityFile extends DomainCommand implements DeserializableCommand
 {

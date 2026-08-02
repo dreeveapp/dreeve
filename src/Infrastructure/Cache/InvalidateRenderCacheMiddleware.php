@@ -20,8 +20,8 @@ final readonly class InvalidateRenderCacheMiddleware implements MiddlewareInterf
         $command = $envelope->getMessage();
         $envelope = $stack->next()->handle($envelope, $stack);
 
-        foreach (new \ReflectionClass($command)->getAttributes(InvalidatesCacheTags::class) as $attribute) {
-            $this->renderCache->invalidateTags(...$attribute->newInstance()->cacheTags);
+        if ($command instanceof InvalidatesCacheTags) {
+            $this->renderCache->invalidateTags(...$command->getCacheTagsToInvalidate()->toArray());
         }
 
         return $envelope;

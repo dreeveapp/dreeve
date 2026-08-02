@@ -49,7 +49,7 @@ class CacheableRendererTest extends ContainerTestCase
         $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITIES)));
         $this->cacheableRenderer->render($cacheable);
 
-        $this->renderCache->invalidateTags(CacheTag::SETTINGS);
+        $this->renderCache->invalidateTags(CacheTag::SETTINGS_APPEARANCE);
 
         $cacheable->rendered = 'changed';
         $this->assertEquals('rendered', $this->cacheableRenderer->render($cacheable)->content);
@@ -101,6 +101,23 @@ class CacheableRendererTest extends ContainerTestCase
 
         $this->assertFalse($this->cacheableRenderer->render($cacheable)->wasServedFromCache);
         $this->assertFalse($this->cacheableRenderer->render($cacheable)->wasServedFromCache);
+    }
+
+    public function testItReportsTheCacheKeyIncludingItsContextSegments(): void
+    {
+        $cacheable = CacheableStub::for(Cacheability::for(
+            cacheTags: CacheTags::of(CacheTag::ACTIVITIES),
+            cacheContexts: CacheContexts::of(TrustedVisitorCacheContext::class),
+        ));
+
+        $render = $this->rendererFor(demoModeIsEnabled: true, loggedIn: false)->render($cacheable);
+
+        $this->assertStringEndsWith('stub.trust=anonymized', (string) $render->cacheKey);
+    }
+
+    public function testItReportsNoCacheKeyForAnUncacheableRender(): void
+    {
+        $this->assertNull($this->cacheableRenderer->render(CacheableStub::for(Cacheability::none()))->cacheKey);
     }
 
     public function testItKeepsOneEntryPerContextValueAndNeverCrossesThemOver(): void
