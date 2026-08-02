@@ -18,6 +18,10 @@ final readonly class TrustedVisitor
 
     public function isTrusted(): bool
     {
-        return !$this->demoMode->isEnabled() || $this->security->getUser() instanceof UserInterface;
+        if (!$this->demoMode->isEnabled()) {
+            return true;
+        }
+
+        return $this->security->getUser() instanceof UserInterface;
     }
 }
