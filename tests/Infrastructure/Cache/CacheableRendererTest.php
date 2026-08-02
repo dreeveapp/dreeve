@@ -164,6 +164,20 @@ class CacheableRendererTest extends ContainerTestCase
         $this->assertEquals(1, $cacheable->renderCount);
     }
 
+    public function testItFailsWhenTheDeclaredContextIsNotRegistered(): void
+    {
+        $cacheable = CacheableStub::for(Cacheability::for(
+            cacheTags: CacheTags::of(CacheTag::ACTIVITIES),
+            cacheContexts: CacheContexts::of(TrustedVisitorCacheContext::class),
+        ));
+
+        $this->expectExceptionObject(new \RuntimeException(sprintf(
+            'Cache context "%s" is not registered',
+            TrustedVisitorCacheContext::class
+        )));
+        $this->cacheableRenderer->render($cacheable);
+    }
+
     private function rendererFor(bool $demoModeIsEnabled, bool $loggedIn): CacheableRenderer
     {
         $security = $this->createStub(Security::class);
