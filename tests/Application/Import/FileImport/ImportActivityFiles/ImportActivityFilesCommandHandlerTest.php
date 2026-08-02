@@ -13,10 +13,16 @@ use App\Domain\Activity\Lap\ActivityLapRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Import\FileImportStatus;
+use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableRenderer;
+use App\Infrastructure\Cache\CacheTag;
+use App\Infrastructure\Cache\CacheTags;
+use App\Infrastructure\Cache\RenderCache;
 use App\Infrastructure\ValueObject\String\CompressedString;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\Console\ConsoleOutputSnapshotDriver;
 use App\Tests\ContainerTestCase;
+use App\Tests\Infrastructure\Cache\CacheableStub;
 use App\Tests\SpyOutput;
 use League\Flysystem\FilesystemOperator;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -27,6 +33,7 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
 
     private ImportActivityFilesCommandHandler $handler;
     private FilesystemOperator $watchStorage;
+    private CacheableRenderer $cacheableRenderer;
 
     public function testHandleImportsActivityFile(): void
     {
@@ -153,6 +160,31 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->assertMatchesSnapshot($output, new ConsoleOutputSnapshotDriver());
     }
 
+    public function testHandleDropsRenderedPagesWhenAFileWasImported(): void
+    {
+        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITIES)));
+        $this->cacheableRenderer->render($cacheable);
+
+        $this->dropInWatchFolder('ride.tcx', $this->fixture('activity.tcx'));
+        $this->handler->handle(new ImportActivityFiles(new SpyOutput()));
+
+        $this->cacheableRenderer->render($cacheable);
+        $this->assertEquals(2, $cacheable->renderCount);
+    }
+
+    public function testHandleKeepsRenderedPagesWhenNothingWasImported(): void
+    {
+        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITIES)));
+        $this->cacheableRenderer->render($cacheable);
+
+        $this->dropInWatchFolder('notes.txt', 'just some text');
+        $this->handler->handle(new ImportActivityFiles(new SpyOutput()));
+
+        // Finding nothing to import is the common case on a 5 minute cron, so it must not cost the cache.
+        $this->cacheableRenderer->render($cacheable);
+        $this->assertEquals(1, $cacheable->renderCount);
+    }
+
     private function getFileImports(): array
     {
         return $this->getConnection()
@@ -182,6 +214,8 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
 
         $this->handler = $this->getContainer()->get(ImportActivityFilesCommandHandler::class);
         $this->watchStorage = $this->getContainer()->get('default.storage');
+        $this->cacheableRenderer = $this->getContainer()->get(CacheableRenderer::class);
+        $this->getContainer()->get(RenderCache::class)->clear();
         $this->getConnection()->executeStatement(
             'INSERT INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             ['key' => 'lock.importDataOrBuildApp', 'value' => '{"lockAcquiredBy": "test"}']

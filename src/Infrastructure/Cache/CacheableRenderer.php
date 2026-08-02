@@ -12,7 +12,7 @@ final readonly class CacheableRenderer
     ) {
     }
 
-    public function render(Cacheable $cacheable): ?string
+    public function render(Cacheable $cacheable): Render
     {
         $cacheability = $cacheable->getCacheability();
 

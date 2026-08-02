@@ -7,7 +7,6 @@ namespace App\Infrastructure\Cache;
 use App\Application\AppVersion;
 use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Contracts\Cache\ItemInterface;
 
 final readonly class RenderCache
 {
@@ -22,10 +21,10 @@ final readonly class RenderCache
     /**
      * @param \Closure(): ?string $callback
      */
-    public function get(string $cacheKey, Cacheability $cacheability, \Closure $callback): ?string
+    public function get(string $cacheKey, Cacheability $cacheability, \Closure $callback): Render
     {
         if (!$cacheability->isCacheable()) {
-            return $callback();
+            return Render::freshlyRendered($callback());
         }
 
         $item = $this->cache->getItem($this->buildCacheKey($cacheKey));
@@ -33,14 +32,13 @@ final readonly class RenderCache
             /** @var string|null $cached */
             $cached = $item->get();
 
-            return $cached;
+            return Render::servedFromCache($cached);
         }
 
         // A render legitimately being null (a widget without data) must be cached too, otherwise
         // the cheapest looking renders are the ones re-running their queries on every request.
         $rendered = $callback();
 
-        assert($item instanceof ItemInterface);
         $item->set($rendered);
         if (!$cacheability->getCacheTags()->isEmpty()) {
             $item->tag($cacheability->getCacheTags()->toTagStrings());
@@ -50,7 +48,7 @@ final readonly class RenderCache
         }
         $this->cache->save($item);
 
-        return $rendered;
+        return Render::freshlyRendered($rendered);
     }
 
     public function invalidateTags(CacheTag ...$cacheTags): void
@@ -88,7 +86,6 @@ final readonly class RenderCache
     private function markAppVersion(): void
     {
         $item = $this->cache->getItem(self::APP_VERSION_CACHE_KEY);
-        assert($item instanceof ItemInterface);
         $item->set(AppVersion::getSemanticVersion());
         $this->cache->save($item);
     }

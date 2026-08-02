@@ -6,12 +6,12 @@ namespace App\Domain\Settings\UpdateSettings;
 
 use App\Domain\Settings\AthleteSettingsPayload;
 use App\Domain\Settings\SettingsGroup;
+use App\Infrastructure\Cache\CacheTag;
+use App\Infrastructure\Cache\InvalidatesCacheTags;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
-use App\Infrastructure\Cache\CacheTag;
-use App\Infrastructure\Cache\InvalidatesCacheTags;
 use App\Infrastructure\CQRS\Command\RequiresRebuild;
 
 #[RequiresRebuild]

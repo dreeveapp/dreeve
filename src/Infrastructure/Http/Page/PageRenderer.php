@@ -16,10 +16,13 @@ final readonly class PageRenderer
 
     public function render(Page $page): Response
     {
+        $render = $this->cacheableRenderer->render($page);
+
         $response = new Response(
-            content: $this->cacheableRenderer->render($page) ?? '',
+            content: $render->content ?? '',
             headers: ['Content-Type' => 'text/html; charset=UTF-8'],
         );
+        $response->headers->set('X-Cache-Hit', $render->wasServedFromCache ? '1' : '0');
 
         if (!$page->getCacheability()->getCacheContexts()->isEmpty()) {
             // The render varies per visitor, so a user's own reverse proxy must never hand
