@@ -12,6 +12,17 @@ final readonly class HeartRateZone
     public const string FOUR = 'zone4';
     public const string FIVE = 'zone5';
 
+    /**
+     * @var array<string, string>
+     */
+    public const array COLORS = [
+        self::ONE => '#DF584A',
+        self::TWO => '#D63522',
+        self::THREE => '#BD2D22',
+        self::FOUR => '#942319',
+        self::FIVE => '#6A1009',
+    ];
+
     public function __construct(
         private string $name,
         private HeartRateZoneMode $mode,
@@ -23,6 +34,16 @@ final readonly class HeartRateZone
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getShortName(): string
+    {
+        return str_replace('zone', 'Z', $this->name);
+    }
+
+    public function getColor(): string
+    {
+        return self::COLORS[$this->name];
     }
 
     public function getFrom(): int

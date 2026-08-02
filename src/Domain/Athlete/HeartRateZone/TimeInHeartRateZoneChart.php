@@ -66,35 +66,35 @@ final readonly class TimeInHeartRateZoneChart
                             'value' => $this->timeInHeartRateZones->getTimeInZoneOne(),
                             'name' => $this->translator->trans('Zone 1 (recovery)'),
                             'itemStyle' => [
-                                'color' => '#DF584A',
+                                'color' => HeartRateZone::COLORS[HeartRateZone::ONE],
                             ],
                         ],
                         [
                             'value' => $this->timeInHeartRateZones->getTimeInZoneTwo(),
                             'name' => $this->translator->trans('Zone 2 (aerobic)'),
                             'itemStyle' => [
-                                'color' => '#D63522',
+                                'color' => HeartRateZone::COLORS[HeartRateZone::TWO],
                             ],
                         ],
                         [
                             'value' => $this->timeInHeartRateZones->getTimeInZoneThree(),
                             'name' => $this->translator->trans('Zone 3 (aerobic/anaerobic)'),
                             'itemStyle' => [
-                                'color' => '#BD2D22',
+                                'color' => HeartRateZone::COLORS[HeartRateZone::THREE],
                             ],
                         ],
                         [
                             'value' => $this->timeInHeartRateZones->getTimeInZoneFour(),
                             'name' => $this->translator->trans('Zone 4 (anaerobic)'),
                             'itemStyle' => [
-                                'color' => '#942319',
+                                'color' => HeartRateZone::COLORS[HeartRateZone::FOUR],
                             ],
                         ],
                         [
                             'value' => $this->timeInHeartRateZones->getTimeInZoneFive(),
                             'name' => $this->translator->trans('Zone 5 (maximal)'),
                             'itemStyle' => [
-                                'color' => '#6A1009',
+                                'color' => HeartRateZone::COLORS[HeartRateZone::FIVE],
                             ],
                         ],
                     ],

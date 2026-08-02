@@ -101,6 +101,12 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                 ActivityStreamMetricType::VALUE_DISTRIBUTION
             );
 
+            $athleteMaxHeartRate = $athlete->getMaxHeartRate($activity->getStartDate());
+            $heartRateZones = $general->getHeartRateZoneConfiguration()->getHeartRateZonesFor(
+                sportType: $activity->getSportType(),
+                on: $activity->getStartDate()
+            );
+
             $distributionCharts = [];
             $heartRateDistribution = $valueDistributionMetrics->filterOnStreamType(StreamType::HEART_RATE)?->getData() ?? [];
             if ($activity->getAverageHeartRate() && [] !== $heartRateDistribution) {
@@ -109,11 +115,8 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                     'data' => Json::encode(HeartRateDistributionChart::create(
                         heartRateData: $heartRateDistribution,
                         averageHeartRate: $activity->getAverageHeartRate(),
-                        athleteMaxHeartRate: $athlete->getMaxHeartRate($activity->getStartDate()),
-                        heartRateZones: $general->getHeartRateZoneConfiguration()->getHeartRateZonesFor(
-                            sportType: $activity->getSportType(),
-                            on: $activity->getStartDate()
-                        )
+                        athleteMaxHeartRate: $athleteMaxHeartRate,
+                        heartRateZones: $heartRateZones
                     )->build()),
                 ];
             }
@@ -220,6 +223,8 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                     maximumNumberOfDigitsOnYAxis: $maximumNumberOfDigits,
                     unitSystem: $unitSystem,
                     sportType: $activity->getSportType(),
+                    athleteMaxHeartRate: $athleteMaxHeartRate,
+                    heartRateZones: $heartRateZones,
                     translator: $this->translator,
                 );
                 $profileChart = $combinedCharts->build();

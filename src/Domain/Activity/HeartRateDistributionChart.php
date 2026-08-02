@@ -214,7 +214,7 @@ final readonly class HeartRateDistributionChart
                                         'textBorderColor' => 'none',
                                     ],
                                     'itemStyle' => [
-                                        'color' => '#DF584A',
+                                        'color' => $this->heartRateZones->getZoneOne()->getColor(),
                                     ],
                                     'x' => $beforeZoneOne.'%',
                                 ],
@@ -238,7 +238,7 @@ final readonly class HeartRateDistributionChart
                                         'textBorderColor' => 'none',
                                     ],
                                     'itemStyle' => [
-                                        'color' => '#D63522',
+                                        'color' => $this->heartRateZones->getZoneTwo()->getColor(),
                                     ],
                                     'x' => ($beforeZoneOne + ($zone1Range * $markAreaStep)).'%',
                                 ],
@@ -262,7 +262,7 @@ final readonly class HeartRateDistributionChart
                                         'textBorderColor' => 'none',
                                     ],
                                     'itemStyle' => [
-                                        'color' => '#BD2D22',
+                                        'color' => $this->heartRateZones->getZoneThree()->getColor(),
                                     ],
                                     'x' => ($beforeZoneOne + ($zone2Range * $markAreaStep)).'%',
                                 ],
@@ -286,7 +286,7 @@ final readonly class HeartRateDistributionChart
                                         'textBorderColor' => 'none',
                                     ],
                                     'itemStyle' => [
-                                        'color' => '#942319',
+                                        'color' => $this->heartRateZones->getZoneFour()->getColor(),
                                     ],
                                     'x' => ($beforeZoneOne + ($zone3Range * $markAreaStep)).'%',
                                 ],
@@ -309,7 +309,7 @@ final readonly class HeartRateDistributionChart
                                         'textBorderColor' => 'none',
                                     ],
                                     'itemStyle' => [
-                                        'color' => '#6A1009',
+                                        'color' => $this->heartRateZones->getZoneFive()->getColor(),
                                     ],
                                     'x' => ($beforeZoneOne + ($zone4Range * $markAreaStep)).'%',
                                 ],

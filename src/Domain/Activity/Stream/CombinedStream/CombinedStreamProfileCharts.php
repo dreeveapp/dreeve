@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Stream\CombinedStream;
 
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Athlete\HeartRateZone\HeartRateZones;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Theme\Theme;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -36,6 +37,8 @@ final readonly class CombinedStreamProfileCharts
         private int $maximumNumberOfDigitsOnYAxis,
         private UnitSystem $unitSystem,
         private SportType $sportType,
+        private int $athleteMaxHeartRate,
+        private HeartRateZones $heartRateZones,
         private TranslatorInterface $translator,
     ) {
     }
@@ -58,6 +61,8 @@ final readonly class CombinedStreamProfileCharts
         int $maximumNumberOfDigitsOnYAxis,
         UnitSystem $unitSystem,
         SportType $sportType,
+        int $athleteMaxHeartRate,
+        HeartRateZones $heartRateZones,
         TranslatorInterface $translator,
     ): self {
         return new self(
@@ -69,6 +74,8 @@ final readonly class CombinedStreamProfileCharts
             maximumNumberOfDigitsOnYAxis: $maximumNumberOfDigitsOnYAxis,
             unitSystem: $unitSystem,
             sportType: $sportType,
+            athleteMaxHeartRate: $athleteMaxHeartRate,
+            heartRateZones: $heartRateZones,
             translator: $translator,
         );
     }
@@ -216,6 +223,11 @@ final readonly class CombinedStreamProfileCharts
                         ],
                     ],
                 ],
+                ...$this->buildHeartRateZoneMarkLine(
+                    streamType: $yAxisStreamType,
+                    minYAxis: $minYAxis,
+                    maxYAxis: $maxYAxis
+                ),
                 'data' => $seriesData,
                 'type' => 'line',
                 'showSymbol' => false,
@@ -294,6 +306,67 @@ final readonly class CombinedStreamProfileCharts
             'xAxis' => $xAxes,
             'yAxis' => $yAxes,
             'series' => $series,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function buildHeartRateZoneMarkLine(
+        CombinedStreamType $streamType,
+        int|float $minYAxis,
+        int|float $maxYAxis,
+    ): array {
+        if (CombinedStreamType::HEART_RATE !== $streamType) {
+            return [];
+        }
+
+        $data = [];
+        foreach ($this->heartRateZones->getZones() as $heartRateZone) {
+            [$fromBpm] = $heartRateZone->getRangeInBpm($this->athleteMaxHeartRate);
+            // The y-axis is derived from the actual data, skip boundaries that fall outside of it.
+            if ($fromBpm <= $minYAxis) {
+                continue;
+            }
+            if ($fromBpm >= $maxYAxis) {
+                continue;
+            }
+
+            $data[] = [
+                'name' => $heartRateZone->getShortName(),
+                'yAxis' => $fromBpm,
+                'lineStyle' => [
+                    'color' => $heartRateZone->getColor(),
+                    'type' => 'dashed',
+                    'width' => 1,
+                    'opacity' => 0.8,
+                ],
+                'label' => [
+                    'backgroundColor' => $heartRateZone->getColor(),
+                ],
+            ];
+        }
+
+        if ([] === $data) {
+            return [];
+        }
+
+        return [
+            'markLine' => [
+                'symbol' => 'none',
+                'silent' => true,
+                'animation' => false,
+                'label' => [
+                    'show' => true,
+                    'position' => 'insideEndTop',
+                    'formatter' => '{b}',
+                    'fontSize' => 9,
+                    'color' => '#fff',
+                    'padding' => [2, 3],
+                    'borderRadius' => 2,
+                ],
+                'data' => $data,
+            ],
         ];
     }
 }
