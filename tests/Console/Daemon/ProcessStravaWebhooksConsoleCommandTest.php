@@ -166,6 +166,7 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
             keyValueStore: $this->getContainer()->get(KeyValueStore::class),
             rebuildStatus: $this->getContainer()->get(RebuildStatus::class),
             clock: PausedClock::fromString(self::TODAY),
+            settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );
     }
 

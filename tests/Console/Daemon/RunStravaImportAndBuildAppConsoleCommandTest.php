@@ -12,9 +12,13 @@ use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Import\ImportMode;
+use App\Domain\Integration\Notification\SendNotification\SendNotification;
+use App\Domain\Settings\KeyValueBasedSettingsRepository;
+use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Strava;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\CQRS\Command\DomainCommand;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
@@ -59,6 +63,29 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
         ]);
 
         $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
+    }
+
+    public function testDoesNotSendANotificationWhenTheSuccessfulBuildNotificationIsDisabled(): void
+    {
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: SettingsGroup::INTEGRATIONS->keyValueKey(),
+            value: Value::fromString(Json::encode(['notifications' => ['notifyOnSuccessfulBuild' => false]])),
+        ));
+
+        $command = $this->getCommandInApplication('app:cron:run-strava-import');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            '--'.RunStravaImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
+            '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+        ]);
+
+        $dispatchedCommands = $this->commandBus->getDispatchedCommands();
+        $this->assertNotEmpty($dispatchedCommands);
+        $this->assertEmpty(array_filter(
+            $dispatchedCommands,
+            static fn (DomainCommand $dispatchedCommand): bool => $dispatchedCommand instanceof SendNotification,
+        ));
     }
 
     public function testRunWithRestrictToActivityIds(): void
@@ -363,6 +390,7 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
             keyValueStore: $this->keyValueStore,
             rebuildStatus: new RebuildStatus($this->keyValueStore),
             clock: PausedClock::fromString(self::TODAY),
+            settingsRepository: $this->getContainer()->get(KeyValueBasedSettingsRepository::class),
         );
     }
 

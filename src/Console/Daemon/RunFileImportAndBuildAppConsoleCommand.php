@@ -14,6 +14,7 @@ use App\Application\RebuildStatus;
 use App\Domain\Import\ImportMode;
 use App\Domain\Import\WatchDirectory;
 use App\Domain\Integration\Notification\SendNotification\SendNotification;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\DependencyInjection\Mutex\WithMutex;
 use App\Infrastructure\Doctrine\Migrations\RequiresUpToDateDatabaseSchema;
@@ -54,6 +55,7 @@ final class RunFileImportAndBuildAppConsoleCommand extends Command
         private readonly LoggerInterface $logger,
         private readonly ImportMode $importMode,
         private readonly RebuildStatus $rebuildStatus,
+        private readonly SettingsRepository $settingsRepository,
     ) {
         parent::__construct();
     }
@@ -137,12 +139,14 @@ final class RunFileImportAndBuildAppConsoleCommand extends Command
         $this->mutex->releaseLock();
 
         $this->resourceUsage->stopTimer();
-        $this->commandBus->dispatch(new SendNotification(
-            title: 'Build successful',
-            message: sprintf('New import and build of your stats was successful in %ss', $this->resourceUsage->getRunTimeInSeconds()),
-            tags: ['+1'],
-            actionUrl: $this->appUrl
-        ));
+        if ($this->settingsRepository->integrations()->shouldNotifyOnSuccessfulBuild()) {
+            $this->commandBus->dispatch(new SendNotification(
+                title: 'Build successful',
+                message: sprintf('New import and build of your stats was successful in %ss', $this->resourceUsage->getRunTimeInSeconds()),
+                tags: ['+1'],
+                actionUrl: $this->appUrl
+            ));
+        }
 
         $output->writeln(sprintf(
             '<info>%s</info>',

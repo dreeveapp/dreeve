@@ -35,6 +35,16 @@ class IntegrationsSettingsTest extends TestCase
         $this->assertFalse($settings->isAIIntegrationWithUIEnabled());
         $this->assertSame([], $settings->getChatCommands()->jsonSerialize());
         $this->assertCount(0, iterator_to_array($settings->getConfiguredNotificationUrls()));
+        $this->assertTrue($settings->shouldNotifyOnSuccessfulBuild());
+    }
+
+    public function testItDisablesTheSuccessfulBuildNotification(): void
+    {
+        $settings = IntegrationsSettings::fromArray([
+            'notifications' => ['notifyOnSuccessfulBuild' => '0'],
+        ]);
+
+        $this->assertFalse($settings->shouldNotifyOnSuccessfulBuild());
     }
 
     public function testItEnablesTheAIIntegration(): void
