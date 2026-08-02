@@ -60,6 +60,26 @@ class PageCacheContextGuardTest extends ContainerTestCase
         }
     }
 
+    public function testTheAuthenticationContextResolvesToADifferentSegmentPerVisitor(): void
+    {
+        /** @var TokenStorageInterface $tokenStorage */
+        $tokenStorage = $this->getContainer()->get('security.token_storage');
+        /** @var AuthenticatedCacheContext $cacheContext */
+        $cacheContext = $this->getContainer()->get(AuthenticatedCacheContext::class);
+
+        $tokenStorage->setToken(null);
+        $this->assertEquals('anon', $cacheContext->resolve());
+
+        $tokenStorage->setToken(new UsernamePasswordToken(
+            new InMemoryUser('admin', null, ['ROLE_ADMIN']),
+            'main',
+            ['ROLE_ADMIN'],
+        ));
+        $this->assertEquals('auth', $cacheContext->resolve());
+
+        $tokenStorage->setToken(null);
+    }
+
     public function testPagesNotVaryingByAuthenticationRenderIdenticallyForEveryVisitor(): void
     {
         $this->provideFullTestSet();
