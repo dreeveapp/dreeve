@@ -8,13 +8,4 @@ use App\Infrastructure\Eventing\DomainEvent;
 
 final class ActivityWasDeleted extends DomainEvent
 {
-    public function __construct(
-        private readonly ActivityId $activityId,
-    ) {
-    }
-
-    public function getActivityId(): ActivityId
-    {
-        return $this->activityId;
-    }
 }

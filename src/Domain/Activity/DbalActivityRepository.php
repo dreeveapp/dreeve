@@ -205,7 +205,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'activityId' => $activityId,
         ]);
 
-        $this->eventBus->publishEvents([new ActivityWasDeleted($activityId)]);
+        $this->eventBus->publishEvents([new ActivityWasDeleted()]);
     }
 
     public function activityNeedsStreamImport(ActivityId $activityId): bool

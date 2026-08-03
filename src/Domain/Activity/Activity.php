@@ -420,7 +420,7 @@ final class Activity implements SupportsAITooling
         ]);
 
         if ($this->getLocalImagePaths() !== $clone->getLocalImagePaths()) {
-            $clone->recordThat(new ActivityImagesHaveBeenUpdated($this->getId()));
+            $clone->recordThat(new ActivityImagesHaveBeenUpdated());
         }
 
         return $clone;

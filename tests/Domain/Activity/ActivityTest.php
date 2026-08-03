@@ -77,7 +77,7 @@ class ActivityTest extends TestCase
         $updatedActivity = $activity->withLocalImagePaths(['/activities/one.jpg', '/activities/two.jpg']);
 
         $this->assertEquals(
-            [new ActivityImagesHaveBeenUpdated($activity->getId())],
+            [new ActivityImagesHaveBeenUpdated()],
             $updatedActivity->getRecordedEvents()
         );
         $this->assertEmpty($activity->getRecordedEvents());
@@ -112,7 +112,7 @@ class ActivityTest extends TestCase
             ->build();
 
         $this->assertEquals(
-            [new ActivityImagesHaveBeenUpdated($activity->getId())],
+            [new ActivityImagesHaveBeenUpdated()],
             $activity->withLocalImagePaths([])->getRecordedEvents()
         );
     }
