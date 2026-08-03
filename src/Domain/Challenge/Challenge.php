@@ -3,26 +3,29 @@
 namespace App\Domain\Challenge;
 
 use App\Domain\Integration\AI\SupportsAITooling;
+use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Index(name: 'Challenge_createdOnIndex', columns: ['createdOn'])]
-final readonly class Challenge implements SupportsAITooling
+final class Challenge implements SupportsAITooling
 {
+    use RecordsEvents;
+
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string', unique: true)]
-        private ChallengeId $challengeId,
+        private readonly ChallengeId $challengeId,
         #[ORM\Column(type: 'datetime_immutable')]
-        private SerializableDateTime $createdOn,
+        private readonly SerializableDateTime $createdOn,
         #[ORM\Column(type: 'string')]
-        private string $name,
+        private readonly string $name,
         #[ORM\Column(type: 'string', nullable: true)]
-        private ?string $logoUrl,
+        private readonly ?string $logoUrl,
         #[ORM\Column(type: 'string', nullable: true)]
-        private ?string $localLogoUrl,
+        private readonly ?string $localLogoUrl,
         #[ORM\Column(type: 'string')]
-        private string $slug,
+        private readonly string $slug,
     ) {
     }
 
@@ -51,7 +54,7 @@ final readonly class Challenge implements SupportsAITooling
         ?string $logoUrl,
         string $slug,
     ): self {
-        return new self(
+        $challenge = new self(
             challengeId: $challengeId,
             createdOn: $createdOn,
             name: $name,
@@ -59,6 +62,9 @@ final readonly class Challenge implements SupportsAITooling
             localLogoUrl: null,
             slug: $slug,
         );
+        $challenge->recordThat(new ChallengeWasImported());
+
+        return $challenge;
     }
 
     public function getId(): ChallengeId

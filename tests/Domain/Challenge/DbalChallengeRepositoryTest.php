@@ -6,6 +6,7 @@ use App\Domain\Challenge\ChallengeId;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Challenge\Challenges;
 use App\Domain\Challenge\DbalChallengeRepository;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -114,7 +115,8 @@ class DbalChallengeRepositoryTest extends ContainerTestCase
         parent::setUp();
 
         $this->challengeRepository = new DbalChallengeRepository(
-            $this->getConnection()
+            $this->getConnection(),
+            $this->getContainer()->get(EventBus::class),
         );
     }
 }

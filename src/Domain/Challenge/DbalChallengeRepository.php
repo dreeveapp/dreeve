@@ -2,12 +2,21 @@
 
 namespace App\Domain\Challenge;
 
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Doctrine\DBAL\Connection;
 
 final readonly class DbalChallengeRepository extends DbalRepository implements ChallengeRepository
 {
+    public function __construct(
+        Connection $connection,
+        private EventBus $eventBus,
+    ) {
+        parent::__construct($connection);
+    }
+
     public function add(Challenge $challenge): void
     {
         $sql = 'INSERT INTO Challenge (challengeId, createdOn, name, logoUrl, localLogoUrl, slug)
@@ -21,6 +30,8 @@ final readonly class DbalChallengeRepository extends DbalRepository implements C
             'localLogoUrl' => $challenge->getLocalLogoUrl(),
             'slug' => $challenge->getSlug(),
         ]);
+
+        $this->eventBus->publishEvents($challenge->getRecordedEvents());
     }
 
     public function findAll(): Challenges

@@ -92,6 +92,30 @@ class ApiRequestHandlerTest extends ContainerTestCase
         $this->assertEquals($response->getContent(), $secondResponse->getContent());
     }
 
+    public function testHandleForRegisteredPageWithoutCacheContexts(): void
+    {
+        $this->provideFullTestSet();
+
+        $response = $this->apiRequestHandler->handle('challenges');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            'text/html; charset=UTF-8',
+            $response->headers->get('Content-Type'),
+        );
+        // The page declares no cache context, so its render can be shared by every visitor.
+        $this->assertStringNotContainsString('no-store', (string) $response->headers->get('Cache-Control'));
+        $this->assertStringEndsWith('challenges', (string) $response->headers->get('X-Cache-Miss'));
+
+        $secondResponse = $this->apiRequestHandler->handle('challenges');
+        $this->assertFalse($secondResponse->headers->has('X-Cache-Miss'));
+        $this->assertEquals(
+            $response->headers->get('X-Cache-Miss'),
+            $secondResponse->headers->get('X-Cache-Hit'),
+        );
+        $this->assertEquals($response->getContent(), $secondResponse->getContent());
+    }
+
     public function testHandleWhenPathIsNeitherAPageNorAFile(): void
     {
         $this->assertEquals(

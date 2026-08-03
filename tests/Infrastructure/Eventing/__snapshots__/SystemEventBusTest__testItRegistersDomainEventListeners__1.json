@@ -3,6 +3,9 @@
         "reactToActivityImagesHaveBeenUpdated",
         "reactToActivityWasDeleted"
     ],
+    "App\\Domain\\Challenge\\ChallengeInvalidateCacheTagsListener": [
+        "reactToChallengeWasImported"
+    ],
     "App\\Domain\\Settings\\SettingsInvalidateCacheTagsListener": [
         "reactToSettingsWereUpdated"
     ]

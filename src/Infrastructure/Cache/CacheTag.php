@@ -9,6 +9,7 @@ use App\Domain\Settings\SettingsGroup;
 enum CacheTag: string
 {
     case ACTIVITY_IMAGES = 'activity.images';
+    case CHALLENGES = 'challenges';
     case SETTINGS_GENERAL = 'settings.general';
     case SETTINGS_APPEARANCE = 'settings.appearance';
     case SETTINGS_IMPORT = 'settings.import';
