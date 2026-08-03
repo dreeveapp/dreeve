@@ -41,7 +41,7 @@ class CombinedStreamProfileChartsTest extends ContainerTestCase
         ]);
     }
 
-    public function testItShouldAddHeartRateZoneMarkLines(): void
+    public function testItShouldAddABandPerHeartRateZone(): void
     {
         $chart = $this->buildChart(items: [
             ['yAxisData' => [100, 120, 140, 160, 175], 'yAxisStreamType' => CombinedStreamType::HEART_RATE],
@@ -49,63 +49,115 @@ class CombinedStreamProfileChartsTest extends ContainerTestCase
 
         $this->assertEquals(
             [
-                [
-                    'name' => 'Z2',
-                    'yAxis' => 112,
-                    'lineStyle' => ['color' => '#D63522', 'type' => 'dashed', 'width' => 1, 'opacity' => 0.8],
-                    'label' => ['backgroundColor' => '#D63522'],
-                ],
-                [
-                    'name' => 'Z3',
-                    'yAxis' => 131,
-                    'lineStyle' => ['color' => '#BD2D22', 'type' => 'dashed', 'width' => 1, 'opacity' => 0.8],
-                    'label' => ['backgroundColor' => '#BD2D22'],
-                ],
-                [
-                    'name' => 'Z4',
-                    'yAxis' => 149,
-                    'lineStyle' => ['color' => '#942319', 'type' => 'dashed', 'width' => 1, 'opacity' => 0.8],
-                    'label' => ['backgroundColor' => '#942319'],
-                ],
-                [
-                    'name' => 'Z5',
-                    'yAxis' => 168,
-                    'lineStyle' => ['color' => '#6A1009', 'type' => 'dashed', 'width' => 1, 'opacity' => 0.8],
-                    'label' => ['backgroundColor' => '#6A1009'],
+                'data' => [
+                    [
+                        ['xAxis' => 'min', 'yAxis' => 183, 'itemStyle' => ['color' => '#3E444D'], 'emphasis' => ['disabled' => true]],
+                        ['xAxis' => 'max', 'yAxis' => 100],
+                    ],
+                    [
+                        ['xAxis' => 'min', 'yAxis' => 112, 'itemStyle' => ['color' => '#DF584A', 'opacity' => 0.35], 'emphasis' => ['disabled' => true]],
+                        ['xAxis' => 'max', 'yAxis' => 100],
+                    ],
+                    [
+                        ['xAxis' => 'min', 'yAxis' => 131, 'itemStyle' => ['color' => '#D63522', 'opacity' => 0.35], 'emphasis' => ['disabled' => true]],
+                        ['xAxis' => 'max', 'yAxis' => 112],
+                    ],
+                    [
+                        ['xAxis' => 'min', 'yAxis' => 149, 'itemStyle' => ['color' => '#BD2D22', 'opacity' => 0.35], 'emphasis' => ['disabled' => true]],
+                        ['xAxis' => 'max', 'yAxis' => 131],
+                    ],
+                    [
+                        ['xAxis' => 'min', 'yAxis' => 168, 'itemStyle' => ['color' => '#942319', 'opacity' => 0.35], 'emphasis' => ['disabled' => true]],
+                        ['xAxis' => 'max', 'yAxis' => 149],
+                    ],
+                    [
+                        ['xAxis' => 'min', 'yAxis' => 183, 'itemStyle' => ['color' => '#6A1009', 'opacity' => 0.35], 'emphasis' => ['disabled' => true]],
+                        ['xAxis' => 'max', 'yAxis' => 168],
+                    ],
                 ],
             ],
-            $chart['series'][0]['markLine']['data']
+            $chart['series'][0]['markArea']
         );
     }
 
-    public function testItShouldSkipHeartRateZoneMarkLinesOutsideOfTheYAxisRange(): void
+    public function testItShouldRenderTheHeartRateStreamAsALineWithoutArea(): void
+    {
+        $chart = $this->buildChart(items: [
+            ['yAxisData' => [100, 120, 140, 160, 175], 'yAxisStreamType' => CombinedStreamType::HEART_RATE],
+        ]);
+
+        $this->assertEquals(2, $chart['series'][0]['lineStyle']['width']);
+        $this->assertArrayNotHasKey('areaStyle', $chart['series'][0]);
+    }
+
+    public function testItShouldSkipHeartRateZonesOutsideOfTheYAxisRange(): void
     {
         $chart = $this->buildChart(items: [
             ['yAxisData' => [150, 160, 175], 'yAxisStreamType' => CombinedStreamType::HEART_RATE],
         ]);
 
         $this->assertEquals(
-            ['Z5'],
-            array_column($chart['series'][0]['markLine']['data'], 'name')
+            [
+                'data' => [
+                    [
+                        ['xAxis' => 'min', 'yAxis' => 178, 'itemStyle' => ['color' => '#3E444D'], 'emphasis' => ['disabled' => true]],
+                        ['xAxis' => 'max', 'yAxis' => 150],
+                    ],
+                    [
+                        ['xAxis' => 'min', 'yAxis' => 168, 'itemStyle' => ['color' => '#942319', 'opacity' => 0.35], 'emphasis' => ['disabled' => true]],
+                        ['xAxis' => 'max', 'yAxis' => 150],
+                    ],
+                    [
+                        ['xAxis' => 'min', 'yAxis' => 178, 'itemStyle' => ['color' => '#6A1009', 'opacity' => 0.35], 'emphasis' => ['disabled' => true]],
+                        ['xAxis' => 'max', 'yAxis' => 168],
+                    ],
+                ],
+            ],
+            $chart['series'][0]['markArea']
         );
     }
 
-    public function testItShouldNotAddHeartRateZoneMarkLinesWhenNoneAreInRange(): void
+    public function testItShouldOnlyKeepTheBackgroundWhenNoZoneIsInRange(): void
     {
         $chart = $this->buildChart(items: [
             ['yAxisData' => [40, 45, 50], 'yAxisStreamType' => CombinedStreamType::HEART_RATE],
         ]);
 
-        $this->assertArrayNotHasKey('markLine', $chart['series'][0]);
+        $this->assertEquals(
+            [
+                'data' => [
+                    [
+                        ['xAxis' => 'min', 'yAxis' => 51, 'itemStyle' => ['color' => '#3E444D'], 'emphasis' => ['disabled' => true]],
+                        ['xAxis' => 'max', 'yAxis' => 40],
+                    ],
+                ],
+            ],
+            $chart['series'][0]['markArea']
+        );
     }
 
-    public function testItShouldNotAddHeartRateZoneMarkLinesToOtherStreamTypes(): void
+    public function testItShouldLeaveOtherStreamTypesUntouched(): void
     {
         $chart = $this->buildChart(items: [
             ['yAxisData' => [100, 120, 140, 160, 175], 'yAxisStreamType' => CombinedStreamType::WATTS],
         ]);
 
-        $this->assertArrayNotHasKey('markLine', $chart['series'][0]);
+        $this->assertEquals(
+            [
+                'data' => [
+                    [
+                        ['xAxis' => 'min', 'yAxis' => 183, 'itemStyle' => ['color' => '#3E444D'], 'emphasis' => ['disabled' => true]],
+                        ['xAxis' => 'max', 'yAxis' => 100],
+                    ],
+                ],
+            ],
+            $chart['series'][0]['markArea']
+        );
+        $this->assertEquals(0, $chart['series'][0]['lineStyle']['width']);
+        $this->assertEquals(
+            ['opacity' => 1, 'origin' => 'start'],
+            $chart['series'][0]['areaStyle']
+        );
     }
 
     /**

@@ -23,18 +23,18 @@ class HeartRateZoneTest extends TestCase
         );
     }
 
-    #[DataProvider(methodName: 'provideTestShortNameAndColorData')]
-    public function testGetShortNameAndColor(string $name, string $expectedShortName, string $expectedColor): void
+    #[DataProvider(methodName: 'provideTestColorData')]
+    public function testGetColor(string $name, string $expectedColor): void
     {
-        $heartRateZone = new HeartRateZone(
-            name: $name,
-            mode: HeartRateZoneMode::RELATIVE,
-            from: 60,
-            to: 80,
+        $this->assertEquals(
+            $expectedColor,
+            new HeartRateZone(
+                name: $name,
+                mode: HeartRateZoneMode::RELATIVE,
+                from: 60,
+                to: 80,
+            )->getColor(),
         );
-
-        $this->assertEquals($expectedShortName, $heartRateZone->getShortName());
-        $this->assertEquals($expectedColor, $heartRateZone->getColor());
     }
 
     public function testGetFromPercentage(): void
@@ -93,14 +93,14 @@ class HeartRateZoneTest extends TestCase
         );
     }
 
-    public static function provideTestShortNameAndColorData(): array
+    public static function provideTestColorData(): array
     {
         return [
-            [HeartRateZone::ONE, 'Z1', '#DF584A'],
-            [HeartRateZone::TWO, 'Z2', '#D63522'],
-            [HeartRateZone::THREE, 'Z3', '#BD2D22'],
-            [HeartRateZone::FOUR, 'Z4', '#942319'],
-            [HeartRateZone::FIVE, 'Z5', '#6A1009'],
+            [HeartRateZone::ONE, '#DF584A'],
+            [HeartRateZone::TWO, '#D63522'],
+            [HeartRateZone::THREE, '#BD2D22'],
+            [HeartRateZone::FOUR, '#942319'],
+            [HeartRateZone::FIVE, '#6A1009'],
         ];
     }
 

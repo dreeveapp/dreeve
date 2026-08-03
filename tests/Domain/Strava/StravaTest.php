@@ -193,7 +193,7 @@ class StravaTest extends TestCase
             ->method('fileExists');
 
         $this->expectException(RequestException::class);
-        $this->expectExceptionMessage('The error');
+        $this->expectExceptionMessageIsOrContains('The error');
 
         $matcher = $this->exactly(2);
         $this->client
@@ -224,7 +224,7 @@ class StravaTest extends TestCase
             ->method('fileExists');
 
         $this->expectException(RequestException::class);
-        $this->expectExceptionMessage('The error');
+        $this->expectExceptionMessageIsOrContains('The error');
 
         $matcher = $this->exactly(2);
         $this->client
@@ -255,7 +255,7 @@ class StravaTest extends TestCase
             ->method('fileExists');
 
         $this->expectException(RequestException::class);
-        $this->expectExceptionMessage('The error');
+        $this->expectExceptionMessageIsOrContains('The error');
 
         $matcher = $this->exactly(2);
         $this->client

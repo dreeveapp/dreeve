@@ -18,6 +18,8 @@ final readonly class CombinedStreamProfileCharts
     private const int TOP_MARGIN = 90;
     private const int BOTTOM_MARGIN = 35;
     private const int GAP = 5;
+    private const string LANE_BACKGROUND_COLOR = '#3E444D';
+    private const float ZONE_BAND_OPACITY = 0.35;
 
     /**
      * @param list<array{
@@ -117,6 +119,7 @@ final readonly class CombinedStreamProfileCharts
             }
 
             $yAxisSuffix = $yAxisStreamType->getSuffix($this->unitSystem, $this->sportType);
+            $isHeartRate = CombinedStreamType::HEART_RATE === $yAxisStreamType;
 
             [$min, $max] = [min($yAxisData), max($yAxisData)];
             $margin = ($max - $min) * 0.1;
@@ -203,27 +206,7 @@ final readonly class CombinedStreamProfileCharts
                 'name' => CombinedStreamType::PACE === $yAxisStreamType ? '__pace' : $yAxisSuffix,
                 'xAxisIndex' => $index,
                 'yAxisIndex' => $index,
-                'markArea' => [
-                    'data' => [
-                        [
-                            [
-                                'xAxis' => 'min',
-                                'yAxis' => $maxYAxis,
-                                'itemStyle' => [
-                                    'color' => '#3E444D',
-                                ],
-                                'emphasis' => [
-                                    'disabled' => true,
-                                ],
-                            ],
-                            [
-                                'xAxis' => 'max',
-                                'yAxis' => $minYAxis,
-                            ],
-                        ],
-                    ],
-                ],
-                ...$this->buildHeartRateZoneMarkLine(
+                'markArea' => $this->buildMarkArea(
                     streamType: $yAxisStreamType,
                     minYAxis: $minYAxis,
                     maxYAxis: $maxYAxis
@@ -236,14 +219,16 @@ final readonly class CombinedStreamProfileCharts
                 'color' => $yAxisStreamType->getSeriesColor(),
                 'smooth' => true,
                 'lineStyle' => [
-                    'width' => 0,
+                    'width' => $isHeartRate ? 2 : 0,
                 ],
                 'emphasis' => [
                     'disabled' => true,
                 ],
-                'areaStyle' => [
-                    'opacity' => 1,
-                    'origin' => 'start',
+                ...$isHeartRate ? [] : [
+                    'areaStyle' => [
+                        'opacity' => 1,
+                        'origin' => 'start',
+                    ],
                 ],
             ];
         }
@@ -312,61 +297,64 @@ final readonly class CombinedStreamProfileCharts
     /**
      * @return array<string, mixed>
      */
-    private function buildHeartRateZoneMarkLine(
+    private function buildMarkArea(
         CombinedStreamType $streamType,
         int|float $minYAxis,
         int|float $maxYAxis,
     ): array {
+        $data = [
+            [
+                [
+                    'xAxis' => 'min',
+                    'yAxis' => $maxYAxis,
+                    'itemStyle' => [
+                        'color' => self::LANE_BACKGROUND_COLOR,
+                    ],
+                    'emphasis' => [
+                        'disabled' => true,
+                    ],
+                ],
+                [
+                    'xAxis' => 'max',
+                    'yAxis' => $minYAxis,
+                ],
+            ],
+        ];
+
         if (CombinedStreamType::HEART_RATE !== $streamType) {
-            return [];
+            return ['data' => $data];
         }
 
-        $data = [];
-        foreach ($this->heartRateZones->getZones() as $heartRateZone) {
-            [$fromBpm] = $heartRateZone->getRangeInBpm($this->athleteMaxHeartRate);
-            // The y-axis is derived from the actual data, skip boundaries that fall outside of it.
-            if ($fromBpm <= $minYAxis) {
-                continue;
-            }
-            if ($fromBpm >= $maxYAxis) {
+        $zones = $this->heartRateZones->getZones();
+        foreach ($zones as $i => $heartRateZone) {
+            // A zone ends one beat below the next one.
+            $nextZone = $zones[$i + 1] ?? null;
+            $upperBpm = is_null($nextZone) ? $maxYAxis : $nextZone->getRangeInBpm($this->athleteMaxHeartRate)[0];
+            $from = max($heartRateZone->getRangeInBpm($this->athleteMaxHeartRate)[0], $minYAxis);
+            $to = min($upperBpm, $maxYAxis);
+            if ($from >= $to) {
                 continue;
             }
 
             $data[] = [
-                'name' => $heartRateZone->getShortName(),
-                'yAxis' => $fromBpm,
-                'lineStyle' => [
-                    'color' => $heartRateZone->getColor(),
-                    'type' => 'dashed',
-                    'width' => 1,
-                    'opacity' => 0.8,
+                [
+                    'xAxis' => 'min',
+                    'yAxis' => $to,
+                    'itemStyle' => [
+                        'color' => $heartRateZone->getColor(),
+                        'opacity' => self::ZONE_BAND_OPACITY,
+                    ],
+                    'emphasis' => [
+                        'disabled' => true,
+                    ],
                 ],
-                'label' => [
-                    'backgroundColor' => $heartRateZone->getColor(),
+                [
+                    'xAxis' => 'max',
+                    'yAxis' => $from,
                 ],
             ];
         }
 
-        if ([] === $data) {
-            return [];
-        }
-
-        return [
-            'markLine' => [
-                'symbol' => 'none',
-                'silent' => true,
-                'animation' => false,
-                'label' => [
-                    'show' => true,
-                    'position' => 'insideEndTop',
-                    'formatter' => '{b}',
-                    'fontSize' => 9,
-                    'color' => '#fff',
-                    'padding' => [2, 3],
-                    'borderRadius' => 2,
-                ],
-                'data' => $data,
-            ],
-        ];
+        return ['data' => $data];
     }
 }

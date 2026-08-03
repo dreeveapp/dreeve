@@ -36,11 +36,6 @@ final readonly class HeartRateZone
         return $this->name;
     }
 
-    public function getShortName(): string
-    {
-        return str_replace('zone', 'Z', $this->name);
-    }
-
     public function getColor(): string
     {
         return self::COLORS[$this->name];

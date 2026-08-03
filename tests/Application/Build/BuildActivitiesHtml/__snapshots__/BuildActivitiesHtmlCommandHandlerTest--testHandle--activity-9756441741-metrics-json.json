@@ -408,14 +408,10 @@
             "color": "#ee6666",
             "smooth": true,
             "lineStyle": {
-                "width": 0
+                "width": 2
             },
             "emphasis": {
                 "disabled": true
-            },
-            "areaStyle": {
-                "opacity": 1,
-                "origin": "start"
             }
         },
         {
