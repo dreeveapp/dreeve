@@ -80,6 +80,25 @@ class CombinedStreamProfileChartsTest extends ContainerTestCase
         );
     }
 
+    public function testItShouldTagEveryHeartRateWithItsZoneForTheTooltip(): void
+    {
+        $chart = $this->buildChart(items: [
+            ['yAxisData' => [80, 92, 120, 140, 155, 170], 'yAxisStreamType' => CombinedStreamType::HEART_RATE],
+        ]);
+
+        $this->assertEquals(
+            [
+                80,
+                ['value' => 92, 'extra' => 'zone 1'],
+                ['value' => 120, 'extra' => 'zone 2'],
+                ['value' => 140, 'extra' => 'zone 3'],
+                ['value' => 155, 'extra' => 'zone 4'],
+                ['value' => 170, 'extra' => 'zone 5'],
+            ],
+            $chart['series'][0]['data']
+        );
+    }
+
     public function testItShouldRenderTheHeartRateStreamAsALineWithoutArea(): void
     {
         $chart = $this->buildChart(items: [

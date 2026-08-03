@@ -119,7 +119,7 @@ final readonly class CombinedStreamProfileCharts
             }
 
             $yAxisSuffix = $yAxisStreamType->getSuffix($this->unitSystem, $this->sportType);
-            $isHeartRate = CombinedStreamType::HEART_RATE === $yAxisStreamType;
+            $isHeartRateStreamType = CombinedStreamType::HEART_RATE === $yAxisStreamType;
 
             [$min, $max] = [min($yAxisData), max($yAxisData)];
             $margin = ($max - $min) * 0.1;
@@ -201,6 +201,28 @@ final readonly class CombinedStreamProfileCharts
                     $this->grades,
                 );
             }
+            if ($isHeartRateStreamType) {
+                $zones = [];
+                foreach ($this->heartRateZones->getZones() as $i => $heartRateZone) {
+                    $zones[] = [
+                        'fromBpm' => $heartRateZone->getRangeInBpm($this->athleteMaxHeartRate)[0],
+                        'name' => sprintf('zone %d', $i + 1),
+                    ];
+                }
+                $zones = array_reverse($zones);
+                $seriesData = array_map(
+                    function (int|float $heartRate) use ($zones): int|float|array {
+                        foreach ($zones as $zone) {
+                            if ($heartRate >= $zone['fromBpm']) {
+                                return ['value' => $heartRate, 'extra' => $zone['name']];
+                            }
+                        }
+
+                        return $heartRate;
+                    },
+                    $yAxisData
+                );
+            }
 
             $series[] = [
                 'name' => CombinedStreamType::PACE === $yAxisStreamType ? '__pace' : $yAxisSuffix,
@@ -219,12 +241,12 @@ final readonly class CombinedStreamProfileCharts
                 'color' => $yAxisStreamType->getSeriesColor(),
                 'smooth' => true,
                 'lineStyle' => [
-                    'width' => $isHeartRate ? 2 : 0,
+                    'width' => $isHeartRateStreamType ? 2 : 0,
                 ],
                 'emphasis' => [
                     'disabled' => true,
                 ],
-                ...$isHeartRate ? [] : [
+                ...$isHeartRateStreamType ? [] : [
                     'areaStyle' => [
                         'opacity' => 1,
                         'origin' => 'start',
