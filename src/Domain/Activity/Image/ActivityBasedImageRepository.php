@@ -4,7 +4,6 @@ namespace App\Domain\Activity\Image;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
-use App\Domain\Activity\EnrichedActivities;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Image\ImageOrientation;
 use App\Domain\Image\ImagePath;
@@ -18,7 +17,6 @@ use League\Flysystem\FilesystemOperator;
 final readonly class ActivityBasedImageRepository implements ImageRepository
 {
     public function __construct(
-        private EnrichedActivities $enrichedActivities,
         private ActivityRepository $activityRepository,
         private FilesystemOperator $fileStorage,
         private SettingsRepository $settingsRepository,
@@ -29,7 +27,7 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
     public function findAll(): Images
     {
         $images = Images::empty();
-        $activities = $this->enrichedActivities->findAll();
+        $activities = $this->activityRepository->findAll();
         foreach ($activities as $activity) {
             if (0 === $activity->getTotalImageCount()) {
                 continue;
@@ -61,7 +59,7 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
 
     public function findRandomFor(SportTypes $sportTypes, Years $years): Image
     {
-        $activities = $this->enrichedActivities->findAll()->toArray();
+        $activities = $this->activityRepository->findAll()->toArray();
         shuffle($activities);
 
         foreach ($activities as $activity) {
@@ -99,7 +97,7 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
 
     public function count(): int
     {
-        $activities = $this->enrichedActivities->findAll();
+        $activities = $this->activityRepository->findAll();
         $totalImageCount = 0;
 
         foreach ($activities as $activity) {
