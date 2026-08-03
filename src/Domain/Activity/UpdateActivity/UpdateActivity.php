@@ -11,9 +11,6 @@ use App\Domain\Gear\GearId;
 use App\Domain\Image\NewImage;
 use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
 use App\Domain\Image\RemovedImage;
-use App\Infrastructure\Cache\CacheTag;
-use App\Infrastructure\Cache\CacheTags;
-use App\Infrastructure\Cache\InvalidatesCacheTags;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -21,7 +18,7 @@ use App\Infrastructure\CQRS\Command\DomainCommand;
 use App\Infrastructure\CQRS\Command\RequiresRebuild;
 
 #[RequiresRebuild]
-final readonly class UpdateActivity extends DomainCommand implements DeserializableCommand, InvalidatesCacheTags
+final readonly class UpdateActivity extends DomainCommand implements DeserializableCommand
 {
     use ProvideLocalImageFromDropZonePayload;
     use ProvidesCommandName;
@@ -131,10 +128,5 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
     public function getRemovedImages(): array
     {
         return $this->removedImages;
-    }
-
-    public function getCacheTagsToInvalidate(): CacheTags
-    {
-        return CacheTags::of(CacheTag::ACTIVITIES);
     }
 }

@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace App\Infrastructure\CQRS\Command\Bus;
 
 use App\Infrastructure\CQRS\Command\RequiresRebuild;
-use App\Infrastructure\Eventing\EventBus;
-use App\Infrastructure\Eventing\Rebuild\RebuildIsRequired;
+use App\Infrastructure\KeyValue\Key;
+use App\Infrastructure\KeyValue\KeyValue;
+use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Infrastructure\KeyValue\Value;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 
-final readonly class PublishRebuildIsRequiredMiddleware implements MiddlewareInterface
+final readonly class SetForceRebuildFlagMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private EventBus $eventBus,
+        private KeyValueStore $keyValueStore,
     ) {
     }
 
@@ -24,7 +26,10 @@ final readonly class PublishRebuildIsRequiredMiddleware implements MiddlewareInt
         $envelope = $stack->next()->handle($envelope, $stack);
 
         if ([] !== new \ReflectionClass($command)->getAttributes(RequiresRebuild::class)) {
-            $this->eventBus->publishEvents([new RebuildIsRequired()]);
+            $this->keyValueStore->save(KeyValue::fromState(
+                key: Key::FORCE_REBUILD,
+                value: Value::fromString('1'),
+            ));
         }
 
         return $envelope;

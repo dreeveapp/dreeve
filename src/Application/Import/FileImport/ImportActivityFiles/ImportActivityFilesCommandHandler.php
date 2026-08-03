@@ -19,8 +19,6 @@ use App\Domain\Import\FileParser\CouldNotParseActivityFile;
 use App\Domain\Import\FileParser\RawActivityFile;
 use App\Domain\Import\FileParser\UnsupportedFileType;
 use App\Domain\Import\WatchDirectory;
-use App\Infrastructure\Cache\CacheTag;
-use App\Infrastructure\Cache\RenderCache;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\DependencyInjection\Mutex\WithMutex;
@@ -45,7 +43,6 @@ final readonly class ImportActivityFilesCommandHandler implements CommandHandler
         private FileImportRepository $fileImportRepository,
         private Mutex $mutex,
         private Clock $clock,
-        private RenderCache $renderCache,
     ) {
     }
 
@@ -163,9 +160,5 @@ final readonly class ImportActivityFilesCommandHandler implements CommandHandler
             $countSkipped,
             $countFailed,
         ));
-
-        if ($countImported > 0) {
-            $this->renderCache->invalidateTags(CacheTag::ACTIVITIES);
-        }
     }
 }

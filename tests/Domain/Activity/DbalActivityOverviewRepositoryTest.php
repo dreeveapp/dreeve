@@ -22,6 +22,7 @@ use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
+use App\Tests\Infrastructure\Eventing\SpyEventBus;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -409,7 +410,8 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         parent::setUp();
 
         $this->activityRepository = new DbalActivityRepository(
-            $this->getConnection()
+            $this->getConnection(),
+            new SpyEventBus(),
         );
         $this->activityOverviewRepository = new DbalActivityOverviewRepository(
             $this->getConnection()

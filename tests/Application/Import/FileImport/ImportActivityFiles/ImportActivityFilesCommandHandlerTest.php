@@ -160,24 +160,12 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->assertMatchesSnapshot($output, new ConsoleOutputSnapshotDriver());
     }
 
-    public function testHandleDropsRenderedPagesWhenAFileWasImported(): void
+    public function testHandleKeepsRenderedPagesBecauseImportedFilesCarryNoImages(): void
     {
-        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITIES)));
+        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
         $this->cacheableRenderer->render($cacheable);
 
         $this->dropInWatchFolder('ride.tcx', $this->fixture('activity.tcx'));
-        $this->handler->handle(new ImportActivityFiles(new SpyOutput()));
-
-        $this->cacheableRenderer->render($cacheable);
-        $this->assertEquals(2, $cacheable->renderCount);
-    }
-
-    public function testHandleKeepsRenderedPagesWhenNothingWasImported(): void
-    {
-        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITIES)));
-        $this->cacheableRenderer->render($cacheable);
-
-        $this->dropInWatchFolder('notes.txt', 'just some text');
         $this->handler->handle(new ImportActivityFiles(new SpyOutput()));
 
         $this->cacheableRenderer->render($cacheable);

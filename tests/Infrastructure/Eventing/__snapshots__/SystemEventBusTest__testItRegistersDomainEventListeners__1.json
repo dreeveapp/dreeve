@@ -1,0 +1,9 @@
+{
+    "App\\Domain\\Activity\\ActivityInvalidateCacheTagsListener": [
+        "reactToActivityImagesHaveBeenUpdated",
+        "reactToActivityWasDeleted"
+    ],
+    "App\\Domain\\Settings\\SettingsInvalidateCacheTagsListener": [
+        "reactToSettingsWereUpdated"
+    ]
+}

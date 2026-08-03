@@ -16,6 +16,7 @@ use App\Infrastructure\ValueObject\String\Path;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\Infrastructure\Eventing\SpyEventBus;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class DuplicateActivityScannerTest extends ContainerTestCase
@@ -193,6 +194,7 @@ class DuplicateActivityScannerTest extends ContainerTestCase
 
         $this->activityRepository = new DbalActivityRepository(
             $this->getConnection(),
+            new SpyEventBus(),
         );
         $this->duplicateActivityScanner = new DuplicateActivityScanner(
             $this->getConnection(),

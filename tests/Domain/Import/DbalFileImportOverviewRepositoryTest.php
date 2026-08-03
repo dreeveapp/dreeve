@@ -21,6 +21,7 @@ use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\Infrastructure\Eventing\SpyEventBus;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -247,7 +248,8 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
             $this->getConnection()
         );
         $this->activityRepository = new DbalActivityRepository(
-            $this->getConnection()
+            $this->getConnection(),
+            new SpyEventBus(),
         );
     }
 }

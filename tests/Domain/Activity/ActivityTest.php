@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Activity;
 
+use App\Domain\Activity\ActivityImagesHaveBeenUpdated;
 use App\Domain\Activity\WorldType;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
@@ -64,6 +65,55 @@ class ActivityTest extends TestCase
         $this->assertEquals(
             SecPer100Meter::from(35.9971),
             $activity->getPaceInSecPer100Meter()
+        );
+    }
+
+    public function testWithLocalImagePathsItShouldRecordThatTheImagesWereUpdated(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withLocalImagePaths('/activities/one.jpg')
+            ->build();
+
+        $updatedActivity = $activity->withLocalImagePaths(['/activities/one.jpg', '/activities/two.jpg']);
+
+        $this->assertEquals(
+            [new ActivityImagesHaveBeenUpdated($activity->getId())],
+            $updatedActivity->getRecordedEvents()
+        );
+        $this->assertEmpty($activity->getRecordedEvents());
+    }
+
+    public function testWithLocalImagePathsItShouldRecordNothingWhenTheImagesDidNotChange(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withLocalImagePaths('/activities/one.jpg')
+            ->build();
+
+        $this->assertEmpty(
+            $activity->withLocalImagePaths(['/activities/one.jpg'])->getRecordedEvents()
+        );
+    }
+
+    public function testWithLocalImagePathsItShouldRecordNothingWhenOnlyTheLeadingSlashDiffers(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withLocalImagePaths('activities/one.jpg')
+            ->build();
+
+        $this->assertEmpty(
+            $activity->withLocalImagePaths(['/activities/one.jpg'])->getRecordedEvents()
+        );
+    }
+
+    public function testWithLocalImagePathsItShouldRecordThatTheImagesWereRemoved(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withLocalImagePaths('/activities/one.jpg')
+            ->build();
+
+        $this->assertEquals(
+            [new ActivityImagesHaveBeenUpdated($activity->getId())],
+            $activity->withLocalImagePaths([])->getRecordedEvents()
         );
     }
 }

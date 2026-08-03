@@ -45,7 +45,7 @@ class SystemEventBusTest extends KernelTestCase
             }
         }
 
-        $this->assertEmpty($snapshot);
+        $this->assertMatchesJsonSnapshot($snapshot);
     }
 
     protected function setUp(): void

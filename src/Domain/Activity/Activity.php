@@ -414,10 +414,16 @@ final class Activity implements SupportsAITooling
      */
     public function withLocalImagePaths(array $localImagePaths): self
     {
-        return clone ($this, [
+        $clone = clone ($this, [
             'localImagePaths' => $localImagePaths,
             'totalImageCount' => count($localImagePaths),
         ]);
+
+        if ($this->getLocalImagePaths() !== $clone->getLocalImagePaths()) {
+            $clone->recordThat(new ActivityImagesHaveBeenUpdated($this->getId()));
+        }
+
+        return $clone;
     }
 
     public function getTotalImageCount(): int

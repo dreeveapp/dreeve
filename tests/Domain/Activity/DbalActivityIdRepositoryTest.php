@@ -16,6 +16,7 @@ use App\Domain\Gear\GearType;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
+use App\Tests\Infrastructure\Eventing\SpyEventBus;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class DbalActivityIdRepositoryTest extends ContainerTestCase
@@ -182,6 +183,7 @@ class DbalActivityIdRepositoryTest extends ContainerTestCase
         );
         $this->activityRepository = new DbalActivityRepository(
             $this->getConnection(),
+            new SpyEventBus(),
         );
     }
 }

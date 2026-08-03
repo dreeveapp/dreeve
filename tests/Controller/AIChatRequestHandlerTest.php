@@ -20,6 +20,7 @@ use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
+use App\Tests\Infrastructure\Eventing\SpyEventBus;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use League\Flysystem\FilesystemOperator;
 use NeuronAI\Agent\Agent;
@@ -256,7 +257,7 @@ class AIChatRequestHandlerTest extends ContainerTestCase
             ])),
         ));
 
-        return new KeyValueBasedSettingsRepository($keyValueStore);
+        return new KeyValueBasedSettingsRepository($keyValueStore, new SpyEventBus());
     }
 
     #[\Override]

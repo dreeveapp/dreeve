@@ -8,6 +8,7 @@ use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
 use App\Domain\Integration\Weather\OpenMeteo\Weather;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
@@ -19,9 +20,17 @@ use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\String\ExternalReferenceId;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\Connection;
 
 final readonly class DbalActivityRepository extends DbalRepository implements ActivityRepository
 {
+    public function __construct(
+        Connection $connection,
+        private EventBus $eventBus,
+    ) {
+        parent::__construct($connection);
+    }
+
     public function find(ActivityId $activityId): Activity
     {
         $queryBuilder = $this->connection->createQueryBuilder();
@@ -125,6 +134,8 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'streamsAreImported' => 0,
             'workoutType' => $activity->getWorkoutType()?->value,
         ]);
+
+        $this->eventBus->publishEvents($activity->getRecordedEvents());
     }
 
     public function update(ActivityWithRawData $activityWithRawData): void
@@ -182,6 +193,8 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'workoutType' => $activity->getWorkoutType()?->value,
             'data' => Json::encode($this->cleanData($activityWithRawData->getRawData())),
         ]);
+
+        $this->eventBus->publishEvents($activity->getRecordedEvents());
     }
 
     public function delete(ActivityId $activityId): void
@@ -191,6 +204,8 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
         $this->connection->executeStatement($sql, [
             'activityId' => $activityId,
         ]);
+
+        $this->eventBus->publishEvents([new ActivityWasDeleted($activityId)]);
     }
 
     public function activityNeedsStreamImport(ActivityId $activityId): bool

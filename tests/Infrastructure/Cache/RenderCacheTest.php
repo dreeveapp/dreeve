@@ -17,7 +17,7 @@ class RenderCacheTest extends ContainerTestCase
     {
         $render = $this->renderCache->get(
             cacheKey: 'activity/123.tz=Europe/Brussels.user=me@example.com',
-            cacheability: Cacheability::for(CacheTags::of(CacheTag::ACTIVITIES)),
+            cacheability: Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
             callback: fn (): string => 'rendered',
         );
 
@@ -31,7 +31,7 @@ class RenderCacheTest extends ContainerTestCase
     public function testAKeyThatNeededNormalisingStillServesFromCache(): void
     {
         $cacheKey = 'segment/9:special';
-        $cacheability = Cacheability::for(CacheTags::of(CacheTag::ACTIVITIES));
+        $cacheability = Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES));
 
         $this->renderCache->get($cacheKey, $cacheability, fn (): string => 'rendered');
         $render = $this->renderCache->get($cacheKey, $cacheability, fn (): string => 'should-not-run');
@@ -44,7 +44,7 @@ class RenderCacheTest extends ContainerTestCase
     {
         $this->renderCache->get(
             cacheKey: 'photos',
-            cacheability: Cacheability::for(CacheTags::of(CacheTag::ACTIVITIES)),
+            cacheability: Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
             callback: fn (): string => 'rendered',
         );
 
@@ -52,7 +52,7 @@ class RenderCacheTest extends ContainerTestCase
 
         $render = $this->renderCache->get(
             cacheKey: 'photos',
-            cacheability: Cacheability::for(CacheTags::of(CacheTag::ACTIVITIES)),
+            cacheability: Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
             callback: fn (): string => 'should-not-run',
         );
         $this->assertTrue($render->wasServedFromCache);

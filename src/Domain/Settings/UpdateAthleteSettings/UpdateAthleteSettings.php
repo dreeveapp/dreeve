@@ -6,23 +6,14 @@ namespace App\Domain\Settings\UpdateAthleteSettings;
 
 use App\Domain\Settings\AthleteSettingsPayload;
 use App\Domain\Settings\GeneralSettings;
-use App\Domain\Settings\SettingsGroup;
-use App\Infrastructure\Cache\CacheTag;
-use App\Infrastructure\Cache\CacheTags;
-use App\Infrastructure\Cache\InvalidatesCacheTags;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
 
-final readonly class UpdateAthleteSettings extends DomainCommand implements DeserializableCommand, InvalidatesCacheTags
+final readonly class UpdateAthleteSettings extends DomainCommand implements DeserializableCommand
 {
     use ProvidesCommandName;
-
-    public function getCacheTagsToInvalidate(): CacheTags
-    {
-        return CacheTags::of(CacheTag::forSettingsGroup(SettingsGroup::GENERAL));
-    }
 
     /**
      * @param array<string, mixed> $athlete

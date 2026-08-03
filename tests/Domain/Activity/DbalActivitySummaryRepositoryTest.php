@@ -10,6 +10,7 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\DbalActivityRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Tests\ContainerTestCase;
+use App\Tests\Infrastructure\Eventing\SpyEventBus;
 
 class DbalActivitySummaryRepositoryTest extends ContainerTestCase
 {
@@ -50,6 +51,7 @@ class DbalActivitySummaryRepositoryTest extends ContainerTestCase
         $this->activitySummaryRepository = $this->getContainer()->get(ActivitySummaryRepository::class);
         $this->activityRepository = new DbalActivityRepository(
             $this->getConnection(),
+            new SpyEventBus(),
         );
     }
 }

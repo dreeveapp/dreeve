@@ -11,6 +11,7 @@ use App\Domain\Activity\DbalActivityRepository;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
@@ -261,6 +262,20 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         );
     }
 
+    public function testDelete(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState(
+            $activity,
+            ['raw' => 'data']
+        ));
+
+        $this->activityRepository->delete($activity->getId());
+
+        $this->expectExceptionObject(new EntityNotFound(sprintf('Activity "%s" not found', $activity->getId())));
+        $this->activityRepository->find($activity->getId());
+    }
+
     #[\Override]
     protected function setUp(): void
     {
@@ -268,6 +283,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
 
         $this->activityRepository = new DbalActivityRepository(
             $this->getConnection(),
+            $this->getContainer()->get(EventBus::class),
         );
     }
 }
