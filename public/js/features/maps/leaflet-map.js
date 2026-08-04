@@ -1,6 +1,7 @@
 import {fetchJson} from "../../utils";
 import L from 'leaflet';
 import {createMapToolsControl} from "./leaflet-controls";
+import smoothPolyline from "./smooth-polyline";
 import './ctrl-scroll-zoom';
 
 export default class LeafletMap {
@@ -30,12 +31,12 @@ export default class LeafletMap {
         const polylines = await fetchJson(this.data.polylineUrl);
 
         for (const coordinates of polylines) {
-            L.polyline(coordinates, {
+            smoothPolyline(coordinates, {
                 color: this.config.polylineColor,
                 weight: 2,
                 opacity: 0.9,
                 lineJoin: 'round',
-                smoothFactor: 2.0
+                smoothFactor: 0.25
             }).addTo(featureGroup);
 
             if (this.data.showStartMarker) {
