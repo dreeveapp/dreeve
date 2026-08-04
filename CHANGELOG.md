@@ -1,3 +1,28 @@
+# [v5.1.4](https://github.com/dreeveapp/dreeve/releases/tag/v5.1.4) - 2026-08-04
+
+## New features
+* You can now disable build notifications
+
+## Improvements
+* When importing FIT files, Garmin workout names ae now automatically used as activity titles
+* Sailing activities now display more appropriate units
+* Added heart rate zone indicators to activity charts
+
+## Bug fixes
+* Fixed an error in the AI workout assistant that could cause an "Invalid message sequence" error
+
+## Technical details
+* ISSUE #2382: Garmin Workout Name as Title by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2388
+* ISSUE #2354: Adequate units for sailing activities by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2360
+* ISSUE #2390: Allow to disable build notifications by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2394
+* ISSUE #2395: AI workout assistant UI errors with Invalid message sequence at position 1 by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2397
+* ISSUE #2384: Introduce a caching mechanism to start serving the app dynamically by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2385
+* ISSUE #2389: Heart rate zones indicator on charts by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2396
+* ISSUE #2384: Moved cache tag invalidation to event listeners by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2399
+* ISSUE #2384: Refactor challenges page to be dynamic one by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2400
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.1.3...v5.1.4
+
 # [v5.1.3](https://github.com/dreeveapp/dreeve/releases/tag/v5.1.3) - 2026-07-29
 
 This release fixes a critical bug in the v4 -> v5 migration path.
