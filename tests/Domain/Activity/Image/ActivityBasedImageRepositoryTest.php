@@ -9,6 +9,7 @@ use App\Domain\Activity\Image\ActivityBasedImageRepository;
 use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
+use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
@@ -102,6 +103,44 @@ class ActivityBasedImageRepositoryTest extends ContainerTestCase
             sportTypes: SportTypes::thatSupportImagesForStravaRewind(),
             years: Years::fromArray([Year::fromInt(2024)]),
         );
+    }
+
+    public function testCount(): void
+    {
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withSportType(SportType::RUN)
+                ->withTotalImageCount(3)
+                ->build(),
+            []
+        ));
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('2'))
+                ->withSportType(SportType::RIDE)
+                ->withTotalImageCount(4)
+                ->build(),
+            []
+        ));
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('3'))
+                ->withSportType(SportType::WALK)
+                ->withTotalImageCount(5)
+                ->build(),
+            []
+        ));
+
+        $this->assertEquals(12, $this->imageRepository->count());
+
+        $this->getContainer()->get(SettingsRepository::class)->save(SettingsGroup::APPEARANCE, [
+            'photos' => [
+                'hidePhotosForSportTypes' => [SportType::RIDE->value, SportType::WALK->value],
+            ],
+        ]);
+
+        $this->assertEquals(3, $this->imageRepository->count());
     }
 
     public function testDeleteForActivity(): void

@@ -84,7 +84,7 @@ Component: Component
 'Conditions are combined with AND.': 'Conditions are combined with AND.'
 Config: Config
 Configure: Configure
-'Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget.': 'Configure the Eddington numbers to calculate. You can show up to two in the navigation bar and up to two in the dashboard widget.'
+'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.'
 'Configure {widget}': 'Configure {widget}'
 'Configured via an environment variable and cannot be changed here.': 'Configured via an environment variable and cannot be changed here.'
 'Configured via environment variables and cannot be changed here.': 'Configured via environment variables and cannot be changed here.'
