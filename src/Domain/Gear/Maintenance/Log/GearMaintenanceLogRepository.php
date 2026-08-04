@@ -22,7 +22,7 @@ interface GearMaintenanceLogRepository
     public function findMostRecentForMaintenanceTask(MaintenanceTaskId $maintenanceTaskId): ?GearMaintenanceLog;
 
     /**
-     * @return array<string, SerializableDateTime> the date of the most recent maintenance, keyed by maintenance task id
+     * @return array<string, SerializableDateTime>
      */
     public function findMostRecentPerMaintenanceTask(): array;
 }
