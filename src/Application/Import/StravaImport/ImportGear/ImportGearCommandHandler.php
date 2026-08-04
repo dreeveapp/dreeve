@@ -3,6 +3,7 @@
 namespace App\Application\Import\StravaImport\ImportGear;
 
 use App\Domain\Gear\Gear;
+use App\Domain\Gear\GearIdRepository;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearType;
 use App\Domain\Strava\RateLimit\StravaRateLimitHasBeenReached;
@@ -19,6 +20,7 @@ final readonly class ImportGearCommandHandler implements CommandHandler
 {
     public function __construct(
         private Strava $strava,
+        private GearIdRepository $gearIdRepository,
         private GearRepository $gearRepository,
         private Clock $clock,
     ) {
@@ -31,10 +33,10 @@ final readonly class ImportGearCommandHandler implements CommandHandler
 
         $this->strava->setConsoleOutput($command->getOutput());
 
-        $stravaGearIdsToImport = $this->gearRepository->findUniqueStravaGearIds(null);
+        $stravaGearIdsToImport = $this->gearIdRepository->findUniqueStravaGearIds(null);
         if ($command->isPartialImport()) {
             // We only want to update gears that are referenced on the activities to be imported.
-            $stravaGearIdsToImport = $this->gearRepository->findUniqueStravaGearIds($command->getRestrictToActivityIds());
+            $stravaGearIdsToImport = $this->gearIdRepository->findUniqueStravaGearIds($command->getRestrictToActivityIds());
         }
 
         foreach ($stravaGearIdsToImport as $gearId) {

@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Gear\Maintenance;
 
 use App\Domain\Gear\Gear;
-use App\Domain\Gear\GearId;
-use App\Domain\Gear\GearIds;
-use App\Domain\Gear\GearRepository;
+use App\Domain\Gear\GearIdRepository;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Infrastructure\Exception\EntityNotFound;
@@ -21,7 +19,7 @@ final readonly class KeyValueBasedGearMaintenanceRepository implements GearMaint
 {
     public function __construct(
         private KeyValueStore $keyValueStore,
-        private GearRepository $gearRepository,
+        private GearIdRepository $gearIdRepository,
     ) {
     }
 
@@ -39,9 +37,7 @@ final readonly class KeyValueBasedGearMaintenanceRepository implements GearMaint
         // The config references gear ids that may be unprefixed (copy-pasted from a gear URL),
         // while the database stores them with their Strava "b"/"g" prefix. Normalize them here
         // so every consumer works with ids that match the database.
-        $gearMaintenanceConfig->normalizeGearIds(GearIds::fromArray(
-            $this->gearRepository->findAll()->map(fn (Gear $gear): GearId => $gear->getId())
-        ));
+        $gearMaintenanceConfig->normalizeGearIds($this->gearIdRepository->findAll());
 
         return $gearMaintenanceConfig;
     }

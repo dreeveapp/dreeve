@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Table(name: 'GearMaintenanceLog')]
 #[ORM\Index(name: 'GearMaintenanceLog_gearIndex', columns: ['gearId'])]
+#[ORM\Index(name: 'GearMaintenanceLog_maintenanceTask', columns: ['maintenanceTaskId', 'performedOn'])]
 final readonly class GearMaintenanceLog
 {
     private function __construct(

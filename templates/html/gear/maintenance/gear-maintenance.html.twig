@@ -101,7 +101,7 @@
                                                     </div>
                                                     <div class="grid grid-cols-1 xl:grid-cols-2 gap-y-4 divide-x *:px-4 -mx-4 font-normal text-gray-700">
                                                         {% for maintenanceTask in gearComponent.getMaintenanceTasks() %}
-                                                            {% set mostRecentMaintenance = mostRecentMaintenanceForTask(maintenanceTask.getId()) %}
+                                                            {% set maintenanceTaskStatus = maintenanceTaskStatuses.getForTask(maintenanceTask.getId()) %}
                                                             <div class="flex flex-col">
                                                                 <div class="flex justify-between">
                                                                     <div>
@@ -113,18 +113,13 @@
                                                                 </div>
                                                                 <span class="text-xs grow">
                                                                         {{ "Last maintenance"|trans }}:
-                                                                        {% if mostRecentMaintenance is not null %}
-                                                                            {{ mostRecentMaintenance.getPerformedOn()|formatDate('normal') }}
+                                                                        {% if maintenanceTaskStatus.getLastPerformedOn() is not null %}
+                                                                            {{ maintenanceTaskStatus.getLastPerformedOn()|formatDate('normal') }}
                                                                         {% else %}
                                                                             {{ "never"|trans }}
                                                                         {% endif %}
                                                                     </span>
-                                                                {% set progress = calculateMaintenanceTaskProgress(
-                                                                    gearComponent.getAttachedTo(),
-                                                                    mostRecentMaintenance is not null ? mostRecentMaintenance.getPerformedOn() : null,
-                                                                    maintenanceTask.getIntervalUnit(),
-                                                                    maintenanceTask.getIntervalValue()
-                                                                ) %}
+                                                                {% set progress = maintenanceTaskStatus.getProgress() %}
                                                                 {% if progress.isZero() %}
                                                                     {% set colors = {'bg':'bg-gray-200','text':'text-gray-700'} %}
                                                                 {% elseif progress.isLow() %}

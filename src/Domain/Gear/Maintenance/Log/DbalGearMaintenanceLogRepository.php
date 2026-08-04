@@ -89,6 +89,22 @@ final readonly class DbalGearMaintenanceLogRepository extends DbalRepository imp
         return $this->hydrate($result);
     }
 
+    public function findMostRecentPerMaintenanceTask(): array
+    {
+        $results = $this->connection->executeQuery(
+            'SELECT maintenanceTaskId, MAX(performedOn) AS performedOn
+            FROM GearMaintenanceLog
+            GROUP BY maintenanceTaskId'
+        )->fetchAllAssociative();
+
+        $mostRecentPerMaintenanceTask = [];
+        foreach ($results as $result) {
+            $mostRecentPerMaintenanceTask[$result['maintenanceTaskId']] = SerializableDateTime::fromString($result['performedOn']);
+        }
+
+        return $mostRecentPerMaintenanceTask;
+    }
+
     /**
      * @param array<string, mixed> $result
      */

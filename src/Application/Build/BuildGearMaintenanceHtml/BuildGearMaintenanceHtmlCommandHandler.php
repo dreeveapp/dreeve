@@ -68,6 +68,7 @@ final readonly class BuildGearMaintenanceHtmlCommandHandler implements CommandHa
                 'gearsAttachedToComponents' => $gearsThatAreAttachedToComponents,
                 'gearComponents' => $gearMaintenanceConfig->getGearComponents(),
                 'gearIdsThatHaveDueTasks' => $this->maintenanceTaskProgressCalculator->getGearIdsThatHaveDueTasks(),
+                'maintenanceTaskStatuses' => $this->maintenanceTaskProgressCalculator->calculateStatuses(),
             ])
         );
     }

@@ -39,6 +39,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'Activity_startDateTimeIndex', columns: ['startDateTime'])]
 #[ORM\Index(name: 'Activity_sportType', columns: ['sportType'])]
 #[ORM\Index(name: 'Activity_gearId', columns: ['gearId'])]
+#[ORM\Index(name: 'Activity_gearIdStartDateTime', columns: ['gearId', 'startDateTime'])]
 #[ORM\Index(name: 'Activity_markedForDeletion', columns: ['markedForDeletion'])]
 #[ORM\Index(name: 'Activity_streamsAreImported', columns: ['streamsAreImported'])]
 final class Activity implements SupportsAITooling

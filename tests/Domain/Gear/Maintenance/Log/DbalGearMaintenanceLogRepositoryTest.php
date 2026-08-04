@@ -141,6 +141,31 @@ class DbalGearMaintenanceLogRepositoryTest extends ContainerTestCase
         );
     }
 
+    public function testFindMostRecentPerMaintenanceTask(): void
+    {
+        $this->assertEmpty($this->gearMaintenanceLogRepository->findMostRecentPerMaintenanceTask());
+
+        foreach ([
+            ['chain-lubed', '2025-01-01 00:00:00'],
+            ['chain-lubed', '2025-03-01 00:00:00'],
+            ['chain-replaced', '2025-06-01 00:00:00'],
+        ] as [$maintenanceTaskId, $performedOn]) {
+            $this->gearMaintenanceLogRepository->add(GearMaintenanceLog::create(
+                gearId: GearId::fromUnprefixed('b1'),
+                maintenanceTaskId: MaintenanceTaskId::fromUnprefixed($maintenanceTaskId),
+                performedOn: SerializableDateTime::fromString($performedOn),
+            ));
+        }
+
+        $this->assertEquals(
+            [
+                (string) MaintenanceTaskId::fromUnprefixed('chain-lubed') => SerializableDateTime::fromString('2025-03-01 00:00:00'),
+                (string) MaintenanceTaskId::fromUnprefixed('chain-replaced') => SerializableDateTime::fromString('2025-06-01 00:00:00'),
+            ],
+            $this->gearMaintenanceLogRepository->findMostRecentPerMaintenanceTask(),
+        );
+    }
+
     #[\Override]
     protected function setUp(): void
     {
