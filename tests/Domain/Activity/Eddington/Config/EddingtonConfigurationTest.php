@@ -17,7 +17,6 @@ class EddingtonConfigurationTest extends TestCase
         $theConfig = EddingtonConfiguration::fromArray([
             EddingtonConfigItem::create(
                 label: 'Ride',
-                showInNavBar: true,
                 sportTypesToInclude: SportTypes::fromArray([
                     SportType::RIDE, SportType::MOUNTAIN_BIKE_RIDE, SportType::GRAVEL_RIDE, SportType::VIRTUAL_RIDE,
                 ]),
@@ -25,7 +24,6 @@ class EddingtonConfigurationTest extends TestCase
             ),
             EddingtonConfigItem::create(
                 label: 'Run',
-                showInNavBar: true,
                 sportTypesToInclude: SportTypes::fromArray([
                     SportType::RUN, SportType::TRAIL_RUN, SportType::VIRTUAL_RUN,
                 ]),
@@ -33,7 +31,6 @@ class EddingtonConfigurationTest extends TestCase
             ),
             EddingtonConfigItem::create(
                 label: 'Walk',
-                showInNavBar: false,
                 sportTypesToInclude: SportTypes::fromArray([
                     SportType::WALK, SportType::HIKE,
                 ]),
@@ -69,20 +66,12 @@ class EddingtonConfigurationTest extends TestCase
         yield 'missing "label" key' => [$yml, '"label" property is required'];
 
         $yml = self::getValidYml();
-        unset($yml[0]['showInNavBar']);
-        yield 'missing "showInNavBar" key' => [$yml, '"showInNavBar" property is required'];
-
-        $yml = self::getValidYml();
         unset($yml[0]['sportTypesToInclude']);
         yield 'missing "sportTypesToInclude" key' => [$yml, '"sportTypesToInclude" property is required'];
 
         $yml = self::getValidYml();
         $yml[0]['label'] = '';
         yield 'empty "label"' => [$yml, '"label" property cannot be empty'];
-
-        $yml = self::getValidYml();
-        $yml[0]['showInNavBar'] = 'LOL';
-        yield 'invalid "showInNavBar"' => [$yml, '"showInNavBar" property must be a boolean'];
 
         $yml = self::getValidYml();
         $yml[0]['sportTypesToInclude'] = 'LOL';
@@ -101,10 +90,6 @@ class EddingtonConfigurationTest extends TestCase
         yield 'mixed activity types in "sportTypesToInclude"' => [$yml, 'Eddington "Ride" contains sport types with different activity types'];
 
         $yml = self::getValidYml();
-        $yml[2]['showInNavBar'] = true;
-        yield 'too many items in navBar"' => [$yml, 'You can only have two Eddingtons with "showInNavBar" set to true'];
-
-        $yml = self::getValidYml();
         $yml[0]['showInDashboardWidget'] = 'LOL';
         yield 'invalid "showInDashboardWidget"' => [$yml, '"showInDashboardWidget" property must be a boolean'];
 
@@ -118,19 +103,16 @@ class EddingtonConfigurationTest extends TestCase
         return [
             [
                 'label' => 'Ride',
-                'showInNavBar' => true,
                 'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide'],
                 'showInDashboardWidget' => true,
             ],
             [
                 'label' => 'Run',
-                'showInNavBar' => true,
                 'sportTypesToInclude' => ['Run', 'TrailRun', 'VirtualRun'],
                 'showInDashboardWidget' => true,
             ],
             [
                 'label' => 'Walk',
-                'showInNavBar' => false,
                 'sportTypesToInclude' => ['Walk', 'Hike'],
                 'showInDashboardWidget' => false,
             ],

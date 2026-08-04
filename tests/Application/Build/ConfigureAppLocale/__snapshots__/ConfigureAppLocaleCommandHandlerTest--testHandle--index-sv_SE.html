@@ -25,7 +25,7 @@
     <link rel="preload" href="/libraries/clusterize/clusterize.min.css?0025176c-5652-11ee-923d-02424dd627d5" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="/libraries/lightgallery/lightgallery-bundle.min.css?0025176c-5652-11ee-923d-02424dd627d5" as="style" onload="this.onload=null;this.rel='stylesheet'">
 </head>
-<body class="bg-gray-50" data-easter-egg="b0184875-c916-58be-9380-3851ce9e983f">
+<body class="bg-gray-50">
 <div class="antialiased">
     <!-- NAVIGATION -->
             <nav class="text-gray-900 bg-white border-b border-gray-200 px-4 py-2.5 fixed left-0 right-0 top-0 z-1100 group">
@@ -37,7 +37,7 @@
                         <path d="M9 4v16"></path>
                         <path class="origin-center [transform-box:fill-box] transition-transform duration-300 ease-in-out sidebar-collapsed:rotate-180" d="M16 8l-3 4 3 4"></path>
                     </svg>
-                    <span class="sr-only">Ativar/desativar barra lateral</span>
+                    <span class="sr-only">Visa/D&ouml;lj sidof&auml;lt</span>
                 </button>
                 <button data-drawer-target="drawer-navigation" data-drawer-toggle="drawer-navigation" aria-controls="drawer-navigation" class="md:hidden mr-3 inline-flex items-center justify-center text-gray-600 cursor-pointer select-none">
                     <span aria-hidden="true" class="relative block w-3.5 h-5">
@@ -45,7 +45,7 @@
                         <span class="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-current transition-all duration-300 ease-in-out drawer-open:opacity-0"></span>
                         <span class="absolute inset-x-0 bottom-1 h-0.5 rounded-full bg-current transition-all duration-300 ease-in-out drawer-open:bottom-1/2 drawer-open:translate-y-1/2 drawer-open:-rotate-45"></span>
                     </span>
-                    <span class="sr-only">Ativar/desativar barra lateral</span>
+                    <span class="sr-only">Visa/D&ouml;lj sidof&auml;lt</span>
                 </button>
                         <a href="#" data-router-navigate="/dashboard" class="flex items-center justify-between mr-4">
                 <img src="/assets/images/logo.svg" class="rounded-full mr-3 h-8" alt="Logo">
@@ -136,46 +136,47 @@
                 <div>
             <ul class="space-y-1 pb-2">
                 <li>
-                    <a title="Painel" href="/dashboard" data-router-navigate="/dashboard">
+                    <a title="&Ouml;versikt" href="/dashboard" data-router-navigate="/dashboard">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.143 4H4.857A.857.857 0 0 0 4 4.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 10 9.143V4.857A.857.857 0 0 0 9.143 4Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 20 9.143V4.857A.857.857 0 0 0 19.143 4Zm-10 10H4.857a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286A.857.857 0 0 0 9.143 14Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286a.857.857 0 0 0-.857-.857Z"></path>
                         </svg>
-                        <span>Painel</span>
+                        <span>&Ouml;versikt</span>
                     </a>
                 </li>
             </ul>
             <ul class="space-y-1 py-2">
                 <li>
-                    <a title="Atividades" href="/activities" data-router-navigate="/activities">
+                    <a title="Aktiviteter" href="/activities" data-router-navigate="/activities">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 9h6m-6 3h6m-6 3h6M6.996 9h.01m-.01 3h.01m-.01 3h.01M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"></path>
                         </svg>
-                        <span>Atividades</span>
+                        <span>Aktiviteter</span>
                         <span class="badge">15</span>
                     </a>
                 </li>
                                     <li>
-                        <a title="Equipamento" href="/gear" data-router-navigate="/gear">
+                        <a title="Utrustning" href="/gear" data-router-navigate="/gear">
                             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10.051 8.102-3.778.322-1.994 1.994a.94.94 0 0 0 .533 1.6l2.698.316m8.39 1.617-.322 3.78-1.994 1.994a.94.94 0 0 1-1.595-.533l-.4-2.652m8.166-11.174a1.366 1.366 0 0 0-1.12-1.12c-1.616-.279-4.906-.623-6.38.853-1.671 1.672-5.211 8.015-6.31 10.023a.932.932 0 0 0 .162 1.111l.828.835.833.832a.932.932 0 0 0 1.111.163c2.008-1.102 8.35-4.642 10.021-6.312 1.475-1.478 1.133-4.77.855-6.385Zm-2.961 3.722a1.88 1.88 0 1 1-3.76 0 1.88 1.88 0 0 1 3.76 0Z"></path>
                             </svg>
-                            <span>Equipamento</span>
-                                                    </a>
+                            <span>Utrustning</span>
+                            <div class="contents" data-async-content-url="/api/gear/maintenance-due"></div>
+                        </a>
                     </li>
                                 <li>
-                    <a title="Segmentos" href="/segments" data-router-navigate="/segments">
+                    <a title="Segment" href="/segments" data-router-navigate="/segments">
                         <svg fill="currentColor" viewbox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g><path d="M217.45557,38.544a35.9967,35.9967,0,0,0-57.937,40.96679L79.5105,159.51855a36.05906,36.05906,0,0,0-40.96607,7.0254H38.544a36.00029,36.00029,0,1,0,57.93737,9.94531L176.4895,96.48145A35.99663,35.99663,0,0,0,217.45557,38.544ZM72.48584,200.48535a12.00027,12.00027,0,0,1-16.97119-16.9707h-.00049a12.00044,12.00044,0,0,1,16.97168,16.9707Zm128-128a12.01673,12.01673,0,0,1-16.969.00244l-.0022-.00244a12.0001,12.0001,0,1,1,16.97119,0Z"></path></g></svg>
-                        <span>Segmentos</span>
+                        <span>Segment</span>
                     </a>
                 </li>
             </ul>
             <ul class="space-y-1 py-2">
                 <li>
-                    <a title="Estat&iacute;sticas mensais" href="/monthly-stats" data-router-navigate="/monthly-stats">
+                    <a title="Sammanst&auml;llning" href="/monthly-stats" data-router-navigate="/monthly-stats">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z"></path>
                         </svg>
-                        <span>Estat&iacute;sticas mensais</span>
+                        <span>Sammanst&auml;llning</span>
                     </a>
                 </li>
                 <li>
@@ -184,24 +185,20 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"></path>
                         </svg>
                         <span>Eddington</span>
-                        <div class="sidebar-collapsed:hidden flex gap-x-0.5">
-                                                            <span class="badge">6</span>
-                                                            <span class="badge">2</span>
-                                                    </div>
                     </a>
                 </li>
                 <li>
-                    <a title="Mapa de calor" href="/heatmap" data-router-navigate="/heatmap">
+                    <a title="F&auml;rgkarta" href="/heatmap" data-router-navigate="/heatmap">
                         <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g><path d="M3 8.70938C3 7.23584 3 6.49907 3.39264 6.06935C3.53204 5.91678 3.70147 5.79466 3.89029 5.71066C4.42213 5.47406 5.12109 5.70705 6.51901 6.17302C7.58626 6.52877 8.11989 6.70665 8.6591 6.68823C8.85714 6.68147 9.05401 6.65511 9.24685 6.60952C9.77191 6.48541 10.2399 6.1734 11.176 5.54937L12.5583 4.62778C13.7574 3.82843 14.3569 3.42876 15.0451 3.3366C15.7333 3.24444 16.4168 3.47229 17.7839 3.92799L18.9487 4.31624C19.9387 4.64625 20.4337 4.81126 20.7169 5.20409C21 5.59692 21 6.11871 21 7.16229V15.2907C21 16.7642 21 17.501 20.6074 17.9307C20.468 18.0833 20.2985 18.2054 20.1097 18.2894C19.5779 18.526 18.8789 18.293 17.481 17.827C16.4137 17.4713 15.8801 17.2934 15.3409 17.3118C15.1429 17.3186 14.946 17.3449 14.7532 17.3905C14.2281 17.5146 13.7601 17.8266 12.824 18.4507L11.4417 19.3722C10.2426 20.1716 9.64311 20.5713 8.95493 20.6634C8.26674 20.7556 7.58319 20.5277 6.21609 20.072L5.05132 19.6838C4.06129 19.3538 3.56627 19.1888 3.28314 18.7959C3 18.4031 3 17.8813 3 16.8377V8.70938Z" stroke="currentColor" stroke-width="2"></path><path d="M9 6.63867V20.5" stroke="currentColor" stroke-width="2"></path><path d="M15 3V17" stroke="currentColor" stroke-width="2"></path></g></svg>
-                        <span>Mapa de calor</span>
+                        <span>F&auml;rgkarta</span>
                     </a>
                 </li>
                                     <li>
-                        <a title="Melhores esfor&ccedil;os" href="/best-efforts" data-router-navigate="/best-efforts">
+                        <a title="B&auml;sta Insatser" href="/best-efforts" data-router-navigate="/best-efforts">
                             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
                                 <path fill="currentColor" d="M21,4H18V3a1,1,0,0,0-1-1H7A1,1,0,0,0,6,3V4H3A1,1,0,0,0,2,5V8a4,4,0,0,0,4,4H7.54A6,6,0,0,0,11,13.91V16H10a3,3,0,0,0-3,3v2a1,1,0,0,0,1,1h8a1,1,0,0,0,1-1V19a3,3,0,0,0-3-3H13V13.91A6,6,0,0,0,16.46,12H18a4,4,0,0,0,4-4V5A1,1,0,0,0,21,4ZM6,10A2,2,0,0,1,4,8V6H6V8a6,6,0,0,0,.35,2Zm8,8a1,1,0,0,1,1,1v1H9V19a1,1,0,0,1,1-1ZM16,8A4,4,0,0,1,8,8V4h8Zm4,0a2,2,0,0,1-2,2h-.35A6,6,0,0,0,18,8V6h2Z"></path>
                             </svg>
-                            <span>Melhores esfor&ccedil;os</span>
+                            <span>B&auml;sta Insatser</span>
                         </a>
                     </li>
                                 <li>
@@ -211,31 +208,31 @@
                     </a>
                 </li>
                 <li>
-                    <a title="Rewind" href="/rewind" data-router-navigate="/rewind">
+                    <a title="Tillbakablick" href="/rewind" data-router-navigate="/rewind">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3M3.22302 14C4.13247 18.008 7.71683 21 12 21c4.9706 0 9-4.0294 9-9 0-4.97056-4.0294-9-9-9-3.72916 0-6.92858 2.26806-8.29409 5.5M7 9H3V5"></path>
                         </svg>
-                        <span>Rewind</span>
+                        <span>Tillbakablick</span>
                     </a>
                 </li>
             </ul>
                             <ul class="space-y-1 py-2">
                                             <li>
-                            <a title="Desafios" href="/challenges" data-router-navigate="/challenges" data-router-content-url="/api/challenges">
+                            <a title="Utmaningar" href="/challenges" data-router-navigate="/challenges" data-router-content-url="/api/challenges">
                                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8.032 12 1.984 1.984 4.96-4.96m4.55 5.272.893-.893a1.984 1.984 0 0 0 0-2.806l-.893-.893a1.984 1.984 0 0 1-.581-1.403V7.04a1.984 1.984 0 0 0-1.984-1.984h-1.262a1.983 1.983 0 0 1-1.403-.581l-.893-.893a1.984 1.984 0 0 0-2.806 0l-.893.893a1.984 1.984 0 0 1-1.403.581H7.04A1.984 1.984 0 0 0 5.055 7.04v1.262c0 .527-.209 1.031-.581 1.403l-.893.893a1.984 1.984 0 0 0 0 2.806l.893.893c.372.372.581.876.581 1.403v1.262a1.984 1.984 0 0 0 1.984 1.984h1.262c.527 0 1.031.209 1.403.581l.893.893a1.984 1.984 0 0 0 2.806 0l.893-.893a1.985 1.985 0 0 1 1.403-.581h1.262a1.984 1.984 0 0 0 1.984-1.984V15.7c0-.527.209-1.031.581-1.403Z"></path>
                                 </svg>
-                                <span>Desafios</span>
+                                <span>Utmaningar</span>
                                 <span class="badge">2</span>
                             </a>
                         </li>
                                                                 <li>
-                            <a title="Fotos" href="/photos" data-router-navigate="/photos" data-router-content-url="/api/photos">
+                            <a title="Bilder" href="/photos" data-router-navigate="/photos" data-router-content-url="/api/photos">
                                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M4 18V8a1 1 0 0 1 1-1h1.5l1.707-1.707A1 1 0 0 1 8.914 5h6.172a1 1 0 0 1 .707.293L17.5 7H19a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z"></path>
                                     <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
                                 </svg>
-                                <span>Fotos</span>
+                                <span>Bilder</span>
                                 <span class="badge">32</span>
                             </a>
                         </li>
@@ -244,7 +241,7 @@
         <div>
             <div class="sidebar-collapsed:hidden">
                 <div class="flex items-center justify-center gap-x-1">
-                    <span class="bg-gray-100 text-gray-600 font-medium px-2.5 py-0.5 rounded-sm" title="Atualizado em 17-10-2023 16:15">v5.1.4</span>
+                    <span class="bg-gray-100 text-gray-600 font-medium px-2.5 py-0.5 rounded-sm">v5.1.4</span>
                     <span class="hidden" data-latest-version data-current-version="v5.1.4">
                     (latest: <a class="underline" href="https://github.com/dreeveapp/dreeve/releases/tag/%5BLATEST_VERSION%5D">[LATEST_VERSION]</a>)
                 </span>
@@ -264,7 +261,7 @@
                         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"></path>
                         <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"></path>
                     </svg>
-                    <span class="sr-only">A carregar...</span>
+                    <span class="sr-only">Laddar...</span>
                 </div>
             </div>
             <!-- JS LOADED CONTENT -->
@@ -278,7 +275,7 @@
                                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"></path>
                                 <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"></path>
                             </svg>
-                            <span class="sr-only">A carregar...</span>
+                            <span class="sr-only">Laddar...</span>
                         </div>
                     </div>
                     <!-- Modal content -->
@@ -290,13 +287,12 @@
             </main>
 </div>
 <script>
-    window.dreeve = {"countries":{"AF":"Afeganist\u00e3o","ZA":"\u00c1frica do Sul","AX":"Alanda","AL":"Alb\u00e2nia","DE":"Alemanha","AD":"Andorra","AO":"Angola","AI":"Anguila","AQ":"Ant\u00e1rtida","AG":"Ant\u00edgua e Barbuda","SA":"Ar\u00e1bia Saudita","DZ":"Arg\u00e9lia","AR":"Argentina","AM":"Arm\u00e9nia","AW":"Aruba","AU":"Austr\u00e1lia","AT":"\u00c1ustria","AZ":"Azerbaij\u00e3o","BS":"Baamas","BD":"Bangladeche","BB":"Barbados","BH":"Bar\u00e9m","BE":"B\u00e9lgica","BZ":"Belize","BJ":"Benim","BM":"Bermudas","BY":"Bielorr\u00fassia","BO":"Bol\u00edvia","BA":"B\u00f3snia e Herzegovina","BW":"Botsuana","BR":"Brasil","BN":"Brunei","BG":"Bulg\u00e1ria","BF":"Burquina Faso","BI":"Burundi","BT":"But\u00e3o","CV":"Cabo Verde","CM":"Camar\u00f5es","KH":"Camboja","CA":"Canad\u00e1","QA":"Catar","KZ":"Cazaquist\u00e3o","TD":"Chade","CZ":"Ch\u00e9quia","CL":"Chile","CN":"China","CY":"Chipre","VA":"Cidade do Vaticano","CO":"Col\u00f4mbia","KM":"Comores","CG":"Congo-Brazzaville","CD":"Congo-Kinshasa","KP":"Coreia do Norte","KR":"Coreia do Sul","CR":"Costa Rica","CI":"C\u00f4te d\u2019Ivoire (Costa do Marfim)","HR":"Cro\u00e1cia","CU":"Cuba","CW":"Cura\u00e7au","DK":"Dinamarca","DM":"Dom\u00ednica","EG":"Egito","AE":"Emirados \u00c1rabes Unidos","EC":"Equador","ER":"Eritreia","SK":"Eslov\u00e1quia","SI":"Eslov\u00e9nia","ES":"Espanha","SZ":"Essuat\u00edni","US":"Estados Unidos","EE":"Est\u00f3nia","ET":"Eti\u00f3pia","FJ":"Fiji","PH":"Filipinas","FI":"Finl\u00e2ndia","FR":"Fran\u00e7a","GA":"Gab\u00e3o","GM":"G\u00e2mbia","GH":"Gana","GE":"Ge\u00f3rgia","GI":"Gibraltar","GD":"Granada","GR":"Gr\u00e9cia","GL":"Gronel\u00e2ndia","GP":"Guadalupe","GU":"Guame","GT":"Guatemala","GG":"Guernesey","GY":"Guiana","GF":"Guiana Francesa","GN":"Guin\u00e9","GQ":"Guin\u00e9 Equatorial","GW":"Guin\u00e9-Bissau","HT":"Haiti","HN":"Honduras","HK":"Hong Kong, RAE da China","HU":"Hungria","YE":"I\u00e9men","BV":"Ilha Bouvet","IM":"Ilha de Man","CX":"Ilha do Natal","NF":"Ilha Norfolk","KY":"Ilhas Caim\u00e3o","CK":"Ilhas Cook","CC":"Ilhas dos Cocos (Keeling)","FK":"Ilhas Falkland","FO":"Ilhas Faro\u00e9","GS":"Ilhas Ge\u00f3rgia do Sul e Sandwich do Sul","HM":"Ilhas Heard e McDonald","MP":"Ilhas Marianas do Norte","MH":"Ilhas Marshall","UM":"Ilhas Menores Afastadas dos EUA","PN":"Ilhas Pitcairn","SB":"Ilhas Salom\u00e3o","TC":"Ilhas Turcas e Caicos","VG":"Ilhas Virgens Brit\u00e2nicas","VI":"Ilhas Virgens dos EUA","IN":"\u00cdndia","ID":"Indon\u00e9sia","IR":"Ir\u00e3o","IQ":"Iraque","IE":"Irlanda","IS":"Isl\u00e2ndia","IL":"Israel","IT":"It\u00e1lia","JM":"Jamaica","JP":"Jap\u00e3o","JE":"Jersey","DJ":"Jibuti","JO":"Jord\u00e2nia","KW":"Koweit","LA":"Laos","LS":"Lesoto","LV":"Let\u00f3nia","LB":"L\u00edbano","LR":"Lib\u00e9ria","LY":"L\u00edbia","LI":"Listenstaine","LT":"Litu\u00e2nia","LU":"Luxemburgo","MO":"Macau, RAE da China","MK":"Maced\u00f3nia do Norte","MG":"Madag\u00e1scar","YT":"Maiote","MY":"Mal\u00e1sia","MW":"Mal\u00e1ui","MV":"Maldivas","ML":"Mali","MT":"Malta","MA":"Marrocos","MQ":"Martinica","MU":"Maur\u00edcia","MR":"Maurit\u00e2nia","MX":"M\u00e9xico","MM":"Mianmar (Birm\u00e2nia)","FM":"Micron\u00e9sia","MZ":"Mo\u00e7ambique","MD":"Mold\u00e1via","MC":"M\u00f3naco","MN":"Mong\u00f3lia","MS":"Monserrate","ME":"Montenegro","NA":"Nam\u00edbia","NR":"Nauru","NP":"Nepal","NI":"Nicar\u00e1gua","NE":"N\u00edger","NG":"Nig\u00e9ria","NU":"Niu\u00ea","NO":"Noruega","NC":"Nova Caled\u00f3nia","NZ":"Nova Zel\u00e2ndia","OM":"Om\u00e3","NL":"Pa\u00edses Baixos","BQ":"Pa\u00edses Baixos Caribenhos","PW":"Palau","PA":"Panam\u00e1","PG":"Papua-Nova Guin\u00e9","PK":"Paquist\u00e3o","PY":"Paraguai","PE":"Peru","PF":"Polin\u00e9sia Francesa","PL":"Pol\u00f3nia","PR":"Porto Rico","PT":"Portugal","KE":"Qu\u00e9nia","KG":"Quirguist\u00e3o","KI":"Quirib\u00e1ti","GB":"Reino Unido","CF":"Rep\u00fablica Centro-Africana","DO":"Rep\u00fablica Dominicana","RE":"Reuni\u00e3o","RO":"Rom\u00e9nia","RW":"Ruanda","RU":"R\u00fassia","SV":"Salvador","WS":"Samoa","AS":"Samoa Americana","SH":"Santa Helena","LC":"Santa L\u00facia","BL":"S\u00e3o Bartolomeu","KN":"S\u00e3o Crist\u00f3v\u00e3o e Neves","SM":"S\u00e3o Marinho","MF":"S\u00e3o Martinho (Saint-Martin)","SX":"S\u00e3o Martinho (Sint Maarten)","PM":"S\u00e3o Pedro e Miquel\u00e3o","ST":"S\u00e3o Tom\u00e9 e Pr\u00edncipe","VC":"S\u00e3o Vicente e Granadinas","EH":"Sara Ocidental","SC":"Seicheles","SN":"Senegal","SL":"Serra Leoa","RS":"S\u00e9rvia","SG":"Singapura","SY":"S\u00edria","SO":"Som\u00e1lia","LK":"Sri Lanca","SD":"Sud\u00e3o","SS":"Sud\u00e3o do Sul","SE":"Su\u00e9cia","CH":"Su\u00ed\u00e7a","SR":"Suriname","SJ":"Svalbard e Jan Mayen","TH":"Tail\u00e2ndia","TW":"Taiwan","TJ":"Tajiquist\u00e3o","TZ":"Tanz\u00e2nia","IO":"Territ\u00f3rio Brit\u00e2nico do Oceano \u00cdndico","TF":"Territ\u00f3rios Austrais Franceses","PS":"Territ\u00f3rios palestinianos","TL":"Timor-Leste","TG":"Togo","TO":"Tonga","TK":"Toquelau","TT":"Trindade e Tobago","TN":"Tun\u00edsia","TM":"Turquemenist\u00e3o","TR":"Turquia","TV":"Tuvalu","UA":"Ucr\u00e2nia","UG":"Uganda","UY":"Uruguai","UZ":"Usbequist\u00e3o","VU":"Vanuatu","VE":"Venezuela","VN":"Vietname","WF":"Wallis e Futuna","ZM":"Z\u00e2mbia","ZW":"Zimbabu\u00e9"},"appUrl":{"basePath":""},"unitSystem":{"name":"metric","paceSymbol":"\/km","distanceSymbol":"km","elevationSymbol":"m"},"leafletConfig":{"polylineColor":"#fc6719","tileLayerUrls":["https:\/\/tile.openstreetmap.org\/{z}\/{x}\/{y}.png"],"enableGreyScale":true}};
+    window.dreeve = {"countries":{"AF":"Afghanistan","AL":"Albanien","DZ":"Algeriet","VI":"Amerikanska Jungfru\u00f6arna","AS":"Amerikanska Samoa","AD":"Andorra","AO":"Angola","AI":"Anguilla","AQ":"Antarktis","AG":"Antigua och Barbuda","AR":"Argentina","AM":"Armenien","AW":"Aruba","AU":"Australien","AZ":"Azerbajdzjan","BS":"Bahamas","BH":"Bahrain","BD":"Bangladesh","BB":"Barbados","BY":"Belarus","BE":"Belgien","BZ":"Belize","BJ":"Benin","BM":"Bermuda","BT":"Bhutan","BO":"Bolivia","BA":"Bosnien och Hercegovina","BW":"Botswana","BV":"Bouvet\u00f6n","BR":"Brasilien","VG":"Brittiska Jungfru\u00f6arna","IO":"Brittiska territoriet i Indiska oceanen","BN":"Brunei","BG":"Bulgarien","BF":"Burkina Faso","BI":"Burundi","KY":"Cayman\u00f6arna","CF":"Centralafrikanska republiken","CL":"Chile","CO":"Colombia","CK":"Cook\u00f6arna","CR":"Costa Rica","CW":"Cura\u00e7ao","CY":"Cypern","DK":"Danmark","DJ":"Djibouti","DM":"Dominica","DO":"Dominikanska republiken","EC":"Ecuador","EG":"Egypten","GQ":"Ekvatorialguinea","SV":"El Salvador","CI":"Elfenbenskusten","ER":"Eritrea","EE":"Estland","SZ":"Eswatini","ET":"Etiopien","FK":"Falklands\u00f6arna","FJ":"Fiji","PH":"Filippinerna","FI":"Finland","FR":"Frankrike","GF":"Franska Guyana","PF":"Franska Polynesien","TF":"Franska sydterritorierna","FO":"F\u00e4r\u00f6arna","AE":"F\u00f6renade Arabemiraten","GA":"Gabon","GM":"Gambia","GE":"Georgien","GH":"Ghana","GI":"Gibraltar","GR":"Grekland","GD":"Grenada","GL":"Gr\u00f6nland","GP":"Guadeloupe","GU":"Guam","GT":"Guatemala","GG":"Guernsey","GN":"Guinea","GW":"Guinea-Bissau","GY":"Guyana","HT":"Haiti","HM":"Heard\u00f6n och McDonald\u00f6arna","HN":"Honduras","HK":"Hongkong SAR","IN":"Indien","ID":"Indonesien","IQ":"Irak","IR":"Iran","IE":"Irland","IS":"Island","IM":"Isle of Man","IL":"Israel","IT":"Italien","JM":"Jamaica","JP":"Japan","YE":"Jemen","JE":"Jersey","JO":"Jordanien","CX":"Jul\u00f6n","KH":"Kambodja","CM":"Kamerun","CA":"Kanada","CV":"Kap Verde","BQ":"Karibiska Nederl\u00e4nderna","KZ":"Kazakstan","KE":"Kenya","CN":"Kina","KG":"Kirgizistan","KI":"Kiribati","CC":"Kokos\u00f6arna","KM":"Komorerna","CG":"Kongo-Brazzaville","CD":"Kongo-Kinshasa","HR":"Kroatien","CU":"Kuba","KW":"Kuwait","LA":"Laos","LS":"Lesotho","LV":"Lettland","LB":"Libanon","LR":"Liberia","LY":"Libyen","LI":"Liechtenstein","LT":"Litauen","LU":"Luxemburg","MO":"Macao SAR","MG":"Madagaskar","MW":"Malawi","MY":"Malaysia","MV":"Maldiverna","ML":"Mali","MT":"Malta","MA":"Marocko","MH":"Marshall\u00f6arna","MQ":"Martinique","MR":"Mauretanien","MU":"Mauritius","YT":"Mayotte","MX":"Mexiko","FM":"Mikronesien","MZ":"Mo\u00e7ambique","MD":"Moldavien","MC":"Monaco","MN":"Mongoliet","ME":"Montenegro","MS":"Montserrat","MM":"Myanmar (Burma)","NA":"Namibia","NR":"Nauru","NL":"Nederl\u00e4nderna","NP":"Nepal","NI":"Nicaragua","NE":"Niger","NG":"Nigeria","NU":"Niue","KP":"Nordkorea","MK":"Nordmakedonien","MP":"Nordmarianerna","NF":"Norfolk\u00f6n","NO":"Norge","NC":"Nya Kaledonien","NZ":"Nya Zeeland","OM":"Oman","PK":"Pakistan","PW":"Palau","PS":"Palestinska territorierna","PA":"Panama","PG":"Papua Nya Guinea","PY":"Paraguay","PE":"Peru","PN":"Pitcairn\u00f6arna","PL":"Polen","PT":"Portugal","PR":"Puerto Rico","QA":"Qatar","RE":"R\u00e9union","RO":"Rum\u00e4nien","RW":"Rwanda","RU":"Ryssland","BL":"S:t Barth\u00e9lemy","SH":"S:t Helena","KN":"S:t Kitts och Nevis","LC":"S:t Lucia","PM":"S:t Pierre och Miquelon","VC":"S:t Vincent och Grenadinerna","MF":"Saint-Martin","SB":"Salomon\u00f6arna","WS":"Samoa","SM":"San Marino","ST":"S\u00e3o Tom\u00e9 och Pr\u00edncipe","SA":"Saudiarabien","CH":"Schweiz","SN":"Senegal","RS":"Serbien","SC":"Seychellerna","SL":"Sierra Leone","SG":"Singapore","SX":"Sint Maarten","SK":"Slovakien","SI":"Slovenien","SO":"Somalia","ES":"Spanien","LK":"Sri Lanka","GB":"Storbritannien","SD":"Sudan","SR":"Surinam","SJ":"Svalbard och Jan Mayen","SE":"Sverige","ZA":"Sydafrika","GS":"Sydgeorgien och Sydsandwich\u00f6arna","KR":"Sydkorea","SS":"Sydsudan","SY":"Syrien","TJ":"Tadzjikistan","TW":"Taiwan","TZ":"Tanzania","TD":"Tchad","TH":"Thailand","CZ":"Tjeckien","TG":"Togo","TK":"Tokelau\u00f6arna","TO":"Tonga","TT":"Trinidad och Tobago","TN":"Tunisien","TR":"Turkiet","TM":"Turkmenistan","TC":"Turks- och Caicos\u00f6arna","TV":"Tuvalu","DE":"Tyskland","UG":"Uganda","UA":"Ukraina","HU":"Ungern","UY":"Uruguay","US":"USA","UM":"USA:s yttre \u00f6ar","UZ":"Uzbekistan","VU":"Vanuatu","VA":"Vatikanstaten","VE":"Venezuela","VN":"Vietnam","EH":"V\u00e4stsahara","WF":"Wallis- och Futuna\u00f6arna","ZM":"Zambia","ZW":"Zimbabwe","AX":"\u00c5land","AT":"\u00d6sterrike","TL":"\u00d6sttimor"},"appUrl":{"basePath":""},"unitSystem":{"name":"metric","paceSymbol":"\/km","distanceSymbol":"km","elevationSymbol":"m"},"leafletConfig":{"polylineColor":"#fc6719","tileLayerUrls":["https:\/\/tile.openstreetmap.org\/{z}\/{x}\/{y}.png"],"enableGreyScale":true}};
     window.dreeve.placeholderBrokenImage = "/assets/placeholder-broken.webp";
     window.dreeve.authStatusUrl = "/auth/status";
 </script>
 <script src="/libraries/echarts/echarts.min.js?0025176c-5652-11ee-923d-02424dd627d5"></script>
 <script src="/libraries/echarts/echarts.world.min.js?0025176c-5652-11ee-923d-02424dd627d5"></script>
 <script src="/js/dist/app.min.js?0025176c-5652-11ee-923d-02424dd627d5" type="module"></script>
-<!-- b0184875-c916-58be-9380-3851ce9e983f -->
 </body>
 </html>

@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
 use App\Controller\AIChatRequestHandler;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
@@ -13,6 +14,7 @@ use App\Domain\Settings\KeyValueBasedSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\KeyValue\Value;
@@ -22,7 +24,6 @@ use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
 use App\Tests\Infrastructure\Eventing\SpyEventBus;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
-use League\Flysystem\FilesystemOperator;
 use NeuronAI\Agent\Agent;
 use NeuronAI\Agent\AgentInterface;
 use NeuronAI\Chat\Enums\MessageRole;
@@ -41,13 +42,16 @@ class AIChatRequestHandlerTest extends ContainerTestCase
 {
     use MatchesSnapshots;
 
-    private FilesystemOperator $buildStorage;
+    private KeyValueStore $keyValueStore;
     private Stub $neuronAIAgent;
     private MockObject $chatRepository;
 
     public function testHandle(): void
     {
-        $this->buildStorage->write('index.html', 'I am the index', []);
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString('2023-10-17@1.0.0'),
+        ));
 
         $this->chatRepository
             ->expects($this->once())
@@ -66,7 +70,7 @@ class AIChatRequestHandlerTest extends ContainerTestCase
         $this->assertMatchesHtmlSnapshot($requestHandler->handle()->getContent());
     }
 
-    public function testHandleNoIndexFound(): void
+    public function testHandleWhenTheAppHasNotBeenBuiltYet(): void
     {
         $this->chatRepository
             ->expects($this->never())
@@ -81,7 +85,10 @@ class AIChatRequestHandlerTest extends ContainerTestCase
 
     public function testHandleAINotEnabled(): void
     {
-        $this->buildStorage->write('index.html', 'I am the index', []);
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString('2023-10-17@1.0.0'),
+        ));
 
         $this->chatRepository
             ->expects($this->never())
@@ -210,7 +217,7 @@ class AIChatRequestHandlerTest extends ContainerTestCase
     private function buildRequestHandler(bool $aiUIEnabled): AIChatRequestHandler
     {
         return new AIChatRequestHandler(
-            buildHtmlStorage: $this->buildStorage,
+            appStatusChecker: $this->getContainer()->get(AppStatusChecker::class),
             neuronAIAgent: $this->neuronAIAgent,
             chatRepository: $this->chatRepository,
             commandBus: $this->getContainer()->get(CommandBus::class),
@@ -227,7 +234,7 @@ class AIChatRequestHandlerTest extends ContainerTestCase
         CommandBus $commandBus,
     ): AIChatRequestHandler {
         return new AIChatRequestHandler(
-            buildHtmlStorage: $this->buildStorage,
+            appStatusChecker: $this->getContainer()->get(AppStatusChecker::class),
             neuronAIAgent: $agent,
             chatRepository: $chatRepository,
             commandBus: $commandBus,
@@ -265,7 +272,7 @@ class AIChatRequestHandlerTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->buildStorage = $this->getContainer()->get('build_html.storage');
+        $this->keyValueStore = $this->getContainer()->get(KeyValueStore::class);
         $this->neuronAIAgent = $this->createStub(AgentInterface::class);
         $this->chatRepository = $this->createMock(ChatRepository::class);
     }

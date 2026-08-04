@@ -21,7 +21,7 @@ final readonly class Cacheability
     ): self {
         return new self(
             isCacheable: true,
-            cacheTags: $cacheTags,
+            cacheTags: CacheTags::of(...CacheTag::crossCutting(), ...$cacheTags->toArray()),
             cacheContexts: $cacheContexts ?? CacheContexts::none(),
             ttlInSeconds: $ttlInSeconds,
         );

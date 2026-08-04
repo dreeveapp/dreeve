@@ -47,7 +47,7 @@ final readonly class ManuallyCreateActivityCommandHandler implements CommandHand
         $averageSpeed = KmPerHour::from($distance->toFloat() / ($durationInSeconds / 3600));
 
         $activityId = $this->activityIdFactory->random();
-        $activity = Activity::fromState(
+        $activity = Activity::create(
             activityId: $activityId,
             startDateTime: $command->getStartDateTime(),
             sportType: $command->getSportType(),

@@ -28,7 +28,6 @@ final readonly class MetricsSettings
                 if (!is_array($item)) {
                     return $item;
                 }
-                $item['showInNavBar'] = filter_var($item['showInNavBar'] ?? false, FILTER_VALIDATE_BOOLEAN);
                 $item['showInDashboardWidget'] = filter_var($item['showInDashboardWidget'] ?? false, FILTER_VALIDATE_BOOLEAN);
                 $item['sportTypesToInclude'] = array_values(is_array($item['sportTypesToInclude'] ?? null) ? $item['sportTypesToInclude'] : []);
 

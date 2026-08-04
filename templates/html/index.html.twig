@@ -25,7 +25,7 @@
     <link rel="preload" href="{{ relativeUrl(asset('libraries/clusterize/clusterize.min.css')) }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="{{ relativeUrl(asset('libraries/lightgallery/lightgallery-bundle.min.css')) }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
 </head>
-<body class="bg-gray-50" data-easter-egg="{{ easterEggPageUrl }}">
+<body class="bg-gray-50">
 <div class="antialiased">
     <!-- NAVIGATION -->
     {% autoescape false %}
@@ -67,10 +67,7 @@
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10.051 8.102-3.778.322-1.994 1.994a.94.94 0 0 0 .533 1.6l2.698.316m8.39 1.617-.322 3.78-1.994 1.994a.94.94 0 0 1-1.595-.533l-.4-2.652m8.166-11.174a1.366 1.366 0 0 0-1.12-1.12c-1.616-.279-4.906-.623-6.38.853-1.671 1.672-5.211 8.015-6.31 10.023a.932.932 0 0 0 .162 1.111l.828.835.833.832a.932.932 0 0 0 1.111.163c2.008-1.102 8.35-4.642 10.021-6.312 1.475-1.478 1.133-4.77.855-6.385Zm-2.961 3.722a1.88 1.88 0 1 1-3.76 0 1.88 1.88 0 0 1 3.76 0Z"/>
                             </svg>
                             <span>{{ "Gear"|trans|ellipses(23) }}</span>
-                            {% if maintenanceTaskIsDue %}
-                                <span class="sidebar-collapsed:hidden flex size-2 me-3 bg-red-500 rounded-full animate-pulse"
-                                      title="{{ "One of your gear maintenance tasks is due"|trans }}"></span>
-                            {% endif %}
+                            <div class="contents" data-async-content-url="{{ relativeUrl('api/gear/maintenance-due') }}"></div>
                         </a>
                     </li>
                 {% endif %}
@@ -96,11 +93,6 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"/>
                         </svg>
                         <span>Eddington</span>
-                        <div class="sidebar-collapsed:hidden flex gap-x-0.5">
-                            {% for eddingtonNumber in eddingtonNumbers|slice(0, 2) %}
-                                <span class="badge">{{ eddingtonNumber }}</span>
-                            {% endfor %}
-                        </div>
                     </a>
                 </li>
                 <li>
@@ -166,7 +158,7 @@
             <div class="sidebar-collapsed:hidden">
                 <div class="flex items-center justify-center gap-x-1">
                     <span class="bg-gray-100 text-gray-600 font-medium px-2.5 py-0.5 rounded-sm"
-                            title="{{ "Updated on"|trans }} {{ lastUpdate|formatDate('normal') }} {{ lastUpdate|formatTime() }}">{{ appVersion.getSemanticVersion() }}</span>
+                            {% if lastUpdate %}title="{{ "Updated on"|trans }} {{ lastUpdate|formatDate('normal') }} {{ lastUpdate|formatTime() }}"{% endif %}>{{ appVersion.getSemanticVersion() }}</span>
                     <span class="hidden" data-latest-version
                           data-current-version="{{ appVersion.getSemanticVersion() }}">
                     (latest: <a class="underline"
@@ -235,6 +227,5 @@
 <script src="{{ relativeUrl(asset('js/dist/app.min.js')) }}" type="module"></script>
 {% block customScripts %}
 {% endblock customScripts %}
-<!-- {{ easterEggPageUrl }} -->
 </body>
 </html>

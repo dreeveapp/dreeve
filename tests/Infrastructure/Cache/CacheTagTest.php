@@ -8,6 +8,12 @@ use PHPUnit\Framework\TestCase;
 
 class CacheTagTest extends TestCase
 {
+    public function testTheCrossCuttingTagsAreDistinct(): void
+    {
+        $crossCuttingTags = CacheTag::crossCutting();
+        $this->assertEquals(array_unique($crossCuttingTags, SORT_REGULAR), $crossCuttingTags);
+    }
+
     public function testEverySettingsGroupMapsToADistinctCacheTag(): void
     {
         $cacheTags = array_map(

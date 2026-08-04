@@ -148,7 +148,7 @@ final class Activity implements SupportsAITooling
 
         $deviceName = $rawData['device_name'] ?? null;
 
-        return self::fromState(
+        return self::create(
             activityId: ActivityId::fromUnprefixed((string) $rawData['id']),
             startDateTime: $startDate,
             sportType: SportType::from($rawData['sport_type']),
@@ -184,6 +184,80 @@ final class Activity implements SupportsAITooling
             isCommute: $rawData['commute'] ?? false,
             workoutType: WorkoutType::fromStravaInt($rawData['workout_type'] ?? null),
         );
+    }
+
+    /**
+     * @param array<string> $localImagePaths
+     */
+    public static function create(
+        ActivityId $activityId,
+        SerializableDateTime $startDateTime,
+        SportType $sportType,
+        WorldType $worldType,
+        ImportSource $importSource,
+        ?ExternalReferenceId $externalReferenceId,
+        ActivityName $name,
+        ?string $description,
+        Kilometer $distance,
+        Meter $elevation,
+        ?Coordinate $startingCoordinate,
+        ?int $calories,
+        ?int $kilojoules,
+        ?int $averagePower,
+        ?int $maxPower,
+        KmPerHour $averageSpeed,
+        KmPerHour $maxSpeed,
+        ?int $averageHeartRate,
+        ?int $maxHeartRate,
+        ?int $averageCadence,
+        int $movingTimeInSeconds,
+        int $elapsedTimeInSeconds,
+        ?string $deviceName,
+        int $totalImageCount,
+        array $localImagePaths,
+        ?string $polyline,
+        RouteGeography $routeGeography,
+        ?string $weather,
+        ?GearId $gearId,
+        bool $isCommute,
+        ?WorkoutType $workoutType,
+    ): self {
+        $activity = self::fromState(
+            activityId: $activityId,
+            startDateTime: $startDateTime,
+            sportType: $sportType,
+            worldType: $worldType,
+            importSource: $importSource,
+            externalReferenceId: $externalReferenceId,
+            name: $name,
+            description: $description,
+            distance: $distance,
+            elevation: $elevation,
+            startingCoordinate: $startingCoordinate,
+            calories: $calories,
+            kilojoules: $kilojoules,
+            averagePower: $averagePower,
+            maxPower: $maxPower,
+            averageSpeed: $averageSpeed,
+            maxSpeed: $maxSpeed,
+            averageHeartRate: $averageHeartRate,
+            maxHeartRate: $maxHeartRate,
+            averageCadence: $averageCadence,
+            movingTimeInSeconds: $movingTimeInSeconds,
+            elapsedTimeInSeconds: $elapsedTimeInSeconds,
+            deviceName: $deviceName,
+            totalImageCount: $totalImageCount,
+            localImagePaths: $localImagePaths,
+            polyline: $polyline,
+            routeGeography: $routeGeography,
+            weather: $weather,
+            gearId: $gearId,
+            isCommute: $isCommute,
+            workoutType: $workoutType,
+        );
+        $activity->recordThat(new ActivityWasAdded());
+
+        return $activity;
     }
 
     /**

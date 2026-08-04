@@ -2,18 +2,15 @@
 
 namespace App\Tests\Application\Build\ConfigureAppLocale;
 
-use App\Application\Build\BuildIndexHtml\BuildIndexHtml;
 use App\Application\Build\ConfigureAppLocale\ConfigureAppLocale;
 use App\Application\Build\ConfigureAppLocale\ConfigureAppLocaleCommandHandler;
+use App\Application\IndexPage;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Localisation\Locale;
-use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use Carbon\Carbon;
-use League\Flysystem\FileAttributes;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Translation\LocaleSwitcher;
@@ -26,7 +23,7 @@ class ConfigureAppLocaleCommandHandlerTest extends ContainerTestCase
     private string $snapshotName;
     private LocaleSwitcher $localeSwitcher;
     private SettingsRepository $settingsRepository;
-    private CommandBus $commandBus;
+    private IndexPage $indexPage;
 
     #[DataProvider(methodName: 'provideLocales')]
     public function testHandle(Locale $locale): void
@@ -45,18 +42,9 @@ class ConfigureAppLocaleCommandHandlerTest extends ContainerTestCase
         $this->configureLocaleHandlerFor($locale)->handle(new ConfigureAppLocale());
 
         $this->provideFullTestSet();
-        $this->commandBus->dispatch(new BuildIndexHtml(SerializableDateTime::fromString('2023-10-17 16:15:04')));
 
-        $fileSystem = $this->getContainer()->get('build_html.storage');
-        foreach ($fileSystem->listContents('/', true) as $item) {
-            $path = $item->path();
-
-            $this->snapshotName = preg_replace('/[^a-zA-Z0-9]/', '-', (string) $path).'-'.$locale->value;
-            if (!$item instanceof FileAttributes) {
-                continue;
-            }
-            $this->assertMatchesHtmlSnapshot($fileSystem->read($path));
-        }
+        $this->snapshotName = 'index-'.$locale->value;
+        $this->assertMatchesHtmlSnapshot($this->indexPage->render());
 
         $this->assertEquals(
             $locale->value,
@@ -100,6 +88,6 @@ class ConfigureAppLocaleCommandHandlerTest extends ContainerTestCase
 
         $this->localeSwitcher = $this->getContainer()->get(LocaleSwitcher::class);
         $this->settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $this->commandBus = $this->getContainer()->get(CommandBus::class);
+        $this->indexPage = $this->getContainer()->get(IndexPage::class);
     }
 }

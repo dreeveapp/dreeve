@@ -9,7 +9,6 @@ use App\Domain\Settings\SettingsRepository;
 use App\Domain\Settings\UpdateSettings\UpdateSettings;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\RenderCache;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
@@ -104,7 +103,6 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
             'eddington' => [
                 [
                     'label' => 'Ride',
-                    'showInNavBar' => true,
                     'showInDashboardWidget' => false,
                     'sportTypesToInclude' => ['Ride', 'VirtualRide'],
                 ],
@@ -153,7 +151,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
 
     public function testItOnlyInvalidatesRendersOfTheGroupThatWasSaved(): void
     {
-        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::SETTINGS_APPEARANCE)));
+        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::empty()));
         $this->cacheableRenderer->render($cacheable);
 
         $this->commandBus->dispatch(UpdateSettings::fromPayload([

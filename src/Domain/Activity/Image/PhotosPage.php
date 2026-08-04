@@ -35,7 +35,7 @@ final readonly class PhotosPage implements Page
     public function getCacheability(): Cacheability
     {
         return Cacheability::for(
-            cacheTags: CacheTags::of(CacheTag::ACTIVITY_IMAGES, CacheTag::SETTINGS_APPEARANCE),
+            cacheTags: CacheTags::of(CacheTag::ACTIVITY_IMAGES),
             cacheContexts: CacheContexts::of(TrustedVisitorCacheContext::class),
         );
     }

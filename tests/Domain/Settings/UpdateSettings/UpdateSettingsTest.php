@@ -73,7 +73,6 @@ class UpdateSettingsTest extends TestCase
                     'eddington' => [
                         [
                             'label' => 'Ride',
-                            'showInNavBar' => true,
                             'sportTypesToInclude' => ['NotASportType'],
                         ],
                     ],

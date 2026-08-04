@@ -200,7 +200,6 @@
     --animate-spin: spin 1s linear infinite;
     --animate-ping: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
     --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    --animate-bounce: bounce 1s infinite;
     --blur-xs: 4px;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -1106,9 +1105,6 @@
   .mx-auto {
     margin-inline: auto;
   }
-  .my-4 {
-    margin-block: calc(var(--spacing) * 4);
-  }
   .ms-auto {
     margin-inline-start: auto;
   }
@@ -1601,6 +1597,9 @@
   .block {
     display: block;
   }
+  .contents {
+    display: contents;
+  }
   .flex {
     display: flex;
   }
@@ -1829,9 +1828,6 @@
   }
   .min-h-92 {
     min-height: calc(var(--spacing) * 92);
-  }
-  .min-h-\[80vh\] {
-    min-height: 80vh;
   }
   .min-h-screen {
     min-height: 100vh;
@@ -2193,18 +2189,6 @@
   }
   .animate-\[bounce_1s_infinite_400ms\] {
     animation: bounce 1s infinite 400ms;
-  }
-  .animate-\[spin_1\.5s_linear_infinite\] {
-    animation: spin 1.5s linear infinite;
-  }
-  .animate-\[spin_2s_linear_infinite\] {
-    animation: spin 2s linear infinite;
-  }
-  .animate-\[spin_3s_linear_infinite_reverse\] {
-    animation: spin 3s linear infinite reverse;
-  }
-  .animate-bounce {
-    animation: var(--animate-bounce);
   }
   .animate-ping {
     animation: var(--animate-ping);
@@ -3284,10 +3268,6 @@
     font-size: var(--text-3xl);
     line-height: var(--tw-leading, var(--text-3xl--line-height));
   }
-  .text-4xl {
-    font-size: var(--text-4xl);
-    line-height: var(--tw-leading, var(--text-4xl--line-height));
-  }
   .text-5xl {
     font-size: var(--text-5xl);
     line-height: var(--tw-leading, var(--text-5xl--line-height));
@@ -3464,9 +3444,6 @@
   }
   .dark .datatable-wrapper .datatable-table thead th.datatable-descending .datatable-sorter {
     color: white;
-  }
-  .text-\[\#111827\] {
-    color: #111827;
   }
   .text-\[\#faba00\] {
     color: #faba00;
@@ -3713,9 +3690,6 @@
   .select-none {
     -webkit-user-select: none;
     user-select: none;
-  }
-  .\[animation-direction\:reverse\] {
-    animation-direction: reverse;
   }
   .\[transform-box\:fill-box\] {
     transform-box: fill-box;
@@ -6561,18 +6535,6 @@ table.data-table {
     padding: calc(var(--spacing) * 4);
     text-align: left;
   }
-  body:has(.rainbow-bg) {
-    animation: rainbow-bg 10s linear infinite;
-    nav {
-      animation: rainbow-bg 10s linear infinite;
-    }
-    aside, #toggle-sidebar-collapsed-state {
-      display: none !important;
-    }
-    main {
-      margin-left: 0px !important;
-    }
-  }
 }
 @layer base {
   * {
@@ -7311,29 +7273,6 @@ table.data-table {
   }
   100% {
     box-shadow: 0 0 0 0 rgba(242, 103, 34, 0);
-  }
-}
-@keyframes rainbow-bg {
-  0% {
-    background-color: #ff6b6b;
-  }
-  16% {
-    background-color: #ffa36c;
-  }
-  33% {
-    background-color: #fff56d;
-  }
-  50% {
-    background-color: #6bff95;
-  }
-  66% {
-    background-color: #6bdfff;
-  }
-  83% {
-    background-color: #8a6bff;
-  }
-  100% {
-    background-color: #ff6b6b;
   }
 }
 @layer properties {

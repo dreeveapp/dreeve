@@ -60,7 +60,7 @@ class CacheableRendererTest extends ContainerTestCase
         $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
         $this->cacheableRenderer->render($cacheable);
 
-        $this->renderCache->invalidateTags(CacheTag::SETTINGS_APPEARANCE);
+        $this->renderCache->invalidateTags(CacheTag::CHALLENGES);
 
         $cacheable->rendered = 'changed';
         $this->assertEquals(

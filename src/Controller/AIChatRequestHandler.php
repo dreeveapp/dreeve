@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Domain\Integration\AI\Chat\ChatRepository;
@@ -14,7 +15,6 @@ use App\Infrastructure\Http\ServerSentEvent;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\RelativeUrl;
 use GuzzleHttp\Exception\ClientException;
-use League\Flysystem\FilesystemOperator;
 use NeuronAI\Agent\AgentInterface;
 use NeuronAI\Chat\Enums\MessageRole;
 use NeuronAI\Chat\Messages\Stream\Chunks\TextChunk;
@@ -34,7 +34,7 @@ use Twig\Environment;
 final readonly class AIChatRequestHandler
 {
     public function __construct(
-        private FilesystemOperator $buildHtmlStorage,
+        private AppStatusChecker $appStatusChecker,
         private AgentInterface $neuronAIAgent,
         private ChatRepository $chatRepository,
         private CommandBus $commandBus,
@@ -48,7 +48,7 @@ final readonly class AIChatRequestHandler
     #[Route(path: '/ai/chat', name: 'ai_chat', methods: ['GET'], priority: 2)]
     public function handle(): Response
     {
-        if (!$this->buildHtmlStorage->fileExists('index.html')) {
+        if (!$this->appStatusChecker->hasBeenBuilt()) {
             return new RedirectResponse(RelativeUrl::from('/', $this->appUrl)->toRelativeUrl(), Response::HTTP_FOUND);
         }
         if (!$this->settingsRepository->integrations()->isAIIntegrationWithUIEnabled()) {

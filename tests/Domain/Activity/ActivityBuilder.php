@@ -80,6 +80,43 @@ final class ActivityBuilder
         return new self();
     }
 
+    public function buildAsNewlyCreated(): Activity
+    {
+        return Activity::create(
+            activityId: $this->activityId,
+            startDateTime: $this->startDateTime,
+            sportType: $this->sportType,
+            worldType: $this->worldType,
+            importSource: $this->importSource,
+            externalReferenceId: $this->externalReferenceId,
+            name: $this->name,
+            description: $this->description,
+            distance: $this->distance,
+            elevation: $this->elevation,
+            startingCoordinate: $this->startingCoordinate,
+            calories: $this->calories,
+            kilojoules: null,
+            averagePower: $this->averagePower,
+            maxPower: $this->maxPower,
+            averageSpeed: $this->averageSpeed,
+            maxSpeed: $this->maxSpeed,
+            averageHeartRate: $this->averageHeartRate,
+            maxHeartRate: $this->maxHeartRate,
+            averageCadence: $this->averageCadence,
+            movingTimeInSeconds: $this->movingTimeInSeconds,
+            elapsedTimeInSeconds: $this->elapsedTimeInSeconds,
+            deviceName: $this->deviceName,
+            totalImageCount: $this->totalImageCount,
+            localImagePaths: $this->localImagePaths,
+            polyline: $this->polyline,
+            routeGeography: $this->routeGeography,
+            weather: $this->weather,
+            gearId: $this->gearId,
+            isCommute: $this->isCommute,
+            workoutType: $this->workoutType,
+        );
+    }
+
     public function build(): Activity
     {
         return Activity::fromState(

@@ -14,6 +14,7 @@ use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Segment\SegmentEffort\SegmentEffortBuilder;
+use App\Tests\Infrastructure\Eventing\SpyEventBus;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class DbalSegmentRepositoryTest extends ContainerTestCase
@@ -112,11 +113,6 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
         );
     }
 
-    /**
-     * Seeds three segments of which one ($segmentTwo) has no efforts.
-     *
-     * @return array{\App\Domain\Segment\Segment, \App\Domain\Segment\Segment, \App\Domain\Segment\Segment}
-     */
     private function seedSegmentsWithEfforts(): array
     {
         $segmentOne = SegmentBuilder::fromDefaults()
@@ -162,7 +158,8 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
         parent::setUp();
 
         $this->segmentRepository = new DbalSegmentRepository(
-            $this->getConnection()
+            $this->getConnection(),
+            new SpyEventBus(),
         );
     }
 }

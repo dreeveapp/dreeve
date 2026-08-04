@@ -28,9 +28,8 @@ final readonly class ChallengesPage implements Page
 
     public function getCacheability(): Cacheability
     {
-        // The month headings are rendered in the configured locale, hence the appearance tag.
         return Cacheability::for(
-            cacheTags: CacheTags::of(CacheTag::CHALLENGES, CacheTag::SETTINGS_APPEARANCE),
+            cacheTags: CacheTags::of(CacheTag::CHALLENGES),
         );
     }
 

@@ -12,6 +12,7 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\FileSystem\PermissionChecker;
+use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Infrastructure\FileSystem\SuccessfulPermissionChecker;
@@ -87,6 +88,7 @@ class AppStatusCheckerTest extends ContainerTestCase
             $this->getContainer()->get(SettingsRepository::class),
             $this->getContainer()->get(ActivityIdRepository::class),
             $permissionChecker,
+            $this->getContainer()->get(KeyValueStore::class),
         );
     }
 }

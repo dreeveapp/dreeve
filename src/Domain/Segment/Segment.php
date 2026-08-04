@@ -11,6 +11,7 @@ use App\Domain\Integration\AI\SupportsAITooling;
 use App\Domain\Segment\SegmentEffort\SegmentEffort;
 use App\Domain\Zwift\CouldNotDetermineZwiftMap;
 use App\Domain\Zwift\ZwiftMap;
+use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
@@ -23,6 +24,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'Segment_detailsHaveBeenImported', columns: ['detailsHaveBeenImported'])]
 final class Segment implements SupportsAITooling
 {
+    use RecordsEvents;
+
     private ?SegmentEffort $bestEffort = null;
     private int $numberOfTimesRidden = 0;
     private ?SerializableDateTime $lastEffortDate = null;
@@ -69,7 +72,7 @@ final class Segment implements SupportsAITooling
         ?string $countryCode,
         ?float $averageGradient,
     ): self {
-        return new self(
+        $segment = new self(
             segmentId: $segmentId,
             name: $name,
             sportType: $sportType,
@@ -84,6 +87,9 @@ final class Segment implements SupportsAITooling
             startingCoordinate: null,
             averageGradient: $averageGradient,
         );
+        $segment->recordThat(new SegmentWasAdded());
+
+        return $segment;
     }
 
     public static function fromState(

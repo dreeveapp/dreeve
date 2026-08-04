@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use League\Flysystem\FilesystemOperator;
+use App\Application\AppStatusChecker;
+use App\Application\IndexPage;
+use App\Infrastructure\Http\Page\PageRenderer;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -14,17 +16,19 @@ use Symfony\Component\Routing\Attribute\Route;
 final readonly class AppRequestHandler
 {
     public function __construct(
-        private FilesystemOperator $buildHtmlStorage,
+        private AppStatusChecker $appStatusChecker,
+        private IndexPage $indexPage,
+        private PageRenderer $pageRenderer,
     ) {
     }
 
     #[Route(path: '/{wildcard?}', name: 'app', requirements: ['wildcard' => '.*'], methods: ['GET'], priority: -10)]
     public function handle(): Response
     {
-        if (!$this->buildHtmlStorage->fileExists('index.html')) {
+        if (!$this->appStatusChecker->hasBeenBuilt()) {
             throw new NotFoundHttpException('Not found');
         }
 
-        return new Response($this->buildHtmlStorage->read('index.html'), Response::HTTP_OK);
+        return $this->pageRenderer->render($this->indexPage);
     }
 }

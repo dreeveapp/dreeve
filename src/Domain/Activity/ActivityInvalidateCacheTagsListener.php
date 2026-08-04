@@ -16,6 +16,12 @@ final readonly class ActivityInvalidateCacheTagsListener
     }
 
     #[AsEventListener]
+    public function reactToActivityWasAdded(ActivityWasAdded $event): void
+    {
+        $this->renderCache->invalidateTags(CacheTag::ACTIVITIES);
+    }
+
+    #[AsEventListener]
     public function reactToActivityImagesHaveBeenUpdated(ActivityImagesHaveBeenUpdated $event): void
     {
         $this->renderCache->invalidateTags(CacheTag::ACTIVITY_IMAGES);
@@ -24,6 +30,6 @@ final readonly class ActivityInvalidateCacheTagsListener
     #[AsEventListener]
     public function reactToActivityWasDeleted(ActivityWasDeleted $event): void
     {
-        $this->renderCache->invalidateTags(CacheTag::ACTIVITY_IMAGES);
+        $this->renderCache->invalidateTags(CacheTag::ACTIVITIES, CacheTag::ACTIVITY_IMAGES);
     }
 }

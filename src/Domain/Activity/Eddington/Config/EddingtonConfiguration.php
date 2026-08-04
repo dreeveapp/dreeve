@@ -27,19 +27,16 @@ final class EddingtonConfiguration extends Collection
         return [
             [
                 'label' => 'Ride',
-                'showInNavBar' => true,
                 'sportTypesToInclude' => ['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide'],
                 'showInDashboardWidget' => true,
             ],
             [
                 'label' => 'Run',
-                'showInNavBar' => true,
                 'sportTypesToInclude' => ['Run', 'TrailRun', 'VirtualRun'],
                 'showInDashboardWidget' => true,
             ],
             [
                 'label' => 'Walk',
-                'showInNavBar' => false,
                 'sportTypesToInclude' => ['Walk', 'Hike'],
                 'showInDashboardWidget' => false,
             ],
@@ -65,7 +62,7 @@ final class EddingtonConfiguration extends Collection
                 throw new InvalidEddingtonConfiguration('Invalid Eddington configuration provided');
             }
 
-            foreach (['label', 'showInNavBar', 'sportTypesToInclude'] as $requiredKey) {
+            foreach (['label', 'sportTypesToInclude'] as $requiredKey) {
                 if (array_key_exists($requiredKey, $eddingtonConfig)) {
                     continue;
                 }
@@ -74,10 +71,6 @@ final class EddingtonConfiguration extends Collection
 
             if (empty($eddingtonConfig['label'])) {
                 throw new InvalidEddingtonConfiguration('"label" property cannot be empty');
-            }
-
-            if (!is_bool($eddingtonConfig['showInNavBar'])) {
-                throw new InvalidEddingtonConfiguration('"showInNavBar" property must be a boolean');
             }
 
             if (array_key_exists('showInDashboardWidget', $eddingtonConfig) && !is_bool($eddingtonConfig['showInDashboardWidget'])) {
@@ -110,15 +103,11 @@ final class EddingtonConfiguration extends Collection
 
             $eddingtonConfigItems[] = EddingtonConfigItem::create(
                 label: $eddingtonConfig['label'],
-                showInNavBar: $eddingtonConfig['showInNavBar'],
                 sportTypesToInclude: $sportTypesToInclude,
                 showInDashboardWidget: $eddingtonConfig['showInDashboardWidget'] ?? false,
             );
         }
 
-        if (count(array_filter($items, fn (array $eddingtonConfig) => $eddingtonConfig['showInNavBar'])) > 2) {
-            throw new InvalidEddingtonConfiguration('You can only have two Eddingtons with "showInNavBar" set to true');
-        }
         if (count(array_filter($items, fn (array $eddingtonConfig): bool => array_key_exists('showInDashboardWidget', $eddingtonConfig) && $eddingtonConfig['showInDashboardWidget'])) > 2) {
             throw new InvalidEddingtonConfiguration('You can only have two Eddingtons with "showInDashboardWidget" set to true');
         }

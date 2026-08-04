@@ -12,7 +12,9 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Infrastructure\Cache\RenderCache;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -92,6 +94,8 @@ class RunBuildCommandHandlerTest extends ContainerTestCase
             commandBus: $this->commandBus = new SpyCommandBus(),
             appStatusChecker: $this->getContainer()->get(AppStatusChecker::class),
             gearImportStatus: $this->getContainer()->get(GearImportStatus::class),
+            keyValueStore: $this->getContainer()->get(KeyValueStore::class),
+            renderCache: $this->getContainer()->get(RenderCache::class),
             clock: PausedClock::on(SerializableDateTime::fromString('2023-10-17 16:15:04')),
         );
     }

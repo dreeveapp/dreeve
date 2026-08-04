@@ -14,7 +14,6 @@ use App\Application\Build\BuildGearMaintenanceHtml\BuildGearMaintenanceHtml;
 use App\Application\Build\BuildGearStatsHtml\BuildGearStatsHtml;
 use App\Application\Build\BuildGpxFiles\BuildGpxFiles;
 use App\Application\Build\BuildHeatmapHtml\BuildHeatmapHtml;
-use App\Application\Build\BuildIndexHtml\BuildIndexHtml;
 use App\Application\Build\BuildManifest\BuildManifest;
 use App\Application\Build\BuildMilestonesHtml\BuildMilestonesHtml;
 use App\Application\Build\BuildMonthlyStatsHtml\BuildMonthlyStatsHtml;
@@ -24,10 +23,16 @@ use App\Application\Build\BuildSegmentsHtml\BuildSegmentsHtml;
 use App\Application\Build\ConfigureAppColors\ConfigureAppColors;
 use App\Application\Build\ConfigureAppLocale\ConfigureAppLocale;
 use App\Application\Import\StravaImport\ImportGear\GearImportStatus;
+use App\Infrastructure\Cache\CacheTag;
+use App\Infrastructure\Cache\RenderCache;
 use App\Infrastructure\Console\ProgressBar;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
+use App\Infrastructure\KeyValue\Key;
+use App\Infrastructure\KeyValue\KeyValue;
+use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Time\Clock\Clock;
 
 final readonly class RunBuildCommandHandler implements CommandHandler
@@ -36,6 +41,8 @@ final readonly class RunBuildCommandHandler implements CommandHandler
         private CommandBus $commandBus,
         private AppStatusChecker $appStatusChecker,
         private GearImportStatus $gearImportStatus,
+        private KeyValueStore $keyValueStore,
+        private RenderCache $renderCache,
         private Clock $clock,
     ) {
     }
@@ -62,7 +69,6 @@ This is not a bug, once all your activities have been imported, your gear statis
             'Configuring locale' => new ConfigureAppLocale(),
             'Configuring theme colors' => new ConfigureAppColors(),
             'Building Manifest' => new BuildManifest(),
-            'Building index' => new BuildIndexHtml($now),
             'Building dashboard' => new BuildDashboardHtml(),
             'Building activities' => new BuildActivitiesHtml($now),
             'Building gpx files' => new BuildGpxFiles(),
@@ -90,5 +96,11 @@ This is not a bug, once all your activities have been imported, your gear statis
 
         $progressBar->finish();
         $output->writeln('');
+
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_DATE_TIME,
+            value: Value::fromString($now->iso()),
+        ));
+        $this->renderCache->invalidateTags(CacheTag::APP_BUILD);
     }
 }

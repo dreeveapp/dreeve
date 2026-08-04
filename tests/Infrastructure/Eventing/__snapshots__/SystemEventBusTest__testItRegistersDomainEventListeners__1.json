@@ -1,10 +1,15 @@
 {
     "App\\Domain\\Activity\\ActivityInvalidateCacheTagsListener": [
+        "reactToActivityWasAdded",
         "reactToActivityImagesHaveBeenUpdated",
         "reactToActivityWasDeleted"
     ],
     "App\\Domain\\Challenge\\ChallengeInvalidateCacheTagsListener": [
         "reactToChallengeWasImported"
+    ],
+    "App\\Domain\\Segment\\SegmentInvalidateCacheTagsListener": [
+        "reactToSegmentWasAdded",
+        "reactToSegmentsWereDeleted"
     ],
     "App\\Domain\\Settings\\SettingsInvalidateCacheTagsListener": [
         "reactToSettingsWereUpdated"

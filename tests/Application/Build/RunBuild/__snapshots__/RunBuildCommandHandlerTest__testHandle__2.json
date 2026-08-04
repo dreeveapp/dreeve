@@ -12,12 +12,6 @@
         "payload": []
     },
     {
-        "commandName": "App\\Application\\Build\\BuildIndexHtml\\BuildIndexHtml",
-        "payload": {
-            "now": "2023-10-17 16:15:04"
-        }
-    },
-    {
         "commandName": "App\\Application\\Build\\BuildDashboardHtml\\BuildDashboardHtml",
         "payload": []
     },

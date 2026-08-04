@@ -143,6 +143,7 @@ class ActivityBasedImageRepositoryTest extends ContainerTestCase
         parent::setUp();
 
         $this->imageRepository = new ActivityBasedImageRepository(
+            $this->getConnection(),
             $this->getContainer()->get(ActivityRepository::class),
             $this->fileStorage = $this->getContainer()->get('file.storage'),
             $this->getContainer()->get(SettingsRepository::class),

@@ -160,6 +160,7 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
                 $this->getContainer()->get(SettingsRepository::class),
                 $this->getContainer()->get(ActivityIdRepository::class),
                 new SuccessfulPermissionChecker(),
+                $this->getContainer()->get(KeyValueStore::class),
             ),
             appUrl: AppUrl::fromString('http://localhost'),
             importMode: ImportMode::STRAVA_API,

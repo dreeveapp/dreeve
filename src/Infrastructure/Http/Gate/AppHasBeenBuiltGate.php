@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\Gate;
 
+use App\Application\AppStatusChecker;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Import\ImportMode;
-use League\Flysystem\FilesystemOperator;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -16,7 +16,7 @@ final class AppHasBeenBuiltGate extends ConditionalRedirectGate
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         private readonly ImportMode $importMode,
-        private readonly FilesystemOperator $buildHtmlStorage,
+        private readonly AppStatusChecker $appStatusChecker,
         private readonly ActivityIdRepository $activityIdRepository,
     ) {
         parent::__construct($urlGenerator);
@@ -24,7 +24,7 @@ final class AppHasBeenBuiltGate extends ConditionalRedirectGate
 
     protected function shouldGuard(): bool
     {
-        if (!$this->buildHtmlStorage->fileExists('index.html')) {
+        if (!$this->appStatusChecker->hasBeenBuilt()) {
             return true;
         }
 

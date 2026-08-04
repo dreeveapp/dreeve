@@ -34,7 +34,7 @@ class ChallengesPageTest extends ContainerTestCase
 
         $this->assertTrue($cacheability->isCacheable());
         $this->assertEquals(
-            [CacheTag::CHALLENGES->value, CacheTag::SETTINGS_APPEARANCE->value],
+            [CacheTag::SETTINGS_APPEARANCE->value, CacheTag::SETTINGS_GENERAL->value, CacheTag::CHALLENGES->value],
             $cacheability->getCacheTags()->toTagStrings()
         );
         $this->assertEmpty($cacheability->getCacheContexts()->toArray());

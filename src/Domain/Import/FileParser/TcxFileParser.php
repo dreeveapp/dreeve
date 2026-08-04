@@ -99,7 +99,7 @@ final readonly class TcxFileParser implements ActivityFileParser
         $activityId = $this->activityIdFactory->random();
         $startDateTime = SerializableDateTime::fromTimestamp($startTimestamp)->toTimezone($this->timezone ?? SerializableTimezone::UTC());
         $activityLaps = $this->buildActivityLaps($laps, $activityId);
-        $activity = Activity::fromState(
+        $activity = Activity::create(
             activityId: $activityId,
             startDateTime: $startDateTime,
             sportType: $sportType,

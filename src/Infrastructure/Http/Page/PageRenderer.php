@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\Page;
 
+use App\Infrastructure\Cache\Cacheable;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Http\HtmlResponse;
 
@@ -14,7 +15,7 @@ final readonly class PageRenderer
     ) {
     }
 
-    public function render(Page $page): HtmlResponse
+    public function render(Cacheable $page): HtmlResponse
     {
         $render = $this->cacheableRenderer->render($page);
 

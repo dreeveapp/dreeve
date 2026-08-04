@@ -8,7 +8,10 @@ use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Settings\AthleteHasNotBeenConfigured;
 use App\Domain\Settings\KeyValueBasedSettingsRepository;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\FileSystem\PermissionChecker;
+use App\Infrastructure\KeyValue\Key;
+use App\Infrastructure\KeyValue\KeyValueStore;
 use League\Flysystem\UnableToCreateDirectory;
 use League\Flysystem\UnableToWriteFile;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -20,7 +23,19 @@ final readonly class AppStatusChecker
         private SettingsRepository $settingsRepository,
         private ActivityIdRepository $activityIdRepository,
         private PermissionChecker $fileSystemPermissionChecker,
+        private KeyValueStore $keyValueStore,
     ) {
+    }
+
+    public function hasBeenBuilt(): bool
+    {
+        try {
+            $this->keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT);
+        } catch (EntityNotFound) {
+            return false;
+        }
+
+        return true;
     }
 
     public function ensureIsReadyForStravaImport(): void

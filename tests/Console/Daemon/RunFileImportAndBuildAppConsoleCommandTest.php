@@ -450,6 +450,7 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
                 $this->getContainer()->get(SettingsRepository::class),
                 $this->getContainer()->get(ActivityIdRepository::class),
                 $permissionChecker,
+                $this->getContainer()->get(KeyValueStore::class),
             ),
             watchDirectory: $this->getContainer()->get(WatchDirectory::class),
             resourceUsage: new FixedResourceUsage(),

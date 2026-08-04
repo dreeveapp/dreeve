@@ -2,23 +2,28 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Build\BuildIndexHtml;
+namespace App\Application;
 
-use App\Application\AppUrl;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
-use App\Domain\Activity\Eddington\EddingtonCalculator;
 use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Gear\GearRepository;
-use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\Cacheable;
+use App\Infrastructure\Cache\CacheTag;
+use App\Infrastructure\Cache\CacheTags;
+use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\KeyValue\Key;
+use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Translation\LocaleSwitcher;
+use Twig\Environment;
 
-final readonly class IndexHtml
+final readonly class IndexPage implements Cacheable
 {
     public function __construct(
         private ActivityIdRepository $activityIdRepository,
@@ -26,45 +31,51 @@ final readonly class IndexHtml
         private ChallengeRepository $challengeRepository,
         private ActivityBestEffortRepository $activityBestEffortRepository,
         private ImageRepository $imageRepository,
-        private EddingtonCalculator $eddingtonCalculator,
-        private MaintenanceTaskProgressCalculator $maintenanceTaskProgressCalculator,
         private AppUrl $appUrl,
         private LocaleSwitcher $localeSwitcher,
         private SettingsRepository $settingsRepository,
+        private KeyValueStore $keyValueStore,
+        private Environment $twig,
     ) {
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function getContext(SerializableDateTime $now): array
+    public function getCacheKey(): string
+    {
+        return 'index';
+    }
+
+    public function getCacheability(): Cacheability
+    {
+        return Cacheability::for(
+            cacheTags: CacheTags::of(
+                // The "updated on" stamp in the sidebar is written when a build finishes.
+                CacheTag::APP_BUILD,
+                CacheTag::ACTIVITIES,
+                CacheTag::ACTIVITY_IMAGES,
+                CacheTag::CHALLENGES,
+                // The top nav bar renders the workout assistant when the AI UI is enabled.
+                CacheTag::SETTINGS_INTEGRATIONS,
+            ),
+        );
+    }
+
+    public function render(): string
     {
         $appearance = $this->settingsRepository->appearance();
         $unitSystem = $appearance->getUnitSystem();
 
-        $eddingtonNumbers = [];
-        $eddingtons = $this->eddingtonCalculator->calculate($unitSystem);
-
-        foreach ($eddingtons as $eddington) {
-            if (!$eddington->getConfig()->showInNavBar()) {
-                continue;
-            }
-            $eddingtonNumbers[] = $eddington->getNumber();
-        }
-
         $general = $this->settingsRepository->general();
 
-        return [
+        return $this->twig->load('html/index.html.twig')->render([
+            'router' => Router::SINGLE_PAGE,
             'totalActivityCount' => $this->activityIdRepository->count(),
-            'eddingtonNumbers' => $eddingtonNumbers,
             'completedChallenges' => $this->challengeRepository->count(),
             'totalPhotoCount' => $this->imageRepository->count(),
             'hasGear' => $this->gearRepository->hasGear(),
-            'lastUpdate' => $now,
+            'lastUpdate' => $this->getLastUpdate(),
             'athlete' => $general->getAthlete(),
             'profilePictureUrl' => $general->getProfilePictureUrl(),
             'subTitle' => $general->getAppSubTitle(),
-            'maintenanceTaskIsDue' => !$this->maintenanceTaskProgressCalculator->getGearIdsThatHaveDueTasks()->isEmpty(),
             'hasBestEfforts' => $this->activityBestEffortRepository->hasData(),
             'javascriptWindowConstants' => Json::encode([
                 'countries' => Countries::getNames($this->localeSwitcher->getLocale()),
@@ -79,6 +90,16 @@ final readonly class IndexHtml
                 ],
                 'leafletConfig' => $appearance->getLeafletConfig(),
             ]),
-        ];
+        ]);
+    }
+
+    private function getLastUpdate(): ?SerializableDateTime
+    {
+        try {
+            return SerializableDateTime::fromString((string) $this->keyValueStore->find(Key::APP_LAST_BUILD_DATE_TIME));
+        } catch (EntityNotFound) {
+            // The app has not been built since this key was introduced.
+            return null;
+        }
     }
 }

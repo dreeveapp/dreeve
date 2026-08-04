@@ -2,11 +2,15 @@
 
 namespace App\Tests\Infrastructure\Http\Gate;
 
+use App\Application\AppStatusChecker;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\Http\Gate\AppHasBeenBuiltGate;
+use App\Infrastructure\KeyValue\Key;
+use App\Infrastructure\KeyValue\KeyValue;
+use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Infrastructure\KeyValue\Value;
 use App\Tests\ContainerTestCase;
-use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,17 +20,17 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AppHasBeenBuiltGateTest extends ContainerTestCase
 {
-    private FilesystemOperator&MockObject $buildHtmlStorage;
     private ActivityIdRepository&MockObject $activityIdRepository;
+    private AppStatusChecker $appStatusChecker;
+    private KeyValueStore $keyValueStore;
     private UrlGeneratorInterface $urlGenerator;
 
     public function testItPassesThroughWhenTheAppHasBeenBuilt(): void
     {
-        $this->buildHtmlStorage
-            ->expects($this->once())
-            ->method('fileExists')
-            ->with('index.html')
-            ->willReturn(true);
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString('2023-10-17@1.0.0'),
+        ));
         $this->activityIdRepository
             ->expects($this->once())
             ->method('count')
@@ -37,11 +41,6 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
 
     public function testItRedirectsWhenNothingHasBeenBuiltYet(): void
     {
-        $this->buildHtmlStorage
-            ->expects($this->once())
-            ->method('fileExists')
-            ->with('index.html')
-            ->willReturn(false);
         $this->activityIdRepository->expects($this->never())->method('count');
 
         $response = $this->gate()->handle(Request::create('/dashboard'))->getResponse();
@@ -53,11 +52,10 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
 
     public function testItRedirectsWhenBuiltButNoActivitiesHaveBeenImported(): void
     {
-        $this->buildHtmlStorage
-            ->expects($this->once())
-            ->method('fileExists')
-            ->with('index.html')
-            ->willReturn(true);
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString('2023-10-17@1.0.0'),
+        ));
         $this->activityIdRepository
             ->expects($this->once())
             ->method('count')
@@ -72,11 +70,6 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
 
     public function testItNeverRedirectsTheFinishSetupTargetItself(): void
     {
-        $this->buildHtmlStorage
-            ->expects($this->once())
-            ->method('fileExists')
-            ->with('index.html')
-            ->willReturn(false);
         $this->activityIdRepository->expects($this->never())->method('count');
 
         $decision = $this->gate()->handle(Request::create('/finish-setup'));
@@ -88,11 +81,6 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
     #[DataProvider('provideExemptAdminPaths')]
     public function testItKeepsTheAdminPanelReachableWhileBuildingInFileImportMode(string $path): void
     {
-        $this->buildHtmlStorage
-            ->expects($this->once())
-            ->method('fileExists')
-            ->with('index.html')
-            ->willReturn(false);
         $this->activityIdRepository->expects($this->never())->method('count');
 
         $decision = $this->gate(ImportMode::FILES)->handle(Request::create($path));
@@ -104,11 +92,6 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
     #[DataProvider('provideExemptAdminPaths')]
     public function testItRedirectsTheAdminPanelWhileBuildingInStravaApiImportMode(string $path): void
     {
-        $this->buildHtmlStorage
-            ->expects($this->once())
-            ->method('fileExists')
-            ->with('index.html')
-            ->willReturn(false);
         $this->activityIdRepository->expects($this->never())->method('count');
 
         $response = $this->gate(ImportMode::STRAVA_API)->handle(Request::create($path))->getResponse();
@@ -127,7 +110,7 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
 
     private function gate(ImportMode $importMode = ImportMode::FILES): AppHasBeenBuiltGate
     {
-        return new AppHasBeenBuiltGate($this->urlGenerator, $importMode, $this->buildHtmlStorage, $this->activityIdRepository);
+        return new AppHasBeenBuiltGate($this->urlGenerator, $importMode, $this->appStatusChecker, $this->activityIdRepository);
     }
 
     #[\Override]
@@ -135,8 +118,9 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->buildHtmlStorage = $this->createMock(FilesystemOperator::class);
         $this->activityIdRepository = $this->createMock(ActivityIdRepository::class);
+        $this->appStatusChecker = $this->getContainer()->get(AppStatusChecker::class);
+        $this->keyValueStore = $this->getContainer()->get(KeyValueStore::class);
         $this->urlGenerator = $this->getContainer()->get(UrlGeneratorInterface::class);
     }
 }

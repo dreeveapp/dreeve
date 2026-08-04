@@ -11,7 +11,6 @@ final readonly class EddingtonConfigItem
 {
     private function __construct(
         private string $label,
-        private bool $showInNavBar,
         private SportTypes $sportTypesToInclude,
         private bool $showInDashboardWidget,
     ) {
@@ -19,13 +18,11 @@ final readonly class EddingtonConfigItem
 
     public static function create(
         string $label,
-        bool $showInNavBar,
         SportTypes $sportTypesToInclude,
         bool $showInDashboardWidget,
     ): self {
         return new self(
             label: $label,
-            showInNavBar: $showInNavBar,
             sportTypesToInclude: $sportTypesToInclude,
             showInDashboardWidget: $showInDashboardWidget,
         );
@@ -39,11 +36,6 @@ final readonly class EddingtonConfigItem
     public function getLabel(): string
     {
         return $this->label;
-    }
-
-    public function showInNavBar(): bool
-    {
-        return $this->showInNavBar;
     }
 
     public function getSportTypesToInclude(): SportTypes

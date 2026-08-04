@@ -12,7 +12,6 @@ class EddingtonConfigItemTest extends TestCase
     {
         $configItem = EddingtonConfigItem::create(
             label: 'Test With 999% weird ° $ chars YO',
-            showInNavBar: true,
             sportTypesToInclude: SportTypes::empty(),
             showInDashboardWidget: false
         );

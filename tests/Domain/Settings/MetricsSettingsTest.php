@@ -27,7 +27,6 @@ class MetricsSettingsTest extends TestCase
             'eddington' => [
                 [
                     'label' => 'Ride',
-                    'showInNavBar' => true,
                     'showInDashboardWidget' => false,
                     'sportTypesToInclude' => ['Ride', 'VirtualRide'],
                 ],
@@ -38,7 +37,6 @@ class MetricsSettingsTest extends TestCase
         $this->assertCount(1, $eddingtonConfiguration);
         $item = $eddingtonConfiguration->getFirst();
         $this->assertSame('Ride', $item->getLabel());
-        $this->assertTrue($item->showInNavBar());
         $this->assertFalse($item->showInDashboardWidget());
         $this->assertTrue($item->getSportTypesToInclude()->has(SportType::RIDE));
 
@@ -54,15 +52,14 @@ class MetricsSettingsTest extends TestCase
             'eddington' => [
                 [
                     'label' => 'Ride',
-                    'showInNavBar' => '1',
+                    'showInDashboardWidget' => '1',
                     'sportTypesToInclude' => ['Ride'],
                 ],
             ],
         ]);
 
         $item = $settings->getEddingtonConfiguration()->getFirst();
-        $this->assertTrue($item->showInNavBar());
-        $this->assertFalse($item->showInDashboardWidget());
+        $this->assertTrue($item->showInDashboardWidget());
     }
 
     public function testItThrowsForAnInvalidSportType(): void
@@ -73,7 +70,6 @@ class MetricsSettingsTest extends TestCase
             'eddington' => [
                 [
                     'label' => 'Ride',
-                    'showInNavBar' => true,
                     'sportTypesToInclude' => ['NotASportType'],
                 ],
             ],

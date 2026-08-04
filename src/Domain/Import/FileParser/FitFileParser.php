@@ -161,7 +161,7 @@ final readonly class FitFileParser implements ActivityFileParser
         $workoutDescription = is_string($workout['wkt_description'] ?? null) ? trim($workout['wkt_description']) : '';
         $activityName = '' !== $workoutName ? ActivityName::fromString($workoutName) : ActivityName::from($startDateTime, $sportType);
 
-        $activity = Activity::fromState(
+        $activity = Activity::create(
             activityId: $activityId,
             startDateTime: $startDateTime,
             sportType: $sportType,

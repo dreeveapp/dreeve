@@ -2,10 +2,15 @@
 
 namespace App\Tests\Controller;
 
+use App\Application\AppStatusChecker;
 use App\Controller\FinishSetupRequestHandler;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Infrastructure\KeyValue\Key;
+use App\Infrastructure\KeyValue\KeyValue;
+use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Infrastructure\KeyValue\Value;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -26,9 +31,10 @@ class FinishSetupRequestHandlerTest extends ContainerTestCase
 
     public function testHandleRedirectsWhenTheAppIsReady(): void
     {
-        /** @var \League\Flysystem\InMemory\InMemoryFilesystemAdapter $buildStorage */
-        $buildStorage = $this->getContainer()->get('build_html.storage');
-        $buildStorage->write('index.html', 'I am the index', []);
+        $this->getContainer()->get(KeyValueStore::class)->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString('2023-10-17@1.0.0'),
+        ));
 
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()->build(),
@@ -45,7 +51,7 @@ class FinishSetupRequestHandlerTest extends ContainerTestCase
     protected function setUp(): void
     {
         $this->finishSetupRequestHandler = new FinishSetupRequestHandler(
-            $this->getContainer()->get('build_html.storage'),
+            $this->getContainer()->get(AppStatusChecker::class),
             $this->getContainer()->get(ActivityIdRepository::class),
             $this->getContainer()->get(Environment::class),
         );
