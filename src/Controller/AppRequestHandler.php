@@ -6,8 +6,8 @@ namespace App\Controller;
 
 use App\Application\AppStatusChecker;
 use App\Application\IndexPage;
+use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Http\Page\PageRenderer;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,7 +23,7 @@ final readonly class AppRequestHandler
     }
 
     #[Route(path: '/{wildcard?}', name: 'app', requirements: ['wildcard' => '.*'], methods: ['GET'], priority: -10)]
-    public function handle(): Response
+    public function handle(): HtmlResponse
     {
         if (!$this->appStatusChecker->hasBeenBuilt()) {
             throw new NotFoundHttpException('Not found');
