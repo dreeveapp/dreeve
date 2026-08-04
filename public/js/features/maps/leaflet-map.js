@@ -35,7 +35,7 @@ export default class LeafletMap {
                 weight: 2,
                 opacity: 0.9,
                 lineJoin: 'round',
-                smoothFactor: 2.0
+                smoothFactor: 1.0
             }).addTo(featureGroup);
 
             if (this.data.showStartMarker) {
