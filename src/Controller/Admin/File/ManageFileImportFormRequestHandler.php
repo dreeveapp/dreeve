@@ -7,7 +7,7 @@ namespace App\Controller\Admin\File;
 use App\Domain\Import\DeleteFileImport\DeleteFileImport;
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportOverviewRepository;
-use Symfony\Component\HttpFoundation\Response;
+use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -22,9 +22,9 @@ final readonly class ManageFileImportFormRequestHandler
     }
 
     #[Route(path: '/admin/file-imports/{fileImportId}/delete', name: 'admin_delete_file_import', methods: ['GET'], priority: 10)]
-    public function handleDelete(string $fileImportId): Response
+    public function handleDelete(string $fileImportId): HtmlResponse
     {
-        return new Response($this->twig->render('html/admin/page/file/delete-file-import.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/file/delete-file-import.html.twig', [
             'dispatchCommand' => DeleteFileImport::getCommandName(),
             'fileImport' => $this->fileImportOverviewRepository->findOneByFileImportId(
                 FileImportId::fromString($fileImportId)

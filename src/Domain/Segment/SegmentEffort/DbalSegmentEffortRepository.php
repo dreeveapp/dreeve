@@ -66,7 +66,7 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
             throw new EntityNotFound(sprintf('segmentEffort "%s" not found', $segmentEffortId));
         }
 
-        return $this->hydrate($result);
+        return $this->hydrateWithRankingMap($result);
     }
 
     public function findTopXBySegmentId(SegmentId $segmentId, int $limit): SegmentEfforts
@@ -80,7 +80,7 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
             ->orderBy('elapsedTimeInSeconds', 'ASC');
 
         return SegmentEfforts::fromArray(array_map(
-            $this->hydrate(...),
+            $this->hydrateWithRankingMap(...),
             $queryBuilder->executeQuery()->fetchAllAssociative()
         ));
     }
@@ -95,7 +95,7 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
             ->orderBy('startDateTime', 'DESC');
 
         return SegmentEfforts::fromArray(array_map(
-            $this->hydrate(...),
+            $this->hydrateWithRankingMap(...),
             $queryBuilder->executeQuery()->fetchAllAssociative()
         ));
     }
@@ -113,27 +113,41 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
 
     public function findByActivityId(ActivityId $activityId): SegmentEfforts
     {
-        $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder->select('*')
-            ->from('SegmentEffort')
-            ->andWhere('activityId = :activityId')
-            ->setParameter('activityId', $activityId);
+        $sql = 'SELECT * FROM (
+                    SELECT SegmentEffort.*, ROW_NUMBER() OVER (
+                        PARTITION BY segmentId
+                        ORDER BY elapsedTimeInSeconds ASC, segmentEffortId ASC
+                    ) rank
+                    FROM SegmentEffort
+                    WHERE segmentId IN (SELECT segmentId FROM SegmentEffort WHERE activityId = :activityId)
+                ) ranked
+                WHERE activityId = :activityId
+                ORDER BY startDateTime ASC, segmentEffortId ASC';
 
         return SegmentEfforts::fromArray(array_map(
-            $this->hydrate(...),
-            $queryBuilder->executeQuery()->fetchAllAssociative()
+            fn (array $result): SegmentEffort => $this->hydrate($result, (int) $result['rank']),
+            $this->connection->executeQuery($sql, ['activityId' => (string) $activityId])->fetchAllAssociative()
         ));
     }
 
     /**
      * @param array<string, mixed> $result
      */
-    private function hydrate(array $result): SegmentEffort
+    private function hydrateWithRankingMap(array $result): SegmentEffort
     {
-        $segmentEffortId = SegmentEffortId::fromString($result['segmentEffortId']);
+        return $this->hydrate(
+            $result,
+            $this->segmentEffortRankingMap->getRankFor(SegmentEffortId::fromString($result['segmentEffortId']))
+        );
+    }
 
+    /**
+     * @param array<string, mixed> $result
+     */
+    private function hydrate(array $result, ?int $rank): SegmentEffort
+    {
         return SegmentEffort::fromState(
-            segmentEffortId: $segmentEffortId,
+            segmentEffortId: SegmentEffortId::fromString($result['segmentEffortId']),
             segmentId: SegmentId::fromString($result['segmentId']),
             activityId: ActivityId::fromString($result['activityId']),
             startDateTime: SerializableDateTime::fromString($result['startDateTime']),
@@ -143,7 +157,7 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
             averageWatts: $result['averageWatts'],
             averageHeartRate: $result['averageHeartRate'],
             maxHeartRate: $result['maxHeartRate'],
-            rank: $this->segmentEffortRankingMap->getRankFor($segmentEffortId)
+            rank: $rank,
         );
     }
 }

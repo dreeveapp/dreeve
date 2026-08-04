@@ -14,6 +14,7 @@ import initTabs from "./components/tabs";
 import LazyLoad from "../libraries/lazyload.min";
 import initDataTables from "./features/data-table/data-table-manager";
 import initFullscreen from "./components/fullscreen";
+import initAsyncContent from "./components/async-content";
 import ScrollTo from "./components/scroll-to";
 import MilestoneFilter from "./features/milestones/milestone-filter";
 import DarkModeManager from "./components/dark-mode";
@@ -53,6 +54,7 @@ const initElements = (rootNode) => {
     initLeafletMaps(rootNode);
     initFullscreen(rootNode);
     scrollTo.init(rootNode);
+    initAsyncContent(rootNode);
 }
 
 initSidebar();

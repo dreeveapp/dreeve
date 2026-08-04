@@ -1,0 +1,52 @@
+{% if segmentEfforts|length > 0 %}
+    <details class="group/section">
+        <summary class="list-none cursor-pointer flex items-center justify-between py-2 hover:text-primary transition select-none">
+            <div class="flex items-center gap-2">
+                <h3 class="font-bold text-gray-900 group-hover/section:text-primary transition">{{ "Segments"|trans }}</h3>
+                <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ segmentEfforts|length }}</span>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/section:rotate-180" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m1 1 4 4 4-4"/>
+            </svg>
+        </summary>
+        <div class="mt-3 space-y-2 max-h-125 overflow-y-auto p-1">
+            {% for segmentEffort in segmentEfforts %}
+                <a href="#" data-model-content-url="{{ relativeUrl('segment/' ~ segmentEffort.getSegmentId() ~ '.html') }}" rel="nofollow"
+                   class="group/segment flex items-center gap-3 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs hover:ring-primary/30 rounded-xl p-3 transition">
+                    <div title="Rank" class="shrink-0 w-12 h-10 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center font-bold text-sm gap-0.5">
+                        {{ segmentEffort.getRank() }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <span class="font-semibold text-gray-900 truncate group-hover/segment:text-primary transition">{{ segmentEffort.getName() }}</span>
+                        <div class="text-xs text-gray-500 mt-0.5">{{ segmentEffort.getDistance()|renderMeasurement(2) }}</div>
+                    </div>
+                    <div class="hidden sm:flex gap-4 text-right">
+                        <div>
+                            <div class="text-xxs uppercase text-gray-400 tracking-wider">{{ "Time"|trans }}</div>
+                            <div class="text-sm font-bold text-gray-900">{{ segmentEffort.getElapsedTimeFormatted() }}</div>
+                        </div>
+                        <div>
+                            <div class="text-xxs uppercase text-gray-400 tracking-wider">{{ "Speed"|trans }}</div>
+                            <div class="text-sm font-bold text-gray-900">
+                                {% set velocityPreference = sportType.getVelocityDisplayPreference() %}
+                                {% if velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPer100Meter') %}
+                                    {{ segmentEffort.getPaceInSecPer100Meter()|formatPace }}/100m
+                                {% elseif velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPerKm') %}
+                                    {{ segmentEffort.getPaceInSecPerKm()|formatPace }}{{ renderUnitSymbol('pace') }}
+                                {% else %}
+                                    {{ sportType.toDisplaySpeed(segmentEffort.getAverageSpeed())|renderMeasurement(1) }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% if segmentEffort.getAverageWatts() %}
+                            <div>
+                                <div class="text-xxs uppercase text-gray-400 tracking-wider">{{ "Power"|trans }}</div>
+                                <div class="text-sm font-bold text-gray-900">{{ segmentEffort.getAverageWatts()|formatNumber(0) }}w</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </details>
+{% endif %}

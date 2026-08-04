@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +32,7 @@ final readonly class LoginLogoutRequestHandler
             return new RedirectResponse($this->urlGenerator->generate('admin_file_upload'));
         }
 
-        return new Response($this->twig->render('html/admin/login.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/login.html.twig', [
             'error' => $authenticationUtils->getLastAuthenticationError(),
         ]));
     }

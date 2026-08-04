@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http\Page;
 
 use App\Infrastructure\Cache\CacheableRenderer;
-use Symfony\Component\HttpFoundation\Response;
+use App\Infrastructure\Http\HtmlResponse;
 
 final readonly class PageRenderer
 {
@@ -14,14 +14,11 @@ final readonly class PageRenderer
     ) {
     }
 
-    public function render(Page $page): Response
+    public function render(Page $page): HtmlResponse
     {
         $render = $this->cacheableRenderer->render($page);
 
-        $response = new Response(
-            content: $render->getContent() ?? '',
-            headers: ['Content-Type' => 'text/html; charset=UTF-8'],
-        );
+        $response = new HtmlResponse($render->getContent() ?? '');
 
         $render->wasServedFromCache()
             ? $response->headers->set('X-Cache-Hit', $render->getCacheKey())

@@ -10,7 +10,7 @@ use App\Domain\Gear\GearIds;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Gear\Maintenance\UpdateGearMaintenanceConfig\UpdateGearMaintenanceConfig;
-use Symfony\Component\HttpFoundation\Response;
+use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -28,7 +28,7 @@ final readonly class ManageGearMaintenanceConfigRequestHandler
     }
 
     #[Route(path: '/admin/gear/maintenance-config', name: 'admin_manage_gear_maintenance_config', methods: ['GET'], priority: 10)]
-    public function handle(): Response
+    public function handle(): HtmlResponse
     {
         $gearMaintenanceConfig = $this->gearMaintenanceRepository->find();
         $gears = $this->gearRepository->findAll();
@@ -49,7 +49,7 @@ final readonly class ManageGearMaintenanceConfigRequestHandler
             );
         }
 
-        return new Response($this->twig->render('html/admin/page/gear/maintenance/config.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/gear/maintenance/config.html.twig', [
             'dispatchCommand' => UpdateGearMaintenanceConfig::getCommandName(),
             'gearMaintenanceConfig' => $gearMaintenanceConfig,
             'gears' => $gears,

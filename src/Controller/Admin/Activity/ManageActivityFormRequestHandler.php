@@ -18,7 +18,7 @@ use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Domain\Import\ImportMode;
 use App\Domain\Settings\SettingsRepository;
-use Symfony\Component\HttpFoundation\Response;
+use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -38,13 +38,13 @@ final readonly class ManageActivityFormRequestHandler
     }
 
     #[Route(path: '/admin/activities/add', name: 'admin_add_activity', methods: ['GET'], priority: 10)]
-    public function handleAdd(): Response
+    public function handleAdd(): HtmlResponse
     {
         if (!$this->importMode->isFiles()) {
             throw new NotFoundHttpException('Activities can only be created manually when running in file import mode.');
         }
 
-        return new Response($this->twig->render('html/admin/page/activity/edit-manually-added-activity.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/activity/edit-manually-added-activity.html.twig', [
             'dispatchCommand' => ManuallyCreateActivity::getCommandName(),
             'sportTypes' => $this->settingsRepository->appearance()->getSportTypesSortingOrder(),
             'workoutTypes' => WorkoutType::cases(),
@@ -53,12 +53,12 @@ final readonly class ManageActivityFormRequestHandler
     }
 
     #[Route(path: '/admin/activities/{activityId}/edit', name: 'admin_edit_activity', methods: ['GET'], priority: 10)]
-    public function handleEdit(string $activityId): Response
+    public function handleEdit(string $activityId): HtmlResponse
     {
         $activity = $this->activityRepository->find(ActivityId::fromString($activityId));
 
         if (ImportSource::MANUAL === $activity->getImportSource()) {
-            return new Response($this->twig->render('html/admin/page/activity/edit-manually-added-activity.html.twig', [
+            return new HtmlResponse($this->twig->render('html/admin/page/activity/edit-manually-added-activity.html.twig', [
                 'dispatchCommand' => UpdateManuallyAddedActivity::getCommandName(),
                 'activity' => $activity,
                 'sportTypes' => $this->settingsRepository->appearance()->getSportTypesSortingOrder(),
@@ -77,7 +77,7 @@ final readonly class ManageActivityFormRequestHandler
             $gearIsReadOnly = $gears->isEmpty() || ($currentGear instanceof Gear && $currentGear->getType()->isImported());
         }
 
-        return new Response($this->twig->render('html/admin/page/activity/edit-activity.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/activity/edit-activity.html.twig', [
             'dispatchCommand' => UpdateActivity::getCommandName(),
             'activity' => $activity,
             'sportTypes' => $this->settingsRepository->appearance()->getSportTypesSortingOrder(),
@@ -88,9 +88,9 @@ final readonly class ManageActivityFormRequestHandler
     }
 
     #[Route(path: '/admin/activities/{activityId}/delete', name: 'admin_delete_activity', methods: ['GET'], priority: 10)]
-    public function handleDelete(string $activityId): Response
+    public function handleDelete(string $activityId): HtmlResponse
     {
-        return new Response($this->twig->render('html/admin/page/activity/delete-activity.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/activity/delete-activity.html.twig', [
             'dispatchCommand' => DeleteActivity::getCommandName(),
             'activity' => $this->activityRepository->find(ActivityId::fromString($activityId)),
         ]));

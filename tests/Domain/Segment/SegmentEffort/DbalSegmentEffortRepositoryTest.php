@@ -133,6 +133,34 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
         );
     }
 
+    public function testFindByActivityIdRanksTheSameWayTheRankingMapDoes(): void
+    {
+        $rankingMap = $this->getContainer()->get(SegmentEffortRankingMap::class);
+
+        // Two segments, ridden by three activities, so ranks only come out right when efforts
+        // of other activities are taken into account.
+        foreach ([[1, 1, 1, 300], [2, 1, 2, 100], [3, 1, 3, 200], [4, 2, 1, 60], [5, 2, 2, 30]] as [$effortId, $segmentId, $activityId, $elapsedTime]) {
+            $this->segmentEffortRepository->add(SegmentEffortBuilder::fromDefaults()
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed($effortId))
+                ->withSegmentId(SegmentId::fromUnprefixed($segmentId))
+                ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                ->withElapsedTimeInSeconds($elapsedTime)
+                ->build());
+        }
+
+        $segmentEfforts = $this->segmentEffortRepository->findByActivityId(ActivityId::fromUnprefixed(1));
+
+        $this->assertCount(2, $segmentEfforts);
+        foreach ($segmentEfforts as $segmentEffort) {
+            $this->assertEquals(
+                $rankingMap->getRankFor($segmentEffort->getId()),
+                $segmentEffort->getRank(),
+                sprintf('Rank mismatch for segment effort "%s"', $segmentEffort->getId())
+            );
+        }
+        $this->assertEquals([3, 2], $segmentEfforts->map(fn ($segmentEffort): ?int => $segmentEffort->getRank()));
+    }
+
     public function testDelete(): void
     {
         $segmentEffortOne = SegmentEffortBuilder::fromDefaults()->build();

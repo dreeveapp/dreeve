@@ -24,8 +24,6 @@ final class BestEffortsCalculator
 
     /** @var array<string, array<string, array<int, string>>> */
     private array $cache = [];
-    /** @var array<string, string[]> */
-    private array $cachedPerActivity = [];
     /** @var array<string, array<int, array<int, string>>> */
     private array $historyCache = [];
     private ActivityTypes $cachedActivityTypes;
@@ -91,9 +89,6 @@ final class BestEffortsCalculator
 
                 $this->cachedBestEfforts[$activityBestEffort->getId()] = $activityBestEffort;
                 $this->cache[$period->value][$sportType->value][$distance->toInt()] = $activityBestEffort->getId();
-                if (BestEffortPeriod::ALL_TIME === $period) {
-                    $this->cachedPerActivity[(string) $activityId][] = $activityBestEffort->getId();
-                }
 
                 if (!$this->cachedActivityTypes->has($sportType->getActivityType())) {
                     $this->cachedActivityTypes->add($sportType->getActivityType());
@@ -159,15 +154,6 @@ final class BestEffortsCalculator
         $id = $this->cache[$period->value][$sportType->value][$distance] ?? 'unexisting';
 
         return $this->cachedBestEfforts[$id] ?? null;
-    }
-
-    public function forActivity(ActivityId $activityId): ActivityBestEfforts
-    {
-        $this->buildCache();
-
-        $ids = $this->cachedPerActivity[(string) $activityId] ?? [];
-
-        return ActivityBestEfforts::fromArray(array_map(fn (string $id): ActivityBestEffort => $this->cachedBestEfforts[$id], $ids));
     }
 
     public function historyFor(SportType $sportType, ConvertableToMeter $distance, int $position): ?ActivityBestEffort

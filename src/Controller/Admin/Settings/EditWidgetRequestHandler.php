@@ -9,7 +9,7 @@ use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\DeleteWidget\DeleteWidget;
 use App\Domain\Dashboard\Widget\ConfiguredWidget;
 use App\Domain\Dashboard\Widget\ConfiguredWidgets;
-use Symfony\Component\HttpFoundation\Response;
+use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,28 +25,28 @@ final readonly class EditWidgetRequestHandler
     }
 
     #[Route(path: '/admin/settings/dashboard/widget/{dashboardWidgetId}/configure', name: 'admin_configure_dashboard_widget', methods: ['GET'], priority: 10)]
-    public function handleConfigure(string $dashboardWidgetId): Response
+    public function handleConfigure(string $dashboardWidgetId): HtmlResponse
     {
         $widget = $this->configuredWidgets->find(DashboardWidgetId::fromString($dashboardWidgetId));
         if (!$widget instanceof ConfiguredWidget || !$widget->isConfigurable()) {
             throw new NotFoundHttpException('Widget not found');
         }
 
-        return new Response($this->twig->render('html/admin/page/settings/dashboard/configure-widget.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/settings/dashboard/configure-widget.html.twig', [
             'dispatchCommand' => ConfigureWidget::getCommandName(),
             'configuredWidget' => $widget,
         ]));
     }
 
     #[Route(path: '/admin/settings/dashboard/widget/{dashboardWidgetId}/delete', name: 'admin_delete_dashboard_widget', methods: ['GET'], priority: 10)]
-    public function handleDelete(string $dashboardWidgetId): Response
+    public function handleDelete(string $dashboardWidgetId): HtmlResponse
     {
         $widget = $this->configuredWidgets->find(DashboardWidgetId::fromString($dashboardWidgetId));
         if (!$widget instanceof ConfiguredWidget) {
             throw new NotFoundHttpException('Widget not found');
         }
 
-        return new Response($this->twig->render('html/admin/page/settings/dashboard/delete-widget.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/settings/dashboard/delete-widget.html.twig', [
             'dispatchCommand' => DeleteWidget::getCommandName(),
             'widget' => $widget,
         ]));

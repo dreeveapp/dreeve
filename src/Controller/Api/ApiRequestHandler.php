@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
 use App\Infrastructure\Http\Page\PageRegistry;
 use App\Infrastructure\Http\Page\PageRenderer;

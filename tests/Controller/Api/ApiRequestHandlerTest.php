@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Controller\Api;
 
-use App\Controller\ApiRequestHandler;
+use App\Controller\Api\ApiRequestHandler;
 use App\Infrastructure\Cache\RenderCache;
 use App\Infrastructure\Http\Page\PageRegistry;
 use App\Infrastructure\Http\Page\PageRenderer;

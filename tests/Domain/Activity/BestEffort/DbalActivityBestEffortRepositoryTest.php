@@ -7,6 +7,7 @@ use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
+use App\Domain\Activity\BestEffort\ActivityBestEfforts;
 use App\Domain\Activity\BestEffort\DbalActivityBestEffortRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
@@ -112,6 +113,56 @@ class DbalActivityBestEffortRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             ActivityIds::fromArray([ActivityId::fromUnprefixed('test-4')]),
             $this->activityBestEffortRepository->findActivityIdsThatNeedBestEffortsCalculation()
+        );
+    }
+
+    public function testFindByActivity(): void
+    {
+        // Same distance for two activities, the faster one holds the record.
+        $this->activityBestEffortRepository->add(
+            ActivityBestEffortBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('fastest'))
+                ->withSportType(SportType::RIDE)
+                ->withDistanceInMeter(Meter::from(10000))
+                ->withTimeInSeconds(1800)
+                ->build()
+        );
+        $this->activityBestEffortRepository->add(
+            ActivityBestEffortBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('slowest'))
+                ->withSportType(SportType::RIDE)
+                ->withDistanceInMeter(Meter::from(10000))
+                ->withTimeInSeconds(3600)
+                ->build()
+        );
+        // A distance only the slowest activity has ridden, so it holds that record.
+        $slowestOnlyBestEffort = ActivityBestEffortBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed('slowest'))
+            ->withSportType(SportType::RIDE)
+            ->withDistanceInMeter(Meter::from(20000))
+            ->withTimeInSeconds(7200)
+            ->build();
+        $this->activityBestEffortRepository->add($slowestOnlyBestEffort);
+
+        $this->assertEquals(
+            ActivityBestEfforts::fromArray([$slowestOnlyBestEffort]),
+            $this->activityBestEffortRepository->findByActivity(ActivityId::fromUnprefixed('slowest'))
+        );
+    }
+
+    public function testFindByActivityWhenItHoldsNoRecords(): void
+    {
+        $this->activityBestEffortRepository->add(
+            ActivityBestEffortBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('test'))
+                ->withSportType(SportType::RIDE)
+                ->withDistanceInMeter(Meter::from(10000))
+                ->withTimeInSeconds(3600)
+                ->build()
+        );
+
+        $this->assertEmpty(
+            $this->activityBestEffortRepository->findByActivity(ActivityId::fromUnprefixed('unknown'))->toArray()
         );
     }
 

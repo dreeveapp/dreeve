@@ -9,9 +9,9 @@ use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
+use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Http\Request\PaginationFromRequest;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -31,11 +31,11 @@ final readonly class ManageActivityOverviewRequestHandler
     }
 
     #[Route(path: '/admin/activities', name: 'admin_manage_activity_overview', methods: ['GET'], priority: 10)]
-    public function handle(Request $request): Response
+    public function handle(Request $request): HtmlResponse
     {
         $filters = ActivityOverviewFilters::fromRequest($request);
 
-        return new Response($this->twig->render('html/admin/page/activity/manage-activities-overview.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/activity/manage-activities-overview.html.twig', [
             'overview' => $this->activityOverviewRepository->find(
                 $this->paginationFromRequest($request),
                 $filters,

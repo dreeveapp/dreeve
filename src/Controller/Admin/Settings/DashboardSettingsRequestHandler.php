@@ -8,7 +8,7 @@ use App\Domain\Dashboard\AddWidget\AddWidget;
 use App\Domain\Dashboard\ResetDashboardLayoutToDefault\ResetDashboardLayoutToDefault;
 use App\Domain\Dashboard\SaveDashboardLayout\SaveDashboardLayout;
 use App\Domain\Dashboard\Widget\ConfiguredWidgets;
-use Symfony\Component\HttpFoundation\Response;
+use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -23,9 +23,9 @@ final readonly class DashboardSettingsRequestHandler
     }
 
     #[Route(path: '/admin/settings/dashboard', name: 'admin_settings_dashboard', methods: ['GET'], priority: 10)]
-    public function handle(): Response
+    public function handle(): HtmlResponse
     {
-        return new Response($this->twig->render('html/admin/page/settings/dashboard/dashboard.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/settings/dashboard/dashboard.html.twig', [
             'widgets' => $this->configuredWidgets,
             'widths' => ConfiguredWidgets::WIDTHS,
             'addWidgetCommand' => AddWidget::getCommandName(),
@@ -34,9 +34,9 @@ final readonly class DashboardSettingsRequestHandler
     }
 
     #[Route(path: '/admin/settings/dashboard/reset', name: 'admin_reset_dashboard_layout', methods: ['GET'], priority: 10)]
-    public function handleReset(): Response
+    public function handleReset(): HtmlResponse
     {
-        return new Response($this->twig->render('html/admin/page/settings/dashboard/reset-dashboard-layout.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/settings/dashboard/reset-dashboard-layout.html.twig', [
             'dispatchCommand' => ResetDashboardLayoutToDefault::getCommandName(),
         ]));
     }

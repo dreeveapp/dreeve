@@ -9,6 +9,7 @@ use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Http\ServerSentEvent;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\RelativeUrl;
@@ -63,11 +64,11 @@ final readonly class AIChatRequestHandler
             ->add('submit', SubmitType::class)
             ->getForm();
 
-        return new Response($this->twig->render('html/chat/chat.html.twig', [
+        return new HtmlResponse($this->twig->render('html/chat/chat.html.twig', [
             'chatHistory' => $this->chatRepository->findAll(),
             'form' => $form->createView(),
             'chatCommands' => Json::encode($this->settingsRepository->integrations()->getChatCommands()),
-        ]), Response::HTTP_OK);
+        ]));
     }
 
     #[Route(path: '/chat/clear', name: 'ai_chat_clear', methods: ['POST'], priority: 2)]

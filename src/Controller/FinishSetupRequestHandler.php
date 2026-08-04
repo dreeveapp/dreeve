@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Domain\Activity\ActivityIdRepository;
+use App\Infrastructure\Http\HtmlResponse;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +31,6 @@ final readonly class FinishSetupRequestHandler
             return new RedirectResponse('/', Response::HTTP_FOUND);
         }
 
-        return new Response($this->twig->render('html/finish-setup.html.twig'), Response::HTTP_OK);
+        return new HtmlResponse($this->twig->render('html/finish-setup.html.twig'));
     }
 }

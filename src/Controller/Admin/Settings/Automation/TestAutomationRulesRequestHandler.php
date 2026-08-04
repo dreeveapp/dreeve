@@ -12,8 +12,8 @@ use App\Domain\Automation\Condition\Conditions;
 use App\Domain\Automation\DryRun\AutomationRuleDryRunner;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -34,7 +34,7 @@ final readonly class TestAutomationRulesRequestHandler
     }
 
     #[Route(path: '/admin/settings/automation-rules/test', name: 'admin_test_automation_rules', methods: ['GET'], priority: 20)]
-    public function handle(Request $request): Response
+    public function handle(Request $request): HtmlResponse
     {
         if (!$this->importMode->isFiles()) {
             throw new NotFoundHttpException('Automation rules are only available in file import mode');
@@ -58,7 +58,7 @@ final readonly class TestAutomationRulesRequestHandler
             }
         }
 
-        return new Response($this->twig->render('html/admin/page/settings/automation-rules/test-automation-rules.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/settings/automation-rules/test-automation-rules.html.twig', [
             'activityId' => $activityId,
             'dryRun' => $dryRun,
             'notFound' => $notFound,

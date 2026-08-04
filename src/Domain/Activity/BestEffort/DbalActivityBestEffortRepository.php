@@ -7,7 +7,9 @@ namespace App\Domain\Activity\BestEffort;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Activity\Stream\StreamType;
+use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Repository\DbalRepository;
 use Doctrine\DBAL\ArrayParameterType;
 
@@ -65,6 +67,46 @@ final readonly class DbalActivityBestEffortRepository extends DbalRepository imp
                     'sportTypes' => ArrayParameterType::STRING,
                 ]
             )->fetchFirstColumn()
+        ));
+    }
+
+    public function findByActivity(ActivityId $activity): ActivityBestEfforts
+    {
+        $sql = 'SELECT activityId, sportType, distanceInMeter, timeInSeconds
+                FROM (
+                    SELECT
+                        activityId,
+                        sportType,
+                        distanceInMeter,
+                        timeInSeconds,
+                        ROW_NUMBER() OVER (
+                            PARTITION BY sportType, distanceInMeter
+                            ORDER BY timeInSeconds ASC
+                        ) AS rn
+                    FROM ActivityBestEffort
+                    WHERE sportType IN (:sportTypes)
+                ) ranked
+                WHERE rn = 1
+                AND activityId = :activityId
+                ORDER BY distanceInMeter ASC';
+
+        return ActivityBestEfforts::fromArray(array_map(
+            fn (array $result): ActivityBestEffort => ActivityBestEffort::fromState(
+                activityId: ActivityId::fromString($result['activityId']),
+                distanceInMeter: Meter::from($result['distanceInMeter']),
+                sportType: SportType::from($result['sportType']),
+                timeInSeconds: $result['timeInSeconds'],
+            ),
+            $this->connection->executeQuery(
+                $sql,
+                [
+                    'sportTypes' => array_map(fn (SportType $sportType) => $sportType->value, SportTypes::thatSupportsBestEfforts()->toArray()),
+                    'activityId' => (string) $activity,
+                ],
+                [
+                    'sportTypes' => ArrayParameterType::STRING,
+                ]
+            )->fetchAllAssociative()
         ));
     }
 

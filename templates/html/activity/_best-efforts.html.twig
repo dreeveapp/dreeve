@@ -1,0 +1,22 @@
+{% if bestEfforts|length > 0 %}
+    <section class="rounded-lg bg-amber-50 border border-amber-100 dark:bg-[#202830] dark:border-[#3e444d] shadow-xs p-5">
+        <div class="flex items-center gap-2 mb-3">
+           {{ svg('star', 'size-5', 'text-amber-500') }}
+            <h3 class="font-bold text-gray-900">{{ "Personal bests"|trans }}</h3>
+            <span class="text-xs text-gray-500">{{ "Congrats! You achieved {numberOfPRs} PRs in this activity."|trans({'{numberOfPRs}': bestEfforts|length}) }}</span>
+        </div>
+        <div class="flex flex-wrap gap-2">
+            {% for bestEffort in bestEfforts %}
+                {% set distance = bestEffort.getBestEffortDistance() %}
+                <div class="bg-white rounded-xl px-4 py-2.5 border border-gray-200">
+                    <div class="text-xxs uppercase font-semibold text-gray-500">
+                        {{ distance.isLowerThanOne() ? distance.toFloat()|round(1) : distance.toInt() }}{{ distance.getSymbol() }}
+                    </div>
+                    <div class="text-lg font-black text-gray-900">
+                        {{ bestEffort.getFormattedTime() }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}

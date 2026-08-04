@@ -6,7 +6,6 @@ namespace App\Application\Build\BuildActivitiesHtml;
 
 use App\Application\Countries;
 use App\Domain\Activity\ActivityTotals;
-use App\Domain\Activity\BestEffort\BestEffortsCalculator;
 use App\Domain\Activity\CadenceDistributionChart;
 use App\Domain\Activity\EnrichedActivities;
 use App\Domain\Activity\HeartRateDistributionChart;
@@ -26,7 +25,6 @@ use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\VelocityDistributionChart;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
-use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -50,10 +48,8 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
         private ActivitySplitRepository $activitySplitRepository,
         private ActivityLapRepository $activityLapRepository,
         private SportTypeRepository $sportTypeRepository,
-        private SegmentEffortRepository $segmentEffortRepository,
         private GearRepository $gearRepository,
         private RecordingDeviceRepository $recordingDeviceRepository,
-        private BestEffortsCalculator $bestEffortsCalculator,
         private Countries $countries,
         private Environment $twig,
         private FilesystemOperator $buildHtmlStorage,
@@ -277,12 +273,10 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                         Slug::fromString($activity->getName()),
                     ),
                     'distributionCharts' => $distributionCharts,
-                    'segmentEfforts' => $this->segmentEffortRepository->findByActivityId($activity->getId()),
                     'splits' => $activitySplits,
                     'laps' => $this->activityLapRepository->findBy($activity->getId()),
                     'profileChartHeight' => $profileChartHeight,
                     'hasProfileChart' => null !== $profileChart,
-                    'bestEfforts' => $this->bestEffortsCalculator->forActivity($activity->getId()),
                     'heartRateZones' => $timeInHeartRateZones,
                 ]),
             );

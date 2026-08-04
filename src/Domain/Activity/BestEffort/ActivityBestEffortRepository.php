@@ -15,5 +15,7 @@ interface ActivityBestEffortRepository
 
     public function findActivityIdsThatNeedBestEffortsCalculation(): ActivityIds;
 
+    public function findByActivity(ActivityId $activity): ActivityBestEfforts;
+
     public function deleteForActivity(ActivityId $activityId): void;
 }

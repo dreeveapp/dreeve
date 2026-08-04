@@ -16,9 +16,9 @@ use App\Domain\Settings\UpdateSettings\UpdateSettings;
 use App\Domain\Strava\StravaClientId;
 use App\Domain\Strava\StravaClientSecret;
 use App\Domain\Strava\StravaRefreshToken;
+use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -53,9 +53,9 @@ final readonly class SettingsRequestHandler
     }
 
     #[Route(path: '/admin/settings/athlete', name: 'admin_settings_athlete', methods: ['GET'], priority: 10)]
-    public function athlete(): Response
+    public function athlete(): HtmlResponse
     {
-        return new Response($this->twig->render(
+        return new HtmlResponse($this->twig->render(
             'html/admin/page/settings/athlete.html.twig',
             [
                 'dispatchCommand' => UpdateAthleteSettings::getCommandName(),
@@ -65,7 +65,7 @@ final readonly class SettingsRequestHandler
     }
 
     #[Route(path: '/admin/settings/{group}', name: 'admin_settings', methods: ['GET'], priority: 5)]
-    public function handle(string $group): Response
+    public function handle(string $group): HtmlResponse
     {
         $settingsGroup = SettingsGroup::tryFrom($group)
             ?? throw new NotFoundHttpException(sprintf('Unknown settings group "%s"', $group));
@@ -74,7 +74,7 @@ final readonly class SettingsRequestHandler
             throw new NotFoundHttpException('Page not found');
         }
 
-        return new Response($this->twig->render(
+        return new HtmlResponse($this->twig->render(
             sprintf('html/admin/page/settings/%s.html.twig', $settingsGroup->value),
             [
                 'dispatchCommand' => UpdateSettings::getCommandName(),

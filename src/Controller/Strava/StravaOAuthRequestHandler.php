@@ -10,6 +10,7 @@ use App\Domain\Strava\InvalidStravaAccessToken;
 use App\Domain\Strava\Strava;
 use App\Domain\Strava\StravaClientId;
 use App\Domain\Strava\StravaClientSecret;
+use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Serialization\Json;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -40,7 +41,7 @@ final readonly class StravaOAuthRequestHandler
     public function handle(Request $request): Response
     {
         if ($this->importMode->isFiles()) {
-            return new Response($this->twig->render('html/strava-oauth/not-available-in-file-import-mode.html.twig'), Response::HTTP_OK);
+            return new HtmlResponse($this->twig->render('html/strava-oauth/not-available-in-file-import-mode.html.twig'));
         }
 
         try {
@@ -54,10 +55,10 @@ final readonly class StravaOAuthRequestHandler
         if ($e instanceof InsufficientStravaAccessTokenScopes) {
             // The user probably used the refresh token displayed on Strava's API settings page.
             // Even though the docs state explicitly that this will not work, users still do this and "report issues".
-            return new Response($this->twig->render('html/strava-oauth/insufficient-scopes.html.twig', [
+            return new HtmlResponse($this->twig->render('html/strava-oauth/insufficient-scopes.html.twig', [
                 'stravaClientId' => $this->stravaClientId,
                 'returnUrl' => $request->getSchemeAndHttpHost().'/strava-oauth',
-            ]), Response::HTTP_OK);
+            ]));
         }
 
         if ($e instanceof InvalidStravaAccessToken) {
@@ -75,10 +76,10 @@ final readonly class StravaOAuthRequestHandler
 
                     $refreshToken = Json::decode($response->getBody()->getContents())['refresh_token'];
 
-                    return new Response($this->twig->render('html/strava-oauth/refresh-token.html.twig', [
+                    return new HtmlResponse($this->twig->render('html/strava-oauth/refresh-token.html.twig', [
                         'refreshToken' => $refreshToken,
                         'url' => $request->getSchemeAndHttpHost(),
-                    ]), Response::HTTP_OK);
+                    ]));
                 } catch (ClientException|RequestException $e) {
                     $error = $e->getMessage();
                     if (($response = $e->getResponse()) instanceof ResponseInterface) {
@@ -87,16 +88,16 @@ final readonly class StravaOAuthRequestHandler
                 }
             }
 
-            return new Response($this->twig->render('html/strava-oauth/start-authorization.html.twig', [
+            return new HtmlResponse($this->twig->render('html/strava-oauth/start-authorization.html.twig', [
                 'stravaClientId' => $this->stravaClientId,
                 'returnUrl' => $request->getSchemeAndHttpHost().'/strava-oauth',
                 'error' => $error ?? null,
-            ]), Response::HTTP_OK);
+            ]));
         }
 
         // Any other exception is unexpected.
-        return new Response($this->twig->render('html/strava-oauth/error-page.html.twig', [
+        return new HtmlResponse($this->twig->render('html/strava-oauth/error-page.html.twig', [
             'error' => $e->getMessage(),
-        ]), Response::HTTP_OK);
+        ]));
     }
 }
