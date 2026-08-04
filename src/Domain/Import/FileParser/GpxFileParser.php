@@ -17,7 +17,9 @@ use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\WorldType;
+use App\Domain\Import\FileParser\Gpx\GpxMetadata;
 use App\Domain\Import\FileParser\Gpx\GpxSportType;
+use App\Domain\Import\FileParser\Gpx\GpxWorkoutSummary;
 use App\Domain\Import\SupportedFileExtension;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
@@ -74,7 +76,9 @@ final readonly class GpxFileParser implements ActivityFileParser
         if (isset($xml['creator']) && '' !== (string) $xml['creator']) {
             $deviceName = (string) $xml['creator'];
         }
-        $calories = $this->resolveCalories($xml);
+        $metadata = GpxMetadata::fromXml($xml);
+        $workoutSummary = null !== $metadata->getName() ? GpxWorkoutSummary::tryFromString($metadata->getName()) : null;
+        $calories = $this->resolveCalories($xml) ?? $workoutSummary?->getCalories();
 
         [$laps, $streams, $startTimestamp] = $this->parseTracksAndStreams($xml);
 
@@ -86,6 +90,24 @@ final readonly class GpxFileParser implements ActivityFileParser
         $activityId = $this->activityIdFactory->random();
         $startDateTime = SerializableDateTime::fromTimestamp($startTimestamp)->toTimezone($this->timezone ?? SerializableTimezone::UTC());
         $activityLaps = $this->buildActivityLaps($laps, $activityId);
+
+        $distanceInMeter = $workoutSummary?->getDistanceInMeter()
+            ?? $activityLaps->sum(static fn (ActivityLap $lap): float => $lap->getDistance()->toFloat());
+        $elapsedTimeInSeconds = $workoutSummary?->getElapsedTimeInSeconds()
+            ?? (int) $activityLaps->sum(static fn (ActivityLap $lap): int => $lap->getElapsedTimeInSeconds());
+        $movingTimeInSeconds = $workoutSummary?->getMovingTimeInSeconds()
+            ?? (int) $activityLaps->sum(static fn (ActivityLap $lap): int => $lap->getMovingTimeInSeconds());
+        if ($elapsedTimeInSeconds > 0) {
+            $movingTimeInSeconds = min($movingTimeInSeconds, $elapsedTimeInSeconds);
+        }
+        $activityName = $this->resolveActivityName(
+            xml: $xml,
+            metadata: $metadata,
+            workoutSummary: $workoutSummary,
+            startDateTime: $startDateTime,
+            sportType: $sportType
+        );
+
         $activity = Activity::create(
             activityId: $activityId,
             startDateTime: $startDateTime,
@@ -96,22 +118,26 @@ final readonly class GpxFileParser implements ActivityFileParser
             ),
             importSource: ImportSource::GPX_FILE,
             externalReferenceId: ExternalReferenceId::fromString($file->getPath()->getFilename()),
-            name: ActivityName::from($startDateTime, $sportType),
-            description: null,
-            distance: Kilometer::from(round($activityLaps->sum(static fn (ActivityLap $lap): float => $lap->getDistance()->toFloat()) / 1000, 3)),
+            name: $activityName,
+            description: $workoutSummary?->getDescription() ?? $metadata->getDescription() ?? $this->resolveTrackDescription($xml),
+            distance: Kilometer::from(round($distanceInMeter / 1000, 3)),
             elevation: Meter::from(round($activityLaps->sum(static fn (ActivityLap $lap): float => $lap->getElevationDifference()->toFloat()))),
             startingCoordinate: StreamMath::firstCoordinate($streams),
             calories: $calories,
             kilojoules: null,
             averagePower: Math::average($streams[StreamType::WATTS->value]),
             maxPower: Math::max($streams[StreamType::WATTS->value]),
-            averageSpeed: MetersPerSecond::fromOptional([] !== $velocities ? array_sum($velocities) / count($velocities) : null)->toKmPerHour(),
+            averageSpeed: MetersPerSecond::fromOptional(match (true) {
+                null !== $workoutSummary?->getDistanceInMeter() && $movingTimeInSeconds > 0 => $distanceInMeter / $movingTimeInSeconds,
+                [] !== $velocities => array_sum($velocities) / count($velocities),
+                default => null,
+            })->toKmPerHour(),
             maxSpeed: MetersPerSecond::fromOptional([] !== $velocities ? max($velocities) : null)->toKmPerHour(),
             averageHeartRate: Math::average($streams[StreamType::HEART_RATE->value]),
             maxHeartRate: Math::max($streams[StreamType::HEART_RATE->value]),
             averageCadence: Math::average($streams[StreamType::CADENCE->value]),
-            movingTimeInSeconds: (int) $activityLaps->sum(static fn (ActivityLap $lap): int => $lap->getMovingTimeInSeconds()),
-            elapsedTimeInSeconds: (int) $activityLaps->sum(static fn (ActivityLap $lap): int => $lap->getElapsedTimeInSeconds()),
+            movingTimeInSeconds: $movingTimeInSeconds,
+            elapsedTimeInSeconds: $elapsedTimeInSeconds,
             deviceName: $deviceName,
             totalImageCount: 0,
             localImagePaths: [],
@@ -255,6 +281,37 @@ final readonly class GpxFileParser implements ActivityFileParser
         }
 
         return SportType::WORKOUT;
+    }
+
+    private function resolveActivityName(
+        \SimpleXMLElement $xml,
+        GpxMetadata $metadata,
+        ?GpxWorkoutSummary $workoutSummary,
+        SerializableDateTime $startDateTime,
+        SportType $sportType,
+    ): ActivityName {
+        // A serialized workout summary is not a name, even though it sits in the name element.
+        $name = null === $workoutSummary ? $metadata->getName() : null;
+        $name ??= $this->firstNonEmptyTrackChild($xml, 'name');
+
+        return null !== $name ? ActivityName::fromString($name) : ActivityName::from($startDateTime, $sportType);
+    }
+
+    private function resolveTrackDescription(\SimpleXMLElement $xml): ?string
+    {
+        return $this->firstNonEmptyTrackChild($xml, 'desc');
+    }
+
+    private function firstNonEmptyTrackChild(\SimpleXMLElement $xml, string $child): ?string
+    {
+        foreach ($xml->trk as $track) {
+            $value = trim($this->stringChild($track, $child) ?? '');
+            if ('' !== $value) {
+                return $value;
+            }
+        }
+
+        return null;
     }
 
     private function resolveCalories(\SimpleXMLElement $xml): ?int

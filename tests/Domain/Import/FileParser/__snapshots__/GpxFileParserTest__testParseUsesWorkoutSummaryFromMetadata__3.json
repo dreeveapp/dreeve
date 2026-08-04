@@ -1,0 +1,44 @@
+[
+    {
+        "dataSize": 4,
+        "activityId": "activity-1",
+        "streamType": "altitude",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[10,12,11,14]"
+    },
+    {
+        "dataSize": 4,
+        "activityId": "activity-1",
+        "streamType": "distance",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[0,65.69,131.38,197.07]"
+    },
+    {
+        "dataSize": 4,
+        "activityId": "activity-1",
+        "streamType": "heartrate",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[95,101,104,108]"
+    },
+    {
+        "dataSize": 4,
+        "activityId": "activity-1",
+        "streamType": "latlng",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[[51,3.7],[51.0005,3.7005],[51.001,3.701],[51.0015,3.7015]]"
+    },
+    {
+        "dataSize": 4,
+        "activityId": "activity-1",
+        "streamType": "time",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[0,30,60,90]"
+    },
+    {
+        "dataSize": 4,
+        "activityId": "activity-1",
+        "streamType": "velocity_smooth",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[2.1896900034133764,2.1896900034133764,2.1896833090845362,2.189676614803544]"
+    }
+]

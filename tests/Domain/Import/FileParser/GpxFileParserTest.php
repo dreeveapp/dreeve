@@ -71,6 +71,42 @@ class GpxFileParserTest extends ActivityFileParserTestCase
         $this->assertSame(20, $parsed->getActivity()->getMovingTimeInSeconds());
     }
 
+    public function testParseUsesWorkoutSummaryFromMetadata(): void
+    {
+        $this->assertParsedFileMatchesSnapshot(
+            $this->parser->parse($this->rawFileFromFixture('activity-fitotrack.gpx'))
+        );
+    }
+
+    public function testParseIgnoresWorkoutSummaryAsActivityName(): void
+    {
+        $parsed = $this->parser->parse($this->rawFileFromFixture('activity-fitotrack.gpx'));
+
+        $this->assertSame('Morning Workout', $parsed->getActivity()->getName());
+        $this->assertSame('Walked to the market', $parsed->getActivity()->getDescription());
+    }
+
+    public function testParseUsesMetadataNameAndDescription(): void
+    {
+        $parsed = $this->parser->parse($this->rawFileFromFixture('activity-metadata-name-and-description.gpx'));
+
+        $this->assertSame('Loop around the lake', $parsed->getActivity()->getName());
+        $this->assertSame('Easy recovery spin, stopped for coffee halfway.', $parsed->getActivity()->getDescription());
+    }
+
+    public function testParseFallsBackToStreamValuesWhenWorkoutSummaryIsImplausible(): void
+    {
+        $parsed = $this->parser->parse($this->rawFileFromFixture('activity-workout-summary-implausible.gpx'));
+        $activity = $parsed->getActivity();
+
+        $this->assertSame('Fallback name', $activity->getName());
+        $this->assertSame('', $activity->getDescription());
+        $this->assertNull($activity->getCalories());
+        $this->assertSame(60, $activity->getElapsedTimeInSeconds());
+        $this->assertSame(60, $activity->getMovingTimeInSeconds());
+        $this->assertSame(0.131, $activity->getDistance()->toFloat());
+    }
+
     public function testParseSportTypeComesFromFirstTrack(): void
     {
         $parsed = $this->parser->parse($this->rawFileFromFixture('activity-multi-track.gpx'));

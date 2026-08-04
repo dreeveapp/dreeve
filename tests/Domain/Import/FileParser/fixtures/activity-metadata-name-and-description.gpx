@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="OsmAnd"
+     xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>Loop around the lake</name>
+    <desc>Easy recovery spin, stopped for coffee halfway.</desc>
+    <time>2021-09-08T00:00:00Z</time>
+  </metadata>
+  <trk>
+    <type>cycling</type>
+    <trkseg>
+      <trkpt lat="45.0" lon="22.5">
+        <ele>100</ele>
+        <time>2021-09-08T00:00:00Z</time>
+      </trkpt>
+      <trkpt lat="45.001" lon="22.501">
+        <ele>110</ele>
+        <time>2021-09-08T00:00:10Z</time>
+      </trkpt>
+      <trkpt lat="45.002" lon="22.502">
+        <ele>105</ele>
+        <time>2021-09-08T00:00:20Z</time>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>

@@ -10,6 +10,10 @@ This is Dreeve's default mode (`IMPORT_MODE=files`).
 | `.tcx` | Contains streams and laps. |
 | `.gpx` | Route data. Contains the least detail of the three. |
 
+The activity name and description are taken from the file's `<metadata>` (falling back to `<trk>`) when it
+has them. Some Android trackers write a serialised workout summary into `<metadata><name>` instead of a
+name; Dreeve reads the distance, duration and calories out of it and generates a name as usual.
+
 ## Uploading files
 
 <!-- tabs:start -->

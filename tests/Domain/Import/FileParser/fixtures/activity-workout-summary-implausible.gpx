@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="FitoTrack"
+     xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>Workout(id=1, uuid=68cfcda9-fa21-4a95-b2a1-fcf228705550, start=1785746832700, end=1785743210127, activeDuration=, comment=, distance=abc, repetitions=0, energy=0, workoutTypeId=walking, intervalSetUsedId=-1)</name>
+    <time>2026-08-03T07:46:50.127Z</time>
+  </metadata>
+  <trk>
+    <name>Fallback name</name>
+    <trkseg>
+      <trkpt lat="51.0" lon="3.7">
+        <ele>10</ele>
+        <time>2026-08-03T07:46:55Z</time>
+      </trkpt>
+      <trkpt lat="51.0005" lon="3.7005">
+        <ele>12</ele>
+        <time>2026-08-03T07:47:25Z</time>
+      </trkpt>
+      <trkpt lat="51.0010" lon="3.7010">
+        <ele>11</ele>
+        <time>2026-08-03T07:47:55Z</time>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>
