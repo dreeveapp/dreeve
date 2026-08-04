@@ -19,13 +19,13 @@ final readonly class PageRenderer
         $render = $this->cacheableRenderer->render($page);
 
         $response = new Response(
-            content: $render->content ?? '',
+            content: $render->getContent() ?? '',
             headers: ['Content-Type' => 'text/html; charset=UTF-8'],
         );
 
-        $render->wasServedFromCache
-            ? $response->headers->set('X-Cache-Hit', $render->cacheKey)
-            : $response->headers->set('X-Cache-Miss', $render->cacheKey ?? 'uncacheable');
+        $render->wasServedFromCache()
+            ? $response->headers->set('X-Cache-Hit', $render->getCacheKey())
+            : $response->headers->set('X-Cache-Miss', $render->getCacheKey() ?? 'uncacheable');
 
         if (!$page->getCacheability()->getCacheContexts()->isEmpty()) {
             $response->headers->set('Cache-Control', 'private, no-store');

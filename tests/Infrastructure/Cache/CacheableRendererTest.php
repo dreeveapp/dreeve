@@ -2,6 +2,7 @@
 
 namespace App\Tests\Infrastructure\Cache;
 
+use App\Application\AppVersion;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\CacheContextRegistry;
@@ -9,6 +10,7 @@ use App\Infrastructure\Cache\CacheContexts;
 use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\Context\TrustedVisitorCacheContext;
+use App\Infrastructure\Cache\Render;
 use App\Infrastructure\Cache\RenderCache;
 use App\Infrastructure\Config\DemoMode;
 use App\Infrastructure\Security\TrustedVisitor;
@@ -25,10 +27,16 @@ class CacheableRendererTest extends ContainerTestCase
     {
         $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
 
-        $this->assertEquals('rendered', $this->cacheableRenderer->render($cacheable)->content);
+        $this->assertEquals(
+            Render::freshlyRendered('rendered', $this->prefixedCacheKey('stub')),
+            $this->cacheableRenderer->render($cacheable)
+        );
 
         $cacheable->rendered = 'changed';
-        $this->assertEquals('rendered', $this->cacheableRenderer->render($cacheable)->content);
+        $this->assertEquals(
+            Render::servedFromCache('rendered', $this->prefixedCacheKey('stub')),
+            $this->cacheableRenderer->render($cacheable)
+        );
         $this->assertEquals(1, $cacheable->renderCount);
     }
 
@@ -40,7 +48,10 @@ class CacheableRendererTest extends ContainerTestCase
         $this->renderCache->invalidateTags(CacheTag::ACTIVITY_IMAGES);
 
         $cacheable->rendered = 'changed';
-        $this->assertEquals('changed', $this->cacheableRenderer->render($cacheable)->content);
+        $this->assertEquals(
+            Render::freshlyRendered('changed', $this->prefixedCacheKey('stub')),
+            $this->cacheableRenderer->render($cacheable)
+        );
         $this->assertEquals(2, $cacheable->renderCount);
     }
 
@@ -52,7 +63,10 @@ class CacheableRendererTest extends ContainerTestCase
         $this->renderCache->invalidateTags(CacheTag::SETTINGS_APPEARANCE);
 
         $cacheable->rendered = 'changed';
-        $this->assertEquals('rendered', $this->cacheableRenderer->render($cacheable)->content);
+        $this->assertEquals(
+            Render::servedFromCache('rendered', $this->prefixedCacheKey('stub')),
+            $this->cacheableRenderer->render($cacheable)
+        );
         $this->assertEquals(1, $cacheable->renderCount);
     }
 
@@ -61,8 +75,14 @@ class CacheableRendererTest extends ContainerTestCase
         $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
         $cacheable->rendered = null;
 
-        $this->assertNull($this->cacheableRenderer->render($cacheable)->content);
-        $this->assertNull($this->cacheableRenderer->render($cacheable)->content);
+        $this->assertEquals(
+            Render::freshlyRendered(null, $this->prefixedCacheKey('stub')),
+            $this->cacheableRenderer->render($cacheable)
+        );
+        $this->assertEquals(
+            Render::servedFromCache(null, $this->prefixedCacheKey('stub')),
+            $this->cacheableRenderer->render($cacheable)
+        );
         $this->assertEquals(1, $cacheable->renderCount);
     }
 
@@ -91,16 +111,22 @@ class CacheableRendererTest extends ContainerTestCase
     {
         $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
 
-        $this->assertFalse($this->cacheableRenderer->render($cacheable)->wasServedFromCache);
-        $this->assertTrue($this->cacheableRenderer->render($cacheable)->wasServedFromCache);
+        $this->assertEquals(
+            Render::freshlyRendered('rendered', $this->prefixedCacheKey('stub')),
+            $this->cacheableRenderer->render($cacheable)
+        );
+        $this->assertEquals(
+            Render::servedFromCache('rendered', $this->prefixedCacheKey('stub')),
+            $this->cacheableRenderer->render($cacheable)
+        );
     }
 
     public function testItNeverReportsAnUncacheableRenderAsComingFromCache(): void
     {
         $cacheable = CacheableStub::for(Cacheability::none());
 
-        $this->assertFalse($this->cacheableRenderer->render($cacheable)->wasServedFromCache);
-        $this->assertFalse($this->cacheableRenderer->render($cacheable)->wasServedFromCache);
+        $this->assertEquals(Render::notCacheable('rendered'), $this->cacheableRenderer->render($cacheable));
+        $this->assertEquals(Render::notCacheable('rendered'), $this->cacheableRenderer->render($cacheable));
     }
 
     public function testItReportsTheCacheKeyIncludingItsContextSegments(): void
@@ -110,14 +136,10 @@ class CacheableRendererTest extends ContainerTestCase
             cacheContexts: CacheContexts::of(TrustedVisitorCacheContext::class),
         ));
 
-        $render = $this->rendererFor(demoModeIsEnabled: true, loggedIn: false)->render($cacheable);
-
-        $this->assertStringEndsWith('stub.trust=anonymized', (string) $render->cacheKey);
-    }
-
-    public function testItReportsNoCacheKeyForAnUncacheableRender(): void
-    {
-        $this->assertNull($this->cacheableRenderer->render(CacheableStub::for(Cacheability::none()))->cacheKey);
+        $this->assertEquals(
+            Render::freshlyRendered('rendered', $this->prefixedCacheKey('stub.trust=anonymized')),
+            $this->rendererFor(demoModeIsEnabled: true, loggedIn: false)->render($cacheable)
+        );
     }
 
     public function testItKeepsOneEntryPerContextValueAndNeverCrossesThemOver(): void
@@ -129,24 +151,24 @@ class CacheableRendererTest extends ContainerTestCase
 
         $cacheable->rendered = 'anonymized-html';
         $this->assertEquals(
-            'anonymized-html',
-            $this->rendererFor(demoModeIsEnabled: true, loggedIn: false)->render($cacheable)->content
+            Render::freshlyRendered('anonymized-html', $this->prefixedCacheKey('stub.trust=anonymized')),
+            $this->rendererFor(demoModeIsEnabled: true, loggedIn: false)->render($cacheable)
         );
 
         $cacheable->rendered = 'trusted-html';
         $this->assertEquals(
-            'trusted-html',
-            $this->rendererFor(demoModeIsEnabled: true, loggedIn: true)->render($cacheable)->content
+            Render::freshlyRendered('trusted-html', $this->prefixedCacheKey('stub.trust=trusted')),
+            $this->rendererFor(demoModeIsEnabled: true, loggedIn: true)->render($cacheable)
         );
 
         $cacheable->rendered = 'should-never-be-rendered';
         $this->assertEquals(
-            'anonymized-html',
-            $this->rendererFor(demoModeIsEnabled: true, loggedIn: false)->render($cacheable)->content
+            Render::servedFromCache('anonymized-html', $this->prefixedCacheKey('stub.trust=anonymized')),
+            $this->rendererFor(demoModeIsEnabled: true, loggedIn: false)->render($cacheable)
         );
         $this->assertEquals(
-            'trusted-html',
-            $this->rendererFor(demoModeIsEnabled: true, loggedIn: true)->render($cacheable)->content
+            Render::servedFromCache('trusted-html', $this->prefixedCacheKey('stub.trust=trusted')),
+            $this->rendererFor(demoModeIsEnabled: true, loggedIn: true)->render($cacheable)
         );
         $this->assertEquals(2, $cacheable->renderCount);
     }
@@ -176,6 +198,11 @@ class CacheableRendererTest extends ContainerTestCase
             TrustedVisitorCacheContext::class
         )));
         $this->cacheableRenderer->render($cacheable);
+    }
+
+    private function prefixedCacheKey(string $cacheKey): string
+    {
+        return AppVersion::getSemanticVersion().'.'.$cacheKey;
     }
 
     private function rendererFor(bool $demoModeIsEnabled, bool $loggedIn): CacheableRenderer

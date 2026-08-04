@@ -7,9 +7,9 @@ namespace App\Infrastructure\Cache;
 final readonly class Render
 {
     private function __construct(
-        public ?string $content,
-        public bool $wasServedFromCache,
-        public ?string $cacheKey,
+        private ?string $content,
+        private bool $wasServedFromCache,
+        private ?string $cacheKey,
     ) {
     }
 
@@ -38,5 +38,20 @@ final readonly class Render
             wasServedFromCache: false,
             cacheKey: null,
         );
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function wasServedFromCache(): bool
+    {
+        return $this->wasServedFromCache;
+    }
+
+    public function getCacheKey(): ?string
+    {
+        return $this->cacheKey;
     }
 }

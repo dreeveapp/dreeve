@@ -30,7 +30,7 @@ class ChallengeInvalidateCacheTagsListenerTest extends ContainerTestCase
             slug: 'challenge',
         ));
 
-        $this->assertFalse($this->renderChallenges()->wasServedFromCache);
+        $this->assertFalse($this->renderChallenges()->wasServedFromCache());
     }
 
     public function testItDoesNotInvalidateWhenAChallengeIsMerelyHydratedAndStored(): void
@@ -39,13 +39,13 @@ class ChallengeInvalidateCacheTagsListenerTest extends ContainerTestCase
 
         $this->challengeRepository->add(ChallengeBuilder::fromDefaults()->build());
 
-        $this->assertTrue($this->renderChallenges()->wasServedFromCache);
+        $this->assertTrue($this->renderChallenges()->wasServedFromCache());
     }
 
     private function warmUpChallengesRenderCache(): void
     {
         $this->renderChallenges();
-        $this->assertTrue($this->renderChallenges()->wasServedFromCache);
+        $this->assertTrue($this->renderChallenges()->wasServedFromCache());
     }
 
     private function renderChallenges(): Render

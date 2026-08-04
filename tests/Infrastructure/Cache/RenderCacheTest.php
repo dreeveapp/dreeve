@@ -6,6 +6,7 @@ use App\Application\AppVersion;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
+use App\Infrastructure\Cache\Render;
 use App\Infrastructure\Cache\RenderCache;
 use App\Tests\ContainerTestCase;
 
@@ -22,10 +23,12 @@ class RenderCacheTest extends ContainerTestCase
         );
 
         $this->assertEquals(
-            AppVersion::getSemanticVersion().'.activity_123.tz=Europe_Brussels.user=me_example.com',
-            $render->cacheKey
+            Render::freshlyRendered(
+                'rendered',
+                AppVersion::getSemanticVersion().'.activity_123.tz=Europe_Brussels.user=me_example.com'
+            ),
+            $render
         );
-        $this->assertEquals('rendered', $render->content);
     }
 
     public function testAKeyThatNeededNormalisingStillServesFromCache(): void
@@ -36,8 +39,10 @@ class RenderCacheTest extends ContainerTestCase
         $this->renderCache->get($cacheKey, $cacheability, fn (): string => 'rendered');
         $render = $this->renderCache->get($cacheKey, $cacheability, fn (): string => 'should-not-run');
 
-        $this->assertTrue($render->wasServedFromCache);
-        $this->assertEquals('rendered', $render->content);
+        $this->assertEquals(
+            Render::servedFromCache('rendered', AppVersion::getSemanticVersion().'.segment_9_special'),
+            $render
+        );
     }
 
     public function testItPrunes(): void
@@ -55,7 +60,11 @@ class RenderCacheTest extends ContainerTestCase
             cacheability: Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
             callback: fn (): string => 'should-not-run',
         );
-        $this->assertTrue($render->wasServedFromCache);
+
+        $this->assertEquals(
+            Render::servedFromCache('rendered', AppVersion::getSemanticVersion().'.photos'),
+            $render
+        );
     }
 
     #[\Override]
