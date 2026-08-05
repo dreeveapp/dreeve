@@ -8,13 +8,10 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Http\Page\Page;
-use App\Infrastructure\Http\Page\ProvidesCacheKeyFromPath;
 use Twig\Environment;
 
 final readonly class ChallengesPage implements Page
 {
-    use ProvidesCacheKeyFromPath;
-
     public function __construct(
         private ChallengeRepository $challengeRepository,
         private Environment $twig,
@@ -29,6 +26,7 @@ final readonly class ChallengesPage implements Page
     public function getCacheability(): Cacheability
     {
         return Cacheability::for(
+            cacheKey: $this->getPath(),
             cacheTags: CacheTags::of(CacheTag::CHALLENGES),
         );
     }

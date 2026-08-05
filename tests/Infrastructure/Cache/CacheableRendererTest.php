@@ -25,7 +25,7 @@ class CacheableRendererTest extends ContainerTestCase
 
     public function testItRendersOnceAndServesEveryRequestAfterThatFromCache(): void
     {
-        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
+        $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
 
         $this->assertEquals(
             Render::freshlyRendered('rendered', $this->prefixedCacheKey('stub')),
@@ -42,7 +42,7 @@ class CacheableRendererTest extends ContainerTestCase
 
     public function testItRendersAgainAfterItsTagWasInvalidated(): void
     {
-        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
+        $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
         $this->cacheableRenderer->render($cacheable);
 
         $this->renderCache->invalidateTags(CacheTag::ACTIVITY_IMAGES);
@@ -57,7 +57,7 @@ class CacheableRendererTest extends ContainerTestCase
 
     public function testItKeepsTheEntryWhenAnUnrelatedTagWasInvalidated(): void
     {
-        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
+        $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
         $this->cacheableRenderer->render($cacheable);
 
         $this->renderCache->invalidateTags(CacheTag::CHALLENGES);
@@ -72,7 +72,7 @@ class CacheableRendererTest extends ContainerTestCase
 
     public function testItCachesARenderThatIsNull(): void
     {
-        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
+        $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
         $cacheable->rendered = null;
 
         $this->assertEquals(
@@ -98,7 +98,7 @@ class CacheableRendererTest extends ContainerTestCase
 
     public function testItRendersAgainAfterTheWholeCacheWasCleared(): void
     {
-        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
+        $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
         $this->cacheableRenderer->render($cacheable);
 
         $this->renderCache->clear();
@@ -109,7 +109,7 @@ class CacheableRendererTest extends ContainerTestCase
 
     public function testItReportsWhetherTheRenderCameFromCache(): void
     {
-        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
+        $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
 
         $this->assertEquals(
             Render::freshlyRendered('rendered', $this->prefixedCacheKey('stub')),
@@ -132,6 +132,7 @@ class CacheableRendererTest extends ContainerTestCase
     public function testItReportsTheCacheKeyIncludingItsContextSegments(): void
     {
         $cacheable = CacheableStub::for(Cacheability::for(
+            cacheKey: 'stub',
             cacheTags: CacheTags::of(CacheTag::ACTIVITY_IMAGES),
             cacheContexts: CacheContexts::of(TrustedVisitorCacheContext::class),
         ));
@@ -145,6 +146,7 @@ class CacheableRendererTest extends ContainerTestCase
     public function testItKeepsOneEntryPerContextValueAndNeverCrossesThemOver(): void
     {
         $cacheable = CacheableStub::for(Cacheability::for(
+            cacheKey: 'stub',
             cacheTags: CacheTags::of(CacheTag::ACTIVITY_IMAGES),
             cacheContexts: CacheContexts::of(TrustedVisitorCacheContext::class),
         ));
@@ -176,6 +178,7 @@ class CacheableRendererTest extends ContainerTestCase
     public function testItCollapsesToASingleEntryWhenDemoModeIsDisabled(): void
     {
         $cacheable = CacheableStub::for(Cacheability::for(
+            cacheKey: 'stub',
             cacheTags: CacheTags::of(CacheTag::ACTIVITY_IMAGES),
             cacheContexts: CacheContexts::of(TrustedVisitorCacheContext::class),
         ));
@@ -189,6 +192,7 @@ class CacheableRendererTest extends ContainerTestCase
     public function testItFailsWhenTheDeclaredContextIsNotRegistered(): void
     {
         $cacheable = CacheableStub::for(Cacheability::for(
+            cacheKey: 'stub',
             cacheTags: CacheTags::of(CacheTag::ACTIVITY_IMAGES),
             cacheContexts: CacheContexts::of(TrustedVisitorCacheContext::class),
         ));

@@ -12,13 +12,10 @@ use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\Context\TrustedVisitorCacheContext;
 use App\Infrastructure\Http\Page\Page;
-use App\Infrastructure\Http\Page\ProvidesCacheKeyFromPath;
 use Twig\Environment;
 
 final readonly class PhotosPage implements Page
 {
-    use ProvidesCacheKeyFromPath;
-
     public function __construct(
         private ImageRepository $imageRepository,
         private SportTypeRepository $sportTypeRepository,
@@ -35,6 +32,7 @@ final readonly class PhotosPage implements Page
     public function getCacheability(): Cacheability
     {
         return Cacheability::for(
+            cacheKey: $this->getPath(),
             cacheTags: CacheTags::of(CacheTag::ACTIVITY_IMAGES),
             cacheContexts: CacheContexts::of(TrustedVisitorCacheContext::class),
         );

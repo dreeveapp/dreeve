@@ -80,7 +80,7 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
     {
         return $this->renderCache->get(
             cacheKey: $cacheTag->value,
-            cacheability: Cacheability::for(CacheTags::of($cacheTag)),
+            cacheability: Cacheability::for('stub', CacheTags::of($cacheTag)),
             callback: fn (): string => 'rendered',
         );
     }

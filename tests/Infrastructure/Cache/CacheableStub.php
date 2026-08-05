@@ -13,22 +13,15 @@ final class CacheableStub implements Cacheable
     public ?string $rendered = 'rendered';
 
     private function __construct(
-        private readonly string $cacheKey,
         private readonly Cacheability $cacheability,
     ) {
     }
 
-    public static function for(Cacheability $cacheability, string $cacheKey = 'stub'): self
+    public static function for(Cacheability $cacheability): self
     {
         return new self(
-            cacheKey: $cacheKey,
             cacheability: $cacheability,
         );
-    }
-
-    public function getCacheKey(): string
-    {
-        return $this->cacheKey;
     }
 
     public function getCacheability(): Cacheability

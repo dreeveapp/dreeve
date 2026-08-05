@@ -162,7 +162,7 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
 
     public function testHandleKeepsRenderedPagesBecauseImportedFilesCarryNoImages(): void
     {
-        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
+        $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
         $this->cacheableRenderer->render($cacheable);
 
         $this->dropInWatchFolder('ride.tcx', $this->fixture('activity.tcx'));

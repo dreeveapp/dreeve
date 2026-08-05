@@ -39,14 +39,10 @@ final readonly class IndexPage implements Cacheable
     ) {
     }
 
-    public function getCacheKey(): string
-    {
-        return 'index';
-    }
-
     public function getCacheability(): Cacheability
     {
         return Cacheability::for(
+            cacheKey: 'index',
             cacheTags: CacheTags::of(
                 // The "updated on" stamp in the sidebar is written when a build finishes.
                 CacheTag::APP_BUILD,

@@ -26,7 +26,7 @@ class PhotosPageTest extends ContainerTestCase
     public function testGetPath(): void
     {
         $this->assertEquals('photos', $this->photosPage->getPath());
-        $this->assertEquals('photos', $this->photosPage->getCacheKey());
+        $this->assertEquals('photos', $this->photosPage->getCacheability()->getCacheKey());
     }
 
     public function testGetCacheability(): void

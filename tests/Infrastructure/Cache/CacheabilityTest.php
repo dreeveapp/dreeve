@@ -11,7 +11,7 @@ class CacheabilityTest extends TestCase
 {
     public function testEveryCacheabilityCarriesTheCrossCuttingTags(): void
     {
-        $cacheTags = Cacheability::for(CacheTags::empty())->getCacheTags()->toTagStrings();
+        $cacheTags = Cacheability::for('stub', CacheTags::empty())->getCacheTags()->toTagStrings();
 
         foreach (CacheTag::crossCutting() as $crossCuttingTag) {
             $this->assertContains($crossCuttingTag->value, $cacheTags);
@@ -20,7 +20,7 @@ class CacheabilityTest extends TestCase
 
     public function testItKeepsTheDeclaredTags(): void
     {
-        $cacheability = Cacheability::for(CacheTags::of(CacheTag::ACTIVITIES, CacheTag::CHALLENGES));
+        $cacheability = Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITIES, CacheTag::CHALLENGES));
 
         $this->assertContains(CacheTag::ACTIVITIES->value, $cacheability->getCacheTags()->toTagStrings());
         $this->assertContains(CacheTag::CHALLENGES->value, $cacheability->getCacheTags()->toTagStrings());
@@ -28,7 +28,7 @@ class CacheabilityTest extends TestCase
 
     public function testItDoesNotDuplicateACrossCuttingTagThatWasAlsoDeclared(): void
     {
-        $cacheTags = Cacheability::for(CacheTags::of(CacheTag::SETTINGS_APPEARANCE))->getCacheTags()->toTagStrings();
+        $cacheTags = Cacheability::for('stub', CacheTags::of(CacheTag::SETTINGS_APPEARANCE))->getCacheTags()->toTagStrings();
 
         $this->assertEquals(array_unique($cacheTags), $cacheTags);
     }

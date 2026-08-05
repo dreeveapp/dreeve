@@ -1,39 +1,37 @@
 Buildingapp...
 
 
-0%[>---------------------------]0/17-Initializing...
+0%[>---------------------------]0/16-Initializing...
 
-5%[=>--------------------------]1/17-Configuringlocale
+6%[=>--------------------------]1/16-Configuringlocale
 
-11%[===>------------------------]2/17-Configuringthemecolors
+12%[===>------------------------]2/16-Configuringthemecolors
 
-17%[====>-----------------------]3/17-BuildingManifest
+18%[=====>----------------------]3/16-BuildingManifest
 
-23%[======>---------------------]4/17-Buildingdashboard
+25%[=======>--------------------]4/16-Buildingdashboard
 
-29%[========>-------------------]5/17-Buildingactivities
+31%[========>-------------------]5/16-Buildingactivities
 
-35%[=========>------------------]6/17-Buildinggpxfiles
+37%[==========>-----------------]6/16-Buildinggpxfiles
 
-41%[===========>----------------]7/17-Buildingmonthlystats
+43%[============>---------------]7/16-Buildingmonthlystats
 
-47%[=============>--------------]8/17-Buildinggearstats
+50%[==============>-------------]8/16-Buildinggearstats
 
-52%[==============>-------------]9/17-Buildinggearmaintenance
+56%[===============>------------]9/16-Buildinggearmaintenance
 
-58%[================>-----------]10/17-Buildingrecordingdevices
+62%[=================>----------]10/16-Buildingrecordingdevices
 
-64%[==================>---------]11/17-Buildingeddington
+68%[===================>--------]11/16-Buildingmilestones
 
-70%[===================>--------]12/17-Buildingmilestones
+75%[=====================>------]12/16-Buildingsegments
 
-76%[=====================>------]13/17-Buildingsegments
+81%[======================>-----]13/16-Buildingheatmap
 
-82%[=======================>----]14/17-Buildingheatmap
+87%[========================>---]14/16-Buildingbestefforts
 
-88%[========================>---]15/17-Buildingbestefforts
+93%[==========================>-]15/16-Buildingrewind
 
-94%[==========================>-]16/17-Buildingrewind
-
-100%[============================]17/17-Buildingbadges
+100%[============================]16/16-Buildingbadges
 

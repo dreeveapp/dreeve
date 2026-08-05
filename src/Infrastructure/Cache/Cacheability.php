@@ -8,6 +8,7 @@ final readonly class Cacheability
 {
     private function __construct(
         private bool $isCacheable,
+        private string $cacheKey,
         private CacheTags $cacheTags,
         private CacheContexts $cacheContexts,
         private ?int $ttlInSeconds,
@@ -15,12 +16,14 @@ final readonly class Cacheability
     }
 
     public static function for(
+        string $cacheKey,
         CacheTags $cacheTags,
         ?CacheContexts $cacheContexts = null,
         ?int $ttlInSeconds = null,
     ): self {
         return new self(
             isCacheable: true,
+            cacheKey: $cacheKey,
             cacheTags: CacheTags::of(...CacheTag::crossCutting(), ...$cacheTags->toArray()),
             cacheContexts: $cacheContexts ?? CacheContexts::none(),
             ttlInSeconds: $ttlInSeconds,
@@ -31,6 +34,7 @@ final readonly class Cacheability
     {
         return new self(
             isCacheable: false,
+            cacheKey: '',
             cacheTags: CacheTags::empty(),
             cacheContexts: CacheContexts::none(),
             ttlInSeconds: null,
@@ -40,6 +44,11 @@ final readonly class Cacheability
     public function isCacheable(): bool
     {
         return $this->isCacheable;
+    }
+
+    public function getCacheKey(): string
+    {
+        return $this->cacheKey;
     }
 
     public function getCacheTags(): CacheTags

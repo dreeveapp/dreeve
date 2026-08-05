@@ -52,7 +52,7 @@ class ChallengeInvalidateCacheTagsListenerTest extends ContainerTestCase
     {
         return $this->renderCache->get(
             cacheKey: 'challenges',
-            cacheability: Cacheability::for(CacheTags::of(CacheTag::CHALLENGES)),
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::CHALLENGES)),
             callback: fn (): string => 'rendered',
         );
     }

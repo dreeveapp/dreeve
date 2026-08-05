@@ -6,8 +6,6 @@ namespace App\Infrastructure\Cache;
 
 interface Cacheable
 {
-    public function getCacheKey(): string;
-
     public function getCacheability(): Cacheability;
 
     public function render(): ?string;

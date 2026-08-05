@@ -24,7 +24,7 @@ class PageCacheContextGuardTest extends ContainerTestCase
         $cacheKeys = [];
         foreach ($pageRegistry->all() as $page) {
             $paths[] = $page->getPath();
-            $cacheKeys[] = $page->getCacheKey();
+            $cacheKeys[] = $page->getCacheability()->getCacheKey();
         }
 
         $this->assertNotEmpty($paths);

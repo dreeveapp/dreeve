@@ -25,7 +25,7 @@ class ChallengesPageTest extends ContainerTestCase
     public function testGetPath(): void
     {
         $this->assertEquals('challenges', $this->challengesPage->getPath());
-        $this->assertEquals('challenges', $this->challengesPage->getCacheKey());
+        $this->assertEquals('challenges', $this->challengesPage->getCacheability()->getCacheKey());
     }
 
     public function testGetCacheability(): void

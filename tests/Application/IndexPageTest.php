@@ -63,7 +63,7 @@ class IndexPageTest extends ContainerTestCase
 
     public function testGetCacheKey(): void
     {
-        $this->assertEquals('index', $this->indexPage->getCacheKey());
+        $this->assertEquals('index', $this->indexPage->getCacheability()->getCacheKey());
     }
 
     public function testGetCacheability(): void

@@ -2,35 +2,43 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Build\BuildEddingtonHtml;
+namespace App\Domain\Activity\Eddington;
 
-use App\Domain\Activity\Eddington\EddingtonCalculator;
-use App\Domain\Activity\Eddington\EddingtonChart;
-use App\Domain\Activity\Eddington\EddingtonHistoryChart;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\CQRS\Command\Command;
-use App\Infrastructure\CQRS\Command\CommandHandler;
+use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheTag;
+use App\Infrastructure\Cache\CacheTags;
+use App\Infrastructure\Http\Page\Page;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Serialization\Json;
-use League\Flysystem\FilesystemOperator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class BuildEddingtonHtmlCommandHandler implements CommandHandler
+final readonly class EddingtonPage implements Page
 {
     public function __construct(
         private EddingtonCalculator $eddingtonCalculator,
         private SettingsRepository $settingsRepository,
-        private Environment $twig,
-        private FilesystemOperator $buildHtmlStorage,
         private TranslatorInterface $translator,
+        private Environment $twig,
     ) {
     }
 
-    public function handle(Command $command): void
+    public function getPath(): string
     {
-        assert($command instanceof BuildEddingtonHtml);
+        return 'eddington';
+    }
 
+    public function getCacheability(): Cacheability
+    {
+        return Cacheability::for(
+            cacheKey: $this->getPath(),
+            cacheTags: CacheTags::of(CacheTag::ACTIVITIES, CacheTag::SETTINGS_METRICS),
+        );
+    }
+
+    public function render(): string
+    {
         $eddingtonCharts = [];
         $eddingtonHistoryCharts = [];
         $allEddingtons = [];
@@ -55,14 +63,11 @@ final readonly class BuildEddingtonHtmlCommandHandler implements CommandHandler
             );
         }
 
-        $this->buildHtmlStorage->write(
-            'eddington.html',
-            $this->twig->load('html/eddington.html.twig')->render([
-                'activeUnitSystem' => $this->settingsRepository->appearance()->getUnitSystem(),
-                'eddingtons' => $allEddingtons,
-                'eddingtonCharts' => $eddingtonCharts,
-                'eddingtonHistoryCharts' => $eddingtonHistoryCharts,
-            ]),
-        );
+        return $this->twig->load('html/eddington.html.twig')->render([
+            'activeUnitSystem' => $this->settingsRepository->appearance()->getUnitSystem(),
+            'eddingtons' => $allEddingtons,
+            'eddingtonCharts' => $eddingtonCharts,
+            'eddingtonHistoryCharts' => $eddingtonHistoryCharts,
+        ]);
     }
 }

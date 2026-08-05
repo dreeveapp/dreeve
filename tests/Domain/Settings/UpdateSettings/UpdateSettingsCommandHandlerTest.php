@@ -151,7 +151,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
 
     public function testItOnlyInvalidatesRendersOfTheGroupThatWasSaved(): void
     {
-        $cacheable = CacheableStub::for(Cacheability::for(CacheTags::empty()));
+        $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::empty()));
         $this->cacheableRenderer->render($cacheable);
 
         $this->commandBus->dispatch(UpdateSettings::fromPayload([

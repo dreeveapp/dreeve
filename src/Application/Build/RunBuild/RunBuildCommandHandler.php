@@ -9,7 +9,6 @@ use App\Application\Build\BuildActivitiesHtml\BuildActivitiesHtml;
 use App\Application\Build\BuildBadgeSvg\BuildBadgeSvg;
 use App\Application\Build\BuildBestEffortsHtml\BuildBestEffortsHtml;
 use App\Application\Build\BuildDashboardHtml\BuildDashboardHtml;
-use App\Application\Build\BuildEddingtonHtml\BuildEddingtonHtml;
 use App\Application\Build\BuildGearMaintenanceHtml\BuildGearMaintenanceHtml;
 use App\Application\Build\BuildGearStatsHtml\BuildGearStatsHtml;
 use App\Application\Build\BuildGpxFiles\BuildGpxFiles;
@@ -76,7 +75,6 @@ This is not a bug, once all your activities have been imported, your gear statis
             'Building gear stats' => new BuildGearStatsHtml($now),
             'Building gear maintenance' => new BuildGearMaintenanceHtml(),
             'Building recording devices' => new BuildRecordingDevices(),
-            'Building eddington' => new BuildEddingtonHtml($now),
             'Building milestones' => new BuildMilestonesHtml(),
             'Building segments' => new BuildSegmentsHtml(),
             'Building heatmap' => new BuildHeatmapHtml($now),
