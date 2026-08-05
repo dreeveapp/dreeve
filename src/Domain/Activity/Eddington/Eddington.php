@@ -1,31 +1,58 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Activity\Eddington;
 
-use App\Domain\Activity\Activities;
 use App\Domain\Activity\Eddington\Config\EddingtonConfigItem;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
-final class Eddington
+final readonly class Eddington
 {
-    /** @var array<string, Eddington> */
-    public static array $instances = [];
-
-    private const string DATE_FORMAT = 'Y-m-d';
-    /** @var array<string, int|float> */
-    private readonly array $distancesPerDay;
-    private readonly int $eddingtonNumber;
-
+    /**
+     * @param array<int<1, max>, int<0, max>>  $timesCompletedData
+     * @param array<int, SerializableDateTime> $history
+     * @param array<int, int>                  $daysToCompleteForFutureNumbers
+     */
     private function __construct(
-        private readonly string $id,
-        private readonly string $label,
-        private readonly Activities $activities,
-        private readonly UnitSystem $unitSystem,
-        private readonly EddingtonConfigItem $config,
+        private string $id,
+        private string $label,
+        private UnitSystem $unitSystem,
+        private EddingtonConfigItem $config,
+        private int $eddingtonNumber,
+        private int $longestDistanceInADay,
+        private array $timesCompletedData,
+        private array $history,
+        private array $daysToCompleteForFutureNumbers,
     ) {
-        $this->distancesPerDay = $this->buildDistancesPerDay();
-        $this->eddingtonNumber = $this->calculateEddingtonNumber();
+    }
+
+    /**
+     * @param array<int<1, max>, int<0, max>>  $timesCompletedData
+     * @param array<int, SerializableDateTime> $history
+     * @param array<int, int>                  $daysToCompleteForFutureNumbers
+     */
+    public static function create(
+        EddingtonConfigItem $config,
+        UnitSystem $unitSystem,
+        int $eddingtonNumber,
+        int $longestDistanceInADay,
+        array $timesCompletedData,
+        array $history,
+        array $daysToCompleteForFutureNumbers,
+    ): self {
+        return new self(
+            id: $config->getId().$unitSystem->value,
+            label: $config->getLabel(),
+            unitSystem: $unitSystem,
+            config: $config,
+            eddingtonNumber: $eddingtonNumber,
+            longestDistanceInADay: $longestDistanceInADay,
+            timesCompletedData: $timesCompletedData,
+            history: $history,
+            daysToCompleteForFutureNumbers: $daysToCompleteForFutureNumbers,
+        );
     }
 
     public function getId(): string
@@ -48,65 +75,14 @@ final class Eddington
         return $this->unitSystem;
     }
 
-    /**
-     * @return array<string, float|int>
-     */
-    private function buildDistancesPerDay(): array
+    public function getNumber(): int
     {
-        $distancesPerDay = [];
-        foreach ($this->activities as $activity) {
-            $day = $activity->getStartDate()->format(self::DATE_FORMAT);
-            if (!array_key_exists($day, $distancesPerDay)) {
-                $distancesPerDay[$day] = 0;
-            }
-
-            $distance = $activity->getDistance()->toUnitSystem($this->unitSystem);
-            $distancesPerDay[$day] += $distance->toFloat();
-        }
-
-        return $distancesPerDay;
-    }
-
-    private function calculateEddingtonNumber(): int
-    {
-        $distanceCounts = [];
-
-        foreach ($this->distancesPerDay as $distance) {
-            $rounded = (int) floor($distance);
-            for ($i = 1; $i <= $rounded; ++$i) {
-                $distanceCounts[$i] = ($distanceCounts[$i] ?? 0) + 1;
-            }
-        }
-
-        ksort($distanceCounts);
-
-        $eddington = 0;
-        foreach ($distanceCounts as $distance => $count) {
-            if ($count >= $distance) {
-                $eddington = $distance;
-            } else {
-                break;
-            }
-        }
-
-        return $eddington;
-    }
-
-    /**
-     * @return array<string, float|int>
-     */
-    private function getDistancesPerDay(): array
-    {
-        return $this->distancesPerDay;
+        return $this->eddingtonNumber;
     }
 
     public function getLongestDistanceInADay(): int
     {
-        if ([] === $this->getDistancesPerDay()) {
-            return 0;
-        }
-
-        return (int) floor(max($this->getDistancesPerDay()));
+        return $this->longestDistanceInADay;
     }
 
     /**
@@ -114,23 +90,7 @@ final class Eddington
      */
     public function getTimesCompletedData(): array
     {
-        $counts = [];
-
-        foreach ($this->distancesPerDay as $distance) {
-            $rounded = (int) floor($distance);
-            for ($i = 1; $i <= $rounded; ++$i) {
-                $counts[$i] = ($counts[$i] ?? 0) + 1;
-            }
-        }
-
-        ksort($counts);
-
-        return $counts;
-    }
-
-    public function getNumber(): int
-    {
-        return $this->eddingtonNumber;
+        return $this->timesCompletedData;
     }
 
     /**
@@ -138,14 +98,7 @@ final class Eddington
      */
     public function getDaysToCompleteForFutureNumbers(): array
     {
-        $futureNumbers = [];
-        $eddingtonNumber = $this->getNumber();
-        $timesCompleted = $this->getTimesCompletedData();
-        for ($distance = $eddingtonNumber + 1; $distance <= $this->getLongestDistanceInADay(); ++$distance) {
-            $futureNumbers[$distance] = $distance - $timesCompleted[$distance];
-        }
-
-        return $futureNumbers;
+        return $this->daysToCompleteForFutureNumbers;
     }
 
     /**
@@ -153,47 +106,6 @@ final class Eddington
      */
     public function getEddingtonHistory(): array
     {
-        $history = [];
-        $eddingtonNumber = $this->getNumber();
-        // We need the distances sorted by oldest => newest.
-        $distancesPerDay = array_reverse($this->getDistancesPerDay());
-
-        for ($distance = $eddingtonNumber; $distance > 0; --$distance) {
-            $countForDistance = 0;
-            foreach ($distancesPerDay as $day => $distanceInDay) {
-                if ($distanceInDay >= $distance) {
-                    ++$countForDistance;
-                }
-                if ($countForDistance === $distance) {
-                    // This is the day we reached the eddington Number.
-                    $history[$distance] = SerializableDateTime::fromString($day);
-                    break;
-                }
-            }
-        }
-
-        return array_reverse($history, true);
-    }
-
-    public static function getInstance(
-        Activities $activities,
-        EddingtonConfigItem $config,
-        UnitSystem $unitSystem,
-    ): self {
-        $eddingtonId = $config->getId().$unitSystem->value;
-
-        if (array_key_exists($eddingtonId, self::$instances)) {
-            return self::$instances[$eddingtonId];
-        }
-
-        self::$instances[$eddingtonId] = new self(
-            id: $eddingtonId,
-            label: $config->getLabel(),
-            activities: $activities,
-            unitSystem: $unitSystem,
-            config: $config
-        );
-
-        return self::$instances[$eddingtonId];
+        return $this->history;
     }
 }

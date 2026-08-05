@@ -5,7 +5,6 @@ namespace App\Tests;
 use App\Domain\Activity\ActivityIntensity;
 use App\Domain\Activity\ActivityTotals;
 use App\Domain\Activity\DailyTrainingLoad;
-use App\Domain\Activity\Eddington\Eddington;
 use App\Domain\Activity\EnrichedActivities;
 use App\Domain\Activity\Stream\StreamBasedActivityHeartRateRepository;
 use App\Domain\Activity\Stream\StreamBasedActivityPowerRepository;
@@ -50,7 +49,6 @@ abstract class ContainerTestCase extends KernelTestCase
         StreamBasedActivityHeartRateRepository::$cachedHeartRateZonesPerActivityType = [];
         StreamBasedActivityHeartRateRepository::$cachedHeartRateZonesPerActivity = [];
         StreamBasedActivityHeartRateRepository::$cachedHeartRateZonesInLastXDays = [];
-        Eddington::$instances = [];
         ActivityTotals::$instance = null;
         HtmlTwigExtension::$seenIds = [];
 
