@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Settings;
 
 use App\Domain\Settings\MapsSettings;
+use App\Infrastructure\ValueObject\String\Url;
 use PHPUnit\Framework\TestCase;
 
 class MapsSettingsTest extends TestCase
@@ -46,9 +47,9 @@ class MapsSettingsTest extends TestCase
         $this->assertSame(8, $settings->getHeatmapConfig()->getInitialZoom()?->getValue());
     }
 
-    public function testItAcceptsASingleTileLayerUrlAsAString(): void
+    public function testItDropsBlankTileLayerRowsSubmittedByTheAdminForm(): void
     {
-        $settings = MapsSettings::fromArray(['tileLayerUrl' => 'https://tile.example.com/{z}/{x}/{y}.png']);
+        $settings = MapsSettings::fromArray(['tileLayerUrl' => ['https://tile.example.com/{z}/{x}/{y}.png', '']]);
 
         $this->assertSame(
             ['https://tile.example.com/{z}/{x}/{y}.png'],
@@ -56,14 +57,11 @@ class MapsSettingsTest extends TestCase
         );
     }
 
-    public function testItDropsBlankTileLayerRowsSubmittedByTheAdminForm(): void
+    public function testItThrowsForAWhitespaceOnlyTileLayerRow(): void
     {
-        $settings = MapsSettings::fromArray(['tileLayerUrl' => ['https://tile.example.com/{z}/{x}/{y}.png', '', '   ']]);
+        $this->expectExceptionObject(new \InvalidArgumentException(Url::class.' can not be empty'));
 
-        $this->assertSame(
-            ['https://tile.example.com/{z}/{x}/{y}.png'],
-            array_map('strval', $settings->getLeafletConfig()->getTileLayerUrls()),
-        );
+        MapsSettings::fromArray(['tileLayerUrl' => ['   ']]);
     }
 
     public function testItFallsBackToTheDefaultTileLayerWhenTheListIsEmptied(): void

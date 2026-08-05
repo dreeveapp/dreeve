@@ -30,10 +30,12 @@ final readonly class MapsSettings
         $heatmap = is_array($data['heatmap'] ?? null) ? $data['heatmap'] : [];
         /** @var array<int, mixed> $initialCenter */
         $initialCenter = is_array($heatmap['initialCenter'] ?? null) ? array_values($heatmap['initialCenter']) : [];
+        /** @var array<int, mixed> $tileLayerUrls */
+        $tileLayerUrls = is_array($data['tileLayerUrl'] ?? null) ? $data['tileLayerUrl'] : [];
 
         $leafletConfig = LeafletConfig::create(
             polylineColor: (string) ($data['polylineColor'] ?? self::DEFAULT_POLYLINE_COLOR),
-            tileLayerUrls: self::tileLayerUrls($data['tileLayerUrl'] ?? null),
+            tileLayerUrls: array_values(array_filter($tileLayerUrls)) ?: [self::DEFAULT_TILE_LAYER_URL],
             enableGreyScale: filter_var($data['enableGreyScale'] ?? true, FILTER_VALIDATE_BOOLEAN),
         );
 
@@ -58,27 +60,6 @@ final readonly class MapsSettings
         return $this->heatmapConfig;
     }
 
-    /**
-     * A single URL, or a list of URLs to stack on top of each other. Blank rows submitted by the
-     * admin form are dropped, so an emptied list falls back to the default tile layer.
-     *
-     * @return string[]
-     */
-    private static function tileLayerUrls(mixed $tileLayerUrl): array
-    {
-        $tileLayerUrls = array_values(array_filter(
-            array_map(
-                self::asOptionalString(...),
-                is_array($tileLayerUrl) ? $tileLayerUrl : [$tileLayerUrl],
-            ),
-        ));
-
-        return [] === $tileLayerUrls ? [self::DEFAULT_TILE_LAYER_URL] : $tileLayerUrls;
-    }
-
-    /**
-     * The admin form submits every field, so an untouched optional field arrives as an empty string.
-     */
     private static function asOptionalString(mixed $value): ?string
     {
         if (!is_string($value) && !is_int($value) && !is_float($value)) {
