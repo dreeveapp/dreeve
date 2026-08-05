@@ -39,14 +39,17 @@ final readonly class GpxWorkoutSummary
         }
 
         $fields = [];
-        foreach (preg_split('/,\s*(?=[A-Za-z_][A-Za-z0-9_]*=)/', $matches['body']) ?: [] as $pair) {
+        foreach (preg_split('/,\s*(?=[A-Za-z_]\w*=)/', $matches['body']) ?: [] as $pair) {
             if (!str_contains($pair, '=')) {
                 continue;
             }
             [$key, $fieldValue] = explode('=', $pair, 2);
             $key = trim($key);
             $fieldValue = trim($fieldValue);
-            if ('' === $key || '' === $fieldValue) {
+            if ('' === $key) {
+                continue;
+            }
+            if ('' === $fieldValue) {
                 continue;
             }
             $fields[$key] = $fieldValue;

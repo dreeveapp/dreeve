@@ -17,7 +17,7 @@ class MapsSettingsTest extends TestCase
         $this->assertSame('#fc6719', (string) $settings->getLeafletConfig()->getPolylineColor());
         $this->assertSame(
             ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-            array_map('strval', $settings->getLeafletConfig()->getTileLayerUrls()),
+            array_map(strval(...), $settings->getLeafletConfig()->getTileLayerUrls()),
         );
         $this->assertTrue($settings->getLeafletConfig()->enableGreyScale());
         $this->assertNull($settings->getHeatmapConfig()->getInitialCenter());
@@ -53,7 +53,7 @@ class MapsSettingsTest extends TestCase
 
         $this->assertSame(
             ['https://tile.example.com/{z}/{x}/{y}.png'],
-            array_map('strval', $settings->getLeafletConfig()->getTileLayerUrls()),
+            array_map(strval(...), $settings->getLeafletConfig()->getTileLayerUrls()),
         );
     }
 
@@ -70,7 +70,7 @@ class MapsSettingsTest extends TestCase
 
         $this->assertSame(
             ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-            array_map('strval', $settings->getLeafletConfig()->getTileLayerUrls()),
+            array_map(strval(...), $settings->getLeafletConfig()->getTileLayerUrls()),
         );
     }
 

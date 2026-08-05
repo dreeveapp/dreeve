@@ -291,7 +291,7 @@ final readonly class GpxFileParser implements ActivityFileParser
         SportType $sportType,
     ): ActivityName {
         // A serialized workout summary is not a name, even though it sits in the name element.
-        $name = null === $workoutSummary ? $metadata->getName() : null;
+        $name = $workoutSummary instanceof GpxWorkoutSummary ? null : $metadata->getName();
         $name ??= $this->firstNonEmptyTrackChild($xml, 'name');
 
         return null !== $name ? ActivityName::fromString($name) : ActivityName::from($startDateTime, $sportType);
