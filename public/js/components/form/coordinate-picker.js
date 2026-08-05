@@ -145,7 +145,6 @@ class CoordinatePicker {
         this.render();
 
         const coordinate = this.coordinate();
-        // The first coordinate typed in gets framed, otherwise it stays a speck on the world map.
         if (coordinate && !hadCoordinate) {
             this.resetView();
 
