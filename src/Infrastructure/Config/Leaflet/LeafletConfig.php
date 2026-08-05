@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Infrastructure\Config\Leaflet;
 
 use App\Infrastructure\ValueObject\String\CssColor;
-use App\Infrastructure\ValueObject\String\Url;
 
 final readonly class LeafletConfig implements \JsonSerializable
 {
     private function __construct(
         private CssColor $polylineColor,
-        /** @var Url[] */
+        /** @var TileLayerUrl[] */
         private array $tileLayerUrls,
         private bool $enableGreyScale,
     ) {
@@ -27,7 +26,7 @@ final readonly class LeafletConfig implements \JsonSerializable
     ): self {
         return new self(
             polylineColor: CssColor::fromString($polylineColor),
-            tileLayerUrls: array_map(Url::fromString(...), $tileLayerUrls),
+            tileLayerUrls: array_map(TileLayerUrl::fromString(...), $tileLayerUrls),
             enableGreyScale: $enableGreyScale,
         );
     }
@@ -38,7 +37,7 @@ final readonly class LeafletConfig implements \JsonSerializable
     }
 
     /**
-     * @return Url[]
+     * @return TileLayerUrl[]
      */
     public function getTileLayerUrls(): array
     {

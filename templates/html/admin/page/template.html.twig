@@ -14,6 +14,9 @@
         <meta name="js-dist-url" content="{{ relativeUrl('js/dist/') }}">
         <link rel="icon" type="image/x-icon" href="{{ relativeUrl('assets/images/logo.svg') }}">
         <link href="{{ relativeUrl(asset('css/dist/tailwind.min.css')) }}" rel="stylesheet"/>
+        {# Leaflet needs its core stylesheet to position and clip its panes. Loaded blocking,
+           not preloaded: the maps measure their container on mount and would race an async swap. #}
+        <link href="{{ relativeUrl(asset('libraries/leaflet/leaflet.min.css')) }}" rel="stylesheet"/>
         {% block stylesheets %}{% endblock %}
         <script>
             document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');

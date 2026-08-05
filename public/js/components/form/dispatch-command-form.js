@@ -177,8 +177,18 @@ const syncCheckboxGroupValidity = (group) => {
     boxes[0].setCustomValidity(message);
 };
 
+const repeaterInstances = new Map();
+
+export function getRepeaterInstance(root) {
+    return repeaterInstances.get(root);
+}
+
 export default function initDispatchCommandForm(rootNode = document) {
-    rootNode.querySelectorAll('[data-dispatch-command] [data-repeater]').forEach((root) => new Repeater(root).init());
+    rootNode.querySelectorAll('[data-dispatch-command] [data-repeater]').forEach((root) => {
+        const repeater = new Repeater(root);
+        repeaterInstances.set(root, repeater);
+        repeater.init();
+    });
 
     rootNode.addEventListener('change', (event) => {
         const target = event.target;

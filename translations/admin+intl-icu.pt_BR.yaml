@@ -66,6 +66,7 @@ Apply: Aplicar
 'Average power': 'Average power'
 'Back to app': 'Voltar para o aplicativo'
 'Base URI': 'URI Base'
+'Base map': 'Base map'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Antes de poder usar o aplicativo, precisamos saber algumas coisas sobre você. Elas são usadas para calcular suas zonas de frequência cardíaca e carga de treinamento. Você pode ajustar todas as outras configurações mais tarde.'
 Birthday: 'Data de nascimento'
 Cancel: Cancelar
@@ -93,6 +94,7 @@ Configure: Configurar
 'Continues to next rule': 'Continues to next rule'
 'Cron expression': 'Expressão Cron'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Expressão Cron especificando quando a ação deve ser executada, ex. '0 14 * * *' executa todos os dias às 14:00. Consulte crontab.guru para obter ajuda."
+Custom...: Custom...
 Daemon: Daemon
 'Dashboard layout': 'Layout do painel'
 'Date range based': 'Baseado em intervalo de datas'
@@ -251,7 +253,9 @@ Password: Senha
 'Performed on': 'Realizado em'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos dos tipos de esporte selecionados são excluídas da galeria de fotos.'
 'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
+'Pick a ready-made tile provider, or choose Custom to enter your own tile layer URLs.': 'Pick a ready-made tile provider, or choose Custom to enter your own tile layer URLs.'
 'Polyline color': 'Polyline color'
+Preview: Preview
 'Processed on': 'Processado em'
 'Profile picture URL': 'URL da foto do perfil'
 Provider: Provedor
@@ -260,6 +264,7 @@ Radius: Radius
 'Recording device': 'Recording device'
 'Recording device management': 'Gerenciamento de dispositivos de gravação'
 'Recording devices will appear here once activities have been imported.': 'Os dispositivos de gravação aparecerão aqui assim que as atividades forem importadas.'
+'Reflects the settings above. Saving requires a rebuild before the change appears on the site.': 'Reflects the settings above. Saving requires a rebuild before the change appears on the site.'
 'Register maintenance': 'Registrar manutenção'
 'Remember me for 7 days': 'Lembrar-me por 7 dias'
 Remove: Remover

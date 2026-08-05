@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Settings;
 
 use App\Domain\Settings\MapsSettings;
-use App\Infrastructure\ValueObject\String\Url;
+use App\Infrastructure\Config\Leaflet\TileLayerUrl;
 use PHPUnit\Framework\TestCase;
 
 class MapsSettingsTest extends TestCase
@@ -59,7 +59,7 @@ class MapsSettingsTest extends TestCase
 
     public function testItThrowsForAWhitespaceOnlyTileLayerRow(): void
     {
-        $this->expectExceptionObject(new \InvalidArgumentException(Url::class.' can not be empty'));
+        $this->expectExceptionObject(new \InvalidArgumentException(TileLayerUrl::class.' can not be empty'));
 
         MapsSettings::fromArray(['tileLayerUrl' => ['   ']]);
     }

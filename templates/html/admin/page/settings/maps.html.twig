@@ -1,8 +1,5 @@
 {% extends "html/admin/page/template.html.twig" %}
 
-{% block stylesheets %}
-    <link href="{{ relativeUrl(asset('libraries/leaflet/leaflet.min.css')) }}" rel="stylesheet"/>
-{% endblock %}
 {% block main %}
     {% set heatmap = settings.heatmap ?? {} %}
     {% set initialCenter = heatmap.initialCenter ?? [] %}
@@ -12,8 +9,11 @@
     {% for tileLayerUrl in tileLayerUrls %}
         {% set tileLayerRows = tileLayerRows|merge([{'value': tileLayerUrl}]) %}
     {% endfor %}
+    {% set basemapPresets = enum('App\\Infrastructure\\Config\\Leaflet\\BasemapPreset').cases() %}
+    {% set selectedPreset = basemapPresetForUrls(tileLayerUrls) %}
     <div class="flex flex-col gap-4">
-        <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs"
+              data-basemap-preview='{{ {presets: enumTileLayerUrls()}|json_encode }}'>
             <input type="hidden" name="group" value="{{ group.value }}">
             <div class="mb-5">
                 <h3 class="text-lg font-semibold">{{ "Maps"|trans({}, 'admin') }}</h3>
@@ -21,9 +21,27 @@
             <div data-form-error class="form-error hidden" role="alert"></div>
             <div class="flex flex-col gap-4">
                 <div>
+                    <label for="basemapPreset">{{ "Base map"|trans({}, 'admin') }}</label>
+                    <select id="basemapPreset" data-basemap-preset>
+                        {% for preset in basemapPresets %}
+                            <option value="{{ preset.value }}" {{ selectedPreset == preset ? 'selected' : '' }}>{{ preset.getLabel() }}</option>
+                        {% endfor %}
+                        <option value="custom" {{ selectedPreset is null ? 'selected' : '' }}>{{ "Custom..."|trans({}, 'admin') }}</option>
+                    </select>
+                    <p class="description">
+                        {{ "Pick a ready-made tile provider, or choose Custom to enter your own tile layer URLs."|trans({}, 'admin') }}
+                    </p>
+                </div>
+                <div>
                     <label for="polylineColor">{{ "Polyline color"|trans({}, 'admin') }}</label>
-                    <input type="text" id="polylineColor" name="data[polylineColor]"
-                           value="{{ settings.polylineColor ?? '#fc6719' }}" required placeholder="#fc6719">
+                    <div class="flex items-center gap-2">
+                        <input type="color" data-basemap-color-picker
+                               value="{{ settings.polylineColor ?? '#fc6719' }}"
+                               class="h-9 w-12 shrink-0 cursor-pointer rounded-lg border border-gray-200 p-1">
+                        <input type="text" id="polylineColor" name="data[polylineColor]"
+                               value="{{ settings.polylineColor ?? '#fc6719' }}" required placeholder="#fc6719"
+                               data-basemap-color-text class="mt-0">
+                    </div>
                     <p class="description">
                         {{ "The color of the routes drawn on every map. Accepts any valid CSS color, e.g. red, #FF0000 or rgb(255,0,0)."|trans({}, 'admin') }}
                     </p>
@@ -31,39 +49,51 @@
                 <div>
                     <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
                         <input type="hidden" name="data[enableGreyScale]" value="0">
-                        <input type="checkbox" name="data[enableGreyScale]" value="1"
+                        <input type="checkbox" name="data[enableGreyScale]" value="1" data-basemap-greyscale
                                {{ (settings.enableGreyScale ?? true) ? 'checked' : '' }}>
                         <span>{{ "Render the map tiles in greyscale"|trans({}, 'admin') }}</span>
                     </label>
                 </div>
             </div>
-            <div class="mt-6 border-t border-gray-200 pt-6" data-repeater data-repeater-min="1">
-                <label class="mt-0!">{{ "Tile layers"|trans({}, 'admin') }}</label>
-                <p class="description mb-2">
-                    {{ "The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer."|trans({}, 'admin') }}
-                </p>
-                <div class="flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ tileLayerRows|json_encode|e('html_attr') }}"></div>
-                <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
-                    <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
-                    </svg>
-                    <span>{{ "Add tile layer"|trans({}, 'admin') }}</span>
-                </button>
-                <template data-repeater-template>
-                    <div class="flex items-end gap-2" data-repeater-item>
-                        <div class="flex-1">
-                            <input type="text" name="data[tileLayerUrl][]" data-repeater-field="value"
-                                   placeholder="https://tile.openstreetmap.org/{z}/{x}/{y}.png">
+            {# Hidden with a plain class when a preset is selected, never with data-dependent-on:
+               that component disables the inputs it hides, which would submit no tile layer at all. #}
+            <div class="mt-6 border-t border-gray-200 pt-6 {{ selectedPreset is not null ? 'hidden' : '' }}"
+                 data-basemap-custom-urls>
+                <div data-repeater data-repeater-min="1">
+                    <label class="mt-0!">{{ "Tile layers"|trans({}, 'admin') }}</label>
+                    <p class="description mb-2">
+                        {{ "The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer."|trans({}, 'admin') }}
+                    </p>
+                    <div class="flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ tileLayerRows|json_encode|e('html_attr') }}"></div>
+                    <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
+                        <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                        </svg>
+                        <span>{{ "Add tile layer"|trans({}, 'admin') }}</span>
+                    </button>
+                    <template data-repeater-template>
+                        <div class="flex items-end gap-2" data-repeater-item>
+                            <div class="flex-1">
+                                <input type="text" name="data[tileLayerUrl][]" data-repeater-field="value" data-basemap-url
+                                       placeholder="https://tile.openstreetmap.org/{z}/{x}/{y}.png">
+                            </div>
+                            <button type="button" data-repeater-remove
+                                    class="unstyled cursor-pointer grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
+                                    aria-label="{{ "Remove tile layer"|trans({}, 'admin') }}">
+                                <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                                </svg>
+                            </button>
                         </div>
-                        <button type="button" data-repeater-remove
-                                class="unstyled cursor-pointer grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
-                                aria-label="{{ "Remove tile layer"|trans({}, 'admin') }}">
-                            <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
-                            </svg>
-                        </button>
-                    </div>
-                </template>
+                    </template>
+                </div>
+            </div>
+            <div class="mt-6 border-t border-gray-200 pt-6">
+                <label class="mt-0!">{{ "Preview"|trans({}, 'admin') }}</label>
+                <p class="description mb-2">
+                    {{ "Reflects the settings above. Saving requires a rebuild before the change appears on the site."|trans({}, 'admin') }}
+                </p>
+                <div data-basemap-preview-map class="h-64 w-full rounded-lg border border-gray-200 bg-gray-100"></div>
             </div>
             <div class="mt-6 border-t border-gray-200 pt-6">
                 <h4 class="mt-0!">{{ "Heatmap"|trans({}, 'admin') }}</h4>

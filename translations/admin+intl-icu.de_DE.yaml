@@ -66,6 +66,7 @@ Apply: Anwenden
 'Average power': 'Average power'
 'Back to app': 'Zurück zur App'
 'Base URI': 'Base URI'
+'Base map': 'Base map'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Bevor Sie die App nutzen können, benötigen wir einige Informationen über Sie. Diese werden verwendet, um Ihre Herzfrequenzzonen und Ihre Trainingsbelastung zu berechnen. Alle weiteren Einstellungen können Sie später anpassen.'
 Birthday: Geburtstag
 Cancel: Abbrechen
@@ -93,6 +94,7 @@ Configure: Konfigurieren
 'Continues to next rule': 'Continues to next rule'
 'Cron expression': Cron-Ausdruck
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron-Ausdruck, der angibt, wann die Aktion ausgeführt werden soll, z. B. führt '0 14 * * *' sie jeden Tag um 14:00 Uhr aus. Siehe crontab.guru für Hilfe."
+Custom...: Custom...
 Daemon: Daemon
 'Dashboard layout': Dashboard-Layout
 'Date range based': 'Nach Datumsbereich'
@@ -251,7 +253,9 @@ Password: Passwort
 'Performed on': 'Durchgeführt am'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos der ausgewählten Sportarten werden von der Fotogalerie ausgeschlossen.'
 'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
+'Pick a ready-made tile provider, or choose Custom to enter your own tile layer URLs.': 'Pick a ready-made tile provider, or choose Custom to enter your own tile layer URLs.'
 'Polyline color': 'Polyline color'
+Preview: Preview
 'Processed on': 'Verarbeitet am'
 'Profile picture URL': Profilbild-URL
 Provider: Anbieter
@@ -260,6 +264,7 @@ Radius: Radius
 'Recording device': Aufzeichnungsgerät
 'Recording device management': 'Verwaltung der Aufzeichnungsgeräte'
 'Recording devices will appear here once activities have been imported.': 'Aufzeichnungsgeräte werden hier angezeigt, sobald Aktivitäten importiert wurden.'
+'Reflects the settings above. Saving requires a rebuild before the change appears on the site.': 'Reflects the settings above. Saving requires a rebuild before the change appears on the site.'
 'Register maintenance': 'Wartung erfassen'
 'Remember me for 7 days': 'Für 7 Tage angemeldet bleiben'
 Remove: Entfernen

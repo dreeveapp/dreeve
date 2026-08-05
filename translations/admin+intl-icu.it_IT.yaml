@@ -66,6 +66,7 @@ Apply: Applica
 'Average power': 'Average power'
 'Back to app': 'Back to app'
 'Base URI': 'Base URI'
+'Base map': 'Base map'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.'
 Birthday: Birthday
 Cancel: Cancel
@@ -93,6 +94,7 @@ Configure: Configure
 'Continues to next rule': 'Continues to next rule'
 'Cron expression': 'Cron expression'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."
+Custom...: Custom...
 Daemon: Daemon
 'Dashboard layout': 'Dashboard layout'
 'Date range based': 'Date range based'
@@ -251,7 +253,9 @@ Password: Password
 'Performed on': 'Performed on'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
 'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
+'Pick a ready-made tile provider, or choose Custom to enter your own tile layer URLs.': 'Pick a ready-made tile provider, or choose Custom to enter your own tile layer URLs.'
 'Polyline color': 'Polyline color'
+Preview: Preview
 'Processed on': 'Processed on'
 'Profile picture URL': 'Profile picture URL'
 Provider: Provider
@@ -260,6 +264,7 @@ Radius: Radius
 'Recording device': 'Recording device'
 'Recording device management': 'Recording device management'
 'Recording devices will appear here once activities have been imported.': 'Recording devices will appear here once activities have been imported.'
+'Reflects the settings above. Saving requires a rebuild before the change appears on the site.': 'Reflects the settings above. Saving requires a rebuild before the change appears on the site.'
 'Register maintenance': 'Register maintenance'
 'Remember me for 7 days': 'Remember me for 7 days'
 Remove: Remove

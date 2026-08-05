@@ -4,6 +4,7 @@ namespace App\Tests\Infrastructure\Twig;
 
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\SportType\SportType;
+use App\Infrastructure\Config\Leaflet\BasemapPreset;
 use App\Infrastructure\Twig\EnumTwigExtension;
 use App\Tests\ContainerTestCase;
 
@@ -34,6 +35,27 @@ class EnumTwigExtensionTest extends ContainerTestCase
     {
         $this->expectException(\ValueError::class);
         $this->enumTwigExtension->getActivityTypeFrom('lol');
+    }
+
+    public function testGetBasemapPresetForUrls(): void
+    {
+        $this->assertSame(
+            BasemapPreset::CARTO_DARK_MATTER,
+            $this->enumTwigExtension->getBasemapPresetForUrls(BasemapPreset::CARTO_DARK_MATTER->getTileLayerUrls()),
+        );
+
+        $this->assertNull($this->enumTwigExtension->getBasemapPresetForUrls(['https://example.com/{z}/{x}/{y}.png']));
+        $this->assertNull($this->enumTwigExtension->getBasemapPresetForUrls('not-an-array'));
+    }
+
+    public function testGetEnumTileLayerUrls(): void
+    {
+        $urls = $this->enumTwigExtension->getEnumTileLayerUrls();
+
+        $this->assertCount(count(BasemapPreset::cases()), $urls);
+        foreach (BasemapPreset::cases() as $preset) {
+            $this->assertSame($preset->getTileLayerUrls(), $urls[$preset->value]);
+        }
     }
 
     #[\Override]

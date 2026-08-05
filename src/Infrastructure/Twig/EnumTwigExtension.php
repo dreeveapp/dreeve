@@ -6,6 +6,7 @@ namespace App\Infrastructure\Twig;
 
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\SportType\SportType;
+use App\Infrastructure\Config\Leaflet\BasemapPreset;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Attribute\AsTwigFunction;
 
@@ -35,5 +36,27 @@ final readonly class EnumTwigExtension
     public function getActivityTypeFrom(string $activityType): ActivityType
     {
         return ActivityType::from($activityType);
+    }
+
+    #[AsTwigFunction('basemapPresetForUrls')]
+    public function getBasemapPresetForUrls(mixed $tileLayerUrls): ?BasemapPreset
+    {
+        if (!is_array($tileLayerUrls)) {
+            return null;
+        }
+
+        /** @var string[] $urls */
+        $urls = array_values(array_filter($tileLayerUrls, is_string(...)));
+
+        return BasemapPreset::tryFromTileLayerUrls($urls);
+    }
+
+    /**
+     * @return array<string, string[]>
+     */
+    #[AsTwigFunction('enumTileLayerUrls')]
+    public function getEnumTileLayerUrls(): array
+    {
+        return BasemapPreset::tileLayerUrlsIndexedByPreset();
     }
 }

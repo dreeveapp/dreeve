@@ -113,6 +113,22 @@ class UpdateSettingsTest extends TestCase
             ],
             'ZoomLevel must be a number between 1 and 18, got 19',
         ];
+
+        yield 'maps data with a tile layer url missing placeholders' => [
+            [
+                'group' => 'maps',
+                'data' => ['tileLayerUrl' => ['https://example.com/tiles.png']],
+            ],
+            'Invalid tile layer url "https://example.com/tiles.png", it must contain the placeholders {z}, {x} and {y}',
+        ];
+
+        yield 'maps data with a heatmap latitude out of range' => [
+            [
+                'group' => 'maps',
+                'data' => ['heatmap' => ['initialCenter' => ['200.0', '3.7'], 'initialZoom' => '12']],
+            ],
+            'Invalid latitude value: 200',
+        ];
     }
 
     public function testItKeepsTheSubmittedMapsPayloadVerbatim(): void
