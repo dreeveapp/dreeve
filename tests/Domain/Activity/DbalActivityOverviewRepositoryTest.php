@@ -397,7 +397,7 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('300'))
                 ->withName('Morning Swim')
-                ->withSportType(SportType::SWIM)
+                ->withSportType(SportType::POOL_SWIM)
                 ->withStartDateTime(SerializableDateTime::fromString('2026-06-03 08:00:00'))
                 ->build(),
             [],

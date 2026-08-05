@@ -255,6 +255,7 @@ Oct: 十月
 'Older effort': 'Older effort'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': '平均而言，每天的平均值为 {dailyAverage}，每周的平均值为 {weeklyAverage}，每月的平均值为 {monthlyAverage} 🐣。'
 'One of your gear maintenance tasks is due': 您有装备需维护
+'Open Water Swim': 'Open Water Swim'
 'Optimal training range': 最佳训练范围
 Other: 其他
 'Outdoor Sports': 户外运动
@@ -276,6 +277,7 @@ Photos: 照片
 Pilates: 普拉提
 'Pizza slices': 'Pizza slices'
 'Polarised training (last 30 days)': 极化训练（过去30天）
+'Pool Swim': 'Pool Swim'
 Power: 功率
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': '消耗了约{caloriesBurned}卡路里，或大约{numberOfPizzaSlices}片披萨🍕。'
 'Prev year': 去年
@@ -344,7 +346,6 @@ Streaks: 连续记录
 Sun: 周日
 Sun.: Sun.
 Surfing: 冲浪
-Swim: 游泳
 'TSB (Form)': 'TSB (状态)'
 'TSB positive in': 'TSB positive in'
 'Table Tennis': 乒乓球

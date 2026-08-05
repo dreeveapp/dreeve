@@ -86,7 +86,7 @@ class ConsistencyChallengeCalculatorTest extends ContainerTestCase
                         goal: 200,
                         unit: ConsistencyChallenge::KILOMETER,
                         sportTypesToInclude: SportTypes::fromArray([
-                            SportType::SWIM,
+                            SportType::POOL_SWIM,
                         ]),
                     ),
                     ConsistencyChallenge::create(

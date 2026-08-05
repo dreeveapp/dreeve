@@ -18,7 +18,7 @@ class SportTypesSortingOrderTest extends TestCase
         $allSportTypesWithoutSortedOnes = [];
         foreach (SportType::cases() as $sportType) {
             if (in_array($sportType, [
-                SportType::SWIM,
+                SportType::POOL_SWIM,
                 SportType::RUN,
             ])) {
                 continue;
@@ -28,7 +28,7 @@ class SportTypesSortingOrderTest extends TestCase
         }
 
         $this->assertEquals(
-            SportTypesSortingOrder::fromArray([SportType::SWIM, SportType::RUN, ...$allSportTypesWithoutSortedOnes]),
+            SportTypesSortingOrder::fromArray([SportType::POOL_SWIM, SportType::RUN, ...$allSportTypesWithoutSortedOnes]),
             SportTypesSortingOrder::from(['Swim', 'Run'])
         );
     }

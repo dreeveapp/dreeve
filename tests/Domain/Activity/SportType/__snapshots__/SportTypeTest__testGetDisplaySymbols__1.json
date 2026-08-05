@@ -227,6 +227,18 @@
             "distancePrecision": 2
         }
     },
+    "OpenWaterSwim": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 2
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 2
+        }
+    },
     "Windsurf": {
         "metric": {
             "distance": "NM",

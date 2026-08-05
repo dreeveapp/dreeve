@@ -56,7 +56,7 @@ class CalculateStreamValueDistributionTest extends ContainerTestCase
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed(1))
-                ->withSportType(SportType::SWIM)
+                ->withSportType(SportType::POOL_SWIM)
                 ->withStartDateTime(SerializableDateTime::fromString('2021-03-01'))
                 ->build(),
             []

@@ -18,6 +18,7 @@
     "StandUpPaddling": "activity--sport-type--generic",
     "Surfing": "activity--sport-type--generic",
     "Swim": "activity--sport-type--swim",
+    "OpenWaterSwim": "activity--sport-type--swim",
     "Windsurf": "activity--sport-type--generic",
     "BackcountrySki": "activity--sport-type--generic",
     "AlpineSki": "activity--sport-type--generic",

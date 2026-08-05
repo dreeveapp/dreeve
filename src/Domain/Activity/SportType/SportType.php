@@ -41,7 +41,8 @@ enum SportType: string implements TranslatableInterface
     case ROWING = 'Rowing';
     case STAND_UP_PADDLING = 'StandUpPaddling';
     case SURFING = 'Surfing';
-    case SWIM = 'Swim';
+    case POOL_SWIM = 'Swim';
+    case OPEN_WATER_SWIM = 'OpenWaterSwim';
     case WIND_SURF = 'Windsurf';
     // Winter sports.
     case BACK_COUNTRY_SKI = 'BackcountrySki';
@@ -108,7 +109,7 @@ enum SportType: string implements TranslatableInterface
         }
 
         return match ($this) {
-            self::SWIM => SecPer100Meter::zero(),
+            self::POOL_SWIM, self::OPEN_WATER_SWIM => SecPer100Meter::zero(),
             default => KmPerHour::zero(),
         };
     }
@@ -166,7 +167,7 @@ enum SportType: string implements TranslatableInterface
         }
 
         return match ($this) {
-            self::SWIM => 'activity--sport-type--swim',
+            self::POOL_SWIM, self::OPEN_WATER_SWIM => 'activity--sport-type--swim',
             default => 'activity--sport-type--generic',
         };
     }
@@ -192,7 +193,8 @@ enum SportType: string implements TranslatableInterface
             self::ROWING => $translator->trans('Rowing', locale: $locale),
             self::STAND_UP_PADDLING => $translator->trans('Stand Up Paddling', locale: $locale),
             self::SURFING => $translator->trans('Surfing', locale: $locale),
-            self::SWIM => $translator->trans('Swim', locale: $locale),
+            self::POOL_SWIM => $translator->trans('Pool Swim', locale: $locale),
+            self::OPEN_WATER_SWIM => $translator->trans('Open Water Swim', locale: $locale),
             self::WIND_SURF => $translator->trans('Wind Surf', locale: $locale),
             self::BACK_COUNTRY_SKI => $translator->trans('Back Country Ski', locale: $locale),
             self::ALPINE_SKI => $translator->trans('Alpine Ski', locale: $locale),
@@ -248,7 +250,8 @@ enum SportType: string implements TranslatableInterface
             // WATER.
             SportType::CANOEING, SportType::KAYAKING, SportType::KITE_SURF,
             SportType::ROWING, SportType::STAND_UP_PADDLING,
-            SportType::SURFING, SportType::SWIM, SportType::WIND_SURF => ActivityType::WATER_SPORTS,
+            SportType::SURFING, SportType::POOL_SWIM, SportType::OPEN_WATER_SWIM,
+            SportType::WIND_SURF => ActivityType::WATER_SPORTS,
             // WINTER.
             SportType::BACK_COUNTRY_SKI, SportType::ALPINE_SKI, SportType::NORDIC_SKI,
             SportType::ICE_SKATE, SportType::SNOWBOARD, SportType::SNOWSHOE => ActivityType::WINTER_SPORTS,
@@ -302,7 +305,7 @@ enum SportType: string implements TranslatableInterface
             self::TABLE_TENNIS,
             self::WEIGHT_TRAINING,
             self::WORKOUT,
-            self::SWIM,
+            self::POOL_SWIM,
             self::ICE_SKATE,
             self::YOGA,
             self::STAIR_STEPPER,
@@ -331,7 +334,7 @@ enum SportType: string implements TranslatableInterface
             self::TABLE_TENNIS,
             self::WEIGHT_TRAINING,
             self::WORKOUT,
-            self::SWIM,
+            self::POOL_SWIM,
             self::ICE_SKATE,
             self::YOGA,
             self::BASKETBALL,

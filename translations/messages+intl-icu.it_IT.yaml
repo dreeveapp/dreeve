@@ -255,6 +255,7 @@ Oct: Ott
 'Older effort': 'Sforzo meno recente'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'In media, questo equivale a {dailyAverage} al giorno, una media settimanale di {weeklyAverage} e una media mensile di {monthlyAverage} 🐣.'
 'One of your gear maintenance tasks is due': "Uno dei tuoi compiti di manutenzione dell'attrezzatura è in scadenza"
+'Open Water Swim': 'Open Water Swim'
 'Optimal training range': 'Intervallo di allenamento ottimale'
 Other: Altro
 'Outdoor Sports': "Sport all'aperto"
@@ -276,6 +277,7 @@ Photos: Foto
 Pilates: Pilates
 'Pizza slices': 'Pizza slices'
 'Polarised training (last 30 days)': 'Allenamento polarizzato (ultimi 30 giorni)'
+'Pool Swim': 'Pool Swim'
 Power: Potenza
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': "Consumato l'equivalente di {caloriesBurned} calorie, ovvero circa {numberOfPizzaSlices} fette di pizza 🍕."
 'Prev year': 'Anno precedente'
@@ -344,7 +346,6 @@ Streaks: Serie
 Sun: Dom
 Sun.: Sun.
 Surfing: Surf
-Swim: Nuoto
 'TSB (Form)': 'TSB (Forma)'
 'TSB positive in': 'TSB positivo tra'
 'Table Tennis': 'Tennis tavolo'

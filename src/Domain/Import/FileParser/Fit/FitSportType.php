@@ -56,6 +56,7 @@ final class FitSportType
     private const int SUB_SPORT_INDOOR_ROWING = 14;
     private const int SUB_SPORT_ELLIPTICAL = 15;
     private const int SUB_SPORT_STAIR_CLIMBING = 16;
+    private const int SUB_SPORT_OPEN_WATER = 18;
     private const int SUB_SPORT_STRENGTH_TRAINING = 20;
     private const int SUB_SPORT_INDOOR_WALKING = 27;
     private const int SUB_SPORT_E_BIKE_FITNESS = 28;
@@ -103,7 +104,11 @@ final class FitSportType
                 self::SUB_SPORT_PILATES === $subSport => SportType::PILATES,
                 default => SportType::WORKOUT,
             },
-            self::SPORT_SWIMMING => SportType::SWIM,
+            self::SPORT_SWIMMING => match (true) {
+                self::SUB_SPORT_OPEN_WATER === $subSport => SportType::OPEN_WATER_SWIM,
+                // Covers lap swimming (17) and devices that do not set a sub sport at all.
+                default => SportType::POOL_SWIM,
+            },
             self::SPORT_BASKETBALL => SportType::BASKETBALL,
             self::SPORT_SOCCER => SportType::SOCCER,
             self::SPORT_TENNIS => SportType::TENNIS,
