@@ -15,6 +15,7 @@ enum CacheTag: string
     case CHALLENGES = 'challenges';
     case SETTINGS_GENERAL = 'settings.general';
     case SETTINGS_APPEARANCE = 'settings.appearance';
+    case SETTINGS_MAPS = 'settings.maps';
     case SETTINGS_IMPORT = 'settings.import';
     case SETTINGS_METRICS = 'settings.metrics';
     case SETTINGS_ZWIFT = 'settings.zwift';
@@ -22,11 +23,6 @@ enum CacheTag: string
     case SETTINGS_DAEMON = 'settings.daemon';
 
     /**
-     * Settings that feed formatting and athlete context used by virtually every render:
-     * unit system, locale and date format; athlete, heart rate zones, FTP and weight history.
-     * Every cacheable depends on them, so they are applied to every Cacheability instead of
-     * being declared per component, where they could be forgotten.
-     *
      * @return self[]
      */
     public static function crossCutting(): array
@@ -39,6 +35,7 @@ enum CacheTag: string
         return match ($settingsGroup) {
             SettingsGroup::GENERAL => self::SETTINGS_GENERAL,
             SettingsGroup::APPEARANCE => self::SETTINGS_APPEARANCE,
+            SettingsGroup::MAPS => self::SETTINGS_MAPS,
             SettingsGroup::IMPORT => self::SETTINGS_IMPORT,
             SettingsGroup::METRICS => self::SETTINGS_METRICS,
             SettingsGroup::ZWIFT => self::SETTINGS_ZWIFT,

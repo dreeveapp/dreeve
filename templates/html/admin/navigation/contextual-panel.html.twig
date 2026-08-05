@@ -50,6 +50,7 @@
     {% if isActiveNavItem({'/admin/settings': false}) %}
         {% set inGeneral = isActiveNavItem({'/admin/settings/general': false}) %}
         {% set inAppearance = isActiveNavItem({'/admin/settings/appearance': false}) %}
+        {% set inMaps = isActiveNavItem({'/admin/settings/maps': false}) %}
         {% set inImport = isActiveNavItem({'/admin/settings/import': false}) %}
         {% set inMetrics = isActiveNavItem({'/admin/settings/metrics': false}) %}
         {% set inZwift = isActiveNavItem({'/admin/settings/zwift': false}) %}
@@ -70,6 +71,11 @@
                 <li>
                     <a href="{{ relativeUrl(path('admin_settings', {'group': 'appearance'})) }}" {{ inAppearance ? 'aria-selected="true"' : '' }}>
                         {{ "Appearance"|trans({}, 'admin') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'maps'})) }}" {{ inMaps ? 'aria-selected="true"' : '' }}>
+                        {{ "Maps"|trans({}, 'admin') }}
                     </a>
                 </li>
                 <li>

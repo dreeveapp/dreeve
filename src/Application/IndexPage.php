@@ -55,6 +55,8 @@ final readonly class IndexPage implements Cacheable
                 CacheTag::CHALLENGES,
                 // The top nav bar renders the workout assistant when the AI UI is enabled.
                 CacheTag::SETTINGS_INTEGRATIONS,
+                // The leaflet config every map on the page reads is embedded in window.dreeve.
+                CacheTag::SETTINGS_MAPS,
             ),
         );
     }
@@ -88,7 +90,7 @@ final readonly class IndexPage implements Cacheable
                     'distanceSymbol' => $unitSystem->distanceSymbol(),
                     'elevationSymbol' => $unitSystem->elevationSymbol(),
                 ],
-                'leafletConfig' => $appearance->getLeafletConfig(),
+                'leafletConfig' => $this->settingsRepository->maps()->getLeafletConfig(),
             ]),
         ]);
     }

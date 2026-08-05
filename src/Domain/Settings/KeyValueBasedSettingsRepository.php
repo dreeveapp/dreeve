@@ -80,6 +80,11 @@ final readonly class KeyValueBasedSettingsRepository implements SettingsReposito
         return AppearanceSettings::fromArray($this->find(SettingsGroup::APPEARANCE));
     }
 
+    public function maps(): MapsSettings
+    {
+        return MapsSettings::fromArray($this->find(SettingsGroup::MAPS));
+    }
+
     public function import(): ImportSettings
     {
         return ImportSettings::fromArray($this->find(SettingsGroup::IMPORT));

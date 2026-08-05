@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Settings;
 
 use App\Domain\Activity\SportType\SportTypesSortingOrder;
-use App\Infrastructure\Config\Leaflet\HeatmapConfig;
-use App\Infrastructure\Config\Leaflet\LeafletConfig;
 use App\Infrastructure\Config\Photos\HidePhotosForSportTypes;
 use App\Infrastructure\Localisation\Locale;
 use App\Infrastructure\Measurement\UnitSystem;
@@ -20,8 +18,6 @@ final readonly class AppearanceSettings
         private DateAndTimeFormat $dateAndTimeFormat,
         private SportTypesSortingOrder $sportTypesSortingOrder,
         private HidePhotosForSportTypes $hidePhotosForSportTypes,
-        private LeafletConfig $leafletConfig,
-        private HeatmapConfig $heatmapConfig,
     ) {
     }
 
@@ -34,15 +30,6 @@ final readonly class AppearanceSettings
 
         $dateFormat = $data['dateFormat'] ?? [];
 
-        $maps = $data['maps'] ?? [];
-        $heatmap = $maps['heatmap'] ?? [];
-
-        $leafletConfig = LeafletConfig::create(
-            polylineColor: $maps['polylineColor'] ?? '#fc6719',
-            tileLayerUrls: $maps['tileLayerUrl'] ?? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            enableGreyScale: $maps['enableGreyScale'] ?? true
-        );
-
         return new self(
             unitSystem: UnitSystem::tryFrom($data['unitSystem'] ?? '') ?? UnitSystem::METRIC,
             locale: Locale::tryFrom($data['locale'] ?? '') ?? Locale::en_US,
@@ -53,12 +40,6 @@ final readonly class AppearanceSettings
             ),
             sportTypesSortingOrder: SportTypesSortingOrder::from($data['sportTypesSortingOrder'] ?? []),
             hidePhotosForSportTypes: HidePhotosForSportTypes::from($data['photos']['hidePhotosForSportTypes'] ?? []),
-            leafletConfig: $leafletConfig,
-            heatmapConfig: HeatmapConfig::create(
-                leafletConfig: $leafletConfig,
-                initialCenter: [] !== ($heatmap['initialCenter'] ?? []) ? $heatmap['initialCenter'] : null,
-                initialZoom: (int) ($heatmap['initialZoom'] ?? 12)
-            ),
         );
     }
 
@@ -85,15 +66,5 @@ final readonly class AppearanceSettings
     public function getHidePhotosForSportTypes(): HidePhotosForSportTypes
     {
         return $this->hidePhotosForSportTypes;
-    }
-
-    public function getLeafletConfig(): LeafletConfig
-    {
-        return $this->leafletConfig;
-    }
-
-    public function getHeatmapConfig(): HeatmapConfig
-    {
-        return $this->heatmapConfig;
     }
 }

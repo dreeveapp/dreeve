@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Settings\UpdateSettings;
 
+use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\UpdateSettings\UpdateSettings;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -88,5 +89,47 @@ class UpdateSettingsTest extends TestCase
             ],
             'ZwiftRacingScore must be a number between 0 and 1000',
         ];
+
+        yield 'maps data with an invalid polyline color' => [
+            [
+                'group' => 'maps',
+                'data' => ['polylineColor' => 'notacolour'],
+            ],
+            'notacolour is not a valid CSS color',
+        ];
+
+        yield 'maps data with an invalid tile layer url' => [
+            [
+                'group' => 'maps',
+                'data' => ['tileLayerUrl' => ['not-a-url']],
+            ],
+            'Invalid url "not-a-url"',
+        ];
+
+        yield 'maps data with a heatmap zoom level out of range' => [
+            [
+                'group' => 'maps',
+                'data' => ['heatmap' => ['initialZoom' => '19']],
+            ],
+            'ZoomLevel must be a number between 1 and 18, got 19',
+        ];
+    }
+
+    public function testItKeepsTheSubmittedMapsPayloadVerbatim(): void
+    {
+        $data = [
+            'polylineColor' => 'red',
+            'tileLayerUrl' => ['https://tile.example.com/{z}/{x}/{y}.png'],
+            'enableGreyScale' => '0',
+            'heatmap' => [
+                'initialCenter' => ['51.05', '3.72'],
+                'initialZoom' => '14',
+            ],
+        ];
+
+        $command = UpdateSettings::fromPayload(['group' => 'maps', 'data' => $data]);
+
+        $this->assertSame(SettingsGroup::MAPS, $command->getGroup());
+        $this->assertSame($data, $command->getData());
     }
 }

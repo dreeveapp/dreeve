@@ -1,0 +1,105 @@
+{% extends "html/admin/page/template.html.twig" %}
+
+{% block stylesheets %}
+    <link href="{{ relativeUrl(asset('libraries/leaflet/leaflet.min.css')) }}" rel="stylesheet"/>
+{% endblock %}
+{% block main %}
+    {% set heatmap = settings.heatmap ?? {} %}
+    {% set initialCenter = heatmap.initialCenter ?? [] %}
+    {% set tileLayerUrl = settings.tileLayerUrl ?? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png' %}
+    {% set tileLayerUrls = tileLayerUrl is iterable ? tileLayerUrl : [tileLayerUrl] %}
+    {% set tileLayerRows = [] %}
+    {% for tileLayerUrl in tileLayerUrls %}
+        {% set tileLayerRows = tileLayerRows|merge([{'value': tileLayerUrl}]) %}
+    {% endfor %}
+    <div class="flex flex-col gap-4">
+        <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            <input type="hidden" name="group" value="{{ group.value }}">
+            <div class="mb-5">
+                <h3 class="text-lg font-semibold">{{ "Maps"|trans({}, 'admin') }}</h3>
+            </div>
+            <div data-form-error class="form-error hidden" role="alert"></div>
+            <div class="flex flex-col gap-4">
+                <div>
+                    <label for="polylineColor">{{ "Polyline color"|trans({}, 'admin') }}</label>
+                    <input type="text" id="polylineColor" name="data[polylineColor]"
+                           value="{{ settings.polylineColor ?? '#fc6719' }}" required placeholder="#fc6719">
+                    <p class="description">
+                        {{ "The color of the routes drawn on every map. Accepts any valid CSS color, e.g. red, #FF0000 or rgb(255,0,0)."|trans({}, 'admin') }}
+                    </p>
+                </div>
+                <div>
+                    <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
+                        <input type="hidden" name="data[enableGreyScale]" value="0">
+                        <input type="checkbox" name="data[enableGreyScale]" value="1"
+                               {{ (settings.enableGreyScale ?? true) ? 'checked' : '' }}>
+                        <span>{{ "Render the map tiles in greyscale"|trans({}, 'admin') }}</span>
+                    </label>
+                </div>
+            </div>
+            <div class="mt-6 border-t border-gray-200 pt-6" data-repeater data-repeater-min="1">
+                <label class="mt-0!">{{ "Tile layers"|trans({}, 'admin') }}</label>
+                <p class="description mb-2">
+                    {{ "The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer."|trans({}, 'admin') }}
+                </p>
+                <div class="flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ tileLayerRows|json_encode|e('html_attr') }}"></div>
+                <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
+                    <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                    </svg>
+                    <span>{{ "Add tile layer"|trans({}, 'admin') }}</span>
+                </button>
+                <template data-repeater-template>
+                    <div class="flex items-end gap-2" data-repeater-item>
+                        <div class="flex-1">
+                            <input type="text" name="data[tileLayerUrl][]" data-repeater-field="value"
+                                   placeholder="https://tile.openstreetmap.org/{z}/{x}/{y}.png">
+                        </div>
+                        <button type="button" data-repeater-remove
+                                class="unstyled cursor-pointer grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
+                                aria-label="{{ "Remove tile layer"|trans({}, 'admin') }}">
+                            <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </template>
+            </div>
+            <div class="mt-6 border-t border-gray-200 pt-6">
+                <h4 class="mt-0!">{{ "Heatmap"|trans({}, 'admin') }}</h4>
+                <p class="description mb-2">
+                    {{ "The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area."|trans({}, 'admin') }}
+                </p>
+                <div class="mb-2">
+                    <label for="initialZoom" class="mt-0! text-xs">{{ "Zoom level"|trans({}, 'admin') }}</label>
+                    <input type="number" step="1" min="1" max="18" id="initialZoom" name="data[heatmap][initialZoom]"
+                           placeholder="12" value="{{ heatmap.initialZoom ?? '' }}" class="mt-0">
+                </div>
+                <div data-coordinate-picker='{{ {}|json_encode }}' class="grid gap-2 sm:grid-cols-2">
+                    <div>
+                        <label class="mt-0! text-xs">{{ "Latitude"|trans({}, 'admin') }}</label>
+                        <input type="number" step="any" min="-90" max="90" name="data[heatmap][initialCenter][0]"
+                               data-coordinate-picker-field="latitude" placeholder="51.0543"
+                               value="{{ initialCenter[0] ?? '' }}" class="mt-0">
+                    </div>
+                    <div>
+                        <label class="mt-0! text-xs">{{ "Longitude"|trans({}, 'admin') }}</label>
+                        <input type="number" step="any" min="-180" max="180" name="data[heatmap][initialCenter][1]"
+                               data-coordinate-picker-field="longitude" placeholder="3.7174"
+                               value="{{ initialCenter[1] ?? '' }}" class="mt-0">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <p class="mb-1 text-xxs text-gray-500">{{ "Click the map to set the center, or drag the marker to fine-tune it."|trans({}, 'admin') }}</p>
+                        <div data-coordinate-picker-map class="h-64 w-full rounded-lg border border-gray-200 bg-gray-100"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
+                <button type="submit" data-has-loading-state class="group btn--primary">
+                    <span class="label">{{ "Save settings"|trans({}, 'admin') }}</span>
+                    <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock main %}

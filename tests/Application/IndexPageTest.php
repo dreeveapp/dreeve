@@ -80,6 +80,7 @@ class IndexPageTest extends ContainerTestCase
                 CacheTag::ACTIVITY_IMAGES->value,
                 CacheTag::CHALLENGES->value,
                 CacheTag::SETTINGS_INTEGRATIONS->value,
+                CacheTag::SETTINGS_MAPS->value,
             ],
             $cacheability->getCacheTags()->toTagStrings()
         );

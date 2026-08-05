@@ -32,6 +32,7 @@ Activity: Activity
 'Add rule': 'Add rule'
 'Add service': 'Add service'
 'Add task': 'Add task'
+'Add tile layer': 'Add tile layer'
 'Add weight': 'Add weight'
 'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
@@ -76,6 +77,7 @@ Cancel: Cancel
 'Choose the order the metrics are shown in.': 'Choose the order the metrics are shown in.'
 Clear: Clear
 'Clear filters': 'Clear filters'
+'Click the map to set the center, or drag the marker to fine-tune it.': 'Click the map to set the center, or drag the marker to fine-tune it.'
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Click the map to set the location, or drag the marker to fine-tune it.'
 Close: Close
 Command: Command
@@ -151,6 +153,7 @@ General: General
 'Go to last page': 'Go to last page'
 'Go to next page': 'Go to next page'
 'Go to previous page': 'Go to previous page'
+Heatmap: Heatmap
 'Hide photos for sport types': 'Hide photos for sport types'
 'History of cycling FTP. Needed to calculate activity stress level.': 'History of cycling FTP. Needed to calculate activity stress level.'
 'History of running FTP. Needed to calculate activity stress level.': 'History of running FTP. Needed to calculate activity stress level.'
@@ -190,6 +193,7 @@ Longitude: Longitude
 'Maintenance logs will appear here once maintenance has been registered.': 'Maintenance logs will appear here once maintenance has been registered.'
 'Maintenance tasks': 'Maintenance tasks'
 Male: Male
+Maps: Maps
 'Mark as commute': 'Mark as commute'
 Match: Match
 "Matches on the activity's finishing point.": "Matches on the activity's finishing point."
@@ -247,6 +251,7 @@ Password: Password
 'Performed on': 'Performed on'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
 'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
+'Polyline color': 'Polyline color'
 'Processed on': 'Processed on'
 'Profile picture URL': 'Profile picture URL'
 Provider: Provider
@@ -265,8 +270,10 @@ Remove: Remove
 'Remove condition': 'Remove condition'
 'Remove goal': 'Remove goal'
 'Remove task': 'Remove task'
+'Remove tile layer': 'Remove tile layer'
 'Remove widget': 'Remove widget'
 Removing...: Removing...
+'Render the map tiles in greyscale': 'Render the map tiles in greyscale'
 "Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
 'Reset dashboard to default': 'Reset dashboard to default'
 'Reset to default': 'Reset to default'
@@ -354,6 +361,7 @@ Tasks: Tasks
 'The average power': 'The average power'
 'The average speed': 'The average speed'
 'The calories burned': 'The calories burned'
+'The color of the routes drawn on every map. Accepts any valid CSS color, e.g. red, #FF0000 or rgb(255,0,0).': 'The color of the routes drawn on every map. Accepts any valid CSS color, e.g. red, #FF0000 or rgb(255,0,0).'
 'The current name of the activity': 'The current name of the activity'
 'The device used to record the activity': 'The device used to record the activity'
 'The distance': 'The distance'
@@ -371,8 +379,10 @@ Tasks: Tasks
 'The name of the gear assigned to the activity': 'The name of the gear assigned to the activity'
 'The number of activities recorded with the gear': 'The number of activities recorded with the gear'
 'The start date, optionally with a custom PHP date format': 'The start date, optionally with a custom PHP date format'
+'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.'
 'The total distance ridden with the gear': 'The total distance ridden with the gear'
 'The unit system used to render distances, elevations, temperatures, etc.': 'The unit system used to render distances, elevations, temperatures, etc.'
+'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.'
 'The workout type': 'The workout type'
 'Then do this': 'Then do this'
 'This action cannot be undone.': 'This action cannot be undone.'
@@ -384,6 +394,7 @@ Tasks: Tasks
 'This widget still needs to be configured.': 'This widget still needs to be configured.'
 'This will discard your current dashboard layout and restore the default widgets.': 'This will discard your current dashboard layout and restore the default widgets.'
 Thursday: Thursday
+'Tile layers': 'Tile layers'
 'Time format': 'Time format'
 'Time of day': 'Time of day'
 To: To
@@ -427,6 +438,7 @@ Weekdays: Weekdays
 'Your measured max heart rate, applied from the given date onwards.': 'Your measured max heart rate, applied from the given date onwards.'
 'Your measured resting heart rate, applied from the given date onwards.': 'Your measured resting heart rate, applied from the given date onwards.'
 Zone: Zone
+'Zoom level': 'Zoom level'
 Zwift: Zwift
 'Zwift level': 'Zwift level'
 'Zwift racing score': 'Zwift racing score'

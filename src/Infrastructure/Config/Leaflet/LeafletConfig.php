@@ -18,17 +18,13 @@ final readonly class LeafletConfig implements \JsonSerializable
     }
 
     /**
-     * @param string[]|string $tileLayerUrls
+     * @param string[] $tileLayerUrls
      */
     public static function create(
         string $polylineColor,
-        string|array $tileLayerUrls,
+        array $tileLayerUrls,
         bool $enableGreyScale,
     ): self {
-        if (is_string($tileLayerUrls)) {
-            $tileLayerUrls = [$tileLayerUrls];
-        }
-
         return new self(
             polylineColor: CssColor::fromString($polylineColor),
             tileLayerUrls: array_map(Url::fromString(...), $tileLayerUrls),

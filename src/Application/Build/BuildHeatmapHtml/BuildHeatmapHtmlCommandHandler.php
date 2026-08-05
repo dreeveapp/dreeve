@@ -63,7 +63,7 @@ final readonly class BuildHeatmapHtmlCommandHandler implements CommandHandler
                 'numberOfCountriesWithWorkouts' => count(array_unique(array_merge(...$routes->map(
                     fn (Route $route): array => $route->getRouteGeography()->getPassedThroughCountries()
                 )))),
-                'heatmapConfig' => $appearance->getHeatmapConfig(),
+                'heatmapConfig' => $this->settingsRepository->maps()->getHeatmapConfig(),
             ]),
         );
     }

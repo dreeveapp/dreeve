@@ -20,6 +20,8 @@ interface SettingsRepository
 
     public function appearance(): AppearanceSettings;
 
+    public function maps(): MapsSettings;
+
     public function import(): ImportSettings;
 
     public function metrics(): MetricsSettings;

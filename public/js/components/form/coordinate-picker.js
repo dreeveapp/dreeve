@@ -33,6 +33,7 @@ class CoordinatePicker {
         this.map = null;
         this.marker = null;
         this.circle = null;
+        this.hasCoordinate = false;
         this.isMounting = false;
         this.isDestroyed = false;
         this.isWriting = false;
@@ -140,9 +141,17 @@ class CoordinatePicker {
             return;
         }
 
+        const hadCoordinate = this.hasCoordinate;
         this.render();
 
         const coordinate = this.coordinate();
+        // The first coordinate typed in gets framed, otherwise it stays a speck on the world map.
+        if (coordinate && !hadCoordinate) {
+            this.resetView();
+
+            return;
+        }
+
         if (coordinate && !this.map.getBounds().contains(coordinate)) {
             this.map.panTo(coordinate);
         }
@@ -150,6 +159,7 @@ class CoordinatePicker {
 
     render() {
         const coordinate = this.coordinate();
+        this.hasCoordinate = null !== coordinate;
 
         if (!coordinate) {
             this.marker?.remove();

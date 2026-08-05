@@ -13,6 +13,7 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
     private array $findCache = [];
     private ?GeneralSettings $general = null;
     private ?AppearanceSettings $appearanceSettings = null;
+    private ?MapsSettings $mapsSettings = null;
     private ?ImportSettings $importSettings = null;
     private ?MetricsSettings $metricsSettings = null;
     private ?ZwiftSettings $zwiftSettings = null;
@@ -42,6 +43,7 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
         $this->findCache = [];
         $this->general = null;
         $this->appearanceSettings = null;
+        $this->mapsSettings = null;
         $this->importSettings = null;
         $this->metricsSettings = null;
         $this->zwiftSettings = null;
@@ -57,6 +59,11 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
     public function appearance(): AppearanceSettings
     {
         return $this->appearanceSettings ??= $this->settingsRepository->appearance();
+    }
+
+    public function maps(): MapsSettings
+    {
+        return $this->mapsSettings ??= $this->settingsRepository->maps();
     }
 
     public function import(): ImportSettings

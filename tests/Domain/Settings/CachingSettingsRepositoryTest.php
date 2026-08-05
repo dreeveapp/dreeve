@@ -11,6 +11,7 @@ use App\Domain\Settings\DaemonSettings;
 use App\Domain\Settings\GeneralSettings;
 use App\Domain\Settings\ImportSettings;
 use App\Domain\Settings\IntegrationsSettings;
+use App\Domain\Settings\MapsSettings;
 use App\Domain\Settings\MetricsSettings;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
@@ -37,6 +38,7 @@ class CachingSettingsRepositoryTest extends TestCase
     {
         yield 'general' => ['general', GeneralSettings::fromArray(['athlete' => ['birthday' => '1989-08-14', 'maxHeartRateFormula' => 'fox']]), fn (SettingsRepository $r) => $r->general()];
         yield 'appearance' => ['appearance', AppearanceSettings::fromArray(null), fn (SettingsRepository $r) => $r->appearance()];
+        yield 'maps' => ['maps', MapsSettings::fromArray(null), fn (SettingsRepository $r) => $r->maps()];
         yield 'import' => ['import', ImportSettings::fromArray(null), fn (SettingsRepository $r) => $r->import()];
         yield 'metrics' => ['metrics', MetricsSettings::fromArray(null), fn (SettingsRepository $r) => $r->metrics()];
         yield 'zwift' => ['zwift', ZwiftSettings::fromArray(null), fn (SettingsRepository $r) => $r->zwift()];
