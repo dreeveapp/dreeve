@@ -1,3 +1,27 @@
+# [v5.1.5](https://github.com/dreeveapp/dreeve/releases/tag/v5.1.5) - 2026-08-05
+
+## New features
+* Added configuration options for Leaflet map base styles
+* Swimming activities can now be categorized as either Open Water Swimming or Pool Swimming
+
+## Improvements
+* Improved map rendering by lowering the default smoothing factor
+* Activity segments and best efforts are now loaded asynchronously
+* Improved the algorithm that determines when gear maintenance is due
+* GPX imports can now extract calorie data when available
+
+## Technical details
+* ISSUE #2402: Lower smoothFactor to 1.0 by @cgtobi in https://github.com/dreeveapp/dreeve/pull/2405
+* ISSUE #2406: Fetch activity segments and best efforts async in preparation for the cached pages by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2407
+* ISSUE #2408: Refactor the application shell to the new cache based system by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2410
+* ISSUE #2411: Improve 'gear maintenance is due' algo by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2412
+* ISSUE #2409: Leaflet base style config by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2415
+* ISSUE #2404: Extract calories for gpx files by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2416
+* ISSUE #2418: Move the Eddington page to the new cache based system by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2420
+* ISSUE #2417: Separate swimming activities to OWS/Pool by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2422
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.1.4...v5.1.5
+
 # [v5.1.4](https://github.com/dreeveapp/dreeve/releases/tag/v5.1.4) - 2026-08-04
 
 ## New features
