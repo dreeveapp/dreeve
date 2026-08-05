@@ -105,7 +105,7 @@ final readonly class EddingtonCalculator
     }
 
     /**
-     * @param array<int, int> $numberOfDaysPerDistance
+     * @param array<int, int<0, max>> $numberOfDaysPerDistance
      *
      * @return array<int<1, max>, int<0, max>>
      */
