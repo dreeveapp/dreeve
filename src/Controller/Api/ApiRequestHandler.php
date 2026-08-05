@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Infrastructure\Http\Page\PageRegistry;
-use App\Infrastructure\Http\Page\PageRenderer;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\CompressedString;
 use League\Flysystem\FilesystemOperator;
@@ -20,18 +18,12 @@ final readonly class ApiRequestHandler
 {
     public function __construct(
         private FilesystemOperator $buildApiStorage,
-        private PageRegistry $pageRegistry,
-        private PageRenderer $pageRenderer,
     ) {
     }
 
     #[Route(path: '/api/{path}', name: 'api', requirements: ['path' => '[a-zA-Z0-9_\-/.]+'], methods: ['GET'], priority: 2)]
     public function handle(string $path): Response
     {
-        if ($page = $this->pageRegistry->find($path)) {
-            return $this->pageRenderer->render($page);
-        }
-
         try {
             if (!$this->buildApiStorage->fileExists($path)) {
                 return new Response('', Response::HTTP_NOT_FOUND);
