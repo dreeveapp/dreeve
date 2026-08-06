@@ -21,9 +21,12 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
 
     public function testItStoresTheSubmittedConfiguration(): void
     {
-        $this->seedLayout([
-            ['id' => 'dashboardWidget-streaks', 'widget' => 'streaks', 'width' => 33, 'config' => ['subtitle' => null, 'sportTypesToInclude' => []]],
-        ]);
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode([
+                ['id' => 'dashboardWidget-streaks', 'widget' => 'streaks', 'width' => 33, 'config' => ['subtitle' => null, 'sportTypesToInclude' => []]],
+            ])),
+        ));
 
         $this->commandBus->dispatch(ConfigureWidget::fromPayload([
             'dashboardWidgetId' => 'dashboardWidget-streaks',
@@ -38,9 +41,12 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
 
     public function testItCoercesValuesToTheDefaultTypeAndDropsUnknownKeys(): void
     {
-        $this->seedLayout([
-            ['id' => 'dashboardWidget-mostRecentActivities', 'widget' => 'mostRecentActivities', 'width' => 66, 'config' => ['numberOfActivitiesToDisplay' => 5]],
-        ]);
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode([
+                ['id' => 'dashboardWidget-mostRecentActivities', 'widget' => 'mostRecentActivities', 'width' => 66, 'config' => ['numberOfActivitiesToDisplay' => 5]],
+            ])),
+        ));
 
         $this->commandBus->dispatch(ConfigureWidget::fromPayload([
             'dashboardWidgetId' => 'dashboardWidget-mostRecentActivities',
@@ -55,9 +61,12 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
 
     public function testItClearsAMultiSelectWhenNothingIsSubmitted(): void
     {
-        $this->seedLayout([
-            ['id' => 'dashboardWidget-streaks', 'widget' => 'streaks', 'width' => 33, 'config' => ['subtitle' => 'x', 'sportTypesToInclude' => ['Run']]],
-        ]);
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode([
+                ['id' => 'dashboardWidget-streaks', 'widget' => 'streaks', 'width' => 33, 'config' => ['subtitle' => 'x', 'sportTypesToInclude' => ['Run']]],
+            ])),
+        ));
 
         $this->commandBus->dispatch(ConfigureWidget::fromPayload([
             'dashboardWidgetId' => 'dashboardWidget-streaks',
@@ -72,9 +81,12 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
 
     public function testItStoresNestedTrainingGoalsPreservingPeriodKeys(): void
     {
-        $this->seedLayout([
-            ['id' => 'dashboardWidget-trainingGoals', 'widget' => 'trainingGoals', 'width' => 33, 'config' => ['goals' => []]],
-        ]);
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode([
+                ['id' => 'dashboardWidget-trainingGoals', 'widget' => 'trainingGoals', 'width' => 33, 'config' => ['goals' => []]],
+            ])),
+        ));
 
         $goals = [
             'weekly' => [
@@ -95,9 +107,12 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
 
     public function testItRejectsInvalidTrainingGoalsWithACleanMessage(): void
     {
-        $this->seedLayout([
-            ['id' => 'dashboardWidget-trainingGoals', 'widget' => 'trainingGoals', 'width' => 33, 'config' => ['goals' => []]],
-        ]);
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode([
+                ['id' => 'dashboardWidget-trainingGoals', 'widget' => 'trainingGoals', 'width' => 33, 'config' => ['goals' => []]],
+            ])),
+        ));
 
         $this->expectExceptionObject(new CouldNotProcessCommand('The unit "minute" is not valid for goal type "distance"'));
 
@@ -113,9 +128,12 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
 
     public function testItRejectsInvalidConfigurationWithACleanMessage(): void
     {
-        $this->seedLayout([
-            ['id' => 'dashboardWidget-mostRecentActivities', 'widget' => 'mostRecentActivities', 'width' => 66, 'config' => ['numberOfActivitiesToDisplay' => 5]],
-        ]);
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode([
+                ['id' => 'dashboardWidget-mostRecentActivities', 'widget' => 'mostRecentActivities', 'width' => 66, 'config' => ['numberOfActivitiesToDisplay' => 5]],
+            ])),
+        ));
 
         $this->expectExceptionObject(CouldNotProcessCommand::withReason(
             'Configuration item "numberOfActivitiesToDisplay" must be set to a value of 1 or greater.'
@@ -129,9 +147,12 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
 
     public function testItThrowsWhenWidgetDoesNotExist(): void
     {
-        $this->seedLayout([
-            ['id' => 'dashboardWidget-streaks', 'widget' => 'streaks', 'width' => 33, 'config' => ['subtitle' => null, 'sportTypesToInclude' => []]],
-        ]);
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode([
+                ['id' => 'dashboardWidget-streaks', 'widget' => 'streaks', 'width' => 33, 'config' => ['subtitle' => null, 'sportTypesToInclude' => []]],
+            ])),
+        ));
 
         $this->expectExceptionObject(new \RuntimeException('Dashboard widget "dashboardWidget-doesNotExist" does not exist.'));
 
@@ -139,14 +160,6 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
             'dashboardWidgetId' => 'dashboardWidget-doesNotExist',
             'config' => ['subtitle' => 'Keep it up'],
         ]));
-    }
-
-    private function seedLayout(array $layout): void
-    {
-        $this->keyValueStore->save(KeyValue::fromState(
-            Key::DASHBOARD,
-            Value::fromString(Json::encode($layout)),
-        ));
     }
 
     private function storedConfigFor(string $id): array

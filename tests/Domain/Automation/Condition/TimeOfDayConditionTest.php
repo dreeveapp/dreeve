@@ -28,7 +28,7 @@ class TimeOfDayConditionTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->condition->guardValidConfiguration($this->config('lt', '08:30'));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => 'lt', 'time' => '08:30']));
     }
 
     #[DataProvider('provideInvalidConfigurations')]
@@ -36,7 +36,7 @@ class TimeOfDayConditionTest extends TestCase
     {
         $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
 
-        $this->condition->guardValidConfiguration($this->config($operator, $time));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => $operator, 'time' => $time]));
     }
 
     public function testMatchesBeforeAConfiguredTime(): void
@@ -46,8 +46,8 @@ class TimeOfDayConditionTest extends TestCase
             ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 07:15:00'))
             ->build();
 
-        $this->assertTrue($this->condition->matches($activity, $this->config('lt', '09:00')));
-        $this->assertFalse($this->condition->matches($activity, $this->config('lt', '06:00')));
+        $this->assertTrue($this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'lt', 'time' => '09:00'])));
+        $this->assertFalse($this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'lt', 'time' => '06:00'])));
     }
 
     public function testMatchesAfterAConfiguredTime(): void
@@ -57,8 +57,8 @@ class TimeOfDayConditionTest extends TestCase
             ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 18:45:00'))
             ->build();
 
-        $this->assertTrue($this->condition->matches($activity, $this->config('gt', '17:00')));
-        $this->assertFalse($this->condition->matches($activity, $this->config('gt', '20:00')));
+        $this->assertTrue($this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'gt', 'time' => '17:00'])));
+        $this->assertFalse($this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'gt', 'time' => '20:00'])));
     }
 
     /**
@@ -68,11 +68,6 @@ class TimeOfDayConditionTest extends TestCase
     {
         yield 'invalid operator' => ['nope', '08:30', 'Invalid time of day operator "nope".'];
         yield 'malformed time' => ['lt', '25:00', 'Invalid time "25:00", expected HH:MM.'];
-    }
-
-    private function config(string $operator, string $time): RuleConfiguration
-    {
-        return RuleConfiguration::fromConfig(['operator' => $operator, 'time' => $time]);
     }
 
     #[\Override]

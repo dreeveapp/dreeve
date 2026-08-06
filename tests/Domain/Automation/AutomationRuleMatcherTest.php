@@ -28,10 +28,13 @@ class AutomationRuleMatcherTest extends TestCase
             ->withDistance(Kilometer::from(80.0))
             ->build();
 
-        $rule = $this->rule('1', conditions: ConfiguredConditions::fromArray([
-            new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['deviceName' => 'Garmin'])),
-            new ConfiguredCondition(ConditionType::DISTANCE, RuleConfiguration::fromConfig(['minKm' => 50])),
-        ]));
+        $rule = AutomationRuleBuilder::fromDefaults()
+            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('1'))
+            ->withConditions(ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['deviceName' => 'Garmin'])),
+                new ConfiguredCondition(ConditionType::DISTANCE, RuleConfiguration::fromConfig(['minKm' => 50])),
+            ]))
+            ->build();
 
         $this->assertTrue($this->matcher->matches($rule, $activity));
     }
@@ -41,7 +44,12 @@ class AutomationRuleMatcherTest extends TestCase
         $activity = ActivityBuilder::fromDefaults()->withDeviceName('Wahoo')->build();
 
         $this->assertFalse($this->matcher->matches(
-            $this->rule('1', conditions: $this->deviceIs('Garmin')),
+            AutomationRuleBuilder::fromDefaults()
+                ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('1'))
+                ->withConditions(ConfiguredConditions::fromArray([
+                    new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['deviceName' => 'Garmin'])),
+                ]))
+                ->build(),
             $activity,
         ));
     }
@@ -51,7 +59,10 @@ class AutomationRuleMatcherTest extends TestCase
         $activity = ActivityBuilder::fromDefaults()->build();
 
         $this->assertFalse($this->matcher->matches(
-            $this->rule('1', conditions: ConfiguredConditions::empty()),
+            AutomationRuleBuilder::fromDefaults()
+                ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('1'))
+                ->withConditions(ConfiguredConditions::empty())
+                ->build(),
             $activity,
         ));
     }
@@ -64,10 +75,13 @@ class AutomationRuleMatcherTest extends TestCase
             ->build();
 
         // First condition fails; a short-circuiting matcher would never look at the second.
-        $rule = $this->rule('1', conditions: ConfiguredConditions::fromArray([
-            new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['deviceName' => 'Garmin'])),
-            new ConfiguredCondition(ConditionType::DISTANCE, RuleConfiguration::fromConfig(['minKm' => 50])),
-        ]));
+        $rule = AutomationRuleBuilder::fromDefaults()
+            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('1'))
+            ->withConditions(ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['deviceName' => 'Garmin'])),
+                new ConfiguredCondition(ConditionType::DISTANCE, RuleConfiguration::fromConfig(['minKm' => 50])),
+            ]))
+            ->build();
 
         $results = $this->matcher->evaluateConditions($rule, $activity);
 
@@ -83,9 +97,12 @@ class AutomationRuleMatcherTest extends TestCase
         $activity = ActivityBuilder::fromDefaults()->build();
 
         // SPORT_TYPE is not registered in the fixture Conditions, so it is skipped entirely.
-        $rule = $this->rule('1', conditions: ConfiguredConditions::fromArray([
-            new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['sportTypes' => ['Ride']])),
-        ]));
+        $rule = AutomationRuleBuilder::fromDefaults()
+            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('1'))
+            ->withConditions(ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['sportTypes' => ['Ride']])),
+            ]))
+            ->build();
 
         $this->assertCount(0, $this->matcher->evaluateConditions($rule, $activity));
 
@@ -93,21 +110,6 @@ class AutomationRuleMatcherTest extends TestCase
             $this->matcher->matches($rule, $activity),
             'A rule with only unregistered condition types has no condition to satisfy, so it never matches.',
         );
-    }
-
-    private function deviceIs(string $deviceName): ConfiguredConditions
-    {
-        return ConfiguredConditions::fromArray([
-            new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['deviceName' => $deviceName])),
-        ]);
-    }
-
-    private function rule(string $id, ConfiguredConditions $conditions): \App\Domain\Automation\AutomationRule
-    {
-        return AutomationRuleBuilder::fromDefaults()
-            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed($id))
-            ->withConditions($conditions)
-            ->build();
     }
 
     #[\Override]

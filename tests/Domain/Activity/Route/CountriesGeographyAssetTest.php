@@ -11,7 +11,7 @@ class CountriesGeographyAssetTest extends TestCase
 
     public function testEveryIndexEntryIsWellFormed(): void
     {
-        foreach ($this->index() as $entry) {
+        foreach (Json::decode(file_get_contents(self::ASSETS_DIRECTORY.'/index.json') ?: '[]') as $entry) {
             $this->assertMatchesRegularExpression('/^[A-Z]{2}$/', $entry['countryCode']);
             $this->assertFileExists(sprintf('%s/%s.json', self::ASSETS_DIRECTORY, $entry['countryCode']));
 
@@ -29,7 +29,7 @@ class CountriesGeographyAssetTest extends TestCase
     {
         $polygonsPerCountry = [];
 
-        foreach ($this->index() as $entry) {
+        foreach (Json::decode(file_get_contents(self::ASSETS_DIRECTORY.'/index.json') ?: '[]') as $entry) {
             $polygons = $polygonsPerCountry[$entry['countryCode']] ??= Json::decode(
                 file_get_contents(sprintf('%s/%s.json', self::ASSETS_DIRECTORY, $entry['countryCode'])) ?: '[]'
             );
@@ -51,18 +51,10 @@ class CountriesGeographyAssetTest extends TestCase
 
     public function testSmallCountriesSurvivedTheBuild(): void
     {
-        $countryCodes = array_unique(array_column($this->index(), 'countryCode'));
+        $countryCodes = array_unique(array_column(Json::decode(file_get_contents(self::ASSETS_DIRECTORY.'/index.json') ?: '[]'), 'countryCode'));
 
         foreach (['BE', 'NL', 'CZ', 'PL', 'MC', 'LI', 'SM', 'VA', 'AD', 'LS'] as $countryCode) {
             $this->assertContains($countryCode, $countryCodes);
         }
-    }
-
-    /**
-     * @return array<int, array{countryCode: string, polygonIndex: int, boundingBox: array{float, float, float, float}}>
-     */
-    private function index(): array
-    {
-        return Json::decode(file_get_contents(self::ASSETS_DIRECTORY.'/index.json') ?: '[]');
     }
 }

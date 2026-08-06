@@ -22,7 +22,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         ]);
 
         /** @var ConfiguredWidget[] $configuredWidgets */
-        $configuredWidgets = iterator_to_array($this->configuredWidgets());
+        $configuredWidgets = iterator_to_array($this->getContainer()->get(ConfiguredWidgets::class));
 
         $this->assertCount(1, $configuredWidgets);
         $configuredWidget = $configuredWidgets[0];
@@ -42,7 +42,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         ]);
 
         /** @var ConfiguredWidget[] $configuredWidgets */
-        $configuredWidgets = iterator_to_array($this->configuredWidgets());
+        $configuredWidgets = iterator_to_array($this->getContainer()->get(ConfiguredWidgets::class));
 
         $this->assertCount(1, $configuredWidgets);
         $this->assertFalse($configuredWidgets[0]->isConfigurable());
@@ -55,7 +55,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         ]);
 
         /** @var ConfiguredWidget[] $configuredWidgets */
-        $configuredWidgets = iterator_to_array($this->configuredWidgets());
+        $configuredWidgets = iterator_to_array($this->getContainer()->get(ConfiguredWidgets::class));
 
         $this->assertCount(1, $configuredWidgets);
         $this->assertTrue($configuredWidgets[0]->stillNeedsConfiguration());
@@ -72,7 +72,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         ]);
 
         /** @var ConfiguredWidget[] $configuredWidgets */
-        $configuredWidgets = iterator_to_array($this->configuredWidgets());
+        $configuredWidgets = iterator_to_array($this->getContainer()->get(ConfiguredWidgets::class));
 
         $this->assertCount(1, $configuredWidgets);
         $this->assertFalse($configuredWidgets[0]->stillNeedsConfiguration());
@@ -85,7 +85,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         ]);
 
         $this->expectExceptionObject(new \InvalidArgumentException('Dashboard widget "invalid" does not exists.'));
-        $this->configuredWidgets()->getIterator();
+        $this->getContainer()->get(ConfiguredWidgets::class)->getIterator();
     }
 
     public function testWhenWidgetHasBeenRemoved(): void
@@ -94,7 +94,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
             ['widget' => 'bestEfforts', 'width' => 100],
         ]);
 
-        $this->assertCount(0, $this->configuredWidgets()->getIterator());
+        $this->assertCount(0, $this->getContainer()->get(ConfiguredWidgets::class)->getIterator());
     }
 
     public function testFindReturnsTheMatchingWidget(): void
@@ -104,7 +104,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
             ['id' => 'dashboardWidget-2', 'widget' => 'gearStats', 'width' => 50],
         ]);
 
-        $configuredWidget = $this->configuredWidgets()->find(DashboardWidgetId::fromString('dashboardWidget-2'));
+        $configuredWidget = $this->getContainer()->get(ConfiguredWidgets::class)->find(DashboardWidgetId::fromString('dashboardWidget-2'));
 
         $this->assertInstanceOf(ConfiguredWidget::class, $configuredWidget);
         $this->assertSame('dashboardWidget-2', (string) $configuredWidget->getId());
@@ -117,13 +117,13 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         ]);
 
         $this->assertNull(
-            $this->configuredWidgets()->find(DashboardWidgetId::fromString('dashboardWidget-does-not-exist')),
+            $this->getContainer()->get(ConfiguredWidgets::class)->find(DashboardWidgetId::fromString('dashboardWidget-does-not-exist')),
         );
     }
 
     public function testGetAvailableWidgetsReturnsCatalogSortedByLabel(): void
     {
-        $availableWidgets = $this->configuredWidgets()->getAvailableWidgets();
+        $availableWidgets = $this->getContainer()->get(ConfiguredWidgets::class)->getAvailableWidgets();
 
         $this->assertArrayHasKey('eddington', $availableWidgets);
         $this->assertArrayHasKey('gearStats', $availableWidgets);
@@ -136,7 +136,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
 
     public function testHasAvailableWidget(): void
     {
-        $configuredWidgets = $this->configuredWidgets();
+        $configuredWidgets = $this->getContainer()->get(ConfiguredWidgets::class);
 
         $this->assertTrue($configuredWidgets->hasAvailableWidget(WidgetName::fromConfigValue('eddington')));
         $this->assertFalse($configuredWidgets->hasAvailableWidget(WidgetName::fromConfigValue('doesNotExist')));
@@ -152,13 +152,8 @@ class ConfiguredWidgetsTest extends ContainerTestCase
 
         $this->assertSame(
             ['introText' => 1, 'gearStats' => 2],
-            $this->configuredWidgets()->getConfiguredWidgetCountPerType(),
+            $this->getContainer()->get(ConfiguredWidgets::class)->getConfiguredWidgetCountPerType(),
         );
-    }
-
-    private function configuredWidgets(): ConfiguredWidgets
-    {
-        return $this->getContainer()->get(ConfiguredWidgets::class);
     }
 
     private function saveLayout(array $layout): void

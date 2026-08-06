@@ -39,7 +39,12 @@ class ActivityTokenProviderTest extends TestCase
         $this->assertSame(
             $expectedValue,
             $this->buildProvider(UnitSystem::METRIC)->resolve(
-                $this->buildToken($key),
+                Token::create(
+                    prefix: 'activity',
+                    key: $key,
+                    modifier: null,
+                    raw: sprintf('[activity:%s]', $key),
+                ),
                 $this->buildContext()
             )
         );
@@ -51,7 +56,12 @@ class ActivityTokenProviderTest extends TestCase
         $this->assertSame(
             $expectedValue,
             $this->buildProvider(UnitSystem::IMPERIAL)->resolve(
-                $this->buildToken($key),
+                Token::create(
+                    prefix: 'activity',
+                    key: $key,
+                    modifier: null,
+                    raw: sprintf('[activity:%s]', $key),
+                ),
                 $this->buildContext()
             )
         );
@@ -63,11 +73,21 @@ class ActivityTokenProviderTest extends TestCase
 
         $this->assertSame(
             '10-10-2023',
-            $provider->resolve($this->buildToken('start-date', 'd-m-Y'), $this->buildContext())
+            $provider->resolve(Token::create(
+                prefix: 'activity',
+                key: 'start-date',
+                modifier: 'd-m-Y',
+                raw: sprintf('[activity:%s:%s]', 'start-date', 'd-m-Y'),
+            ), $this->buildContext())
         );
         $this->assertSame(
             '14:30',
-            $provider->resolve($this->buildToken('start-date', 'H:i'), $this->buildContext())
+            $provider->resolve(Token::create(
+                prefix: 'activity',
+                key: 'start-date',
+                modifier: 'H:i',
+                raw: sprintf('[activity:%s:%s]', 'start-date', 'H:i'),
+            ), $this->buildContext())
         );
     }
 
@@ -77,7 +97,12 @@ class ActivityTokenProviderTest extends TestCase
         $context = TokenizerContext::empty()->with(ActivityBuilder::fromDefaults()->build());
 
         $this->assertNull(
-            $this->buildProvider(UnitSystem::METRIC)->resolve($this->buildToken($key), $context)
+            $this->buildProvider(UnitSystem::METRIC)->resolve(Token::create(
+                prefix: 'activity',
+                key: $key,
+                modifier: null,
+                raw: sprintf('[activity:%s]', $key),
+            ), $context)
         );
     }
 
@@ -85,7 +110,12 @@ class ActivityTokenProviderTest extends TestCase
     {
         $this->assertNull(
             $this->buildProvider(UnitSystem::METRIC)->resolve(
-                $this->buildToken('pizza'),
+                Token::create(
+                    prefix: 'activity',
+                    key: 'pizza',
+                    modifier: null,
+                    raw: sprintf('[activity:%s]', 'pizza'),
+                ),
                 $this->buildContext()
             )
         );
@@ -95,7 +125,12 @@ class ActivityTokenProviderTest extends TestCase
     {
         $this->assertNull(
             $this->buildProvider(UnitSystem::METRIC)->resolve(
-                $this->buildToken('name'),
+                Token::create(
+                    prefix: 'activity',
+                    key: 'name',
+                    modifier: null,
+                    raw: sprintf('[activity:%s]', 'name'),
+                ),
                 TokenizerContext::empty()
             )
         );
@@ -192,16 +227,6 @@ class ActivityTokenProviderTest extends TestCase
                 ->withCalories(500)
                 ->withDeviceName('Garmin Edge 530')
                 ->build()
-        );
-    }
-
-    private function buildToken(string $key, ?string $modifier = null): Token
-    {
-        return Token::create(
-            prefix: 'activity',
-            key: $key,
-            modifier: $modifier,
-            raw: null !== $modifier ? sprintf('[activity:%s:%s]', $key, $modifier) : sprintf('[activity:%s]', $key),
         );
     }
 }

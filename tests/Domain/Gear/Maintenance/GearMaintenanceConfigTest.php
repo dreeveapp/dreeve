@@ -10,18 +10,10 @@ use Symfony\Component\Yaml\Yaml;
 
 class GearMaintenanceConfigTest extends ContainerTestCase
 {
-    /**
-     * @param array<string, mixed> $config
-     */
-    private function createConfig(array $config): GearMaintenanceConfig
-    {
-        return GearMaintenanceConfig::fromArray($config);
-    }
-
     public function testFromArrayWhenEmpty(): void
     {
         $this->assertFalse(
-            $this->createConfig([])->isFeatureEnabled(),
+            GearMaintenanceConfig::fromArray([])->isFeatureEnabled(),
         );
     }
 
@@ -34,13 +26,13 @@ class GearMaintenanceConfigTest extends ContainerTestCase
                 GearId::fromUnprefixed('bike-one-gear-id'),
                 GearId::fromUnprefixed('bike-two-gear-id'),
             ]),
-            $this->createConfig($yml)->getAllReferencedGearIds()
+            GearMaintenanceConfig::fromArray($yml)->getAllReferencedGearIds()
         );
     }
 
     public function testNormalizeGearIds(): void
     {
-        $config = $this->createConfig($this->getYmlStringThatNeedsNormalization());
+        $config = GearMaintenanceConfig::fromArray($this->getYmlStringThatNeedsNormalization());
         $config->normalizeGearIds(GearIds::fromArray([GearId::fromUnprefixed('b123456')]));
 
         $this->assertEquals(

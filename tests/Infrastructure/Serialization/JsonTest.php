@@ -42,7 +42,7 @@ class JsonTest extends TestCase
         $this->assertEquals(
             ['first', 'second', 'third'],
             $this->namesIn(Json::decodeLazy(
-                json: file_get_contents($this->fixture()) ?: '',
+                json: file_get_contents(__DIR__.'/fixtures/lazy-decode.json') ?: '',
                 pointer: '/items'
             ))
         );
@@ -53,7 +53,7 @@ class JsonTest extends TestCase
         $this->assertEquals(
             ['first', 'second', 'third'],
             $this->namesIn(Json::decodeLazyFromFile(
-                filePath: $this->fixture(),
+                filePath: __DIR__.'/fixtures/lazy-decode.json',
                 pointer: '/items'
             ))
         );
@@ -65,11 +65,6 @@ class JsonTest extends TestCase
 Please see the troubleshooting guide for steps to resolve the issue: https://docs.dreeve.app/#/troubleshooting/import-build-fails for more information.'));
 
         Json::decode('{"name": "Ride", "distance": 42,}');
-    }
-
-    private function fixture(): string
-    {
-        return __DIR__.'/fixtures/lazy-decode.json';
     }
 
     /**

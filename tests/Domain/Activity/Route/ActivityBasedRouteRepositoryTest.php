@@ -86,16 +86,44 @@ class ActivityBasedRouteRepositoryTest extends ContainerTestCase
     public function testFindAllAgreesWithHasMappableRoute(): void
     {
         $activities = [
-            'on the map' => $this->activityOnTheMap(),
-            'sport type does not support reverse geocoding' => $this->activityOnTheMap()
+            'on the map' => ActivityBuilder::fromDefaults()
+                ->withSportType(SportType::RIDE)
+                ->withWorldType(WorldType::REAL_WORLD)
+                ->withPolyline('tqafAua~y^vG{D')
+                ->withRouteGeography(RouteGeography::create(['country_code' => 'BE'])),
+            'sport type does not support reverse geocoding' => ActivityBuilder::fromDefaults()
+                ->withSportType(SportType::RIDE)
+                ->withWorldType(WorldType::REAL_WORLD)
+                ->withPolyline('tqafAua~y^vG{D')
+                ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))
                 ->withSportType(SportType::VIRTUAL_RIDE),
-            'not recorded in the real world' => $this->activityOnTheMap()
+            'not recorded in the real world' => ActivityBuilder::fromDefaults()
+                ->withSportType(SportType::RIDE)
+                ->withWorldType(WorldType::REAL_WORLD)
+                ->withPolyline('tqafAua~y^vG{D')
+                ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))
                 ->withWorldType(WorldType::ZWIFT),
-            'without polyline' => $this->activityOnTheMap()->withPolyline(null),
-            'with empty polyline' => $this->activityOnTheMap()->withPolyline(''),
-            'without a reverse geocoded country' => $this->activityOnTheMap()
+            'without polyline' => ActivityBuilder::fromDefaults()
+                ->withSportType(SportType::RIDE)
+                ->withWorldType(WorldType::REAL_WORLD)
+                ->withPolyline('tqafAua~y^vG{D')
+                ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))->withPolyline(null),
+            'with empty polyline' => ActivityBuilder::fromDefaults()
+                ->withSportType(SportType::RIDE)
+                ->withWorldType(WorldType::REAL_WORLD)
+                ->withPolyline('tqafAua~y^vG{D')
+                ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))->withPolyline(''),
+            'without a reverse geocoded country' => ActivityBuilder::fromDefaults()
+                ->withSportType(SportType::RIDE)
+                ->withWorldType(WorldType::REAL_WORLD)
+                ->withPolyline('tqafAua~y^vG{D')
+                ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))
                 ->withRouteGeography(RouteGeography::create([])),
-            'reverse geocoded without a country' => $this->activityOnTheMap()
+            'reverse geocoded without a country' => ActivityBuilder::fromDefaults()
+                ->withSportType(SportType::RIDE)
+                ->withWorldType(WorldType::REAL_WORLD)
+                ->withPolyline('tqafAua~y^vG{D')
+                ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))
                 ->withRouteGeography(RouteGeography::create(['is_reverse_geocoded' => true])),
         ];
 
@@ -122,15 +150,6 @@ class ActivityBasedRouteRepositoryTest extends ContainerTestCase
         $this->assertEquals($expected, $actual);
         // Guard against a test set that trivially agrees because nothing is on the map.
         $this->assertContains(true, $expected);
-    }
-
-    private function activityOnTheMap(): ActivityBuilder
-    {
-        return ActivityBuilder::fromDefaults()
-            ->withSportType(SportType::RIDE)
-            ->withWorldType(WorldType::REAL_WORLD)
-            ->withPolyline('tqafAua~y^vG{D')
-            ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']));
     }
 
     #[\Override]

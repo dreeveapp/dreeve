@@ -31,7 +31,7 @@ class ValidAppSettingsGateTest extends ContainerTestCase
                 ],
             ]));
 
-        $this->assertFalse($this->gate()->handle(Request::create('/dashboard'))->hasBeenApplied());
+        $this->assertFalse(new ValidAppSettingsGate($this->urlGenerator, $this->settingsRepository)->handle(Request::create('/dashboard'))->hasBeenApplied());
     }
 
     public function testItRedirectsWhenTheAthleteHasNotBeenConfigured(): void
@@ -41,7 +41,7 @@ class ValidAppSettingsGateTest extends ContainerTestCase
             ->method('general')
             ->willThrowException(AthleteHasNotBeenConfigured::because('nope'));
 
-        $response = $this->gate()->handle(Request::create('/dashboard'))->getResponse();
+        $response = new ValidAppSettingsGate($this->urlGenerator, $this->settingsRepository)->handle(Request::create('/dashboard'))->getResponse();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('/admin/settings/athlete', $response->getTargetUrl());
@@ -56,7 +56,7 @@ class ValidAppSettingsGateTest extends ContainerTestCase
             ->method('general')
             ->willThrowException(AthleteHasNotBeenConfigured::because('nope'));
 
-        $decision = $this->gate()->handle(Request::create($path));
+        $decision = new ValidAppSettingsGate($this->urlGenerator, $this->settingsRepository)->handle(Request::create($path));
 
         $this->assertTrue($decision->hasBeenApplied());
         $this->assertNull($decision->getResponse());
@@ -78,7 +78,7 @@ class ValidAppSettingsGateTest extends ContainerTestCase
             ->method('general')
             ->willThrowException(AthleteHasNotBeenConfigured::because('nope'));
 
-        $response = $this->gate()->handle(Request::create($path))->getResponse();
+        $response = new ValidAppSettingsGate($this->urlGenerator, $this->settingsRepository)->handle(Request::create($path))->getResponse();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('/admin/settings/athlete', $response->getTargetUrl());
@@ -89,11 +89,6 @@ class ValidAppSettingsGateTest extends ContainerTestCase
         yield 'the settings index' => ['/admin/settings'];
         yield 'another settings group' => ['/admin/settings/general'];
         yield 'the file upload page' => ['/admin/upload'];
-    }
-
-    private function gate(): ValidAppSettingsGate
-    {
-        return new ValidAppSettingsGate($this->urlGenerator, $this->settingsRepository);
     }
 
     #[\Override]

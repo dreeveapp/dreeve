@@ -8,7 +8,6 @@ use App\Domain\Challenge\ChallengeRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
-use App\Infrastructure\Cache\Render;
 use App\Infrastructure\Cache\RenderCache;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -30,7 +29,11 @@ class ChallengeInvalidateCacheTagsListenerTest extends ContainerTestCase
             slug: 'challenge',
         ));
 
-        $this->assertFalse($this->renderChallenges()->wasServedFromCache());
+        $this->assertFalse($this->renderCache->get(
+            cacheKey: 'challenges',
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::CHALLENGES)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
     }
 
     public function testItDoesNotInvalidateWhenAChallengeIsMerelyHydratedAndStored(): void
@@ -39,22 +42,25 @@ class ChallengeInvalidateCacheTagsListenerTest extends ContainerTestCase
 
         $this->challengeRepository->add(ChallengeBuilder::fromDefaults()->build());
 
-        $this->assertTrue($this->renderChallenges()->wasServedFromCache());
+        $this->assertTrue($this->renderCache->get(
+            cacheKey: 'challenges',
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::CHALLENGES)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
     }
 
     private function warmUpChallengesRenderCache(): void
     {
-        $this->renderChallenges();
-        $this->assertTrue($this->renderChallenges()->wasServedFromCache());
-    }
-
-    private function renderChallenges(): Render
-    {
-        return $this->renderCache->get(
+        $this->renderCache->get(
             cacheKey: 'challenges',
             cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::CHALLENGES)),
             callback: fn (): string => 'rendered',
         );
+        $this->assertTrue($this->renderCache->get(
+            cacheKey: 'challenges',
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::CHALLENGES)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
     }
 
     #[\Override]

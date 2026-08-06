@@ -94,8 +94,16 @@ final class MigrationsAreUpToDateTest extends KernelTestCase
     {
         $differences = [];
         foreach (['notnull', 'default'] as $property) {
-            $migratedValue = $this->stringify($migrated[$property]);
-            $mappedValue = $this->stringify($mapped[$property]);
+            $migratedValue = match (true) {
+                null === $migrated[$property] => 'NULL',
+                is_bool($migrated[$property]) => $migrated[$property] ? 'true' : 'false',
+                default => (string) $migrated[$property],
+            };
+            $mappedValue = match (true) {
+                null === $mapped[$property] => 'NULL',
+                is_bool($mapped[$property]) => $mapped[$property] ? 'true' : 'false',
+                default => (string) $mapped[$property],
+            };
             if ($migratedValue !== $mappedValue) {
                 $differences[] = sprintf(
                     '%s.%s: %s %s -> %s',
@@ -124,14 +132,5 @@ final class MigrationsAreUpToDateTest extends KernelTestCase
         }
 
         return $result;
-    }
-
-    private function stringify(mixed $value): string
-    {
-        return match (true) {
-            null === $value => 'NULL',
-            is_bool($value) => $value ? 'true' : 'false',
-            default => (string) $value,
-        };
     }
 }

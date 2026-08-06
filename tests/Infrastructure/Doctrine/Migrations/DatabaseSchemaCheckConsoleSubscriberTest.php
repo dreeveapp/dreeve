@@ -31,7 +31,7 @@ class DatabaseSchemaCheckConsoleSubscriberTest extends TestCase
         $this->migrationRunner->markAsNotAtLatestVersion();
 
         $output = new BufferedOutput();
-        $event = $this->createEvent(new TaggedCommand('app:tagged'), $output);
+        $event = new ConsoleCommandEvent(new TaggedCommand('app:tagged'), new StringInput(''), $output);
 
         $this->subscriber->onConsoleCommand($event);
 
@@ -42,7 +42,7 @@ class DatabaseSchemaCheckConsoleSubscriberTest extends TestCase
     public function testItAllowsTaggedCommandWhenSchemaIsUpToDate(): void
     {
         $output = new BufferedOutput();
-        $event = $this->createEvent(new TaggedCommand('app:tagged'), $output);
+        $event = new ConsoleCommandEvent(new TaggedCommand('app:tagged'), new StringInput(''), $output);
 
         $this->subscriber->onConsoleCommand($event);
 
@@ -55,7 +55,7 @@ class DatabaseSchemaCheckConsoleSubscriberTest extends TestCase
         $this->migrationRunner->markAsNotAtLatestVersion();
 
         $output = new BufferedOutput();
-        $event = $this->createEvent(new UntaggedCommand('app:untagged'), $output);
+        $event = new ConsoleCommandEvent(new UntaggedCommand('app:untagged'), new StringInput(''), $output);
 
         $this->subscriber->onConsoleCommand($event);
 
@@ -68,17 +68,12 @@ class DatabaseSchemaCheckConsoleSubscriberTest extends TestCase
         $this->migrationRunner->throwOnNextRun();
 
         $output = new BufferedOutput();
-        $event = $this->createEvent(new TaggedCommand('app:tagged'), $output);
+        $event = new ConsoleCommandEvent(new TaggedCommand('app:tagged'), new StringInput(''), $output);
 
         $this->subscriber->onConsoleCommand($event);
 
         $this->assertFalse($event->commandShouldRun());
         $this->assertStringContainsString('Your database is not up to date with the migration schema', $output->fetch());
-    }
-
-    private function createEvent(Command $command, BufferedOutput $output): ConsoleCommandEvent
-    {
-        return new ConsoleCommandEvent($command, new StringInput(''), $output);
     }
 
     #[\Override]

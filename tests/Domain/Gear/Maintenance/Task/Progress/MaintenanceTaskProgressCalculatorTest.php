@@ -58,7 +58,7 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
         // The chain is attached to two active gears and one retired one, which is ignored.
         $this->assertEquals(
             [GearId::fromUnprefixed('g1233776'), GearId::fromUnprefixed('g10130856')],
-            $this->getCalculator()->getGearIdsThatHaveDueTasks()->toArray()
+            $this->getContainer()->get(MaintenanceTaskProgressCalculator::class)->getGearIdsThatHaveDueTasks()->toArray()
         );
     }
 
@@ -70,7 +70,7 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
 
         $this->assertEquals(
             [GearId::fromUnprefixed('g1233776'), GearId::fromUnprefixed('g10130856')],
-            $this->getCalculator()->getGearIdsThatHaveDueTasks()->toArray()
+            $this->getContainer()->get(MaintenanceTaskProgressCalculator::class)->getGearIdsThatHaveDueTasks()->toArray()
         );
     }
 
@@ -79,19 +79,14 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
         $this->importGearMaintenanceConfig();
         $this->rideSinceTheChainWasLubed(Kilometer::from(10));
 
-        $this->assertEmpty($this->getCalculator()->getGearIdsThatHaveDueTasks()->toArray());
+        $this->assertEmpty($this->getContainer()->get(MaintenanceTaskProgressCalculator::class)->getGearIdsThatHaveDueTasks()->toArray());
     }
 
     public function testGetGearIdsThatHaveDueTasksWhenTheFeatureIsNotEnabled(): void
     {
         $this->rideSinceTheChainWasLubed(Kilometer::from(600));
 
-        $this->assertEmpty($this->getCalculator()->getGearIdsThatHaveDueTasks()->toArray());
-    }
-
-    private function getCalculator(): MaintenanceTaskProgressCalculator
-    {
-        return $this->getContainer()->get(MaintenanceTaskProgressCalculator::class);
+        $this->assertEmpty($this->getContainer()->get(MaintenanceTaskProgressCalculator::class)->getGearIdsThatHaveDueTasks()->toArray());
     }
 
     private function rideSinceTheChainWasLubed(Kilometer $distance): void

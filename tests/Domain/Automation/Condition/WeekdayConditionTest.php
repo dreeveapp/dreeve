@@ -28,7 +28,7 @@ class WeekdayConditionTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->condition->guardValidConfiguration($this->config('isOneOf', [1, 6, 7]));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'weekdays' => [1, 6, 7]]));
     }
 
     public function testGuardAcceptsNumericStrings(): void
@@ -36,7 +36,7 @@ class WeekdayConditionTest extends TestCase
         $this->expectNotToPerformAssertions();
 
         // The generic config coercion leaves array elements as submitted strings.
-        $this->condition->guardValidConfiguration($this->config('isOneOf', ['1', '5']));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'weekdays' => ['1', '5']]));
     }
 
     /**
@@ -47,7 +47,7 @@ class WeekdayConditionTest extends TestCase
     {
         $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
 
-        $this->condition->guardValidConfiguration($this->config($operator, $weekdays));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => $operator, 'weekdays' => $weekdays]));
     }
 
     /**
@@ -61,7 +61,7 @@ class WeekdayConditionTest extends TestCase
             ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
             ->build();
 
-        $this->assertSame($expectedToMatch, $this->condition->matches($activity, $this->config($operator, $weekdays)));
+        $this->assertSame($expectedToMatch, $this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => $operator, 'weekdays' => $weekdays])));
     }
 
     /**
@@ -83,14 +83,6 @@ class WeekdayConditionTest extends TestCase
         yield 'isOneOf does not match when the activity falls on another weekday' => ['isOneOf', [6, 7], false];
         yield 'isNoneOf does not match on a configured weekday' => ['isNoneOf', [2, 4], false];
         yield 'isNoneOf matches on another weekday' => ['isNoneOf', [6, 7], true];
-    }
-
-    /**
-     * @param list<int|string> $weekdays
-     */
-    private function config(string $operator, array $weekdays): RuleConfiguration
-    {
-        return RuleConfiguration::fromConfig(['operator' => $operator, 'weekdays' => $weekdays]);
     }
 
     #[\Override]

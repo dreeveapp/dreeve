@@ -28,7 +28,7 @@ class DeviceConditionTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->condition->guardValidConfiguration($this->config('is', 'garmin-edge-130'));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => 'is', 'deviceId' => 'garmin-edge-130']));
     }
 
     #[DataProvider('provideInvalidConfigurations')]
@@ -36,28 +36,28 @@ class DeviceConditionTest extends TestCase
     {
         $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
 
-        $this->condition->guardValidConfiguration($this->config($operator, $deviceId));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => $operator, 'deviceId' => $deviceId]));
     }
 
     public function testMatchesNormalisingTypedAndPickedNames(): void
     {
         $activity = ActivityBuilder::fromDefaults()->withDeviceName('Garmin Edge 130')->build();
 
-        $this->assertTrue($this->condition->matches($activity, $this->config('is', 'garmin-edge-130')));
+        $this->assertTrue($this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceId' => 'garmin-edge-130'])));
     }
 
     public function testDoesNotMatchADifferentDevice(): void
     {
         $activity = ActivityBuilder::fromDefaults()->withDeviceName('Wahoo Elemnt')->build();
 
-        $this->assertFalse($this->condition->matches($activity, $this->config('is', 'garmin-edge-130')));
+        $this->assertFalse($this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceId' => 'garmin-edge-130'])));
     }
 
     public function testDoesNotMatchWhenActivityHasNoDevice(): void
     {
         $activity = ActivityBuilder::fromDefaults()->build();
 
-        $this->assertFalse($this->condition->matches($activity, $this->config('is', 'garmin-edge-130')));
+        $this->assertFalse($this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceId' => 'garmin-edge-130'])));
     }
 
     public function testIsNotOperatorInvertsTheMatch(): void
@@ -66,9 +66,9 @@ class DeviceConditionTest extends TestCase
         $wahoo = ActivityBuilder::fromDefaults()->withDeviceName('Wahoo Elemnt')->build();
         $noDevice = ActivityBuilder::fromDefaults()->build();
 
-        $this->assertFalse($this->condition->matches($garmin, $this->config('isNot', 'garmin-edge-130')));
-        $this->assertTrue($this->condition->matches($wahoo, $this->config('isNot', 'garmin-edge-130')));
-        $this->assertTrue($this->condition->matches($noDevice, $this->config('isNot', 'garmin-edge-130')));
+        $this->assertFalse($this->condition->matches($garmin, RuleConfiguration::fromConfig(['operator' => 'isNot', 'deviceId' => 'garmin-edge-130'])));
+        $this->assertTrue($this->condition->matches($wahoo, RuleConfiguration::fromConfig(['operator' => 'isNot', 'deviceId' => 'garmin-edge-130'])));
+        $this->assertTrue($this->condition->matches($noDevice, RuleConfiguration::fromConfig(['operator' => 'isNot', 'deviceId' => 'garmin-edge-130'])));
     }
 
     /**
@@ -78,11 +78,6 @@ class DeviceConditionTest extends TestCase
     {
         yield 'invalid operator' => ['nope', 'garmin-edge-130', 'Invalid device operator "nope".'];
         yield 'missing device id' => ['is', '  ', 'A "deviceId" is required.'];
-    }
-
-    private function config(string $operator, string $deviceId): RuleConfiguration
-    {
-        return RuleConfiguration::fromConfig(['operator' => $operator, 'deviceId' => $deviceId]);
     }
 
     #[\Override]

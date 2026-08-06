@@ -22,26 +22,26 @@ class ActivityFileParsersTest extends TestCase
     {
         $this->expectExceptionObject(new \LogicException('parsed-by-fit'));
 
-        $this->registry->parse($this->rawFile('/import/activity.FIT'));
+        $this->registry->parse(RawActivityFile::from(Path::fromString('/import/activity.FIT'), ''));
     }
 
     public function testParseRoutesToTcxParser(): void
     {
         $this->expectExceptionObject(new \LogicException('parsed-by-tcx'));
 
-        $this->registry->parse($this->rawFile('/import/sub/dir/ride.tcx'));
+        $this->registry->parse(RawActivityFile::from(Path::fromString('/import/sub/dir/ride.tcx'), ''));
     }
 
     public function testParseRoutesToGpxParser(): void
     {
         $this->expectExceptionObject(new \LogicException('parsed-by-gpx'));
 
-        $this->registry->parse($this->rawFile('/import/sub/dir/ride.gpx'));
+        $this->registry->parse(RawActivityFile::from(Path::fromString('/import/sub/dir/ride.gpx'), ''));
     }
 
     public function testParseWithoutExtensionThrows(): void
     {
-        $rawActivityFile = $this->rawFile('/import/activity');
+        $rawActivityFile = RawActivityFile::from(Path::fromString('/import/activity'), '');
 
         $this->expectExceptionObject(new CouldNotParseActivityFile('Could not determine file extension for "/import/activity"', $rawActivityFile));
         $this->registry->parse($rawActivityFile);
@@ -50,7 +50,7 @@ class ActivityFileParsersTest extends TestCase
     public function testParseWithUnsupportedExtensionThrows(): void
     {
         $this->expectExceptionObject(new UnsupportedFileType('No parser available for file extension "./import/activity.lol"'));
-        $this->registry->parse($this->rawFile('/import/activity.lol'));
+        $this->registry->parse(RawActivityFile::from(Path::fromString('/import/activity.lol'), ''));
     }
 
     protected function setUp(): void
@@ -62,11 +62,6 @@ class ActivityFileParsersTest extends TestCase
             $this->createParser(SupportedFileExtension::TCX),
             $this->createParser(SupportedFileExtension::GPX),
         ]);
-    }
-
-    private function rawFile(string $path): RawActivityFile
-    {
-        return RawActivityFile::from(Path::fromString($path), '');
     }
 
     private function createParser(SupportedFileExtension $extension): ActivityFileParser

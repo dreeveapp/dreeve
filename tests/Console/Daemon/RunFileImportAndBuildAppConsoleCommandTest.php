@@ -143,7 +143,10 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
 
     public function testSkipsWhenAlreadyBuiltTodayAndNoFiles(): void
     {
-        $this->markAppAsBuiltToday();
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString(self::TODAY.'@'.AppVersion::getSemanticVersion()),
+        ));
 
         $command = $this->getCommandInApplication('app:cron:run-file-import');
         $commandTester = new CommandTester($command);
@@ -160,7 +163,10 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
 
     public function testBuildOnlyIfRequiredSkipsWhenAlreadyBuiltToday(): void
     {
-        $this->markAppAsBuiltToday();
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString(self::TODAY.'@'.AppVersion::getSemanticVersion()),
+        ));
 
         $command = $this->getCommandInApplication('app:cron:run-file-import');
         $commandTester = new CommandTester($command);
@@ -210,7 +216,10 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
             [],
         ));
 
-        $this->markAppAsBuiltToday();
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString(self::TODAY.'@'.AppVersion::getSemanticVersion()),
+        ));
         $this->watchStorage->write('watch/ride.fit', 'raw-fit-bytes');
 
         $command = $this->getCommandInApplication('app:cron:run-file-import');
@@ -232,7 +241,10 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
             [],
         ));
 
-        $this->markAppAsBuiltToday();
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString(self::TODAY.'@'.AppVersion::getSemanticVersion()),
+        ));
         $this->keyValueStore->save(KeyValue::fromState(
             key: Key::FORCE_REBUILD,
             value: Value::fromString('1'),
@@ -467,14 +479,6 @@ class RunFileImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
             rebuildStatus: new RebuildStatus($this->keyValueStore),
             settingsRepository: $this->getContainer()->get(KeyValueBasedSettingsRepository::class),
         );
-    }
-
-    private function markAppAsBuiltToday(): void
-    {
-        $this->keyValueStore->save(KeyValue::fromState(
-            key: Key::APP_LAST_BUILD_SNAPSHOT,
-            value: Value::fromString(self::TODAY.'@'.AppVersion::getSemanticVersion()),
-        ));
     }
 
     protected function getConsoleCommand(): Command

@@ -28,7 +28,12 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
     public function testDiscoverSevenDayStreak(): void
     {
         for ($i = 0; $i < 7; ++$i) {
-            $this->insertActivity($i + 1, sprintf('2024-01-%02d', $i + 1));
+            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($i + 1))
+                    ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i + 1)))
+                    ->build(), []
+            ));
         }
 
         $milestones = $this->discoverer->discover();
@@ -43,7 +48,12 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
     public function testDiscoverMultipleThresholds(): void
     {
         for ($i = 0; $i < 14; ++$i) {
-            $this->insertActivity($i + 1, sprintf('2024-01-%02d', $i + 1));
+            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($i + 1))
+                    ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i + 1)))
+                    ->build(), []
+            ));
         }
 
         $milestones = $this->discoverer->discover();
@@ -53,7 +63,12 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
     public function testDiscoverNoMilestoneForShortStreak(): void
     {
         for ($i = 0; $i < 5; ++$i) {
-            $this->insertActivity($i + 1, sprintf('2024-01-%02d', $i + 1));
+            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($i + 1))
+                    ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i + 1)))
+                    ->build(), []
+            ));
         }
 
         $this->assertTrue($this->discoverer->discover()->isEmpty());
@@ -63,11 +78,21 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
     {
         // 5-day streak, then gap, then 7-day streak
         for ($i = 0; $i < 5; ++$i) {
-            $this->insertActivity($i + 1, sprintf('2024-01-%02d', $i + 1));
+            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($i + 1))
+                    ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i + 1)))
+                    ->build(), []
+            ));
         }
         // Gap on Jan 6
         for ($i = 0; $i < 7; ++$i) {
-            $this->insertActivity($i + 10, sprintf('2024-01-%02d', $i + 7));
+            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($i + 10))
+                    ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i + 7)))
+                    ->build(), []
+            ));
         }
 
         $milestones = $this->discoverer->discover();
@@ -77,9 +102,19 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
     public function testDiscoverHandlesDuplicateDaysInStreak(): void
     {
         for ($i = 0; $i < 7; ++$i) {
-            $this->insertActivity($i + 1, sprintf('2024-01-%02d', $i + 1));
+            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($i + 1))
+                    ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i + 1)))
+                    ->build(), []
+            ));
         }
-        $this->insertActivity(100, '2024-01-03');
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed(100))
+                ->withStartDateTime(SerializableDateTime::fromString('2024-01-03'))
+                ->build(), []
+        ));
 
         $milestones = $this->discoverer->discover();
         $this->assertMatchesJsonSnapshot(Json::encode($milestones));
@@ -88,7 +123,12 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
     public function testFunComparisonIsSet(): void
     {
         for ($i = 0; $i < 21; ++$i) {
-            $this->insertActivity($i + 1, sprintf('2024-01-%02d', $i + 1));
+            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($i + 1))
+                    ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i + 1)))
+                    ->build(), []
+            ));
         }
 
         $milestones = $this->discoverer->discover();
@@ -108,15 +148,5 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
     {
         parent::setUp();
         $this->discoverer = new StreakMilestoneDiscoverer($this->getConnection(), new IncrementingMilestoneIdFactory());
-    }
-
-    private function insertActivity(int $id, string $date): void
-    {
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed($id))
-                ->withStartDateTime(SerializableDateTime::fromString($date))
-                ->build(), []
-        ));
     }
 }

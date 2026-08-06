@@ -137,7 +137,10 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
 
     public function testBuildIfRequiredSkipsWhenAlreadyBuiltTodayAndNothingPending(): void
     {
-        $this->markAppAsBuiltToday();
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString(self::TODAY.'@'.AppVersion::getSemanticVersion()),
+        ));
 
         $command = $this->getCommandInApplication('app:cron:run-strava-import');
         $commandTester = new CommandTester($command);
@@ -153,7 +156,10 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
 
     public function testOnlyIfRequiredStillImportsButSkipsBuildWhenNoRebuildIsRequired(): void
     {
-        $this->markAppAsBuiltToday();
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString(self::TODAY.'@'.AppVersion::getSemanticVersion()),
+        ));
 
         $command = $this->getCommandInApplication('app:cron:run-strava-import');
         $commandTester = new CommandTester($command);
@@ -173,7 +179,10 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
 
     public function testBuildIfRequiredBuildsAndClearsForceRebuildWhenPending(): void
     {
-        $this->markAppAsBuiltToday();
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString(self::TODAY.'@'.AppVersion::getSemanticVersion()),
+        ));
         $this->keyValueStore->save(KeyValue::fromState(
             key: Key::FORCE_REBUILD,
             value: Value::fromString('1'),
@@ -240,7 +249,10 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
 
     public function testBuildAlwaysBuildsWithoutIfRequiredEvenWhenAlreadyBuiltToday(): void
     {
-        $this->markAppAsBuiltToday();
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::APP_LAST_BUILD_SNAPSHOT,
+            value: Value::fromString(self::TODAY.'@'.AppVersion::getSemanticVersion()),
+        ));
 
         $command = $this->getCommandInApplication('app:cron:run-strava-import');
         $commandTester = new CommandTester($command);
@@ -394,14 +406,6 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
             clock: PausedClock::fromString(self::TODAY),
             settingsRepository: $this->getContainer()->get(KeyValueBasedSettingsRepository::class),
         );
-    }
-
-    private function markAppAsBuiltToday(): void
-    {
-        $this->keyValueStore->save(KeyValue::fromState(
-            key: Key::APP_LAST_BUILD_SNAPSHOT,
-            value: Value::fromString(self::TODAY.'@'.AppVersion::getSemanticVersion()),
-        ));
     }
 
     protected function getConsoleCommand(): Command

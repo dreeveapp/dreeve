@@ -28,7 +28,7 @@ class SportTypeConditionTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->condition->guardValidConfiguration($this->config('isOneOf', [SportType::RIDE->value, SportType::RUN->value]));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => [SportType::RIDE->value, SportType::RUN->value]]));
     }
 
     /**
@@ -39,21 +39,21 @@ class SportTypeConditionTest extends TestCase
     {
         $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
 
-        $this->condition->guardValidConfiguration($this->config($operator, $sportTypes));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => $operator, 'sportTypes' => $sportTypes]));
     }
 
     public function testMatchesWhenActivitySportTypeIsOneOfTheConfigured(): void
     {
         $activity = ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build();
 
-        $this->assertTrue($this->condition->matches($activity, $this->config('isOneOf', [SportType::RIDE->value, SportType::RUN->value])));
+        $this->assertTrue($this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => [SportType::RIDE->value, SportType::RUN->value]])));
     }
 
     public function testDoesNotMatchWhenActivitySportTypeIsNotConfigured(): void
     {
         $activity = ActivityBuilder::fromDefaults()->withSportType(SportType::WALK)->build();
 
-        $this->assertFalse($this->condition->matches($activity, $this->config('isOneOf', [SportType::RIDE->value, SportType::RUN->value])));
+        $this->assertFalse($this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => [SportType::RIDE->value, SportType::RUN->value]])));
     }
 
     public function testIsNoneOfOperatorInvertsTheMatch(): void
@@ -61,8 +61,8 @@ class SportTypeConditionTest extends TestCase
         $ride = ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build();
         $walk = ActivityBuilder::fromDefaults()->withSportType(SportType::WALK)->build();
 
-        $this->assertFalse($this->condition->matches($ride, $this->config('isNoneOf', [SportType::RIDE->value, SportType::RUN->value])));
-        $this->assertTrue($this->condition->matches($walk, $this->config('isNoneOf', [SportType::RIDE->value, SportType::RUN->value])));
+        $this->assertFalse($this->condition->matches($ride, RuleConfiguration::fromConfig(['operator' => 'isNoneOf', 'sportTypes' => [SportType::RIDE->value, SportType::RUN->value]])));
+        $this->assertTrue($this->condition->matches($walk, RuleConfiguration::fromConfig(['operator' => 'isNoneOf', 'sportTypes' => [SportType::RIDE->value, SportType::RUN->value]])));
     }
 
     /**
@@ -73,14 +73,6 @@ class SportTypeConditionTest extends TestCase
         yield 'invalid operator' => ['nope', [SportType::RIDE->value], 'Invalid sport type operator "nope".'];
         yield 'no sport types selected' => ['isOneOf', [], 'At least one sport type is required.'];
         yield 'invalid sport type' => ['isOneOf', [SportType::RIDE->value, 'Flying'], 'Invalid sport type "Flying".'];
-    }
-
-    /**
-     * @param list<string> $sportTypes
-     */
-    private function config(string $operator, array $sportTypes): RuleConfiguration
-    {
-        return RuleConfiguration::fromConfig(['operator' => $operator, 'sportTypes' => $sportTypes]);
     }
 
     #[\Override]

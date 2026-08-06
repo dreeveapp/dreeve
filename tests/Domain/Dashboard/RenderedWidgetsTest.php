@@ -35,7 +35,10 @@ class RenderedWidgetsTest extends ContainerTestCase
         ]);
 
         /** @var RenderedWidget[] $rendered */
-        $rendered = iterator_to_array($this->renderedWidgets());
+        $rendered = iterator_to_array(new RenderedWidgets(
+            $this->getContainer()->get(ConfiguredWidgets::class),
+            PausedClock::fromString('2026-01-09'),
+        ));
 
         $this->assertCount(1, $rendered);
         $this->assertSame(66, $rendered[0]->getWidth());
@@ -48,15 +51,10 @@ class RenderedWidgetsTest extends ContainerTestCase
             ['id' => 'dashboardWidget-1', 'widget' => 'gearStats', 'width' => 50],
         ]);
 
-        $this->assertCount(0, $this->renderedWidgets()->getIterator());
-    }
-
-    private function renderedWidgets(): RenderedWidgets
-    {
-        return new RenderedWidgets(
+        $this->assertCount(0, new RenderedWidgets(
             $this->getContainer()->get(ConfiguredWidgets::class),
             PausedClock::fromString('2026-01-09'),
-        );
+        )->getIterator());
     }
 
     private function saveLayout(array $layout): void

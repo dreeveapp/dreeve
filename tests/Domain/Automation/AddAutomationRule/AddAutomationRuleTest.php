@@ -50,14 +50,22 @@ class AddAutomationRuleTest extends TestCase
 
     public function testEnabledCanBeDisabled(): void
     {
-        $command = AddAutomationRule::fromPayload(['enabled' => false] + self::validPayload());
+        $command = AddAutomationRule::fromPayload(['enabled' => false] + [
+            'label' => 'Tag commutes',
+            'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
+            'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
+        ]);
 
         $this->assertFalse($command->isEnabled());
     }
 
     public function testStopProcessingDefaultsToTrue(): void
     {
-        $command = AddAutomationRule::fromPayload(self::validPayload());
+        $command = AddAutomationRule::fromPayload([
+            'label' => 'Tag commutes',
+            'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
+            'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
+        ]);
 
         $this->assertTrue($command->stopProcessing());
     }
@@ -66,14 +74,22 @@ class AddAutomationRuleTest extends TestCase
     #[TestWith(data: ['true', true])]
     public function testStopProcessingCanBeToggledExplicitly(string $stopProcessing, bool $expectedStopProcessing): void
     {
-        $command = AddAutomationRule::fromPayload(['stopProcessing' => $stopProcessing] + self::validPayload());
+        $command = AddAutomationRule::fromPayload(['stopProcessing' => $stopProcessing] + [
+            'label' => 'Tag commutes',
+            'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
+            'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
+        ]);
 
         $this->assertSame($expectedStopProcessing, $command->stopProcessing());
     }
 
     public function testLabelIsTrimmed(): void
     {
-        $command = AddAutomationRule::fromPayload(['label' => '  Trimmed  '] + self::validPayload());
+        $command = AddAutomationRule::fromPayload(['label' => '  Trimmed  '] + [
+            'label' => 'Tag commutes',
+            'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
+            'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
+        ]);
 
         $this->assertSame('Trimmed', $command->getLabel());
     }
@@ -111,45 +127,57 @@ class AddAutomationRuleTest extends TestCase
         ];
 
         yield 'empty conditions' => [
-            ['conditions' => []] + self::validPayload(),
+            ['conditions' => []] + [
+                'label' => 'Tag commutes',
+                'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
+                'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
+            ],
             'At least one condition is required.',
         ];
 
         yield 'empty actions' => [
-            ['actions' => []] + self::validPayload(),
+            ['actions' => []] + [
+                'label' => 'Tag commutes',
+                'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
+                'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
+            ],
             'At least one action is required.',
         ];
 
         yield 'invalid condition type' => [
-            ['conditions' => [['type' => 'nope']]] + self::validPayload(),
+            ['conditions' => [['type' => 'nope']]] + [
+                'label' => 'Tag commutes',
+                'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
+                'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
+            ],
             'Invalid condition type "nope".',
         ];
 
         yield 'invalid action type' => [
-            ['actions' => [['type' => 'nope']]] + self::validPayload(),
+            ['actions' => [['type' => 'nope']]] + [
+                'label' => 'Tag commutes',
+                'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
+                'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
+            ],
             'Invalid action type "nope".',
         ];
 
         yield 'component without a type' => [
-            ['conditions' => [['config' => []]]] + self::validPayload(),
+            ['conditions' => [['config' => []]]] + [
+                'label' => 'Tag commutes',
+                'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
+                'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
+            ],
             'Each component requires a non-empty "type".',
         ];
 
         yield 'config that is not an object' => [
-            ['conditions' => [['type' => 'device', 'config' => 'nope']]] + self::validPayload(),
+            ['conditions' => [['type' => 'device', 'config' => 'nope']]] + [
+                'label' => 'Tag commutes',
+                'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
+                'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
+            ],
             'A component "config" must be an object.',
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private static function validPayload(): array
-    {
-        return [
-            'label' => 'Tag commutes',
-            'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
-            'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
         ];
     }
 
@@ -158,7 +186,11 @@ class AddAutomationRuleTest extends TestCase
      */
     private static function validPayloadWithout(string $key): array
     {
-        $payload = self::validPayload();
+        $payload = [
+            'label' => 'Tag commutes',
+            'conditions' => [['type' => 'device', 'config' => ['deviceName' => 'Garmin']]],
+            'actions' => [['type' => 'setName', 'config' => ['name' => 'Commute']]],
+        ];
         unset($payload[$key]);
 
         return $payload;

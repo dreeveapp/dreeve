@@ -69,9 +69,18 @@ class DbalAutomationRuleRepositoryTest extends ContainerTestCase
 
     public function testFindAllOrdersBySortOrder(): void
     {
-        $this->repository->add($this->ruleWithSortOrder('a', 2));
-        $this->repository->add($this->ruleWithSortOrder('b', 0));
-        $this->repository->add($this->ruleWithSortOrder('c', 1));
+        $this->repository->add(AutomationRuleBuilder::fromDefaults()
+            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('a'))
+            ->withSortOrder(2)
+            ->build());
+        $this->repository->add(AutomationRuleBuilder::fromDefaults()
+            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('b'))
+            ->withSortOrder(0)
+            ->build());
+        $this->repository->add(AutomationRuleBuilder::fromDefaults()
+            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('c'))
+            ->withSortOrder(1)
+            ->build());
 
         $this->assertSame(
             ['automationRule-b', 'automationRule-c', 'automationRule-a'],
@@ -110,9 +119,18 @@ class DbalAutomationRuleRepositoryTest extends ContainerTestCase
 
     public function testUpdateOrder(): void
     {
-        $this->repository->add($this->ruleWithSortOrder('a', 0));
-        $this->repository->add($this->ruleWithSortOrder('b', 1));
-        $this->repository->add($this->ruleWithSortOrder('c', 2));
+        $this->repository->add(AutomationRuleBuilder::fromDefaults()
+            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('a'))
+            ->withSortOrder(0)
+            ->build());
+        $this->repository->add(AutomationRuleBuilder::fromDefaults()
+            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('b'))
+            ->withSortOrder(1)
+            ->build());
+        $this->repository->add(AutomationRuleBuilder::fromDefaults()
+            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('c'))
+            ->withSortOrder(2)
+            ->build());
 
         $this->repository->updateOrder([
             AutomationRuleId::fromUnprefixed('c'),
@@ -128,7 +146,10 @@ class DbalAutomationRuleRepositoryTest extends ContainerTestCase
 
     public function testDelete(): void
     {
-        $rule = $this->ruleWithSortOrder('1', 0);
+        $rule = AutomationRuleBuilder::fromDefaults()
+            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('1'))
+            ->withSortOrder(0)
+            ->build();
         $this->repository->add($rule);
 
         $this->repository->delete($rule->getId());
@@ -161,14 +182,6 @@ class DbalAutomationRuleRepositoryTest extends ContainerTestCase
             Json::encode($rule->getConditions())
         );
         $this->assertTrue($rule->getActions()->isEmpty());
-    }
-
-    private function ruleWithSortOrder(string $id, int $sortOrder): \App\Domain\Automation\AutomationRule
-    {
-        return AutomationRuleBuilder::fromDefaults()
-            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed($id))
-            ->withSortOrder($sortOrder)
-            ->build();
     }
 
     #[\Override]

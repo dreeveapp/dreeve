@@ -77,11 +77,31 @@ class DbalActivityStreamMetricRepositoryTest extends ContainerTestCase
 
     public function testFindActivityIdsWithoutBestAverages(): void
     {
-        $this->addStream(ActivityId::fromUnprefixed('1'), StreamType::WATTS);
-        $this->addStream(ActivityId::fromUnprefixed('2'), StreamType::WATTS);
-        $this->addStream(ActivityId::fromUnprefixed('3'), StreamType::WATTS);
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withStreamType(StreamType::WATTS)
+                ->build()
+        );
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('2'))
+                ->withStreamType(StreamType::WATTS)
+                ->build()
+        );
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('3'))
+                ->withStreamType(StreamType::WATTS)
+                ->build()
+        );
         // Activity 4 has a stream type that doesn't support best averages.
-        $this->addStream(ActivityId::fromUnprefixed('4'), StreamType::TIME);
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('4'))
+                ->withStreamType(StreamType::TIME)
+                ->build()
+        );
 
         $this->activityStreamMetricRepository->add(ActivityStreamMetric::create(
             activityId: ActivityId::fromUnprefixed('1'),
@@ -103,7 +123,12 @@ class DbalActivityStreamMetricRepositoryTest extends ContainerTestCase
 
     public function testFindActivityIdsWithoutBestAveragesWhenAllHaveMetrics(): void
     {
-        $this->addStream(ActivityId::fromUnprefixed('1'), StreamType::WATTS);
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withStreamType(StreamType::WATTS)
+                ->build()
+        );
 
         $this->activityStreamMetricRepository->add(ActivityStreamMetric::create(
             activityId: ActivityId::fromUnprefixed('1'),
@@ -120,10 +145,25 @@ class DbalActivityStreamMetricRepositoryTest extends ContainerTestCase
 
     public function testFindActivityIdsWithoutNormalizedPower(): void
     {
-        $this->addStream(ActivityId::fromUnprefixed('1'), StreamType::WATTS);
-        $this->addStream(ActivityId::fromUnprefixed('2'), StreamType::WATTS);
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withStreamType(StreamType::WATTS)
+                ->build()
+        );
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('2'))
+                ->withStreamType(StreamType::WATTS)
+                ->build()
+        );
         // Activity 3 has heart rate, not watts - should not appear.
-        $this->addStream(ActivityId::fromUnprefixed('3'), StreamType::HEART_RATE);
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('3'))
+                ->withStreamType(StreamType::HEART_RATE)
+                ->build()
+        );
 
         $this->activityStreamMetricRepository->add(ActivityStreamMetric::create(
             activityId: ActivityId::fromUnprefixed('1'),
@@ -142,7 +182,12 @@ class DbalActivityStreamMetricRepositoryTest extends ContainerTestCase
 
     public function testFindActivityIdsWithoutNormalizedPowerWhenAllHaveMetrics(): void
     {
-        $this->addStream(ActivityId::fromUnprefixed('1'), StreamType::WATTS);
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withStreamType(StreamType::WATTS)
+                ->build()
+        );
 
         $this->activityStreamMetricRepository->add(ActivityStreamMetric::create(
             activityId: ActivityId::fromUnprefixed('1'),
@@ -159,11 +204,31 @@ class DbalActivityStreamMetricRepositoryTest extends ContainerTestCase
 
     public function testFindActivityIdsWithoutDistributionValues(): void
     {
-        $this->addStream(ActivityId::fromUnprefixed('1'), StreamType::WATTS);
-        $this->addStream(ActivityId::fromUnprefixed('2'), StreamType::HEART_RATE);
-        $this->addStream(ActivityId::fromUnprefixed('3'), StreamType::VELOCITY);
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withStreamType(StreamType::WATTS)
+                ->build()
+        );
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('2'))
+                ->withStreamType(StreamType::HEART_RATE)
+                ->build()
+        );
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('3'))
+                ->withStreamType(StreamType::VELOCITY)
+                ->build()
+        );
         // Activity 4 has a stream type that doesn't support distribution.
-        $this->addStream(ActivityId::fromUnprefixed('4'), StreamType::ALTITUDE);
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('4'))
+                ->withStreamType(StreamType::ALTITUDE)
+                ->build()
+        );
 
         $this->activityStreamMetricRepository->add(ActivityStreamMetric::create(
             activityId: ActivityId::fromUnprefixed('1'),
@@ -185,7 +250,12 @@ class DbalActivityStreamMetricRepositoryTest extends ContainerTestCase
 
     public function testFindActivityIdsWithoutDistributionValuesWhenAllHaveMetrics(): void
     {
-        $this->addStream(ActivityId::fromUnprefixed('1'), StreamType::WATTS);
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withStreamType(StreamType::WATTS)
+                ->build()
+        );
 
         $this->activityStreamMetricRepository->add(ActivityStreamMetric::create(
             activityId: ActivityId::fromUnprefixed('1'),
@@ -254,16 +324,6 @@ class DbalActivityStreamMetricRepositoryTest extends ContainerTestCase
                 ActivityId::fromUnprefixed('999'),
                 ActivityStreamMetricType::BEST_AVERAGES,
             ),
-        );
-    }
-
-    private function addStream(ActivityId $activityId, StreamType $streamType): void
-    {
-        $this->activityStreamRepository->add(
-            ActivityStreamBuilder::fromDefaults()
-                ->withActivityId($activityId)
-                ->withStreamType($streamType)
-                ->build()
         );
     }
 

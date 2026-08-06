@@ -27,28 +27,23 @@ class SetSportTypeActionTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->action->guardValidConfiguration($this->config('Ride'));
+        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['sportType' => 'Ride']));
     }
 
     public function testGuardThrowsOnInvalidSportType(): void
     {
         $this->expectExceptionObject(new InvalidAutomationRule('Invalid sport type "nope".'));
 
-        $this->action->guardValidConfiguration($this->config('nope'));
+        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['sportType' => 'nope']));
     }
 
     public function testApplyToSetsTheSportType(): void
     {
         $activity = ActivityBuilder::fromDefaults()->withSportType(SportType::RUN)->build();
 
-        $activity = $this->action->applyTo($activity, $this->config('Ride'));
+        $activity = $this->action->applyTo($activity, RuleConfiguration::fromConfig(['sportType' => 'Ride']));
 
         $this->assertSame(SportType::RIDE, $activity->getSportType());
-    }
-
-    private function config(string $sportType): RuleConfiguration
-    {
-        return RuleConfiguration::fromConfig(['sportType' => $sportType]);
     }
 
     #[\Override]

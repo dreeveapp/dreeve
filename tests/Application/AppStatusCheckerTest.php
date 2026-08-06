@@ -11,7 +11,6 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\FileSystem\PermissionChecker;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -24,28 +23,48 @@ class AppStatusCheckerTest extends ContainerTestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->buildChecker(new SuccessfulPermissionChecker())->ensureIsReadyForStravaImport();
+        new AppStatusChecker(
+            $this->getContainer()->get(SettingsRepository::class),
+            $this->getContainer()->get(ActivityIdRepository::class),
+            new SuccessfulPermissionChecker(),
+            $this->getContainer()->get(KeyValueStore::class),
+        )->ensureIsReadyForStravaImport();
     }
 
     public function testEnsureIsReadyForStravaImportThrowsWhenFileSystemIsNotWritable(): void
     {
         $this->expectExceptionObject(AppIsNotReady::becauseFileSystemIsNotWritable());
 
-        $this->buildChecker(new UnwritablePermissionChecker())->ensureIsReadyForStravaImport();
+        new AppStatusChecker(
+            $this->getContainer()->get(SettingsRepository::class),
+            $this->getContainer()->get(ActivityIdRepository::class),
+            new UnwritablePermissionChecker(),
+            $this->getContainer()->get(KeyValueStore::class),
+        )->ensureIsReadyForStravaImport();
     }
 
     public function testEnsureIsReadyForFileImportPasses(): void
     {
         $this->expectNotToPerformAssertions();
 
-        $this->buildChecker(new SuccessfulPermissionChecker())->ensureIsReadyForFileImport();
+        new AppStatusChecker(
+            $this->getContainer()->get(SettingsRepository::class),
+            $this->getContainer()->get(ActivityIdRepository::class),
+            new SuccessfulPermissionChecker(),
+            $this->getContainer()->get(KeyValueStore::class),
+        )->ensureIsReadyForFileImport();
     }
 
     public function testEnsureIsReadyForFileImportThrowsWhenFileSystemIsNotWritable(): void
     {
         $this->expectExceptionObject(AppIsNotReady::becauseFileSystemIsNotWritable());
 
-        $this->buildChecker(new UnwritablePermissionChecker())->ensureIsReadyForFileImport();
+        new AppStatusChecker(
+            $this->getContainer()->get(SettingsRepository::class),
+            $this->getContainer()->get(ActivityIdRepository::class),
+            new UnwritablePermissionChecker(),
+            $this->getContainer()->get(KeyValueStore::class),
+        )->ensureIsReadyForFileImport();
     }
 
     public function testEnsureIsReadyForBuildPasses(): void
@@ -57,7 +76,12 @@ class AppStatusCheckerTest extends ContainerTestCase
             [],
         ));
 
-        $this->buildChecker(new SuccessfulPermissionChecker())->ensureIsReadyForBuild();
+        new AppStatusChecker(
+            $this->getContainer()->get(SettingsRepository::class),
+            $this->getContainer()->get(ActivityIdRepository::class),
+            new SuccessfulPermissionChecker(),
+            $this->getContainer()->get(KeyValueStore::class),
+        )->ensureIsReadyForBuild();
     }
 
     public function testEnsureIsReadyForBuildThrowsWhenAthleteHasNotBeenConfigured(): void
@@ -72,23 +96,23 @@ class AppStatusCheckerTest extends ContainerTestCase
 
         $this->expectExceptionObject(AppIsNotReady::becauseAthleteHasNotBeenConfiguredYet());
 
-        $this->buildChecker(new SuccessfulPermissionChecker())->ensureIsReadyForBuild();
+        new AppStatusChecker(
+            $this->getContainer()->get(SettingsRepository::class),
+            $this->getContainer()->get(ActivityIdRepository::class),
+            new SuccessfulPermissionChecker(),
+            $this->getContainer()->get(KeyValueStore::class),
+        )->ensureIsReadyForBuild();
     }
 
     public function testEnsureIsReadyForBuildThrowsWhenNoActivitiesHaveBeenImported(): void
     {
         $this->expectExceptionObject(AppIsNotReady::becauseNoActivitiesHaveBeenImportedYet());
 
-        $this->buildChecker(new SuccessfulPermissionChecker())->ensureIsReadyForBuild();
-    }
-
-    private function buildChecker(PermissionChecker $permissionChecker): AppStatusChecker
-    {
-        return new AppStatusChecker(
+        new AppStatusChecker(
             $this->getContainer()->get(SettingsRepository::class),
             $this->getContainer()->get(ActivityIdRepository::class),
-            $permissionChecker,
+            new SuccessfulPermissionChecker(),
             $this->getContainer()->get(KeyValueStore::class),
-        );
+        )->ensureIsReadyForBuild();
     }
 }

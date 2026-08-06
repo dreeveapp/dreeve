@@ -9,7 +9,6 @@ use App\Domain\Activity\WorldType;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
-use App\Infrastructure\Cache\Render;
 use App\Infrastructure\Cache\RenderCache;
 use App\Tests\ContainerTestCase;
 
@@ -27,9 +26,21 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertFalse($this->render(CacheTag::ACTIVITIES)->wasServedFromCache());
-        $this->assertTrue($this->render(CacheTag::ACTIVITY_IMAGES)->wasServedFromCache());
-        $this->assertTrue($this->render(CacheTag::ACTIVITY_ROUTE)->wasServedFromCache());
+        $this->assertFalse($this->renderCache->get(
+            cacheKey: CacheTag::ACTIVITIES->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITIES)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
+        $this->assertTrue($this->renderCache->get(
+            cacheKey: CacheTag::ACTIVITY_IMAGES->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
+        $this->assertTrue($this->renderCache->get(
+            cacheKey: CacheTag::ACTIVITY_ROUTE->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_ROUTE)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
     }
 
     public function testItDoesNotInvalidateWhenAnActivityIsMerelyHydratedAndStored(): void
@@ -41,7 +52,11 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertTrue($this->render(CacheTag::ACTIVITIES)->wasServedFromCache());
+        $this->assertTrue($this->renderCache->get(
+            cacheKey: CacheTag::ACTIVITIES->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITIES)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
     }
 
     public function testItInvalidatesWhenAnActivityIsDeleted(): void
@@ -52,9 +67,21 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
 
         $this->activityRepository->delete($activity->getId());
 
-        $this->assertFalse($this->render(CacheTag::ACTIVITIES)->wasServedFromCache());
-        $this->assertFalse($this->render(CacheTag::ACTIVITY_IMAGES)->wasServedFromCache());
-        $this->assertFalse($this->render(CacheTag::ACTIVITY_ROUTE)->wasServedFromCache());
+        $this->assertFalse($this->renderCache->get(
+            cacheKey: CacheTag::ACTIVITIES->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITIES)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
+        $this->assertFalse($this->renderCache->get(
+            cacheKey: CacheTag::ACTIVITY_IMAGES->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
+        $this->assertFalse($this->renderCache->get(
+            cacheKey: CacheTag::ACTIVITY_ROUTE->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_ROUTE)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
     }
 
     public function testItOnlyInvalidatesTheRouteWhenTheRouteHasBeenUpdated(): void
@@ -71,9 +98,21 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertTrue($this->render(CacheTag::ACTIVITIES)->wasServedFromCache());
-        $this->assertTrue($this->render(CacheTag::ACTIVITY_IMAGES)->wasServedFromCache());
-        $this->assertFalse($this->render(CacheTag::ACTIVITY_ROUTE)->wasServedFromCache());
+        $this->assertTrue($this->renderCache->get(
+            cacheKey: CacheTag::ACTIVITIES->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITIES)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
+        $this->assertTrue($this->renderCache->get(
+            cacheKey: CacheTag::ACTIVITY_IMAGES->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
+        $this->assertFalse($this->renderCache->get(
+            cacheKey: CacheTag::ACTIVITY_ROUTE->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_ROUTE)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
     }
 
     public function testItDoesNotInvalidateTheRouteWhenTheActivityIsNotOnTheMap(): void
@@ -89,7 +128,11 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertTrue($this->render(CacheTag::ACTIVITY_ROUTE)->wasServedFromCache());
+        $this->assertTrue($this->renderCache->get(
+            cacheKey: CacheTag::ACTIVITY_ROUTE->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_ROUTE)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
     }
 
     public function testItOnlyInvalidatesTheImagesWhenTheImagesHaveBeenUpdated(): void
@@ -103,25 +146,32 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertTrue($this->render(CacheTag::ACTIVITIES)->wasServedFromCache());
-        $this->assertFalse($this->render(CacheTag::ACTIVITY_IMAGES)->wasServedFromCache());
+        $this->assertTrue($this->renderCache->get(
+            cacheKey: CacheTag::ACTIVITIES->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITIES)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
+        $this->assertFalse($this->renderCache->get(
+            cacheKey: CacheTag::ACTIVITY_IMAGES->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
+            callback: fn (): string => 'rendered',
+        )->wasServedFromCache());
     }
 
     private function warmUpRenderCache(): void
     {
         foreach ([CacheTag::ACTIVITIES, CacheTag::ACTIVITY_IMAGES, CacheTag::ACTIVITY_ROUTE] as $cacheTag) {
-            $this->render($cacheTag);
-            $this->assertTrue($this->render($cacheTag)->wasServedFromCache());
+            $this->renderCache->get(
+                cacheKey: $cacheTag->value,
+                cacheability: Cacheability::for('stub', CacheTags::of($cacheTag)),
+                callback: fn (): string => 'rendered',
+            );
+            $this->assertTrue($this->renderCache->get(
+                cacheKey: $cacheTag->value,
+                cacheability: Cacheability::for('stub', CacheTags::of($cacheTag)),
+                callback: fn (): string => 'rendered',
+            )->wasServedFromCache());
         }
-    }
-
-    private function render(CacheTag $cacheTag): Render
-    {
-        return $this->renderCache->get(
-            cacheKey: $cacheTag->value,
-            cacheability: Cacheability::for('stub', CacheTags::of($cacheTag)),
-            callback: fn (): string => 'rendered',
-        );
     }
 
     #[\Override]

@@ -80,7 +80,11 @@ final class GapCalculatorTest extends TestCase
     {
         $calculator = GapCalculator::create(smoothingWindowSize: 3);
 
-        $segments = iterator_to_array($calculator->calculateSegments($this->shortTrackPoints()), false);
+        $segments = iterator_to_array($calculator->calculateSegments([
+            ['lat' => 51.0000, 'lon' => 4.0000, 'ele' => 10.0, 'timestamp' => 0],
+            ['lat' => 51.0001, 'lon' => 4.0000, 'ele' => 11.0, 'timestamp' => 6],
+            ['lat' => 51.0002, 'lon' => 4.0000, 'ele' => 12.0, 'timestamp' => 12],
+        ]), false);
 
         self::assertCount(2, $segments);
         self::assertGreaterThan(0.0, $segments[0]->getGrade());
@@ -172,18 +176,6 @@ final class GapCalculatorTest extends TestCase
             ['lat' => 51.0004, 'lon' => 4.0000, 'ele' => 45.0, 'timestamp' => 16],
             ['lat' => 51.0006, 'lon' => 4.0000, 'ele' => 11.0, 'timestamp' => 24],
             ['lat' => 51.0008, 'lon' => 4.0000, 'ele' => 11.5, 'timestamp' => 32],
-        ];
-    }
-
-    /**
-     * @return list<array<string, float|int>>
-     */
-    private function shortTrackPoints(): array
-    {
-        return [
-            ['lat' => 51.0000, 'lon' => 4.0000, 'ele' => 10.0, 'timestamp' => 0],
-            ['lat' => 51.0001, 'lon' => 4.0000, 'ele' => 11.0, 'timestamp' => 6],
-            ['lat' => 51.0002, 'lon' => 4.0000, 'ele' => 12.0, 'timestamp' => 12],
         ];
     }
 }

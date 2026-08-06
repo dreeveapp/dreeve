@@ -44,7 +44,12 @@ class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
     public function testDiscoverFirstThreshold(): void
     {
         $gearId = GearId::fromUnprefixed('bike-1');
-        $this->insertGear($gearId, 'Canyon Endurace');
+        $this->getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId($gearId)
+                ->withName('Canyon Endurace')
+                ->build()
+        );
         $this->insertActivity('1', '2024-01-01', $gearId, 86400);
 
         $milestones = $this->discoverer->discover();
@@ -60,7 +65,12 @@ class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
     public function testDiscoverMultipleThresholdsWithPreviousChain(): void
     {
         $gearId = GearId::fromUnprefixed('bike-1');
-        $this->insertGear($gearId, 'Canyon Endurace');
+        $this->getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId($gearId)
+                ->withName('Canyon Endurace')
+                ->build()
+        );
         $this->insertActivity('1', '2024-01-01', $gearId, 100000);
         $this->insertActivity('2', '2024-01-02', $gearId, 80000);
 
@@ -72,8 +82,18 @@ class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
     {
         $bikeId = GearId::fromUnprefixed('bike-1');
         $shoesId = GearId::fromUnprefixed('shoes-1');
-        $this->insertGear($bikeId, 'Canyon Endurace');
-        $this->insertGear($shoesId, 'Nike Pegasus');
+        $this->getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId($bikeId)
+                ->withName('Canyon Endurace')
+                ->build()
+        );
+        $this->getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId($shoesId)
+                ->withName('Nike Pegasus')
+                ->build()
+        );
 
         $this->insertActivity('1', '2024-01-01', $bikeId, 86400);
         $this->insertActivity('2', '2024-01-02', $shoesId, 86400);
@@ -85,7 +105,12 @@ class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
     public function testDiscoverSkipsZeroMovingTime(): void
     {
         $gearId = GearId::fromUnprefixed('bike-1');
-        $this->insertGear($gearId, 'Canyon Endurace');
+        $this->getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId($gearId)
+                ->withName('Canyon Endurace')
+                ->build()
+        );
         $this->insertActivity('1', '2024-01-01', $gearId, 0);
 
         $this->assertTrue($this->discoverer->discover()->isEmpty());
@@ -97,16 +122,6 @@ class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
         $this->discoverer = new GearMovingTimeMilestoneDiscoverer(
             $this->getConnection(),
             new IncrementingMilestoneIdFactory(),
-        );
-    }
-
-    private function insertGear(GearId $gearId, string $name): void
-    {
-        $this->getContainer()->get(GearRepository::class)->add(
-            GearBuilder::fromDefaults()
-                ->withGearId($gearId)
-                ->withName($name)
-                ->build()
         );
     }
 

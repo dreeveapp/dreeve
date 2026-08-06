@@ -23,7 +23,11 @@ class GateRequestListenerTest extends TestCase
             $this->gate(GateDecision::respond(new RedirectResponse('/never-reached'))),
         ]);
 
-        $event = $this->mainRequest(Request::create('/dashboard'));
+        $event = new RequestEvent(
+            kernel: $this->createStub(HttpKernelInterface::class),
+            request: Request::create('/dashboard'),
+            requestType: HttpKernelInterface::MAIN_REQUEST,
+        );
         $listener->onKernelRequest($event);
 
         $this->assertSame($redirect, $event->getResponse());
@@ -39,7 +43,11 @@ class GateRequestListenerTest extends TestCase
             $this->recordingGate($calls, 'third', GateDecision::respond(new RedirectResponse('/never-reached'))),
         ]);
 
-        $event = $this->mainRequest(Request::create('/dashboard'));
+        $event = new RequestEvent(
+            kernel: $this->createStub(HttpKernelInterface::class),
+            request: Request::create('/dashboard'),
+            requestType: HttpKernelInterface::MAIN_REQUEST,
+        );
         $listener->onKernelRequest($event);
 
         // The third gate is never reached once the second one intercepts.
@@ -56,7 +64,11 @@ class GateRequestListenerTest extends TestCase
             $this->recordingGate($calls, 'second', GateDecision::respond(new RedirectResponse('/never-reached'))),
         ]);
 
-        $event = $this->mainRequest(Request::create('/admin/settings/athlete'));
+        $event = new RequestEvent(
+            kernel: $this->createStub(HttpKernelInterface::class),
+            request: Request::create('/admin/settings/athlete'),
+            requestType: HttpKernelInterface::MAIN_REQUEST,
+        );
         $listener->onKernelRequest($event);
 
         // The first gate is guarding and keeps this path open. The gates behind it must not
@@ -69,7 +81,11 @@ class GateRequestListenerTest extends TestCase
     {
         $listener = new GateRequestListener([$this->gate(GateDecision::defer()), $this->gate(GateDecision::defer())]);
 
-        $event = $this->mainRequest(Request::create('/dashboard'));
+        $event = new RequestEvent(
+            kernel: $this->createStub(HttpKernelInterface::class),
+            request: Request::create('/dashboard'),
+            requestType: HttpKernelInterface::MAIN_REQUEST,
+        );
         $listener->onKernelRequest($event);
 
         $this->assertNull($event->getResponse());
@@ -80,7 +96,11 @@ class GateRequestListenerTest extends TestCase
     {
         $listener = new GateRequestListener([$this->gate(GateDecision::respond(new RedirectResponse('/gated')))]);
 
-        $event = $this->mainRequest(Request::create($path));
+        $event = new RequestEvent(
+            kernel: $this->createStub(HttpKernelInterface::class),
+            request: Request::create($path),
+            requestType: HttpKernelInterface::MAIN_REQUEST,
+        );
         $listener->onKernelRequest($event);
 
         $this->assertNull($event->getResponse());
@@ -149,14 +169,5 @@ class GateRequestListenerTest extends TestCase
                 return $this->decision;
             }
         };
-    }
-
-    private function mainRequest(Request $request): RequestEvent
-    {
-        return new RequestEvent(
-            kernel: $this->createStub(HttpKernelInterface::class),
-            request: $request,
-            requestType: HttpKernelInterface::MAIN_REQUEST,
-        );
     }
 }

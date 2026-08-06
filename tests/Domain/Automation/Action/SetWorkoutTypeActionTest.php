@@ -27,28 +27,23 @@ class SetWorkoutTypeActionTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->action->guardValidConfiguration($this->config('race'));
+        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['workoutType' => 'race']));
     }
 
     public function testGuardThrowsOnInvalidWorkoutType(): void
     {
         $this->expectExceptionObject(new InvalidAutomationRule('Invalid workout type "nope".'));
 
-        $this->action->guardValidConfiguration($this->config('nope'));
+        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['workoutType' => 'nope']));
     }
 
     public function testApplyToSetsTheWorkoutType(): void
     {
         $activity = ActivityBuilder::fromDefaults()->build();
 
-        $activity = $this->action->applyTo($activity, $this->config('race'));
+        $activity = $this->action->applyTo($activity, RuleConfiguration::fromConfig(['workoutType' => 'race']));
 
         $this->assertSame(WorkoutType::RACE, $activity->getWorkoutType());
-    }
-
-    private function config(string $workoutType): RuleConfiguration
-    {
-        return RuleConfiguration::fromConfig(['workoutType' => $workoutType]);
     }
 
     #[\Override]

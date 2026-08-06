@@ -767,7 +767,12 @@ class CalculateGapTest extends ContainerTestCase
     public function testMapSegmentsToSplitsReturnsEmptyArrayForEmptySplitCollection(): void
     {
         $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [$this->flatGapSegment(1000.0, 250)], ActivitySplits::empty());
+        $mappedSplits = $method->invoke($this->calculateGap, [GapSegment::create(
+            distanceInMeters: 1000.0,
+            durationInSeconds: 250,
+            grade: 0.0,
+            gapMultiplier: 1.0,
+        )], ActivitySplits::empty());
 
         $this->assertSame([], $mappedSplits);
     }
@@ -780,7 +785,12 @@ class CalculateGapTest extends ContainerTestCase
             ->build();
 
         $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [$this->flatGapSegment(1000.0, 250)], ActivitySplits::fromArray([$split]));
+        $mappedSplits = $method->invoke($this->calculateGap, [GapSegment::create(
+            distanceInMeters: 1000.0,
+            durationInSeconds: 250,
+            grade: 0.0,
+            gapMultiplier: 1.0,
+        )], ActivitySplits::fromArray([$split]));
 
         $this->assertSame($split, $mappedSplits[0]);
         $this->assertNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
@@ -821,7 +831,12 @@ class CalculateGapTest extends ContainerTestCase
         $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
         $mappedSplits = $method->invoke(
             $this->calculateGap,
-            [$this->flatGapSegment(1000.0, 250)],
+            [GapSegment::create(
+                distanceInMeters: 1000.0,
+                durationInSeconds: 250,
+                grade: 0.0,
+                gapMultiplier: 1.0,
+            )],
             ActivitySplits::fromArray([$zeroDistanceSplit, $normalSplit]),
         );
 
@@ -837,7 +852,12 @@ class CalculateGapTest extends ContainerTestCase
             ->build();
 
         $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [$this->flatGapSegment(999.999995, 250)], ActivitySplits::fromArray([$split]));
+        $mappedSplits = $method->invoke($this->calculateGap, [GapSegment::create(
+            distanceInMeters: 999.999995,
+            durationInSeconds: 250,
+            grade: 0.0,
+            gapMultiplier: 1.0,
+        )], ActivitySplits::fromArray([$split]));
 
         $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
         $this->assertEqualsWithDelta(250.0, $mappedSplits[0]->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
@@ -851,7 +871,12 @@ class CalculateGapTest extends ContainerTestCase
             ->build();
 
         $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [$this->flatGapSegment(500.0, 125)], ActivitySplits::fromArray([$split]));
+        $mappedSplits = $method->invoke($this->calculateGap, [GapSegment::create(
+            distanceInMeters: 500.0,
+            durationInSeconds: 125,
+            grade: 0.0,
+            gapMultiplier: 1.0,
+        )], ActivitySplits::fromArray([$split]));
 
         $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
     }
@@ -911,7 +936,12 @@ class CalculateGapTest extends ContainerTestCase
         $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
         $mappedSplits = $method->invoke(
             $this->calculateGap,
-            [$this->flatGapSegment(1000.0, 250)],
+            [GapSegment::create(
+                distanceInMeters: 1000.0,
+                durationInSeconds: 250,
+                grade: 0.0,
+                gapMultiplier: 1.0,
+            )],
             ActivitySplits::fromArray([$normalSplit, $zeroDistanceSplit]),
         );
 
@@ -934,7 +964,12 @@ class CalculateGapTest extends ContainerTestCase
         $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
         $mappedSplits = $method->invoke(
             $this->calculateGap,
-            [$this->flatGapSegment(1000.0, 300)],
+            [GapSegment::create(
+                distanceInMeters: 1000.0,
+                durationInSeconds: 300,
+                grade: 0.0,
+                gapMultiplier: 1.0,
+            )],
             ActivitySplits::fromArray([$firstSplit, $secondSplit]),
         );
 
@@ -956,8 +991,18 @@ class CalculateGapTest extends ContainerTestCase
             ->withAverageSpeed(MetersPerSecond::from(2.0))
             ->build();
         $segments = [
-            $this->flatGapSegment(600.0, 120, 1.0),
-            $this->flatGapSegment(400.0, 160, 0.5),
+            GapSegment::create(
+                distanceInMeters: 600.0,
+                durationInSeconds: 120,
+                grade: 0.0,
+                gapMultiplier: 1.0,
+            ),
+            GapSegment::create(
+                distanceInMeters: 400.0,
+                durationInSeconds: 160,
+                grade: 0.0,
+                gapMultiplier: 0.5,
+            ),
         ];
 
         $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
@@ -988,7 +1033,12 @@ class CalculateGapTest extends ContainerTestCase
         $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
         $mappedSplits = $method->invoke(
             $this->calculateGap,
-            [$this->flatGapSegment(500.0, 250)],
+            [GapSegment::create(
+                distanceInMeters: 500.0,
+                durationInSeconds: 250,
+                grade: 0.0,
+                gapMultiplier: 1.0,
+            )],
             ActivitySplits::fromArray([$firstSplit, $secondSplit]),
         );
 
@@ -1006,7 +1056,12 @@ class CalculateGapTest extends ContainerTestCase
             ->build();
 
         $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [$this->flatGapSegment(500.0, 250)], ActivitySplits::fromArray([$split]));
+        $mappedSplits = $method->invoke($this->calculateGap, [GapSegment::create(
+            distanceInMeters: 500.0,
+            durationInSeconds: 250,
+            grade: 0.0,
+            gapMultiplier: 1.0,
+        )], ActivitySplits::fromArray([$split]));
 
         $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
         $this->assertEqualsWithDelta(250.0, $mappedSplits[0]->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
@@ -1020,7 +1075,12 @@ class CalculateGapTest extends ContainerTestCase
             ->build();
 
         $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [$this->flatGapSegment(2000.0, 500)], ActivitySplits::fromArray([$split]));
+        $mappedSplits = $method->invoke($this->calculateGap, [GapSegment::create(
+            distanceInMeters: 2000.0,
+            durationInSeconds: 500,
+            grade: 0.0,
+            gapMultiplier: 1.0,
+        )], ActivitySplits::fromArray([$split]));
 
         $this->assertCount(1, $mappedSplits);
         $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
@@ -1034,8 +1094,18 @@ class CalculateGapTest extends ContainerTestCase
             ->withAverageSpeed(MetersPerSecond::from(4.0))
             ->build();
         $segments = [
-            $this->flatGapSegment(500.0, 100, 2.0),
-            $this->flatGapSegment(500.0, 200, 1.0),
+            GapSegment::create(
+                distanceInMeters: 500.0,
+                durationInSeconds: 100,
+                grade: 0.0,
+                gapMultiplier: 2.0,
+            ),
+            GapSegment::create(
+                distanceInMeters: 500.0,
+                durationInSeconds: 200,
+                grade: 0.0,
+                gapMultiplier: 1.0,
+            ),
         ];
 
         $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
@@ -1410,16 +1480,6 @@ class CalculateGapTest extends ContainerTestCase
                 ->withStreamType(StreamType::MOVING)
                 ->withData($moving)
                 ->build()
-        );
-    }
-
-    private function flatGapSegment(float $distanceInMeters, int $durationInSeconds, float $multiplier = 1.0): GapSegment
-    {
-        return GapSegment::create(
-            distanceInMeters: $distanceInMeters,
-            durationInSeconds: $durationInSeconds,
-            grade: 0.0,
-            gapMultiplier: $multiplier,
         );
     }
 

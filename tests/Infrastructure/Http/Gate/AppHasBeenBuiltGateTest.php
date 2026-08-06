@@ -36,14 +36,14 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
             ->method('count')
             ->willReturn(1);
 
-        $this->assertFalse($this->gate()->handle(Request::create('/dashboard'))->hasBeenApplied());
+        $this->assertFalse(new AppHasBeenBuiltGate($this->urlGenerator, ImportMode::FILES, $this->appStatusChecker, $this->activityIdRepository)->handle(Request::create('/dashboard'))->hasBeenApplied());
     }
 
     public function testItRedirectsWhenNothingHasBeenBuiltYet(): void
     {
         $this->activityIdRepository->expects($this->never())->method('count');
 
-        $response = $this->gate()->handle(Request::create('/dashboard'))->getResponse();
+        $response = new AppHasBeenBuiltGate($this->urlGenerator, ImportMode::FILES, $this->appStatusChecker, $this->activityIdRepository)->handle(Request::create('/dashboard'))->getResponse();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('/finish-setup', $response->getTargetUrl());
@@ -61,7 +61,7 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
             ->method('count')
             ->willReturn(0);
 
-        $response = $this->gate()->handle(Request::create('/dashboard'))->getResponse();
+        $response = new AppHasBeenBuiltGate($this->urlGenerator, ImportMode::FILES, $this->appStatusChecker, $this->activityIdRepository)->handle(Request::create('/dashboard'))->getResponse();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('/finish-setup', $response->getTargetUrl());
@@ -72,7 +72,7 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
     {
         $this->activityIdRepository->expects($this->never())->method('count');
 
-        $decision = $this->gate()->handle(Request::create('/finish-setup'));
+        $decision = new AppHasBeenBuiltGate($this->urlGenerator, ImportMode::FILES, $this->appStatusChecker, $this->activityIdRepository)->handle(Request::create('/finish-setup'));
 
         $this->assertTrue($decision->hasBeenApplied());
         $this->assertNull($decision->getResponse());
@@ -83,7 +83,7 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
     {
         $this->activityIdRepository->expects($this->never())->method('count');
 
-        $decision = $this->gate(ImportMode::FILES)->handle(Request::create($path));
+        $decision = new AppHasBeenBuiltGate($this->urlGenerator, ImportMode::FILES, $this->appStatusChecker, $this->activityIdRepository)->handle(Request::create($path));
 
         $this->assertTrue($decision->hasBeenApplied());
         $this->assertNull($decision->getResponse());
@@ -94,7 +94,7 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
     {
         $this->activityIdRepository->expects($this->never())->method('count');
 
-        $response = $this->gate(ImportMode::STRAVA_API)->handle(Request::create($path))->getResponse();
+        $response = new AppHasBeenBuiltGate($this->urlGenerator, ImportMode::STRAVA_API, $this->appStatusChecker, $this->activityIdRepository)->handle(Request::create($path))->getResponse();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('/finish-setup', $response->getTargetUrl());
@@ -106,11 +106,6 @@ class AppHasBeenBuiltGateTest extends ContainerTestCase
         yield 'admin root' => ['/admin'];
         yield 'admin sub path' => ['/admin/settings/general'];
         yield 'admin login' => ['/admin/login'];
-    }
-
-    private function gate(ImportMode $importMode = ImportMode::FILES): AppHasBeenBuiltGate
-    {
-        return new AppHasBeenBuiltGate($this->urlGenerator, $importMode, $this->appStatusChecker, $this->activityIdRepository);
     }
 
     #[\Override]

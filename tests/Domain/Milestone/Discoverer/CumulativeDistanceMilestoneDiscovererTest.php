@@ -75,8 +75,8 @@ class CumulativeDistanceMilestoneDiscovererTest extends ContainerTestCase
 
     public function testDiscoverWithMultipleSportTypes(): void
     {
-        $this->insertActivityWithSportType(1, '2024-01-01', 150.0, SportType::RIDE);
-        $this->insertActivityWithSportType(2, '2024-01-02', 110.0, SportType::RUN);
+        $this->insertActivity(1, '2024-01-01', 150.0, SportType::RIDE);
+        $this->insertActivity(2, '2024-01-02', 110.0, SportType::RUN);
 
         $milestones = $this->discoverer->discover();
         $this->assertMatchesJsonSnapshot(Json::encode($milestones));
@@ -100,13 +100,12 @@ class CumulativeDistanceMilestoneDiscovererTest extends ContainerTestCase
         );
     }
 
-    private function insertActivity(int $id, string $date, float $distanceKm): void
-    {
-        $this->insertActivityWithSportType($id, $date, $distanceKm, SportType::RIDE);
-    }
-
-    private function insertActivityWithSportType(int $id, string $date, float $distanceKm, SportType $sportType): void
-    {
+    private function insertActivity(
+        int $id,
+        string $date,
+        float $distanceKm,
+        SportType $sportType = SportType::RIDE,
+    ): void {
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed($id))

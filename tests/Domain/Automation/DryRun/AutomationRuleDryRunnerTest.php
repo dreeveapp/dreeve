@@ -43,7 +43,9 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
                 new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
                 new ConfiguredCondition(ConditionType::DISTANCE, RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 50.0])),
             ]),
-            actions: $this->setName('Long ride'),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Long ride'])),
+            ]),
         );
 
         // A short ride: the sport type matches but the distance does not.
@@ -66,8 +68,25 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
 
     public function testProcessingStopsAtAMatchedRuleThatStopsProcessing(): void
     {
-        $this->saveRule(id: 'first', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('First'));
-        $this->saveRule(id: 'second', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('Second'), sortOrder: 1);
+        $this->saveRule(
+            id: 'first',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'First'])),
+            ]),
+        );
+        $this->saveRule(
+            id: 'second',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Second'])),
+            ]),
+            sortOrder: 1,
+        );
 
         $dryRun = $this->dryRunner->run(ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build());
 
@@ -88,9 +107,36 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
 
     public function testMultipleRulesApplyUntilARuleStopsProcessing(): void
     {
-        $this->saveRule(id: 'first', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('First'), stopProcessing: false);
-        $this->saveRule(id: 'second', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('Second'), sortOrder: 1);
-        $this->saveRule(id: 'third', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('Third'), sortOrder: 2);
+        $this->saveRule(
+            id: 'first',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'First'])),
+            ]),
+            stopProcessing: false,
+        );
+        $this->saveRule(
+            id: 'second',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Second'])),
+            ]),
+            sortOrder: 1,
+        );
+        $this->saveRule(
+            id: 'third',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Third'])),
+            ]),
+            sortOrder: 2,
+        );
 
         $dryRun = $this->dryRunner->run(ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build());
 
@@ -112,8 +158,26 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
 
     public function testADisabledRuleIsNeverAppliedEvenWhenItsConditionsMatch(): void
     {
-        $this->saveRule(id: 'disabled', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('From disabled rule'), enabled: false);
-        $this->saveRule(id: 'enabled', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('From enabled rule'), sortOrder: 1);
+        $this->saveRule(
+            id: 'disabled',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'From disabled rule'])),
+            ]),
+            enabled: false,
+        );
+        $this->saveRule(
+            id: 'enabled',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'From enabled rule'])),
+            ]),
+            sortOrder: 1,
+        );
 
         $dryRun = $this->dryRunner->run(ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build());
 
@@ -129,7 +193,15 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
 
     public function testNoRulesAreAppliedWhenNoRuleMatches(): void
     {
-        $this->saveRule(id: '1', conditions: $this->sportTypeIsOneOf('Run'), actions: $this->setName('Should not apply'));
+        $this->saveRule(
+            id: '1',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Run']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Should not apply'])),
+            ]),
+        );
 
         $dryRun = $this->dryRunner->run(ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build());
 
@@ -144,7 +216,13 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
 
     public function testARuleWithoutConditionsNeverMatches(): void
     {
-        $this->saveRule(id: '1', conditions: ConfiguredConditions::empty(), actions: $this->setName('Should not apply'));
+        $this->saveRule(
+            id: '1',
+            conditions: ConfiguredConditions::empty(),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Should not apply'])),
+            ]),
+        );
 
         $dryRun = $this->dryRunner->run(ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build());
 
@@ -163,7 +241,9 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
                 new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
                 new ConfiguredCondition(ConditionType::DISTANCE, RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 50.0])),
             ]),
-            actions: $this->setName('Long ride'),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Long ride'])),
+            ]),
         );
 
         $longRide = ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withDistance(Kilometer::from(80.0))->build();
@@ -183,7 +263,9 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
                     'deviceId' => RecordingDeviceId::fromName('Garmin Edge 130')->toUnprefixedString(),
                 ])),
             ]),
-            actions: $this->setName('Recorded on the Garmin'),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Recorded on the Garmin'])),
+            ]),
         );
 
         $matching = ActivityBuilder::fromDefaults()->withDeviceName('Garmin Edge 130')->build();
@@ -201,7 +283,9 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
                 new ConfiguredCondition(ConditionType::WEEKDAY, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'weekdays' => [2, 3]])),
                 new ConfiguredCondition(ConditionType::TIME_OF_DAY, RuleConfiguration::fromConfig(['operator' => 'lt', 'time' => '09:00'])),
             ]),
-            actions: $this->setName('Early weekday ride'),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Early weekday ride'])),
+            ]),
         );
 
         $tuesdayMorning = ActivityBuilder::fromDefaults()->withStartDateTime(SerializableDateTime::fromString('2023-10-10 07:30:00'))->build();
@@ -222,7 +306,9 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
             conditions: ConfiguredConditions::fromArray([
                 new ConfiguredCondition(ConditionType::STARTS_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.05, 'longitude' => 4.0, 'radius' => 1000.0])),
             ]),
-            actions: $this->setName('Started near home'),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Started near home'])),
+            ]),
         );
 
         $near = ActivityBuilder::fromDefaults()->withStartingCoordinate(Coordinate::createFromLatAndLng(Latitude::fromString('51.055'), Longitude::fromString('4.0')))->build();
@@ -236,7 +322,9 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
     {
         $this->saveRule(
             id: '1',
-            conditions: $this->sportTypeIsOneOf('Ride'),
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
             actions: ConfiguredActions::fromArray([
                 new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Commute: [activity:name]'])),
                 new ConfiguredAction(ActionType::SET_DESCRIPTION, RuleConfiguration::fromConfig(['description' => 'Renamed to [activity:name] on [activity:start-date:d-m-Y]'])),
@@ -269,8 +357,26 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
 
     public function testConfiguredActionsAreExposedForEveryRuleNotJustTheAppliedOnes(): void
     {
-        $this->saveRule(id: 'not-applied', conditions: $this->sportTypeIsOneOf('Run'), actions: $this->setName('Not applied'), stopProcessing: false);
-        $this->saveRule(id: 'applied', conditions: $this->sportTypeIsOneOf('Ride'), actions: $this->setName('[activity:name] to work'), sortOrder: 1);
+        $this->saveRule(
+            id: 'not-applied',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Run']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Not applied'])),
+            ]),
+            stopProcessing: false,
+        );
+        $this->saveRule(
+            id: 'applied',
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
+            actions: ConfiguredActions::fromArray([
+                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => '[activity:name] to work'])),
+            ]),
+            sortOrder: 1,
+        );
 
         $dryRun = $this->dryRunner->run(ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withName('Morning Ride')->build());
 
@@ -289,7 +395,9 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
     {
         $this->saveRule(
             id: '1',
-            conditions: $this->sportTypeIsOneOf('Ride'),
+            conditions: ConfiguredConditions::fromArray([
+                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+            ]),
             actions: ConfiguredActions::fromArray([
                 new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Renamed [activity:name]'])),
                 new ConfiguredAction(ActionType::SET_DESCRIPTION, RuleConfiguration::fromConfig(['description' => 'Still [activity:name]'])),
@@ -343,20 +451,6 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
         $this->assertCount(1, $result->getConditionResults(), 'The unregistered condition type is ignored.');
         $this->assertSame(ConditionType::SPORT_TYPE, $result->getConditionResults()[0]->getType());
         $this->assertTrue($result->wasApplied());
-    }
-
-    private function sportTypeIsOneOf(string ...$sportTypes): ConfiguredConditions
-    {
-        return ConfiguredConditions::fromArray([
-            new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => $sportTypes])),
-        ]);
-    }
-
-    private function setName(string $name): ConfiguredActions
-    {
-        return ConfiguredActions::fromArray([
-            new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => $name])),
-        ]);
     }
 
     private function saveRule(

@@ -26,28 +26,23 @@ class SetDeviceActionTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->action->guardValidConfiguration($this->config('Garmin Edge 1040'));
+        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['deviceName' => 'Garmin Edge 1040']));
     }
 
     public function testGuardThrowsOnEmptyDeviceName(): void
     {
         $this->expectExceptionObject(new InvalidAutomationRule('A "deviceName" is required.'));
 
-        $this->action->guardValidConfiguration($this->config('   '));
+        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['deviceName' => '   ']));
     }
 
     public function testApplyToSetsTheConfiguredDevice(): void
     {
         $activity = ActivityBuilder::fromDefaults()->build();
 
-        $activity = $this->action->applyTo($activity, $this->config('Garmin Edge 1040'));
+        $activity = $this->action->applyTo($activity, RuleConfiguration::fromConfig(['deviceName' => 'Garmin Edge 1040']));
 
         $this->assertSame('Garmin Edge 1040', $activity->getDeviceName());
-    }
-
-    private function config(string $deviceName): RuleConfiguration
-    {
-        return RuleConfiguration::fromConfig(['deviceName' => $deviceName]);
     }
 
     #[\Override]

@@ -55,7 +55,16 @@ class GearTokenProviderTest extends TestCase
 
         $this->assertSame(
             $expectedValue,
-            $provider->resolve($this->buildToken($key), $this->buildContext())
+            $provider->resolve(Token::create(
+                prefix: 'gear',
+                key: $key,
+                modifier: null,
+                raw: sprintf('[gear:%s]', $key),
+            ), TokenizerContext::empty()->with(
+                ActivityBuilder::fromDefaults()
+                    ->withGearId(GearId::fromUnprefixed('1'))
+                    ->build()
+            ))
         );
     }
 
@@ -74,7 +83,16 @@ class GearTokenProviderTest extends TestCase
 
         $this->assertSame(
             '6 mi',
-            $provider->resolve($this->buildToken('distance'), $this->buildContext())
+            $provider->resolve(Token::create(
+                prefix: 'gear',
+                key: 'distance',
+                modifier: null,
+                raw: sprintf('[gear:%s]', 'distance'),
+            ), TokenizerContext::empty()->with(
+                ActivityBuilder::fromDefaults()
+                    ->withGearId(GearId::fromUnprefixed('1'))
+                    ->build()
+            ))
         );
     }
 
@@ -89,7 +107,12 @@ class GearTokenProviderTest extends TestCase
             ActivityBuilder::fromDefaults()->withoutGearId()->build()
         );
 
-        $this->assertNull($provider->resolve($this->buildToken('name'), $context));
+        $this->assertNull($provider->resolve(Token::create(
+            prefix: 'gear',
+            key: 'name',
+            modifier: null,
+            raw: sprintf('[gear:%s]', 'name'),
+        ), $context));
     }
 
     public function testResolveReturnsNullWhenGearNotFound(): void
@@ -101,7 +124,16 @@ class GearTokenProviderTest extends TestCase
             ->with(GearId::fromUnprefixed('1'))
             ->willThrowException(new EntityNotFound('Gear "1" not found'));
 
-        $this->assertNull($provider->resolve($this->buildToken('name'), $this->buildContext()));
+        $this->assertNull($provider->resolve(Token::create(
+            prefix: 'gear',
+            key: 'name',
+            modifier: null,
+            raw: sprintf('[gear:%s]', 'name'),
+        ), TokenizerContext::empty()->with(
+            ActivityBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('1'))
+                ->build()
+        )));
     }
 
     public function testResolveReturnsNullWithoutActivityInContext(): void
@@ -111,7 +143,12 @@ class GearTokenProviderTest extends TestCase
             ->expects($this->never())
             ->method('find');
 
-        $this->assertNull($provider->resolve($this->buildToken('name'), TokenizerContext::empty()));
+        $this->assertNull($provider->resolve(Token::create(
+            prefix: 'gear',
+            key: 'name',
+            modifier: null,
+            raw: sprintf('[gear:%s]', 'name'),
+        ), TokenizerContext::empty()));
     }
 
     public function testResolveReturnsNullForUnknownKey(): void
@@ -123,7 +160,16 @@ class GearTokenProviderTest extends TestCase
             ->with(GearId::fromUnprefixed('1'))
             ->willReturn(GearBuilder::fromDefaults()->build());
 
-        $this->assertNull($provider->resolve($this->buildToken('pizza'), $this->buildContext()));
+        $this->assertNull($provider->resolve(Token::create(
+            prefix: 'gear',
+            key: 'pizza',
+            modifier: null,
+            raw: sprintf('[gear:%s]', 'pizza'),
+        ), TokenizerContext::empty()->with(
+            ActivityBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('1'))
+                ->build()
+        )));
     }
 
     public static function provideTokens(): array
@@ -154,25 +200,6 @@ class GearTokenProviderTest extends TestCase
         return new GearTokenProvider(
             gearRepository: $this->gearRepository,
             settingsRepository: $settingsRepository,
-        );
-    }
-
-    private function buildContext(): TokenizerContext
-    {
-        return TokenizerContext::empty()->with(
-            ActivityBuilder::fromDefaults()
-                ->withGearId(GearId::fromUnprefixed('1'))
-                ->build()
-        );
-    }
-
-    private function buildToken(string $key): Token
-    {
-        return Token::create(
-            prefix: 'gear',
-            key: $key,
-            modifier: null,
-            raw: sprintf('[gear:%s]', $key),
         );
     }
 }

@@ -25,7 +25,12 @@ class ValidStravaRefreshTokenGateTest extends ContainerTestCase
         $this->strava->expects($this->never())->method('verifyAccessToken');
         $this->activityIdRepository->expects($this->never())->method('hasImportedFromStravaApi');
 
-        $gate = $this->gate(ImportMode::FILES);
+        $gate = new ValidStravaRefreshTokenGate(
+            $this->urlGenerator,
+            ImportMode::FILES,
+            $this->strava,
+            $this->activityIdRepository,
+        );
 
         $this->assertFalse($gate->handle(Request::create('/dashboard'))->hasBeenApplied());
     }
@@ -38,7 +43,12 @@ class ValidStravaRefreshTokenGateTest extends ContainerTestCase
             ->willReturn(true);
         $this->strava->expects($this->never())->method('verifyAccessToken');
 
-        $gate = $this->gate(ImportMode::STRAVA_API);
+        $gate = new ValidStravaRefreshTokenGate(
+            $this->urlGenerator,
+            ImportMode::STRAVA_API,
+            $this->strava,
+            $this->activityIdRepository,
+        );
 
         $this->assertFalse($gate->handle(Request::create('/dashboard'))->hasBeenApplied());
     }
@@ -54,7 +64,12 @@ class ValidStravaRefreshTokenGateTest extends ContainerTestCase
             ->method('verifyAccessToken')
             ->willThrowException(new InvalidStravaAccessToken());
 
-        $gate = $this->gate(ImportMode::STRAVA_API);
+        $gate = new ValidStravaRefreshTokenGate(
+            $this->urlGenerator,
+            ImportMode::STRAVA_API,
+            $this->strava,
+            $this->activityIdRepository,
+        );
 
         $response = $gate->handle(Request::create('/dashboard'))->getResponse();
 
@@ -73,7 +88,12 @@ class ValidStravaRefreshTokenGateTest extends ContainerTestCase
             ->expects($this->once())
             ->method('verifyAccessToken');
 
-        $gate = $this->gate(ImportMode::STRAVA_API);
+        $gate = new ValidStravaRefreshTokenGate(
+            $this->urlGenerator,
+            ImportMode::STRAVA_API,
+            $this->strava,
+            $this->activityIdRepository,
+        );
 
         $this->assertFalse($gate->handle(Request::create('/dashboard'))->hasBeenApplied());
     }
@@ -89,22 +109,17 @@ class ValidStravaRefreshTokenGateTest extends ContainerTestCase
             ->method('verifyAccessToken')
             ->willThrowException(new InvalidStravaAccessToken());
 
-        $gate = $this->gate(ImportMode::STRAVA_API);
+        $gate = new ValidStravaRefreshTokenGate(
+            $this->urlGenerator,
+            ImportMode::STRAVA_API,
+            $this->strava,
+            $this->activityIdRepository,
+        );
 
         $decision = $gate->handle(Request::create('/strava-oauth'));
 
         $this->assertTrue($decision->hasBeenApplied());
         $this->assertNull($decision->getResponse());
-    }
-
-    private function gate(ImportMode $importMode): ValidStravaRefreshTokenGate
-    {
-        return new ValidStravaRefreshTokenGate(
-            $this->urlGenerator,
-            $importMode,
-            $this->strava,
-            $this->activityIdRepository,
-        );
     }
 
     #[\Override]

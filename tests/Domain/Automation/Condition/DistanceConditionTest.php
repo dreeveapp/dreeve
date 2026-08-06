@@ -31,7 +31,7 @@ class DistanceConditionTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->condition->guardValidConfiguration($this->config('gte', 10.0));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 10.0]));
     }
 
     #[DataProvider('provideInvalidConfigurations')]
@@ -39,7 +39,7 @@ class DistanceConditionTest extends TestCase
     {
         $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
 
-        $this->condition->guardValidConfiguration($this->config($operator, $value));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => $operator, 'value' => $value]));
     }
 
     #[DataProvider('provideMatchExpectations')]
@@ -47,7 +47,7 @@ class DistanceConditionTest extends TestCase
     {
         $activity = ActivityBuilder::fromDefaults()->withDistance(Kilometer::from(42.5))->build();
 
-        $this->assertSame($expectedToMatch, $this->condition->matches($activity, $this->config($operator, $value)));
+        $this->assertSame($expectedToMatch, $this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => $operator, 'value' => $value])));
     }
 
     public function testMatchesInterpretsTheValueInMilesForImperialUnitSystem(): void
@@ -55,8 +55,8 @@ class DistanceConditionTest extends TestCase
         $condition = $this->conditionFor(UnitSystem::IMPERIAL);
         $activity = ActivityBuilder::fromDefaults()->withDistance(Kilometer::from(16.1))->build();
 
-        $this->assertTrue($condition->matches($activity, $this->config('gte', 10.0)));
-        $this->assertFalse($condition->matches($activity, $this->config('gte', 12.0)));
+        $this->assertTrue($condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 10.0])));
+        $this->assertFalse($condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 12.0])));
     }
 
     /**
@@ -80,11 +80,6 @@ class DistanceConditionTest extends TestCase
         yield 'lt the exact distance' => ['lt', 42.5, false];
         yield 'gt the exact distance' => ['gt', 42.5, false];
         yield 'eq another value' => ['eq', 40.0, false];
-    }
-
-    private function config(string $operator, float $value): RuleConfiguration
-    {
-        return RuleConfiguration::fromConfig(['operator' => $operator, 'value' => $value]);
     }
 
     private function conditionFor(UnitSystem $unitSystem): DistanceCondition

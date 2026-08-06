@@ -29,28 +29,23 @@ class AssignGearActionTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->action->guardValidConfiguration($this->config('gear-123'));
+        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['gearId' => 'gear-123']));
     }
 
     public function testGuardThrowsOnEmptyGearId(): void
     {
         $this->expectExceptionObject(new InvalidAutomationRule('A "gearId" is required.'));
 
-        $this->action->guardValidConfiguration($this->config('   '));
+        $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['gearId' => '   ']));
     }
 
     public function testApplyToAssignsTheConfiguredGear(): void
     {
         $activity = ActivityBuilder::fromDefaults()->build();
 
-        $activity = $this->action->applyTo($activity, $this->config('gear-123'));
+        $activity = $this->action->applyTo($activity, RuleConfiguration::fromConfig(['gearId' => 'gear-123']));
 
         $this->assertEquals(GearId::fromString('gear-123'), $activity->getGearId());
-    }
-
-    private function config(string $gearId): RuleConfiguration
-    {
-        return RuleConfiguration::fromConfig(['gearId' => $gearId]);
     }
 
     #[\Override]

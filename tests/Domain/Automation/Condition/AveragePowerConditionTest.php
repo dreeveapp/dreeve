@@ -27,7 +27,7 @@ class AveragePowerConditionTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->condition->guardValidConfiguration($this->config('gte', 200));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 200]));
     }
 
     #[DataProvider('provideInvalidConfigurations')]
@@ -35,7 +35,7 @@ class AveragePowerConditionTest extends TestCase
     {
         $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
 
-        $this->condition->guardValidConfiguration($this->config($operator, $value));
+        $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => $operator, 'value' => $value]));
     }
 
     #[DataProvider('provideMatchExpectations')]
@@ -43,7 +43,7 @@ class AveragePowerConditionTest extends TestCase
     {
         $activity = ActivityBuilder::fromDefaults()->withAveragePower(220)->build();
 
-        $this->assertSame($expectedToMatch, $this->condition->matches($activity, $this->config($operator, $value)));
+        $this->assertSame($expectedToMatch, $this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => $operator, 'value' => $value])));
     }
 
     #[DataProvider('provideOperators')]
@@ -51,7 +51,7 @@ class AveragePowerConditionTest extends TestCase
     {
         $activity = ActivityBuilder::fromDefaults()->build();
 
-        $this->assertFalse($this->condition->matches($activity, $this->config($operator, 100)));
+        $this->assertFalse($this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => $operator, 'value' => 100])));
     }
 
     public static function provideInvalidConfigurations(): iterable
@@ -78,11 +78,6 @@ class AveragePowerConditionTest extends TestCase
         yield 'gt' => ['gt'];
         yield 'gte' => ['gte'];
         yield 'eq' => ['eq'];
-    }
-
-    private function config(string $operator, int $value): RuleConfiguration
-    {
-        return RuleConfiguration::fromConfig(['operator' => $operator, 'value' => $value]);
     }
 
     #[\Override]

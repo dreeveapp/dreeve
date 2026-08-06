@@ -23,7 +23,9 @@ class CalculateMovingStreamTest extends ContainerTestCase
         $this->calculateMovingStream->process(new SpyOutput());
 
         // Threshold is 0.5 m/s.
-        $this->assertSame([false, true, false, true], $this->movingDataFor(1));
+        $this->assertSame([false, true, false, true], $this->activityStreamRepository
+            ->findByActivityId(ActivityId::fromUnprefixed(1))
+            ->filterOnType(StreamType::MOVING)?->getData());
     }
 
     public function testItDerivesMovingFromDistanceWhenVelocityMissing(): void
@@ -35,7 +37,9 @@ class CalculateMovingStreamTest extends ContainerTestCase
 
         // Deltas: 2m/10s = 0.2 m/s (stopped), 18m/10s = 1.8 m/s (moving).
         // First point has no predecessor, so it counts as moving.
-        $this->assertSame([true, false, true], $this->movingDataFor(2));
+        $this->assertSame([true, false, true], $this->activityStreamRepository
+            ->findByActivityId(ActivityId::fromUnprefixed(2))
+            ->filterOnType(StreamType::MOVING)?->getData());
     }
 
     public function testItDerivesMovingFromCoordinatesWhenVelocityAndDistanceMissing(): void
@@ -46,7 +50,9 @@ class CalculateMovingStreamTest extends ContainerTestCase
         $this->calculateMovingStream->process(new SpyOutput());
 
         // ~111m over 100s ≈ 1.1 m/s.
-        $this->assertSame([true, true], $this->movingDataFor(3));
+        $this->assertSame([true, true], $this->activityStreamRepository
+            ->findByActivityId(ActivityId::fromUnprefixed(3))
+            ->filterOnType(StreamType::MOVING)?->getData());
     }
 
     public function testItDoesNotOverwriteAnExistingMovingStream(): void
@@ -58,7 +64,9 @@ class CalculateMovingStreamTest extends ContainerTestCase
         $this->calculateMovingStream->process(new SpyOutput());
 
         // Velocity 0.0 would yield [false]; the existing stream must be kept.
-        $this->assertSame([true], $this->movingDataFor(4));
+        $this->assertSame([true], $this->activityStreamRepository
+            ->findByActivityId(ActivityId::fromUnprefixed(4))
+            ->filterOnType(StreamType::MOVING)?->getData());
     }
 
     public function testItSkipsActivitiesWithoutASpeedSource(): void
@@ -86,16 +94,6 @@ class CalculateMovingStreamTest extends ContainerTestCase
                 ->withData($data)
                 ->build()
         );
-    }
-
-    /**
-     * @return list<bool>|null
-     */
-    private function movingDataFor(int $activityId): ?array
-    {
-        return $this->activityStreamRepository
-            ->findByActivityId(ActivityId::fromUnprefixed($activityId))
-            ->filterOnType(StreamType::MOVING)?->getData();
     }
 
     #[\Override]
