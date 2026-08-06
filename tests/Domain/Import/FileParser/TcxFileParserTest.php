@@ -92,12 +92,10 @@ class TcxFileParserTest extends ActivityFileParserTestCase
             [0, 10, 20, 30, 40],
             $parsed->getStreams()->filterOnType(StreamType::TIME)->getData()
         );
-        // The Suunto zero-altitude filter must not touch files that genuinely
-        // have no altitude other than zero.
-        $this->assertSame(
-            [0.0, 0.0, 0.0, 0.0, 0.0],
-            $parsed->getStreams()->filterOnType(StreamType::ALTITUDE)->getData()
-        );
+        // The Suunto zero-altitude filter leaves these zeros alone because the file has
+        // no real altitude data, after which the mapper drops the stream: an altitude
+        // series of nothing but zeroes conveys no elevation.
+        $this->assertNull($parsed->getStreams()->filterOnType(StreamType::ALTITUDE));
     }
 
     #[\Override]
