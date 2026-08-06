@@ -38,7 +38,7 @@ final readonly class HeatmapApiRequestHandler
                 cacheKey: self::CACHE_KEY,
                 cacheTags: CacheTags::of(CacheTag::ACTIVITY_ROUTE),
             ),
-            callback: fn (): string => (string) Json::encode($this->enrichedRoutes()),
+            callback: fn (): string => Json::encode($this->enrichedRoutes()),
         );
 
         return new JsonResponse($render->getContent() ?? '[]', json: true);

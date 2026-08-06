@@ -816,7 +816,7 @@ final class Activity implements SupportsAITooling
     {
         return $this->sportType->supportsReverseGeocoding()
             && WorldType::REAL_WORLD === $this->worldType
-            && !empty($this->polyline)
+            && !in_array($this->polyline, [null, '', '0'], true)
             && !is_null($this->routeGeography->getStartingPointCountryCode());
     }
 
