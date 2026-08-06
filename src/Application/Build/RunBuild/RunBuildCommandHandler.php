@@ -7,7 +7,6 @@ namespace App\Application\Build\RunBuild;
 use App\Application\AppStatusChecker;
 use App\Application\Build\BuildActivitiesHtml\BuildActivitiesHtml;
 use App\Application\Build\BuildBadgeSvg\BuildBadgeSvg;
-use App\Application\Build\BuildBestEffortsHtml\BuildBestEffortsHtml;
 use App\Application\Build\BuildDashboardHtml\BuildDashboardHtml;
 use App\Application\Build\BuildGearMaintenanceHtml\BuildGearMaintenanceHtml;
 use App\Application\Build\BuildGearStatsHtml\BuildGearStatsHtml;
@@ -72,7 +71,6 @@ This is not a bug, once all your activities have been imported, your gear statis
             'Building gear maintenance' => new BuildGearMaintenanceHtml(),
             'Building recording devices' => new BuildRecordingDevices(),
             'Building segments' => new BuildSegmentsHtml(),
-            'Building best efforts' => new BuildBestEffortsHtml(),
             'Building rewind' => new BuildRewindHtml($now),
             'Building badges' => new BuildBadgeSvg($now),
         ];

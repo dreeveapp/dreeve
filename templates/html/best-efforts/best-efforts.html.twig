@@ -64,7 +64,7 @@
                                                 <th scope="row" class="sticky left-0 bg-white font-medium whitespace-nowrap">
                                                     <div>
                                                         <a href="#" class="font-medium text-blue-600 hover:underline"
-                                                           data-model-content-url="{{ relativeUrl('best-efforts/' ~ activityType.value  ~ '/'  ~ distance.toInt()  ~ '-' ~ distance.getSymbol() ~ '.html')|lower }}">
+                                                           data-model-content-url="{{ relativeUrl('api/best-efforts/' ~ activityType.value ~ '/' ~ distance.toMeter().toInt()) }}">
                                                             {{ distance.isLowerThanOne() ? distance.toFloat()|round(1) : distance.toInt() }} {{ distance.getSymbol() }}
                                                         </a>
                                                     </div>

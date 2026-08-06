@@ -42,10 +42,7 @@ final readonly class HeatmapApiRequestHandler
         );
 
         $response = new JsonResponse($render->getContent() ?? '[]', json: true);
-
-        $render->wasServedFromCache()
-            ? $response->headers->set('X-Cache-Hit', $render->getCacheKey())
-            : $response->headers->set('X-Cache-Miss', $render->getCacheKey() ?? 'uncacheable');
+        $response->headers->add($render->getCacheHeaders());
 
         return $response;
     }

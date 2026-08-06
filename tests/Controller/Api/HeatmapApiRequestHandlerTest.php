@@ -32,8 +32,12 @@ class HeatmapApiRequestHandlerTest extends ContainerTestCase
 
         $response = $this->heatmapApiRequestHandler->routes();
         $this->assertStringContainsString('Night Ride', (string) $response->getContent());
-        $this->assertFalse($response->headers->has('X-Cache-Hit'));
-        $this->assertStringContainsString('heatmap.routes', (string) $response->headers->get('X-Cache-Miss'));
+        $this->assertEquals('MISS', $response->headers->get('X-Cache'));
+        $this->assertStringContainsString('heatmap.routes', (string) $response->headers->get('X-Cache-Key'));
+        $this->assertEquals(
+            'settings.appearance, settings.general, activity.route',
+            $response->headers->get('X-Cache-Tags'),
+        );
 
         // Rename every route behind the repository's back, so a fresh render would look different.
         $this->getConnection()->executeStatement(
@@ -42,10 +46,10 @@ class HeatmapApiRequestHandlerTest extends ContainerTestCase
 
         $secondResponse = $this->heatmapApiRequestHandler->routes();
         $this->assertEquals($response->getContent(), $secondResponse->getContent());
-        $this->assertFalse($secondResponse->headers->has('X-Cache-Miss'));
+        $this->assertEquals('HIT', $secondResponse->headers->get('X-Cache'));
         $this->assertEquals(
-            $response->headers->get('X-Cache-Miss'),
-            $secondResponse->headers->get('X-Cache-Hit'),
+            $response->headers->get('X-Cache-Key'),
+            $secondResponse->headers->get('X-Cache-Key'),
         );
     }
 

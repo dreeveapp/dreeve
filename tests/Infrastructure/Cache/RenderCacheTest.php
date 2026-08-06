@@ -12,6 +12,8 @@ use App\Tests\ContainerTestCase;
 
 class RenderCacheTest extends ContainerTestCase
 {
+    private const int SELF_HEALING_TTL_IN_SECONDS = 86400;
+
     private RenderCache $renderCache;
 
     public function testItStripsReservedCharactersOutOfTheCacheKey(): void
@@ -25,7 +27,9 @@ class RenderCacheTest extends ContainerTestCase
         $this->assertEquals(
             Render::freshlyRendered(
                 'rendered',
-                AppVersion::getSemanticVersion().'.activity_123.tz=Europe_Brussels.user=me_example.com'
+                AppVersion::getSemanticVersion().'.activity_123.tz=Europe_Brussels.user=me_example.com',
+                ['settings.appearance', 'settings.general', 'activity.images'],
+                self::SELF_HEALING_TTL_IN_SECONDS,
             ),
             $render
         );
@@ -40,8 +44,57 @@ class RenderCacheTest extends ContainerTestCase
         $render = $this->renderCache->get($cacheKey, $cacheability, fn (): string => 'should-not-run');
 
         $this->assertEquals(
-            Render::servedFromCache('rendered', AppVersion::getSemanticVersion().'.segment_9_special'),
+            Render::servedFromCache(
+                'rendered',
+                AppVersion::getSemanticVersion().'.segment_9_special',
+                ['settings.appearance', 'settings.general', 'activity.images'],
+                self::SELF_HEALING_TTL_IN_SECONDS,
+            ),
             $render
+        );
+    }
+
+    public function testItReportsTheDeclaredLifetimeOnAMiss(): void
+    {
+        $render = $this->renderCache->get(
+            cacheKey: 'photos',
+            cacheability: Cacheability::for(
+                cacheKey: 'stub',
+                cacheTags: CacheTags::of(CacheTag::ACTIVITY_IMAGES),
+                ttlInSeconds: 60,
+            ),
+            callback: fn (): string => 'rendered',
+        );
+
+        $this->assertEquals(60, $render->getTtlInSeconds());
+    }
+
+    public function testItReportsWhatWasStoredOnAHitAndNotWhatIsDeclaredNow(): void
+    {
+        $this->renderCache->get(
+            cacheKey: 'photos',
+            cacheability: Cacheability::for(
+                cacheKey: 'stub',
+                cacheTags: CacheTags::of(CacheTag::ACTIVITY_IMAGES),
+                ttlInSeconds: 3600,
+            ),
+            callback: fn (): string => 'rendered',
+        );
+
+        $render = $this->renderCache->get(
+            cacheKey: 'photos',
+            cacheability: Cacheability::for(
+                cacheKey: 'stub',
+                cacheTags: CacheTags::of(CacheTag::CHALLENGES),
+                ttlInSeconds: 60,
+            ),
+            callback: fn (): string => 'should-not-run',
+        );
+
+        $this->assertEquals(3600, $render->getTtlInSeconds());
+        $this->assertEquals(
+            ['settings.appearance', 'settings.general', 'activity.images'],
+            $render->getCacheTags()
         );
     }
 
@@ -62,7 +115,12 @@ class RenderCacheTest extends ContainerTestCase
         );
 
         $this->assertEquals(
-            Render::servedFromCache('rendered', AppVersion::getSemanticVersion().'.photos'),
+            Render::servedFromCache(
+                'rendered',
+                AppVersion::getSemanticVersion().'.photos',
+                ['settings.appearance', 'settings.general', 'activity.images'],
+                self::SELF_HEALING_TTL_IN_SECONDS,
+            ),
             $render
         );
     }

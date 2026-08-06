@@ -73,7 +73,7 @@ final readonly class BestEffortsCalculator
             historyPerSportType: $historyPerSportType,
             periods: array_values(array_filter(
                 BestEffortPeriod::cases(),
-                fn (BestEffortPeriod $period): bool => isset($bestEffortPerPeriod[$period->value]) && [] !== $bestEffortPerPeriod[$period->value]
+                fn (BestEffortPeriod $period): bool => isset($bestEffortPerPeriod[$period->value])
             )),
             sportTypesPerPeriod: $sportTypesPerPeriod,
             activityTypes: $this->buildActivityTypes($sportTypesPerPeriod),

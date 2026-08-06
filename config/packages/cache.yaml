@@ -24,6 +24,4 @@ framework:
             render.cache:
                 adapter: cache.adapter.filesystem
                 tags: render.cache.tags
-                # Self healing safety net: anything we forget to tag corrects itself within a day,
-                # which is no worse than the nightly rebuild it replaces.
-                default_lifetime: 86400
+                default_lifetime: '%app.render_cache.default_lifetime%'

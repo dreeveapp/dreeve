@@ -46,10 +46,6 @@
         "payload": []
     },
     {
-        "commandName": "App\\Application\\Build\\BuildBestEffortsHtml\\BuildBestEffortsHtml",
-        "payload": []
-    },
-    {
         "commandName": "App\\Application\\Build\\BuildRewindHtml\\BuildRewindHtml",
         "payload": {
             "now": "2023-10-17 16:15:04"

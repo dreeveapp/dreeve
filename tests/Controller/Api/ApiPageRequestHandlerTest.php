@@ -32,14 +32,19 @@ class ApiPageRequestHandlerTest extends ContainerTestCase
             $response->headers->get('Cache-Control'),
         );
         $this->assertStringContainsString('data-image', (string) $response->getContent());
-        $this->assertFalse($response->headers->has('X-Cache-Hit'));
-        $this->assertStringContainsString('photos.trust=', (string) $response->headers->get('X-Cache-Miss'));
+        $this->assertEquals('MISS', $response->headers->get('X-Cache'));
+        $this->assertStringContainsString('photos.trust=', (string) $response->headers->get('X-Cache-Key'));
+        $this->assertEquals(
+            'settings.appearance, settings.general, activity.images',
+            $response->headers->get('X-Cache-Tags'),
+        );
+        $this->assertEquals('86400', $response->headers->get('X-Cache-TTL'));
 
         $secondResponse = $this->apiPageRequestHandler->handle('photos');
-        $this->assertFalse($secondResponse->headers->has('X-Cache-Miss'));
+        $this->assertEquals('HIT', $secondResponse->headers->get('X-Cache'));
         $this->assertEquals(
-            $response->headers->get('X-Cache-Miss'),
-            $secondResponse->headers->get('X-Cache-Hit'),
+            $response->headers->get('X-Cache-Key'),
+            $secondResponse->headers->get('X-Cache-Key'),
         );
         $this->assertEquals($response->getContent(), $secondResponse->getContent());
     }

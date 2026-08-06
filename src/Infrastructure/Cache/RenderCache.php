@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Infrastructure\Cache;
 
 use App\Application\AppVersion;
+use Psr\Cache\CacheItemInterface;
 use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\Cache\PruneableInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Contracts\Cache\ItemInterface;
 
 final readonly class RenderCache
 {
@@ -16,6 +18,8 @@ final readonly class RenderCache
     public function __construct(
         #[Autowire(service: 'render.cache')]
         private TagAwareAdapterInterface $cache,
+        #[Autowire('%app.render_cache.default_lifetime%')]
+        private int $selfHealingTtlInSeconds,
     ) {
     }
 
@@ -39,21 +43,30 @@ final readonly class RenderCache
             /** @var string|null $cached */
             $cached = $item->get();
 
-            return Render::servedFromCache($cached, $prefixedCacheKey);
+            return Render::servedFromCache(
+                content: $cached,
+                cacheKey: $prefixedCacheKey,
+                cacheTags: $this->storedCacheTags($item) ?? $cacheability->getCacheTags()->toTagStrings(),
+                ttlInSeconds: $this->remainingTtlInSeconds($item),
+            );
         }
 
         $rendered = $callback();
+        $ttlInSeconds = $cacheability->getTtlInSeconds() ?? $this->selfHealingTtlInSeconds;
 
         $item->set($rendered);
         if (!$cacheability->getCacheTags()->isEmpty()) {
             $item->tag($cacheability->getCacheTags()->toTagStrings());
         }
-        if (!is_null($ttlInSeconds = $cacheability->getTtlInSeconds())) {
-            $item->expiresAfter($ttlInSeconds);
-        }
+        $item->expiresAfter($ttlInSeconds);
         $this->cache->save($item);
 
-        return Render::freshlyRendered($rendered, $prefixedCacheKey);
+        return Render::freshlyRendered(
+            content: $rendered,
+            cacheKey: $prefixedCacheKey,
+            cacheTags: $cacheability->getCacheTags()->toTagStrings(),
+            ttlInSeconds: $ttlInSeconds,
+        );
     }
 
     public function invalidateTags(CacheTag ...$cacheTags): void
@@ -77,5 +90,34 @@ final readonly class RenderCache
         }
 
         $this->cache->prune();
+    }
+
+    /**
+     * @return string[]|null
+     */
+    private function storedCacheTags(CacheItemInterface $item): ?array
+    {
+        if (!$item instanceof ItemInterface) {
+            return null;
+        }
+
+        /** @var array<string, string>|null $tags */
+        $tags = $item->getMetadata()[ItemInterface::METADATA_TAGS] ?? null;
+
+        return is_null($tags) ? null : array_values($tags);
+    }
+
+    private function remainingTtlInSeconds(CacheItemInterface $item): ?int
+    {
+        if (!$item instanceof ItemInterface) {
+            return null;
+        }
+
+        $expiry = $item->getMetadata()[ItemInterface::METADATA_EXPIRY] ?? null;
+        if (!is_numeric($expiry)) {
+            return null;
+        }
+
+        return max(0, (int) ceil($expiry - microtime(true)));
     }
 }

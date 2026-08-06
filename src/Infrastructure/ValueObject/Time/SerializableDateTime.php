@@ -72,6 +72,11 @@ class SerializableDateTime extends \DateTimeImmutable implements \JsonSerializab
         return $this->setTimezone($timezone);
     }
 
+    public function getSecondsUntilMidnight(): int
+    {
+        return $this->modify('tomorrow midnight')->getTimestamp() - $this->getTimestamp();
+    }
+
     public function getHourWithoutLeadingZero(): int
     {
         return (int) $this->format('G');

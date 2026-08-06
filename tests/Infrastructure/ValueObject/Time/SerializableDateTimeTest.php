@@ -16,6 +16,22 @@ class SerializableDateTimeTest extends TestCase
         );
     }
 
+    public function testGetSecondsUntilMidnight(): void
+    {
+        $this->assertEquals(
+            5258,
+            SerializableDateTime::fromString('2023-10-05 22:32:22')->getSecondsUntilMidnight()
+        );
+        $this->assertEquals(
+            86400,
+            SerializableDateTime::fromString('2023-10-05 00:00:00')->getSecondsUntilMidnight()
+        );
+        $this->assertEquals(
+            1,
+            SerializableDateTime::fromString('2023-10-05 23:59:59')->getSecondsUntilMidnight()
+        );
+    }
+
     public function testFromTimeStamp(): void
     {
         $this->assertEquals(

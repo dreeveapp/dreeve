@@ -21,9 +21,7 @@ final readonly class PageRenderer
 
         $response = new HtmlResponse($render->getContent() ?? '');
 
-        $render->wasServedFromCache()
-            ? $response->headers->set('X-Cache-Hit', $render->getCacheKey())
-            : $response->headers->set('X-Cache-Miss', $render->getCacheKey() ?? 'uncacheable');
+        $response->headers->add($render->getCacheHeaders());
 
         if (!$page->getCacheability()->getCacheContexts()->isEmpty()) {
             $response->headers->set('Cache-Control', 'private, no-store');
