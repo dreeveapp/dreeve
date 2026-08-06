@@ -69,6 +69,45 @@ class CalculateMovingStreamTest extends ContainerTestCase
             ->filterOnType(StreamType::MOVING)?->getData());
     }
 
+    public function testItIgnoresAVelocityStreamThatOnlyContainsZeroes(): void
+    {
+        $this->addStream(6, StreamType::TIME, [0, 5, 10]);
+        $this->addStream(6, StreamType::VELOCITY, [0.0, 0.0, 0.0]);
+
+        $this->calculateMovingStream->process(new SpyOutput());
+
+        $this->assertFalse($this->activityStreamRepository->hasOneForActivityAndStreamType(
+            ActivityId::fromUnprefixed(6),
+            StreamType::MOVING,
+        ));
+    }
+
+    public function testItIgnoresADistanceStreamThatOnlyContainsZeroes(): void
+    {
+        $this->addStream(7, StreamType::TIME, [0, 5, 10]);
+        $this->addStream(7, StreamType::DISTANCE, [0.0, 0.0, 0.0]);
+
+        $this->calculateMovingStream->process(new SpyOutput());
+
+        $this->assertFalse($this->activityStreamRepository->hasOneForActivityAndStreamType(
+            ActivityId::fromUnprefixed(7),
+            StreamType::MOVING,
+        ));
+    }
+
+    public function testItDoesNotPersistAMovingStreamWhenNothingMoved(): void
+    {
+        $this->addStream(8, StreamType::TIME, [0, 1, 2, 3]);
+        $this->addStream(8, StreamType::DISTANCE, [100.0, 100.0, 100.0, 100.0]);
+
+        $this->calculateMovingStream->process(new SpyOutput());
+
+        $this->assertFalse($this->activityStreamRepository->hasOneForActivityAndStreamType(
+            ActivityId::fromUnprefixed(8),
+            StreamType::MOVING,
+        ));
+    }
+
     public function testItSkipsActivitiesWithoutASpeedSource(): void
     {
         $this->addStream(5, StreamType::TIME, [0, 1]);

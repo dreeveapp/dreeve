@@ -123,10 +123,13 @@ final readonly class CalculateCombinedStreams implements CalculateActivityMetric
             $maxYAxisValue = PHP_INT_MIN;
             $maxTimeDataIndex = count($timeData) - 1;
             foreach ($timeData as $i => $time) {
-                if ($hasMovingData && true === $movingData[$i] && $i < $maxTimeDataIndex) {
+                // Without a moving stream we cannot tell movement from standstill, so we fall back to elapsed time
+                $isMoving = !$hasMovingData || true === $movingData[$i];
+                if ($isMoving && $i < $maxTimeDataIndex) {
                     $delta = $timeData[$i + 1] - $time;
+                    $nextIsMoving = $hasMovingData && true === $movingData[$i + 1];
                     // Ignore session gaps (e.g. activity recorded in multiple sessions).
-                    if (true === $movingData[$i + 1] || $delta <= 60) {
+                    if ($nextIsMoving || $delta <= 60) {
                         $cumulativeMovingTime += $delta;
                     }
                 }
