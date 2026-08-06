@@ -6,16 +6,25 @@ namespace App\Domain\Gear;
 
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypes;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Doctrine\DBAL\Connection;
 use Money\Currency;
 use Money\Money;
 
 final readonly class DbalGearRepository extends DbalRepository implements GearRepository
 {
+    public function __construct(
+        Connection $connection,
+        private EventBus $eventBus,
+    ) {
+        parent::__construct($connection);
+    }
+
     public function add(Gear $gear): void
     {
         $sql = 'INSERT INTO Gear (gearId, createdOn, name, isRetired, `type`, localImagePath, purchasePriceAmount, purchasePriceCurrency)
@@ -32,6 +41,8 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
             'purchasePriceAmount' => $purchasePrice?->getAmount(),
             'purchasePriceCurrency' => $purchasePrice?->getCurrency()->getCode(),
         ]);
+
+        $this->eventBus->publishEvents($gear->getRecordedEvents());
     }
 
     public function update(Gear $gear): void
@@ -55,6 +66,8 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
             'purchasePriceAmount' => $purchasePrice?->getAmount(),
             'purchasePriceCurrency' => $purchasePrice?->getCurrency()->getCode(),
         ]);
+
+        $this->eventBus->publishEvents($gear->getRecordedEvents());
     }
 
     public function findAll(): Gears

@@ -7,6 +7,7 @@ use App\Domain\Activity\Eddington\EddingtonPage;
 use App\Domain\Activity\Image\PhotosPage;
 use App\Domain\Activity\Route\HeatmapPage;
 use App\Domain\Challenge\ChallengesPage;
+use App\Domain\Milestone\MilestonesPage;
 use App\Infrastructure\Cache\Cacheable;
 use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\RenderCache;
@@ -77,6 +78,14 @@ class RenderCacheInvalidationTest extends ContainerTestCase
             CacheTag::SETTINGS_GENERAL,
             CacheTag::ACTIVITY_ROUTE,
             CacheTag::SETTINGS_MAPS,
+        ]];
+
+        yield 'milestones' => [MilestonesPage::class, [
+            CacheTag::SETTINGS_APPEARANCE,
+            CacheTag::SETTINGS_GENERAL,
+            CacheTag::ACTIVITIES,
+            CacheTag::GEAR,
+            CacheTag::SETTINGS_METRICS,
         ]];
 
         yield 'photos' => [PhotosPage::class, [

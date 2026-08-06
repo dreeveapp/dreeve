@@ -18,6 +18,7 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\DbalGearRepository;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -417,7 +418,8 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
             $this->getConnection()
         );
         $this->gearRepository = new DbalGearRepository(
-            $this->getConnection()
+            $this->getConnection(),
+            $this->getContainer()->get(EventBus::class),
         );
     }
 }

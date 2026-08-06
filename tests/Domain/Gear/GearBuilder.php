@@ -59,6 +59,18 @@ final class GearBuilder
         );
     }
 
+    public function buildAsNewlyCreated(): Gear
+    {
+        return Gear::create(
+            gearId: $this->gearId,
+            createdOn: $this->createdOn,
+            name: $this->name,
+            isRetired: $this->isRetired,
+            type: $this->type,
+            localImagePath: $this->localImagePath,
+        );
+    }
+
     public function withGearType(GearType $type): self
     {
         $this->type = $type;

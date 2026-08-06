@@ -4,6 +4,7 @@ namespace App\Domain\Gear;
 
 use App\Domain\Activity\ActivityTypes;
 use App\Domain\Integration\AI\SupportsAITooling;
+use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Hour;
@@ -18,31 +19,32 @@ use Money\Money;
 #[ORM\Entity]
 #[ORM\Table(name: 'Gear')]
 #[ORM\Index(name: 'Gear_type', columns: ['type'])]
-final readonly class Gear implements SupportsAITooling
+final class Gear implements SupportsAITooling
 {
     use ProvideTimeFormats;
+    use RecordsEvents;
 
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string', unique: true)]
-        private GearId $gearId,
+        private readonly GearId $gearId,
         #[ORM\Column(type: 'datetime_immutable')]
-        private SerializableDateTime $createdOn,
-        private Meter $distanceInMeter,
+        private readonly SerializableDateTime $createdOn,
+        private readonly Meter $distanceInMeter,
         #[ORM\Column(type: 'string')]
-        private string $name,
+        private readonly string $name,
         #[ORM\Column(type: 'boolean')]
-        private bool $isRetired,
+        private readonly bool $isRetired,
         #[ORM\Column(type: 'string', enumType: GearType::class, options: ['default' => GearType::IMPORTED->value])]
-        private GearType $type,
+        private readonly GearType $type,
         #[ORM\Column(type: 'string', nullable: true)]
-        private ?string $localImagePath,
-        private Seconds $movingTime,
-        private Meter $elevation,
-        private int $numberOfActivities,
-        private int $totalCalories,
-        private ActivityTypes $activityTypes,
+        private readonly ?string $localImagePath,
+        private readonly Seconds $movingTime,
+        private readonly Meter $elevation,
+        private readonly int $numberOfActivities,
+        private readonly int $totalCalories,
+        private readonly ActivityTypes $activityTypes,
         #[ORM\Embedded(class: Money::class)]
-        private ?Money $purchasePrice,
+        private readonly ?Money $purchasePrice,
     ) {
     }
 
@@ -54,7 +56,7 @@ final readonly class Gear implements SupportsAITooling
         GearType $type,
         ?string $localImagePath = null,
     ): self {
-        return new self(
+        $gear = new self(
             gearId: $gearId,
             createdOn: $createdOn,
             distanceInMeter: Meter::zero(),
@@ -69,6 +71,9 @@ final readonly class Gear implements SupportsAITooling
             activityTypes: ActivityTypes::empty(),
             purchasePrice: null,
         );
+        $gear->recordThat(new GearWasAdded());
+
+        return $gear;
     }
 
     public static function fromState(
@@ -114,9 +119,12 @@ final readonly class Gear implements SupportsAITooling
 
     public function withName(string $name): self
     {
-        return clone ($this, [
+        $clone = clone ($this, [
             'name' => $name,
         ]);
+        $clone->recordThat(new GearWasUpdated());
+
+        return $clone;
     }
 
     public function getOriginalName(): string
@@ -209,9 +217,12 @@ final readonly class Gear implements SupportsAITooling
 
     public function withIsRetired(bool $isRetired): self
     {
-        return clone ($this, [
+        $clone = clone ($this, [
             'isRetired' => $isRetired,
         ]);
+        $clone->recordThat(new GearWasUpdated());
+
+        return $clone;
     }
 
     public function getStatus(): GearStatus
@@ -235,9 +246,12 @@ final readonly class Gear implements SupportsAITooling
 
     public function withLocalImagePath(?string $localImagePath): self
     {
-        return clone ($this, [
+        $clone = clone ($this, [
             'localImagePath' => $localImagePath,
         ]);
+        $clone->recordThat(new GearWasUpdated());
+
+        return $clone;
     }
 
     public function getActivityTypes(): ActivityTypes
@@ -259,9 +273,12 @@ final readonly class Gear implements SupportsAITooling
 
     public function withPurchasePrice(Money $purchasePrice): self
     {
-        return clone ($this, [
+        $clone = clone ($this, [
             'purchasePrice' => $purchasePrice,
         ]);
+        $clone->recordThat(new GearWasUpdated());
+
+        return $clone;
     }
 
     /**

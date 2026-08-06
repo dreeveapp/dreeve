@@ -13,7 +13,6 @@ use App\Application\Build\BuildGearMaintenanceHtml\BuildGearMaintenanceHtml;
 use App\Application\Build\BuildGearStatsHtml\BuildGearStatsHtml;
 use App\Application\Build\BuildGpxFiles\BuildGpxFiles;
 use App\Application\Build\BuildManifest\BuildManifest;
-use App\Application\Build\BuildMilestonesHtml\BuildMilestonesHtml;
 use App\Application\Build\BuildMonthlyStatsHtml\BuildMonthlyStatsHtml;
 use App\Application\Build\BuildRecordingDevices\BuildRecordingDevices;
 use App\Application\Build\BuildRewindHtml\BuildRewindHtml;
@@ -74,7 +73,6 @@ This is not a bug, once all your activities have been imported, your gear statis
             'Building gear stats' => new BuildGearStatsHtml($now),
             'Building gear maintenance' => new BuildGearMaintenanceHtml(),
             'Building recording devices' => new BuildRecordingDevices(),
-            'Building milestones' => new BuildMilestonesHtml(),
             'Building segments' => new BuildSegmentsHtml(),
             'Building best efforts' => new BuildBestEffortsHtml(),
             'Building rewind' => new BuildRewindHtml($now),

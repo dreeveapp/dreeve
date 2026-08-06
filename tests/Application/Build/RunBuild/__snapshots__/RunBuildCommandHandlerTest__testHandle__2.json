@@ -46,10 +46,6 @@
         "payload": []
     },
     {
-        "commandName": "App\\Application\\Build\\BuildMilestonesHtml\\BuildMilestonesHtml",
-        "payload": []
-    },
-    {
         "commandName": "App\\Application\\Build\\BuildSegmentsHtml\\BuildSegmentsHtml",
         "payload": []
     },

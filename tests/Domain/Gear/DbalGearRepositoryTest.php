@@ -12,6 +12,7 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Gears;
 use App\Domain\Gear\GearType;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
@@ -256,6 +257,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
 
         $this->gearRepository = new DbalGearRepository(
             $this->getConnection(),
+            $this->getContainer()->get(EventBus::class),
         );
     }
 }

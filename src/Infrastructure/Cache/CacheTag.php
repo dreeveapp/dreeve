@@ -14,6 +14,7 @@ enum CacheTag: string
     case ACTIVITY_ROUTE = 'activity.route';
     case SEGMENTS = 'segments';
     case CHALLENGES = 'challenges';
+    case GEAR = 'gear';
     case SETTINGS_GENERAL = 'settings.general';
     case SETTINGS_APPEARANCE = 'settings.appearance';
     case SETTINGS_MAPS = 'settings.maps';
