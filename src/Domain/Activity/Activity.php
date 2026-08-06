@@ -812,9 +812,6 @@ final class Activity implements SupportsAITooling
         ]));
     }
 
-    /**
-     * Mirrors the WHERE clause of ActivityBasedRouteRepository::findAll().
-     */
     public function hasMappableRoute(): bool
     {
         return $this->sportType->supportsReverseGeocoding()
@@ -824,8 +821,6 @@ final class Activity implements SupportsAITooling
     }
 
     /**
-     * Null when the activity does not show up on the map. Otherwise every field the Route read model exposes.
-     *
      * @return array<string, mixed>|null
      */
     private function routeSignature(): ?array
