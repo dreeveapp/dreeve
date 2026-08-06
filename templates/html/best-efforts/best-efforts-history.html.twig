@@ -1,5 +1,5 @@
 {% autoescape false %}
-    {% set sportTypes = bestEffortsCalculator.getSportTypesFor(period, activityType) %}
+    {% set sportTypes = bestEfforts.getSportTypesFor(period, activityType) %}
     <!-- Modal header -->
     <div class="modal-header flex items-center justify-between">
         <h3>
@@ -41,7 +41,7 @@
                                 {{ loop.index }}
                             </th>
                             {% for sportType in sportTypes %}
-                                {% set bestEffort = bestEffortsCalculator.historyFor(sportType, distance, i) %}
+                                {% set bestEffort = bestEfforts.historyFor(sportType, distance, i) %}
                                 {% if bestEffort %}
                                     {% set activity = enrichedActivities.find(bestEffort.getActivityId()) %}
                                     <td class="truncate">

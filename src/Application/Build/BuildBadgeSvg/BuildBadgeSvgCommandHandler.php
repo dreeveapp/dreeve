@@ -71,10 +71,12 @@ final readonly class BuildBadgeSvgCommandHandler implements CommandHandler
             );
         }
 
+        $bestEfforts = $this->bestEffortsCalculator->calculate();
+
         $sportTypesThatHaveBestEfforts = [];
         /** @var ActivityType $activityType */
-        foreach ($this->bestEffortsCalculator->getActivityTypes() as $activityType) {
-            $sportTypes = $this->bestEffortsCalculator->getSportTypesFor(
+        foreach ($bestEfforts->getActivityTypes() as $activityType) {
+            $sportTypes = $bestEfforts->getSportTypesFor(
                 period: BestEffortPeriod::ALL_TIME,
                 activityType: $activityType,
             );
@@ -86,6 +88,7 @@ final readonly class BuildBadgeSvgCommandHandler implements CommandHandler
                     $this->twig->load('svg/badge/svg-pb-badge.html.twig')->render([
                         'sportType' => $sportType,
                         'period' => BestEffortPeriod::ALL_TIME,
+                        'bestEfforts' => $bestEfforts,
                     ])
                 );
             }

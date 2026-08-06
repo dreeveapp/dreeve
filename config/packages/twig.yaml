@@ -11,4 +11,3 @@ twig:
         appVersion: '@App\Application\AppVersion'
         importMode: '@App\Domain\Import\ImportMode'
         enrichedActivities: '@App\Domain\Activity\EnrichedActivities'
-        bestEffortsCalculator: '@App\Domain\Activity\BestEffort\BestEffortsCalculator'

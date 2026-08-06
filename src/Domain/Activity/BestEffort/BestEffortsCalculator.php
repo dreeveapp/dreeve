@@ -4,218 +4,133 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\BestEffort;
 
-use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypeRepository;
 use App\Domain\Activity\ActivityTypes;
-use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\BestEffort\FindBestEfforts\FindBestEfforts;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Activity\SportType\SportTypes;
-use App\Infrastructure\Measurement\Length\ConvertableToMeter;
-use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Time\Clock\Clock;
-use Doctrine\DBAL\ArrayParameterType;
-use Doctrine\DBAL\Connection;
+use App\Infrastructure\ValueObject\Time\DateRange;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
-final class BestEffortsCalculator
+final readonly class BestEffortsCalculator
 {
-    /** @var array<string, ActivityBestEffort> */
-    private array $cachedBestEfforts = [];
-
-    /** @var array<string, array<string, array<int, string>>> */
-    private array $cache = [];
-    /** @var array<string, array<int, array<int, string>>> */
-    private array $historyCache = [];
-    private ActivityTypes $cachedActivityTypes;
+    private const int HISTORY_SIZE = 10;
 
     public function __construct(
-        private readonly Connection $connection,
-        private readonly SportTypeRepository $sportTypeRepository,
-        private readonly ActivityTypeRepository $activityTypeRepository,
-        private readonly Clock $clock,
+        private QueryBus $queryBus,
+        private SportTypeRepository $sportTypeRepository,
+        private ActivityTypeRepository $activityTypeRepository,
+        private Clock $clock,
     ) {
     }
 
-    private function buildCache(): void
+    public function calculate(): BestEfforts
     {
-        if ([] !== $this->cache) {
-            return;
+        $response = $this->queryBus->ask(new FindBestEfforts());
+        $startDateTimePerActivity = $response->getStartDateTimePerActivity();
+
+        $periodBoundaries = [];
+        foreach (BestEffortPeriod::cases() as $period) {
+            $periodBoundaries[$period->value] = $this->boundariesFor(
+                $period->getDateRange($this->clock->getCurrentDateTimeImmutable())
+            );
         }
 
-        $this->cachedActivityTypes = ActivityTypes::empty();
-        foreach (BestEffortPeriod::cases() as $period) {
-            $sql = 'SELECT activityId, sportType, distanceInMeter, timeInSeconds
-                FROM (
-                    SELECT
-                        ActivityBestEffort.activityId,
-                        ActivityBestEffort.sportType,
-                        distanceInMeter,
-                        timeInSeconds,
-                        ROW_NUMBER() OVER (
-                            PARTITION BY ActivityBestEffort.sportType, distanceInMeter
-                            ORDER BY timeInSeconds ASC
-                        ) AS rn
-                    FROM ActivityBestEffort
-                    INNER JOIN Activity ON ActivityBestEffort.activityId = Activity.activityId
-                    WHERE ActivityBestEffort.sportType IN (:sportTypes)
-                    AND startDateTime BETWEEN :dateFrom AND :dateTo
-                ) ranked
-                WHERE rn = 1
-                ORDER BY distanceInMeter ASC';
+        $bestEffortPerPeriod = [];
+        $historyPerSportType = [];
 
-            $dateRange = $period->getDateRange($this->clock->getCurrentDateTimeImmutable());
-            $results = $this->connection->executeQuery(
-                $sql,
-                [
-                    'sportTypes' => array_map(fn (SportType $sportType) => $sportType->value, SportTypes::thatSupportsBestEfforts()->toArray()),
-                    'dateFrom' => $dateRange->getFrom()->format('Y-m-d 00:00:00'),
-                    'dateTo' => $dateRange->getTill()->format('Y-m-d 23:59:59'),
-                ],
-                [
-                    'sportTypes' => ArrayParameterType::STRING,
-                ]
-            )->fetchAllAssociative();
+        // The efforts come in fastest first, so the first effort that falls within a period is that
+        // period's best effort, and the first ten of a distance are its all time top ten.
+        foreach ($response->getBestEfforts() as $bestEffort) {
+            $sportType = $bestEffort->getSportType()->value;
+            $distanceInMeter = $bestEffort->getDistanceInMeter()->toInt();
+            $startDateTime = $startDateTimePerActivity[(string) $bestEffort->getActivityId()];
 
-            foreach ($results as $result) {
-                $activityId = ActivityId::fromString($result['activityId']);
-                $sportType = SportType::from($result['sportType']);
-                $distance = Meter::from($result['distanceInMeter']);
-                $activityBestEffort = ActivityBestEffort::fromState(
-                    activityId: $activityId,
-                    distanceInMeter: $distance,
-                    sportType: $sportType,
-                    timeInSeconds: $result['timeInSeconds']
-                );
+            if (count($historyPerSportType[$sportType][$distanceInMeter] ?? []) < self::HISTORY_SIZE) {
+                $historyPerSportType[$sportType][$distanceInMeter][] = $bestEffort;
+            }
 
-                $this->cachedBestEfforts[$activityBestEffort->getId()] = $activityBestEffort;
-                $this->cache[$period->value][$sportType->value][$distance->toInt()] = $activityBestEffort->getId();
-
-                if (!$this->cachedActivityTypes->has($sportType->getActivityType())) {
-                    $this->cachedActivityTypes->add($sportType->getActivityType());
+            foreach ($periodBoundaries as $periodValue => [$from, $till]) {
+                if (isset($bestEffortPerPeriod[$periodValue][$sportType][$distanceInMeter])) {
+                    continue;
                 }
+                if ($startDateTime->isBefore($from)) {
+                    continue;
+                }
+                if ($startDateTime->isAfter($till)) {
+                    continue;
+                }
+                $bestEffortPerPeriod[$periodValue][$sportType][$distanceInMeter] = $bestEffort;
             }
         }
-    }
 
-    private function buildHistoryCache(): void
-    {
-        if ([] !== $this->historyCache) {
-            return;
-        }
-        $sql = 'SELECT activityId, distanceInMeter, sportType, timeInSeconds
-        FROM (
-            SELECT
-                ActivityBestEffort.activityId,
-                distanceInMeter,
-                ActivityBestEffort.sportType,
-                timeInSeconds,
-                ROW_NUMBER() OVER (
-                    PARTITION BY ActivityBestEffort.sportType, distanceInMeter
-                    ORDER BY timeInSeconds ASC
-                ) AS rn
-            FROM ActivityBestEffort
-            INNER JOIN Activity ON ActivityBestEffort.activityId = Activity.activityId
-            WHERE ActivityBestEffort.sportType IN (:sportTypes)
-        ) ranked
-        WHERE rn <= 10
-        ORDER BY sportType, distanceInMeter, rn';
+        $sportTypesPerPeriod = $this->buildSportTypesPerPeriod($bestEffortPerPeriod);
 
-        $results = $this->connection->executeQuery(
-            $sql,
-            [
-                'sportTypes' => array_map(fn (SportType $sportType) => $sportType->value, SportTypes::thatSupportsBestEfforts()->toArray()),
-            ],
-            [
-                'sportTypes' => ArrayParameterType::STRING,
-            ]
-        )->fetchAllAssociative();
-
-        foreach ($results as $result) {
-            $activityId = ActivityId::fromString($result['activityId']);
-            $sportType = SportType::from($result['sportType']);
-            $distance = Meter::from($result['distanceInMeter']);
-            $activityBestEffort = ActivityBestEffort::fromState(
-                activityId: $activityId,
-                distanceInMeter: $distance,
-                sportType: $sportType,
-                timeInSeconds: $result['timeInSeconds']
-            );
-
-            $this->cachedBestEfforts[$activityBestEffort->getId()] = $activityBestEffort;
-            $this->historyCache[$sportType->value][$distance->toInt()][] = $activityBestEffort->getId();
-        }
-    }
-
-    public function for(BestEffortPeriod $period, SportType $sportType, ConvertableToMeter $distance): ?ActivityBestEffort
-    {
-        $this->buildCache();
-
-        $distance = $distance->toMeter()->toInt();
-        $id = $this->cache[$period->value][$sportType->value][$distance] ?? 'unexisting';
-
-        return $this->cachedBestEfforts[$id] ?? null;
-    }
-
-    public function historyFor(SportType $sportType, ConvertableToMeter $distance, int $position): ?ActivityBestEffort
-    {
-        $this->buildCache();
-        $this->buildHistoryCache();
-
-        $distance = $distance->toMeter()->toInt();
-        $id = $this->historyCache[$sportType->value][$distance][$position] ?? 'unexisting';
-
-        return $this->cachedBestEfforts[$id] ?? null;
-    }
-
-    /**
-     * @return BestEffortPeriod[]
-     */
-    public function getPeriods(): array
-    {
-        $this->buildCache();
-
-        $periods = array_keys($this->cache);
-
-        return array_map(
-            BestEffortPeriod::from(...),
-            $periods,
+        return BestEfforts::create(
+            bestEffortPerPeriod: $bestEffortPerPeriod,
+            historyPerSportType: $historyPerSportType,
+            periods: array_values(array_filter(
+                BestEffortPeriod::cases(),
+                fn (BestEffortPeriod $period): bool => isset($bestEffortPerPeriod[$period->value]) && [] !== $bestEffortPerPeriod[$period->value]
+            )),
+            sportTypesPerPeriod: $sportTypesPerPeriod,
+            activityTypes: $this->buildActivityTypes($sportTypesPerPeriod),
         );
     }
 
-    public function getSportTypesFor(BestEffortPeriod $period, ActivityType $activityType): SportTypes
+    /**
+     * @param array<string, array<string, array<int, ActivityBestEffort>>> $bestEffortPerPeriod
+     *
+     * @return array<string, array<string, SportTypes>>
+     */
+    private function buildSportTypesPerPeriod(array $bestEffortPerPeriod): array
     {
-        $this->buildCache();
-
-        $sportTypes = SportTypes::empty();
         $importedSportTypes = $this->sportTypeRepository->findAll();
 
-        foreach ($importedSportTypes as $sportType) {
-            if ($sportType->getActivityType() !== $activityType) {
-                continue;
+        $sportTypesPerPeriod = [];
+        foreach (BestEffortPeriod::cases() as $period) {
+            foreach ($importedSportTypes as $sportType) {
+                if (empty($bestEffortPerPeriod[$period->value][$sportType->value])) {
+                    continue;
+                }
+                $activityType = $sportType->getActivityType();
+                $sportTypesPerPeriod[$period->value][$activityType->value] ??= SportTypes::empty();
+                $sportTypesPerPeriod[$period->value][$activityType->value]->add($sportType);
             }
-            if (empty($this->cache[$period->value][$sportType->value])) {
-                continue;
-            }
-            $sportTypes->add($sportType);
         }
 
-        return $sportTypes;
+        return $sportTypesPerPeriod;
     }
 
-    public function getActivityTypes(): ActivityTypes
+    /**
+     * @param array<string, array<string, SportTypes>> $sportTypesPerPeriod
+     */
+    private function buildActivityTypes(array $sportTypesPerPeriod): ActivityTypes
     {
-        $this->buildCache();
-
         $activityTypes = ActivityTypes::empty();
-
-        $importedActivityTypes = $this->activityTypeRepository->findAll();
-        foreach ($importedActivityTypes as $activityType) {
-            if (!$this->cachedActivityTypes->has($activityType)) {
-                continue;
+        foreach ($this->activityTypeRepository->findAll() as $activityType) {
+            foreach ($sportTypesPerPeriod as $sportTypesPerActivityType) {
+                if (!isset($sportTypesPerActivityType[$activityType->value])) {
+                    continue;
+                }
+                $activityTypes->add($activityType);
+                break;
             }
-            $activityTypes->add($activityType);
         }
 
         return $activityTypes;
+    }
+
+    /**
+     * @return array{SerializableDateTime, SerializableDateTime}
+     */
+    private function boundariesFor(DateRange $dateRange): array
+    {
+        return [
+            SerializableDateTime::fromString($dateRange->getFrom()->format('Y-m-d 00:00:00')),
+            SerializableDateTime::fromString($dateRange->getTill()->format('Y-m-d 23:59:59')),
+        ];
     }
 }

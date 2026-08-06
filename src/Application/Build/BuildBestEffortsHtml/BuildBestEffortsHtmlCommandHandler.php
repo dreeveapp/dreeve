@@ -28,15 +28,16 @@ final readonly class BuildBestEffortsHtmlCommandHandler implements CommandHandle
     {
         assert($command instanceof BuildBestEffortsHtml);
 
+        $bestEfforts = $this->bestEffortsCalculator->calculate();
         $bestEffortsCharts = [];
 
-        foreach ($this->bestEffortsCalculator->getActivityTypes() as $activityType) {
+        foreach ($bestEfforts->getActivityTypes() as $activityType) {
             foreach (BestEffortPeriod::cases() as $bestEffortPeriod) {
                 $bestEffortsCharts[$activityType->value][$bestEffortPeriod->value] = Json::encode(
                     BestEffortChart::create(
                         activityType: $activityType,
                         period: $bestEffortPeriod,
-                        bestEffortsCalculator: $this->bestEffortsCalculator,
+                        bestEfforts: $bestEfforts,
                         translator: $this->translator,
                     )->build()
                 );
@@ -54,6 +55,7 @@ final readonly class BuildBestEffortsHtmlCommandHandler implements CommandHandle
                         'activityType' => $activityType,
                         'period' => BestEffortPeriod::ALL_TIME,
                         'distance' => $distance,
+                        'bestEfforts' => $bestEfforts,
                     ])
                 );
             }
@@ -67,6 +69,7 @@ final readonly class BuildBestEffortsHtmlCommandHandler implements CommandHandle
             'best-efforts.html',
             $this->twig->load('html/best-efforts/best-efforts.html.twig')->render([
                 'bestEffortsCharts' => $bestEffortsCharts,
+                'bestEfforts' => $bestEfforts,
             ])
         );
     }

@@ -27,7 +27,7 @@
            font-size="12px" font-weight="normal">
             {% set lastRowIndex = (totalItems / itemsPerRow)|round(0, 'ceil') - 1 %}
             {% for distance in sportType.getActivityType().getDistancesForBestEffortCalculation() %}
-                {% set bestEffort = bestEffortsCalculator.for(period, sportType, distance) %}
+                {% set bestEffort = bestEfforts.for(period, sportType, distance) %}
                 {% set currentRow = loop.index0 // itemsPerRow %}
                 {% set numberOfItemsOnThisRow = currentRow == lastRowIndex
                     ? (totalItems % itemsPerRow == 0
