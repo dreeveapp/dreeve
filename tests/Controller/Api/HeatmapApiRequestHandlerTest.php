@@ -30,17 +30,22 @@ class HeatmapApiRequestHandlerTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
 
-        $firstResponse = (string) $this->heatmapApiRequestHandler->routes()->getContent();
-        $this->assertStringContainsString('Night Ride', $firstResponse);
+        $response = $this->heatmapApiRequestHandler->routes();
+        $this->assertStringContainsString('Night Ride', (string) $response->getContent());
+        $this->assertFalse($response->headers->has('X-Cache-Hit'));
+        $this->assertStringContainsString('heatmap.routes', (string) $response->headers->get('X-Cache-Miss'));
 
         // Rename every route behind the repository's back, so a fresh render would look different.
         $this->getConnection()->executeStatement(
             'UPDATE Activity SET name = "This name never made it into the render cache"'
         );
 
+        $secondResponse = $this->heatmapApiRequestHandler->routes();
+        $this->assertEquals($response->getContent(), $secondResponse->getContent());
+        $this->assertFalse($secondResponse->headers->has('X-Cache-Miss'));
         $this->assertEquals(
-            $firstResponse,
-            (string) $this->heatmapApiRequestHandler->routes()->getContent()
+            $response->headers->get('X-Cache-Miss'),
+            $secondResponse->headers->get('X-Cache-Hit'),
         );
     }
 
