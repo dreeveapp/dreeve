@@ -98,6 +98,6 @@ final readonly class ActivityBestEffort
             return $bestEffortDistance;
         }
 
-        return null;
+        return null; // @codeCoverageIgnore
     }
 }

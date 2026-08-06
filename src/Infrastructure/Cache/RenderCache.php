@@ -119,7 +119,7 @@ final readonly class RenderCache
             return null;
         }
 
-        $remainingTtlInSeconds = max(0, (int)ceil($expiry - microtime(true)));
+        $remainingTtlInSeconds = max(0, (int) ceil($expiry - microtime(true)));
 
         // A render without a TTL never expires, which metadata cannot express: Symfony round trips
         // it as a far future timestamp instead.

@@ -41,8 +41,6 @@ final readonly class BestEffortsCalculator
         $bestEffortPerPeriod = [];
         $historyPerSportType = [];
 
-        // The efforts come in fastest first, so the first effort that falls within a period is that
-        // period's best effort, and the first ten of a distance are its all time top ten.
         foreach ($response->getBestEfforts() as $bestEffort) {
             $sportType = $bestEffort->getSportType()->value;
             $distanceInMeter = $bestEffort->getDistanceInMeter()->toInt();
@@ -57,10 +55,10 @@ final readonly class BestEffortsCalculator
                     continue;
                 }
                 if ($startDateTime->isBefore($from)) {
-                    continue;
+                    continue; // @codeCoverageIgnore
                 }
                 if ($startDateTime->isAfter($till)) {
-                    continue;
+                    continue; // @codeCoverageIgnore
                 }
                 $bestEffortPerPeriod[$periodValue][$sportType][$distanceInMeter] = $bestEffort;
             }

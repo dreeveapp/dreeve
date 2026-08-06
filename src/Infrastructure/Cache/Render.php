@@ -76,11 +76,6 @@ final readonly class Render
         return CacheStatus::HIT === $this->cacheStatus;
     }
 
-    public function getCacheKey(): ?string
-    {
-        return $this->cacheKey;
-    }
-
     /**
      * @return string[]
      */
