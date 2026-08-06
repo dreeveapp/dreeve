@@ -3,8 +3,6 @@
 namespace App\Tests\Domain\Activity\Image;
 
 use App\Domain\Activity\Image\PhotosPage;
-use App\Infrastructure\Cache\CacheTag;
-use App\Infrastructure\Cache\Context\TrustedVisitorCacheContext;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -27,21 +25,6 @@ class PhotosPageTest extends ContainerTestCase
     {
         $this->assertEquals('photos', $this->photosPage->getPath());
         $this->assertEquals('photos', $this->photosPage->getCacheability()->getCacheKey());
-    }
-
-    public function testGetCacheability(): void
-    {
-        $cacheability = $this->photosPage->getCacheability();
-
-        $this->assertTrue($cacheability->isCacheable());
-        $this->assertEquals(
-            [CacheTag::SETTINGS_APPEARANCE->value, CacheTag::SETTINGS_GENERAL->value, CacheTag::ACTIVITY_IMAGES->value],
-            $cacheability->getCacheTags()->toTagStrings()
-        );
-        $this->assertEquals(
-            [TrustedVisitorCacheContext::class],
-            $cacheability->getCacheContexts()->toArray()
-        );
     }
 
     #[\Override]

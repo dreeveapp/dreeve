@@ -64,13 +64,20 @@ final readonly class IndexPage implements Cacheable
 
         $general = $this->settingsRepository->general();
 
+        $lastUpdate = null;
+        try {
+            $lastUpdate = SerializableDateTime::fromString((string) $this->keyValueStore->find(Key::APP_LAST_BUILD_DATE_TIME));
+        } catch (EntityNotFound) {
+            // The app has not been built since this key was introduced.
+        }
+
         return $this->twig->load('html/index.html.twig')->render([
             'router' => Router::SINGLE_PAGE,
             'totalActivityCount' => $this->activityIdRepository->count(),
             'completedChallenges' => $this->challengeRepository->count(),
             'totalPhotoCount' => $this->imageRepository->count(),
             'hasGear' => $this->gearRepository->hasGear(),
-            'lastUpdate' => $this->getLastUpdate(),
+            'lastUpdate' => $lastUpdate,
             'athlete' => $general->getAthlete(),
             'profilePictureUrl' => $general->getProfilePictureUrl(),
             'subTitle' => $general->getAppSubTitle(),
@@ -89,15 +96,5 @@ final readonly class IndexPage implements Cacheable
                 'leafletConfig' => $this->settingsRepository->maps()->getLeafletConfig(),
             ]),
         ]);
-    }
-
-    private function getLastUpdate(): ?SerializableDateTime
-    {
-        try {
-            return SerializableDateTime::fromString((string) $this->keyValueStore->find(Key::APP_LAST_BUILD_DATE_TIME));
-        } catch (EntityNotFound) {
-            // The app has not been built since this key was introduced.
-            return null;
-        }
     }
 }

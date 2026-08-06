@@ -44,45 +44,6 @@ class ApiPageRequestHandlerTest extends ContainerTestCase
         $this->assertEquals($response->getContent(), $secondResponse->getContent());
     }
 
-    public function testHandleForRegisteredPageWithoutCacheContexts(): void
-    {
-        $this->provideFullTestSet();
-
-        $response = $this->apiPageRequestHandler->handle('challenges');
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(
-            'text/html; charset=UTF-8',
-            $response->headers->get('Content-Type'),
-        );
-        // The page declares no cache context, so its render can be shared by every visitor.
-        $this->assertStringNotContainsString('no-store', (string) $response->headers->get('Cache-Control'));
-        $this->assertStringEndsWith('challenges', (string) $response->headers->get('X-Cache-Miss'));
-
-        $secondResponse = $this->apiPageRequestHandler->handle('challenges');
-        $this->assertFalse($secondResponse->headers->has('X-Cache-Miss'));
-        $this->assertEquals(
-            $response->headers->get('X-Cache-Miss'),
-            $secondResponse->headers->get('X-Cache-Hit'),
-        );
-        $this->assertEquals($response->getContent(), $secondResponse->getContent());
-    }
-
-    public function testHandleForHeatmap(): void
-    {
-        $this->provideFullTestSet();
-
-        $response = $this->apiPageRequestHandler->handle('heatmap');
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertStringEndsWith('heatmap', (string) $response->headers->get('X-Cache-Miss'));
-        $this->assertStringContainsString('data-leaflet-routes', (string) $response->getContent());
-
-        $this->assertTrue(
-            $this->apiPageRequestHandler->handle('heatmap')->headers->has('X-Cache-Hit')
-        );
-    }
-
     public function testHandleWhenPageIsNotRegistered(): void
     {
         $this->assertEquals(

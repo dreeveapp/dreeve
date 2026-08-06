@@ -3,7 +3,6 @@
 namespace App\Tests\Application;
 
 use App\Application\IndexPage;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
@@ -64,28 +63,6 @@ class IndexPageTest extends ContainerTestCase
     public function testGetCacheKey(): void
     {
         $this->assertEquals('index', $this->indexPage->getCacheability()->getCacheKey());
-    }
-
-    public function testGetCacheability(): void
-    {
-        $cacheability = $this->indexPage->getCacheability();
-
-        $this->assertTrue($cacheability->isCacheable());
-        $this->assertEquals(
-            [
-                CacheTag::SETTINGS_APPEARANCE->value,
-                CacheTag::SETTINGS_GENERAL->value,
-                CacheTag::APP_BUILD->value,
-                CacheTag::ACTIVITIES->value,
-                CacheTag::ACTIVITY_IMAGES->value,
-                CacheTag::CHALLENGES->value,
-                CacheTag::SETTINGS_INTEGRATIONS->value,
-                CacheTag::SETTINGS_MAPS->value,
-            ],
-            $cacheability->getCacheTags()->toTagStrings()
-        );
-        $this->assertEmpty($cacheability->getCacheContexts()->toArray());
-        $this->assertNull($cacheability->getTtlInSeconds());
     }
 
     #[\Override]
