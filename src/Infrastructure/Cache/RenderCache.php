@@ -14,12 +14,11 @@ use Symfony\Contracts\Cache\ItemInterface;
 final readonly class RenderCache
 {
     private const string CHARACTERS_RESERVED_IN_A_CACHE_KEY = '/[{}()\/\\\\@:\s\x00-\x1F]+/';
+    private const int LONGEST_REPORTABLE_TTL_IN_SECONDS = 365 * 86400;
 
     public function __construct(
         #[Autowire(service: 'render.cache')]
         private TagAwareAdapterInterface $cache,
-        #[Autowire('%app.render_cache.default_lifetime%')]
-        private int $selfHealingTtlInSeconds,
     ) {
     }
 
@@ -52,13 +51,15 @@ final readonly class RenderCache
         }
 
         $rendered = $callback();
-        $ttlInSeconds = $cacheability->getTtlInSeconds() ?? $this->selfHealingTtlInSeconds;
+        $ttlInSeconds = $cacheability->getTtlInSeconds();
 
         $item->set($rendered);
         if (!$cacheability->getCacheTags()->isEmpty()) {
             $item->tag($cacheability->getCacheTags()->toTagStrings());
         }
-        $item->expiresAfter($ttlInSeconds);
+        if (!is_null($ttlInSeconds)) {
+            $item->expiresAfter($ttlInSeconds);
+        }
         $this->cache->save($item);
 
         return Render::freshlyRendered(
@@ -118,6 +119,10 @@ final readonly class RenderCache
             return null;
         }
 
-        return max(0, (int) ceil($expiry - microtime(true)));
+        $remainingTtlInSeconds = max(0, (int)ceil($expiry - microtime(true)));
+
+        // A render without a TTL never expires, which metadata cannot express: Symfony round trips
+        // it as a far future timestamp instead.
+        return $remainingTtlInSeconds > self::LONGEST_REPORTABLE_TTL_IN_SECONDS ? null : $remainingTtlInSeconds;
     }
 }

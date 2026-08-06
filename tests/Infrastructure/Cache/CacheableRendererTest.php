@@ -21,8 +21,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class CacheableRendererTest extends ContainerTestCase
 {
     private const array CACHE_TAGS = ['settings.appearance', 'settings.general', 'activity.images'];
-    private const int SELF_HEALING_TTL_IN_SECONDS = 86400;
-
     private RenderCache $renderCache;
     private CacheableRenderer $cacheableRenderer;
 
@@ -31,13 +29,13 @@ class CacheableRendererTest extends ContainerTestCase
         $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
 
         $this->assertEquals(
-            Render::freshlyRendered('rendered', AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS, self::SELF_HEALING_TTL_IN_SECONDS),
+            Render::freshlyRendered('rendered', AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS),
             $this->cacheableRenderer->render($cacheable)
         );
 
         $cacheable->rendered = 'changed';
         $this->assertEquals(
-            Render::servedFromCache('rendered', AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS, self::SELF_HEALING_TTL_IN_SECONDS),
+            Render::servedFromCache('rendered', AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS),
             $this->cacheableRenderer->render($cacheable)
         );
         $this->assertEquals(1, $cacheable->renderCount);
@@ -52,7 +50,7 @@ class CacheableRendererTest extends ContainerTestCase
 
         $cacheable->rendered = 'changed';
         $this->assertEquals(
-            Render::freshlyRendered('changed', AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS, self::SELF_HEALING_TTL_IN_SECONDS),
+            Render::freshlyRendered('changed', AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS),
             $this->cacheableRenderer->render($cacheable)
         );
         $this->assertEquals(2, $cacheable->renderCount);
@@ -67,7 +65,7 @@ class CacheableRendererTest extends ContainerTestCase
 
         $cacheable->rendered = 'changed';
         $this->assertEquals(
-            Render::servedFromCache('rendered', AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS, self::SELF_HEALING_TTL_IN_SECONDS),
+            Render::servedFromCache('rendered', AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS),
             $this->cacheableRenderer->render($cacheable)
         );
         $this->assertEquals(1, $cacheable->renderCount);
@@ -79,11 +77,11 @@ class CacheableRendererTest extends ContainerTestCase
         $cacheable->rendered = null;
 
         $this->assertEquals(
-            Render::freshlyRendered(null, AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS, self::SELF_HEALING_TTL_IN_SECONDS),
+            Render::freshlyRendered(null, AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS),
             $this->cacheableRenderer->render($cacheable)
         );
         $this->assertEquals(
-            Render::servedFromCache(null, AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS, self::SELF_HEALING_TTL_IN_SECONDS),
+            Render::servedFromCache(null, AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS),
             $this->cacheableRenderer->render($cacheable)
         );
         $this->assertEquals(1, $cacheable->renderCount);
@@ -115,11 +113,11 @@ class CacheableRendererTest extends ContainerTestCase
         $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
 
         $this->assertEquals(
-            Render::freshlyRendered('rendered', AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS, self::SELF_HEALING_TTL_IN_SECONDS),
+            Render::freshlyRendered('rendered', AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS),
             $this->cacheableRenderer->render($cacheable)
         );
         $this->assertEquals(
-            Render::servedFromCache('rendered', AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS, self::SELF_HEALING_TTL_IN_SECONDS),
+            Render::servedFromCache('rendered', AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS),
             $this->cacheableRenderer->render($cacheable)
         );
     }
@@ -141,7 +139,7 @@ class CacheableRendererTest extends ContainerTestCase
         ));
 
         $this->assertEquals(
-            Render::freshlyRendered('rendered', AppVersion::getSemanticVersion().'.stub.trust=anonymized', self::CACHE_TAGS, self::SELF_HEALING_TTL_IN_SECONDS),
+            Render::freshlyRendered('rendered', AppVersion::getSemanticVersion().'.stub.trust=anonymized', self::CACHE_TAGS),
             $this->rendererFor(demoModeIsEnabled: true, loggedIn: false)->render($cacheable)
         );
     }
@@ -156,23 +154,23 @@ class CacheableRendererTest extends ContainerTestCase
 
         $cacheable->rendered = 'anonymized-html';
         $this->assertEquals(
-            Render::freshlyRendered('anonymized-html', AppVersion::getSemanticVersion().'.stub.trust=anonymized', self::CACHE_TAGS, self::SELF_HEALING_TTL_IN_SECONDS),
+            Render::freshlyRendered('anonymized-html', AppVersion::getSemanticVersion().'.stub.trust=anonymized', self::CACHE_TAGS),
             $this->rendererFor(demoModeIsEnabled: true, loggedIn: false)->render($cacheable)
         );
 
         $cacheable->rendered = 'trusted-html';
         $this->assertEquals(
-            Render::freshlyRendered('trusted-html', AppVersion::getSemanticVersion().'.stub.trust=trusted', self::CACHE_TAGS, self::SELF_HEALING_TTL_IN_SECONDS),
+            Render::freshlyRendered('trusted-html', AppVersion::getSemanticVersion().'.stub.trust=trusted', self::CACHE_TAGS),
             $this->rendererFor(demoModeIsEnabled: true, loggedIn: true)->render($cacheable)
         );
 
         $cacheable->rendered = 'should-never-be-rendered';
         $this->assertEquals(
-            Render::servedFromCache('anonymized-html', AppVersion::getSemanticVersion().'.stub.trust=anonymized', self::CACHE_TAGS, self::SELF_HEALING_TTL_IN_SECONDS),
+            Render::servedFromCache('anonymized-html', AppVersion::getSemanticVersion().'.stub.trust=anonymized', self::CACHE_TAGS),
             $this->rendererFor(demoModeIsEnabled: true, loggedIn: false)->render($cacheable)
         );
         $this->assertEquals(
-            Render::servedFromCache('trusted-html', AppVersion::getSemanticVersion().'.stub.trust=trusted', self::CACHE_TAGS, self::SELF_HEALING_TTL_IN_SECONDS),
+            Render::servedFromCache('trusted-html', AppVersion::getSemanticVersion().'.stub.trust=trusted', self::CACHE_TAGS),
             $this->rendererFor(demoModeIsEnabled: true, loggedIn: true)->render($cacheable)
         );
         $this->assertEquals(2, $cacheable->renderCount);

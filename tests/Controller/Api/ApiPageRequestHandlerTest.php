@@ -38,7 +38,8 @@ class ApiPageRequestHandlerTest extends ContainerTestCase
             'settings.appearance, settings.general, activity.images',
             $response->headers->get('X-Cache-Tags'),
         );
-        $this->assertEquals('86400', $response->headers->get('X-Cache-TTL'));
+        // The page does not declare a lifetime, so there is none to report.
+        $this->assertFalse($response->headers->has('X-Cache-TTL'));
 
         $secondResponse = $this->apiPageRequestHandler->handle('photos');
         $this->assertEquals('HIT', $secondResponse->headers->get('X-Cache'));

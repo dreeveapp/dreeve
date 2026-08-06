@@ -24,4 +24,3 @@ framework:
             render.cache:
                 adapter: cache.adapter.filesystem
                 tags: render.cache.tags
-                default_lifetime: '%app.render_cache.default_lifetime%'

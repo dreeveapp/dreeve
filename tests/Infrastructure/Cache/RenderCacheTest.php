@@ -9,11 +9,12 @@ use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\Render;
 use App\Infrastructure\Cache\RenderCache;
 use App\Tests\ContainerTestCase;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Adapter\TagAwareAdapter;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class RenderCacheTest extends ContainerTestCase
 {
-    private const int SELF_HEALING_TTL_IN_SECONDS = 86400;
-
     private RenderCache $renderCache;
 
     public function testItStripsReservedCharactersOutOfTheCacheKey(): void
@@ -29,7 +30,6 @@ class RenderCacheTest extends ContainerTestCase
                 'rendered',
                 AppVersion::getSemanticVersion().'.activity_123.tz=Europe_Brussels.user=me_example.com',
                 ['settings.appearance', 'settings.general', 'activity.images'],
-                self::SELF_HEALING_TTL_IN_SECONDS,
             ),
             $render
         );
@@ -48,7 +48,6 @@ class RenderCacheTest extends ContainerTestCase
                 'rendered',
                 AppVersion::getSemanticVersion().'.segment_9_special',
                 ['settings.appearance', 'settings.general', 'activity.images'],
-                self::SELF_HEALING_TTL_IN_SECONDS,
             ),
             $render
         );
@@ -98,6 +97,37 @@ class RenderCacheTest extends ContainerTestCase
         );
     }
 
+    public function testItReportsNoTtlForAnItemThatWasStoredWithoutAnExpiry(): void
+    {
+        $pool = new TagAwareAdapter(new FilesystemAdapter(
+            namespace: 'render-cache-test',
+            defaultLifetime: 0,
+            directory: sys_get_temp_dir(),
+        ));
+        $pool->clear();
+
+        $item = $pool->getItem(AppVersion::getSemanticVersion().'.stored-without-an-expiry');
+        $item->set('rendered');
+        $item->tag(['activity.images']);
+        $pool->save($item);
+
+        $storedExpiry = $pool->getItem(AppVersion::getSemanticVersion().'.stored-without-an-expiry')
+            ->getMetadata()[ItemInterface::METADATA_EXPIRY] ?? null;
+        $this->assertGreaterThan(50 * 365 * 86400, $storedExpiry - time());
+
+        $render = new RenderCache($pool)->get(
+            cacheKey: 'stored-without-an-expiry',
+            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
+            callback: fn (): string => 'should-not-run',
+        );
+
+        $this->assertTrue($render->wasServedFromCache());
+        $this->assertNull($render->getTtlInSeconds());
+        $this->assertArrayNotHasKey('X-Cache-TTL', $render->getCacheHeaders());
+
+        $pool->clear();
+    }
+
     public function testItPrunes(): void
     {
         $this->renderCache->get(
@@ -119,7 +149,6 @@ class RenderCacheTest extends ContainerTestCase
                 'rendered',
                 AppVersion::getSemanticVersion().'.photos',
                 ['settings.appearance', 'settings.general', 'activity.images'],
-                self::SELF_HEALING_TTL_IN_SECONDS,
             ),
             $render
         );
