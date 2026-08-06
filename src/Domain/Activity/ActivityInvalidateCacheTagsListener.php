@@ -28,8 +28,18 @@ final readonly class ActivityInvalidateCacheTagsListener
     }
 
     #[AsEventListener]
+    public function reactToActivityRouteWasUpdated(ActivityRouteWasUpdated $event): void
+    {
+        $this->renderCache->invalidateTags(CacheTag::ACTIVITY_ROUTE);
+    }
+
+    #[AsEventListener]
     public function reactToActivityWasDeleted(ActivityWasDeleted $event): void
     {
-        $this->renderCache->invalidateTags(CacheTag::ACTIVITIES, CacheTag::ACTIVITY_IMAGES);
+        $this->renderCache->invalidateTags(
+            CacheTag::ACTIVITIES,
+            CacheTag::ACTIVITY_IMAGES,
+            CacheTag::ACTIVITY_ROUTE
+        );
     }
 }

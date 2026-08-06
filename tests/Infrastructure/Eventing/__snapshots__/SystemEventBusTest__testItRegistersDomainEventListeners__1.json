@@ -2,6 +2,7 @@
     "App\\Domain\\Activity\\ActivityInvalidateCacheTagsListener": [
         "reactToActivityWasAdded",
         "reactToActivityImagesHaveBeenUpdated",
+        "reactToActivityRouteWasUpdated",
         "reactToActivityWasDeleted"
     ],
     "App\\Domain\\Challenge\\ChallengeInvalidateCacheTagsListener": [

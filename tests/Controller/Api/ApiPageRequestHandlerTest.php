@@ -68,6 +68,21 @@ class ApiPageRequestHandlerTest extends ContainerTestCase
         $this->assertEquals($response->getContent(), $secondResponse->getContent());
     }
 
+    public function testHandleForHeatmap(): void
+    {
+        $this->provideFullTestSet();
+
+        $response = $this->apiPageRequestHandler->handle('heatmap');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertStringEndsWith('heatmap', (string) $response->headers->get('X-Cache-Miss'));
+        $this->assertStringContainsString('data-leaflet-routes', (string) $response->getContent());
+
+        $this->assertTrue(
+            $this->apiPageRequestHandler->handle('heatmap')->headers->has('X-Cache-Hit')
+        );
+    }
+
     public function testHandleWhenPageIsNotRegistered(): void
     {
         $this->assertEquals(

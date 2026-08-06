@@ -4,6 +4,8 @@ namespace App\Tests\Domain\Activity;
 
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\Route\RouteGeography;
+use App\Domain\Activity\WorldType;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
@@ -27,6 +29,7 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
 
         $this->assertFalse($this->render(CacheTag::ACTIVITIES)->wasServedFromCache());
         $this->assertTrue($this->render(CacheTag::ACTIVITY_IMAGES)->wasServedFromCache());
+        $this->assertTrue($this->render(CacheTag::ACTIVITY_ROUTE)->wasServedFromCache());
     }
 
     public function testItDoesNotInvalidateWhenAnActivityIsMerelyHydratedAndStored(): void
@@ -51,6 +54,42 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
 
         $this->assertFalse($this->render(CacheTag::ACTIVITIES)->wasServedFromCache());
         $this->assertFalse($this->render(CacheTag::ACTIVITY_IMAGES)->wasServedFromCache());
+        $this->assertFalse($this->render(CacheTag::ACTIVITY_ROUTE)->wasServedFromCache());
+    }
+
+    public function testItOnlyInvalidatesTheRouteWhenTheRouteHasBeenUpdated(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withPolyline('tqafAua~y^vG{D')
+            ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))
+            ->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->update(ActivityWithRawData::fromState(
+            $activity->withPolyline('kqafAua~y^vG{D'),
+            [],
+        ));
+
+        $this->assertTrue($this->render(CacheTag::ACTIVITIES)->wasServedFromCache());
+        $this->assertTrue($this->render(CacheTag::ACTIVITY_IMAGES)->wasServedFromCache());
+        $this->assertFalse($this->render(CacheTag::ACTIVITY_ROUTE)->wasServedFromCache());
+    }
+
+    public function testItDoesNotInvalidateTheRouteWhenTheActivityIsNotOnTheMap(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withWorldType(WorldType::ZWIFT)
+            ->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->update(ActivityWithRawData::fromState(
+            $activity->withPolyline('tqafAua~y^vG{D'),
+            [],
+        ));
+
+        $this->assertTrue($this->render(CacheTag::ACTIVITY_ROUTE)->wasServedFromCache());
     }
 
     public function testItOnlyInvalidatesTheImagesWhenTheImagesHaveBeenUpdated(): void
@@ -70,7 +109,7 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
 
     private function warmUpRenderCache(): void
     {
-        foreach ([CacheTag::ACTIVITIES, CacheTag::ACTIVITY_IMAGES] as $cacheTag) {
+        foreach ([CacheTag::ACTIVITIES, CacheTag::ACTIVITY_IMAGES, CacheTag::ACTIVITY_ROUTE] as $cacheTag) {
             $this->render($cacheTag);
             $this->assertTrue($this->render($cacheTag)->wasServedFromCache());
         }

@@ -2,13 +2,23 @@
 
 namespace App\Tests\Domain\Activity;
 
+use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityImagesHaveBeenUpdated;
+use App\Domain\Activity\ActivityName;
+use App\Domain\Activity\ActivityRouteWasUpdated;
+use App\Domain\Activity\ActivityWasAdded;
+use App\Domain\Activity\Route\RouteGeography;
+use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\WorkoutType;
 use App\Domain\Activity\WorldType;
+use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 
@@ -115,5 +125,127 @@ class ActivityTest extends TestCase
             [new ActivityImagesHaveBeenUpdated()],
             $activity->withLocalImagePaths([])->getRecordedEvents()
         );
+    }
+
+    public function testHasMappableRoute(): void
+    {
+        $this->assertTrue($this->activityOnTheMap()->build()->hasMappableRoute());
+    }
+
+    #[DataProvider('provideActivitiesThatAreNotOnTheMap')]
+    public function testHasMappableRouteWhenItIsNotOnTheMap(ActivityBuilder $builder): void
+    {
+        $this->assertFalse($builder->build()->hasMappableRoute());
+    }
+
+    /**
+     * @return \Generator<string, array{ActivityBuilder}>
+     */
+    public static function provideActivitiesThatAreNotOnTheMap(): \Generator
+    {
+        yield 'sport type does not support reverse geocoding' => [
+            self::activityOnTheMap()->withSportType(SportType::VIRTUAL_RIDE),
+        ];
+        yield 'not recorded in the real world' => [
+            self::activityOnTheMap()->withWorldType(WorldType::ZWIFT),
+        ];
+        yield 'without polyline' => [
+            self::activityOnTheMap()->withPolyline(null),
+        ];
+        yield 'with empty polyline' => [
+            self::activityOnTheMap()->withPolyline(''),
+        ];
+        yield 'without reverse geocoded country' => [
+            self::activityOnTheMap()->withRouteGeography(RouteGeography::create([])),
+        ];
+    }
+
+    #[DataProvider('provideRouteChanges')]
+    public function testItShouldRecordThatTheRouteWasUpdated(callable $change): void
+    {
+        $activity = $this->activityOnTheMap()->build();
+
+        $this->assertEquals(
+            [new ActivityRouteWasUpdated()],
+            $change($activity)->getRecordedEvents()
+        );
+        $this->assertEmpty($activity->getRecordedEvents());
+    }
+
+    /**
+     * @return \Generator<string, array{callable(Activity): Activity}>
+     */
+    public static function provideRouteChanges(): \Generator
+    {
+        yield 'polyline' => [fn (Activity $activity): Activity => $activity->withPolyline('other-polyline')];
+        yield 'route geography' => [fn (Activity $activity): Activity => $activity->withRouteGeography(
+            RouteGeography::create(['country_code' => 'NL'])
+        )];
+        yield 'sport type' => [fn (Activity $activity): Activity => $activity->withSportType(SportType::RUN)];
+        yield 'world type' => [fn (Activity $activity): Activity => $activity->withWorldType(WorldType::ZWIFT)];
+        yield 'name' => [fn (Activity $activity): Activity => $activity->withName(ActivityName::fromString('Renamed'))];
+        yield 'distance' => [fn (Activity $activity): Activity => $activity->withDistance(Kilometer::from(42))];
+        yield 'start date' => [fn (Activity $activity): Activity => $activity->withStartDateTime(
+            SerializableDateTime::fromString('2024-01-01')
+        )];
+        yield 'commute' => [fn (Activity $activity): Activity => $activity->withCommute(true)];
+        yield 'workout type' => [fn (Activity $activity): Activity => $activity->withWorkoutType(WorkoutType::RACE)];
+    }
+
+    #[DataProvider('provideRouteNonChanges')]
+    public function testItShouldRecordNothingWhenTheRouteDidNotChange(callable $change): void
+    {
+        $this->assertEmpty($change($this->activityOnTheMap()->build())->getRecordedEvents());
+    }
+
+    /**
+     * @return \Generator<string, array{callable(Activity): Activity}>
+     */
+    public static function provideRouteNonChanges(): \Generator
+    {
+        yield 'the same polyline' => [fn (Activity $activity): Activity => $activity->withPolyline('tqafAua~y^vG{D')];
+        yield 'the same route geography' => [fn (Activity $activity): Activity => $activity->withRouteGeography(
+            RouteGeography::create(['country_code' => 'BE'])
+        )];
+        yield 'the same name' => [fn (Activity $activity): Activity => $activity->withName(
+            ActivityName::fromString('Test activity')
+        )];
+        yield 'a property the map does not care about' => [
+            fn (Activity $activity): Activity => $activity->withDeviceName('Wahoo'),
+        ];
+    }
+
+    public function testItShouldRecordNothingWhenTheActivityIsNotOnTheMap(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withWorldType(WorldType::ZWIFT)
+            ->build();
+
+        $this->assertEmpty($activity->withName(ActivityName::fromString('Renamed'))->getRecordedEvents());
+    }
+
+    public function testItShouldRecordThatTheRouteWasUpdatedWhenTheActivityIsCreatedOnTheMap(): void
+    {
+        $this->assertEquals(
+            [new ActivityWasAdded(), new ActivityRouteWasUpdated()],
+            $this->activityOnTheMap()->buildAsNewlyCreated()->getRecordedEvents()
+        );
+    }
+
+    public function testItShouldOnlyRecordThatTheActivityWasAddedWhenItIsCreatedOffTheMap(): void
+    {
+        $this->assertEquals(
+            [new ActivityWasAdded()],
+            ActivityBuilder::fromDefaults()->buildAsNewlyCreated()->getRecordedEvents()
+        );
+    }
+
+    private static function activityOnTheMap(): ActivityBuilder
+    {
+        return ActivityBuilder::fromDefaults()
+            ->withSportType(SportType::RIDE)
+            ->withWorldType(WorldType::REAL_WORLD)
+            ->withPolyline('tqafAua~y^vG{D')
+            ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']));
     }
 }

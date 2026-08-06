@@ -11,6 +11,7 @@ enum CacheTag: string
     case APP_BUILD = 'app.build';
     case ACTIVITIES = 'activities';
     case ACTIVITY_IMAGES = 'activity.images';
+    case ACTIVITY_ROUTE = 'activity.route';
     case SEGMENTS = 'segments';
     case CHALLENGES = 'challenges';
     case SETTINGS_GENERAL = 'settings.general';

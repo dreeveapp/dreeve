@@ -257,6 +257,9 @@ final class Activity implements SupportsAITooling
             workoutType: $workoutType,
         );
         $activity->recordThat(new ActivityWasAdded());
+        if ($activity->hasMappableRoute()) {
+            $activity->recordThat(new ActivityRouteWasUpdated());
+        }
 
         return $activity;
     }
@@ -344,9 +347,9 @@ final class Activity implements SupportsAITooling
 
     public function withStartDateTime(SerializableDateTime $startDateTime): self
     {
-        return clone ($this, [
+        return $this->recordRouteUpdate(clone ($this, [
             'startDateTime' => $startDateTime,
-        ]);
+        ]));
     }
 
     public function getSportType(): SportType
@@ -361,9 +364,9 @@ final class Activity implements SupportsAITooling
 
     public function withWorldType(WorldType $worldType): self
     {
-        return clone ($this, [
+        return $this->recordRouteUpdate(clone ($this, [
             'worldType' => $worldType,
-        ]);
+        ]));
     }
 
     public function getImportSource(): ImportSource
@@ -378,9 +381,9 @@ final class Activity implements SupportsAITooling
 
     public function withSportType(SportType $sportType): self
     {
-        return clone ($this, [
+        return $this->recordRouteUpdate(clone ($this, [
             'sportType' => $sportType,
-        ]);
+        ]));
     }
 
     public function getStartingCoordinate(): ?Coordinate
@@ -527,9 +530,9 @@ final class Activity implements SupportsAITooling
 
     public function withName(ActivityName $name): self
     {
-        return clone ($this, [
+        return $this->recordRouteUpdate(clone ($this, [
             'name' => $name,
-        ]);
+        ]));
     }
 
     public function getDescription(): string
@@ -551,9 +554,9 @@ final class Activity implements SupportsAITooling
 
     public function withDistance(Kilometer $distance): self
     {
-        return clone ($this, [
+        return $this->recordRouteUpdate(clone ($this, [
             'distance' => $distance,
-        ]);
+        ]));
     }
 
     public function getDistanceInDisplayUnit(): NauticalMile|Kilometer
@@ -715,9 +718,9 @@ final class Activity implements SupportsAITooling
 
     public function withPolyline(?string $polyline): self
     {
-        return clone ($this, [
+        return $this->recordRouteUpdate(clone ($this, [
             'polyline' => $polyline,
-        ]);
+        ]));
     }
 
     public function getDeviceName(): ?string
@@ -744,9 +747,9 @@ final class Activity implements SupportsAITooling
 
     public function withCommute(bool $isCommute): self
     {
-        return clone ($this, [
+        return $this->recordRouteUpdate(clone ($this, [
             'isCommute' => $isCommute,
-        ]);
+        ]));
     }
 
     public function getWorkoutType(): ?WorkoutType
@@ -756,9 +759,9 @@ final class Activity implements SupportsAITooling
 
     public function withWorkoutType(?WorkoutType $workoutType): self
     {
-        return clone ($this, [
+        return $this->recordRouteUpdate(clone ($this, [
             'workoutType' => $workoutType,
-        ]);
+        ]));
     }
 
     public function isZwiftRide(): bool
@@ -804,9 +807,52 @@ final class Activity implements SupportsAITooling
 
     public function withRouteGeography(RouteGeography $routeGeography): self
     {
-        return clone ($this, [
+        return $this->recordRouteUpdate(clone ($this, [
             'routeGeography' => $routeGeography,
-        ]);
+        ]));
+    }
+
+    /**
+     * Mirrors the WHERE clause of ActivityBasedRouteRepository::findAll().
+     */
+    public function hasMappableRoute(): bool
+    {
+        return $this->sportType->supportsReverseGeocoding()
+            && WorldType::REAL_WORLD === $this->worldType
+            && !empty($this->polyline)
+            && !is_null($this->routeGeography->getStartingPointCountryCode());
+    }
+
+    /**
+     * Null when the activity does not show up on the map. Otherwise every field the Route read model exposes.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function routeSignature(): ?array
+    {
+        if (!$this->hasMappableRoute()) {
+            return null;
+        }
+
+        return [
+            'name' => $this->getName(),
+            'distance' => $this->distance->toFloat(),
+            'polyline' => $this->polyline,
+            'routeGeography' => $this->routeGeography->jsonSerialize(),
+            'sportType' => $this->sportType->value,
+            'startDateTime' => $this->startDateTime->getTimestamp(),
+            'isCommute' => $this->isCommute,
+            'workoutType' => $this->workoutType?->value,
+        ];
+    }
+
+    private function recordRouteUpdate(self $clone): self
+    {
+        if ($this->routeSignature() !== $clone->routeSignature()) {
+            $clone->recordThat(new ActivityRouteWasUpdated());
+        }
+
+        return $clone;
     }
 
     public function getNormalizedPower(): ?int

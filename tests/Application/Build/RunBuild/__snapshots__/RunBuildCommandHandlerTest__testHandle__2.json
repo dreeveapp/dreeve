@@ -54,12 +54,6 @@
         "payload": []
     },
     {
-        "commandName": "App\\Application\\Build\\BuildHeatmapHtml\\BuildHeatmapHtml",
-        "payload": {
-            "now": "2023-10-17 16:15:04"
-        }
-    },
-    {
         "commandName": "App\\Application\\Build\\BuildBestEffortsHtml\\BuildBestEffortsHtml",
         "payload": []
     },
