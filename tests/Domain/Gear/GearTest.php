@@ -2,6 +2,8 @@
 
 namespace App\Tests\Domain\Gear;
 
+use App\Domain\Activity\ActivityTypes;
+use App\Domain\Gear\Gear;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
@@ -93,36 +95,88 @@ class GearTest extends TestCase
         $this->assertEquals($expectedResult, $gear->getRelativeCostPerWorkout());
     }
 
-    /**
-     * @return iterable<string, array{?Meter, ?Seconds, string}>
-     */
     public static function provideMovingTimeFormatted(): iterable
     {
         yield 'with moving time' => [Meter::from(10000), Seconds::from(3661), '1h 1m'];
         yield 'with zero moving time' => [null, null, '0m'];
     }
 
-    /**
-     * @return iterable<string, array{Meter, ?int, Kilometer}>
-     */
     public static function provideAverageDistance(): iterable
     {
         yield 'with activities' => [Meter::from(30000), 3, Kilometer::from(10)];
         yield 'with zero activities' => [Meter::from(30000), null, Kilometer::zero()];
     }
 
-    /**
-     * @return iterable<string, array{Meter, ?Seconds, KmPerHour}>
-     */
     public static function provideAverageSpeed(): iterable
     {
         yield 'with moving time' => [Meter::from(10000), Seconds::from(3600), KmPerHour::from(10)];
         yield 'with zero moving time' => [Meter::from(10000), null, KmPerHour::zero()];
     }
 
-    /**
-     * @return iterable<string, array{?Seconds, ?Money, ?Money}>
-     */
+    public function testItRecordsGearWasAddedOnCreate(): void
+    {
+        $this->assertCount(1, GearBuilder::fromDefaults()->buildAsNewlyCreated()->getRecordedEvents());
+    }
+
+    public function testItDoesNotRecordOnHydration(): void
+    {
+        $this->assertEmpty(GearBuilder::fromDefaults()->build()->getRecordedEvents());
+    }
+
+    #[DataProvider('provideUnchangedMutations')]
+    public function testItDoesNotRecordWhenNothingChanged(\Closure $mutate): void
+    {
+        $gear = GearBuilder::fromDefaults()
+            ->withName('Existing gear')
+            ->withIsRetired(false)
+            ->withLocalImagePath('/gear/bike.jpg')
+            ->withPurchasePrice(Money::EUR(10000))
+            ->build();
+
+        $this->assertEmpty($mutate($gear)->getRecordedEvents());
+    }
+
+    #[DataProvider('provideChangedMutations')]
+    public function testItRecordsGearWasUpdatedOnlyOnceWhenSomethingChanged(\Closure $mutate): void
+    {
+        $gear = GearBuilder::fromDefaults()
+            ->withName('Existing gear')
+            ->withIsRetired(false)
+            ->withLocalImagePath('/gear/bike.jpg')
+            ->withPurchasePrice(Money::EUR(10000))
+            ->build();
+
+        $this->assertCount(1, $mutate($gear)->getRecordedEvents());
+    }
+
+    public function testItDoesNotRecordWhenTheActivityTypesAreEnriched(): void
+    {
+        $gear = GearBuilder::fromDefaults()->build();
+
+        $this->assertEmpty($gear->withActivityTypes(ActivityTypes::empty())->getRecordedEvents());
+    }
+
+    public static function provideUnchangedMutations(): iterable
+    {
+        yield 'name' => [fn (Gear $gear): Gear => $gear->withName('Existing gear')];
+        yield 'isRetired' => [fn (Gear $gear): Gear => $gear->withIsRetired(false)];
+        yield 'localImagePath' => [fn (Gear $gear): Gear => $gear->withLocalImagePath('/gear/bike.jpg')];
+        yield 'purchasePrice' => [fn (Gear $gear): Gear => $gear->withPurchasePrice(Money::EUR(10000))];
+        yield 'all of them, like a no-op import' => [fn (Gear $gear): Gear => $gear
+            ->withName('Existing gear')
+            ->withIsRetired(false), ];
+    }
+
+    public static function provideChangedMutations(): iterable
+    {
+        yield 'name' => [fn (Gear $gear): Gear => $gear->withName('Renamed gear')];
+        yield 'isRetired' => [fn (Gear $gear): Gear => $gear->withIsRetired(true)];
+        yield 'localImagePath' => [fn (Gear $gear): Gear => $gear->withLocalImagePath('/gear/other.jpg')];
+        yield 'localImagePath removed' => [fn (Gear $gear): Gear => $gear->withLocalImagePath(null)];
+        yield 'purchasePrice amount' => [fn (Gear $gear): Gear => $gear->withPurchasePrice(Money::EUR(20000))];
+        yield 'purchasePrice currency' => [fn (Gear $gear): Gear => $gear->withPurchasePrice(Money::USD(10000))];
+    }
+
     public static function provideRelativeCostPerHour(): iterable
     {
         yield 'with moving time' => [Seconds::from(7200), Money::EUR(10000), Money::EUR(5000)];
@@ -130,9 +184,6 @@ class GearTest extends TestCase
         yield 'without purchase price' => [Seconds::from(7200), null, null];
     }
 
-    /**
-     * @return iterable<string, array{?int, ?Money, ?Money}>
-     */
     public static function provideRelativeCostPerWorkout(): iterable
     {
         yield 'with activities' => [5, Money::EUR(10000), Money::EUR(2000)];

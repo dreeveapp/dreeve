@@ -122,7 +122,9 @@ final class Gear implements SupportsAITooling
         $clone = clone ($this, [
             'name' => $name,
         ]);
-        $clone->recordThat(new GearWasUpdated());
+        if ($this->name !== $name) {
+            $clone->recordThat(new GearWasUpdated());
+        }
 
         return $clone;
     }
@@ -220,7 +222,9 @@ final class Gear implements SupportsAITooling
         $clone = clone ($this, [
             'isRetired' => $isRetired,
         ]);
-        $clone->recordThat(new GearWasUpdated());
+        if ($this->isRetired !== $isRetired) {
+            $clone->recordThat(new GearWasUpdated());
+        }
 
         return $clone;
     }
@@ -249,7 +253,9 @@ final class Gear implements SupportsAITooling
         $clone = clone ($this, [
             'localImagePath' => $localImagePath,
         ]);
-        $clone->recordThat(new GearWasUpdated());
+        if ($this->getLocalImagePath() !== $clone->getLocalImagePath()) {
+            $clone->recordThat(new GearWasUpdated());
+        }
 
         return $clone;
     }
@@ -276,7 +282,9 @@ final class Gear implements SupportsAITooling
         $clone = clone ($this, [
             'purchasePrice' => $purchasePrice,
         ]);
-        $clone->recordThat(new GearWasUpdated());
+        if (!$this->purchasePrice?->equals($purchasePrice)) {
+            $clone->recordThat(new GearWasUpdated());
+        }
 
         return $clone;
     }

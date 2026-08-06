@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Gear;
 
+use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheTag;
@@ -62,12 +63,25 @@ class GearInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->assertTrue($this->isServedFromCache());
     }
 
+    public function testItDoesNotInvalidateWhenAnImportRewritesTheSameValues(): void
+    {
+        $this->gearRepository->add(GearBuilder::fromDefaults()->build());
+        $this->warmUpRenderCache();
+
+        $this->gearRepository->update(
+            $this->gearRepository->find(GearId::fromUnprefixed('1'))
+                ->withName('Existing gear')
+                ->withIsRetired(false)
+        );
+
+        $this->assertTrue($this->isServedFromCache());
+    }
+
     public function testItDoesNotInvalidateWhenGearIsRead(): void
     {
         $this->gearRepository->add(GearBuilder::fromDefaults()->build());
         $this->warmUpRenderCache();
 
-        // Reading enriches the gear with its activity types, which must not record an event.
         $this->gearRepository->findAll();
 
         $this->assertTrue($this->isServedFromCache());
