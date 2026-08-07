@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
-use App\Domain\Activity\Stream\ActivityStream;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Serialization\Escape;
@@ -25,8 +24,9 @@ final readonly class GpxSerializer
         $activity = $this->enrichedActivities->find($activityId);
         $activitySteams = $this->activityStreamRepository->findByActivityId($activity->getId());
 
-        $timeStream = $activitySteams->filterOnType(StreamType::TIME);
-        assert($timeStream instanceof ActivityStream);
+        if (!$timeStream = $activitySteams->filterOnType(StreamType::TIME)) {
+            return null;
+        }
         $latLngStream = $activitySteams->filterOnType(StreamType::LAT_LNG)?->getData() ?? [];
         $altitudeStream = $activitySteams->filterOnType(StreamType::ALTITUDE)?->getData() ?? [];
         $powerStream = $activitySteams->filterOnType(StreamType::WATTS)?->getData() ?? [];

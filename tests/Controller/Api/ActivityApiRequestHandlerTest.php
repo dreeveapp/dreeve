@@ -44,6 +44,41 @@ class ActivityApiRequestHandlerTest extends ControllerWebTestCase
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
+    public function testGpx(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->client->request('GET', '/api/activity/activity-9756441741/route.gpx');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'application/gpx+xml; charset=UTF-8');
+        $this->assertMatchesXmlSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
+    public function testGpxForActivityWithoutTimeStream(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->client->request('GET', '/api/activity/activity-9542782314/route.gpx');
+
+        $this->assertResponseStatusCodeSame(404);
+        $this->assertEquals(
+            ['message' => 'Activity "activity-9542782314" has no GPX data'],
+            Json::decode((string) $this->client->getResponse()->getContent())
+        );
+    }
+
+    public function testGpxWhenActivityNotFound(): void
+    {
+        $this->client->request('GET', '/api/activity/activity-1/route.gpx');
+
+        $this->assertResponseStatusCodeSame(404);
+        $this->assertEquals(
+            ['message' => 'Activity "activity-1" not found'],
+            Json::decode((string) $this->client->getResponse()->getContent())
+        );
+    }
+
     public function testItAcceptsAnUnprefixedActivityId(): void
     {
         $this->provideFullTestSet();
@@ -87,6 +122,18 @@ class ActivityApiRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertEquals(
             'api_activity_segments',
+            $this->client->getRequest()->attributes->get('_route')
+        );
+    }
+
+    public function testItServesGpxFromTheEndpointAndNotFromTheBuildDirectory(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->client->request('GET', '/api/activity/activity-9756441741/route.gpx');
+
+        $this->assertEquals(
+            'api_activity_gpx',
             $this->client->getRequest()->attributes->get('_route')
         );
     }

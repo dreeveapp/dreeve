@@ -1,33 +1,31 @@
 Buildingapp...
 
 
-0%[>---------------------------]0/14-Initializing...
+0%[>---------------------------]0/13-Initializing...
 
-7%[==>-------------------------]1/14-Configuringlocale
+7%[==>-------------------------]1/13-Configuringlocale
 
-14%[====>-----------------------]2/14-Configuringthemecolors
+15%[====>-----------------------]2/13-Configuringthemecolors
 
-21%[======>---------------------]3/14-BuildingManifest
+23%[======>---------------------]3/13-BuildingManifest
 
-28%[========>-------------------]4/14-Buildingdashboard
+30%[========>-------------------]4/13-Buildingdashboard
 
-35%[==========>-----------------]5/14-Buildingactivities
+38%[==========>-----------------]5/13-Buildingactivities
 
-42%[============>---------------]6/14-Buildinggpxfiles
+46%[============>---------------]6/13-Buildingmonthlystats
 
-50%[==============>-------------]7/14-Buildingmonthlystats
+53%[===============>------------]7/13-Buildinggearstats
 
-57%[================>-----------]8/14-Buildinggearstats
+61%[=================>----------]8/13-Buildinggearmaintenance
 
-64%[==================>---------]9/14-Buildinggearmaintenance
+69%[===================>--------]9/13-Buildingrecordingdevices
 
-71%[====================>-------]10/14-Buildingrecordingdevices
+76%[=====================>------]10/13-Buildingsegments
 
-78%[======================>-----]11/14-Buildingsegments
+84%[=======================>----]11/13-Buildingbestefforts
 
-85%[========================>---]12/14-Buildingbestefforts
+92%[=========================>--]12/13-Buildingrewind
 
-92%[==========================>-]13/14-Buildingrewind
-
-100%[============================]14/14-Buildingbadges
+100%[============================]13/13-Buildingbadges
 
