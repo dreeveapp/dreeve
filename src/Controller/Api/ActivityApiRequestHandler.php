@@ -45,7 +45,9 @@ final readonly class ActivityApiRequestHandler
     public function bestEfforts(string $activityId): HtmlResponse
     {
         try {
-            $activity = $this->activityRepository->find(ActivityId::fromPrefixedOrUnprefixed($activityId));
+            $activity = $this->activityRepository->find(
+                ActivityId::fromPrefixedOrUnprefixed($activityId)
+            );
         } catch (EntityNotFound) {
             throw new NotFoundHttpException(sprintf('Activity "%s" not found', $activityId));
         }
