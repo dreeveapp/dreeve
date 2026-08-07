@@ -196,6 +196,53 @@ class CalculateCombinedStreamsTest extends ContainerTestCase
         );
     }
 
+    public function testProcessWithoutAMovingStreamFallsBackToElapsedTime(): void
+    {
+        $output = new SpyOutput();
+
+        $activityRepository = $this->getContainer()->get(ActivityRepository::class);
+        $streamRepository = $this->getContainer()->get(ActivityStreamRepository::class);
+
+        $activityId = ActivityId::fromUnprefixed('one');
+        $activityRepository->add(
+            ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withSportType(SportType::WEIGHT_TRAINING)
+                    ->withActivityId($activityId)
+                    ->build(),
+                []
+            )
+        );
+        $streamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withStreamType(StreamType::TIME)
+                ->withData([0, 4, 9, 15, 105, 110])
+                ->build()
+        );
+        $streamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withStreamType(StreamType::HEART_RATE)
+                ->withData([91, 95, 125, 129, 128, 117])
+                ->build()
+        );
+
+        $this->calculateCombinedStreams->process($output);
+
+        $combinedStream = $this->getContainer()->get(CombinedActivityStreamRepository::class)
+            ->findOneForActivityAndUnitSystem($activityId, UnitSystem::METRIC);
+
+        $this->assertEquals(
+            ['4s', '9s', '15s', '15s', '20s', '20s'],
+            $combinedStream->getTimes()
+        );
+        $this->assertEquals(
+            [91, 95, 125, 129, 128, 117],
+            $combinedStream->getChartStreamData(CombinedStreamType::HEART_RATE)
+        );
+    }
+
     public function testProcessWhenStreamDataIsMissingOrEmpty(): void
     {
         $output = new SpyOutput();

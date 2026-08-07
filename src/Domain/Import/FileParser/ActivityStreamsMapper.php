@@ -30,7 +30,11 @@ final readonly class ActivityStreamsMapper
             if (!$streamType = StreamType::tryFrom($type)) {
                 continue;
             }
-            if ([] === array_filter($values, static fn (mixed $value): bool => null !== $value)) {
+            $hasUsableValues = match ($streamType) {
+                StreamType::TIME => array_any($values, static fn (mixed $value): bool => null !== $value),
+                default => [] !== array_filter($values),
+            };
+            if (!$hasUsableValues) {
                 continue;
             }
             $streams->add(ActivityStream::create(

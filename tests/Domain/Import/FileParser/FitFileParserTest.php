@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Import\FileParser;
 
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Import\FileParser\ActivityStreamsMapper;
 use App\Domain\Import\FileParser\CouldNotParseActivityFile;
 use App\Domain\Import\FileParser\FitFileParser;
@@ -104,6 +105,16 @@ class FitFileParserTest extends ActivityFileParserTestCase
         $this->assertParsedFileMatchesSnapshot(
             $parser->parse($this->rawFileFromFixture('activity-pool-swim-with-hr-mesgs.fit'))
         );
+    }
+
+    public function testParseIgnoresADistanceStreamThatOnlyContainsZeroes(): void
+    {
+        $this->givenFitToolReturns((string) file_get_contents(__DIR__.'/fixtures/fit-document-with-zero-distance.json'));
+
+        $streams = $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))->getStreams();
+
+        $this->assertNull($streams->filterOnType(StreamType::DISTANCE));
+        $this->assertNotNull($streams->filterOnType(StreamType::HEART_RATE));
     }
 
     public function testParseMergesStrapHeartRateFromHrMessages(): void

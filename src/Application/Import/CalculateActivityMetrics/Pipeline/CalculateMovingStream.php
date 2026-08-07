@@ -67,12 +67,17 @@ final readonly class CalculateMovingStream implements CalculateActivityMetricsSt
             return null;
         }
 
-        return array_map(
+        $moving = array_map(
             // An unknown speed (a gap in the data) counts as moving so we never
             // discard time we cannot prove was spent stationary.
             static fn (?float $speed): bool => null === $speed || $speed >= self::MOVING_SPEED_THRESHOLD_IN_METERS_PER_SECOND,
             $speeds,
         );
+        if (count(array_filter($moving)) < 2) {
+            return null;
+        }
+
+        return $moving;
     }
 
     /**
@@ -81,7 +86,7 @@ final readonly class CalculateMovingStream implements CalculateActivityMetricsSt
     private function resolveSpeeds(ActivityStreams $streams): ?array
     {
         $velocity = array_values($streams->filterOnType(StreamType::VELOCITY)?->getData() ?? []);
-        if ($this->hasNumericValue($velocity)) {
+        if ($this->hasUsableValues($velocity)) {
             return array_map(
                 static fn (mixed $value): ?float => is_numeric($value) ? (float) $value : null,
                 $velocity,
@@ -94,7 +99,7 @@ final readonly class CalculateMovingStream implements CalculateActivityMetricsSt
         }
 
         $distance = array_values($streams->filterOnType(StreamType::DISTANCE)?->getData() ?? []);
-        if ($this->hasNumericValue($distance)) {
+        if ($this->hasUsableValues($distance)) {
             return $this->speedsFromDistance($distance, $time);
         }
 
@@ -158,8 +163,8 @@ final readonly class CalculateMovingStream implements CalculateActivityMetricsSt
     /**
      * @param list<mixed> $values
      */
-    private function hasNumericValue(array $values): bool
+    private function hasUsableValues(array $values): bool
     {
-        return array_any($values, fn (mixed $value): bool => is_numeric($value));
+        return array_any($values, static fn (mixed $value): bool => is_numeric($value) && 0.0 !== (float) $value);
     }
 }
