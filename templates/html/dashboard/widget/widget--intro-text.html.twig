@@ -6,7 +6,7 @@
         {% set startDate = '<span class="text-sm">' ~ intro.getStartDate()|formatDate('normal') ~ '</span>' %}
         {% set totalDaysOfWorkingOut = kbdTagOpen ~ intro.getTotalDaysOfWorkingOut() ~ kdbTagClose %}
         {% trans with {'{numberOfDaysAgo}': numberOfDaysAgo, '{startDate}': startDate, '{totalDaysOfWorkingOut}': totalDaysOfWorkingOut} %}
-            Since I began using Strava {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.
+            Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.
         {% endtrans %}
     </p>
     <p class="mb-3">
