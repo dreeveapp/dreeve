@@ -5,6 +5,7 @@ namespace App\Tests\Controller;
 use App\Domain\Import\ImportMode;
 use App\Tests\ProvideBuiltApp;
 use App\Tests\ProvideSettings;
+use App\Tests\ResetStaticCaches;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -12,6 +13,7 @@ abstract class ControllerWebTestCase extends WebTestCase
 {
     use ProvideSettings;
     use ProvideBuiltApp;
+    use ResetStaticCaches;
 
     protected KernelBrowser $client;
 
@@ -23,6 +25,8 @@ abstract class ControllerWebTestCase extends WebTestCase
         parent::setUp();
 
         $this->originalImportMode = $_ENV['IMPORT_MODE'] ?? null;
+
+        $this->resetStaticCaches();
 
         $this->prepareEnvironment();
 
