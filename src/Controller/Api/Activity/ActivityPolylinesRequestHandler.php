@@ -63,9 +63,6 @@ final readonly class ActivityPolylinesRequestHandler
     }
 
     /**
-     * Unlike metrics and coordinates, this one still has an answer when there is no combined
-     * stream: it falls back to the (privacy truncated) polyline Strava hands us.
-     *
      * @return array<mixed>|null
      */
     private function routeCoordinates(Activity $activity): ?array
