@@ -2,10 +2,13 @@
 
 namespace App\Tests\Domain\Activity;
 
+use App\Domain\Activity\ActivityCacheTag;
+use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Route\RouteGeography;
+use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorldType;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheTag;
@@ -222,6 +225,52 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2016))));
     }
 
+    public function testItOnlyInvalidatesTheActivityThatWasUpdated(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->update(ActivityWithRawData::fromState(
+            $activity->withSportType(SportType::GRAVEL_RIDE),
+            [],
+        ));
+
+        $this->assertFalse($this->isServedFromCache(ActivityCacheTag::for($activity->getId())));
+        $this->assertTrue($this->isServedFromCache(ActivityCacheTag::for(ActivityId::fromUnprefixed('1'))));
+    }
+
+    public function testItInvalidatesTheActivityScopedTagForAnActivityThatIsNotOnTheMap(): void
+    {
+        // The route signature is null for these, so ActivityRouteWasUpdated never fires. They can
+        // still have a profile chart, which is styled after the sport type.
+        $activity = ActivityBuilder::fromDefaults()
+            ->withWorldType(WorldType::ZWIFT)
+            ->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->update(ActivityWithRawData::fromState(
+            $activity->withSportType(SportType::VIRTUAL_RIDE),
+            [],
+        ));
+
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_ROUTE));
+        $this->assertFalse($this->isServedFromCache(ActivityCacheTag::for($activity->getId())));
+    }
+
+    public function testItInvalidatesTheActivityScopedTagWhenAnActivityIsDeleted(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->delete($activity->getId());
+
+        $this->assertFalse($this->isServedFromCache(ActivityCacheTag::for($activity->getId())));
+        $this->assertTrue($this->isServedFromCache(ActivityCacheTag::for(ActivityId::fromUnprefixed('1'))));
+    }
+
     private function isServedFromCache(CacheTag|ScopedCacheTag $cacheTag): bool
     {
         return $this->renderCache->get(
@@ -241,6 +290,8 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             CacheTag::ACTIVITIES->forYear(Year::fromInt(2016)),
             CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023)),
             CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2016)),
+            ActivityCacheTag::for(ActivityId::fromUnprefixed('903645')),
+            ActivityCacheTag::for(ActivityId::fromUnprefixed('1')),
         ];
 
         foreach ($cacheTags as $cacheTag) {

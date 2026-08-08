@@ -57,13 +57,7 @@ final readonly class BuildSegmentsHtmlCommandHandler implements CommandHandler
                     ->withBestEffort($segmentEffortsTopTen->getBestEffort())
                     ->withLastEffortDate($segmentEfforts->getFirst()?->getStartDateTime());
 
-                $polylinesFileLocation = sprintf('segment/%s/polylines.json', $segment->getId()->toUnprefixedString());
-                if (($leafletMap = $segment->getLeafletMap()) && !$this->buildApiStorage->fileExists($polylinesFileLocation)) {
-                    $this->buildApiStorage->write(
-                        $polylinesFileLocation,
-                        (string) Json::encodeAndCompress([$segment->getPolyline()?->decodeAndPairLatLng()]),
-                    );
-                }
+                $leafletMap = $segment->getLeafletMap();
 
                 $this->buildHtmlStorage->write(
                     'segment/'.$segment->getId().'.html',
@@ -82,7 +76,7 @@ final readonly class BuildSegmentsHtmlCommandHandler implements CommandHandler
                             SegmentEffortHistoryChart::create($segmentEfforts)->build()
                         ),
                         'leaflet' => $leafletMap ? [
-                            'polylineUrl' => $polylinesFileLocation,
+                            'polylineUrl' => sprintf('segment/%s/polylines', $segment->getId()->toUnprefixedString()),
                             'map' => $leafletMap,
                         ] : null,
                     ]),

@@ -27,7 +27,7 @@ final readonly class ActivityInvalidateCacheTagsListener
     #[AsEventListener]
     public function reactToActivityWasUpdated(ActivityWasUpdated $event): void
     {
-        $cacheTags = [CacheTag::ACTIVITIES];
+        $cacheTags = [CacheTag::ACTIVITIES, ActivityCacheTag::for($event->getActivityId())];
         foreach ($event->getYears() as $year) {
             $cacheTags[] = CacheTag::ACTIVITIES->forYear($year);
         }
@@ -56,6 +56,7 @@ final readonly class ActivityInvalidateCacheTagsListener
         $this->renderCache->invalidateTags(
             CacheTag::ACTIVITIES,
             CacheTag::ACTIVITIES->forYear($event->getYear()),
+            ActivityCacheTag::for($event->getActivityId()),
             CacheTag::ACTIVITY_IMAGES,
             CacheTag::ACTIVITY_IMAGES->forYear($event->getYear()),
             CacheTag::ACTIVITY_ROUTE,

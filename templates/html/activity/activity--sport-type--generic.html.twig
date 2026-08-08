@@ -203,8 +203,8 @@
                 <div>
                     {% set unprefixedActivityId = activity.getId().toUnprefixedString() %}
                     <div style="height: {{ profileChartHeight }}px"
-                         data-echarts-options='{{ relativeUrl('api/activity/' ~ unprefixedActivityId ~ '/metrics.json') }}'
-                         data-leaflet-echart-connect='{{ relativeUrl('api/activity/' ~ unprefixedActivityId ~ '/coordinates.json') }}'
+                         data-echarts-options-url='{{ relativeUrl('api/activity/' ~ unprefixedActivityId ~ '/metrics') }}'
+                         data-leaflet-echart-connect='{{ relativeUrl('api/activity/' ~ unprefixedActivityId ~ '/coordinates') }}'
                     ></div>
                 </div>
             {% endif %}

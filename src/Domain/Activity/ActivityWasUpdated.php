@@ -11,9 +11,15 @@ use App\Infrastructure\ValueObject\Time\Year;
 final class ActivityWasUpdated extends DomainEvent
 {
     public function __construct(
+        private readonly ActivityId $activityId,
         private readonly SerializableDateTime $startDate,
         private readonly SerializableDateTime $previousStartDate,
     ) {
+    }
+
+    public function getActivityId(): ActivityId
+    {
+        return $this->activityId;
     }
 
     /**

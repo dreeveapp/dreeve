@@ -82,11 +82,15 @@ final readonly class CombinedStreamProfileCharts
         );
     }
 
+    public static function totalHeightFor(int $numberOfLanes): int
+    {
+        return self::TOP_MARGIN + $numberOfLanes * self::GRID_HEIGHT
+            + ($numberOfLanes - 1) * self::GAP + self::BOTTOM_MARGIN;
+    }
+
     public function getTotalHeight(): int
     {
-        $count = count($this->items);
-
-        return self::TOP_MARGIN + $count * self::GRID_HEIGHT + ($count - 1) * self::GAP + self::BOTTOM_MARGIN;
+        return self::totalHeightFor(count($this->items));
     }
 
     /**

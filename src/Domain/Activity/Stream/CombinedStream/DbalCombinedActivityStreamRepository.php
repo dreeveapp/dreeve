@@ -30,6 +30,25 @@ final readonly class DbalCombinedActivityStreamRepository extends DbalRepository
         ]);
     }
 
+    public function countChartableStreamTypesFor(ActivityId $activityId, UnitSystem $unitSystem): int
+    {
+        $sql = 'SELECT streamTypes FROM CombinedActivityStream
+                WHERE activityId = :activityId AND unitSystem = :unitSystem';
+        if (!$streamTypes = $this->connection->executeQuery($sql,
+            [
+                'activityId' => $activityId,
+                'unitSystem' => $unitSystem->value,
+            ],
+        )->fetchOne()) {
+            return 0;
+        }
+
+        return count(array_filter(
+            explode(',', (string) $streamTypes),
+            fn (string $streamType): bool => CombinedStreamType::from($streamType)->isChartable()
+        ));
+    }
+
     public function findOneForActivityAndUnitSystem(ActivityId $activityId, UnitSystem $unitSystem): CombinedActivityStream
     {
         $sql = 'SELECT * FROM CombinedActivityStream 

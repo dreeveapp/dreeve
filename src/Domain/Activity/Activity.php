@@ -876,6 +876,7 @@ final class Activity implements SupportsAITooling
         }
         if ($this->updateSignature() !== $clone->updateSignature()) {
             $clone->recordOnlyOnce(new ActivityWasUpdated(
+                activityId: $clone->getId(),
                 startDate: $clone->getStartDate(),
                 previousStartDate: $this->getStartDate()
             ));

@@ -51,7 +51,6 @@ final readonly class BestEffortsApiRequestHandler
                 cacheKey: $cacheKey,
                 cacheTags: CacheTags::of(CacheTag::ACTIVITIES),
             ),
-            // The history is ranked over all time, so unlike the page it does not go stale at midnight.
             callback: fn (): string => $this->twig->load('html/best-efforts/best-efforts-history.html.twig')->render([
                 'activityType' => $type,
                 'period' => BestEffortPeriod::ALL_TIME,

@@ -24,13 +24,13 @@ export default class ChartManager {
     init(rootNode, isDarkMode) {
         const handlers = this.getClickHandlers();
         const connectedCharts = [];
-        rootNode.querySelectorAll('[data-echarts-options]').forEach(chartNode => {
+        rootNode.querySelectorAll('[data-echarts-options], [data-echarts-options-url]').forEach(chartNode => {
             const chart = echarts.init(chartNode, isDarkMode ? 'v5-dark' : 'v5');
-            const rawChartOptions = chartNode.getAttribute('data-echarts-options');
+            const chartOptionsUrl = chartNode.getAttribute('data-echarts-options-url');
 
-            const loadOptions = rawChartOptions.toLowerCase().endsWith('.json')
-                ? fetchJson(rawChartOptions)
-                : Promise.resolve(JSON.parse(rawChartOptions));
+            const loadOptions = chartOptionsUrl
+                ? fetchJson(chartOptionsUrl)
+                : Promise.resolve(JSON.parse(chartNode.getAttribute('data-echarts-options')));
             chart.showLoading();
 
             loadOptions.then(chartOptions => {

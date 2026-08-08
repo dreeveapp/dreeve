@@ -217,7 +217,10 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
         }
 
         $this->eventBus->publishEvents([
-            new ActivityWasDeleted(SerializableDateTime::fromString((string) $startDateTime)),
+            new ActivityWasDeleted(
+                activityId: $activityId,
+                startDate: SerializableDateTime::fromString((string) $startDateTime)
+            ),
         ]);
     }
 
