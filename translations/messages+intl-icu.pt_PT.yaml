@@ -70,6 +70,7 @@ Consistency: Consistency
 Country: Country
 Cricket: Cricket
 Crossfit: Crossfit
+'Crunching the numbers...': 'Crunching the numbers...'
 'Current Status': 'Current Status'
 'Current streaks': 'Current streaks'
 Cycling: Cycling
@@ -97,6 +98,7 @@ Distance: Distância
 'Distance per month per gear': 'Distância por mês por equipamento'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.'
 Duration: Duration
+'Dusting off the record books...': 'Dusting off the record books...'
 'E-Bike Rides': 'Passeios de E-Bike'
 'E-Mountain Bike Rides': 'Passeios de E-MTB'
 Eddington: Eddington
@@ -120,6 +122,7 @@ Evening: 'Fim da tarde'
 'FTP history': 'Histórico de FTP'
 Favourite: Favorito
 Feb: Fev
+'Filling up the bottles...': 'Filling up the bottles...'
 'Filter on KOM segments': 'Filtrar por segmentos KOM'
 'Filter on country': 'Filtrar por país'
 'Filter on sport type': 'Filtrar por tipo de desporto'
@@ -292,6 +295,7 @@ Ranking: Ranking
 'Reached {threshold} hours total moving time': 'Reached {threshold} hours total moving time'
 'Reached {threshold} total distance': 'Reached {threshold} total distance'
 'Reached {threshold} total elevation': 'Reached {threshold} total elevation'
+'Recalculating your suffer score...': 'Recalculating your suffer score...'
 'Recent effort': 'Recent effort'
 'Recording devices': 'Recording devices'
 'Recording devices details': 'Recording devices details'
@@ -488,6 +492,7 @@ Volume: Volume
 Walking: Walking
 Walks: Passeios
 'Water Sports': 'Desportos Aquáticos'
+'Waxing the chain...': 'Waxing the chain...'
 'We detected following issues': 'Foram detectadas as seguintes situações'
 Wed: Qua
 Wed.: Wed.

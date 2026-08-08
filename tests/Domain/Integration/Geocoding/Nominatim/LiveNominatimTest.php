@@ -25,7 +25,7 @@ class LiveNominatimTest extends TestCase
 
     private Nominatim $nominatim;
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject&\GuzzleHttp\Client
+     * @var MockObject&Client
      */
     private MockObject $client;
 

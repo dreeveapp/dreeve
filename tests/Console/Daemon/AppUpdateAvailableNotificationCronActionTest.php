@@ -22,7 +22,7 @@ class AppUpdateAvailableNotificationCronActionTest extends ConsoleCommandTestCas
     private AppUpdateAvailableNotificationCronAction $cronAction;
     private SpyCommandBus $commandBus;
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject&\GuzzleHttp\Client
+     * @var MockObject&Client
      */
     private MockObject $client;
 

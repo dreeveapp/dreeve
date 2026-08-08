@@ -37,16 +37,16 @@ class StravaTest extends TestCase
     private Strava $strava;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject&\GuzzleHttp\Client
+     * @var MockObject&Client
      */
     private MockObject $client;
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject&\League\Flysystem\FilesystemOperator
+     * @var MockObject&FilesystemOperator
      */
     private MockObject $filesystemOperator;
     private NullSleep $sleep;
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject&\Psr\Log\LoggerInterface
+     * @var MockObject&LoggerInterface
      */
     private MockObject $logger;
 

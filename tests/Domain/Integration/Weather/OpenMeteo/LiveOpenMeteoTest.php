@@ -22,7 +22,7 @@ class LiveOpenMeteoTest extends TestCase
 
     private LiveOpenMeteo $liveOpenMeteo;
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject&\GuzzleHttp\Client
+     * @var MockObject&Client
      */
     private MockObject $client;
     private Clock $clock;

@@ -38,18 +38,18 @@ use Symfony\Component\HttpFoundation\EventStreamResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 
-#[\PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations]
+#[AllowMockObjectsWithoutExpectations]
 class AIChatRequestHandlerTest extends ContainerTestCase
 {
     use MatchesSnapshots;
 
     private KeyValueStore $keyValueStore;
     /**
-     * @var \PHPUnit\Framework\MockObject\Stub&\NeuronAI\Agent\AgentInterface
+     * @var Stub&AgentInterface
      */
     private Stub $neuronAIAgent;
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject&\App\Domain\Integration\AI\Chat\ChatRepository
+     * @var MockObject&ChatRepository
      */
     private MockObject $chatRepository;
 

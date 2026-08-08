@@ -18,7 +18,7 @@ class SetForceRebuildFlagMiddlewareTest extends TestCase
 {
     private SetForceRebuildFlagMiddleware $middleware;
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject&\App\Infrastructure\KeyValue\KeyValueStore
+     * @var MockObject&KeyValueStore
      */
     private MockObject $keyValueStore;
 

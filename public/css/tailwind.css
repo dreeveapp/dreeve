@@ -8,6 +8,7 @@
 @import "./components/data-table.css";
 @import "./components/filter-dropdown.css";
 @import "./components/form.css";
+@import "./components/loader.css";
 @import "./components/modal.css";
 @import "./components/pill.css";
 @import "./components/popover.css";
