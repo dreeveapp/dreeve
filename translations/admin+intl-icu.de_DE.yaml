@@ -1,5 +1,5 @@
 24-hour: 24-Stunden
-'A rule applies': 'A rule applies'
+'A rule applies': 'Eine Regel trifft zu'
 AI: KI
 AM/PM: AM/PM
 'API key': API-Schlüssel
@@ -7,7 +7,7 @@ Active: Aktiv
 'Activities excluded from peak power outputs': 'Aktivitäten, die von Maximalleistungswerten ausgeschlossen werden'
 'Activities to skip during import': 'Aktivitäten, die beim Import übersprungen werden'
 'Activities will appear here once they are imported.': 'Aktivitäten werden hier angezeigt, sobald sie importiert wurden.'
-Activity: Activität
+Activity: Aktivität
 'Activity ID': Aktivitäts-ID
 'Activity IDs to exclude when calculating peak power outputs.': 'Aktivität-IDs, die bei der Berechnung der Maximalleistungswerte ausgeschlossen werden.'
 'Activity management': Aktivitätenverwaltung
@@ -32,7 +32,7 @@ Activity: Activität
 'Add rule': 'Regel hinzufügen'
 'Add service': 'Service hinzufügen'
 'Add task': 'Aufgabe hinzufügen'
-'Add tile layer': 'Add tile layer'
+'Add tile layer': 'Kachelebene hinzufügen'
 'Add weight': 'Gewicht hinzufügen'
 'Add widget': 'Widget hinzufügen'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Füge {fit}, {tcx} oder {gpx} Dateien hinzu. Sie werden alle paar Minuten verarbeitet'
@@ -59,11 +59,11 @@ Apply: Anwenden
 'Assign gear': 'Ausrüstung zuweisen'
 'Athlete settings': Athleteneinstellung
 'Attached to': 'Zugeordnet zu'
-'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom.': 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom.'
-'Automation rules': Automatisierunsregeln
+'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom.': 'Fülle Ausrüstung, Pendelfahrten, Sportarten und mehr bei neu importierten Aktivitäten automatisch aus. Regeln werden von oben nach unten abgearbeitet.'
+'Automation rules': Automatisierungsregeln
 'Automation rules are only available in file import mode': 'Automatisierungsregeln sind nur im Dateiimportmodus verfügbar.'
-'Available tokens': 'Available tokens'
-'Average power': 'Average power'
+'Available tokens': 'Verfügbare Tokens'
+'Average power': 'Ø Leistung'
 'Back to app': 'Zurück zur App'
 'Base URI': 'Base URI'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Bevor Sie die App nutzen können, benötigen wir einige Informationen über Sie. Diese werden verwendet, um Ihre Herzfrequenzzonen und Ihre Trainingsbelastung zu berechnen. Alle weiteren Einstellungen können Sie später anpassen.'
@@ -77,8 +77,8 @@ Cancel: Abbrechen
 'Choose the order the metrics are shown in.': 'Wähle die Reihenfolge, in der die Metriken angezeigt werden.'
 Clear: Leeren
 'Clear filters': 'Filter zurücksetzen'
-'Click the map to set the center, or drag the marker to fine-tune it.': 'Click the map to set the center, or drag the marker to fine-tune it.'
-'Click the map to set the location, or drag the marker to fine-tune it.': 'Click the map to set the location, or drag the marker to fine-tune it.'
+'Click the map to set the center, or drag the marker to fine-tune it.': 'Klicke auf die Karte, um den Mittelpunkt festzulegen, oder ziehe den Marker für die Feineinstellung.'
+'Click the map to set the location, or drag the marker to fine-tune it.': 'Klicke auf die Karte, um den Ort festzulegen, oder ziehe den Marker für die Feineinstellung.'
 Close: Schließen
 Command: Befehl
 Commute: Pendeln
@@ -86,7 +86,7 @@ Component: Komponente
 'Conditions are combined with AND.': 'Die Bedingungen werden mit UND verknüpft.'
 Config: Konfiguration
 Configure: Konfigurieren
-'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.'
+'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Konfiguriere die zu berechnenden Eddington-Zahlen. Du kannst bis zu zwei im Dashboard-Widget anzeigen.'
 'Configure {widget}': '{widget} konfigurieren'
 'Configured via an environment variable and cannot be changed here.': 'Wird über eine Umgebungsvariable konfiguriert und kann hier nicht geändert werden.'
 'Configured via environment variables and cannot be changed here.': 'Wird über Umgebungsvariablen konfiguriert und kann hier nicht geändert werden.'
@@ -110,7 +110,7 @@ Disabled: Deaktiviert
 Distance: Distanz
 'Drag to reorder': 'Ziehen zum Neuordnen'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Ziehen, um die Reihenfolge festzulegen, in der Sportarten in der gesamten App angezeigt werden.'
-Duration: Duration
+Duration: Dauer
 Edit: Bearbeiten
 'Edit activity': 'Aktivität bearbeiten'
 'Edit automation rule': 'Automatisierungsregel bearbeiten'
@@ -158,7 +158,7 @@ Heatmap: Heatmap
 'History of cycling FTP. Needed to calculate activity stress level.': 'Verlauf der Radfahr-FTP. Wird benötigt, um das Belastungsniveau der Aktivität zu berechnen.'
 'History of running FTP. Needed to calculate activity stress level.': 'Verlauf der Lauf-FTP. Wird benötigt, um das Belastungsniveau der Aktivität zu berechnen.'
 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'Gewichtsverlauf (in kg oder Pfund, abhängig vom eingestellten Einheitensystem). Wird benötigt, um die relative Leistung in W/kg zu berechnen.'
-Hours: Hours
+Hours: Stunden
 'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'Wie oft (in Minuten, zwischen 1 und 60) in der Warteschlange stehende Webhook-Ereignisse verarbeitet werden.'
 If: Wenn
 'If all of these match': 'Wenn alle Bedingungen erfüllt sind'
@@ -168,11 +168,11 @@ Image: Bild
 Images: Bilder
 Import: Import
 'Import Strava data': 'Import Strava data'
-'Import activities': 'Import activities'
+'Import activities': 'Aktivitäten importieren'
 'Import pending': 'Import pending'
 'Import segment details': 'Segmentdetails importieren'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Segmentdetails importieren, damit Segmentkarten angezeigt werden können. Dies erfordert einen zusätzlichen Strava-API-Aufruf pro Segment und erhöht die Importzeit erheblich.'
-'Import source': 'Import source'
+'Import source': 'Importquelle'
 'Imported files will appear here once you upload them.': 'Importierte Dateien werden hier angezeigt, sobald du sie hochlädst.'
 'Imported from Strava': 'Von Strava importiert'
 'Imports new Strava activities.': 'Imports new Strava activities.'
@@ -246,12 +246,12 @@ Operator: Operator
 'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.': 'PHP-Datumsformat für normale Daten, z. B. d-m-Y ergibt 01-01-2025.'
 'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.': 'PHP-Datumsformat für kurze Daten, z. B. d-m-y ergibt 01-01-25.'
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Teile, deren Wartung du verfolgst, z. B. Ketten, Kassetten, Bremsbeläge ...'
-'Passes near': 'Passes near'
+'Passes near': 'Führt vorbei an'
 Password: Passwort
 'Performed on': 'Durchgeführt am'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos der ausgewählten Sportarten werden von der Fotogalerie ausgeschlossen.'
-'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
-'Polyline color': 'Polyline color'
+'Pick a device you already recorded with, or type a new name.': 'Wähle ein Gerät, mit dem du bereits aufgezeichnet hast, oder gib einen neuen Namen ein.'
+'Polyline color': 'Routenfarbe'
 'Processed on': 'Verarbeitet am'
 'Profile picture URL': Profilbild-URL
 Provider: Anbieter
@@ -269,10 +269,10 @@ Remove: Entfernen
 'Remove condition': 'Bedingung entfernen'
 'Remove goal': 'Ziel entfernen'
 'Remove task': 'Aufgabe entfernen'
-'Remove tile layer': 'Remove tile layer'
+'Remove tile layer': 'Kachelebene entfernen'
 'Remove widget': 'Widget entfernen'
 Removing...: Entfernen...
-'Render the map tiles in greyscale': 'Render the map tiles in greyscale'
+'Render the map tiles in greyscale': 'Karte in Graustufen anzeigen'
 "Reorder widgets and set each widget's width.": 'Widgets neu anordnen und die Breite jedes Widgets festlegen.'
 'Reset dashboard to default': 'Dashboard auf Standard zurücksetzen'
 'Reset to default': 'Auf Standard zurücksetzen'
@@ -291,7 +291,7 @@ Saved: gespeichert
 Saving...: 'Wird gespeichert...'
 'Scheduled actions the daemon runs at regular intervals.': 'Geplante Aktionen, die der Daemon in regelmäßigen Abständen ausführt.'
 'Search by name, date or activity ID': 'Nach Name, Datum oder Aktivitäts-ID suchen'
-Seconds: Seconds
+Seconds: Sekunden
 'Select a component first...': 'Wähle zuerst eine Komponente aus...'
 'Select a component…': 'Komponente auswählen…'
 'Select all': 'Alle auswählen'
@@ -306,7 +306,7 @@ Seconds: Seconds
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sendet eine Benachrichtigung, wenn eine Ausrüstungswartung fällig ist. Erfordert einen konfigurierten Benachrichtigungsdienst.'
 'Set description': 'Beschreibung festlegen'
 'Set name': 'Name festlegen'
-'Set recording device': 'Set recording device'
+'Set recording device': 'Aufzeichnungsgerät festlegen'
 'Set sport type': 'Sportart festlegen'
 'Set workout type': 'Trainingstyp festlegen'
 Settings: Einstellungen
@@ -314,7 +314,7 @@ Settings: Einstellungen
 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Kurzbefehle, die ein Benutzer im Trainingsassistenten auswählen kann. Dem Befehl keinen Schrägstrich voranstellen.'
 'Show in dashboard widget': 'Im Dashboard-Widget anzeigen'
 'Show last X years by default': 'Standardmäßig letzte X Jahre anzeigen'
-'Show options': 'Show options'
+'Show options': 'Optionen anzeigen'
 'Show password': 'Passwort anzeigen'
 'Show the workout assistant in the UI.': 'Den Trainingsassistenten in der Benutzeroberfläche anzeigen.'
 'Showing {first} - {last} of {total}': 'Zeige {first} - {last} von {total}'
@@ -324,18 +324,18 @@ Settings: Einstellungen
 'Signing in...': 'Anmeldung läuft...'
 'Skip activities recorded before': 'Aktivitäten überspringen, die aufgezeichnet wurden vor'
 Skipped: Übersprungen
-'Skipped (an earlier rule stopped processing).': 'Skipped (an earlier rule stopped processing).'
+'Skipped (an earlier rule stopped processing).': 'Übersprungen (eine vorherige Regel hat die Verarbeitung gestoppt).'
 Source: Quelle
 'Sport type': Sportart
 'Sport types': Sportarten
 'Sport types sorting order': 'Sortierreihenfolge der Sportarten'
 'Sport types to import': 'Zu importierende Sportarten'
 'Sport types to include': 'Einzubeziehende Sportarten'
-'Start date and time': 'Start date and time'
+'Start date and time': 'Startdatum und -uhrzeit'
 'Starts near': 'Beginnt in der Nähe'
-'Stop processing further rules when this rule matches': 'Stop processing further rules when this rule matches'
-'Stops after match': 'Stops after match'
-'Stops here': 'Stops here'
+'Stop processing further rules when this rule matches': 'Weitere Regeln ignorieren, wenn diese Regel zutrifft'
+'Stops after match': 'Stoppt nach Treffer'
+'Stops here': 'Stoppt hier'
 'Strava API credentials.': Strava-API-Zugangsdaten.
 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': 'Die Strava-API hat Ratenbegrenzungen, daher deckeln wir die Anzahl der neuen Aktivitäten, die pro Import verarbeitet werden. 250 ist ein sicherer Wert.'
 'Strava activity IDs to skip during import.': 'Strava-Aktivitäts-IDs, die beim Import übersprungen werden sollen.'
@@ -355,39 +355,39 @@ Tasks: Aufgaben
 'The URL the app is hosted on.': 'Die URL, unter der die App gehostet wird.'
 'The activity started': 'Die Aktivität begann'
 'The activity will be marked as a commute.': 'Die Aktivität wird als Pendelfahrt markiert.'
-'The average cadence': 'The average cadence'
-'The average heart rate': 'The average heart rate'
-'The average power': 'The average power'
-'The average speed': 'The average speed'
-'The calories burned': 'The calories burned'
-'The color of the routes drawn on every map. Accepts any valid CSS color, e.g. red, #FF0000 or rgb(255,0,0).': 'The color of the routes drawn on every map. Accepts any valid CSS color, e.g. red, #FF0000 or rgb(255,0,0).'
-'The current name of the activity': 'The current name of the activity'
-'The device used to record the activity': 'The device used to record the activity'
-'The distance': 'The distance'
-'The elapsed time': 'The elapsed time'
-'The elevation gain': 'The elevation gain'
+'The average cadence': 'Die durchschnittliche Trittfrequenz'
+'The average heart rate': 'Die durchschnittliche Herzfrequenz'
+'The average power': 'Die durchschnittliche Leistung'
+'The average speed': 'Die durchschnittliche Geschwindigkeit'
+'The calories burned': 'Die verbrannten Kalorien'
+'The color of the routes drawn on every map. Accepts any valid CSS color, e.g. red, #FF0000 or rgb(255,0,0).': 'Die Farbe der Routen, die auf den Karten gezeichnet werden. Akzeptiert jede gültige CSS-Farbe, z.B. red, #FF0000 oder rgb(255,0,0).'
+'The current name of the activity': 'Der aktuelle Name der Aktivität'
+'The device used to record the activity': 'Das zur Aufzeichnung verwendete Gerät'
+'The distance': 'Die Distanz'
+'The elapsed time': 'Die verstrichene Zeit'
+'The elevation gain': 'Die Höhenmeter'
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'Die Formel zur Berechnung deiner maximalen Herzfrequenz. Der Standardwert ist Fox (220 − Alter).'
 'The formula used to calculate your resting heart rate. The default is an age-based estimate.': 'Die Formel zur Berechnung deines Ruhepulses. Der Standardwert ist eine altersbasierte Schätzung.'
 'The last zone has no upper bound.': 'Die letzte Zone hat keine Obergrenze.'
 'The locale used to render the app.': 'Die für die Anzeige der App verwendete Spracheinstellung.'
-'The max heart rate': 'The max heart rate'
-'The max power': 'The max power'
-'The max speed': 'The max speed'
-'The moving time': 'The moving time'
+'The max heart rate': 'Die maximale Herzfrequenz'
+'The max power': 'Die maximale Leistung'
+'The max speed': 'Die Höchstgeschwindigkeit'
+'The moving time': 'Die Bewegungszeit'
 "The name is derived from the device recorded on your activities and can't be edited.": 'Der Name wird aus dem Gerät abgeleitet, das bei deinen Aktivitäten aufgezeichnet wurde, und kann nicht bearbeitet werden.'
-'The name of the gear assigned to the activity': 'The name of the gear assigned to the activity'
-'The number of activities recorded with the gear': 'The number of activities recorded with the gear'
-'The start date, optionally with a custom PHP date format': 'The start date, optionally with a custom PHP date format'
-'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.'
-'The total distance ridden with the gear': 'The total distance ridden with the gear'
+'The name of the gear assigned to the activity': 'Der Name der Ausrüstung, die der Aktivität zugewiesen ist'
+'The number of activities recorded with the gear': 'Die Anzahl der mit der Ausrüstung aufgezeichneten Aktivitäten'
+'The start date, optionally with a custom PHP date format': 'Das Startdatum, optional mit einem benutzerdefinierten PHP-Datumsformat'
+'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'Die Kachelebenen-URLs (Tile Layers), die zum Rendern der Karten verwendet werden. Füge mehrere hinzu, um sie zu stapeln, z.B. um Ortsnamen über eine Satellitenebene zu legen.'
+'The total distance ridden with the gear': 'Die mit der Ausrüstung zurückgelegte Gesamtstrecke'
 'The unit system used to render distances, elevations, temperatures, etc.': 'Das Einheitensystem für Entfernungen, Höhen, Temperaturen usw.'
-'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.'
-'The workout type': 'The workout type'
+'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'Der sichtbare Bereich, in dem sich die Heatmap öffnet. Sowohl das Zentrum als auch die Zoomstufe werden benötigt. Lass sie leer, um automatisch auf deinen aktivsten Bereich zu zoomen.'
+'The workout type': 'Der Trainingstyp'
 'Then do this': 'Dann ausführen'
 'This action cannot be undone.': 'Diese Aktion kann nicht rückgängig gemacht werden.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Diese Komponente ist an mehreren Ausrüstungen montiert. Wähle die aus, die du gewartet hast.'
 'This only affects future imports. Already imported activities are left untouched. This action cannot be undone.': 'Dies betrifft ausschließlich zukünftige Importe. Bereits importierte Aktivitäten bleiben unberührt. Diese Maßnahme kann nicht rückgängig gemacht werden.'
-'This only removes the import record, the imported activity is kept.': 'Dadurch wird lediglich der Importdatensatz entfernt, die importierte Aktivität bleibt erhalten.“'
+'This only removes the import record, the imported activity is kept.': 'Dadurch wird lediglich der Importdatensatz entfernt, die importierte Aktivität bleibt erhalten.'
 "This value is imported from Strava and can't be edited here.": 'Dieser Wert wird von Strava importiert und kann hier nicht bearbeitet werden.'
 'This widget still needs to be configured.': 'Dieses Widget muss noch konfiguriert werden.'
 'This will discard your current dashboard layout and restore the default widgets.': 'Dadurch wird dein aktuelles Dashboard-Layout verworfen und die Standard-Widgets werden wiederhergestellt.'
@@ -436,7 +436,7 @@ Weekdays: Wochentage
 'Your measured max heart rate, applied from the given date onwards.': 'Deine gemessene maximale Herzfrequenz, angewendet ab dem angegebenen Datum.'
 'Your measured resting heart rate, applied from the given date onwards.': 'Dein gemessener Ruhepuls, angewendet ab dem angegebenen Datum.'
 Zone: Zone
-'Zoom level': 'Zoom level'
+'Zoom level': 'Zoomstufe'
 Zwift: Zwift
 'Zwift level': Zwift-Level
 'Zwift racing score': 'Zwift Rennwert'
@@ -448,20 +448,20 @@ after: nach
 'at or before': 'am oder vor'
 before: vor
 'calendar days': Kalendertage
-contains: contains
+contains: enthält
 'discord://token@id': 'discord://token@id'
-'does not contain': 'does not contain'
+'does not contain': 'enthält nicht'
 'eg: Commuter bike on short rides': 'z.B.: Pendelfahrten auf kurzen Strecken'
 'eg: Imported automatically': 'z.B.: Automatisch importiert'
 'eg: Morning commute': 'z.B.: morgendliche Pendelfahrt'
-'eg: commute': 'eg: commute'
+'eg: commute': 'z.B.: Pendeln'
 exactly: genau
 'exactly at': 'genau um'
 ftp: ftp
-'greater than': 'größer as'
+'greater than': 'größer als'
 'hours used': 'genutzte Stunden'
 is: ist
-'is none of': 'is none of'
+'is none of': 'ist keines von'
 'is not': 'ist nicht'
 'is one of': 'ist einer davon'
 'kilometers used': 'genutzte Kilometer'
@@ -470,12 +470,12 @@ is: ist
 'miles used': 'genutzte Meilen'
 minutes: Minuten
 'outside radius': 'außerhalb des Radius'
-then: then
+then: dann
 'within radius': 'innerhalb des Radius'
 '{count} files ready to upload': '{count} Dateien zum Hochladen bereit'
 '{count} files uploaded': '{count} Dateien hochgeladen'
 '{count} images selected': '{count} Bilder ausgewählt'
-'{count} rules apply': '{count} rules apply'
+'{count} rules apply': '{count} Regeln treffen zu'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr}-Benachrichtigungsdienst-URLs (z. B. discord://token@id, telegram://token@telegram/?channels=channel). Leer lassen, um Benachrichtigungen vollständig zu deaktivieren.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & Drop{strongClose} oder {strongOpen}Durchsuchen{strongClose}, um Dateien auszuwählen'
-'{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & drop{strongClose} oder {strongOpen}Durchsuchen{strongClose}, um Bilder auszuwählen'
+'{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & Drop{strongClose} oder {strongOpen}Durchsuchen{strongClose}, um Bilder auszuwählen'
