@@ -12,8 +12,8 @@ use App\Domain\Gear\GearRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Cacheable;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValueStore;
@@ -45,14 +45,14 @@ final readonly class IndexPage implements Cacheable
             cacheKey: 'index',
             cacheTags: CacheTags::of(
                 // The "updated on" stamp in the sidebar is written when a build finishes.
-                CacheTag::APP_BUILD,
-                CacheTag::ACTIVITIES,
-                CacheTag::ACTIVITY_IMAGES,
-                CacheTag::CHALLENGES,
+                RootCacheTag::APP_BUILD,
+                RootCacheTag::ACTIVITIES,
+                RootCacheTag::ACTIVITY_IMAGES,
+                RootCacheTag::CHALLENGES,
                 // The top nav bar renders the workout assistant when the AI UI is enabled.
-                CacheTag::SETTINGS_INTEGRATIONS,
+                RootCacheTag::SETTINGS_INTEGRATIONS,
                 // The leaflet config every map on the page reads is embedded in window.dreeve.
-                CacheTag::SETTINGS_MAPS,
+                RootCacheTag::SETTINGS_MAPS,
             ),
         );
     }

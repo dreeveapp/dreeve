@@ -7,9 +7,9 @@ namespace App\Controller\Api;
 use App\Domain\Activity\Route\RouteRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Twig\UrlTwigExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,7 +36,7 @@ final readonly class HeatmapApiRequestHandler
             cacheKey: self::CACHE_KEY,
             cacheability: Cacheability::for(
                 cacheKey: self::CACHE_KEY,
-                cacheTags: CacheTags::of(CacheTag::ACTIVITY_ROUTE),
+                cacheTags: CacheTags::of(RootCacheTag::ACTIVITY_ROUTE),
             ),
             callback: fn (): string => Json::encode($this->enrichedRoutes()),
         );

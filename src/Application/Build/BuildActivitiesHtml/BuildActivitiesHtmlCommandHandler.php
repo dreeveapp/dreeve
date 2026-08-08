@@ -185,69 +185,11 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                 activityId: $activity->getId(),
                 unitSystem: $unitSystem
             );
-
-            $profileChart = null;
-            $profileChartHeight = 0;
-            $coordinateMap = [];
-            try {
-                $combinedActivityStream = $this->combinedActivityStreamRepository->findOneForActivityAndUnitSystem(
-                    activityId: $activity->getId(),
-                    unitSystem: $unitSystem
-                );
-
-                $maximumNumberOfDigits = $combinedActivityStream->getMaximumNumberOfDigits();
-                $distances = $combinedActivityStream->getDistances();
-                $times = $combinedActivityStream->getTimes();
-                $grades = $combinedActivityStream->getGrades();
-                $coordinateMap = $combinedActivityStream->getCoordinates();
-
-                $streamTypesForCharts = $combinedActivityStream->getStreamTypesForCharts();
-                $items = [];
-                foreach ($streamTypesForCharts as $combinedStreamType) {
-                    $items[] = [
-                        'yAxisData' => $combinedActivityStream->getChartStreamData($combinedStreamType),
-                        'yAxisStreamType' => $combinedStreamType,
-                    ];
-                }
-
-                $combinedCharts = CombinedStreamProfileCharts::create(
-                    items: array_reverse($items),
-                    topXAxisData: $times,
-                    bottomXAxisData: $distances,
-                    bottomXAxisSuffix: $activity->getSportType()->distanceSymbol($unitSystem),
-                    grades: $grades,
-                    maximumNumberOfDigitsOnYAxis: $maximumNumberOfDigits,
-                    unitSystem: $unitSystem,
-                    sportType: $activity->getSportType(),
-                    athleteMaxHeartRate: $athleteMaxHeartRate,
-                    heartRateZones: $heartRateZones,
-                    translator: $this->translator,
-                );
-                $profileChart = $combinedCharts->build();
-                $profileChartHeight = $combinedCharts->getTotalHeight();
-            } catch (EntityNotFound) {
-            }
+            $numberOfProfileChartLanes = $this->combinedActivityStreamRepository
+                ->countChartableStreamTypesFor($activity->getId(), $unitSystem);
 
             $unprefixedActivityId = $activity->getId()->toUnprefixedString();
-            if ($profileChart) {
-                $this->buildApiStorage->write(
-                    sprintf('activity/%s/metrics.json', $unprefixedActivityId),
-                    (string) Json::encodeAndCompress($profileChart),
-                );
-                $this->buildApiStorage->write(
-                    sprintf('activity/%s/coordinates.json', $unprefixedActivityId),
-                    (string) Json::encodeAndCompress($coordinateMap),
-                );
-            }
-
-            $polylinesFileLocation = sprintf('activity/%s/polylines.json', $unprefixedActivityId);
-            if (($leafletMap = $activity->getLeafletMap()) instanceof LeafletMap) {
-                $coordinates = $coordinateMap ?: $activity->getEncodedPolyline()?->decodeAndPairLatLng();
-                $this->buildApiStorage->write(
-                    $polylinesFileLocation,
-                    (string) Json::encodeAndCompress([$coordinates]),
-                );
-            }
+            $leafletMap = $activity->getLeafletMap();
             $templateName = sprintf('html/activity/%s.html.twig', $activity->getSportType()->getTemplateName());
             $gpxFileLocation = sprintf('api/activity/%s/route.gpx', $unprefixedActivityId);
             $activityHasTimeStream = $this->activityStreamRepository->hasOneForActivityAndStreamType($activity->getId(), StreamType::TIME);
@@ -263,7 +205,7 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                 $this->twig->load($templateName)->render([
                     'activity' => $activity,
                     'leaflet' => $leafletMap instanceof LeafletMap ? [
-                        'polylineUrl' => $polylinesFileLocation,
+                        'polylineUrl' => sprintf('activity/%s/polylines', $unprefixedActivityId),
                         'map' => $leafletMap,
                     ] : null,
                     'gpxLink' => $activityHasTimeStream ? $gpxFileLocation : null,
@@ -275,8 +217,8 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                     'distributionCharts' => $distributionCharts,
                     'splits' => $activitySplits,
                     'laps' => $this->activityLapRepository->findBy($activity->getId()),
-                    'profileChartHeight' => $profileChartHeight,
-                    'hasProfileChart' => null !== $profileChart,
+                    'profileChartHeight' => CombinedStreamProfileCharts::totalHeightFor($numberOfProfileChartLanes),
+                    'hasProfileChart' => $numberOfProfileChartLanes > 0,
                     'heartRateZones' => $timeInHeartRateZones,
                 ]),
             );

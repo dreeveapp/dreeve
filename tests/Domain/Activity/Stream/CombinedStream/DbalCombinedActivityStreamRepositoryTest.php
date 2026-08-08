@@ -9,6 +9,8 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
+use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
+use App\Domain\Activity\Stream\CombinedStream\CombinedStreamTypes;
 use App\Domain\Activity\Stream\CombinedStream\DbalCombinedActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Measurement\UnitSystem;
@@ -45,6 +47,61 @@ class DbalCombinedActivityStreamRepositoryTest extends ContainerTestCase
             $this->combinedActivityStreamRepository->findOneForActivityAndUnitSystem(
                 activityId: ActivityId::fromUnprefixed('test'),
                 unitSystem: UnitSystem::METRIC
+            )
+        );
+    }
+
+    public function testCountChartableStreamTypesFor(): void
+    {
+        $this->combinedActivityStreamRepository->add(
+            CombinedActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('test'))
+                ->withUnitSystem(UnitSystem::METRIC)
+                ->withStreamTypes(CombinedStreamTypes::fromArray([
+                    // Only ALTITUDE and WATTS are chartable, the other three are not.
+                    CombinedStreamType::TIME,
+                    CombinedStreamType::DISTANCE,
+                    CombinedStreamType::LAT_LNG,
+                    CombinedStreamType::ALTITUDE,
+                    CombinedStreamType::WATTS,
+                ]))
+                ->build()
+        );
+
+        $this->assertEquals(
+            2,
+            $this->combinedActivityStreamRepository->countChartableStreamTypesFor(
+                activityId: ActivityId::fromUnprefixed('test'),
+                unitSystem: UnitSystem::METRIC
+            )
+        );
+    }
+
+    public function testCountChartableStreamTypesForWhenThereIsNoCombinedStream(): void
+    {
+        $this->assertEquals(
+            0,
+            $this->combinedActivityStreamRepository->countChartableStreamTypesFor(
+                activityId: ActivityId::fromUnprefixed('test'),
+                unitSystem: UnitSystem::METRIC
+            )
+        );
+    }
+
+    public function testCountChartableStreamTypesForWhenTheUnitSystemDoesNotMatch(): void
+    {
+        $this->combinedActivityStreamRepository->add(
+            CombinedActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('test'))
+                ->withUnitSystem(UnitSystem::METRIC)
+                ->build()
+        );
+
+        $this->assertEquals(
+            0,
+            $this->combinedActivityStreamRepository->countChartableStreamTypesFor(
+                activityId: ActivityId::fromUnprefixed('test'),
+                unitSystem: UnitSystem::IMPERIAL
             )
         );
     }

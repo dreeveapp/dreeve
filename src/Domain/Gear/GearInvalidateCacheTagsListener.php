@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear;
 
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\RootCacheTag;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 final readonly class GearInvalidateCacheTagsListener
@@ -18,12 +18,12 @@ final readonly class GearInvalidateCacheTagsListener
     #[AsEventListener]
     public function reactToGearWasAdded(GearWasAdded $event): void
     {
-        $this->renderCache->invalidateTags(CacheTag::GEAR);
+        $this->renderCache->invalidateTags(RootCacheTag::GEAR);
     }
 
     #[AsEventListener]
     public function reactToGearWasUpdated(GearWasUpdated $event): void
     {
-        $this->renderCache->invalidateTags(CacheTag::GEAR);
+        $this->renderCache->invalidateTags(RootCacheTag::GEAR);
     }
 }

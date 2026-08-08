@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Challenge;
 
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\RootCacheTag;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 final readonly class ChallengeInvalidateCacheTagsListener
@@ -18,6 +18,6 @@ final readonly class ChallengeInvalidateCacheTagsListener
     #[AsEventListener]
     public function reactToChallengeWasImported(ChallengeWasImported $event): void
     {
-        $this->renderCache->invalidateTags(CacheTag::CHALLENGES);
+        $this->renderCache->invalidateTags(RootCacheTag::CHALLENGES);
     }
 }

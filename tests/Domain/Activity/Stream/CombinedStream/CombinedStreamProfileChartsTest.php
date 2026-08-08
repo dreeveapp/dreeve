@@ -32,6 +32,13 @@ class CombinedStreamProfileChartsTest extends ContainerTestCase
         );
     }
 
+    #[TestWith(data: [1, 245])]
+    #[TestWith(data: [4, 620])]
+    public function testTotalHeightFor(int $numberOfLanes, int $expectedHeight): void
+    {
+        $this->assertEquals($expectedHeight, CombinedStreamProfileCharts::totalHeightFor($numberOfLanes));
+    }
+
     public function testItShouldThrowWhenYAxisDataIsEmpty(): void
     {
         $this->expectExceptionObject(new \RuntimeException('yAxisData data cannot be empty'));

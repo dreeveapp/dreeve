@@ -5,9 +5,9 @@ namespace App\Tests\Domain\Gear;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Tests\ContainerTestCase;
 
 class GearInvalidateCacheTagsListenerTest extends ContainerTestCase
@@ -90,8 +90,8 @@ class GearInvalidateCacheTagsListenerTest extends ContainerTestCase
     private function isServedFromCache(): bool
     {
         return $this->renderCache->get(
-            cacheKey: CacheTag::GEAR->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::GEAR)),
+            cacheKey: RootCacheTag::GEAR->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(RootCacheTag::GEAR)),
             callback: fn (): string => 'rendered',
         )->wasServedFromCache();
     }
@@ -99,8 +99,8 @@ class GearInvalidateCacheTagsListenerTest extends ContainerTestCase
     private function warmUpRenderCache(): void
     {
         $this->renderCache->get(
-            cacheKey: CacheTag::GEAR->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::GEAR)),
+            cacheKey: RootCacheTag::GEAR->value,
+            cacheability: Cacheability::for('stub', CacheTags::of(RootCacheTag::GEAR)),
             callback: fn (): string => 'rendered',
         );
         $this->assertTrue($this->isServedFromCache());

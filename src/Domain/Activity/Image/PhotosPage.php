@@ -8,9 +8,9 @@ use App\Application\Countries;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheContexts;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\Context\TrustedVisitorCacheContext;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\Http\Page\Page;
 use Twig\Environment;
 
@@ -33,7 +33,7 @@ final readonly class PhotosPage implements Page
     {
         return Cacheability::for(
             cacheKey: $this->getPath(),
-            cacheTags: CacheTags::of(CacheTag::ACTIVITY_IMAGES),
+            cacheTags: CacheTags::of(RootCacheTag::ACTIVITY_IMAGES),
             cacheContexts: CacheContexts::of(TrustedVisitorCacheContext::class),
         );
     }

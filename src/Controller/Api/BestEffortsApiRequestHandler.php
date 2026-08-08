@@ -8,9 +8,9 @@ use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\BestEffort\BestEffortPeriod;
 use App\Domain\Activity\BestEffort\BestEffortsCalculator;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Measurement\Length\ConvertableToMeter;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -49,9 +49,8 @@ final readonly class BestEffortsApiRequestHandler
             cacheKey: $cacheKey,
             cacheability: Cacheability::for(
                 cacheKey: $cacheKey,
-                cacheTags: CacheTags::of(CacheTag::ACTIVITIES),
+                cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
             ),
-            // The history is ranked over all time, so unlike the page it does not go stale at midnight.
             callback: fn (): string => $this->twig->load('html/best-efforts/best-efforts-history.html.twig')->render([
                 'activityType' => $type,
                 'period' => BestEffortPeriod::ALL_TIME,

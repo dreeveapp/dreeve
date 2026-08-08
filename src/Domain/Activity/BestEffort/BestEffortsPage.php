@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Activity\BestEffort;
 
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\Http\Page\Page;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
@@ -32,7 +32,7 @@ final readonly class BestEffortsPage implements Page
     {
         return Cacheability::for(
             cacheKey: $this->getPath(),
-            cacheTags: CacheTags::of(CacheTag::ACTIVITIES),
+            cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
             // Every period but "all time" is relative to the current date, so the render goes
             // stale at midnight, even when none of the activities changed.
             ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),

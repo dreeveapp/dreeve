@@ -70,7 +70,7 @@ final readonly class RenderCache
         );
     }
 
-    public function invalidateTags(CacheTag|ScopedCacheTag ...$cacheTags): void
+    public function invalidateTags(CacheTag ...$cacheTags): void
     {
         if ([] === $cacheTags) {
             return;

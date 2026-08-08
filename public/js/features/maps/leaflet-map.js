@@ -63,7 +63,7 @@ export default class LeafletMap {
             return;
         }
 
-        const eChartNode = document.querySelector('div[data-echarts-options][data-leaflet-echart-connect]');
+        const eChartNode = document.querySelector('div[data-echarts-options-url][data-leaflet-echart-connect]');
         if (!eChartNode) {
             return;
         }

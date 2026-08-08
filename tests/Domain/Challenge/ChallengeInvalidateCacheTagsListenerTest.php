@@ -6,9 +6,9 @@ use App\Domain\Challenge\Challenge;
 use App\Domain\Challenge\ChallengeId;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 
@@ -31,7 +31,7 @@ class ChallengeInvalidateCacheTagsListenerTest extends ContainerTestCase
 
         $this->assertFalse($this->renderCache->get(
             cacheKey: 'challenges',
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::CHALLENGES)),
+            cacheability: Cacheability::for('stub', CacheTags::of(RootCacheTag::CHALLENGES)),
             callback: fn (): string => 'rendered',
         )->wasServedFromCache());
     }
@@ -44,7 +44,7 @@ class ChallengeInvalidateCacheTagsListenerTest extends ContainerTestCase
 
         $this->assertTrue($this->renderCache->get(
             cacheKey: 'challenges',
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::CHALLENGES)),
+            cacheability: Cacheability::for('stub', CacheTags::of(RootCacheTag::CHALLENGES)),
             callback: fn (): string => 'rendered',
         )->wasServedFromCache());
     }
@@ -53,12 +53,12 @@ class ChallengeInvalidateCacheTagsListenerTest extends ContainerTestCase
     {
         $this->renderCache->get(
             cacheKey: 'challenges',
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::CHALLENGES)),
+            cacheability: Cacheability::for('stub', CacheTags::of(RootCacheTag::CHALLENGES)),
             callback: fn (): string => 'rendered',
         );
         $this->assertTrue($this->renderCache->get(
             cacheKey: 'challenges',
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::CHALLENGES)),
+            cacheability: Cacheability::for('stub', CacheTags::of(RootCacheTag::CHALLENGES)),
             callback: fn (): string => 'rendered',
         )->wasServedFromCache());
     }

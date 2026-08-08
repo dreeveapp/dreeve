@@ -3,6 +3,7 @@
 namespace App\Tests\Domain\Activity;
 
 use App\Domain\Activity\Activity;
+use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityImagesHaveBeenUpdated;
 use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ActivityRouteWasUpdated;
@@ -270,6 +271,7 @@ class ActivityTest extends TestCase
 
         $this->assertContainsEquals(
             new ActivityWasUpdated(
+                ActivityId::fromUnprefixed('903645'),
                 SerializableDateTime::fromString('2023-10-10'),
                 SerializableDateTime::fromString('2023-10-10')
             ),
@@ -337,6 +339,7 @@ class ActivityTest extends TestCase
 
         $this->assertEquals(
             [new ActivityWasUpdated(
+                ActivityId::fromUnprefixed('903645'),
                 SerializableDateTime::fromString('2023-10-10'),
                 SerializableDateTime::fromString('2023-10-10')
             )],
