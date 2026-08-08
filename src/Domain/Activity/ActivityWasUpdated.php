@@ -16,16 +16,6 @@ final class ActivityWasUpdated extends DomainEvent
     ) {
     }
 
-    public function getStartDate(): SerializableDateTime
-    {
-        return $this->startDate;
-    }
-
-    public function getPreviousStartDate(): SerializableDateTime
-    {
-        return $this->previousStartDate;
-    }
-
     /**
      * @return Year[]
      */

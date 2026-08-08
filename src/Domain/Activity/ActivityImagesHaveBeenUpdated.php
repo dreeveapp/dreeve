@@ -15,11 +15,6 @@ final class ActivityImagesHaveBeenUpdated extends DomainEvent
     ) {
     }
 
-    public function getStartDate(): SerializableDateTime
-    {
-        return $this->startDate;
-    }
-
     public function getYear(): Year
     {
         return Year::fromDate($this->startDate);
