@@ -3,15 +3,15 @@
 namespace App\Tests\Infrastructure\Cache;
 
 use App\Domain\Settings\SettingsGroup;
-use App\Infrastructure\Cache\CacheTag;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\ValueObject\Time\Year;
 use PHPUnit\Framework\TestCase;
 
-class CacheTagTest extends TestCase
+class RootCacheTagTest extends TestCase
 {
     public function testTheCrossCuttingTagsAreDistinct(): void
     {
-        $crossCuttingTags = CacheTag::crossCutting();
+        $crossCuttingTags = RootCacheTag::crossCutting();
         $this->assertEquals(array_unique($crossCuttingTags, SORT_REGULAR), $crossCuttingTags);
     }
 
@@ -19,14 +19,14 @@ class CacheTagTest extends TestCase
     {
         $this->assertEquals(
             'activities.2025',
-            CacheTag::ACTIVITIES->forYear(Year::fromInt(2025))->toTagString()
+            RootCacheTag::ACTIVITIES->forYear(Year::fromInt(2025))->toTagString()
         );
     }
 
     public function testEverySettingsGroupMapsToADistinctCacheTag(): void
     {
         $cacheTags = array_map(
-            CacheTag::forSettingsGroup(...),
+            RootCacheTag::forSettingsGroup(...),
             SettingsGroup::cases()
         );
 
@@ -38,7 +38,7 @@ class CacheTagTest extends TestCase
         foreach (SettingsGroup::cases() as $settingsGroup) {
             $this->assertEquals(
                 'settings.'.$settingsGroup->value,
-                CacheTag::forSettingsGroup($settingsGroup)->value
+                RootCacheTag::forSettingsGroup($settingsGroup)->value
             );
         }
     }

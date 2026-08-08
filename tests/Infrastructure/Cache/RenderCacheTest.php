@@ -4,10 +4,10 @@ namespace App\Tests\Infrastructure\Cache;
 
 use App\Application\AppVersion;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\Render;
 use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Tests\ContainerTestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
@@ -21,7 +21,7 @@ class RenderCacheTest extends ContainerTestCase
     {
         $render = $this->renderCache->get(
             cacheKey: 'activity/123.tz=Europe/Brussels.user=me@example.com',
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
+            cacheability: Cacheability::for('stub', CacheTags::of(RootCacheTag::ACTIVITY_IMAGES)),
             callback: fn (): string => 'rendered',
         );
 
@@ -38,7 +38,7 @@ class RenderCacheTest extends ContainerTestCase
     public function testAKeyThatNeededNormalisingStillServesFromCache(): void
     {
         $cacheKey = 'segment/9:special';
-        $cacheability = Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES));
+        $cacheability = Cacheability::for('stub', CacheTags::of(RootCacheTag::ACTIVITY_IMAGES));
 
         $this->renderCache->get($cacheKey, $cacheability, fn (): string => 'rendered');
         $render = $this->renderCache->get($cacheKey, $cacheability, fn (): string => 'should-not-run');
@@ -59,7 +59,7 @@ class RenderCacheTest extends ContainerTestCase
             cacheKey: 'photos',
             cacheability: Cacheability::for(
                 cacheKey: 'stub',
-                cacheTags: CacheTags::of(CacheTag::ACTIVITY_IMAGES),
+                cacheTags: CacheTags::of(RootCacheTag::ACTIVITY_IMAGES),
                 ttlInSeconds: 60,
             ),
             callback: fn (): string => 'rendered',
@@ -74,7 +74,7 @@ class RenderCacheTest extends ContainerTestCase
             cacheKey: 'photos',
             cacheability: Cacheability::for(
                 cacheKey: 'stub',
-                cacheTags: CacheTags::of(CacheTag::ACTIVITY_IMAGES),
+                cacheTags: CacheTags::of(RootCacheTag::ACTIVITY_IMAGES),
                 ttlInSeconds: 3600,
             ),
             callback: fn (): string => 'rendered',
@@ -84,7 +84,7 @@ class RenderCacheTest extends ContainerTestCase
             cacheKey: 'photos',
             cacheability: Cacheability::for(
                 cacheKey: 'stub',
-                cacheTags: CacheTags::of(CacheTag::CHALLENGES),
+                cacheTags: CacheTags::of(RootCacheTag::CHALLENGES),
                 ttlInSeconds: 60,
             ),
             callback: fn (): string => 'should-not-run',
@@ -117,7 +117,7 @@ class RenderCacheTest extends ContainerTestCase
 
         $render = new RenderCache($pool)->get(
             cacheKey: 'stored-without-an-expiry',
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
+            cacheability: Cacheability::for('stub', CacheTags::of(RootCacheTag::ACTIVITY_IMAGES)),
             callback: fn (): string => 'should-not-run',
         );
 
@@ -132,7 +132,7 @@ class RenderCacheTest extends ContainerTestCase
     {
         $this->renderCache->get(
             cacheKey: 'photos',
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
+            cacheability: Cacheability::for('stub', CacheTags::of(RootCacheTag::ACTIVITY_IMAGES)),
             callback: fn (): string => 'rendered',
         );
 
@@ -140,7 +140,7 @@ class RenderCacheTest extends ContainerTestCase
 
         $render = $this->renderCache->get(
             cacheKey: 'photos',
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
+            cacheability: Cacheability::for('stub', CacheTags::of(RootCacheTag::ACTIVITY_IMAGES)),
             callback: fn (): string => 'should-not-run',
         );
 

@@ -7,14 +7,14 @@ namespace App\Infrastructure\Cache;
 final readonly class CacheTags
 {
     /**
-     * @param array<CacheTag|ScopedCacheTag> $cacheTags
+     * @param array<CacheTag> $cacheTags
      */
     private function __construct(
         private array $cacheTags,
     ) {
     }
 
-    public static function of(CacheTag|ScopedCacheTag ...$cacheTags): self
+    public static function of(CacheTag ...$cacheTags): self
     {
         return new self($cacheTags);
     }
@@ -30,7 +30,7 @@ final readonly class CacheTags
     }
 
     /**
-     * @return array<CacheTag|ScopedCacheTag>
+     * @return array<CacheTag>
      */
     public function toArray(): array
     {
@@ -48,7 +48,7 @@ final readonly class CacheTags
     public function toTagStrings(): array
     {
         return array_values(array_unique(array_map(
-            fn (CacheTag|ScopedCacheTag $cacheTag): string => $cacheTag->toTagString(),
+            fn (CacheTag $cacheTag): string => $cacheTag->toTagString(),
             $this->cacheTags
         )));
     }

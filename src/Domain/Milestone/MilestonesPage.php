@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Milestone;
 
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\Http\Page\Page;
 use Twig\Environment;
 
@@ -28,10 +28,10 @@ final readonly class MilestonesPage implements Page
         return Cacheability::for(
             cacheKey: $this->getPath(),
             cacheTags: CacheTags::of(
-                CacheTag::ACTIVITIES,
-                CacheTag::GEAR,
+                RootCacheTag::ACTIVITIES,
+                RootCacheTag::GEAR,
                 // The Eddington milestones depend on the configured sport types.
-                CacheTag::SETTINGS_METRICS,
+                RootCacheTag::SETTINGS_METRICS,
             ),
         );
     }

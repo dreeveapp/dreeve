@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Challenge;
 
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\Http\Page\Page;
 use Twig\Environment;
 
@@ -27,7 +27,7 @@ final readonly class ChallengesPage implements Page
     {
         return Cacheability::for(
             cacheKey: $this->getPath(),
-            cacheTags: CacheTags::of(CacheTag::CHALLENGES),
+            cacheTags: CacheTags::of(RootCacheTag::CHALLENGES),
         );
     }
 

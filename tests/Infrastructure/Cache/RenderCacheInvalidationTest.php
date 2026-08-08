@@ -11,8 +11,8 @@ use App\Domain\Milestone\MilestonesPage;
 use App\Domain\Rewind\RewindComparePage;
 use App\Domain\Rewind\RewindPage;
 use App\Infrastructure\Cache\Cacheable;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Tests\ContainerTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -27,7 +27,7 @@ class RenderCacheInvalidationTest extends ContainerTestCase
         $cacheable = $this->getContainer()->get($cacheableClassName);
         $cacheability = $cacheable->getCacheability();
 
-        foreach (CacheTag::cases() as $cacheTag) {
+        foreach (RootCacheTag::cases() as $cacheTag) {
             $this->renderCache->clear();
             $this->renderCache->get(
                 cacheKey: $cacheability->getCacheKey(),
@@ -52,66 +52,66 @@ class RenderCacheInvalidationTest extends ContainerTestCase
     public static function provideCacheables(): \Generator
     {
         yield 'index' => [IndexPage::class, [
-            CacheTag::SETTINGS_APPEARANCE,
-            CacheTag::SETTINGS_GENERAL,
-            CacheTag::APP_BUILD,
-            CacheTag::ACTIVITIES,
-            CacheTag::ACTIVITY_IMAGES,
-            CacheTag::CHALLENGES,
-            CacheTag::SETTINGS_INTEGRATIONS,
-            CacheTag::SETTINGS_MAPS,
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::APP_BUILD,
+            RootCacheTag::ACTIVITIES,
+            RootCacheTag::ACTIVITY_IMAGES,
+            RootCacheTag::CHALLENGES,
+            RootCacheTag::SETTINGS_INTEGRATIONS,
+            RootCacheTag::SETTINGS_MAPS,
         ]];
 
         yield 'challenges' => [ChallengesPage::class, [
-            CacheTag::SETTINGS_APPEARANCE,
-            CacheTag::SETTINGS_GENERAL,
-            CacheTag::CHALLENGES,
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::CHALLENGES,
         ]];
 
         yield 'eddington' => [EddingtonPage::class, [
-            CacheTag::SETTINGS_APPEARANCE,
-            CacheTag::SETTINGS_GENERAL,
-            CacheTag::ACTIVITIES,
-            CacheTag::SETTINGS_METRICS,
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::ACTIVITIES,
+            RootCacheTag::SETTINGS_METRICS,
         ]];
 
         yield 'heatmap' => [HeatmapPage::class, [
-            CacheTag::SETTINGS_APPEARANCE,
-            CacheTag::SETTINGS_GENERAL,
-            CacheTag::ACTIVITY_ROUTE,
-            CacheTag::SETTINGS_MAPS,
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::ACTIVITY_ROUTE,
+            RootCacheTag::SETTINGS_MAPS,
         ]];
 
         yield 'milestones' => [MilestonesPage::class, [
-            CacheTag::SETTINGS_APPEARANCE,
-            CacheTag::SETTINGS_GENERAL,
-            CacheTag::ACTIVITIES,
-            CacheTag::GEAR,
-            CacheTag::SETTINGS_METRICS,
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::ACTIVITIES,
+            RootCacheTag::GEAR,
+            RootCacheTag::SETTINGS_METRICS,
         ]];
 
         // The year scoped rewinds cannot be expressed here, they are covered by
         // ActivityInvalidateCacheTagsListenerTest and the rewind page tests.
         yield 'rewind' => [RewindPage::class, [
-            CacheTag::SETTINGS_APPEARANCE,
-            CacheTag::SETTINGS_GENERAL,
-            CacheTag::ACTIVITIES,
-            CacheTag::ACTIVITY_IMAGES,
-            CacheTag::GEAR,
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::ACTIVITIES,
+            RootCacheTag::ACTIVITY_IMAGES,
+            RootCacheTag::GEAR,
         ]];
 
         yield 'rewind-compare' => [RewindComparePage::class, [
-            CacheTag::SETTINGS_APPEARANCE,
-            CacheTag::SETTINGS_GENERAL,
-            CacheTag::ACTIVITIES,
-            CacheTag::ACTIVITY_IMAGES,
-            CacheTag::GEAR,
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::ACTIVITIES,
+            RootCacheTag::ACTIVITY_IMAGES,
+            RootCacheTag::GEAR,
         ]];
 
         yield 'photos' => [PhotosPage::class, [
-            CacheTag::SETTINGS_APPEARANCE,
-            CacheTag::SETTINGS_GENERAL,
-            CacheTag::ACTIVITY_IMAGES,
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::ACTIVITY_IMAGES,
         ]];
     }
 

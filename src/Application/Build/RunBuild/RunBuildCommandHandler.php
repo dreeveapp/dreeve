@@ -17,8 +17,8 @@ use App\Application\Build\BuildSegmentsHtml\BuildSegmentsHtml;
 use App\Application\Build\ConfigureAppColors\ConfigureAppColors;
 use App\Application\Build\ConfigureAppLocale\ConfigureAppLocale;
 use App\Application\Import\StravaImport\ImportGear\GearImportStatus;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\Console\ProgressBar;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\Command;
@@ -89,6 +89,6 @@ This is not a bug, once all your activities have been imported, your gear statis
             key: Key::APP_LAST_BUILD_DATE_TIME,
             value: Value::fromString($now->iso()),
         ));
-        $this->renderCache->invalidateTags(CacheTag::APP_BUILD);
+        $this->renderCache->invalidateTags(RootCacheTag::APP_BUILD);
     }
 }

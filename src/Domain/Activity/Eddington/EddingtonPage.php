@@ -6,8 +6,8 @@ namespace App\Domain\Activity\Eddington;
 
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\Http\Page\Page;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Serialization\Json;
@@ -33,7 +33,7 @@ final readonly class EddingtonPage implements Page
     {
         return Cacheability::for(
             cacheKey: $this->getPath(),
-            cacheTags: CacheTags::of(CacheTag::ACTIVITIES, CacheTag::SETTINGS_METRICS),
+            cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_METRICS),
         );
     }
 

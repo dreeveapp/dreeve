@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Cache;
 
-final readonly class ScopedCacheTag
+final readonly class ScopedCacheTag implements CacheTag
 {
     private function __construct(
-        private CacheTag $cacheTag,
+        private RootCacheTag $rootCacheTag,
         private string $scope,
     ) {
     }
 
-    public static function for(CacheTag $cacheTag, string $scope): self
+    public static function for(RootCacheTag $rootCacheTag, string $scope): self
     {
         return new self(
-            cacheTag: $cacheTag,
+            rootCacheTag: $rootCacheTag,
             scope: $scope,
         );
     }
 
     public function toTagString(): string
     {
-        return $this->cacheTag->value.'.'.$this->scope;
+        return $this->rootCacheTag->value.'.'.$this->scope;
     }
 }

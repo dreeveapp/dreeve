@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Settings;
 
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\RootCacheTag;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 final readonly class SettingsInvalidateCacheTagsListener
@@ -18,6 +18,6 @@ final readonly class SettingsInvalidateCacheTagsListener
     #[AsEventListener]
     public function reactToSettingsWereUpdated(SettingsWereUpdated $event): void
     {
-        $this->renderCache->invalidateTags(CacheTag::forSettingsGroup($event->getGroup()));
+        $this->renderCache->invalidateTags(RootCacheTag::forSettingsGroup($event->getGroup()));
     }
 }

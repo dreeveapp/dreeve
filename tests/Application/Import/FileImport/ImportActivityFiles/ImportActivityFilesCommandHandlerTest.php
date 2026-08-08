@@ -15,9 +15,9 @@ use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Import\FileImportStatus;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
-use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\ValueObject\String\CompressedString;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\Console\ConsoleOutputSnapshotDriver;
@@ -178,7 +178,7 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
 
     public function testHandleKeepsRenderedPagesBecauseImportedFilesCarryNoImages(): void
     {
-        $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)));
+        $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::of(RootCacheTag::ACTIVITY_IMAGES)));
         $this->cacheableRenderer->render($cacheable);
 
         $this->watchStorage->write('watch/ride.tcx', $this->fixture('activity.tcx'));

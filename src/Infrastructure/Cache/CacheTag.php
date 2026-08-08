@@ -4,60 +4,13 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Cache;
 
-use App\Domain\Settings\SettingsGroup;
-use App\Infrastructure\ValueObject\Time\Year;
-
-enum CacheTag: string
+/**
+ * A label a render is tagged with, so it can be invalidated when the thing it depends on changes.
+ *
+ * A RootCacheTag covers everything of its kind, a ScopedCacheTag narrows that down to a single part of it.
+ * Both are matched by their exact tag string: invalidating a root tag leaves its scoped tags untouched.
+ */
+interface CacheTag
 {
-    case APP_BUILD = 'app.build';
-    case ACTIVITIES = 'activities';
-    case ACTIVITY_IMAGES = 'activity.images';
-    case ACTIVITY_ROUTE = 'activity.route';
-    case SEGMENTS = 'segments';
-    case CHALLENGES = 'challenges';
-    case GEAR = 'gear';
-    case SETTINGS_GENERAL = 'settings.general';
-    case SETTINGS_APPEARANCE = 'settings.appearance';
-    case SETTINGS_MAPS = 'settings.maps';
-    case SETTINGS_IMPORT = 'settings.import';
-    case SETTINGS_METRICS = 'settings.metrics';
-    case SETTINGS_ZWIFT = 'settings.zwift';
-    case SETTINGS_INTEGRATIONS = 'settings.integrations';
-    case SETTINGS_DAEMON = 'settings.daemon';
-
-    public function toTagString(): string
-    {
-        return $this->value;
-    }
-
-    /**
-     * Narrows this tag down to a single year, so a render that only covers that year survives
-     * a change to any other year.
-     */
-    public function forYear(Year $year): ScopedCacheTag
-    {
-        return ScopedCacheTag::for($this, (string) $year);
-    }
-
-    /**
-     * @return self[]
-     */
-    public static function crossCutting(): array
-    {
-        return [self::SETTINGS_APPEARANCE, self::SETTINGS_GENERAL];
-    }
-
-    public static function forSettingsGroup(SettingsGroup $settingsGroup): self
-    {
-        return match ($settingsGroup) {
-            SettingsGroup::GENERAL => self::SETTINGS_GENERAL,
-            SettingsGroup::APPEARANCE => self::SETTINGS_APPEARANCE,
-            SettingsGroup::MAPS => self::SETTINGS_MAPS,
-            SettingsGroup::IMPORT => self::SETTINGS_IMPORT,
-            SettingsGroup::METRICS => self::SETTINGS_METRICS,
-            SettingsGroup::ZWIFT => self::SETTINGS_ZWIFT,
-            SettingsGroup::INTEGRATIONS => self::SETTINGS_INTEGRATIONS,
-            SettingsGroup::DAEMON => self::SETTINGS_DAEMON,
-        };
-    }
+    public function toTagString(): string;
 }

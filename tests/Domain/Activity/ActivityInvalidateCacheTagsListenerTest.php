@@ -14,7 +14,7 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\RenderCache;
-use App\Infrastructure\Cache\ScopedCacheTag;
+use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Year;
 use App\Tests\ContainerTestCase;
@@ -33,9 +33,9 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES));
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES));
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_ROUTE));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITY_IMAGES));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITY_ROUTE));
     }
 
     public function testItDoesNotInvalidateWhenAnActivityIsMerelyHydratedAndStored(): void
@@ -47,7 +47,7 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITIES));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITIES));
     }
 
     public function testItInvalidatesWhenAnActivityIsDeleted(): void
@@ -58,9 +58,9 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
 
         $this->activityRepository->delete($activity->getId());
 
-        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES));
-        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES));
-        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITY_ROUTE));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITY_IMAGES));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITY_ROUTE));
     }
 
     public function testItInvalidatesTheRouteWhenTheRouteHasBeenUpdated(): void
@@ -77,8 +77,8 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES));
-        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITY_ROUTE));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITY_IMAGES));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITY_ROUTE));
     }
 
     public function testItInvalidatesWhenAnActivityIsUpdated(): void
@@ -92,9 +92,9 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES));
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES));
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_ROUTE));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITY_IMAGES));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITY_ROUTE));
     }
 
     public function testItDoesNotInvalidateWhenAnUpdateRewritesTheSameValues(): void
@@ -108,7 +108,7 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITIES));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITIES));
     }
 
     public function testItOnlyInvalidatesTheYearAnUpdatedActivityBelongsTo(): void
@@ -124,9 +124,9 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2023))));
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2016))));
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023))));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES->forYear(Year::fromInt(2023))));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITIES->forYear(Year::fromInt(2016))));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023))));
     }
 
     public function testItInvalidatesBothYearsWhenAnActivityMovesToAnotherYear(): void
@@ -142,8 +142,8 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2023))));
-        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2016))));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES->forYear(Year::fromInt(2023))));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES->forYear(Year::fromInt(2016))));
     }
 
     public function testItDoesNotInvalidateTheRouteWhenTheActivityIsNotOnTheMap(): void
@@ -159,7 +159,7 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_ROUTE));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITY_ROUTE));
     }
 
     public function testItOnlyInvalidatesTheImagesWhenTheImagesHaveBeenUpdated(): void
@@ -173,8 +173,8 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITIES));
-        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITIES));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITY_IMAGES));
     }
 
     public function testItOnlyInvalidatesTheYearAnAddedActivityBelongsTo(): void
@@ -188,8 +188,8 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2023))));
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2016))));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES->forYear(Year::fromInt(2023))));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITIES->forYear(Year::fromInt(2016))));
     }
 
     public function testItOnlyInvalidatesTheYearADeletedActivityBelongsTo(): void
@@ -202,10 +202,10 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
 
         $this->activityRepository->delete($activity->getId());
 
-        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2023))));
-        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023))));
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2016))));
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2016))));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES->forYear(Year::fromInt(2023))));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023))));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITIES->forYear(Year::fromInt(2016))));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2016))));
     }
 
     public function testItOnlyInvalidatesTheYearUpdatedImagesBelongTo(): void
@@ -221,8 +221,8 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023))));
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2016))));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023))));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2016))));
     }
 
     public function testItOnlyInvalidatesTheActivityThatWasUpdated(): void
@@ -255,7 +255,7 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_ROUTE));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITY_ROUTE));
         $this->assertFalse($this->isServedFromCache(ActivityCacheTag::for($activity->getId())));
     }
 
@@ -271,7 +271,7 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->assertTrue($this->isServedFromCache(ActivityCacheTag::for(ActivityId::fromUnprefixed('1'))));
     }
 
-    private function isServedFromCache(CacheTag|ScopedCacheTag $cacheTag): bool
+    private function isServedFromCache(CacheTag $cacheTag): bool
     {
         return $this->renderCache->get(
             cacheKey: $cacheTag->toTagString(),
@@ -283,13 +283,13 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
     private function warmUpRenderCache(): void
     {
         $cacheTags = [
-            CacheTag::ACTIVITIES,
-            CacheTag::ACTIVITY_IMAGES,
-            CacheTag::ACTIVITY_ROUTE,
-            CacheTag::ACTIVITIES->forYear(Year::fromInt(2023)),
-            CacheTag::ACTIVITIES->forYear(Year::fromInt(2016)),
-            CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023)),
-            CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2016)),
+            RootCacheTag::ACTIVITIES,
+            RootCacheTag::ACTIVITY_IMAGES,
+            RootCacheTag::ACTIVITY_ROUTE,
+            RootCacheTag::ACTIVITIES->forYear(Year::fromInt(2023)),
+            RootCacheTag::ACTIVITIES->forYear(Year::fromInt(2016)),
+            RootCacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023)),
+            RootCacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2016)),
             ActivityCacheTag::for(ActivityId::fromUnprefixed('903645')),
             ActivityCacheTag::for(ActivityId::fromUnprefixed('1')),
         ];
