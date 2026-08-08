@@ -256,7 +256,7 @@ final class Activity implements SupportsAITooling
             isCommute: $isCommute,
             workoutType: $workoutType,
         );
-        $activity->recordThat(new ActivityWasAdded());
+        $activity->recordThat(new ActivityWasAdded($activity->getStartDate()));
         if ($activity->hasMappableRoute()) {
             $activity->recordThat(new ActivityRouteWasUpdated());
         }
@@ -347,7 +347,7 @@ final class Activity implements SupportsAITooling
 
     public function withStartDateTime(SerializableDateTime $startDateTime): self
     {
-        return $this->recordRouteUpdate(clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'startDateTime' => $startDateTime,
         ]));
     }
@@ -364,7 +364,7 @@ final class Activity implements SupportsAITooling
 
     public function withWorldType(WorldType $worldType): self
     {
-        return $this->recordRouteUpdate(clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'worldType' => $worldType,
         ]));
     }
@@ -381,7 +381,7 @@ final class Activity implements SupportsAITooling
 
     public function withSportType(SportType $sportType): self
     {
-        return $this->recordRouteUpdate(clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'sportType' => $sportType,
         ]));
     }
@@ -393,9 +393,9 @@ final class Activity implements SupportsAITooling
 
     public function withStartingCoordinate(?Coordinate $coordinate): self
     {
-        return clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'startingCoordinate' => $coordinate,
-        ]);
+        ]));
     }
 
     public function getGearId(): ?GearId
@@ -411,9 +411,9 @@ final class Activity implements SupportsAITooling
     public function withGear(
         ?GearId $gearId = null,
     ): self {
-        return clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'gearId' => $gearId,
-        ]);
+        ]));
     }
 
     public function getGearName(): ?string
@@ -498,7 +498,7 @@ final class Activity implements SupportsAITooling
         ]);
 
         if ($this->getLocalImagePaths() !== $clone->getLocalImagePaths()) {
-            $clone->recordThat(new ActivityImagesHaveBeenUpdated());
+            $clone->recordThat(new ActivityImagesHaveBeenUpdated($clone->getStartDate()));
         }
 
         return $clone;
@@ -530,7 +530,7 @@ final class Activity implements SupportsAITooling
 
     public function withName(ActivityName $name): self
     {
-        return $this->recordRouteUpdate(clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'name' => $name,
         ]));
     }
@@ -542,9 +542,9 @@ final class Activity implements SupportsAITooling
 
     public function withDescription(?string $description): self
     {
-        return clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'description' => $description,
-        ]);
+        ]));
     }
 
     public function getDistance(): Kilometer
@@ -554,7 +554,7 @@ final class Activity implements SupportsAITooling
 
     public function withDistance(Kilometer $distance): self
     {
-        return $this->recordRouteUpdate(clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'distance' => $distance,
         ]));
     }
@@ -571,9 +571,9 @@ final class Activity implements SupportsAITooling
 
     public function withElevation(Meter $elevation): self
     {
-        return clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'elevation' => $elevation,
-        ]);
+        ]));
     }
 
     public function getCalories(): ?int
@@ -603,9 +603,9 @@ final class Activity implements SupportsAITooling
 
     public function withAverageSpeed(KmPerHour $averageSpeed): self
     {
-        return clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'averageSpeed' => $averageSpeed,
-        ]);
+        ]));
     }
 
     public function getAverageSpeedInDisplayUnit(): Knot|KmPerHour
@@ -630,9 +630,9 @@ final class Activity implements SupportsAITooling
 
     public function withMaxSpeed(KmPerHour $maxSpeed): self
     {
-        return clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'maxSpeed' => $maxSpeed,
-        ]);
+        ]));
     }
 
     public function getMaxSpeedInDisplayUnit(): Knot|KmPerHour
@@ -679,9 +679,9 @@ final class Activity implements SupportsAITooling
 
     public function withMovingTimeInSeconds(int $movingTimeInSeconds): self
     {
-        return clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'movingTimeInSeconds' => $movingTimeInSeconds,
-        ]);
+        ]));
     }
 
     public function getMovingTimeFormatted(): string
@@ -696,9 +696,9 @@ final class Activity implements SupportsAITooling
 
     public function withElapsedTimeInSeconds(int $elapsedTimeInSeconds): self
     {
-        return clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'elapsedTimeInSeconds' => $elapsedTimeInSeconds,
-        ]);
+        ]));
     }
 
     public function getElapsedTimeFormatted(): string
@@ -718,7 +718,7 @@ final class Activity implements SupportsAITooling
 
     public function withPolyline(?string $polyline): self
     {
-        return $this->recordRouteUpdate(clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'polyline' => $polyline,
         ]));
     }
@@ -730,9 +730,9 @@ final class Activity implements SupportsAITooling
 
     public function withDeviceName(?string $deviceName): self
     {
-        return clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'deviceName' => $deviceName,
-        ]);
+        ]));
     }
 
     public function getDeviceId(): RecordingDeviceId
@@ -747,7 +747,7 @@ final class Activity implements SupportsAITooling
 
     public function withCommute(bool $isCommute): self
     {
-        return $this->recordRouteUpdate(clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'isCommute' => $isCommute,
         ]));
     }
@@ -759,7 +759,7 @@ final class Activity implements SupportsAITooling
 
     public function withWorkoutType(?WorkoutType $workoutType): self
     {
-        return $this->recordRouteUpdate(clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'workoutType' => $workoutType,
         ]));
     }
@@ -807,7 +807,7 @@ final class Activity implements SupportsAITooling
 
     public function withRouteGeography(RouteGeography $routeGeography): self
     {
-        return $this->recordRouteUpdate(clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'routeGeography' => $routeGeography,
         ]));
     }
@@ -841,10 +841,44 @@ final class Activity implements SupportsAITooling
         ];
     }
 
-    private function recordRouteUpdate(self $clone): self
+    /**
+     * @return array<string, mixed>
+     */
+    private function updateSignature(): array
+    {
+        return [
+            'startDateTime' => $this->startDateTime->getTimestamp(),
+            'name' => $this->getOriginalName(),
+            'description' => $this->description,
+            'deviceName' => $this->deviceName,
+            'sportType' => $this->sportType->value,
+            'worldType' => $this->worldType->value,
+            'distance' => $this->distance->toFloat(),
+            'averageSpeed' => $this->averageSpeed->toFloat(),
+            'maxSpeed' => $this->maxSpeed->toFloat(),
+            'movingTimeInSeconds' => $this->movingTimeInSeconds,
+            'elapsedTimeInSeconds' => $this->elapsedTimeInSeconds,
+            'elevation' => $this->elevation->toFloat(),
+            'polyline' => $this->polyline,
+            'startingCoordinateLatitude' => $this->startingCoordinate?->getLatitude()->toFloat(),
+            'startingCoordinateLongitude' => $this->startingCoordinate?->getLongitude()->toFloat(),
+            'routeGeography' => $this->routeGeography->jsonSerialize(),
+            'gearId' => (string) $this->gearId,
+            'isCommute' => $this->isCommute,
+            'workoutType' => $this->workoutType?->value,
+        ];
+    }
+
+    private function recordUpdate(self $clone): self
     {
         if ($this->routeSignature() !== $clone->routeSignature()) {
             $clone->recordThat(new ActivityRouteWasUpdated());
+        }
+        if ($this->updateSignature() !== $clone->updateSignature()) {
+            $clone->recordOnlyOnce(new ActivityWasUpdated(
+                startDate: $clone->getStartDate(),
+                previousStartDate: $this->getStartDate()
+            ));
         }
 
         return $clone;

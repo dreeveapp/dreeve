@@ -38,12 +38,27 @@ export default class Router {
         return this.determineActiveMenuLink(newUrl);
     }
 
-    determineContentUrl(page) {
-        const link = document.querySelector(
-            `a[data-router-navigate="${page}"][data-router-content-url]`
-        );
+    determineContentUrlLink(url) {
+        const link = document.querySelector(`a[data-router-navigate="${url}"][data-router-content-url]`);
+        if (link) {
+            return {link: link, route: url};
+        }
 
-        return link?.getAttribute('data-router-content-url') ?? `${page}.html`;
+        const newUrl = url.replace(/\/[^\/]*$/, '');
+        if (newUrl === url || newUrl === '') {
+            return null;
+        }
+
+        return this.determineContentUrlLink(newUrl);
+    }
+
+    determineContentUrl(page) {
+        const match = this.determineContentUrlLink(page);
+        if (!match) {
+            return `${page}.html`;
+        }
+
+        return match.link.getAttribute('data-router-content-url') + page.slice(match.route.length);
     }
 
     async renderContent(page, modalId) {

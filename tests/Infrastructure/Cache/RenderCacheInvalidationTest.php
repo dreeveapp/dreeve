@@ -8,6 +8,8 @@ use App\Domain\Activity\Image\PhotosPage;
 use App\Domain\Activity\Route\HeatmapPage;
 use App\Domain\Challenge\ChallengesPage;
 use App\Domain\Milestone\MilestonesPage;
+use App\Domain\Rewind\RewindComparePage;
+use App\Domain\Rewind\RewindPage;
 use App\Infrastructure\Cache\Cacheable;
 use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\RenderCache;
@@ -86,6 +88,24 @@ class RenderCacheInvalidationTest extends ContainerTestCase
             CacheTag::ACTIVITIES,
             CacheTag::GEAR,
             CacheTag::SETTINGS_METRICS,
+        ]];
+
+        // The year scoped rewinds cannot be expressed here, they are covered by
+        // ActivityInvalidateCacheTagsListenerTest and the rewind page tests.
+        yield 'rewind' => [RewindPage::class, [
+            CacheTag::SETTINGS_APPEARANCE,
+            CacheTag::SETTINGS_GENERAL,
+            CacheTag::ACTIVITIES,
+            CacheTag::ACTIVITY_IMAGES,
+            CacheTag::GEAR,
+        ]];
+
+        yield 'rewind-compare' => [RewindComparePage::class, [
+            CacheTag::SETTINGS_APPEARANCE,
+            CacheTag::SETTINGS_GENERAL,
+            CacheTag::ACTIVITIES,
+            CacheTag::ACTIVITY_IMAGES,
+            CacheTag::GEAR,
         ]];
 
         yield 'photos' => [PhotosPage::class, [

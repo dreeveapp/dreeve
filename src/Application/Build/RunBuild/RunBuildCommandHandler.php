@@ -13,7 +13,6 @@ use App\Application\Build\BuildGearStatsHtml\BuildGearStatsHtml;
 use App\Application\Build\BuildManifest\BuildManifest;
 use App\Application\Build\BuildMonthlyStatsHtml\BuildMonthlyStatsHtml;
 use App\Application\Build\BuildRecordingDevices\BuildRecordingDevices;
-use App\Application\Build\BuildRewindHtml\BuildRewindHtml;
 use App\Application\Build\BuildSegmentsHtml\BuildSegmentsHtml;
 use App\Application\Build\ConfigureAppColors\ConfigureAppColors;
 use App\Application\Build\ConfigureAppLocale\ConfigureAppLocale;
@@ -71,7 +70,6 @@ This is not a bug, once all your activities have been imported, your gear statis
             'Building gear maintenance' => new BuildGearMaintenanceHtml(),
             'Building recording devices' => new BuildRecordingDevices(),
             'Building segments' => new BuildSegmentsHtml(),
-            'Building rewind' => new BuildRewindHtml($now),
             'Building badges' => new BuildBadgeSvg($now),
         ];
 

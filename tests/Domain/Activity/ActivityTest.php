@@ -7,17 +7,21 @@ use App\Domain\Activity\ActivityImagesHaveBeenUpdated;
 use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ActivityRouteWasUpdated;
 use App\Domain\Activity\ActivityWasAdded;
+use App\Domain\Activity\ActivityWasUpdated;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Activity\WorldType;
+use App\Domain\Gear\GearId;
 use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use App\Infrastructure\ValueObject\Time\Year;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -87,7 +91,7 @@ class ActivityTest extends TestCase
         $updatedActivity = $activity->withLocalImagePaths(['/activities/one.jpg', '/activities/two.jpg']);
 
         $this->assertEquals(
-            [new ActivityImagesHaveBeenUpdated()],
+            [new ActivityImagesHaveBeenUpdated(SerializableDateTime::fromString('2023-10-10'))],
             $updatedActivity->getRecordedEvents()
         );
         $this->assertEmpty($activity->getRecordedEvents());
@@ -122,7 +126,7 @@ class ActivityTest extends TestCase
             ->build();
 
         $this->assertEquals(
-            [new ActivityImagesHaveBeenUpdated()],
+            [new ActivityImagesHaveBeenUpdated(SerializableDateTime::fromString('2023-10-10'))],
             $activity->withLocalImagePaths([])->getRecordedEvents()
         );
     }
@@ -193,8 +197,8 @@ class ActivityTest extends TestCase
             ->withPolyline('tqafAua~y^vG{D')
             ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))->build();
 
-        $this->assertEquals(
-            [new ActivityRouteWasUpdated()],
+        $this->assertContainsEquals(
+            new ActivityRouteWasUpdated(),
             $change($activity)->getRecordedEvents()
         );
         $this->assertEmpty($activity->getRecordedEvents());
@@ -221,9 +225,9 @@ class ActivityTest extends TestCase
     }
 
     #[DataProvider('provideRouteNonChanges')]
-    public function testItShouldRecordNothingWhenTheRouteDidNotChange(callable $change): void
+    public function testItShouldNotRecordThatTheRouteWasUpdatedWhenTheRouteDidNotChange(callable $change): void
     {
-        $this->assertEmpty($change(ActivityBuilder::fromDefaults()
+        $this->assertNotContainsEquals(new ActivityRouteWasUpdated(), $change(ActivityBuilder::fromDefaults()
             ->withSportType(SportType::RIDE)
             ->withWorldType(WorldType::REAL_WORLD)
             ->withPolyline('tqafAua~y^vG{D')
@@ -247,19 +251,136 @@ class ActivityTest extends TestCase
         ];
     }
 
-    public function testItShouldRecordNothingWhenTheActivityIsNotOnTheMap(): void
+    public function testItShouldNotRecordThatTheRouteWasUpdatedWhenTheActivityIsNotOnTheMap(): void
     {
         $activity = ActivityBuilder::fromDefaults()
             ->withWorldType(WorldType::ZWIFT)
             ->build();
 
-        $this->assertEmpty($activity->withName(ActivityName::fromString('Renamed'))->getRecordedEvents());
+        $this->assertNotContainsEquals(
+            new ActivityRouteWasUpdated(),
+            $activity->withName(ActivityName::fromString('Renamed'))->getRecordedEvents()
+        );
+    }
+
+    #[DataProvider('provideUpdates')]
+    public function testItShouldRecordThatTheActivityWasUpdated(callable $change): void
+    {
+        $activity = ActivityBuilder::fromDefaults()->build();
+
+        $this->assertContainsEquals(
+            new ActivityWasUpdated(
+                SerializableDateTime::fromString('2023-10-10'),
+                SerializableDateTime::fromString('2023-10-10')
+            ),
+            $change($activity)->getRecordedEvents()
+        );
+        $this->assertEmpty($activity->getRecordedEvents());
+    }
+
+    /**
+     * @return \Generator<string, array{callable(Activity): Activity}>
+     */
+    public static function provideUpdates(): \Generator
+    {
+        yield 'name' => [fn (Activity $activity): Activity => $activity->withName(ActivityName::fromString('Renamed'))];
+        yield 'description' => [fn (Activity $activity): Activity => $activity->withDescription('Updated')];
+        yield 'device name' => [fn (Activity $activity): Activity => $activity->withDeviceName('Wahoo')];
+        yield 'sport type' => [fn (Activity $activity): Activity => $activity->withSportType(SportType::RUN)];
+        yield 'world type' => [fn (Activity $activity): Activity => $activity->withWorldType(WorldType::ZWIFT)];
+        yield 'distance' => [fn (Activity $activity): Activity => $activity->withDistance(Kilometer::from(42))];
+        yield 'elevation' => [fn (Activity $activity): Activity => $activity->withElevation(Meter::from(666))];
+        yield 'average speed' => [fn (Activity $activity): Activity => $activity->withAverageSpeed(KmPerHour::from(42))];
+        yield 'max speed' => [fn (Activity $activity): Activity => $activity->withMaxSpeed(KmPerHour::from(42))];
+        yield 'moving time' => [fn (Activity $activity): Activity => $activity->withMovingTimeInSeconds(4242)];
+        yield 'elapsed time' => [fn (Activity $activity): Activity => $activity->withElapsedTimeInSeconds(4242)];
+        yield 'polyline' => [fn (Activity $activity): Activity => $activity->withPolyline('other-polyline')];
+        yield 'starting coordinate' => [fn (Activity $activity): Activity => $activity->withStartingCoordinate(
+            Coordinate::createFromLatAndLng(Latitude::fromString('1'), Longitude::fromString('2'))
+        )];
+        yield 'route geography' => [fn (Activity $activity): Activity => $activity->withRouteGeography(
+            RouteGeography::create(['country_code' => 'NL'])
+        )];
+        yield 'gear' => [fn (Activity $activity): Activity => $activity->withGear(GearId::fromUnprefixed('42'))];
+        yield 'commute' => [fn (Activity $activity): Activity => $activity->withCommute(true)];
+        yield 'workout type' => [fn (Activity $activity): Activity => $activity->withWorkoutType(WorkoutType::RACE)];
+    }
+
+    #[DataProvider('provideNonUpdates')]
+    public function testItShouldRecordNothingWhenNothingChanged(callable $change): void
+    {
+        $this->assertEmpty($change(ActivityBuilder::fromDefaults()->build())->getRecordedEvents());
+    }
+
+    /**
+     * @return \Generator<string, array{callable(Activity): Activity}>
+     */
+    public static function provideNonUpdates(): \Generator
+    {
+        // An import rewriting the same values must not invalidate anything.
+        yield 'the same name' => [fn (Activity $activity): Activity => $activity->withName(
+            ActivityName::fromString('Test activity')
+        )];
+        yield 'the same distance' => [fn (Activity $activity): Activity => $activity->withDistance(Kilometer::from(10))];
+        yield 'the same start date' => [fn (Activity $activity): Activity => $activity->withStartDateTime(
+            SerializableDateTime::fromString('2023-10-10')
+        )];
+        // Enrichment happens on every read, it may never record anything.
+        yield 'the gear name' => [fn (Activity $activity): Activity => $activity->withGearName('Race bike')];
+        yield 'the normalized power' => [fn (Activity $activity): Activity => $activity->withNormalizedPower(242)];
+        yield 'the max cadence' => [fn (Activity $activity): Activity => $activity->withMaxCadence(99)];
+    }
+
+    public function testItShouldRecordThatTheActivityWasUpdatedOnlyOnce(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()->build();
+
+        $this->assertEquals(
+            [new ActivityWasUpdated(
+                SerializableDateTime::fromString('2023-10-10'),
+                SerializableDateTime::fromString('2023-10-10')
+            )],
+            $activity
+                ->withName(ActivityName::fromString('Renamed'))
+                ->withDescription('Updated')
+                ->withDeviceName('Wahoo')
+                ->withMovingTimeInSeconds(4242)
+                ->getRecordedEvents()
+        );
+    }
+
+    public function testItShouldRecordBothYearsWhenTheActivityMovesToAnotherYear(): void
+    {
+        $updatedActivity = ActivityBuilder::fromDefaults()
+            ->build()
+            ->withStartDateTime(SerializableDateTime::fromString('2021-05-05'));
+
+        $events = $updatedActivity->getRecordedEvents();
+        $this->assertCount(1, $events);
+
+        $event = $events[0];
+        $this->assertInstanceOf(ActivityWasUpdated::class, $event);
+        $this->assertEquals([Year::fromInt(2021), Year::fromInt(2023)], $event->getYears());
+    }
+
+    public function testItShouldRecordOneYearWhenTheActivityStaysInTheSameYear(): void
+    {
+        $updatedActivity = ActivityBuilder::fromDefaults()
+            ->build()
+            ->withStartDateTime(SerializableDateTime::fromString('2023-05-05'));
+
+        $events = $updatedActivity->getRecordedEvents();
+        $this->assertCount(1, $events);
+
+        $event = $events[0];
+        $this->assertInstanceOf(ActivityWasUpdated::class, $event);
+        $this->assertEquals([Year::fromInt(2023)], $event->getYears());
     }
 
     public function testItShouldRecordThatTheRouteWasUpdatedWhenTheActivityIsCreatedOnTheMap(): void
     {
         $this->assertEquals(
-            [new ActivityWasAdded(), new ActivityRouteWasUpdated()],
+            [new ActivityWasAdded(SerializableDateTime::fromString('2023-10-10')), new ActivityRouteWasUpdated()],
             ActivityBuilder::fromDefaults()
                 ->withSportType(SportType::RIDE)
                 ->withWorldType(WorldType::REAL_WORLD)
@@ -271,7 +392,7 @@ class ActivityTest extends TestCase
     public function testItShouldOnlyRecordThatTheActivityWasAddedWhenItIsCreatedOffTheMap(): void
     {
         $this->assertEquals(
-            [new ActivityWasAdded()],
+            [new ActivityWasAdded(SerializableDateTime::fromString('2023-10-10'))],
             ActivityBuilder::fromDefaults()->buildAsNewlyCreated()->getRecordedEvents()
         );
     }

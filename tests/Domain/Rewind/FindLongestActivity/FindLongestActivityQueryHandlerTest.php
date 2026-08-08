@@ -2,7 +2,7 @@
 
 namespace App\Tests\Domain\Rewind\FindLongestActivity;
 
-use App\Domain\Activity\EnrichedActivities;
+use App\Domain\Activity\ActivityRepository;
 use App\Domain\Rewind\FindLongestActivity\FindLongestActivity;
 use App\Domain\Rewind\FindLongestActivity\FindLongestActivityQueryHandler;
 use App\Infrastructure\Exception\EntityNotFound;
@@ -27,7 +27,7 @@ class FindLongestActivityQueryHandlerTest extends ContainerTestCase
 
         $this->queryHandler = new FindLongestActivityQueryHandler(
             $this->getConnection(),
-            $this->getContainer()->get(EnrichedActivities::class)
+            $this->getContainer()->get(ActivityRepository::class)
         );
     }
 }

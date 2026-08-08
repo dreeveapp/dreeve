@@ -4,21 +4,42 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Cache;
 
-use App\Infrastructure\ValueObject\Collection;
-
-/**
- * @extends Collection<CacheTag>
- */
-final class CacheTags extends Collection
+final readonly class CacheTags
 {
-    public function getItemClassName(): string
-    {
-        return CacheTag::class;
+    /**
+     * @param array<CacheTag|ScopedCacheTag> $cacheTags
+     */
+    private function __construct(
+        private array $cacheTags,
+    ) {
     }
 
-    public static function of(CacheTag ...$cacheTags): self
+    public static function of(CacheTag|ScopedCacheTag ...$cacheTags): self
     {
-        return self::fromArray($cacheTags);
+        return new self($cacheTags);
+    }
+
+    public static function empty(): self
+    {
+        return new self([]);
+    }
+
+    public function merge(self $other): self
+    {
+        return new self([...$this->cacheTags, ...$other->cacheTags]);
+    }
+
+    /**
+     * @return array<CacheTag|ScopedCacheTag>
+     */
+    public function toArray(): array
+    {
+        return $this->cacheTags;
+    }
+
+    public function isEmpty(): bool
+    {
+        return [] === $this->cacheTags;
     }
 
     /**
@@ -26,6 +47,9 @@ final class CacheTags extends Collection
      */
     public function toTagStrings(): array
     {
-        return array_values(array_unique($this->map(fn (CacheTag $cacheTag): string => $cacheTag->value)));
+        return array_values(array_unique(array_map(
+            fn (CacheTag|ScopedCacheTag $cacheTag): string => $cacheTag->toTagString(),
+            $this->cacheTags
+        )));
     }
 }

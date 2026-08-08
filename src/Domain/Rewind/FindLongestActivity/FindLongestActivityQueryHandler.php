@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Rewind\FindLongestActivity;
 
 use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\EnrichedActivities;
+use App\Domain\Activity\ActivityRepository;
 use App\Infrastructure\CQRS\Query\Query;
 use App\Infrastructure\CQRS\Query\QueryHandler;
 use App\Infrastructure\CQRS\Query\Response;
@@ -17,7 +17,7 @@ final readonly class FindLongestActivityQueryHandler implements QueryHandler
 {
     public function __construct(
         private Connection $connection,
-        private EnrichedActivities $enrichedActivities,
+        private ActivityRepository $activityRepository,
     ) {
     }
 
@@ -45,7 +45,7 @@ final readonly class FindLongestActivityQueryHandler implements QueryHandler
         }
 
         return new FindLongestActivityResponse(
-            $this->enrichedActivities->find(ActivityId::fromString($activityId)),
+            $this->activityRepository->find(ActivityId::fromString($activityId)),
         );
     }
 }

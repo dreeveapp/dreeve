@@ -50,11 +50,41 @@ class ApiPageRequestHandlerTest extends ContainerTestCase
         $this->assertEquals($response->getContent(), $secondResponse->getContent());
     }
 
+    public function testHandleForADynamicPage(): void
+    {
+        $this->provideFullTestSet();
+
+        $response = $this->apiPageRequestHandler->handle('rewind/2023/compare/2022');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('MISS', $response->headers->get('X-Cache'));
+        $this->assertStringContainsString('rewind.2023.compare.2022', (string) $response->headers->get('X-Cache-Key'));
+        // Only the two years that are actually rendered can invalidate this page.
+        $this->assertEquals(
+            'settings.appearance, settings.general, activities.2023, activity.images.2023, gear, activities.2022, activity.images.2022',
+            $response->headers->get('X-Cache-Tags'),
+        );
+
+        $secondResponse = $this->apiPageRequestHandler->handle('rewind/2023/compare/2022');
+        $this->assertEquals('HIT', $secondResponse->headers->get('X-Cache'));
+        $this->assertEquals($response->getContent(), $secondResponse->getContent());
+    }
+
     public function testHandleWhenPageIsNotRegistered(): void
     {
         $this->assertEquals(
             404,
             $this->apiPageRequestHandler->handle('unknown')->getStatusCode()
+        );
+    }
+
+    public function testHandleWhenADynamicPageCannotResolveThePath(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->assertEquals(
+            404,
+            $this->apiPageRequestHandler->handle('rewind/1999')->getStatusCode()
         );
     }
 

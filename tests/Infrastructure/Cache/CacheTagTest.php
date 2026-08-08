@@ -4,6 +4,7 @@ namespace App\Tests\Infrastructure\Cache;
 
 use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\Cache\CacheTag;
+use App\Infrastructure\ValueObject\Time\Year;
 use PHPUnit\Framework\TestCase;
 
 class CacheTagTest extends TestCase
@@ -12,6 +13,14 @@ class CacheTagTest extends TestCase
     {
         $crossCuttingTags = CacheTag::crossCutting();
         $this->assertEquals(array_unique($crossCuttingTags, SORT_REGULAR), $crossCuttingTags);
+    }
+
+    public function testItCanBeScopedToAYear(): void
+    {
+        $this->assertEquals(
+            'activities.2025',
+            CacheTag::ACTIVITIES->forYear(Year::fromInt(2025))->toTagString()
+        );
     }
 
     public function testEverySettingsGroupMapsToADistinctCacheTag(): void

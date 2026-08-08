@@ -12,6 +12,17 @@ trait RecordsEvents
         $this->recordedEvents[] = $event;
     }
 
+    protected function recordOnlyOnce(DomainEvent $event): void
+    {
+        foreach ($this->recordedEvents as $recordedEvent) {
+            if ($recordedEvent->equals($event)) {
+                return;
+            }
+        }
+
+        $this->recordThat($event);
+    }
+
     /**
      * @return DomainEvent[]
      */

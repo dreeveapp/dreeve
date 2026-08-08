@@ -21,6 +21,9 @@ class LiveOpenMeteoTest extends TestCase
     use MatchesSnapshots;
 
     private LiveOpenMeteo $liveOpenMeteo;
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject&\GuzzleHttp\Client
+     */
     private MockObject $client;
     private Clock $clock;
 

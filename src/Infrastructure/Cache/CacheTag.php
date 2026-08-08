@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Cache;
 
 use App\Domain\Settings\SettingsGroup;
+use App\Infrastructure\ValueObject\Time\Year;
 
 enum CacheTag: string
 {
@@ -23,6 +24,20 @@ enum CacheTag: string
     case SETTINGS_ZWIFT = 'settings.zwift';
     case SETTINGS_INTEGRATIONS = 'settings.integrations';
     case SETTINGS_DAEMON = 'settings.daemon';
+
+    public function toTagString(): string
+    {
+        return $this->value;
+    }
+
+    /**
+     * Narrows this tag down to a single year, so a render that only covers that year survives
+     * a change to any other year.
+     */
+    public function forYear(Year $year): ScopedCacheTag
+    {
+        return ScopedCacheTag::for($this, (string) $year);
+    }
 
     /**
      * @return self[]

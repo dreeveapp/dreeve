@@ -19,6 +19,12 @@ abstract class DomainEvent extends Event implements \JsonSerializable
         ];
     }
 
+    public function equals(self $other): bool
+    {
+        return static::class === $other::class
+            && $this->getSerializablePayload() == $other->getSerializablePayload();
+    }
+
     /**
      * @return array<mixed>
      */

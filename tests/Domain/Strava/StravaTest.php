@@ -36,9 +36,18 @@ class StravaTest extends TestCase
 
     private Strava $strava;
 
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject&\GuzzleHttp\Client
+     */
     private MockObject $client;
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject&\League\Flysystem\FilesystemOperator
+     */
     private MockObject $filesystemOperator;
     private NullSleep $sleep;
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject&\Psr\Log\LoggerInterface
+     */
     private MockObject $logger;
 
     public function testGetAccessToken(): void

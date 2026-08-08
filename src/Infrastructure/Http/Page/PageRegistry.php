@@ -20,6 +20,13 @@ final readonly class PageRegistry
     public function find(string $path): ?Page
     {
         foreach ($this->pages as $page) {
+            if ($page instanceof DynamicPage) {
+                if ($resolvedPage = $page->resolve($path)) {
+                    return $resolvedPage;
+                }
+                continue;
+            }
+
             if ($page->getPath() === $path) {
                 return $page;
             }

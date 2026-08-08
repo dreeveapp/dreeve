@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Activity;
 
+use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Route\RouteGeography;
@@ -10,6 +11,9 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\ScopedCacheTag;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use App\Infrastructure\ValueObject\Time\Year;
 use App\Tests\ContainerTestCase;
 
 class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
@@ -26,21 +30,9 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertFalse($this->renderCache->get(
-            cacheKey: CacheTag::ACTIVITIES->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITIES)),
-            callback: fn (): string => 'rendered',
-        )->wasServedFromCache());
-        $this->assertTrue($this->renderCache->get(
-            cacheKey: CacheTag::ACTIVITY_IMAGES->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
-            callback: fn (): string => 'rendered',
-        )->wasServedFromCache());
-        $this->assertTrue($this->renderCache->get(
-            cacheKey: CacheTag::ACTIVITY_ROUTE->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_ROUTE)),
-            callback: fn (): string => 'rendered',
-        )->wasServedFromCache());
+        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES));
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES));
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_ROUTE));
     }
 
     public function testItDoesNotInvalidateWhenAnActivityIsMerelyHydratedAndStored(): void
@@ -52,11 +44,7 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertTrue($this->renderCache->get(
-            cacheKey: CacheTag::ACTIVITIES->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITIES)),
-            callback: fn (): string => 'rendered',
-        )->wasServedFromCache());
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITIES));
     }
 
     public function testItInvalidatesWhenAnActivityIsDeleted(): void
@@ -67,24 +55,12 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
 
         $this->activityRepository->delete($activity->getId());
 
-        $this->assertFalse($this->renderCache->get(
-            cacheKey: CacheTag::ACTIVITIES->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITIES)),
-            callback: fn (): string => 'rendered',
-        )->wasServedFromCache());
-        $this->assertFalse($this->renderCache->get(
-            cacheKey: CacheTag::ACTIVITY_IMAGES->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
-            callback: fn (): string => 'rendered',
-        )->wasServedFromCache());
-        $this->assertFalse($this->renderCache->get(
-            cacheKey: CacheTag::ACTIVITY_ROUTE->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_ROUTE)),
-            callback: fn (): string => 'rendered',
-        )->wasServedFromCache());
+        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES));
+        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES));
+        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITY_ROUTE));
     }
 
-    public function testItOnlyInvalidatesTheRouteWhenTheRouteHasBeenUpdated(): void
+    public function testItInvalidatesTheRouteWhenTheRouteHasBeenUpdated(): void
     {
         $activity = ActivityBuilder::fromDefaults()
             ->withPolyline('tqafAua~y^vG{D')
@@ -98,21 +74,73 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertTrue($this->renderCache->get(
-            cacheKey: CacheTag::ACTIVITIES->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITIES)),
-            callback: fn (): string => 'rendered',
-        )->wasServedFromCache());
-        $this->assertTrue($this->renderCache->get(
-            cacheKey: CacheTag::ACTIVITY_IMAGES->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
-            callback: fn (): string => 'rendered',
-        )->wasServedFromCache());
-        $this->assertFalse($this->renderCache->get(
-            cacheKey: CacheTag::ACTIVITY_ROUTE->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_ROUTE)),
-            callback: fn (): string => 'rendered',
-        )->wasServedFromCache());
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES));
+        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITY_ROUTE));
+    }
+
+    public function testItInvalidatesWhenAnActivityIsUpdated(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->update(ActivityWithRawData::fromState(
+            $activity->withName(ActivityName::fromString('Renamed')),
+            [],
+        ));
+
+        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES));
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES));
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_ROUTE));
+    }
+
+    public function testItDoesNotInvalidateWhenAnUpdateRewritesTheSameValues(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->update(ActivityWithRawData::fromState(
+            $activity->withName(ActivityName::fromString('Test activity')),
+            [],
+        ));
+
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITIES));
+    }
+
+    public function testItOnlyInvalidatesTheYearAnUpdatedActivityBelongsTo(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
+            ->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->update(ActivityWithRawData::fromState(
+            $activity->withName(ActivityName::fromString('Renamed')),
+            [],
+        ));
+
+        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2023))));
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2016))));
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023))));
+    }
+
+    public function testItInvalidatesBothYearsWhenAnActivityMovesToAnotherYear(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
+            ->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->update(ActivityWithRawData::fromState(
+            $activity->withStartDateTime(SerializableDateTime::fromString('2016-10-10')),
+            [],
+        ));
+
+        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2023))));
+        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2016))));
     }
 
     public function testItDoesNotInvalidateTheRouteWhenTheActivityIsNotOnTheMap(): void
@@ -128,11 +156,7 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertTrue($this->renderCache->get(
-            cacheKey: CacheTag::ACTIVITY_ROUTE->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_ROUTE)),
-            callback: fn (): string => 'rendered',
-        )->wasServedFromCache());
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_ROUTE));
     }
 
     public function testItOnlyInvalidatesTheImagesWhenTheImagesHaveBeenUpdated(): void
@@ -146,31 +170,82 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertTrue($this->renderCache->get(
-            cacheKey: CacheTag::ACTIVITIES->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITIES)),
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITIES));
+        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES));
+    }
+
+    public function testItOnlyInvalidatesTheYearAnAddedActivityBelongsTo(): void
+    {
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
+                ->buildAsNewlyCreated(),
+            [],
+        ));
+
+        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2023))));
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2016))));
+    }
+
+    public function testItOnlyInvalidatesTheYearADeletedActivityBelongsTo(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
+            ->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->delete($activity->getId());
+
+        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2023))));
+        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023))));
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITIES->forYear(Year::fromInt(2016))));
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2016))));
+    }
+
+    public function testItOnlyInvalidatesTheYearUpdatedImagesBelongTo(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
+            ->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->update(ActivityWithRawData::fromState(
+            $activity->withLocalImagePaths(['/image.jpg']),
+            [],
+        ));
+
+        $this->assertFalse($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023))));
+        $this->assertTrue($this->isServedFromCache(CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2016))));
+    }
+
+    private function isServedFromCache(CacheTag|ScopedCacheTag $cacheTag): bool
+    {
+        return $this->renderCache->get(
+            cacheKey: $cacheTag->toTagString(),
+            cacheability: Cacheability::for('stub', CacheTags::of($cacheTag)),
             callback: fn (): string => 'rendered',
-        )->wasServedFromCache());
-        $this->assertFalse($this->renderCache->get(
-            cacheKey: CacheTag::ACTIVITY_IMAGES->value,
-            cacheability: Cacheability::for('stub', CacheTags::of(CacheTag::ACTIVITY_IMAGES)),
-            callback: fn (): string => 'rendered',
-        )->wasServedFromCache());
+        )->wasServedFromCache();
     }
 
     private function warmUpRenderCache(): void
     {
-        foreach ([CacheTag::ACTIVITIES, CacheTag::ACTIVITY_IMAGES, CacheTag::ACTIVITY_ROUTE] as $cacheTag) {
-            $this->renderCache->get(
-                cacheKey: $cacheTag->value,
-                cacheability: Cacheability::for('stub', CacheTags::of($cacheTag)),
-                callback: fn (): string => 'rendered',
-            );
-            $this->assertTrue($this->renderCache->get(
-                cacheKey: $cacheTag->value,
-                cacheability: Cacheability::for('stub', CacheTags::of($cacheTag)),
-                callback: fn (): string => 'rendered',
-            )->wasServedFromCache());
+        $cacheTags = [
+            CacheTag::ACTIVITIES,
+            CacheTag::ACTIVITY_IMAGES,
+            CacheTag::ACTIVITY_ROUTE,
+            CacheTag::ACTIVITIES->forYear(Year::fromInt(2023)),
+            CacheTag::ACTIVITIES->forYear(Year::fromInt(2016)),
+            CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023)),
+            CacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2016)),
+        ];
+
+        foreach ($cacheTags as $cacheTag) {
+            $this->isServedFromCache($cacheTag);
+            $this->assertTrue($this->isServedFromCache($cacheTag));
         }
     }
 

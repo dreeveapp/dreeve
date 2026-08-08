@@ -17,6 +17,9 @@ use Symfony\Component\Messenger\Middleware\StackInterface;
 class SetForceRebuildFlagMiddlewareTest extends TestCase
 {
     private SetForceRebuildFlagMiddleware $middleware;
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject&\App\Infrastructure\KeyValue\KeyValueStore
+     */
     private MockObject $keyValueStore;
 
     public function testItFlagsForceRebuildForATaggedCommand(): void

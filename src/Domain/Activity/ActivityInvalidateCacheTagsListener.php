@@ -18,13 +18,30 @@ final readonly class ActivityInvalidateCacheTagsListener
     #[AsEventListener]
     public function reactToActivityWasAdded(ActivityWasAdded $event): void
     {
-        $this->renderCache->invalidateTags(CacheTag::ACTIVITIES);
+        $this->renderCache->invalidateTags(
+            CacheTag::ACTIVITIES,
+            CacheTag::ACTIVITIES->forYear($event->getYear()),
+        );
+    }
+
+    #[AsEventListener]
+    public function reactToActivityWasUpdated(ActivityWasUpdated $event): void
+    {
+        $cacheTags = [CacheTag::ACTIVITIES];
+        foreach ($event->getYears() as $year) {
+            $cacheTags[] = CacheTag::ACTIVITIES->forYear($year);
+        }
+
+        $this->renderCache->invalidateTags(...$cacheTags);
     }
 
     #[AsEventListener]
     public function reactToActivityImagesHaveBeenUpdated(ActivityImagesHaveBeenUpdated $event): void
     {
-        $this->renderCache->invalidateTags(CacheTag::ACTIVITY_IMAGES);
+        $this->renderCache->invalidateTags(
+            CacheTag::ACTIVITY_IMAGES,
+            CacheTag::ACTIVITY_IMAGES->forYear($event->getYear()),
+        );
     }
 
     #[AsEventListener]
@@ -38,8 +55,10 @@ final readonly class ActivityInvalidateCacheTagsListener
     {
         $this->renderCache->invalidateTags(
             CacheTag::ACTIVITIES,
+            CacheTag::ACTIVITIES->forYear($event->getYear()),
             CacheTag::ACTIVITY_IMAGES,
-            CacheTag::ACTIVITY_ROUTE
+            CacheTag::ACTIVITY_IMAGES->forYear($event->getYear()),
+            CacheTag::ACTIVITY_ROUTE,
         );
     }
 }
