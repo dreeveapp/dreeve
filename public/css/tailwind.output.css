@@ -4491,9 +4491,6 @@
   .drawer-open\:opacity-0:where(body:has(#drawer-navigation[aria-modal="true"]) *) {
     opacity: 0%;
   }
-  .authenticated\:inline-flex:where([data-authenticated], [data-authenticated] *) {
-    display: inline-flex;
-  }
   .\[\&\.disabled\]\:bg-gray-100.disabled {
     background-color: var(--color-gray-100);
   }

@@ -112,7 +112,6 @@ class GateRequestListenerTest extends TestCase
     public static function provideAlwaysOpenPaths(): iterable
     {
         yield 'strava webhook' => ['/strava/webhook'];
-        yield 'auth status' => ['/auth/status'];
         yield 'profiler' => ['/_profiler/abc123'];
         yield 'web debug toolbar' => ['/_wdt/abc123'];
         yield 'css asset' => ['/css/app.css'];

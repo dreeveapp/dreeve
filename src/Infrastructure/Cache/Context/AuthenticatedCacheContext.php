@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Infrastructure\Cache\Context;
 
 use App\Infrastructure\Cache\CacheContext;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Infrastructure\Security\AuthenticatedVisitor;
 
 final readonly class AuthenticatedCacheContext implements CacheContext
 {
     public function __construct(
-        private Security $security,
+        private AuthenticatedVisitor $authenticatedVisitor,
     ) {
     }
 
@@ -22,6 +21,6 @@ final readonly class AuthenticatedCacheContext implements CacheContext
 
     public function resolve(): string
     {
-        return $this->security->getUser() instanceof UserInterface ? 'auth' : 'anon';
+        return $this->authenticatedVisitor->isAuthenticated() ? 'auth' : 'anon';
     }
 }

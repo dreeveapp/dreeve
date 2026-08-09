@@ -13,11 +13,14 @@ use App\Domain\Activity\Stream\CombinedStream\CombinedStreamProfileCharts;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheContexts;
 use App\Infrastructure\Cache\CacheTags;
+use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\Page\PageResolver;
 use App\Infrastructure\Http\Page\ResolvedPage;
+use App\Infrastructure\Security\AuthenticatedVisitor;
 use App\Infrastructure\ValueObject\String\Slug;
 use Twig\Environment;
 
@@ -35,6 +38,7 @@ final readonly class ActivityPageResolver implements PageResolver
         private ActivitySplitRepository $activitySplitRepository,
         private ActivityLapRepository $activityLapRepository,
         private SettingsRepository $settingsRepository,
+        private AuthenticatedVisitor $authenticatedVisitor,
         private Environment $twig,
     ) {
     }
@@ -70,6 +74,7 @@ final readonly class ActivityPageResolver implements PageResolver
                 ActivityCacheTag::for($activityId),
                 RootCacheTag::GEAR,
             ),
+            cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
         );
     }
 
@@ -117,6 +122,7 @@ final readonly class ActivityPageResolver implements PageResolver
             'profileChartHeight' => CombinedStreamProfileCharts::totalHeightFor($numberOfProfileChartLanes),
             'hasProfileChart' => $numberOfProfileChartLanes > 0,
             'heartRateZones' => $timeInHeartRateZones,
+            'isAuthenticated' => $this->authenticatedVisitor->isAuthenticated(),
         ]);
     }
 }

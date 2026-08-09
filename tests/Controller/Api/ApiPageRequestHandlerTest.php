@@ -77,8 +77,12 @@ class ApiPageRequestHandlerTest extends ContainerTestCase
         $response = $this->apiPageRequestHandler->handle('activity/activity-9756441741');
 
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            'no-store, private',
+            $response->headers->get('Cache-Control'),
+        );
         $this->assertEquals('MISS', $response->headers->get('X-Cache'));
-        $this->assertStringEndsWith('activity.9756441741', (string) $response->headers->get('X-Cache-Key'));
+        $this->assertStringEndsWith('activity.9756441741.auth=anon', (string) $response->headers->get('X-Cache-Key'));
         $this->assertEquals(
             'settings.appearance, settings.general, activities.9756441741, gear',
             $response->headers->get('X-Cache-Tags'),
