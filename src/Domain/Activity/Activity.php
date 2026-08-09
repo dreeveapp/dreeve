@@ -4,7 +4,6 @@ namespace App\Domain\Activity;
 
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
-use App\Domain\Activity\Stream\ActivityPowerRepository;
 use App\Domain\Activity\Stream\PowerOutput;
 use App\Domain\Activity\Stream\PowerOutputs;
 use App\Domain\Gear\GearId;
@@ -928,16 +927,7 @@ final class Activity implements SupportsAITooling
      */
     public function getSortables(): array
     {
-        $bestAveragePowerSortables = [];
-        foreach (ActivityPowerRepository::TIME_INTERVALS_IN_SECONDS_REDACTED as $interval) {
-            if (!($bestAverage = $this->getBestAveragePowerForTimeInterval($interval)) instanceof PowerOutput) {
-                continue;
-            }
-
-            $bestAveragePowerSortables[sprintf('power-%ss', $interval)] = $bestAverage->getPower();
-        }
-
-        return array_filter(array_merge([
+        return array_filter([
             'start-date' => $this->getStartDate()->getTimestamp(),
             'distance' => (int) ($this->getDistance()->toFloat() * 1000),
             'elevation' => (int) ($this->getElevation()->toFloat() * 1000),
@@ -946,7 +936,7 @@ final class Activity implements SupportsAITooling
             'speed' => (int) ($this->getAverageSpeed()->toFloat() * 1000),
             'heart-rate' => $this->getAverageHeartRate(),
             'calories' => $this->getCalories(),
-        ], $bestAveragePowerSortables));
+        ]);
     }
 
     /**

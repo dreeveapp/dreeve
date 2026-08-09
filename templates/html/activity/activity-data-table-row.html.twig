@@ -36,7 +36,7 @@
         {{ activity.getAveragePower() ? activity.getAveragePower() ~ '<span class="text-xxs ml-px">w</span>': '-' }}
     </td>
     {% for timeInterval in timeIntervals %}
-        {% set powerOutput = activity.getBestAveragePowerForTimeInterval(timeInterval) %}
+        {% set powerOutput = enrichedActivity.getBestAveragePowerForTimeInterval(timeInterval) %}
         {% if powerOutput %}
             <td class="border-l-2">
                 {{ powerOutput.getPower() }}<span class="text-xxs ml-px">w</span>

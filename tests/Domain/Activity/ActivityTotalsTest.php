@@ -16,7 +16,7 @@ class ActivityTotalsTest extends ContainerTestCase
     {
         $this->assertEquals(
             $expectedResult,
-            ActivityTotals::getInstance(
+            ActivityTotals::create(
                 activities: $activities,
                 now: $now,
                 translator: $this->getContainer()->get(TranslatorInterface::class),

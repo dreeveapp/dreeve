@@ -2,6 +2,8 @@
 
 namespace App\Tests\Domain\Activity;
 
+use App\Domain\Activity\Activity;
+use App\Domain\Activity\EnrichedActivity;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
@@ -62,6 +64,36 @@ class DbalEnrichedActivityRepositoryTest extends ContainerTestCase
         $this->assertNull($enrichedActivity->getGearName());
         $this->assertFalse($enrichedActivity->hasDetailedPowerData());
         $this->assertNull($enrichedActivity->getBestAveragePowerForTimeInterval(5));
+    }
+
+    public function testFindAll(): void
+    {
+        $this->provideFullTestSet();
+
+        $enrichedActivities = $this->enrichedActivityRepository->findAll();
+
+        $this->assertEquals(
+            array_map(
+                fn (Activity $activity): string => (string) $activity->getId(),
+                $this->getContainer()->get(ActivityRepository::class)->findAll()->toArray()
+            ),
+            array_map(
+                fn (EnrichedActivity $enrichedActivity): string => (string) $enrichedActivity->getActivity()->getId(),
+                $enrichedActivities
+            ),
+        );
+    }
+
+    public function testFindAllEnrichesEveryActivityTheSameWayFindDoes(): void
+    {
+        $this->provideFullTestSet();
+
+        foreach ($this->enrichedActivityRepository->findAll() as $enrichedActivity) {
+            $this->assertEquals(
+                $this->enrichedActivityRepository->find($enrichedActivity->getActivity()->getId()),
+                $enrichedActivity,
+            );
+        }
     }
 
     public function testFindForAnActivityThatDoesNotExist(): void

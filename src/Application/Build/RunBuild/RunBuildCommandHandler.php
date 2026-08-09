@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Application\Build\RunBuild;
 
 use App\Application\AppStatusChecker;
-use App\Application\Build\BuildActivitiesHtml\BuildActivitiesHtml;
 use App\Application\Build\BuildBadgeSvg\BuildBadgeSvg;
 use App\Application\Build\BuildDashboardHtml\BuildDashboardHtml;
 use App\Application\Build\BuildGearMaintenanceHtml\BuildGearMaintenanceHtml;
@@ -63,7 +62,6 @@ This is not a bug, once all your activities have been imported, your gear statis
             'Configuring theme colors' => new ConfigureAppColors(),
             'Building Manifest' => new BuildManifest(),
             'Building dashboard' => new BuildDashboardHtml(),
-            'Building activities' => new BuildActivitiesHtml($now),
             'Building gear stats' => new BuildGearStatsHtml($now),
             'Building gear maintenance' => new BuildGearMaintenanceHtml(),
             'Building recording devices' => new BuildRecordingDevices(),

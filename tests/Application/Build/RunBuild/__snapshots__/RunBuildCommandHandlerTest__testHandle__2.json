@@ -16,12 +16,6 @@
         "payload": []
     },
     {
-        "commandName": "App\\Application\\Build\\BuildActivitiesHtml\\BuildActivitiesHtml",
-        "payload": {
-            "now": "2023-10-17 16:15:04"
-        }
-    },
-    {
         "commandName": "App\\Application\\Build\\BuildGearStatsHtml\\BuildGearStatsHtml",
         "payload": {
             "now": "2023-10-17 16:15:04"

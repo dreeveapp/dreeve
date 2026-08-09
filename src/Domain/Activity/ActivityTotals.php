@@ -13,7 +13,6 @@ final class ActivityTotals
 {
     use ProvideTimeFormats;
 
-    public static ?ActivityTotals $instance = null;
 
     private readonly Kilometer $totalDistance;
     private readonly Meter $totalElevation;
@@ -37,20 +36,16 @@ final class ActivityTotals
         $this->totalActivities = count($this->activities);
     }
 
-    public static function getInstance(
+    public static function create(
         Activities $activities,
         SerializableDateTime $now,
         TranslatorInterface $translator): self
     {
-        if (!self::$instance instanceof ActivityTotals) {
-            self::$instance = new self(
-                activities: $activities,
-                now: $now,
-                translator: $translator,
-            );
-        }
-
-        return self::$instance;
+        return new self(
+            activities: $activities,
+            now: $now,
+            translator: $translator,
+        );
     }
 
     public function getDistance(): Kilometer

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
+use App\Domain\Activity\Stream\ActivityPowerRepository;
 use App\Domain\Activity\Stream\PowerOutput;
 use App\Domain\Activity\Stream\PowerOutputs;
 
@@ -57,6 +58,23 @@ final readonly class EnrichedActivity
     public function hasDetailedPowerData(): bool
     {
         return !$this->bestPowerOutputs->isEmpty();
+    }
+
+    /**
+     * @return array<string, string|int|float>
+     */
+    public function getSortables(): array
+    {
+        $powerSortables = [];
+        foreach (ActivityPowerRepository::TIME_INTERVALS_IN_SECONDS_REDACTED as $interval) {
+            if (!($bestAverage = $this->getBestAveragePowerForTimeInterval($interval)) instanceof PowerOutput) {
+                continue;
+            }
+
+            $powerSortables[sprintf('power-%ss', $interval)] = $bestAverage->getPower();
+        }
+
+        return array_filter(array_merge($this->activity->getSortables(), $powerSortables));
     }
 
     public function getBestAveragePowerForTimeInterval(int $timeInterval): ?PowerOutput

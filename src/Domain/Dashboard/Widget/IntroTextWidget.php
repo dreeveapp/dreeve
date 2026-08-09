@@ -41,7 +41,7 @@ final readonly class IntroTextWidget implements Widget
     public function render(SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
         $allActivities = $this->enrichedActivities->findAll();
-        $activityTotals = ActivityTotals::getInstance(
+        $activityTotals = ActivityTotals::create(
             activities: $allActivities,
             now: $now,
             translator: $this->translator,

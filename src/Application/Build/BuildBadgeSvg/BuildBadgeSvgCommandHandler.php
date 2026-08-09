@@ -44,7 +44,7 @@ final readonly class BuildBadgeSvgCommandHandler implements CommandHandler
         $zwiftRacingScore = $this->settingsRepository->zwift()->getZwiftRacingScore();
         $activities = $this->enrichedActivities->findAll();
 
-        $activityTotals = ActivityTotals::getInstance(
+        $activityTotals = ActivityTotals::create(
             activities: $activities,
             now: $now,
             translator: $this->translator,
