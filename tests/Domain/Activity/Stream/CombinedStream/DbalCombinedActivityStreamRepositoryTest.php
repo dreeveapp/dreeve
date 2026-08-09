@@ -13,6 +13,7 @@ use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamTypes;
 use App\Domain\Activity\Stream\CombinedStream\DbalCombinedActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -48,6 +49,17 @@ class DbalCombinedActivityStreamRepositoryTest extends ContainerTestCase
                 activityId: ActivityId::fromUnprefixed('test'),
                 unitSystem: UnitSystem::METRIC
             )
+        );
+    }
+
+    public function testFindOneForActivityAndUnitSystemWhenThereIsNoCombinedStream(): void
+    {
+        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionMessageIsOrContains('CombinedActivityStream not found');
+
+        $this->combinedActivityStreamRepository->findOneForActivityAndUnitSystem(
+            activityId: ActivityId::fromUnprefixed('test'),
+            unitSystem: UnitSystem::METRIC
         );
     }
 

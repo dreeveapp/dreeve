@@ -3,7 +3,6 @@
 namespace App\Domain\Activity\Stream;
 
 use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivitySummaryRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
@@ -19,61 +18,11 @@ use Doctrine\DBAL\Connection;
 
 final class StreamBasedActivityPowerRepository implements ActivityPowerRepository
 {
-    /** @var array<string, PowerOutputs> */
-    public static array $cachedPowerOutputs = [];
-
     public function __construct(
         private readonly Connection $connection,
-        private readonly ActivityIdRepository $activityIdRepository,
         private readonly ActivitySummaryRepository $activitySummaryRepository,
         private readonly SettingsRepository $settingsRepository,
     ) {
-    }
-
-    public function findBest(ActivityId $activityId): PowerOutputs
-    {
-        $this->buildStaticCaches();
-
-        return StreamBasedActivityPowerRepository::$cachedPowerOutputs[(string) $activityId];
-    }
-
-    private function buildStaticCaches(): void
-    {
-        if ([] !== StreamBasedActivityPowerRepository::$cachedPowerOutputs) {
-            return;
-        }
-
-        $athleteWeightHistory = $this->settingsRepository->general()->getAthleteWeightHistory($this->settingsRepository->appearance()->getUnitSystem());
-
-        $activityIds = $this->activityIdRepository->findAll();
-        foreach ($activityIds as $activityId) {
-            StreamBasedActivityPowerRepository::$cachedPowerOutputs[(string) $activityId] = PowerOutputs::empty();
-        }
-
-        $results = $this->connection->executeQuery(
-            'SELECT activityId, data FROM ActivityStreamMetric
-             WHERE streamType = :streamType AND metricType = :metricType',
-            [
-                'streamType' => StreamType::WATTS->value,
-                'metricType' => ActivityStreamMetricType::BEST_AVERAGES->value,
-            ]
-        )->fetchAllAssociative();
-
-        foreach ($results as $result) {
-            $activityId = ActivityId::fromString($result['activityId']);
-            $activitySummary = $this->activitySummaryRepository->find($activityId);
-
-            try {
-                $athleteWeight = $athleteWeightHistory->find($activitySummary->getStartDate())->getWeightInKg();
-            } catch (EntityNotFound) {
-                continue; // @codeCoverageIgnore
-            }
-
-            StreamBasedActivityPowerRepository::$cachedPowerOutputs[(string) $activityId] = PowerOutputs::fromBestAverages(
-                bestAverages: Json::uncompressAndDecode($result['data']),
-                athleteWeight: $athleteWeight,
-            );
-        }
     }
 
     public function findBestForSportTypes(SportTypes $sportTypes): PowerOutputs
