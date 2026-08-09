@@ -330,7 +330,6 @@ class ActivityTest extends TestCase
         // Enrichment happens on every read, it may never record anything.
         yield 'the gear name' => [fn (Activity $activity): Activity => $activity->withGearName('Race bike')];
         yield 'the normalized power' => [fn (Activity $activity): Activity => $activity->withNormalizedPower(242)];
-        yield 'the max cadence' => [fn (Activity $activity): Activity => $activity->withMaxCadence(99)];
     }
 
     public function testItShouldRecordThatTheActivityWasUpdatedOnlyOnce(): void

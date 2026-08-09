@@ -4,8 +4,6 @@ namespace App\Domain\Activity;
 
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
-use App\Domain\Activity\Stream\PowerOutput;
-use App\Domain\Activity\Stream\PowerOutputs;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
 use App\Domain\Integration\AI\SupportsAITooling;
@@ -48,8 +46,6 @@ final class Activity implements SupportsAITooling
 
     public const string DATE_TIME_FORMAT = 'Y-m-d\TH:i:s\Z';
 
-    private ?int $maxCadence = null;
-    private ?PowerOutputs $bestPowerOutputs = null;
     private ?int $normalizedPower = null;
     private ?string $gearName = null;
 
@@ -427,35 +423,6 @@ final class Activity implements SupportsAITooling
         ]);
     }
 
-    public function hasDetailedPowerData(): bool
-    {
-        if (is_null($this->bestPowerOutputs)) {
-            return false;
-        }
-
-        return !$this->bestPowerOutputs->isEmpty();
-    }
-
-    public function getBestAveragePowerForTimeInterval(int $timeInterval): ?PowerOutput
-    {
-        if (is_null($this->bestPowerOutputs)) {
-            return null;
-        }
-
-        return $this->bestPowerOutputs->find(fn (PowerOutput $bestPowerOutput): bool => $bestPowerOutput->getTimeIntervalInSeconds() === $timeInterval);
-    }
-
-    public function withBestPowerOutputs(PowerOutputs $bestPowerOutputs): self
-    {
-        if ($bestPowerOutputs->isEmpty()) {
-            return $this;
-        }
-
-        return clone ($this, [
-            'bestPowerOutputs' => $bestPowerOutputs,
-        ]);
-    }
-
     public function getWeather(): ?Weather
     {
         if (!$this->weather) {
@@ -652,18 +619,6 @@ final class Activity implements SupportsAITooling
     public function getAverageCadence(): ?int
     {
         return $this->averageCadence;
-    }
-
-    public function getMaxCadence(): ?int
-    {
-        return $this->maxCadence;
-    }
-
-    public function withMaxCadence(int $maxCadence): self
-    {
-        return clone ($this, [
-            'maxCadence' => $maxCadence,
-        ]);
     }
 
     public function getMovingTimeInSeconds(): int

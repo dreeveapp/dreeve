@@ -3,8 +3,6 @@
 namespace App\Domain\Activity;
 
 use App\Domain\Activity\SportType\SportTypes;
-use App\Domain\Activity\Stream\ActivityPowerRepository;
-use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Gear\GearRepository;
@@ -23,9 +21,7 @@ final class EnrichedActivities
     public function __construct(
         private readonly Connection $connection,
         private readonly ActivityRepository $activityRepository,
-        private readonly ActivityStreamRepository $activityStreamRepository,
         private readonly ActivityTypeRepository $activityTypeRepository,
-        private readonly ActivityPowerRepository $activityPowerRepository,
         private readonly GearRepository $gearRepository,
     ) {
     }
@@ -44,7 +40,6 @@ final class EnrichedActivities
 
         $gears = $this->gearRepository->findAll();
         $normalizedPowers = $this->fetchNormalizedPowers();
-        $maxCadences = $this->fetchMaxCadences();
 
         $activityTypes = $this->activityTypeRepository->findAll();
         foreach ($activityTypes as $activityType) {
@@ -57,16 +52,9 @@ final class EnrichedActivities
             $activityId = (string) $activity->getId();
             $activity = $activity
                 ->withNormalizedPower($normalizedPowers[$activityId] ?? null)
-                ->withBestPowerOutputs(
-                    $this->activityPowerRepository->findBest($activity->getId())
-                )
                 ->withGearName(
                     $gears->getByGearId($activity->getGearId())?->getName()
                 );
-
-            if (isset($maxCadences[$activityId])) {
-                $activity = $activity->withMaxCadence($maxCadences[$activityId]);
-            }
 
             self::$cachedActivities[$activityId] = $activity;
             self::$cachedActivitiesPerActivityType[$activity->getSportType()->getActivityType()->value][] = $activityId;
@@ -94,24 +82,6 @@ final class EnrichedActivities
         }
 
         return $normalizedPowers;
-    }
-
-    /**
-     * @return array<string, int>
-     */
-    private function fetchMaxCadences(): array
-    {
-        $cadenceStreams = $this->activityStreamRepository->findByStreamType(StreamType::CADENCE);
-
-        $maxCadences = [];
-        foreach ($cadenceStreams as $stream) {
-            $data = $stream->getData();
-            if ([] !== $data) {
-                $maxCadences[(string) $stream->getActivityId()] = max($data);
-            }
-        }
-
-        return $maxCadences;
     }
 
     public function find(ActivityId $activityId): Activity
