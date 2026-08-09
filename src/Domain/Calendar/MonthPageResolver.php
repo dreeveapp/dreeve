@@ -39,8 +39,6 @@ final readonly class MonthPageResolver implements PageResolver
             return null;
         }
 
-        // Months outside the range that actually holds activities would render an empty calendar, and every
-        // one of them would claim its own cache entry.
         if ($month->isBefore($firstMonth) || $month->isAfter($this->currentMonth())) {
             return null;
         }
@@ -56,8 +54,6 @@ final readonly class MonthPageResolver implements PageResolver
     {
         return Cacheability::for(
             cacheKey: sprintf('%s.%s', self::BASE_PATH, $month->getId()),
-            // The grid also renders the trailing days of the previous month and the leading days of the next
-            // one, so an activity in either of those shows up on this page too.
             cacheTags: CacheTags::of(
                 RootCacheTag::ACTIVITIES->forMonth($month->getPreviousMonth()),
                 RootCacheTag::ACTIVITIES->forMonth($month),

@@ -44,7 +44,6 @@ final class ActivityWasUpdated extends DomainEvent
         $month = Month::fromDate($this->startDate);
         $previousMonth = Month::fromDate($this->previousStartDate);
 
-        // An activity can move to another month within the same year, so comparing years is not enough here.
         if ($month->getId() === $previousMonth->getId()) {
             return [$month];
         }
