@@ -8,23 +8,34 @@ use App\Domain\Activity\Image\PhotosPage;
 use App\Domain\Activity\Route\HeatmapPage;
 use App\Domain\Challenge\ChallengesPage;
 use App\Domain\Milestone\MilestonesPage;
-use App\Domain\Rewind\RewindComparePage;
-use App\Domain\Rewind\RewindPage;
+use App\Domain\Rewind\RewindComparePageResolver;
+use App\Domain\Rewind\RewindPageResolver;
 use App\Infrastructure\Cache\Cacheable;
 use App\Infrastructure\Cache\RenderCache;
 use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\Http\Page\PageResolver;
 use App\Tests\ContainerTestCase;
+use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class RenderCacheInvalidationTest extends ContainerTestCase
 {
+    use ProvideTestData;
+
     private RenderCache $renderCache;
 
     #[DataProvider('provideCacheables')]
-    public function testItIsInvalidatedByItsCacheTags(string $cacheableClassName, array $invalidatingCacheTags): void
+    public function testItIsInvalidatedByItsCacheTags(string $cacheableClassName, array $invalidatingCacheTags, ?string $pathToResolve = null): void
     {
         /** @var Cacheable $cacheable */
         $cacheable = $this->getContainer()->get($cacheableClassName);
+
+        if ($cacheable instanceof PageResolver) {
+            $this->provideFullTestSet();
+            $cacheable = $cacheable->resolve((string) $pathToResolve);
+            $this->assertNotNull($cacheable);
+        }
+
         $cacheability = $cacheable->getCacheability();
 
         foreach (RootCacheTag::cases() as $cacheTag) {
@@ -92,21 +103,23 @@ class RenderCacheInvalidationTest extends ContainerTestCase
 
         // The year scoped rewinds cannot be expressed here, they are covered by
         // ActivityInvalidateCacheTagsListenerTest and the rewind page tests.
-        yield 'rewind' => [RewindPage::class, [
+        yield 'rewind' => [RewindPageResolver::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
             RootCacheTag::ACTIVITIES,
             RootCacheTag::ACTIVITY_IMAGES,
             RootCacheTag::GEAR,
-        ]];
+        ], 'rewind/all-time'];
 
-        yield 'rewind-compare' => [RewindComparePage::class, [
+        // Only the all time side contributes unscoped tags, the 2023 side is year scoped and therefore
+        // untouched by the root tags this test invalidates.
+        yield 'rewind-compare' => [RewindComparePageResolver::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
             RootCacheTag::ACTIVITIES,
             RootCacheTag::ACTIVITY_IMAGES,
             RootCacheTag::GEAR,
-        ]];
+        ], 'rewind/all-time/compare/2023'];
 
         yield 'photos' => [PhotosPage::class, [
             RootCacheTag::SETTINGS_APPEARANCE,

@@ -2,24 +2,24 @@
 
 namespace App\Tests\Domain\Rewind;
 
-use App\Domain\Rewind\RewindComparePage;
+use App\Domain\Rewind\RewindComparePageResolver;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class RewindComparePageTest extends ContainerTestCase
+class RewindComparePageResolverTest extends ContainerTestCase
 {
     use MatchesSnapshots;
     use ProvideTestData;
 
-    private RewindComparePage $rewindComparePage;
+    private RewindComparePageResolver $rewindComparePageResolver;
 
     public function testRender(): void
     {
         $this->provideFullTestSet();
 
-        $page = $this->rewindComparePage->resolve('rewind/2023/compare/2022');
+        $page = $this->rewindComparePageResolver->resolve('rewind/2023/compare/2022');
         $this->assertNotNull($page);
         $this->assertMatchesHtmlSnapshot($page->render());
     }
@@ -29,7 +29,7 @@ class RewindComparePageTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
 
-        $this->assertEquals($expectedPath, $this->rewindComparePage->resolve($path)?->getPath());
+        $this->assertEquals($expectedPath, $this->rewindComparePageResolver->resolve($path)?->getPath());
     }
 
     public static function providePathsToResolve(): \Generator
@@ -49,14 +49,14 @@ class RewindComparePageTest extends ContainerTestCase
     {
         $this->addActivityOneFixtures();
 
-        $this->assertNull($this->rewindComparePage->resolve('rewind/2023/compare/all-time'));
+        $this->assertNull($this->rewindComparePageResolver->resolve('rewind/2023/compare/all-time'));
     }
 
     public function testGetCacheabilityCarriesTheTagsOfBothSides(): void
     {
         $this->provideFullTestSet();
 
-        $page = $this->rewindComparePage->resolve('rewind/2023/compare/2022');
+        $page = $this->rewindComparePageResolver->resolve('rewind/2023/compare/2022');
         $this->assertNotNull($page);
 
         $this->assertEquals('rewind.2023.compare.2022', $page->getCacheability()->getCacheKey());
@@ -74,7 +74,7 @@ class RewindComparePageTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
 
-        $page = $this->rewindComparePage->resolve('rewind/2023/compare/all-time');
+        $page = $this->rewindComparePageResolver->resolve('rewind/2023/compare/all-time');
         $this->assertNotNull($page);
 
         $this->assertEqualsCanonicalizing(
@@ -92,6 +92,6 @@ class RewindComparePageTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->rewindComparePage = $this->getContainer()->get(RewindComparePage::class);
+        $this->rewindComparePageResolver = $this->getContainer()->get(RewindComparePageResolver::class);
     }
 }

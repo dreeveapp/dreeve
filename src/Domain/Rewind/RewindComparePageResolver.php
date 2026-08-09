@@ -7,10 +7,11 @@ namespace App\Domain\Rewind;
 use App\Domain\Rewind\FindAvailableRewindOptions\FindAvailableRewindOptions;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\Http\Page\PageWithParameters;
+use App\Infrastructure\Http\Page\PageResolver;
+use App\Infrastructure\Http\Page\ResolvedPage;
 use Twig\Environment;
 
-final readonly class RewindComparePage implements PageWithParameters
+final readonly class RewindComparePageResolver implements PageResolver
 {
     private const string PATH_PATTERN = '#^rewind/(?<left>[^/]+)/compare(?:/(?<right>[^/]+))?$#';
 
@@ -18,12 +19,10 @@ final readonly class RewindComparePage implements PageWithParameters
         private QueryBus $queryBus,
         private RewindItemsBuilder $rewindItemsBuilder,
         private Environment $twig,
-        private string $activeRewindOptionLeft = FindAvailableRewindOptions::ALL_TIME,
-        private string $activeRewindOptionRight = FindAvailableRewindOptions::ALL_TIME,
     ) {
     }
 
-    public function resolve(string $path): ?self
+    public function resolve(string $path): ?ResolvedPage
     {
         if (!preg_match(self::PATH_PATTERN, $path, $matches)) {
             return null;
@@ -45,28 +44,23 @@ final readonly class RewindComparePage implements PageWithParameters
             return null;
         }
 
-        return clone ($this, [
-            'activeRewindOptionLeft' => $left,
-            'activeRewindOptionRight' => $right,
-        ]);
-    }
-
-    public function getPath(): string
-    {
-        return sprintf('rewind/%s/compare/%s', $this->activeRewindOptionLeft, $this->activeRewindOptionRight);
-    }
-
-    public function getCacheability(): Cacheability
-    {
-        return Cacheability::for(
-            cacheKey: sprintf('rewind.%s.compare.%s', $this->activeRewindOptionLeft, $this->activeRewindOptionRight),
-            // Both sides are rendered, so a change to either one of them invalidates this page.
-            cacheTags: RewindCacheTags::forOption($this->activeRewindOptionLeft)
-                ->merge(RewindCacheTags::forOption($this->activeRewindOptionRight)),
+        return new ResolvedPage(
+            path: sprintf('rewind/%s/compare/%s', $left, $right),
+            cacheability: $this->cacheabilityFor($left, $right),
+            render: fn (): string => $this->renderFor($left, $right),
         );
     }
 
-    public function render(): string
+    private function cacheabilityFor(string $left, string $right): Cacheability
+    {
+        return Cacheability::for(
+            cacheKey: sprintf('rewind.%s.compare.%s', $left, $right),
+            // Both sides are rendered, so a change to either one of them invalidates this page.
+            cacheTags: RewindCacheTags::forOption($left)->merge(RewindCacheTags::forOption($right)),
+        );
+    }
+
+    private function renderFor(string $left, string $right): string
     {
         $availableRewindOptionsResponse = $this->queryBus->ask(new FindAvailableRewindOptions());
         $availableRewindOptions = $availableRewindOptionsResponse->getAvailableOptions();
@@ -75,20 +69,20 @@ final readonly class RewindComparePage implements PageWithParameters
             'availableRewindOptions' => $availableRewindOptions,
             'availableRewindOptionsToCompareWith' => array_filter(
                 $availableRewindOptions,
-                fn (string $option): bool => $option !== $this->activeRewindOptionLeft && $option !== $this->activeRewindOptionRight,
+                fn (string $option): bool => $option !== $left && $option !== $right,
             ),
-            'activeRewindOptionLeft' => $this->activeRewindOptionLeft,
-            'activeRewindOptionRight' => $this->activeRewindOptionRight,
+            'activeRewindOptionLeft' => $left,
+            'activeRewindOptionRight' => $right,
             'rewindItemsLeft' => $this->rewindItemsBuilder->build(
-                rewindOption: $this->activeRewindOptionLeft,
-                yearsToQuery: $availableRewindOptionsResponse->getYearsToQuery($this->activeRewindOptionLeft),
+                rewindOption: $left,
+                yearsToQuery: $availableRewindOptionsResponse->getYearsToQuery($left),
             ),
             'rewindItemsRight' => $this->rewindItemsBuilder->build(
-                rewindOption: $this->activeRewindOptionRight,
-                yearsToQuery: $availableRewindOptionsResponse->getYearsToQuery($this->activeRewindOptionRight),
+                rewindOption: $right,
+                yearsToQuery: $availableRewindOptionsResponse->getYearsToQuery($right),
             ),
-            'rewindItemsLeftIsAllTimeRewind' => FindAvailableRewindOptions::ALL_TIME === $this->activeRewindOptionLeft,
-            'rewindItemsRightIsAllTimeRewind' => FindAvailableRewindOptions::ALL_TIME === $this->activeRewindOptionRight,
+            'rewindItemsLeftIsAllTimeRewind' => FindAvailableRewindOptions::ALL_TIME === $left,
+            'rewindItemsRightIsAllTimeRewind' => FindAvailableRewindOptions::ALL_TIME === $right,
         ]);
     }
 

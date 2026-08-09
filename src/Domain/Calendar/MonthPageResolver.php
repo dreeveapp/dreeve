@@ -6,17 +6,17 @@ namespace App\Domain\Calendar;
 
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Calendar\FindMonthlyStats\FindMonthlyStats;
-use App\Domain\Calendar\FindMonthlyStats\FindMonthlyStatsResponse;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\Http\Page\PageWithParameters;
+use App\Infrastructure\Http\Page\PageResolver;
+use App\Infrastructure\Http\Page\ResolvedPage;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Twig\Environment;
 
-final readonly class MonthPage implements PageWithParameters
+final readonly class MonthPageResolver implements PageResolver
 {
     private const string BASE_PATH = 'month';
 
@@ -25,37 +25,35 @@ final readonly class MonthPage implements PageWithParameters
         private QueryBus $queryBus,
         private Clock $clock,
         private Environment $twig,
-        private string $monthId = '',
     ) {
     }
 
-    public function resolve(string $path): ?self
+    public function resolve(string $path): ?ResolvedPage
     {
         if (!preg_match('#^'.self::BASE_PATH.'/(\d{4}-(?:0[1-9]|1[0-2]))$#', $path, $matches)) {
             return null;
         }
 
-        $month = self::toMonth($matches[1]);
+        $month = Month::fromDate(SerializableDateTime::fromString($matches[1].'-01 00:00:00'));
         if (!$firstMonth = $this->queryBus->ask(new FindMonthlyStats())->getFirstMonth()) {
             return null;
         }
 
+        // Months outside the range that actually holds activities would render an empty calendar, and every
+        // one of them would claim its own cache entry.
         if ($month->isBefore($firstMonth) || $month->isAfter($this->currentMonth())) {
             return null;
         }
 
-        return clone ($this, ['monthId' => $month->getId()]);
+        return new ResolvedPage(
+            path: self::BASE_PATH.'/'.$month->getId(),
+            cacheability: $this->cacheabilityFor($month),
+            render: fn (): string => $this->renderFor($month),
+        );
     }
 
-    public function getPath(): string
+    private function cacheabilityFor(Month $month): Cacheability
     {
-        return self::BASE_PATH.'/'.$this->getMonth()->getId();
-    }
-
-    public function getCacheability(): Cacheability
-    {
-        $month = $this->getMonth();
-
         return Cacheability::for(
             cacheKey: sprintf('%s.%s', self::BASE_PATH, $month->getId()),
             // The grid also renders the trailing days of the previous month and the leading days of the next
@@ -68,10 +66,8 @@ final readonly class MonthPage implements PageWithParameters
         );
     }
 
-    public function render(): string
+    private function renderFor(Month $month): string
     {
-        $month = $this->getMonth();
-        /** @var FindMonthlyStatsResponse $monthlyStats */
         $monthlyStats = $this->queryBus->ask(new FindMonthlyStats());
 
         return $this->twig->load('html/calendar/month.html.twig')->render([
@@ -86,16 +82,6 @@ final readonly class MonthPage implements PageWithParameters
                 ),
             ),
         ]);
-    }
-
-    private function getMonth(): Month
-    {
-        return '' === $this->monthId ? $this->currentMonth() : self::toMonth($this->monthId);
-    }
-
-    private static function toMonth(string $monthId): Month
-    {
-        return Month::fromDate(SerializableDateTime::fromString($monthId.'-01 00:00:00'));
     }
 
     private function currentMonth(): Month

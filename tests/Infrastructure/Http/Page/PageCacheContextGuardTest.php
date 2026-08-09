@@ -2,9 +2,14 @@
 
 namespace App\Tests\Infrastructure\Http\Page;
 
+use App\Domain\Calendar\MonthPageResolver;
+use App\Domain\Rewind\RewindComparePageResolver;
+use App\Domain\Rewind\RewindPageResolver;
 use App\Infrastructure\Cache\CacheContextRegistry;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
+use App\Infrastructure\Http\Page\Page;
 use App\Infrastructure\Http\Page\PageRegistry;
+use App\Infrastructure\Http\Page\PageResolver;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -15,14 +20,23 @@ class PageCacheContextGuardTest extends ContainerTestCase
 {
     use ProvideTestData;
 
+    /**
+     * A resolver serves a family of paths, so these guards need one real path per resolver to work with.
+     * A resolver without an entry fails every test in this class, which is the point.
+     */
+    private const array PATH_PER_RESOLVER = [
+        MonthPageResolver::class => 'month/2023-06',
+        RewindPageResolver::class => 'rewind/2023',
+        RewindComparePageResolver::class => 'rewind/2023/compare/2022',
+    ];
+
     public function testEveryPageHasAPathAndACacheKeyOfItsOwn(): void
     {
-        /** @var PageRegistry $pageRegistry */
-        $pageRegistry = $this->getContainer()->get(PageRegistry::class);
+        $this->provideFullTestSet();
 
         $paths = [];
         $cacheKeys = [];
-        foreach ($pageRegistry->all() as $page) {
+        foreach ($this->allPages() as $page) {
             $paths[] = $page->getPath();
             $cacheKeys[] = $page->getCacheability()->getCacheKey();
         }
@@ -48,16 +62,43 @@ class PageCacheContextGuardTest extends ContainerTestCase
 
     public function testEveryContextDeclaredByAPageResolvesThroughTheRealRegistry(): void
     {
-        /** @var PageRegistry $pageRegistry */
-        $pageRegistry = $this->getContainer()->get(PageRegistry::class);
+        $this->provideFullTestSet();
+
         /** @var CacheContextRegistry $cacheContextRegistry */
         $cacheContextRegistry = $this->getContainer()->get(CacheContextRegistry::class);
 
-        foreach ($pageRegistry->all() as $page) {
+        foreach ($this->allPages() as $page) {
             $this->assertIsString(
                 $cacheContextRegistry->buildCacheKeySegments($page->getCacheability()->getCacheContexts())
             );
         }
+    }
+
+    /**
+     * @return Page[]
+     */
+    private function allPages(): array
+    {
+        /** @var PageRegistry $pageRegistry */
+        $pageRegistry = $this->getContainer()->get(PageRegistry::class);
+
+        $pages = [];
+        foreach ($pageRegistry->all() as $page) {
+            if (!$page instanceof PageResolver) {
+                $pages[] = $page;
+                continue;
+            }
+
+            $path = self::PATH_PER_RESOLVER[$page::class] ?? null;
+            $this->assertNotNull($path, sprintf('Add a path for "%s" to %s::PATH_PER_RESOLVER.', $page::class, self::class));
+
+            $resolvedPage = $page->resolve($path);
+            $this->assertNotNull($resolvedPage, sprintf('"%s" does not resolve "%s" anymore, pick another path.', $page::class, $path));
+
+            $pages[] = $resolvedPage;
+        }
+
+        return $pages;
     }
 
     public function testTheAuthenticationContextResolvesToADifferentSegmentPerVisitor(): void
@@ -86,11 +127,9 @@ class PageCacheContextGuardTest extends ContainerTestCase
 
         /** @var TokenStorageInterface $tokenStorage */
         $tokenStorage = $this->getContainer()->get('security.token_storage');
-        /** @var PageRegistry $pageRegistry */
-        $pageRegistry = $this->getContainer()->get(PageRegistry::class);
 
         $assertedPages = 0;
-        foreach ($pageRegistry->all() as $page) {
+        foreach ($this->allPages() as $page) {
             $declaredContexts = $page->getCacheability()->getCacheContexts()->toArray();
             if (in_array(AuthenticatedCacheContext::class, $declaredContexts, true)) {
                 continue;

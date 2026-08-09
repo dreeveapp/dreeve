@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 final readonly class PageRegistry
 {
     /**
-     * @param iterable<Page> $pages
+     * @param iterable<Page|PageResolver> $pages
      */
     public function __construct(
         #[AutowireIterator('app.html_page')]
@@ -20,7 +20,7 @@ final readonly class PageRegistry
     public function find(string $path): ?Page
     {
         foreach ($this->pages as $page) {
-            if ($page instanceof PageWithParameters) {
+            if ($page instanceof PageResolver) {
                 if ($resolvedPage = $page->resolve($path)) {
                     return $resolvedPage;
                 }
@@ -36,7 +36,7 @@ final readonly class PageRegistry
     }
 
     /**
-     * @return iterable<Page>
+     * @return iterable<Page|PageResolver>
      */
     public function all(): iterable
     {

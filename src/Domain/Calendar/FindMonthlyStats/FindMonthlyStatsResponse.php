@@ -34,10 +34,7 @@ final readonly class FindMonthlyStatsResponse implements Response
         array $statsPerMonth,
         array $minMaxMonthPerActivityType,
     ) {
-        // Every lookup this response supports is resolved up front into a keyed map. The templates ask for
-        // stats month by month and sport type by sport type, so filtering the full list on each call turned
-        // rendering into a quadratic walk over thousands of rows.
-        $totals = self::emptyRawTotals();
+        $totals = $this->emptyRawTotals();
         $perMonthId = [];
         $perMonthIdAndSportType = [];
         $perMonthIdAndActivityType = [];
@@ -55,26 +52,20 @@ final readonly class FindMonthlyStatsResponse implements Response
                 $firstMonth = $month;
             }
 
-            $totals = self::addToRawTotals($totals, $entry);
-            $perMonthId[$monthId] = self::addToRawTotals($perMonthId[$monthId] ?? self::emptyRawTotals(), $entry);
-            $perMonthIdAndSportType[$monthId][$sportTypeValue] = self::addToRawTotals(
-                $perMonthIdAndSportType[$monthId][$sportTypeValue] ?? self::emptyRawTotals(),
-                $entry
-            );
-            $perMonthIdAndActivityType[$monthId][$activityTypeValue] = self::addToRawTotals(
-                $perMonthIdAndActivityType[$monthId][$activityTypeValue] ?? self::emptyRawTotals(),
-                $entry
-            );
+            $totals = $this->addToRawTotals($totals, $entry);
+            $perMonthId[$monthId] = $this->addToRawTotals($perMonthId[$monthId] ?? $this->emptyRawTotals(), $entry);
+            $perMonthIdAndSportType[$monthId][$sportTypeValue] = $this->addToRawTotals($perMonthIdAndSportType[$monthId][$sportTypeValue] ?? $this->emptyRawTotals(), $entry);
+            $perMonthIdAndActivityType[$monthId][$activityTypeValue] = $this->addToRawTotals($perMonthIdAndActivityType[$monthId][$activityTypeValue] ?? $this->emptyRawTotals(), $entry);
         }
 
-        $this->totals = self::toMeasuredTotals($totals);
-        $this->statsPerMonthId = array_map(self::toMeasuredTotals(...), $perMonthId);
+        $this->totals = $this->toMeasuredTotals($totals);
+        $this->statsPerMonthId = array_map($this->toMeasuredTotals(...), $perMonthId);
         $this->statsPerMonthIdAndSportType = array_map(
-            fn (array $perSportType): array => array_map(self::toMeasuredTotals(...), $perSportType),
+            fn (array $perSportType): array => array_map($this->toMeasuredTotals(...), $perSportType),
             $perMonthIdAndSportType
         );
         $this->statsPerMonthIdAndActivityType = array_map(
-            fn (array $perActivityType): array => array_map(self::toMeasuredTotals(...), $perActivityType),
+            fn (array $perActivityType): array => array_map($this->toMeasuredTotals(...), $perActivityType),
             $perMonthIdAndActivityType
         );
         $this->firstMonth = $firstMonth;
@@ -101,10 +92,6 @@ final readonly class FindMonthlyStatsResponse implements Response
             ?? throw new \RuntimeException('No max date found for activity type '.$activityType->value);
     }
 
-    /**
-     * The month the very first activity took place in, regardless of sport type. Null when there are no
-     * activities at all.
-     */
     public function getFirstMonth(): ?Month
     {
         return $this->firstMonth;
@@ -132,7 +119,7 @@ final readonly class FindMonthlyStatsResponse implements Response
     public function getForMonthAndSportType(Month $month, SportType $sportType): array
     {
         return $this->statsPerMonthIdAndSportType[$month->getId()][$sportType->value]
-            ?? self::toMeasuredTotals(self::emptyRawTotals());
+            ?? $this->toMeasuredTotals($this->emptyRawTotals());
     }
 
     /**
@@ -146,7 +133,7 @@ final readonly class FindMonthlyStatsResponse implements Response
     /**
      * @return array{'numberOfActivities': int, 'distance': float, 'elevation': int, 'movingTime': int, 'calories': int}
      */
-    private static function emptyRawTotals(): array
+    private function emptyRawTotals(): array
     {
         return [
             'numberOfActivities' => 0,
@@ -163,7 +150,7 @@ final readonly class FindMonthlyStatsResponse implements Response
      *
      * @return array{'numberOfActivities': int, 'distance': float, 'elevation': int, 'movingTime': int, 'calories': int}
      */
-    private static function addToRawTotals(array $totals, array $entry): array
+    private function addToRawTotals(array $totals, array $entry): array
     {
         return [
             'numberOfActivities' => $totals['numberOfActivities'] + $entry['numberOfActivities'],
@@ -179,7 +166,7 @@ final readonly class FindMonthlyStatsResponse implements Response
      *
      * @return array{'numberOfActivities': int, 'distance': Kilometer, 'elevation': Meter, 'movingTime': Seconds, 'calories': int}
      */
-    private static function toMeasuredTotals(array $totals): array
+    private function toMeasuredTotals(array $totals): array
     {
         return [
             'numberOfActivities' => $totals['numberOfActivities'],

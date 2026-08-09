@@ -2,24 +2,24 @@
 
 namespace App\Tests\Domain\Rewind;
 
-use App\Domain\Rewind\RewindPage;
+use App\Domain\Rewind\RewindPageResolver;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class RewindPageTest extends ContainerTestCase
+class RewindPageResolverTest extends ContainerTestCase
 {
     use MatchesSnapshots;
     use ProvideTestData;
 
-    private RewindPage $rewindPage;
+    private RewindPageResolver $rewindPageResolver;
 
     public function testRenderForAllTime(): void
     {
         $this->provideFullTestSet();
 
-        $page = $this->rewindPage->resolve('rewind');
+        $page = $this->rewindPageResolver->resolve('rewind');
         $this->assertNotNull($page);
         $this->assertMatchesHtmlSnapshot($page->render());
     }
@@ -28,7 +28,7 @@ class RewindPageTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
 
-        $page = $this->rewindPage->resolve('rewind/2023');
+        $page = $this->rewindPageResolver->resolve('rewind/2023');
         $this->assertNotNull($page);
         $this->assertMatchesHtmlSnapshot($page->render());
     }
@@ -38,7 +38,7 @@ class RewindPageTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
 
-        $this->assertEquals($expectedPath, $this->rewindPage->resolve($path)?->getPath());
+        $this->assertEquals($expectedPath, $this->rewindPageResolver->resolve($path)?->getPath());
     }
 
     public static function providePathsToResolve(): \Generator
@@ -56,7 +56,7 @@ class RewindPageTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
 
-        $page = $this->rewindPage->resolve('rewind/all-time');
+        $page = $this->rewindPageResolver->resolve('rewind/all-time');
         $this->assertNotNull($page);
 
         $this->assertEquals('rewind.all-time', $page->getCacheability()->getCacheKey());
@@ -70,7 +70,7 @@ class RewindPageTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
 
-        $page = $this->rewindPage->resolve('rewind/2023');
+        $page = $this->rewindPageResolver->resolve('rewind/2023');
         $this->assertNotNull($page);
 
         $this->assertEquals('rewind.2023', $page->getCacheability()->getCacheKey());
@@ -85,6 +85,6 @@ class RewindPageTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->rewindPage = $this->getContainer()->get(RewindPage::class);
+        $this->rewindPageResolver = $this->getContainer()->get(RewindPageResolver::class);
     }
 }
