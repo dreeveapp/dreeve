@@ -7,6 +7,10 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\Stream\Metric\ActivityStreamMetric;
+use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
+use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
+use App\Domain\Activity\Stream\StreamType;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\ProvideBuiltTestSet;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -62,6 +66,41 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     {
         yield 'run' => [SportType::RUN];
         yield 'swim' => [SportType::POOL_SWIM];
+    }
+
+    public function testItLabelsTheVelocityDistributionOfARunAsPace(): void
+    {
+        $this->provideBuiltTestSet();
+
+        $this->client->request('GET', '/api/fragment/page/activity/activity-45326441741');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertDistributionChartIsTitled('Pace');
+    }
+
+    public function testItLabelsTheVelocityDistributionOfARideAsSpeed(): void
+    {
+        $this->provideBuiltTestSet();
+
+        $this->getContainer()->get(ActivityStreamMetricRepository::class)->add(ActivityStreamMetric::create(
+            activityId: ActivityId::fromUnprefixed('9756441741'),
+            streamType: StreamType::VELOCITY,
+            metricType: ActivityStreamMetricType::VALUE_DISTRIBUTION,
+            data: [10 => 5, 20 => 9, 30 => 4],
+        ));
+
+        $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertDistributionChartIsTitled('Speed');
+    }
+
+    private function assertDistributionChartIsTitled(string $title): void
+    {
+        $this->assertStringContainsString(
+            sprintf('<div class="text-sm font-semibold mb-2 text-center">%s</div>', $title),
+            (string) $this->client->getResponse()->getContent(),
+        );
     }
 
     public function testGetPath(): void
