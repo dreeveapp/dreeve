@@ -16,12 +16,12 @@ use Carbon\CarbonInterval;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 
-final class StreamBasedActivityPowerRepository implements ActivityPowerRepository
+final readonly class StreamBasedActivityPowerRepository implements ActivityPowerRepository
 {
     public function __construct(
-        private readonly Connection $connection,
-        private readonly ActivitySummaryRepository $activitySummaryRepository,
-        private readonly SettingsRepository $settingsRepository,
+        private Connection $connection,
+        private ActivitySummaryRepository $activitySummaryRepository,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 

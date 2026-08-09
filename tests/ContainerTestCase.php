@@ -2,7 +2,11 @@
 
 namespace App\Tests;
 
+use App\Domain\Activity\ActivityIntensity;
+use App\Domain\Activity\DailyTrainingLoad;
+use App\Domain\Activity\EnrichedActivities;
 use App\Domain\Import\ImportMode;
+use App\Infrastructure\Twig\HtmlTwigExtension;
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -11,7 +15,6 @@ use Symfony\Component\Translation\LocaleSwitcher;
 abstract class ContainerTestCase extends KernelTestCase
 {
     use ProvideSettings;
-    use ResetStaticCaches;
 
     protected static ?Connection $ourDbalConnection = null;
 
@@ -34,7 +37,10 @@ abstract class ContainerTestCase extends KernelTestCase
             self::$ourDbalConnection = self::getContainer()->get(Connection::class);
         }
 
-        $this->resetStaticCaches();
+        EnrichedActivities::reset();
+        DailyTrainingLoad::$cachedLoad = [];
+        ActivityIntensity::$cachedIntensities = [];
+        HtmlTwigExtension::$seenIds = [];
 
         // Empty file systems.
         /** @var \League\Flysystem\FilesystemOperator[] $fileSystems */

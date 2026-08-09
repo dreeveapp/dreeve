@@ -8,6 +8,8 @@ trait ProvideBuiltTestSet
 {
     use ProvideTestData;
 
+    abstract protected function markAppAsBuilt(): void;
+
     protected function provideBuiltTestSet(): void
     {
         $this->provideFullTestSet();
