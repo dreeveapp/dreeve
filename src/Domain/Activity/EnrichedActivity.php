@@ -7,8 +7,9 @@ namespace App\Domain\Activity;
 use App\Domain\Activity\Stream\ActivityPowerRepository;
 use App\Domain\Activity\Stream\PowerOutput;
 use App\Domain\Activity\Stream\PowerOutputs;
+use App\Domain\Integration\AI\SupportsAITooling;
 
-final readonly class EnrichedActivity
+final readonly class EnrichedActivity implements SupportsAITooling
 {
     private function __construct(
         private Activity $activity,
@@ -82,5 +83,39 @@ final readonly class EnrichedActivity
         return $this->bestPowerOutputs->find(
             fn (PowerOutput $bestPowerOutput): bool => $bestPowerOutput->getTimeIntervalInSeconds() === $timeInterval
         );
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function exportForAITooling(): array
+    {
+        return [
+            'id' => $this->activity->getId()->toUnprefixedString(),
+            'startDateTime' => $this->activity->getStartDate(),
+            'sportType' => $this->activity->getSportType()->value,
+            'name' => $this->activity->getName(),
+            'description' => $this->activity->getDescription(),
+            'distanceInKilometer' => $this->activity->getDistance(),
+            'elevationInMeter' => $this->activity->getElevation(),
+            'startingCoordinate' => $this->activity->getStartingCoordinate(),
+            'caloriesBurnt' => $this->activity->getCalories(),
+            'averagePowerInWatts' => $this->activity->getAveragePower(),
+            'maxPowerInWatts' => $this->activity->getMaxPower(),
+            'averageSpeed' => $this->activity->getAverageSpeed(),
+            'maxSpeed' => $this->activity->getMaxSpeed(),
+            'averageHeartRate' => $this->activity->getAverageHeartRate(),
+            'maxHeartRate' => $this->activity->getMaxHeartRate(),
+            'averageCadence' => $this->activity->getAverageCadence(),
+            'movingTimeInSeconds' => $this->activity->getMovingTimeInSeconds(),
+            'recordedOnDevice' => $this->activity->getDeviceName(),
+            'totalImageCount' => $this->activity->getTotalImageCount(),
+            'routeGeography' => $this->activity->getRouteGeography()->jsonSerialize(),
+            'weather' => $this->activity->getWeather(),
+            'gearId' => $this->activity->getGearId()?->toUnprefixedString(),
+            'gearName' => $this->gearName,
+            'isCommute' => $this->activity->isCommute(),
+            'workoutType' => $this->activity->getWorkoutType()?->value,
+        ];
     }
 }

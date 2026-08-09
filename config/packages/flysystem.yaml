@@ -23,11 +23,6 @@ flysystem:
             options:
                 directory: '%kernel.project_dir%/storage/database'
                 lock: 0
-        build.storage:
-            adapter: 'local'
-            options:
-                directory: '%kernel.project_dir%/build'
-                lock: 0
         build-html.storage:
             adapter: 'local'
             options:

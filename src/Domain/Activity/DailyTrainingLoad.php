@@ -1,57 +1,70 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Activity;
 
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\Time\Seconds;
+use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
-final class DailyTrainingLoad
+final readonly class DailyTrainingLoad
 {
-    /** @var array<string, int|null> */
-    public static array $cachedLoad = [];
-
     public function __construct(
-        private readonly EnrichedActivities $enrichedActivities,
-        private readonly ActivityIntensity $activityIntensity,
-        private readonly SettingsRepository $settingsRepository,
+        private EnrichedActivityRepository $enrichedActivityRepository,
+        private ActivityIntensity $activityIntensity,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
-    public function calculate(SerializableDateTime $on): int
+    /**
+     * @return array<string, int> the training load per day, keyed by 'Y-m-d'
+     */
+    public function calculateForDateRange(DateRange $dateRange): array
     {
-        $cacheKey = $on->format('Y-m-d');
-        if (array_key_exists($cacheKey, self::$cachedLoad) && null !== self::$cachedLoad[$cacheKey]) {
-            return self::$cachedLoad[$cacheKey];
+        $from = SerializableDateTime::fromString($dateRange->getFrom()->format('Y-m-d').' 00:00:00');
+        $till = SerializableDateTime::fromString($dateRange->getTill()->modify('+1 day')->format('Y-m-d').' 00:00:00');
+
+        $activitiesPerDay = [];
+        foreach ($this->enrichedActivityRepository->findByDateRange($from, $till) as $enrichedActivity) {
+            $activitiesPerDay[$enrichedActivity->getActivity()->getStartDate()->format('Y-m-d')][] = $enrichedActivity;
         }
 
-        $activities = $this->enrichedActivities->findByStartDate(
-            startDate: $on,
-            activityType: null
-        );
-        $load = 0;
+        $loadPerDay = [];
+        for ($day = $from; $day < $till; $day = $day->modify('+1 day')) {
+            $on = $day->format('Y-m-d');
+            $loadPerDay[$on] = $this->calculateForDay($activitiesPerDay[$on] ?? []);
+        }
 
+        return $loadPerDay;
+    }
+
+    /**
+     * @param EnrichedActivity[] $enrichedActivities
+     */
+    private function calculateForDay(array $enrichedActivities): int
+    {
+        $load = 0;
         $general = $this->settingsRepository->general();
 
-        /** @var Activity $activity */
-        foreach ($activities as $activity) {
+        foreach ($enrichedActivities as $enrichedActivity) {
+            $activity = $enrichedActivity->getActivity();
             $movingTimeInSeconds = $activity->getMovingTimeInSeconds();
-            if (ActivityType::RIDE === $activity->getSportType()->getActivityType() && ($normalizedPower = $activity->getNormalizedPower())) {
-                try {
-                    $intensity = $this->activityIntensity->calculatePowerBased($activity->getId());
-                    $intensity /= 100;
-                    $ftp = $general->getFtpHistory()->find(ActivityType::RIDE, $activity->getStartDate())->getFtp();
-                    $load += ($movingTimeInSeconds * $normalizedPower * $intensity) / ($ftp->getValue() * 3600) * 100;
 
-                    continue;
-                } catch (CouldNotDetermineActivityIntensity|EntityNotFound) {
-                }
+            try {
+                $intensity = $this->activityIntensity->calculatePowerBased($enrichedActivity) / 100;
+                $normalizedPower = (int) $enrichedActivity->getNormalizedPower();
+                $ftp = $general->getFtpHistory()->find(ActivityType::RIDE, $activity->getStartDate())->getFtp();
+                $load += ($movingTimeInSeconds * $normalizedPower * $intensity) / ($ftp->getValue() * 3600) * 100;
+
+                continue;
+            } catch (CouldNotDetermineActivityIntensity|EntityNotFound) {
             }
 
             try {
-                $intensity = $this->activityIntensity->calculateHeartRateBased($activity->getId());
-                $intensity /= 100;
+                $intensity = $this->activityIntensity->calculateHeartRateBased($enrichedActivity) / 100;
                 $athlete = $general->getAthlete();
                 $bannisterKFactor = $athlete->isMale() ? 1.92 : 1.67;
                 $trimp = Seconds::from($movingTimeInSeconds)->toMinute()->toFloat() * $intensity * exp($bannisterKFactor * $intensity);
@@ -70,8 +83,6 @@ final class DailyTrainingLoad
             }
         }
 
-        self::$cachedLoad[$cacheKey] = (int) round($load);
-
-        return self::$cachedLoad[$cacheKey];
+        return (int) round($load);
     }
 }

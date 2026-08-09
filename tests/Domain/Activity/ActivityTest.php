@@ -327,9 +327,6 @@ class ActivityTest extends TestCase
         yield 'the same start date' => [fn (Activity $activity): Activity => $activity->withStartDateTime(
             SerializableDateTime::fromString('2023-10-10')
         )];
-        // Enrichment happens on every read, it may never record anything.
-        yield 'the gear name' => [fn (Activity $activity): Activity => $activity->withGearName('Race bike')];
-        yield 'the normalized power' => [fn (Activity $activity): Activity => $activity->withNormalizedPower(242)];
     }
 
     public function testItShouldRecordThatTheActivityWasUpdatedOnlyOnce(): void

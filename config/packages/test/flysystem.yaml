@@ -9,9 +9,6 @@ flysystem:
         database.storage:
             adapter: 'memory'
 
-        build.storage:
-            adapter: 'memory'
-
         build_html.storage:
             adapter: 'memory'
 

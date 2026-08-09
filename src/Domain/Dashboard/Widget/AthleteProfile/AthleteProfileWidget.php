@@ -3,6 +3,7 @@
 namespace App\Domain\Dashboard\Widget\AthleteProfile;
 
 use App\Domain\Activity\ActivityIntensity;
+use App\Domain\Activity\EnrichedActivityRepository;
 use App\Domain\Activity\Math;
 use App\Domain\Dashboard\Widget\AthleteProfile\FindAthleteProfileMetrics\FindAthleteProfileMetrics;
 use App\Domain\Dashboard\Widget\Widget;
@@ -20,6 +21,7 @@ final readonly class AthleteProfileWidget implements Widget
     public function __construct(
         private QueryBus $queryBus,
         private ActivityIntensity $activityIntensity,
+        private EnrichedActivityRepository $enrichedActivityRepository,
         private Environment $twig,
         private TranslatorInterface $translator,
     ) {
@@ -67,8 +69,8 @@ final readonly class AthleteProfileWidget implements Widget
 
             // INTENSITY: Use IF / TRIMP.
             $intensities = [];
-            foreach ($findAthleteProfileMetricsResponse->getActivityIds() as $activityId) {
-                $intensities[] = $this->activityIntensity->calculate($activityId);
+            foreach ($this->enrichedActivityRepository->findByIds($findAthleteProfileMetricsResponse->getActivityIds()) as $enrichedActivity) {
+                $intensities[] = $this->activityIntensity->calculate($enrichedActivity);
             }
             $intensity = min(100, Math::median($intensities));
 

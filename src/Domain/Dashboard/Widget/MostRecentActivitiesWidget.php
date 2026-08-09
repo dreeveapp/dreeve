@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget;
 
-use App\Domain\Activity\EnrichedActivities;
+use App\Domain\Activity\ActivityRepository;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -14,7 +14,7 @@ final readonly class MostRecentActivitiesWidget implements Widget
 {
     public function __construct(
         private TranslatorInterface $translator,
-        private EnrichedActivities $enrichedActivities,
+        private ActivityRepository $activityRepository,
         private Environment $twig,
     ) {
     }
@@ -52,7 +52,7 @@ final readonly class MostRecentActivitiesWidget implements Widget
 
     public function render(SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
-        $allActivities = $this->enrichedActivities->findAll();
+        $allActivities = $this->activityRepository->findAll();
 
         $numberOfActivitiesToDisplay = (int) $configuration->get('numberOfActivitiesToDisplay');
 

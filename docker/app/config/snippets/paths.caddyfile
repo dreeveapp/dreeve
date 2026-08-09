@@ -1,9 +1,5 @@
 # Path-routing rules cover every path directive EXCEPT the PHP front-controller handle.
 (paths) {
-	handle /manifest.json {
-	    root /var/www/build
-    }
-
 	# Serve static .html from build/html
 	@staticBuildFiles {
 		path *.html

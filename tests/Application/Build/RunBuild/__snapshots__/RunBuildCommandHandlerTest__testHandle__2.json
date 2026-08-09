@@ -8,10 +8,6 @@
         "payload": []
     },
     {
-        "commandName": "App\\Application\\Build\\BuildManifest\\BuildManifest",
-        "payload": []
-    },
-    {
         "commandName": "App\\Application\\Build\\BuildDashboardHtml\\BuildDashboardHtml",
         "payload": []
     },

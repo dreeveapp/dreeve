@@ -3,11 +3,8 @@
 namespace App\Tests\Controller;
 
 use App\Domain\Activity\ActivityIdRepository;
-use App\Domain\Activity\ActivityIntensity;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Activity\DailyTrainingLoad;
-use App\Domain\Activity\EnrichedActivities;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
@@ -34,9 +31,6 @@ abstract class ControllerWebTestCase extends WebTestCase
 
         $this->originalImportMode = $_ENV['IMPORT_MODE'] ?? null;
 
-        EnrichedActivities::reset();
-        DailyTrainingLoad::$cachedLoad = [];
-        ActivityIntensity::$cachedIntensities = [];
         HtmlTwigExtension::$seenIds = [];
 
         $this->prepareEnvironment();

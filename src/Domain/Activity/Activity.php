@@ -6,7 +6,6 @@ use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
-use App\Domain\Integration\AI\SupportsAITooling;
 use App\Domain\Integration\Weather\OpenMeteo\Weather;
 use App\Domain\Zwift\CouldNotDetermineZwiftMap;
 use App\Domain\Zwift\ZwiftMap;
@@ -39,15 +38,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'Activity_gearIdStartDateTime', columns: ['gearId', 'startDateTime'])]
 #[ORM\Index(name: 'Activity_markedForDeletion', columns: ['markedForDeletion'])]
 #[ORM\Index(name: 'Activity_streamsAreImported', columns: ['streamsAreImported'])]
-final class Activity implements SupportsAITooling
+final class Activity
 {
     use RecordsEvents;
     use ProvideTimeFormats;
 
     public const string DATE_TIME_FORMAT = 'Y-m-d\TH:i:s\Z';
-
-    private ?int $normalizedPower = null;
-    private ?string $gearName = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     // @phpstan-ignore-next-line
@@ -409,18 +405,6 @@ final class Activity implements SupportsAITooling
         return $this->recordUpdate(clone ($this, [
             'gearId' => $gearId,
         ]));
-    }
-
-    public function getGearName(): ?string
-    {
-        return $this->gearName;
-    }
-
-    public function withGearName(?string $gearName): self
-    {
-        return clone ($this, [
-            'gearName' => $gearName,
-        ]);
     }
 
     public function getWeather(): ?Weather
@@ -839,18 +823,6 @@ final class Activity implements SupportsAITooling
         return $clone;
     }
 
-    public function getNormalizedPower(): ?int
-    {
-        return $this->normalizedPower;
-    }
-
-    public function withNormalizedPower(?int $normalizedPower): self
-    {
-        return clone ($this, [
-            'normalizedPower' => $normalizedPower,
-        ]);
-    }
-
     /**
      * @return string[]
      */
@@ -904,40 +876,6 @@ final class Activity implements SupportsAITooling
             'elevation' => $this->getElevation()->toUnitSystem($unitSystem)->toFloat(),
             'moving-time' => $this->getMovingTimeInSeconds() / 3600,
             'calories' => $this->getCalories() ?? 0,
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function exportForAITooling(): array
-    {
-        return [
-            'id' => $this->getId()->toUnprefixedString(),
-            'startDateTime' => $this->getStartDate(),
-            'sportType' => $this->getSportType()->value,
-            'name' => $this->getName(),
-            'description' => $this->getDescription(),
-            'distanceInKilometer' => $this->getDistance(),
-            'elevationInMeter' => $this->getElevation(),
-            'startingCoordinate' => $this->getStartingCoordinate(),
-            'caloriesBurnt' => $this->getCalories(),
-            'averagePowerInWatts' => $this->getAveragePower(),
-            'maxPowerInWatts' => $this->getMaxPower(),
-            'averageSpeed' => $this->getAverageSpeed(),
-            'maxSpeed' => $this->getMaxSpeed(),
-            'averageHeartRate' => $this->getAverageHeartRate(),
-            'maxHeartRate' => $this->getMaxHeartRate(),
-            'averageCadence' => $this->getAverageCadence(),
-            'movingTimeInSeconds' => $this->getMovingTimeInSeconds(),
-            'recordedOnDevice' => $this->getDeviceName(),
-            'totalImageCount' => $this->getTotalImageCount(),
-            'routeGeography' => $this->getRouteGeography()->jsonSerialize(),
-            'weather' => $this->getWeather(),
-            'gearId' => $this->getGearId()?->toUnprefixedString(),
-            'gearName' => $this->getGearName(),
-            'isCommute' => $this->isCommute(),
-            'workoutType' => $this->getWorkoutType()?->value,
         ];
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget;
 
-use App\Domain\Activity\EnrichedActivities;
+use App\Domain\Activity\ActivityRepository;
 use App\Domain\Calendar\Months;
 use App\Domain\Challenge\Consistency\ConsistencyChallengeCalculator;
 use App\Domain\Challenge\Consistency\ConsistencyChallenges;
@@ -16,7 +16,7 @@ final readonly class ChallengeConsistencyWidget implements Widget, HasWideConfig
 {
     public function __construct(
         private TranslatorInterface $translator,
-        private EnrichedActivities $enrichedActivities,
+        private ActivityRepository $activityRepository,
         private ConsistencyChallengeCalculator $consistencyChallengeCalculator,
         private Environment $twig,
     ) {
@@ -47,7 +47,7 @@ final readonly class ChallengeConsistencyWidget implements Widget, HasWideConfig
 
     public function render(SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
-        $allActivities = $this->enrichedActivities->findAll();
+        $allActivities = $this->activityRepository->findAll();
 
         $allMonths = Months::create(
             startDate: $allActivities->getFirstActivityStartDate(),

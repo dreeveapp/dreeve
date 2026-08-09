@@ -12,6 +12,7 @@ use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Domain\Rewind\FindMovingTimePerDay\FindMovingTimePerDay;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Years;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -80,6 +81,10 @@ final readonly class ActivityGridWidget implements Widget
 
         $movingTimePerDay = $this->queryBus->ask(new FindMovingTimePerDay($years))->getMovingTimePerDayInMinutes();
         $caloriesBurnedPerDay = $this->queryBus->ask(new FindCaloriesBurnedPerDay($years))->getCaloriesBurnedPerDay();
+        $trainingLoadPerDay = $this->trainingLoad->calculateForDateRange(DateRange::fromDates(
+            from: $fromDate,
+            till: $toDate,
+        ));
 
         $activityGrids = [];
         foreach (ActivityGridType::cases() as $activityGridType) {
@@ -93,7 +98,7 @@ final readonly class ActivityGridWidget implements Widget
             $on = SerializableDateTime::fromDateTimeImmutable($dt);
             $activityGrids[ActivityGridType::LOAD->value]->add(
                 on: $on,
-                value: $this->trainingLoad->calculate($on)
+                value: $trainingLoadPerDay[$on->format('Y-m-d')] ?? 0
             );
             $activityGrids[ActivityGridType::MOVING_TIME->value]->add(
                 on: $on,

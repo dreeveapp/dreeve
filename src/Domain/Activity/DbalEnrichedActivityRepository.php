@@ -12,6 +12,8 @@ use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 
 final readonly class DbalEnrichedActivityRepository extends DbalRepository implements EnrichedActivityRepository
@@ -47,12 +49,7 @@ final readonly class DbalEnrichedActivityRepository extends DbalRepository imple
     public function find(ActivityId $activityId): EnrichedActivity
     {
         $result = $this->connection->executeQuery(
-            sprintf(
-                'SELECT %s, %s FROM Activity a %s WHERE a.activityId = :activityId',
-                self::ACTIVITY_COLUMNS,
-                self::ENRICHMENT_COLUMNS,
-                self::ENRICHMENT_JOINS,
-            ),
+            $this->buildQuery('WHERE a.activityId = :activityId'),
             [...$this->enrichmentParameters(), 'activityId' => $activityId],
         )->fetchAssociative();
 
@@ -65,16 +62,60 @@ final readonly class DbalEnrichedActivityRepository extends DbalRepository imple
 
     public function findAll(): array
     {
-        $results = $this->connection->executeQuery(
-            sprintf(
-                'SELECT %s, %s FROM Activity a %s ORDER BY a.startDateTime DESC',
-                self::ACTIVITY_COLUMNS,
-                self::ENRICHMENT_COLUMNS,
-                self::ENRICHMENT_JOINS,
-            ),
+        return $this->hydrateAll($this->connection->executeQuery(
+            $this->buildQuery('ORDER BY a.startDateTime DESC'),
             $this->enrichmentParameters(),
-        )->fetchAllAssociative();
+        )->fetchAllAssociative());
+    }
 
+    public function findByIds(ActivityIds $activityIds): array
+    {
+        if ($activityIds->isEmpty()) {
+            return [];
+        }
+
+        return $this->hydrateAll($this->connection->executeQuery(
+            $this->buildQuery('WHERE a.activityId IN (:activityIds) ORDER BY a.startDateTime DESC'),
+            [
+                ...$this->enrichmentParameters(),
+                'activityIds' => array_map(strval(...), $activityIds->toArray()),
+            ],
+            [
+                'activityIds' => ArrayParameterType::STRING,
+            ]
+        )->fetchAllAssociative());
+    }
+
+    public function findByDateRange(SerializableDateTime $from, SerializableDateTime $till): array
+    {
+        return $this->hydrateAll($this->connection->executeQuery(
+            $this->buildQuery('WHERE a.startDateTime >= :from AND a.startDateTime < :till ORDER BY a.startDateTime DESC'),
+            [
+                ...$this->enrichmentParameters(),
+                'from' => $from->format('Y-m-d H:i:s'),
+                'till' => $till->format('Y-m-d H:i:s'),
+            ]
+        )->fetchAllAssociative());
+    }
+
+    private function buildQuery(string $clauses): string
+    {
+        return sprintf(
+            'SELECT %s, %s FROM Activity a %s %s',
+            self::ACTIVITY_COLUMNS,
+            self::ENRICHMENT_COLUMNS,
+            self::ENRICHMENT_JOINS,
+            $clauses,
+        );
+    }
+
+    /**
+     * @param array<array<string, mixed>> $results
+     *
+     * @return EnrichedActivity[]
+     */
+    private function hydrateAll(array $results): array
+    {
         $athleteWeightHistory = $this->athleteWeightHistory();
 
         return array_map(

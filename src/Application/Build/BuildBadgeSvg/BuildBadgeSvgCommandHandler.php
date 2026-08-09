@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Application\Build\BuildBadgeSvg;
 
 use App\Application\AppUrl;
+use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityTotals;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\BestEffort\BestEffortPeriod;
 use App\Domain\Activity\BestEffort\BestEffortsCalculator;
-use App\Domain\Activity\EnrichedActivities;
 use App\Domain\Activity\FindActivityTotals\FindActivityTotals;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Settings\SettingsRepository;
@@ -26,7 +26,7 @@ final readonly class BuildBadgeSvgCommandHandler implements CommandHandler
     public function __construct(
         private SettingsRepository $settingsRepository,
         private ChallengeRepository $challengeRepository,
-        private EnrichedActivities $enrichedActivities,
+        private ActivityRepository $activityRepository,
         private BestEffortsCalculator $bestEffortsCalculator,
         private QueryBus $queryBus,
         private AppUrl $appUrl,
@@ -45,7 +45,7 @@ final readonly class BuildBadgeSvgCommandHandler implements CommandHandler
         $athlete = $this->settingsRepository->general()->getAthlete();
         $zwiftLevel = $this->settingsRepository->zwift()->getZwiftLevel();
         $zwiftRacingScore = $this->settingsRepository->zwift()->getZwiftRacingScore();
-        $activities = $this->enrichedActivities->findAll();
+        $activities = $this->activityRepository->findAll();
 
         $activityTotals = ActivityTotals::create(
             totals: $this->queryBus->ask(new FindActivityTotals()),

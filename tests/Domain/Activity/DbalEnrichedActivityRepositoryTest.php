@@ -4,6 +4,7 @@ namespace App\Tests\Domain\Activity;
 
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\EnrichedActivity;
@@ -154,12 +155,101 @@ class DbalEnrichedActivityRepositoryTest extends ContainerTestCase
         }
     }
 
+    public function testFindByIds(): void
+    {
+        $this->provideFullTestSet();
+
+        $activityIds = ActivityIds::fromArray([
+            ActivityId::fromUnprefixed('9756441741'),
+            ActivityId::fromUnprefixed('8756441741'),
+            ActivityId::fromUnprefixed('9830227182'),
+        ]);
+
+        $this->assertEquals(
+            array_map(
+                fn (Activity $activity): string => (string) $activity->getId(),
+                $this->getContainer()->get(ActivityRepository::class)->findByIds($activityIds)->toArray()
+            ),
+            $this->idsOf($this->enrichedActivityRepository->findByIds($activityIds)),
+        );
+    }
+
+    public function testFindByIdsEnrichesTheSameWayFindDoes(): void
+    {
+        $this->provideFullTestSet();
+
+        $activityId = ActivityId::fromUnprefixed('9756441741');
+
+        $this->assertEquals(
+            [$this->enrichedActivityRepository->find($activityId)],
+            $this->enrichedActivityRepository->findByIds(ActivityIds::fromArray([$activityId])),
+        );
+    }
+
+    public function testFindByIdsForNoIds(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->assertEmpty($this->enrichedActivityRepository->findByIds(ActivityIds::empty()));
+    }
+
+    public function testFindByDateRange(): void
+    {
+        $activityRepository = $this->getContainer()->get(ActivityRepository::class);
+        foreach (['2023-10-09 10:00:00', '2023-10-10 10:00:00', '2023-10-11 10:00:00'] as $index => $startDateTime) {
+            $activityRepository->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed((string) $index))
+                    ->withStartDateTime(SerializableDateTime::fromString($startDateTime))
+                    ->build(),
+                [],
+            ));
+        }
+
+        // The upper bound is exclusive, so the activity on the 11th falls outside the range.
+        $this->assertEquals(
+            ['activity-1', 'activity-0'],
+            $this->idsOf($this->enrichedActivityRepository->findByDateRange(
+                SerializableDateTime::fromString('2023-10-09 00:00:00'),
+                SerializableDateTime::fromString('2023-10-11 00:00:00'),
+            )),
+        );
+    }
+
+    public function testFindByDateRangeEnrichesTheSameWayFindDoes(): void
+    {
+        $this->provideFullTestSet();
+
+        foreach ($this->enrichedActivityRepository->findByDateRange(
+            SerializableDateTime::fromString('1970-01-01'),
+            SerializableDateTime::fromString('2100-01-01'),
+        ) as $enrichedActivity) {
+            $this->assertEquals(
+                $this->enrichedActivityRepository->find($enrichedActivity->getActivity()->getId()),
+                $enrichedActivity,
+            );
+        }
+    }
+
     public function testFindForAnActivityThatDoesNotExist(): void
     {
         $this->expectException(EntityNotFound::class);
         $this->expectExceptionMessageIsOrContains('Activity "activity-1" not found');
 
         $this->enrichedActivityRepository->find(ActivityId::fromUnprefixed('1'));
+    }
+
+    /**
+     * @param EnrichedActivity[] $enrichedActivities
+     *
+     * @return string[]
+     */
+    private function idsOf(array $enrichedActivities): array
+    {
+        return array_map(
+            fn (EnrichedActivity $enrichedActivity): string => (string) $enrichedActivity->getActivity()->getId(),
+            $enrichedActivities
+        );
     }
 
     #[\Override]

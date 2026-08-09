@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget\WeeklyStats;
 
+use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
-use App\Domain\Activity\EnrichedActivities;
+use App\Domain\Activity\ActivityTypeRepository;
 use App\Domain\Calendar\Weeks;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\StatsContext;
@@ -20,7 +21,8 @@ use Twig\Environment;
 final readonly class WeeklyStatsWidget implements Widget
 {
     public function __construct(
-        private EnrichedActivities $enrichedActivities,
+        private ActivityRepository $activityRepository,
+        private ActivityTypeRepository $activityTypeRepository,
         private SettingsRepository $settingsRepository,
         private Environment $twig,
         private TranslatorInterface $translator,
@@ -64,7 +66,7 @@ final readonly class WeeklyStatsWidget implements Widget
     public function render(SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
         $weeklyDistanceTimeCharts = $weeksPerActivityType = [];
-        $activitiesPerActivityType = $this->enrichedActivities->findGroupedByActivityType();
+        $activitiesPerActivityType = $this->activityRepository->findAll()->groupByActivityType($this->activityTypeRepository->findAll());
 
         /** @var string[] $metricsDisplayOrder */
         $metricsDisplayOrder = $configuration->get('metricsDisplayOrder');

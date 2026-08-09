@@ -47,7 +47,6 @@
                     <span>{{ activity.getSportType()|trans }}</span>
                     <span>{{ activity.getDistance()|renderMeasurement(0) }}</span>
                     <span>{{ activity.getStartDate()|formatDate() }}</span>
-                    {% if activity.getGearName() %}<span>{{ activity.getGearName() }}</span>{% endif %}
                     {% if activity.getDeviceName() %}<span>{{ activity.getDeviceName() }}</span>{% endif %}
                 </div>
             </div>

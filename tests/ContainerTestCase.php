@@ -2,9 +2,6 @@
 
 namespace App\Tests;
 
-use App\Domain\Activity\ActivityIntensity;
-use App\Domain\Activity\DailyTrainingLoad;
-use App\Domain\Activity\EnrichedActivities;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\Twig\HtmlTwigExtension;
 use Carbon\Carbon;
@@ -37,9 +34,6 @@ abstract class ContainerTestCase extends KernelTestCase
             self::$ourDbalConnection = self::getContainer()->get(Connection::class);
         }
 
-        EnrichedActivities::reset();
-        DailyTrainingLoad::$cachedLoad = [];
-        ActivityIntensity::$cachedIntensities = [];
         HtmlTwigExtension::$seenIds = [];
 
         // Empty file systems.

@@ -2,30 +2,29 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Build\BuildManifest;
+namespace App\Controller;
 
 use App\Application\AppName;
 use App\Application\AppUrl;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\CQRS\Command\Command;
-use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
-use League\Flysystem\FilesystemOperator;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Routing\Attribute\Route;
 
-final readonly class BuildManifestCommandHandler implements CommandHandler
+#[AsController]
+final readonly class ManifestRequestHandler
 {
     public function __construct(
         private SettingsRepository $settingsRepository,
         private AppUrl $appUrl,
         private KernelProjectDir $kernelProjectDir,
-        private FilesystemOperator $buildStorage,
     ) {
     }
 
-    public function handle(Command $command): void
+    #[Route(path: '/manifest.json', name: 'manifest', methods: ['GET'], priority: 3)]
+    public function handle(): Response
     {
-        assert($command instanceof BuildManifest);
-
         $athlete = $this->settingsRepository->general()->getAthlete();
 
         $manifest = file_get_contents($this->kernelProjectDir.'/templates/manifest.json');
@@ -37,6 +36,9 @@ final readonly class BuildManifestCommandHandler implements CommandHandler
             '[APP_BASE_PATH]' => $this->appUrl->getBasePath() ?? '',
         ]);
 
-        $this->buildStorage->write('manifest.json', $manifest);
+        $response = new Response($manifest);
+        $response->headers->set('Content-Type', 'application/manifest+json');
+
+        return $response;
     }
 }

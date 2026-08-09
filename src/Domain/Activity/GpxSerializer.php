@@ -14,14 +14,14 @@ final readonly class GpxSerializer
     private const string DATE_TIME_FORMAT = 'Y-m-d\TH:i:s.000\Z';
 
     public function __construct(
-        private EnrichedActivities $enrichedActivities,
+        private ActivityRepository $activityRepository,
         private ActivityStreamRepository $activityStreamRepository,
     ) {
     }
 
     public function serialize(ActivityId $activityId): ?string
     {
-        $activity = $this->enrichedActivities->find($activityId);
+        $activity = $this->activityRepository->find($activityId);
         $activitySteams = $this->activityStreamRepository->findByActivityId($activity->getId());
 
         if (!$timeStream = $activitySteams->filterOnType(StreamType::TIME)) {

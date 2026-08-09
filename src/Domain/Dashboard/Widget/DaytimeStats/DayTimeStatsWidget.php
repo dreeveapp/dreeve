@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget\DaytimeStats;
 
-use App\Domain\Activity\EnrichedActivities;
+use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\ActivityTypeRepository;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Infrastructure\Serialization\Json;
@@ -15,7 +16,8 @@ use Twig\Environment;
 final readonly class DayTimeStatsWidget implements Widget
 {
     public function __construct(
-        private EnrichedActivities $enrichedActivities,
+        private ActivityRepository $activityRepository,
+        private ActivityTypeRepository $activityTypeRepository,
         private Environment $twig,
         private TranslatorInterface $translator,
     ) {
@@ -43,7 +45,8 @@ final readonly class DayTimeStatsWidget implements Widget
     public function render(SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
         $statsPerActivityType = [];
-        $activitiesPerActivityType = $this->enrichedActivities->findGroupedByActivityType();
+        $allActivities = $this->activityRepository->findAll();
+        $activitiesPerActivityType = $allActivities->groupByActivityType($this->activityTypeRepository->findAll());
         if (count($activitiesPerActivityType) > 1) {
             foreach ($activitiesPerActivityType as $activityType => $activities) {
                 $dayTimeStats = DaytimeStats::create($activities);
@@ -59,7 +62,6 @@ final readonly class DayTimeStatsWidget implements Widget
             }
         }
 
-        $allActivities = $this->enrichedActivities->findAll();
         $allDayTimeStats = DaytimeStats::create($allActivities);
 
         return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([

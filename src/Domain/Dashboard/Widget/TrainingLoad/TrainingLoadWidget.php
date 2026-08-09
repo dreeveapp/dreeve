@@ -54,11 +54,10 @@ final readonly class TrainingLoadWidget implements Widget
     {
         $timeInHeartRateZonesForLast30Days = $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForLast30Days();
 
-        $intensities = [];
-        for ($i = (TrainingLoadChart::NUMBER_OF_DAYS_TO_DISPLAY + 210); $i >= 0; --$i) {
-            $calculateForDate = $now->modify('- '.$i.' days');
-            $intensities[$calculateForDate->format('Y-m-d')] = $this->dailyTrainingLoad->calculate($calculateForDate);
-        }
+        $intensities = $this->dailyTrainingLoad->calculateForDateRange(DateRange::fromDates(
+            from: $now->modify('- '.(TrainingLoadChart::NUMBER_OF_DAYS_TO_DISPLAY + 210).' days'),
+            till: $now,
+        ));
 
         $trainingMetrics = TrainingMetrics::create($intensities);
 
