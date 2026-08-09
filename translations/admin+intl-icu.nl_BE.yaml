@@ -247,7 +247,6 @@ Operator: Operator
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Parts you track maintenance for, eg: chains, cassettes, brake pads...'
 'Passes near': 'Passes near'
 Password: Password
-'Pending build': 'Pending build'
 'Performed on': 'Performed on'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
 'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
@@ -386,7 +385,6 @@ Tasks: Tasks
 'The workout type': 'The workout type'
 'Then do this': 'Then do this'
 'This action cannot be undone.': 'This action cannot be undone.'
-'This activity shows up on the app after the next build.': 'This activity shows up on the app after the next build.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'This component is fitted to multiple gears, pick the one you serviced.'
 'This only affects future imports. Already imported activities are left untouched. This action cannot be undone.': 'This only affects future imports. Already imported activities are left untouched. This action cannot be undone.'
 'This only removes the import record, the imported activity is kept.': 'This only removes the import record, the imported activity is kept.'

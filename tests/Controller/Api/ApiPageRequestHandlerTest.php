@@ -70,6 +70,35 @@ class ApiPageRequestHandlerTest extends ContainerTestCase
         $this->assertEquals($response->getContent(), $secondResponse->getContent());
     }
 
+    public function testHandleForAnActivityDetail(): void
+    {
+        $this->provideFullTestSet();
+
+        $response = $this->apiPageRequestHandler->handle('activity/activity-9756441741');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('MISS', $response->headers->get('X-Cache'));
+        $this->assertStringEndsWith('activity.9756441741', (string) $response->headers->get('X-Cache-Key'));
+        $this->assertEquals(
+            'settings.appearance, settings.general, activities.9756441741, gear',
+            $response->headers->get('X-Cache-Tags'),
+        );
+
+        $secondResponse = $this->apiPageRequestHandler->handle('activity/activity-9756441741');
+        $this->assertEquals('HIT', $secondResponse->headers->get('X-Cache'));
+        $this->assertEquals($response->getContent(), $secondResponse->getContent());
+    }
+
+    public function testHandleForAnActivityThatDoesNotExist(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->assertEquals(
+            404,
+            $this->apiPageRequestHandler->handle('activity/activity-1')->getStatusCode()
+        );
+    }
+
     public function testHandleWhenPageIsNotRegistered(): void
     {
         $this->assertEquals(

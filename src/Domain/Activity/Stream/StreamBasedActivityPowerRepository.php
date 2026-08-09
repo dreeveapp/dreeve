@@ -61,7 +61,6 @@ final class StreamBasedActivityPowerRepository implements ActivityPowerRepositor
 
         foreach ($results as $result) {
             $activityId = ActivityId::fromString($result['activityId']);
-            $bestAverages = Json::uncompressAndDecode($result['data']);
             $activitySummary = $this->activitySummaryRepository->find($activityId);
 
             try {
@@ -70,21 +69,10 @@ final class StreamBasedActivityPowerRepository implements ActivityPowerRepositor
                 continue; // @codeCoverageIgnore
             }
 
-            foreach (self::TIME_INTERVALS_IN_SECONDS_REDACTED as $timeIntervalInSeconds) {
-                $interval = CarbonInterval::seconds($timeIntervalInSeconds);
-                if (!isset($bestAverages[$timeIntervalInSeconds])) {
-                    continue;
-                }
-                $bestAverageForTimeInterval = $bestAverages[$timeIntervalInSeconds];
-
-                $relativePower = $athleteWeight->toFloat() > 0 ? round($bestAverageForTimeInterval / $athleteWeight->toFloat(), 2) : 0;
-                StreamBasedActivityPowerRepository::$cachedPowerOutputs[(string) $activityId]->add(PowerOutput::fromState(
-                    timeIntervalInSeconds: $timeIntervalInSeconds,
-                    formattedTimeInterval: 0 !== (int) $interval->totalHours ? $interval->totalHours.' h' : (0 !== (int) $interval->totalMinutes ? $interval->totalMinutes.' m' : $interval->totalSeconds.' s'),
-                    power: $bestAverageForTimeInterval,
-                    relativePower: $relativePower,
-                ));
-            }
+            StreamBasedActivityPowerRepository::$cachedPowerOutputs[(string) $activityId] = PowerOutputs::fromBestAverages(
+                bestAverages: Json::uncompressAndDecode($result['data']),
+                athleteWeight: $athleteWeight,
+            );
         }
     }
 

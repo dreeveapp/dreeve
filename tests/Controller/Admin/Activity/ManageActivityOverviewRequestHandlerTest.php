@@ -78,15 +78,10 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('Trail Shoes', $gearOption->text());
     }
 
-    public function testLinksToTheDetailPageOnlyOnceItHasBeenBuilt(): void
+    public function testLinksEveryActivityToItsDetailPage(): void
     {
         $this->seedActivities(2);
         $this->markAppAsBuilt();
-        // Only the first activity made it into a build, the second one was added afterwards.
-        static::getContainer()->get('build_html.storage')->write(
-            'activity/'.ActivityId::fromUnprefixed('1').'.html',
-            'I am the activity page'
-        );
 
         $this->client->loginUser($this->adminUser());
 
@@ -94,19 +89,13 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
 
-        $detailLinks = $crawler->filter('table.data-table tbody a[href*="#/activity/"]');
-        $this->assertCount(1, $detailLinks);
+        $detailLinks = $crawler->filter('table.data-table tbody a[href*="#/api/page/activity/"]');
+        $this->assertCount(2, $detailLinks);
         $this->assertStringContainsString(
-            '/activities#/activity/'.ActivityId::fromUnprefixed('1').'.html',
+            '/activities#/api/page/activity/'.ActivityId::fromUnprefixed('1'),
             $detailLinks->first()->attr('href')
         );
         $this->assertSame('Activity 1', trim($detailLinks->first()->text()));
-
-        // The unbuilt one renders as plain text with an explanatory pill instead.
-        $pendingPills = $crawler->filter('table.data-table tbody td:first-child span.pill');
-        $this->assertCount(1, $pendingPills);
-        $this->assertSame('Pending build', trim($pendingPills->first()->text()));
-        $this->assertStringContainsString('Activity 2', $crawler->filter('table.data-table')->text());
     }
 
     #[DataProvider('provideSportTypeFilterScenarios')]

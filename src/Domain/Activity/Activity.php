@@ -498,7 +498,7 @@ final class Activity implements SupportsAITooling
         ]);
 
         if ($this->getLocalImagePaths() !== $clone->getLocalImagePaths()) {
-            $clone->recordThat(new ActivityImagesHaveBeenUpdated($clone->getStartDate()));
+            $clone->recordThat(new ActivityImagesHaveBeenUpdated($clone->getId(), $clone->getStartDate()));
         }
 
         return $clone;

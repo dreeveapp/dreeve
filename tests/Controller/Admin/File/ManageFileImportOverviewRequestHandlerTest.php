@@ -187,7 +187,7 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
         );
     }
 
-    public function testLinksToTheDetailPageOnlyOnceItHasBeenBuilt(): void
+    public function testLinksEveryImportedActivityToItsDetailPage(): void
     {
         $this->withImportMode(ImportMode::FILES);
 
@@ -212,30 +212,19 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
             );
         }
 
-        // Only the first activity made it into a build, the second one was imported afterwards.
-        static::getContainer()->get('build_html.storage')->write(
-            'activity/'.ActivityId::fromUnprefixed('1').'.html',
-            'I am the activity page'
-        );
-
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/file-imports');
 
         $this->assertResponseIsSuccessful();
 
-        $detailLinks = $crawler->filter('table.data-table tbody a[href*="#/activity/"]');
-        $this->assertCount(1, $detailLinks);
+        $detailLinks = $crawler->filter('table.data-table tbody a[href*="#/api/page/activity/"]');
+        $this->assertCount(2, $detailLinks);
         $this->assertStringContainsString(
-            '/activities#/activity/'.ActivityId::fromUnprefixed('1').'.html',
+            '/activities#/api/page/activity/'.ActivityId::fromUnprefixed('1'),
             $detailLinks->first()->attr('href')
         );
         $this->assertSame('Activity 1', trim($detailLinks->first()->text()));
-
-        $pendingPills = $crawler->filter('table.data-table tbody span.pill');
-        $this->assertCount(1, $pendingPills);
-        $this->assertSame('Pending build', trim($pendingPills->first()->text()));
-        $this->assertStringContainsString('Activity 2', $crawler->filter('table.data-table')->text());
     }
 
     private function seedFileImports(int $count): void

@@ -110,23 +110,11 @@
                 {% for activity in overview %}
                     <tr class="group/row">
                         <td class="whitespace-nowrap text-left">
-                            {% if activityPageBuildStatus.hasBeenBuilt(activity.getActivityId()) %}
-                                <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
-                                   title="{{ activity.getName() }}"
-                                   href="{{ relativeUrl('/activities#/activity/' ~ activity.getActivityId() ~ '.html') }}">
-                                    {{ activity.getName() }}
-                                </a>
-                            {% else %}
-                                <div class="flex items-center gap-2">
-                                    <span class="block max-w-100 truncate font-medium text-gray-800" title="{{ activity.getName() }}">
-                                        {{ activity.getName() }}
-                                    </span>
-                                    <span class="pill pill--neutral text-xs"
-                                          title="{{ "This activity shows up on the app after the next build."|trans({}, 'admin') }}">
-                                        {{ "Pending build"|trans({}, 'admin') }}
-                                    </span>
-                                </div>
-                            {% endif %}
+                            <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
+                               title="{{ activity.getName() }}"
+                               href="{{ relativeUrl('/activities#/api/page/activity/' ~ activity.getActivityId()) }}">
+                                {{ activity.getName() }}
+                            </a>
                         </td>
                         <td class="whitespace-nowrap text-left">
                             {{ activity.getSportType()|trans }}

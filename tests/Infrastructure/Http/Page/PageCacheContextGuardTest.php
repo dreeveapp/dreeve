@@ -2,6 +2,7 @@
 
 namespace App\Tests\Infrastructure\Http\Page;
 
+use App\Domain\Activity\ActivityPageResolver;
 use App\Domain\Calendar\MonthPageResolver;
 use App\Domain\Rewind\RewindComparePageResolver;
 use App\Domain\Rewind\RewindPageResolver;
@@ -25,6 +26,7 @@ class PageCacheContextGuardTest extends ContainerTestCase
      * A resolver without an entry fails every test in this class, which is the point.
      */
     private const array PATH_PER_RESOLVER = [
+        ActivityPageResolver::class => 'activity/activity-9756441741',
         MonthPageResolver::class => 'month/2023-06',
         RewindPageResolver::class => 'rewind/2023',
         RewindComparePageResolver::class => 'rewind/2023/compare/2022',

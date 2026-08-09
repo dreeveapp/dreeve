@@ -43,6 +43,7 @@ final readonly class ActivityInvalidateCacheTagsListener
     public function reactToActivityImagesHaveBeenUpdated(ActivityImagesHaveBeenUpdated $event): void
     {
         $this->renderCache->invalidateTags(
+            ActivityCacheTag::for($event->getActivityId()),
             RootCacheTag::ACTIVITY_IMAGES,
             RootCacheTag::ACTIVITY_IMAGES->forYear($event->getYear()),
         );

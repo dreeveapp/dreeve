@@ -142,7 +142,7 @@
                         </div>
                     {% endif %}
                     {% set averageCadence = activity.getAverageCadence() %}
-                    {% set maxCadence = activity.getMaxCadence() %}
+                    {% set maxCadence = enrichedActivity.getMaxCadence() %}
                     <div class="bg-gray-50 rounded-lg p-3 flex gap-x-2 items-center justify-between" title="{{ maxCadence ? 'Max ' ~ maxCadence : '' }}">
                         <span class="text-xs text-gray-500">{{ "Cadence"|trans }}</span>
                         <span class="text-sm font-bold text-gray-900">
@@ -154,8 +154,8 @@
                     </div>
                     <a href="#" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group" data-router-force-reload data-router-navigate="{{ relativeUrl('activities') }}" data-filters='{{ dataFilters('activities', {gear: activity.getGearIdIncludingNone()}) }}'>
                         <span class="text-xs text-gray-500 shrink-0">{{ "Gear"|trans }}</span>
-                        <span class="text-xs font-bold text-gray-900 group-hover:text-primary truncate" title="{{ activity.getGearName() }}">
-                            {{ activity.getGearName() ?: 'Unspecified'|trans }}
+                        <span class="text-xs font-bold text-gray-900 group-hover:text-primary truncate" title="{{ enrichedActivity.getGearName() }}">
+                            {{ enrichedActivity.getGearName() ?: 'Unspecified'|trans }}
                         </span>
                     </a>
                     <a href="#" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group" data-router-force-reload data-router-navigate="{{ relativeUrl('activities') }}" data-filters='{{ dataFilters('activities', {device: activity.getDeviceId()}) }}'>
@@ -303,20 +303,20 @@
                                 </div>
                             </div>
                         </div>
-                        {% set normalizedPower = activity.getNormalizedPower() %}
+                        {% set normalizedPower = enrichedActivity.getNormalizedPower() %}
                         {% if normalizedPower %}
                             <div class="rounded-lg bg-primary/5 ring-1 ring-primary/20 p-3 mb-3 flex items-center justify-between">
                                 <div class="text-xxs uppercase text-primary font-semibold tracking-wider">{{ "Normalized power"|trans }}</div>
                                 <div class="text-lg font-bold text-primary">{{ normalizedPower }}<span class="text-sm font-medium ml-0.5">w</span></div>
                             </div>
                         {% endif %}
-                        {% if activity.hasDetailedPowerData() %}
+                        {% if enrichedActivity.hasDetailedPowerData() %}
                             {% set timeIntervals =  [5, 60, 300, 1200, 3600] %}
                             {% set timeIntervalLabels = ['5s', '1m', '5m', '20m', '1h'] %}
                             <div class="text-xxs uppercase text-gray-500 font-semibold tracking-wider mb-1.5">{{ "Best efforts"|trans }}</div>
                             <div class="grid grid-cols-[repeat(auto-fit,minmax(80px,1fr))] gap-1.5">
                                 {% for timeInterval in timeIntervals %}
-                                    {% set powerOutput = activity.getBestAveragePowerForTimeInterval(timeInterval) %}
+                                    {% set powerOutput = enrichedActivity.getBestAveragePowerForTimeInterval(timeInterval) %}
                                     {% if powerOutput %}
                                         <div class="text-center bg-gray-50 rounded-md py-1.5">
                                             <div class="text-xxs text-gray-500">{{ timeIntervalLabels[loop.index0] }}</div>

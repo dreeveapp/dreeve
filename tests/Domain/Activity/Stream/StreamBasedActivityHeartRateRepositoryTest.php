@@ -1,0 +1,232 @@
+<?php
+
+namespace App\Tests\Domain\Activity\Stream;
+
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\ActivityType;
+use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\Stream\ActivityHeartRateRepository;
+use App\Domain\Activity\Stream\ActivityStreamRepository;
+use App\Domain\Activity\Stream\Metric\ActivityStreamMetric;
+use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
+use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
+use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Athlete\HeartRateZone\HeartRateZone;
+use App\Domain\Athlete\HeartRateZone\TimeInHeartRateZones;
+use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use App\Tests\ContainerTestCase;
+use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\ProvideTestData;
+use PHPUnit\Framework\Attributes\DataProvider;
+
+class StreamBasedActivityHeartRateRepositoryTest extends ContainerTestCase
+{
+    use ProvideTestData;
+
+    private ActivityHeartRateRepository $activityHeartRateRepository;
+
+    public function testItMatchesCountingTheRawStreamSampleBySample(): void
+    {
+        $this->provideFullTestSet();
+
+        $activityId = ActivityId::fromUnprefixed('9756441741');
+        $activity = $this->getContainer()->get(ActivityRepository::class)->find($activityId);
+        $heartRateStream = $this->getContainer()->get(ActivityStreamRepository::class)
+            ->findOneByActivityAndStreamType($activityId, StreamType::HEART_RATE);
+
+        $general = $this->getContainer()->get(SettingsRepository::class)->general();
+        $athleteMaxHeartRate = $general->getAthlete()->getMaxHeartRate($activity->getStartDate());
+        $zones = $general->getHeartRateZoneConfiguration()->getHeartRateZonesFor(
+            sportType: $activity->getSportType(),
+            on: $activity->getStartDate()
+        );
+
+        $expected = [];
+        foreach ($zones->getZones() as $zone) {
+            [$minHeartRate, $maxHeartRate] = $zone->getRangeInBpm($athleteMaxHeartRate);
+            $expected[$zone->getName()] = count(array_filter(
+                $heartRateStream->getData(),
+                fn (int $heartRate): bool => $heartRate >= $minHeartRate && $heartRate <= $maxHeartRate
+            ));
+        }
+
+        $this->assertEquals(
+            TimeInHeartRateZones::create(
+                timeInZoneOne: $expected[HeartRateZone::ONE],
+                timeInZoneTwo: $expected[HeartRateZone::TWO],
+                timeInZoneThree: $expected[HeartRateZone::THREE],
+                timeInZoneFour: $expected[HeartRateZone::FOUR],
+                timeInZoneFive: $expected[HeartRateZone::FIVE],
+            ),
+            $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForActivity($activityId),
+        );
+    }
+
+    public function testFindTotalTimeInSecondsInHeartRateZonesForActivity(): void
+    {
+        $this->provideFullTestSet();
+
+        $timeInHeartRateZones = $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForActivity(
+            ActivityId::fromUnprefixed('9830227182')
+        );
+
+        $this->assertEquals(0, $timeInHeartRateZones->getTimeInZoneOne());
+        $this->assertEquals(0, $timeInHeartRateZones->getTimeInZoneTwo());
+        $this->assertEquals(0, $timeInHeartRateZones->getTimeInZoneThree());
+        $this->assertEquals(0, $timeInHeartRateZones->getTimeInZoneFour());
+        $this->assertEquals(10, $timeInHeartRateZones->getTimeInZoneFive());
+    }
+
+    #[DataProvider('provideActivitiesWithoutUsableHeartRateData')]
+    public function testFindTotalTimeInSecondsInHeartRateZonesForActivityWithoutHeartRateData(string $activityId): void
+    {
+        $this->provideFullTestSet();
+
+        $this->expectException(EntityNotFound::class);
+        $this->expectExceptionMessage(sprintf('HeartRateZones for "activity-%s" not found', $activityId));
+
+        $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForActivity(
+            ActivityId::fromUnprefixed($activityId)
+        );
+    }
+
+    public static function provideActivitiesWithoutUsableHeartRateData(): \Generator
+    {
+        yield 'no heart rate stream at all' => ['9542782314'];
+        yield 'a heart rate stream rejected as faulty' => ['8756441741'];
+    }
+
+    public function testFindTotalTimeInSecondsInHeartRateZonesForActivityThatDoesNotExist(): void
+    {
+        $this->expectException(EntityNotFound::class);
+
+        $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForActivity(
+            ActivityId::fromUnprefixed('1')
+        );
+    }
+
+    public function testAnotherActivityDoesNotChangeTheZonesOfThisOne(): void
+    {
+        $this->provideFullTestSet();
+
+        $activityId = ActivityId::fromUnprefixed('9830227182');
+        $before = $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForActivity($activityId);
+
+        $this->addActivityWithHeartRateDistribution(
+            activityId: ActivityId::fromUnprefixed('42'),
+            heartRateDistribution: [180 => 600],
+        );
+
+        $this->assertEquals(
+            $before,
+            $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForActivity($activityId),
+        );
+    }
+
+    public function testFindTotalTimeInSecondsInHeartRateZonesSeesEveryActivity(): void
+    {
+        $this->provideFullTestSet();
+
+        $before = $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZones();
+
+        $this->addActivityWithHeartRateDistribution(
+            activityId: ActivityId::fromUnprefixed('42'),
+            heartRateDistribution: [180 => 600],
+        );
+
+        $this->assertEquals(
+            self::totalSeconds($before) + 600,
+            self::totalSeconds($this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZones()),
+        );
+    }
+
+    public function testFindTotalTimeInSecondsInHeartRateZonesPerActivityType(): void
+    {
+        $this->provideFullTestSet();
+
+        $perActivityType = $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesPerActivityType();
+
+        $this->assertEqualsCanonicalizing(
+            array_map(fn (ActivityType $activityType): string => $activityType->value, ActivityType::cases()),
+            array_keys($perActivityType),
+        );
+        $this->assertContainsOnlyInstancesOf(TimeInHeartRateZones::class, $perActivityType);
+
+        $this->assertEquals(
+            self::totalSeconds($this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZones()),
+            array_sum(array_map(self::totalSeconds(...), $perActivityType)),
+        );
+    }
+
+    public function testFindTotalTimeInSecondsInHeartRateZonesForLast30DaysIgnoresOlderActivities(): void
+    {
+        $this->provideFullTestSet();
+
+        $before = $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForLast30Days();
+
+        $this->addActivityWithHeartRateDistribution(
+            activityId: ActivityId::fromUnprefixed('42'),
+            heartRateDistribution: [180 => 600],
+            startDate: SerializableDateTime::fromString('2020-01-01 10:00:00'),
+        );
+
+        $this->assertEquals(
+            $before,
+            $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForLast30Days(),
+        );
+
+        $this->addActivityWithHeartRateDistribution(
+            activityId: ActivityId::fromUnprefixed('43'),
+            heartRateDistribution: [180 => 600],
+            startDate: SerializableDateTime::fromString('2023-10-15 10:00:00'),
+        );
+
+        $this->assertEquals(
+            self::totalSeconds($before) + 600,
+            self::totalSeconds($this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForLast30Days()),
+        );
+    }
+
+    private static function totalSeconds(TimeInHeartRateZones $timeInHeartRateZones): int
+    {
+        return $timeInHeartRateZones->getTimeInZoneOne() + $timeInHeartRateZones->getTimeInZoneTwo()
+            + $timeInHeartRateZones->getTimeInZoneThree() + $timeInHeartRateZones->getTimeInZoneFour()
+            + $timeInHeartRateZones->getTimeInZoneFive();
+    }
+
+    /**
+     * @param array<int, int> $heartRateDistribution
+     */
+    private function addActivityWithHeartRateDistribution(
+        ActivityId $activityId,
+        array $heartRateDistribution,
+        ?SerializableDateTime $startDate = null,
+    ): void {
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withSportType(SportType::RIDE)
+                ->withStartDateTime($startDate ?? SerializableDateTime::fromString('2023-10-15 10:00:00'))
+                ->build(),
+            [],
+        ));
+        $this->getContainer()->get(ActivityStreamMetricRepository::class)->add(ActivityStreamMetric::create(
+            activityId: $activityId,
+            streamType: StreamType::HEART_RATE,
+            metricType: ActivityStreamMetricType::VALUE_DISTRIBUTION,
+            data: $heartRateDistribution,
+        ));
+    }
+
+    #[\Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->activityHeartRateRepository = $this->getContainer()->get(ActivityHeartRateRepository::class);
+    }
+}

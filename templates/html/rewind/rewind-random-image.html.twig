@@ -1,5 +1,5 @@
 {% autoescape false %}
-    <a class="h-104 w-full flex flex-col items-center" href="#" data-model-content-url="{{ relativeUrl('activity/' ~ activity.getId() ~ '.html') }}" target="_blank">
+    <a class="h-104 w-full flex flex-col items-center" href="#" data-model-content-url="{{ relativeUrl('api/page/activity/' ~ activity.getId()) }}" target="_blank">
         <img class="max-h-full max-w-full rounded-lg lazy" data-src="{{ securedImageUrl(image.getImageUrl()) }}" alt="{{ activity.getName() }}" src="{{ placeholderImage(image.getOrientation()) }}" />
     </a>
 {% endautoescape %}

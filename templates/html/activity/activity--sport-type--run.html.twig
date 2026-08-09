@@ -78,8 +78,8 @@
                 {% endif %}
                 <a href="#" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group" data-router-force-reload data-router-navigate="{{ relativeUrl('activities') }}" data-filters='{{ dataFilters('activities', {gear: activity.getGearIdIncludingNone()}) }}'>
                     <span class="text-xs text-gray-500 shrink-0">{{ "Gear"|trans }}</span>
-                    <span class="text-xs font-bold text-gray-900 group-hover:text-primary truncate" title="{{ activity.getGearName() }}">
-                            {{ activity.getGearName() ?: 'Unspecified'|trans }}
+                    <span class="text-xs font-bold text-gray-900 group-hover:text-primary truncate" title="{{ enrichedActivity.getGearName() }}">
+                            {{ enrichedActivity.getGearName() ?: 'Unspecified'|trans }}
                     </span>
                 </a>
                 <a href="#" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group" data-router-force-reload data-router-navigate="{{ relativeUrl('activities') }}" data-filters='{{ dataFilters('activities', {device: activity.getDeviceId()}) }}'>

@@ -6,33 +6,16 @@ namespace App\Application\Build\BuildActivitiesHtml;
 
 use App\Application\Countries;
 use App\Domain\Activity\ActivityTotals;
-use App\Domain\Activity\CadenceDistributionChart;
 use App\Domain\Activity\EnrichedActivities;
-use App\Domain\Activity\HeartRateDistributionChart;
-use App\Domain\Activity\Lap\ActivityLapRepository;
-use App\Domain\Activity\LeafletMap;
-use App\Domain\Activity\PowerDistributionChart;
-use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\SportType\SportTypeRepository;
-use App\Domain\Activity\Stream\ActivityHeartRateRepository;
 use App\Domain\Activity\Stream\ActivityPowerRepository;
-use App\Domain\Activity\Stream\ActivityStreamRepository;
-use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
-use App\Domain\Activity\Stream\CombinedStream\CombinedStreamProfileCharts;
-use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
-use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
-use App\Domain\Activity\Stream\StreamType;
-use App\Domain\Activity\VelocityDistributionChart;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
-use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Measurement\Velocity\Pace;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\DataTableRow;
-use App\Infrastructure\ValueObject\String\Slug;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -41,12 +24,6 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
 {
     public function __construct(
         private EnrichedActivities $enrichedActivities,
-        private ActivityStreamRepository $activityStreamRepository,
-        private ActivityStreamMetricRepository $activityStreamMetricRepository,
-        private ActivityHeartRateRepository $activityHeartRateRepository,
-        private CombinedActivityStreamRepository $combinedActivityStreamRepository,
-        private ActivitySplitRepository $activitySplitRepository,
-        private ActivityLapRepository $activityLapRepository,
         private SportTypeRepository $sportTypeRepository,
         private GearRepository $gearRepository,
         private RecordingDeviceRepository $recordingDeviceRepository,
@@ -64,9 +41,7 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
         assert($command instanceof BuildActivitiesHtml);
 
         $now = $command->getCurrentDateTime();
-        $general = $this->settingsRepository->general();
         $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
-        $athlete = $general->getAthlete();
         $importedSportTypes = $this->sportTypeRepository->findAll();
 
         $activities = $this->enrichedActivities->findAll();
@@ -90,138 +65,6 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
 
         $dataDatableRows = [];
         foreach ($activities as $activity) {
-            $activityType = $activity->getSportType()->getActivityType();
-
-            $valueDistributionMetrics = $this->activityStreamMetricRepository->findByActivityIdAndMetricType(
-                $activity->getId(),
-                ActivityStreamMetricType::VALUE_DISTRIBUTION
-            );
-
-            $athleteMaxHeartRate = $athlete->getMaxHeartRate($activity->getStartDate());
-            $heartRateZones = $general->getHeartRateZoneConfiguration()->getHeartRateZonesFor(
-                sportType: $activity->getSportType(),
-                on: $activity->getStartDate()
-            );
-
-            $distributionCharts = [];
-            $heartRateDistribution = $valueDistributionMetrics->filterOnStreamType(StreamType::HEART_RATE)?->getData() ?? [];
-            if ($activity->getAverageHeartRate() && [] !== $heartRateDistribution) {
-                $distributionCharts[] = [
-                    'title' => $this->translator->trans('Heart rate'),
-                    'data' => Json::encode(HeartRateDistributionChart::create(
-                        heartRateData: $heartRateDistribution,
-                        averageHeartRate: $activity->getAverageHeartRate(),
-                        athleteMaxHeartRate: $athleteMaxHeartRate,
-                        heartRateZones: $heartRateZones
-                    )->build()),
-                ];
-            }
-
-            $powerDistribution = $valueDistributionMetrics->filterOnStreamType(StreamType::WATTS)?->getData() ?? [];
-            if ($activityType->supportsPowerData() && $activity->getAveragePower()
-                && count($powerDistribution) > 1) {
-                $ftp = null;
-                try {
-                    $ftp = $general->getFtpHistory()->find(
-                        activityType: $activityType,
-                        on: $activity->getStartDate()
-                    );
-                } catch (EntityNotFound) {
-                }
-
-                $powerDistributionChart = PowerDistributionChart::create(
-                    powerData: $powerDistribution,
-                    averagePower: $activity->getAveragePower(),
-                    ftp: $ftp,
-                )->build();
-
-                if (!is_null($powerDistributionChart)) {
-                    $distributionCharts[] = [
-                        'title' => $this->translator->trans('Power'),
-                        'data' => Json::encode($powerDistributionChart),
-                    ];
-                }
-            }
-
-            $velocityDistribution = $valueDistributionMetrics->filterOnStreamType(StreamType::VELOCITY)?->getData() ?? [];
-            if ([] !== $velocityDistribution) {
-                $velocityUnitPreference = $activity->getSportType()->getVelocityDisplayPreference();
-
-                $velocityDistributionChart = VelocityDistributionChart::create(
-                    velocityData: $velocityDistribution,
-                    averageSpeed: $activity->getAverageSpeed(),
-                    sportType: $activity->getSportType(),
-                    unitSystem: $unitSystem,
-                )->build();
-
-                if (!is_null($velocityDistributionChart)) {
-                    $distributionCharts[] = [
-                        'title' => match (true) {
-                            $velocityUnitPreference instanceof Pace => $this->translator->trans('Pace'),
-                            default => $this->translator->trans('Speed'),
-                        },
-                        'data' => Json::encode($velocityDistributionChart),
-                    ];
-                }
-            }
-
-            $cadenceDistribution = $valueDistributionMetrics->filterOnStreamType(StreamType::CADENCE)?->getData() ?? [];
-            if ($activity->getAverageCadence() && count($cadenceDistribution) > 1) {
-                $cadenceDistributionChart = CadenceDistributionChart::create(
-                    cadenceData: $cadenceDistribution,
-                    averageCadence: $activity->getAverageCadence(),
-                    activityType: $activityType,
-                )->build();
-
-                if (!is_null($cadenceDistributionChart)) {
-                    $distributionCharts[] = [
-                        'title' => $this->translator->trans('Cadence'),
-                        'data' => Json::encode($cadenceDistributionChart),
-                    ];
-                }
-            }
-
-            $activitySplits = $this->activitySplitRepository->findBy(
-                activityId: $activity->getId(),
-                unitSystem: $unitSystem
-            );
-            $numberOfProfileChartLanes = $this->combinedActivityStreamRepository
-                ->countChartableStreamTypesFor($activity->getId(), $unitSystem);
-
-            $leafletMap = $activity->getLeafletMap();
-            $templateName = sprintf('html/activity/%s.html.twig', $activity->getSportType()->getTemplateName());
-            $gpxFileLocation = sprintf('api/activity/%s/route.gpx', $activity->getId());
-            $activityHasTimeStream = $this->activityStreamRepository->hasOneForActivityAndStreamType($activity->getId(), StreamType::TIME);
-
-            $timeInHeartRateZones = null;
-            try {
-                $timeInHeartRateZones = $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForActivity($activity->getId());
-            } catch (EntityNotFound) {
-            }
-
-            $this->buildHtmlStorage->write(
-                'activity/'.$activity->getId().'.html',
-                $this->twig->load($templateName)->render([
-                    'activity' => $activity,
-                    'leaflet' => $leafletMap instanceof LeafletMap ? [
-                        'polylineUrl' => sprintf('activity/%s/polylines', $activity->getId()),
-                        'map' => $leafletMap,
-                    ] : null,
-                    'gpxLink' => $activityHasTimeStream ? $gpxFileLocation : null,
-                    'gpxFileName' => sprintf(
-                        '%s-%s.gpx',
-                        $activity->getStartDate()->format('Y-m-d'),
-                        Slug::fromString($activity->getName()),
-                    ),
-                    'distributionCharts' => $distributionCharts,
-                    'splits' => $activitySplits,
-                    'laps' => $this->activityLapRepository->findBy($activity->getId()),
-                    'profileChartHeight' => CombinedStreamProfileCharts::totalHeightFor($numberOfProfileChartLanes),
-                    'hasProfileChart' => $numberOfProfileChartLanes > 0,
-                    'heartRateZones' => $timeInHeartRateZones,
-                ]),
-            );
-
             $dataDatableRows[] = DataTableRow::create(
                 markup: $this->twig->load('html/activity/activity-data-table-row.html.twig')->render([
                     'timeIntervals' => ActivityPowerRepository::TIME_INTERVALS_IN_SECONDS_REDACTED,

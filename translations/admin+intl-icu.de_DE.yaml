@@ -247,7 +247,6 @@ Operator: Operator
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Teile, deren Wartung du verfolgst, z. B. Ketten, Kassetten, Bremsbeläge ...'
 'Passes near': 'Passes near'
 Password: Passwort
-'Pending build': 'Pending build'
 'Performed on': 'Durchgeführt am'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos der ausgewählten Sportarten werden von der Fotogalerie ausgeschlossen.'
 'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
@@ -386,7 +385,6 @@ Tasks: Aufgaben
 'The workout type': 'The workout type'
 'Then do this': 'Dann ausführen'
 'This action cannot be undone.': 'Diese Aktion kann nicht rückgängig gemacht werden.'
-'This activity shows up on the app after the next build.': 'This activity shows up on the app after the next build.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Diese Komponente ist an mehreren Ausrüstungen montiert. Wähle die aus, die du gewartet hast.'
 'This only affects future imports. Already imported activities are left untouched. This action cannot be undone.': 'Dies betrifft ausschließlich zukünftige Importe. Bereits importierte Aktivitäten bleiben unberührt. Diese Maßnahme kann nicht rückgängig gemacht werden.'
 'This only removes the import record, the imported activity is kept.': 'Dadurch wird lediglich der Importdatensatz entfernt, die importierte Aktivität bleibt erhalten.“'

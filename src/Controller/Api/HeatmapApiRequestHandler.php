@@ -61,7 +61,7 @@ final readonly class HeatmapApiRequestHandler
                     unitSystem: $appearance->getUnitSystem(),
                     dateAndTimeFormat: $appearance->getDateAndTimeFormat(),
                 )
-                ->withRelativeActivityUri($this->urlTwigExtension->toRelativeUrl('activity/'.$route->getActivityId().'.html'));
+                ->withRelativeActivityUri($this->urlTwigExtension->toRelativeUrl('api/page/activity/'.$route->getActivityId()));
         }
 
         return $enrichedRoutes;

@@ -48,10 +48,11 @@ final readonly class HeartRateZonesWidget implements Widget
 
         /* @var \App\Domain\Activity\ActivityType $activityType */
         if (count($importedActivityTypes) > 1) {
+            $timeInHeartRateZonesPerActivityType = $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesPerActivityType();
             foreach ($importedActivityTypes as $activityType) {
                 $chartsPerActivityType[$activityType->value] = Json::encode(
                     TimeInHeartRateZoneChart::create(
-                        timeInHeartRateZones: $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForActivityType($activityType),
+                        timeInHeartRateZones: $timeInHeartRateZonesPerActivityType[$activityType->value],
                         translator: $this->translator,
                     )->build(),
                 );

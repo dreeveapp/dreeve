@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Stream;
 
 use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\ActivityType;
 use App\Domain\Athlete\HeartRateZone\TimeInHeartRateZones;
 
 interface ActivityHeartRateRepository
 {
     public function findTotalTimeInSecondsInHeartRateZones(): TimeInHeartRateZones;
 
-    public function findTotalTimeInSecondsInHeartRateZonesForActivityType(ActivityType $activityType): TimeInHeartRateZones;
+    /**
+     * @return array<string, TimeInHeartRateZones> keyed by ActivityType->value
+     */
+    public function findTotalTimeInSecondsInHeartRateZonesPerActivityType(): array;
 
     public function findTotalTimeInSecondsInHeartRateZonesForActivity(ActivityId $activityId): TimeInHeartRateZones;
 

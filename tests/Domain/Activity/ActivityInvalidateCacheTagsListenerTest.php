@@ -178,6 +178,21 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITY_IMAGES));
     }
 
+    public function testItInvalidatesTheActivityItselfWhenItsImagesHaveBeenUpdated(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->update(ActivityWithRawData::fromState(
+            $activity->withLocalImagePaths(['/image.jpg']),
+            [],
+        ));
+
+        $this->assertFalse($this->isServedFromCache(ActivityCacheTag::for($activity->getId())));
+        $this->assertTrue($this->isServedFromCache(ActivityCacheTag::for(ActivityId::fromUnprefixed('1'))));
+    }
+
     public function testItOnlyInvalidatesTheYearAnAddedActivityBelongsTo(): void
     {
         $this->warmUpRenderCache();

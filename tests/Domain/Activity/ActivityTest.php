@@ -92,7 +92,7 @@ class ActivityTest extends TestCase
         $updatedActivity = $activity->withLocalImagePaths(['/activities/one.jpg', '/activities/two.jpg']);
 
         $this->assertEquals(
-            [new ActivityImagesHaveBeenUpdated(SerializableDateTime::fromString('2023-10-10'))],
+            [new ActivityImagesHaveBeenUpdated(ActivityId::fromUnprefixed('903645'), SerializableDateTime::fromString('2023-10-10'))],
             $updatedActivity->getRecordedEvents()
         );
         $this->assertEmpty($activity->getRecordedEvents());
@@ -127,7 +127,7 @@ class ActivityTest extends TestCase
             ->build();
 
         $this->assertEquals(
-            [new ActivityImagesHaveBeenUpdated(SerializableDateTime::fromString('2023-10-10'))],
+            [new ActivityImagesHaveBeenUpdated(ActivityId::fromUnprefixed('903645'), SerializableDateTime::fromString('2023-10-10'))],
             $activity->withLocalImagePaths([])->getRecordedEvents()
         );
     }
