@@ -101,9 +101,82 @@
                     <section>
             <div class="flex items-center justify-between mb-3">
                 <h3 class="font-bold text-gray-900">Splits</h3>
+                                    <ul class="tabs tabs--menu-item tabs--menu-item--compact" id="splitsLapsTab" data-tabs="#splitsLapsTabContent" role="tablist">
+                        <li role="presentation">
+                            <a href="#" data-tabs-target="#splitsLapsTabSplits" role="tab" aria-controls="splitsLapsTabSplits">
+                                Per km
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#" data-tabs-target="#splitsLapsTabLaps" role="tab" aria-controls="splitsLapsTabLaps">
+                                Laps
+                            </a>
+                        </li>
+                    </ul>
                             </div>
             <div id="splitsLapsTabContent">
+                                    <div id="splitsLapsTabSplits" role="tabpanel" class="bg-white border border-gray-200 shadow-xs rounded-lg overflow-hidden">
+                        <div class="max-h-85 overflow-auto">
+                            <table class="min-w-160 w-full table-fixed border-separate border-spacing-0 text-sm">
+                                <thead class="sticky top-0 z-10 bg-gray-50">
+                                <tr class="text-xxs uppercase text-gray-500 font-semibold">
+                                    <th class="border-b border-gray-100 w-10 px-4 py-2 text-left font-semibold">km</th>
+                                    <th class="border-b border-gray-100 w-15 md:w-20 px-2 py-2 text-left font-semibold">Pace</th>
+                                    <th class="border-b border-gray-100 px-2 py-2 text-left font-semibold"></th>
+                                </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-2.5 font-bold text-gray-900">1</td>
+                                        <td class="px-2 py-2.5 text-gray-500">33s<span class="text-xxs ml-px">/100m</span>
+</td>
+                                        <td class="px-2 py-2.5">
+                                            <div class="flex items-center gap-2">
+                                                <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                                    <div class="h-full bg-primary rounded-full" style="width: 28.48%"></div>
+                                                </div>
                                             </div>
+                                        </td>
+                                    </tr>
+                                                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                                                    <div id="splitsLapsTabLaps" role="tabpanel" class="bg-white border border-gray-200 shadow-xs rounded-lg overflow-hidden">
+                        <div class="max-h-85 overflow-auto">
+                            <table class="min-w-160 w-full table-fixed border-separate border-spacing-0 text-sm">
+                                <thead class="sticky top-0 z-10 bg-gray-50">
+                                <tr class="text-xxs uppercase text-gray-500 font-semibold">
+                                    <th class="border-b border-gray-100 w-10 px-4 py-2 text-left font-semibold">Lap</th>
+                                    <th class="border-b border-gray-100 w-20 px-2 py-2 text-left font-semibold">Distance</th>
+                                    <th class="border-b border-gray-100 w-20 px-2 py-2 text-left font-semibold">Time</th>
+                                    <th class="border-b border-gray-100 w-20 px-2 py-2 text-left font-semibold">Pace</th>
+                                    <th class="border-b border-gray-100 px-2 py-2"></th>
+                                    <th class="border-b border-gray-100 w-17.5 px-4 py-2 text-right font-semibold">HR</th>
+                                </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-2.5 font-bold text-gray-900">1</td>
+                                        <td class="px-2 py-2.5 text-gray-500">0.1<span class="text-xxs ml-px whitespace-nowrap">km</span>
+</td>
+                                        <td class="px-2 py-2.5 text-gray-500">1:50</td>
+                                        <td class="px-2 py-2.5 text-gray-500">33s<span class="text-xxs ml-px">/100m</span>
+</td>
+                                        <td class="px-2 py-2.5">
+                                            <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                                <div class="h-full bg-primary rounded-full" style="width: 28.48%"></div>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-2.5 text-right text-gray-500">
+                                            n/a
+                                        </td>
+                                    </tr>
+                                                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                            </div>
         </section>
             <div data-async-content-url="/api/fragment/partial/activity/activity-123456789/segments"></div>
             </div>

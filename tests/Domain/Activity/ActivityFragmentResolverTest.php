@@ -6,12 +6,18 @@ use App\Domain\Activity\ActivityFragmentResolver;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\Lap\ActivityLapId;
+use App\Domain\Activity\Lap\ActivityLapRepository;
+use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetric;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Activity\Stream\StreamType;
+use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use App\Tests\Domain\Activity\Lap\ActivityLapBuilder;
+use App\Tests\Domain\Activity\Split\ActivitySplitBuilder;
 use App\Tests\ProvideBuiltTestSet;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -55,6 +61,18 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
                 ->build(),
             [],
         ));
+        $this->getContainer()->get(ActivityLapRepository::class)->add(
+            ActivityLapBuilder::fromDefaults()
+                ->withLapId(ActivityLapId::fromUnprefixed('123456789-1'))
+                ->withActivityId($activityId)
+                ->build()
+        );
+        $this->getContainer()->get(ActivitySplitRepository::class)->add(
+            ActivitySplitBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withGapPace(SecPerKm::from(310))
+                ->build()
+        );
 
         $this->client->request('GET', '/api/fragment/page/activity/'.$activityId);
 
