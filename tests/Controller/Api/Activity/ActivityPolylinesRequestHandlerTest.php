@@ -21,7 +21,6 @@ class ActivityPolylinesRequestHandlerTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        // This activity has a map but no combined stream, so it falls back to the encoded polyline.
         $this->client->request('GET', '/api/activity/activity-9830227112/polylines');
 
         $this->assertResponseIsSuccessful();
@@ -62,7 +61,6 @@ class ActivityPolylinesRequestHandlerTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/activity/activity-9830227112/polylines');
 
         $this->assertResponseIsSuccessful();
-        // The full stream wins over the privacy truncated polyline on the activity.
         $this->assertEquals(
             [[[51.2, 3.18], [51.21, 3.19], [51.22, 3.2]]],
             Json::decode((string) $this->client->getResponse()->getContent())
@@ -81,7 +79,6 @@ class ActivityPolylinesRequestHandlerTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/activity/activity-9830227112/polylines');
 
         $this->assertResponseIsSuccessful();
-        // An empty stream must not shadow the encoded polyline.
         $this->assertEquals($fromPolyline, $this->client->getResponse()->getContent());
     }
 
