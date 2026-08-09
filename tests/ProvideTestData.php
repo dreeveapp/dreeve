@@ -44,6 +44,7 @@ use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Domain\Activity\BestEffort\ActivityBestEffortBuilder;
@@ -140,6 +141,23 @@ trait ProvideTestData
                 purchasePrice: new Money(29950, new Currency('EUR')),
             )
         );
+    }
+
+    protected function addSegmentWithAPolylineFixtures(): void
+    {
+        $segment = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed('10'))
+            ->withName(Name::fromString('Segment Ten'))
+            ->withDistance(Kilometer::from(0.1))
+            ->withDeviceName('MyWhoosh')
+            ->withSportType(SportType::VIRTUAL_RIDE)
+            ->withPolyline(EncodedPolyline::fromString('tqafAua~y^vG{D'))
+            ->build();
+
+        /** @var SegmentRepository $segmentRepository */
+        $segmentRepository = $this->getContainer()->get(SegmentRepository::class);
+        $segmentRepository->add($segment);
+        $segmentRepository->update($segment);
     }
 
     private function addSegmentFixtures(): void

@@ -9,141 +9,67 @@ use App\Infrastructure\Http\Fragment\FragmentRenderer;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 
+/**
+ * What each fragment renders lives next to that fragment. This is about the handler itself:
+ * resolving a path through the registry, refusing the wrong type and consulting the render cache.
+ */
 class ApiFragmentRequestHandlerTest extends ContainerTestCase
 {
     use ProvideTestData;
 
     private ApiFragmentRequestHandler $apiFragmentRequestHandler;
 
-    public function testHandleForRegisteredFragment(): void
+    public function testItServesEveryTypeUnderItsOwnSegment(): void
     {
         $this->provideFullTestSet();
 
-        $response = $this->apiFragmentRequestHandler->handle('page', 'photos');
+        $page = $this->apiFragmentRequestHandler->handle('page', 'photos');
+        $this->assertEquals(200, $page->getStatusCode());
+        $this->assertEquals('text/html; charset=UTF-8', $page->headers->get('Content-Type'));
 
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(
-            'text/html; charset=UTF-8',
-            $response->headers->get('Content-Type'),
-        );
-        // The fragment declares a cache context, so it must never be shared by a reverse proxy.
-        $this->assertEquals(
-            'no-store, private',
-            $response->headers->get('Cache-Control'),
-        );
-        $this->assertStringContainsString('data-image', (string) $response->getContent());
-        $this->assertEquals('MISS', $response->headers->get('X-Cache'));
-        $this->assertStringContainsString('photos.trust=', (string) $response->headers->get('X-Cache-Key'));
-        $this->assertEquals(
-            'settings.appearance, settings.general, activity.images',
-            $response->headers->get('X-Cache-Tags'),
-        );
-        // The fragment does not declare a lifetime, so there is none to report.
-        $this->assertFalse($response->headers->has('X-Cache-TTL'));
+        $partial = $this->apiFragmentRequestHandler->handle('partial', 'gear/maintenance-due');
+        $this->assertEquals(200, $partial->getStatusCode());
+        $this->assertEquals('text/html; charset=UTF-8', $partial->headers->get('Content-Type'));
 
-        $secondResponse = $this->apiFragmentRequestHandler->handle('page', 'photos');
+        $data = $this->apiFragmentRequestHandler->handle('data', 'heatmap/routes');
+        $this->assertEquals(200, $data->getStatusCode());
+        $this->assertEquals('application/json', $data->headers->get('Content-Type'));
+    }
+
+    public function testItServesTheSecondRequestFromTheRenderCache(): void
+    {
+        $this->provideFullTestSet();
+
+        // The tags pool is an array adapter that gets reset between HTTP requests, which drops the
+        // tag versions every cached entry is validated against. Driving the handler directly is
+        // the only way to observe a second, cached call.
+        $firstResponse = $this->apiFragmentRequestHandler->handle('data', 'heatmap/routes');
+        $this->assertEquals('MISS', $firstResponse->headers->get('X-Cache'));
+
+        $this->getConnection()->executeStatement(
+            'UPDATE Activity SET name = "This name never made it into the render cache"'
+        );
+
+        $secondResponse = $this->apiFragmentRequestHandler->handle('data', 'heatmap/routes');
         $this->assertEquals('HIT', $secondResponse->headers->get('X-Cache'));
+        $this->assertEquals($firstResponse->getContent(), $secondResponse->getContent());
         $this->assertEquals(
-            $response->headers->get('X-Cache-Key'),
+            $firstResponse->headers->get('X-Cache-Key'),
             $secondResponse->headers->get('X-Cache-Key'),
         );
-        $this->assertEquals($response->getContent(), $secondResponse->getContent());
     }
 
-    public function testHandleForAFragmentResolver(): void
+    public function testItDoesNotServeAFragmentUnderTheWrongType(): void
     {
         $this->provideFullTestSet();
 
-        $response = $this->apiFragmentRequestHandler->handle('page', 'rewind/2023/compare/2022');
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('MISS', $response->headers->get('X-Cache'));
-        $this->assertStringContainsString('rewind.2023.compare.2022', (string) $response->headers->get('X-Cache-Key'));
-        // Only the two years that are actually rendered can invalidate this fragment.
-        $this->assertEquals(
-            'settings.appearance, settings.general, activities.2023, activity.images.2023, gear, activities.2022, activity.images.2022',
-            $response->headers->get('X-Cache-Tags'),
-        );
-
-        $secondResponse = $this->apiFragmentRequestHandler->handle('page', 'rewind/2023/compare/2022');
-        $this->assertEquals('HIT', $secondResponse->headers->get('X-Cache'));
-        $this->assertEquals($response->getContent(), $secondResponse->getContent());
-    }
-
-    public function testHandleForAnActivityDetail(): void
-    {
-        $this->provideFullTestSet();
-
-        $response = $this->apiFragmentRequestHandler->handle('page', 'activity/activity-9756441741');
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(
-            'no-store, private',
-            $response->headers->get('Cache-Control'),
-        );
-        $this->assertEquals('MISS', $response->headers->get('X-Cache'));
-        $this->assertStringEndsWith('activity.9756441741.auth=anon', (string) $response->headers->get('X-Cache-Key'));
-        $this->assertEquals(
-            'settings.appearance, settings.general, activities.9756441741, gear',
-            $response->headers->get('X-Cache-Tags'),
-        );
-
-        $secondResponse = $this->apiFragmentRequestHandler->handle('page', 'activity/activity-9756441741');
-        $this->assertEquals('HIT', $secondResponse->headers->get('X-Cache'));
-        $this->assertEquals($response->getContent(), $secondResponse->getContent());
-    }
-
-    public function testHandleForADataFragment(): void
-    {
-        $this->provideFullTestSet();
-
-        $response = $this->apiFragmentRequestHandler->handle('data', 'activity/activity-9756441741/metrics');
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(
-            'application/json',
-            $response->headers->get('Content-Type'),
-        );
-        $this->assertEquals('MISS', $response->headers->get('X-Cache'));
-        $this->assertStringEndsWith('activity.9756441741.metrics', (string) $response->headers->get('X-Cache-Key'));
-        $this->assertEquals(
-            'settings.appearance, settings.general, activities.9756441741',
-            $response->headers->get('X-Cache-Tags'),
-        );
-
-        $secondResponse = $this->apiFragmentRequestHandler->handle('data', 'activity/activity-9756441741/metrics');
-        $this->assertEquals('HIT', $secondResponse->headers->get('X-Cache'));
-        $this->assertEquals($response->getContent(), $secondResponse->getContent());
-    }
-
-    public function testHandleForAFragmentThatOptsOutOfTheRenderCache(): void
-    {
-        $this->provideFullTestSet();
-
-        $response = $this->apiFragmentRequestHandler->handle('partial', 'gear/maintenance-due');
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(
-            'text/html; charset=UTF-8',
-            $response->headers->get('Content-Type'),
-        );
-        $this->assertEquals('UNCACHEABLE', $response->headers->get('X-Cache'));
-        $this->assertFalse($response->headers->has('X-Cache-Key'));
-        $this->assertEquals('no-store, private', $response->headers->get('Cache-Control'));
-    }
-
-    public function testHandleWhenTheTypeDoesNotMatchTheFragment(): void
-    {
-        $this->provideFullTestSet();
-
-        // Each fragment is only served under the segment matching its own type.
         $this->assertEquals(
             404,
             $this->apiFragmentRequestHandler->handle('data', 'photos')->getStatusCode()
         );
         $this->assertEquals(
             404,
-            $this->apiFragmentRequestHandler->handle('page', 'activity/activity-9756441741/metrics')->getStatusCode()
+            $this->apiFragmentRequestHandler->handle('page', 'heatmap/routes')->getStatusCode()
         );
         $this->assertEquals(
             404,
@@ -152,24 +78,6 @@ class ApiFragmentRequestHandlerTest extends ContainerTestCase
         $this->assertEquals(
             404,
             $this->apiFragmentRequestHandler->handle('partial', 'photos')->getStatusCode()
-        );
-    }
-
-    public function testHandleForAnActivityThatDoesNotExist(): void
-    {
-        $this->provideFullTestSet();
-
-        $this->assertEquals(
-            404,
-            $this->apiFragmentRequestHandler->handle('page', 'activity/activity-1')->getStatusCode()
-        );
-        $this->assertEquals(
-            404,
-            $this->apiFragmentRequestHandler->handle('data', 'activity/activity-1/coordinates')->getStatusCode()
-        );
-        $this->assertEquals(
-            404,
-            $this->apiFragmentRequestHandler->handle('data', 'activity/activity-1/metrics')->getStatusCode()
         );
     }
 
@@ -188,18 +96,6 @@ class ApiFragmentRequestHandlerTest extends ContainerTestCase
         $this->assertEquals(
             404,
             $this->apiFragmentRequestHandler->handle('page', 'rewind/1999')->getStatusCode()
-        );
-        $this->assertEquals(
-            404,
-            $this->apiFragmentRequestHandler->handle('data', 'activity/9756441741/coordinates')->getStatusCode()
-        );
-        $this->assertEquals(
-            404,
-            $this->apiFragmentRequestHandler->handle('data', 'activity/activity-9830227112/coordinates')->getStatusCode()
-        );
-        $this->assertEquals(
-            404,
-            $this->apiFragmentRequestHandler->handle('data', 'activity/activity-9830227112/metrics')->getStatusCode()
         );
     }
 

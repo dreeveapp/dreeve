@@ -8,24 +8,17 @@ use App\Domain\Activity\ActivityMetricsFragmentResolver;
 use App\Domain\Activity\ActivityPolylinesFragmentResolver;
 use App\Domain\Activity\BestEffort\ActivityBestEffortsFragmentResolver;
 use App\Domain\Activity\BestEffort\BestEffortsHistoryFragmentResolver;
-use App\Domain\Activity\SportType\SportType;
 use App\Domain\Calendar\MonthFragmentResolver;
 use App\Domain\Rewind\RewindCompareFragmentResolver;
 use App\Domain\Rewind\RewindFragmentResolver;
 use App\Domain\Segment\ActivitySegmentsFragmentResolver;
-use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentPolylinesFragmentResolver;
-use App\Domain\Segment\SegmentRepository;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContextRegistry;
 use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentRegistry;
 use App\Infrastructure\Http\Fragment\FragmentResolver;
-use App\Infrastructure\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
-use App\Infrastructure\ValueObject\String\Name;
 use App\Tests\ContainerTestCase;
-use App\Tests\Domain\Segment\SegmentBuilder;
 use App\Tests\ProvideTestData;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -100,19 +93,7 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
     private function provideFragmentTestSet(): void
     {
         $this->provideFullTestSet();
-
-        $segment = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed('10'))
-            ->withName(Name::fromString('Segment Ten'))
-            ->withDistance(Kilometer::from(0.1))
-            ->withDeviceName('MyWhoosh')
-            ->withSportType(SportType::VIRTUAL_RIDE)
-            ->withPolyline(EncodedPolyline::fromString('tqafAua~y^vG{D'))
-            ->build();
-
-        $segmentRepository = $this->getContainer()->get(SegmentRepository::class);
-        $segmentRepository->add($segment);
-        $segmentRepository->update($segment);
+        $this->addSegmentWithAPolylineFixtures();
     }
 
     /**
