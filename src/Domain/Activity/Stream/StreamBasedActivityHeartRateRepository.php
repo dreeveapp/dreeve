@@ -78,11 +78,11 @@ final readonly class StreamBasedActivityHeartRateRepository implements ActivityH
             \DateInterval::createFromDateString(self::CALCULATE_HEART_RATE_ZONES_FOR_LAST_X_DAYS.' days')
         );
 
-        $total = self::emptyZones();
-        $inLastXDays = self::emptyZones();
+        $total = $this->emptyZones();
+        $inLastXDays = $this->emptyZones();
         $perActivityType = array_combine(
             array_map(fn (ActivityType $activityType): string => $activityType->value, ActivityType::cases()),
-            array_map(fn (ActivityType $activityType): array => self::emptyZones(), ActivityType::cases()),
+            array_map(fn (ActivityType $activityType): array => $this->emptyZones(), ActivityType::cases()),
         );
 
         $results = $this->connection->executeQuery(
@@ -142,7 +142,7 @@ final readonly class StreamBasedActivityHeartRateRepository implements ActivityH
             on: $on
         );
 
-        $zoneSeconds = self::emptyZones();
+        $zoneSeconds = $this->emptyZones();
         foreach ($athleteHeartRateZones->getZones() as $heartRateZone) {
             [$minHeartRate, $maxHeartRate] = $heartRateZone->getRangeInBpm($athleteMaxHeartRate);
 
@@ -173,7 +173,7 @@ final readonly class StreamBasedActivityHeartRateRepository implements ActivityH
     /**
      * @return array<string, int>
      */
-    private static function emptyZones(): array
+    private function emptyZones(): array
     {
         return [
             HeartRateZone::ONE => 0,

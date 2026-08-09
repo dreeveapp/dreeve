@@ -9,20 +9,20 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Carbon\CarbonInterval;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class ActivityTotals
+final readonly class ActivityTotals
 {
     use ProvideTimeFormats;
 
-    private readonly Kilometer $totalDistance;
-    private readonly Meter $totalElevation;
-    private readonly int $totalCalories;
-    private readonly int $totalMovingTimeInSeconds;
-    private readonly int $totalActivities;
+    private Kilometer $totalDistance;
+    private Meter $totalElevation;
+    private int $totalCalories;
+    private int $totalMovingTimeInSeconds;
+    private int $totalActivities;
 
     private function __construct(
-        private readonly Activities $activities,
-        private readonly SerializableDateTime $now,
-        private readonly TranslatorInterface $translator,
+        private Activities $activities,
+        private SerializableDateTime $now,
+        private TranslatorInterface $translator,
     ) {
         $this->totalDistance = Kilometer::from(
             $this->activities->sum(fn (Activity $activity): float => $activity->getDistance()->toFloat())

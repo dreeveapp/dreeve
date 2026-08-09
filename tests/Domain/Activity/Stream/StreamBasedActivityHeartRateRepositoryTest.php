@@ -87,7 +87,7 @@ class StreamBasedActivityHeartRateRepositoryTest extends ContainerTestCase
         $this->provideFullTestSet();
 
         $this->expectException(EntityNotFound::class);
-        $this->expectExceptionMessage(sprintf('HeartRateZones for "activity-%s" not found', $activityId));
+        $this->expectExceptionMessageIsOrContains(sprintf('HeartRateZones for "activity-%s" not found', $activityId));
 
         $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForActivity(
             ActivityId::fromUnprefixed($activityId)
