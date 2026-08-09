@@ -413,10 +413,10 @@
 
                             </th>
                             <th scope="col">
-                                <span data-dataTable-summable="distance">{{ activityTotals.getDistance()|formatMeasurement(0) }}</span> {{ renderUnitSymbol('distance') }}
+                                <span data-dataTable-summable="distance">{{ activityTotals.getTotalDistance()|formatMeasurement(0) }}</span> {{ renderUnitSymbol('distance') }}
                             </th>
                             <th scope="col">
-                                <span data-dataTable-summable="elevation">{{ activityTotals.getElevation()|formatMeasurement(0) }}</span> {{ renderUnitSymbol('elevation') }}
+                                <span data-dataTable-summable="elevation">{{ activityTotals.getTotalElevation()|formatMeasurement(0) }}</span> {{ renderUnitSymbol('elevation') }}
                             </th>
                             <th scope="col">
                                 <span data-dataTable-summable="moving-time">{{ activityTotals.getMovingTimeInHours()|formatNumber(0) }}</span> h
@@ -426,7 +426,7 @@
                             <th scope="col">
                             </th>
                             <th scope="col">
-                                <span data-dataTable-summable="calories">{{ activityTotals.getCalories()|formatNumber(0) }}</span> kcal
+                                <span data-dataTable-summable="calories">{{ activityTotals.getTotalCalories()|formatNumber(0) }}</span> kcal
                             </th>
                             <th scope="col">
                             </th>

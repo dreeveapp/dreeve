@@ -60,7 +60,7 @@ final readonly class ActivityTotals
 
     public function getMovingTimeInHours(): int
     {
-        return (int) round(CarbonInterval::seconds($this->totals->getTotalMovingTimeInSeconds())->cascade()->totalHours);
+        return $this->totals->getMovingTimeInHours();
     }
 
     public function getStartDate(): SerializableDateTime

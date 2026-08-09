@@ -14,8 +14,6 @@ use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\Page\Page;
-use App\Infrastructure\Time\Clock\Clock;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final readonly class ActivitiesPage implements Page
@@ -26,8 +24,6 @@ final readonly class ActivitiesPage implements Page
         private RecordingDeviceRepository $recordingDeviceRepository,
         private GearRepository $gearRepository,
         private Countries $countries,
-        private Clock $clock,
-        private TranslatorInterface $translator,
         private Environment $twig,
     ) {
     }
@@ -53,11 +49,7 @@ final readonly class ActivitiesPage implements Page
         return $this->twig->load('html/activity/activities.html.twig')->render([
             'sportTypes' => $this->sportTypeRepository->findAll(),
             'devices' => $this->recordingDeviceRepository->findAll(),
-            'activityTotals' => ActivityTotals::create(
-                totals: $this->queryBus->ask(new FindActivityTotals()),
-                now: $this->clock->getCurrentDateTimeImmutable(),
-                translator: $this->translator,
-            ),
+            'activityTotals' => $this->queryBus->ask(new FindActivityTotals()),
             'countries' => $this->countries->getUsedInActivities(),
             'gears' => $this->gearRepository->findAllUsed(),
         ]);
