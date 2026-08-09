@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller\Api\Activity;
+namespace App\Tests\Controller\Api;
 
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
