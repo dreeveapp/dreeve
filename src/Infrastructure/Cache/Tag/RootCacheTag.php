@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Cache;
+namespace App\Infrastructure\Cache\Tag;
 
 use App\Domain\Calendar\Month;
 use App\Domain\Settings\SettingsGroup;

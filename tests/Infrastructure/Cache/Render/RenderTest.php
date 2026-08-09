@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Infrastructure\Cache;
+namespace App\Tests\Infrastructure\Cache\Render;
 
-use App\Infrastructure\Cache\CacheStatus;
-use App\Infrastructure\Cache\Render;
+use App\Infrastructure\Cache\Render\CacheStatus;
+use App\Infrastructure\Cache\Render\Render;
 use PHPUnit\Framework\TestCase;
 
 class RenderTest extends TestCase

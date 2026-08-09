@@ -3,8 +3,8 @@
 namespace App\Tests\Infrastructure\Cache;
 
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTags;
-use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use PHPUnit\Framework\TestCase;
 
 class CacheabilityTest extends TestCase

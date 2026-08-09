@@ -7,8 +7,8 @@ namespace App\Domain\Activity\Route;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTags;
-use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\Page\Page;
 use Twig\Environment;
 

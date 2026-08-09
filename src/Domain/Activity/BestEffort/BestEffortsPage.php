@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Activity\BestEffort;
 
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTags;
-use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\Page\Page;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;

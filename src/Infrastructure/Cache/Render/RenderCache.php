@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Cache;
+namespace App\Infrastructure\Cache\Render;
 
 use App\Application\AppVersion;
+use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\Tag\CacheTag;
+use App\Infrastructure\Cache\Tag\CacheTags;
 use Psr\Cache\CacheItemInterface;
 use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\Cache\PruneableInterface;

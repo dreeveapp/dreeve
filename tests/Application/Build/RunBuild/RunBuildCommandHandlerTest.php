@@ -12,7 +12,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
-use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\Serialization\Json;

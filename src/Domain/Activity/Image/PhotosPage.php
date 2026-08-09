@@ -7,10 +7,10 @@ namespace App\Domain\Activity\Image;
 use App\Application\Countries;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheContexts;
-use App\Infrastructure\Cache\CacheTags;
+use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Context\TrustedVisitorCacheContext;
-use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\Page\Page;
 use Twig\Environment;
 

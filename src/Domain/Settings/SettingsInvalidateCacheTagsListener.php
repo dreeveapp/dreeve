@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Settings;
 
-use App\Infrastructure\Cache\RenderCache;
-use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\Cache\Render\RenderCache;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 final readonly class SettingsInvalidateCacheTagsListener

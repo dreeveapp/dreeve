@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Cache;
 
+use App\Infrastructure\Cache\Context\CacheContexts;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
+
 final readonly class Cacheability
 {
     private function __construct(

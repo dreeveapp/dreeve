@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Tests\Infrastructure\Cache;
+namespace App\Tests\Infrastructure\Cache\Render;
 
 use App\Application\AppVersion;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTags;
-use App\Infrastructure\Cache\Render;
-use App\Infrastructure\Cache\RenderCache;
-use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\Cache\Render\Render;
+use App\Infrastructure\Cache\Render\RenderCache;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Tests\ContainerTestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;

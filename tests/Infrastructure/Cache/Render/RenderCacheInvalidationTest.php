@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Infrastructure\Cache;
+namespace App\Tests\Infrastructure\Cache\Render;
 
 use App\Application\IndexPage;
 use App\Domain\Activity\Eddington\EddingtonPage;
@@ -11,8 +11,8 @@ use App\Domain\Milestone\MilestonesPage;
 use App\Domain\Rewind\RewindComparePageResolver;
 use App\Domain\Rewind\RewindPageResolver;
 use App\Infrastructure\Cache\Cacheable;
-use App\Infrastructure\Cache\RenderCache;
-use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\Cache\Render\RenderCache;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\Page\PageResolver;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;

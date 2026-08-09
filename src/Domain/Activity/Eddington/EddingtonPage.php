@@ -6,8 +6,8 @@ namespace App\Domain\Activity\Eddington;
 
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTags;
-use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\Page\Page;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Serialization\Json;

@@ -3,7 +3,7 @@
 namespace App\Tests\Controller\Api;
 
 use App\Controller\Api\ApiPageRequestHandler;
-use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\Http\Page\PageRegistry;
 use App\Infrastructure\Http\Page\PageRenderer;
 use App\Tests\ContainerTestCase;

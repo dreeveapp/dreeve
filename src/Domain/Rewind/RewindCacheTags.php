@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Rewind;
 
 use App\Domain\Rewind\FindAvailableRewindOptions\FindAvailableRewindOptions;
-use App\Infrastructure\Cache\CacheTags;
-use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\ValueObject\Time\Year;
 
 final readonly class RewindCacheTags

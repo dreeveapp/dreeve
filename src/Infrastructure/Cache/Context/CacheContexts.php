@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Cache;
+namespace App\Infrastructure\Cache\Context;
 
 final readonly class CacheContexts
 {

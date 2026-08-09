@@ -3,7 +3,7 @@
 namespace App\Tests\Domain\Calendar;
 
 use App\Domain\Calendar\MonthlyStatsPage;
-use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;

@@ -5,9 +5,9 @@ namespace App\Tests\Domain\Gear;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTags;
-use App\Infrastructure\Cache\RenderCache;
-use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\Cache\Render\RenderCache;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Tests\ContainerTestCase;
 
 class GearInvalidateCacheTagsListenerTest extends ContainerTestCase

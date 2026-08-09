@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Cache;
 
+use App\Infrastructure\Cache\Context\CacheContextRegistry;
+use App\Infrastructure\Cache\Render\Render;
+use App\Infrastructure\Cache\Render\RenderCache;
+
 final readonly class CacheableRenderer
 {
     public function __construct(

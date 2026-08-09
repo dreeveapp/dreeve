@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Infrastructure\Cache;
+namespace App\Tests\Infrastructure\Cache\Tag;
 
 use App\Domain\Settings\SettingsGroup;
-use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\ValueObject\Time\Year;
 use PHPUnit\Framework\TestCase;
 

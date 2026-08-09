@@ -4,7 +4,7 @@ namespace App\Tests\Controller\Api;
 
 use App\Controller\Api\BestEffortsApiRequestHandler;
 use App\Domain\Activity\ActivityType;
-use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\Measurement\Length\ConvertableToMeter;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
-use App\Infrastructure\Cache\RootCacheTag;
-use App\Infrastructure\Cache\ScopedCacheTag;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\Cache\Tag\ScopedCacheTag;
 
 final readonly class ActivityCacheTag
 {

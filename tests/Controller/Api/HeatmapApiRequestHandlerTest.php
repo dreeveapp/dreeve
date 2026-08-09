@@ -3,7 +3,7 @@
 namespace App\Tests\Controller\Api;
 
 use App\Controller\Api\HeatmapApiRequestHandler;
-use App\Infrastructure\Cache\RenderCache;
+use App\Infrastructure\Cache\Render\RenderCache;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;

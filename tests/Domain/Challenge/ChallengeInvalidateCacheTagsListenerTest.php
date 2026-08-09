@@ -6,9 +6,9 @@ use App\Domain\Challenge\Challenge;
 use App\Domain\Challenge\ChallengeId;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheTags;
-use App\Infrastructure\Cache\RenderCache;
-use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\Cache\Render\RenderCache;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Cache;
+namespace App\Infrastructure\Cache\Tag;
 
 /**
  * A label a render is tagged with, so it can be invalidated when the thing it depends on changes.
