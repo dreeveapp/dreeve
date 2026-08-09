@@ -88,11 +88,6 @@ final readonly class CombinedStreamProfileCharts
             + ($numberOfLanes - 1) * self::GAP + self::BOTTOM_MARGIN;
     }
 
-    public function getTotalHeight(): int
-    {
-        return self::totalHeightFor(count($this->items));
-    }
-
     /**
      * @return array<string, mixed>
      */

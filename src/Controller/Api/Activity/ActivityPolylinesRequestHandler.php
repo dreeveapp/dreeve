@@ -9,8 +9,8 @@ use App\Domain\Activity\ActivityCacheTag;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\LeafletMap;
-use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
-use App\Domain\Settings\SettingsRepository;
+use App\Domain\Activity\Stream\ActivityStreamRepository;
+use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\RenderCache;
@@ -26,8 +26,7 @@ final readonly class ActivityPolylinesRequestHandler
 {
     public function __construct(
         private ActivityRepository $activityRepository,
-        private CombinedActivityStreamRepository $combinedActivityStreamRepository,
-        private SettingsRepository $settingsRepository,
+        private ActivityStreamRepository $activityStreamRepository,
         private RenderCache $renderCache,
     ) {
     }
@@ -52,7 +51,7 @@ final readonly class ActivityPolylinesRequestHandler
                 cacheKey: $cacheKey,
                 cacheTags: CacheTags::of(ActivityCacheTag::for($activity->getId())),
             ),
-            // Resolved inside the callback so a cache hit never touches the stream blob.
+            // Resolved inside the callback so a cache hit never touches the lat/lng blob.
             callback: fn (): string => Json::encode([$this->routeCoordinates($activity)]),
         );
 
@@ -63,22 +62,22 @@ final readonly class ActivityPolylinesRequestHandler
     }
 
     /**
-     * @return array<mixed>|null
+     * @return array<mixed>
      */
-    private function routeCoordinates(Activity $activity): ?array
+    private function routeCoordinates(Activity $activity): array
     {
         try {
-            $coordinates = $this->combinedActivityStreamRepository->findOneForActivityAndUnitSystem(
+            $latLng = $this->activityStreamRepository->findOneByActivityAndStreamType(
                 activityId: $activity->getId(),
-                unitSystem: $this->settingsRepository->appearance()->getUnitSystem(),
-            )->getCoordinates();
+                streamType: StreamType::LAT_LNG,
+            )->getData();
 
-            if ($coordinates) {
-                return $coordinates;
+            if ($latLng) {
+                return $latLng;
             }
         } catch (EntityNotFound) {
         }
 
-        return $activity->getEncodedPolyline()?->decodeAndPairLatLng();
+        return $activity->getEncodedPolyline()?->decodeAndPairLatLng() ?? [];
     }
 }
