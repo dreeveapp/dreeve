@@ -37,7 +37,7 @@
         <div class="grid grid-cols-1 gap-y-1">
             {% if leaflet %}
                 {% set leafletOptions = {
-                    'polylineUrl': relativeUrl('api/' ~ leaflet.polylineUrl),
+                    'polylineUrl': relativeUrl('api/fragment/data/' ~ leaflet.polylineUrl),
                     'tileLayer': leaflet.map.getTileLayer(),
                     'minZoom': leaflet.map.getMinZoom(),
                     'maxZoom': leaflet.map.getMaxZoom(),

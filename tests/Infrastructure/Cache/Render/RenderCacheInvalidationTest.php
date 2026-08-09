@@ -3,17 +3,17 @@
 namespace App\Tests\Infrastructure\Cache\Render;
 
 use App\Application\IndexPage;
-use App\Domain\Activity\Eddington\EddingtonPage;
-use App\Domain\Activity\Image\PhotosPage;
-use App\Domain\Activity\Route\HeatmapPage;
-use App\Domain\Challenge\ChallengesPage;
-use App\Domain\Milestone\MilestonesPage;
-use App\Domain\Rewind\RewindComparePageResolver;
-use App\Domain\Rewind\RewindPageResolver;
+use App\Domain\Activity\Eddington\EddingtonFragment;
+use App\Domain\Activity\Image\PhotosFragment;
+use App\Domain\Activity\Route\HeatmapFragment;
+use App\Domain\Challenge\ChallengesFragment;
+use App\Domain\Milestone\MilestonesFragment;
+use App\Domain\Rewind\RewindCompareFragmentResolver;
+use App\Domain\Rewind\RewindFragmentResolver;
 use App\Infrastructure\Cache\Cacheable;
 use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Http\Page\PageResolver;
+use App\Infrastructure\Http\Fragment\FragmentResolver;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -30,7 +30,7 @@ class RenderCacheInvalidationTest extends ContainerTestCase
         /** @var Cacheable $cacheable */
         $cacheable = $this->getContainer()->get($cacheableClassName);
 
-        if ($cacheable instanceof PageResolver) {
+        if ($cacheable instanceof FragmentResolver) {
             $this->provideFullTestSet();
             $cacheable = $cacheable->resolve((string) $pathToResolve);
             $this->assertNotNull($cacheable);
@@ -73,27 +73,27 @@ class RenderCacheInvalidationTest extends ContainerTestCase
             RootCacheTag::SETTINGS_MAPS,
         ]];
 
-        yield 'challenges' => [ChallengesPage::class, [
+        yield 'challenges' => [ChallengesFragment::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
             RootCacheTag::CHALLENGES,
         ]];
 
-        yield 'eddington' => [EddingtonPage::class, [
+        yield 'eddington' => [EddingtonFragment::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
             RootCacheTag::ACTIVITIES,
             RootCacheTag::SETTINGS_METRICS,
         ]];
 
-        yield 'heatmap' => [HeatmapPage::class, [
+        yield 'heatmap' => [HeatmapFragment::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
             RootCacheTag::ACTIVITY_ROUTE,
             RootCacheTag::SETTINGS_MAPS,
         ]];
 
-        yield 'milestones' => [MilestonesPage::class, [
+        yield 'milestones' => [MilestonesFragment::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
             RootCacheTag::ACTIVITIES,
@@ -103,7 +103,7 @@ class RenderCacheInvalidationTest extends ContainerTestCase
 
         // The year scoped rewinds cannot be expressed here, they are covered by
         // ActivityInvalidateCacheTagsListenerTest and the rewind page tests.
-        yield 'rewind' => [RewindPageResolver::class, [
+        yield 'rewind' => [RewindFragmentResolver::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
             RootCacheTag::ACTIVITIES,
@@ -113,7 +113,7 @@ class RenderCacheInvalidationTest extends ContainerTestCase
 
         // Only the all time side contributes unscoped tags, the 2023 side is year scoped and therefore
         // untouched by the root tags this test invalidates.
-        yield 'rewind-compare' => [RewindComparePageResolver::class, [
+        yield 'rewind-compare' => [RewindCompareFragmentResolver::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
             RootCacheTag::ACTIVITIES,
@@ -121,7 +121,7 @@ class RenderCacheInvalidationTest extends ContainerTestCase
             RootCacheTag::GEAR,
         ], 'rewind/all-time/compare/2023'];
 
-        yield 'photos' => [PhotosPage::class, [
+        yield 'photos' => [PhotosFragment::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
             RootCacheTag::ACTIVITY_IMAGES,

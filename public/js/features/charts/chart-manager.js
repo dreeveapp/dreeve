@@ -68,7 +68,7 @@ export default class ChartManager {
                 const month = (params.dataIndex + 1).toString().padStart(2, "0");
                 const basePath = window.dreeve?.appUrl?.basePath || '';
                 const prefix = basePath ? '/' + basePath.replace(/^\/+|\/+$/g, '') : '';
-                const modalId = `${prefix}/api/page/month/${params.seriesName}-${month}`;
+                const modalId = `${prefix}/api/fragment/page/month/${params.seriesName}-${month}`;
 
                 this.modalManager.open(modalId);
                 this.router.pushCurrentRouteToHistoryState(modalId);

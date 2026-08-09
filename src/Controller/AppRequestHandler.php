@@ -6,8 +6,8 @@ namespace App\Controller;
 
 use App\Application\AppStatusChecker;
 use App\Application\IndexPage;
-use App\Infrastructure\Http\HtmlResponse;
-use App\Infrastructure\Http\Page\PageRenderer;
+use App\Infrastructure\Http\Fragment\FragmentRenderer;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,17 +18,17 @@ final readonly class AppRequestHandler
     public function __construct(
         private AppStatusChecker $appStatusChecker,
         private IndexPage $indexPage,
-        private PageRenderer $pageRenderer,
+        private FragmentRenderer $fragmentRenderer,
     ) {
     }
 
     #[Route(path: '/{wildcard?}', name: 'app', requirements: ['wildcard' => '.*'], methods: ['GET'], priority: -10)]
-    public function handle(): HtmlResponse
+    public function handle(): Response
     {
         if (!$this->appStatusChecker->hasBeenBuilt()) {
             throw new NotFoundHttpException('Not found');
         }
 
-        return $this->pageRenderer->render($this->indexPage);
+        return $this->fragmentRenderer->render($this->indexPage);
     }
 }

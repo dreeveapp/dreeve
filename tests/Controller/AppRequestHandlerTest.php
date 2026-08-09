@@ -5,7 +5,7 @@ namespace App\Tests\Controller;
 use App\Application\AppStatusChecker;
 use App\Application\IndexPage;
 use App\Controller\AppRequestHandler;
-use App\Infrastructure\Http\Page\PageRenderer;
+use App\Infrastructure\Http\Fragment\FragmentRenderer;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
@@ -48,7 +48,7 @@ class AppRequestHandlerTest extends ContainerTestCase
         $this->appRequestHandler = new AppRequestHandler(
             $this->getContainer()->get(AppStatusChecker::class),
             $this->getContainer()->get(IndexPage::class),
-            $this->getContainer()->get(PageRenderer::class),
+            $this->getContainer()->get(FragmentRenderer::class),
         );
     }
 }

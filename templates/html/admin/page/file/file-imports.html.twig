@@ -101,7 +101,7 @@
                                     {% if activityId %}
                                         <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
                                            title="{{ fileImport.getActivityName() }}"
-                                           href="{{ relativeUrl('/activities#/api/page/activity/' ~ activityId) }}">
+                                           href="{{ relativeUrl('/activities#/api/fragment/page/activity/' ~ activityId) }}">
                                             {{ fileImport.getActivityName() }}
                                         </a>
                                     {% endif %}
