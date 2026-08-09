@@ -2,6 +2,7 @@
 
 namespace App\Domain\Activity;
 
+use App\Domain\Activity\FindActivityTotals\FindActivityTotalsResponse;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
@@ -13,35 +14,20 @@ final readonly class ActivityTotals
 {
     use ProvideTimeFormats;
 
-    private Kilometer $totalDistance;
-    private Meter $totalElevation;
-    private int $totalCalories;
-    private int $totalMovingTimeInSeconds;
-    private int $totalActivities;
-
     private function __construct(
-        private Activities $activities,
+        private FindActivityTotalsResponse $totals,
         private SerializableDateTime $now,
         private TranslatorInterface $translator,
     ) {
-        $this->totalDistance = Kilometer::from(
-            $this->activities->sum(fn (Activity $activity): float => $activity->getDistance()->toFloat())
-        );
-        $this->totalElevation = Meter::from(
-            $this->activities->sum(fn (Activity $activity): float => $activity->getElevation()->toFloat())
-        );
-        $this->totalCalories = (int) $this->activities->sum(fn (Activity $activity): ?int => $activity->getCalories());
-        $this->totalMovingTimeInSeconds = (int) $this->activities->sum(fn (Activity $activity): int => $activity->getMovingTimeInSeconds());
-        $this->totalActivities = count($this->activities);
     }
 
     public static function create(
-        Activities $activities,
+        FindActivityTotalsResponse $totals,
         SerializableDateTime $now,
         TranslatorInterface $translator): self
     {
         return new self(
-            activities: $activities,
+            totals: $totals,
             now: $now,
             translator: $translator,
         );
@@ -49,37 +35,37 @@ final readonly class ActivityTotals
 
     public function getDistance(): Kilometer
     {
-        return $this->totalDistance;
+        return $this->totals->getTotalDistance();
     }
 
     public function getElevation(): Meter
     {
-        return $this->totalElevation;
+        return $this->totals->getTotalElevation();
     }
 
     public function getCalories(): int
     {
-        return $this->totalCalories;
+        return $this->totals->getTotalCalories();
     }
 
     public function getTotalActivities(): int
     {
-        return $this->totalActivities;
+        return $this->totals->getTotalActivities();
     }
 
     public function getMovingTimeFormatted(): string
     {
-        return $this->formatDurationAsHumanString($this->totalMovingTimeInSeconds);
+        return $this->formatDurationAsHumanString($this->totals->getTotalMovingTimeInSeconds());
     }
 
     public function getMovingTimeInHours(): int
     {
-        return (int) round(CarbonInterval::seconds($this->totalMovingTimeInSeconds)->cascade()->totalHours);
+        return (int) round(CarbonInterval::seconds($this->totals->getTotalMovingTimeInSeconds())->cascade()->totalHours);
     }
 
     public function getStartDate(): SerializableDateTime
     {
-        return $this->activities->getFirstActivityStartDate();
+        return $this->totals->getFirstActivityStartDate() ?? throw new \RuntimeException('No activities found');
     }
 
     public function getDailyAverage(): Kilometer
@@ -123,6 +109,6 @@ final readonly class ActivityTotals
 
     public function getTotalDaysOfWorkingOut(): int
     {
-        return count(array_unique($this->activities->map(fn (Activity $activity) => $activity->getStartDate()->format('Ymd'))));
+        return $this->totals->getTotalDaysOfWorkingOut();
     }
 }

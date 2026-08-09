@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Dashboard\Widget;
 
 use App\Domain\Activity\ActivityTotals;
-use App\Domain\Activity\EnrichedActivities;
+use App\Domain\Activity\FindActivityTotals\FindActivityTotals;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -13,7 +14,7 @@ use Twig\Environment;
 final readonly class IntroTextWidget implements Widget
 {
     public function __construct(
-        private EnrichedActivities $enrichedActivities,
+        private QueryBus $queryBus,
         private Environment $twig,
         private TranslatorInterface $translator,
     ) {
@@ -40,9 +41,8 @@ final readonly class IntroTextWidget implements Widget
 
     public function render(SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
-        $allActivities = $this->enrichedActivities->findAll();
         $activityTotals = ActivityTotals::create(
-            activities: $allActivities,
+            totals: $this->queryBus->ask(new FindActivityTotals()),
             now: $now,
             translator: $this->translator,
         );

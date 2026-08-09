@@ -10,11 +10,13 @@ use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\BestEffort\BestEffortPeriod;
 use App\Domain\Activity\BestEffort\BestEffortsCalculator;
 use App\Domain\Activity\EnrichedActivities;
+use App\Domain\Activity\FindActivityTotals\FindActivityTotals;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Zwift\ZwiftLevel;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -26,6 +28,7 @@ final readonly class BuildBadgeSvgCommandHandler implements CommandHandler
         private ChallengeRepository $challengeRepository,
         private EnrichedActivities $enrichedActivities,
         private BestEffortsCalculator $bestEffortsCalculator,
+        private QueryBus $queryBus,
         private AppUrl $appUrl,
         private Environment $twig,
         private FilesystemOperator $fileStorage,
@@ -45,7 +48,7 @@ final readonly class BuildBadgeSvgCommandHandler implements CommandHandler
         $activities = $this->enrichedActivities->findAll();
 
         $activityTotals = ActivityTotals::create(
-            activities: $activities,
+            totals: $this->queryBus->ask(new FindActivityTotals()),
             now: $now,
             translator: $this->translator,
         );

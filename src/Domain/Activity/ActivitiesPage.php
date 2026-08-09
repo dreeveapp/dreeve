@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Domain\Activity;
 
 use App\Application\Countries;
+use App\Domain\Activity\FindActivityTotals\FindActivityTotals;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheTags;
 use App\Infrastructure\Cache\RootCacheTag;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\Page\Page;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -19,7 +21,7 @@ use Twig\Environment;
 final readonly class ActivitiesPage implements Page
 {
     public function __construct(
-        private ActivityRepository $activityRepository,
+        private QueryBus $queryBus,
         private SportTypeRepository $sportTypeRepository,
         private RecordingDeviceRepository $recordingDeviceRepository,
         private GearRepository $gearRepository,
@@ -52,7 +54,7 @@ final readonly class ActivitiesPage implements Page
             'sportTypes' => $this->sportTypeRepository->findAll(),
             'devices' => $this->recordingDeviceRepository->findAll(),
             'activityTotals' => ActivityTotals::create(
-                activities: $this->activityRepository->findAll(),
+                totals: $this->queryBus->ask(new FindActivityTotals()),
                 now: $this->clock->getCurrentDateTimeImmutable(),
                 translator: $this->translator,
             ),
