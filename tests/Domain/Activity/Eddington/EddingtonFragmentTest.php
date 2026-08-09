@@ -3,17 +3,18 @@
 namespace App\Tests\Domain\Activity\Eddington;
 
 use App\Tests\Controller\ControllerWebTestCase;
-use App\Tests\ProvideBuiltTestSet;
+use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class EddingtonFragmentTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideBuiltTestSet;
+    use ProvideTestData;
 
     public function testRender(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/eddington');
 
@@ -24,7 +25,8 @@ class EddingtonFragmentTest extends ControllerWebTestCase
 
     public function testGetPath(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/eddington');
 
@@ -37,9 +39,16 @@ class EddingtonFragmentTest extends ControllerWebTestCase
 
     public function testItIsNotServedAsADataFragment(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/data/eddington');
         $this->assertResponseStatusCodeSame(404);
+    }
+
+    #[\Override]
+    protected function shouldMarkAppAsBuilt(): bool
+    {
+        return false;
     }
 }

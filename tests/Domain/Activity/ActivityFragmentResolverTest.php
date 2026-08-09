@@ -18,18 +18,19 @@ use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\Lap\ActivityLapBuilder;
 use App\Tests\Domain\Activity\Split\ActivitySplitBuilder;
-use App\Tests\ProvideBuiltTestSet;
+use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class ActivityFragmentResolverTest extends AdminWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideBuiltTestSet;
+    use ProvideTestData;
 
     public function testRender(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
 
@@ -40,7 +41,8 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
 
     public function testRenderForAVirtualRide(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9542782314');
 
@@ -51,7 +53,8 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     #[DataProvider('provideSportTypesWithTheirOwnTemplate')]
     public function testItRendersTheTemplateOfTheSportType(SportType $sportType): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $activityId = ActivityId::fromUnprefixed('123456789');
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
@@ -88,7 +91,8 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
 
     public function testItLabelsTheVelocityDistributionOfARunAsPace(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-45326441741');
 
@@ -98,7 +102,8 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
 
     public function testItLabelsTheVelocityDistributionOfARideAsSpeed(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->getContainer()->get(ActivityStreamMetricRepository::class)->add(ActivityStreamMetric::create(
             activityId: ActivityId::fromUnprefixed('9756441741'),
@@ -123,7 +128,8 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
 
     public function testGetPath(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
 
@@ -136,7 +142,8 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
 
     public function testItIsNotServedAsADataFragment(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/data/activity/activity-9756441741');
 
@@ -145,7 +152,8 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
 
     public function testItOnlyRendersTheEditLinkForAuthenticatedVisitors(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
         $this->assertStringNotContainsString(
@@ -163,7 +171,8 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
 
     public function testItVariesByAuthentication(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
         $anonymousCacheKey = (string) $this->client->getResponse()->headers->get('X-Cache-Key');
@@ -180,7 +189,8 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
 
     public function testItIsTaggedWithTheActivityItRenders(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
 
@@ -193,7 +203,8 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     #[DataProvider('providePathsToResolve')]
     public function testResolve(string $path): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->assertNull($this->getContainer()->get(ActivityFragmentResolver::class)->resolve($path));
     }
@@ -205,5 +216,11 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
         yield 'the bare base path' => ['activity'];
         yield 'a nested path' => ['activity/activity-9756441741/metrics'];
         yield 'another page entirely' => ['milestones'];
+    }
+
+    #[\Override]
+    protected function shouldMarkAppAsBuilt(): bool
+    {
+        return false;
     }
 }

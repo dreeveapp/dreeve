@@ -4,17 +4,18 @@ namespace App\Tests\Domain\Calendar;
 
 use App\Domain\Calendar\MonthFragmentResolver;
 use App\Tests\Controller\ControllerWebTestCase;
-use App\Tests\ProvideBuiltTestSet;
+use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class MonthFragmentResolverTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideBuiltTestSet;
+    use ProvideTestData;
 
     public function testRender(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/month/2023-06');
 
@@ -25,7 +26,8 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
 
     public function testRenderJanuary(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/month/2023-01');
 
@@ -35,7 +37,8 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
 
     public function testGetPath(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/month/2023-06');
 
@@ -48,7 +51,8 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
 
     public function testItIsNotServedAsADataFragment(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/data/month/2023-06');
 
@@ -57,7 +61,8 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
 
     public function testItIsTaggedWithTheMonthsItRenders(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/month/2023-01');
 
@@ -70,7 +75,8 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
     public function testItResolvesEveryMonthBetweenTheFirstActivityAndToday(): void
     {
         // The clock is paused on 2023-10-17, the test set starts in July 2020.
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/month/2020-07');
         $this->assertResponseIsSuccessful();
@@ -81,7 +87,8 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
 
     public function testItDoesNotResolveMonthsOutsideThatRange(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/month/2020-06');
         $this->assertResponseStatusCodeSame(404);
@@ -92,7 +99,8 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
 
     public function testItDoesNotResolveMalformedPaths(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $monthFragmentResolver = $this->getContainer()->get(MonthFragmentResolver::class);
 
@@ -110,5 +118,11 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveWhenThereAreNoActivities(): void
     {
         $this->assertNull($this->getContainer()->get(MonthFragmentResolver::class)->resolve('month/2023-06'));
+    }
+
+    #[\Override]
+    protected function shouldMarkAppAsBuilt(): bool
+    {
+        return false;
     }
 }

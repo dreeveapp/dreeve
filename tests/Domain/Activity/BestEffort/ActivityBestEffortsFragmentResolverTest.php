@@ -3,17 +3,18 @@
 namespace App\Tests\Domain\Activity\BestEffort;
 
 use App\Tests\Controller\ControllerWebTestCase;
-use App\Tests\ProvideBuiltTestSet;
+use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideBuiltTestSet;
+    use ProvideTestData;
 
     public function testRender(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/partial/activity/activity-9542782314/best-efforts');
 
@@ -24,7 +25,8 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
 
     public function testItStaysOutOfTheRenderCache(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/partial/activity/activity-9542782314/best-efforts');
 
@@ -33,7 +35,8 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
 
     public function testItIsNotServedAsAPageFragment(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9542782314/best-efforts');
 
@@ -42,7 +45,8 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
 
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/partial/activity/activity-1/best-efforts');
 
@@ -51,10 +55,17 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
 
     public function testItRejectsAnUnprefixedActivityId(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/partial/activity/9542782314/best-efforts');
 
         $this->assertResponseStatusCodeSame(404);
+    }
+
+    #[\Override]
+    protected function shouldMarkAppAsBuilt(): bool
+    {
+        return false;
     }
 }

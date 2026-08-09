@@ -3,17 +3,18 @@
 namespace App\Tests\Domain\Segment;
 
 use App\Tests\Controller\ControllerWebTestCase;
-use App\Tests\ProvideBuiltTestSet;
+use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class ActivitySegmentsFragmentResolverTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideBuiltTestSet;
+    use ProvideTestData;
 
     public function testRender(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/partial/activity/activity-9542782314/segments');
 
@@ -24,7 +25,8 @@ class ActivitySegmentsFragmentResolverTest extends ControllerWebTestCase
 
     public function testRenderForActivityWithoutAnySegments(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/partial/activity/activity-9756441709/segments');
 
@@ -34,7 +36,8 @@ class ActivitySegmentsFragmentResolverTest extends ControllerWebTestCase
 
     public function testItStaysOutOfTheRenderCache(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/partial/activity/activity-9542782314/segments');
 
@@ -43,7 +46,8 @@ class ActivitySegmentsFragmentResolverTest extends ControllerWebTestCase
 
     public function testItIsNotServedAsAPageFragment(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9542782314/segments');
 
@@ -52,7 +56,8 @@ class ActivitySegmentsFragmentResolverTest extends ControllerWebTestCase
 
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/partial/activity/activity-1/segments');
 
@@ -61,10 +66,17 @@ class ActivitySegmentsFragmentResolverTest extends ControllerWebTestCase
 
     public function testItRejectsAnUnprefixedActivityId(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/partial/activity/9542782314/segments');
 
         $this->assertResponseStatusCodeSame(404);
+    }
+
+    #[\Override]
+    protected function shouldMarkAppAsBuilt(): bool
+    {
+        return false;
     }
 }

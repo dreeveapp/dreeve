@@ -3,17 +3,18 @@
 namespace App\Tests\Domain\Activity\BestEffort;
 
 use App\Tests\Controller\ControllerWebTestCase;
-use App\Tests\ProvideBuiltTestSet;
+use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class BestEffortsFragmentTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideBuiltTestSet;
+    use ProvideTestData;
 
     public function testRender(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/best-efforts');
 
@@ -24,7 +25,8 @@ class BestEffortsFragmentTest extends ControllerWebTestCase
 
     public function testGetPath(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/best-efforts');
 
@@ -37,7 +39,8 @@ class BestEffortsFragmentTest extends ControllerWebTestCase
 
     public function testItIsNotServedAsADataFragment(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/data/best-efforts');
 
@@ -46,9 +49,16 @@ class BestEffortsFragmentTest extends ControllerWebTestCase
 
     public function testItShouldExpireAtMidnight(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/best-efforts');
         $this->assertResponseHeaderSame('X-Cache-TTL', '27896');
+    }
+
+    #[\Override]
+    protected function shouldMarkAppAsBuilt(): bool
+    {
+        return false;
     }
 }

@@ -5,17 +5,18 @@ namespace App\Tests\Domain\Activity\BestEffort;
 use App\Domain\Activity\ActivityType;
 use App\Infrastructure\Measurement\Length\ConvertableToMeter;
 use App\Tests\Controller\ControllerWebTestCase;
-use App\Tests\ProvideBuiltTestSet;
+use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideBuiltTestSet;
+    use ProvideTestData;
 
     public function testRender(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         foreach (ActivityType::RIDE->getDistancesForBestEffortCalculation() as $distance) {
             $this->client->request('GET', sprintf(
@@ -32,7 +33,8 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
 
     public function testGetPath(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/best-efforts/Ride/10000');
 
@@ -50,7 +52,8 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
 
     public function testItIsNotServedAsADataFragment(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/data/best-efforts/Ride/10000');
 
@@ -59,7 +62,8 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
 
     public function testItDoesNotResolveAnActivityTypeThatDoesNotExist(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/best-efforts/Snorkeling/10000');
 
@@ -68,7 +72,8 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
 
     public function testItDoesNotResolveAnActivityTypeWithoutBestEfforts(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/best-efforts/Walk/10000');
 
@@ -77,7 +82,8 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
 
     public function testItDoesNotResolveADistanceThatIsNotCalculated(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/best-efforts/Ride/12345');
 
@@ -98,5 +104,11 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
                 sprintf('Two distances of "%s" resolve to the same amount of meter', $activityType->value)
             );
         }
+    }
+
+    #[\Override]
+    protected function shouldMarkAppAsBuilt(): bool
+    {
+        return false;
     }
 }

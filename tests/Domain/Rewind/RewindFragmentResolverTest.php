@@ -4,18 +4,19 @@ namespace App\Tests\Domain\Rewind;
 
 use App\Domain\Rewind\RewindFragmentResolver;
 use App\Tests\Controller\ControllerWebTestCase;
-use App\Tests\ProvideBuiltTestSet;
+use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class RewindFragmentResolverTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideBuiltTestSet;
+    use ProvideTestData;
 
     public function testRenderForAllTime(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/rewind');
 
@@ -26,7 +27,8 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
 
     public function testRenderForASingleYear(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/rewind/2023');
 
@@ -36,7 +38,8 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
 
     public function testItIsNotServedAsADataFragment(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/data/rewind/2023');
 
@@ -46,7 +49,8 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
     #[DataProvider('providePathsToResolve')]
     public function testResolve(string $path, ?string $expectedPath): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->assertEquals(
             $expectedPath,
@@ -67,7 +71,8 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
 
     public function testGetCacheabilityForAllTime(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/rewind/all-time');
 
@@ -84,7 +89,8 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
 
     public function testGetCacheabilityForASingleYearIsScopedToThatYear(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/rewind/2023');
 
@@ -97,5 +103,11 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
             ['activities.2023', 'activity.images.2023', 'gear', 'settings.appearance', 'settings.general'],
             explode(', ', (string) $this->client->getResponse()->headers->get('X-Cache-Tags')),
         );
+    }
+
+    #[\Override]
+    protected function shouldMarkAppAsBuilt(): bool
+    {
+        return false;
     }
 }

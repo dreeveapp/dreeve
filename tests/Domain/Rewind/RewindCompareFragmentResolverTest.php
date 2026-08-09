@@ -4,18 +4,19 @@ namespace App\Tests\Domain\Rewind;
 
 use App\Domain\Rewind\RewindCompareFragmentResolver;
 use App\Tests\Controller\ControllerWebTestCase;
-use App\Tests\ProvideBuiltTestSet;
+use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class RewindCompareFragmentResolverTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideBuiltTestSet;
+    use ProvideTestData;
 
     public function testRender(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/2022');
 
@@ -26,7 +27,8 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
 
     public function testItIsNotServedAsADataFragment(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/data/rewind/2023/compare/2022');
 
@@ -36,7 +38,8 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
     #[DataProvider('providePathsToResolve')]
     public function testResolve(string $path, ?string $expectedPath): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->assertEquals(
             $expectedPath,
@@ -69,7 +72,8 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
 
     public function testGetCacheabilityCarriesTheTagsOfBothSides(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/2022');
 
@@ -90,7 +94,8 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
 
     public function testGetCacheabilityWhenComparedWithAllTime(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/all-time');
 
@@ -103,5 +108,11 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
             ],
             explode(', ', (string) $this->client->getResponse()->headers->get('X-Cache-Tags')),
         );
+    }
+
+    #[\Override]
+    protected function shouldMarkAppAsBuilt(): bool
+    {
+        return false;
     }
 }

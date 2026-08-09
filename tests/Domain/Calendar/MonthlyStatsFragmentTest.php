@@ -5,17 +5,18 @@ namespace App\Tests\Domain\Calendar;
 use App\Domain\Calendar\MonthlyStatsFragment;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Tests\Controller\ControllerWebTestCase;
-use App\Tests\ProvideBuiltTestSet;
+use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class MonthlyStatsFragmentTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideBuiltTestSet;
+    use ProvideTestData;
 
     public function testRender(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/monthly-stats');
 
@@ -33,7 +34,8 @@ class MonthlyStatsFragmentTest extends ControllerWebTestCase
 
     public function testGetPath(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/monthly-stats');
 
@@ -46,7 +48,8 @@ class MonthlyStatsFragmentTest extends ControllerWebTestCase
 
     public function testItIsNotServedAsADataFragment(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/data/monthly-stats');
 
@@ -55,7 +58,8 @@ class MonthlyStatsFragmentTest extends ControllerWebTestCase
 
     public function testGetCacheTags(): void
     {
-        $this->provideBuiltTestSet();
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/monthly-stats');
 
@@ -63,5 +67,11 @@ class MonthlyStatsFragmentTest extends ControllerWebTestCase
             'X-Cache-Tags',
             'settings.appearance, settings.general, '.RootCacheTag::ACTIVITIES->toTagString(),
         );
+    }
+
+    #[\Override]
+    protected function shouldMarkAppAsBuilt(): bool
+    {
+        return false;
     }
 }
