@@ -141,9 +141,6 @@ class RenderCacheInvalidationTest extends ContainerTestCase
             RootCacheTag::SETTINGS_GENERAL,
             RootCacheTag::SEGMENTS,
         ]];
-
-        // The segment detail is scoped to a single segment and to the activities it lists, so none of
-        // the root tags this test invalidates touch it. SegmentInvalidateCacheTagsListenerTest covers it.
     }
 
     #[\Override]
