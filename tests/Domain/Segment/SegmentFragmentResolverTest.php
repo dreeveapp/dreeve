@@ -2,7 +2,14 @@
 
 namespace App\Tests\Domain\Segment;
 
+use App\Domain\Activity\ActivityId;
+use App\Domain\Segment\SegmentEffort\SegmentEffortId;
+use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
+use App\Domain\Segment\SegmentId;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\Domain\Segment\SegmentEffort\SegmentEffortBuilder;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
@@ -23,7 +30,73 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
-    public function testRenderWithAMap(): void
+    public function testRenderWithHeartRateData(): void
+    {
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
+        $this->addSegmentWithAPolylineFixtures();
+
+        $segmentEffortRepository = $this->getContainer()->get(SegmentEffortRepository::class);
+        $segmentEffortRepository->add(
+            SegmentEffortBuilder::fromDefaults()
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('11'))
+                ->withSegmentId(SegmentId::fromUnprefixed('10'))
+                ->withActivityId(ActivityId::fromUnprefixed('9542782314'))
+                ->withStartDateTime(SerializableDateTime::fromString('2023-10-01'))
+                ->withElapsedTimeInSeconds(10.3)
+                ->withAverageWatts(200)
+                ->withAverageHeartRate(145)
+                ->withDistance(Kilometer::from(0.1))
+                ->withName('An effort')
+                ->build()
+        );
+        $segmentEffortRepository->add(
+            SegmentEffortBuilder::fromDefaults()
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('12'))
+                ->withSegmentId(SegmentId::fromUnprefixed('10'))
+                ->withActivityId(ActivityId::fromUnprefixed('9542782314'))
+                ->withStartDateTime(SerializableDateTime::fromString('2023-10-02'))
+                ->withElapsedTimeInSeconds(11.3)
+                ->withAverageWatts(200)
+                ->withAverageHeartRate(162)
+                ->withDistance(Kilometer::from(0.1))
+                ->withName('An effort')
+                ->build()
+        );
+
+        $this->client->request('GET', '/api/fragment/page/segment/segment-10');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
+    public function testRenderWithASingleHeartRateEffort(): void
+    {
+        $this->provideFullTestSet();
+        $this->markAppAsBuilt();
+        $this->addSegmentWithAPolylineFixtures();
+
+        $this->getContainer()->get(SegmentEffortRepository::class)->add(
+            SegmentEffortBuilder::fromDefaults()
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('11'))
+                ->withSegmentId(SegmentId::fromUnprefixed('10'))
+                ->withActivityId(ActivityId::fromUnprefixed('9542782314'))
+                ->withStartDateTime(SerializableDateTime::fromString('2023-10-01'))
+                ->withElapsedTimeInSeconds(10.3)
+                ->withAverageWatts(200)
+                ->withAverageHeartRate(145)
+                ->withDistance(Kilometer::from(0.1))
+                ->withName('An effort')
+                ->build()
+        );
+
+        $this->client->request('GET', '/api/fragment/page/segment/segment-10');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
+    public function testRenderWithoutAnyEfforts(): void
     {
         $this->provideFullTestSet();
         $this->markAppAsBuilt();
