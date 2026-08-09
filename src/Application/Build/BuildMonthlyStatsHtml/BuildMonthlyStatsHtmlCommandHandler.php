@@ -10,7 +10,6 @@ use App\Domain\Calendar\Calendar;
 use App\Domain\Calendar\FindMonthlyStats\FindMonthlyStats;
 use App\Domain\Calendar\Month;
 use App\Domain\Calendar\Months;
-use App\Domain\Challenge\ChallengeRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
@@ -20,7 +19,6 @@ use Twig\Environment;
 final readonly class BuildMonthlyStatsHtmlCommandHandler implements CommandHandler
 {
     public function __construct(
-        private ChallengeRepository $challengeRepository,
         private SportTypeRepository $sportTypeRepository,
         private EnrichedActivities $enrichedActivities,
         private QueryBus $queryBus,
@@ -35,7 +33,6 @@ final readonly class BuildMonthlyStatsHtmlCommandHandler implements CommandHandl
 
         $now = $command->getCurrentDateTime();
         $allActivities = $this->enrichedActivities->findAll();
-        $allChallenges = $this->challengeRepository->findAll();
 
         $allMonths = Months::create(
             startDate: $allActivities->getFirstActivityStartDate(),
@@ -48,7 +45,6 @@ final readonly class BuildMonthlyStatsHtmlCommandHandler implements CommandHandl
             'monthly-stats.html',
             $this->twig->load('html/calendar/monthly-stats.html.twig')->render([
                 'monthlyStatistics' => $monthlyStats,
-                'challenges' => $allChallenges,
                 'months' => $allMonths->reverse(),
                 'sportTypes' => $this->sportTypeRepository->findAll(),
             ]),
@@ -62,7 +58,6 @@ final readonly class BuildMonthlyStatsHtmlCommandHandler implements CommandHandl
                     'hasPreviousMonth' => $month->getId() != $allActivities->getFirstActivityStartDate()->format(Month::MONTH_ID_FORMAT),
                     'hasNextMonth' => $month->getId() != $now->format(Month::MONTH_ID_FORMAT),
                     'statistics' => $monthlyStats->getForMonth($month),
-                    'challenges' => $allChallenges,
                     'calendar' => Calendar::create(
                         month: $month,
                         enrichedActivities: $this->enrichedActivities,

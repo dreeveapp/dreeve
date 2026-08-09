@@ -44,10 +44,6 @@
                     <div class="text-xs text-gray-500">{{ "hours"|trans }}</div>
                 </li>
                 <li class="flex flex-col px-2 text-sm">
-                    <div>{{ challenges|filter(challenge => challenge.getCreatedOn().format('Y-m') == calendar.getMonth().getId())|length }}</div>
-                    <div class="text-xs text-gray-500">{{ "challenges"|trans }}</div>
-                </li>
-                <li class="flex flex-col px-2 text-sm">
                     <div>{{ statistics.calories|formatNumber(0) }}</div>
                     <div class="text-xs text-gray-500">kcal</div>
                 </li>
