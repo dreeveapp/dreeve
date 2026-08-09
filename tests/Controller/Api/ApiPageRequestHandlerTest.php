@@ -50,7 +50,7 @@ class ApiPageRequestHandlerTest extends ContainerTestCase
         $this->assertEquals($response->getContent(), $secondResponse->getContent());
     }
 
-    public function testHandleForADynamicPage(): void
+    public function testHandleForAPageWithParameters(): void
     {
         $this->provideFullTestSet();
 
@@ -78,7 +78,7 @@ class ApiPageRequestHandlerTest extends ContainerTestCase
         );
     }
 
-    public function testHandleWhenADynamicPageCannotResolveThePath(): void
+    public function testHandleWhenAPageWithParametersCannotResolveThePath(): void
     {
         $this->provideFullTestSet();
 

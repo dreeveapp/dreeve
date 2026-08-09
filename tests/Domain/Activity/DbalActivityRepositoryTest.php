@@ -262,6 +262,54 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         );
     }
 
+    public function testFindByDateRange(): void
+    {
+        foreach ([
+            1 => '2023-09-30 23:59:59',
+            2 => '2023-10-01 00:00:00',
+            3 => '2023-10-15 12:00:00',
+            4 => '2023-10-31 23:59:59',
+            5 => '2023-11-01 00:00:00',
+        ] as $activityId => $startDateTime) {
+            $this->activityRepository->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withStartDateTime(SerializableDateTime::fromString($startDateTime))
+                    ->build(),
+                ['raw' => 'data']
+            ));
+        }
+
+        $activities = $this->activityRepository->findByDateRange(
+            from: SerializableDateTime::fromString('2023-10-01 00:00:00'),
+            till: SerializableDateTime::fromString('2023-11-01 00:00:00'),
+        );
+
+        $this->assertEquals(
+            [
+                ActivityId::fromUnprefixed(4),
+                ActivityId::fromUnprefixed(3),
+                ActivityId::fromUnprefixed(2),
+            ],
+            $activities->map(fn (Activity $activity): ActivityId => $activity->getId())
+        );
+    }
+
+    public function testFindByDateRangeItShouldReturnEmptyWhenNothingIsInRange(): void
+    {
+        $this->activityRepository->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withStartDateTime(SerializableDateTime::fromString('2023-10-15 12:00:00'))
+                ->build(),
+            ['raw' => 'data']
+        ));
+
+        $this->assertTrue($this->activityRepository->findByDateRange(
+            from: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+            till: SerializableDateTime::fromString('2024-02-01 00:00:00'),
+        )->isEmpty());
+    }
+
     public function testDelete(): void
     {
         $activity = ActivityBuilder::fromDefaults()->build();

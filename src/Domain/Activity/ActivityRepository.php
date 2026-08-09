@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+
 interface ActivityRepository
 {
     public function find(ActivityId $activityId): Activity;
 
     public function findAll(): Activities;
+
+    public function findByDateRange(SerializableDateTime $from, SerializableDateTime $till): Activities;
 
     public function findWithRawData(ActivityId $activityId): ActivityWithRawData;
 

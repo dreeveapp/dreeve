@@ -10,6 +10,7 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorldType;
+use App\Domain\Calendar\Month;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheTag;
 use App\Infrastructure\Cache\CacheTags;
@@ -259,6 +260,88 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->assertFalse($this->isServedFromCache(ActivityCacheTag::for($activity->getId())));
     }
 
+    public function testItOnlyInvalidatesTheMonthAnAddedActivityBelongsTo(): void
+    {
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
+                ->buildAsNewlyCreated(),
+            [],
+        ));
+
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES->forMonth($this->month('2023-10'))));
+        // Another month of the same year keeps its render, which is what the month scope buys over the year scope.
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITIES->forMonth($this->month('2023-08'))));
+    }
+
+    public function testItOnlyInvalidatesTheMonthADeletedActivityBelongsTo(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
+            ->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->delete($activity->getId());
+
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES->forMonth($this->month('2023-10'))));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITIES->forMonth($this->month('2023-08'))));
+    }
+
+    public function testItOnlyInvalidatesTheMonthAnUpdatedActivityBelongsTo(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
+            ->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->update(ActivityWithRawData::fromState(
+            $activity->withName(ActivityName::fromString('Renamed')),
+            [],
+        ));
+
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES->forMonth($this->month('2023-10'))));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITIES->forMonth($this->month('2023-08'))));
+    }
+
+    public function testItInvalidatesBothMonthsWhenAnActivityMovesWithinTheSameYear(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
+            ->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->update(ActivityWithRawData::fromState(
+            $activity->withStartDateTime(SerializableDateTime::fromString('2023-08-10')),
+            [],
+        ));
+
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES->forMonth($this->month('2023-10'))));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES->forMonth($this->month('2023-08'))));
+    }
+
+    public function testItInvalidatesBothMonthsWhenAnActivityMovesToAnotherYear(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
+            ->build();
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        $this->warmUpRenderCache();
+
+        $this->activityRepository->update(ActivityWithRawData::fromState(
+            $activity->withStartDateTime(SerializableDateTime::fromString('2016-10-10')),
+            [],
+        ));
+
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES->forMonth($this->month('2023-10'))));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES->forMonth($this->month('2016-10'))));
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITIES->forMonth($this->month('2023-08'))));
+    }
+
     public function testItInvalidatesTheActivityScopedTagWhenAnActivityIsDeleted(): void
     {
         $activity = ActivityBuilder::fromDefaults()->build();
@@ -269,6 +352,11 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
 
         $this->assertFalse($this->isServedFromCache(ActivityCacheTag::for($activity->getId())));
         $this->assertTrue($this->isServedFromCache(ActivityCacheTag::for(ActivityId::fromUnprefixed('1'))));
+    }
+
+    private function month(string $monthId): Month
+    {
+        return Month::fromDate(SerializableDateTime::fromString($monthId.'-01'));
     }
 
     private function isServedFromCache(CacheTag $cacheTag): bool
@@ -290,6 +378,9 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
             RootCacheTag::ACTIVITIES->forYear(Year::fromInt(2016)),
             RootCacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023)),
             RootCacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2016)),
+            RootCacheTag::ACTIVITIES->forMonth($this->month('2023-10')),
+            RootCacheTag::ACTIVITIES->forMonth($this->month('2023-08')),
+            RootCacheTag::ACTIVITIES->forMonth($this->month('2016-10')),
             ActivityCacheTag::for(ActivityId::fromUnprefixed('903645')),
             ActivityCacheTag::for(ActivityId::fromUnprefixed('1')),
         ];

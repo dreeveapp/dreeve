@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
+use App\Domain\Calendar\Month;
 use App\Infrastructure\Eventing\DomainEvent;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Year;
@@ -33,5 +34,21 @@ final class ActivityWasUpdated extends DomainEvent
         }
 
         return $years;
+    }
+
+    /**
+     * @return Month[]
+     */
+    public function getMonths(): array
+    {
+        $month = Month::fromDate($this->startDate);
+        $previousMonth = Month::fromDate($this->previousStartDate);
+
+        // An activity can move to another month within the same year, so comparing years is not enough here.
+        if ($month->getId() === $previousMonth->getId()) {
+            return [$month];
+        }
+
+        return [$month, $previousMonth];
     }
 }

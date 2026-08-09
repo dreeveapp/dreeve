@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Cache;
 
+use App\Domain\Calendar\Month;
 use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\ValueObject\Time\Year;
 
@@ -33,6 +34,11 @@ enum RootCacheTag: string implements CacheTag
     public function forYear(Year $year): ScopedCacheTag
     {
         return ScopedCacheTag::for($this, (string) $year);
+    }
+
+    public function forMonth(Month $month): ScopedCacheTag
+    {
+        return ScopedCacheTag::for($this, $month->getId());
     }
 
     /**

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Calendar\FindMonthlyStats;
 
-use App\Domain\Activity\ActivityTypes;
+use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Calendar\Month;
 use App\Infrastructure\CQRS\Query\Query;
@@ -13,7 +13,6 @@ use App\Infrastructure\CQRS\Query\Response;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
-use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 
 final readonly class FindMonthlyStatsQueryHandler implements QueryHandler
@@ -42,14 +41,9 @@ final readonly class FindMonthlyStatsQueryHandler implements QueryHandler
         )->fetchAllAssociative();
 
         $statsPerMonth = [];
-        $activityTypes = ActivityTypes::empty();
         foreach ($results as $result) {
             $month = Month::fromDate(SerializableDateTime::fromString(sprintf('%s-01 00:00:00', $result['yearAndMonth'])));
             $sportType = SportType::from($result['sportType']);
-
-            if (!$activityTypes->has($sportType->getActivityType())) {
-                $activityTypes->add($sportType->getActivityType());
-            }
 
             $statsPerMonth[] = [
                 'month' => $month,
@@ -62,28 +56,22 @@ final readonly class FindMonthlyStatsQueryHandler implements QueryHandler
             ];
         }
 
-        $minMaxDatePerActivityType = [];
-        foreach ($activityTypes as $activityType) {
-            /** @var non-empty-array<string, string> $result */
-            $result = $this->connection->executeQuery(
-                <<<SQL
-                SELECT MIN(startDateTime) AS minStartDate,
+        $minMaxResults = $this->connection->executeQuery(
+            <<<SQL
+                SELECT activityType,
+                       MIN(startDateTime) AS minStartDate,
                        MAX(startDateTime) AS maxStartDate
                 FROM Activity
-                WHERE sportType IN (:sportTypes)
-                SQL,
-                [
-                    'sportTypes' => $activityType->getSportTypes()->map(fn (SportType $sportType) => $sportType->value),
-                ],
-                [
-                    'sportTypes' => ArrayParameterType::STRING,
-                ]
-            )->fetchAssociative();
+                GROUP BY activityType
+            SQL,
+        )->fetchAllAssociative();
 
+        $minMaxDatePerActivityType = [];
+        foreach ($minMaxResults as $minMaxResult) {
             $minMaxDatePerActivityType[] = [
-                'activityType' => $activityType,
-                'min' => Month::fromDate(SerializableDateTime::fromString($result['minStartDate'])),
-                'max' => Month::fromDate(SerializableDateTime::fromString($result['maxStartDate'])),
+                'activityType' => ActivityType::from($minMaxResult['activityType']),
+                'min' => Month::fromDate(SerializableDateTime::fromString($minMaxResult['minStartDate'])),
+                'max' => Month::fromDate(SerializableDateTime::fromString($minMaxResult['maxStartDate'])),
             ];
         }
 

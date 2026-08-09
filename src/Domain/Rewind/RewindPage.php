@@ -7,10 +7,10 @@ namespace App\Domain\Rewind;
 use App\Domain\Rewind\FindAvailableRewindOptions\FindAvailableRewindOptions;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\Http\Page\DynamicPage;
+use App\Infrastructure\Http\Page\PageWithParameters;
 use Twig\Environment;
 
-final readonly class RewindPage implements DynamicPage
+final readonly class RewindPage implements PageWithParameters
 {
     private const string BASE_PATH = 'rewind';
 

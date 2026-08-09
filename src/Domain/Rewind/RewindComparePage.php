@@ -7,10 +7,10 @@ namespace App\Domain\Rewind;
 use App\Domain\Rewind\FindAvailableRewindOptions\FindAvailableRewindOptions;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\Http\Page\DynamicPage;
+use App\Infrastructure\Http\Page\PageWithParameters;
 use Twig\Environment;
 
-final readonly class RewindComparePage implements DynamicPage
+final readonly class RewindComparePage implements PageWithParameters
 {
     private const string PATH_PATTERN = '#^rewind/(?<left>[^/]+)/compare(?:/(?<right>[^/]+))?$#';
 

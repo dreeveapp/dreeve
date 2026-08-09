@@ -21,6 +21,7 @@ final readonly class ActivityInvalidateCacheTagsListener
         $this->renderCache->invalidateTags(
             RootCacheTag::ACTIVITIES,
             RootCacheTag::ACTIVITIES->forYear($event->getYear()),
+            RootCacheTag::ACTIVITIES->forMonth($event->getMonth()),
         );
     }
 
@@ -30,6 +31,9 @@ final readonly class ActivityInvalidateCacheTagsListener
         $cacheTags = [RootCacheTag::ACTIVITIES, ActivityCacheTag::for($event->getActivityId())];
         foreach ($event->getYears() as $year) {
             $cacheTags[] = RootCacheTag::ACTIVITIES->forYear($year);
+        }
+        foreach ($event->getMonths() as $month) {
+            $cacheTags[] = RootCacheTag::ACTIVITIES->forMonth($month);
         }
 
         $this->renderCache->invalidateTags(...$cacheTags);
@@ -56,6 +60,7 @@ final readonly class ActivityInvalidateCacheTagsListener
         $this->renderCache->invalidateTags(
             RootCacheTag::ACTIVITIES,
             RootCacheTag::ACTIVITIES->forYear($event->getYear()),
+            RootCacheTag::ACTIVITIES->forMonth($event->getMonth()),
             ActivityCacheTag::for($event->getActivityId()),
             RootCacheTag::ACTIVITY_IMAGES,
             RootCacheTag::ACTIVITY_IMAGES->forYear($event->getYear()),
