@@ -120,7 +120,7 @@ class ApiFragmentRequestHandlerTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
 
-        $response = $this->apiFragmentRequestHandler->handle('page', 'gear/maintenance-due');
+        $response = $this->apiFragmentRequestHandler->handle('partial', 'gear/maintenance-due');
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(
@@ -136,7 +136,7 @@ class ApiFragmentRequestHandlerTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
 
-        // A page is never served under the data segment, nor the other way around.
+        // Each fragment is only served under the segment matching its own type.
         $this->assertEquals(
             404,
             $this->apiFragmentRequestHandler->handle('data', 'photos')->getStatusCode()
@@ -144,6 +144,14 @@ class ApiFragmentRequestHandlerTest extends ContainerTestCase
         $this->assertEquals(
             404,
             $this->apiFragmentRequestHandler->handle('page', 'activity/activity-9756441741/metrics')->getStatusCode()
+        );
+        $this->assertEquals(
+            404,
+            $this->apiFragmentRequestHandler->handle('page', 'gear/maintenance-due')->getStatusCode()
+        );
+        $this->assertEquals(
+            404,
+            $this->apiFragmentRequestHandler->handle('partial', 'photos')->getStatusCode()
         );
     }
 

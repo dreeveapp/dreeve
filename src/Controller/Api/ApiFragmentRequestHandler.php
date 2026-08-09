@@ -20,7 +20,7 @@ final readonly class ApiFragmentRequestHandler
     ) {
     }
 
-    #[Route(path: '/api/fragment/{type}/{path}', name: 'api_fragment', requirements: ['type' => 'page|data', 'path' => '[a-zA-Z0-9_\-/]+'], methods: ['GET'], priority: 3)]
+    #[Route(path: '/api/fragment/{type}/{path}', name: 'api_fragment', requirements: ['type' => 'page|partial|data', 'path' => '[a-zA-Z0-9_\-/]+'], methods: ['GET'], priority: 3)]
     public function handle(string $type, string $path): Response
     {
         $fragment = $this->fragmentRegistry->find($path);

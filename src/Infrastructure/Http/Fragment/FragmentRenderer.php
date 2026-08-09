@@ -23,7 +23,7 @@ final readonly class FragmentRenderer
         $render = $this->cacheableRenderer->render($cacheable);
 
         $response = match ($type) {
-            FragmentType::PAGE => new HtmlResponse($render->getContent() ?? ''),
+            FragmentType::PAGE, FragmentType::PARTIAL => new HtmlResponse($render->getContent() ?? ''),
             FragmentType::DATA => new JsonResponse($render->getContent() ?? '[]', json: true),
         };
 

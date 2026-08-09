@@ -45,7 +45,7 @@ final readonly class ActivityBestEffortsFragmentResolver implements FragmentReso
             render: fn (): string => $this->twig->load('html/activity/_best-efforts.html.twig')->render([
                 'bestEfforts' => $this->activityBestEffortRepository->findByActivity($activityId),
             ]),
-            type: FragmentType::PAGE,
+            type: FragmentType::PARTIAL,
         );
     }
 }

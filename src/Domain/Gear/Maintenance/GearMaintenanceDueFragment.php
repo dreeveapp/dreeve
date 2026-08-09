@@ -25,7 +25,7 @@ final readonly class GearMaintenanceDueFragment implements Fragment
 
     public function getType(): FragmentType
     {
-        return FragmentType::PAGE;
+        return FragmentType::PARTIAL;
     }
 
     public function getCacheability(): Cacheability

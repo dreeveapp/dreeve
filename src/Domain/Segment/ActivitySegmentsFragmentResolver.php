@@ -44,7 +44,7 @@ final readonly class ActivitySegmentsFragmentResolver implements FragmentResolve
                 'segmentEfforts' => $this->segmentEffortRepository->findByActivityId($activity->getId()),
                 'sportType' => $activity->getSportType(),
             ]),
-            type: FragmentType::PAGE,
+            type: FragmentType::PARTIAL,
         );
     }
 }
