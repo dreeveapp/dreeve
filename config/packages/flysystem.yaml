@@ -28,8 +28,3 @@ flysystem:
             options:
                 directory: '%kernel.project_dir%/build/html'
                 lock: 0
-        build_api.storage:
-            adapter: 'local'
-            options:
-                directory: '%kernel.project_dir%/build/api'
-                lock: 0
