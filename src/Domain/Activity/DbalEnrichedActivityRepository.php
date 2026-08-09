@@ -135,11 +135,13 @@ final readonly class DbalEnrichedActivityRepository extends DbalRepository imple
             return null;
         }
 
-        if ([] === $cadenceDistribution = Json::uncompressAndDecode($data)) {
+        /** @var array<int|string, int> $cadenceDistribution */
+        $cadenceDistribution = Json::uncompressAndDecode($data);
+        if ([] === $cadences = array_keys($cadenceDistribution)) {
             return null;
         }
 
-        return max(array_keys($cadenceDistribution));
+        return (int) max($cadences);
     }
 
     private function bestPowerOutputs(?string $data, Activity $activity, AthleteWeightHistory $athleteWeightHistory): PowerOutputs

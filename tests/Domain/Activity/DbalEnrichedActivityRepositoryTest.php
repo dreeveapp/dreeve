@@ -3,10 +3,10 @@
 namespace App\Tests\Domain\Activity;
 
 use App\Domain\Activity\Activity;
-use App\Domain\Activity\EnrichedActivity;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\EnrichedActivity;
 use App\Domain\Activity\EnrichedActivityRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Tests\ContainerTestCase;

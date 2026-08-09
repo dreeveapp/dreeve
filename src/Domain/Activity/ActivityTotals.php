@@ -13,7 +13,6 @@ final class ActivityTotals
 {
     use ProvideTimeFormats;
 
-
     private readonly Kilometer $totalDistance;
     private readonly Meter $totalElevation;
     private readonly int $totalCalories;
