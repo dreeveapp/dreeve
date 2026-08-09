@@ -188,10 +188,9 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
             $numberOfProfileChartLanes = $this->combinedActivityStreamRepository
                 ->countChartableStreamTypesFor($activity->getId(), $unitSystem);
 
-            $unprefixedActivityId = $activity->getId()->toUnprefixedString();
             $leafletMap = $activity->getLeafletMap();
             $templateName = sprintf('html/activity/%s.html.twig', $activity->getSportType()->getTemplateName());
-            $gpxFileLocation = sprintf('api/activity/%s/route.gpx', $unprefixedActivityId);
+            $gpxFileLocation = sprintf('api/activity/%s/route.gpx', $activity->getId());
             $activityHasTimeStream = $this->activityStreamRepository->hasOneForActivityAndStreamType($activity->getId(), StreamType::TIME);
 
             $timeInHeartRateZones = null;
@@ -205,7 +204,7 @@ final readonly class BuildActivitiesHtmlCommandHandler implements CommandHandler
                 $this->twig->load($templateName)->render([
                     'activity' => $activity,
                     'leaflet' => $leafletMap instanceof LeafletMap ? [
-                        'polylineUrl' => sprintf('activity/%s/polylines', $unprefixedActivityId),
+                        'polylineUrl' => sprintf('activity/%s/polylines', $activity->getId()),
                         'map' => $leafletMap,
                     ] : null,
                     'gpxLink' => $activityHasTimeStream ? $gpxFileLocation : null,

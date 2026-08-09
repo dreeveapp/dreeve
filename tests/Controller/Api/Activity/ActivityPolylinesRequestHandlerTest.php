@@ -41,7 +41,7 @@ class ActivityPolylinesRequestHandlerTest extends ControllerWebTestCase
             $firstResponse->headers->get('X-Cache-Tags'),
         );
 
-        $secondResponse = $handler->handle('9830227112');
+        $secondResponse = $handler->handle('activity-9830227112');
 
         $this->assertEquals('HIT', $secondResponse->headers->get('X-Cache'));
         $this->assertEquals($firstResponse->getContent(), $secondResponse->getContent());

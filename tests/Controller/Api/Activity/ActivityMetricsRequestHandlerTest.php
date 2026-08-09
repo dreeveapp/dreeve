@@ -43,9 +43,8 @@ class ActivityMetricsRequestHandlerTest extends ControllerWebTestCase
             $firstResponse->headers->get('X-Cache-Tags'),
         );
 
-        $secondResponse = $handler->handle('9756441741');
+        $secondResponse = $handler->handle('activity-9756441741');
 
-        // The unprefixed id must resolve to the very same entry, not a second one.
         $this->assertEquals('HIT', $secondResponse->headers->get('X-Cache'));
         $this->assertEquals($firstResponse->getContent(), $secondResponse->getContent());
         $this->assertEquals(

@@ -33,17 +33,17 @@ class ActivitySegmentsRequestHandlerTest extends ControllerWebTestCase
         $this->assertEmpty(trim((string) $this->client->getResponse()->getContent()));
     }
 
-    public function testItAcceptsAnUnprefixedActivityId(): void
+    public function testItRejectsAnUnprefixedActivityId(): void
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/activity/activity-9542782314/segments');
-        $prefixed = (string) $this->client->getResponse()->getContent();
-
         $this->client->request('GET', '/api/activity/9542782314/segments');
 
-        $this->assertResponseIsSuccessful();
-        $this->assertEquals($prefixed, $this->client->getResponse()->getContent());
+        $this->assertResponseStatusCodeSame(404);
+        $this->assertEquals(
+            ['message' => 'Activity "9542782314" not found'],
+            Json::decode((string) $this->client->getResponse()->getContent())
+        );
     }
 
     public function testHandleWhenActivityNotFound(): void

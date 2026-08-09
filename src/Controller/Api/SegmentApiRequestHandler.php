@@ -30,8 +30,8 @@ final readonly class SegmentApiRequestHandler
     public function polylines(string $segmentId): JsonResponse
     {
         try {
-            $segment = $this->segmentRepository->find(SegmentId::fromPrefixedOrUnprefixed($segmentId));
-        } catch (EntityNotFound) {
+            $segment = $this->segmentRepository->find(SegmentId::fromString($segmentId));
+        } catch (EntityNotFound|\InvalidArgumentException) {
             throw new NotFoundHttpException(sprintf('Segment "%s" not found', $segmentId));
         }
 

@@ -123,7 +123,7 @@ final readonly class RewindItemsBuilder
                 content: $this->twig->render('html/rewind/rewind-biggest-activity.html.twig', [
                     'activity' => $longestActivity,
                     'leaflet' => $leafletMap ? [
-                        'polylineUrl' => sprintf('activity/%s/polylines', $longestActivity->getId()->toUnprefixedString()),
+                        'polylineUrl' => sprintf('activity/%s/polylines', $longestActivity->getId()),
                         'map' => $leafletMap,
                     ] : null,
                 ])

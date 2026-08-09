@@ -48,9 +48,8 @@ class SegmentApiRequestHandlerTest extends ControllerWebTestCase
             $firstResponse->headers->get('X-Cache-Tags'),
         );
 
-        $secondResponse = $handler->polylines('10');
+        $secondResponse = $handler->polylines('segment-10');
 
-        // The unprefixed id must resolve to the very same entry, not a second one.
         $this->assertEquals('HIT', $secondResponse->headers->get('X-Cache'));
         $this->assertEquals($firstResponse->getContent(), $secondResponse->getContent());
         $this->assertEquals(

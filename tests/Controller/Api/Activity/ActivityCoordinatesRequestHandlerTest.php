@@ -43,7 +43,7 @@ class ActivityCoordinatesRequestHandlerTest extends ControllerWebTestCase
             $firstResponse->headers->get('X-Cache-Tags'),
         );
 
-        $secondResponse = $handler->handle('9756441741');
+        $secondResponse = $handler->handle('activity-9756441741');
 
         $this->assertEquals('HIT', $secondResponse->headers->get('X-Cache'));
         $this->assertEquals($firstResponse->getContent(), $secondResponse->getContent());

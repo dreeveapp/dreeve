@@ -201,10 +201,9 @@
             {% endif %}
             {% if hasProfileChart is not empty %}
                 <div>
-                    {% set unprefixedActivityId = activity.getId().toUnprefixedString() %}
                     <div style="height: {{ profileChartHeight }}px"
-                         data-echarts-options-url='{{ relativeUrl('api/activity/' ~ unprefixedActivityId ~ '/metrics') }}'
-                         data-leaflet-echart-connect='{{ relativeUrl('api/activity/' ~ unprefixedActivityId ~ '/coordinates') }}'
+                         data-echarts-options-url='{{ relativeUrl('api/activity/' ~ activity.getId() ~ '/metrics') }}'
+                         data-leaflet-echart-connect='{{ relativeUrl('api/activity/' ~ activity.getId() ~ '/coordinates') }}'
                     ></div>
                 </div>
             {% endif %}

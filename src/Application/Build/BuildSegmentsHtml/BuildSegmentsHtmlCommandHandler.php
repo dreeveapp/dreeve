@@ -76,7 +76,7 @@ final readonly class BuildSegmentsHtmlCommandHandler implements CommandHandler
                             SegmentEffortHistoryChart::create($segmentEfforts)->build()
                         ),
                         'leaflet' => $leafletMap ? [
-                            'polylineUrl' => sprintf('segment/%s/polylines', $segment->getId()->toUnprefixedString()),
+                            'polylineUrl' => sprintf('segment/%s/polylines', $segment->getId()),
                             'map' => $leafletMap,
                         ] : null,
                     ]),

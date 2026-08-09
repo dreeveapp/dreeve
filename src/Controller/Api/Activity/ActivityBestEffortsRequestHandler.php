@@ -28,8 +28,8 @@ final readonly class ActivityBestEffortsRequestHandler
     public function handle(string $activityId): HtmlResponse
     {
         try {
-            $activity = $this->activityRepository->find(ActivityId::fromPrefixedOrUnprefixed($activityId));
-        } catch (EntityNotFound) {
+            $activity = $this->activityRepository->find(ActivityId::fromString($activityId));
+        } catch (EntityNotFound|\InvalidArgumentException) {
             throw new NotFoundHttpException(sprintf('Activity "%s" not found', $activityId));
         }
 
