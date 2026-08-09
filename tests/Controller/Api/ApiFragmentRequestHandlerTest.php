@@ -163,6 +163,14 @@ class ApiFragmentRequestHandlerTest extends ContainerTestCase
             404,
             $this->apiFragmentRequestHandler->handle('page', 'activity/activity-1')->getStatusCode()
         );
+        $this->assertEquals(
+            404,
+            $this->apiFragmentRequestHandler->handle('data', 'activity/activity-1/coordinates')->getStatusCode()
+        );
+        $this->assertEquals(
+            404,
+            $this->apiFragmentRequestHandler->handle('data', 'activity/activity-1/metrics')->getStatusCode()
+        );
     }
 
     public function testHandleWhenFragmentIsNotRegistered(): void
@@ -180,6 +188,18 @@ class ApiFragmentRequestHandlerTest extends ContainerTestCase
         $this->assertEquals(
             404,
             $this->apiFragmentRequestHandler->handle('page', 'rewind/1999')->getStatusCode()
+        );
+        $this->assertEquals(
+            404,
+            $this->apiFragmentRequestHandler->handle('data', 'activity/9756441741/coordinates')->getStatusCode()
+        );
+        $this->assertEquals(
+            404,
+            $this->apiFragmentRequestHandler->handle('data', 'activity/activity-9830227112/coordinates')->getStatusCode()
+        );
+        $this->assertEquals(
+            404,
+            $this->apiFragmentRequestHandler->handle('data', 'activity/activity-9830227112/metrics')->getStatusCode()
         );
     }
 
