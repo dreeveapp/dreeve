@@ -8,10 +8,10 @@ use App\Domain\Activity\ActivityMetricsFragmentResolver;
 use App\Domain\Activity\ActivityPolylinesFragmentResolver;
 use App\Domain\Activity\BestEffort\ActivityBestEffortsFragmentResolver;
 use App\Domain\Activity\BestEffort\BestEffortsHistoryFragmentResolver;
+use App\Domain\Activity\SportType\SportType;
 use App\Domain\Calendar\MonthFragmentResolver;
 use App\Domain\Rewind\RewindCompareFragmentResolver;
 use App\Domain\Rewind\RewindFragmentResolver;
-use App\Domain\Activity\SportType\SportType;
 use App\Domain\Segment\ActivitySegmentsFragmentResolver;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentPolylinesFragmentResolver;
@@ -21,8 +21,8 @@ use App\Infrastructure\Cache\Context\CacheContextRegistry;
 use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentRegistry;
 use App\Infrastructure\Http\Fragment\FragmentResolver;
-use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Segment\SegmentBuilder;
@@ -35,10 +35,6 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
 {
     use ProvideTestData;
 
-    /**
-     * A resolver serves a family of paths, so these guards need one real path per resolver to work with.
-     * A resolver without an entry fails every test in this class, which is the point.
-     */
     private const array PATH_PER_RESOLVER = [
         ActivityFragmentResolver::class => 'activity/activity-9756441741',
         MonthFragmentResolver::class => 'month/2023-06',
@@ -62,8 +58,6 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
         foreach ($this->allFragments() as $fragment) {
             $paths[] = $fragment->getPath();
 
-            // Fragments opting out of the render cache all share the same empty key, so only
-            // the ones that actually end up in the cache have to be unique.
             if (!$fragment->getCacheability()->isCacheable()) {
                 continue;
             }
@@ -103,10 +97,6 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
         }
     }
 
-    /**
-     * The shared test set has no segment carrying a route, so the segment polylines resolver
-     * gets one of its own here instead of widening the fixture for every other test.
-     */
     private function provideFragmentTestSet(): void
     {
         $this->provideFullTestSet();
@@ -120,7 +110,6 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
             ->withPolyline(EncodedPolyline::fromString('tqafAua~y^vG{D'))
             ->build();
 
-        // add() never writes the polyline, it only lands through update().
         $segmentRepository = $this->getContainer()->get(SegmentRepository::class);
         $segmentRepository->add($segment);
         $segmentRepository->update($segment);
