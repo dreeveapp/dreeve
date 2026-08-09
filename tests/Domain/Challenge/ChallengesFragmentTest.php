@@ -2,36 +2,45 @@
 
 namespace App\Tests\Domain\Challenge;
 
-use App\Domain\Challenge\ChallengesFragment;
-use App\Tests\ContainerTestCase;
-use App\Tests\ProvideTestData;
+use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\ProvideBuiltTestSet;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class ChallengesFragmentTest extends ContainerTestCase
+class ChallengesFragmentTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideTestData;
-
-    private ChallengesFragment $challengesPage;
+    use ProvideBuiltTestSet;
 
     public function testRender(): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $this->assertMatchesHtmlSnapshot($this->challengesPage->render());
+        $this->client->request('GET', '/api/fragment/page/challenges');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
     public function testGetPath(): void
     {
-        $this->assertEquals('challenges', $this->challengesPage->getPath());
-        $this->assertEquals('challenges', $this->challengesPage->getCacheability()->getCacheKey());
+        $this->provideBuiltTestSet();
+
+        $this->client->request('GET', '/api/fragment/page/challenges');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringEndsWith(
+            'challenges',
+            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+        );
     }
 
-    #[\Override]
-    protected function setUp(): void
+    public function testItIsNotServedAsADataFragment(): void
     {
-        parent::setUp();
+        $this->provideBuiltTestSet();
 
-        $this->challengesPage = $this->getContainer()->get(ChallengesFragment::class);
+        $this->client->request('GET', '/api/fragment/data/challenges');
+
+        $this->assertResponseStatusCodeSame(404);
     }
 }

@@ -2,44 +2,57 @@
 
 namespace App\Tests\Domain\Activity;
 
-use App\Domain\Activity\ActivitiesFragment;
-use App\Tests\ContainerTestCase;
-use App\Tests\ProvideTestData;
+use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\ProvideBuiltTestSet;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class ActivitiesFragmentTest extends ContainerTestCase
+class ActivitiesFragmentTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideTestData;
-
-    private ActivitiesFragment $activitiesPage;
+    use ProvideBuiltTestSet;
 
     public function testRender(): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $this->assertMatchesHtmlSnapshot($this->activitiesPage->render());
+        $this->client->request('GET', '/api/fragment/page/activities');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
     public function testGetPath(): void
     {
-        $this->assertEquals('activities', $this->activitiesPage->getPath());
-        $this->assertEquals('activities', $this->activitiesPage->getCacheability()->getCacheKey());
+        $this->provideBuiltTestSet();
+
+        $this->client->request('GET', '/api/fragment/page/activities');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringEndsWith(
+            'activities',
+            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+        );
+    }
+
+    public function testItIsNotServedAsADataFragment(): void
+    {
+        $this->provideBuiltTestSet();
+
+        $this->client->request('GET', '/api/fragment/data/activities');
+
+        $this->assertResponseStatusCodeSame(404);
     }
 
     public function testItIsTaggedWithTheActivitiesAndGearItRenders(): void
     {
-        $this->assertEquals(
-            ['settings.appearance', 'settings.general', 'activities', 'gear'],
-            $this->activitiesPage->getCacheability()->getCacheTags()->toTagStrings(),
+        $this->provideBuiltTestSet();
+
+        $this->client->request('GET', '/api/fragment/page/activities');
+
+        $this->assertResponseHeaderSame(
+            'X-Cache-Tags',
+            'settings.appearance, settings.general, activities, gear',
         );
-    }
-
-    #[\Override]
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->activitiesPage = $this->getContainer()->get(ActivitiesFragment::class);
     }
 }

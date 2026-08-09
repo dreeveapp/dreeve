@@ -3,42 +3,55 @@
 namespace App\Tests\Domain\Rewind;
 
 use App\Domain\Rewind\RewindFragmentResolver;
-use App\Tests\ContainerTestCase;
-use App\Tests\ProvideTestData;
+use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\ProvideBuiltTestSet;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class RewindFragmentResolverTest extends ContainerTestCase
+class RewindFragmentResolverTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideTestData;
-
-    private RewindFragmentResolver $rewindPageResolver;
+    use ProvideBuiltTestSet;
 
     public function testRenderForAllTime(): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $page = $this->rewindPageResolver->resolve('rewind');
-        $this->assertNotNull($page);
-        $this->assertMatchesHtmlSnapshot($page->render());
+        $this->client->request('GET', '/api/fragment/page/rewind');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
     public function testRenderForASingleYear(): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $page = $this->rewindPageResolver->resolve('rewind/2023');
-        $this->assertNotNull($page);
-        $this->assertMatchesHtmlSnapshot($page->render());
+        $this->client->request('GET', '/api/fragment/page/rewind/2023');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
+    public function testItIsNotServedAsADataFragment(): void
+    {
+        $this->provideBuiltTestSet();
+
+        $this->client->request('GET', '/api/fragment/data/rewind/2023');
+
+        $this->assertResponseStatusCodeSame(404);
     }
 
     #[DataProvider('providePathsToResolve')]
     public function testResolve(string $path, ?string $expectedPath): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $this->assertEquals($expectedPath, $this->rewindPageResolver->resolve($path)?->getPath());
+        $this->assertEquals(
+            $expectedPath,
+            $this->getContainer()->get(RewindFragmentResolver::class)->resolve($path)?->getPath()
+        );
     }
 
     public static function providePathsToResolve(): \Generator
@@ -54,37 +67,35 @@ class RewindFragmentResolverTest extends ContainerTestCase
 
     public function testGetCacheabilityForAllTime(): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $page = $this->rewindPageResolver->resolve('rewind/all-time');
-        $this->assertNotNull($page);
+        $this->client->request('GET', '/api/fragment/page/rewind/all-time');
 
-        $this->assertEquals('rewind.all-time', $page->getCacheability()->getCacheKey());
+        $this->assertResponseIsSuccessful();
+        $this->assertStringEndsWith(
+            'rewind.all-time',
+            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+        );
         $this->assertEqualsCanonicalizing(
             ['activities', 'activity.images', 'gear', 'settings.appearance', 'settings.general'],
-            $page->getCacheability()->getCacheTags()->toTagStrings(),
+            explode(', ', (string) $this->client->getResponse()->headers->get('X-Cache-Tags')),
         );
     }
 
     public function testGetCacheabilityForASingleYearIsScopedToThatYear(): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $page = $this->rewindPageResolver->resolve('rewind/2023');
-        $this->assertNotNull($page);
+        $this->client->request('GET', '/api/fragment/page/rewind/2023');
 
-        $this->assertEquals('rewind.2023', $page->getCacheability()->getCacheKey());
+        $this->assertResponseIsSuccessful();
+        $this->assertStringEndsWith(
+            'rewind.2023',
+            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+        );
         $this->assertEqualsCanonicalizing(
             ['activities.2023', 'activity.images.2023', 'gear', 'settings.appearance', 'settings.general'],
-            $page->getCacheability()->getCacheTags()->toTagStrings(),
+            explode(', ', (string) $this->client->getResponse()->headers->get('X-Cache-Tags')),
         );
-    }
-
-    #[\Override]
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->rewindPageResolver = $this->getContainer()->get(RewindFragmentResolver::class);
     }
 }

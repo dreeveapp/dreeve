@@ -2,36 +2,45 @@
 
 namespace App\Tests\Domain\Activity\Image;
 
-use App\Domain\Activity\Image\PhotosFragment;
-use App\Tests\ContainerTestCase;
-use App\Tests\ProvideTestData;
+use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\ProvideBuiltTestSet;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class PhotosFragmentTest extends ContainerTestCase
+class PhotosFragmentTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideTestData;
-
-    private PhotosFragment $photosPage;
+    use ProvideBuiltTestSet;
 
     public function testRender(): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $this->assertMatchesHtmlSnapshot($this->photosPage->render());
+        $this->client->request('GET', '/api/fragment/page/photos');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
     public function testGetPath(): void
     {
-        $this->assertEquals('photos', $this->photosPage->getPath());
-        $this->assertEquals('photos', $this->photosPage->getCacheability()->getCacheKey());
+        $this->provideBuiltTestSet();
+
+        $this->client->request('GET', '/api/fragment/page/photos');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringContainsString(
+            'photos.trust=',
+            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+        );
     }
 
-    #[\Override]
-    protected function setUp(): void
+    public function testItIsNotServedAsADataFragment(): void
     {
-        parent::setUp();
+        $this->provideBuiltTestSet();
 
-        $this->photosPage = $this->getContainer()->get(PhotosFragment::class);
+        $this->client->request('GET', '/api/fragment/data/photos');
+
+        $this->assertResponseStatusCodeSame(404);
     }
 }

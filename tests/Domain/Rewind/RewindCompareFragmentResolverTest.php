@@ -3,33 +3,45 @@
 namespace App\Tests\Domain\Rewind;
 
 use App\Domain\Rewind\RewindCompareFragmentResolver;
-use App\Tests\ContainerTestCase;
-use App\Tests\ProvideTestData;
+use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\ProvideBuiltTestSet;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class RewindCompareFragmentResolverTest extends ContainerTestCase
+class RewindCompareFragmentResolverTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideTestData;
-
-    private RewindCompareFragmentResolver $rewindComparePageResolver;
+    use ProvideBuiltTestSet;
 
     public function testRender(): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $page = $this->rewindComparePageResolver->resolve('rewind/2023/compare/2022');
-        $this->assertNotNull($page);
-        $this->assertMatchesHtmlSnapshot($page->render());
+        $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/2022');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
+    public function testItIsNotServedAsADataFragment(): void
+    {
+        $this->provideBuiltTestSet();
+
+        $this->client->request('GET', '/api/fragment/data/rewind/2023/compare/2022');
+
+        $this->assertResponseStatusCodeSame(404);
     }
 
     #[DataProvider('providePathsToResolve')]
     public function testResolve(string $path, ?string $expectedPath): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $this->assertEquals($expectedPath, $this->rewindComparePageResolver->resolve($path)?->getPath());
+        $this->assertEquals(
+            $expectedPath,
+            $this->getContainer()->get(RewindCompareFragmentResolver::class)->resolve($path)?->getPath()
+        );
     }
 
     public static function providePathsToResolve(): \Generator
@@ -48,50 +60,48 @@ class RewindCompareFragmentResolverTest extends ContainerTestCase
     public function testItDoesNotResolveWhenThereIsNothingToCompare(): void
     {
         $this->addActivityOneFixtures();
+        $this->markAppAsBuilt();
 
-        $this->assertNull($this->rewindComparePageResolver->resolve('rewind/2023/compare/all-time'));
+        $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/all-time');
+
+        $this->assertResponseStatusCodeSame(404);
     }
 
     public function testGetCacheabilityCarriesTheTagsOfBothSides(): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $page = $this->rewindComparePageResolver->resolve('rewind/2023/compare/2022');
-        $this->assertNotNull($page);
+        $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/2022');
 
-        $this->assertEquals('rewind.2023.compare.2022', $page->getCacheability()->getCacheKey());
+        $this->assertResponseIsSuccessful();
+        $this->assertStringEndsWith(
+            'rewind.2023.compare.2022',
+            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+        );
         $this->assertEqualsCanonicalizing(
             [
                 'activities.2023', 'activity.images.2023',
                 'activities.2022', 'activity.images.2022',
                 'gear', 'settings.appearance', 'settings.general',
             ],
-            $page->getCacheability()->getCacheTags()->toTagStrings(),
+            explode(', ', (string) $this->client->getResponse()->headers->get('X-Cache-Tags')),
         );
     }
 
     public function testGetCacheabilityWhenComparedWithAllTime(): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $page = $this->rewindComparePageResolver->resolve('rewind/2023/compare/all-time');
-        $this->assertNotNull($page);
+        $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/all-time');
 
+        $this->assertResponseIsSuccessful();
         $this->assertEqualsCanonicalizing(
             [
                 'activities.2023', 'activity.images.2023',
                 'activities', 'activity.images',
                 'gear', 'settings.appearance', 'settings.general',
             ],
-            $page->getCacheability()->getCacheTags()->toTagStrings(),
+            explode(', ', (string) $this->client->getResponse()->headers->get('X-Cache-Tags')),
         );
-    }
-
-    #[\Override]
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->rewindComparePageResolver = $this->getContainer()->get(RewindCompareFragmentResolver::class);
     }
 }

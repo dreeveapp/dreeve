@@ -2,42 +2,53 @@
 
 namespace App\Tests\Domain\Activity\BestEffort;
 
-use App\Domain\Activity\BestEffort\BestEffortsFragment;
-use App\Tests\ContainerTestCase;
-use App\Tests\ProvideTestData;
+use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\ProvideBuiltTestSet;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class BestEffortsFragmentTest extends ContainerTestCase
+class BestEffortsFragmentTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideTestData;
-
-    private BestEffortsFragment $bestEffortsPage;
+    use ProvideBuiltTestSet;
 
     public function testRender(): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $this->assertMatchesHtmlSnapshot($this->bestEffortsPage->render());
+        $this->client->request('GET', '/api/fragment/page/best-efforts');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
     public function testGetPath(): void
     {
-        $this->assertEquals('best-efforts', $this->bestEffortsPage->getPath());
-        $this->assertEquals('best-efforts', $this->bestEffortsPage->getCacheability()->getCacheKey());
+        $this->provideBuiltTestSet();
+
+        $this->client->request('GET', '/api/fragment/page/best-efforts');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringEndsWith(
+            'best-efforts',
+            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+        );
+    }
+
+    public function testItIsNotServedAsADataFragment(): void
+    {
+        $this->provideBuiltTestSet();
+
+        $this->client->request('GET', '/api/fragment/data/best-efforts');
+
+        $this->assertResponseStatusCodeSame(404);
     }
 
     public function testItShouldExpireAtMidnight(): void
     {
-        // The clock is paused on 2023-10-17 16:15:04.
-        $this->assertEquals(27896, $this->bestEffortsPage->getCacheability()->getTtlInSeconds());
-    }
+        $this->provideBuiltTestSet();
 
-    #[\Override]
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->bestEffortsPage = $this->getContainer()->get(BestEffortsFragment::class);
+        $this->client->request('GET', '/api/fragment/page/best-efforts');
+        $this->assertResponseHeaderSame('X-Cache-TTL', '27896');
     }
 }

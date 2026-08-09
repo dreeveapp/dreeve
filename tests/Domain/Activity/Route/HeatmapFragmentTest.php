@@ -2,36 +2,45 @@
 
 namespace App\Tests\Domain\Activity\Route;
 
-use App\Domain\Activity\Route\HeatmapFragment;
-use App\Tests\ContainerTestCase;
-use App\Tests\ProvideTestData;
+use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\ProvideBuiltTestSet;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class HeatmapFragmentTest extends ContainerTestCase
+class HeatmapFragmentTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideTestData;
-
-    private HeatmapFragment $heatmapPage;
+    use ProvideBuiltTestSet;
 
     public function testRender(): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $this->assertMatchesHtmlSnapshot($this->heatmapPage->render());
+        $this->client->request('GET', '/api/fragment/page/heatmap');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
     public function testGetPath(): void
     {
-        $this->assertEquals('heatmap', $this->heatmapPage->getPath());
-        $this->assertEquals('heatmap', $this->heatmapPage->getCacheability()->getCacheKey());
+        $this->provideBuiltTestSet();
+
+        $this->client->request('GET', '/api/fragment/page/heatmap');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringEndsWith(
+            'heatmap',
+            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+        );
     }
 
-    #[\Override]
-    protected function setUp(): void
+    public function testItIsNotServedAsADataFragment(): void
     {
-        parent::setUp();
+        $this->provideBuiltTestSet();
 
-        $this->heatmapPage = $this->getContainer()->get(HeatmapFragment::class);
+        $this->client->request('GET', '/api/fragment/data/heatmap');
+
+        $this->assertResponseStatusCodeSame(404);
     }
 }

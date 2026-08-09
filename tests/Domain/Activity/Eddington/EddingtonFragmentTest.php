@@ -2,36 +2,44 @@
 
 namespace App\Tests\Domain\Activity\Eddington;
 
-use App\Domain\Activity\Eddington\EddingtonFragment;
-use App\Tests\ContainerTestCase;
-use App\Tests\ProvideTestData;
+use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\ProvideBuiltTestSet;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class EddingtonFragmentTest extends ContainerTestCase
+class EddingtonFragmentTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideTestData;
-
-    private EddingtonFragment $eddingtonPage;
+    use ProvideBuiltTestSet;
 
     public function testRender(): void
     {
-        $this->provideFullTestSet();
+        $this->provideBuiltTestSet();
 
-        $this->assertMatchesHtmlSnapshot($this->eddingtonPage->render());
+        $this->client->request('GET', '/api/fragment/page/eddington');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
     public function testGetPath(): void
     {
-        $this->assertEquals('eddington', $this->eddingtonPage->getPath());
-        $this->assertEquals('eddington', $this->eddingtonPage->getCacheability()->getCacheKey());
+        $this->provideBuiltTestSet();
+
+        $this->client->request('GET', '/api/fragment/page/eddington');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringEndsWith(
+            'eddington',
+            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+        );
     }
 
-    #[\Override]
-    protected function setUp(): void
+    public function testItIsNotServedAsADataFragment(): void
     {
-        parent::setUp();
+        $this->provideBuiltTestSet();
 
-        $this->eddingtonPage = $this->getContainer()->get(EddingtonFragment::class);
+        $this->client->request('GET', '/api/fragment/data/eddington');
+        $this->assertResponseStatusCodeSame(404);
     }
 }
