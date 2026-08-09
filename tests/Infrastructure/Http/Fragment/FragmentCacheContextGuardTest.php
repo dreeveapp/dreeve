@@ -12,6 +12,7 @@ use App\Domain\Calendar\MonthFragmentResolver;
 use App\Domain\Rewind\RewindCompareFragmentResolver;
 use App\Domain\Rewind\RewindFragmentResolver;
 use App\Domain\Segment\ActivitySegmentsFragmentResolver;
+use App\Domain\Segment\SegmentFragmentResolver;
 use App\Domain\Segment\SegmentPolylinesFragmentResolver;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContextRegistry;
@@ -39,6 +40,8 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
         ActivityBestEffortsFragmentResolver::class => 'activity/activity-9542782314/best-efforts',
         ActivitySegmentsFragmentResolver::class => 'activity/activity-9542782314/segments',
         SegmentPolylinesFragmentResolver::class => 'segment/segment-10/polylines',
+        // Segment ten has no efforts, so this also guards that a segment nobody ever rode still resolves.
+        SegmentFragmentResolver::class => 'segment/segment-10',
         BestEffortsHistoryFragmentResolver::class => 'best-efforts/Ride/10000',
     ];
 

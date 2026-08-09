@@ -11,7 +11,6 @@ use App\Application\Build\BuildGearMaintenanceHtml\BuildGearMaintenanceHtml;
 use App\Application\Build\BuildGearStatsHtml\BuildGearStatsHtml;
 use App\Application\Build\BuildManifest\BuildManifest;
 use App\Application\Build\BuildRecordingDevices\BuildRecordingDevices;
-use App\Application\Build\BuildSegmentsHtml\BuildSegmentsHtml;
 use App\Application\Build\ConfigureAppColors\ConfigureAppColors;
 use App\Application\Build\ConfigureAppLocale\ConfigureAppLocale;
 use App\Application\Import\StravaImport\ImportGear\GearImportStatus;
@@ -65,7 +64,6 @@ This is not a bug, once all your activities have been imported, your gear statis
             'Building gear stats' => new BuildGearStatsHtml($now),
             'Building gear maintenance' => new BuildGearMaintenanceHtml(),
             'Building recording devices' => new BuildRecordingDevices(),
-            'Building segments' => new BuildSegmentsHtml(),
             'Building badges' => new BuildBadgeSvg($now),
         ];
 

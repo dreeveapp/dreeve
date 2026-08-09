@@ -14,11 +14,13 @@
         <div class="flex justify-center">
             {% set bestEffort = segment.getBestEffort() %}
             <div class="w-52">
-                {{ bestEffort.getElapsedTimeFormatted() }}
-                <span class="font-medium">-</span>
-                {{ segment.getBestEffort().getAverageSpeed()|renderMeasurement(1) }}
-                {% if segment.getBestEffort().getAverageWatts() %}
-                    <span class="font-medium">-</span> {{ segment.getBestEffort().getAverageWatts()|formatNumber(0) }}<span class="text-xxs ml-px">w</span>
+                {% if bestEffort %}
+                    {{ bestEffort.getElapsedTimeFormatted() }}
+                    <span class="font-medium">-</span>
+                    {{ bestEffort.getAverageSpeed()|renderMeasurement(1) }}
+                    {% if bestEffort.getAverageWatts() %}
+                        <span class="font-medium">-</span> {{ bestEffort.getAverageWatts()|formatNumber(0) }}<span class="text-xxs ml-px">w</span>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>

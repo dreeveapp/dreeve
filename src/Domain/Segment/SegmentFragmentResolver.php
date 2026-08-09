@@ -1,0 +1,124 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domain\Segment;
+
+use App\Domain\Activity\ActivityCacheTag;
+use App\Domain\Activity\EnrichedActivity;
+use App\Domain\Activity\EnrichedActivityRepository;
+use App\Domain\Segment\SegmentEffort\SegmentEffort;
+use App\Domain\Segment\SegmentEffort\SegmentEffortHistoryChart;
+use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
+use App\Domain\Segment\SegmentEffort\SegmentEfforts;
+use App\Domain\Segment\SegmentEffort\SegmentEffortVsHeartRateChart;
+use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\Tag\CacheTag;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Http\Fragment\FragmentResolver;
+use App\Infrastructure\Http\Fragment\ResolvedFragment;
+use App\Infrastructure\Serialization\Json;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
+
+final readonly class SegmentFragmentResolver implements FragmentResolver
+{
+    private const string BASE_PATH = 'segment';
+    private const int NUMBER_OF_TOP_EFFORTS = 10;
+
+    public function __construct(
+        private SegmentRepository $segmentRepository,
+        private SegmentEffortRepository $segmentEffortRepository,
+        private EnrichedActivityRepository $enrichedActivityRepository,
+        private SettingsRepository $settingsRepository,
+        private TranslatorInterface $translator,
+        private Environment $twig,
+    ) {
+    }
+
+    public function resolve(string $path): ?ResolvedFragment
+    {
+        if (!preg_match('#^'.self::BASE_PATH.'/([^/]+)$#', $path, $matches)) {
+            return null;
+        }
+
+        try {
+            $segment = $this->segmentRepository->find(SegmentId::fromString($matches[1]));
+        } catch (EntityNotFound|\InvalidArgumentException) {
+            return null;
+        }
+
+        $topTenSegmentEfforts = $this->segmentEffortRepository->findTopXBySegmentId(
+            $segment->getId(),
+            self::NUMBER_OF_TOP_EFFORTS
+        );
+
+        return new ResolvedFragment(
+            path: sprintf('%s/%s', self::BASE_PATH, $segment->getId()),
+            cacheability: Cacheability::for(
+                cacheKey: sprintf('%s.%s', self::BASE_PATH, $segment->getId()->toUnprefixedString()),
+                cacheTags: CacheTags::of(
+                    SegmentCacheTag::for($segment->getId()),
+                    RootCacheTag::GEAR,
+                    // The top ten renders the title and gear of every activity it lists, so a
+                    // rename of one of those has to invalidate this segment too.
+                    ...array_map(
+                        static fn (SegmentEffort $segmentEffort): CacheTag => ActivityCacheTag::for($segmentEffort->getActivityId()),
+                        $topTenSegmentEfforts->toArray(),
+                    ),
+                ),
+            ),
+            render: fn (): string => $this->renderFor($segment, $topTenSegmentEfforts),
+        );
+    }
+
+    private function renderFor(Segment $segment, SegmentEfforts $topTenSegmentEfforts): string
+    {
+        $segmentEfforts = $this->segmentEffortRepository->findBySegmentId($segment->getId());
+        $segment = $segment
+            ->withNumberOfTimesRidden(count($segmentEfforts))
+            ->withBestEffort($topTenSegmentEfforts->getBestEffort())
+            ->withLastEffortDate($segmentEfforts->getFirst()?->getStartDateTime());
+
+        $leafletMap = $segment->getLeafletMap();
+
+        return $this->twig->load('html/segment/segment.html.twig')->render([
+            'segment' => $segment,
+            'segmentEffortsTopTen' => $topTenSegmentEfforts,
+            'enrichedActivitiesPerSegmentEffortId' => $this->enrichedActivitiesPerSegmentEffortId($topTenSegmentEfforts),
+            'segmentEffortsVsHeartRateChart' => Json::encode(
+                SegmentEffortVsHeartRateChart::create(
+                    segmentEfforts: $segmentEfforts,
+                    sportType: $segment->getSportType(),
+                    unitSystem: $this->settingsRepository->appearance()->getUnitSystem(),
+                    translator: $this->translator
+                )->build()
+            ),
+            'segmentEffortsHistoryChart' => Json::encode(
+                SegmentEffortHistoryChart::create($segmentEfforts)->build()
+            ),
+            'leaflet' => $leafletMap ? [
+                'polylineUrl' => sprintf('%s/%s/polylines', self::BASE_PATH, $segment->getId()),
+                'map' => $leafletMap,
+            ] : null,
+        ]);
+    }
+
+    /**
+     * @return array<string, EnrichedActivity>
+     */
+    private function enrichedActivitiesPerSegmentEffortId(SegmentEfforts $segmentEfforts): array
+    {
+        $enrichedActivities = [];
+        foreach ($segmentEfforts as $segmentEffort) {
+            $enrichedActivities[(string) $segmentEffort->getId()] = $this->enrichedActivityRepository->find(
+                $segmentEffort->getActivityId()
+            );
+        }
+
+        return $enrichedActivities;
+    }
+}

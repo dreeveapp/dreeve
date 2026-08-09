@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\BestEffort;
 
+use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypes;
 use App\Domain\Activity\SportType\SportType;
@@ -57,6 +58,21 @@ final readonly class BestEfforts
     public function historyFor(SportType $sportType, ConvertableToMeter $distance, int $position): ?ActivityBestEffort
     {
         return $this->historyPerSportType[$sportType->value][$distance->toMeter()->toInt()][$position] ?? null;
+    }
+
+    public function getActivityIds(): ActivityIds
+    {
+        $activityIds = [];
+        foreach ([$this->bestEffortPerPeriod, $this->historyPerSportType] as $bestEfforts) {
+            array_walk_recursive(
+                $bestEfforts,
+                function (ActivityBestEffort $activityBestEffort) use (&$activityIds): void {
+                    $activityIds[] = $activityBestEffort->getActivityId();
+                }
+            );
+        }
+
+        return ActivityIds::fromArray($activityIds)->unique();
     }
 
     /**

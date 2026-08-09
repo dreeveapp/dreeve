@@ -84,7 +84,7 @@
     <div class="flex flex-wrap gap-2 p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <div id="images" class="flex flex-wrap gap-2">
             {% for image in images %}
-                {% set activity = enrichedActivities.find(image.getActivityId()) %}
+                {% set activity = activitiesPerActivityId[image.getActivityId()] %}
                 {% set lightGalleryElement = {
                     'src': securedImageUrl(image.getImageUrl()),
                     'subHtml': '<p>' ~ activity.getSanitizedName() ~ '</p>',

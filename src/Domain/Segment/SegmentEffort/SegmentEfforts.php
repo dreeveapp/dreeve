@@ -16,10 +16,12 @@ final class SegmentEfforts extends Collection
         return SegmentEffort::class;
     }
 
-    public function getBestEffort(): SegmentEffort
+    public function getBestEffort(): ?SegmentEffort
     {
-        $bestEffort = $this->getFirst();
-        assert($bestEffort instanceof SegmentEffort);
+        if (!$bestEffort = $this->getFirst()) {
+            return null;
+        }
+
         foreach ($this as $segmentEffort) {
             if ($segmentEffort->getElapsedTimeInSeconds() >= $bestEffort->getElapsedTimeInSeconds()) {
                 continue;

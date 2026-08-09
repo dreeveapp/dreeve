@@ -12,6 +12,8 @@ interface ActivityRepository
 
     public function findAll(): Activities;
 
+    public function findByIds(ActivityIds $activityIds): Activities;
+
     public function findByDateRange(SerializableDateTime $from, SerializableDateTime $till): Activities;
 
     public function findWithRawData(ActivityId $activityId): ActivityWithRawData;

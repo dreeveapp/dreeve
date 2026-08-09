@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget;
 
+use App\Domain\Activity\ActivityRepository;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Milestone\MilestoneCollector;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -15,6 +16,7 @@ final readonly class MostRecentMilestonesWidget implements Widget
     public function __construct(
         private TranslatorInterface $translator,
         private MilestoneCollector $milestonesCollector,
+        private ActivityRepository $activityRepository,
         private Environment $twig,
     ) {
     }
@@ -58,9 +60,11 @@ final readonly class MostRecentMilestonesWidget implements Widget
         }
 
         $numberOfMilestonesToDisplay = (int) $configuration->get('numberOfMilestonesToDisplay');
+        $milestones = $milestones->slice(0, $numberOfMilestonesToDisplay);
 
         return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
-            'milestones' => $milestones->slice(0, $numberOfMilestonesToDisplay),
+            'milestones' => $milestones,
+            'activitiesPerActivityId' => $this->activityRepository->findByIds($milestones->getActivityIds())->keyByActivityId(),
         ]);
     }
 }

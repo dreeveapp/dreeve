@@ -22,7 +22,7 @@
                 </div>
                 <div class="text-sm text-gray-600">
                     {% if milestone.getActivityId() %}
-                        {% set activity = enrichedActivities.find(milestone.getActivityId()) %}
+                        {% set activity = activitiesPerActivityId[milestone.getActivityId()] %}
                         {{ activity|activityLink }}
                     {% endif %}
                 </div>

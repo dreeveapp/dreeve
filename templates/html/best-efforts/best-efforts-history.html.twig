@@ -43,7 +43,7 @@
                             {% for sportType in sportTypes %}
                                 {% set bestEffort = bestEfforts.historyFor(sportType, distance, i) %}
                                 {% if bestEffort %}
-                                    {% set activity = enrichedActivities.find(bestEffort.getActivityId()) %}
+                                    {% set activity = activitiesPerActivityId[bestEffort.getActivityId()] %}
                                     <td class="truncate">
                                         <div class="font-semibold text-gray-700">{{ bestEffort.getFormattedTime() }}</div>
                                         <div class="text-xs">{{ activity.getStartDate()|formatDate() }}</div>

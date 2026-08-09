@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\BestEffort;
 
+use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -20,6 +21,7 @@ final readonly class BestEffortsHistoryFragmentResolver implements FragmentResol
 
     public function __construct(
         private BestEffortsCalculator $bestEffortsCalculator,
+        private ActivityRepository $activityRepository,
         private Environment $twig,
     ) {
     }
@@ -49,13 +51,21 @@ final readonly class BestEffortsHistoryFragmentResolver implements FragmentResol
                 cacheKey: sprintf('%s.%s.%d', self::BASE_PATH, $activityType->value, $distanceInMeter),
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
             ),
-            render: fn (): string => $this->twig->load('html/best-efforts/best-efforts-history.html.twig')->render([
-                'activityType' => $activityType,
-                'period' => BestEffortPeriod::ALL_TIME,
-                'distance' => $distance,
-                'bestEfforts' => $this->bestEffortsCalculator->calculate(),
-            ]),
+            render: fn (): string => $this->renderFor($activityType, $distance),
             type: FragmentType::PAGE,
         );
+    }
+
+    private function renderFor(ActivityType $activityType, ConvertableToMeter $distance): string
+    {
+        $bestEfforts = $this->bestEffortsCalculator->calculate();
+
+        return $this->twig->load('html/best-efforts/best-efforts-history.html.twig')->render([
+            'activityType' => $activityType,
+            'period' => BestEffortPeriod::ALL_TIME,
+            'distance' => $distance,
+            'bestEfforts' => $bestEfforts,
+            'activitiesPerActivityId' => $this->activityRepository->findByIds($bestEfforts->getActivityIds())->keyByActivityId(),
+        ]);
     }
 }

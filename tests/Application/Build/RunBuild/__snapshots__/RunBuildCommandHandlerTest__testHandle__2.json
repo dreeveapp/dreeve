@@ -30,10 +30,6 @@
         "payload": []
     },
     {
-        "commandName": "App\\Application\\Build\\BuildSegmentsHtml\\BuildSegmentsHtml",
-        "payload": []
-    },
-    {
         "commandName": "App\\Application\\Build\\BuildBadgeSvg\\BuildBadgeSvg",
         "payload": {
             "now": "2023-10-17 16:15:04"

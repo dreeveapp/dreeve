@@ -1,23 +1,21 @@
 Buildingapp...
 
 
-0%[>---------------------------]0/9-Initializing...
+0%[>---------------------------]0/8-Initializing...
 
-11%[===>------------------------]1/9-Configuringlocale
+12%[===>------------------------]1/8-Configuringlocale
 
-22%[======>---------------------]2/9-Configuringthemecolors
+25%[=======>--------------------]2/8-Configuringthemecolors
 
-33%[=========>------------------]3/9-BuildingManifest
+37%[==========>-----------------]3/8-BuildingManifest
 
-44%[============>---------------]4/9-Buildingdashboard
+50%[==============>-------------]4/8-Buildingdashboard
 
-55%[===============>------------]5/9-Buildinggearstats
+62%[=================>----------]5/8-Buildinggearstats
 
-66%[==================>---------]6/9-Buildinggearmaintenance
+75%[=====================>------]6/8-Buildinggearmaintenance
 
-77%[=====================>------]7/9-Buildingrecordingdevices
+87%[========================>---]7/8-Buildingrecordingdevices
 
-88%[========================>---]8/9-Buildingsegments
-
-100%[============================]9/9-Buildingbadges
+100%[============================]8/8-Buildingbadges
 

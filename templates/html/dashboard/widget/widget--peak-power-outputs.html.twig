@@ -53,7 +53,7 @@
                                         {{ powerOutput.getRelativePower() }}<span class="text-xxs ml-px">w/kg</span>
                                     </td>
                                     <td class="text-left truncate">
-                                        {{ enrichedActivities.find(powerOutput.getActivityId())|activityLink() }}
+                                        {{ activitiesPerActivityId[powerOutput.getActivityId()]|activityLink() }}
                                     </td>
                                 </tr>
                             {% endif %}

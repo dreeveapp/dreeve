@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\BestEffort;
 
+use App\Domain\Activity\ActivityRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -18,6 +19,7 @@ final readonly class BestEffortsFragment implements Fragment
 {
     public function __construct(
         private BestEffortsCalculator $bestEffortsCalculator,
+        private ActivityRepository $activityRepository,
         private TranslatorInterface $translator,
         private Clock $clock,
         private Environment $twig,
@@ -64,6 +66,7 @@ final readonly class BestEffortsFragment implements Fragment
         return $this->twig->load('html/best-efforts/best-efforts.html.twig')->render([
             'bestEffortsCharts' => $bestEffortsCharts,
             'bestEfforts' => $bestEfforts,
+            'activitiesPerActivityId' => $this->activityRepository->findByIds($bestEfforts->getActivityIds())->keyByActivityId(),
         ]);
     }
 }

@@ -58,6 +58,22 @@ final class SegmentEffortBuilder
         );
     }
 
+    public function buildAsNewlyCreated(): SegmentEffort
+    {
+        return SegmentEffort::create(
+            segmentEffortId: $this->segmentEffortId,
+            segmentId: $this->segmentId,
+            activityId: $this->activityId,
+            startDateTime: $this->startDateTime,
+            name: $this->name,
+            elapsedTimeInSeconds: $this->elapsedTimeInSeconds,
+            distance: $this->distance,
+            averageWatts: $this->averageWatts,
+            averageHeartRate: $this->averageHeartRate,
+            maxHeartRate: $this->maxHeartRate,
+        );
+    }
+
     public function withSegmentEffortId(SegmentEffortId $id): self
     {
         $this->segmentEffortId = $id;

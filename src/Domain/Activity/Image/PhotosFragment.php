@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Image;
 
 use App\Application\Countries;
+use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\CacheContexts;
@@ -19,6 +20,7 @@ final readonly class PhotosFragment implements Fragment
 {
     public function __construct(
         private ImageRepository $imageRepository,
+        private ActivityRepository $activityRepository,
         private SportTypeRepository $sportTypeRepository,
         private Countries $countries,
         private Environment $twig,
@@ -50,6 +52,7 @@ final readonly class PhotosFragment implements Fragment
 
         return $this->twig->load('html/photos.html.twig')->render([
             'images' => $images,
+            'activitiesPerActivityId' => $this->activityRepository->findByIds($images->getActivityIds())->keyByActivityId(),
             'sportTypes' => $this->sportTypeRepository->findForImages(),
             'countries' => $this->countries->getUsedInPhotos(),
             'totalPhotoCount' => count($images),

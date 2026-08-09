@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Stream;
 
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
 use App\Infrastructure\Measurement\Mass\Kilogram;
 use App\Infrastructure\ValueObject\Collection;
 use Carbon\CarbonInterval;
@@ -13,6 +15,13 @@ use Carbon\CarbonInterval;
  */
 final class PowerOutputs extends Collection
 {
+    public function getActivityIds(): ActivityIds
+    {
+        return ActivityIds::fromArray(array_filter($this->map(
+            fn (PowerOutput $powerOutput): ?ActivityId => $powerOutput->getActivityId()
+        )))->unique();
+    }
+
     public function getItemClassName(): string
     {
         return PowerOutput::class;

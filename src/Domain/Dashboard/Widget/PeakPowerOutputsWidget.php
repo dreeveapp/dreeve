@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget;
 
+use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypeRepository;
-use App\Domain\Activity\EnrichedActivities;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Activity\Stream\ActivityPowerRepository;
 use App\Domain\Activity\Stream\BestPowerOutputs;
@@ -23,7 +24,7 @@ use Twig\Environment;
 final readonly class PeakPowerOutputsWidget implements Widget
 {
     public function __construct(
-        private EnrichedActivities $enrichedActivities,
+        private ActivityRepository $activityRepository,
         private ActivityPowerRepository $activityPowerRepository,
         private ActivityTypeRepository $activityTypeRepository,
         private Environment $twig,
@@ -76,7 +77,7 @@ final readonly class PeakPowerOutputsWidget implements Widget
         }
 
         $activityType = ActivityType::from(array_key_first($bestAllTimePowerOutputsPerActivityType));
-        $allActivities = $this->enrichedActivities->findAll();
+        $allActivities = $this->activityRepository->findAll();
         $allYears = Years::create(
             startDate: $allActivities->getFirstActivityStartDate(),
             endDate: $now
@@ -121,8 +122,14 @@ final readonly class PeakPowerOutputsWidget implements Widget
             ]),
         );
 
+        $activityIds = ActivityIds::empty();
+        foreach ($bestAllTimePowerOutputsPerActivityType as $powerOutputs) {
+            $activityIds = $activityIds->mergeWith($powerOutputs->getActivityIds());
+        }
+
         return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'powerOutputsPerActivityType' => $bestAllTimePowerOutputsPerActivityType,
+            'activitiesPerActivityId' => $this->activityRepository->findByIds($activityIds->unique())->keyByActivityId(),
             'timeIntervals' => ActivityPowerRepository::TIME_INTERVALS_IN_SECONDS_REDACTED,
         ]);
     }

@@ -7,6 +7,7 @@ namespace App\Domain\Segment\SegmentEffort;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Integration\AI\SupportsAITooling;
 use App\Domain\Segment\SegmentId;
+use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
@@ -21,32 +22,33 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'SegmentEffort_activityIndex', columns: ['activityId'])]
 #[ORM\Index(name: 'SegmentEffort_segmentElapsedTime', columns: ['segmentId', 'elapsedTimeInSeconds'])]
 #[ORM\Index(name: 'SegmentEffort_segmentStartDateTime', columns: ['segmentId', 'startDateTime'])]
-final readonly class SegmentEffort implements SupportsAITooling
+final class SegmentEffort implements SupportsAITooling
 {
     use ProvideTimeFormats;
+    use RecordsEvents;
 
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string', unique: true)]
-        private SegmentEffortId $segmentEffortId,
+        private readonly SegmentEffortId $segmentEffortId,
         #[ORM\Column(type: 'string')]
-        private SegmentId $segmentId,
+        private readonly SegmentId $segmentId,
         #[ORM\Column(type: 'string')]
-        private ActivityId $activityId,
+        private readonly ActivityId $activityId,
         #[ORM\Column(type: 'datetime_immutable')]
-        private SerializableDateTime $startDateTime,
+        private readonly SerializableDateTime $startDateTime,
         #[ORM\Column(type: 'string')]
-        private string $name,
+        private readonly string $name,
         #[ORM\Column(type: 'float')]
-        private float $elapsedTimeInSeconds,
+        private readonly float $elapsedTimeInSeconds,
         #[ORM\Column(type: 'integer')]
-        private Kilometer $distance,
+        private readonly Kilometer $distance,
         #[ORM\Column(type: 'float', nullable: true)]
-        private ?float $averageWatts,
+        private readonly ?float $averageWatts,
         #[ORM\Column(type: 'integer', nullable: true)]
-        private ?int $averageHeartRate,
+        private readonly ?int $averageHeartRate,
         #[ORM\Column(type: 'integer', nullable: true)]
-        private ?int $maxHeartRate,
-        private ?int $rank,
+        private readonly ?int $maxHeartRate,
+        private readonly ?int $rank,
     ) {
     }
 
@@ -62,7 +64,7 @@ final readonly class SegmentEffort implements SupportsAITooling
         ?int $averageHeartRate,
         ?int $maxHeartRate,
     ): self {
-        return new self(
+        $segmentEffort = new self(
             segmentEffortId: $segmentEffortId,
             segmentId: $segmentId,
             activityId: $activityId,
@@ -75,6 +77,9 @@ final readonly class SegmentEffort implements SupportsAITooling
             maxHeartRate: $maxHeartRate,
             rank: null,
         );
+        $segmentEffort->recordThat(new SegmentEffortWasAdded($segmentId));
+
+        return $segmentEffort;
     }
 
     public static function fromState(

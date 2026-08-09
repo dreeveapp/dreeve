@@ -193,7 +193,7 @@ final class Segment implements SupportsAITooling
         return $this->bestEffort;
     }
 
-    public function withBestEffort(SegmentEffort $segmentEffort): self
+    public function withBestEffort(?SegmentEffort $segmentEffort): self
     {
         return clone ($this, [
             'bestEffort' => $segmentEffort,

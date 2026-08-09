@@ -12,7 +12,7 @@
             </summary>
             <div class="mt-3 space-y-2 max-h-125 overflow-y-auto p-1">
                 {% for segmentEffort in segmentEfforts %}
-                    <a href="#" data-model-content-url="{{ relativeUrl('segment/' ~ segmentEffort.getSegmentId() ~ '.html') }}" rel="nofollow"
+                    <a href="#" data-model-content-url="{{ relativeUrl('api/fragment/page/segment/' ~ segmentEffort.getSegmentId()) }}" rel="nofollow"
                        class="group/segment flex items-center gap-3 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs hover:ring-primary/30 rounded-xl p-3 transition">
                         <div title="Rank" class="shrink-0 w-12 h-10 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center font-bold text-sm gap-0.5">
                             {{ segmentEffort.getRank() }}

@@ -10,6 +10,8 @@ use App\Domain\Challenge\ChallengesFragment;
 use App\Domain\Milestone\MilestonesFragment;
 use App\Domain\Rewind\RewindCompareFragmentResolver;
 use App\Domain\Rewind\RewindFragmentResolver;
+use App\Domain\Segment\SegmentDataTableFragment;
+use App\Domain\Segment\SegmentsFragment;
 use App\Infrastructure\Cache\Cacheable;
 use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -126,6 +128,22 @@ class RenderCacheInvalidationTest extends ContainerTestCase
             RootCacheTag::SETTINGS_GENERAL,
             RootCacheTag::ACTIVITY_IMAGES,
         ]];
+
+        yield 'segments' => [SegmentsFragment::class, [
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::SEGMENTS,
+            RootCacheTag::ACTIVITIES,
+        ]];
+
+        yield 'segment-data-table' => [SegmentDataTableFragment::class, [
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::SEGMENTS,
+        ]];
+
+        // The segment detail is scoped to a single segment and to the activities it lists, so none of
+        // the root tags this test invalidates touch it. SegmentInvalidateCacheTagsListenerTest covers it.
     }
 
     #[\Override]

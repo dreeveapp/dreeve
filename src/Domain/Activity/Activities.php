@@ -19,6 +19,19 @@ final class Activities extends Collection
         return Activity::class;
     }
 
+    /**
+     * @return array<string, Activity>
+     */
+    public function keyByActivityId(): array
+    {
+        $activities = [];
+        foreach ($this as $activity) {
+            $activities[(string) $activity->getId()] = $activity;
+        }
+
+        return $activities;
+    }
+
     public function getFirstActivityStartDate(): SerializableDateTime
     {
         $startDate = null;

@@ -9,4 +9,3 @@ twig:
         rebuildStatus: '@App\Application\RebuildStatus'
         appVersion: '@App\Application\AppVersion'
         importMode: '@App\Domain\Import\ImportMode'
-        enrichedActivities: '@App\Domain\Activity\EnrichedActivities'
