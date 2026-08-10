@@ -35,6 +35,33 @@ class DashboardWidgetFragmentTest extends ControllerWebTestCase
         }
     }
 
+    public function testItDoesNotServeAWidgetThatIsNotOnTheLayout(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->client->request('GET', '/api/fragment/partial/dashboard/widget/dashboardWidget-doesNotExist');
+
+        $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testItDoesNotServeAMalformedWidgetId(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->client->request('GET', '/api/fragment/partial/dashboard/widget/doesNotExist');
+
+        $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testItIsNotServedAsAPageFragment(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->client->request('GET', '/api/fragment/page/dashboard/widget/dashboardWidget-introText');
+
+        $this->assertResponseStatusCodeSame(404);
+    }
+
     protected function getSnapshotId(): string
     {
         return new \ReflectionClass($this)->getShortName().'--'.
