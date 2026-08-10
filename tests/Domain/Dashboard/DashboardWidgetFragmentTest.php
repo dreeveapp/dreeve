@@ -3,9 +3,14 @@
 namespace App\Tests\Domain\Dashboard;
 
 use App\Domain\Dashboard\DashboardLayout;
+use App\Domain\Dashboard\Widget\ConfiguredWidgets;
+use App\Infrastructure\KeyValue\Key;
+use App\Infrastructure\KeyValue\KeyValue;
+use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Infrastructure\KeyValue\Value;
+use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;
-use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class DashboardWidgetFragmentTest extends ControllerWebTestCase
@@ -13,21 +18,45 @@ class DashboardWidgetFragmentTest extends ControllerWebTestCase
     use MatchesSnapshots;
     use ProvideTestData;
 
-    #[DataProvider(methodName: 'provideDashboardWidgetId')]
-    public function testRender(string $dashboardWidgetId): void
+    private string $snapshotName;
+
+    public function testRender(): void
     {
         $this->provideFullTestSet();
+        $this->saveLayoutContainingEveryAvailableWidget();
 
-        $this->client->request('GET', '/api/fragment/partial/dashboard/widget/'.$dashboardWidgetId);
+        foreach ($this->getContainer()->get(ConfiguredWidgets::class) as $configuredWidget) {
+            $this->snapshotName = (string) $configuredWidget->getName();
 
-        $this->assertResponseIsSuccessful();
-        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+            $this->client->request('GET', '/api/fragment/partial/dashboard/widget/'.$configuredWidget->getId());
+
+            $this->assertResponseIsSuccessful();
+            $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+        }
     }
 
-    public static function provideDashboardWidgetId(): iterable
+    protected function getSnapshotId(): string
     {
-        foreach (DashboardLayout::default() as $layoutItem) {
-            yield $layoutItem['widget'] => [$layoutItem['id']];
+        return new \ReflectionClass($this)->getShortName().'--'.
+            $this->name().'--'.
+            $this->snapshotName;
+    }
+
+    private function saveLayoutContainingEveryAvailableWidget(): void
+    {
+        $layout = DashboardLayout::default();
+        $configuredWidgetNames = array_column($layout, 'widget');
+
+        foreach (array_keys($this->getContainer()->get(ConfiguredWidgets::class)->getAvailableWidgets()) as $widgetName) {
+            if (in_array($widgetName, $configuredWidgetNames, true)) {
+                continue;
+            }
+            $layout[] = ['id' => 'dashboardWidget-'.$widgetName, 'widget' => $widgetName, 'width' => 100];
         }
+
+        $this->getContainer()->get(KeyValueStore::class)->save(KeyValue::fromState(
+            key: Key::DASHBOARD,
+            value: Value::fromString(Json::encode($layout)),
+        ));
     }
 }
