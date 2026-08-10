@@ -25,15 +25,15 @@
                 </svg>
                 {{ "Admin"|trans({}, 'admin') }}
             </span>
-            {% if rebuildStatus.isPending() %}
-            <span id="rebuild-pending-badge"
+            {% if importStatus.isPending() %}
+            <span id="import-pending-badge"
                   class="ml-2 pill pill--warning px-2.5 text-xs font-semibold"
                   title="{{ "Changes still need to be processed before they appear on the app"|trans({}, 'admin') }}">
                 <span class="relative flex size-2">
                     <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-75"></span>
                     <span class="relative inline-flex size-2 rounded-full bg-current"></span>
                 </span>
-                {{ "Rebuild pending"|trans({}, 'admin') }}
+                {{ "Import pending"|trans({}, 'admin') }}
             </span>
             {% endif %}
         </div>

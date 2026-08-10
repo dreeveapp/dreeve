@@ -9,10 +9,8 @@ use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
-use App\Infrastructure\CQRS\Command\RequiresRebuild;
 use App\Infrastructure\CQRS\Command\SuppressesFlashMessage;
 
-#[RequiresRebuild]
 #[SuppressesFlashMessage]
 final readonly class SaveDashboardLayout extends DomainCommand implements DeserializableCommand
 {

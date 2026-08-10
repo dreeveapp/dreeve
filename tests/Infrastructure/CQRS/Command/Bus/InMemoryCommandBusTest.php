@@ -4,7 +4,6 @@ namespace App\Tests\Infrastructure\CQRS\Command\Bus;
 
 use App\Infrastructure\CQRS\CanNotRegisterCQRSHandler;
 use App\Infrastructure\CQRS\Command\Bus\InMemoryCommandBus;
-use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Tests\Infrastructure\CQRS\Command\Bus\RunAnOperation\RunAnOperation;
 use App\Tests\Infrastructure\CQRS\Command\Bus\RunAnOperation\RunAnOperationCommandHandler;
 use App\Tests\Infrastructure\CQRS\Command\Bus\RunAnOperationCommand\RunAnOperationCommandCommandHandler;
@@ -17,7 +16,7 @@ class InMemoryCommandBusTest extends KernelTestCase
     {
         $commandBus = new InMemoryCommandBus(commandHandlers: [
             new RunAnOperationCommandHandler(),
-        ], keyValueStore: $this->getContainer()->get(KeyValueStore::class));
+        ]);
 
         $this->expectExceptionObject(new \RuntimeException('This is a test command and it is called'));
 
@@ -26,7 +25,7 @@ class InMemoryCommandBusTest extends KernelTestCase
 
     public function testDispatchWhenNotRegistered(): void
     {
-        $commandBus = new InMemoryCommandBus(commandHandlers: [], keyValueStore: $this->getContainer()->get(KeyValueStore::class));
+        $commandBus = new InMemoryCommandBus(commandHandlers: []);
 
         $this->expectExceptionObject(new NoHandlerForMessageException(RunAnOperation::class));
 
@@ -39,7 +38,7 @@ class InMemoryCommandBusTest extends KernelTestCase
 
         $commandBus = new InMemoryCommandBus(commandHandlers: [
             new RunOperationWithoutACommandCommandHandler(),
-        ], keyValueStore: $this->getContainer()->get(KeyValueStore::class));
+        ]);
         $commandBus->dispatch(new RunAnOperation('test'));
     }
 
@@ -49,7 +48,7 @@ class InMemoryCommandBusTest extends KernelTestCase
 
         $commandBus = new InMemoryCommandBus(commandHandlers: [
             new RunAnOperationCommandCommandHandler(),
-        ], keyValueStore: $this->getContainer()->get(KeyValueStore::class));
+        ]);
         $commandBus->dispatch(new RunAnOperation('test'));
     }
 
@@ -59,7 +58,7 @@ class InMemoryCommandBusTest extends KernelTestCase
 
         $commandBus = new InMemoryCommandBus(commandHandlers: [
             new RunOperationWithInvalidNameHandler(),
-        ], keyValueStore: $this->getContainer()->get(KeyValueStore::class));
+        ]);
         $commandBus->dispatch(new RunAnOperation('test'));
     }
 }

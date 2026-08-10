@@ -4,7 +4,6 @@ namespace App\Tests\Console\Daemon;
 
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
-use App\Application\RebuildStatus;
 use App\Console\Daemon\ProcessStravaWebhooksConsoleCommand;
 use App\Console\Daemon\RunStravaImportAndBuildAppConsoleCommand;
 use App\Domain\Activity\ActivityIdRepository;
@@ -165,7 +164,6 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
             appUrl: AppUrl::fromString('http://localhost'),
             importMode: ImportMode::STRAVA_API,
             keyValueStore: $this->getContainer()->get(KeyValueStore::class),
-            rebuildStatus: $this->getContainer()->get(RebuildStatus::class),
             clock: PausedClock::fromString(self::TODAY),
             settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );

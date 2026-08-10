@@ -15,7 +15,7 @@ class UpdateAthleteSettingsCommandHandlerTest extends ContainerTestCase
     private CommandBus $commandBus;
     private SettingsRepository $settingsRepository;
 
-    public function testItOnlyUpdatesTheAthleteAndFlagsForceRebuild(): void
+    public function testItOnlyUpdatesTheAthlete(): void
     {
         $this->settingsRepository->save(
             group: SettingsGroup::GENERAL,

@@ -11,7 +11,6 @@ enum Key: string
     case APP_LAST_BUILD_DATE_TIME = 'appLastBuildDateTime';
     case GEAR_MAINTENANCE = 'gearMaintenance';
     case DASHBOARD = 'dashboard';
-    case FORCE_REBUILD = 'forceRebuild';
     case SETTINGS_GENERAL = 'settingsGeneral';
     case SETTINGS_APPEARANCE = 'settingsAppearance';
     case SETTINGS_MAPS = 'settingsMaps';

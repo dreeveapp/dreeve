@@ -10,7 +10,6 @@ use App\Application\AppUrl;
 use App\Application\Build\RunBuild\RunBuild;
 use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
 use App\Application\Import\FileImport\ImportActivityFiles\ImportActivityFiles;
-use App\Application\RebuildStatus;
 use App\Domain\Import\ImportMode;
 use App\Domain\Import\WatchDirectory;
 use App\Domain\Integration\Notification\SendNotification\SendNotification;
@@ -54,7 +53,6 @@ final class RunFileImportAndBuildAppConsoleCommand extends Command
         private readonly KeyValueStore $keyValueStore,
         private readonly LoggerInterface $logger,
         private readonly ImportMode $importMode,
-        private readonly RebuildStatus $rebuildStatus,
         private readonly SettingsRepository $settingsRepository,
     ) {
         parent::__construct();
@@ -84,7 +82,6 @@ final class RunFileImportAndBuildAppConsoleCommand extends Command
         $buildWillRun = ($shouldBuild && $importWillRun) || $this->buildIsRequired(
             input: $input,
             keyValueStore: $this->keyValueStore,
-            rebuildStatus: $this->rebuildStatus,
             today: $today
         );
 

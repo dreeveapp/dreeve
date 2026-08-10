@@ -6,6 +6,6 @@ twig:
     form_themes: ['form/flowbite-layout.html.twig']
     globals:
         appName: '@App\Application\AppName'
-        rebuildStatus: '@App\Application\RebuildStatus'
+        importStatus: '@App\Application\ImportStatus'
         appVersion: '@App\Application\AppVersion'
         importMode: '@App\Domain\Import\ImportMode'

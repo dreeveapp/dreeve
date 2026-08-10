@@ -7,9 +7,7 @@ namespace App\Domain\Gear\Maintenance\UpdateGearMaintenanceConfig;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
-use App\Infrastructure\CQRS\Command\RequiresRebuild;
 
-#[RequiresRebuild]
 final readonly class UpdateGearMaintenanceConfig extends DomainCommand implements DeserializableCommand
 {
     use ProvidesCommandName;

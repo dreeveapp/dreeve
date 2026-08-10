@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Daemon;
 
 use App\Application\AppVersion;
-use App\Application\RebuildStatus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
@@ -46,7 +45,6 @@ trait HandlesImportAndBuild
     private function buildIsRequired(
         InputInterface $input,
         KeyValueStore $keyValueStore,
-        RebuildStatus $rebuildStatus,
         string $today,
     ): bool {
         if (!$this->resolvePhases($input)[self::BUILD_OPTION]) {
@@ -62,11 +60,8 @@ trait HandlesImportAndBuild
         } catch (EntityNotFound) {
             return true;
         }
-        if ($appLastBuildSnapshot !== $this->buildSnapshot($today)) {
-            return true;
-        }
 
-        return $rebuildStatus->isPending();
+        return $appLastBuildSnapshot !== $this->buildSnapshot($today);
     }
 
     private function markAppAsBuilt(
@@ -77,7 +72,6 @@ trait HandlesImportAndBuild
             key: Key::APP_LAST_BUILD_SNAPSHOT,
             value: Value::fromString($this->buildSnapshot($today)),
         ));
-        $keyValueStore->clear(Key::FORCE_REBUILD);
     }
 
     private function buildSnapshot(string $today): string

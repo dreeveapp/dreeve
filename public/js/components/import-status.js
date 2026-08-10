@@ -2,13 +2,13 @@ import {fetchJson} from "../utils";
 
 const POLL_INTERVAL_MS = 30000;
 
-export default function initRebuildStatus() {
-    const badge = document.getElementById('rebuild-pending-badge');
+export default function initImportStatus() {
+    const badge = document.getElementById('import-pending-badge');
     if (!badge) {
         return;
     }
 
-    const url = document.querySelector('meta[name="rebuild-status-url"]')?.getAttribute('content');
+    const url = document.querySelector('meta[name="import-status-url"]')?.getAttribute('content');
     if (!url) {
         return;
     }
@@ -31,7 +31,5 @@ export default function initRebuildStatus() {
         }
     };
 
-    if (document.getElementById('rebuild-pending-badge')) {
-        intervalId = setInterval(poll, POLL_INTERVAL_MS);
-    }
+    intervalId = setInterval(poll, POLL_INTERVAL_MS);
 }

@@ -6,7 +6,6 @@ use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
 use App\Application\AppVersion;
 use App\Application\Build\RunBuild\RunBuild;
-use App\Application\RebuildStatus;
 use App\Console\Daemon\RunStravaImportAndBuildAppConsoleCommand;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivityRepository;
@@ -19,7 +18,6 @@ use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Strava;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\DomainCommand;
-use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
@@ -175,35 +173,6 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
             $this->commandBus->getDispatchedCommands(),
             static fn (object $dispatchedCommand): bool => $dispatchedCommand instanceof RunBuild,
         ));
-    }
-
-    public function testBuildIfRequiredBuildsAndClearsForceRebuildWhenPending(): void
-    {
-        $this->keyValueStore->save(KeyValue::fromState(
-            key: Key::APP_LAST_BUILD_SNAPSHOT,
-            value: Value::fromString(self::TODAY.'@'.AppVersion::getSemanticVersion()),
-        ));
-        $this->keyValueStore->save(KeyValue::fromState(
-            key: Key::FORCE_REBUILD,
-            value: Value::fromString('1'),
-        ));
-
-        $command = $this->getCommandInApplication('app:cron:run-strava-import');
-        $commandTester = new CommandTester($command);
-        $commandTester->execute([
-            'command' => $command->getName(),
-            '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
-            '--'.RunStravaImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION => true,
-        ]);
-
-        $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
-        $this->assertSame(
-            self::TODAY.'@'.AppVersion::getSemanticVersion(),
-            (string) $this->keyValueStore->find(Key::APP_LAST_BUILD_SNAPSHOT),
-        );
-
-        $this->expectExceptionObject(new EntityNotFound('KeyValue "forceRebuild" not found'));
-        $this->keyValueStore->find(Key::FORCE_REBUILD);
     }
 
     public function testBuildIfRequiredBuildsWhenAppWasNeverBuiltBefore(): void
@@ -402,7 +371,6 @@ class RunStravaImportAndBuildAppConsoleCommandTest extends ConsoleCommandTestCas
             appUrl: AppUrl::fromString('http://localhost'),
             importMode: $importMode,
             keyValueStore: $this->keyValueStore,
-            rebuildStatus: new RebuildStatus($this->keyValueStore),
             clock: PausedClock::fromString(self::TODAY),
             settingsRepository: $this->getContainer()->get(KeyValueBasedSettingsRepository::class),
         );

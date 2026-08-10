@@ -4,7 +4,6 @@ namespace App\Tests\Console;
 
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
-use App\Application\RebuildStatus;
 use App\Console\Daemon\RunFileImportAndBuildAppConsoleCommand;
 use App\Console\Daemon\RunStravaImportAndBuildAppConsoleCommand;
 use App\Console\ImportDataAndBuildAppConsoleCommand;
@@ -136,7 +135,6 @@ class ImportDataAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
             appUrl: AppUrl::fromString('http://localhost'),
             importMode: ImportMode::STRAVA_API,
             keyValueStore: $this->getContainer()->get(KeyValueStore::class),
-            rebuildStatus: $this->getContainer()->get(RebuildStatus::class),
             clock: PausedClock::fromString(self::TODAY),
             settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );
@@ -164,7 +162,6 @@ class ImportDataAndBuildAppConsoleCommandTest extends ConsoleCommandTestCase
             keyValueStore: $this->getContainer()->get(KeyValueStore::class),
             logger: new NullLogger(),
             importMode: ImportMode::FILES,
-            rebuildStatus: $this->getContainer()->get(RebuildStatus::class),
             settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );
     }

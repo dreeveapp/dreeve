@@ -15,7 +15,6 @@ use App\Application\Import\StravaImport\ImportChallenges\ImportChallenges;
 use App\Application\Import\StravaImport\ImportGear\ImportGear;
 use App\Application\Import\StravaImport\ImportSegments\ImportSegments;
 use App\Application\Import\StravaImport\ProcessRawActivityData\ProcessRawActivityData;
-use App\Application\RebuildStatus;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Import\ImportMode;
@@ -63,7 +62,6 @@ final class RunStravaImportAndBuildAppConsoleCommand extends Command
         private readonly AppUrl $appUrl,
         private readonly ImportMode $importMode,
         private readonly KeyValueStore $keyValueStore,
-        private readonly RebuildStatus $rebuildStatus,
         private readonly Clock $clock,
         private readonly SettingsRepository $settingsRepository,
     ) {
@@ -91,7 +89,6 @@ final class RunStravaImportAndBuildAppConsoleCommand extends Command
         $buildWillRun = $this->buildIsRequired(
             input: $input,
             keyValueStore: $this->keyValueStore,
-            rebuildStatus: $this->rebuildStatus,
             today: $today
         );
 

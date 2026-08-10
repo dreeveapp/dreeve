@@ -8,7 +8,6 @@ use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\HandlerBuilder;
 use App\Infrastructure\CQRS\HandlerBuilderType;
-use App\Infrastructure\KeyValue\KeyValueStore;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\Exception\NoHandlerForMessageException;
@@ -27,7 +26,6 @@ final class InMemoryCommandBus implements CommandBus
     public function __construct(
         #[AutowireIterator('app.command_handler')]
         private readonly iterable $commandHandlers,
-        private readonly KeyValueStore $keyValueStore,
     ) {
     }
 
@@ -37,7 +35,6 @@ final class InMemoryCommandBus implements CommandBus
         // Otherwise, we end up with infinite recursion in the container.
         if (!isset($this->bus)) {
             $this->bus = new MessageBus([
-                new SetForceRebuildFlagMiddleware($this->keyValueStore),
                 new HandleMessageMiddleware(
                     new HandlersLocator(
                         new HandlerBuilder(HandlerBuilderType::COMMAND_HANDLER)

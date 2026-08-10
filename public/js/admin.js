@@ -8,7 +8,7 @@ import initDependentSelects from "./components/form/dependent-select";
 import initDependentFormInputs from "./components/form/dependent-form-input";
 import initCoordinatePickers from "./components/form/coordinate-picker";
 import initDropdowns from "./components/dropdown";
-import initRebuildStatus from "./components/rebuild-status";
+import initImportStatus from "./components/import-status";
 import initSearchAutocompletes from "./components/form/search-autocomplete";
 import initToasts from "./components/toast";
 import FileDropzoneUpload from "./features/file-upload/file-dropzone-upload";
@@ -29,7 +29,7 @@ initDependentSelects();
 initDependentFormInputs();
 initCoordinatePickers(document);
 initDropdowns(document);
-initRebuildStatus();
+initImportStatus();
 initSearchAutocompletes();
 initToasts();
 
