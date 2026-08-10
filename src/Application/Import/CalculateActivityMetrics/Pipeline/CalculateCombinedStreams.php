@@ -25,7 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
 #[AsTaggedItem(priority: 40)]
-#[WithMutex(lockName: LockName::IMPORT_DATA_OR_BUILD_APP)]
+#[WithMutex(lockName: LockName::IMPORT_DATA)]
 final readonly class CalculateCombinedStreams implements CalculateActivityMetricsStep
 {
     use ProvideTimeFormats;

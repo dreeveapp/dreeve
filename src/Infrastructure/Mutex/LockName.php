@@ -6,7 +6,7 @@ namespace App\Infrastructure\Mutex;
 
 enum LockName: string
 {
-    case IMPORT_DATA_OR_BUILD_APP = 'importDataOrBuildApp';
+    case IMPORT_DATA = 'importData';
 
     public function key(): string
     {

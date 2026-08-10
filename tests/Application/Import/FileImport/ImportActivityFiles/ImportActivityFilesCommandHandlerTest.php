@@ -209,7 +209,7 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->getContainer()->get(RenderCache::class)->clear();
         $this->getConnection()->executeStatement(
             'INSERT INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
-            ['key' => 'lock.importDataOrBuildApp', 'value' => '{"lockAcquiredBy": "test"}']
+            ['key' => 'lock.importData', 'value' => '{"lockAcquiredBy": "test"}']
         );
     }
 

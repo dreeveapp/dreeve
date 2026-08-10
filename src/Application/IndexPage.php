@@ -14,11 +14,7 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Cacheable;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\KeyValue\Key;
-use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Translation\LocaleSwitcher;
 use Twig\Environment;
@@ -34,7 +30,6 @@ final readonly class IndexPage implements Cacheable
         private AppUrl $appUrl,
         private LocaleSwitcher $localeSwitcher,
         private SettingsRepository $settingsRepository,
-        private KeyValueStore $keyValueStore,
         private Environment $twig,
     ) {
     }
@@ -44,8 +39,6 @@ final readonly class IndexPage implements Cacheable
         return Cacheability::for(
             cacheKey: 'index',
             cacheTags: CacheTags::of(
-                // The "updated on" stamp in the sidebar is written when a build finishes.
-                RootCacheTag::APP_BUILD,
                 RootCacheTag::ACTIVITIES,
                 RootCacheTag::ACTIVITY_IMAGES,
                 RootCacheTag::CHALLENGES,
@@ -64,19 +57,11 @@ final readonly class IndexPage implements Cacheable
 
         $general = $this->settingsRepository->general();
 
-        $lastUpdate = null;
-        try {
-            $lastUpdate = SerializableDateTime::fromString((string) $this->keyValueStore->find(Key::APP_LAST_BUILD_DATE_TIME));
-        } catch (EntityNotFound) {
-            // The app has not been built since this key was introduced.
-        }
-
         return $this->twig->load('html/index.html.twig')->render([
             'totalActivityCount' => $this->activityIdRepository->count(),
             'completedChallenges' => $this->challengeRepository->count(),
             'totalPhotoCount' => $this->imageRepository->count(),
             'hasGear' => $this->gearRepository->hasGear(),
-            'lastUpdate' => $lastUpdate,
             'athlete' => $general->getAthlete(),
             'profilePictureUrl' => $general->getProfilePictureUrl(),
             'subTitle' => $general->getAppSubTitle(),

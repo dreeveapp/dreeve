@@ -24,7 +24,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
     public function testRenderDreeveBadge(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         // An activity name that has to survive both the ellipsing and the escaping.
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
@@ -45,7 +45,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
     public function testRenderZwiftBadge(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/badge/zwift.svg');
 
@@ -56,7 +56,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
     public function testRenderPersonalBestBadge(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/badge/pb/ride.svg');
 
@@ -67,7 +67,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
     public function testRenderPersonalBestBadgeForVirtualRide(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/badge/pb/virtualride.svg');
 
@@ -78,7 +78,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
     public function testGetPath(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/badge/dreeve.svg');
 
@@ -92,7 +92,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
     public function testItIsTaggedWithWhatItRenders(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/badge/dreeve.svg');
 
@@ -105,7 +105,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveTheZwiftBadgeWithoutAConfiguredLevel(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->getContainer()->get(KeyValueStore::class)->save(KeyValue::fromState(
             SettingsGroup::ZWIFT->keyValueKey(),
@@ -120,7 +120,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveASportTypeWithoutBestEfforts(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/badge/pb/walk.svg');
 
@@ -130,7 +130,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveAnUnknownSportType(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/badge/pb/unicycling.svg');
 
@@ -140,7 +140,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
     public function testItIsNotServedAsAPageFragment(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/badge/dreeve');
 
@@ -148,7 +148,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
     }
 
     #[\Override]
-    protected function shouldMarkAppAsBuilt(): bool
+    protected function shouldSeedActivity(): bool
     {
         return false;
     }

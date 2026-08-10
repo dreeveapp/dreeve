@@ -1,16 +1,5 @@
 # Path-routing rules cover every path directive EXCEPT the PHP front-controller handle.
 (paths) {
-	# Serve static .html from build/html
-	@staticBuildFiles {
-		path *.html
-	}
-	handle @staticBuildFiles {
-		handle {
-			root * /var/www/build/html
-			file_server
-		}
-	}
-
 	handle /files/* {
 		# Only serve image and SVG files from storage, except the activity photos:
 		# those are only reachable through the IP-gated /secured-image/* route.

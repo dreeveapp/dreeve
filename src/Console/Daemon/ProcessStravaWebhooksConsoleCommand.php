@@ -22,7 +22,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[WithMutex(lockName: LockName::IMPORT_DATA_OR_BUILD_APP)]
+#[WithMutex(lockName: LockName::IMPORT_DATA)]
 #[RequiresUpToDateDatabaseSchema]
 #[AsCommand(name: ProcessStravaWebhooksConsoleCommand::NAME, description: 'Process webhooks')]
 final class ProcessStravaWebhooksConsoleCommand extends Command
@@ -80,10 +80,8 @@ final class ProcessStravaWebhooksConsoleCommand extends Command
         }
 
         $input = new ArrayInput([
-            'command' => RunStravaImportAndBuildAppConsoleCommand::NAME,
-            RunStravaImportAndBuildAppConsoleCommand::RESTRICT_TO_ACTIVITY_IDS_ARGUMENT => implode(',', array_map(strval(...), $createOrUpdateActivityIds->toArray())),
-            '--'.RunStravaImportAndBuildAppConsoleCommand::IMPORT_OPTION => true,
-            '--'.RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION => true,
+            'command' => RunStravaImportConsoleCommand::NAME,
+            RunStravaImportConsoleCommand::RESTRICT_TO_ACTIVITY_IDS_ARGUMENT => implode(',', array_map(strval(...), $createOrUpdateActivityIds->toArray())),
         ]);
         $input->setInteractive(false);
 

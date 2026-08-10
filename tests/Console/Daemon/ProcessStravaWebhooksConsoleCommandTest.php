@@ -4,9 +4,9 @@ namespace App\Tests\Console\Daemon;
 
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
+use App\Application\Import\StravaImport\ImportGear\GearImportStatus;
 use App\Console\Daemon\ProcessStravaWebhooksConsoleCommand;
-use App\Console\Daemon\RunStravaImportAndBuildAppConsoleCommand;
-use App\Domain\Activity\ActivityIdRepository;
+use App\Console\Daemon\RunStravaImportConsoleCommand;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Import\ImportMode;
@@ -15,7 +15,6 @@ use App\Domain\Strava\Strava;
 use App\Domain\Strava\Webhook\WebhookAspectType;
 use App\Domain\Strava\Webhook\WebhookEvent;
 use App\Domain\Strava\Webhook\WebhookEventRepository;
-use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
 use App\Infrastructure\Serialization\Json;
@@ -103,7 +102,7 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
 
         $this->getConnection()->executeStatement(
             'INSERT INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
-            ['key' => 'lock.importDataOrBuildApp', 'value' => '{"lockAcquiredBy": "test", "heartbeat": 1764806400}']
+            ['key' => 'lock.importData', 'value' => '{"lockAcquiredBy": "test", "heartbeat": 1764806400}']
         );
 
         $command = $this->getCommandInApplication('app:cron:process-webhooks');
@@ -137,15 +136,15 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
             mutex: new Mutex(
                 connection: $this->getConnection(),
                 clock: PausedClock::fromString(self::TODAY),
-                lockName: LockName::IMPORT_DATA_OR_BUILD_APP,
+                lockName: LockName::IMPORT_DATA,
             ),
             importMode: $importMode,
         );
     }
 
-    private function buildStravaImportCommand(SpyCommandBus $commandBus): RunStravaImportAndBuildAppConsoleCommand
+    private function buildStravaImportCommand(SpyCommandBus $commandBus): RunStravaImportConsoleCommand
     {
-        return new RunStravaImportAndBuildAppConsoleCommand(
+        return new RunStravaImportConsoleCommand(
             commandBus: $commandBus,
             resourceUsage: new FixedResourceUsage(),
             strava: $this->getContainer()->get(Strava::class),
@@ -153,18 +152,12 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
             mutex: new Mutex(
                 connection: $this->getConnection(),
                 clock: PausedClock::fromString(self::TODAY),
-                lockName: LockName::IMPORT_DATA_OR_BUILD_APP,
+                lockName: LockName::IMPORT_DATA,
             ),
-            appStatusChecker: new AppStatusChecker(
-                $this->getContainer()->get(SettingsRepository::class),
-                $this->getContainer()->get(ActivityIdRepository::class),
-                new SuccessfulPermissionChecker(),
-                $this->getContainer()->get(KeyValueStore::class),
-            ),
+            appStatusChecker: new AppStatusChecker(new SuccessfulPermissionChecker()),
+            gearImportStatus: $this->getContainer()->get(GearImportStatus::class),
             appUrl: AppUrl::fromString('http://localhost'),
             importMode: ImportMode::STRAVA_API,
-            keyValueStore: $this->getContainer()->get(KeyValueStore::class),
-            clock: PausedClock::fromString(self::TODAY),
             settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );
     }

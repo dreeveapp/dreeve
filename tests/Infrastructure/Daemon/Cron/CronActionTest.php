@@ -14,11 +14,11 @@ class CronActionTest extends TestCase
     public function testGetIdAndExpression(): void
     {
         $cronAction = CronAction::create(
-            id: CronActionId::RUN_STRAVA_IMPORT_AND_BUILD_APP,
+            id: CronActionId::RUN_STRAVA_IMPORT,
             expression: new CronExpression('0 2 * * *'),
         );
 
-        $this->assertSame(CronActionId::RUN_STRAVA_IMPORT_AND_BUILD_APP, $cronAction->getId());
+        $this->assertSame(CronActionId::RUN_STRAVA_IMPORT, $cronAction->getId());
         $this->assertEquals(new CronExpression('0 2 * * *'), $cronAction->getExpression());
     }
 
@@ -35,7 +35,7 @@ class CronActionTest extends TestCase
 
     public static function provideCommands(): iterable
     {
-        yield 'runStravaImportAndBuildApp' => [CronActionId::RUN_STRAVA_IMPORT_AND_BUILD_APP, 'bin/console app:cron:run-strava-import --import --build'];
+        yield 'runStravaImport' => [CronActionId::RUN_STRAVA_IMPORT, 'bin/console app:cron:run-strava-import'];
         yield 'gearMaintenanceNotification' => [CronActionId::GEAR_MAINTENANCE_NOTIFICATION, 'bin/console app:cron:gear-maintenance-notification'];
         yield 'appUpdateAvailableNotification' => [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, 'bin/console app:cron:app-update-available-notification'];
     }
@@ -53,8 +53,8 @@ class CronActionTest extends TestCase
 
     public static function provideImportModeSupport(): iterable
     {
-        yield 'strava import is not supported in file mode' => [CronActionId::RUN_STRAVA_IMPORT_AND_BUILD_APP, ImportMode::FILES, false];
-        yield 'strava import is supported in strava api mode' => [CronActionId::RUN_STRAVA_IMPORT_AND_BUILD_APP, ImportMode::STRAVA_API, true];
+        yield 'strava import is not supported in file mode' => [CronActionId::RUN_STRAVA_IMPORT, ImportMode::FILES, false];
+        yield 'strava import is supported in strava api mode' => [CronActionId::RUN_STRAVA_IMPORT, ImportMode::STRAVA_API, true];
         yield 'gear maintenance is supported in file mode' => [CronActionId::GEAR_MAINTENANCE_NOTIFICATION, ImportMode::FILES, true];
         yield 'gear maintenance is supported in strava api mode' => [CronActionId::GEAR_MAINTENANCE_NOTIFICATION, ImportMode::STRAVA_API, true];
         yield 'app update is supported in file mode' => [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, ImportMode::FILES, true];

@@ -6,8 +6,7 @@ namespace App\Infrastructure\Daemon;
 
 use App\Console\Daemon\ProcessStravaWebhooksConsoleCommand;
 use App\Console\Daemon\PruneRenderCacheConsoleCommand;
-use App\Console\Daemon\RunFileImportAndBuildAppConsoleCommand;
-use App\Console\Daemon\RunStravaImportAndBuildAppConsoleCommand;
+use App\Console\Daemon\RunFileImportConsoleCommand;
 use App\Domain\Import\ImportMode;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Console\ConsoleOutputAware;
@@ -105,38 +104,7 @@ final class SystemDaemon implements Daemon
                         cronActionId: 'runFileImport',
                         clock: $this->clock,
                         output: $this->getConsoleOutput(),
-                        command: sprintf(
-                            'bin/console %s --%s --%s --%s',
-                            RunFileImportAndBuildAppConsoleCommand::NAME,
-                            RunFileImportAndBuildAppConsoleCommand::IMPORT_OPTION,
-                            RunFileImportAndBuildAppConsoleCommand::BUILD_OPTION,
-                            RunFileImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION,
-                        )
-                    );
-                    $process->start();
-
-                    return resolve(true);
-                }
-            );
-        }
-
-        if ($this->importMode->isStravaApi()) {
-            $extraConfiguredCronActionsOutput[] = sprintf('<info> - buildApp: %s</info>', self::CRON_EVERY_5_MINUTES);
-            $actions[] = new Action(
-                key: 'buildApp',
-                mutexTtl: 300,
-                expression: self::CRON_EVERY_5_MINUTES,
-                performer: function (): PromiseInterface {
-                    $process = new CronProcess(
-                        cronActionId: 'buildApp',
-                        clock: $this->clock,
-                        output: $this->getConsoleOutput(),
-                        command: sprintf(
-                            'bin/console %s --%s --%s',
-                            RunStravaImportAndBuildAppConsoleCommand::NAME,
-                            RunStravaImportAndBuildAppConsoleCommand::BUILD_OPTION,
-                            RunStravaImportAndBuildAppConsoleCommand::ONLY_IF_REQUIRED_OPTION,
-                        )
+                        command: sprintf('bin/console %s', RunFileImportConsoleCommand::NAME)
                     );
                     $process->start();
 

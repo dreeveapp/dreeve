@@ -20,13 +20,13 @@ class AutowireWithMutexPassTest extends TestCase
             ->setAutowired(true)
             ->setAutoconfigured(true)
             ->setPublic(true)
-            ->addTag('app.mutex', ['mutex' => 'mutex.importDataOrBuildApp']);
+            ->addTag('app.mutex', ['mutex' => 'mutex.importData']);
         $container->compile();
 
-        $this->assertEquals('mutex.importDataOrBuildApp', (string) $container->getDefinition('dummy_service')->getArgument(0));
+        $this->assertEquals('mutex.importData', (string) $container->getDefinition('dummy_service')->getArgument(0));
         $this->assertEquals(
             Mutex::class,
-            $container->getDefinition('mutex.importDataOrBuildApp')->getClass()
+            $container->getDefinition('mutex.importData')->getClass()
         );
     }
 

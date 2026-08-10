@@ -9,10 +9,16 @@ Run the following commands to setup the project on your local machine
 > make up
 ```
 
-Everytime you make changes to the app, you need to build the html files again
+The `app` container bakes `src/`, `templates/` and `public/` into its image, so rebuild it after you change
+any of them:
 
 ```bash
-> make console arg="app:cron:run-file-import --build"
+> make build-containers
 ```
 
-(In `stravaApi` mode, use `app:cron:run-strava-import --build`.)
+Pages are rendered on request and cached under the current app version, so drop the render cache to see your
+changes:
+
+```bash
+> make clear-cache
+```

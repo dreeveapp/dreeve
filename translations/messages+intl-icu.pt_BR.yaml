@@ -455,7 +455,7 @@ Time: Tempo
 'Time in zone': 'Tempo na zona'
 'Times completed': 'Vezes concluído'
 Title: Título
-'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect': 'Para habilitar, configure isso no painel de administração e recompile os arquivos para que as alterações entrem em vigor.'
+'To enable it, configure this in the admin panel': 'To enable it, configure this in the admin panel'
 'Toggle sidebar': 'Ativar/desativar barra lateral'
 'Top 10': 'Top 10'
 'Total distance per month': 'Distância total por mês'
@@ -474,7 +474,6 @@ Title: Título
 Tue: Ter
 Tue.: Ter.
 Unspecified: 'Não especificado'
-'Updated on': 'Atualizado em'
 'User badge': 'Emblema do usuário'
 'Velo Mobiles': 'Velo Móveis'
 'Very high': 'Muito alta'

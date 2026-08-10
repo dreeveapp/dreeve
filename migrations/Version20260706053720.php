@@ -287,7 +287,7 @@ final class Version20260706053720 extends AbstractMigration
             return;
         }
 
-        $renamedActions = ['importDataAndBuildApp' => CronActionId::RUN_STRAVA_IMPORT_AND_BUILD_APP->value];
+        $renamedActions = ['importDataAndBuildApp' => CronActionId::RUN_STRAVA_IMPORT->value];
 
         $actions = [];
         foreach ($cron as $item) {

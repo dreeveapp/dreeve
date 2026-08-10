@@ -156,10 +156,10 @@
                         <input type="hidden" name="data[notifications][notifyOnSuccessfulBuild]" value="0">
                         <input type="checkbox" name="data[notifications][notifyOnSuccessfulBuild]" value="1"
                                {{ (notifications.notifyOnSuccessfulBuild ?? true) ? 'checked' : '' }}>
-                        <span>{{ "Notify when a build was successful"|trans({}, 'admin') }}</span>
+                        <span>{{ "Notify when an import was successful"|trans({}, 'admin') }}</span>
                     </label>
                     <p class="description">
-                        {{ "Sends a notification after every successful import and build."|trans({}, 'admin') }}
+                        {{ "Sends a notification after every successful import."|trans({}, 'admin') }}
                     </p>
                 </div>
             </div>

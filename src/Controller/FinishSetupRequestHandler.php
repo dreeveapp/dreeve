@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Application\AppStatusChecker;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,7 +16,6 @@ use Twig\Environment;
 final readonly class FinishSetupRequestHandler
 {
     public function __construct(
-        private AppStatusChecker $appStatusChecker,
         private ActivityIdRepository $activityIdRepository,
         private Environment $twig,
     ) {
@@ -26,7 +24,7 @@ final readonly class FinishSetupRequestHandler
     #[Route(path: '/finish-setup', name: 'finish_setup', methods: ['GET'], priority: 2)]
     public function handle(): Response
     {
-        if ($this->appStatusChecker->hasBeenBuilt() && $this->activityIdRepository->count() > 0) {
+        if ($this->activityIdRepository->count() > 0) {
             // The app is ready, load it.
             return new RedirectResponse('/', Response::HTTP_FOUND);
         }

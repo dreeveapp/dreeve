@@ -92,7 +92,8 @@ app-serve-docs:
 	docsify serve docs
 
 clear-cache:
-	@make console arg="cache:pool:clear render.cache render.cache.tags"
+	# Has to run in the app container, php-cli runs in the dev env and would clear the wrong pools.
+	docker compose exec app bin/console cache:pool:clear render.cache render.cache.tags
 # Ollama models
 ollama-run-llama32:
 	docker compose exec ollama ollama pull llama3.2

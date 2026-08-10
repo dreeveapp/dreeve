@@ -16,7 +16,7 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
     public function testRenderForAllTime(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/rewind');
 
@@ -28,7 +28,7 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
     public function testRenderForASingleYear(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/rewind/2023');
 
@@ -39,7 +39,7 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
     public function testItIsNotServedAsADataFragment(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/rewind/2023');
 
@@ -50,7 +50,7 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
     public function testResolve(string $path, ?string $expectedPath): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->assertEquals(
             $expectedPath,
@@ -72,7 +72,7 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
     public function testGetCacheabilityForAllTime(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/rewind/all-time');
 
@@ -90,7 +90,7 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
     public function testGetCacheabilityForASingleYearIsScopedToThatYear(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/rewind/2023');
 
@@ -106,7 +106,7 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
     }
 
     #[\Override]
-    protected function shouldMarkAppAsBuilt(): bool
+    protected function shouldSeedActivity(): bool
     {
         return false;
     }

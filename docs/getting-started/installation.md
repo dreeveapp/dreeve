@@ -67,8 +67,8 @@ networks:
 ```
 
 > [!IMPORTANT]
-> **Important** Both containers must mount the **same** volumes. They share one database, one build
-> directory and one watch folder.
+> **Important** Both containers must mount the **same** volumes. They share one database, one render cache
+> (`./build`) and one watch folder.
 
 ## .env
 

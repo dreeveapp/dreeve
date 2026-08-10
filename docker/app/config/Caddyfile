@@ -33,7 +33,7 @@ import /etc/frankenphp/snippets/paths.caddyfile
 		?Permissions-Policy "browsing-topics=()"
 	}
 
-	# Path-routing rules (static html, /files/*, /gear-maintenance/*, /assets/*).
+	# Path-routing rules (/files/*, /assets/*).
 	import paths
 
 	# Serve everything else trough Symfony.

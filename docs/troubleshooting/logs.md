@@ -32,26 +32,15 @@ These logs provide a detailed record of every API call made to Strava, including
 
 #### **CLI output**
 
-These logs capture all output from the CLI, providing a history of your imports and build processes.
+These logs capture all output from the CLI, providing a history of your imports.
 
 ```log
-[2025-06-04T05:50:00.646195+00:00] console-output.INFO: Configuring locale... [] []
-[2025-06-04T05:50:00.714520+00:00] console-output.INFO: Building Manifest... [] []
-[2025-06-04T05:50:00.716234+00:00] console-output.INFO: Building App... [] []
-[2025-06-04T05:50:00.716378+00:00] console-output.INFO:   => Building index [] []
-[2025-06-04T05:50:02.059219+00:00] console-output.INFO:   => Building dashboard [] []
-[2025-06-04T05:50:10.016846+00:00] console-output.INFO:   => Building activities [] []
-[2025-06-04T05:50:19.658260+00:00] console-output.INFO:   => Building gpx files [] []
-[2025-06-04T05:50:19.857651+00:00] console-output.INFO:   => Building monthly-stats [] []
-[2025-06-04T05:50:21.074592+00:00] console-output.INFO:   => Building gear-stats [] []
-[2025-06-04T05:50:21.140954+00:00] console-output.INFO:   => Building gear-maintenance [] []
-[2025-06-04T05:50:21.182099+00:00] console-output.INFO:   => Building eddington [] []
-[2025-06-04T05:50:21.277291+00:00] console-output.INFO:   => Building segments [] []
-[2025-06-04T05:50:31.956830+00:00] console-output.INFO:   => Building heatmap [] []
-[2025-06-04T05:50:31.987428+00:00] console-output.INFO:   => Building rewind [] []
-[2025-06-04T05:50:32.139279+00:00] console-output.INFO:   => Building challenges [] []
-[2025-06-04T05:50:32.188401+00:00] console-output.INFO:   => Building photos [] []
-[2025-06-04T05:50:32.359225+00:00] console-output.INFO:   => Building badges [] []
+[2025-06-04T05:50:00.646195+00:00] console-output.INFO: Importing activities... [] []
+[2025-06-04T05:50:02.059219+00:00] console-output.INFO: Importing gear... [] []
+[2025-06-04T05:50:10.016846+00:00] console-output.INFO: Processing raw activity data... [] []
+[2025-06-04T05:50:19.658260+00:00] console-output.INFO: Importing segments... [] []
+[2025-06-04T05:50:19.857651+00:00] console-output.INFO: Importing challenges... [] []
+[2025-06-04T05:50:21.074592+00:00] console-output.INFO: Calculating activity metrics... [] []
 [2025-06-04T05:50:32.385393+00:00] console-output.INFO: <info>Time: 31.739s, Memory: 206.50 MB, Peak Memory: 212.50 MB</info> [] []
 ```
 

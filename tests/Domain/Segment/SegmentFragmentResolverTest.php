@@ -21,7 +21,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/segment/segment-1');
 
@@ -33,7 +33,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
     public function testRenderWithHeartRateData(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
         $segmentEffortRepository = $this->getContainer()->get(SegmentEffortRepository::class);
@@ -73,7 +73,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
     public function testRenderWithASingleHeartRateEffort(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
         $this->getContainer()->get(SegmentEffortRepository::class)->add(
@@ -99,7 +99,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
     public function testRenderWithoutAnyEfforts(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
         $this->client->request('GET', '/api/fragment/page/segment/segment-10');
@@ -111,7 +111,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
     public function testGetPath(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/segment/segment-1');
 
@@ -125,7 +125,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
     public function testItIsTaggedWithTheSegmentAndTheActivitiesItLists(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/segment/segment-1');
 
@@ -139,7 +139,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
     public function testItIsNotServedAsADataFragment(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/segment/segment-1');
 
@@ -149,7 +149,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotSwallowTheDataTableFragment(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/segment/data-table');
 
@@ -159,7 +159,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveASegmentThatDoesNotExist(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/segment/segment-999');
 
@@ -169,7 +169,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
     public function testItRejectsAnUnprefixedSegmentId(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/segment/1');
 
@@ -177,7 +177,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
     }
 
     #[\Override]
-    protected function shouldMarkAppAsBuilt(): bool
+    protected function shouldSeedActivity(): bool
     {
         return false;
     }

@@ -14,7 +14,7 @@ class SegmentsFragmentTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/segments');
 
@@ -26,7 +26,7 @@ class SegmentsFragmentTest extends ControllerWebTestCase
     public function testGetPath(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/segments');
 
@@ -40,7 +40,7 @@ class SegmentsFragmentTest extends ControllerWebTestCase
     public function testItIsNotServedAsADataFragment(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/segments');
 
@@ -50,7 +50,7 @@ class SegmentsFragmentTest extends ControllerWebTestCase
     public function testItIsTaggedWithTheSegmentsAndActivitiesItRenders(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/segments');
 
@@ -61,7 +61,7 @@ class SegmentsFragmentTest extends ControllerWebTestCase
     }
 
     #[\Override]
-    protected function shouldMarkAppAsBuilt(): bool
+    protected function shouldSeedActivity(): bool
     {
         return false;
     }

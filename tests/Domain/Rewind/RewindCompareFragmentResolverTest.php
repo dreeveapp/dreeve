@@ -16,7 +16,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/2022');
 
@@ -28,7 +28,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
     public function testItIsNotServedAsADataFragment(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/rewind/2023/compare/2022');
 
@@ -39,7 +39,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
     public function testResolve(string $path, ?string $expectedPath): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->assertEquals(
             $expectedPath,
@@ -63,7 +63,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveWhenThereIsNothingToCompare(): void
     {
         $this->addActivityOneFixtures();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/all-time');
 
@@ -73,7 +73,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
     public function testGetCacheabilityCarriesTheTagsOfBothSides(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/2022');
 
@@ -95,7 +95,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
     public function testGetCacheabilityWhenComparedWithAllTime(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/all-time');
 
@@ -111,7 +111,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
     }
 
     #[\Override]
-    protected function shouldMarkAppAsBuilt(): bool
+    protected function shouldSeedActivity(): bool
     {
         return false;
     }

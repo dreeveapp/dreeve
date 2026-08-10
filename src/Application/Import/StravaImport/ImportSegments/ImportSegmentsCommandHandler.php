@@ -17,7 +17,7 @@ use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 
-#[WithMutex(lockName: LockName::IMPORT_DATA_OR_BUILD_APP)]
+#[WithMutex(lockName: LockName::IMPORT_DATA)]
 final readonly class ImportSegmentsCommandHandler implements CommandHandler
 {
     public function __construct(

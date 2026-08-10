@@ -156,8 +156,7 @@
         <div>
             <div class="sidebar-collapsed:hidden">
                 <div class="flex items-center justify-center gap-x-1">
-                    <span class="bg-gray-100 text-gray-600 font-medium px-2.5 py-0.5 rounded-sm"
-                            {% if lastUpdate %}title="{{ "Updated on"|trans }} {{ lastUpdate|formatDate('normal') }} {{ lastUpdate|formatTime() }}"{% endif %}>{{ appVersion.getSemanticVersion() }}</span>
+                    <span class="bg-gray-100 text-gray-600 font-medium px-2.5 py-0.5 rounded-sm">{{ appVersion.getSemanticVersion() }}</span>
                     <span class="hidden" data-latest-version
                           data-current-version="{{ appVersion.getSemanticVersion() }}">
                     (latest: <a class="underline"

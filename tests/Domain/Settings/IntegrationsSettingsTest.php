@@ -35,7 +35,7 @@ class IntegrationsSettingsTest extends TestCase
         $this->assertFalse($settings->isAIIntegrationWithUIEnabled());
         $this->assertSame([], $settings->getChatCommands()->jsonSerialize());
         $this->assertCount(0, iterator_to_array($settings->getConfiguredNotificationUrls()));
-        $this->assertTrue($settings->shouldNotifyOnSuccessfulBuild());
+        $this->assertTrue($settings->shouldNotifyOnSuccessfulImport());
     }
 
     public function testItDisablesTheSuccessfulBuildNotification(): void
@@ -44,7 +44,7 @@ class IntegrationsSettingsTest extends TestCase
             'notifications' => ['notifyOnSuccessfulBuild' => '0'],
         ]);
 
-        $this->assertFalse($settings->shouldNotifyOnSuccessfulBuild());
+        $this->assertFalse($settings->shouldNotifyOnSuccessfulImport());
     }
 
     public function testItEnablesTheAIIntegration(): void

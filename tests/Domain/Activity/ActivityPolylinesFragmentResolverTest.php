@@ -19,7 +19,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/activity/activity-9830227112/polylines');
 
@@ -31,7 +31,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testGetPath(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/activity/activity-9830227112/polylines');
 
@@ -49,7 +49,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testItIsNotServedAsAPageFragment(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9830227112/polylines');
 
@@ -59,7 +59,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testItPrefersTheLatLngStreamOverTheEncodedPolyline(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
         $this->addLatLngStreamFor(
             ActivityId::fromUnprefixed('9830227112'),
             [[51.2, 3.18], [51.21, 3.19], [51.22, 3.2]],
@@ -77,7 +77,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testItFallsBackToTheEncodedPolylineForAnEmptyLatLngStream(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/activity/activity-9830227112/polylines');
         $fromPolyline = (string) $this->client->getResponse()->getContent();
@@ -93,7 +93,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveAnActivityWithoutAMap(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/activity/activity-9756441741/polylines');
 
@@ -103,7 +103,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/activity/activity-1/polylines');
 
@@ -113,7 +113,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testItRejectsAnUnprefixedActivityId(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/activity/9830227112/polylines');
 
@@ -137,7 +137,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
     }
 
     #[\Override]
-    protected function shouldMarkAppAsBuilt(): bool
+    protected function shouldSeedActivity(): bool
     {
         return false;
     }

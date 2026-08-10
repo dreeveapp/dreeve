@@ -28,7 +28,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[WithMutex(lockName: LockName::IMPORT_DATA_OR_BUILD_APP)]
+#[WithMutex(lockName: LockName::IMPORT_DATA)]
 #[RequiresUpToDateDatabaseSchema]
 #[AsCommand(name: 'app:data:detect-corrupted-activities', description: 'Checks for corrupted activities and deletes them')]
 class DetectCorruptedActivitiesConsoleCommand extends Command

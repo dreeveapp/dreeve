@@ -46,7 +46,7 @@ and recorded in the import log as `skipped`.
 The daemon container will detect the files and import every 5 minutes. To trigger a run yourself:
 
 ```bash
-> docker compose exec app bin/console app:cron:run-file-import --import --build
+> docker compose exec app bin/console app:cron:run-file-import
 ```
 
 ## The import log

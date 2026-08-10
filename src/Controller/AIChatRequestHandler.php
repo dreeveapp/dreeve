@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
+use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Settings\SettingsRepository;
@@ -34,7 +34,7 @@ use Twig\Environment;
 final readonly class AIChatRequestHandler
 {
     public function __construct(
-        private AppStatusChecker $appStatusChecker,
+        private ActivityIdRepository $activityIdRepository,
         private AgentInterface $neuronAIAgent,
         private ChatRepository $chatRepository,
         private CommandBus $commandBus,
@@ -48,7 +48,7 @@ final readonly class AIChatRequestHandler
     #[Route(path: '/ai/chat', name: 'ai_chat', methods: ['GET'], priority: 2)]
     public function handle(): Response
     {
-        if (!$this->appStatusChecker->hasBeenBuilt()) {
+        if ($this->activityIdRepository->count() <= 0) {
             return new RedirectResponse(RelativeUrl::from('/', $this->appUrl)->toRelativeUrl(), Response::HTTP_FOUND);
         }
         if (!$this->settingsRepository->integrations()->isAIIntegrationWithUIEnabled()) {

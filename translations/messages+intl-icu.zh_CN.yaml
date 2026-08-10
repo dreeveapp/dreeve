@@ -455,7 +455,7 @@ Time: 时间
 'Time in zone': 'Time in zone'
 'Times completed': 完成次数
 Title: Title
-'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect': 'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect'
+'To enable it, configure this in the admin panel': 'To enable it, configure this in the admin panel'
 'Toggle sidebar': 切换侧边栏
 'Top 10': 前10名
 'Total distance per month': 每月总距离
@@ -474,7 +474,6 @@ Title: Title
 Tue: 周二
 Tue.: Tue.
 Unspecified: 未指定
-'Updated on': 更新于
 'User badge': 用户徽章
 'Velo Mobiles': 躺车
 'Very high': 非常高

@@ -8,7 +8,7 @@ Telegram, Slack, email, and plenty more) through a single URL format.
 
 | Trigger                             | Notes                                                                                            |
 |-------------------------------------|--------------------------------------------------------------------------------------------------|
-| **A new build of the app just ran** | Your data has been imported and the app has been updated.                                        |
+| **A new import just ran**           | Your data has been imported and the app has been updated.                                        |
 | **Gear maintenance is due**         | A maintenance task has reached its interval. |
 | **A new app version is available**  | A newer Dreeve release has been published.                                                       |
 

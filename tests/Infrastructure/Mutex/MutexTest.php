@@ -20,7 +20,7 @@ class MutexTest extends ContainerTestCase
         $this->mutex->acquireLock('myProcess');
 
         $this->expectExceptionObject(new LockIsAlreadyAcquired(
-            name: LockName::IMPORT_DATA_OR_BUILD_APP->value,
+            name: LockName::IMPORT_DATA->value,
             lockAcquiredBy: 'myProcess',
         ));
 
@@ -30,7 +30,7 @@ class MutexTest extends ContainerTestCase
     public function testAcquireLockWhenLockIsStale(): void
     {
         $this->getConnection()->executeStatement('INSERT INTO KeyValue (key, value) VALUES (:key, :value)', [
-            'key' => 'lock.importDataOrBuildApp',
+            'key' => 'lock.importData',
             'value' => Json::encode([
                 'heartbeat' => 1,
                 'lockAcquiredBy' => 'myProcess',
@@ -44,7 +44,7 @@ class MutexTest extends ContainerTestCase
     public function testHeartBeat(): void
     {
         $this->getConnection()->executeStatement('INSERT INTO KeyValue (key, value) VALUES (:key, :value)', [
-            'key' => 'lock.importDataOrBuildApp',
+            'key' => 'lock.importData',
             'value' => Json::encode([
                 'heartbeat' => 1,
                 'lockAcquiredBy' => 'myProcess',
@@ -54,7 +54,7 @@ class MutexTest extends ContainerTestCase
         $this->mutex->heartbeat();
 
         $this->expectExceptionObject(new LockIsAlreadyAcquired(
-            name: LockName::IMPORT_DATA_OR_BUILD_APP->value,
+            name: LockName::IMPORT_DATA->value,
             lockAcquiredBy: 'myProcess',
         ));
 
@@ -63,7 +63,7 @@ class MutexTest extends ContainerTestCase
 
     public function testHeartBeatWithUnexistingLock(): void
     {
-        $this->expectExceptionObject(new \RuntimeException('Cannot heartbeat: lock "importDataOrBuildApp" does not exist'));
+        $this->expectExceptionObject(new \RuntimeException('Cannot heartbeat: lock "importData" does not exist'));
 
         $this->mutex->heartbeat();
     }
@@ -76,7 +76,7 @@ class MutexTest extends ContainerTestCase
         $this->mutex = new Mutex(
             connection: $this->getConnection(),
             clock: PausedClock::fromString('2025-11-01 10:00:00'),
-            lockName: LockName::IMPORT_DATA_OR_BUILD_APP,
+            lockName: LockName::IMPORT_DATA,
         );
     }
 }

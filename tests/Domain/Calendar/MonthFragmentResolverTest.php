@@ -15,7 +15,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/month/2023-06');
 
@@ -27,7 +27,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
     public function testRenderJanuary(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/month/2023-01');
 
@@ -38,7 +38,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
     public function testGetPath(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/month/2023-06');
 
@@ -52,7 +52,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
     public function testItIsNotServedAsADataFragment(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/month/2023-06');
 
@@ -62,7 +62,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
     public function testItIsTaggedWithTheMonthsItRenders(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/month/2023-01');
 
@@ -76,7 +76,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
     {
         // The clock is paused on 2023-10-17, the test set starts in July 2020.
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/month/2020-07');
         $this->assertResponseIsSuccessful();
@@ -88,7 +88,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveMonthsOutsideThatRange(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/month/2020-06');
         $this->assertResponseStatusCodeSame(404);
@@ -100,7 +100,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveMalformedPaths(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $monthFragmentResolver = $this->getContainer()->get(MonthFragmentResolver::class);
 
@@ -112,7 +112,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
     }
 
     /**
-     * AppHasBeenBuiltGate redirects every request while there are no activities, so an empty
+     * AppHasActivitiesGate redirects every request while there are no activities, so an empty
      * database can only be observed through the resolver.
      */
     public function testItDoesNotResolveWhenThereAreNoActivities(): void
@@ -121,7 +121,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
     }
 
     #[\Override]
-    protected function shouldMarkAppAsBuilt(): bool
+    protected function shouldSeedActivity(): bool
     {
         return false;
     }

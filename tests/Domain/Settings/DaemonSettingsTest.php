@@ -36,7 +36,7 @@ class DaemonSettingsTest extends TestCase
         $this->assertEquals(
             [
                 CronAction::create(
-                    id: CronActionId::RUN_STRAVA_IMPORT_AND_BUILD_APP,
+                    id: CronActionId::RUN_STRAVA_IMPORT,
                     expression: new \Cron\CronExpression('0 3 * * *'),
                 ),
             ],

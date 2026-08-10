@@ -20,7 +20,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
 {
     public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
     {
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/admin/activities');
 
@@ -45,7 +45,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
     public function testRendersTheTableWithoutPaginationForASinglePage(): void
     {
         $this->seedActivities(3);
-        $this->markAppAsBuilt();
+        $this->seedActivity();
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/activities');
@@ -81,7 +81,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
     public function testLinksEveryActivityToItsDetailPage(): void
     {
         $this->seedActivities(2);
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->loginUser($this->adminUser());
 
@@ -105,7 +105,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         ?string $expectedSelectedOption,
     ): void {
         $this->seedActivities(3);
-        $this->markAppAsBuilt();
+        $this->seedActivity();
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/activities?filters[sportType]='.$sportTypeFilter);
@@ -140,7 +140,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
     public function testRendersTheFilterFormWhenActiveFiltersMatchNothing(): void
     {
         $this->seedActivities(3);
-        $this->markAppAsBuilt();
+        $this->seedActivity();
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/activities?filters[device]=Nonexistent');
@@ -158,7 +158,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
     public function testRendersTheTableWithPaginationWhenResultsExceedASinglePage(): void
     {
         $this->seedActivities(30);
-        $this->markAppAsBuilt();
+        $this->seedActivity();
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/activities');
@@ -229,7 +229,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
     }
 
     #[\Override]
-    protected function shouldMarkAppAsBuilt(): bool
+    protected function shouldSeedActivity(): bool
     {
         return false;
     }

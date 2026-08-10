@@ -68,7 +68,7 @@ Navigate to http://localhost:8080/. You should see this page, just follow the st
 ## Importing
 
 ```bash
-> docker compose exec app bin/console app:cron:run-strava-import --import --build
+> docker compose exec app bin/console app:cron:run-strava-import
 ```
 
 The first run takes a while. Strava enforces API rate limits and Dreeve deliberately paces itself to stay

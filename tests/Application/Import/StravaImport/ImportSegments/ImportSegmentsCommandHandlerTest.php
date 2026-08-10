@@ -54,7 +54,7 @@ class ImportSegmentsCommandHandlerTest extends ContainerTestCase
             new Mutex(
                 connection: $this->getConnection(),
                 clock: PausedClock::fromString('2025-12-04'),
-                lockName: LockName::IMPORT_DATA_OR_BUILD_APP,
+                lockName: LockName::IMPORT_DATA,
             )
         );
 
@@ -83,7 +83,7 @@ class ImportSegmentsCommandHandlerTest extends ContainerTestCase
             new Mutex(
                 connection: $this->getConnection(),
                 clock: PausedClock::fromString('2025-12-04'),
-                lockName: LockName::IMPORT_DATA_OR_BUILD_APP,
+                lockName: LockName::IMPORT_DATA,
             )
         );
 
@@ -100,7 +100,7 @@ class ImportSegmentsCommandHandlerTest extends ContainerTestCase
             new Mutex(
                 connection: $this->getConnection(),
                 clock: PausedClock::fromString('2025-12-04'),
-                lockName: LockName::IMPORT_DATA_OR_BUILD_APP,
+                lockName: LockName::IMPORT_DATA,
             )
         );
 
@@ -120,7 +120,7 @@ class ImportSegmentsCommandHandlerTest extends ContainerTestCase
 
         $this->getConnection()->executeStatement(
             'INSERT INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
-            ['key' => 'lock.importDataOrBuildApp', 'value' => '{"lockAcquiredBy": "test"}']
+            ['key' => 'lock.importData', 'value' => '{"lockAcquiredBy": "test"}']
         );
     }
 

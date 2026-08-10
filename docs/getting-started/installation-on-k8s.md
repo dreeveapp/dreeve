@@ -59,7 +59,7 @@ stringData:
   ADMIN_PASSWORD_HASH: "CHANGE-ME"
 ---
 # Replaces the bind-mounted php.ini from the compose setup. Large
-# imports/builds are memory-hungry; 4G matches the upstream guidance.
+# imports are memory-hungry; 4G matches the upstream guidance.
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -77,6 +77,7 @@ data:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  # Holds the render cache both containers share.
   name: dreeve-build
   namespace: dreeve
 spec:
@@ -280,15 +281,14 @@ kubectl -n dreeve get pods -w
 
 Within about 30 seconds the pod should report `2/2 Running`.
 
-## First run: import and build
+## First run: import your data
 
-Dreeve's first-run flow asks you to import your data and build the static
-site. The compose commands translate directly to `kubectl exec` - the `-c
-app` flag matters because the pod has two containers:
+Dreeve's first-run flow asks you to import your data. The compose commands
+translate directly to `kubectl exec` - the `-c app` flag matters because the
+pod has two containers:
 
 ```bash
-kubectl -n dreeve exec deploy/dreeve -c app -- bin/console app:data:import
-kubectl -n dreeve exec deploy/dreeve -c app -- bin/console app:data:build
+kubectl -n dreeve exec deploy/dreeve -c app -- bin/console app:cron:run-strava-import
 ```
 
 Using `deploy/dreeve` saves looking up the pod name - kubectl resolves it to
@@ -296,9 +296,9 @@ the running pod.
 
 ## Operational notes
 
-- **Memory.** The build step is the hungry one and grows with your activity
+- **Memory.** The import step is the hungry one and grows with your activity
   count. The manifests set PHP's `memory_limit` to 4G with a 5Gi container
-  ceiling. If you see OOMKills or failing builds as your history grows, bump
+  ceiling. If you see OOMKills or failing imports as your history grows, bump
   both together (the ConfigMap and the container limit).
 - **Never scale above 1 replica.** SQLite. The `Recreate` strategy exists
   for the same reason.

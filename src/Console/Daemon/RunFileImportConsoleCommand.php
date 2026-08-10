@@ -7,7 +7,6 @@ namespace App\Console\Daemon;
 use App\Application\AppIsNotReady;
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
-use App\Application\Build\RunBuild\RunBuild;
 use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
 use App\Application\Import\FileImport\ImportActivityFiles\ImportActivityFiles;
 use App\Domain\Import\ImportMode;
@@ -17,29 +16,26 @@ use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\DependencyInjection\Mutex\WithMutex;
 use App\Infrastructure\Doctrine\Migrations\RequiresUpToDateDatabaseSchema;
-use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\Logging\LoggableConsoleOutput;
 use App\Infrastructure\Mutex\LockIsAlreadyAcquired;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
-use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\Time\ResourceUsage\ResourceUsage;
 use Monolog\Attribute\WithMonologChannel;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[WithMonologChannel('daemon')]
-#[WithMutex(lockName: LockName::IMPORT_DATA_OR_BUILD_APP)]
+#[WithMutex(lockName: LockName::IMPORT_DATA)]
 #[RequiresUpToDateDatabaseSchema]
-#[AsCommand(name: RunFileImportAndBuildAppConsoleCommand::NAME, description: 'Run file import')]
-final class RunFileImportAndBuildAppConsoleCommand extends Command
+#[AsCommand(name: RunFileImportConsoleCommand::NAME, description: 'Run file import')]
+final class RunFileImportConsoleCommand extends Command
 {
-    use HandlesImportAndBuild;
-
     public const string NAME = 'app:cron:run-file-import';
 
     public function __construct(
@@ -49,8 +45,6 @@ final class RunFileImportAndBuildAppConsoleCommand extends Command
         private readonly ResourceUsage $resourceUsage,
         private readonly Mutex $mutex,
         private readonly AppUrl $appUrl,
-        private readonly Clock $clock,
-        private readonly KeyValueStore $keyValueStore,
         private readonly LoggerInterface $logger,
         private readonly ImportMode $importMode,
         private readonly SettingsRepository $settingsRepository,
@@ -60,7 +54,8 @@ final class RunFileImportAndBuildAppConsoleCommand extends Command
 
     protected function configure(): void
     {
-        $this->addImportAndBuildOptions();
+        $this->addOption('import', null, InputOption::VALUE_NONE);
+        $this->addOption('build', null, InputOption::VALUE_NONE);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -73,19 +68,7 @@ final class RunFileImportAndBuildAppConsoleCommand extends Command
             return Command::SUCCESS;
         }
 
-        $phases = $this->resolvePhases($input);
-        $shouldImport = $phases[self::IMPORT_OPTION];
-        $shouldBuild = $phases[self::BUILD_OPTION];
-
-        $today = $this->clock->getCurrentDateTimeImmutable()->format('Y-m-d');
-        $importWillRun = $shouldImport && $this->watchDirectory->hasFilesThatCanBeProcessed();
-        $buildWillRun = ($shouldBuild && $importWillRun) || $this->buildIsRequired(
-            input: $input,
-            keyValueStore: $this->keyValueStore,
-            today: $today
-        );
-
-        if (!$importWillRun && !$buildWillRun) {
+        if (!$this->watchDirectory->hasFilesThatCanBeProcessed()) {
             $output->writeln('No files left to process...');
 
             return Command::SUCCESS;
@@ -94,7 +77,7 @@ final class RunFileImportAndBuildAppConsoleCommand extends Command
         $this->resourceUsage->startTimer();
 
         try {
-            $this->mutex->acquireLock('runFileImportAndBuildApp');
+            $this->mutex->acquireLock('runFileImport');
         } catch (LockIsAlreadyAcquired) {
             // Another process is importing data, postpone import.
             $output->writeln('<comment>Postponing file import, another process is importing data.</comment>');
@@ -103,25 +86,10 @@ final class RunFileImportAndBuildAppConsoleCommand extends Command
         }
 
         try {
-            if ($importWillRun) {
-                $this->appStatusChecker->ensureIsReadyForFileImport();
+            $this->appStatusChecker->ensureIsReadyForFileImport();
 
-                $this->commandBus->dispatch(new ImportActivityFiles($output));
-                $this->commandBus->dispatch(new CalculateActivityMetrics($output));
-            }
-
-            if ($buildWillRun) {
-                $this->appStatusChecker->ensureIsReadyForBuild();
-
-                $this->commandBus->dispatch(new RunBuild(
-                    output: $output,
-                ));
-
-                $this->markAppAsBuilt(
-                    keyValueStore: $this->keyValueStore,
-                    today: $today
-                );
-            }
+            $this->commandBus->dispatch(new ImportActivityFiles($output));
+            $this->commandBus->dispatch(new CalculateActivityMetrics($output));
         } catch (AppIsNotReady $e) {
             $this->mutex->releaseLock();
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
@@ -136,10 +104,10 @@ final class RunFileImportAndBuildAppConsoleCommand extends Command
         $this->mutex->releaseLock();
 
         $this->resourceUsage->stopTimer();
-        if ($this->settingsRepository->integrations()->shouldNotifyOnSuccessfulBuild()) {
+        if ($this->settingsRepository->integrations()->shouldNotifyOnSuccessfulImport()) {
             $this->commandBus->dispatch(new SendNotification(
-                title: 'Build successful',
-                message: sprintf('New import and build of your stats was successful in %ss', $this->resourceUsage->getRunTimeInSeconds()),
+                title: 'Import successful',
+                message: sprintf('New import of your stats was successful in %ss', $this->resourceUsage->getRunTimeInSeconds()),
                 tags: ['+1'],
                 actionUrl: $this->appUrl
             ));

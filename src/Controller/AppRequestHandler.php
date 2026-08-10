@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Application\AppStatusChecker;
 use App\Application\IndexPage;
+use App\Domain\Activity\ActivityIdRepository;
 use App\Infrastructure\Http\Fragment\FragmentRenderer;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final readonly class AppRequestHandler
 {
     public function __construct(
-        private AppStatusChecker $appStatusChecker,
+        private ActivityIdRepository $activityIdRepository,
         private IndexPage $indexPage,
         private FragmentRenderer $fragmentRenderer,
     ) {
@@ -25,7 +25,7 @@ final readonly class AppRequestHandler
     #[Route(path: '/{wildcard?}', name: 'app', requirements: ['wildcard' => '.*'], methods: ['GET'], priority: -10)]
     public function handle(): Response
     {
-        if (!$this->appStatusChecker->hasBeenBuilt()) {
+        if ($this->activityIdRepository->count() <= 0) {
             throw new NotFoundHttpException('Not found');
         }
 

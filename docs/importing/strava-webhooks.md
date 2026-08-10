@@ -1,6 +1,6 @@
 # Strava Webhooks Integration
 
-Dreeve supports Strava webhooks to automatically import and build your data when new activities are uploaded. 
+Dreeve supports Strava webhooks to automatically import your data when new activities are uploaded. 
 This eliminates the need to manually run import commands or set up cron jobs.
 
 When enabled, your app will receive real-time notifications from Strava whenever:
@@ -9,7 +9,7 @@ When enabled, your app will receive real-time notifications from Strava whenever
 - An existing activity is updated
 - An activity is deleted
 
-These will trigger the import and build processes in the background. It may take a few minutes for all updates to fully complete.
+These will trigger an import in the background. It may take a few minutes for all updates to fully complete.
 
 > [!IMPORTANT]
 > **Important** Your Dreeve instance must be publicly accessible over HTTPS for Strava webhooks to work.

@@ -66,7 +66,7 @@ class CalculateCombinedStreamsTest extends ContainerTestCase
             mutex: new Mutex(
                 connection: $this->getConnection(),
                 clock: PausedClock::fromString('2025-12-04'),
-                lockName: LockName::IMPORT_DATA_OR_BUILD_APP,
+                lockName: LockName::IMPORT_DATA,
             )
         )->process($output);
 
@@ -129,7 +129,7 @@ class CalculateCombinedStreamsTest extends ContainerTestCase
             mutex: new Mutex(
                 connection: $this->getConnection(),
                 clock: PausedClock::fromString('2025-12-04'),
-                lockName: LockName::IMPORT_DATA_OR_BUILD_APP,
+                lockName: LockName::IMPORT_DATA,
             )
         )->process($output);
 
@@ -397,7 +397,7 @@ class CalculateCombinedStreamsTest extends ContainerTestCase
         $this->calculateCombinedStreams = $this->getContainer()->get(CalculateCombinedStreams::class);
         $this->getConnection()->executeStatement(
             'INSERT INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
-            ['key' => 'lock.importDataOrBuildApp', 'value' => '{"lockAcquiredBy": "test"}']
+            ['key' => 'lock.importData', 'value' => '{"lockAcquiredBy": "test"}']
         );
     }
 }

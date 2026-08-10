@@ -50,16 +50,10 @@
         }
     },
     {
-        "commandName": "App\\Application\\Build\\RunBuild\\RunBuild",
-        "payload": {
-            "output": {}
-        }
-    },
-    {
         "commandName": "App\\Domain\\Integration\\Notification\\SendNotification\\SendNotification",
         "payload": {
-            "title": "Build successful",
-            "message": "New import and build of your stats was successful in 10s",
+            "title": "Import successful",
+            "message": "New import of your stats was successful in 10s",
             "tags": [
                 "+1"
             ],

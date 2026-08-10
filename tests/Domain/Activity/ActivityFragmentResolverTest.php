@@ -30,7 +30,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
 
@@ -42,7 +42,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     public function testRenderForAVirtualRide(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9542782314');
 
@@ -54,7 +54,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     public function testItRendersTheTemplateOfTheSportType(SportType $sportType): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $activityId = ActivityId::fromUnprefixed('123456789');
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
@@ -92,7 +92,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     public function testItLabelsTheVelocityDistributionOfARunAsPace(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-45326441741');
 
@@ -103,7 +103,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     public function testItLabelsTheVelocityDistributionOfARideAsSpeed(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->getContainer()->get(ActivityStreamMetricRepository::class)->add(ActivityStreamMetric::create(
             activityId: ActivityId::fromUnprefixed('9756441741'),
@@ -129,7 +129,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     public function testGetPath(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
 
@@ -143,7 +143,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     public function testItIsNotServedAsADataFragment(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/activity/activity-9756441741');
 
@@ -153,7 +153,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     public function testItOnlyRendersTheEditLinkForAuthenticatedVisitors(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
         $this->assertStringNotContainsString(
@@ -172,7 +172,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     public function testItVariesByAuthentication(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
         $anonymousCacheKey = (string) $this->client->getResponse()->headers->get('X-Cache-Key');
@@ -190,7 +190,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     public function testItIsTaggedWithTheActivityItRenders(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
 
@@ -204,7 +204,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     public function testResolve(string $path): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->assertNull($this->getContainer()->get(ActivityFragmentResolver::class)->resolve($path));
     }
@@ -219,7 +219,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     }
 
     #[\Override]
-    protected function shouldMarkAppAsBuilt(): bool
+    protected function shouldSeedActivity(): bool
     {
         return false;
     }

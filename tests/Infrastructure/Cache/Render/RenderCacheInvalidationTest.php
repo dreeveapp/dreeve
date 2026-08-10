@@ -71,7 +71,6 @@ class RenderCacheInvalidationTest extends ContainerTestCase
         yield 'index' => [IndexPage::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
-            RootCacheTag::APP_BUILD,
             RootCacheTag::ACTIVITIES,
             RootCacheTag::ACTIVITY_IMAGES,
             RootCacheTag::CHALLENGES,

@@ -2,9 +2,11 @@
 
 namespace App\Tests\Controller;
 
-use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
 use App\Controller\AIChatRequestHandler;
+use App\Domain\Activity\ActivityIdRepository;
+use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Domain\Integration\AI\Chat\ChatMessage;
 use App\Domain\Integration\AI\Chat\ChatMessageId;
@@ -14,13 +16,13 @@ use App\Domain\Settings\KeyValueBasedSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
-use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
+use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
 use App\Tests\Infrastructure\Eventing\SpyEventBus;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
@@ -55,9 +57,9 @@ class AIChatRequestHandlerTest extends ContainerTestCase
 
     public function testHandle(): void
     {
-        $this->keyValueStore->save(KeyValue::fromState(
-            key: Key::APP_LAST_BUILD_SNAPSHOT,
-            value: Value::fromString('2023-10-17@1.0.0'),
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()->build(),
+            [],
         ));
 
         $this->chatRepository
@@ -77,7 +79,7 @@ class AIChatRequestHandlerTest extends ContainerTestCase
         $this->assertMatchesHtmlSnapshot($requestHandler->handle()->getContent());
     }
 
-    public function testHandleWhenTheAppHasNotBeenBuiltYet(): void
+    public function testHandleWhenNoActivitiesHaveBeenImportedYet(): void
     {
         $this->chatRepository
             ->expects($this->never())
@@ -92,9 +94,9 @@ class AIChatRequestHandlerTest extends ContainerTestCase
 
     public function testHandleAINotEnabled(): void
     {
-        $this->keyValueStore->save(KeyValue::fromState(
-            key: Key::APP_LAST_BUILD_SNAPSHOT,
-            value: Value::fromString('2023-10-17@1.0.0'),
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()->build(),
+            [],
         ));
 
         $this->chatRepository
@@ -224,7 +226,7 @@ class AIChatRequestHandlerTest extends ContainerTestCase
     private function buildRequestHandler(bool $aiUIEnabled): AIChatRequestHandler
     {
         return new AIChatRequestHandler(
-            appStatusChecker: $this->getContainer()->get(AppStatusChecker::class),
+            activityIdRepository: $this->getContainer()->get(ActivityIdRepository::class),
             neuronAIAgent: $this->neuronAIAgent,
             chatRepository: $this->chatRepository,
             commandBus: $this->getContainer()->get(CommandBus::class),
@@ -241,7 +243,7 @@ class AIChatRequestHandlerTest extends ContainerTestCase
         CommandBus $commandBus,
     ): AIChatRequestHandler {
         return new AIChatRequestHandler(
-            appStatusChecker: $this->getContainer()->get(AppStatusChecker::class),
+            activityIdRepository: $this->getContainer()->get(ActivityIdRepository::class),
             neuronAIAgent: $agent,
             chatRepository: $chatRepository,
             commandBus: $commandBus,

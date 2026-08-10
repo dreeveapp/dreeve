@@ -31,7 +31,7 @@ final readonly class IntegrationsSettings
         private array $aiConfig,
         private ChatCommands $chatCommands,
         private ConfiguredNotificationUrls $configuredNotificationUrls,
-        private bool $notifyOnSuccessfulBuild,
+        private bool $notifyOnSuccessfulImport,
     ) {
     }
 
@@ -80,7 +80,8 @@ final readonly class IntegrationsSettings
             aiConfig: $aiConfig,
             chatCommands: ChatCommands::fromArray($aiConfig['agent']['commands'] ?? []),
             configuredNotificationUrls: ConfiguredNotificationUrls::fromConfig($services),
-            notifyOnSuccessfulBuild: filter_var($notifications['notifyOnSuccessfulBuild'] ?? true, FILTER_VALIDATE_BOOLEAN),
+            // The stored key predates the removal of the build phase, renaming it would reset the user's setting.
+            notifyOnSuccessfulImport: filter_var($notifications['notifyOnSuccessfulBuild'] ?? true, FILTER_VALIDATE_BOOLEAN),
         );
     }
 
@@ -104,9 +105,9 @@ final readonly class IntegrationsSettings
         return $this->configuredNotificationUrls;
     }
 
-    public function shouldNotifyOnSuccessfulBuild(): bool
+    public function shouldNotifyOnSuccessfulImport(): bool
     {
-        return $this->notifyOnSuccessfulBuild;
+        return $this->notifyOnSuccessfulImport;
     }
 
     public function getAIProvider(): AIProviderInterface

@@ -167,15 +167,15 @@ If: If
 Image: Image
 Images: Images
 Import: Import
+'Import Strava data': 'Import Strava data'
 'Import activities': 'Import activities'
-'Import data & build app': 'Import data & build app'
 'Import pending': 'Import pending'
 'Import segment details': 'Import segment details'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
 'Import source': 'Import source'
 'Imported files will appear here once you upload them.': 'Imported files will appear here once you upload them.'
 'Imported from Strava': 'Imported from Strava'
-'Imports new Strava activities and rebuilds the app.': 'Imports new Strava activities and rebuilds the app.'
+'Imports new Strava activities.': 'Imports new Strava activities.'
 'Include retired gear': 'Include retired gear'
 Info: Info
 Integrations: Integrations
@@ -225,7 +225,7 @@ Monday: Monday
 'No unit': 'No unit'
 'Normal date format': 'Normal date format'
 'Notification services': 'Notification services'
-'Notify when a build was successful': 'Notify when a build was successful'
+'Notify when an import was successful': 'Notify when an import was successful'
 'Number of activities to display': 'Number of activities to display'
 'Number of challenges to display': 'Number of challenges to display'
 'Number of milestones to display': 'Number of milestones to display'
@@ -301,7 +301,7 @@ Seconds: Seconds
 'Select gear...': 'Select gear...'
 'Select sport types': 'Select sport types'
 'Select the serviced gear…': 'Select the serviced gear…'
-'Sends a notification after every successful import and build.': 'Sends a notification after every successful import and build.'
+'Sends a notification after every successful import.': 'Sends a notification after every successful import.'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sends a notification when a new app version is available. Requires a configured notification service.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sends a notification when gear maintenance is due. Requires a configured notification service.'
 'Set description': 'Set description'

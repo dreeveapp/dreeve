@@ -38,7 +38,6 @@ abstract class ContainerTestCase extends KernelTestCase
         $fileSystems = [
             // $this->getContainer()->get('default.storage'),
             $this->getContainer()->get('file.storage'),
-            $this->getContainer()->get('build_html.storage'),
         ];
 
         foreach ($fileSystems as $fileSystem) {

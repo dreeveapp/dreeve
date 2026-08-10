@@ -35,8 +35,7 @@ No. `IMPORT_MODE` is either `files` or `stravaApi`, you can switch between them 
 
 Almost always one of three things:
 
-1. **The build hasn't run.** Dreeve's frontend is pre-rendered static HTML, so importing an activity does not make
-   it appear. A build has to run afterwards.
+1. **The import hasn't run yet.** In `files` import mode the daemon picks up new files every 5 minutes.
 2. **It was a duplicate.** Dreeve won't import the same activity twice.
 3. **It failed to parse.**
 
@@ -130,13 +129,10 @@ Stop the containers, then copy the whole directory:
 
 # Start again
 > docker compose up -d
-
-# Rebuild the frontend
-> docker compose exec app bin/console app:data:build
 ```
 
-The frontend is pre-rendered static HTML that lives in `build/`, so run a build after restoring to regenerate it
-from the restored database. You do **not** need to re-import your activities.
+The app reads straight from the restored database, so there is nothing else to run. You do **not** need to
+re-import your activities.
 
 </details>
 

@@ -19,7 +19,7 @@ class BadgeRequestHandlerTest extends ControllerWebTestCase
     public function testHandle(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/badge/dreeve.svg');
 
@@ -32,7 +32,7 @@ class BadgeRequestHandlerTest extends ControllerWebTestCase
     public function testHandleWhenBadgeIsNotRegistered(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/badge/unknown.svg');
 
@@ -50,7 +50,7 @@ class BadgeRequestHandlerTest extends ControllerWebTestCase
     }
 
     #[\Override]
-    protected function shouldMarkAppAsBuilt(): bool
+    protected function shouldSeedActivity(): bool
     {
         return false;
     }

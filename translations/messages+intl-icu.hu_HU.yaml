@@ -455,7 +455,7 @@ Time: Idő
 'Time in zone': 'Time in zone'
 'Times completed': 'Teljesítések száma'
 Title: Title
-'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect': 'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect'
+'To enable it, configure this in the admin panel': 'To enable it, configure this in the admin panel'
 'Toggle sidebar': 'Oldalsáv ki/be'
 'Top 10': 'Top 10'
 'Total distance per month': 'Havi össztávolság'
@@ -474,7 +474,6 @@ Title: Title
 Tue: K
 Tue.: Tue.
 Unspecified: Meghatározatlan
-'Updated on': 'Frissítve:'
 'User badge': 'Felhasználói kitűző'
 'Velo Mobiles': Velomobil
 'Very high': 'Nagyon magas'

@@ -455,7 +455,7 @@ Time: Tid
 'Time in zone': 'Time in zone'
 'Times completed': 'Antal gånger avklarade'
 Title: Title
-'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect': 'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect'
+'To enable it, configure this in the admin panel': 'To enable it, configure this in the admin panel'
 'Toggle sidebar': 'Visa/Dölj sidofält'
 'Top 10': '10 bästa'
 'Total distance per month': 'Total distans per månad'
@@ -474,7 +474,6 @@ Title: Title
 Tue: Tis
 Tue.: Tue.
 Unspecified: Ospecificerad
-'Updated on': Uppdaterades
 'User badge': Användarmärke
 'Velo Mobiles': Velomobil
 'Very high': 'Väldigt hög'

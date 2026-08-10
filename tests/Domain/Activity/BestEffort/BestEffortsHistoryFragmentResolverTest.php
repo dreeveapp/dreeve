@@ -16,7 +16,7 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         foreach (ActivityType::RIDE->getDistancesForBestEffortCalculation() as $distance) {
             $this->client->request('GET', sprintf(
@@ -34,7 +34,7 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
     public function testGetPath(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/best-efforts/Ride/10000');
 
@@ -53,7 +53,7 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
     public function testItIsNotServedAsADataFragment(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/best-efforts/Ride/10000');
 
@@ -63,7 +63,7 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveAnActivityTypeThatDoesNotExist(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/best-efforts/Snorkeling/10000');
 
@@ -73,7 +73,7 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveAnActivityTypeWithoutBestEfforts(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/best-efforts/Walk/10000');
 
@@ -83,7 +83,7 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveADistanceThatIsNotCalculated(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/best-efforts/Ride/12345');
 
@@ -107,7 +107,7 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
     }
 
     #[\Override]
-    protected function shouldMarkAppAsBuilt(): bool
+    protected function shouldSeedActivity(): bool
     {
         return false;
     }

@@ -21,30 +21,23 @@ and challenges, none of which is present in an activity file.
 > [!IMPORTANT]
 > **Important** The two modes are **mutually exclusive**. Dreeve runs in one or the other
 
-## An import is always followed by a build
-
-**Dreeve's frontend is pre-rendered static HTML.** Importing an activity writes it to the database, but it does
-*not* make it show up in the app. The pages are only regenerated when a **build** runs.
-
-To import new activities and then rebuild the app:
-
 <!-- tabs:start -->
 
 #### **Files mode**
 
 ```bash
-> docker compose exec app bin/console app:cron:run-file-import --import --build
+> docker compose exec app bin/console app:cron:run-file-import
 ```
 
 #### **Strava API mode**
 
 ```bash
-> docker compose exec app bin/console app:cron:run-strava-import --import --build
+> docker compose exec app bin/console app:cron:run-strava-import
 ```
 
 <!-- tabs:end -->
 
 > [!NOTE]
-> The same applies after changing settings in the admin panel: a build has to run before you see the effect.
-> The **daemon** container does this automatically for you every 5 minutes if you run the app in `file` import mode.
+> In `files` import mode the **daemon** container runs the import automatically for you every 5 minutes.
+> In `stravaApi` mode you can schedule it from the admin panel under **Settings > Daemon**.
 

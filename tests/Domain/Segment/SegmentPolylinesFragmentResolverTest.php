@@ -14,7 +14,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
         $this->client->request('GET', '/api/fragment/data/segment/segment-10/polylines');
@@ -27,7 +27,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testGetPath(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
         $this->client->request('GET', '/api/fragment/data/segment/segment-10/polylines');
@@ -42,7 +42,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testItIsTaggedWithTheSegmentsItRenders(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
         $this->client->request('GET', '/api/fragment/data/segment/segment-10/polylines');
@@ -57,7 +57,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testItIsNotServedAsAPageFragment(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
         $this->client->request('GET', '/api/fragment/page/segment/segment-10/polylines');
@@ -68,7 +68,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveASegmentWithoutAMap(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/segment/segment-1/polylines');
 
@@ -78,7 +78,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testItDoesNotResolveASegmentThatDoesNotExist(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/segment/segment-999/polylines');
 
@@ -88,7 +88,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
     public function testItRejectsAnUnprefixedSegmentId(): void
     {
         $this->provideFullTestSet();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
         $this->client->request('GET', '/api/fragment/data/segment/10/polylines');
@@ -97,7 +97,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
     }
 
     #[\Override]
-    protected function shouldMarkAppAsBuilt(): bool
+    protected function shouldSeedActivity(): bool
     {
         return false;
     }

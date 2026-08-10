@@ -144,20 +144,20 @@ Two things are **not** carried over by the migration and have to be set up again
   recording devices) are not migrated. Enter them again in the admin panel, on the gear or recording device
   settings pages.
 
-### 8. Run an import and build
+### 8. Run an import
 
 <!-- tabs:start -->
 
 #### **Files mode**
 
 ```bash
-> docker compose exec app bin/console app:cron:run-file-import --import --build
+> docker compose exec app bin/console app:cron:run-file-import
 ```
 
 #### **Strava API mode**
 
 ```bash
-> docker compose exec app bin/console app:cron:run-strava-import --import --build
+> docker compose exec app bin/console app:cron:run-strava-import
 ```
 
 <!-- tabs:end -->

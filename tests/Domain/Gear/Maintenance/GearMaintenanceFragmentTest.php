@@ -27,7 +27,7 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
     {
         $this->importGearMaintenanceConfig();
         $this->provideGearWithMaintenanceHistory();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/gear/maintenance');
 
@@ -38,7 +38,7 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
 
     public function testRenderWhenTheFeatureIsNotEnabled(): void
     {
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/gear/maintenance');
 
@@ -50,7 +50,7 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
     {
         $this->importGearMaintenanceConfig();
         $this->provideGearWithMaintenanceHistory();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/gear/maintenance');
 
@@ -65,7 +65,7 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
     {
         $this->importGearMaintenanceConfig();
         $this->provideGearWithMaintenanceHistory();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/data/gear/maintenance');
 
@@ -76,7 +76,7 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
     {
         $this->importGearMaintenanceConfig();
         $this->provideGearWithMaintenanceHistory();
-        $this->markAppAsBuilt();
+        $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/gear/maintenance');
 
@@ -160,7 +160,7 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
     }
 
     #[\Override]
-    protected function shouldMarkAppAsBuilt(): bool
+    protected function shouldSeedActivity(): bool
     {
         return false;
     }

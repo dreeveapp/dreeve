@@ -10,24 +10,6 @@ When a new version of the app is released, pull the latest Docker image:
 > docker compose pull # if available, pull a new image
 > docker compose up -d # start new containers using the compose config and the newly pulled image
 ```
-After that, wait a few minutes for the daemon container to update the app to the new version. 
-If you don't want to wait, you can trigger a build manually:
-
-<!-- tabs:start -->
-
-#### **Files mode**
-
-```bash
-> docker compose exec app bin/console app:cron:run-file-import --build
-```
-
-#### **Strava API mode**
-
-```bash
-> docker compose exec app bin/console app:cron:run-strava-import --build
-```
-
-<!-- tabs:end -->
 
 > [!WARNING]
 > * **Backup before updates**: always back up your Docker volumes, in particular `storage/database`, before upgrading.

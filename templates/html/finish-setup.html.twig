@@ -38,36 +38,12 @@
                     </div>
                     <div class="flex items-center gap-2 px-4 py-3 font-mono text-sm">
                         <span class="select-none text-primary">›</span>
-                        <code class="flex-1 overflow-x-auto whitespace-nowrap text-gray-800">docker compose exec app bin/console app:data:import</code>
+                        <code class="flex-1 overflow-x-auto whitespace-nowrap text-gray-800">docker compose exec app bin/console app:cron:run-strava-import</code>
                     </div>
                 </div>
-            </div>
-            <div class="mt-6">
-                <div class="flex items-center gap-2.5">
-                    <span class="grid size-6 place-items-center rounded-md bg-orange-100 text-xs font-bold text-primary">2</span>
-                    <h3 class="font-semibold">Build static HTML files</h3>
-                </div>
-                <div class="mt-3 overflow-hidden rounded-xl border border-gray-200 bg-gray-50">
-                    <div class="flex items-center justify-between border-b border-gray-200 bg-gray-100/70 px-3 py-1.5">
-                        <div class="flex items-center gap-1.5">
-                            <span class="size-2.5 rounded-full bg-red-400"></span>
-                            <span class="size-2.5 rounded-full bg-yellow-400"></span>
-                            <span class="size-2.5 rounded-full bg-green-400"></span>
-                        </div>
-                        <span class="font-mono text-[11px] text-gray-400">terminal</span>
-                    </div>
-                    <div class="flex items-center gap-2 px-4 py-3 font-mono text-sm">
-                        <span class="select-none text-primary">›</span>
-                        <code class="flex-1 overflow-x-auto whitespace-nowrap text-gray-800">docker compose exec app bin/console app:data:build</code>
-                    </div>
-                </div>
-                <p class="mt-2.5 flex items-start gap-2 text-xs text-gray-500">
-                    <svg class="mt-px size-3.5 shrink-0 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"></path></svg>
-                    Requires at least one imported activity before it will run.
-                </p>
             </div>
             <div class="mt-10 bg-gray-50/50 px-4 py-3 text-sm text-gray-500">
-                Refresh this page after you've run the commands.
+                Refresh this page after you've run the command.
             </div>
         {% else %}
             <div class="mt-8">
@@ -92,7 +68,7 @@
                     <h3 class="font-semibold">Wait a few minutes</h3>
                 </div>
                 <p class="mt-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">
-                    The import and build run automatically every 5 minutes. Once your files have been processed,
+                    The import runs automatically every 5 minutes. Once your files have been processed,
                     your statistics will be available here.
                 </p>
             </div>

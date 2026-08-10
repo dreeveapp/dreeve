@@ -455,7 +455,7 @@ Time: Time
 'Time in zone': 'Time in zone'
 'Times completed': 'Aantal keer voltooid'
 Title: Title
-'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect': 'To enable it, configure this in the admin panel and rebuild the files for the changes to take effect'
+'To enable it, configure this in the admin panel': 'To enable it, configure this in the admin panel'
 'Toggle sidebar': 'Toggle sidebar'
 'Top 10': 'Top 10'
 'Total distance per month': 'Total distance per month'
@@ -474,7 +474,6 @@ Title: Title
 Tue: Di
 Tue.: Tue.
 Unspecified: Unspecified
-'Updated on': 'Bijgewerkt op'
 'User badge': 'User badge'
 'Velo Mobiles': 'Velo Mobiles'
 'Very high': 'Heel hoog'
