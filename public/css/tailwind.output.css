@@ -1697,9 +1697,6 @@
   .h-2\.5 {
     height: calc(var(--spacing) * 2.5);
   }
-  .h-3 {
-    height: calc(var(--spacing) * 3);
-  }
   .h-4 {
     height: calc(var(--spacing) * 4);
   }
@@ -5125,7 +5122,27 @@ table.data-table {
         }
       }
     }
+    tr.clusterize-loading {
+      &:hover {
+        @media (hover: hover) {
+          background-color: transparent;
+        }
+      }
+      td {
+        padding: 0px;
+        > div {
+          position: sticky;
+          left: 0px;
+          width: 100cqi;
+          padding-inline: calc(var(--spacing) * 6);
+          padding-block: calc(var(--spacing) * 10);
+        }
+      }
+    }
   }
+}
+.scroll-area:has(> table.data-table) {
+  container-type: inline-size;
 }
 @layer components {
   div.filter-dropdown > button[data-dropdown] {

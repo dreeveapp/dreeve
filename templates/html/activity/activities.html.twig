@@ -413,7 +413,11 @@
                         </thead>
                         <tbody class="clusterize-content">
                         <tr class="clusterize-loading">
-                            <td class="px-6 py-2.5 truncate">{{ "Loading data..."|trans }}</td>
+                            <td colspan="100">
+                                <div>
+                                    {% include 'html/loader.html.twig' with {modifier: 'loader--md'} %}
+                                </div>
+                            </td>
                         </tr>
                         </tbody>
                         <tfoot>

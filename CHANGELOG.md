@@ -1,3 +1,37 @@
+# [v5.2.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.2.0) - 2026-08-10
+
+## No more builds
+
+This release brings another major UX improvement. We've **eliminated the need for pre-built HTML files**.
+Changes made in the admin panel are now reflected in the app immediately. No more waiting for builds.
+
+## Other noteworthy changes
+
+* Toggle column visibility on the activity overview
+
+## What's Changed
+* ISSUE #2426: Move the Heatmap page to the new cache based system by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2427
+* ISSUE #2430: Move the Milestones page to the new cache based system by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2431
+* ISSUE #2434: Serve activity GPX file on demand by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2438
+* ISSUE #2429: Heart rate diagram for certain activity types in file mode by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2435
+* ISSUE #2432: Move the Best efforts page to the new cache based system by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2433
+* ISSUE #2437: Replaced Strava-specific intro wording with source-agnostic phrasing by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2439
+* ISSUE #2441: Move the Rewind page to the new cache based system by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2442
+* ISSUE #2443: Serve activity metrics and coordinates file on demand by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2444
+* ISSUE #2447: Move the Months page to the new cache based system by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2448
+* ISSUE #2449: Move the Activity pages to the new cache based system by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2450
+* ISSUE #2451: Move the Segments pages to the new cache based system by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2452
+* ISSUE #2454: Move the manifest.json page to a dynamic request handler by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2455
+* ISSUE #2457: Move the Badges pages to the new cache based system by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2458
+* ISSUE #2459: ConfigureAppColors needs to invalidate cache tags by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2460
+* ISSUE #2461: Move the Gear pages to the new cache based system by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2463
+* ISSUE #2464: Move the dashboard pages to the new cache based system by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2465
+* ISSUE #2466: Remove all references to build-related functionality by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2467
+* ISSUE #2424: Allow to toggle column visibility by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2469
+* ISSUE #2445 Translation: German files by @effectpears in https://github.com/dreeveapp/dreeve/pull/2446
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.1.5...v5.2.0
+
 # [v5.1.5](https://github.com/dreeveapp/dreeve/releases/tag/v5.1.5) - 2026-08-05
 
 ## New features

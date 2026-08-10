@@ -41,5 +41,21 @@ table.data-table {
                 }
             }
         }
+
+        tr.clusterize-loading {
+            @apply hover:bg-transparent;
+
+            td {
+                @apply p-0;
+
+                > div {
+                    @apply sticky left-0 w-[100cqi] px-6 py-10;
+                }
+            }
+        }
     }
+}
+
+.scroll-area:has(> table.data-table) {
+    container-type: inline-size;
 }
