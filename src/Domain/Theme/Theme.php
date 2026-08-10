@@ -55,12 +55,12 @@ final class Theme implements ResetInterface
 
     public function getColorForSportType(SportType $sportType): string
     {
-        return $this->getChartColors()->forSportType($sportType) ?? self::fallbackColor($sportType->value);
+        return $this->getChartColors()->forSportType($sportType) ?? $this->fallbackColor($sportType->value);
     }
 
     public function getColorForGear(GearId $gearId): string
     {
-        return $this->getChartColors()->forGear($gearId) ?? self::fallbackColor((string) $gearId);
+        return $this->getChartColors()->forGear($gearId) ?? $this->fallbackColor((string) $gearId);
     }
 
     public static function getColorForYear(Year $year): string
@@ -71,7 +71,7 @@ final class Theme implements ResetInterface
         return $colors[$yearsAgo % count($colors)];
     }
 
-    private static function fallbackColor(string $key): string
+    private function fallbackColor(string $key): string
     {
         $colors = self::defaultChartColors();
 
