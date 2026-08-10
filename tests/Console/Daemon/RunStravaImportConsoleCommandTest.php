@@ -4,7 +4,6 @@ namespace App\Tests\Console\Daemon;
 
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
-use App\Application\Import\StravaImport\ImportGear\GearImportStatus;
 use App\Console\Daemon\RunStravaImportConsoleCommand;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
@@ -222,7 +221,6 @@ class RunStravaImportConsoleCommandTest extends ConsoleCommandTestCase
                 lockName: LockName::IMPORT_DATA,
             ),
             appStatusChecker: $appStatusChecker ?? new AppStatusChecker(new SuccessfulPermissionChecker()),
-            gearImportStatus: $this->getContainer()->get(GearImportStatus::class),
             appUrl: AppUrl::fromString('http://localhost'),
             importMode: $importMode,
             settingsRepository: $this->getContainer()->get(KeyValueBasedSettingsRepository::class),

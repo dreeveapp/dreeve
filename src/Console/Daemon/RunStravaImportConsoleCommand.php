@@ -11,7 +11,6 @@ use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
 use App\Application\Import\StravaImport\DeleteActivitiesMarkedForDeletion\DeleteActivitiesMarkedForDeletion;
 use App\Application\Import\StravaImport\ImportActivities\ImportActivities;
 use App\Application\Import\StravaImport\ImportChallenges\ImportChallenges;
-use App\Application\Import\StravaImport\ImportGear\GearImportStatus;
 use App\Application\Import\StravaImport\ImportGear\ImportGear;
 use App\Application\Import\StravaImport\ImportSegments\ImportSegments;
 use App\Application\Import\StravaImport\ProcessRawActivityData\ProcessRawActivityData;
@@ -56,7 +55,6 @@ final class RunStravaImportConsoleCommand extends Command
         private readonly LoggerInterface $logger,
         private readonly Mutex $mutex,
         private readonly AppStatusChecker $appStatusChecker,
-        private readonly GearImportStatus $gearImportStatus,
         private readonly AppUrl $appUrl,
         private readonly ImportMode $importMode,
         private readonly SettingsRepository $settingsRepository,
@@ -111,13 +109,6 @@ final class RunStravaImportConsoleCommand extends Command
                 output: $output,
                 restrictToActivityIds: $restrictToActivityIds
             ));
-
-            if (!$this->gearImportStatus->isComplete()) {
-                $output->block('[WARNING] Some of your gear hasn’t been imported yet. This is most likely due to Strava API rate limits being reached. As a result, your gear statistics may currently be incomplete.
-
-This is not a bug, once all your activities have been imported, your gear statistics will update automatically and be complete.', null, 'fg=black;bg=yellow', ' ', true);
-            }
-
             $this->commandBus->dispatch(new ProcessRawActivityData($output));
             $this->commandBus->dispatch(new ImportSegments($output));
             $this->commandBus->dispatch(new ImportChallenges($output));
