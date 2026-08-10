@@ -19,6 +19,9 @@
     "App\\Domain\\Challenge\\ChallengeInvalidateCacheTagsListener": [
         "reactToChallengeWasImported"
     ],
+    "App\\Domain\\Dashboard\\DashboardInvalidateCacheTagsListener": [
+        "reactToDashboardLayoutWasUpdated"
+    ],
     "App\\Domain\\Gear\\GearInvalidateCacheTagsListener": [
         "reactToGearWasAdded",
         "reactToGearWasUpdated"

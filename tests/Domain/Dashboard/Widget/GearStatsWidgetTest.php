@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Dashboard\Widget;
 
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\Widget\GearStatsWidget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
@@ -26,6 +27,7 @@ class GearStatsWidgetTest extends ContainerTestCase
             ->add('includeRetiredGear', false);
 
         $render = $this->widget->render(
+            dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
             now: SerializableDateTime::fromString('2025-10-16'),
             configuration: $config
         );
@@ -38,6 +40,7 @@ class GearStatsWidgetTest extends ContainerTestCase
             ->add('includeRetiredGear', false);
 
         $render = $this->widget->render(
+            dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
             now: SerializableDateTime::fromString('2025-10-16'),
             configuration: $config
         );

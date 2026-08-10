@@ -72,7 +72,6 @@ final readonly class IndexPage implements Cacheable
         }
 
         return $this->twig->load('html/index.html.twig')->render([
-            'router' => Router::SINGLE_PAGE,
             'totalActivityCount' => $this->activityIdRepository->count(),
             'completedChallenges' => $this->challengeRepository->count(),
             'totalPhotoCount' => $this->imageRepository->count(),

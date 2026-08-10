@@ -11,6 +11,7 @@ use App\Infrastructure\ValueObject\Time\Year;
 enum RootCacheTag: string implements CacheTag
 {
     case APP_BUILD = 'app.build';
+    case DASHBOARD = 'dashboard';
     case ACTIVITIES = 'activities';
     case ACTIVITY_IMAGES = 'activity.images';
     case ACTIVITY_ROUTE = 'activity.route';

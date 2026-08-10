@@ -1,4 +1,3 @@
-{% set uniqueId = uniqueNumberForId('distanceBreakdownWidget') %}
 {% autoescape false %}
     <h3 class="mb-4 text-lg font-semibold">
         {{ "Distance breakdown"|trans }}
@@ -52,7 +51,7 @@
                             <th scope="row"
                                 class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
                                 <div>
-                                    <a href="#" data-router-navigate="{{ relativeUrl('activities') }}" data-filters='{{ dataFilters('activities', {sportType: sportTypes, distance: {from: statistic.min, to: statistic.max, multiplier: 10}}) }}' class="text-blue-600 hover:underline">
+                                    <a href="{{ relativeUrl('activities') }}" data-router-content-url="{{ relativeUrl('api/fragment/page/activities') }}" data-filters='{{ dataFilters('activities', {sportType: sportTypes, distance: {from: statistic.min, to: statistic.max, multiplier: 10}}) }}' class="text-blue-600 hover:underline">
                                         {{ statistic.label }}
                                     </a>
                                 </div>

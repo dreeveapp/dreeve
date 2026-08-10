@@ -1,5 +1,4 @@
 {% autoescape false %}
-{% set uniqueId = uniqueNumberForId('trainingGoalsWidget') %}
 <div class="flex items-center justify-between">
     <h3 class="text-lg font-semibold">{{ "Training goals"|trans }}</h3>
     {% if calculatedTrainingGoalsPerPeriod|length > 1 %}

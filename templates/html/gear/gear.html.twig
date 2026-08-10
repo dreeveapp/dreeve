@@ -136,7 +136,7 @@
     {% autoescape false %}
         <tr class="group/row">
             <th scope="row" class="px-2 py-2 sticky left-0 font-medium bg-white whitespace-nowrap">
-                <a href="#" data-router-navigate="{{ relativeUrl('activities') }}" data-filters='{{ dataFilters('activities', {gear: gear.getId()}) }}' class="font-medium text-blue-600 hover:underline">
+                <a href="{{ relativeUrl('activities') }}" data-router-content-url="{{ relativeUrl('api/fragment/page/activities') }}" data-filters='{{ dataFilters('activities', {gear: gear.getId()}) }}' class="font-medium text-blue-600 hover:underline">
                     {{ gear.getName() }}
                 </a>
             </th>

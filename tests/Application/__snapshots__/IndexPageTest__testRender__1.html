@@ -47,7 +47,7 @@
                     </span>
                     <span class="sr-only">Toggle sidebar</span>
                 </button>
-                        <a href="#" data-router-navigate="/dashboard" class="flex items-center justify-between mr-4">
+                        <a href="/dashboard" data-router-content-url="/api/fragment/page/dashboard" class="flex items-center justify-between mr-4">
                 <img src="/assets/images/logo.svg" class="rounded-full mr-3 h-8" alt="Logo">
                 <div class="flex gap-x-1 sm:text-lg font-extrabold whitespace-nowrap">
                     <div>Dreeve</div>
@@ -133,10 +133,10 @@
     </div>
 </nav>        <!-- SIDEBAR -->
     <aside class="-translate-x-full md:translate-x-0" aria-label="Sidenav" id="drawer-navigation">
-                <div>
+        <div>
             <ul class="space-y-1 pb-2">
                 <li>
-                    <a title="Dashboard" href="/dashboard" data-router-navigate="/dashboard">
+                    <a title="Dashboard" href="/dashboard" data-router-content-url="/api/fragment/page/dashboard">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.143 4H4.857A.857.857 0 0 0 4 4.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 10 9.143V4.857A.857.857 0 0 0 9.143 4Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 20 9.143V4.857A.857.857 0 0 0 19.143 4Zm-10 10H4.857a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286A.857.857 0 0 0 9.143 14Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286a.857.857 0 0 0-.857-.857Z"></path>
                         </svg>
@@ -146,7 +146,7 @@
             </ul>
             <ul class="space-y-1 py-2">
                 <li>
-                    <a title="Activities" href="/activities" data-router-navigate="/activities" data-router-content-url="/api/fragment/page/activities">
+                    <a title="Activities" href="/activities" data-router-content-url="/api/fragment/page/activities">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 9h6m-6 3h6m-6 3h6M6.996 9h.01m-.01 3h.01m-.01 3h.01M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"></path>
                         </svg>
@@ -155,7 +155,7 @@
                     </a>
                 </li>
                                     <li>
-                        <a title="Gear" href="/gear" data-router-navigate="/gear" data-router-content-url="/api/fragment/page/gear">
+                        <a title="Gear" href="/gear" data-router-content-url="/api/fragment/page/gear">
                             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10.051 8.102-3.778.322-1.994 1.994a.94.94 0 0 0 .533 1.6l2.698.316m8.39 1.617-.322 3.78-1.994 1.994a.94.94 0 0 1-1.595-.533l-.4-2.652m8.166-11.174a1.366 1.366 0 0 0-1.12-1.12c-1.616-.279-4.906-.623-6.38.853-1.671 1.672-5.211 8.015-6.31 10.023a.932.932 0 0 0 .162 1.111l.828.835.833.832a.932.932 0 0 0 1.111.163c2.008-1.102 8.35-4.642 10.021-6.312 1.475-1.478 1.133-4.77.855-6.385Zm-2.961 3.722a1.88 1.88 0 1 1-3.76 0 1.88 1.88 0 0 1 3.76 0Z"></path>
                             </svg>
@@ -164,7 +164,7 @@
                         </a>
                     </li>
                                 <li>
-                    <a title="Segments" href="/segments" data-router-navigate="/segments" data-router-content-url="/api/fragment/page/segments">
+                    <a title="Segments" href="/segments" data-router-content-url="/api/fragment/page/segments">
                         <svg fill="currentColor" viewbox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g><path d="M217.45557,38.544a35.9967,35.9967,0,0,0-57.937,40.96679L79.5105,159.51855a36.05906,36.05906,0,0,0-40.96607,7.0254H38.544a36.00029,36.00029,0,1,0,57.93737,9.94531L176.4895,96.48145A35.99663,35.99663,0,0,0,217.45557,38.544ZM72.48584,200.48535a12.00027,12.00027,0,0,1-16.97119-16.9707h-.00049a12.00044,12.00044,0,0,1,16.97168,16.9707Zm128-128a12.01673,12.01673,0,0,1-16.969.00244l-.0022-.00244a12.0001,12.0001,0,1,1,16.97119,0Z"></path></g></svg>
                         <span>Segments</span>
                     </a>
@@ -172,7 +172,7 @@
             </ul>
             <ul class="space-y-1 py-2">
                 <li>
-                    <a title="Monthly stats" href="/monthly-stats" data-router-navigate="/monthly-stats" data-router-content-url="/api/fragment/page/monthly-stats">
+                    <a title="Monthly stats" href="/monthly-stats" data-router-content-url="/api/fragment/page/monthly-stats">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z"></path>
                         </svg>
@@ -180,7 +180,7 @@
                     </a>
                 </li>
                 <li>
-                    <a title="Eddington" href="/eddington" data-router-navigate="/eddington" data-router-content-url="/api/fragment/page/eddington">
+                    <a title="Eddington" href="/eddington" data-router-content-url="/api/fragment/page/eddington">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"></path>
                         </svg>
@@ -188,13 +188,13 @@
                     </a>
                 </li>
                 <li>
-                    <a title="Heatmap" href="/heatmap" data-router-navigate="/heatmap" data-router-content-url="/api/fragment/page/heatmap">
+                    <a title="Heatmap" href="/heatmap" data-router-content-url="/api/fragment/page/heatmap">
                         <svg viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g><path d="M3 8.70938C3 7.23584 3 6.49907 3.39264 6.06935C3.53204 5.91678 3.70147 5.79466 3.89029 5.71066C4.42213 5.47406 5.12109 5.70705 6.51901 6.17302C7.58626 6.52877 8.11989 6.70665 8.6591 6.68823C8.85714 6.68147 9.05401 6.65511 9.24685 6.60952C9.77191 6.48541 10.2399 6.1734 11.176 5.54937L12.5583 4.62778C13.7574 3.82843 14.3569 3.42876 15.0451 3.3366C15.7333 3.24444 16.4168 3.47229 17.7839 3.92799L18.9487 4.31624C19.9387 4.64625 20.4337 4.81126 20.7169 5.20409C21 5.59692 21 6.11871 21 7.16229V15.2907C21 16.7642 21 17.501 20.6074 17.9307C20.468 18.0833 20.2985 18.2054 20.1097 18.2894C19.5779 18.526 18.8789 18.293 17.481 17.827C16.4137 17.4713 15.8801 17.2934 15.3409 17.3118C15.1429 17.3186 14.946 17.3449 14.7532 17.3905C14.2281 17.5146 13.7601 17.8266 12.824 18.4507L11.4417 19.3722C10.2426 20.1716 9.64311 20.5713 8.95493 20.6634C8.26674 20.7556 7.58319 20.5277 6.21609 20.072L5.05132 19.6838C4.06129 19.3538 3.56627 19.1888 3.28314 18.7959C3 18.4031 3 17.8813 3 16.8377V8.70938Z" stroke="currentColor" stroke-width="2"></path><path d="M9 6.63867V20.5" stroke="currentColor" stroke-width="2"></path><path d="M15 3V17" stroke="currentColor" stroke-width="2"></path></g></svg>
                         <span>Heatmap</span>
                     </a>
                 </li>
                                     <li>
-                        <a title="Best efforts" href="/best-efforts" data-router-navigate="/best-efforts" data-router-content-url="/api/fragment/page/best-efforts">
+                        <a title="Best efforts" href="/best-efforts" data-router-content-url="/api/fragment/page/best-efforts">
                             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
                                 <path fill="currentColor" d="M21,4H18V3a1,1,0,0,0-1-1H7A1,1,0,0,0,6,3V4H3A1,1,0,0,0,2,5V8a4,4,0,0,0,4,4H7.54A6,6,0,0,0,11,13.91V16H10a3,3,0,0,0-3,3v2a1,1,0,0,0,1,1h8a1,1,0,0,0,1-1V19a3,3,0,0,0-3-3H13V13.91A6,6,0,0,0,16.46,12H18a4,4,0,0,0,4-4V5A1,1,0,0,0,21,4ZM6,10A2,2,0,0,1,4,8V6H6V8a6,6,0,0,0,.35,2Zm8,8a1,1,0,0,1,1,1v1H9V19a1,1,0,0,1,1-1ZM16,8A4,4,0,0,1,8,8V4h8Zm4,0a2,2,0,0,1-2,2h-.35A6,6,0,0,0,18,8V6h2Z"></path>
                             </svg>
@@ -202,13 +202,13 @@
                         </a>
                     </li>
                                 <li>
-                    <a title="Milestones" href="/milestones" data-router-navigate="/milestones" data-router-content-url="/api/fragment/page/milestones">
+                    <a title="Milestones" href="/milestones" data-router-content-url="/api/fragment/page/milestones">
                         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 -960 960 960" fill="currentColor"><path d="M80-200v-80h240v-240h240v-240h320v80H640v240H400v240H80Z"></path></svg>
                         <span>Milestones</span>
                     </a>
                 </li>
                 <li>
-                    <a title="Rewind" href="/rewind" data-router-navigate="/rewind" data-router-content-url="/api/fragment/page/rewind">
+                    <a title="Rewind" href="/rewind" data-router-content-url="/api/fragment/page/rewind">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3M3.22302 14C4.13247 18.008 7.71683 21 12 21c4.9706 0 9-4.0294 9-9 0-4.97056-4.0294-9-9-9-3.72916 0-6.92858 2.26806-8.29409 5.5M7 9H3V5"></path>
                         </svg>
@@ -218,7 +218,7 @@
             </ul>
                             <ul class="space-y-1 py-2">
                                             <li>
-                            <a title="Challenges" href="/challenges" data-router-navigate="/challenges" data-router-content-url="/api/fragment/page/challenges">
+                            <a title="Challenges" href="/challenges" data-router-content-url="/api/fragment/page/challenges">
                                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8.032 12 1.984 1.984 4.96-4.96m4.55 5.272.893-.893a1.984 1.984 0 0 0 0-2.806l-.893-.893a1.984 1.984 0 0 1-.581-1.403V7.04a1.984 1.984 0 0 0-1.984-1.984h-1.262a1.983 1.983 0 0 1-1.403-.581l-.893-.893a1.984 1.984 0 0 0-2.806 0l-.893.893a1.984 1.984 0 0 1-1.403.581H7.04A1.984 1.984 0 0 0 5.055 7.04v1.262c0 .527-.209 1.031-.581 1.403l-.893.893a1.984 1.984 0 0 0 0 2.806l.893.893c.372.372.581.876.581 1.403v1.262a1.984 1.984 0 0 0 1.984 1.984h1.262c.527 0 1.031.209 1.403.581l.893.893a1.984 1.984 0 0 0 2.806 0l.893-.893a1.985 1.985 0 0 1 1.403-.581h1.262a1.984 1.984 0 0 0 1.984-1.984V15.7c0-.527.209-1.031.581-1.403Z"></path>
                                 </svg>
@@ -227,7 +227,7 @@
                             </a>
                         </li>
                                                                 <li>
-                            <a title="Photos" href="/photos" data-router-navigate="/photos" data-router-content-url="/api/fragment/page/photos">
+                            <a title="Photos" href="/photos" data-router-content-url="/api/fragment/page/photos">
                                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M4 18V8a1 1 0 0 1 1-1h1.5l1.707-1.707A1 1 0 0 1 8.914 5h6.172a1 1 0 0 1 .707.293L17.5 7H19a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z"></path>
                                     <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>

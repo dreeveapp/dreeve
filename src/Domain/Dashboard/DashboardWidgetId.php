@@ -12,4 +12,9 @@ final readonly class DashboardWidgetId extends Identifier
     {
         return 'dashboardWidget-';
     }
+
+    public function toHtmlIdSuffix(): string
+    {
+        return '--'.$this;
+    }
 }

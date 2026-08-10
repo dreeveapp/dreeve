@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace App\Domain\Dashboard\Widget\ActivityGrid;
 
 use App\Domain\Activity\DailyTrainingLoad;
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\Widget\ActivityGrid\FindCaloriesBurnedPerDay\FindCaloriesBurnedPerDay;
+use App\Domain\Dashboard\Widget\DependsOnCurrentDay;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Domain\Rewind\FindMovingTimePerDay\FindMovingTimePerDay;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\DateRange;
@@ -18,7 +22,7 @@ use App\Infrastructure\ValueObject\Time\Years;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class ActivityGridWidget implements Widget
+final readonly class ActivityGridWidget implements Widget, DependsOnCurrentDay
 {
     public function __construct(
         private DailyTrainingLoad $trainingLoad,
@@ -36,6 +40,11 @@ final readonly class ActivityGridWidget implements Widget
     public function getTemplateName(): string
     {
         return 'widget--activity-grid';
+    }
+
+    public function getCacheTags(): CacheTags
+    {
+        return CacheTags::of(RootCacheTag::ACTIVITIES);
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration
@@ -62,7 +71,7 @@ final readonly class ActivityGridWidget implements Widget
         }
     }
 
-    public function render(SerializableDateTime $now, WidgetConfiguration $configuration): string
+    public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
         $fromDate = SerializableDateTime::fromString($now->modify('-11 months')->format('Y-m-01'));
         $toDate = SerializableDateTime::fromString($now->format('Y-m-t 23:59:59'));
@@ -124,6 +133,7 @@ final readonly class ActivityGridWidget implements Widget
         }
 
         return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+            'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'gridCharts' => $activityGridsCharts,
             'metricsDisplayOrder' => array_map(
                 ActivityGridType::from(...),

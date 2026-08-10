@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Dashboard\Widget;
 
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\Widget\MostRecentChallengesCompletedWidget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
@@ -16,6 +17,7 @@ class MostRecentChallengesCompletedWidgetTest extends ContainerTestCase
     public function testItShouldRenderNull(): void
     {
         $this->assertNull($this->widget->render(
+            dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
             now: SerializableDateTime::fromString('2025-12-02'),
             configuration: WidgetConfiguration::empty()
         ));

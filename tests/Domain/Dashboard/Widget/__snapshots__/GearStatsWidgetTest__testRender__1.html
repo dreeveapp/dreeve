@@ -4,7 +4,7 @@
             Total hours spent per gear
         </h3>
         <div class="flex">
-            <a href="#" data-router-navigate="/gear" class="shrink-0 inline-flex items-center p-2 text-sm font-medium rounded-lg text-blue-600 hover:bg-gray-100">
+            <a href="/gear" data-router-content-url="/api/fragment/page/gear" class="shrink-0 inline-flex items-center p-2 text-sm font-medium rounded-lg text-blue-600 hover:bg-gray-100">
                 View details
             </a>
             <button type="button" data-fullscreen-trigger class="-mt-0.5 cursor-pointer">
@@ -14,32 +14,32 @@
         </div>
     </div>
             <div class="tabs tabs--default">
-            <ul id="gearStatsActivityTypeTab--1" data-tabs="#gearStatsActivityTypeTabContent--1" role="tablist">
+            <ul id="gearStatsActivityTypeTab--dashboardWidget-test" data-tabs="#gearStatsActivityTypeTabContent--dashboardWidget-test" role="tablist">
                 <li role="presentation">
-                    <a href="#" data-tabs-target="#gearStatsAll--1" role="tab" aria-controls="all">
+                    <a href="#" data-tabs-target="#gearStatsAll--dashboardWidget-test" role="tab" aria-controls="all">
                         All
                     </a>
                 </li>
                                     <li role="presentation">
-                        <a href="#" data-tabs-target="#gearStatsRide--1" role="tab" aria-controls="gearStatsRide--1">
+                        <a href="#" data-tabs-target="#gearStatsRide--dashboardWidget-test" role="tab" aria-controls="gearStatsRide--dashboardWidget-test">
                             Cycling
                         </a>
                     </li>
                                     <li role="presentation">
-                        <a href="#" data-tabs-target="#gearStatsRun--1" role="tab" aria-controls="gearStatsRun--1">
+                        <a href="#" data-tabs-target="#gearStatsRun--dashboardWidget-test" role="tab" aria-controls="gearStatsRun--dashboardWidget-test">
                             Running
                         </a>
                     </li>
                             </ul>
         </div>
-        <div id="gearStatsActivityTypeTabContent--1" class="flex flex-col grow">
-        <div class="grow" id="gearStatsAll--1" role="tabpanel" aria-labelledby="gearStatsAll--1-tab">
+        <div id="gearStatsActivityTypeTabContent--dashboardWidget-test" class="flex flex-col grow">
+        <div class="grow" id="gearStatsAll--dashboardWidget-test" role="tabpanel" aria-labelledby="gearStatsAll--dashboardWidget-test-tab">
             <div class="h-full min-h-64" data-echarts-options='{"backgroundColor":null,"animation":false,"grid":{"left":"2px","right":"0%","bottom":"0%","containLabel":true},"center":["50%","50%"],"legend":{"show":false},"tooltip":{"trigger":"item","formatter":"{b}: {c}h"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{gear|{b}}\n{sub|{c}h}","lineHeight":15,"rich":{"gear":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":7,"name":"Retro Race Bike","itemStyle":{"color":"#5470c6"}},{"value":1,"name":"Zwift hub","itemStyle":{"color":"#91cc75"}}]}]}'></div>
         </div>
-                    <div class="grow" id="gearStatsRide--1" role="tabpanel" aria-labelledby="gearStatsRide--1-tab">
+                    <div class="grow" id="gearStatsRide--dashboardWidget-test" role="tabpanel" aria-labelledby="gearStatsRide--dashboardWidget-test-tab">
                 <div class="h-full min-h-64" data-echarts-options='{"backgroundColor":null,"animation":false,"grid":{"left":"2px","right":"0%","bottom":"0%","containLabel":true},"center":["50%","50%"],"legend":{"show":false},"tooltip":{"trigger":"item","formatter":"{b}: {c}h"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{gear|{b}}\n{sub|{c}h}","lineHeight":15,"rich":{"gear":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":5,"name":"Retro Race Bike","itemStyle":{"color":"#5470c6"}},{"value":1,"name":"Zwift hub","itemStyle":{"color":"#91cc75"}}]}]}'></div>
             </div>
-                    <div class="grow" id="gearStatsRun--1" role="tabpanel" aria-labelledby="gearStatsRun--1-tab">
+                    <div class="grow" id="gearStatsRun--dashboardWidget-test" role="tabpanel" aria-labelledby="gearStatsRun--dashboardWidget-test-tab">
                 <div class="h-full min-h-64" data-echarts-options='{"backgroundColor":null,"animation":false,"grid":{"left":"2px","right":"0%","bottom":"0%","containLabel":true},"center":["50%","50%"],"legend":{"show":false},"tooltip":{"trigger":"item","formatter":"{b}: {c}h"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{gear|{b}}\n{sub|{c}h}","lineHeight":15,"rich":{"gear":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":2,"name":"Retro Race Bike","itemStyle":{"color":"#5470c6"}}]}]}'></div>
             </div>
             </div>

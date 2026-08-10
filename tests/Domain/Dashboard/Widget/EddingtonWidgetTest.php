@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Dashboard\Widget;
 
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\Widget\EddingtonWidget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -14,6 +15,7 @@ class EddingtonWidgetTest extends ContainerTestCase
     public function testRenderWhenNoEddingtons(): void
     {
         $this->assertNull($this->widget->render(
+            dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
             now: SerializableDateTime::fromString('2025-12-02'),
             configuration: WidgetConfiguration::empty()
         ));

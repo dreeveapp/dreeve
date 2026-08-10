@@ -6,18 +6,22 @@ namespace App\Domain\Dashboard\Widget\TrainingGoals;
 
 use App\Domain\Calendar\Month;
 use App\Domain\Calendar\Week;
+use App\Domain\Dashboard\DashboardWidgetId;
+use App\Domain\Dashboard\Widget\DependsOnCurrentDay;
 use App\Domain\Dashboard\Widget\HasWideConfigurationForm;
 use App\Domain\Dashboard\Widget\RequiresConfiguration;
 use App\Domain\Dashboard\Widget\TrainingGoals\FindTrainingGoalMetrics\FindTrainingGoalMetrics;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Year;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class TrainingGoalsWidget implements Widget, HasWideConfigurationForm, RequiresConfiguration
+final readonly class TrainingGoalsWidget implements Widget, DependsOnCurrentDay, HasWideConfigurationForm, RequiresConfiguration
 {
     public function __construct(
         private TranslatorInterface $translator,
@@ -34,6 +38,11 @@ final readonly class TrainingGoalsWidget implements Widget, HasWideConfiguration
     public function getTemplateName(): string
     {
         return 'widget--training-goals';
+    }
+
+    public function getCacheTags(): CacheTags
+    {
+        return CacheTags::of(RootCacheTag::ACTIVITIES);
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration
@@ -54,7 +63,7 @@ final readonly class TrainingGoalsWidget implements Widget, HasWideConfiguration
         return empty($configuration->get('goals'));
     }
 
-    public function render(SerializableDateTime $now, WidgetConfiguration $configuration): ?string
+    public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): ?string
     {
         if (empty($configuration->get('goals'))) {
             return null;
@@ -132,6 +141,7 @@ final readonly class TrainingGoalsWidget implements Widget, HasWideConfiguration
         }
 
         return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+            'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'fromToLabels' => $fromToLabels,
             'calculatedTrainingGoalsPerPeriod' => $calculatedGoalsPerPeriod,
         ]);

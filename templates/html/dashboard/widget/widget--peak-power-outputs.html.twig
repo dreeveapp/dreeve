@@ -1,8 +1,7 @@
-{% set uniqueId = uniqueNumberForId('peakPowerOutputs') %}
 {% autoescape false %}
     <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-semibold">{{ "Peak power outputs"|trans }}</h3>
-        <a href="#" data-model-content-url="{{ relativeUrl('power-output.html') }}"
+        <a href="#" data-model-content-url="{{ relativeUrl('api/fragment/page/power-output') }}"
            class="inline-flex items-center p-2 text-sm font-medium rounded-lg text-blue-600 hover:bg-gray-100">
             {{ "View details"|trans }}
         </a>

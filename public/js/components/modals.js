@@ -72,7 +72,7 @@ export default class ModalManager {
                 }, {once: true});
 
                 // Re-register nav items that may have been added dynamically
-                const newNavItems = this.modalSkeletonNode.querySelectorAll('a[data-router-navigate]:not([data-router-disabled])');
+                const newNavItems = this.modalSkeletonNode.querySelectorAll('a[data-router-content-url]');
                 this.router.registerNavItems(newNavItems);
             },
             onHide: () => {

@@ -41,6 +41,12 @@ export const numberFormat = (number, decimals, decPoint, thousandsSep) => {
     return s.join(dec)
 }
 
+export const basePath = () => {
+    const configured = window.dreeve?.appUrl?.basePath || '';
+
+    return configured ? '/' + configured.replace(/^\/+|\/+$/g, '') : '';
+}
+
 export const fetchJson = async (url) => {
     const response = await fetch(url);
 

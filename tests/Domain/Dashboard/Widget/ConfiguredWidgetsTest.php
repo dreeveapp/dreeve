@@ -81,7 +81,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
     public function testWhenWidgetDoesNotExists(): void
     {
         $this->saveLayout([
-            ['widget' => 'invalid', 'width' => 100],
+            ['id' => 'dashboardWidget-1', 'widget' => 'invalid', 'width' => 100],
         ]);
 
         $this->expectExceptionObject(new \InvalidArgumentException('Dashboard widget "invalid" does not exists.'));
@@ -91,7 +91,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
     public function testWhenWidgetHasBeenRemoved(): void
     {
         $this->saveLayout([
-            ['widget' => 'bestEfforts', 'width' => 100],
+            ['id' => 'dashboardWidget-1', 'widget' => 'bestEfforts', 'width' => 100],
         ]);
 
         $this->assertCount(0, $this->getContainer()->get(ConfiguredWidgets::class)->getIterator());

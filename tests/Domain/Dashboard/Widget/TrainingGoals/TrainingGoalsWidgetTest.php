@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Dashboard\Widget\TrainingGoals;
 
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\Widget\TrainingGoals\TrainingGoalsWidget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -60,6 +61,7 @@ class TrainingGoalsWidgetTest extends ContainerTestCase
             ]);
 
         $render = $this->widget->render(
+            dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
             now: SerializableDateTime::fromString('2025-10-16'),
             configuration: $config
         );
@@ -69,6 +71,7 @@ class TrainingGoalsWidgetTest extends ContainerTestCase
     public function testRenderWhenNoGoals(): void
     {
         $render = $this->widget->render(
+            dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
             now: SerializableDateTime::fromString('2025-10-16'),
             configuration: WidgetConfiguration::empty()
         );
@@ -89,6 +92,7 @@ class TrainingGoalsWidgetTest extends ContainerTestCase
             ]);
 
         $render = $this->widget->render(
+            dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
             now: SerializableDateTime::fromString('2025-10-16'),
             configuration: $config
         );
@@ -105,6 +109,7 @@ class TrainingGoalsWidgetTest extends ContainerTestCase
             ]);
 
         $render = $this->widget->render(
+            dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
             now: SerializableDateTime::fromString('2025-10-16'),
             configuration: $config
         );
@@ -114,6 +119,7 @@ class TrainingGoalsWidgetTest extends ContainerTestCase
     public function testRenderWhenNoGoalsUseCaseTwo(): void
     {
         $render = $this->widget->render(
+            dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
             now: SerializableDateTime::fromString('2025-10-16'),
             configuration: WidgetConfiguration::empty()
             ->add('goals', ['weekly' => []])

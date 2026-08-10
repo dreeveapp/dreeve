@@ -6,6 +6,7 @@ use App\Domain\Dashboard\DashboardLayout;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\KeyValueBasedDashboardLayoutRepository;
 use App\Domain\Dashboard\Widget\WidgetName;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
@@ -198,6 +199,6 @@ class KeyValueBasedDashboardLayoutRepositoryTest extends ContainerTestCase
         parent::setUp();
 
         $this->keyValueStore = $this->getContainer()->get(KeyValueStore::class);
-        $this->repository = new KeyValueBasedDashboardLayoutRepository($this->keyValueStore);
+        $this->repository = new KeyValueBasedDashboardLayoutRepository($this->keyValueStore, $this->getContainer()->get(EventBus::class));
     }
 }

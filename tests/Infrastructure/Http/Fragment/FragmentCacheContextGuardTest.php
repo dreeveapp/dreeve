@@ -10,6 +10,7 @@ use App\Domain\Activity\BestEffort\ActivityBestEffortsFragmentResolver;
 use App\Domain\Activity\BestEffort\BestEffortsHistoryFragmentResolver;
 use App\Domain\Badge\BadgeFragmentResolver;
 use App\Domain\Calendar\MonthFragmentResolver;
+use App\Domain\Dashboard\DashboardWidgetFragmentResolver;
 use App\Domain\Rewind\RewindCompareFragmentResolver;
 use App\Domain\Rewind\RewindFragmentResolver;
 use App\Domain\Segment\ActivitySegmentsFragmentResolver;
@@ -44,6 +45,7 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
         SegmentFragmentResolver::class => 'segment/segment-10',
         BestEffortsHistoryFragmentResolver::class => 'best-efforts/Ride/10000',
         BadgeFragmentResolver::class => 'badge/dreeve',
+        DashboardWidgetFragmentResolver::class => 'dashboard/widget/dashboardWidget-introText',
     ];
 
     public function testEveryFragmentHasAPathAndACacheKeyOfItsOwn(): void

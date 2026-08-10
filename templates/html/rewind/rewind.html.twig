@@ -34,7 +34,7 @@
                         <ul aria-labelledby="dropdownRewindOptionButton">
                             {% for rewindOption in availableRewindOptions|filter(rewindOption => rewindOption != activeRewindOption) %}
                                 <li>
-                                    <a href="#" data-router-navigate="{{ relativeUrl('rewind/' ~ rewindOption) }}" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">
+                                    <a href="{{ relativeUrl('rewind/' ~ rewindOption) }}" data-router-content-url="{{ relativeUrl('api/fragment/page/rewind/' ~ rewindOption) }}" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">
                                         {% if rewindOption == constant('App\\Domain\\Rewind\\FindAvailableRewindOptions\\FindAvailableRewindOptions::ALL_TIME')  %}
                                             {{ allTimeLabel }}
                                         {% else %}
@@ -61,7 +61,7 @@
                         <ul aria-labelledby="dropdownRewindOptionCompareToButton">
                             {% for rewindOption in availableRewindOptions|filter(rewindOption => rewindOption != activeRewindOption) %}
                                 <li>
-                                    <a href="#" data-router-navigate="{{ relativeUrl('rewind/' ~ activeRewindOption ~ '/compare/' ~ rewindOption) }}" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">
+                                    <a href="{{ relativeUrl('rewind/' ~ activeRewindOption ~ '/compare/' ~ rewindOption) }}" data-router-content-url="{{ relativeUrl('api/fragment/page/rewind/' ~ activeRewindOption ~ '/compare/' ~ rewindOption) }}" class="block px-4 py-2 text-gray-500 hover:bg-gray-100">
                                         {% if rewindOption == constant('App\\Domain\\Rewind\\FindAvailableRewindOptions\\FindAvailableRewindOptions::ALL_TIME')  %}
                                             {{ allTimeLabel }}
                                         {% else %}

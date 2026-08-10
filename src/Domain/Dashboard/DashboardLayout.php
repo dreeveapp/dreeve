@@ -63,11 +63,15 @@ final readonly class DashboardLayout implements \IteratorAggregate
         }
 
         foreach ($config as $widget) {
-            foreach (['widget', 'width'] as $requiredKey) {
+            foreach (['id', 'widget', 'width'] as $requiredKey) {
                 if (array_key_exists($requiredKey, $widget)) {
                     continue;
                 }
                 throw new InvalidDashboardLayout(sprintf('"%s" property is required for each dashboard widget', $requiredKey));
+            }
+
+            if (!is_string($widget['id']) || !str_starts_with($widget['id'], DashboardWidgetId::getPrefix())) {
+                throw new InvalidDashboardLayout(sprintf('"id" property must be a string starting with "%s"', DashboardWidgetId::getPrefix()));
             }
 
             if (!is_int($widget['width'])) {

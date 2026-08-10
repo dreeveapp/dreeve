@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Application\Build\RunBuild;
 
 use App\Application\AppStatusChecker;
-use App\Application\Build\BuildDashboardHtml\BuildDashboardHtml;
 use App\Application\Build\ConfigureAppLocale\ConfigureAppLocale;
 use App\Application\Import\StravaImport\ImportGear\GearImportStatus;
 use App\Infrastructure\Cache\Render\RenderCache;
@@ -52,7 +51,6 @@ This is not a bug, once all your activities have been imported, your gear statis
 
         $commandsWithMessages = [
             'Configuring locale' => new ConfigureAppLocale(),
-            'Building dashboard' => new BuildDashboardHtml(),
         ];
 
         $progressBar = new ProgressBar($output, count($commandsWithMessages));

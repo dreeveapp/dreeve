@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Domain\Dashboard\Widget;
 
 use App\Domain\Activity\ActivityRepository;
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -29,6 +32,11 @@ final readonly class MostRecentActivitiesWidget implements Widget
         return 'widget--most-recent-activities';
     }
 
+    public function getCacheTags(): CacheTags
+    {
+        return CacheTags::of(RootCacheTag::ACTIVITIES);
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty()
@@ -50,7 +58,7 @@ final readonly class MostRecentActivitiesWidget implements Widget
         }
     }
 
-    public function render(SerializableDateTime $now, WidgetConfiguration $configuration): string
+    public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
         $allActivities = $this->activityRepository->findAll();
 

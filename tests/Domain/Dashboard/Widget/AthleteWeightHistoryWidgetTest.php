@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Dashboard\Widget;
 
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\Widget\AthleteWeightHistoryWidget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Domain\Settings\SettingsGroup;
@@ -27,6 +28,7 @@ class AthleteWeightHistoryWidgetTest extends ContainerTestCase
 
         $this->assertNull(
             $this->widget->render(
+                DashboardWidgetId::fromUnprefixed('test'),
                 SerializableDateTime::fromString('2026-01-09'),
                 WidgetConfiguration::empty()
             )

@@ -5,9 +5,13 @@ namespace App\Domain\Dashboard\Widget\AthleteProfile;
 use App\Domain\Activity\ActivityIntensity;
 use App\Domain\Activity\EnrichedActivityRepository;
 use App\Domain\Activity\Math;
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\Widget\AthleteProfile\FindAthleteProfileMetrics\FindAthleteProfileMetrics;
+use App\Domain\Dashboard\Widget\DependsOnCurrentDay;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Serialization\Json;
@@ -16,7 +20,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class AthleteProfileWidget implements Widget
+final readonly class AthleteProfileWidget implements Widget, DependsOnCurrentDay
 {
     public function __construct(
         private QueryBus $queryBus,
@@ -37,6 +41,11 @@ final readonly class AthleteProfileWidget implements Widget
         return 'widget--athlete-profile';
     }
 
+    public function getCacheTags(): CacheTags
+    {
+        return CacheTags::of(RootCacheTag::ACTIVITIES);
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();
@@ -46,7 +55,7 @@ final readonly class AthleteProfileWidget implements Widget
     {
     }
 
-    public function render(SerializableDateTime $now, WidgetConfiguration $configuration): ?string
+    public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): ?string
     {
         $chartData = [];
         foreach ([30, 90] as $lastXDays) {

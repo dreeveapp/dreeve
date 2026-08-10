@@ -3,7 +3,7 @@
         <h3 class="text-lg font-semibold">
             {{ "Most recent challenges"|trans }}
         </h3>
-        <a href="#" data-router-navigate="{{ relativeUrl('challenges') }}"
+        <a href="{{ relativeUrl('challenges') }}" data-router-content-url="{{ relativeUrl('api/fragment/page/challenges') }}"
            class="shrink-0 inline-flex items-center p-2 text-sm font-medium rounded-lg text-blue-600 hover:bg-gray-100">
             {{ "View all"|trans }}
         </a>

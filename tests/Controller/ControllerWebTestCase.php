@@ -10,7 +10,6 @@ use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\KeyValue\Value;
-use App\Infrastructure\Twig\HtmlTwigExtension;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\ProvideSettings;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -30,8 +29,6 @@ abstract class ControllerWebTestCase extends WebTestCase
         parent::setUp();
 
         $this->originalImportMode = $_ENV['IMPORT_MODE'] ?? null;
-
-        HtmlTwigExtension::$seenIds = [];
 
         $this->prepareEnvironment();
 

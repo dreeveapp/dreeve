@@ -6,6 +6,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\Widget\ChallengeConsistencyWidget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
@@ -33,6 +34,7 @@ class ChallengeConsistencyWidgetTest extends ContainerTestCase
 
         $this->assertMatchesHtmlSnapshot(
             $this->widget->render(
+                dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
                 now: SerializableDateTime::fromString('2025-12-31'),
                 configuration: $this->widget->getDefaultConfiguration()
             )

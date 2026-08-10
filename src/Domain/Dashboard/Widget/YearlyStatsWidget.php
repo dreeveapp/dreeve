@@ -7,6 +7,7 @@ namespace App\Domain\Dashboard\Widget;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypeRepository;
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\StatsContext;
 use App\Domain\Dashboard\Widget\YearlyStats\FindYearlyStats\FindYearlyStats;
@@ -14,6 +15,8 @@ use App\Domain\Dashboard\Widget\YearlyStats\FindYearlyStatsPerDay\FindYearlyStat
 use App\Domain\Dashboard\Widget\YearlyStats\YearlyStatistics;
 use App\Domain\Dashboard\Widget\YearlyStats\YearlyStatisticsChart;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -21,7 +24,7 @@ use App\Infrastructure\ValueObject\Time\Years;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class YearlyStatsWidget implements Widget
+final readonly class YearlyStatsWidget implements Widget, DependsOnCurrentDay
 {
     public function __construct(
         private ActivityRepository $activityRepository,
@@ -41,6 +44,11 @@ final readonly class YearlyStatsWidget implements Widget
     public function getTemplateName(): string
     {
         return 'widget--yearly-stats';
+    }
+
+    public function getCacheTags(): CacheTags
+    {
+        return CacheTags::of(RootCacheTag::ACTIVITIES);
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration
@@ -74,7 +82,7 @@ final readonly class YearlyStatsWidget implements Widget
         }
     }
 
-    public function render(SerializableDateTime $now, WidgetConfiguration $configuration): string
+    public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
         $yearlyStatChartsPerContext = [];
         $yearlyStatistics = [];
@@ -127,6 +135,7 @@ final readonly class YearlyStatsWidget implements Widget
         $metricsDisplayOrder = $configuration->get('metricsDisplayOrder');
 
         return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+            'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'yearlyStatsChartsPerContext' => $yearlyStatChartsPerContext,
             'yearlyStatistics' => $yearlyStatistics,
             'metricsDisplayOrder' => array_map(

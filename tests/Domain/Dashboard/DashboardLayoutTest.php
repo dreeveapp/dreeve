@@ -28,6 +28,14 @@ class DashboardLayoutTest extends TestCase
     public static function provideInvalidConfig(): iterable
     {
         $yml = self::getValidYml();
+        unset($yml[0]['id']);
+        yield 'missing "id" key' => [$yml, '"id" property is required for each dashboard widget'];
+
+        $yml = self::getValidYml();
+        $yml[0]['id'] = 'nope';
+        yield 'invalid "id" key' => [$yml, '"id" property must be a string starting with "dashboardWidget-"'];
+
+        $yml = self::getValidYml();
         unset($yml[0]['widget']);
         yield 'missing "widget" key' => [$yml, '"widget" property is required for each dashboard widget'];
 
@@ -55,20 +63,20 @@ class DashboardLayoutTest extends TestCase
     private static function getValidYml(): array
     {
         return Yaml::parse(<<<YML
-- {'widget': 'mostRecentActivities', 'width': 66}
-- {'widget': 'introText', 'width': 33}
-- {'widget': 'weeklyStats', 'width': 100}
-- {'widget': 'peakPowerOutputs', 'width': 50}
-- {'widget': 'heartRateZones', 'width': 50}
-- {'widget': 'activityGrid', 'width': 100}
-- {'widget': 'trainingLoad', 'width': 100}
-- {'widget': 'weekdayStats', 'width': 50}
-- {'widget': 'dayTimeStats', 'width': 50}
-- {'widget': 'distanceBreakdown', 'width': 100}
-- {'widget': 'bestEfforts', 'width': 100}
-- {'widget': 'yearlyDistances', 'width': 100}
-- {'widget': 'challengeConsistency', 'width': 50}
-- {'widget': 'ftpHistory', 'width': 50}
+- {'id': 'dashboardWidget-mostRecentActivities', 'widget': 'mostRecentActivities', 'width': 66}
+- {'id': 'dashboardWidget-introText', 'widget': 'introText', 'width': 33}
+- {'id': 'dashboardWidget-weeklyStats', 'widget': 'weeklyStats', 'width': 100}
+- {'id': 'dashboardWidget-peakPowerOutputs', 'widget': 'peakPowerOutputs', 'width': 50}
+- {'id': 'dashboardWidget-heartRateZones', 'widget': 'heartRateZones', 'width': 50}
+- {'id': 'dashboardWidget-activityGrid', 'widget': 'activityGrid', 'width': 100}
+- {'id': 'dashboardWidget-trainingLoad', 'widget': 'trainingLoad', 'width': 100}
+- {'id': 'dashboardWidget-weekdayStats', 'widget': 'weekdayStats', 'width': 50}
+- {'id': 'dashboardWidget-dayTimeStats', 'widget': 'dayTimeStats', 'width': 50}
+- {'id': 'dashboardWidget-distanceBreakdown', 'widget': 'distanceBreakdown', 'width': 100}
+- {'id': 'dashboardWidget-bestEfforts', 'widget': 'bestEfforts', 'width': 100}
+- {'id': 'dashboardWidget-yearlyDistances', 'widget': 'yearlyDistances', 'width': 100}
+- {'id': 'dashboardWidget-challengeConsistency', 'widget': 'challengeConsistency', 'width': 50}
+- {'id': 'dashboardWidget-ftpHistory', 'widget': 'ftpHistory', 'width': 50}
 YML
         );
     }

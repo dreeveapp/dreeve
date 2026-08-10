@@ -6,9 +6,11 @@ namespace App\Domain\Dashboard\Widget;
 
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypeRepository;
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Ftp\FtpHistoryChart;
 use App\Domain\Ftp\Ftps;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -35,6 +37,11 @@ final readonly class FtpHistoryWidget implements Widget
         return 'widget--ftp-history';
     }
 
+    public function getCacheTags(): CacheTags
+    {
+        return CacheTags::empty();
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();
@@ -44,7 +51,7 @@ final readonly class FtpHistoryWidget implements Widget
     {
     }
 
-    public function render(SerializableDateTime $now, WidgetConfiguration $configuration): ?string
+    public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): ?string
     {
         $ftpHistoryCharts = [];
 
@@ -84,6 +91,7 @@ final readonly class FtpHistoryWidget implements Widget
         }
 
         return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+            'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'ftpHistoryCharts' => $ftpHistoryCharts,
         ]);
     }

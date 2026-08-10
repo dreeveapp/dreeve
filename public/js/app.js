@@ -13,7 +13,7 @@ import initTabs from "./components/tabs";
 import LazyLoad from "../libraries/lazyload.min";
 import initDataTables from "./features/data-table/data-table-manager";
 import initFullscreen from "./components/fullscreen";
-import initAsyncContent from "./components/async-content";
+import initAsyncContent, {abortPendingAsyncContent} from "./components/async-content";
 import ScrollTo from "./components/scroll-to";
 import MilestoneFilter from "./features/milestones/milestone-filter";
 import DarkModeManager from "./components/dark-mode";
@@ -67,6 +67,7 @@ eventBus.on(Events.DARK_MODE_TOGGLED, ({darkModeEnabled}) => {
 eventBus.on(Events.PAGE_LOADED, async ({page, modalId}) => {
     modalManager.close();
 
+    abortPendingAsyncContent();
     chartManager.reset();
     initElements(document);
 
@@ -103,6 +104,9 @@ eventBus.on(Events.NAVIGATION_CLICKED, ({link}) => {
     Object.entries(filters).forEach(([tableName, tableFilters]) => {
         FilterStorage.set(tableName, tableFilters);
     });
+});
+eventBus.on(Events.ASYNC_CONTENT_LOADED, ({node}) => {
+    initElements(node);
 });
 eventBus.on(Events.MODAL_LOADED, async ({node, modalName}) => {
     initElements(node);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Dashboard;
 
 use App\Domain\Dashboard\Widget\WidgetName;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
@@ -16,6 +17,7 @@ final readonly class KeyValueBasedDashboardLayoutRepository implements Dashboard
 {
     public function __construct(
         private KeyValueStore $keyValueStore,
+        private EventBus $eventBus,
     ) {
     }
 
@@ -40,10 +42,7 @@ final readonly class KeyValueBasedDashboardLayoutRepository implements Dashboard
             'width' => $width,
         ];
 
-        $this->keyValueStore->save(KeyValue::fromState(
-            Key::DASHBOARD,
-            Value::fromString(Json::encode($layout)),
-        ));
+        $this->save($layout);
     }
 
     public function deleteWidget(DashboardWidgetId $dashboardWidgetId): void
@@ -53,10 +52,7 @@ final readonly class KeyValueBasedDashboardLayoutRepository implements Dashboard
             static fn (array $item): bool => ($item['id'] ?? null) !== (string) $dashboardWidgetId,
         ));
 
-        $this->keyValueStore->save(KeyValue::fromState(
-            Key::DASHBOARD,
-            Value::fromString(Json::encode($layout)),
-        ));
+        $this->save($layout);
     }
 
     public function saveLayout(array $orderedWidgets): void
@@ -86,18 +82,12 @@ final readonly class KeyValueBasedDashboardLayoutRepository implements Dashboard
             $layout[] = $item;
         }
 
-        $this->keyValueStore->save(KeyValue::fromState(
-            Key::DASHBOARD,
-            Value::fromString(Json::encode($layout)),
-        ));
+        $this->save($layout);
     }
 
     public function resetToDefault(): void
     {
-        $this->keyValueStore->save(KeyValue::fromState(
-            Key::DASHBOARD,
-            Value::fromString(Json::encode(DashboardLayout::default())),
-        ));
+        $this->save(DashboardLayout::default());
     }
 
     public function updateWidgetConfiguration(DashboardWidgetId $dashboardWidgetId, array $configuration): void
@@ -117,5 +107,18 @@ final readonly class KeyValueBasedDashboardLayoutRepository implements Dashboard
             Key::DASHBOARD,
             Value::fromString(Json::encode($layout)),
         ));
+    }
+
+    /**
+     * @param array<int, mixed> $layout
+     */
+    private function save(array $layout): void
+    {
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode($layout)),
+        ));
+
+        $this->eventBus->publishEvents([new DashboardLayoutWasUpdated()]);
     }
 }

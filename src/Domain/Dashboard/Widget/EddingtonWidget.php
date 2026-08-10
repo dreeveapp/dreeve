@@ -6,7 +6,10 @@ namespace App\Domain\Dashboard\Widget;
 
 use App\Domain\Activity\Eddington\Eddington;
 use App\Domain\Activity\Eddington\EddingtonCalculator;
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -31,6 +34,11 @@ final readonly class EddingtonWidget implements Widget
         return 'widget--eddington';
     }
 
+    public function getCacheTags(): CacheTags
+    {
+        return CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_METRICS);
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();
@@ -40,7 +48,7 @@ final readonly class EddingtonWidget implements Widget
     {
     }
 
-    public function render(SerializableDateTime $now, WidgetConfiguration $configuration): ?string
+    public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): ?string
     {
         $eddingtons = array_filter(
             $this->eddingtonCalculator->calculate($this->settingsRepository->appearance()->getUnitSystem()),

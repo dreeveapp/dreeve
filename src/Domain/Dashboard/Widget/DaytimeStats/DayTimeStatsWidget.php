@@ -6,8 +6,11 @@ namespace App\Domain\Dashboard\Widget\DaytimeStats;
 
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityTypeRepository;
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -33,6 +36,11 @@ final readonly class DayTimeStatsWidget implements Widget
         return 'widget--day-time-stats';
     }
 
+    public function getCacheTags(): CacheTags
+    {
+        return CacheTags::of(RootCacheTag::ACTIVITIES);
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();
@@ -42,7 +50,7 @@ final readonly class DayTimeStatsWidget implements Widget
     {
     }
 
-    public function render(SerializableDateTime $now, WidgetConfiguration $configuration): string
+    public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
         $statsPerActivityType = [];
         $allActivities = $this->activityRepository->findAll();
@@ -65,6 +73,7 @@ final readonly class DayTimeStatsWidget implements Widget
         $allDayTimeStats = DaytimeStats::create($allActivities);
 
         return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+            'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'allActivities' => [
                 'chart' => Json::encode(
                     DaytimeStatsChart::create(

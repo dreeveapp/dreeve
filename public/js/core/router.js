@@ -1,4 +1,5 @@
 import {eventBus, Events} from "./event-bus";
+import {basePath} from "../utils";
 
 export default class Router {
     constructor(app) {
@@ -7,7 +8,7 @@ export default class Router {
         this.spinner = app.querySelector('#spinner');
         this.menu = document.querySelector('aside');
         this.menuItems = document.querySelectorAll(
-            'nav a[data-router-navigate]:not([data-router-disabled]), aside li a[data-router-navigate]:not([data-router-disabled])'
+            'nav a[data-router-content-url], aside li a[data-router-content-url]'
         );
         this.mobileNavTriggerEl = document.querySelector('[data-drawer-target="drawer-navigation"]');
     }
@@ -25,7 +26,7 @@ export default class Router {
     }
 
     determineActiveMenuLink(url) {
-        const activeLink = document.querySelector(`aside li a[data-router-navigate="${url}"]`);
+        const activeLink = document.querySelector(`aside li a[href="${url}"][data-router-content-url]`);
         if (activeLink) {
             return activeLink;
         }
@@ -39,7 +40,7 @@ export default class Router {
     }
 
     determineContentUrlLink(url) {
-        const link = document.querySelector(`a[data-router-navigate="${url}"][data-router-content-url]`);
+        const link = document.querySelector(`a[href="${url}"][data-router-content-url]`);
         if (link) {
             return {link: link, route: url};
         }
@@ -54,14 +55,17 @@ export default class Router {
 
     determineContentUrl(page) {
         const match = this.determineContentUrlLink(page);
-        if (!match) {
-            return `${page}.html`;
-        }
 
-        return match.link.getAttribute('data-router-content-url') + page.slice(match.route.length);
+        return match ? match.link.getAttribute('data-router-content-url') + page.slice(match.route.length) : null;
     }
 
     async renderContent(page, modalId) {
+        const contentUrl = this.determineContentUrl(page);
+        if (!contentUrl) {
+            console.error(`No router link found for "${page}", cannot determine its content URL.`);
+            return;
+        }
+
         // Close mobile nav if open
         if (!this.menu.hasAttribute('aria-hidden')) {
             this.mobileNavTriggerEl.dispatchEvent(
@@ -75,27 +79,22 @@ export default class Router {
         // Update active states
         this.menuItems.forEach(node => node.setAttribute('aria-selected', 'false'));
 
-        const activeLink = this.determineActiveMenuLink(page);
-        activeLink?.setAttribute('aria-selected', 'true');
-
-        if (activeLink?.hasAttribute('data-router-sub-menu')) {
-            activeLink.closest('ul')?.classList.remove('hidden');
-        }
+        this.determineActiveMenuLink(page)?.setAttribute('aria-selected', 'true');
 
         this.showLoader();
 
-        const response = await fetch(this.determineContentUrl(page), {cache: 'no-store'});
+        const response = await fetch(contentUrl, {cache: 'no-store'});
         this.appContent.innerHTML = await response.text();
         window.scrollTo(0, 0);
 
         this.hideLoader();
 
         // Re-register nav items that may have been added dynamically
-        const newNavItems = document.querySelectorAll('main a[data-router-navigate]:not([data-router-disabled])');
+        const newNavItems = document.querySelectorAll('main a[data-router-content-url]');
         this.registerNavItems(newNavItems);
 
         const fullPageName = page
-            .replace(window.dreeve.appUrl.basePath, '')
+            .slice(basePath().length)
             .replace(/^\/+/, '')
             .replaceAll('/', '-');
 
@@ -106,7 +105,7 @@ export default class Router {
         items.forEach(link => {
             link.addEventListener('click', async e => {
                 e.preventDefault();
-                const route = link.getAttribute('data-router-navigate');
+                const route = link.getAttribute('href');
 
                 await eventBus.emitAsync(Events.NAVIGATION_CLICKED, {link});
 
@@ -152,26 +151,17 @@ export default class Router {
 
     currentRoute() {
         const defaultRoute = '/dashboard';
-        if (window.dreeve.appUrl.basePath === '') {
-            // App is not served from a subpath.
+        const base = basePath();
+        if ('' === base) {
             return location.pathname.replace('/', '') ? location.pathname : defaultRoute;
         }
 
-        // App is served from a subpath.
-        const base = '/' + window.dreeve.appUrl.basePath.replace(/^\/+|\/+$/g, '');
-        const pathname = location.pathname.replace(/\/+$/, '');
-
-        return pathname === base
+        return location.pathname.replace(/\/+$/, '') === base
             ? base + defaultRoute
             : location.pathname;
     }
 
     boot() {
-        if (this.appContent === null) {
-            // App content can be null if SYMFONY routing is used.
-            return;
-        }
-
         const route = this.currentRoute();
         const modal = location.hash.replace('#', '');
 

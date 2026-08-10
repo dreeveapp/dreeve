@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Dashboard\Widget;
 
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\Widget\MostRecentMilestonesWidget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
@@ -24,6 +25,7 @@ class MostRecentMilestonesWidgetTest extends ContainerTestCase
     {
         $this->assertEmpty(
             $this->widget->render(
+                dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
                 now: SerializableDateTime::fromString('2025-12-02'),
                 configuration: WidgetConfiguration::empty()
             )

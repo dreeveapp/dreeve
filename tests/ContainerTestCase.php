@@ -3,7 +3,6 @@
 namespace App\Tests;
 
 use App\Domain\Import\ImportMode;
-use App\Infrastructure\Twig\HtmlTwigExtension;
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -33,8 +32,6 @@ abstract class ContainerTestCase extends KernelTestCase
             self::bootKernel();
             self::$ourDbalConnection = self::getContainer()->get(Connection::class);
         }
-
-        HtmlTwigExtension::$seenIds = [];
 
         // Empty file systems.
         /** @var \League\Flysystem\FilesystemOperator[] $fileSystems */

@@ -7,9 +7,12 @@ namespace App\Domain\Dashboard\Widget\DistanceBreakdown;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypeRepository;
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -35,6 +38,11 @@ final readonly class DistanceBreakdownWidget implements Widget
         return 'widget--distance-breakdown';
     }
 
+    public function getCacheTags(): CacheTags
+    {
+        return CacheTags::of(RootCacheTag::ACTIVITIES);
+    }
+
     public function getDefaultConfiguration(): WidgetConfiguration
     {
         return WidgetConfiguration::empty();
@@ -44,7 +52,7 @@ final readonly class DistanceBreakdownWidget implements Widget
     {
     }
 
-    public function render(SerializableDateTime $now, WidgetConfiguration $configuration): string
+    public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
         $activitiesPerActivityType = $this->activityRepository->findAll()->groupByActivityType($this->activityTypeRepository->findAll());
 
@@ -70,6 +78,7 @@ final readonly class DistanceBreakdownWidget implements Widget
         }
 
         return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+            'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'distanceBreakdowns' => $distanceBreakdowns,
         ]);
     }

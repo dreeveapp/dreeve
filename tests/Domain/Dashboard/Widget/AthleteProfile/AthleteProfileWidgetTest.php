@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Dashboard\Widget\AthleteProfile;
 
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\Widget\AthleteProfile\AthleteProfileWidget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -15,6 +16,7 @@ class AthleteProfileWidgetTest extends ContainerTestCase
     {
         $this->assertNull(
             $this->widget->render(
+                DashboardWidgetId::fromUnprefixed('test'),
                 SerializableDateTime::fromString('2026-01-09'),
                 WidgetConfiguration::empty()
             )
