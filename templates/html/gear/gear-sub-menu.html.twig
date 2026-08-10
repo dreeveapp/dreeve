@@ -9,10 +9,7 @@
         <li>
             <a href="#" data-router-navigate="{{ relativeUrl('gear/maintenance') }}"
                class="flex items-center {{ activeMenuItem == 'gearMaintenance' ? 'active' : '' }}">
-                {% if maintenanceTaskIsDue %}
-                    <span class="flex size-2 me-2 bg-red-500 rounded-full animate-pulse"
-                          title="{{ "One of your gear maintenance tasks is due"|trans }}"></span>
-                {% endif %}
+                <div class="contents" data-async-content-url="{{ relativeUrl('api/fragment/partial/gear/maintenance-due') }}"></div>
                 {{ "Maintenance"|trans }}
             </a>
         </li>

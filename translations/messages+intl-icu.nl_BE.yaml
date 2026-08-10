@@ -173,7 +173,6 @@ History: Historiek
 'How much training you do in total on days you train.': 'How much training you do in total on days you train.'
 'How often do you train': 'How often do you train'
 'Ice Skate': 'Ice Skate'
-Id: Id
 Imperial: Imperial
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉."
 'Individual thresholds vary based on fitness level.': 'Individual thresholds vary based on fitness level.'
@@ -298,7 +297,6 @@ Ranking: Ranking
 'Recalculating your suffer score...': 'Recalculating your suffer score...'
 'Recent effort': 'Recent effort'
 'Recording devices': 'Recording devices'
-'Recording devices details': 'Recording devices details'
 'Recovery Timeline': 'Recovery Timeline'
 'Recovery forecast': 'Recovery forecast'
 'Reduced carbon emission by commuting': 'Reduced carbon emission by commuting'

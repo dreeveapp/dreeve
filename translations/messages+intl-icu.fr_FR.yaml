@@ -173,7 +173,6 @@ History: Historique
 'How much training you do in total on days you train.': 'La quantité totale de vos entraînements les jours où vous vous entraînez.'
 'How often do you train': 'La fréquence de vos entraînements'
 'Ice Skate': 'Patin à glace'
-Id: Id
 Imperial: Impérial
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": "Pendant ce temps, j'ai parcouru {totalDistance}, soit {numberOfTripsAroundTheWorld} tours du monde 🌍 ou {numberOfTripsToTheMoonPercent}% du chemin vers la Lune 🌕, et gravi une altitude de {totalElevation}, soit {timesMountEverest} fois la hauteur du mont Everest 🏔. Au total, cela représente {totalTimeRecorded} de temps de déplacement 🎉."
 'Individual thresholds vary based on fitness level.': 'Les seuils individuels varient selon le niveau de forme physique.'
@@ -298,7 +297,6 @@ Ranking: Classement
 'Recalculating your suffer score...': 'Recalculating your suffer score...'
 'Recent effort': 'Effort récent'
 'Recording devices': "Appareils d'enregistrement"
-'Recording devices details': "Détails des appareils d'enregistrement"
 'Recovery Timeline': 'Ligne de temps de récupération'
 'Recovery forecast': 'Prévision de récupération'
 'Reduced carbon emission by commuting': 'Réduction des émissions de carbone grâce aux déplacements domicile-travail'

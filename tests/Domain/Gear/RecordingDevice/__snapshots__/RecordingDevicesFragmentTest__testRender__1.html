@@ -22,9 +22,6 @@
             </li>
             </ol>
 </nav>
-    <a href="#" data-model-content-url="/gear/recording-devices/info.html">
-        <svg class="size-4 text-gray-400" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"></path></svg>
-    </a>
 </div>
     <!-- GEAR SUB MENU -->
         <ul class="tabs tabs--menu-item">
@@ -35,7 +32,8 @@
         </li>
         <li>
             <a href="#" data-router-navigate="/gear/maintenance" class="flex items-center ">
-                                Maintenance
+                <div class="contents" data-async-content-url="/api/fragment/partial/gear/maintenance-due"></div>
+                Maintenance
             </a>
         </li>
         <li>

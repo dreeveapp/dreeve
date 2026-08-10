@@ -173,7 +173,6 @@ History: Előzmények
 'How much training you do in total on days you train.': 'Mennyi összes edzést végzel az edzésnapjaidon.'
 'How often do you train': 'Milyen gyakran edzel'
 'Ice Skate': Jégkorcsolya
-Id: Azonosító
 Imperial: Angolszász
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'Ez idő alatt {totalDistance}-t tettem meg, ami {numberOfTripsAroundTheWorld} körülutazás a Föld körül, vagy {numberOfTripsToTheMoonPercent}% az úton a Hold felé, és {totalElevation} szintemelkedést győztem le, ami {timesMountEverest}-szer a Mount Everest magassága. Összesen {totalTimeRecorded} mozgásban töltött idő.'
 'Individual thresholds vary based on fitness level.': 'Az egyéni küszöbértékek a fitnesz szinttől függően változnak.'
@@ -298,7 +297,6 @@ Ranking: Ranglista
 'Recalculating your suffer score...': 'Recalculating your suffer score...'
 'Recent effort': 'Közelmúltbeli teljesítmény'
 'Recording devices': 'Rögzítő eszközök'
-'Recording devices details': 'Rögzítő eszközök részletei'
 'Recovery Timeline': 'Regenerációs idővonal'
 'Recovery forecast': 'Regenerációs előrejelzés'
 'Reduced carbon emission by commuting': 'Csökkentett szén-dioxid kibocsátás ingázással'

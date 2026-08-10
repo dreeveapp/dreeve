@@ -1,15 +1,9 @@
 Buildingapp...
 
 
-0%[>---------------------------]0/5-Initializing...
+0%[>---------------------------]0/2-Initializing...
 
-20%[=====>----------------------]1/5-Configuringlocale
+50%[==============>-------------]1/2-Configuringlocale
 
-40%[===========>----------------]2/5-Buildingdashboard
-
-60%[================>-----------]3/5-Buildinggearstats
-
-80%[======================>-----]4/5-Buildinggearmaintenance
-
-100%[============================]5/5-Buildingrecordingdevices
+100%[============================]2/2-Buildingdashboard
 

@@ -6,9 +6,6 @@ namespace App\Application\Build\RunBuild;
 
 use App\Application\AppStatusChecker;
 use App\Application\Build\BuildDashboardHtml\BuildDashboardHtml;
-use App\Application\Build\BuildGearMaintenanceHtml\BuildGearMaintenanceHtml;
-use App\Application\Build\BuildGearStatsHtml\BuildGearStatsHtml;
-use App\Application\Build\BuildRecordingDevices\BuildRecordingDevices;
 use App\Application\Build\ConfigureAppLocale\ConfigureAppLocale;
 use App\Application\Import\StravaImport\ImportGear\GearImportStatus;
 use App\Infrastructure\Cache\Render\RenderCache;
@@ -56,9 +53,6 @@ This is not a bug, once all your activities have been imported, your gear statis
         $commandsWithMessages = [
             'Configuring locale' => new ConfigureAppLocale(),
             'Building dashboard' => new BuildDashboardHtml(),
-            'Building gear stats' => new BuildGearStatsHtml($now),
-            'Building gear maintenance' => new BuildGearMaintenanceHtml(),
-            'Building recording devices' => new BuildRecordingDevices(),
         ];
 
         $progressBar = new ProgressBar($output, count($commandsWithMessages));

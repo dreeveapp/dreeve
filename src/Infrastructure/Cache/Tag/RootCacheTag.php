@@ -17,6 +17,8 @@ enum RootCacheTag: string implements CacheTag
     case SEGMENTS = 'segments';
     case CHALLENGES = 'challenges';
     case GEAR = 'gear';
+    case GEAR_MAINTENANCE = 'gear.maintenance';
+    case RECORDING_DEVICES = 'gear.recording-devices';
     case SETTINGS_GENERAL = 'settings.general';
     case SETTINGS_APPEARANCE = 'settings.appearance';
     case SETTINGS_MAPS = 'settings.maps';

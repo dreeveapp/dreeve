@@ -8,6 +8,7 @@ use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearIdRepository;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
@@ -20,6 +21,7 @@ final readonly class KeyValueBasedGearMaintenanceRepository implements GearMaint
     public function __construct(
         private KeyValueStore $keyValueStore,
         private GearIdRepository $gearIdRepository,
+        private EventBus $eventBus,
     ) {
     }
 
@@ -158,5 +160,7 @@ final readonly class KeyValueBasedGearMaintenanceRepository implements GearMaint
             Key::GEAR_MAINTENANCE,
             Value::fromString(Json::encode($config)),
         ));
+
+        $this->eventBus->publishEvents([new GearMaintenanceConfigWasUpdated()]);
     }
 }

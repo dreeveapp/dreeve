@@ -7,6 +7,10 @@ use App\Domain\Activity\Eddington\EddingtonFragment;
 use App\Domain\Activity\Image\PhotosFragment;
 use App\Domain\Activity\Route\HeatmapFragment;
 use App\Domain\Challenge\ChallengesFragment;
+use App\Domain\Gear\GearStatsFragment;
+use App\Domain\Gear\Maintenance\GearMaintenanceDueFragment;
+use App\Domain\Gear\Maintenance\GearMaintenanceFragment;
+use App\Domain\Gear\RecordingDevice\RecordingDevicesFragment;
 use App\Domain\Milestone\MilestonesFragment;
 use App\Domain\Rewind\RewindCompareFragmentResolver;
 use App\Domain\Rewind\RewindFragmentResolver;
@@ -140,6 +144,36 @@ class RenderCacheInvalidationTest extends ContainerTestCase
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
             RootCacheTag::SEGMENTS,
+        ]];
+
+        yield 'gear' => [GearStatsFragment::class, [
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::GEAR,
+            RootCacheTag::ACTIVITIES,
+        ]];
+
+        yield 'gear-maintenance' => [GearMaintenanceFragment::class, [
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::GEAR_MAINTENANCE,
+            RootCacheTag::ACTIVITIES,
+            RootCacheTag::GEAR,
+        ]];
+
+        yield 'gear-maintenance-due' => [GearMaintenanceDueFragment::class, [
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::GEAR_MAINTENANCE,
+            RootCacheTag::ACTIVITIES,
+            RootCacheTag::GEAR,
+        ]];
+
+        yield 'gear-recording-devices' => [RecordingDevicesFragment::class, [
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::RECORDING_DEVICES,
+            RootCacheTag::ACTIVITIES,
         ]];
     }
 

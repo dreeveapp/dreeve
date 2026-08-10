@@ -10,6 +10,7 @@ use App\Domain\Gear\RecordingDevice\RecordingDevice;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDevices;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
@@ -257,6 +258,7 @@ class DbalRecordingDeviceRepositoryTest extends ContainerTestCase
 
         $this->recordingDeviceRepository = new DbalRecordingDeviceRepository(
             $this->getConnection(),
+            $this->getContainer()->get(EventBus::class),
         );
     }
 }

@@ -6,12 +6,21 @@ namespace App\Domain\Gear\Maintenance\Log;
 
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Doctrine\DBAL\Connection;
 
 final readonly class DbalGearMaintenanceLogRepository extends DbalRepository implements GearMaintenanceLogRepository
 {
+    public function __construct(
+        Connection $connection,
+        private EventBus $eventBus,
+    ) {
+        parent::__construct($connection);
+    }
+
     public function add(GearMaintenanceLog $gearMaintenanceLog): void
     {
         $sql = 'INSERT INTO GearMaintenanceLog (gearMaintenanceLogId, gearId, maintenanceTaskId, performedOn)
@@ -23,6 +32,8 @@ final readonly class DbalGearMaintenanceLogRepository extends DbalRepository imp
             'maintenanceTaskId' => $gearMaintenanceLog->getMaintenanceTaskId(),
             'performedOn' => $gearMaintenanceLog->getPerformedOn(),
         ]);
+
+        $this->eventBus->publishEvents($gearMaintenanceLog->getRecordedEvents());
     }
 
     public function update(GearMaintenanceLog $gearMaintenanceLog): void
@@ -39,6 +50,8 @@ final readonly class DbalGearMaintenanceLogRepository extends DbalRepository imp
             'maintenanceTaskId' => $gearMaintenanceLog->getMaintenanceTaskId(),
             'performedOn' => $gearMaintenanceLog->getPerformedOn(),
         ]);
+
+        $this->eventBus->publishEvents($gearMaintenanceLog->getRecordedEvents());
     }
 
     public function find(GearMaintenanceLogId $gearMaintenanceLogId): GearMaintenanceLog
@@ -61,6 +74,7 @@ final readonly class DbalGearMaintenanceLogRepository extends DbalRepository imp
             'DELETE FROM GearMaintenanceLog WHERE gearMaintenanceLogId = :gearMaintenanceLogId',
             ['gearMaintenanceLogId' => $gearMaintenanceLogId]
         );
+        $this->eventBus->publishEvents([new GearMaintenanceLogWasUpdated()]);
     }
 
     public function findAll(): GearMaintenanceLogs

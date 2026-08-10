@@ -2,7 +2,7 @@
 
 {% block content %}
     {% autoescape false %}
-        {% include 'html/gear/gear-sub-menu.html.twig' with {activeMenuItem: 'gearMaintenance', maintenanceTaskIsDue: false} %}
+        {% include 'html/gear/gear-sub-menu.html.twig' with {activeMenuItem: 'gearMaintenance'} %}
         <div class="grid grid-cols-1 gap-4">
             <div class="mb-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
                 <h3 class="mb-4 text-lg font-semibold">

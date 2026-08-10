@@ -6,6 +6,7 @@ namespace App\Domain\Gear\Maintenance\Log;
 
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
+use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,17 +14,19 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'GearMaintenanceLog')]
 #[ORM\Index(name: 'GearMaintenanceLog_gearIndex', columns: ['gearId'])]
 #[ORM\Index(name: 'GearMaintenanceLog_maintenanceTask', columns: ['maintenanceTaskId', 'performedOn'])]
-final readonly class GearMaintenanceLog
+final class GearMaintenanceLog
 {
+    use RecordsEvents;
+
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string', unique: true)]
-        private GearMaintenanceLogId $gearMaintenanceLogId,
+        private readonly GearMaintenanceLogId $gearMaintenanceLogId,
         #[ORM\Column(type: 'string')]
-        private GearId $gearId,
+        private readonly GearId $gearId,
         #[ORM\Column(type: 'string')]
-        private MaintenanceTaskId $maintenanceTaskId,
+        private readonly MaintenanceTaskId $maintenanceTaskId,
         #[ORM\Column(type: 'datetime_immutable')]
-        private SerializableDateTime $performedOn,
+        private readonly SerializableDateTime $performedOn,
     ) {
     }
 
@@ -32,12 +35,15 @@ final readonly class GearMaintenanceLog
         MaintenanceTaskId $maintenanceTaskId,
         SerializableDateTime $performedOn,
     ): self {
-        return new self(
+        $gearMaintenanceLog = new self(
             gearMaintenanceLogId: GearMaintenanceLogId::random(),
             gearId: $gearId,
             maintenanceTaskId: $maintenanceTaskId,
             performedOn: $performedOn,
         );
+        $gearMaintenanceLog->recordThat(new GearMaintenanceLogWasUpdated());
+
+        return $gearMaintenanceLog;
     }
 
     public static function fromState(
@@ -56,12 +62,17 @@ final readonly class GearMaintenanceLog
 
     public function withPerformedOn(SerializableDateTime $performedOn): self
     {
-        return new self(
+        $clone = new self(
             gearMaintenanceLogId: $this->gearMaintenanceLogId,
             gearId: $this->gearId,
             maintenanceTaskId: $this->maintenanceTaskId,
             performedOn: $performedOn,
         );
+        if ($performedOn->getTimestamp() !== $this->performedOn->getTimestamp()) {
+            $clone->recordThat(new GearMaintenanceLogWasUpdated());
+        }
+
+        return $clone;
     }
 
     public function getId(): GearMaintenanceLogId

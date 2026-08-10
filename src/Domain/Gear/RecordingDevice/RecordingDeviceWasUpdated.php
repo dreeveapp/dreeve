@@ -1,0 +1,11 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domain\Gear\RecordingDevice;
+
+use App\Infrastructure\Eventing\DomainEvent;
+
+final class RecordingDeviceWasUpdated extends DomainEvent
+{
+}

@@ -4,15 +4,24 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\RecordingDevice;
 
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Repository\DbalRepository;
+use Doctrine\DBAL\Connection;
 use Money\Currency;
 use Money\Money;
 
 final readonly class DbalRecordingDeviceRepository extends DbalRepository implements RecordingDeviceRepository
 {
+    public function __construct(
+        Connection $connection,
+        private EventBus $eventBus,
+    ) {
+        parent::__construct($connection);
+    }
+
     public function findAll(): RecordingDevices
     {
         $results = $this->connection->executeQuery(
@@ -88,5 +97,7 @@ final readonly class DbalRecordingDeviceRepository extends DbalRepository implem
                 'purchasePriceCurrency' => $purchasePrice?->getCurrency()->getCode(),
             ]
         );
+
+        $this->eventBus->publishEvents($recordingDevice->getRecordedEvents());
     }
 }

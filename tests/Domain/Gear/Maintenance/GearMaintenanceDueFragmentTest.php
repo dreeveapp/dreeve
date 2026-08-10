@@ -55,16 +55,17 @@ class GearMaintenanceDueFragmentTest extends ControllerWebTestCase
         $this->assertEmpty(trim((string) $this->client->getResponse()->getContent()));
     }
 
-    public function testItStaysOutOfTheRenderCache(): void
+    public function testItIsTaggedWithTheMaintenanceDataItRenders(): void
     {
         $this->importGearMaintenanceConfig();
         $this->rideSinceTheChainWasLubed(Kilometer::from(750));
 
         $this->client->request('GET', '/api/fragment/partial/gear/maintenance-due');
 
-        // The sidebar polls this badge, so a cached answer would keep showing a task you just did.
-        $this->assertResponseHeaderSame('X-Cache', 'UNCACHEABLE');
-        $this->assertFalse($this->client->getResponse()->headers->has('X-Cache-Key'));
+        $this->assertResponseHeaderSame(
+            'X-Cache-Tags',
+            'settings.appearance, settings.general, gear.maintenance, activities, gear',
+        );
     }
 
     public function testItIsNotServedAsAPageFragment(): void

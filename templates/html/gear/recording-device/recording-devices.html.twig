@@ -9,13 +9,10 @@
             'label': 'Recording devices'|trans
         }],
         'disableMargin': true} %}
-    <a href="#" data-model-content-url="{{ relativeUrl('gear/recording-devices/info.html') }}">
-        <svg class="size-4 text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/></svg>
-    </a>
 </div>
 {% autoescape false %}
     <!-- GEAR SUB MENU -->
-    {% include 'html/gear/gear-sub-menu.html.twig' with {activeMenuItem: 'recordingDevices', maintenanceTaskIsDue: maintenanceTaskIsDue} %}
+    {% include 'html/gear/gear-sub-menu.html.twig' with {activeMenuItem: 'recordingDevices'} %}
     <div class="grid grid-cols-1 mb-4">
         <!-- RECORDING DEVICE STATS -->
         <div class="mb-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xs">

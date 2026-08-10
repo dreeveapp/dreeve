@@ -23,6 +23,13 @@
         "reactToGearWasAdded",
         "reactToGearWasUpdated"
     ],
+    "App\\Domain\\Gear\\Maintenance\\GearMaintenanceInvalidateCacheTagsListener": [
+        "reactToGearMaintenanceConfigWasUpdated",
+        "reactToGearMaintenanceLogWasUpdated"
+    ],
+    "App\\Domain\\Gear\\RecordingDevice\\RecordingDeviceInvalidateCacheTagsListener": [
+        "reactToRecordingDeviceWasUpdated"
+    ],
     "App\\Domain\\Segment\\SegmentInvalidateCacheTagsListener": [
         "reactToSegmentWasAdded",
         "reactToSegmentsWereDeleted",

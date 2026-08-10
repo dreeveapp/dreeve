@@ -2,53 +2,68 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Build\BuildGearStatsHtml;
+namespace App\Domain\Gear;
 
 use App\Domain\Activity\Activities;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Calendar\Months;
-use App\Domain\Gear\DistanceOverTimePerGearChart;
-use App\Domain\Gear\DistancePerMonthPerGearChart;
 use App\Domain\Gear\FindGearStatsPerDay\FindGearStatsPerDay;
-use App\Domain\Gear\Gear;
-use App\Domain\Gear\GearId;
-use App\Domain\Gear\GearRepository;
-use App\Domain\Gear\GearType;
-use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Theme\Theme;
-use App\Infrastructure\CQRS\Command\Command;
-use App\Infrastructure\CQRS\Command\CommandHandler;
+use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
+use App\Infrastructure\Http\Fragment\Fragment;
+use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
-use League\Flysystem\FilesystemOperator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class BuildGearStatsHtmlCommandHandler implements CommandHandler
+final readonly class GearStatsFragment implements Fragment
 {
     public function __construct(
         private GearRepository $gearRepository,
-        private MaintenanceTaskProgressCalculator $maintenanceTaskProgressCalculator,
         private ActivityRepository $activityRepository,
         private SettingsRepository $settingsRepository,
         private QueryBus $queryBus,
-        private Environment $twig,
-        private FilesystemOperator $buildHtmlStorage,
         private TranslatorInterface $translator,
         private Theme $theme,
+        private Clock $clock,
+        private Environment $twig,
     ) {
     }
 
-    public function handle(Command $command): void
+    public function getPath(): string
     {
-        assert($command instanceof BuildGearStatsHtml);
+        return 'gear';
+    }
 
-        $now = $command->getCurrentDateTime();
+    public function getType(): FragmentType
+    {
+        return FragmentType::PAGE;
+    }
+
+    public function getCacheability(): Cacheability
+    {
+        return Cacheability::for(
+            cacheKey: $this->getPath(),
+            cacheTags: CacheTags::of(
+                RootCacheTag::GEAR,
+                RootCacheTag::ACTIVITIES,
+            ),
+            ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
+        );
+    }
+
+    public function render(): string
+    {
+        $now = $this->clock->getCurrentDateTimeImmutable();
         $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
         $activities = $this->activityRepository->findAll();
         $allUsedGear = $this->gearRepository->findAllUsed();
@@ -64,35 +79,31 @@ final readonly class BuildGearStatsHtmlCommandHandler implements CommandHandler
             $activeGear->add($unspecifiedGear);
         }
 
-        $this->buildHtmlStorage->write(
-            'gear.html',
-            $this->twig->load('html/gear/gear.html.twig')->render([
-                'maintenanceTaskIsDue' => !$this->maintenanceTaskProgressCalculator->getGearIdsThatHaveDueTasks()->isEmpty(),
-                'activeGear' => $activeGear,
-                'retiredGear' => $allUsedGear->filter(fn (Gear $gear): bool => $gear->isRetired()),
-                'unitSystem' => $unitSystem,
-                'distancePerMonthPerGearChart' => Json::encode(
-                    DistancePerMonthPerGearChart::create(
-                        gearCollection: $allUsedGear,
-                        activityCollection: $activities,
-                        unitSystem: $unitSystem,
-                        months: $allMonths,
-                        theme: $this->theme,
-                    )->build()
-                ),
-                'distanceOverTimePerGear' => Json::encode(
-                    DistanceOverTimePerGearChart::create(
-                        gears: $allUsedGear,
-                        gearStats: $gearStats,
-                        startDate: $activities->getFirstActivityStartDate(),
-                        unitSystem: $unitSystem,
-                        translator: $this->translator,
-                        now: $now,
-                        theme: $this->theme,
-                    )->build()
-                ),
-            ]),
-        );
+        return $this->twig->load('html/gear/gear.html.twig')->render([
+            'activeGear' => $activeGear,
+            'retiredGear' => $allUsedGear->filter(fn (Gear $gear): bool => $gear->isRetired()),
+            'unitSystem' => $unitSystem,
+            'distancePerMonthPerGearChart' => Json::encode(
+                DistancePerMonthPerGearChart::create(
+                    gearCollection: $allUsedGear,
+                    activityCollection: $activities,
+                    unitSystem: $unitSystem,
+                    months: $allMonths,
+                    theme: $this->theme,
+                )->build()
+            ),
+            'distanceOverTimePerGear' => Json::encode(
+                DistanceOverTimePerGearChart::create(
+                    gears: $allUsedGear,
+                    gearStats: $gearStats,
+                    startDate: $activities->getFirstActivityStartDate(),
+                    unitSystem: $unitSystem,
+                    translator: $this->translator,
+                    now: $now,
+                    theme: $this->theme,
+                )->build()
+            ),
+        ]);
     }
 
     private function buildUnspecifiedGear(Activities $activities): ?Gear

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\RecordingDevice;
 
+use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
@@ -14,21 +15,22 @@ use Money\Money;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'RecordingDevice')]
-final readonly class RecordingDevice
+final class RecordingDevice
 {
     use ProvideTimeFormats;
+    use RecordsEvents;
 
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string', unique: true)]
-        private RecordingDeviceId $id,
+        private readonly RecordingDeviceId $id,
         #[ORM\Column(type: 'string')]
-        private string $name,
+        private readonly string $name,
         #[ORM\Embedded(class: Money::class)]
-        private ?Money $purchasePrice,
-        private Seconds $timeTracked,
-        private Kilometer $distanceTracked,
-        private Meter $elevationTracked,
-        private int $numberOfWorkouts,
+        private readonly ?Money $purchasePrice,
+        private readonly Seconds $timeTracked,
+        private readonly Kilometer $distanceTracked,
+        private readonly Meter $elevationTracked,
+        private readonly int $numberOfWorkouts,
     ) {
     }
 
@@ -36,7 +38,7 @@ final readonly class RecordingDevice
         string $name,
         ?Money $purchasePrice,
     ): self {
-        return new self(
+        $recordingDevice = new self(
             id: RecordingDeviceId::fromName($name),
             name: $name,
             purchasePrice: $purchasePrice,
@@ -45,6 +47,9 @@ final readonly class RecordingDevice
             elevationTracked: Meter::zero(),
             numberOfWorkouts: 0,
         );
+        $recordingDevice->recordThat(new RecordingDeviceWasUpdated());
+
+        return $recordingDevice;
     }
 
     public static function fromState(

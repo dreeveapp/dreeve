@@ -33,7 +33,12 @@ class UpdateGearMaintenanceLogCommandHandlerTest extends ContainerTestCase
         ]));
 
         $this->assertEquals(
-            $log->withPerformedOn(SerializableDateTime::fromString('2025-06-01 00:00:00')),
+            GearMaintenanceLog::fromState(
+                gearMaintenanceLogId: $log->getId(),
+                gearId: GearId::fromUnprefixed('b1'),
+                maintenanceTaskId: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                performedOn: SerializableDateTime::fromString('2025-06-01 00:00:00'),
+            ),
             $this->gearMaintenanceLogRepository->find($log->getId()),
         );
     }

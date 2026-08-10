@@ -9,6 +9,7 @@ use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogId;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogs;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -173,6 +174,7 @@ class DbalGearMaintenanceLogRepositoryTest extends ContainerTestCase
 
         $this->gearMaintenanceLogRepository = new DbalGearMaintenanceLogRepository(
             $this->getConnection(),
+            $this->getContainer()->get(EventBus::class),
         );
     }
 }
