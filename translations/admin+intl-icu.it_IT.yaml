@@ -169,6 +169,7 @@ Images: Images
 Import: Import
 'Import activities': 'Import activities'
 'Import data & build app': 'Import data & build app'
+'Import pending': 'Import pending'
 'Import segment details': 'Import segment details'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
 'Import source': 'Import source'
@@ -255,7 +256,6 @@ Password: Password
 'Profile picture URL': 'Profile picture URL'
 Provider: Provider
 Radius: Radius
-'Rebuild pending': 'Rebuild pending'
 'Recording device': 'Recording device'
 'Recording device management': 'Recording device management'
 'Recording devices will appear here once activities have been imported.': 'Recording devices will appear here once activities have been imported.'
