@@ -19,7 +19,7 @@
     <div class="grid grid-cols-1">
         <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
             <!--HTML-->
-            <div data-datatable-settings='{"url":"/api/fragment/data/activity/data-table","name":"activities"}' class="relative">
+            <div data-datatable-settings='{"url":"/api/fragment/data/activity/data-table","name":"activities","toggleableColumns":true}' class="relative">
                 <form class="flex flex-col gap-y-2 mb-2" autocomplete="off">
                     <div class="flex items-center">
                         <label for="search" class="sr-only">Search</label>
@@ -345,6 +345,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="filter-dropdown filter-dropdown--icon ms-auto">
+                            <button id="dropdownColumnsButton" data-dropdown="dropdownColumns" data-dropdown-placement="bottom-end" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button" title="Columns">
+                                <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v14M9 5v14M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"></path></svg>
+                                <span class="sr-only">Columns</span>
+                            </button>
+                            <div id="dropdownColumns" class="divide-y divide-gray-100">
+                                <ul aria-labelledby="dropdownColumnsButton" data-datatable-columns></ul>
+                                <div class="p-3">
+                                    <a href="#" class="text-primary text-sm underline" data-datatable-columns-reset>Show all columns</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="flex items-center justify-between gap-x-2 text-xs text-gray-700">
                         <div>
@@ -357,7 +369,7 @@
                     <table class="data-table">
                         <thead>
                         <tr>
-                            <th class="narrow" scope="col" data-datatable-sort="start-date">
+                            <th class="narrow" scope="col" data-datatable-sort="start-date" data-datatable-column="start-date">
                                 <div class="flex items-center justify-center" title="Date">
                                     Date
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
@@ -368,7 +380,7 @@
                             <th scope="col" class="narrow text-left bg-gray-50 lg:sticky lg:left-0">
                                 <div class="w-92">Title</div>
                             </th>
-                            <th scope="col" data-datatable-sort="distance">
+                            <th scope="col" data-datatable-sort="distance" data-datatable-column="distance">
                                 <div class="flex items-center justify-center" title="Distance">
                                     Dist.
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
@@ -376,7 +388,7 @@
 </div>
                                 </div>
                             </th>
-                            <th scope="col" data-datatable-sort="elevation">
+                            <th scope="col" data-datatable-sort="elevation" data-datatable-column="elevation">
                                 <div class="flex items-center justify-center" title="Elevation">
                                     Elev.
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
@@ -384,15 +396,15 @@
 </div>
                                 </div>
                             </th>
-                            <th scope="col" data-datatable-sort="moving-time">
-                                <div class="flex items-center justify-center" title="Time">
+                            <th scope="col" data-datatable-sort="moving-time" data-datatable-column="moving-time">
+                                <div class="flex items-center justify-center" title="Moving time">
                                     Moving time
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
 <svg class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
 </div>
                                 </div>
                             </th>
-                            <th scope="col" data-datatable-sort="speed">
+                            <th scope="col" data-datatable-sort="speed" data-datatable-column="speed">
                                 <div class="flex items-center justify-center" title="Speed">
                                     Speed
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
@@ -400,7 +412,7 @@
 </div>
                                 </div>
                             </th>
-                            <th scope="col" data-datatable-sort="heart-rate">
+                            <th scope="col" data-datatable-sort="heart-rate" data-datatable-column="heart-rate">
                                 <div class="flex items-center justify-center" title="Heart rate">
                                     HR
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
@@ -408,7 +420,7 @@
 </div>
                                 </div>
                             </th>
-                            <th scope="col" data-datatable-sort="calories">
+                            <th scope="col" data-datatable-sort="calories" data-datatable-column="calories">
                                 <div class="flex items-center justify-center" title="Calories burned">
                                     Cal.
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
@@ -416,7 +428,7 @@
 </div>
                                 </div>
                             </th>
-                            <th scope="col" data-datatable-sort="power">
+                            <th scope="col" data-datatable-sort="power" data-datatable-column="power">
                                 <div class="flex items-center justify-center" title="Power">
                                     Power
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
@@ -424,64 +436,64 @@
 </div>
                                 </div>
                             </th>
-                            <th scope="col" data-datatable-sort="power-5s" colspan="2">
-                                <div class="flex items-center justify-center" title="Speed">
+                            <th scope="col" data-datatable-sort="power-5s" data-datatable-column="power-5s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     Best 5s
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
 <svg class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
 </div>
                                 </div>
                             </th>
-                            <th scope="col" data-datatable-sort="power-10s" colspan="2">
-                                <div class="flex items-center justify-center" title="Speed">
+                            <th scope="col" data-datatable-sort="power-10s" data-datatable-column="power-10s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     Best 10s
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
 <svg class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
 </div>
                                 </div>
                             </th>
-                            <th scope="col" data-datatable-sort="power-30s" colspan="2">
-                                <div class="flex items-center justify-center" title="Speed">
+                            <th scope="col" data-datatable-sort="power-30s" data-datatable-column="power-30s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     Best 30s
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
 <svg class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
 </div>
                                 </div>
                             </th>
-                            <th scope="col" data-datatable-sort="power-60s" colspan="2">
-                                <div class="flex items-center justify-center" title="Speed">
+                            <th scope="col" data-datatable-sort="power-60s" data-datatable-column="power-60s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     Best 1m
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
 <svg class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
 </div>
                                 </div>
                             </th>
-                            <th scope="col" data-datatable-sort="power-300s" colspan="2">
-                                <div class="flex items-center justify-center" title="Speed">
+                            <th scope="col" data-datatable-sort="power-300s" data-datatable-column="power-300s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     Best 5m
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
 <svg class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
 </div>
                                 </div>
                             </th>
-                            <th scope="col" data-datatable-sort="power-480s" colspan="2">
-                                <div class="flex items-center justify-center" title="Speed">
+                            <th scope="col" data-datatable-sort="power-480s" data-datatable-column="power-480s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     Best 8m
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
 <svg class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
 </div>
                                 </div>
                             </th>
-                            <th scope="col" data-datatable-sort="power-1200s" colspan="2">
-                                <div class="flex items-center justify-center" title="Speed">
+                            <th scope="col" data-datatable-sort="power-1200s" data-datatable-column="power-1200s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     Best 20m
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
 <svg class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
 </div>
                                 </div>
                             </th>
-                            <th scope="col" data-datatable-sort="power-3600s" colspan="2">
-                                <div class="flex items-center justify-center" title="Speed">
+                            <th scope="col" data-datatable-sort="power-3600s" data-datatable-column="power-3600s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     Best 1h
                                     <div class="ml-1.5 group sorting-icon" aria-sort="none">
 <svg class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
