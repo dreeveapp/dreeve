@@ -49,18 +49,18 @@
             <div id="badgesTabContent" class="grow">
                 <div id="badgesTabUserBadge" class="flex flex-col gap-y-3 items-center justify-between" role="tabpanel" aria-labelledby="badgesTabUserBadge-tab">
                     <div class="min-h-40 max-h-80">
-                        <img class="max-h-full" src="{{ relativeUrl('files/strava-badge.svg') }}"  alt="{{ "Your Strava badge"|trans }}"/>
+                        <img class="max-h-full" src="{{ relativeUrl('badge/dreeve.svg') }}"  alt="{{ "Your Dreeve badge"|trans }}"/>
                     </div>
-                    <code class="text-xs text-center">&lt;img src="{{ appUrl }}/files/strava-badge.svg" alt="Your Strava badge"/&gt;</code>
+                    <code class="text-xs text-center">&lt;img src="{{ appUrl }}/badge/dreeve.svg" alt="Your Dreeve badge"/&gt;</code>
                 </div>
                 {% if sportTypesThatHaveBestEfforts is not empty %}
                     <div id="badgesTabPbBadges" class="grid grid-cols-1 lg:grid-cols-2 gap-4"  role="tabpanel" aria-labelledby="badgesTabPbBadges-tab">
                         {% for sportType in sportTypesThatHaveBestEfforts %}
                             <div class="flex flex-col gap-y-3 items-center justify-between">
                                 <div class="min-h-40 max-h-80">
-                                    <img class="max-h-full" src="{{ relativeUrl('files/pb-' ~ sportType.value|lower ~ '-badge.svg') }}"  alt="{{ "Your PB badge"|trans }}"/>
+                                    <img class="max-h-full" src="{{ relativeUrl('badge/pb/' ~ sportType.value|lower ~ '.svg') }}"  alt="{{ "Your PB badge"|trans }}"/>
                                 </div>
-                                <code class="text-xs text-center">&lt;img src="{{ appUrl }}/files/pb-{{ sportType.value|lower }}-badge.svg" alt="Your PB badge"/&gt;</code>
+                                <code class="text-xs text-center">&lt;img src="{{ appUrl }}/badge/pb/{{ sportType.value|lower }}.svg" alt="Your PB badge"/&gt;</code>
                             </div>
                         {% endfor %}
                     </div>
@@ -68,9 +68,9 @@
                 {% if zwiftLevel %}
                     <div id="badgesTabZwiftBadge" class="flex flex-col gap-y-3 items-center justify-between"  role="tabpanel" aria-labelledby="badgesTabZwiftBadge-tab">
                         <div class="min-h-40 max-h-80">
-                            <img class="max-h-full" src="{{ relativeUrl('files/zwift-badge.svg') }}"  alt="{{ "Your Zwift badge"|trans }}"/>
+                            <img class="max-h-full" src="{{ relativeUrl('badge/zwift.svg') }}"  alt="{{ "Your Zwift badge"|trans }}"/>
                         </div>
-                        <code class="text-xs text-center">&lt;img src="{{ appUrl }}/files/zwift-badge.svg" alt="Your Zwift badge"/&gt;</code>
+                        <code class="text-xs text-center">&lt;img src="{{ appUrl }}/badge/zwift.svg" alt="Your Zwift badge"/&gt;</code>
                     </div>
                 {% endif %}
             </div>

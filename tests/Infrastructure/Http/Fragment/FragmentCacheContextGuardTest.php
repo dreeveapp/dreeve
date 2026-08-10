@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityMetricsFragmentResolver;
 use App\Domain\Activity\ActivityPolylinesFragmentResolver;
 use App\Domain\Activity\BestEffort\ActivityBestEffortsFragmentResolver;
 use App\Domain\Activity\BestEffort\BestEffortsHistoryFragmentResolver;
+use App\Domain\Badge\BadgeFragmentResolver;
 use App\Domain\Calendar\MonthFragmentResolver;
 use App\Domain\Rewind\RewindCompareFragmentResolver;
 use App\Domain\Rewind\RewindFragmentResolver;
@@ -42,6 +43,7 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
         SegmentPolylinesFragmentResolver::class => 'segment/segment-10/polylines',
         SegmentFragmentResolver::class => 'segment/segment-10',
         BestEffortsHistoryFragmentResolver::class => 'best-efforts/Ride/10000',
+        BadgeFragmentResolver::class => 'badge/dreeve',
     ];
 
     public function testEveryFragmentHasAPathAndACacheKeyOfItsOwn(): void

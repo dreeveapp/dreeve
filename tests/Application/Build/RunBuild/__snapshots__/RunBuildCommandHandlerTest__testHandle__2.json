@@ -24,11 +24,5 @@
     {
         "commandName": "App\\Application\\Build\\BuildRecordingDevices\\BuildRecordingDevices",
         "payload": []
-    },
-    {
-        "commandName": "App\\Application\\Build\\BuildBadgeSvg\\BuildBadgeSvg",
-        "payload": {
-            "now": "2023-10-17 16:15:04"
-        }
     }
 ]

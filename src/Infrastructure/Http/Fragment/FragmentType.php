@@ -9,4 +9,5 @@ enum FragmentType: string
     case PAGE = 'page';
     case PARTIAL = 'partial';
     case DATA = 'data';
+    case SVG = 'svg';
 }

@@ -45,7 +45,6 @@ class CaddyfileFileAccessTest extends TestCase
         yield 'top-level image is served, cached immutably' => ['/files/sample.png', 200, 'immutable'];
         yield 'nested image is served (guards wildcard depth)' => ['/files/challenges/nested.png', 200, 'immutable'];
         yield 'extension match is case-insensitive' => ['/files/UPPER.PNG', 200, 'immutable'];
-        yield 'badge svg is served without caching' => ['/files/team-badge.svg', 200, 'no-cache'];
         yield 'activity photo is blocked (gated via /secured-image)' => ['/files/activities/secret.jpg', 404, null];
         yield 'nested activity photo is blocked' => ['/files/activities/2024/secret.jpg', 404, null];
         yield 'non-image file is blocked' => ['/files/secret.txt', 404, null];

@@ -8,6 +8,7 @@ use App\Infrastructure\Cache\Cacheable;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Render\CacheStatus;
 use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\SvgResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,6 +26,7 @@ final readonly class FragmentRenderer
         $response = match ($type) {
             FragmentType::PAGE, FragmentType::PARTIAL => new HtmlResponse($render->getContent() ?? ''),
             FragmentType::DATA => new JsonResponse($render->getContent() ?? '[]', json: true),
+            FragmentType::SVG => new SvgResponse($render->getContent() ?? ''),
         };
 
         $response->headers->add($render->getCacheHeaders());

@@ -12,17 +12,6 @@
 	}
 
 	handle /files/* {
-		# Serve badge SVGs — no cache
-		@badges path /files/*-badge.svg
-		handle @badges {
-			header {
-				Cache-Control "no-cache, no-store, must-revalidate"
-			}
-
-			root * /var/www/storage
-			file_server
-		}
-
 		# Only serve image and SVG files from storage, except the activity photos:
 		# those are only reachable through the IP-gated /secured-image/* route.
 		# Everything else is blocked.

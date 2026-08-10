@@ -88,6 +88,16 @@ final readonly class BestEfforts
         return $this->sportTypesPerPeriod[$period->value][$activityType->value] ?? SportTypes::empty();
     }
 
+    public function getAllSportTypesFor(BestEffortPeriod $period): SportTypes
+    {
+        $sportTypes = SportTypes::empty();
+        foreach ($this->activityTypes as $activityType) {
+            $sportTypes->mergeWith($this->getSportTypesFor($period, $activityType));
+        }
+
+        return $sportTypes;
+    }
+
     public function getActivityTypes(): ActivityTypes
     {
         return $this->activityTypes;
