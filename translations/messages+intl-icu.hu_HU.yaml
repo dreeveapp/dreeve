@@ -58,6 +58,7 @@ Challenges: Kihívások
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Chat törlése'
 'Close modal': Bezárás
+Columns: Columns
 Commutes: Ingázások
 'Commutes only': 'Csak ingázások'
 Compare: Összehasonlítás
@@ -323,6 +324,7 @@ Search: Keresés
 'Search segment...': 'Szegmens keresése...'
 Segments: Szegmensek
 Sep: Szept
+'Show all columns': 'Show all columns'
 'Show information': 'Információ megjelenítése'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Megmutatja, hogyan fog a TSB (Forma) és az A:C arány idővel helyreállni, ha teljes pihenőnapokat tartasz.'
 "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure."

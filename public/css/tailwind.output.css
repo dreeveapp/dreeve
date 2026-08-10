@@ -1159,9 +1159,6 @@
   .mt-10 {
     margin-top: calc(var(--spacing) * 10);
   }
-  .mt-px {
-    margin-top: 1px;
-  }
   .apexcharts-canvas .apexcharts-tooltip {
     background-color: white !important;
     color: var(--color-gray-700) !important;
@@ -5299,6 +5296,14 @@ table.data-table {
     text-decoration-line: underline;
     &:is(:where(.peer):checked ~ *) {
       visibility: visible;
+    }
+  }
+  div.filter-dropdown.filter-dropdown--icon > button[data-dropdown] {
+    padding: calc(var(--spacing) * 2);
+    & svg {
+      margin-inline-start: 0px;
+      width: calc(var(--spacing) * 4);
+      height: calc(var(--spacing) * 4);
     }
   }
   body.admin .modal-like-form {

@@ -58,6 +58,7 @@ Challenges: Utmaningar
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Clear chat'
 'Close modal': 'Close modal'
+Columns: Columns
 Commutes: Pendling
 'Commutes only': 'Endast pendling'
 Compare: Jämför
@@ -323,6 +324,7 @@ Search: Sök
 'Search segment...': 'Sök segment...'
 Segments: Segment
 Sep: Sep
+'Show all columns': 'Show all columns'
 'Show information': 'Visa information'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.'
 "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure."

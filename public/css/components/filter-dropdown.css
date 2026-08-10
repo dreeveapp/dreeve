@@ -48,4 +48,12 @@
             @apply text-primary text-sm underline invisible peer-checked:visible ml-auto;
         }
     }
+
+    div.filter-dropdown.filter-dropdown--icon > button[data-dropdown] {
+        @apply p-2;
+
+        & svg {
+            @apply size-4 ms-0;
+        }
+    }
 }

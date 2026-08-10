@@ -58,6 +58,7 @@ Challenges: Desafios
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Clear chat'
 'Close modal': 'Fechar modal'
+Columns: Columns
 Commutes: 'Viagens Escritório'
 'Commutes only': 'Apenas viagens Escritório'
 Compare: Comparar
@@ -323,6 +324,7 @@ Search: Pesquisar
 'Search segment...': 'Pesquisar segmento...'
 Segments: Segmentos
 Sep: Set
+'Show all columns': 'Show all columns'
 'Show information': 'Mostrar informação'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.'
 "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure."

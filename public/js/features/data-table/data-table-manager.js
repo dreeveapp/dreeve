@@ -1,4 +1,5 @@
 import {ClusterRenderer} from "./cluster-renderer";
+import {ColumnManager} from "./column-manager";
 import {FilterManager} from "./filter-manager";
 import {Sorter} from "./sorter";
 import {debounce} from "../../utils";
@@ -17,6 +18,10 @@ export default function initDataTables(rootNode) {
         const sorter = new Sorter(wrapper.querySelectorAll('thead th[data-dataTable-sort]'));
 
         if (!table || !tbody || !searchInput) return;
+
+        if (settings.toggleableColumns) {
+            new ColumnManager(wrapper, settings.name).init();
+        }
 
         fetch(settings.url, {cache: 'no-store'}).then(async (response) => {
             const dataRows = await response.json();

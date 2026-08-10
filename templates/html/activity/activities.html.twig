@@ -7,7 +7,7 @@
     <div class="grid grid-cols-1">
         <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
             <!--HTML-->
-            <div data-dataTable-settings='{"url":"{{ relativeUrl('api/fragment/data/activity/data-table') }}","name":"activities"}' class="relative">
+            <div data-dataTable-settings='{"url":"{{ relativeUrl('api/fragment/data/activity/data-table') }}","name":"activities","toggleableColumns":true}' class="relative">
                 <form class="flex flex-col gap-y-2 mb-2" autocomplete="off">
                     <div class="flex items-center">
                         <label for="search" class="sr-only">Search</label>
@@ -285,6 +285,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="filter-dropdown filter-dropdown--icon ms-auto">
+                            <button id="dropdownColumnsButton" data-dropdown="dropdownColumns" data-dropdown-placement="bottom-end" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button" title="{{ "Columns"|trans }}">
+                                {{ svg('columns') }}
+                                <span class="sr-only">{{ "Columns"|trans }}</span>
+                            </button>
+                            <div id="dropdownColumns" class="divide-y divide-gray-100">
+                                <ul aria-labelledby="dropdownColumnsButton" data-dataTable-columns></ul>
+                                <div class="p-3">
+                                    <a href="#" class="text-primary text-sm underline" data-dataTable-columns-reset>{{ "Show all columns"|trans }}</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="flex items-center justify-between gap-x-2 text-xs text-gray-700">
                         <div>
@@ -298,7 +310,7 @@
                     <table class="data-table">
                         <thead>
                         <tr>
-                            <th class="narrow" scope="col" data-dataTable-sort="start-date">
+                            <th class="narrow" scope="col" data-dataTable-sort="start-date" data-dataTable-column="start-date">
                                 <div class="flex items-center justify-center" title="{{ "Date"|trans }}">
                                     {{ "Date"|trans }}
                                     {{ svg('sorting-icon') }}
@@ -307,92 +319,92 @@
                             <th scope="col" class="narrow text-left bg-gray-50 lg:sticky lg:left-0">
                                 <div class="w-92">{{ "Title"|trans }}</div>
                             </th>
-                            <th scope="col" data-dataTable-sort="distance">
+                            <th scope="col" data-dataTable-sort="distance" data-dataTable-column="distance">
                                 <div class="flex items-center justify-center" title="{{ "Distance"|trans }}">
                                     {{ "Dist."|trans }}
                                     {{ svg('sorting-icon') }}
                                 </div>
                             </th>
-                            <th scope="col" data-dataTable-sort="elevation">
+                            <th scope="col" data-dataTable-sort="elevation" data-dataTable-column="elevation">
                                 <div class="flex items-center justify-center" title="{{ "Elevation"|trans }}">
                                     {{ "Elev."|trans }}
                                     {{ svg('sorting-icon') }}
                                 </div>
                             </th>
-                            <th scope="col" data-dataTable-sort="moving-time">
-                                <div class="flex items-center justify-center" title="{{ "Time"|trans }}">
+                            <th scope="col" data-dataTable-sort="moving-time" data-dataTable-column="moving-time">
+                                <div class="flex items-center justify-center" title="{{ "Moving time"|trans }}">
                                     {{ "Moving time"|trans }}
                                     {{ svg('sorting-icon') }}
                                 </div>
                             </th>
-                            <th scope="col" data-dataTable-sort="speed">
+                            <th scope="col" data-dataTable-sort="speed" data-dataTable-column="speed">
                                 <div class="flex items-center justify-center" title="{{ "Speed"|trans }}">
                                     {{ "Speed"|trans }}
                                     {{ svg('sorting-icon') }}
                                 </div>
                             </th>
-                            <th scope="col" data-dataTable-sort="heart-rate">
+                            <th scope="col" data-dataTable-sort="heart-rate" data-dataTable-column="heart-rate">
                                 <div class="flex items-center justify-center" title="{{ "Heart rate"|trans }}">
                                     {{ "HR"|trans }}
                                     {{ svg('sorting-icon') }}
                                 </div>
                             </th>
-                            <th scope="col" data-dataTable-sort="calories">
+                            <th scope="col" data-dataTable-sort="calories" data-dataTable-column="calories">
                                 <div class="flex items-center justify-center" title="{{ "Calories burned"|trans }}">
                                     {{ "Cal."|trans }}
                                     {{ svg('sorting-icon') }}
                                 </div>
                             </th>
-                            <th scope="col" data-dataTable-sort="power">
+                            <th scope="col" data-dataTable-sort="power" data-dataTable-column="power">
                                 <div class="flex items-center justify-center" title="{{ "Power"|trans }}">
                                     {{ "Power"|trans }}
                                     {{ svg('sorting-icon') }}
                                 </div>
                             </th>
-                            <th scope="col" data-dataTable-sort="power-5s" colspan="2">
-                                <div class="flex items-center justify-center" title="{{ "Speed"|trans }}">
+                            <th scope="col" data-dataTable-sort="power-5s" data-dataTable-column="power-5s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     {{ "Best"|trans }} 5s
                                     {{ svg('sorting-icon') }}
                                 </div>
                             </th>
-                            <th scope="col" data-dataTable-sort="power-10s" colspan="2">
-                                <div class="flex items-center justify-center" title="{{ "Speed"|trans }}">
+                            <th scope="col" data-dataTable-sort="power-10s" data-dataTable-column="power-10s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     {{ "Best"|trans }} 10s
                                     {{ svg('sorting-icon') }}
                                 </div>
                             </th>
-                            <th scope="col" data-dataTable-sort="power-30s" colspan="2">
-                                <div class="flex items-center justify-center" title="{{ "Speed"|trans }}">
+                            <th scope="col" data-dataTable-sort="power-30s" data-dataTable-column="power-30s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     {{ "Best"|trans }} 30s
                                     {{ svg('sorting-icon') }}
                                 </div>
                             </th>
-                            <th scope="col" data-dataTable-sort="power-60s" colspan="2">
-                                <div class="flex items-center justify-center" title="{{ "Speed"|trans }}">
+                            <th scope="col" data-dataTable-sort="power-60s" data-dataTable-column="power-60s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     {{ "Best"|trans }} 1m
                                     {{ svg('sorting-icon') }}
                                 </div>
                             </th>
-                            <th scope="col" data-dataTable-sort="power-300s" colspan="2">
-                                <div class="flex items-center justify-center" title="{{ "Speed"|trans }}">
+                            <th scope="col" data-dataTable-sort="power-300s" data-dataTable-column="power-300s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     {{ "Best"|trans }} 5m
                                     {{ svg('sorting-icon') }}
                                 </div>
                             </th>
-                            <th scope="col" data-dataTable-sort="power-480s" colspan="2">
-                                <div class="flex items-center justify-center" title="{{ "Speed"|trans }}">
+                            <th scope="col" data-dataTable-sort="power-480s" data-dataTable-column="power-480s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     {{ "Best"|trans }} 8m
                                     {{ svg('sorting-icon') }}
                                 </div>
                             </th>
-                            <th scope="col" data-dataTable-sort="power-1200s" colspan="2">
-                                <div class="flex items-center justify-center" title="{{ "Speed"|trans }}">
+                            <th scope="col" data-dataTable-sort="power-1200s" data-dataTable-column="power-1200s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     {{ "Best"|trans }} 20m
                                     {{ svg('sorting-icon') }}
                                 </div>
                             </th>
-                            <th scope="col" data-dataTable-sort="power-3600s" colspan="2">
-                                <div class="flex items-center justify-center" title="{{ "Speed"|trans }}">
+                            <th scope="col" data-dataTable-sort="power-3600s" data-dataTable-column="power-3600s" colspan="2">
+                                <div class="flex items-center justify-center">
                                     {{ "Best"|trans }} 1h
                                     {{ svg('sorting-icon') }}
                                 </div>

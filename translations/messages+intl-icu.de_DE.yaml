@@ -58,6 +58,7 @@ Challenges: Herausforderungen
 'Clear all filters': 'Alle Filter entfernen'
 'Clear chat': 'Chat löschen'
 'Close modal': 'Modalen Dialog schließen'
+Columns: Columns
 Commutes: Pendeln
 'Commutes only': 'Nur Pendelfahrten'
 Compare: Vergleich
@@ -323,6 +324,7 @@ Search: Suche
 'Search segment...': 'Segment suchen...'
 Segments: Segmente
 Sep: Sep
+'Show all columns': 'Show all columns'
 'Show information': 'Informationen anzeigen'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Hier siehst du, wie sich deine Form (TSB) und dein A:C-Verhältnis entwickeln, wenn du komplette Ruhetage einlegst.'
 "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure."

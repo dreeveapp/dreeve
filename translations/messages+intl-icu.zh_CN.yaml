@@ -58,6 +58,7 @@ Challenges: 挑战
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Clear chat'
 'Close modal': 关闭模态框
+Columns: Columns
 Commutes: 通勤
 'Commutes only': 仅通勤
 Compare: 对比
@@ -323,6 +324,7 @@ Search: 搜索
 'Search segment...': 搜索路段...
 Segments: 路段
 Sep: 九月
+'Show all columns': 'Show all columns'
 'Show information': 显示信息
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.'
 "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure."
