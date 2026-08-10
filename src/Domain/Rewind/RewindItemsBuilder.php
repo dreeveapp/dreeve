@@ -25,6 +25,7 @@ use App\Domain\Rewind\FindStreaks\FindStreaks;
 use App\Domain\Rewind\FindTotalActivityCount\FindTotalActivityCount;
 use App\Domain\Rewind\FindTotalsPerMonth\FindTotalsPerMonth;
 use App\Domain\Settings\SettingsRepository;
+use App\Domain\Theme\Theme;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
@@ -43,6 +44,7 @@ final readonly class RewindItemsBuilder
         private SettingsRepository $settingsRepository,
         private Environment $twig,
         private TranslatorInterface $translator,
+        private Theme $theme,
     ) {
     }
 
@@ -113,6 +115,7 @@ final readonly class RewindItemsBuilder
                     'chart' => Json::encode(MovingTimePerGearChart::create(
                         movingTimePerGear: $this->queryBus->ask(new FindMovingTimePerGear($yearsToQuery, null))->getMovingTimePerGear(),
                         gears: $usedGears,
+                        theme: $this->theme,
                     )->build()),
                 ]),
             ))
@@ -137,6 +140,7 @@ final readonly class RewindItemsBuilder
                         distancePerMonth: $totalsPerMonthResponse->getDistancePerMonth(),
                         unitSystem: $unitSystem,
                         translator: $this->translator,
+                        theme: $this->theme,
                     )->build()),
                 ]),
                 totalMetric: $totalsPerMonthResponse->getTotalDistance()->toUnitSystem($unitSystem)->toInt(),
@@ -150,6 +154,7 @@ final readonly class RewindItemsBuilder
                     'chart' => Json::encode(MovingTimePerMonthChart::create(
                         movingTimePerMonth: $totalsPerMonthResponse->getMovingTimePerMonth(),
                         translator: $this->translator,
+                        theme: $this->theme,
                     )->build()),
                 ]),
                 totalMetric: (int) round($totalsPerMonthResponse->getTotalMovingTime() / 3600),
@@ -164,6 +169,7 @@ final readonly class RewindItemsBuilder
                         elevationPerMonth: $totalsPerMonthResponse->getElevationPerMonth(),
                         unitSystem: $unitSystem,
                         translator: $this->translator,
+                        theme: $this->theme,
                     )->build()),
                 ]),
                 totalMetric: $totalsPerMonthResponse->getTotalElevation()->toUnitSystem($unitSystem)->toInt(),
@@ -176,6 +182,7 @@ final readonly class RewindItemsBuilder
                     'chart' => Json::encode(MovingTimePerSportTypeChart::create(
                         movingTimePerSportType: $findMovingTimePerSportTypeResponse->getMovingTimePerSportType(),
                         translator: $this->translator,
+                        theme: $this->theme,
                     )->build()),
                 ]),
                 totalMetric: (int) round($findMovingTimePerSportTypeResponse->getTotalMovingTime() / 3600),
@@ -223,6 +230,7 @@ final readonly class RewindItemsBuilder
                     'chart' => Json::encode(ActivityCountPerMonthChart::create(
                         activityCountPerMonth: $this->queryBus->ask(new FindActivityCountPerMonth($yearsToQuery))->getActivityCountPerMonth(),
                         translator: $this->translator,
+                        theme: $this->theme,
                     )->build()),
                 ]),
                 totalMetric: $totalActivityCountResponse->getTotalActivityCount(),

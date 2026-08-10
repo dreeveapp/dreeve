@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Activity\BestEffort;
 
 use App\Domain\Activity\ActivityRepository;
+use App\Domain\Theme\Theme;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -23,6 +24,7 @@ final readonly class BestEffortsFragment implements Fragment
         private TranslatorInterface $translator,
         private Clock $clock,
         private Environment $twig,
+        private Theme $theme,
     ) {
     }
 
@@ -58,6 +60,7 @@ final readonly class BestEffortsFragment implements Fragment
                         period: $bestEffortPeriod,
                         bestEfforts: $bestEfforts,
                         translator: $this->translator,
+                        theme: $this->theme,
                     )->build()
                 );
             }

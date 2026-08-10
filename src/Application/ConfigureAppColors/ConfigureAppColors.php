@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Build\ConfigureAppColors;
+namespace App\Application\ConfigureAppColors;
 
 use App\Infrastructure\CQRS\Command\DomainCommand;
 

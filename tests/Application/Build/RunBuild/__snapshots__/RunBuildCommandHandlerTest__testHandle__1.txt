@@ -1,17 +1,15 @@
 Buildingapp...
 
 
-0%[>---------------------------]0/6-Initializing...
+0%[>---------------------------]0/5-Initializing...
 
-16%[====>-----------------------]1/6-Configuringlocale
+20%[=====>----------------------]1/5-Configuringlocale
 
-33%[=========>------------------]2/6-Configuringthemecolors
+40%[===========>----------------]2/5-Buildingdashboard
 
-50%[==============>-------------]3/6-Buildingdashboard
+60%[================>-----------]3/5-Buildinggearstats
 
-66%[==================>---------]4/6-Buildinggearstats
+80%[======================>-----]4/5-Buildinggearmaintenance
 
-83%[=======================>----]5/6-Buildinggearmaintenance
-
-100%[============================]6/6-Buildingrecordingdevices
+100%[============================]5/5-Buildingrecordingdevices
 

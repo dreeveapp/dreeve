@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Domain\Gear;
 
 use App\Domain\Gear\FindGearStatsPerDay\FindGearStatsPerDayResponse;
+use App\Domain\Theme\Theme;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Serialization\Escape;
-use App\Infrastructure\Theme\Theme;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -21,6 +21,7 @@ final readonly class DistanceOverTimePerGearChart
         private UnitSystem $unitSystem,
         private TranslatorInterface $translator,
         private SerializableDateTime $now,
+        private Theme $theme,
     ) {
     }
 
@@ -31,6 +32,7 @@ final readonly class DistanceOverTimePerGearChart
         UnitSystem $unitSystem,
         TranslatorInterface $translator,
         SerializableDateTime $now,
+        Theme $theme,
     ): self {
         return new self(
             gears: $gears,
@@ -38,7 +40,8 @@ final readonly class DistanceOverTimePerGearChart
             startDate: $startDate,
             unitSystem: $unitSystem,
             translator: $translator,
-            now: $now
+            now: $now,
+            theme: $theme,
         );
     }
 
@@ -82,7 +85,7 @@ final readonly class DistanceOverTimePerGearChart
                 'smooth' => true,
                 'showSymbol' => false,
                 'itemStyle' => [
-                    'color' => Theme::getColorForGear($gear->getId()),
+                    'color' => $this->theme->getColorForGear($gear->getId()),
                 ],
                 'data' => $distanceOverTimePerGear[(string) $gear->getId()],
             ];

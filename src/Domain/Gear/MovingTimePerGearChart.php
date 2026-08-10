@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear;
 
+use App\Domain\Theme\Theme;
 use App\Infrastructure\Serialization\Escape;
-use App\Infrastructure\Theme\Theme;
 
 final readonly class MovingTimePerGearChart
 {
@@ -13,6 +13,7 @@ final readonly class MovingTimePerGearChart
         /** @var array<string, int> */
         private array $movingTimePerGear,
         private Gears $gears,
+        private Theme $theme,
     ) {
     }
 
@@ -22,10 +23,12 @@ final readonly class MovingTimePerGearChart
     public static function create(
         array $movingTimePerGear,
         Gears $gears,
+        Theme $theme,
     ): self {
         return new self(
             movingTimePerGear: $movingTimePerGear,
             gears: $gears,
+            theme: $theme,
         );
     }
 
@@ -43,7 +46,7 @@ final readonly class MovingTimePerGearChart
                 'value' => round($time / 3600),
                 'name' => Escape::forJsonEncode($gear->getName()),
                 'itemStyle' => [
-                    'color' => Theme::getColorForGear($gear->getId()),
+                    'color' => $this->theme->getColorForGear($gear->getId()),
                 ],
             ];
         }

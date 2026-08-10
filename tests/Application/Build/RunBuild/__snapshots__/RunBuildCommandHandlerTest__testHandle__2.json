@@ -4,10 +4,6 @@
         "payload": []
     },
     {
-        "commandName": "App\\Application\\Build\\ConfigureAppColors\\ConfigureAppColors",
-        "payload": []
-    },
-    {
         "commandName": "App\\Application\\Build\\BuildDashboardHtml\\BuildDashboardHtml",
         "payload": []
     },

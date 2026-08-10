@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Activity\BestEffort;
 
 use App\Domain\Activity\ActivityType;
+use App\Domain\Theme\Theme;
 use App\Infrastructure\Measurement\Length\ConvertableToMeter;
 use App\Infrastructure\Measurement\Unit;
-use App\Infrastructure\Theme\Theme;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class BestEffortChart
@@ -17,6 +17,7 @@ final readonly class BestEffortChart
         private BestEffortPeriod $period,
         private BestEfforts $bestEfforts,
         private TranslatorInterface $translator,
+        private Theme $theme,
     ) {
     }
 
@@ -25,12 +26,14 @@ final readonly class BestEffortChart
         BestEffortPeriod $period,
         BestEfforts $bestEfforts,
         TranslatorInterface $translator,
+        Theme $theme,
     ): self {
         return new self(
             activityType: $activityType,
             period: $period,
             bestEfforts: $bestEfforts,
-            translator: $translator
+            translator: $translator,
+            theme: $theme,
         );
     }
 
@@ -59,7 +62,7 @@ final readonly class BestEffortChart
                     'show' => false,
                 ],
                 'itemStyle' => [
-                    'color' => Theme::getColorForSportType($sportType),
+                    'color' => $this->theme->getColorForSportType($sportType),
                 ],
                 'data' => array_filter(array_map(
                     fn (ConvertableToMeter $distance): ?int => $this->bestEfforts->for(

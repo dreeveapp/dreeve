@@ -6,6 +6,16 @@
         "reactToActivityRouteWasUpdated",
         "reactToActivityWasDeleted"
     ],
+    "App\\Domain\\Theme\\RecalculateChartColorsListener": [
+        "reactToActivityWasAdded",
+        "reactToActivityWasUpdated",
+        "reactToActivityWasDeleted",
+        "reactToGearWasAdded",
+        "reactToGearWasUpdated",
+        "reactToSettingsWereUpdated",
+        "recalculateChartColors",
+        "recalculateChartColors"
+    ],
     "App\\Domain\\Challenge\\ChallengeInvalidateCacheTagsListener": [
         "reactToChallengeWasImported"
     ],

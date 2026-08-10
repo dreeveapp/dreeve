@@ -17,6 +17,7 @@ use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearType;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Domain\Settings\SettingsRepository;
+use App\Domain\Theme\Theme;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
@@ -39,6 +40,7 @@ final readonly class BuildGearStatsHtmlCommandHandler implements CommandHandler
         private Environment $twig,
         private FilesystemOperator $buildHtmlStorage,
         private TranslatorInterface $translator,
+        private Theme $theme,
     ) {
     }
 
@@ -75,6 +77,7 @@ final readonly class BuildGearStatsHtmlCommandHandler implements CommandHandler
                         activityCollection: $activities,
                         unitSystem: $unitSystem,
                         months: $allMonths,
+                        theme: $this->theme,
                     )->build()
                 ),
                 'distanceOverTimePerGear' => Json::encode(
@@ -85,6 +88,7 @@ final readonly class BuildGearStatsHtmlCommandHandler implements CommandHandler
                         unitSystem: $unitSystem,
                         translator: $this->translator,
                         now: $now,
+                        theme: $this->theme,
                     )->build()
                 ),
             ]),

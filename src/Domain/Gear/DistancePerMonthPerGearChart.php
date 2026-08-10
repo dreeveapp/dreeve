@@ -7,9 +7,9 @@ namespace App\Domain\Gear;
 use App\Domain\Activity\Activities;
 use App\Domain\Calendar\Month;
 use App\Domain\Calendar\Months;
+use App\Domain\Theme\Theme;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Serialization\Escape;
-use App\Infrastructure\Theme\Theme;
 
 final readonly class DistancePerMonthPerGearChart
 {
@@ -18,6 +18,7 @@ final readonly class DistancePerMonthPerGearChart
         private Activities $activities,
         private UnitSystem $unitSystem,
         private Months $months,
+        private Theme $theme,
     ) {
     }
 
@@ -26,12 +27,14 @@ final readonly class DistancePerMonthPerGearChart
         Activities $activityCollection,
         UnitSystem $unitSystem,
         Months $months,
+        Theme $theme,
     ): self {
         return new self(
             gears: $gearCollection,
             activities: $activityCollection,
             unitSystem: $unitSystem,
-            months: $months
+            months: $months,
+            theme: $theme,
         );
     }
 
@@ -81,7 +84,7 @@ final readonly class DistancePerMonthPerGearChart
                 'type' => 'bar',
                 'barGap' => 0,
                 'itemStyle' => [
-                    'color' => Theme::getColorForGear($gear->getId()),
+                    'color' => $this->theme->getColorForGear($gear->getId()),
                 ],
                 'emphasis' => [
                     'focus' => 'series',

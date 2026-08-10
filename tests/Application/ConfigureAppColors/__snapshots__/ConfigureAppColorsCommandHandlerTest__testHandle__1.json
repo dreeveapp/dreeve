@@ -4,10 +4,6 @@
         "VirtualRide": "#91cc75",
         "Run": "#fac858"
     },
-    "activityType": {
-        "Ride": "#5470c6",
-        "Run": "#91cc75"
-    },
     "gear": {
         "gear-b12659861": "#5470c6",
         "gear-b12659862": "#91cc75",

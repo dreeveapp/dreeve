@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Rewind;
 
 use App\Domain\Activity\SportType\SportType;
-use App\Infrastructure\Theme\Theme;
+use App\Domain\Theme\Theme;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class MovingTimePerSportTypeChart
@@ -14,6 +14,7 @@ final readonly class MovingTimePerSportTypeChart
         /** @var array<string, int> */
         private array $movingTimePerSportType,
         private TranslatorInterface $translator,
+        private Theme $theme,
     ) {
     }
 
@@ -23,10 +24,12 @@ final readonly class MovingTimePerSportTypeChart
     public static function create(
         array $movingTimePerSportType,
         TranslatorInterface $translator,
+        Theme $theme,
     ): self {
         return new self(
             movingTimePerSportType: $movingTimePerSportType,
             translator: $translator,
+            theme: $theme,
         );
     }
 
@@ -42,7 +45,7 @@ final readonly class MovingTimePerSportTypeChart
                 'value' => round($time / 3600),
                 'name' => $sportTypeEnum->trans($this->translator),
                 'itemStyle' => [
-                    'color' => Theme::getColorForSportType($sportTypeEnum),
+                    'color' => $this->theme->getColorForSportType($sportTypeEnum),
                 ],
             ];
         }

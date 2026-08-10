@@ -6,7 +6,7 @@ namespace App\Domain\Rewind;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Calendar\Month;
-use App\Infrastructure\Theme\Theme;
+use App\Domain\Theme\Theme;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -16,6 +16,7 @@ final readonly class ActivityCountPerMonthChart
         /** @var array<int, array{0: int, 1: SportType, 2: int}> */
         private array $activityCountPerMonth,
         private TranslatorInterface $translator,
+        private Theme $theme,
     ) {
     }
 
@@ -25,10 +26,12 @@ final readonly class ActivityCountPerMonthChart
     public static function create(
         array $activityCountPerMonth,
         TranslatorInterface $translator,
+        Theme $theme,
     ): self {
         return new self(
             activityCountPerMonth: $activityCountPerMonth,
-            translator: $translator
+            translator: $translator,
+            theme: $theme,
         );
     }
 
@@ -60,7 +63,7 @@ final readonly class ActivityCountPerMonthChart
                     'name' => $monthlyTotals[$month] ?? 0,
                     'value' => $monthlyActivityCounts[$key][$month] ?? 0,
                     'itemStyle' => [
-                        'color' => Theme::getColorForSportType($sportType),
+                        'color' => $this->theme->getColorForSportType($sportType),
                     ],
                 ];
             }

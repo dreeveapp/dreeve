@@ -6,8 +6,8 @@ namespace App\Domain\Activity\Stream\CombinedStream;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Athlete\HeartRateZone\HeartRateZones;
+use App\Domain\Theme\Theme;
 use App\Infrastructure\Measurement\UnitSystem;
-use App\Infrastructure\Theme\Theme;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class CombinedStreamProfileCharts

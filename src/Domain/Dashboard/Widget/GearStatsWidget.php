@@ -12,6 +12,7 @@ use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Gears;
 use App\Domain\Gear\MovingTimePerGearChart;
+use App\Domain\Theme\Theme;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
@@ -29,6 +30,7 @@ final readonly class GearStatsWidget implements Widget
         private QueryBus $queryBus,
         private Clock $clock,
         private Environment $twig,
+        private Theme $theme,
     ) {
     }
 
@@ -94,6 +96,7 @@ final readonly class GearStatsWidget implements Widget
                 $chartsPerActivityType[$activityType->value] = Json::encode(MovingTimePerGearChart::create(
                     movingTimePerGear: $movingTimePerGear,
                     gears: $gearsPerActivityType[$activityType->value],
+                    theme: $this->theme,
                 )->build());
             }
         }
@@ -102,6 +105,7 @@ final readonly class GearStatsWidget implements Widget
             'chartAllGears' => Json::encode(MovingTimePerGearChart::create(
                 movingTimePerGear: $this->queryBus->ask(new FindMovingTimePerGear($allYears, null))->getMovingTimePerGear(),
                 gears: $allUsedGears,
+                theme: $this->theme,
             )->build()),
             'chartsPerActivityType' => $chartsPerActivityType,
         ]);

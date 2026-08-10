@@ -6,9 +6,9 @@ namespace App\Domain\Rewind;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Calendar\Month;
+use App\Domain\Theme\Theme;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\UnitSystem;
-use App\Infrastructure\Theme\Theme;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -19,6 +19,7 @@ final readonly class ElevationPerMonthChart
         private array $elevationPerMonth,
         private UnitSystem $unitSystem,
         private TranslatorInterface $translator,
+        private Theme $theme,
     ) {
     }
 
@@ -29,11 +30,13 @@ final readonly class ElevationPerMonthChart
         array $elevationPerMonth,
         UnitSystem $unitSystem,
         TranslatorInterface $translator,
+        Theme $theme,
     ): self {
         return new self(
             elevationPerMonth: $elevationPerMonth,
             unitSystem: $unitSystem,
-            translator: $translator
+            translator: $translator,
+            theme: $theme,
         );
     }
 
@@ -68,7 +71,7 @@ final readonly class ElevationPerMonthChart
                     'name' => $monthlyTotals[$month] ?? 0,
                     'value' => $monthlyElevations[$key][$month] ?? 0,
                     'itemStyle' => [
-                        'color' => Theme::getColorForSportType($sportType),
+                        'color' => $this->theme->getColorForSportType($sportType),
                     ],
                 ];
             }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Application\Build\ConfigureAppColors;
+namespace App\Tests\Application\ConfigureAppColors;
 
-use App\Application\Build\ConfigureAppColors\ConfigureAppColors;
+use App\Application\ConfigureAppColors\ConfigureAppColors;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValueStore;
