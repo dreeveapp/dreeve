@@ -1,0 +1,425 @@
+<html><body>
+<div class="flex items-center mb-4">
+        <h3 class="text-lg font-semibold">
+            Daytime stats
+        </h3>
+        <button type="button" data-fullscreen-trigger class="fullscreen-enabled:hidden ml-auto self-start cursor-pointer">
+            <svg class="size-4 text-gray-400 hover:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H4m0 0v4m0-4 5 5m7-5h4m0 0v4m0-4-5 5M8 20H4m0 0v-4m0 4 5-5m7 5h4m0 0v-4m0 4-5-5"></path></svg>
+            <span class="sr-only">Enter fullscreen mode</span>
+        </button>
+    </div>
+            <div class="tabs tabs--default">
+            <ul id="dayTimeStatsActivityTypeTab--dashboardWidget-dayTimeStats" data-tabs="#dayTimeStatsActivityTypeTabContent--dashboardWidget-dayTimeStats" role="tablist">
+                <li role="presentation">
+                    <a href="#" data-tabs-target="#dayTimeStatsAll--dashboardWidget-dayTimeStats" role="tab" aria-controls="all">
+                        All
+                    </a>
+                </li>
+                                    <li role="presentation">
+                        <a href="#" data-tabs-target="#dayTimeStatsRide--dashboardWidget-dayTimeStats" role="tab" aria-controls="dayTimeStatsRide--dashboardWidget-dayTimeStats">
+                            Cycling
+                        </a>
+                    </li>
+                                    <li role="presentation">
+                        <a href="#" data-tabs-target="#dayTimeStatsRun--dashboardWidget-dayTimeStats" role="tab" aria-controls="dayTimeStatsRun--dashboardWidget-dayTimeStats">
+                            Running
+                        </a>
+                    </li>
+                            </ul>
+        </div>
+        <div class="grow flex flex-col" id="dayTimeStatsActivityTypeTabContent--dashboardWidget-dayTimeStats">
+        <div class="grow flex flex-col" id="dayTimeStatsAll--dashboardWidget-dayTimeStats" role="tabpanel" aria-labelledby="dayTimeStatsAll--dashboardWidget-dayTimeStats-tab">
+            <div class="h-80 fullscreen-enabled:grow fullscreen-enabled:h-full" data-echarts-options='{"backgroundColor":null,"animation":true,"grid":{"left":"3%","right":"4%","bottom":"3%","containLabel":true},"legend":{"show":false},"tooltip":{"trigger":"item","formatter":"{d}%"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{daytime|{b}}\n{sub|{d}%}","lineHeight":15,"rich":{"daytime":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":14.35,"name":"Morning"},{"value":75.63,"name":"Afternoon"},{"value":10,"name":"Evening"},{"value":0.02,"name":"Night"}]}]}'></div>
+            <div class="relative overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th scope="col" class="narrow sticky left-0 bg-gray-50">
+
+                        </th>
+                        <th scope="col" class="narrow">
+                            # workouts
+                        </th>
+                        <th scope="col">
+                            Dist.
+                        </th>
+                        <th scope="col">
+                            Elev.
+                        </th>
+                        <th scope="col">
+                            Moving time
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                                            <tr class="group/row">
+                            <th scope="row" class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                <div class="flex gap-x-2 items-center">
+                                    <svg class="size-4 text-orange-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v4M4.93 6.93l2.83 2.83M2 14h4M22 14h-4M19.07 6.93l-2.83 2.83M12 10a4 4 0 014 4H8a4 4 0 014-4zM2 18h20M5 22h14"></path></svg>
+                                    <div>
+                                        <div>Morning</div>
+                                        <div class="font-normal text-xs text-gray-500">6h
+                                            - 12h
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <td class="narrow">
+                                3
+                            </td>
+                            <td class="truncate">
+                                                                    46<span class="text-xxs ml-px">km avg</span> /
+                                    137<span class="text-xxs ml-px">km total</span>
+                                                            </td>
+                            <td class="truncate">
+                                45<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                            </td>
+                            <td class="truncate" title="1.6h">
+                                1h 35m
+                            </td>
+                        </tr>
+                                            <tr class="group/row">
+                            <th scope="row" class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                <div class="flex gap-x-2 items-center">
+                                    <svg class="size-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+                                    <div>
+                                        <div>Afternoon</div>
+                                        <div class="font-normal text-xs text-gray-500">12h
+                                            - 17h
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <td class="narrow">
+                                8
+                            </td>
+                            <td class="truncate">
+                                                                    19<span class="text-xxs ml-px">km avg</span> /
+                                    151<span class="text-xxs ml-px">km total</span>
+                                                            </td>
+                            <td class="truncate">
+                                2&Acirc;&nbsp;224<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                            </td>
+                            <td class="truncate" title="8.4h">
+                                8h 24m
+                            </td>
+                        </tr>
+                                            <tr class="group/row">
+                            <th scope="row" class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                <div class="flex gap-x-2 items-center">
+                                    <svg class="size-4 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10V2M8 6l4-4 4 4M2 18h20M5 22h14M4.93 13.07l2.83-2.83M19.07 13.07l-2.83-2.83M12 14a4 4 0 014 4H8a4 4 0 014-4z"></path></svg>
+                                    <div>
+                                        <div>Evening</div>
+                                        <div class="font-normal text-xs text-gray-500">17h
+                                            - 23h
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <td class="narrow">
+                                4
+                            </td>
+                            <td class="truncate">
+                                                                    6<span class="text-xxs ml-px">km avg</span> /
+                                    24<span class="text-xxs ml-px">km total</span>
+                                                            </td>
+                            <td class="truncate">
+                                36<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                            </td>
+                            <td class="truncate" title="1.1h">
+                                1h 6m
+                            </td>
+                        </tr>
+                                            <tr class="group/row">
+                            <th scope="row" class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                <div class="flex gap-x-2 items-center">
+                                    <svg class="size-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                                    <div>
+                                        <div>Night</div>
+                                        <div class="font-normal text-xs text-gray-500">23h
+                                            - 6h
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <td class="narrow">
+                                1
+                            </td>
+                            <td class="truncate">
+                                                                    10<span class="text-xxs ml-px">km avg</span> /
+                                    10<span class="text-xxs ml-px">km total</span>
+                                                            </td>
+                            <td class="truncate">
+                                0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                            </td>
+                            <td class="truncate" title="0.0h">
+                                0m
+                            </td>
+                        </tr>
+                                        </tbody>
+                </table>
+            </div>
+        </div>
+                    <div class="grow flex flex-col" id="dayTimeStatsRide--dashboardWidget-dayTimeStats" role="tabpanel" aria-labelledby="dayTimeStatsRide--dashboardWidget-dayTimeStats-tab">
+                <div class="h-80 fullscreen-enabled:grow fullscreen-enabled:h-full" data-echarts-options='{"backgroundColor":null,"animation":true,"grid":{"left":"3%","right":"4%","bottom":"3%","containLabel":true},"legend":{"show":false},"tooltip":{"trigger":"item","formatter":"{d}%"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{daytime|{b}}\n{sub|{d}%}","lineHeight":15,"rich":{"daytime":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":17.7,"name":"Morning"},{"value":69.94,"name":"Afternoon"},{"value":12.33,"name":"Evening"},{"value":0.03,"name":"Night"}]}]}'></div>
+                <div class="relative overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="narrow sticky left-0 bg-gray-50">
+
+                            </th>
+                            <th scope="col" class="narrow">
+                                # workouts
+                            </th>
+                            <th scope="col">
+                                Dist.
+                            </th>
+                            <th scope="col">
+                                Elev.
+                            </th>
+                            <th scope="col">
+                                Moving time
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                    <div class="flex gap-x-2 items-center">
+                                        <svg class="size-4 text-orange-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v4M4.93 6.93l2.83 2.83M2 14h4M22 14h-4M19.07 6.93l-2.83 2.83M12 10a4 4 0 014 4H8a4 4 0 014-4zM2 18h20M5 22h14"></path></svg>
+                                        <div>
+                                            <div>Morning</div>
+                                            <div class="font-normal text-xs text-gray-500">6h
+                                                - 12h
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="narrow">
+                                    3
+                                </td>
+                                <td class="truncate">
+                                                                            46<span class="text-xxs ml-px">km avg</span> /
+                                        137<span class="text-xxs ml-px">km total</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    45<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    1h 35m
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                    <div class="flex gap-x-2 items-center">
+                                        <svg class="size-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+                                        <div>
+                                            <div>Afternoon</div>
+                                            <div class="font-normal text-xs text-gray-500">12h
+                                                - 17h
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="narrow">
+                                    6
+                                </td>
+                                <td class="truncate">
+                                                                            11<span class="text-xxs ml-px">km avg</span> /
+                                        67<span class="text-xxs ml-px">km total</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    1&Acirc;&nbsp;668<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    6h 18m
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                    <div class="flex gap-x-2 items-center">
+                                        <svg class="size-4 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10V2M8 6l4-4 4 4M2 18h20M5 22h14M4.93 13.07l2.83-2.83M19.07 13.07l-2.83-2.83M12 14a4 4 0 014 4H8a4 4 0 014-4z"></path></svg>
+                                        <div>
+                                            <div>Evening</div>
+                                            <div class="font-normal text-xs text-gray-500">17h
+                                                - 23h
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="narrow">
+                                    4
+                                </td>
+                                <td class="truncate">
+                                                                            6<span class="text-xxs ml-px">km avg</span> /
+                                        24<span class="text-xxs ml-px">km total</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    36<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    1h 6m
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                    <div class="flex gap-x-2 items-center">
+                                        <svg class="size-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                                        <div>
+                                            <div>Night</div>
+                                            <div class="font-normal text-xs text-gray-500">23h
+                                                - 6h
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="narrow">
+                                    1
+                                </td>
+                                <td class="truncate">
+                                                                            10<span class="text-xxs ml-px">km avg</span> /
+                                        10<span class="text-xxs ml-px">km total</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    0m
+                                </td>
+                            </tr>
+                                                </tbody>
+                    </table>
+                </div>
+            </div>
+                    <div class="grow flex flex-col" id="dayTimeStatsRun--dashboardWidget-dayTimeStats" role="tabpanel" aria-labelledby="dayTimeStatsRun--dashboardWidget-dayTimeStats-tab">
+                <div class="h-80 fullscreen-enabled:grow fullscreen-enabled:h-full" data-echarts-options='{"backgroundColor":null,"animation":true,"grid":{"left":"3%","right":"4%","bottom":"3%","containLabel":true},"legend":{"show":false},"tooltip":{"trigger":"item","formatter":"{d}%"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{daytime|{b}}\n{sub|{d}%}","lineHeight":15,"rich":{"daytime":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":0,"name":"Morning"},{"value":100,"name":"Afternoon"},{"value":0,"name":"Evening"},{"value":0,"name":"Night"}]}]}'></div>
+                <div class="relative overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="narrow sticky left-0 bg-gray-50">
+
+                            </th>
+                            <th scope="col" class="narrow">
+                                # workouts
+                            </th>
+                            <th scope="col">
+                                Dist.
+                            </th>
+                            <th scope="col">
+                                Elev.
+                            </th>
+                            <th scope="col">
+                                Moving time
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                    <div class="flex gap-x-2 items-center">
+                                        <svg class="size-4 text-orange-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v4M4.93 6.93l2.83 2.83M2 14h4M22 14h-4M19.07 6.93l-2.83 2.83M12 10a4 4 0 014 4H8a4 4 0 014-4zM2 18h20M5 22h14"></path></svg>
+                                        <div>
+                                            <div>Morning</div>
+                                            <div class="font-normal text-xs text-gray-500">6h
+                                                - 12h
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="narrow">
+                                    0
+                                </td>
+                                <td class="truncate">
+                                                                            0<span class="text-xxs ml-px">km</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                    <div class="flex gap-x-2 items-center">
+                                        <svg class="size-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+                                        <div>
+                                            <div>Afternoon</div>
+                                            <div class="font-normal text-xs text-gray-500">12h
+                                                - 17h
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="narrow">
+                                    2
+                                </td>
+                                <td class="truncate">
+                                                                            42<span class="text-xxs ml-px">km avg</span> /
+                                        84<span class="text-xxs ml-px">km total</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    556<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    2h 6m
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                    <div class="flex gap-x-2 items-center">
+                                        <svg class="size-4 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10V2M8 6l4-4 4 4M2 18h20M5 22h14M4.93 13.07l2.83-2.83M19.07 13.07l-2.83-2.83M12 14a4 4 0 014 4H8a4 4 0 014-4z"></path></svg>
+                                        <div>
+                                            <div>Evening</div>
+                                            <div class="font-normal text-xs text-gray-500">17h
+                                                - 23h
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="narrow">
+                                    0
+                                </td>
+                                <td class="truncate">
+                                                                            0<span class="text-xxs ml-px">km</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                    <div class="flex gap-x-2 items-center">
+                                        <svg class="size-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                                        <div>
+                                            <div>Night</div>
+                                            <div class="font-normal text-xs text-gray-500">23h
+                                                - 6h
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <td class="narrow">
+                                    0
+                                </td>
+                                <td class="truncate">
+                                                                            0<span class="text-xxs ml-px">km</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    
+                                </td>
+                            </tr>
+                                                </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+</body></html>

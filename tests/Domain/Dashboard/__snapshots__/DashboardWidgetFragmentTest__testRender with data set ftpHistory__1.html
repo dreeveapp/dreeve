@@ -1,0 +1,27 @@
+<html><body>
+<h3 class="mb-4 text-lg font-semibold">
+        FTP history
+    </h3>
+            <div class="tabs tabs--default">
+            <ul id="ftpHistoryActivityTypeTab--dashboardWidget-ftpHistory" data-tabs="#ftpHistoryActivityTypeTabContent--dashboardWidget-ftpHistory" role="tablist">
+                                    <li role="presentation">
+                        <a href="#" data-tabs-target="#ftpHistoryRide--dashboardWidget-ftpHistory" role="tab" aria-controls="ftpHistoryRide--dashboardWidget-ftpHistory">
+                            Cycling
+                        </a>
+                    </li>
+                                    <li role="presentation">
+                        <a href="#" data-tabs-target="#ftpHistoryRun--dashboardWidget-ftpHistory" role="tab" aria-controls="ftpHistoryRun--dashboardWidget-ftpHistory">
+                            Running
+                        </a>
+                    </li>
+                            </ul>
+        </div>
+        <div class="grow flex flex-col" id="ftpHistoryActivityTypeTabContent--dashboardWidget-ftpHistory">
+                    <div class="grow flex flex-col" id="ftpHistoryRide--dashboardWidget-ftpHistory" role="tabpanel" aria-labelledby="ftpHistoryRide--dashboardWidget-ftpHistory-tab">
+                <div class="grow h-full min-h-64" data-echarts-options='{"animation":true,"backgroundColor":null,"tooltip":{"trigger":"axis","formatter":"callback:formatDateOnlyTooltip"},"grid":{"top":"2%","left":"3%","right":"4%","bottom":"50px","containLabel":true},"toolbox":{"show":true,"feature":{"dataZoom":{"show":true,"yAxisIndex":"none"},"restore":{"show":true}}},"dataZoom":[{"type":"slider","startValue":"2023-01-01","endValue":"2023-10-17","brushSelect":false,"zoomLock":false}],"xAxis":[{"type":"time","boundaryGap":false,"axisTick":{"show":false},"axisLabel":{"formatter":{"year":"{yyyy}","month":"{MMM}","day":"","hour":"{HH}:{mm}","minute":"{HH}:{mm}","second":"{HH}:{mm}:{ss}","millisecond":"{hh}:{mm}:{ss} {SSS}","none":"{yyyy}-{MM}-{dd}"}},"splitLine":{"show":true,"lineStyle":{"color":"#E0E6F1"}}}],"yAxis":[{"type":"value","splitLine":{"show":false},"axisLabel":{"formatter":"{value} w"},"min":188},{"type":"value","splitLine":{"show":false},"axisLabel":{"formatter":"{value} w\/kg"},"min":1.9}],"series":[{"name":"FTP watts","color":["#E34902"],"type":"line","smooth":false,"yAxisIndex":0,"label":{"show":false},"lineStyle":{"width":1},"symbolSize":6,"showSymbol":true,"data":[["2023-01-01","198"],["2023-03-22","220"],["2023-03-29","238"],["2023-04-01","250"],["2023-10-17","250"]]},{"name":"FTP w\/kg","type":"line","smooth":false,"color":["#3AA272"],"yAxisIndex":1,"label":{"show":false},"lineStyle":{"width":1},"symbolSize":6,"showSymbol":true,"data":[["2023-01-01",2.9],["2023-03-22",3.2],["2023-03-29",3.5],["2023-04-01",3.7],["2023-10-17",3.7]]}]}'></div>
+            </div>
+                    <div class="grow flex flex-col" id="ftpHistoryRun--dashboardWidget-ftpHistory" role="tabpanel" aria-labelledby="ftpHistoryRun--dashboardWidget-ftpHistory-tab">
+                <div class="grow h-full min-h-64" data-echarts-options='{"animation":true,"backgroundColor":null,"tooltip":{"trigger":"axis","formatter":"callback:formatDateOnlyTooltip"},"grid":{"top":"2%","left":"3%","right":"4%","bottom":"50px","containLabel":true},"toolbox":{"show":true,"feature":{"dataZoom":{"show":true,"yAxisIndex":"none"},"restore":{"show":true}}},"dataZoom":[{"type":"slider","startValue":"2023-01-01","endValue":"2023-10-17","brushSelect":false,"zoomLock":false}],"xAxis":[{"type":"time","boundaryGap":false,"axisTick":{"show":false},"axisLabel":{"formatter":{"year":"{yyyy}","month":"{MMM}","day":"","hour":"{HH}:{mm}","minute":"{HH}:{mm}","second":"{HH}:{mm}:{ss}","millisecond":"{hh}:{mm}:{ss} {SSS}","none":"{yyyy}-{MM}-{dd}"}},"splitLine":{"show":true,"lineStyle":{"color":"#E0E6F1"}}}],"yAxis":[{"type":"value","splitLine":{"show":false},"axisLabel":{"formatter":"{value} w"},"min":90},{"type":"value","splitLine":{"show":false},"axisLabel":{"formatter":"{value} w\/kg"},"min":0.5}],"series":[{"name":"FTP watts","color":["#E34902"],"type":"line","smooth":false,"yAxisIndex":0,"label":{"show":false},"lineStyle":{"width":1},"symbolSize":6,"showSymbol":true,"data":[["2023-01-01","100"],["2023-03-22","110"],["2023-03-29","120"],["2023-04-01","130"],["2023-10-17","130"]]},{"name":"FTP w\/kg","type":"line","smooth":false,"color":["#3AA272"],"yAxisIndex":1,"label":{"show":false},"lineStyle":{"width":1},"symbolSize":6,"showSymbol":true,"data":[["2023-01-01",1.5],["2023-03-22",1.6],["2023-03-29",1.8],["2023-04-01",1.9],["2023-10-17",1.9]]}]}'></div>
+            </div>
+            </div>
+</body></html>

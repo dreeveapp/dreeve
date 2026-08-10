@@ -1,0 +1,46 @@
+<html><body>
+<div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold">
+            Total hours spent per gear
+        </h3>
+        <div class="flex">
+            <a href="/gear" data-router-content-url="/api/fragment/page/gear" class="shrink-0 inline-flex items-center p-2 text-sm font-medium rounded-lg text-blue-600 hover:bg-gray-100">
+                View details
+            </a>
+            <button type="button" data-fullscreen-trigger class="-mt-0.5 cursor-pointer">
+                <svg class="size-4 text-gray-400 hover:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H4m0 0v4m0-4 5 5m7-5h4m0 0v4m0-4-5 5M8 20H4m0 0v-4m0 4 5-5m7 5h4m0 0v-4m0 4-5-5"></path></svg>
+                <span class="sr-only">Enter fullscreen mode</span>
+            </button>
+        </div>
+    </div>
+            <div class="tabs tabs--default">
+            <ul id="gearStatsActivityTypeTab--dashboardWidget-gearStats" data-tabs="#gearStatsActivityTypeTabContent--dashboardWidget-gearStats" role="tablist">
+                <li role="presentation">
+                    <a href="#" data-tabs-target="#gearStatsAll--dashboardWidget-gearStats" role="tab" aria-controls="all">
+                        All
+                    </a>
+                </li>
+                                    <li role="presentation">
+                        <a href="#" data-tabs-target="#gearStatsRide--dashboardWidget-gearStats" role="tab" aria-controls="gearStatsRide--dashboardWidget-gearStats">
+                            Cycling
+                        </a>
+                    </li>
+                                    <li role="presentation">
+                        <a href="#" data-tabs-target="#gearStatsRun--dashboardWidget-gearStats" role="tab" aria-controls="gearStatsRun--dashboardWidget-gearStats">
+                            Running
+                        </a>
+                    </li>
+                            </ul>
+        </div>
+        <div id="gearStatsActivityTypeTabContent--dashboardWidget-gearStats" class="flex flex-col grow">
+        <div class="grow" id="gearStatsAll--dashboardWidget-gearStats" role="tabpanel" aria-labelledby="gearStatsAll--dashboardWidget-gearStats-tab">
+            <div class="h-full min-h-64" data-echarts-options='{"backgroundColor":null,"animation":false,"grid":{"left":"2px","right":"0%","bottom":"0%","containLabel":true},"center":["50%","50%"],"legend":{"show":false},"tooltip":{"trigger":"item","formatter":"{b}: {c}h"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{gear|{b}}\n{sub|{c}h}","lineHeight":15,"rich":{"gear":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":1,"name":"Zwift One \u2620\ufe0f","itemStyle":{"color":"#ea7ccc"}},{"value":7,"name":"Retro Race Bike","itemStyle":{"color":"#5470c6"}},{"value":1,"name":"Zwift hub","itemStyle":{"color":"#91cc75"}}]}]}'></div>
+        </div>
+                    <div class="grow" id="gearStatsRide--dashboardWidget-gearStats" role="tabpanel" aria-labelledby="gearStatsRide--dashboardWidget-gearStats-tab">
+                <div class="h-full min-h-64" data-echarts-options='{"backgroundColor":null,"animation":false,"grid":{"left":"2px","right":"0%","bottom":"0%","containLabel":true},"center":["50%","50%"],"legend":{"show":false},"tooltip":{"trigger":"item","formatter":"{b}: {c}h"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{gear|{b}}\n{sub|{c}h}","lineHeight":15,"rich":{"gear":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":1,"name":"Zwift One \u2620\ufe0f","itemStyle":{"color":"#ea7ccc"}},{"value":5,"name":"Retro Race Bike","itemStyle":{"color":"#5470c6"}},{"value":1,"name":"Zwift hub","itemStyle":{"color":"#91cc75"}}]}]}'></div>
+            </div>
+                    <div class="grow" id="gearStatsRun--dashboardWidget-gearStats" role="tabpanel" aria-labelledby="gearStatsRun--dashboardWidget-gearStats-tab">
+                <div class="h-full min-h-64" data-echarts-options='{"backgroundColor":null,"animation":false,"grid":{"left":"2px","right":"0%","bottom":"0%","containLabel":true},"center":["50%","50%"],"legend":{"show":false},"tooltip":{"trigger":"item","formatter":"{b}: {c}h"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{gear|{b}}\n{sub|{c}h}","lineHeight":15,"rich":{"gear":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":2,"name":"Retro Race Bike","itemStyle":{"color":"#5470c6"}}]}]}'></div>
+            </div>
+            </div>
+</body></html>

@@ -1,0 +1,41 @@
+<html><body>
+<div class="flex items-center mb-4">
+        <h3 class="text-lg font-semibold">
+            Heart rate zones
+        </h3>
+        <button type="button" data-fullscreen-trigger class="fullscreen-enabled:hidden ml-auto self-start cursor-pointer">
+            <svg class="size-4 text-gray-400 hover:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H4m0 0v4m0-4 5 5m7-5h4m0 0v4m0-4-5 5M8 20H4m0 0v-4m0 4 5-5m7 5h4m0 0v-4m0 4-5-5"></path></svg>
+            <span class="sr-only">Enter fullscreen mode</span>
+        </button>
+    </div>
+            <div class="tabs tabs--default">
+            <ul id="hearRateZoneStatsActivityTypeTab--dashboardWidget-heartRateZones" data-tabs="#hearRateZoneStatsActivityTypeTabContent--dashboardWidget-heartRateZones" role="tablist">
+                <li role="presentation">
+                    <a href="#" data-tabs-target="#hearRateZoneStatsAll--dashboardWidget-heartRateZones" role="tab" aria-controls="all">
+                        All
+                    </a>
+                </li>
+                                    <li role="presentation">
+                        <a href="#" data-tabs-target="#hearRateZoneStatsRide--dashboardWidget-heartRateZones" role="tab" aria-controls="hearRateZoneStatsRide--dashboardWidget-heartRateZones">
+                            Cycling
+                        </a>
+                    </li>
+                                    <li role="presentation">
+                        <a href="#" data-tabs-target="#hearRateZoneStatsRun--dashboardWidget-heartRateZones" role="tab" aria-controls="hearRateZoneStatsRun--dashboardWidget-heartRateZones">
+                            Running
+                        </a>
+                    </li>
+                            </ul>
+        </div>
+        <div id="hearRateZoneStatsActivityTypeTabContent--dashboardWidget-heartRateZones" class="flex flex-col grow">
+        <div class="grow" id="hearRateZoneStatsAll--dashboardWidget-heartRateZones" role="tabpanel" aria-labelledby="hearRateZoneStatsAll--dashboardWidget-heartRateZones-tab">
+            <div class="h-full min-h-64" data-echarts-options='{"backgroundColor":null,"animation":true,"grid":{"left":"3%","right":"4%","bottom":"3%","containLabel":true},"tooltip":{"trigger":"item","formatter":"{d}%"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{zone|{b}}\n{sub|{d}%}","lineHeight":15,"rich":{"zone":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":0,"name":"Zone 1 (recovery)","itemStyle":{"color":"#DF584A"}},{"value":9,"name":"Zone 2 (aerobic)","itemStyle":{"color":"#D63522"}},{"value":36,"name":"Zone 3 (aerobic\/anaerobic)","itemStyle":{"color":"#BD2D22"}},{"value":1145,"name":"Zone 4 (anaerobic)","itemStyle":{"color":"#942319"}},{"value":4704,"name":"Zone 5 (maximal)","itemStyle":{"color":"#6A1009"}}]}]}'></div>
+        </div>
+                    <div class="grow" id="hearRateZoneStatsRide--dashboardWidget-heartRateZones" role="tabpanel" aria-labelledby="hearRateZoneStatsRide--dashboardWidget-heartRateZones-tab">
+                <div class="h-full min-h-64" data-echarts-options='{"backgroundColor":null,"animation":true,"grid":{"left":"3%","right":"4%","bottom":"3%","containLabel":true},"tooltip":{"trigger":"item","formatter":"{d}%"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{zone|{b}}\n{sub|{d}%}","lineHeight":15,"rich":{"zone":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":0,"name":"Zone 1 (recovery)","itemStyle":{"color":"#DF584A"}},{"value":0,"name":"Zone 2 (aerobic)","itemStyle":{"color":"#D63522"}},{"value":0,"name":"Zone 3 (aerobic\/anaerobic)","itemStyle":{"color":"#BD2D22"}},{"value":85,"name":"Zone 4 (anaerobic)","itemStyle":{"color":"#942319"}},{"value":4178,"name":"Zone 5 (maximal)","itemStyle":{"color":"#6A1009"}}]}]}'></div>
+            </div>
+                    <div class="grow" id="hearRateZoneStatsRun--dashboardWidget-heartRateZones" role="tabpanel" aria-labelledby="hearRateZoneStatsRun--dashboardWidget-heartRateZones-tab">
+                <div class="h-full min-h-64" data-echarts-options='{"backgroundColor":null,"animation":true,"grid":{"left":"3%","right":"4%","bottom":"3%","containLabel":true},"tooltip":{"trigger":"item","formatter":"{d}%"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{zone|{b}}\n{sub|{d}%}","lineHeight":15,"rich":{"zone":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":0,"name":"Zone 1 (recovery)","itemStyle":{"color":"#DF584A"}},{"value":9,"name":"Zone 2 (aerobic)","itemStyle":{"color":"#D63522"}},{"value":36,"name":"Zone 3 (aerobic\/anaerobic)","itemStyle":{"color":"#BD2D22"}},{"value":1060,"name":"Zone 4 (anaerobic)","itemStyle":{"color":"#942319"}},{"value":526,"name":"Zone 5 (maximal)","itemStyle":{"color":"#6A1009"}}]}]}'></div>
+            </div>
+            </div>
+</body></html>

@@ -1,0 +1,485 @@
+<html><body>
+<div class="flex items-center mb-4">
+        <h3 class="text-lg font-semibold">
+            Stats per weekday
+        </h3>
+        <button type="button" data-fullscreen-trigger class="fullscreen-enabled:hidden ml-auto self-start cursor-pointer">
+            <svg class="size-4 text-gray-400 hover:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H4m0 0v4m0-4 5 5m7-5h4m0 0v4m0-4-5 5M8 20H4m0 0v-4m0 4 5-5m7 5h4m0 0v-4m0 4-5-5"></path></svg>
+            <span class="sr-only">Enter fullscreen mode</span>
+        </button>
+    </div>
+            <div class="tabs tabs--default">
+            <ul id="weekDayStatsActivityTypeTab--dashboardWidget-weekdayStats" data-tabs="#weekDayStatsActivityTypeTabContent--dashboardWidget-weekdayStats" role="tablist">
+                <li role="presentation">
+                    <a href="#" data-tabs-target="#weekDayStatsAll--dashboardWidget-weekdayStats" role="tab" aria-controls="all">
+                        All
+                    </a>
+                </li>
+                                    <li role="presentation">
+                        <a href="#" data-tabs-target="#weekDayStatsRide--dashboardWidget-weekdayStats" role="tab" aria-controls="weekDayStatsRide--dashboardWidget-weekdayStats">
+                            Cycling
+                        </a>
+                    </li>
+                                    <li role="presentation">
+                        <a href="#" data-tabs-target="#weekDayStatsRun--dashboardWidget-weekdayStats" role="tab" aria-controls="weekDayStatsRun--dashboardWidget-weekdayStats">
+                            Running
+                        </a>
+                    </li>
+                            </ul>
+        </div>
+        <div class="grow flex flex-col" id="weekDayStatsActivityTypeTabContent--dashboardWidget-weekdayStats">
+        <div class="grow flex flex-col" id="weekDayStatsAll--dashboardWidget-weekdayStats" role="tabpanel" aria-labelledby="weekDayStatsAll--dashboardWidget-weekdayStats-tab">
+            <div class="h-80 fullscreen-enabled:grow fullscreen-enabled:h-full" data-echarts-options='{"backgroundColor":null,"animation":true,"grid":{"left":"3%","right":"4%","bottom":"3%","containLabel":true},"legend":{"show":false},"tooltip":{"trigger":"item","formatter":"{d}%"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{weekday|{b}}\n{sub|{d}%}","lineHeight":15,"rich":{"weekday":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":14.45,"name":"Mon."},{"value":5.02,"name":"Tue."},{"value":0,"name":"Wed."},{"value":28.36,"name":"Thu."},{"value":4.78,"name":"Fri."},{"value":28.47,"name":"Sat."},{"value":18.91,"name":"Sun."}]}]}'></div>
+            <div class="relative overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th scope="col" class="narrow sticky left-0 bg-gray-50">
+
+                        </th>
+                        <th scope="col" class="narrow">
+                            # workouts
+                        </th>
+                        <th scope="col">
+                            Dist.
+                        </th>
+                        <th scope="col">
+                            Elev.
+                        </th>
+                        <th scope="col">
+                            Moving time
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                                            <tr class="group/row">
+                            <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                Mon.
+                            </th>
+                            <td class="narrow">
+                                3
+                            </td>
+                            <td class="truncate">
+                                                                    15<span class="text-xxs ml-px">km avg</span> /
+                                    46<span class="text-xxs ml-px">km total</span>
+                                                            </td>
+                            <td class="truncate">
+                                296<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                            </td>
+                            <td class="truncate" title="1.6h">
+                                1h 36m
+                            </td>
+                        </tr>
+                                            <tr class="group/row">
+                            <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                Tue.
+                            </th>
+                            <td class="narrow">
+                                3
+                            </td>
+                            <td class="truncate">
+                                                                    7<span class="text-xxs ml-px">km avg</span> /
+                                    22<span class="text-xxs ml-px">km total</span>
+                                                            </td>
+                            <td class="truncate">
+                                18<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                            </td>
+                            <td class="truncate" title="0.6h">
+                                33m
+                            </td>
+                        </tr>
+                                            <tr class="group/row">
+                            <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                Wed.
+                            </th>
+                            <td class="narrow">
+                                0
+                            </td>
+                            <td class="truncate">
+                                                                    0<span class="text-xxs ml-px">km</span>
+                                                            </td>
+                            <td class="truncate">
+                                0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                            </td>
+                            <td class="truncate" title="0.0h">
+                                
+                            </td>
+                        </tr>
+                                            <tr class="group/row">
+                            <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                Thu.
+                            </th>
+                            <td class="narrow">
+                                3
+                            </td>
+                            <td class="truncate">
+                                                                    22<span class="text-xxs ml-px">km avg</span> /
+                                    67<span class="text-xxs ml-px">km total</span>
+                                                            </td>
+                            <td class="truncate">
+                                834<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                            </td>
+                            <td class="truncate" title="3.2h">
+                                3h 9m
+                            </td>
+                        </tr>
+                                            <tr class="group/row">
+                            <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                Fri.
+                            </th>
+                            <td class="narrow">
+                                1
+                            </td>
+                            <td class="truncate">
+                                                                    12<span class="text-xxs ml-px">km avg</span> /
+                                    12<span class="text-xxs ml-px">km total</span>
+                                                            </td>
+                            <td class="truncate">
+                                15<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                            </td>
+                            <td class="truncate" title="0.5h">
+                                31m
+                            </td>
+                        </tr>
+                                            <tr class="group/row">
+                            <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                Sat.
+                            </th>
+                            <td class="narrow">
+                                4
+                            </td>
+                            <td class="truncate">
+                                                                    44<span class="text-xxs ml-px">km avg</span> /
+                                    175<span class="text-xxs ml-px">km total</span>
+                                                            </td>
+                            <td class="truncate">
+                                586<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                            </td>
+                            <td class="truncate" title="3.2h">
+                                3h 10m
+                            </td>
+                        </tr>
+                                            <tr class="group/row">
+                            <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                Sun.
+                            </th>
+                            <td class="narrow">
+                                2
+                            </td>
+                            <td class="truncate">
+                                                                    0<span class="text-xxs ml-px">km</span>
+                                                            </td>
+                            <td class="truncate">
+                                556<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                            </td>
+                            <td class="truncate" title="2.1h">
+                                2h 6m
+                            </td>
+                        </tr>
+                                        </tbody>
+                </table>
+            </div>
+        </div>
+                    <div class="grow flex flex-col" id="weekDayStatsRide--dashboardWidget-weekdayStats" role="tabpanel" aria-labelledby="weekDayStatsRide--dashboardWidget-weekdayStats-tab">
+                <div class="h-80 fullscreen-enabled:grow fullscreen-enabled:h-full" data-echarts-options='{"backgroundColor":null,"animation":true,"grid":{"left":"3%","right":"4%","bottom":"3%","containLabel":true},"legend":{"show":false},"tooltip":{"trigger":"item","formatter":"{d}%"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{weekday|{b}}\n{sub|{d}%}","lineHeight":15,"rich":{"weekday":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":17.82,"name":"Mon."},{"value":6.19,"name":"Tue."},{"value":0,"name":"Wed."},{"value":23.31,"name":"Thu."},{"value":5.9,"name":"Fri."},{"value":23.46,"name":"Sat."},{"value":23.31,"name":"Sun."}]}]}'></div>
+                <div class="relative overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="narrow sticky left-0 bg-gray-50">
+
+                            </th>
+                            <th scope="col" class="narrow">
+                                # workouts
+                            </th>
+                            <th scope="col">
+                                Dist.
+                            </th>
+                            <th scope="col">
+                                Elev.
+                            </th>
+                            <th scope="col">
+                                Moving time
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                    Mon.
+                                </th>
+                                <td class="narrow">
+                                    3
+                                </td>
+                                <td class="truncate">
+                                                                            15<span class="text-xxs ml-px">km avg</span> /
+                                        46<span class="text-xxs ml-px">km total</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    296<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    1h 36m
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                    Tue.
+                                </th>
+                                <td class="narrow">
+                                    3
+                                </td>
+                                <td class="truncate">
+                                                                            7<span class="text-xxs ml-px">km avg</span> /
+                                        22<span class="text-xxs ml-px">km total</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    18<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    33m
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                    Wed.
+                                </th>
+                                <td class="narrow">
+                                    0
+                                </td>
+                                <td class="truncate">
+                                                                            0<span class="text-xxs ml-px">km</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                    Thu.
+                                </th>
+                                <td class="narrow">
+                                    2
+                                </td>
+                                <td class="truncate">
+                                                                            17<span class="text-xxs ml-px">km avg</span> /
+                                        34<span class="text-xxs ml-px">km total</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    556<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    2h 6m
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                    Fri.
+                                </th>
+                                <td class="narrow">
+                                    1
+                                </td>
+                                <td class="truncate">
+                                                                            12<span class="text-xxs ml-px">km avg</span> /
+                                        12<span class="text-xxs ml-px">km total</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    15<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    31m
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                    Sat.
+                                </th>
+                                <td class="narrow">
+                                    3
+                                </td>
+                                <td class="truncate">
+                                                                            42<span class="text-xxs ml-px">km avg</span> /
+                                        125<span class="text-xxs ml-px">km total</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    308<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    2h 6m
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                    Sun.
+                                </th>
+                                <td class="narrow">
+                                    2
+                                </td>
+                                <td class="truncate">
+                                                                            0<span class="text-xxs ml-px">km</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    556<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    2h 6m
+                                </td>
+                            </tr>
+                                                </tbody>
+                    </table>
+                </div>
+            </div>
+                    <div class="grow flex flex-col" id="weekDayStatsRun--dashboardWidget-weekdayStats" role="tabpanel" aria-labelledby="weekDayStatsRun--dashboardWidget-weekdayStats-tab">
+                <div class="h-80 fullscreen-enabled:grow fullscreen-enabled:h-full" data-echarts-options='{"backgroundColor":null,"animation":true,"grid":{"left":"3%","right":"4%","bottom":"3%","containLabel":true},"legend":{"show":false},"tooltip":{"trigger":"item","formatter":"{d}%"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{weekday|{b}}\n{sub|{d}%}","lineHeight":15,"rich":{"weekday":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":0,"name":"Mon."},{"value":0,"name":"Tue."},{"value":0,"name":"Wed."},{"value":50,"name":"Thu."},{"value":0,"name":"Fri."},{"value":50,"name":"Sat."},{"value":0,"name":"Sun."}]}]}'></div>
+                <div class="relative overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="narrow sticky left-0 bg-gray-50">
+
+                            </th>
+                            <th scope="col" class="narrow">
+                                # workouts
+                            </th>
+                            <th scope="col">
+                                Dist.
+                            </th>
+                            <th scope="col">
+                                Elev.
+                            </th>
+                            <th scope="col">
+                                Moving time
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                    Mon.
+                                </th>
+                                <td class="narrow">
+                                    0
+                                </td>
+                                <td class="truncate">
+                                                                            0<span class="text-xxs ml-px">km</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                    Tue.
+                                </th>
+                                <td class="narrow">
+                                    0
+                                </td>
+                                <td class="truncate">
+                                                                            0<span class="text-xxs ml-px">km</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                    Wed.
+                                </th>
+                                <td class="narrow">
+                                    0
+                                </td>
+                                <td class="truncate">
+                                                                            0<span class="text-xxs ml-px">km</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                    Thu.
+                                </th>
+                                <td class="narrow">
+                                    1
+                                </td>
+                                <td class="truncate">
+                                                                            34<span class="text-xxs ml-px">km avg</span> /
+                                        34<span class="text-xxs ml-px">km total</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    1h 3m
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                    Fri.
+                                </th>
+                                <td class="narrow">
+                                    0
+                                </td>
+                                <td class="truncate">
+                                                                            0<span class="text-xxs ml-px">km</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                    Sat.
+                                </th>
+                                <td class="narrow">
+                                    1
+                                </td>
+                                <td class="truncate">
+                                                                            50<span class="text-xxs ml-px">km avg</span> /
+                                        50<span class="text-xxs ml-px">km total</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    1h 3m
+                                </td>
+                            </tr>
+                                                    <tr class="group/row">
+                                <th scope="row" class="narrow sticky bg-white left-0 font-medium text-gray-900 whitespace-nowrap">
+                                    Sun.
+                                </th>
+                                <td class="narrow">
+                                    0
+                                </td>
+                                <td class="truncate">
+                                                                            0<span class="text-xxs ml-px">km</span>
+                                                                    </td>
+                                <td class="truncate">
+                                    0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                </td>
+                                <td class="truncate">
+                                    
+                                </td>
+                            </tr>
+                                                </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+</body></html>

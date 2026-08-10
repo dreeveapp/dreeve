@@ -56,9 +56,9 @@ final readonly class DashboardWidgetFragmentResolver implements FragmentResolver
                 ttlInSeconds: $widget instanceof DependsOnCurrentDay ? $now->getSecondsUntilMidnight() : null,
             ),
             render: fn (): ?string => $widget->render(
-                $dashboardWidgetId,
-                $now,
-                $configuredWidget->getConfiguration(),
+                dashboardWidgetId: $dashboardWidgetId,
+                now: $now,
+                configuration: $configuredWidget->getConfiguration(),
             ),
             type: FragmentType::PARTIAL,
         );

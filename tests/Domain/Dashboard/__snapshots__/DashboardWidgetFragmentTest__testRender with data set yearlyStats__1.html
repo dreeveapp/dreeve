@@ -1,0 +1,1343 @@
+<html><body>
+<div class="flex items-center justify-between mb-4">
+    <h3 class="text-lg font-semibold">
+        Yearly stats
+    </h3>
+    <ul class="tabs tabs--pills" id="yearlyStatsTab--dashboardWidget-yearlyStats" data-tabs="#yearlyStatsTabContent--dashboardWidget-yearlyStats" role="tablist">
+                    <li role="presentation">
+                <a href="#" data-tabs-target="#yearlyStatsdistance--dashboardWidget-yearlyStats" role="tab" aria-controls="yearlyStatsdistance--dashboardWidget-yearlyStats">
+                    <svg class="size-4" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 21C7.9 21 6.95833 20.6083 6.175 19.825C5.39167 19.0417 5 18.1 5 17V8.825C4.41667 8.60833 3.9375 8.24583 3.5625 7.7375C3.1875 7.22917 3 6.65 3 6C3 5.16667 3.29167 4.45833 3.875 3.875C4.45833 3.29167 5.16667 3 6 3C6.83333 3 7.54167 3.29167 8.125 3.875C8.70833 4.45833 9 5.16667 9 6C9 6.65 8.8125 7.22917 8.4375 7.7375C8.0625 8.24583 7.58333 8.60833 7 8.825V17C7 17.55 7.19583 18.0208 7.5875 18.4125C7.97917 18.8042 8.45 19 9 19C9.55 19 10.0208 18.8042 10.4125 18.4125C10.8042 18.0208 11 17.55 11 17V7C11 5.9 11.3917 4.95833 12.175 4.175C12.9583 3.39167 13.9 3 15 3C16.1 3 17.0417 3.39167 17.825 4.175C18.6083 4.95833 19 5.9 19 7V15.175C19.5833 15.3917 20.0625 15.7542 20.4375 16.2625C20.8125 16.7708 21 17.35 21 18C21 18.8333 20.7083 19.5417 20.125 20.125C19.5417 20.7083 18.8333 21 18 21C17.1667 21 16.4583 20.7083 15.875 20.125C15.2917 19.5417 15 18.8333 15 18C15 17.35 15.1875 16.7667 15.5625 16.25C15.9375 15.7333 16.4167 15.375 17 15.175V7C17 6.45 16.8042 5.97917 16.4125 5.5875C16.0208 5.19583 15.55 5 15 5C14.45 5 13.9792 5.19583 13.5875 5.5875C13.1958 5.97917 13 6.45 13 7V17C13 18.1 12.6083 19.0417 11.825 19.825C11.0417 20.6083 10.1 21 9 21ZM6 7C6.28333 7 6.52083 6.90417 6.7125 6.7125C6.90417 6.52083 7 6.28333 7 6C7 5.71667 6.90417 5.47917 6.7125 5.2875C6.52083 5.09583 6.28333 5 6 5C5.71667 5 5.47917 5.09583 5.2875 5.2875C5.09583 5.47917 5 5.71667 5 6C5 6.28333 5.09583 6.52083 5.2875 6.7125C5.47917 6.90417 5.71667 7 6 7ZM18 19C18.2833 19 18.5208 18.9042 18.7125 18.7125C18.9042 18.5208 19 18.2833 19 18C19 17.7167 18.9042 17.4792 18.7125 17.2875C18.5208 17.0958 18.2833 17 18 17C17.7167 17 17.4792 17.0958 17.2875 17.2875C17.0958 17.4792 17 17.7167 17 18C17 18.2833 17.0958 18.5208 17.2875 18.7125C17.4792 18.9042 17.7167 19 18 19Z" fill="currentColor"></path></svg>
+                    <span class="hidden md:block">Distance</span>
+                </a>
+            </li>
+                    <li role="presentation">
+                <a href="#" data-tabs-target="#yearlyStatsmovingTime--dashboardWidget-yearlyStats" role="tab" aria-controls="yearlyStatsmovingTime--dashboardWidget-yearlyStats">
+                    <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none"><path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"></circle></svg>
+                    <span class="hidden md:block">Time</span>
+                </a>
+            </li>
+                    <li role="presentation">
+                <a href="#" data-tabs-target="#yearlyStatselevation--dashboardWidget-yearlyStats" role="tab" aria-controls="yearlyStatselevation--dashboardWidget-yearlyStats">
+                    <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24"><path fill="currentColor" d="M21.85,17.47l-5-8a1,1,0,0,0-1.7,0l-1,1.63L10.86,5.5a1,1,0,0,0-1.72,0l-7,12A1,1,0,0,0,3,19H21a1,1,0,0,0,.85-1.53ZM10.45,17H4.74L10,8l2.93,5Zm2.35,0L15,13.57h0L16,11.89,19.2,17Z"></path></svg>
+                    <span class="hidden md:block">Elevation</span>
+                </a>
+            </li>
+            </ul>
+</div>
+<div id="yearlyStatsTabContent--dashboardWidget-yearlyStats">
+            <div id="yearlyStatsdistance--dashboardWidget-yearlyStats" role="tabpanel" aria-labelledby="yearlyStatsdistance--dashboardWidget-yearlyStats">
+                                        <div class="tabs tabs--default">
+                    <ul id="yearlyStatsActivityTypedistanceTab--dashboardWidget-yearlyStats" data-tabs="#yearlyStatsActivityTypedistanceTabContent--dashboardWidget-yearlyStats" role="tablist">
+                                                    <li role="presentation">
+                                <a href="#" data-tabs-target="#yearlyStatsRidedistance--dashboardWidget-yearlyStats" role="tab" aria-controls="yearlyStatsRidedistance--dashboardWidget-yearlyStats">
+                                    Cycling
+                                </a>
+                            </li>
+                                                    <li role="presentation">
+                                <a href="#" data-tabs-target="#yearlyStatsRundistance--dashboardWidget-yearlyStats" role="tab" aria-controls="yearlyStatsRundistance--dashboardWidget-yearlyStats">
+                                    Running
+                                </a>
+                            </li>
+                                            </ul>
+                </div>
+                        <div id="yearlyStatsActivityTypedistanceTabContent--dashboardWidget-yearlyStats">
+                                    <div id="yearlyStatsRidedistance--dashboardWidget-yearlyStats" role="tabpanel" aria-labelledby="yearlyStatsRidedistance--dashboardWidget-yearlyStats-tab">
+                        <div class="mb-4 h-80" data-echarts-options='{"animation":true,"backgroundColor":null,"grid":{"left":"2px","right":"10px","bottom":"50px","containLabel":true},"xAxis":[{"type":"category","axisTick":{"show":false},"axisLabel":{"interval":31},"data":["Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec"]}],"legend":{"selected":{"2023":true,"2022":true,"2020":true},"show":true},"tooltip":{"show":true,"trigger":"axis","valueFormatter":"callback:formatDistance"},"yAxis":[{"type":"value","nameRotate":90,"nameLocation":"middle","nameGap":50,"axisLabel":{"formatter":"{value}km"}}],"toolbox":{"show":true,"feature":{"dataZoom":{"show":true,"yAxisIndex":"none"},"restore":{"show":true}}},"dataZoom":[{"type":"slider","start":0,"end":100,"brushSelect":true,"zoomLock":false,"zoomOnMouseWheel":false}],"series":[{"name":"2023","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#ee6666"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,137,137,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,171,204,204,204,204,210,217,217,217,217,217,217,223,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,239,239,239,239,239,239,239,239]},{"name":"2022","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#73c0de"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"name":"2020","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#fc8452"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}]}'></div>
+                        <div class="relative overflow-x-auto">
+                            <table class="w-full text-sm text-center text-gray-500">
+                                <thead class="text-gray-500 text-xxs uppercase font-semibold bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-2 py-3 sticky left-0 bg-gray-50">
+                                        Year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Dist.
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Elev.
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Moving time
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Cal.
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2023</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            239<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        239<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            1&Acirc;&nbsp;193<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        915<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="6.9h">
+                                            6h 55m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        5h 52m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            4&Acirc;&nbsp;311<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2022</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="1.1h">
+                                            1h 3m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        1h 3m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            695<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2021</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--danger text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        -278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="0.0h">
+                                            0m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--danger text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        1h 3m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2020</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="1.1h">
+                                            1h 3m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            695<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                                    <div id="yearlyStatsRundistance--dashboardWidget-yearlyStats" role="tabpanel" aria-labelledby="yearlyStatsRundistance--dashboardWidget-yearlyStats-tab">
+                        <div class="mb-4 h-80" data-echarts-options='{"animation":true,"backgroundColor":null,"grid":{"left":"2px","right":"10px","bottom":"50px","containLabel":true},"xAxis":[{"type":"category","axisTick":{"show":false},"axisLabel":{"interval":31},"data":["Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec"]}],"legend":{"selected":{"2023":true,"2022":true},"show":true},"tooltip":{"show":true,"trigger":"axis","valueFormatter":"callback:formatDistance"},"yAxis":[{"type":"value","nameRotate":90,"nameLocation":"middle","nameGap":50,"axisLabel":{"formatter":"{value}km"}}],"toolbox":{"show":true,"feature":{"dataZoom":{"show":true,"yAxisIndex":"none"},"restore":{"show":true}}},"dataZoom":[{"type":"slider","start":0,"end":100,"brushSelect":true,"zoomLock":false,"zoomOnMouseWheel":false}],"series":[{"name":"2023","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#ee6666"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34]},{"name":"2022","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#73c0de"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50]}]}'></div>
+                        <div class="relative overflow-x-auto">
+                            <table class="w-full text-sm text-center text-gray-500">
+                                <thead class="text-gray-500 text-xxs uppercase font-semibold bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-2 py-3 sticky left-0 bg-gray-50">
+                                        Year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Dist.
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Elev.
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Moving time
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Cal.
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2023</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            34<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--danger text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        -16<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="1.1h">
+                                            1h 3m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            695<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2022</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            50<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        50<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="1.1h">
+                                            1h 3m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        1h 3m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            695<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2021</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="0.0h">
+                                            0m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2020</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="0.0h">
+                                            0m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                            </div>
+        </div>
+            <div id="yearlyStatsmovingTime--dashboardWidget-yearlyStats" role="tabpanel" aria-labelledby="yearlyStatsmovingTime--dashboardWidget-yearlyStats">
+                                        <div class="tabs tabs--default">
+                    <ul id="yearlyStatsActivityTypemovingTimeTab--dashboardWidget-yearlyStats" data-tabs="#yearlyStatsActivityTypemovingTimeTabContent--dashboardWidget-yearlyStats" role="tablist">
+                                                    <li role="presentation">
+                                <a href="#" data-tabs-target="#yearlyStatsRidemovingTime--dashboardWidget-yearlyStats" role="tab" aria-controls="yearlyStatsRidemovingTime--dashboardWidget-yearlyStats">
+                                    Cycling
+                                </a>
+                            </li>
+                                                    <li role="presentation">
+                                <a href="#" data-tabs-target="#yearlyStatsRunmovingTime--dashboardWidget-yearlyStats" role="tab" aria-controls="yearlyStatsRunmovingTime--dashboardWidget-yearlyStats">
+                                    Running
+                                </a>
+                            </li>
+                                            </ul>
+                </div>
+                        <div id="yearlyStatsActivityTypemovingTimeTabContent--dashboardWidget-yearlyStats">
+                                    <div id="yearlyStatsRidemovingTime--dashboardWidget-yearlyStats" role="tabpanel" aria-labelledby="yearlyStatsRidemovingTime--dashboardWidget-yearlyStats-tab">
+                        <div class="mb-4 h-80" data-echarts-options='{"animation":true,"backgroundColor":null,"grid":{"left":"2px","right":"10px","bottom":"50px","containLabel":true},"xAxis":[{"type":"category","axisTick":{"show":false},"axisLabel":{"interval":31},"data":["Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec"]}],"legend":{"selected":{"2023":true,"2022":true,"2020":true},"show":true},"tooltip":{"show":true,"trigger":"axis","valueFormatter":"callback:formatHours"},"yAxis":[{"type":"value","nameRotate":90,"nameLocation":"middle","nameGap":50,"axisLabel":{"formatter":"{value}h"}}],"toolbox":{"show":true,"feature":{"dataZoom":{"show":true,"yAxisIndex":"none"},"restore":{"show":true}}},"dataZoom":[{"type":"slider","start":0,"end":100,"brushSelect":true,"zoomLock":false,"zoomOnMouseWheel":false}],"series":[{"name":"2023","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#ee6666"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7]},{"name":"2022","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#73c0de"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]},{"name":"2020","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#fc8452"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]}]}'></div>
+                        <div class="relative overflow-x-auto">
+                            <table class="w-full text-sm text-center text-gray-500">
+                                <thead class="text-gray-500 text-xxs uppercase font-semibold bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-2 py-3 sticky left-0 bg-gray-50">
+                                        Year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Dist.
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Elev.
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Moving time
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Cal.
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2023</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            239<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        239<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            1&Acirc;&nbsp;193<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        915<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="6.9h">
+                                            6h 55m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        5h 52m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            4&Acirc;&nbsp;311<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2022</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="1.1h">
+                                            1h 3m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        1h 3m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            695<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2021</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--danger text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        -278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="0.0h">
+                                            0m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--danger text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        1h 3m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2020</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="1.1h">
+                                            1h 3m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            695<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                                    <div id="yearlyStatsRunmovingTime--dashboardWidget-yearlyStats" role="tabpanel" aria-labelledby="yearlyStatsRunmovingTime--dashboardWidget-yearlyStats-tab">
+                        <div class="mb-4 h-80" data-echarts-options='{"animation":true,"backgroundColor":null,"grid":{"left":"2px","right":"10px","bottom":"50px","containLabel":true},"xAxis":[{"type":"category","axisTick":{"show":false},"axisLabel":{"interval":31},"data":["Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec"]}],"legend":{"selected":{"2023":true,"2022":true},"show":true},"tooltip":{"show":true,"trigger":"axis","valueFormatter":"callback:formatHours"},"yAxis":[{"type":"value","nameRotate":90,"nameLocation":"middle","nameGap":50,"axisLabel":{"formatter":"{value}h"}}],"toolbox":{"show":true,"feature":{"dataZoom":{"show":true,"yAxisIndex":"none"},"restore":{"show":true}}},"dataZoom":[{"type":"slider","start":0,"end":100,"brushSelect":true,"zoomLock":false,"zoomOnMouseWheel":false}],"series":[{"name":"2023","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#ee6666"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]},{"name":"2022","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#73c0de"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]}]}'></div>
+                        <div class="relative overflow-x-auto">
+                            <table class="w-full text-sm text-center text-gray-500">
+                                <thead class="text-gray-500 text-xxs uppercase font-semibold bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-2 py-3 sticky left-0 bg-gray-50">
+                                        Year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Dist.
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Elev.
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Moving time
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Cal.
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2023</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            34<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--danger text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        -16<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="1.1h">
+                                            1h 3m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            695<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2022</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            50<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        50<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="1.1h">
+                                            1h 3m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        1h 3m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            695<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2021</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="0.0h">
+                                            0m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2020</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="0.0h">
+                                            0m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                            </div>
+        </div>
+            <div id="yearlyStatselevation--dashboardWidget-yearlyStats" role="tabpanel" aria-labelledby="yearlyStatselevation--dashboardWidget-yearlyStats">
+                                        <div class="tabs tabs--default">
+                    <ul id="yearlyStatsActivityTypeelevationTab--dashboardWidget-yearlyStats" data-tabs="#yearlyStatsActivityTypeelevationTabContent--dashboardWidget-yearlyStats" role="tablist">
+                                                    <li role="presentation">
+                                <a href="#" data-tabs-target="#yearlyStatsRideelevation--dashboardWidget-yearlyStats" role="tab" aria-controls="yearlyStatsRideelevation--dashboardWidget-yearlyStats">
+                                    Cycling
+                                </a>
+                            </li>
+                                                    <li role="presentation">
+                                <a href="#" data-tabs-target="#yearlyStatsRunelevation--dashboardWidget-yearlyStats" role="tab" aria-controls="yearlyStatsRunelevation--dashboardWidget-yearlyStats">
+                                    Running
+                                </a>
+                            </li>
+                                            </ul>
+                </div>
+                        <div id="yearlyStatsActivityTypeelevationTabContent--dashboardWidget-yearlyStats">
+                                    <div id="yearlyStatsRideelevation--dashboardWidget-yearlyStats" role="tabpanel" aria-labelledby="yearlyStatsRideelevation--dashboardWidget-yearlyStats-tab">
+                        <div class="mb-4 h-80" data-echarts-options='{"animation":true,"backgroundColor":null,"grid":{"left":"2px","right":"10px","bottom":"50px","containLabel":true},"xAxis":[{"type":"category","axisTick":{"show":false},"axisLabel":{"interval":31},"data":["Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec"]}],"legend":{"selected":{"2023":true,"2022":true,"2020":true},"show":true},"tooltip":{"show":true,"trigger":"axis","valueFormatter":"callback:formatElevation"},"yAxis":[{"type":"value","nameRotate":90,"nameLocation":"middle","nameGap":50,"axisLabel":{"formatter":"{value}m"}}],"toolbox":{"show":true,"feature":{"dataZoom":{"show":true,"yAxisIndex":"none"},"restore":{"show":true}}},"dataZoom":[{"type":"slider","start":0,"end":100,"brushSelect":true,"zoomLock":false,"zoomOnMouseWheel":false}],"series":[{"name":"2023","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#ee6666"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,45,601,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,879,1157,1157,1157,1157,1166,1175,1175,1175,1175,1175,1175,1184,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193,1193]},{"name":"2022","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#73c0de"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278]},{"name":"2020","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#fc8452"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278]}]}'></div>
+                        <div class="relative overflow-x-auto">
+                            <table class="w-full text-sm text-center text-gray-500">
+                                <thead class="text-gray-500 text-xxs uppercase font-semibold bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-2 py-3 sticky left-0 bg-gray-50">
+                                        Year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Dist.
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Elev.
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Moving time
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Cal.
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2023</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            239<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        239<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            1&Acirc;&nbsp;193<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        915<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="6.9h">
+                                            6h 55m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        5h 52m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            4&Acirc;&nbsp;311<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2022</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="1.1h">
+                                            1h 3m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        1h 3m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            695<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2021</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--danger text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        -278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="0.0h">
+                                            0m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--danger text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        1h 3m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2020</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="1.1h">
+                                            1h 3m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            695<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                                    <div id="yearlyStatsRunelevation--dashboardWidget-yearlyStats" role="tabpanel" aria-labelledby="yearlyStatsRunelevation--dashboardWidget-yearlyStats-tab">
+                        <div class="mb-4 h-80" data-echarts-options='{"animation":true,"backgroundColor":null,"grid":{"left":"2px","right":"10px","bottom":"50px","containLabel":true},"xAxis":[{"type":"category","axisTick":{"show":false},"axisLabel":{"interval":31},"data":["Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Feb","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Mar","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","Apr","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","May","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jun","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Jul","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Aug","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Sep","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Oct","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Nov","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec","Dec"]}],"legend":{"selected":{"2023":true,"2022":true},"show":true},"tooltip":{"show":true,"trigger":"axis","valueFormatter":"callback:formatElevation"},"yAxis":[{"type":"value","nameRotate":90,"nameLocation":"middle","nameGap":50,"axisLabel":{"formatter":"{value}m"}}],"toolbox":{"show":true,"feature":{"dataZoom":{"show":true,"yAxisIndex":"none"},"restore":{"show":true}}},"dataZoom":[{"type":"slider","start":0,"end":100,"brushSelect":true,"zoomLock":false,"zoomOnMouseWheel":false}],"series":[{"name":"2023","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#ee6666"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278]},{"name":"2022","type":"line","smooth":true,"showSymbol":false,"itemStyle":{"color":"#73c0de"},"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278,278]}]}'></div>
+                        <div class="relative overflow-x-auto">
+                            <table class="w-full text-sm text-center text-gray-500">
+                                <thead class="text-gray-500 text-xxs uppercase font-semibold bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-2 py-3 sticky left-0 bg-gray-50">
+                                        Year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Dist.
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Elev.
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Moving time
+                                    </th>
+                                    <th>
+                                        Prev year
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Cal.
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2023</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            34<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--danger text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        -16<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="1.1h">
+                                            1h 3m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            695<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2022</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            50<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        50<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        278<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="1.1h">
+                                            1h 3m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--success text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        1h 3m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            695<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2021</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="0.0h">
+                                            0m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                                                                            <svg class="size-4" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                                                        </svg>
+                                                                                                        <div>
+                                                        0m
+                                                    </div>
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                    <tr class="bg-white border-b">
+                                        <th scope="row" class="px-2 py-2 sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
+                                            <div>2020</div>
+                                        </th>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+                                        </td>
+                                        <td>
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap" title="0.0h">
+                                            0m
+                                        </td>
+                                        <td class="px-2 py-2 whitespace-nowrap">
+                                                                                                                                    <div class="pill pill--neutral text-xs rounded">
+                                                                                                    -
+                                                                                            </div>
+                                        </td>
+                                        <td class="px-2 py-2">
+                                            0<span class="text-xxs ml-px">kcal</span>
+                                        </td>
+                                    </tr>
+                                                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                            </div>
+        </div>
+    </div>
+</body></html>
