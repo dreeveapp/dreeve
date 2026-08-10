@@ -40,7 +40,6 @@ class GearStatsFragmentTest extends ControllerWebTestCase
     {
         $this->addGeneralFixtures();
         $this->addGearFixtures();
-        $this->markAppAsBuilt();
 
         $activityRepository = $this->getContainer()->get(ActivityRepository::class);
         $activityRepository->add(ActivityWithRawData::fromState(
@@ -57,6 +56,8 @@ class GearStatsFragmentTest extends ControllerWebTestCase
                 ->build(),
             rawData: []
         ));
+
+        $this->markAppAsBuilt();
 
         $this->client->request('GET', '/api/fragment/page/gear');
 
