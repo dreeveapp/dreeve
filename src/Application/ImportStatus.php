@@ -17,7 +17,10 @@ final readonly class ImportStatus
 
     public function isPending(): bool
     {
-        return $this->watchDirectory->hasFilesThatCanBeProcessed()
-            || $this->automationRulesBackfillQueue->isQueued();
+        if ($this->watchDirectory->hasFilesThatCanBeProcessed()) {
+            return true;
+        }
+
+        return $this->automationRulesBackfillQueue->isQueued();
     }
 }
