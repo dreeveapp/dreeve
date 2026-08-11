@@ -49,7 +49,7 @@ final readonly class PowerOutputFragment implements Fragment
     {
         return Cacheability::for(
             cacheKey: $this->getPath(),
-            cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
+            cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_METRICS),
             ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
         );
     }
@@ -58,61 +58,66 @@ final readonly class PowerOutputFragment implements Fragment
     {
         $now = $this->clock->getCurrentDateTimeImmutable();
 
-        $activityType = null;
-        /** @var ActivityType $importedActivityType */
-        foreach ($this->activityTypeRepository->findAll() as $importedActivityType) {
-            if (!$importedActivityType->supportsPowerData()) {
+        $allYears = null;
+        /** @var array<string, BestPowerOutputs> $bestPowerOutputsPerActivityType */
+        $bestPowerOutputsPerActivityType = [];
+        /** @var array<string, string> $powerOutputChartsPerActivityType */
+        $powerOutputChartsPerActivityType = [];
+
+        /** @var ActivityType $activityType */
+        foreach ($this->activityTypeRepository->findAll() as $activityType) {
+            if (!$activityType->supportsPowerData()) {
                 continue; // @codeCoverageIgnore
             }
-            $bestAllTimePowerOutputs = $this->activityPowerRepository
-                ->findBestForSportTypes(SportTypes::thatSupportPeakPowerOutputs($importedActivityType));
+            $sportTypes = SportTypes::thatSupportPeakPowerOutputs($activityType);
+            $bestAllTimePowerOutputs = $this->activityPowerRepository->findBestForSportTypes($sportTypes);
 
             if ($bestAllTimePowerOutputs->isEmpty()) {
                 continue;
             }
 
-            $activityType = $importedActivityType;
-            break;
+            $allYears ??= Years::create(
+                startDate: $this->activityRepository->findAll()->getFirstActivityStartDate(),
+                endDate: $now
+            );
+
+            $bestPowerOutputs = BestPowerOutputs::empty();
+            $bestPowerOutputs->add(
+                description: $this->translator->trans('All time'),
+                powerOutputs: $bestAllTimePowerOutputs,
+            );
+            foreach ([45, 90] as $numberOfDays) {
+                $bestPowerOutputs->add(
+                    description: $this->translator->trans('Last {numberOfDays} days', ['{numberOfDays}' => $numberOfDays]),
+                    powerOutputs: $this->activityPowerRepository->findBestForSportTypesInDateRange(
+                        sportTypes: $sportTypes,
+                        dateRange: DateRange::lastXDays($now, $numberOfDays)
+                    )
+                );
+            }
+            foreach ($allYears->reverse() as $year) {
+                $bestPowerOutputs->add(
+                    description: (string) $year,
+                    powerOutputs: $this->activityPowerRepository->findBestForSportTypesInDateRange(
+                        sportTypes: $sportTypes,
+                        dateRange: $year->getRange(),
+                    )
+                );
+            }
+
+            $bestPowerOutputsPerActivityType[$activityType->value] = $bestPowerOutputs;
+            $powerOutputChartsPerActivityType[$activityType->value] = Json::encode(
+                PowerOutputChart::create($bestPowerOutputs)->build()
+            );
         }
 
-        if (!$activityType instanceof ActivityType) {
+        if (empty($bestPowerOutputsPerActivityType)) {
             return null;
         }
 
-        $allYears = Years::create(
-            startDate: $this->activityRepository->findAll()->getFirstActivityStartDate(),
-            endDate: $now
-        );
-
-        $bestPowerOutputs = BestPowerOutputs::empty();
-        $bestPowerOutputs->add(
-            description: $this->translator->trans('All time'),
-            powerOutputs: $this->activityPowerRepository->findBestForSportTypes(SportTypes::thatSupportPeakPowerOutputs($activityType)),
-        );
-        foreach ([45, 90] as $numberOfDays) {
-            $bestPowerOutputs->add(
-                description: $this->translator->trans('Last {numberOfDays} days', ['{numberOfDays}' => $numberOfDays]),
-                powerOutputs: $this->activityPowerRepository->findBestForSportTypesInDateRange(
-                    sportTypes: SportTypes::thatSupportPeakPowerOutputs($activityType),
-                    dateRange: DateRange::lastXDays($now, $numberOfDays)
-                )
-            );
-        }
-        foreach ($allYears->reverse() as $year) {
-            $bestPowerOutputs->add(
-                description: (string) $year,
-                powerOutputs: $this->activityPowerRepository->findBestForSportTypesInDateRange(
-                    sportTypes: SportTypes::thatSupportPeakPowerOutputs($activityType),
-                    dateRange: $year->getRange(),
-                )
-            );
-        }
-
         return $this->twig->load('html/dashboard/power-output.html.twig')->render([
-            'powerOutputChart' => Json::encode(
-                PowerOutputChart::create($bestPowerOutputs)->build()
-            ),
-            'bestPowerOutputs' => $bestPowerOutputs,
+            'powerOutputChartsPerActivityType' => $powerOutputChartsPerActivityType,
+            'bestPowerOutputsPerActivityType' => $bestPowerOutputsPerActivityType,
         ]);
     }
 }

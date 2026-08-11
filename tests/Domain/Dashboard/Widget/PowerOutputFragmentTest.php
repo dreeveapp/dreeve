@@ -2,7 +2,18 @@
 
 namespace App\Tests\Domain\Dashboard\Widget;
 
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\Stream\Metric\ActivityStreamMetric;
+use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
+use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
+use App\Domain\Activity\Stream\StreamType;
+use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
@@ -19,6 +30,31 @@ class PowerOutputFragmentTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
+    public function testRenderWithMultipleActivityTypes(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('9756441742'))
+                ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 10:00:00'))
+                ->withSportType(SportType::RUN)
+                ->build(),
+            []
+        ));
+        $this->getContainer()->get(ActivityStreamMetricRepository::class)->add(ActivityStreamMetric::create(
+            activityId: ActivityId::fromUnprefixed('9756441742'),
+            streamType: StreamType::WATTS,
+            metricType: ActivityStreamMetricType::BEST_AVERAGES,
+            data: Json::decode('{"1":390,"5":361,"10":344,"15":333,"30":316,"45":305,"60":298,"120":284,"180":277,"240":272,"300":268,"390":263,"480":259,"720":251,"960":246,"1200":242,"1800":234,"2400":229,"3000":225,"3600":221}'),
+        ));
+
+        $this->client->request('GET', '/api/fragment/page/power-output');
+
+        $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
@@ -39,7 +75,7 @@ class PowerOutputFragmentTest extends ControllerWebTestCase
 
         $this->assertResponseHeaderSame(
             'X-Cache-Tags',
-            'settings.appearance, settings.general, activities',
+            'settings.appearance, settings.general, activities, settings.metrics',
         );
     }
 }
