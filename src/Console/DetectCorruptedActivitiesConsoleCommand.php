@@ -10,6 +10,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivitySummaryRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
+use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Webhook\WebhookAspectType;
 use App\Domain\Strava\Webhook\WebhookEvent;
@@ -18,6 +19,7 @@ use App\Infrastructure\Console\ProvideConsoleIntro;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\DependencyInjection\Mutex\WithMutex;
 use App\Infrastructure\Doctrine\Migrations\RequiresUpToDateDatabaseSchema;
+use App\Infrastructure\Exception\CorruptedData;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
@@ -41,6 +43,7 @@ class DetectCorruptedActivitiesConsoleCommand extends Command
         private readonly ActivityRepository $activityRepository,
         private readonly ActivityStreamRepository $activityStreamRepository,
         private readonly CombinedActivityStreamRepository $combinedActivityStreamRepository,
+        private readonly ActivityStreamMetricRepository $activityStreamMetricRepository,
         private readonly WebhookEventRepository $webhookEventRepository,
         private readonly CommandBus $commandBus,
         private readonly SettingsRepository $settingsRepository,
@@ -63,20 +66,18 @@ class DetectCorruptedActivitiesConsoleCommand extends Command
         );
         $progressIndicator->start('Scanning activities...');
 
-        $activityIds = $this->activityIdRepository->findAll();
+        $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
+        $activityIds = $this->activityIdRepository->findAllImportedFromStravaApi();
         $activityIdsToDelete = ActivityIds::empty();
+        $activityIdsToRebuild = ActivityIds::empty();
+
         foreach ($activityIds as $activityId) {
             $progressIndicator->advance();
-            try {
-                $this->activityRepository->findWithRawData($activityId);
-            } catch (\JsonException) {
-                $activityIdsToDelete->add($activityId);
-                continue;
-            }
 
             try {
+                $this->activityRepository->findWithRawData($activityId);
                 $this->activityStreamRepository->findByActivityId($activityId);
-            } catch (\JsonException) {
+            } catch (CorruptedData) {
                 $activityIdsToDelete->add($activityId);
                 continue;
             }
@@ -84,22 +85,32 @@ class DetectCorruptedActivitiesConsoleCommand extends Command
             try {
                 $this->combinedActivityStreamRepository->findOneForActivityAndUnitSystem(
                     activityId: $activityId,
-                    unitSystem: $this->settingsRepository->appearance()->getUnitSystem(),
+                    unitSystem: $unitSystem,
                 );
             } catch (EntityNotFound) {
-            } catch (\JsonException) {
-                $activityIdsToDelete->add($activityId);
+            } catch (CorruptedData) {
+                $activityIdsToRebuild->add($activityId);
                 continue;
+            }
+
+            try {
+                $this->activityStreamMetricRepository->findByActivityId($activityId);
+            } catch (CorruptedData) {
+                $activityIdsToRebuild->add($activityId);
             }
         }
 
-        if ($activityIdsToDelete->isEmpty()) {
+        $corruptedActivityIds = ActivityIds::empty()
+            ->mergeWith($activityIdsToDelete)
+            ->mergeWith($activityIdsToRebuild);
+
+        if ($corruptedActivityIds->isEmpty()) {
             $progressIndicator->finish('No activities with corrupted data found');
 
             return Command::SUCCESS;
         }
 
-        $progressIndicator->finish(sprintf('Found %d activities with corrupted data', count($activityIdsToDelete)));
+        $progressIndicator->finish(sprintf('Found %d activities with corrupted data', count($corruptedActivityIds)));
         $output->newLine();
         $output->listing(array_map(function (ActivityId $activityId): string {
             $activity = $this->activitySummaryRepository->find($activityId);
@@ -109,9 +120,18 @@ class DetectCorruptedActivitiesConsoleCommand extends Command
                 $activity->getName(),
                 $activity->getStartDate()->format('d-m-Y')
             );
-        }, $activityIdsToDelete->toArray()));
+        }, $corruptedActivityIds->toArray()));
 
         if (!$output->confirm('Do you want to delete these activities so they can be re-imported in the next run?')) {
+            return Command::SUCCESS;
+        }
+
+        foreach ($activityIdsToRebuild as $activityId) {
+            $this->combinedActivityStreamRepository->deleteForActivity($activityId);
+            $this->activityStreamMetricRepository->deleteForActivity($activityId);
+        }
+
+        if ($activityIdsToDelete->isEmpty()) {
             return Command::SUCCESS;
         }
 

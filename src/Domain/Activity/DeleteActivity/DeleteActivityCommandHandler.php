@@ -10,6 +10,7 @@ use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Activity\Lap\ActivityLapRepository;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
+use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Import\FileImportRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
@@ -23,6 +24,7 @@ final readonly class DeleteActivityCommandHandler implements CommandHandler
         private ActivityRepository $activityRepository,
         private ActivityStreamRepository $activityStreamRepository,
         private ActivityStreamMetricRepository $activityStreamMetricRepository,
+        private CombinedActivityStreamRepository $combinedActivityStreamRepository,
         private SegmentEffortRepository $segmentEffortRepository,
         private SegmentRepository $segmentRepository,
         private ActivitySplitRepository $activitySplitRepository,
@@ -41,6 +43,7 @@ final readonly class DeleteActivityCommandHandler implements CommandHandler
 
         $this->activityStreamRepository->deleteForActivity($activityId);
         $this->activityStreamMetricRepository->deleteForActivity($activityId);
+        $this->combinedActivityStreamRepository->deleteForActivity($activityId);
         $this->segmentEffortRepository->deleteForActivity($activityId);
         $this->segmentRepository->deleteOrphaned();
         $this->activitySplitRepository->deleteForActivity($activityId);

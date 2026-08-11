@@ -119,6 +119,18 @@ final readonly class DbalActivityStreamMetricRepository extends DbalRepository i
         ));
     }
 
+    public function findByActivityId(ActivityId $activityId): ActivityStreamMetrics
+    {
+        $sql = 'SELECT * FROM ActivityStreamMetric WHERE activityId = :activityId';
+
+        return ActivityStreamMetrics::fromArray(array_map(
+            $this->hydrate(...),
+            $this->connection->executeQuery($sql, [
+                'activityId' => $activityId,
+            ])->fetchAllAssociative()
+        ));
+    }
+
     /**
      * @param array<string, mixed> $result
      */

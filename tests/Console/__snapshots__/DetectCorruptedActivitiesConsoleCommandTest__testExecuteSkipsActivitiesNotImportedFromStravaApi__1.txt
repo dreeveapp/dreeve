@@ -1,0 +1,14 @@
+
+Dreevev5.2.0
+
+
+
+Runtime:PHP8.5.x(cli)Symfony8.1.4Linux
+
+Configuredimportmode:stravaApi
+
+
+
+Scanningactivities...
+Noactivitieswithcorrupteddatafound
+

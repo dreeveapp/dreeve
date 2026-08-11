@@ -9,6 +9,7 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
+use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\WorldType;
 use App\Infrastructure\Measurement\UnitSystem;
@@ -147,6 +148,109 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
 
         $this->assertMatchesJsonSnapshot(
             $this->getConnection()->executeQuery('SELECT * FROM WebhookEvent')->fetchAllAssociative()
+        );
+    }
+
+    public function testExecuteWithCorruptedCompressedData(): void
+    {
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            activity: ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('test-2'))
+                ->build(),
+            rawData: []
+        ));
+        $this->getConnection()->executeStatement(
+            'INSERT INTO ActivityStream(activityId, streamType, createdOn, data, dataSize)
+                VALUES (:activityId, :streamType, :createdOn, :data, :dataSize)',
+            [
+                'activityId' => 'activity-test-2',
+                'streamType' => StreamType::DISTANCE->value,
+                'createdOn' => '2026-01-06',
+                'data' => 'this is not a valid ZSTD frame',
+                'dataSize' => 2,
+            ]
+        );
+
+        $command = $this->getCommandInApplication('app:data:detect-corrupted-activities');
+        $commandTester = new CommandTester($command);
+        $commandTester->setInputs(['yes']);
+        $commandTester->execute([
+            'command' => $command->getName(),
+        ]);
+
+        $this->assertMatchesSnapshot($commandTester->getDisplay(), new ConsoleOutputSnapshotDriver());
+    }
+
+    public function testExecuteSkipsActivitiesNotImportedFromStravaApi(): void
+    {
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            activity: ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('test-2'))
+                ->withImportSource(ImportSource::FIT_FILE)
+                ->build(),
+            rawData: []
+        ));
+        $this->getConnection()->executeStatement(
+            'INSERT INTO ActivityStream(activityId, streamType, createdOn, data, dataSize)
+                VALUES (:activityId, :streamType, :createdOn, :data, :dataSize)',
+            [
+                'activityId' => 'activity-test-2',
+                'streamType' => StreamType::DISTANCE->value,
+                'createdOn' => '2026-01-06',
+                'data' => 'this is not a valid ZSTD frame',
+                'dataSize' => 2,
+            ]
+        );
+
+        $command = $this->getCommandInApplication('app:data:detect-corrupted-activities');
+        $commandTester = new CommandTester($command);
+        $commandTester->setInputs(['yes']);
+        $commandTester->execute([
+            'command' => $command->getName(),
+        ]);
+
+        $this->assertMatchesSnapshot($commandTester->getDisplay(), new ConsoleOutputSnapshotDriver());
+
+        $this->assertCount(
+            1,
+            $this->getConnection()->executeQuery('SELECT * FROM Activity')->fetchAllAssociative()
+        );
+    }
+
+    public function testExecuteWithCorruptedDerivedDataOnly(): void
+    {
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            activity: ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('test-2'))
+                ->build(),
+            rawData: []
+        ));
+        $this->getConnection()->executeStatement(
+            'INSERT INTO ActivityStreamMetric(activityId, streamType, metricType, data)
+                VALUES (:activityId, :streamType, :metricType, :data)',
+            [
+                'activityId' => 'activity-test-2',
+                'streamType' => StreamType::WATTS->value,
+                'metricType' => ActivityStreamMetricType::NORMALIZED_POWER->value,
+                'data' => 'this is not a valid ZSTD frame',
+            ]
+        );
+
+        $command = $this->getCommandInApplication('app:data:detect-corrupted-activities');
+        $commandTester = new CommandTester($command);
+        $commandTester->setInputs(['yes']);
+        $commandTester->execute([
+            'command' => $command->getName(),
+        ]);
+
+        $this->assertMatchesSnapshot($commandTester->getDisplay(), new ConsoleOutputSnapshotDriver());
+
+        $this->assertEmpty(
+            $this->getConnection()->executeQuery('SELECT * FROM ActivityStreamMetric')->fetchAllAssociative()
+        );
+        $this->assertCount(
+            1,
+            $this->getConnection()->executeQuery('SELECT * FROM Activity')->fetchAllAssociative()
         );
     }
 

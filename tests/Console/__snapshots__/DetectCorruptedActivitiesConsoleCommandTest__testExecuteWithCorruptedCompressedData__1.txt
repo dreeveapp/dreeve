@@ -10,15 +10,12 @@ Configuredimportmode:stravaApi
 
 
 Scanningactivities...
-Found3activitieswithcorrupteddata
+Found1activitieswithcorrupteddata
 
 
-*Activity"Ride06012026"
-*Activity"Testactivity10102023"
 *Activity"Testactivity10102023"
 
 Doyouwanttodeletetheseactivitiessotheycanbereimportedinthenextrun?(yes/no)[yes]:
 >
 Deletingactivities...
-=>Activity"Ride06012026"deleted
 =>Activity"Testactivity10102023"deleted

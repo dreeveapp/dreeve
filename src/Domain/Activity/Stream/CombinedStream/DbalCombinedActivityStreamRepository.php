@@ -30,6 +30,15 @@ final readonly class DbalCombinedActivityStreamRepository extends DbalRepository
         ]);
     }
 
+    public function deleteForActivity(ActivityId $activityId): void
+    {
+        $sql = 'DELETE FROM CombinedActivityStream WHERE activityId = :activityId';
+
+        $this->connection->executeStatement($sql, [
+            'activityId' => $activityId,
+        ]);
+    }
+
     public function countChartableStreamTypesFor(ActivityId $activityId, UnitSystem $unitSystem): int
     {
         $sql = 'SELECT streamTypes FROM CombinedActivityStream

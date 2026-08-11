@@ -2,6 +2,7 @@
 
 namespace App\Tests\Infrastructure\ValueObject\String;
 
+use App\Infrastructure\Exception\CorruptedData;
 use App\Infrastructure\ValueObject\String\CompressedString;
 use PHPUnit\Framework\TestCase;
 
@@ -39,7 +40,8 @@ class CompressedStringTest extends TestCase
 
     public function testUncompressThrowsOnInvalidData(): void
     {
-        $this->expectExceptionObject(new \RuntimeException('ZSTD decompression failed'));
+        $this->expectExceptionObject(new CorruptedData('ZSTD decompression failed. This is usually caused by corrupted activity data.
+Please see the troubleshooting guide for steps to resolve the issue: https://docs.dreeve.app/#/troubleshooting/import-build-fails for more information.'));
 
         $compressed = CompressedString::fromCompressed('this-is-not-zstd');
         $compressed->uncompress();
