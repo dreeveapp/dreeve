@@ -1,0 +1,26 @@
+@layer components {
+    [data-drag-handle] {
+        @apply cursor-grab select-none;
+        touch-action: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+
+        &:active {
+            @apply cursor-grabbing;
+        }
+    }
+
+    .drag-sort-ghost {
+        @apply opacity-40;
+    }
+
+    .drag-sort-chosen {
+        @apply select-none;
+        -webkit-user-select: none;
+    }
+
+    .drag-sort-dragging {
+        @apply shadow-lg opacity-90;
+        cursor: grabbing;
+    }
+}

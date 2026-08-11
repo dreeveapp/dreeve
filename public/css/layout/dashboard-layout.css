@@ -1,19 +1,24 @@
 @layer components {
+    /* Mirrors the real dashboard: a single column until xl, then the 6 column grid. */
     [data-widget-grid] {
+        > [data-width] {
+            @apply col-span-1;
+        }
+
         > [data-width="33"] {
-            @apply col-span-2;
+            @apply xl:col-span-2;
         }
 
         > [data-width="50"] {
-            @apply col-span-3;
+            @apply xl:col-span-3;
         }
 
         > [data-width="66"] {
-            @apply col-span-4;
+            @apply xl:col-span-4;
         }
 
         > [data-width="100"] {
-            @apply col-span-6;
+            @apply xl:col-span-6;
         }
     }
 

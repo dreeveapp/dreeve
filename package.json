@@ -5,6 +5,7 @@
     "leaflet": "^1.9.4",
     "lightgallery": "^2.9.0",
     "marked": "^17.0.1",
+    "sortablejs": "^1.15.7",
     "tailwind-scrollbar": "^4.0.2",
     "tailwindcss": "^4.2.4",
     "webpack": "^5.102.1",

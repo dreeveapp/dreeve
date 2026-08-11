@@ -6,6 +6,7 @@
 @import "./components/checkbox-multiselect.css";
 @import "./components/combobox.css";
 @import "./components/data-table.css";
+@import "./components/drag-sort.css";
 @import "./components/filter-dropdown.css";
 @import "./components/form.css";
 @import "./components/loader.css";

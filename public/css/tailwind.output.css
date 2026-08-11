@@ -2232,9 +2232,6 @@
   .grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
-  .grid-cols-6 {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
   .grid-cols-7 {
     grid-template-columns: repeat(7, minmax(0, 1fr));
   }
@@ -3548,9 +3545,6 @@
   }
   .opacity-0 {
     opacity: 0%;
-  }
-  .opacity-40 {
-    opacity: 40%;
   }
   .opacity-60 {
     opacity: 60%;
@@ -5145,6 +5139,29 @@ table.data-table {
   container-type: inline-size;
 }
 @layer components {
+  [data-drag-handle] {
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    &:active {
+      cursor: grabbing;
+    }
+  }
+  .drag-sort-ghost {
+    opacity: 40%;
+  }
+  .drag-sort-chosen {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .drag-sort-dragging {
+    opacity: 90%;
+    --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    cursor: grabbing;
+  }
   div.filter-dropdown > button[data-dropdown] {
     display: inline-flex;
     width: fit-content;
@@ -6154,17 +6171,22 @@ table.data-table {
       }
     }
   }
-  [data-widget-grid] > [data-width="33"] {
-    grid-column: span 2 / span 2;
+  [data-widget-grid] > [data-width] {
+    grid-column: span 1 / span 1;
   }
-  [data-widget-grid] > [data-width="50"] {
-    grid-column: span 3 / span 3;
-  }
-  [data-widget-grid] > [data-width="66"] {
-    grid-column: span 4 / span 4;
-  }
-  [data-widget-grid] > [data-width="100"] {
-    grid-column: span 6 / span 6;
+  @media (width >= 80rem) {
+    [data-widget-grid] > [data-width="33"] {
+      grid-column: span 2 / span 2;
+    }
+    [data-widget-grid] > [data-width="50"] {
+      grid-column: span 3 / span 3;
+    }
+    [data-widget-grid] > [data-width="66"] {
+      grid-column: span 4 / span 4;
+    }
+    [data-widget-grid] > [data-width="100"] {
+      grid-column: span 6 / span 6;
+    }
   }
   [data-width-seg] button {
     cursor: pointer;
