@@ -260,6 +260,7 @@ Password: Passwort
 'Pick a device you already recorded with, or type a new name.': 'Wähle ein Gerät, mit dem du bereits aufgezeichnet hast, oder gib einen neuen Namen ein.'
 'Pick the rules you want to apply to see which activities would change.': 'Pick the rules you want to apply to see which activities would change.'
 'Polyline color': Routenfarbe
+'Preview selection': 'Preview selection'
 'Processed on': 'Verarbeitet am'
 'Profile picture URL': Profilbild-URL
 Provider: Anbieter
@@ -421,7 +422,6 @@ URL: URL
 Unit: Einheit
 'Unit system': Einheitensystem
 'Unsupported file type': 'Nicht unterstützter Dateityp'
-'Update preview': 'Update preview'
 'Upload activity files': 'Aktivitätsdateien hochladen'
 'Upload failed': 'Upload fehlgeschlagen'
 'Upload files': 'Dateien hochladen'
