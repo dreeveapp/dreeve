@@ -1,8 +1,8 @@
 {% autoescape false %}
     {% set extensions = extensions ?? supportedImageExtensions() %}
     {% set maxImages = maxImages ?? 1 %}
-    {% set maxFileSize = maxFileSize ?? 5 %}
-    {% set maxTotalSize = maxTotalSize ?? 15 %}
+    {% set maxFileSize = maxFileSize ?? 10 %}
+    {% set maxTotalSize = maxTotalSize ?? 30 %}
     {% set name = name ?? 'images' %}
     {% set existingImages = existingImages ?? [] %}
     {% set id = id ?? ('image-dropzone-' ~ name) %}
