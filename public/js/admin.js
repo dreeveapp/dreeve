@@ -15,6 +15,7 @@ import FileDropzoneUpload from "./features/file-upload/file-dropzone-upload";
 import {initImageDropZones} from "./features/file-upload/image-dropzone-upload";
 import initDashboardLayout from "./features/dashboard/dashboard-layout";
 import initSortableLists from "./components/sortable-list";
+import initAsyncContent from "./components/async-content";
 import {initDrawers, initCollapses} from "flowbite";
 
 initDrawers();
@@ -37,3 +38,4 @@ new FileDropzoneUpload(document).init();
 initImageDropZones(document);
 initDashboardLayout(document);
 initSortableLists(document);
+initAsyncContent(document);

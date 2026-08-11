@@ -1,11 +1,14 @@
 24-hour: 24-Stunden
+'A backfill is already queued. It runs on the next import cycle, within five minutes.': 'A backfill is already queued. It runs on the next import cycle, within five minutes.'
 'A rule applies': 'Eine Regel trifft zu'
 AI: KI
 AM/PM: AM/PM
 'API key': API-Schlüssel
 Active: Aktiv
 'Activities excluded from peak power outputs': 'Aktivitäten, die von Maximalleistungswerten ausgeschlossen werden'
+'Activities scanned': 'Activities scanned'
 'Activities to skip during import': 'Aktivitäten, die beim Import übersprungen werden'
+'Activities to update': 'Activities to update'
 'Activities will appear here once they are imported.': 'Aktivitäten werden hier angezeigt, sobald sie importiert wurden.'
 Activity: Aktivität
 'Activity ID': Aktivitäts-ID
@@ -50,6 +53,7 @@ Admin: Admin
 Appearance: Darstellung
 Applied: Applied
 Apply: Anwenden
+'Apply to existing activities': 'Apply to existing activities'
 'Are you sure you want to delete the import of {name}?': 'Möchtest du den Import von {name} wirklich löschen?'
 'Are you sure you want to delete the {component} component?': 'Möchtest du die Komponente {component} wirklich löschen?'
 'Are you sure you want to delete the {rule} rule?': 'Möchtest du die Regel {rule} wirklich löschen?'
@@ -59,7 +63,7 @@ Apply: Anwenden
 'Assign gear': 'Ausrüstung zuweisen'
 'Athlete settings': Athleteneinstellung
 'Attached to': 'Zugeordnet zu'
-'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom.': 'Fülle Ausrüstung, Pendelfahrten, Sportarten und mehr bei neu importierten Aktivitäten automatisch aus. Regeln werden von oben nach unten abgearbeitet.'
+'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom, and can also be applied to activities you already imported.': 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom, and can also be applied to activities you already imported.'
 'Automation rules': Automatisierungsregeln
 'Automation rules are only available in file import mode': 'Automatisierungsregeln sind nur im Dateiimportmodus verfügbar.'
 'Available tokens': 'Verfügbare Tokens'
@@ -103,6 +107,7 @@ Delete: Löschen
 'Delete component': 'Komponente löschen'
 'Delete file import': 'Dateiimport löschen'
 'Delete maintenance log': 'Wartungsprotokoll löschen'
+'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.'
 Deleting...: 'wird gelöscht...'
 Description: Beschreibung
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Ausführliche Anleitungen findest du in {linkOpen}der Dokumentation{linkClose}.'
@@ -172,7 +177,7 @@ Import: Import
 'Import pending': 'Import pending'
 'Import segment details': 'Segmentdetails importieren'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Segmentdetails importieren, damit Segmentkarten angezeigt werden können. Dies erfordert einen zusätzlichen Strava-API-Aufruf pro Segment und erhöht die Importzeit erheblich.'
-'Import source': 'Importquelle'
+'Import source': Importquelle
 'Imported files will appear here once you upload them.': 'Importierte Dateien werden hier angezeigt, sobald du sie hochlädst.'
 'Imported from Strava': 'Von Strava importiert'
 'Imports new Strava activities.': 'Imports new Strava activities.'
@@ -200,6 +205,7 @@ Match: Übereinstimmung
 "Matches on the activity's finishing point.": 'Übereinstimmungen am Ende der Aktivität.'
 "Matches on the activity's starting point.": 'Übereinstimmungen am Beginn der Aktivität'
 'Matches when any point of the route comes near the location.': 'Übereinstimmung, wenn irgendein Punkt der Route in die Nähe des Punktes kommt.'
+'Matching activities': 'Matching activities'
 'Max heart rate (bpm)': 'Max. herzfrequenz (bpm)'
 'Max heart rate formula': 'Formel für max. Herzfrequenz'
 Message: Nachricht
@@ -221,6 +227,7 @@ Monday: Montag
 'No maintenance logs yet.': 'Noch keine Wartungsprotokolle vorhanden.'
 'No recording devices yet.': 'Noch keine Aufzeichnungsgeräte vorhanden.'
 'No rule applies': 'Keine Regel trifft zu'
+'No rules selected yet.': 'No rules selected yet.'
 'No sport types selected': 'Keine Sportarten ausgewählt'
 'No unit': 'keine Einheit'
 'Normal date format': 'Normales Datumsformat'
@@ -251,10 +258,12 @@ Password: Passwort
 'Performed on': 'Durchgeführt am'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos der ausgewählten Sportarten werden von der Fotogalerie ausgeschlossen.'
 'Pick a device you already recorded with, or type a new name.': 'Wähle ein Gerät, mit dem du bereits aufgezeichnet hast, oder gib einen neuen Namen ein.'
-'Polyline color': 'Routenfarbe'
+'Pick the rules you want to apply to see which activities would change.': 'Pick the rules you want to apply to see which activities would change.'
+'Polyline color': Routenfarbe
 'Processed on': 'Verarbeitet am'
 'Profile picture URL': Profilbild-URL
 Provider: Anbieter
+Queueing...: Queueing...
 Radius: Radius
 'Recording device': Aufzeichnungsgerät
 'Recording device management': 'Verwaltung der Aufzeichnungsgeräte'
@@ -284,6 +293,7 @@ Retired: Ausgemustert
 'Return to app': 'Zurück zur App'
 Ride: Radfahrt
 Rules: Regeln
+'Rules to apply': 'Rules to apply'
 Saturday: Samstag
 Save: Speichern
 'Save settings': 'Einstellungen speichern'
@@ -295,6 +305,8 @@ Seconds: Sekunden
 'Select a component first...': 'Wähle zuerst eine Komponente aus...'
 'Select a component…': 'Komponente auswählen…'
 'Select all': 'Alle auswählen'
+'Select at least one activity.': 'Select at least one activity.'
+'Select at least one rule.': 'Select at least one rule.'
 'Select at least one sport type.': 'Wähle mindestens eine Sportart aus.'
 'Select at least one weekday.': 'Wähle mindestens einen Wochentag.'
 'Select device...': 'Gerät auswählen...'
@@ -359,6 +371,7 @@ Tasks: Aufgaben
 'The average heart rate': 'Die durchschnittliche Herzfrequenz'
 'The average power': 'Die durchschnittliche Leistung'
 'The average speed': 'Die durchschnittliche Geschwindigkeit'
+'The backfill runs on the next import cycle, using the rules as they are configured at that moment. This cannot be undone.': 'The backfill runs on the next import cycle, using the rules as they are configured at that moment. This cannot be undone.'
 'The calories burned': 'Die verbrannten Kalorien'
 'The color of the routes drawn on every map. Accepts any valid CSS color, e.g. red, #FF0000 or rgb(255,0,0).': 'Die Farbe der Routen, die auf den Karten gezeichnet werden. Akzeptiert jede gültige CSS-Farbe, z.B. red, #FF0000 oder rgb(255,0,0).'
 'The current name of the activity': 'Der aktuelle Name der Aktivität'
@@ -384,9 +397,9 @@ Tasks: Aufgaben
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'Der sichtbare Bereich, in dem sich die Heatmap öffnet. Sowohl das Zentrum als auch die Zoomstufe werden benötigt. Lass sie leer, um automatisch auf deinen aktivsten Bereich zu zoomen.'
 'The workout type': 'Der Trainingstyp'
 'Then do this': 'Dann ausführen'
+'These rules will be applied to your existing activities on the next import cycle.': 'These rules will be applied to your existing activities on the next import cycle.'
 'This action cannot be undone.': 'Diese Aktion kann nicht rückgängig gemacht werden.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Diese Komponente ist an mehreren Ausrüstungen montiert. Wähle die aus, die du gewartet hast.'
-'This only affects future imports. Already imported activities are left untouched. This action cannot be undone.': 'Dies betrifft ausschließlich zukünftige Importe. Bereits importierte Aktivitäten bleiben unberührt. Diese Maßnahme kann nicht rückgängig gemacht werden.'
 'This only removes the import record, the imported activity is kept.': 'Dadurch wird lediglich der Importdatensatz entfernt, die importierte Aktivität bleibt erhalten.'
 "This value is imported from Strava and can't be edited here.": 'Dieser Wert wird von Strava importiert und kann hier nicht bearbeitet werden.'
 'This widget still needs to be configured.': 'Dieses Widget muss noch konfiguriert werden.'
@@ -408,6 +421,7 @@ URL: URL
 Unit: Einheit
 'Unit system': Einheitensystem
 'Unsupported file type': 'Nicht unterstützter Dateityp'
+'Update preview': 'Update preview'
 'Upload activity files': 'Aktivitätsdateien hochladen'
 'Upload failed': 'Upload fehlgeschlagen'
 'Upload files': 'Dateien hochladen'
@@ -436,7 +450,7 @@ Weekdays: Wochentage
 'Your measured max heart rate, applied from the given date onwards.': 'Deine gemessene maximale Herzfrequenz, angewendet ab dem angegebenen Datum.'
 'Your measured resting heart rate, applied from the given date onwards.': 'Dein gemessener Ruhepuls, angewendet ab dem angegebenen Datum.'
 Zone: Zone
-'Zoom level': 'Zoomstufe'
+'Zoom level': Zoomstufe
 Zwift: Zwift
 'Zwift level': Zwift-Level
 'Zwift racing score': 'Zwift Rennwert'

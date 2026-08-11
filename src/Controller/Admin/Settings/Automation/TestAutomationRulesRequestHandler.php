@@ -40,7 +40,8 @@ final readonly class TestAutomationRulesRequestHandler
             throw new NotFoundHttpException('Automation rules are only available in file import mode');
         }
 
-        if ($this->automationRuleRepository->findAll()->isEmpty()) {
+        $automationRules = $this->automationRuleRepository->findAll();
+        if ($automationRules->isEmpty()) {
             throw new NotFoundHttpException('There are no automation rules to test');
         }
 
@@ -64,6 +65,7 @@ final readonly class TestAutomationRulesRequestHandler
             'notFound' => $notFound,
             'conditions' => $this->conditions->all(),
             'actions' => $this->actions->all(),
+            'hasEnabledRules' => !$automationRules->enabled()->isEmpty(),
         ]));
     }
 }

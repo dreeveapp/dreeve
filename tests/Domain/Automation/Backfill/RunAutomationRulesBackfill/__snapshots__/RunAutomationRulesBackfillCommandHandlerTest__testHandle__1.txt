@@ -1,0 +1,5 @@
+Applying automation rules to existing activities...
+  => Updated "Morning ride"
+  => Updated "Commute ride"
+  => Updated "Evening run"
+Automation rules applied to 3 activities

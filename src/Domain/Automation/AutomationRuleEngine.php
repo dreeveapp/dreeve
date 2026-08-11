@@ -10,25 +10,28 @@ use App\Domain\Automation\Action\Actions;
 final readonly class AutomationRuleEngine
 {
     public function __construct(
-        private AutomationRuleRepository $automationRuleRepository,
         private AutomationRuleMatcher $matcher,
         private Actions $actions,
     ) {
     }
 
-    public function apply(Activity $activity): Activity
+    public function apply(Activity $activity, AutomationRules $rules): Activity
+    {
+        return $this->applyWithReport($activity, $rules)->getActivity();
+    }
+
+    public function applyWithReport(Activity $activity, AutomationRules $rules): AutomationRuleApplication
     {
         // Conditions are always evaluated against the activity as it entered the engine,
         // so earlier rules cannot influence which later rules match.
         $originalActivity = $activity;
+        $appliedRuleIds = [];
 
-        foreach ($this->automationRuleRepository->findAll() as $rule) {
-            if (!$rule->isEnabled()) {
-                continue;
-            }
+        foreach ($rules as $rule) {
             if (!$this->matcher->matches($rule, $originalActivity)) {
                 continue;
             }
+            $appliedRuleIds[] = $rule->getId();
             foreach ($rule->getActions() as $configuredAction) {
                 if (!$this->actions->has($configuredAction->getType())) {
                     continue;
@@ -42,6 +45,6 @@ final readonly class AutomationRuleEngine
             }
         }
 
-        return $activity;
+        return new AutomationRuleApplication($activity, $appliedRuleIds);
     }
 }

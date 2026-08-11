@@ -53,7 +53,8 @@ class AutomationRuleEngineTest extends ContainerTestCase
         );
 
         $result = $this->engine->apply(
-            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build()
+            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build(),
+            $this->repository->findAll()
         );
 
         $this->assertTrue($result->isCommute());
@@ -85,12 +86,16 @@ class AutomationRuleEngineTest extends ContainerTestCase
             sortOrder: 1,
         );
 
-        $result = $this->engine->apply(
-            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withIsCommute(false)->build()
-        );
+        $activity = ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withIsCommute(false)->build();
+        $result = $this->engine->apply($activity, $this->repository->findAll());
 
         $this->assertSame('First', $result->getName());
         $this->assertFalse($result->isCommute(), 'The second rule must never run once a matched rule stopped processing.');
+        $this->assertEquals(
+            [AutomationRuleId::fromUnprefixed('first')],
+            $this->engine->applyWithReport($activity, $this->repository->findAll())->getAppliedRuleIds(),
+            'A rule that stopped processing is the last one reported as applied.'
+        );
     }
 
     public function testAllMatchingRulesApplyWhenTheyDoNotStopProcessing(): void
@@ -119,13 +124,17 @@ class AutomationRuleEngineTest extends ContainerTestCase
             stopProcessing: false,
         );
 
-        $result = $this->engine->apply(
-            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withIsCommute(false)->build()
-        );
+        $activity = ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withIsCommute(false)->build();
+        $result = $this->engine->apply($activity, $this->repository->findAll());
 
         $this->assertSame('Second', $result->getName(), 'A later rule overwrites the value set by an earlier rule.');
         $this->assertTrue($result->isCommute());
         $this->assertSame('From second rule', $result->getDescription());
+        $this->assertEquals(
+            [AutomationRuleId::fromUnprefixed('first'), AutomationRuleId::fromUnprefixed('second')],
+            $this->engine->applyWithReport($activity, $this->repository->findAll())->getAppliedRuleIds(),
+            'Every rule that applied is reported, in the order they ran.'
+        );
     }
 
     public function testConditionsAreEvaluatedAgainstTheOriginalActivity(): void
@@ -164,7 +173,8 @@ class AutomationRuleEngineTest extends ContainerTestCase
         );
 
         $result = $this->engine->apply(
-            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withIsCommute(false)->build()
+            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withIsCommute(false)->build(),
+            $this->repository->findAll()
         );
 
         $this->assertSame(SportType::GRAVEL_RIDE, $result->getSportType());
@@ -195,13 +205,14 @@ class AutomationRuleEngineTest extends ContainerTestCase
         );
 
         $result = $this->engine->apply(
-            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build()
+            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build(),
+            $this->repository->findAll()
         );
 
         $this->assertSame('Applied', $result->getName(), 'Only a rule that actually matched can stop processing.');
     }
 
-    public function testDisabledRulesAreSkipped(): void
+    public function testEveryRuleHandedInIsApplied(): void
     {
         $this->saveRule(
             id: 'disabled',
@@ -213,22 +224,13 @@ class AutomationRuleEngineTest extends ContainerTestCase
             ]),
             enabled: false,
         );
-        $this->saveRule(
-            id: 'enabled',
-            conditions: ConfiguredConditions::fromArray([
-                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
-            ]),
-            actions: ConfiguredActions::fromArray([
-                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'From enabled rule'])),
-            ]),
-            sortOrder: 1,
-        );
 
         $result = $this->engine->apply(
-            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build()
+            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->build(),
+            $this->repository->findAll()
         );
 
-        $this->assertSame('From enabled rule', $result->getName());
+        $this->assertSame('From disabled rule', $result->getName(), 'Filtering out disabled rules is the callers job, not the engines.');
     }
 
     public function testRuleAppliesOnlyWhenAllConditionsMatch(): void
@@ -254,8 +256,8 @@ class AutomationRuleEngineTest extends ContainerTestCase
             ->withDistance(Kilometer::from(80.0))
             ->build();
 
-        $this->assertSame('Untouched', $this->engine->apply($shortRide)->getName(), 'One condition failing means the rule does not apply.');
-        $this->assertSame('Long ride', $this->engine->apply($longRide)->getName());
+        $this->assertSame('Untouched', $this->engine->apply($shortRide, $this->repository->findAll())->getName(), 'One condition failing means the rule does not apply.');
+        $this->assertSame('Long ride', $this->engine->apply($longRide, $this->repository->findAll())->getName());
     }
 
     public function testActivityIsUnchangedWhenNoRuleMatches(): void
@@ -271,7 +273,7 @@ class AutomationRuleEngineTest extends ContainerTestCase
         );
 
         $ride = ActivityBuilder::fromDefaults()->withName('Original')->withSportType(SportType::RIDE)->build();
-        $result = $this->engine->apply($ride);
+        $result = $this->engine->apply($ride, $this->repository->findAll());
 
         $this->assertEquals($ride, $result);
         $this->assertSame('Original', $result->getName());
@@ -294,7 +296,7 @@ class AutomationRuleEngineTest extends ContainerTestCase
             ->withSportType(SportType::RIDE)
             ->withPolyline((string) EncodedPolyline::fromCoordinates([[48.0, 2.0], [51.055, 4.0], [45.0, 1.0]]))
             ->build();
-        $result = $this->engine->apply($activity);
+        $result = $this->engine->apply($activity, $this->repository->findAll());
 
         $this->assertEquals(GearId::fromString('gear-my-bike'), $result->getGearId());
         $this->assertSame(SportType::GRAVEL_RIDE, $result->getSportType());
@@ -331,8 +333,8 @@ class AutomationRuleEngineTest extends ContainerTestCase
             Longitude::fromString((string) 4.0),
         ))->build();
 
-        $this->assertSame('Started near home', $this->engine->apply($startsNear)->getName());
-        $this->assertSame('Started away', $this->engine->apply($startsFar)->getName());
+        $this->assertSame('Started near home', $this->engine->apply($startsNear, $this->repository->findAll())->getName());
+        $this->assertSame('Started away', $this->engine->apply($startsFar, $this->repository->findAll())->getName());
     }
 
     public function testMatchesOnWeekdayAndTimeOfDay(): void
@@ -357,8 +359,8 @@ class AutomationRuleEngineTest extends ContainerTestCase
             ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 15:30:00'))
             ->build();
 
-        $this->assertSame('Early weekday ride', $this->engine->apply($tuesdayMorning)->getName());
-        $this->assertSame('Untouched', $this->engine->apply($tuesdayAfternoon)->getName(), 'Afternoon fails the time-of-day condition.');
+        $this->assertSame('Early weekday ride', $this->engine->apply($tuesdayMorning, $this->repository->findAll())->getName());
+        $this->assertSame('Untouched', $this->engine->apply($tuesdayAfternoon, $this->repository->findAll())->getName(), 'Afternoon fails the time-of-day condition.');
     }
 
     public function testMatchesOnDeviceAndNegativeSportTypeOperator(): void
@@ -387,15 +389,15 @@ class AutomationRuleEngineTest extends ContainerTestCase
             ->withIsCommute(false)
             ->build();
 
-        $this->assertTrue($this->engine->apply($matching)->isCommute());
-        $this->assertFalse($this->engine->apply($wrongDevice)->isCommute(), 'A different device must not satisfy the device condition.');
+        $this->assertTrue($this->engine->apply($matching, $this->repository->findAll())->isCommute());
+        $this->assertFalse($this->engine->apply($wrongDevice, $this->repository->findAll())->isCommute(), 'A different device must not satisfy the device condition.');
     }
 
     public function testActivityIsReturnedUnchangedWhenNoRulesExist(): void
     {
         $activity = ActivityBuilder::fromDefaults()->withName('Untouched')->build();
 
-        $this->assertEquals($activity, $this->engine->apply($activity));
+        $this->assertEquals($activity, $this->engine->apply($activity, $this->repository->findAll()));
     }
 
     public function testRuleWithoutConditionsIsSkipped(): void
@@ -409,7 +411,10 @@ class AutomationRuleEngineTest extends ContainerTestCase
             ]),
         );
 
-        $result = $this->engine->apply(ActivityBuilder::fromDefaults()->withName('Untouched')->build());
+        $result = $this->engine->apply(
+            ActivityBuilder::fromDefaults()->withName('Untouched')->build(),
+            $this->repository->findAll()
+        );
 
         $this->assertSame('Untouched', $result->getName());
     }
@@ -434,7 +439,8 @@ class AutomationRuleEngineTest extends ContainerTestCase
         ]);
 
         $result = $this->engine->apply(
-            ActivityBuilder::fromDefaults()->withName('Untouched')->withSportType(SportType::RIDE)->build()
+            ActivityBuilder::fromDefaults()->withName('Untouched')->withSportType(SportType::RIDE)->build(),
+            $this->repository->findAll()
         );
 
         $this->assertSame('Applied', $result->getName());
@@ -454,13 +460,13 @@ class AutomationRuleEngineTest extends ContainerTestCase
         );
 
         $engine = new AutomationRuleEngine(
-            $this->repository,
             $this->getContainer()->get(AutomationRuleMatcher::class),
             new Actions([new SetNameAction(new Tokenizer([]))]),
         );
 
         $result = $engine->apply(
-            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withIsCommute(false)->build()
+            ActivityBuilder::fromDefaults()->withSportType(SportType::RIDE)->withIsCommute(false)->build(),
+            $this->repository->findAll()
         );
 
         $this->assertSame('Applied', $result->getName());

@@ -1,0 +1,8 @@
+[
+    {
+        "commandName": "App\\Domain\\Automation\\Backfill\\RunAutomationRulesBackfill\\RunAutomationRulesBackfill",
+        "payload": {
+            "output": {}
+        }
+    }
+]

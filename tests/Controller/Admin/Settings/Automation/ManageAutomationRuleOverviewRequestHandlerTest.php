@@ -17,6 +17,10 @@ use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
 use App\Domain\Import\ImportMode;
+use App\Infrastructure\KeyValue\Key;
+use App\Infrastructure\KeyValue\KeyValue;
+use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Infrastructure\KeyValue\Value;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Automation\AutomationRuleBuilder;
@@ -59,6 +63,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('No automation rules yet.', $crawler->filter('body')->text());
         $this->assertCount(0, $crawler->filter('[data-sortable-list]'));
         $this->assertCount(0, $crawler->filter('a[href*="automation-rules/test"]'));
+        $this->assertCount(0, $crawler->filter('a[href*="automation-rules/backfill"]'));
     }
 
     public function testItRendersTheRulesWithTheirConditionsActionsAndState(): void
@@ -103,6 +108,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
 
         $this->assertCount(1, $crawler->filter('a[href*="automation-rules/test"]'));
+        $this->assertCount(2, $crawler->filter('a[href*="automation-rules/backfill"]'));
 
         $list = $crawler->filter('[data-sortable-list]');
         $this->assertCount(1, $list);
@@ -138,6 +144,33 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
 
         $distancePill = $items->eq(1)->filter('.rounded-full.pill--neutral')->eq(0);
         $this->assertCount(2, $distancePill->children());
+    }
+
+    public function testItRendersTheQueuedBannerInsteadOfTheBackfillButton(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+
+        static::getContainer()->get(AutomationRuleRepository::class)->add(
+            AutomationRuleBuilder::fromDefaults()
+                ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('1'))
+                ->withIsEnabled(true)
+                ->build()
+        );
+        static::getContainer()->get(KeyValueStore::class)->save(KeyValue::fromState(
+            key: Key::AUTOMATION_RULES_BACKFILL,
+            value: Value::fromString('2025-12-04 10:00:00'),
+        ));
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/settings/automation-rules');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(1, $crawler->filter('a[href*="automation-rules/backfill"]'));
+        $this->assertStringContainsString(
+            'These rules will be applied to your existing activities on the next import cycle.',
+            $crawler->filter('body')->text()
+        );
     }
 
     public function testItRendersAPillForEveryConditionAndActionType(): void

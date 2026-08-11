@@ -1,0 +1,45 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block main %}
+    {% autoescape false %}
+    {% include 'html/admin/page/settings/automation-rules/_sub-menu.html.twig' with {activeMenuItem: 'backfill', hasEnabledRules: true} only %}
+    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <div class="mb-4">
+            <h3 class="text-lg font-semibold">{{ "Apply to existing activities"|trans({}, 'admin') }}</h3>
+        </div>
+
+        {% if isQueued %}
+            <div class="alert alert--info" role="alert">
+                {{ "A backfill is already queued. It runs on the next import cycle, within five minutes."|trans({}, 'admin') }}
+            </div>
+        {% else %}
+            <form method="GET" class="mb-4 rounded-lg border border-gray-200 bg-gray-50 p-3">
+                <span class="block text-sm font-semibold text-gray-800">{{ "Rules to apply"|trans({}, 'admin') }}</span>
+                <div class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2" data-required-checkbox-group="{{ "Select at least one rule."|trans({}, 'admin') }}">
+                    {% for automationRule in automationRules %}
+                        <label class="inline-flex cursor-pointer items-center gap-x-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-600 shadow-xs transition-colors hover:bg-gray-50 hover:text-gray-900 has-checked:border-primary has-checked:bg-primary-soft has-checked:text-primary">
+                            <input type="checkbox" class="shrink-0" name="automationRuleIds[]" value="{{ automationRule.id }}" {{ automationRule.isSelected ? 'checked' : '' }}>
+                            <span class="truncate">{{ automationRule.label }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+                <div class="mt-3 flex justify-end">
+                    <button type="submit" class="btn--secondary">{{ "Update preview"|trans({}, 'admin') }}</button>
+                </div>
+            </form>
+
+            {% if selectedAutomationRuleIds is empty %}
+                <div class="flex flex-col items-center justify-center gap-1 py-12 px-4 text-center">
+                    <span class="text-sm font-medium text-gray-800">{{ "No rules selected yet."|trans({}, 'admin') }}</span>
+                    <span class="text-xs text-gray-500">{{ "Pick the rules you want to apply to see which activities would change."|trans({}, 'admin') }}</span>
+                </div>
+            {% else %}
+                <div data-async-content-url="{{ relativeUrl(path('admin_backfill_automation_rules_preview', {automationRuleIds: selectedAutomationRuleIds})) }}">
+                    <div class="flex min-h-64 items-center justify-center">
+                        {% include 'html/loader.html.twig' with {modifier: 'loader--md'} %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+    {% endautoescape %}
+{% endblock main %}

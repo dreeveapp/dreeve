@@ -15,4 +15,16 @@ final class AutomationRules extends Collection
     {
         return AutomationRule::class;
     }
+
+    public function enabled(): self
+    {
+        return $this->filter(static fn (AutomationRule $automationRule): bool => $automationRule->isEnabled());
+    }
+
+    public function only(AutomationRuleIds $automationRuleIds): self
+    {
+        $ids = array_map(strval(...), $automationRuleIds->toArray());
+
+        return $this->filter(static fn (AutomationRule $automationRule): bool => in_array((string) $automationRule->getId(), $ids, true));
+    }
 }

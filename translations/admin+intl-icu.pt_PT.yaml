@@ -1,11 +1,14 @@
 24-hour: 24-hour
+'A backfill is already queued. It runs on the next import cycle, within five minutes.': 'A backfill is already queued. It runs on the next import cycle, within five minutes.'
 'A rule applies': 'A rule applies'
 AI: AI
 AM/PM: AM/PM
 'API key': 'API key'
 Active: Active
 'Activities excluded from peak power outputs': 'Activities excluded from peak power outputs'
+'Activities scanned': 'Activities scanned'
 'Activities to skip during import': 'Activities to skip during import'
+'Activities to update': 'Activities to update'
 'Activities will appear here once they are imported.': 'Activities will appear here once they are imported.'
 Activity: Activity
 'Activity ID': 'Activity ID'
@@ -50,6 +53,7 @@ Admin: Admin
 Appearance: Appearance
 Applied: Applied
 Apply: Aplicar
+'Apply to existing activities': 'Apply to existing activities'
 'Are you sure you want to delete the import of {name}?': 'Are you sure you want to delete the import of {name}?'
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
 'Are you sure you want to delete the {rule} rule?': 'Are you sure you want to delete the {rule} rule?'
@@ -59,7 +63,7 @@ Apply: Aplicar
 'Assign gear': 'Assign gear'
 'Athlete settings': 'Athlete settings'
 'Attached to': 'Attached to'
-'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom.': 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom.'
+'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom, and can also be applied to activities you already imported.': 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom, and can also be applied to activities you already imported.'
 'Automation rules': 'Automation rules'
 'Automation rules are only available in file import mode': 'Automation rules are only available in file import mode'
 'Available tokens': 'Available tokens'
@@ -103,6 +107,7 @@ Delete: Delete
 'Delete component': 'Delete component'
 'Delete file import': 'Delete file import'
 'Delete maintenance log': 'Delete maintenance log'
+'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.'
 Deleting...: Deleting...
 Description: Description
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.'
@@ -200,6 +205,7 @@ Match: Match
 "Matches on the activity's finishing point.": "Matches on the activity's finishing point."
 "Matches on the activity's starting point.": "Matches on the activity's starting point."
 'Matches when any point of the route comes near the location.': 'Matches when any point of the route comes near the location.'
+'Matching activities': 'Matching activities'
 'Max heart rate (bpm)': 'Max heart rate (bpm)'
 'Max heart rate formula': 'Max heart rate formula'
 Message: Message
@@ -221,6 +227,7 @@ Monday: Monday
 'No maintenance logs yet.': 'No maintenance logs yet.'
 'No recording devices yet.': 'No recording devices yet.'
 'No rule applies': 'No rule applies'
+'No rules selected yet.': 'No rules selected yet.'
 'No sport types selected': 'No sport types selected'
 'No unit': 'No unit'
 'Normal date format': 'Normal date format'
@@ -251,10 +258,12 @@ Password: Password
 'Performed on': 'Performed on'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
 'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
+'Pick the rules you want to apply to see which activities would change.': 'Pick the rules you want to apply to see which activities would change.'
 'Polyline color': 'Polyline color'
 'Processed on': 'Processed on'
 'Profile picture URL': 'Profile picture URL'
 Provider: Provider
+Queueing...: Queueing...
 Radius: Radius
 'Recording device': 'Recording device'
 'Recording device management': 'Recording device management'
@@ -284,6 +293,7 @@ Retired: Retired
 'Return to app': 'Return to app'
 Ride: Ride
 Rules: Rules
+'Rules to apply': 'Rules to apply'
 Saturday: Saturday
 Save: Save
 'Save settings': 'Save settings'
@@ -295,6 +305,8 @@ Seconds: Seconds
 'Select a component first...': 'Select a component first...'
 'Select a component…': 'Select a component…'
 'Select all': 'Select all'
+'Select at least one activity.': 'Select at least one activity.'
+'Select at least one rule.': 'Select at least one rule.'
 'Select at least one sport type.': 'Select at least one sport type.'
 'Select at least one weekday.': 'Select at least one weekday.'
 'Select device...': 'Select device...'
@@ -359,6 +371,7 @@ Tasks: Tasks
 'The average heart rate': 'The average heart rate'
 'The average power': 'The average power'
 'The average speed': 'The average speed'
+'The backfill runs on the next import cycle, using the rules as they are configured at that moment. This cannot be undone.': 'The backfill runs on the next import cycle, using the rules as they are configured at that moment. This cannot be undone.'
 'The calories burned': 'The calories burned'
 'The color of the routes drawn on every map. Accepts any valid CSS color, e.g. red, #FF0000 or rgb(255,0,0).': 'The color of the routes drawn on every map. Accepts any valid CSS color, e.g. red, #FF0000 or rgb(255,0,0).'
 'The current name of the activity': 'The current name of the activity'
@@ -384,9 +397,9 @@ Tasks: Tasks
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.'
 'The workout type': 'The workout type'
 'Then do this': 'Then do this'
+'These rules will be applied to your existing activities on the next import cycle.': 'These rules will be applied to your existing activities on the next import cycle.'
 'This action cannot be undone.': 'This action cannot be undone.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'This component is fitted to multiple gears, pick the one you serviced.'
-'This only affects future imports. Already imported activities are left untouched. This action cannot be undone.': 'This only affects future imports. Already imported activities are left untouched. This action cannot be undone.'
 'This only removes the import record, the imported activity is kept.': 'This only removes the import record, the imported activity is kept.'
 "This value is imported from Strava and can't be edited here.": "This value is imported from Strava and can't be edited here."
 'This widget still needs to be configured.': 'This widget still needs to be configured.'
@@ -408,6 +421,7 @@ URL: URL
 Unit: Unit
 'Unit system': 'Unit system'
 'Unsupported file type': 'Unsupported file type'
+'Update preview': 'Update preview'
 'Upload activity files': 'Upload activity files'
 'Upload failed': 'Upload failed'
 'Upload files': 'Upload files'

@@ -67,6 +67,9 @@ class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('Test automation rules', $crawler->filter('h3')->text());
         $this->assertCount(1, $crawler->filter('input[name="activityId"][data-autocomplete-url]'));
+
+        $this->assertCount(1, $crawler->filter('.tabs a[href*="automation-rules/test"]'));
+        $this->assertCount(1, $crawler->filter('.tabs a[href*="automation-rules/backfill"]'));
     }
 
     public function testItRendersTheTraceForAValidActivityId(): void

@@ -6,6 +6,7 @@ namespace App\Infrastructure\Daemon;
 
 use App\Console\Daemon\ProcessStravaWebhooksConsoleCommand;
 use App\Console\Daemon\PruneRenderCacheConsoleCommand;
+use App\Console\Daemon\RunAutomationRulesBackfillConsoleCommand;
 use App\Console\Daemon\RunFileImportConsoleCommand;
 use App\Domain\Import\ImportMode;
 use App\Domain\Settings\SettingsRepository;
@@ -105,6 +106,24 @@ final class SystemDaemon implements Daemon
                         clock: $this->clock,
                         output: $this->getConsoleOutput(),
                         command: sprintf('bin/console %s', RunFileImportConsoleCommand::NAME)
+                    );
+                    $process->start();
+
+                    return resolve(true);
+                }
+            );
+
+            $extraConfiguredCronActionsOutput[] = sprintf('<info> - runAutomationRulesBackfill: %s</info>', self::CRON_EVERY_5_MINUTES);
+            $actions[] = new Action(
+                key: 'runAutomationRulesBackfill',
+                mutexTtl: 300,
+                expression: self::CRON_EVERY_5_MINUTES,
+                performer: function (): PromiseInterface {
+                    $process = new CronProcess(
+                        cronActionId: 'runAutomationRulesBackfill',
+                        clock: $this->clock,
+                        output: $this->getConsoleOutput(),
+                        command: sprintf('bin/console %s', RunAutomationRulesBackfillConsoleCommand::NAME)
                     );
                     $process->start();
 

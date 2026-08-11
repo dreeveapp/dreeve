@@ -68,10 +68,10 @@ class ApplyAutomationRulesTest extends ContainerTestCase
         $this->repository = new DbalAutomationRuleRepository($this->getConnection());
         $this->applyAutomationRules = new ApplyAutomationRules(
             new AutomationRuleEngine(
-                $this->repository,
                 new AutomationRuleMatcher(new Conditions([new DistanceCondition()])),
                 new Actions([new SetNameAction()]),
             ),
+            $this->repository,
         );
     }
 }
