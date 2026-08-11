@@ -52,7 +52,7 @@ final readonly class GpxSerializer
         );
 
         $metadataNode = $rootNode->addChild('metadata');
-        $metadataNode->addChild('time', $activity->getStartDate()->format(self::DATE_TIME_FORMAT));
+        $metadataNode->addChild('time', $activity->getStartDate()->toUtc()->format(self::DATE_TIME_FORMAT));
 
         $trkNode = $rootNode->addChild('trk');
         $trkNode->addChild('name', Escape::forJsonEncode($activity->getName()));
@@ -73,7 +73,7 @@ final readonly class GpxSerializer
             $intervalInSeconds = \DateInterval::createFromDateString($time.' seconds');
             $trkptNode->addChild(
                 'time',
-                $activity->getStartDate()->add($intervalInSeconds)->format(self::DATE_TIME_FORMAT)
+                $activity->getStartDate()->add($intervalInSeconds)->toUtc()->format(self::DATE_TIME_FORMAT)
             );
 
             if (isset($altitudeStream[$i])) {

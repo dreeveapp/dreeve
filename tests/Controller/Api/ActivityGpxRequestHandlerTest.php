@@ -23,6 +23,23 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
         $this->assertMatchesXmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
+    public function testHandleConvertsLocalStartDateToUtc(): void
+    {
+        $originalTimezone = date_default_timezone_get();
+        date_default_timezone_set('Europe/Brussels');
+
+        try {
+            $this->provideFullTestSet();
+
+            $this->client->request('GET', '/api/activity/activity-9756441741/route.gpx');
+
+            $this->assertResponseIsSuccessful();
+            $this->assertMatchesXmlSnapshot((string) $this->client->getResponse()->getContent());
+        } finally {
+            date_default_timezone_set($originalTimezone);
+        }
+    }
+
     public function testHandleForActivityWithoutTimeStream(): void
     {
         $this->provideFullTestSet();
