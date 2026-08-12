@@ -2441,6 +2441,9 @@
   .overflow-auto {
     overflow: auto;
   }
+  .overflow-clip {
+    overflow: clip;
+  }
   .overflow-hidden {
     overflow: hidden;
   }
@@ -3552,9 +3555,6 @@
   .opacity-0 {
     opacity: 0%;
   }
-  .opacity-40 {
-    opacity: 40%;
-  }
   .opacity-60 {
     opacity: 60%;
   }
@@ -4279,8 +4279,14 @@
     .lg\:sticky {
       position: sticky;
     }
+    .lg\:top-18 {
+      top: calc(var(--spacing) * 18);
+    }
     .lg\:left-0 {
       left: 0px;
+    }
+    .lg\:z-10 {
+      z-index: 10;
     }
     .lg\:order-2 {
       order: 2;
@@ -4315,8 +4321,14 @@
     .lg\:grid-cols-4 {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
+    .lg\:bg-white {
+      background-color: var(--color-white);
+    }
     .lg\:px-6 {
       padding-inline: calc(var(--spacing) * 6);
+    }
+    .lg\:py-5 {
+      padding-block: calc(var(--spacing) * 5);
     }
     .lg\:py-16 {
       padding-block: calc(var(--spacing) * 16);
