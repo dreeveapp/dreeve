@@ -61,4 +61,47 @@ final readonly class ActivityBasedRouteRepository extends DbalRepository impleme
 
         return $routes;
     }
+
+    public function findSummary(): RouteSummary
+    {
+        $query = 'SELECT sportType, routeGeography
+                    FROM Activity
+                    WHERE sportType IN (:sportTypes)
+                    AND polyline IS NOT NULL AND polyline <> ""
+                    AND routeGeography IS NOT NULL AND routeGeography <> ""
+                    AND JSON_EXTRACT(routeGeography, "$.country_code") IS NOT NULL
+                    AND worldType = :worldType';
+
+        $results = $this->connection->executeQuery(
+            sql: $query,
+            params: [
+                'sportTypes' => array_map(
+                    fn (SportType $sportType) => $sportType->value,
+                    array_filter(
+                        SportType::cases(),
+                        fn (SportType $sportType): bool => $sportType->supportsReverseGeocoding()
+                    )
+                ),
+                'worldType' => WorldType::REAL_WORLD->value,
+            ],
+            types: [
+                'sportTypes' => ArrayParameterType::STRING,
+            ]
+        )->fetchAllAssociative();
+
+        $sportTypes = [];
+        $countries = [];
+        foreach ($results as $result) {
+            $sportTypes[$result['sportType']] ??= SportType::from($result['sportType']);
+            foreach (RouteGeography::create(Json::decode($result['routeGeography']))->getPassedThroughCountries() as $country) {
+                $countries[$country] = true;
+            }
+        }
+
+        return RouteSummary::create(
+            numberOfRoutes: count($results),
+            sportTypes: array_values($sportTypes),
+            countries: array_keys($countries),
+        );
+    }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Route;
 
-use App\Domain\Activity\SportType\SportType;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -42,18 +41,8 @@ final readonly class HeatmapFragment implements Fragment
 
     public function render(): string
     {
-        $routes = $this->routeRepository->findAll();
-        $sportTypesOnTheMap = $routes->map(fn (Route $route): SportType => $route->getSportType());
-
         return $this->twig->load('html/heatmap.html.twig')->render([
-            'numberOfRoutes' => count($routes),
-            'sportTypes' => array_filter(
-                SportType::cases(),
-                fn (SportType $sportType): bool => in_array($sportType, $sportTypesOnTheMap, true)
-            ),
-            'numberOfCountriesWithWorkouts' => count(array_unique(array_merge(...$routes->map(
-                fn (Route $route): array => $route->getRouteGeography()->getPassedThroughCountries()
-            )))),
+            'summary' => $this->routeRepository->findSummary(),
             'heatmapConfig' => $this->settingsRepository->maps()->getHeatmapConfig(),
         ]);
     }

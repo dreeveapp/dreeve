@@ -80,6 +80,58 @@ class ActivityBasedRouteRepositoryTest extends ContainerTestCase
     }
 
     /**
+     * findSummary() runs a second, lighter query over the same rows as findAll(). Assert the two
+     * stay in agreement, because only findSummary() decides what the heatmap page reports.
+     */
+    public function testFindSummary(): void
+    {
+        $routes = [
+            [SportType::RIDE, ['country_code' => 'BE']],
+            [SportType::RUN, ['country_code' => 'PL', 'passed_through_countries' => ['CZ', 'PL']]],
+            // Repeats both the sport type and the country of the first one.
+            [SportType::RIDE, ['country_code' => 'be']],
+        ];
+
+        $index = 0;
+        foreach ($routes as [$sportType, $routeGeography]) {
+            $this->activityRepository->add(ActivityWithRawData::fromState(
+                activity: ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed(++$index))
+                    ->withSportType($sportType)
+                    ->withWorldType(WorldType::REAL_WORLD)
+                    ->withPolyline('tqafAua~y^vG{D')
+                    ->withRouteGeography(RouteGeography::create($routeGeography))
+                    ->build(),
+                rawData: []
+            ));
+        }
+
+        // Excluded by the WHERE clause, so it must not show up in either.
+        $this->activityRepository->add(ActivityWithRawData::fromState(
+            activity: ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed(99))
+                ->withPolyline(null)
+                ->withRouteGeography(RouteGeography::create(['country_code' => 'FR']))
+                ->build(),
+            rawData: []
+        ));
+
+        $summary = $this->routeRepository->findSummary();
+
+        $this->assertEquals(3, $summary->getNumberOfRoutes());
+        $this->assertEquals(count($this->routeRepository->findAll()), $summary->getNumberOfRoutes());
+        $this->assertEquals(
+            array_values(array_filter(
+                SportType::cases(),
+                fn (SportType $sportType): bool => in_array($sportType, [SportType::RIDE, SportType::RUN], true)
+            )),
+            $summary->getSportTypes()
+        );
+        // be, pl and cz: deduplicated across routes and case insensitively.
+        $this->assertEquals(3, $summary->getNumberOfCountries());
+    }
+
+    /**
      * Activity::hasMappableRoute() reimplements this repository's WHERE clause in PHP, so that the
      * domain can tell whether a change impacts the heatmap. Guard the two against drifting apart.
      */

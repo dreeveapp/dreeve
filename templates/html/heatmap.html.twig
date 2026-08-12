@@ -7,7 +7,7 @@
         <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
             <form class="flex flex-col gap-y-2 mb-2" autocomplete="off">
                 <div class="flex flex-wrap gap-2">
-                    {% if sportTypes|length > 0 %}
+                    {% if summary.getSportTypes()|length > 0 %}
                         <div class="filter-dropdown">
                             <button id="dropdownSportTypesButton"
                                     data-dropdown="dropdownSportTypes" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
@@ -18,7 +18,7 @@
                             </button>
                             <div id="dropdownSportTypes" class="divide-y divide-gray-100">
                                 <ul class="space-y-1" aria-labelledby="dropdownSportTypesButton">
-                                    {% for sportType in sportTypes %}
+                                    {% for sportType in summary.getSportTypes() %}
                                         <li>
                                             <div>
                                                 <input type="checkbox" id="{{ sportType.value }}" data-dataTable-filter="sportType" name="sportType[{{ sportType.value }}]" value="{{ sportType.value }}" class="peer" />
@@ -115,7 +115,7 @@
             </form>
             <div class="flex items-center justify-between gap-x-2 text-xs text-gray-700">
                 <div>
-                    {% set numberOfResults = '<span class="font-bold" data-dataTable-result-count>' ~ numberOfRoutes ~ '</span>' %}
+                    {% set numberOfResults = '<span class="font-bold" data-dataTable-result-count>' ~ summary.getNumberOfRoutes() ~ '</span>' %}
                     {{ "{numberOfResults} routes"|trans({'{numberOfResults}': numberOfResults}) }}
                 </div>
                 <a href="#" class="hidden font-medium text-primary hover:underline" data-dataTable-reset>{{ "Clear all filters"|trans }}</a>
@@ -126,8 +126,8 @@
              class="grid grid-cols-1 h-[calc(100vh-235px)] rounded-lg {{ heatmapConfig.getLeafletConfig().enableGreyScale() ? 'enable-grey-scale' : '' }}">
         </div>
         <div class="hidden lg:block z-10000 absolute bottom-3 left-3 py-2 px-4 bg-white border border-gray-200 rounded-lg shadow-xs text-xs">
-            {% set percentage = (numberOfCountriesWithWorkouts / 195 * 100)|formatNumber(0) %}
-            <div class="font-semibold text-gray-700 text-sm mb-0.5">{{ numberOfCountriesWithWorkouts }} {{ "countries"|trans }}</div>
+            {% set percentage = (summary.getNumberOfCountries() / 195 * 100)|formatNumber(0) %}
+            <div class="font-semibold text-gray-700 text-sm mb-0.5">{{ summary.getNumberOfCountries() }} {{ "countries"|trans }}</div>
             <div class="text-gray-500"> {{ "That's {percentage}% of all countries 🌍"|trans({'{percentage}': percentage}) }}</div>
         </div>
     </div>
