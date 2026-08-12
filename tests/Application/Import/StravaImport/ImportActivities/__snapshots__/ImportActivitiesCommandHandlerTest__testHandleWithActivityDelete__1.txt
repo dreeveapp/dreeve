@@ -6,5 +6,5 @@ Status: 3 out of 7 activities imported
   => [3/7] Updated activity: "Night Ride3 - 10-10-2023"
   => [4/7] Imported activity: "Night Ride4 - 11-09-2023"
   => [5/7] Imported activity: "Night Ride5 - 11-09-2023"
-  => Activity "Delete this one as well - 10-10-2023" marked for deletion
   => Activity "Delete this one - 10-10-2023" marked for deletion
+  => Activity "Delete this one as well - 10-10-2023" marked for deletion
