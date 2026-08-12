@@ -21,6 +21,6 @@ class MilestoneIdFactoryTest extends TestCase
         $factory = new MilestoneIdFactory();
         $factory->next();
 
-        $this->assertEquals('milestone-1', (string) (new MilestoneIdFactory())->next());
+        $this->assertEquals('milestone-1', (string) new MilestoneIdFactory()->next());
     }
 }

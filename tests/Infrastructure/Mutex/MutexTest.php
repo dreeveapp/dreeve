@@ -27,6 +27,7 @@ class MutexTest extends ContainerTestCase
         $this->mutex->acquireLock('myProcess');
     }
 
+    #[\PHPUnit\Framework\Attributes\DoesNotPerformAssertions]
     public function testAcquireLockWhenLockIsStale(): void
     {
         $this->getConnection()->executeStatement('INSERT INTO KeyValue (key, value) VALUES (:key, :value)', [
@@ -38,7 +39,6 @@ class MutexTest extends ContainerTestCase
         ]);
 
         $this->mutex->acquireLock('myProcess');
-        $this->addToAssertionCount(1);
     }
 
     public function testHeartBeat(): void

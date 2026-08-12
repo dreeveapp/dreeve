@@ -63,7 +63,7 @@
         "symfony/translation": "8.1.*",
         "symfony/twig-bundle": "8.1.*",
         "symfony/yaml": "8.1.*",
-        "twig/twig": "^3.21",
+        "twig/twig": "^3.28",
         "wyrihaximus/react-cron": "^5.3"
     },
     "require-dev": {

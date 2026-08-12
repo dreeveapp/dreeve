@@ -20,6 +20,7 @@ class TranslationsTest extends ContainerTestCase
 
     private const array DOMAINS = ['messages', 'admin'];
 
+    #[\PHPUnit\Framework\Attributes\DoesNotPerformAssertions]
     public function testAllTranslationsHaveBeenExtracted(): void
     {
         $catalogue = new MessageCatalogue(Locale::en_US->value);
@@ -58,7 +59,6 @@ class TranslationsTest extends ContainerTestCase
             $messages[] = 'Run: make translation-extract';
             $this->fail(implode(PHP_EOL, $messages));
         }
-        $this->addToAssertionCount(1);
     }
 
     public function testTranslationsContainPlaceholders(): void
