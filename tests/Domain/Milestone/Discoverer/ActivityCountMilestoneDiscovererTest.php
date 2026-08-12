@@ -7,12 +7,12 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Milestone\Discoverer\ActivityCountMilestoneDiscoverer;
+use App\Domain\Milestone\MilestoneIdFactory;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use App\Tests\Domain\Milestone\IncrementingMilestoneIdFactory;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class ActivityCountMilestoneDiscovererTest extends ContainerTestCase
@@ -20,10 +20,11 @@ class ActivityCountMilestoneDiscovererTest extends ContainerTestCase
     use MatchesSnapshots;
 
     private ActivityCountMilestoneDiscoverer $discoverer;
+    private MilestoneIdFactory $milestoneIdFactory;
 
     public function testDiscoverWithNoActivities(): void
     {
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
         $this->assertTrue($milestones->isEmpty());
     }
 
@@ -31,14 +32,14 @@ class ActivityCountMilestoneDiscovererTest extends ContainerTestCase
     {
         $this->insertActivities(10);
 
-        $this->assertMatchesJsonSnapshot(Json::encode($this->discoverer->discover()));
+        $this->assertMatchesJsonSnapshot(Json::encode($this->discoverer->discover($this->milestoneIdFactory)));
     }
 
     public function testDiscoverMultipleThresholds(): void
     {
         $this->insertActivities(50);
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
         $this->assertCount(6, $milestones);
 
@@ -76,19 +77,20 @@ class ActivityCountMilestoneDiscovererTest extends ContainerTestCase
             ));
         }
 
-        $this->assertMatchesJsonSnapshot(Json::encode($this->discoverer->discover()));
+        $this->assertMatchesJsonSnapshot(Json::encode($this->discoverer->discover($this->milestoneIdFactory)));
     }
 
     public function testFunComparisonIsSet(): void
     {
         $this->insertActivities(50);
-        $this->assertMatchesJsonSnapshot(Json::encode($this->discoverer->discover()));
+        $this->assertMatchesJsonSnapshot(Json::encode($this->discoverer->discover($this->milestoneIdFactory)));
     }
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->discoverer = new ActivityCountMilestoneDiscoverer($this->getConnection(), new IncrementingMilestoneIdFactory());
+        $this->milestoneIdFactory = new MilestoneIdFactory();
+        $this->discoverer = new ActivityCountMilestoneDiscoverer($this->getConnection());
     }
 
     private function insertActivities(int $count): void

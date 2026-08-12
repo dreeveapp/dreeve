@@ -19,7 +19,6 @@ final readonly class StreakMilestoneDiscoverer implements MilestoneDiscoverer
 {
     public function __construct(
         private Connection $connection,
-        private MilestoneIdFactory $milestoneIdFactory,
     ) {
     }
 
@@ -28,7 +27,7 @@ final readonly class StreakMilestoneDiscoverer implements MilestoneDiscoverer
         120, 150, 180, 250, 365, 500, 730,
     ];
 
-    public function discover(): Milestones
+    public function discover(MilestoneIdFactory $milestoneIdFactory): Milestones
     {
         $rows = $this->connection->executeQuery(
             'SELECT DISTINCT DATE(startDateTime) as activityDate
@@ -78,7 +77,7 @@ final readonly class StreakMilestoneDiscoverer implements MilestoneDiscoverer
                 }
 
                 $milestone = Milestone::create(
-                    id: $this->milestoneIdFactory->random(),
+                    id: $milestoneIdFactory->next(),
                     achievedOn: $achievedOn,
                     category: MilestoneCategory::STREAK,
                     context: new StreakContext(

@@ -25,11 +25,10 @@ final readonly class PersonalBestMilestoneDiscoverer implements MilestoneDiscove
 
     public function __construct(
         private Connection $connection,
-        private MilestoneIdFactory $milestoneIdFactory,
     ) {
     }
 
-    public function discover(): Milestones
+    public function discover(MilestoneIdFactory $milestoneIdFactory): Milestones
     {
         $rows = $this->connection->executeQuery(
             'SELECT be.activityId, be.sportType, be.distanceInMeter, be.timeInSeconds, a.startDateTime
@@ -74,7 +73,7 @@ final readonly class PersonalBestMilestoneDiscoverer implements MilestoneDiscove
 
             $activityId = ActivityId::fromString($row['activityId']);
             $milestone = Milestone::create(
-                id: $this->milestoneIdFactory->random(),
+                id: $milestoneIdFactory->next(),
                 achievedOn: SerializableDateTime::fromString($row['startDateTime']),
                 category: MilestoneCategory::PERSONAL_BEST,
                 context: new PersonalBestContext(

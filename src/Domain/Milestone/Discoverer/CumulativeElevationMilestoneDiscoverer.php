@@ -23,7 +23,6 @@ final readonly class CumulativeElevationMilestoneDiscoverer implements Milestone
     public function __construct(
         private Connection $connection,
         private SettingsRepository $settingsRepository,
-        private MilestoneIdFactory $milestoneIdFactory,
     ) {
     }
 
@@ -39,7 +38,7 @@ final readonly class CumulativeElevationMilestoneDiscoverer implements Milestone
         1_000_000, 1_500_000, 2_000_000, 2_500_000, 3_000_000,
     ];
 
-    public function discover(): Milestones
+    public function discover(MilestoneIdFactory $milestoneIdFactory): Milestones
     {
         $rows = $this->connection->executeQuery(
             'SELECT startDateTime, sportType, elevation
@@ -78,6 +77,7 @@ final readonly class CumulativeElevationMilestoneDiscoverer implements Milestone
             while ($globalThresholdIndex < count($thresholds) && $globalCumulativeInUnit->toFloat() >= $thresholds[$globalThresholdIndex]) {
                 $threshold = $thresholds[$globalThresholdIndex];
                 $milestone = $this->createMilestone(
+                    milestoneIdFactory: $milestoneIdFactory,
                     achievedOn: $achievedOn,
                     sportType: null,
                     threshold: $threshold,
@@ -99,6 +99,7 @@ final readonly class CumulativeElevationMilestoneDiscoverer implements Milestone
             while ($sportThresholdIndices[$sportTypeValue] < count($thresholds) && $sportCumulativeInUnit->toFloat() >= $thresholds[$sportThresholdIndices[$sportTypeValue]]) {
                 $threshold = $thresholds[$sportThresholdIndices[$sportTypeValue]];
                 $milestone = $this->createMilestone(
+                    milestoneIdFactory: $milestoneIdFactory,
                     achievedOn: $achievedOn,
                     sportType: $sportType,
                     threshold: $threshold,
@@ -114,6 +115,7 @@ final readonly class CumulativeElevationMilestoneDiscoverer implements Milestone
     }
 
     private function createMilestone(
+        MilestoneIdFactory $milestoneIdFactory,
         SerializableDateTime $achievedOn,
         ?SportType $sportType,
         int $threshold,
@@ -122,7 +124,7 @@ final readonly class CumulativeElevationMilestoneDiscoverer implements Milestone
         $thresholdInUnit = $this->settingsRepository->appearance()->getUnitSystem()->elevation($threshold);
 
         return Milestone::create(
-            id: $this->milestoneIdFactory->random(),
+            id: $milestoneIdFactory->next(),
             achievedOn: $achievedOn,
             category: MilestoneCategory::CUMULATIVE_ELEVATION,
             context: new CumulativeElevationContext(

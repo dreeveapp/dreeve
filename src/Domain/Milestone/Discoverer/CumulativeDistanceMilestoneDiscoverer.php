@@ -23,7 +23,6 @@ final readonly class CumulativeDistanceMilestoneDiscoverer implements MilestoneD
     public function __construct(
         private Connection $connection,
         private SettingsRepository $settingsRepository,
-        private MilestoneIdFactory $milestoneIdFactory,
     ) {
     }
 
@@ -39,7 +38,7 @@ final readonly class CumulativeDistanceMilestoneDiscoverer implements MilestoneD
         100_000, 150_000, 200_000, 300_000,
     ];
 
-    public function discover(): Milestones
+    public function discover(MilestoneIdFactory $milestoneIdFactory): Milestones
     {
         $rows = $this->connection->executeQuery(
             'SELECT startDateTime, sportType, distance
@@ -77,6 +76,7 @@ final readonly class CumulativeDistanceMilestoneDiscoverer implements MilestoneD
             while ($globalThresholdIndex < count($thresholds) && $globalCumulativeInUnit->toFloat() >= $thresholds[$globalThresholdIndex]) {
                 $threshold = $thresholds[$globalThresholdIndex];
                 $milestone = $this->createMilestone(
+                    milestoneIdFactory: $milestoneIdFactory,
                     achievedOn: $achievedOn,
                     sportType: null,
                     threshold: $threshold,
@@ -98,6 +98,7 @@ final readonly class CumulativeDistanceMilestoneDiscoverer implements MilestoneD
             while ($sportThresholdIndices[$sportTypeValue] < count($thresholds) && $sportCumulativeInUnit->toFloat() >= $thresholds[$sportThresholdIndices[$sportTypeValue]]) {
                 $threshold = $thresholds[$sportThresholdIndices[$sportTypeValue]];
                 $milestone = $this->createMilestone(
+                    milestoneIdFactory: $milestoneIdFactory,
                     achievedOn: $achievedOn,
                     sportType: $sportType,
                     threshold: $threshold,
@@ -113,6 +114,7 @@ final readonly class CumulativeDistanceMilestoneDiscoverer implements MilestoneD
     }
 
     private function createMilestone(
+        MilestoneIdFactory $milestoneIdFactory,
         SerializableDateTime $achievedOn,
         ?SportType $sportType,
         int $threshold,
@@ -121,7 +123,7 @@ final readonly class CumulativeDistanceMilestoneDiscoverer implements MilestoneD
         $thresholdInUnit = $this->settingsRepository->appearance()->getUnitSystem()->distance($threshold);
 
         return Milestone::create(
-            id: $this->milestoneIdFactory->random(),
+            id: $milestoneIdFactory->next(),
             achievedOn: $achievedOn,
             category: MilestoneCategory::CUMULATIVE_DISTANCE,
             context: new CumulativeDistanceContext(

@@ -8,12 +8,12 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Milestone\Context\ActivityRecordContext;
 use App\Domain\Milestone\Discoverer\ActivityDistanceMilestoneDiscoverer;
+use App\Domain\Milestone\MilestoneIdFactory;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use App\Tests\Domain\Milestone\IncrementingMilestoneIdFactory;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class ActivityDistanceMilestoneDiscovererTest extends ContainerTestCase
@@ -21,17 +21,18 @@ class ActivityDistanceMilestoneDiscovererTest extends ContainerTestCase
     use MatchesSnapshots;
 
     private ActivityDistanceMilestoneDiscoverer $discoverer;
+    private MilestoneIdFactory $milestoneIdFactory;
 
     public function testDiscoverWithNoActivities(): void
     {
-        $this->assertTrue($this->discoverer->discover()->isEmpty());
+        $this->assertTrue($this->discoverer->discover($this->milestoneIdFactory)->isEmpty());
     }
 
     public function testDiscoverCreatesPersonalBestForFirstActivity(): void
     {
         $this->insertActivity(1, '2024-01-01', SportType::RIDE, 50.0);
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
         $milestone = $milestones->getFirst();
         $context = $milestone->getContext();
@@ -47,7 +48,7 @@ class ActivityDistanceMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(1, '2024-01-01', SportType::RIDE, 50.0);
         $this->insertActivity(2, '2024-01-02', SportType::RIDE, 80.0);
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
         $second = $milestones->toArray()[1];
         $context = $second->getContext();
@@ -62,19 +63,20 @@ class ActivityDistanceMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(1, '2024-01-01', SportType::RIDE, 50.0);
         $this->insertActivity(2, '2024-01-02', SportType::RIDE, 30.0);
 
-        $this->assertMatchesJsonSnapshot(Json::encode($this->discoverer->discover()));
+        $this->assertMatchesJsonSnapshot(Json::encode($this->discoverer->discover($this->milestoneIdFactory)));
     }
 
     public function testDiscoverSkipsZeroDistance(): void
     {
         $this->insertActivity(1, '2024-01-01', SportType::RIDE, 0.0);
-        $this->assertTrue($this->discoverer->discover()->isEmpty());
+        $this->assertTrue($this->discoverer->discover($this->milestoneIdFactory)->isEmpty());
     }
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->discoverer = new ActivityDistanceMilestoneDiscoverer($this->getConnection(), new IncrementingMilestoneIdFactory());
+        $this->milestoneIdFactory = new MilestoneIdFactory();
+        $this->discoverer = new ActivityDistanceMilestoneDiscoverer($this->getConnection());
     }
 
     private function insertActivity(int $id, string $date, SportType $sportType, float $distanceKm): void

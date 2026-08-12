@@ -19,11 +19,10 @@ final readonly class FirstActivityInCountryMilestoneDiscoverer implements Milest
 {
     public function __construct(
         private Connection $connection,
-        private MilestoneIdFactory $milestoneIdFactory,
     ) {
     }
 
-    public function discover(): Milestones
+    public function discover(MilestoneIdFactory $milestoneIdFactory): Milestones
     {
         $rows = $this->connection->executeQuery(
             "SELECT activityId, startDateTime, sportType, name,
@@ -50,7 +49,7 @@ final readonly class FirstActivityInCountryMilestoneDiscoverer implements Milest
             $seenCountries[$countryCode] = true;
 
             $milestones[] = Milestone::create(
-                id: $this->milestoneIdFactory->random(),
+                id: $milestoneIdFactory->next(),
                 achievedOn: SerializableDateTime::fromString($row['startDateTime']),
                 category: MilestoneCategory::FIRST_ACTIVITY_IN_COUNTRY,
                 context: new FirstActivityInCountryContext(

@@ -11,7 +11,6 @@ final readonly class MilestoneCollector
 {
     /** @var MilestoneDiscoverer[] */
     private array $discoverers;
-    private Milestones $milestones;
 
     /**
      * @param iterable<MilestoneDiscoverer> $discoverers
@@ -21,25 +20,19 @@ final readonly class MilestoneCollector
         iterable $discoverers,
     ) {
         $this->discoverers = iterator_to_array($discoverers);
-        $this->milestones = Milestones::empty();
     }
 
     public function discoverAll(): Milestones
     {
-        if (!$this->milestones->isEmpty()) {
-            return $this->milestones;
-        }
-
+        $milestoneIdFactory = new MilestoneIdFactory();
         $milestones = [];
 
         foreach ($this->discoverers as $discoverer) {
-            $milestones = array_merge($milestones, $discoverer->discover()->toArray());
+            $milestones = array_merge($milestones, $discoverer->discover($milestoneIdFactory)->toArray());
         }
 
         usort($milestones, fn (Milestone $a, Milestone $b): int => $b->getAchievedOn() <=> $a->getAchievedOn());
 
-        $this->milestones->addMultiple($milestones);
-
-        return $this->milestones;
+        return Milestones::fromArray($milestones);
     }
 }

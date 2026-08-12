@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Milestone\Context\CumulativeDistanceContext;
 use App\Domain\Milestone\Discoverer\CumulativeDistanceMilestoneDiscoverer;
+use App\Domain\Milestone\MilestoneIdFactory;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
@@ -15,7 +16,6 @@ use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use App\Tests\Domain\Milestone\IncrementingMilestoneIdFactory;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class CumulativeDistanceMilestoneDiscovererTest extends ContainerTestCase
@@ -23,17 +23,18 @@ class CumulativeDistanceMilestoneDiscovererTest extends ContainerTestCase
     use MatchesSnapshots;
 
     private CumulativeDistanceMilestoneDiscoverer $discoverer;
+    private MilestoneIdFactory $milestoneIdFactory;
 
     public function testDiscoverWithNoActivities(): void
     {
-        $this->assertTrue($this->discoverer->discover()->isEmpty());
+        $this->assertTrue($this->discoverer->discover($this->milestoneIdFactory)->isEmpty());
     }
 
     public function testDiscoverFirstMetricThreshold(): void
     {
         $this->insertActivity(1, '2024-01-01', 100.0);
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
         $context = $milestones->getFirst()->getContext();
         $this->assertInstanceOf(CumulativeDistanceContext::class, $context);
@@ -48,14 +49,14 @@ class CumulativeDistanceMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(1, '2024-01-01', 250.0);
         $this->insertActivity(2, '2024-01-02', 260.0);
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
         $this->assertMatchesJsonSnapshot(Json::encode($milestones));
     }
 
     public function testDiscoverSkipsZeroDistance(): void
     {
         $this->insertActivity(1, '2024-01-01', 0.0);
-        $this->assertTrue($this->discoverer->discover()->isEmpty());
+        $this->assertTrue($this->discoverer->discover($this->milestoneIdFactory)->isEmpty());
     }
 
     public function testDiscoverWithImperialUnits(): void
@@ -67,9 +68,8 @@ class CumulativeDistanceMilestoneDiscovererTest extends ContainerTestCase
         $discoverer = new CumulativeDistanceMilestoneDiscoverer(
             $this->getConnection(),
             $settingsRepository,
-            new IncrementingMilestoneIdFactory(),
         );
-        $milestones = $discoverer->discover();
+        $milestones = $discoverer->discover($this->milestoneIdFactory);
         $this->assertGreaterThanOrEqual(2, count($milestones));
     }
 
@@ -78,7 +78,7 @@ class CumulativeDistanceMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(1, '2024-01-01', 150.0, SportType::RIDE);
         $this->insertActivity(2, '2024-01-02', 110.0, SportType::RUN);
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
         $this->assertMatchesJsonSnapshot(Json::encode($milestones));
     }
 
@@ -86,17 +86,17 @@ class CumulativeDistanceMilestoneDiscovererTest extends ContainerTestCase
     {
         $this->insertActivity(1, '2024-01-01', 500.0);
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
         $this->assertMatchesJsonSnapshot(Json::encode($milestones));
     }
 
     public function setUp(): void
     {
         parent::setUp();
+        $this->milestoneIdFactory = new MilestoneIdFactory();
         $this->discoverer = new CumulativeDistanceMilestoneDiscoverer(
             $this->getConnection(),
             $this->getContainer()->get(SettingsRepository::class),
-            new IncrementingMilestoneIdFactory(),
         );
     }
 

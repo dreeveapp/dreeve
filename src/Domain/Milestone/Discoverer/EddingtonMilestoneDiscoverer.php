@@ -18,11 +18,10 @@ final readonly class EddingtonMilestoneDiscoverer implements MilestoneDiscoverer
     public function __construct(
         private EddingtonCalculator $eddingtonCalculator,
         private SettingsRepository $settingsRepository,
-        private MilestoneIdFactory $milestoneIdFactory,
     ) {
     }
 
-    public function discover(): Milestones
+    public function discover(MilestoneIdFactory $milestoneIdFactory): Milestones
     {
         $milestones = [];
         $thresholds = range(1, 250);
@@ -51,7 +50,7 @@ final readonly class EddingtonMilestoneDiscoverer implements MilestoneDiscoverer
                 }
 
                 $milestone = Milestone::create(
-                    id: $this->milestoneIdFactory->random(),
+                    id: $milestoneIdFactory->next(),
                     achievedOn: $achievedOn,
                     category: MilestoneCategory::EDDINGTON,
                     context: new EddingtonContext(

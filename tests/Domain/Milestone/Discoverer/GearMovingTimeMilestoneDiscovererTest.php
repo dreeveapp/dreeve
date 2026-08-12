@@ -9,12 +9,12 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Milestone\Context\GearMovingTimeContext;
 use App\Domain\Milestone\Discoverer\GearMovingTimeMilestoneDiscoverer;
+use App\Domain\Milestone\MilestoneIdFactory;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
-use App\Tests\Domain\Milestone\IncrementingMilestoneIdFactory;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
@@ -22,10 +22,11 @@ class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
     use MatchesSnapshots;
 
     private GearMovingTimeMilestoneDiscoverer $discoverer;
+    private MilestoneIdFactory $milestoneIdFactory;
 
     public function testDiscoverWithNoActivities(): void
     {
-        $this->assertTrue($this->discoverer->discover()->isEmpty());
+        $this->assertTrue($this->discoverer->discover($this->milestoneIdFactory)->isEmpty());
     }
 
     public function testDiscoverWithNoGear(): void
@@ -38,7 +39,7 @@ class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
                 ->build(), []
         ));
 
-        $this->assertTrue($this->discoverer->discover()->isEmpty());
+        $this->assertTrue($this->discoverer->discover($this->milestoneIdFactory)->isEmpty());
     }
 
     public function testDiscoverFirstThreshold(): void
@@ -52,7 +53,7 @@ class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
         );
         $this->insertActivity('1', '2024-01-01', $gearId, 86400);
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
         $context = $milestones->getFirst()->getContext();
         $this->assertInstanceOf(GearMovingTimeContext::class, $context);
@@ -74,7 +75,7 @@ class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity('1', '2024-01-01', $gearId, 100000);
         $this->insertActivity('2', '2024-01-02', $gearId, 80000);
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
         $this->assertMatchesJsonSnapshot(Json::encode($milestones));
     }
 
@@ -98,7 +99,7 @@ class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity('1', '2024-01-01', $bikeId, 86400);
         $this->insertActivity('2', '2024-01-02', $shoesId, 86400);
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
         $this->assertMatchesJsonSnapshot(Json::encode($milestones));
     }
 
@@ -113,15 +114,15 @@ class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
         );
         $this->insertActivity('1', '2024-01-01', $gearId, 0);
 
-        $this->assertTrue($this->discoverer->discover()->isEmpty());
+        $this->assertTrue($this->discoverer->discover($this->milestoneIdFactory)->isEmpty());
     }
 
     public function setUp(): void
     {
         parent::setUp();
+        $this->milestoneIdFactory = new MilestoneIdFactory();
         $this->discoverer = new GearMovingTimeMilestoneDiscoverer(
             $this->getConnection(),
-            new IncrementingMilestoneIdFactory(),
         );
     }
 

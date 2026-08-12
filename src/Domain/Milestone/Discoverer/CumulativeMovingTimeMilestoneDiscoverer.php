@@ -20,7 +20,6 @@ final readonly class CumulativeMovingTimeMilestoneDiscoverer implements Mileston
 {
     public function __construct(
         private Connection $connection,
-        private MilestoneIdFactory $milestoneIdFactory,
     ) {
     }
 
@@ -30,7 +29,7 @@ final readonly class CumulativeMovingTimeMilestoneDiscoverer implements Mileston
         7_500, 10_000,
     ];
 
-    public function discover(): Milestones
+    public function discover(MilestoneIdFactory $milestoneIdFactory): Milestones
     {
         $rows = $this->connection->executeQuery(
             'SELECT startDateTime, sportType, movingTimeInSeconds
@@ -67,6 +66,7 @@ final readonly class CumulativeMovingTimeMilestoneDiscoverer implements Mileston
             while ($globalThresholdIndex < count(self::THRESHOLDS) && $globalHours >= self::THRESHOLDS[$globalThresholdIndex]) {
                 $threshold = self::THRESHOLDS[$globalThresholdIndex];
                 $milestone = $this->createMilestone(
+                    milestoneIdFactory: $milestoneIdFactory,
                     achievedOn: $achievedOn,
                     sportType: null,
                     threshold: $threshold,
@@ -88,6 +88,7 @@ final readonly class CumulativeMovingTimeMilestoneDiscoverer implements Mileston
             while ($sportThresholdIndices[$sportTypeValue] < count(self::THRESHOLDS) && $sportHours >= self::THRESHOLDS[$sportThresholdIndices[$sportTypeValue]]) {
                 $threshold = self::THRESHOLDS[$sportThresholdIndices[$sportTypeValue]];
                 $milestone = $this->createMilestone(
+                    milestoneIdFactory: $milestoneIdFactory,
                     achievedOn: $achievedOn,
                     sportType: $sportType,
                     threshold: $threshold,
@@ -103,6 +104,7 @@ final readonly class CumulativeMovingTimeMilestoneDiscoverer implements Mileston
     }
 
     private function createMilestone(
+        MilestoneIdFactory $milestoneIdFactory,
         SerializableDateTime $achievedOn,
         ?SportType $sportType,
         int $threshold,
@@ -111,7 +113,7 @@ final readonly class CumulativeMovingTimeMilestoneDiscoverer implements Mileston
         $thresholdHour = Hour::from($threshold);
 
         return Milestone::create(
-            id: $this->milestoneIdFactory->random(),
+            id: $milestoneIdFactory->next(),
             achievedOn: $achievedOn,
             category: MilestoneCategory::CUMULATIVE_MOVING_TIME,
             context: new CumulativeMovingTimeContext(

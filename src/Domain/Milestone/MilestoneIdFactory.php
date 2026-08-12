@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domain\Milestone;
 
-interface MilestoneIdFactory
+final class MilestoneIdFactory
 {
-    public function random(): MilestoneId;
+    private int $counter = 0;
+
+    public function next(): MilestoneId
+    {
+        return MilestoneId::fromString('milestone-'.++$this->counter);
+    }
 }

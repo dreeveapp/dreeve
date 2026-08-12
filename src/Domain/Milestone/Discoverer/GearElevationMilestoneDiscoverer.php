@@ -22,7 +22,6 @@ final readonly class GearElevationMilestoneDiscoverer implements MilestoneDiscov
     public function __construct(
         private Connection $connection,
         private SettingsRepository $settingsRepository,
-        private MilestoneIdFactory $milestoneIdFactory,
     ) {
     }
 
@@ -36,7 +35,7 @@ final readonly class GearElevationMilestoneDiscoverer implements MilestoneDiscov
         100_000, 150_000, 200_000, 300_000, 500_000,
     ];
 
-    public function discover(): Milestones
+    public function discover(MilestoneIdFactory $milestoneIdFactory): Milestones
     {
         $rows = $this->connection->executeQuery(
             'SELECT a.startDateTime, a.gearId, a.elevation, g.name as gearName
@@ -80,7 +79,7 @@ final readonly class GearElevationMilestoneDiscoverer implements MilestoneDiscov
                 $thresholdInUnit = $this->settingsRepository->appearance()->getUnitSystem()->elevation($threshold);
 
                 $milestone = Milestone::create(
-                    id: $this->milestoneIdFactory->random(),
+                    id: $milestoneIdFactory->next(),
                     achievedOn: $achievedOn,
                     category: MilestoneCategory::GEAR_ELEVATION,
                     context: new GearElevationContext(

@@ -20,11 +20,10 @@ final readonly class ActivityElevationMilestoneDiscoverer implements MilestoneDi
 {
     public function __construct(
         private Connection $connection,
-        private MilestoneIdFactory $milestoneIdFactory,
     ) {
     }
 
-    public function discover(): Milestones
+    public function discover(MilestoneIdFactory $milestoneIdFactory): Milestones
     {
         $rows = $this->connection->executeQuery(
             'SELECT activityId, startDateTime, sportType, elevation
@@ -66,7 +65,7 @@ final readonly class ActivityElevationMilestoneDiscoverer implements MilestoneDi
 
             $activityId = ActivityId::fromString($row['activityId']);
             $milestone = Milestone::create(
-                id: $this->milestoneIdFactory->random(),
+                id: $milestoneIdFactory->next(),
                 achievedOn: SerializableDateTime::fromString($row['startDateTime']),
                 category: MilestoneCategory::ACTIVITY_ELEVATION,
                 context: new ActivityRecordContext(

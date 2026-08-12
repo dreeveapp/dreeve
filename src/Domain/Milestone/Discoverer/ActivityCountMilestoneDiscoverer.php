@@ -20,7 +20,6 @@ final readonly class ActivityCountMilestoneDiscoverer implements MilestoneDiscov
 {
     public function __construct(
         private Connection $connection,
-        private MilestoneIdFactory $milestoneIdFactory,
     ) {
     }
 
@@ -30,7 +29,7 @@ final readonly class ActivityCountMilestoneDiscoverer implements MilestoneDiscov
         7_500, 10_000,
     ];
 
-    public function discover(): Milestones
+    public function discover(MilestoneIdFactory $milestoneIdFactory): Milestones
     {
         $rows = $this->connection->executeQuery(
             'SELECT startDateTime, sportType
@@ -60,6 +59,7 @@ final readonly class ActivityCountMilestoneDiscoverer implements MilestoneDiscov
             while ($globalThresholdIndex < count(self::THRESHOLDS) && $globalCount >= self::THRESHOLDS[$globalThresholdIndex]) {
                 $threshold = self::THRESHOLDS[$globalThresholdIndex];
                 $milestone = $this->createMilestone(
+                    milestoneIdFactory: $milestoneIdFactory,
                     achievedOn: $achievedOn,
                     sportType: null,
                     threshold: $threshold,
@@ -80,6 +80,7 @@ final readonly class ActivityCountMilestoneDiscoverer implements MilestoneDiscov
             while ($sportThresholdIndices[$sportTypeValue] < count(self::THRESHOLDS) && $sportCounts[$sportTypeValue] >= self::THRESHOLDS[$sportThresholdIndices[$sportTypeValue]]) {
                 $threshold = self::THRESHOLDS[$sportThresholdIndices[$sportTypeValue]];
                 $milestone = $this->createMilestone(
+                    milestoneIdFactory: $milestoneIdFactory,
                     achievedOn: $achievedOn,
                     sportType: $sportType,
                     threshold: $threshold,
@@ -95,13 +96,14 @@ final readonly class ActivityCountMilestoneDiscoverer implements MilestoneDiscov
     }
 
     private function createMilestone(
+        MilestoneIdFactory $milestoneIdFactory,
         SerializableDateTime $achievedOn,
         ?SportType $sportType,
         int $threshold,
         ?Milestone $previousMilestone,
     ): Milestone {
         return Milestone::create(
-            id: $this->milestoneIdFactory->random(),
+            id: $milestoneIdFactory->next(),
             achievedOn: $achievedOn,
             category: MilestoneCategory::ACTIVITY_COUNT,
             context: new ActivityCountContext(

@@ -9,13 +9,13 @@ use App\Domain\Activity\Eddington\EddingtonCalculator;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Milestone\Context\EddingtonContext;
 use App\Domain\Milestone\Discoverer\EddingtonMilestoneDiscoverer;
+use App\Domain\Milestone\MilestoneIdFactory;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use App\Tests\Domain\Milestone\IncrementingMilestoneIdFactory;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class EddingtonMilestoneDiscovererTest extends ContainerTestCase
@@ -23,10 +23,11 @@ class EddingtonMilestoneDiscovererTest extends ContainerTestCase
     use MatchesSnapshots;
 
     private EddingtonMilestoneDiscoverer $discoverer;
+    private MilestoneIdFactory $milestoneIdFactory;
 
     public function testDiscoverWithNoActivities(): void
     {
-        $this->assertTrue($this->discoverer->discover()->isEmpty());
+        $this->assertTrue($this->discoverer->discover($this->milestoneIdFactory)->isEmpty());
     }
 
     public function testDiscoverWithSufficientActivities(): void
@@ -42,7 +43,7 @@ class EddingtonMilestoneDiscovererTest extends ContainerTestCase
             ));
         }
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
         $context = $milestones->getFirst()->getContext();
         $this->assertInstanceOf(EddingtonContext::class, $context);
@@ -64,17 +65,17 @@ class EddingtonMilestoneDiscovererTest extends ContainerTestCase
             ));
         }
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
         $this->assertMatchesJsonSnapshot(Json::encode($milestones));
     }
 
     public function setUp(): void
     {
         parent::setUp();
+        $this->milestoneIdFactory = new MilestoneIdFactory();
         $this->discoverer = new EddingtonMilestoneDiscoverer(
             $this->getContainer()->get(EddingtonCalculator::class),
             $this->getContainer()->get(SettingsRepository::class),
-            new IncrementingMilestoneIdFactory(),
         );
     }
 }

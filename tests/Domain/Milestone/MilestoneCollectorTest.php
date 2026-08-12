@@ -53,7 +53,6 @@ class MilestoneCollectorTest extends ContainerTestCase
         $this->insertBestEffort(1, SportType::RIDE, 10000, 1800);
 
         $collector = $this->createCollector();
-        $collector->discoverAll();
         $milestones = $collector->discoverAll();
 
         $this->assertFalse($milestones->isEmpty());
@@ -190,27 +189,25 @@ class MilestoneCollectorTest extends ContainerTestCase
     {
         $connection = $this->getConnection();
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $milestoneIdFactory = new IncrementingMilestoneIdFactory();
 
         return new MilestoneCollector([
-            new ActivityCountMilestoneDiscoverer($connection, $milestoneIdFactory),
-            new ActivityDistanceMilestoneDiscoverer($connection, $milestoneIdFactory),
-            new ActivityElevationMilestoneDiscoverer($connection, $milestoneIdFactory),
-            new ActivityMovingTimeMilestoneDiscoverer($connection, $milestoneIdFactory),
-            new CumulativeDistanceMilestoneDiscoverer($connection, $settingsRepository, $milestoneIdFactory),
-            new CumulativeElevationMilestoneDiscoverer($connection, $settingsRepository, $milestoneIdFactory),
-            new CumulativeMovingTimeMilestoneDiscoverer($connection, $milestoneIdFactory),
+            new ActivityCountMilestoneDiscoverer($connection),
+            new ActivityDistanceMilestoneDiscoverer($connection),
+            new ActivityElevationMilestoneDiscoverer($connection),
+            new ActivityMovingTimeMilestoneDiscoverer($connection),
+            new CumulativeDistanceMilestoneDiscoverer($connection, $settingsRepository),
+            new CumulativeElevationMilestoneDiscoverer($connection, $settingsRepository),
+            new CumulativeMovingTimeMilestoneDiscoverer($connection),
             new EddingtonMilestoneDiscoverer(
                 $this->getContainer()->get(EddingtonCalculator::class),
                 $settingsRepository,
-                $milestoneIdFactory,
             ),
-            new FirstActivityOfSportTypeMilestoneDiscoverer($connection, $milestoneIdFactory),
-            new GearDistanceMilestoneDiscoverer($connection, $settingsRepository, $milestoneIdFactory),
-            new GearElevationMilestoneDiscoverer($connection, $settingsRepository, $milestoneIdFactory),
-            new GearMovingTimeMilestoneDiscoverer($connection, $milestoneIdFactory),
-            new PersonalBestMilestoneDiscoverer($connection, $milestoneIdFactory),
-            new StreakMilestoneDiscoverer($connection, $milestoneIdFactory),
+            new FirstActivityOfSportTypeMilestoneDiscoverer($connection),
+            new GearDistanceMilestoneDiscoverer($connection, $settingsRepository),
+            new GearElevationMilestoneDiscoverer($connection, $settingsRepository),
+            new GearMovingTimeMilestoneDiscoverer($connection),
+            new PersonalBestMilestoneDiscoverer($connection),
+            new StreakMilestoneDiscoverer($connection),
         ]);
     }
 }

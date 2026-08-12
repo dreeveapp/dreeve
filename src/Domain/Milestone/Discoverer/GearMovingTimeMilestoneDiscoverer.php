@@ -19,7 +19,6 @@ final readonly class GearMovingTimeMilestoneDiscoverer implements MilestoneDisco
 {
     public function __construct(
         private Connection $connection,
-        private MilestoneIdFactory $milestoneIdFactory,
     ) {
     }
 
@@ -28,7 +27,7 @@ final readonly class GearMovingTimeMilestoneDiscoverer implements MilestoneDisco
         1_500, 2_000,
     ];
 
-    public function discover(): Milestones
+    public function discover(MilestoneIdFactory $milestoneIdFactory): Milestones
     {
         $rows = $this->connection->executeQuery(
             'SELECT a.startDateTime, a.gearId, a.movingTimeInSeconds, g.name as gearName
@@ -71,7 +70,7 @@ final readonly class GearMovingTimeMilestoneDiscoverer implements MilestoneDisco
                 $thresholdHour = Hour::from($threshold);
 
                 $milestone = Milestone::create(
-                    id: $this->milestoneIdFactory->random(),
+                    id: $milestoneIdFactory->next(),
                     achievedOn: $achievedOn,
                     category: MilestoneCategory::GEAR_MOVING_TIME,
                     context: new GearMovingTimeContext(

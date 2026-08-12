@@ -7,11 +7,11 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Milestone\Context\StreakContext;
 use App\Domain\Milestone\Discoverer\StreakMilestoneDiscoverer;
+use App\Domain\Milestone\MilestoneIdFactory;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use App\Tests\Domain\Milestone\IncrementingMilestoneIdFactory;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class StreakMilestoneDiscovererTest extends ContainerTestCase
@@ -19,10 +19,11 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
     use MatchesSnapshots;
 
     private StreakMilestoneDiscoverer $discoverer;
+    private MilestoneIdFactory $milestoneIdFactory;
 
     public function testDiscoverWithNoActivities(): void
     {
-        $this->assertTrue($this->discoverer->discover()->isEmpty());
+        $this->assertTrue($this->discoverer->discover($this->milestoneIdFactory)->isEmpty());
     }
 
     public function testDiscoverSevenDayStreak(): void
@@ -36,7 +37,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
             ));
         }
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
         $context = $milestones->getFirst()->getContext();
         $this->assertInstanceOf(StreakContext::class, $context);
@@ -56,7 +57,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
             ));
         }
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
         $this->assertMatchesJsonSnapshot(Json::encode($milestones));
     }
 
@@ -71,7 +72,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
             ));
         }
 
-        $this->assertTrue($this->discoverer->discover()->isEmpty());
+        $this->assertTrue($this->discoverer->discover($this->milestoneIdFactory)->isEmpty());
     }
 
     public function testDiscoverResetsStreakOnGap(): void
@@ -95,7 +96,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
             ));
         }
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
         $this->assertMatchesJsonSnapshot(Json::encode($milestones));
     }
 
@@ -116,7 +117,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
                 ->build(), []
         ));
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
         $this->assertMatchesJsonSnapshot(Json::encode($milestones));
     }
 
@@ -131,7 +132,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
             ));
         }
 
-        $milestones = $this->discoverer->discover();
+        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
         $twentyOneDayMilestone = null;
         foreach ($milestones->toArray() as $milestone) {
@@ -147,6 +148,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->discoverer = new StreakMilestoneDiscoverer($this->getConnection(), new IncrementingMilestoneIdFactory());
+        $this->milestoneIdFactory = new MilestoneIdFactory();
+        $this->discoverer = new StreakMilestoneDiscoverer($this->getConnection());
     }
 }
