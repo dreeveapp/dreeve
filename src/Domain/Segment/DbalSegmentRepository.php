@@ -99,7 +99,8 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
             ->from('Segment')
             ->setFirstResult($pagination->getOffset())
             ->setMaxResults($pagination->getLimit())
-            ->orderBy('countCompleted', 'DESC');
+            ->orderBy('countCompleted', 'DESC')
+            ->addOrderBy('segmentId', 'ASC');
 
         return Segments::fromArray(array_map(
             $this->hydrate(...),
