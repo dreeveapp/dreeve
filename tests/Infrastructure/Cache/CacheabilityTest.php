@@ -32,12 +32,4 @@ class CacheabilityTest extends TestCase
 
         $this->assertEquals(array_unique($cacheTags), $cacheTags);
     }
-
-    public function testSomethingThatIsNotCacheableCarriesNoTags(): void
-    {
-        $cacheability = Cacheability::none();
-
-        $this->assertFalse($cacheability->isCacheable());
-        $this->assertEmpty($cacheability->getCacheTags()->toTagStrings());
-    }
 }

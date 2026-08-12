@@ -47,15 +47,6 @@ class RenderTest extends TestCase
         );
     }
 
-    public function testGetCacheHeadersWhenTheRenderIsNotCacheable(): void
-    {
-        $render = Render::notCacheable('<html lang="en"></html>');
-
-        $this->assertEquals(CacheStatus::UNCACHEABLE, $render->getCacheStatus());
-        $this->assertFalse($render->wasServedFromCache());
-        $this->assertEquals(['X-Dreeve-Cache' => 'UNCACHEABLE'], $render->getCacheHeaders());
-    }
-
     public function testGetCacheHeadersWhenTheStoredExpiryIsUnknown(): void
     {
         $render = Render::servedFromCache('<html lang="en"></html>', 'v5.1.5.photos', ['activity.images']);

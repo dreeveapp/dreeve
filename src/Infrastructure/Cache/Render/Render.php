@@ -50,17 +50,6 @@ final readonly class Render
         );
     }
 
-    public static function notCacheable(?string $content): self
-    {
-        return new self(
-            content: $content,
-            cacheStatus: CacheStatus::UNCACHEABLE,
-            cacheKey: null,
-            cacheTags: [],
-            ttlInSeconds: null,
-        );
-    }
-
     public function getContent(): ?string
     {
         return $this->content;

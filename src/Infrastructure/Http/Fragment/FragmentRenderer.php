@@ -6,7 +6,6 @@ namespace App\Infrastructure\Http\Fragment;
 
 use App\Infrastructure\Cache\Cacheable;
 use App\Infrastructure\Cache\CacheableRenderer;
-use App\Infrastructure\Cache\Render\CacheStatus;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Http\SvgResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,10 +32,6 @@ final readonly class FragmentRenderer
 
         if (!$cacheable->getCacheability()->getCacheContexts()->isEmpty()) {
             $response->headers->set('Cache-Control', 'private, no-store');
-        }
-
-        if (CacheStatus::UNCACHEABLE === $render->getCacheStatus()) {
-            $response->headers->set('Cache-Control', 'no-store');
         }
 
         return $response;

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentType;
 
@@ -32,7 +34,10 @@ final readonly class BadgeFragmentStub implements Fragment
 
     public function getCacheability(): Cacheability
     {
-        return Cacheability::none();
+        return Cacheability::for(
+            cacheKey: 'badge.dreeve',
+            cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
+        );
     }
 
     public function render(): string

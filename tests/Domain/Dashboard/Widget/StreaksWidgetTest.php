@@ -51,6 +51,26 @@ class StreaksWidgetTest extends ContainerTestCase
         );
     }
 
+    public function testRenderWhenNoActivityMatchesTheSportTypesToInclude(): void
+    {
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withStartDateTime(SerializableDateTime::fromString('2025-01-03 00:00:00'))
+                ->withSportType(SportType::ALPINE_SKI)
+                ->build(),
+            []
+        ));
+        $configuration = WidgetConfiguration::empty()->add('sportTypesToInclude', ['Ride']);
+        $this->assertMatchesHtmlSnapshot(
+            $this->widget->render(
+                dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
+                now: SerializableDateTime::fromString('2025-12-31'),
+                configuration: $configuration
+            )
+        );
+    }
+
     public function testGuardValidConfigurationWhenSportTypesIsNotArray(): void
     {
         $configuration = WidgetConfiguration::empty()->add('sportTypesToInclude', 'lol');

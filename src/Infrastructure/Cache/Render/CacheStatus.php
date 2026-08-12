@@ -8,5 +8,4 @@ enum CacheStatus: string
 {
     case HIT = 'HIT';
     case MISS = 'MISS';
-    case UNCACHEABLE = 'UNCACHEABLE';
 }

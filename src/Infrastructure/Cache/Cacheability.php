@@ -11,7 +11,6 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 final readonly class Cacheability
 {
     private function __construct(
-        private bool $isCacheable,
         private string $cacheKey,
         private CacheTags $cacheTags,
         private CacheContexts $cacheContexts,
@@ -26,28 +25,11 @@ final readonly class Cacheability
         ?int $ttlInSeconds = null,
     ): self {
         return new self(
-            isCacheable: true,
             cacheKey: $cacheKey,
             cacheTags: CacheTags::of(...RootCacheTag::crossCutting(), ...$cacheTags->toArray()),
             cacheContexts: $cacheContexts ?? CacheContexts::none(),
             ttlInSeconds: $ttlInSeconds,
         );
-    }
-
-    public static function none(): self
-    {
-        return new self(
-            isCacheable: false,
-            cacheKey: '',
-            cacheTags: CacheTags::empty(),
-            cacheContexts: CacheContexts::none(),
-            ttlInSeconds: null,
-        );
-    }
-
-    public function isCacheable(): bool
-    {
-        return $this->isCacheable;
     }
 
     public function getCacheKey(): string

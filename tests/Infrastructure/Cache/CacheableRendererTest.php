@@ -87,16 +87,6 @@ class CacheableRendererTest extends ContainerTestCase
         $this->assertEquals(1, $cacheable->renderCount);
     }
 
-    public function testItRendersEveryTimeWhenThereIsNoCacheability(): void
-    {
-        $cacheable = CacheableStub::for(Cacheability::none());
-
-        $this->cacheableRenderer->render($cacheable);
-        $this->cacheableRenderer->render($cacheable);
-
-        $this->assertEquals(2, $cacheable->renderCount);
-    }
-
     public function testItRendersAgainAfterTheWholeCacheWasCleared(): void
     {
         $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::of(RootCacheTag::ACTIVITY_IMAGES)));
@@ -120,14 +110,6 @@ class CacheableRendererTest extends ContainerTestCase
             Render::servedFromCache('rendered', AppVersion::getSemanticVersion().'.stub', self::CACHE_TAGS),
             $this->cacheableRenderer->render($cacheable)
         );
-    }
-
-    public function testItNeverReportsAnUncacheableRenderAsComingFromCache(): void
-    {
-        $cacheable = CacheableStub::for(Cacheability::none());
-
-        $this->assertEquals(Render::notCacheable('rendered'), $this->cacheableRenderer->render($cacheable));
-        $this->assertEquals(Render::notCacheable('rendered'), $this->cacheableRenderer->render($cacheable));
     }
 
     public function testItReportsTheCacheKeyIncludingItsContextSegments(): void

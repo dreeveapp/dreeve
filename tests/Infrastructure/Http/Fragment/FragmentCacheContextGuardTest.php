@@ -56,10 +56,6 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
         $cacheKeys = [];
         foreach ($this->allFragments() as $fragment) {
             $paths[] = $fragment->getPath();
-
-            if (!$fragment->getCacheability()->isCacheable()) {
-                continue;
-            }
             $cacheKeys[] = $fragment->getCacheability()->getCacheKey();
         }
 

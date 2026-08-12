@@ -30,10 +30,6 @@ final readonly class RenderCache
      */
     public function get(string $cacheKey, Cacheability $cacheability, \Closure $callback): Render
     {
-        if (!$cacheability->isCacheable()) {
-            return Render::notCacheable($callback());
-        }
-
         $prefixedCacheKey = (string) preg_replace(
             self::CHARACTERS_RESERVED_IN_A_CACHE_KEY,
             '_',
