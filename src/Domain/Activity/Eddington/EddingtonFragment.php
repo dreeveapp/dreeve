@@ -47,11 +47,7 @@ final readonly class EddingtonFragment implements Fragment
     {
         $eddingtonCharts = [];
         $eddingtonHistoryCharts = [];
-        $allEddingtons = [];
-
-        foreach (UnitSystem::cases() as $unitSystem) {
-            $allEddingtons = [...$allEddingtons, ...$this->eddingtonCalculator->calculate($unitSystem)];
-        }
+        $allEddingtons = $this->eddingtonCalculator->calculate(...UnitSystem::cases());
 
         foreach ($allEddingtons as $eddington) {
             $id = $eddington->getId();

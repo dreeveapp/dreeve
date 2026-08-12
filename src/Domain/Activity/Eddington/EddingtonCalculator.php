@@ -23,7 +23,7 @@ final readonly class EddingtonCalculator
     /**
      * @return list<Eddington>
      */
-    public function calculate(UnitSystem $unitSystem): array
+    public function calculate(UnitSystem ...$unitSystems): array
     {
         $eddingtons = [];
         foreach ($this->settingsRepository->metrics()->getEddingtonConfiguration() as $eddingtonConfigItem) {
@@ -35,15 +35,17 @@ final readonly class EddingtonCalculator
                 continue;
             }
 
-            $eddington = $this->calculateFor(
-                config: $eddingtonConfigItem,
-                unitSystem: $unitSystem,
-                distancePerDay: $distancePerDay
-            );
-            if ($eddington->getNumber() <= 0) {
-                continue;
+            foreach ($unitSystems as $unitSystem) {
+                $eddington = $this->calculateFor(
+                    config: $eddingtonConfigItem,
+                    unitSystem: $unitSystem,
+                    distancePerDay: $distancePerDay
+                );
+                if ($eddington->getNumber() <= 0) {
+                    continue;
+                }
+                $eddingtons[] = $eddington;
             }
-            $eddingtons[] = $eddington;
         }
 
         return $eddingtons;
