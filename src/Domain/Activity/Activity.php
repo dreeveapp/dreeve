@@ -38,6 +38,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'Activity_gearIdStartDateTime', columns: ['gearId', 'startDateTime'])]
 #[ORM\Index(name: 'Activity_markedForDeletion', columns: ['markedForDeletion'])]
 #[ORM\Index(name: 'Activity_streamsAreImported', columns: ['streamsAreImported'])]
+#[ORM\Index(name: 'Activity_importSource', columns: ['importSource'])]
 final class Activity
 {
     use RecordsEvents;

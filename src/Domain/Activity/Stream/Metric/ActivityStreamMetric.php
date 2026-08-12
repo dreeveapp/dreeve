@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'ActivityStreamMetric_activityIndex', columns: ['activityId'])]
 #[ORM\Index(name: 'ActivityStreamMetric_streamTypeIndex', columns: ['streamType'])]
 #[ORM\Index(name: 'ActivityStreamMetric_metricTypeIndex', columns: ['metricType'])]
+#[ORM\Index(name: 'ActivityStreamMetric_streamTypeMetricType', columns: ['streamType', 'metricType'])]
 final readonly class ActivityStreamMetric
 {
     /**

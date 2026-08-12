@@ -101,7 +101,9 @@ final readonly class DbalActivityIdRepository implements ActivityIdRepository
         $queryBuilder = $this->connection->createQueryBuilder();
         $queryBuilder->select('activityId')
             ->from('Activity')
-            ->where('markedForDeletion = 1');
+            ->where('markedForDeletion = 1')
+            ->orderBy('startDateTime', 'DESC')
+            ->addOrderBy('activityId', 'ASC');
 
         return ActivityIds::fromArray(array_map(
             ActivityId::fromString(...),
