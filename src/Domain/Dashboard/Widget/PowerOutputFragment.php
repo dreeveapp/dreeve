@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget;
 
-use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypeRepository;
+use App\Domain\Activity\FindFirstActivityStartDate\FindFirstActivityStartDate;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Activity\Stream\ActivityPowerRepository;
 use App\Domain\Activity\Stream\BestPowerOutputs;
@@ -14,6 +14,7 @@ use App\Domain\Activity\Stream\PowerOutputChart;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Serialization\Json;
@@ -26,9 +27,9 @@ use Twig\Environment;
 final readonly class PowerOutputFragment implements Fragment
 {
     public function __construct(
-        private ActivityRepository $activityRepository,
         private ActivityPowerRepository $activityPowerRepository,
         private ActivityTypeRepository $activityTypeRepository,
+        private QueryBus $queryBus,
         private TranslatorInterface $translator,
         private Clock $clock,
         private Environment $twig,
@@ -77,7 +78,7 @@ final readonly class PowerOutputFragment implements Fragment
             }
 
             $allYears ??= Years::create(
-                startDate: $this->activityRepository->findAll()->getFirstActivityStartDate(),
+                startDate: $this->queryBus->ask(new FindFirstActivityStartDate())->getStartDate(),
                 endDate: $now
             );
 

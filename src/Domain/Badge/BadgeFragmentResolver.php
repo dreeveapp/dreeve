@@ -69,7 +69,7 @@ final readonly class BadgeFragmentResolver implements FragmentResolver
             ),
             render: fn (): string => $this->twig->load('svg/badge/svg-dreeve-badge.html.twig')->render([
                 'athlete' => $this->settingsRepository->general()->getAthlete(),
-                'activities' => $this->activityRepository->findAll()->slice(0, self::NUMBER_OF_MOST_RECENT_ACTIVITIES),
+                'activities' => $this->activityRepository->findMostRecent(self::NUMBER_OF_MOST_RECENT_ACTIVITIES),
                 'activityTotals' => ActivityTotals::create(
                     totals: $this->queryBus->ask(new FindActivityTotals()),
                     now: $this->clock->getCurrentDateTimeImmutable(),

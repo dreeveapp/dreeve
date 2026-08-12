@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
+use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Integration\Weather\OpenMeteo\Weather;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
@@ -44,6 +46,29 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
         )->fetchAllAssociative();
 
         return Activities::fromArray(array_map(ActivityHydrator::hydrate(...), $results));
+    }
+
+    public function findMostRecent(int $limit, ?SportTypes $restrictToSportTypes = null): Activities
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder->select(ActivityHydrator::columns())
+            ->from('Activity')
+            ->orderBy('startDateTime', 'DESC')
+            ->setMaxResults($limit);
+
+        if ($restrictToSportTypes instanceof SportTypes && !$restrictToSportTypes->isEmpty()) {
+            $queryBuilder->andWhere('sportType IN (:sportTypes)')
+                ->setParameter(
+                    key: 'sportTypes',
+                    value: array_map(fn (SportType $sportType): string => $sportType->value, $restrictToSportTypes->toArray()),
+                    type: ArrayParameterType::STRING
+                );
+        }
+
+        return Activities::fromArray(array_map(
+            ActivityHydrator::hydrate(...),
+            $queryBuilder->executeQuery()->fetchAllAssociative()
+        ));
     }
 
     public function findByIds(ActivityIds $activityIds): Activities

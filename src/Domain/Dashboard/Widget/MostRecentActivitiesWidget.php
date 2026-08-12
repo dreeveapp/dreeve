@@ -60,12 +60,10 @@ final readonly class MostRecentActivitiesWidget implements Widget
 
     public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
-        $allActivities = $this->activityRepository->findAll();
-
         $numberOfActivitiesToDisplay = (int) $configuration->get('numberOfActivitiesToDisplay');
 
         return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
-            'mostRecentActivities' => $allActivities->slice(0, $numberOfActivitiesToDisplay),
+            'mostRecentActivities' => $this->activityRepository->findMostRecent($numberOfActivitiesToDisplay),
         ]);
     }
 }

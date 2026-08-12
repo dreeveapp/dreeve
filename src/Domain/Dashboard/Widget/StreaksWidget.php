@@ -80,18 +80,8 @@ final readonly class StreaksWidget implements Widget, DependsOnCurrentDay
             restrictToSportTypes: $sportTypesToInclude,
         ));
 
-        $activities = $this->activityRepository->findAll();
-        $mostRecentActivity = $activities->getFirst();
-        if (!$sportTypesToInclude->isEmpty()) {
-            foreach ($activities as $activity) {
-                if (!$sportTypesToInclude->has($activity->getSportType())) {
-                    continue;
-                }
-
-                $mostRecentActivity = $activity;
-                break;
-            }
-        }
+        $mostRecentActivity = $this->activityRepository->findMostRecent(1, $sportTypesToInclude)->getFirst()
+            ?? $this->activityRepository->findMostRecent(1)->getFirst();
 
         return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
             'subtitle' => $configuration->get('subtitle'),
