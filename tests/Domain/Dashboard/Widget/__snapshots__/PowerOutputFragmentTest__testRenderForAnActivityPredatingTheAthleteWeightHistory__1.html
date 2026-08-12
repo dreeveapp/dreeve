@@ -1,0 +1,119 @@
+<!-- Modal header --><html><body>
+<div class="modal-header flex items-center justify-between">
+        <h3>
+            <span>Peak power outputs</span>
+        </h3>
+        <div class="flex items-center">
+            <button type="button" class="close">
+                <svg class="size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+        </div>
+    </div>
+    <!-- Modal body -->
+    <div class="modal-body space-y-4">
+                <div id="powerOutputDetailsActivityTypeTabContent">
+                            <div id="powerOutputDetailsRide" role="tabpanel" aria-labelledby="powerOutputDetailsRide-tab">
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="h-80" data-echarts-options='{"animation":true,"backgroundColor":null,"grid":{"left":"2px","right":"10px","bottom":"3%","containLabel":true},"legend":{"show":true},"tooltip":{"show":true,"trigger":"axis","formatter":"callback:formatPowerDurationTooltip"},"xAxis":{"type":"log","min":1,"max":3600,"axisLabel":{"formatter":"callback:formatDuration"},"splitLine":{"lineStyle":{"type":"dashed"}}},"yAxis":[{"type":"value","axisLabel":{"formatter":"{value} w"},"max":900,"interval":180}],"series":[{"type":"line","name":"All time","smooth":0.3,"symbol":"none","data":[[5,900],[60,500],[3600,250]]},{"type":"line","name":"2019","smooth":0.3,"symbol":"none","data":[[5,900],[60,500],[3600,250]]}]}'></div>
+                        <div>
+                            <h3 class="mb-4 font-semibold">
+                                Details
+                            </h3>
+                            <div class="relative overflow-x-auto">
+                                <table class="data-table">
+                                    <thead class="z-10 sticky top-0">
+                                    <tr>
+                                        <th scope="col" class="bg-gray-50 sticky left-0">
+                                            <div class="w-24">&nbsp;</div>
+                                        </th>
+                                        <th scope="col" colspan="2">
+                                            Best 1s
+                                        </th>
+                                        <th scope="col" colspan="2">
+                                            Best 5s
+                                        </th>
+                                        <th scope="col" colspan="2">
+                                            Best 15s
+                                        </th>
+                                        <th scope="col" colspan="2">
+                                            Best 1m
+                                        </th>
+                                        <th scope="col" colspan="2">
+                                            Best 2m
+                                        </th>
+                                        <th scope="col" colspan="2">
+                                            Best 5m
+                                        </th>
+                                        <th scope="col" colspan="2">
+                                            Best 8m
+                                        </th>
+                                        <th scope="col" colspan="2">
+                                            Best 20m
+                                        </th>
+                                        <th scope="col" colspan="2">
+                                            Best 30m
+                                        </th>
+                                        <th scope="col" colspan="2">
+                                            Best 1h
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                                                                                                                                                                                <tr class="group/row">
+                                            <td class="font-medium bg-white text-gray-900 sticky left-0">
+                                                All time
+                                            </td>
+                                                                                                                                                <td>
+                                                        900<span class="text-xxs ml-px">w</span>
+                                                    </td>
+                                                    <td class="border-r-2">
+                                                        -
+                                                    </td>
+                                                                                                                                                                                                <td>
+                                                        500<span class="text-xxs ml-px">w</span>
+                                                    </td>
+                                                    <td class="border-r-2">
+                                                        -
+                                                    </td>
+                                                                                                                                                                                                <td>
+                                                        250<span class="text-xxs ml-px">w</span>
+                                                    </td>
+                                                    <td class="border-r-2">
+                                                        -
+                                                    </td>
+                                                                                                                                    </tr>
+                                                                                                                                                            <tr class="group/row">
+                                            <td class="font-medium bg-white text-gray-900 sticky left-0">
+                                                2019
+                                            </td>
+                                                                                                                                                <td>
+                                                        900<span class="text-xxs ml-px">w</span>
+                                                    </td>
+                                                    <td class="border-r-2">
+                                                        -
+                                                    </td>
+                                                                                                                                                                                                <td>
+                                                        500<span class="text-xxs ml-px">w</span>
+                                                    </td>
+                                                    <td class="border-r-2">
+                                                        -
+                                                    </td>
+                                                                                                                                                                                                <td>
+                                                        250<span class="text-xxs ml-px">w</span>
+                                                    </td>
+                                                    <td class="border-r-2">
+                                                        -
+                                                    </td>
+                                                                                                                                    </tr>
+                                                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+    </div>
+</body></html>

@@ -30,7 +30,7 @@ final class PowerOutputs extends Collection
     /**
      * @param array<int|string, int> $bestAverages
      */
-    public static function fromBestAverages(array $bestAverages, Kilogram $athleteWeight): self
+    public static function fromBestAverages(array $bestAverages, ?Kilogram $athleteWeight): self
     {
         $powerOutputs = self::empty();
 
@@ -45,7 +45,7 @@ final class PowerOutputs extends Collection
                 timeIntervalInSeconds: $timeIntervalInSeconds,
                 formattedTimeInterval: 0 !== (int) $interval->totalHours ? $interval->totalHours.' h' : (0 !== (int) $interval->totalMinutes ? $interval->totalMinutes.' m' : $interval->totalSeconds.' s'),
                 power: $bestAverageForTimeInterval,
-                relativePower: $athleteWeight->toFloat() > 0 ? round($bestAverageForTimeInterval / $athleteWeight->toFloat(), 2) : 0,
+                relativePower: $athleteWeight?->toFloat() > 0 ? round($bestAverageForTimeInterval / $athleteWeight->toFloat(), 2) : null,
             ));
         }
 

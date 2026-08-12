@@ -58,6 +58,30 @@ class PowerOutputFragmentTest extends ControllerWebTestCase
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
+    public function testRenderForAnActivityPredatingTheAthleteWeightHistory(): void
+    {
+        $activityId = ActivityId::fromUnprefixed('9756441743');
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withSportType(SportType::RIDE)
+                ->withStartDateTime(SerializableDateTime::fromString('2019-01-01 10:00:00'))
+                ->build(),
+            []
+        ));
+        $this->getContainer()->get(ActivityStreamMetricRepository::class)->add(ActivityStreamMetric::create(
+            activityId: $activityId,
+            streamType: StreamType::WATTS,
+            metricType: ActivityStreamMetricType::BEST_AVERAGES,
+            data: [5 => 900, 60 => 500, 3600 => 250],
+        ));
+
+        $this->client->request('GET', '/api/fragment/page/power-output');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
     public function testItIsNotServedAsAPartialFragment(): void
     {
         $this->provideFullTestSet();

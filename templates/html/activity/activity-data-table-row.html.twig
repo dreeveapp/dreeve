@@ -42,7 +42,7 @@
                 {{ powerOutput.getPower() }}<span class="text-xxs ml-px">w</span>
             </td>
             <td class="border-r-2">
-                {{ powerOutput.getRelativePower() }}<span class="text-xxs ml-px">w/kg</span>
+                {{ powerOutput.getRelativePower() ? powerOutput.getRelativePower() ~ '<span class="text-xxs ml-px">w/kg</span>' : '-' }}
             </td>
         {% else %}
             <td class="border-l-2">-</td>

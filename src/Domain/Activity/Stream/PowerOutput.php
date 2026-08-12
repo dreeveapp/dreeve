@@ -10,7 +10,7 @@ final readonly class PowerOutput
         private int $timeIntervalInSeconds,
         private string $formattedTimeInterval,
         private int $power,
-        private float $relativePower,
+        private ?float $relativePower,
         private ?ActivityId $activityId = null,
     ) {
     }
@@ -19,7 +19,7 @@ final readonly class PowerOutput
         int $timeIntervalInSeconds,
         string $formattedTimeInterval,
         int $power,
-        float $relativePower,
+        ?float $relativePower,
         ?ActivityId $activityId = null,
     ): self {
         return new self(
@@ -46,7 +46,7 @@ final readonly class PowerOutput
         return $this->power;
     }
 
-    public function getRelativePower(): float
+    public function getRelativePower(): ?float
     {
         return $this->relativePower;
     }

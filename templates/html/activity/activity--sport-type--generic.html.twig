@@ -323,7 +323,7 @@
                                         <div class="text-center bg-gray-50 rounded-md py-1.5">
                                             <div class="text-xxs text-gray-500">{{ timeIntervalLabels[loop.index0] }}</div>
                                             <div class="text-sm font-bold text-gray-900">{{ powerOutput.getPower() }}<span class="text-xxs font-medium text-gray-400">w</span></div>
-                                            <div class="text-xxs text-gray-400 tabular-nums">{{ powerOutput.getRelativePower() }} w/kg</div>
+                                            <div class="text-xxs text-gray-400 tabular-nums">{{ powerOutput.getRelativePower() ? powerOutput.getRelativePower() ~ ' w/kg' : "n/a"|trans }}</div>
                                         </div>
                                     {% endif %}
                                 {% endfor %}

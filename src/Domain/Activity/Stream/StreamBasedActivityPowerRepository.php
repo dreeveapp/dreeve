@@ -100,13 +100,13 @@ final readonly class StreamBasedActivityPowerRepository implements ActivityPower
             $activitySummary = $this->activitySummaryRepository->find($activityId);
             $interval = CarbonInterval::seconds($timeIntervalInSeconds);
 
+            $athleteWeight = null;
             try {
                 $athleteWeight = $athleteWeightHistory->find($activitySummary->getStartDate())->getWeightInKg();
             } catch (EntityNotFound) {
-                continue; // @codeCoverageIgnore
             }
 
-            $relativePower = $athleteWeight->toFloat() > 0 ? round($best['power'] / $athleteWeight->toFloat(), 2) : 0;
+            $relativePower = $athleteWeight?->toFloat() > 0 ? round($best['power'] / $athleteWeight->toFloat(), 2) : null;
             $powerOutputs->add(
                 PowerOutput::fromState(
                     timeIntervalInSeconds: $timeIntervalInSeconds,

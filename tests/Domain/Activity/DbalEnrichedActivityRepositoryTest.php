@@ -102,7 +102,7 @@ class DbalEnrichedActivityRepositoryTest extends ContainerTestCase
         $this->assertNull($enrichedActivity->getMaxCadence());
     }
 
-    public function testFindForAnActivityPredatingTheAthleteWeightHistory(): void
+    public function testFindForAnActivityPredatingTheAthleteWeightHistoryStillExposesAbsolutePower(): void
     {
         $activityId = ActivityId::fromUnprefixed('1');
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
@@ -121,8 +121,9 @@ class DbalEnrichedActivityRepositoryTest extends ContainerTestCase
 
         $enrichedActivity = $this->enrichedActivityRepository->find($activityId);
 
-        $this->assertFalse($enrichedActivity->hasDetailedPowerData());
-        $this->assertNull($enrichedActivity->getBestAveragePowerForTimeInterval(5));
+        $this->assertTrue($enrichedActivity->hasDetailedPowerData());
+        $this->assertEquals(493, $enrichedActivity->getBestAveragePowerForTimeInterval(5)?->getPower());
+        $this->assertNull($enrichedActivity->getBestAveragePowerForTimeInterval(5)?->getRelativePower());
     }
 
     public function testFindAll(): void

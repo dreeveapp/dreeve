@@ -191,10 +191,10 @@ final readonly class DbalEnrichedActivityRepository extends DbalRepository imple
             return PowerOutputs::empty();
         }
 
+        $athleteWeight = null;
         try {
             $athleteWeight = $athleteWeightHistory->find($activity->getStartDate())->getWeightInKg();
         } catch (EntityNotFound) {
-            return PowerOutputs::empty();
         }
 
         return PowerOutputs::fromBestAverages(

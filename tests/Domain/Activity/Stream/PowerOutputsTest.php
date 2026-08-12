@@ -27,14 +27,26 @@ class PowerOutputsTest extends TestCase
         $this->assertEquals(5.0, $powerOutputs->getFirst()->getRelativePower());
     }
 
-    public function testFromBestAveragesWithoutAthleteWeight(): void
+    public function testFromBestAveragesWithAZeroedAthleteWeight(): void
     {
         $powerOutputs = PowerOutputs::fromBestAverages(
             bestAverages: [5 => 400],
             athleteWeight: Kilogram::zero(),
         );
 
-        $this->assertEquals(0, $powerOutputs->getFirst()->getRelativePower());
+        $this->assertEquals(400, $powerOutputs->getFirst()->getPower());
+        $this->assertNull($powerOutputs->getFirst()->getRelativePower());
+    }
+
+    public function testFromBestAveragesWithoutAthleteWeight(): void
+    {
+        $powerOutputs = PowerOutputs::fromBestAverages(
+            bestAverages: [5 => 400],
+            athleteWeight: null,
+        );
+
+        $this->assertEquals(400, $powerOutputs->getFirst()->getPower());
+        $this->assertNull($powerOutputs->getFirst()->getRelativePower());
     }
 
     public function testFromBestAveragesWithoutAnyRedactedInterval(): void
