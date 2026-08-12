@@ -95,12 +95,18 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
     public function findAll(Pagination $pagination): Segments
     {
         $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder->select('*', '(SELECT COUNT(*) FROM SegmentEffort WHERE SegmentEffort.segmentId = Segment.segmentId) as countCompleted')
+        $queryBuilder->select('Segment.*', 'COALESCE(efforts.countCompleted, 0) AS countCompleted')
             ->from('Segment')
+            ->leftJoin(
+                'Segment',
+                '(SELECT segmentId, COUNT(*) AS countCompleted FROM SegmentEffort GROUP BY segmentId)',
+                'efforts',
+                'efforts.segmentId = Segment.segmentId'
+            )
             ->setFirstResult($pagination->getOffset())
             ->setMaxResults($pagination->getLimit())
             ->orderBy('countCompleted', 'DESC')
-            ->addOrderBy('segmentId', 'ASC');
+            ->addOrderBy('Segment.segmentId', 'ASC');
 
         return Segments::fromArray(array_map(
             $this->hydrate(...),

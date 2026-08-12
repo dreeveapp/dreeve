@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domain\Segment;
 
-use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
+use App\Domain\Segment\FindEffortSummaryPerSegment\FindEffortSummaryPerSegment;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Repository\Pagination;
@@ -20,7 +21,7 @@ final readonly class SegmentDataTableFragment implements Fragment
 {
     public function __construct(
         private SegmentRepository $segmentRepository,
-        private SegmentEffortRepository $segmentEffortRepository,
+        private QueryBus $queryBus,
         private SettingsRepository $settingsRepository,
         private Environment $twig,
     ) {
@@ -59,16 +60,17 @@ final readonly class SegmentDataTableFragment implements Fragment
 
         $dataTableRows = [];
         $pagination = Pagination::fromOffsetAndLimit(0, 100);
+        $effortSummaries = $this->queryBus->ask(new FindEffortSummaryPerSegment());
 
         do {
             $segments = $this->segmentRepository->findAll($pagination);
             /** @var Segment $segment */
             foreach ($segments as $segment) {
-                $segmentEfforts = $this->segmentEffortRepository->findBySegmentId($segment->getId());
+                $summary = $effortSummaries->getForSegment($segment->getId());
                 $segment = $segment
-                    ->withNumberOfTimesRidden(count($segmentEfforts))
-                    ->withBestEffort($segmentEfforts->getBestEffort())
-                    ->withLastEffortDate($segmentEfforts->getFirst()?->getStartDateTime());
+                    ->withNumberOfTimesRidden($summary?->getNumberOfTimesRidden() ?? 0)
+                    ->withBestEffort($summary?->getBestEffort())
+                    ->withLastEffortDate($summary?->getLastEffortDate());
 
                 $dataTableRows[] = DataTableRow::create(
                     markup: $rowTemplate->render([

@@ -130,17 +130,6 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
         ));
     }
 
-    public function countBySegmentId(SegmentId $segmentId): int
-    {
-        $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder->select('COUNT(*)')
-            ->from('SegmentEffort')
-            ->andWhere('segmentId = :segmentId')
-            ->setParameter('segmentId', $segmentId);
-
-        return (int) $queryBuilder->executeQuery()->fetchOne();
-    }
-
     public function findByActivityId(ActivityId $activityId): SegmentEfforts
     {
         $sql = 'SELECT * FROM (

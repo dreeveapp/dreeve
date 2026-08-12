@@ -19,7 +19,5 @@ interface SegmentEffortRepository
 
     public function findBySegmentId(SegmentId $segmentId): SegmentEfforts;
 
-    public function countBySegmentId(SegmentId $segmentId): int;
-
     public function findByActivityId(ActivityId $activityId): SegmentEfforts;
 }

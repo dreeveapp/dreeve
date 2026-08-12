@@ -27,8 +27,8 @@ class AppVersionAssetVersioningStrategyTest extends TestCase
     public function testItShouldBeStableAcrossInstances(): void
     {
         $this->assertEquals(
-            (new AppVersionAssetVersioningStrategy())->applyVersion('/test/file'),
-            (new AppVersionAssetVersioningStrategy())->applyVersion('/test/file')
+            new AppVersionAssetVersioningStrategy()->applyVersion('/test/file'),
+            new AppVersionAssetVersioningStrategy()->applyVersion('/test/file')
         );
     }
 }

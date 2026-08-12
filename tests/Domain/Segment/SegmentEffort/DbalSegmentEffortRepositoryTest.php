@@ -101,11 +101,6 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
             SegmentEfforts::fromArray([$segmentEffortOne, $segmentEffortTwo]),
             $this->segmentEffortRepository->findBySegmentId($segmentEffortOne->getSegmentId())
         );
-
-        $this->assertEquals(
-            2,
-            $this->segmentEffortRepository->countBySegmentId($segmentEffortOne->getSegmentId())
-        );
     }
 
     public function testFindByActivityId(): void
