@@ -7,9 +7,10 @@
 	}
 
 	frankenphp {
-		num_threads 3
+		# Let FrankenPHP size the thread pool itself. It scales up under load.
+		max_threads auto
 		worker {
-			num 2
+			num {$FRANKENPHP_NUM_WORKERS:4}
 			file ./public/index.php
 		}
 	}

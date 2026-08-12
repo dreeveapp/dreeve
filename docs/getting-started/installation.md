@@ -110,6 +110,11 @@ ADMIN_PASSWORD_HASH='replace-me'
 # PUID=your host UID
 # PGID=your host GID
 
+# How many requests Dreeve can serve at the same time. Defaults to 4.
+# Each worker holds a booted copy of the app in memory, so raise it if pages feel
+# queued up on a machine with cores to spare, and lower it to 2 on a low-memory NAS.
+# FRANKENPHP_NUM_WORKERS=4
+
 # !! IMPORTANT If you want to serve Dreeve via a reverse proxy, 
 # uncomment the following lines and configure them accordingly:
 
