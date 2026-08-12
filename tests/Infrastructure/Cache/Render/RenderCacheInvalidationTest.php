@@ -3,6 +3,7 @@
 namespace App\Tests\Infrastructure\Cache\Render;
 
 use App\Application\IndexPage;
+use App\Domain\Activity\BestEffort\ActivityBestEffortsFragmentResolver;
 use App\Domain\Activity\Eddington\EddingtonFragment;
 use App\Domain\Activity\Image\PhotosFragment;
 use App\Domain\Activity\Route\HeatmapFragment;
@@ -14,6 +15,7 @@ use App\Domain\Gear\RecordingDevice\RecordingDevicesFragment;
 use App\Domain\Milestone\MilestonesFragment;
 use App\Domain\Rewind\RewindCompareFragmentResolver;
 use App\Domain\Rewind\RewindFragmentResolver;
+use App\Domain\Segment\ActivitySegmentsFragmentResolver;
 use App\Domain\Segment\SegmentDataTableFragment;
 use App\Domain\Segment\SegmentsFragment;
 use App\Infrastructure\Cache\Cacheable;
@@ -174,6 +176,18 @@ class RenderCacheInvalidationTest extends ContainerTestCase
             RootCacheTag::RECORDING_DEVICES,
             RootCacheTag::ACTIVITIES,
         ]];
+
+        yield 'activity-segments' => [ActivitySegmentsFragmentResolver::class, [
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::SEGMENTS,
+        ], 'activity/activity-9542782314/segments'];
+
+        yield 'activity-best-efforts' => [ActivityBestEffortsFragmentResolver::class, [
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::ACTIVITIES,
+        ], 'activity/activity-9542782314/best-efforts'];
     }
 
     #[\Override]

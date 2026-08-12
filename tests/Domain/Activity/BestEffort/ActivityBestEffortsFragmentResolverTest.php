@@ -23,14 +23,15 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
-    public function testItStaysOutOfTheRenderCache(): void
+    public function testItEntersTheRenderCache(): void
     {
         $this->provideFullTestSet();
         $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/partial/activity/activity-9542782314/best-efforts');
 
-        $this->assertResponseHeaderSame('X-Dreeve-Cache', 'UNCACHEABLE');
+        $this->assertResponseHeaderSame('X-Dreeve-Cache', 'MISS');
+        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activities.9542782314, activities');
     }
 
     public function testItIsNotServedAsAPageFragment(): void

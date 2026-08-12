@@ -61,20 +61,15 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
 
         return new ResolvedFragment(
             path: self::BASE_PATH.'/'.$activityId,
-            cacheability: $this->cacheabilityFor($activityId),
-            render: fn (): string => $this->renderFor($activityId),
-        );
-    }
-
-    private function cacheabilityFor(ActivityId $activityId): Cacheability
-    {
-        return Cacheability::for(
-            cacheKey: sprintf('%s.%s', self::BASE_PATH, $activityId->toUnprefixedString()),
-            cacheTags: CacheTags::of(
-                ActivityCacheTag::for($activityId),
-                RootCacheTag::GEAR,
+            cacheability: Cacheability::for(
+                cacheKey: sprintf('%s.%s', self::BASE_PATH, $activityId->toUnprefixedString()),
+                cacheTags: CacheTags::of(
+                    ActivityCacheTag::for($activityId),
+                    RootCacheTag::GEAR,
+                ),
+                cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
             ),
-            cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
+            render: fn (): string => $this->renderFor($activityId),
         );
     }
 

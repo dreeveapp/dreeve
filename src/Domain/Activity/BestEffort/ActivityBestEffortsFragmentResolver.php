@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\BestEffort;
 
+use App\Domain\Activity\ActivityCacheTag;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\Fragment\FragmentResolver;
 use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Http\Fragment\ResolvedFragment;
@@ -41,7 +44,13 @@ final readonly class ActivityBestEffortsFragmentResolver implements FragmentReso
 
         return new ResolvedFragment(
             path: sprintf('%s/%s/best-efforts', self::BASE_PATH, $activityId),
-            cacheability: Cacheability::none(),
+            cacheability: Cacheability::for(
+                cacheKey: sprintf('%s.%s.best-efforts', self::BASE_PATH, $activityId->toUnprefixedString()),
+                cacheTags: CacheTags::of(
+                    ActivityCacheTag::for($activityId),
+                    RootCacheTag::ACTIVITIES,
+                ),
+            ),
             render: fn (): string => $this->twig->load('html/activity/_best-efforts.html.twig')->render([
                 'bestEfforts' => $this->activityBestEffortRepository->findByActivity($activityId),
             ]),
