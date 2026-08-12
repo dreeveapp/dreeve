@@ -123,7 +123,7 @@ class RenderCacheTest extends ContainerTestCase
 
         $this->assertTrue($render->wasServedFromCache());
         $this->assertNull($render->getTtlInSeconds());
-        $this->assertArrayNotHasKey('X-Cache-TTL', $render->getCacheHeaders());
+        $this->assertArrayNotHasKey('X-Dreeve-Cache-TTL', $render->getCacheHeaders());
 
         $pool->clear();
     }

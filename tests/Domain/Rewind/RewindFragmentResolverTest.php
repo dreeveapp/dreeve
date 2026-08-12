@@ -79,11 +79,11 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'rewind.all-time',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
         $this->assertEqualsCanonicalizing(
             ['activities', 'activity.images', 'gear', 'settings.appearance', 'settings.general'],
-            explode(', ', (string) $this->client->getResponse()->headers->get('X-Cache-Tags')),
+            explode(', ', (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Tags')),
         );
     }
 
@@ -97,11 +97,11 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'rewind.2023',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
         $this->assertEqualsCanonicalizing(
             ['activities.2023', 'activity.images.2023', 'gear', 'settings.appearance', 'settings.general'],
-            explode(', ', (string) $this->client->getResponse()->headers->get('X-Cache-Tags')),
+            explode(', ', (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Tags')),
         );
     }
 

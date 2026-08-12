@@ -80,7 +80,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'rewind.2023.compare.2022',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
         $this->assertEqualsCanonicalizing(
             [
@@ -88,7 +88,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
                 'activities.2022', 'activity.images.2022',
                 'gear', 'settings.appearance', 'settings.general',
             ],
-            explode(', ', (string) $this->client->getResponse()->headers->get('X-Cache-Tags')),
+            explode(', ', (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Tags')),
         );
     }
 
@@ -106,7 +106,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
                 'activities', 'activity.images',
                 'gear', 'settings.appearance', 'settings.general',
             ],
-            explode(', ', (string) $this->client->getResponse()->headers->get('X-Cache-Tags')),
+            explode(', ', (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Tags')),
         );
     }
 

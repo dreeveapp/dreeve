@@ -42,7 +42,7 @@ class MonthlyStatsFragmentTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'monthly-stats',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 
@@ -64,7 +64,7 @@ class MonthlyStatsFragmentTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/fragment/page/monthly-stats');
 
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, '.RootCacheTag::ACTIVITIES->toTagString(),
         );
     }

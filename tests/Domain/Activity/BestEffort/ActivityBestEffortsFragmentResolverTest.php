@@ -30,7 +30,7 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
 
         $this->client->request('GET', '/api/fragment/partial/activity/activity-9542782314/best-efforts');
 
-        $this->assertResponseHeaderSame('X-Cache', 'UNCACHEABLE');
+        $this->assertResponseHeaderSame('X-Dreeve-Cache', 'UNCACHEABLE');
     }
 
     public function testItIsNotServedAsAPageFragment(): void

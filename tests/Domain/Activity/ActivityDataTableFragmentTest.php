@@ -33,7 +33,7 @@ class ActivityDataTableFragmentTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'activity.data-table',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 
@@ -45,7 +45,7 @@ class ActivityDataTableFragmentTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/fragment/data/activity/data-table');
 
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, activities',
         );
     }

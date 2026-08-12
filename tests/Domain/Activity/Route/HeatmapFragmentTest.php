@@ -33,7 +33,7 @@ class HeatmapFragmentTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'heatmap',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 

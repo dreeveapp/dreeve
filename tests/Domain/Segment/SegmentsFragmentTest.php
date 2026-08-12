@@ -33,7 +33,7 @@ class SegmentsFragmentTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'segments',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 
@@ -55,7 +55,7 @@ class SegmentsFragmentTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/fragment/page/segments');
 
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, segments, activities',
         );
     }

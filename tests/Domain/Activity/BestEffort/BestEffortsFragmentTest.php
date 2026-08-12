@@ -33,7 +33,7 @@ class BestEffortsFragmentTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'best-efforts',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 
@@ -53,7 +53,7 @@ class BestEffortsFragmentTest extends ControllerWebTestCase
         $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/best-efforts');
-        $this->assertResponseHeaderSame('X-Cache-TTL', '27896');
+        $this->assertResponseHeaderSame('X-Dreeve-Cache-TTL', '27896');
     }
 
     #[\Override]

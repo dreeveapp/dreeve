@@ -85,7 +85,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'badge.dreeve',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 
@@ -97,7 +97,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
         $this->client->request('GET', '/badge/dreeve.svg');
 
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, activities, challenges',
         );
     }

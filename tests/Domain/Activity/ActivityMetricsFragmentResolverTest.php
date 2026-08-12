@@ -33,10 +33,10 @@ class ActivityMetricsFragmentResolverTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'activity.9756441741.metrics',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, activities.9756441741',
         );
     }

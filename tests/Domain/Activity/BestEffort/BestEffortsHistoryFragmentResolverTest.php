@@ -42,10 +42,10 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
         $this->assertStringContainsString('Morning Ride', (string) $this->client->getResponse()->getContent());
         $this->assertStringEndsWith(
             'best-efforts.Ride.10000',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, activities',
         );
     }

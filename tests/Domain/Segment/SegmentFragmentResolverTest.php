@@ -118,7 +118,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'segment.1',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 
@@ -131,7 +131,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
 
         // Scoped to this segment, so importing an activity that rode another segment leaves it alone.
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, segments.1, gear, activities.9542782314',
         );
     }

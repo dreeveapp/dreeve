@@ -94,16 +94,16 @@ final readonly class Render
      */
     public function getCacheHeaders(): array
     {
-        $headers = ['X-Cache' => $this->cacheStatus->value];
+        $headers = ['X-Dreeve-Cache' => $this->cacheStatus->value];
 
         if (!is_null($this->cacheKey)) {
-            $headers['X-Cache-Key'] = $this->cacheKey;
+            $headers['X-Dreeve-Cache-Key'] = $this->cacheKey;
         }
         if ([] !== $this->cacheTags) {
-            $headers['X-Cache-Tags'] = implode(', ', $this->cacheTags);
+            $headers['X-Dreeve-Cache-Tags'] = implode(', ', $this->cacheTags);
         }
         if (!is_null($this->ttlInSeconds)) {
-            $headers['X-Cache-TTL'] = (string) $this->ttlInSeconds;
+            $headers['X-Dreeve-Cache-TTL'] = (string) $this->ttlInSeconds;
         }
 
         return $headers;

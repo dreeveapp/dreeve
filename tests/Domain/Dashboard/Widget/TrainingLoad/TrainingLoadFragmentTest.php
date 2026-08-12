@@ -38,7 +38,7 @@ class TrainingLoadFragmentTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/fragment/page/training-load');
 
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, activities',
         );
     }

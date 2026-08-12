@@ -63,7 +63,7 @@ class GearMaintenanceDueFragmentTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/fragment/partial/gear/maintenance-due');
 
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, gear.maintenance, activities, gear',
         );
     }

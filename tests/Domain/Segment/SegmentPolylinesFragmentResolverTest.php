@@ -35,7 +35,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'segment.10.polylines',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 
@@ -49,7 +49,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
 
         // Without this tag a re-imported segment would keep serving its old route forever.
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, segments',
         );
     }

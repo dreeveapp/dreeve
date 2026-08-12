@@ -98,7 +98,7 @@ class PowerOutputFragmentTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/fragment/page/power-output');
 
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, activities, settings.metrics',
         );
     }

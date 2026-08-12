@@ -57,7 +57,7 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'gear.maintenance',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 
@@ -81,7 +81,7 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/fragment/page/gear/maintenance');
 
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, gear.maintenance, activities, gear',
         );
     }

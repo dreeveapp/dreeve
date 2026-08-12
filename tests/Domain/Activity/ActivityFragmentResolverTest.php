@@ -136,7 +136,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'activity.9756441741.auth=anon',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 
@@ -175,7 +175,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
         $this->seedActivity();
 
         $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
-        $anonymousCacheKey = (string) $this->client->getResponse()->headers->get('X-Cache-Key');
+        $anonymousCacheKey = (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key');
         $this->assertResponseHeaderSame('Cache-Control', 'max-age=0, must-revalidate, no-store, private');
 
         $this->client->loginUser($this->adminUser());
@@ -183,7 +183,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
 
         $this->assertNotEquals(
             $anonymousCacheKey,
-            $this->client->getResponse()->headers->get('X-Cache-Key'),
+            $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 
@@ -195,7 +195,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
         $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
 
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, activities.9756441741, gear',
         );
     }

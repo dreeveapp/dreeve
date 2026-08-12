@@ -40,22 +40,19 @@ class ApiFragmentRequestHandlerTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
 
-        // The tags pool is an array adapter that gets reset between HTTP requests, which drops the
-        // tag versions every cached entry is validated against. Driving the handler directly is
-        // the only way to observe a second, cached call.
         $firstResponse = $this->apiFragmentRequestHandler->handle('data', 'heatmap/routes');
-        $this->assertEquals('MISS', $firstResponse->headers->get('X-Cache'));
+        $this->assertEquals('MISS', $firstResponse->headers->get('X-Dreeve-Cache'));
 
         $this->getConnection()->executeStatement(
             'UPDATE Activity SET name = "This name never made it into the render cache"'
         );
 
         $secondResponse = $this->apiFragmentRequestHandler->handle('data', 'heatmap/routes');
-        $this->assertEquals('HIT', $secondResponse->headers->get('X-Cache'));
+        $this->assertEquals('HIT', $secondResponse->headers->get('X-Dreeve-Cache'));
         $this->assertEquals($firstResponse->getContent(), $secondResponse->getContent());
         $this->assertEquals(
-            $firstResponse->headers->get('X-Cache-Key'),
-            $secondResponse->headers->get('X-Cache-Key'),
+            $firstResponse->headers->get('X-Dreeve-Cache-Key'),
+            $secondResponse->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 

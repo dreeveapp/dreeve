@@ -38,7 +38,7 @@ class DashboardFragmentTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/fragment/page/dashboard');
 
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, dashboard',
         );
     }

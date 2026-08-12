@@ -45,7 +45,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'month.2023-06',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 
@@ -67,7 +67,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/fragment/page/month/2023-01');
 
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, activities.2022-12, activities.2023-01, activities.2023-02',
         );
     }

@@ -21,10 +21,10 @@ class RenderTest extends TestCase
         $this->assertTrue($render->wasServedFromCache());
         $this->assertEquals(
             [
-                'X-Cache' => 'HIT',
-                'X-Cache-Key' => 'v5.1.5.best-efforts',
-                'X-Cache-Tags' => 'activities, settings.appearance, settings.general',
-                'X-Cache-TTL' => '19784',
+                'X-Dreeve-Cache' => 'HIT',
+                'X-Dreeve-Cache-Key' => 'v5.1.5.best-efforts',
+                'X-Dreeve-Cache-Tags' => 'activities, settings.appearance, settings.general',
+                'X-Dreeve-Cache-TTL' => '19784',
             ],
             $render->getCacheHeaders()
         );
@@ -38,10 +38,10 @@ class RenderTest extends TestCase
         $this->assertFalse($render->wasServedFromCache());
         $this->assertEquals(
             [
-                'X-Cache' => 'MISS',
-                'X-Cache-Key' => 'v5.1.5.heatmap',
-                'X-Cache-Tags' => 'activity.route',
-                'X-Cache-TTL' => '86400',
+                'X-Dreeve-Cache' => 'MISS',
+                'X-Dreeve-Cache-Key' => 'v5.1.5.heatmap',
+                'X-Dreeve-Cache-Tags' => 'activity.route',
+                'X-Dreeve-Cache-TTL' => '86400',
             ],
             $render->getCacheHeaders()
         );
@@ -53,7 +53,7 @@ class RenderTest extends TestCase
 
         $this->assertEquals(CacheStatus::UNCACHEABLE, $render->getCacheStatus());
         $this->assertFalse($render->wasServedFromCache());
-        $this->assertEquals(['X-Cache' => 'UNCACHEABLE'], $render->getCacheHeaders());
+        $this->assertEquals(['X-Dreeve-Cache' => 'UNCACHEABLE'], $render->getCacheHeaders());
     }
 
     public function testGetCacheHeadersWhenTheStoredExpiryIsUnknown(): void
@@ -62,9 +62,9 @@ class RenderTest extends TestCase
 
         $this->assertEquals(
             [
-                'X-Cache' => 'HIT',
-                'X-Cache-Key' => 'v5.1.5.photos',
-                'X-Cache-Tags' => 'activity.images',
+                'X-Dreeve-Cache' => 'HIT',
+                'X-Dreeve-Cache-Key' => 'v5.1.5.photos',
+                'X-Dreeve-Cache-Tags' => 'activity.images',
             ],
             $render->getCacheHeaders()
         );

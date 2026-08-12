@@ -34,7 +34,7 @@ class HeatmapRoutesFragmentTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'heatmap.routes',
-            (string) $this->client->getResponse()->headers->get('X-Cache-Key'),
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 
@@ -46,7 +46,7 @@ class HeatmapRoutesFragmentTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/fragment/data/heatmap/routes');
 
         $this->assertResponseHeaderSame(
-            'X-Cache-Tags',
+            'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, activity.route',
         );
     }
