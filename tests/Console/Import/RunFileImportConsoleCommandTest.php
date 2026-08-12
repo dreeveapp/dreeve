@@ -1,27 +1,34 @@
 <?php
 
-namespace App\Tests\Console\Daemon;
+namespace App\Tests\Console\Import;
 
 use App\Application\AppStatusChecker;
-use App\Console\Daemon\RunAutomationRulesBackfillConsoleCommand;
-use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\ActivityIds;
-use App\Domain\Automation\AutomationRuleId;
-use App\Domain\Automation\AutomationRuleIds;
-use App\Domain\Automation\Backfill\AutomationRulesBackfillQueue;
-use App\Domain\Automation\Backfill\AutomationRulesBackfillRequest;
+use App\Application\AppUrl;
+use App\Console\Import\RunFileImportConsoleCommand;
+use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Import\ImportMode;
+use App\Domain\Import\WatchDirectory;
+use App\Domain\Integration\Notification\SendNotification\SendNotification;
+use App\Domain\Settings\KeyValueBasedSettingsRepository;
+use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\CQRS\Command\DomainCommand;
 use App\Infrastructure\FileSystem\PermissionChecker;
+use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Console\ConsoleCommandTestCase;
+use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
 use App\Tests\Infrastructure\FileSystem\SuccessfulPermissionChecker;
 use App\Tests\Infrastructure\FileSystem\UnwritablePermissionChecker;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
+use App\Tests\Infrastructure\Time\ResourceUsage\FixedResourceUsage;
+use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -29,88 +36,108 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class RunAutomationRulesBackfillConsoleCommandTest extends ConsoleCommandTestCase
+class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
 {
     use MatchesSnapshots;
 
     private const string TODAY = '2025-12-04';
 
-    private RunAutomationRulesBackfillConsoleCommand $command;
+    private RunFileImportConsoleCommand $command;
     private SpyCommandBus $commandBus;
+    private FilesystemOperator $watchStorage;
     private KeyValueStore $keyValueStore;
 
-    public function testRunsAQueuedBackfill(): void
+    public function testRunsWhenFilesArePresent(): void
     {
-        new AutomationRulesBackfillQueue($this->keyValueStore)->queue(AutomationRulesBackfillRequest::fromState(
-            AutomationRuleIds::fromArray([AutomationRuleId::fromUnprefixed('1')]),
-            ActivityIds::fromArray([ActivityId::fromUnprefixed('a')]),
-        ));
+        $this->watchStorage->write('watch/ride.fit', 'raw-fit-bytes');
 
-        $command = $this->getCommandInApplication(RunAutomationRulesBackfillConsoleCommand::NAME);
+        $command = $this->getCommandInApplication(RunFileImportConsoleCommand::NAME);
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
     }
 
-    public function testSkipsWhenNoBackfillIsQueued(): void
+    public function testIgnoresTheLegacyImportAndBuildOptions(): void
     {
-        $command = $this->getCommandInApplication(RunAutomationRulesBackfillConsoleCommand::NAME);
+        $this->watchStorage->write('watch/ride.fit', 'raw-fit-bytes');
+
+        $withoutOptions = $this->runWithOptions([]);
+        $withOptions = $this->runWithOptions(['--import' => true, '--build' => true]);
+
+        $this->assertSame($withoutOptions, $withOptions);
+    }
+
+    public function testSkipsWhenThereAreNoFiles(): void
+    {
+        $command = $this->getCommandInApplication(RunFileImportConsoleCommand::NAME);
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertEmpty($this->commandBus->getDispatchedCommands());
-        $this->assertStringContainsString('No automation rules backfill queued...', $commandTester->getDisplay());
+        $this->assertStringContainsString('No files left to process...', $commandTester->getDisplay());
     }
 
-    public function testReturnsEarlyWhenImportModeIsStrava(): void
+    public function testDoesNotSendANotificationWhenTheSuccessfulImportNotificationIsDisabled(): void
     {
-        new AutomationRulesBackfillQueue($this->keyValueStore)->queue(AutomationRulesBackfillRequest::fromState(
-            AutomationRuleIds::fromArray([AutomationRuleId::fromUnprefixed('1')]),
-            ActivityIds::fromArray([ActivityId::fromUnprefixed('a')]),
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()->build(),
+            [],
+        ));
+        $this->watchStorage->write('watch/ride.fit', 'raw-fit-bytes');
+
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: SettingsGroup::INTEGRATIONS->keyValueKey(),
+            value: Value::fromString(Json::encode(['notifications' => ['notifyOnSuccessfulBuild' => false]])),
         ));
 
-        $command = $this->buildCommand($commandBus = new SpyCommandBus(), importMode: ImportMode::STRAVA_API);
-        $application = new Application();
-        $application->addCommand($command);
-
-        $commandTester = new CommandTester($application->find(RunAutomationRulesBackfillConsoleCommand::NAME));
+        $command = $this->getCommandInApplication(RunFileImportConsoleCommand::NAME);
+        $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertEmpty($commandBus->getDispatchedCommands());
-        $this->assertStringContainsString('Automation rules are only available in file import mode', $commandTester->getDisplay());
+        $dispatchedCommands = $this->commandBus->getDispatchedCommands();
+        $this->assertNotEmpty($dispatchedCommands);
+        $this->assertEmpty(array_filter(
+            $dispatchedCommands,
+            static fn (DomainCommand $dispatchedCommand): bool => $dispatchedCommand instanceof SendNotification,
+        ));
     }
 
     public function testPostponesWhenLockIsAlreadyAcquired(): void
     {
-        $queue = new AutomationRulesBackfillQueue($this->keyValueStore);
-        $queue->queue(AutomationRulesBackfillRequest::fromState(
-            AutomationRuleIds::fromArray([AutomationRuleId::fromUnprefixed('1')]),
-            ActivityIds::fromArray([ActivityId::fromUnprefixed('a')]),
-        ));
+        $this->watchStorage->write('watch/ride.fit', 'raw-fit-bytes');
         $this->getConnection()->executeStatement(
             'INSERT INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             ['key' => 'lock.importData', 'value' => '{"lockAcquiredBy": "test", "heartbeat": 1764806400}']
         );
 
-        $command = $this->getCommandInApplication(RunAutomationRulesBackfillConsoleCommand::NAME);
+        $command = $this->getCommandInApplication(RunFileImportConsoleCommand::NAME);
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertEmpty($this->commandBus->getDispatchedCommands());
         $this->assertStringContainsString(
-            'Postponing backfill, another process is importing data.',
+            'Postponing file import, another process is importing data.',
             $commandTester->getDisplay(),
         );
-        $this->assertTrue($queue->isQueued(), 'A postponed backfill stays queued for the next cycle.');
+    }
+
+    public function testReturnsEarlyWhenImportModeIsStrava(): void
+    {
+        $command = $this->buildCommand(new SpyCommandBus(), importMode: ImportMode::STRAVA_API);
+
+        $application = new Application();
+        $application->addCommand($command);
+
+        $commandTester = new CommandTester($application->find(RunFileImportConsoleCommand::NAME));
+        $commandTester->execute(['command' => $command->getName()]);
+
+        $this->assertStringContainsString('Cannot import files. IMPORT_MODE=stravaApi', $commandTester->getDisplay());
     }
 
     public function testShowsErrorAndReleasesLockWhenWriteAccessFails(): void
     {
-        new AutomationRulesBackfillQueue($this->keyValueStore)->queue(AutomationRulesBackfillRequest::fromState(
-            AutomationRuleIds::fromArray([AutomationRuleId::fromUnprefixed('1')]),
-            ActivityIds::fromArray([ActivityId::fromUnprefixed('a')]),
-        ));
+        $this->watchStorage->write('watch/ride.fit', 'raw-fit-bytes');
 
         $command = $this->buildCommand(
             $commandBus = new SpyCommandBus(),
@@ -120,7 +147,7 @@ class RunAutomationRulesBackfillConsoleCommandTest extends ConsoleCommandTestCas
         $application = new Application();
         $application->addCommand($command);
 
-        $commandTester = new CommandTester($application->find(RunAutomationRulesBackfillConsoleCommand::NAME));
+        $commandTester = new CommandTester($application->find(RunFileImportConsoleCommand::NAME));
         $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertStringContainsString(
@@ -136,12 +163,9 @@ class RunAutomationRulesBackfillConsoleCommandTest extends ConsoleCommandTestCas
         $this->assertFalse($row, 'Expected the mutex lock to be released');
     }
 
-    public function testLogsReleasesLockAndRethrowsWhenTheBackfillFails(): void
+    public function testLogsReleasesLockAndRethrowsWhenImportFails(): void
     {
-        new AutomationRulesBackfillQueue($this->keyValueStore)->queue(AutomationRulesBackfillRequest::fromState(
-            AutomationRuleIds::fromArray([AutomationRuleId::fromUnprefixed('1')]),
-            ActivityIds::fromArray([ActivityId::fromUnprefixed('a')]),
-        ));
+        $this->watchStorage->write('watch/ride.fit', 'raw-fit-bytes');
 
         $commandBus = $this->createMock(CommandBus::class);
         $commandBus->expects($this->once())->method('dispatch')->willThrowException(new \RuntimeException('OH NO ERROR'));
@@ -154,7 +178,7 @@ class RunAutomationRulesBackfillConsoleCommandTest extends ConsoleCommandTestCas
         $application = new Application();
         $application->addCommand($command);
 
-        $commandTester = new CommandTester($application->find(RunAutomationRulesBackfillConsoleCommand::NAME));
+        $commandTester = new CommandTester($application->find(RunFileImportConsoleCommand::NAME));
 
         $thrown = null;
         try {
@@ -176,8 +200,27 @@ class RunAutomationRulesBackfillConsoleCommandTest extends ConsoleCommandTestCas
     {
         parent::setUp();
 
+        $this->watchStorage = $this->getContainer()->get('default.storage');
+        $this->watchStorage->deleteDirectory('watch');
         $this->keyValueStore = $this->getContainer()->get(KeyValueStore::class);
+
         $this->command = $this->buildCommand($this->commandBus = new SpyCommandBus());
+    }
+
+    /**
+     * @param array<string, bool> $options
+     */
+    private function runWithOptions(array $options): string
+    {
+        $command = $this->buildCommand($commandBus = new SpyCommandBus());
+
+        $application = new Application();
+        $application->addCommand($command);
+
+        $commandTester = new CommandTester($application->find(RunFileImportConsoleCommand::NAME));
+        $commandTester->execute(['command' => $command->getName(), ...$options]);
+
+        return Json::encode($commandBus->getDispatchedCommands());
     }
 
     private function buildCommand(
@@ -185,18 +228,21 @@ class RunAutomationRulesBackfillConsoleCommandTest extends ConsoleCommandTestCas
         PermissionChecker $permissionChecker = new SuccessfulPermissionChecker(),
         ImportMode $importMode = ImportMode::FILES,
         LoggerInterface $logger = new NullLogger(),
-    ): RunAutomationRulesBackfillConsoleCommand {
-        return new RunAutomationRulesBackfillConsoleCommand(
+    ): RunFileImportConsoleCommand {
+        return new RunFileImportConsoleCommand(
             commandBus: $commandBus,
             appStatusChecker: new AppStatusChecker($permissionChecker),
-            backfillQueue: new AutomationRulesBackfillQueue($this->getContainer()->get(KeyValueStore::class)),
+            watchDirectory: $this->getContainer()->get(WatchDirectory::class),
+            resourceUsage: new FixedResourceUsage(),
             mutex: new Mutex(
                 connection: $this->getConnection(),
                 clock: PausedClock::fromString(self::TODAY),
                 lockName: LockName::IMPORT_DATA,
             ),
+            appUrl: AppUrl::fromString('http://localhost'),
             logger: $logger,
             importMode: $importMode,
+            settingsRepository: $this->getContainer()->get(KeyValueBasedSettingsRepository::class),
         );
     }
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Daemon;
+namespace App\Console\Notification;
 
 use App\Application\AppVersion;
 use App\Domain\Integration\GitHub\GitHub;
@@ -14,10 +14,10 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: AppUpdateAvailableNotificationCronAction::NAME, description: 'Send out app update available notification')]
-final class AppUpdateAvailableNotificationCronAction extends Command
+#[AsCommand(name: AppUpdateAvailableNotificationConsoleCommand::NAME, description: 'Send out app update available notification', aliases: ['app:cron:app-update-available-notification'])]
+final class AppUpdateAvailableNotificationConsoleCommand extends Command
 {
-    public const string NAME = 'app:cron:app-update-available-notification';
+    public const string NAME = 'app:notification:app-update-available';
 
     public function __construct(
         private readonly GitHub $gitHub,

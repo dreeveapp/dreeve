@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Console\Webhook;
+namespace App\Tests\Console\Strava;
 
 use App\Application\AppUrl;
-use App\Console\Webhook\StravaCreateWebhookSubscriptionConsoleCommand;
+use App\Console\Strava\StravaCreateWebhookSubscriptionConsoleCommand;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Strava;

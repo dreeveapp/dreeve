@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Daemon;
+namespace App\Console\Strava;
 
+use App\Console\Import\RunStravaImportConsoleCommand;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
@@ -24,10 +25,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[WithMutex(lockName: LockName::IMPORT_DATA)]
 #[RequiresUpToDateDatabaseSchema]
-#[AsCommand(name: ProcessStravaWebhooksConsoleCommand::NAME, description: 'Process webhooks')]
+#[AsCommand(name: ProcessStravaWebhooksConsoleCommand::NAME, description: 'Process webhooks', aliases: ['app:cron:process-webhooks'])]
 final class ProcessStravaWebhooksConsoleCommand extends Command
 {
-    public const string NAME = 'app:cron:process-webhooks';
+    public const string NAME = 'app:strava:webhooks-process';
 
     public function __construct(
         private readonly WebhookEventRepository $webhookEventRepository,

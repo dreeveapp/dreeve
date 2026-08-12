@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Daemon;
+namespace App\Console\Notification;
 
 use App\Application\AppUrl;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
@@ -15,10 +15,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[RequiresUpToDateDatabaseSchema]
-#[AsCommand(name: GearMaintenanceNotificationConsoleCommand::NAME, description: 'Send out gear maintenance notification')]
+#[AsCommand(name: GearMaintenanceNotificationConsoleCommand::NAME, description: 'Send out gear maintenance notification', aliases: ['app:cron:gear-maintenance-notification'])]
 final class GearMaintenanceNotificationConsoleCommand extends Command
 {
-    public const string NAME = 'app:cron:gear-maintenance-notification';
+    public const string NAME = 'app:notification:gear-maintenance';
 
     public function __construct(
         private readonly MaintenanceTaskProgressCalculator $maintenanceTaskProgressCalculator,

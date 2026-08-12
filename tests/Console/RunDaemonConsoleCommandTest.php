@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Tests\Console\Daemon;
+namespace App\Tests\Console;
 
-use App\Console\Daemon\RunDaemonConsoleCommand;
-use App\Tests\Console\ConsoleCommandTestCase;
-use App\Tests\Console\ConsoleOutputSnapshotDriver;
+use App\Console\RunDaemonConsoleCommand;
 use App\Tests\Infrastructure\Daemon\FakeDaemon;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use App\Tests\NullLogger;

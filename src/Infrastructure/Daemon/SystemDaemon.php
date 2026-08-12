@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Daemon;
 
-use App\Console\Daemon\ProcessStravaWebhooksConsoleCommand;
-use App\Console\Daemon\PruneRenderCacheConsoleCommand;
-use App\Console\Daemon\RunAutomationRulesBackfillConsoleCommand;
-use App\Console\Daemon\RunFileImportConsoleCommand;
+use App\Console\Cache\PruneRenderCacheConsoleCommand;
+use App\Console\Import\RunAutomationRulesBackfillConsoleCommand;
+use App\Console\Import\RunFileImportConsoleCommand;
+use App\Console\Strava\ProcessStravaWebhooksConsoleCommand;
 use App\Domain\Import\ImportMode;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Console\ConsoleOutputAware;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Daemon;
+namespace App\Console;
 
 use App\Infrastructure\Console\ProvideConsoleIntro;
 use App\Infrastructure\Daemon\Daemon;

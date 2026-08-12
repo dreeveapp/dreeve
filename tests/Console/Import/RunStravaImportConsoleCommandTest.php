@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\Console\Daemon;
+namespace App\Tests\Console\Import;
 
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
-use App\Console\Daemon\RunStravaImportConsoleCommand;
+use App\Console\Import\RunStravaImportConsoleCommand;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Import\ImportMode;

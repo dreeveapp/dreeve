@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Console\Daemon;
+namespace App\Tests\Console\Notification;
 
 use App\Application\AppUrl;
-use App\Console\Daemon\GearMaintenanceNotificationConsoleCommand;
+use App\Console\Notification\GearMaintenanceNotificationConsoleCommand;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
@@ -67,7 +67,7 @@ class GearMaintenanceNotificationConsoleCommandTest extends ConsoleCommandTestCa
             performedOn: SerializableDateTime::fromString('2025-01-01 00:00:00'),
         ));
 
-        $command = $this->getCommandInApplication('app:cron:gear-maintenance-notification');
+        $command = $this->getCommandInApplication('app:notification:gear-maintenance');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
@@ -76,7 +76,7 @@ class GearMaintenanceNotificationConsoleCommandTest extends ConsoleCommandTestCa
 
     public function testDoesNotNotifyWhenNoMaintenanceIsDue(): void
     {
-        $command = $this->getCommandInApplication('app:cron:gear-maintenance-notification');
+        $command = $this->getCommandInApplication('app:notification:gear-maintenance');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 

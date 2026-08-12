@@ -151,13 +151,13 @@ Two things are **not** carried over by the migration and have to be set up again
 #### **Files mode**
 
 ```bash
-> docker compose exec app bin/console app:cron:run-file-import
+> docker compose exec app bin/console app:import:files
 ```
 
 #### **Strava API mode**
 
 ```bash
-> docker compose exec app bin/console app:cron:run-strava-import
+> docker compose exec app bin/console app:import:strava
 ```
 
 <!-- tabs:end -->

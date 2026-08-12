@@ -17,9 +17,9 @@ class CronActionIdTest extends TestCase
 
     public static function provideCommands(): iterable
     {
-        yield [CronActionId::RUN_STRAVA_IMPORT, 'bin/console app:cron:run-strava-import'];
-        yield [CronActionId::GEAR_MAINTENANCE_NOTIFICATION, 'bin/console app:cron:gear-maintenance-notification'];
-        yield [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, 'bin/console app:cron:app-update-available-notification'];
+        yield [CronActionId::RUN_STRAVA_IMPORT, 'bin/console app:import:strava'];
+        yield [CronActionId::GEAR_MAINTENANCE_NOTIFICATION, 'bin/console app:notification:gear-maintenance'];
+        yield [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, 'bin/console app:notification:app-update-available'];
     }
 
     #[DataProvider('provideDefaultCronExpressions')]

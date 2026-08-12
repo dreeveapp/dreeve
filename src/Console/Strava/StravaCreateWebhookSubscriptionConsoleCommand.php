@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Webhook;
+namespace App\Console\Strava;
 
 use App\Application\AppUrl;
 use App\Controller\Strava\StravaWebhookRequestHandler;

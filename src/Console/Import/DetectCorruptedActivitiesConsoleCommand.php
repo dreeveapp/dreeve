@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console;
+namespace App\Console\Import;
 
 use App\Application\Import\StravaImport\DeleteActivitiesMarkedForDeletion\DeleteActivitiesMarkedForDeletion;
 use App\Domain\Activity\ActivityId;
@@ -32,7 +32,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[WithMutex(lockName: LockName::IMPORT_DATA)]
 #[RequiresUpToDateDatabaseSchema]
-#[AsCommand(name: 'app:data:detect-corrupted-activities', description: 'Checks for corrupted activities and deletes them')]
+#[AsCommand(name: 'app:import:detect-corrupted-activities', description: 'Checks for corrupted activities and deletes them', aliases: ['app:data:detect-corrupted-activities'])]
 class DetectCorruptedActivitiesConsoleCommand extends Command
 {
     use ProvideConsoleIntro;

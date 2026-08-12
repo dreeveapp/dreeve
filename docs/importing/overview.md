@@ -26,13 +26,13 @@ and challenges, none of which is present in an activity file.
 #### **Files mode**
 
 ```bash
-> docker compose exec app bin/console app:cron:run-file-import
+> docker compose exec app bin/console app:import:files
 ```
 
 #### **Strava API mode**
 
 ```bash
-> docker compose exec app bin/console app:cron:run-strava-import
+> docker compose exec app bin/console app:import:strava
 ```
 
 <!-- tabs:end -->

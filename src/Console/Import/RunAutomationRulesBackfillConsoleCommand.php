@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Daemon;
+namespace App\Console\Import;
 
 use App\Application\AppIsNotReady;
 use App\Application\AppStatusChecker;
@@ -27,10 +27,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[WithMonologChannel('daemon')]
 #[WithMutex(lockName: LockName::IMPORT_DATA)]
 #[RequiresUpToDateDatabaseSchema]
-#[AsCommand(name: RunAutomationRulesBackfillConsoleCommand::NAME, description: 'Apply automation rules to existing activities')]
+#[AsCommand(name: RunAutomationRulesBackfillConsoleCommand::NAME, description: 'Apply automation rules to existing activities', aliases: ['app:cron:run-automation-rules-backfill'])]
 final class RunAutomationRulesBackfillConsoleCommand extends Command
 {
-    public const string NAME = 'app:cron:run-automation-rules-backfill';
+    public const string NAME = 'app:automation:backfill';
 
     public function __construct(
         private readonly CommandBus $commandBus,

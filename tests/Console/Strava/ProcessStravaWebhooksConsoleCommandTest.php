@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Console\Daemon;
+namespace App\Tests\Console\Strava;
 
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
-use App\Console\Daemon\ProcessStravaWebhooksConsoleCommand;
-use App\Console\Daemon\RunStravaImportConsoleCommand;
+use App\Console\Import\RunStravaImportConsoleCommand;
+use App\Console\Strava\ProcessStravaWebhooksConsoleCommand;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Import\ImportMode;
@@ -52,7 +52,7 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
             ));
         }
 
-        $command = $this->getCommandInApplication('app:cron:process-webhooks');
+        $command = $this->getCommandInApplication('app:strava:webhooks-process');
         $command->getApplication()->addCommand($this->buildStravaImportCommand($spyCommandBus = new SpyCommandBus()));
 
         $commandTester = new CommandTester($command);
@@ -75,7 +75,7 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
         $application = new Application();
         $application->addCommand($command);
 
-        $commandTester = new CommandTester($application->find('app:cron:process-webhooks'));
+        $commandTester = new CommandTester($application->find('app:strava:webhooks-process'));
         $statusCode = $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertSame(Command::SUCCESS, $statusCode);
@@ -83,7 +83,7 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
 
     public function testWhenThereAreNoWebhookEvents(): void
     {
-        $command = $this->getCommandInApplication('app:cron:process-webhooks');
+        $command = $this->getCommandInApplication('app:strava:webhooks-process');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
@@ -104,7 +104,7 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
             ['key' => 'lock.importData', 'value' => '{"lockAcquiredBy": "test", "heartbeat": 1764806400}']
         );
 
-        $command = $this->getCommandInApplication('app:cron:process-webhooks');
+        $command = $this->getCommandInApplication('app:strava:webhooks-process');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 

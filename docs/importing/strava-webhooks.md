@@ -74,7 +74,7 @@ This should display:
 To delete your webhook subscription and stop receiving notifications, run
 
 ```bash
-docker compose exec app bin/console app:strava:webhooks-unsubscribe <subscription-id>
+docker compose exec app bin/console app:strava:webhooks-delete <subscription-id>
 ```
 
 Replace `<subscription-id>` with the ID obtained from `app:strava:webhooks-view` command.
@@ -84,7 +84,7 @@ Replace `<subscription-id>` with the ID obtained from `app:strava:webhooks-view`
 docker compose exec app bin/console app:strava:webhooks-view
 
 # Delete subscription (use the ID from above)
-docker compose exec app bin/console app:strava:webhooks-unsubscribe 123456
+docker compose exec app bin/console app:strava:webhooks-delete 123456
 ```
 
 ## Troubleshooting tips

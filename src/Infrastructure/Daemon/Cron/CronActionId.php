@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Daemon\Cron;
 
-use App\Console\Daemon\AppUpdateAvailableNotificationCronAction;
-use App\Console\Daemon\GearMaintenanceNotificationConsoleCommand;
-use App\Console\Daemon\RunStravaImportConsoleCommand;
+use App\Console\Import\RunStravaImportConsoleCommand;
+use App\Console\Notification\AppUpdateAvailableNotificationConsoleCommand;
+use App\Console\Notification\GearMaintenanceNotificationConsoleCommand;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\Localisation\TranslatableWithDescription;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -41,7 +41,7 @@ enum CronActionId: string implements TranslatableWithDescription
         return match ($this) {
             self::RUN_STRAVA_IMPORT => sprintf('bin/console %s', RunStravaImportConsoleCommand::NAME),
             self::GEAR_MAINTENANCE_NOTIFICATION => sprintf('bin/console %s', GearMaintenanceNotificationConsoleCommand::NAME),
-            self::APP_UPDATE_AVAILABLE_NOTIFICATION => sprintf('bin/console %s', AppUpdateAvailableNotificationCronAction::NAME),
+            self::APP_UPDATE_AVAILABLE_NOTIFICATION => sprintf('bin/console %s', AppUpdateAvailableNotificationConsoleCommand::NAME),
         };
     }
 

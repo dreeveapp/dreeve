@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Console;
+namespace App\Tests\Console\Import;
 
-use App\Console\DetectCorruptedActivitiesConsoleCommand;
+use App\Console\Import\DetectCorruptedActivitiesConsoleCommand;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
@@ -14,6 +14,8 @@ use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\WorldType;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\String\CompressedString;
+use App\Tests\Console\ConsoleCommandTestCase;
+use App\Tests\Console\ConsoleOutputSnapshotDriver;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Command\Command;
@@ -27,7 +29,7 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
 
     public function testExecuteWithoutCorruptedData(): void
     {
-        $command = $this->getCommandInApplication('app:data:detect-corrupted-activities');
+        $command = $this->getCommandInApplication('app:import:detect-corrupted-activities');
         $commandTester = new CommandTester($command);
         $commandTester->setInputs(['yes']);
         $commandTester->execute([
@@ -64,7 +66,7 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
             ]
         );
 
-        $command = $this->getCommandInApplication('app:data:detect-corrupted-activities');
+        $command = $this->getCommandInApplication('app:import:detect-corrupted-activities');
         $commandTester = new CommandTester($command);
         $commandTester->setInputs(['no']);
         $commandTester->execute([
@@ -137,7 +139,7 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
             ]
         );
 
-        $command = $this->getCommandInApplication('app:data:detect-corrupted-activities');
+        $command = $this->getCommandInApplication('app:import:detect-corrupted-activities');
         $commandTester = new CommandTester($command);
         $commandTester->setInputs(['yes']);
         $commandTester->execute([
@@ -171,7 +173,7 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
             ]
         );
 
-        $command = $this->getCommandInApplication('app:data:detect-corrupted-activities');
+        $command = $this->getCommandInApplication('app:import:detect-corrupted-activities');
         $commandTester = new CommandTester($command);
         $commandTester->setInputs(['yes']);
         $commandTester->execute([
@@ -202,7 +204,7 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
             ]
         );
 
-        $command = $this->getCommandInApplication('app:data:detect-corrupted-activities');
+        $command = $this->getCommandInApplication('app:import:detect-corrupted-activities');
         $commandTester = new CommandTester($command);
         $commandTester->setInputs(['yes']);
         $commandTester->execute([
@@ -236,7 +238,7 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
             ]
         );
 
-        $command = $this->getCommandInApplication('app:data:detect-corrupted-activities');
+        $command = $this->getCommandInApplication('app:import:detect-corrupted-activities');
         $commandTester = new CommandTester($command);
         $commandTester->setInputs(['yes']);
         $commandTester->execute([

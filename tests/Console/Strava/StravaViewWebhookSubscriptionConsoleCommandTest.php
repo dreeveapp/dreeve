@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Console\Webhook;
+namespace App\Tests\Console\Strava;
 
-use App\Console\Webhook\StravaViewWebhookSubscriptionConsoleCommand;
+use App\Console\Strava\StravaViewWebhookSubscriptionConsoleCommand;
 use App\Domain\Strava\Strava;
 use App\Tests\Console\ConsoleCommandTestCase;
 use App\Tests\SpyOutput;

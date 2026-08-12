@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Console\Webhook;
+namespace App\Tests\Console\Strava;
 
-use App\Console\Webhook\StravaDeleteWebhookSubscriptionConsoleCommand;
+use App\Console\Strava\StravaDeleteWebhookSubscriptionConsoleCommand;
 use App\Domain\Strava\Strava;
 use App\Tests\Console\ConsoleCommandTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -24,7 +24,7 @@ class StravaDeleteWebhookSubscriptionConsoleCommandTest extends ConsoleCommandTe
             ->expects($this->atLeastOnce())
             ->method('info');
 
-        $command = $this->getCommandInApplication('app:strava:webhooks-unsubscribe');
+        $command = $this->getCommandInApplication('app:strava:webhooks-delete');
         $commandTester = new CommandTester($command);
 
         $commandTester->setInputs(['y']);
@@ -43,7 +43,7 @@ class StravaDeleteWebhookSubscriptionConsoleCommandTest extends ConsoleCommandTe
             ->expects($this->atLeastOnce())
             ->method('info');
 
-        $command = $this->getCommandInApplication('app:strava:webhooks-unsubscribe');
+        $command = $this->getCommandInApplication('app:strava:webhooks-delete');
         $commandTester = new CommandTester($command);
 
         $commandTester->setInputs(['n']);

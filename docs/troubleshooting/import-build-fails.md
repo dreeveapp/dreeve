@@ -20,7 +20,7 @@ During the next import run, the deleted activities will be automatically re-impo
 Run the following command:
 
 ```bash
-> docker compose exec app bin/console app:data:detect-corrupted-activities
+> docker compose exec app bin/console app:import:detect-corrupted-activities
 ```
 
 This command will guide you step by step through identifying and deleting the affected activities..

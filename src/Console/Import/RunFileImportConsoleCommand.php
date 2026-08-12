@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Daemon;
+namespace App\Console\Import;
 
 use App\Application\AppIsNotReady;
 use App\Application\AppStatusChecker;
@@ -33,10 +33,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[WithMonologChannel('daemon')]
 #[WithMutex(lockName: LockName::IMPORT_DATA)]
 #[RequiresUpToDateDatabaseSchema]
-#[AsCommand(name: RunFileImportConsoleCommand::NAME, description: 'Run file import')]
+#[AsCommand(name: RunFileImportConsoleCommand::NAME, description: 'Run file import', aliases: ['app:cron:run-file-import'])]
 final class RunFileImportConsoleCommand extends Command
 {
-    public const string NAME = 'app:cron:run-file-import';
+    public const string NAME = 'app:import:files';
 
     public function __construct(
         private readonly CommandBus $commandBus,

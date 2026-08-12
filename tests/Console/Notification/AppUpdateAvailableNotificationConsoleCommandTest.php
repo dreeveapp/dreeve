@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Console\Daemon;
+namespace App\Tests\Console\Notification;
 
 use App\Application\AppVersion;
-use App\Console\Daemon\AppUpdateAvailableNotificationCronAction;
+use App\Console\Notification\AppUpdateAvailableNotificationConsoleCommand;
 use App\Domain\Integration\GitHub\GitHub;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Console\ConsoleCommandTestCase;
@@ -15,11 +15,11 @@ use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class AppUpdateAvailableNotificationCronActionTest extends ConsoleCommandTestCase
+class AppUpdateAvailableNotificationConsoleCommandTest extends ConsoleCommandTestCase
 {
     use MatchesSnapshots;
 
-    private AppUpdateAvailableNotificationCronAction $cronAction;
+    private AppUpdateAvailableNotificationConsoleCommand $command;
     private SpyCommandBus $commandBus;
     /**
      * @var MockObject&Client
@@ -34,7 +34,7 @@ class AppUpdateAvailableNotificationCronActionTest extends ConsoleCommandTestCas
             ->with('GET', 'https://api.github.com/repos/dreeveapp/dreeve/releases/latest')
             ->willReturn(new Response(status: 200, body: Json::encode(['name' => 'v3.8.0'])));
 
-        $command = $this->getCommandInApplication('app:cron:app-update-available-notification');
+        $command = $this->getCommandInApplication('app:notification:app-update-available');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
@@ -49,7 +49,7 @@ class AppUpdateAvailableNotificationCronActionTest extends ConsoleCommandTestCas
             ->with('GET', 'https://api.github.com/repos/dreeveapp/dreeve/releases/latest')
             ->willReturn(new Response(status: 200, body: Json::encode(['name' => AppVersion::getSemanticVersion()])));
 
-        $command = $this->getCommandInApplication('app:cron:app-update-available-notification');
+        $command = $this->getCommandInApplication('app:notification:app-update-available');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
@@ -63,7 +63,7 @@ class AppUpdateAvailableNotificationCronActionTest extends ConsoleCommandTestCas
 
         $this->client = $this->createMock(Client::class);
 
-        $this->cronAction = new AppUpdateAvailableNotificationCronAction(
+        $this->command = new AppUpdateAvailableNotificationConsoleCommand(
             new GitHub($this->client),
             $this->commandBus = new SpyCommandBus(),
         );
@@ -71,6 +71,6 @@ class AppUpdateAvailableNotificationCronActionTest extends ConsoleCommandTestCas
 
     protected function getConsoleCommand(): Command
     {
-        return $this->cronAction;
+        return $this->command;
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Console\Daemon;
+namespace App\Console\Import;
 
 use App\Application\AppIsNotReady;
 use App\Application\AppStatusChecker;
@@ -42,10 +42,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[WithMonologChannel('daemon')]
 #[WithMutex(lockName: LockName::IMPORT_DATA)]
 #[RequiresUpToDateDatabaseSchema]
-#[AsCommand(name: RunStravaImportConsoleCommand::NAME, description: 'Run Strava import')]
+#[AsCommand(name: RunStravaImportConsoleCommand::NAME, description: 'Run Strava import', aliases: ['app:cron:run-strava-import'])]
 final class RunStravaImportConsoleCommand extends Command
 {
-    public const string NAME = 'app:cron:run-strava-import';
+    public const string NAME = 'app:import:strava';
     public const string RESTRICT_TO_ACTIVITY_IDS_ARGUMENT = 'restrictToActivityIds';
 
     public function __construct(

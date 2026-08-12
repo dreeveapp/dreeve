@@ -288,7 +288,7 @@ translate directly to `kubectl exec` - the `-c app` flag matters because the
 pod has two containers:
 
 ```bash
-kubectl -n dreeve exec deploy/dreeve -c app -- bin/console app:cron:run-strava-import
+kubectl -n dreeve exec deploy/dreeve -c app -- bin/console app:import:strava
 ```
 
 Using `deploy/dreeve` saves looking up the pod name - kubectl resolves it to
