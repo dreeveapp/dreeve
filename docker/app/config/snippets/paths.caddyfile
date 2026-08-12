@@ -26,4 +26,14 @@
 			Cache-Control "public, max-age=86400"
 		}
 	}
+
+	# Everything below is referenced through Twig's asset(), which appends the app version
+	# as a query string. The URL therefore changes on every release, which is what makes
+	# immutable safe here: a stale entry can never outlive the version that produced it.
+	@versionedAssets path /js/* /css/* /libraries/*
+	handle @versionedAssets {
+		header {
+			Cache-Control "public, max-age=31536000, immutable"
+		}
+	}
 }
