@@ -19,6 +19,7 @@
   - [AI assistant](integrations/ai.md "Dreeve | AI assistant")
   - [Garmin Connect](integrations/garmin-connect.md "Dreeve | Garmin Connect")
   - [Polar Flow](integrations/polar-flow.md "Dreeve | Polar Flow")
+  - [Wahoo Connector](integrations/wahoo-connector.md "Dreeve | Wahoo Connector")
   - [Notifications](integrations/notifications.md "Dreeve | Notifications")
 
 - Troubleshooting
