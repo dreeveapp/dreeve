@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Calendar;
 
 use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\FindFirstActivityStartDate\FindFirstActivityStartDate;
 use App\Domain\Calendar\FindMonthlyStats\FindMonthlyStats;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -35,7 +36,9 @@ final readonly class MonthFragmentResolver implements FragmentResolver
         }
 
         $month = Month::fromDate(SerializableDateTime::fromString($matches[1].'-01 00:00:00'));
-        if (!$firstMonth = $this->queryBus->ask(new FindMonthlyStats())->getFirstMonth()) {
+        try {
+            $firstMonth = Month::fromDate($this->queryBus->ask(new FindFirstActivityStartDate())->getStartDate());
+        } catch (\RuntimeException) {
             return null;
         }
 

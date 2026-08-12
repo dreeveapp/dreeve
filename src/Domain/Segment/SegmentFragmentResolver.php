@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Segment;
 
 use App\Domain\Activity\ActivityCacheTag;
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\EnrichedActivity;
 use App\Domain\Activity\EnrichedActivityRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEffort;
@@ -112,11 +114,19 @@ final readonly class SegmentFragmentResolver implements FragmentResolver
      */
     private function enrichedActivitiesPerSegmentEffortId(SegmentEfforts $segmentEfforts): array
     {
+        $activityIds = ActivityIds::fromArray(array_map(
+            fn (SegmentEffort $segmentEffort): ActivityId => $segmentEffort->getActivityId(),
+            $segmentEfforts->toArray()
+        ));
+
+        $enrichedActivitiesPerActivityId = [];
+        foreach ($this->enrichedActivityRepository->findByIds($activityIds) as $enrichedActivity) {
+            $enrichedActivitiesPerActivityId[(string) $enrichedActivity->getActivity()->getId()] = $enrichedActivity;
+        }
+
         $enrichedActivities = [];
         foreach ($segmentEfforts as $segmentEffort) {
-            $enrichedActivities[(string) $segmentEffort->getId()] = $this->enrichedActivityRepository->find(
-                $segmentEffort->getActivityId()
-            );
+            $enrichedActivities[(string) $segmentEffort->getId()] = $enrichedActivitiesPerActivityId[(string) $segmentEffort->getActivityId()];
         }
 
         return $enrichedActivities;
