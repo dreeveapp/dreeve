@@ -18,14 +18,6 @@ use Doctrine\DBAL\Connection;
 
 final readonly class DbalEnrichedActivityRepository extends DbalRepository implements EnrichedActivityRepository
 {
-    private const string ACTIVITY_COLUMNS = 'a.activityId, a.startDateTime, a.sportType, a.worldType, a.importSource,
-                       a.externalReferenceId, a.name, a.description, a.distance, a.elevation,
-                       a.startingCoordinateLatitude, a.startingCoordinateLongitude, a.calories, a.kilojoules,
-                       a.averagePower, a.maxPower, a.averageSpeed, a.maxSpeed, a.averageHeartRate, a.maxHeartRate,
-                       a.averageCadence, a.movingTimeInSeconds, a.elapsedTimeInSeconds, a.deviceName,
-                       a.totalImageCount, a.localImagePaths, a.polyline, a.routeGeography, a.weather, a.gearId,
-                       a.isCommute, a.workoutType';
-
     private const string ENRICHMENT_JOINS = 'LEFT JOIN Gear g ON g.gearId = a.gearId
                 LEFT JOIN ActivityStreamMetric np
                        ON np.activityId = a.activityId AND np.streamType = :wattsStreamType AND np.metricType = :normalizedPowerMetricType
@@ -102,7 +94,7 @@ final readonly class DbalEnrichedActivityRepository extends DbalRepository imple
     {
         return sprintf(
             'SELECT %s, %s FROM Activity a %s %s',
-            self::ACTIVITY_COLUMNS,
+            ActivityHydrator::columns('a'),
             self::ENRICHMENT_COLUMNS,
             self::ENRICHMENT_JOINS,
             $clauses,

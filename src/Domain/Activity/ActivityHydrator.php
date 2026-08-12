@@ -19,6 +19,31 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 final readonly class ActivityHydrator
 {
     /**
+     * @var list<string>
+     */
+    private const array COLUMNS = [
+        'activityId', 'startDateTime', 'sportType', 'worldType', 'importSource',
+        'externalReferenceId', 'name', 'description', 'distance', 'elevation',
+        'startingCoordinateLatitude', 'startingCoordinateLongitude', 'calories', 'kilojoules',
+        'averagePower', 'maxPower', 'averageSpeed', 'maxSpeed', 'averageHeartRate', 'maxHeartRate',
+        'averageCadence', 'movingTimeInSeconds', 'elapsedTimeInSeconds', 'deviceName',
+        'totalImageCount', 'localImagePaths', 'polyline', 'routeGeography', 'weather', 'gearId',
+        'isCommute', 'workoutType',
+    ];
+
+    public static function columns(?string $alias = null): string
+    {
+        if (is_null($alias)) {
+            return implode(', ', self::COLUMNS);
+        }
+
+        return implode(', ', array_map(
+            static fn (string $column): string => $alias.'.'.$column,
+            self::COLUMNS
+        ));
+    }
+
+    /**
      * @param array<string, mixed> $result
      */
     public static function hydrate(array $result): Activity

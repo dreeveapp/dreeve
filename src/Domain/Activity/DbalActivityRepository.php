@@ -25,7 +25,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
     public function find(ActivityId $activityId): Activity
     {
         $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder->select('*')
+        $queryBuilder->select(ActivityHydrator::columns())
             ->from('Activity')
             ->andWhere('activityId = :activityId')
             ->setParameter('activityId', $activityId);
@@ -40,7 +40,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
     public function findAll(): Activities
     {
         $results = $this->connection->executeQuery(
-            'SELECT * FROM Activity ORDER BY startDateTime DESC'
+            'SELECT '.ActivityHydrator::columns().' FROM Activity ORDER BY startDateTime DESC'
         )->fetchAllAssociative();
 
         return Activities::fromArray(array_map(ActivityHydrator::hydrate(...), $results));
@@ -53,7 +53,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
         }
 
         $results = $this->connection->executeQuery(
-            'SELECT * FROM Activity WHERE activityId IN (:activityIds) ORDER BY startDateTime DESC',
+            'SELECT '.ActivityHydrator::columns().' FROM Activity WHERE activityId IN (:activityIds) ORDER BY startDateTime DESC',
             [
                 'activityIds' => array_map(strval(...), $activityIds->toArray()),
             ],
@@ -68,7 +68,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
     public function findByDateRange(SerializableDateTime $from, SerializableDateTime $till): Activities
     {
         $results = $this->connection->executeQuery(
-            'SELECT * FROM Activity WHERE startDateTime >= :from AND startDateTime < :till ORDER BY startDateTime DESC',
+            'SELECT '.ActivityHydrator::columns().' FROM Activity WHERE startDateTime >= :from AND startDateTime < :till ORDER BY startDateTime DESC',
             [
                 'from' => $from->format('Y-m-d H:i:s'),
                 'till' => $till->format('Y-m-d H:i:s'),
@@ -81,7 +81,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
     public function findWithRawData(ActivityId $activityId): ActivityWithRawData
     {
         $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder->select('*')
+        $queryBuilder->select(ActivityHydrator::columns().', data')
             ->from('Activity')
             ->andWhere('activityId = :activityId')
             ->setParameter('activityId', $activityId);
