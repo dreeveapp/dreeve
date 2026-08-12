@@ -3,7 +3,7 @@ framework:
     secret: '%env(APP_SECRET)%'
     session: true
     assets:
-        version_strategy: 'App\Infrastructure\Http\UuidAssetVersioningStrategy'
+        version_strategy: 'App\Infrastructure\Http\AppVersionAssetVersioningStrategy'
 
 when@dev:
     framework:
