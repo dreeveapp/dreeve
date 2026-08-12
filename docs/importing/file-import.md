@@ -33,6 +33,16 @@ The [Garmin connector](/integrations/garmin-connect.md) is a separate container 
 activities out of Garmin Connect and drops them into the watch folder for you, so you never have to
 export anything by hand.
 
+#### **Polar Flow**
+
+The [Polar connector](/integrations/polar-flow.md) is a separate container that pulls your
+exercises out of Polar Flow and drops them into the watch folder for you.
+
+#### **Wahoo Connector**
+
+The [Wahoo connector](/integrations/wahoo-connector.md) is a separate container that pulls your
+workouts out of Wahoo Cloud and drops them into the watch folder for you.
+
 <!-- tabs:end -->
 
 ### Duplicate detection
