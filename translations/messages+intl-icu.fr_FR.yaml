@@ -85,6 +85,7 @@ Day: Day
 'Days needed': 'Jours nécessaires'
 'Daytime stats': 'Statistiques diurnes'
 Dec: Déc
+'Decreased compared to yesterday': 'Decreased compared to yesterday'
 Density: Densité
 Details: Détails
 Device: Appareil
@@ -175,6 +176,7 @@ History: Historique
 'Ice Skate': 'Patin à glace'
 Imperial: Impérial
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": "Pendant ce temps, j'ai parcouru {totalDistance}, soit {numberOfTripsAroundTheWorld} tours du monde 🌍 ou {numberOfTripsToTheMoonPercent}% du chemin vers la Lune 🌕, et gravi une altitude de {totalElevation}, soit {timesMountEverest} fois la hauteur du mont Everest 🏔. Au total, cela représente {totalTimeRecorded} de temps de déplacement 🎉."
+'Increased compared to yesterday': 'Increased compared to yesterday'
 'Individual thresholds vary based on fitness level.': 'Les seuils individuels varient selon le niveau de forme physique.'
 'Inline Skate': 'Roller en ligne'
 Intensity: Intensité
@@ -477,6 +479,7 @@ Title: Title
 'Training load is accumulating, recovery days are important': "Charge d'entraînement en accumulation, les jours de récupération sont importants"
 Tue: Mar
 Tue.: Tue.
+'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
 Unspecified: 'Non spécifié'
 'Upcoming maintenance': 'Upcoming maintenance'
 'User badge': "Badge d'utilisateur"

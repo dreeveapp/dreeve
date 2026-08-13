@@ -78,7 +78,9 @@ final readonly class TrainingLoadFragment implements Fragment
                 now: $now,
             ),
             'restDaysInLast7Days' => $numberOfRestDays,
-            'timeInHeartRateZonesForLast30Days' => $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForLast30Days(),
+            'polarisedTraining' => PolarisedTraining::fromRollingWindow(
+                $this->activityHeartRateRepository->findTimeInHeartRateZonesForLast30Days()
+            ),
         ]);
     }
 }

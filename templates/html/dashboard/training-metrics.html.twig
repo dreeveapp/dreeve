@@ -145,7 +145,7 @@
     <div class="text-xl font-bold">{{ trainingMetrics.getWeeklyTrimp() }}</div>
     <div class="text-xs text-gray-500 truncate">{{ "Last 7 days training load"|trans }}</div>
 </div>
-{% if timeInHeartRateZonesForLast30Days %}
+{% if polarisedTraining %}
 <div class="col-span-2 lg:col-span-4 flex flex-col justify-between p-3 border border-gray-200 rounded-lg shadow-xs">
     <div class="flex items-center">
         <h4 class="text-sm font-semibold">{{ "Polarised training (last 30 days)"|trans }}</h4>
@@ -155,28 +155,29 @@
         <div data-popover id="popover-polarised-{{ context }}" role="tooltip" class="hidden lg:block max-w-100 text-xs">
             <div class="p-2 space-y-2">
                 <p>{{ "Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones"|trans }}:</p>
-                <p>{{ "Z1-2 (Low)"|trans }}: 75 - 90%</p>
-                <p>{{ "Z3 (Mod)"|trans }}: 0 - 10%</p>
-                <p>{{ "Z4-5 (High)"|trans }}: 10 - 20%</p>
+                {%- for polarisedTrainingZone in enum('App\\Domain\\Dashboard\\Widget\\TrainingLoad\\PolarisedTrainingZone').cases() %}
+                <p>{{ polarisedTrainingZone|trans }}: {{ polarisedTrainingZone.getRecommendedRange() }}</p>
+                {%- endfor %}
             </div>
         </div>
     </div>
-    {% set percentageInLowZones = timeInHeartRateZonesForLast30Days.getPercentageInLowZones() %}
-    {% set percentageInMediumZones = timeInHeartRateZonesForLast30Days.getPercentageInMediumZone() %}
-    {% set percentageInHighZones = timeInHeartRateZonesForLast30Days.getPercentageInHighZones() %}
     <div class="grid grid-cols-3 gap-4 divide-x divide-gray-200">
+        {%- for share in polarisedTraining.getShares() %}
+        {%- set trendSvgIcon = share.getTrend().getSvgIcon() %}
         <div class="flex flex-col items-center">
-            <div class="text-lg md:text-xl font-bold">{{ percentageInLowZones|formatNumber(2) }}%</div>
-            <div class="text-xs text-gray-500 truncate">{{ "Z1-2 (Low)"|trans }}</div>
+            <div class="flex items-center gap-1 text-lg md:text-xl font-bold">
+                {%- if trendSvgIcon %}
+                {%- set trendDescription = share.getTrend()|trans %}
+                <span class="flex items-center" title="{{ trendDescription }}">
+                    {{ svg(trendSvgIcon, 'size-3', share.getTextColor()) }}
+                    <span class="sr-only">{{ trendDescription }}</span>
+                </span>
+                {%- endif %}
+                <span>{{ share.getPercentage()|formatNumber(2) }}%</span>
+            </div>
+            <div class="text-xs text-gray-500 truncate">{{ share.getZone()|trans }}</div>
         </div>
-        <div class="flex flex-col items-center">
-            <div class="text-lg md:text-xl font-bold">{{ percentageInMediumZones|formatNumber(2) }}%</div>
-            <div class="text-xs text-gray-500 truncate">{{ "Z3 (Mod)"|trans }}</div>
-        </div>
-        <div class="flex flex-col items-center">
-            <div class="text-lg md:text-xl font-bold">{{ percentageInHighZones|formatNumber(2) }}%</div>
-            <div class="text-xs text-gray-500 truncate">{{ "Z4-5 (High)"|trans }}</div>
-        </div>
+        {%- endfor %}
     </div>
 </div>
 {% endif %}

@@ -1,0 +1,20 @@
+[
+    {
+        "zone": "LOW",
+        "percentage": 75,
+        "trend": "STEADY",
+        "textColor": "text-green-600"
+    },
+    {
+        "zone": "MODERATE",
+        "percentage": 5,
+        "trend": "STEADY",
+        "textColor": "text-green-600"
+    },
+    {
+        "zone": "HIGH",
+        "percentage": 20,
+        "trend": "STEADY",
+        "textColor": "text-green-600"
+    }
+]

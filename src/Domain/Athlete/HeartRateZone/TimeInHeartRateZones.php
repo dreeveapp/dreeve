@@ -85,7 +85,7 @@ final readonly class TimeInHeartRateZones
         return round($this->calculatePercentage($this->getTimeInZoneFive()), 1);
     }
 
-    private function getTotalTime(): int
+    public function getTotalTimeInSeconds(): int
     {
         return $this->totalTimeInSeconds;
     }
@@ -107,10 +107,10 @@ final readonly class TimeInHeartRateZones
 
     private function calculatePercentage(int $number): float
     {
-        if (0 === $this->getTotalTime()) {
+        if (0 === $this->getTotalTimeInSeconds()) {
             return 0;
         }
 
-        return $number / $this->getTotalTime() * 100;
+        return $number / $this->getTotalTimeInSeconds() * 100;
     }
 }

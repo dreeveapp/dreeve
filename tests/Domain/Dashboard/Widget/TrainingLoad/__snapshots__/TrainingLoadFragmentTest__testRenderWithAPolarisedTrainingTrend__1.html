@@ -129,7 +129,7 @@
     <div class="flex items-center">
         <h4 class="text-sm font-semibold">Rest Days</h4>
     </div>
-    <div class="text-xl font-bold">7 / 7</div>
+    <div class="text-xl font-bold">6 / 7</div>
     <div class="text-xs text-gray-500 truncate">Rest days in last 7 days</div>
 </div>
 <div class="flex flex-col justify-between p-3 border border-gray-200 rounded-lg shadow-xs">
@@ -196,7 +196,10 @@
         </div>
     </div>
     <div class="grid grid-cols-3 gap-4 divide-x divide-gray-200">        <div class="flex flex-col items-center">
-            <div class="flex items-center gap-1 text-lg md:text-xl font-bold">                <span>0.00%</span>
+            <div class="flex items-center gap-1 text-lg md:text-xl font-bold">                <span class="flex items-center" title="Decreased compared to yesterday">
+                    <svg class="size-3 text-amber-500" viewbox="0 0 12 12" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 9.75 1 2.25h10L6 9.75Z"></path></svg>
+                    <span class="sr-only">Decreased compared to yesterday</span>
+                </span>                <span>0.00%</span>
             </div>
             <div class="text-xs text-gray-500 truncate">Z1-2 (Low)</div>
         </div>        <div class="flex flex-col items-center">
@@ -204,7 +207,10 @@
             </div>
             <div class="text-xs text-gray-500 truncate">Z3 (Mod)</div>
         </div>        <div class="flex flex-col items-center">
-            <div class="flex items-center gap-1 text-lg md:text-xl font-bold">                <span>0.00%</span>
+            <div class="flex items-center gap-1 text-lg md:text-xl font-bold">                <span class="flex items-center" title="Increased compared to yesterday">
+                    <svg class="size-3 text-amber-500" viewbox="0 0 12 12" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 2.25 11 9.75H1L6 2.25Z"></path></svg>
+                    <span class="sr-only">Increased compared to yesterday</span>
+                </span>                <span>100%</span>
             </div>
             <div class="text-xs text-gray-500 truncate">Z4-5 (High)</div>
         </div>    </div>

@@ -85,6 +85,7 @@ Day: Day
 'Days needed': 'Days needed'
 'Daytime stats': 'Daytime stats'
 Dec: Dec
+'Decreased compared to yesterday': 'Decreased compared to yesterday'
 Density: Density
 Details: Details
 Device: Device
@@ -175,6 +176,7 @@ History: History
 'Ice Skate': 'Ice Skate'
 Imperial: Imperial
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉."
+'Increased compared to yesterday': 'Increased compared to yesterday'
 'Individual thresholds vary based on fitness level.': 'Individual thresholds vary based on fitness level.'
 'Inline Skate': 'Inline Skate'
 Intensity: Intensity
@@ -477,6 +479,7 @@ Title: Title
 'Training load is accumulating, recovery days are important': 'Training load is accumulating, recovery days are important'
 Tue: Tue
 Tue.: Tue.
+'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
 Unspecified: Unspecified
 'Upcoming maintenance': 'Upcoming maintenance'
 'User badge': 'User badge'

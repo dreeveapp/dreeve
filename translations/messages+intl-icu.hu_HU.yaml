@@ -85,6 +85,7 @@ Day: Nap
 'Days needed': 'Szükséges napok'
 'Daytime stats': 'Napszaki statisztikák'
 Dec: Dec
+'Decreased compared to yesterday': 'Decreased compared to yesterday'
 Density: Sűrűség
 Details: Részletek
 Device: Eszköz
@@ -175,6 +176,7 @@ History: Előzmények
 'Ice Skate': Jégkorcsolya
 Imperial: Angolszász
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'Ez idő alatt {totalDistance}-t tettem meg, ami {numberOfTripsAroundTheWorld} körülutazás a Föld körül, vagy {numberOfTripsToTheMoonPercent}% az úton a Hold felé, és {totalElevation} szintemelkedést győztem le, ami {timesMountEverest}-szer a Mount Everest magassága. Összesen {totalTimeRecorded} mozgásban töltött idő.'
+'Increased compared to yesterday': 'Increased compared to yesterday'
 'Individual thresholds vary based on fitness level.': 'Az egyéni küszöbértékek a fitnesz szinttől függően változnak.'
 'Inline Skate': Görkorcsolya
 Intensity: Intenzitás
@@ -477,6 +479,7 @@ Title: Title
 'Training load is accumulating, recovery days are important': 'Az edzésterhelés halmozódik, a regenerációs napok fontosak'
 Tue: K
 Tue.: Tue.
+'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
 Unspecified: Meghatározatlan
 'Upcoming maintenance': 'Upcoming maintenance'
 'User badge': 'Felhasználói kitűző'

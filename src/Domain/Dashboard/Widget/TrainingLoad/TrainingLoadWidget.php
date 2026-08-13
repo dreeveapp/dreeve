@@ -56,7 +56,9 @@ final readonly class TrainingLoadWidget implements Widget, DependsOnCurrentDay
 
     public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
-        $timeInHeartRateZonesForLast30Days = $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForLast30Days();
+        $polarisedTraining = PolarisedTraining::fromRollingWindow(
+            $this->activityHeartRateRepository->findTimeInHeartRateZonesForLast30Days()
+        );
 
         $intensities = $this->dailyTrainingLoad->calculateForDateRange(DateRange::fromDates(
             from: $now->modify('- '.(TrainingLoadChart::NUMBER_OF_DAYS_TO_DISPLAY + 210).' days'),
@@ -71,7 +73,7 @@ final readonly class TrainingLoadWidget implements Widget, DependsOnCurrentDay
         )))->getNumberOfRestDays();
 
         return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
-            'timeInHeartRateZonesForLast30Days' => $timeInHeartRateZonesForLast30Days,
+            'polarisedTraining' => $polarisedTraining,
             'trainingMetrics' => $trainingMetrics,
             'restDaysInLast7Days' => $numberOfRestDays,
         ]);
