@@ -16,6 +16,3 @@
   => Calculated best efforts for 15 activities (3 s)
   => Calculated best efforts for 16 activities (3 s)
   => Calculated best efforts for 16 activities (3 s)
-
-  => Calculated best efforts for 0 activities (3 s)
-  => Calculated best efforts for 0 activities (3 s)

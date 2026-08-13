@@ -1,4 +1,4 @@
-  => Calculated averages for 0 streams (3 s)
+  => Calculated best averages for 0 streams (3 s)
   => Calculated best averages for 1 streams (3 s)
   => Calculated best averages for 2 streams (3 s)
   => Calculated best averages for 2 streams (3 s)

@@ -212,7 +212,7 @@ class CalculateGapTest extends ContainerTestCase
 
         $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
         $this->assertNull($split->getGapPaceInSecondsPerKm());
-        $this->assertStringContainsString('Calculated GAP for 0 activities', (string) $output);
+        $this->assertSame('', (string) $output, 'a step that calculated nothing should stay silent');
     }
 
     public function testProcessSkipsWhenAllCoordinatesAreMalformed(): void
@@ -232,7 +232,7 @@ class CalculateGapTest extends ContainerTestCase
 
         $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
         $this->assertNull($split->getGapPaceInSecondsPerKm());
-        $this->assertStringContainsString('Calculated GAP for 0 activities', (string) $output);
+        $this->assertSame('', (string) $output, 'a step that calculated nothing should stay silent');
     }
 
     public function testProcessSkipsWhenMovingStreamFiltersOutAllPoints(): void
@@ -253,7 +253,7 @@ class CalculateGapTest extends ContainerTestCase
 
         $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
         $this->assertNull($split->getGapPaceInSecondsPerKm());
-        $this->assertStringContainsString('Calculated GAP for 0 activities', (string) $output);
+        $this->assertSame('', (string) $output, 'a step that calculated nothing should stay silent');
     }
 
     public function testProcessCalculatesGapWhenMovingStreamKeepsLastTwoPoints(): void
@@ -315,7 +315,7 @@ class CalculateGapTest extends ContainerTestCase
 
         $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
         $this->assertNull($split->getGapPaceInSecondsPerKm());
-        $this->assertStringContainsString('Calculated GAP for 0 activities', (string) $output);
+        $this->assertSame('', (string) $output, 'a step that calculated nothing should stay silent');
     }
 
     public function testProcessSkipsActivityWhenNoSegmentsAreGenerated(): void
@@ -335,7 +335,7 @@ class CalculateGapTest extends ContainerTestCase
 
         $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
         $this->assertNull($split->getGapPaceInSecondsPerKm());
-        $this->assertStringContainsString('Calculated GAP for 0 activities', (string) $output);
+        $this->assertSame('', (string) $output, 'a step that calculated nothing should stay silent');
     }
 
     public function testProcessUpdatesImperialSplitsWhenMetricSplitsAreMissing(): void
@@ -1386,7 +1386,7 @@ class CalculateGapTest extends ContainerTestCase
         $output = new SpyOutput();
         $this->calculateGap->process($output);
 
-        $this->assertStringContainsString('Calculated GAP for 0 activities', (string) $output);
+        $this->assertSame('', (string) $output, 'a step that calculated nothing should stay silent');
     }
 
     #[\Override]

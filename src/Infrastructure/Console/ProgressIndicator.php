@@ -9,9 +9,11 @@ use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Helper\ProgressIndicator as SymfonyProgressIndicator;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final readonly class ProgressIndicator
+final class ProgressIndicator
 {
-    private SymfonyProgressIndicator $progressIndicator;
+    private readonly SymfonyProgressIndicator $progressIndicator;
+    private ?string $startMessage = null;
+    private bool $isStarted = false;
 
     public function __construct(OutputInterface $output)
     {
@@ -27,18 +29,30 @@ final readonly class ProgressIndicator
         );
     }
 
+    /**
+     * Rendering is deferred until there is actual progress to report.
+     */
     public function start(string $message): void
     {
-        $this->progressIndicator->start($message);
+        $this->startMessage = $message;
     }
 
     public function updateMessage(string $message): void
     {
+        if (!$this->isStarted) {
+            $this->progressIndicator->start($this->startMessage ?? $message);
+            $this->isStarted = true;
+        }
+
         $this->progressIndicator->setMessage($message);
     }
 
     public function finish(string $message): void
     {
+        if (!$this->isStarted) {
+            return;
+        }
+
         $this->progressIndicator->finish($message);
     }
 }

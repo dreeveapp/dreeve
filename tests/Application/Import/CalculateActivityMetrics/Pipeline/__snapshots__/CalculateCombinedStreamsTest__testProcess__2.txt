@@ -1,6 +1,3 @@
   => Calculated combined activity streams for 0 activities (3 s)
   => Calculated combined activity streams for 1 activities (3 s)
   => Calculated combined activity streams for 1 activities (3 s)
-
-  => Calculated combined activity streams for 0 activities (3 s)
-  => Calculated combined activity streams for 0 activities (3 s)

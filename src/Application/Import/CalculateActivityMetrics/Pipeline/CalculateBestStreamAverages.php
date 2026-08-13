@@ -26,7 +26,7 @@ final readonly class CalculateBestStreamAverages implements CalculateActivityMet
     public function process(OutputInterface $output): void
     {
         $progressIndicator = new ProgressIndicator($output);
-        $progressIndicator->start('=> Calculated averages for 0 streams');
+        $progressIndicator->start('=> Calculated best averages for 0 streams');
 
         $countCalculatedStreams = 0;
         $activityIdsToProcess = $this->activityStreamMetricRepository->findActivityIdsWithoutBestAverages();
