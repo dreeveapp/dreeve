@@ -1,3 +1,36 @@
+# [v5.2.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.2.1) - 2026-08-13
+
+> [!NOTE]
+> We released a separate __Dreeve Wahoo Connector__ container to automatically sync your Wahoo FIT files
+> to Dreeve's watch folder. Read all about it in the docs: https://docs.dreeve.app/#/integrations/wahoo-connector
+> A big thank you to @MattW2 for setting this up 👏
+
+## New features
+* Apply automation rules to past activities
+
+## Improvements
+* You can now drag and drop dashboard widgets and automation rules on mobile devices
+* Maps on the activity page now stay visible while scrolling
+* Images up to 10 MB can now be uploaded
+
+## Technical details
+* ISSUE #2471: Cant drag and drop dashboard or automation rules in admin panel on mobile devices by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2475
+* ISSUE #2306: Allow to apply automation rules to past activities by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2474
+* ISSUE #2473: app:data:detect-corrupted-activities crashes on 'ZSTD decompression failed' by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2478
+* ISSUE #2476: GPX export using wraong date/time by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2480
+* ISSUE #2482: Allow to upload images bigger than 5MB by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2483
+* docs: add Wahoo Connector integration documentation by @MattW2 in https://github.com/dreeveapp/dreeve/pull/2487
+* ISSUE #2481: Peak power outputs details page by activity type by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2486
+* ISSUE #2488: Rename cache headers and prefix Dreeve' to them by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2489
+* ISSUE #2490: Improve performance of the app by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2494
+* ISSUE #2495: Move console commands to the proper namespaces by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2496
+* ISSUE #2492: Sticky map on activity page by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2498
+
+## New Contributors
+* @MattW2 made their first contribution in https://github.com/dreeveapp/dreeve/pull/2487
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.2.0...v5.2.1
+
 # [v5.2.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.2.0) - 2026-08-10
 
 ## No more builds
