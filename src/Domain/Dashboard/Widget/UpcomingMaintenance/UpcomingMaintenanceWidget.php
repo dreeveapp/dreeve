@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Dashboard\Widget;
+namespace App\Domain\Dashboard\Widget\UpcomingMaintenance;
 
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
-use App\Domain\Dashboard\Widget\UpcomingMaintenance\UpcomingMaintenanceTask;
+use App\Domain\Dashboard\Widget\DependsOnCurrentDay;
+use App\Domain\Dashboard\Widget\Widget;
+use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Domain\Gear\GearIdRepository;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\GearComponent;
@@ -103,7 +105,6 @@ final readonly class UpcomingMaintenanceWidget implements Widget, DependsOnCurre
             return null;
         }
 
-        // The completion ratio is not capped at 100%, so overdue tasks still rank among themselves.
         usort(
             $upcomingMaintenanceTasks,
             static fn (UpcomingMaintenanceTask $a, UpcomingMaintenanceTask $b): int => $b->getProgress()->getCompletionRatio() <=> $a->getProgress()->getCompletionRatio(),

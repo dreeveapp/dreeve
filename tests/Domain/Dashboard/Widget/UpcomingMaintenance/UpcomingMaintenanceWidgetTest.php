@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Tests\Domain\Dashboard\Widget;
+namespace App\Tests\Domain\Dashboard\Widget\UpcomingMaintenance;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
-use App\Domain\Dashboard\Widget\UpcomingMaintenanceWidget;
+use App\Domain\Dashboard\Widget\UpcomingMaintenance\UpcomingMaintenanceWidget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;

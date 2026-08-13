@@ -36,9 +36,6 @@ final readonly class MaintenanceTaskProgress
         return min((int) round($this->getCompletionRatio() * 100), 100);
     }
 
-    /**
-     * Unlike the percentage, this is not capped at 100%, which makes it the only way to rank overdue tasks.
-     */
     public function getCompletionRatio(): float
     {
         return $this->elapsed / $this->interval;
