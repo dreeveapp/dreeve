@@ -85,7 +85,6 @@ Day: Day
 'Days needed': 所需天数
 'Daytime stats': 白天统计
 Dec: 十二月
-Delta: Delta
 Density: Density
 Details: 详情
 Device: 设备
@@ -106,7 +105,6 @@ Duration: Duration
 Eddington: 愛丁頓數
 'Eddington number': 'Eddington number'
 'Eddington over time': 'Eddington over time'
-Edit: Edit
 'Edit this activity': 'Edit this activity'
 'Effort vs heart rate': 'Effort vs heart rate'
 'Elapsed time': 'Elapsed time'
@@ -213,7 +211,6 @@ Low: 低
 'Low training load': 'Low training load'
 Maintenance: 维护
 Mar: 三月
-'Matched activities': 'Matched activities'
 Max: 最大
 'Max gradient': 'Max gradient'
 May: 五月
@@ -328,6 +325,7 @@ Sep: 九月
 'Show all columns': 'Show all columns'
 'Show information': 显示信息
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.'
+'Similar activities': 'Similar activities'
 "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure."
 Skateboard: 滑板
 Skating: 滑冰

@@ -41,16 +41,15 @@ class FindRouteMatchesQueryHandlerTest extends ContainerTestCase
 
         $this->assertEquals(
             [
-                ['activity-faster', 1, 3000, -600, false],
-                ['activity-subject', 2, 3600, 0, true],
-                ['activity-slower', 3, 4200, 600, false],
+                ['activity-faster', 1, 3000, false],
+                ['activity-subject', 2, 3600, true],
+                ['activity-slower', 3, 4200, false],
             ],
             array_map(
                 fn (RouteMatch $routeMatch): array => [
                     (string) $routeMatch->getActivityId(),
                     $routeMatch->getRank(),
                     $routeMatch->getMovingTimeInSeconds(),
-                    $routeMatch->getTimeDeltaInSeconds(),
                     $routeMatch->isCurrentActivity(),
                 ],
                 $routeMatches->toArray()

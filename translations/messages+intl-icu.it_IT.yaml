@@ -85,7 +85,6 @@ Day: Day
 'Days needed': 'Giorni necessari'
 'Daytime stats': 'Statistiche giornaliere'
 Dec: Dic
-Delta: Delta
 Density: Density
 Details: Dettagli
 Device: Dispositivo
@@ -106,7 +105,6 @@ Duration: Duration
 Eddington: Eddington
 'Eddington number': 'Eddington number'
 'Eddington over time': 'Eddington over time'
-Edit: Edit
 'Edit this activity': 'Edit this activity'
 'Effort vs heart rate': 'Sforzo vs frequenza cardiaca'
 'Elapsed time': 'Elapsed time'
@@ -213,7 +211,6 @@ Low: Basso
 'Low training load': 'Carico di allenamento basso'
 Maintenance: Manutenzione
 Mar: Mar
-'Matched activities': 'Matched activities'
 Max: Massimo
 'Max gradient': 'Pendenza massima'
 May: Mag
@@ -328,6 +325,7 @@ Sep: Set
 'Show all columns': 'Show all columns'
 'Show information': 'Mostra Informazione'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Mostra come il tuo TSB (Forma) e il rapporto A:C recupereranno nel tempo se fai giorni di riposo completo.'
+'Similar activities': 'Similar activities'
 "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure."
 Skateboard: Skateboard
 Skating: Pattinaggio

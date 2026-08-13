@@ -21,7 +21,6 @@ final readonly class RouteMatch
         private int $movingTimeInSeconds,
         private SerializableDateTime $startDateTime,
         private bool $isCurrentActivity,
-        private int $timeDeltaInSeconds,
     ) {
     }
 
@@ -33,7 +32,6 @@ final readonly class RouteMatch
         int $movingTimeInSeconds,
         SerializableDateTime $startDateTime,
         bool $isCurrentActivity,
-        int $timeDeltaInSeconds,
     ): self {
         return new self(
             activityId: $activityId,
@@ -43,7 +41,6 @@ final readonly class RouteMatch
             movingTimeInSeconds: $movingTimeInSeconds,
             startDateTime: $startDateTime,
             isCurrentActivity: $isCurrentActivity,
-            timeDeltaInSeconds: $timeDeltaInSeconds,
         );
     }
 
@@ -85,16 +82,5 @@ final readonly class RouteMatch
     public function isCurrentActivity(): bool
     {
         return $this->isCurrentActivity;
-    }
-
-    public function getTimeDeltaInSeconds(): int
-    {
-        return $this->timeDeltaInSeconds;
-    }
-
-    public function getTimeDeltaFormatted(): string
-    {
-        return ($this->timeDeltaInSeconds < 0 ? '-' : '+')
-            .$this->formatDurationAsClock(abs($this->timeDeltaInSeconds));
     }
 }

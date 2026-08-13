@@ -35,8 +35,7 @@ final readonly class FindRouteMatchesQueryHandler implements QueryHandler
                        ActivityRouteSignature.waypoints,
                        Activity.activityType,
                        Activity.worldType,
-                       Activity.distance,
-                       Activity.movingTimeInSeconds
+                       Activity.distance
                 FROM ActivityRouteSignature
                 INNER JOIN Activity ON Activity.activityId = ActivityRouteSignature.activityId
                 WHERE ActivityRouteSignature.activityId = :activityId
@@ -56,7 +55,6 @@ final readonly class FindRouteMatchesQueryHandler implements QueryHandler
         $subjectCells = $this->decodeCells($subject['cells']);
         $subjectWaypoints = $this->decodeWaypoints($subject['waypoints']);
         $subjectDistance = (int) $subject['distance'];
-        $subjectMovingTimeInSeconds = (int) $subject['movingTimeInSeconds'];
 
         $candidates = $this->connection->executeQuery(
             <<<SQL
@@ -113,17 +111,15 @@ final readonly class FindRouteMatchesQueryHandler implements QueryHandler
             }
 
             $activityId = ActivityId::fromString((string) $candidate['activityId']);
-            $movingTimeInSeconds = (int) $candidate['movingTimeInSeconds'];
 
             $routeMatches->add(RouteMatch::fromState(
                 activityId: $activityId,
                 rank: ++$rank,
                 name: (string) $candidate['name'],
                 distance: Meter::from($candidateDistance)->toKilometer(),
-                movingTimeInSeconds: $movingTimeInSeconds,
+                movingTimeInSeconds: (int) $candidate['movingTimeInSeconds'],
                 startDateTime: SerializableDateTime::fromString((string) $candidate['startDateTime']),
                 isCurrentActivity: (string) $activityId === (string) $query->getActivityId(),
-                timeDeltaInSeconds: $movingTimeInSeconds - $subjectMovingTimeInSeconds,
             ));
         }
 

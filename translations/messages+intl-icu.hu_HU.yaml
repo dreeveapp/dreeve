@@ -85,7 +85,6 @@ Day: Nap
 'Days needed': 'Szükséges napok'
 'Daytime stats': 'Napszaki statisztikák'
 Dec: Dec
-Delta: Delta
 Density: Sűrűség
 Details: Részletek
 Device: Eszköz
@@ -106,7 +105,6 @@ Duration: Időtartam
 Eddington: Eddington
 'Eddington number': 'Eddington number'
 'Eddington over time': 'Eddington over time'
-Edit: Edit
 'Edit this activity': 'Edit this activity'
 'Effort vs heart rate': 'Erőfeszítés vs pulzus'
 'Elapsed time': 'Elapsed time'
@@ -213,7 +211,6 @@ Low: Alacsony
 'Low training load': 'Alacsony edzésterhelés'
 Maintenance: Karbantartás
 Mar: Már
-'Matched activities': 'Matched activities'
 Max: Max
 'Max gradient': 'Max. lejtés'
 May: Máj
@@ -328,6 +325,7 @@ Sep: Szept
 'Show all columns': 'Show all columns'
 'Show information': 'Információ megjelenítése'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Megmutatja, hogyan fog a TSB (Forma) és az A:C arány idővel helyreállni, ha teljes pihenőnapokat tartasz.'
+'Similar activities': 'Similar activities'
 "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure."
 Skateboard: Gördeszkázás
 Skating: Korcsolyázás
