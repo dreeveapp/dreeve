@@ -99,11 +99,19 @@ class RenderCacheTest extends ContainerTestCase
 
     public function testItReportsNoTtlForAnItemThatWasStoredWithoutAnExpiry(): void
     {
-        $pool = new TagAwareAdapter(new FilesystemAdapter(
-            namespace: 'render-cache-test',
+        $tags = new FilesystemAdapter(
+            namespace: 'render-cache-test-tags',
             defaultLifetime: 0,
             directory: sys_get_temp_dir(),
-        ));
+        );
+        $pool = new TagAwareAdapter(
+            new FilesystemAdapter(
+                namespace: 'render-cache-test',
+                defaultLifetime: 0,
+                directory: sys_get_temp_dir(),
+            ),
+            $tags
+        );
         $pool->clear();
 
         $item = $pool->getItem(AppVersion::getSemanticVersion().'.stored-without-an-expiry');
@@ -115,7 +123,7 @@ class RenderCacheTest extends ContainerTestCase
             ->getMetadata()[ItemInterface::METADATA_EXPIRY] ?? null;
         $this->assertGreaterThan(50 * 365 * 86400, $storedExpiry - time());
 
-        $render = new RenderCache($pool)->get(
+        $render = new RenderCache($pool, $tags)->get(
             cacheKey: 'stored-without-an-expiry',
             cacheability: Cacheability::for('stub', CacheTags::of(RootCacheTag::ACTIVITY_IMAGES)),
             callback: fn (): string => 'should-not-run',

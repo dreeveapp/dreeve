@@ -9,6 +9,7 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTag;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use Psr\Cache\CacheItemInterface;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\Cache\PruneableInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -22,6 +23,8 @@ final readonly class RenderCache
     public function __construct(
         #[Autowire(service: 'render.cache')]
         private TagAwareAdapterInterface $cache,
+        #[Autowire(service: 'render.cache.tags')]
+        private AdapterInterface $tags,
     ) {
     }
 
@@ -81,6 +84,7 @@ final readonly class RenderCache
     public function clear(): void
     {
         $this->cache->clear();
+        $this->tags->clear();
     }
 
     public function prune(): void

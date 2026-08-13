@@ -26,6 +26,7 @@
 
   - [FAQ](troubleshooting/faq.md "Dreeve | FAQ")
   - [Logs](troubleshooting/logs.md "Dreeve | Logs")
+  - [Clearing the cache](troubleshooting/clearing-the-cache.md "Dreeve | Clearing the cache")
   - [Import fails with syntax error](troubleshooting/import-build-fails.md "Dreeve | Import fails with syntax error")
   - [Strava API errors](troubleshooting/strava-api-errors.md "Dreeve | Strava API errors")
   - [Notification issues](troubleshooting/shoutrrr-notifications.md "Dreeve | Notification issues")

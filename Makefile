@@ -92,7 +92,7 @@ app-serve-docs:
 	docsify serve docs
 
 clear-cache:
-	docker compose exec app bin/console cache:pool:clear render.cache render.cache.tags
+	docker compose exec app bin/console app:cache:render:clear
 # Ollama models
 ollama-run-llama32:
 	docker compose exec ollama ollama pull llama3.2

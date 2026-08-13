@@ -1,0 +1,19 @@
+# Clearing the cache
+
+Dreeve renders each page the first time you request it and then stores the result in its render cache.
+Every following visit is served straight from that cache, which is what keeps the app fast.
+
+Whenever your data changes, the pages affected by that change are cleared automatically. In rare cases
+this can go wrong and a page keeps showing old numbers, or an update to a setting does not seem to
+take effect. Clearing the cache by hand is the fix.
+
+Run the following command:
+
+```bash
+> docker compose exec app bin/console app:cache:render:clear
+```
+
+This is safe to run at any time. Nothing is lost.
+
+> [!NOTE]
+> The cache is also cleared automatically whenever you update Dreeve to a new version.
