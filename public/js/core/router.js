@@ -60,11 +60,7 @@ export default class Router {
     }
 
     async renderContent(page, modalId) {
-        const contentUrl = this.determineContentUrl(page);
-        if (!contentUrl) {
-            console.error(`No router link found for "${page}", cannot determine its content URL.`);
-            return;
-        }
+        const contentUrl = this.determineContentUrl(page) ?? `${basePath()}/api/fragment/page/not-found`;
 
         // Close mobile nav if open
         if (!this.menu.hasAttribute('aria-hidden')) {

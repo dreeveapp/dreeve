@@ -3975,6 +3975,9 @@
     .hover\:underline:hover {
       text-decoration-line: underline;
     }
+    .hover\:opacity-90:hover {
+      opacity: 90%;
+    }
     .hover\:ring-primary\/30:hover {
       --tw-ring-color: color-mix(in srgb, #F26722 30%, transparent);
     }

@@ -69,6 +69,7 @@ Apply: Appliquer
 'Available tokens': 'Available tokens'
 'Average power': 'Average power'
 'Back to app': 'Back to app'
+'Back to the admin panel': 'Back to the admin panel'
 'Base URI': 'Base URI'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.'
 Birthday: Birthday
@@ -241,6 +242,7 @@ Monday: Monday
 'Only required for the Azure OpenAI provider.': 'Only required for the Azure OpenAI provider.'
 'Only required for the Ollama provider.': 'Only required for the Ollama provider.'
 'Only required for the OpenAI-like provider.': 'Only required for the OpenAI-like provider.'
+"Oops, looks like you've wandered off the map! 🗺️": "Oops, looks like you've wandered off the map! 🗺️"
 Operator: Operator
 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.'
 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.'
@@ -391,6 +393,7 @@ Tasks: Tasks
 "The name is derived from the device recorded on your activities and can't be edited.": "The name is derived from the device recorded on your activities and can't be edited."
 'The name of the gear assigned to the activity': 'The name of the gear assigned to the activity'
 'The number of activities recorded with the gear': 'The number of activities recorded with the gear'
+"The page you're looking for doesn't exist or may have been moved.": "The page you're looking for doesn't exist or may have been moved."
 'The start date, optionally with a custom PHP date format': 'The start date, optionally with a custom PHP date format'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.'
 'The total distance ridden with the gear': 'The total distance ridden with the gear'

@@ -17,7 +17,7 @@
 			root * /var/www/storage
 			file_server
 		}
-		respond 404
+		error 404
 	}
 
 	# Cache static assets.

@@ -35,6 +35,13 @@ final readonly class FragmentRegistry
         return null;
     }
 
+    public function findOfType(string $path, FragmentType $type): ?Fragment
+    {
+        $fragment = $this->find($path);
+
+        return $fragment?->getType() === $type ? $fragment : null;
+    }
+
     /**
      * @return iterable<Fragment|FragmentResolver>
      */

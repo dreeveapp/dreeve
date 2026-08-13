@@ -256,6 +256,7 @@ Oct: Okt
 'Older effort': 'Korábbi teljesítmény'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'Átlagosan ez {dailyAverage} naponta, heti átlag {weeklyAverage} és havi átlag {monthlyAverage}.'
 'One of your gear maintenance tasks is due': 'Az egyik felszerelés karbantartási feladatod esedékes'
+"Oops, looks like you've wandered off the map! 🗺️": "Oops, looks like you've wandered off the map! 🗺️"
 'Open Water Swim': 'Open Water Swim'
 'Optimal training range': 'Optimális edzéstartomány'
 Other: Egyéb
@@ -444,6 +445,7 @@ Tennis: Tenisz
 "That's {number} days of at least {distance}": 'Ez {number} nap legalább {distance}-vel'
 "That's {percentage}% of all countries 🌍": "That's {percentage}% of all countries 🌍"
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.'
+"The page you're looking for doesn't exist or may have been moved.": "The page you're looking for doesn't exist or may have been moved."
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': 'Ezek a kitűzők dinamikusan jönnek létre. Bármely &lt;img&gt; tagben használhatod őket'
 Thinking...: Gondolkodás...
 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.': 'Ez a diagram összefoglalja, hogyan edzel. Minden tengely különböző normalizált edzési szokást tükröz, így a magasabb értékek erősebb hangsúlyt jelentenek.'

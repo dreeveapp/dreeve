@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Infrastructure\Http\Fragment\Fragment;
+use App\Application\NotFoundFragment;
 use App\Infrastructure\Http\Fragment\FragmentRegistry;
 use App\Infrastructure\Http\Fragment\FragmentRenderer;
+use App\Infrastructure\Http\Fragment\FragmentType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,20 +18,24 @@ final readonly class ApiFragmentRequestHandler
     public function __construct(
         private FragmentRegistry $fragmentRegistry,
         private FragmentRenderer $fragmentRenderer,
+        private NotFoundFragment $notFoundFragment,
     ) {
     }
 
     #[Route(path: '/api/fragment/{type}/{path}', name: 'api_fragment', requirements: ['type' => 'page|partial|data', 'path' => '[a-zA-Z0-9_\-/]+'], methods: ['GET'], priority: 3)]
     public function handle(string $type, string $path): Response
     {
-        $fragment = $this->fragmentRegistry->find($path);
+        $fragmentType = FragmentType::from($type);
 
-        // A fragment is only served under the segment matching its own type, so a data fragment
-        // can never be handed out as a page and the other way around.
-        if (!$fragment instanceof Fragment || $fragment->getType()->value !== $type) {
-            return new Response('', Response::HTTP_NOT_FOUND);
+        if (!$fragment = $this->fragmentRegistry->findOfType($path, $fragmentType)) {
+            $response = FragmentType::PAGE === $fragmentType
+                ? $this->fragmentRenderer->render($this->notFoundFragment)
+                : new Response('');
+            $response->setStatusCode(Response::HTTP_NOT_FOUND);
+
+            return $response;
         }
 
-        return $this->fragmentRenderer->render($fragment, $fragment->getType());
+        return $this->fragmentRenderer->render($fragment, $fragmentType);
     }
 }

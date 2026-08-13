@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller\Api;
 
+use App\Application\NotFoundFragment;
 use App\Controller\Api\ApiFragmentRequestHandler;
 use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\Http\Fragment\FragmentRegistry;
@@ -9,10 +10,6 @@ use App\Infrastructure\Http\Fragment\FragmentRenderer;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 
-/**
- * What each fragment renders lives next to that fragment. This is about the handler itself:
- * resolving a path through the registry, refusing the wrong type and consulting the render cache.
- */
 class ApiFragmentRequestHandlerTest extends ContainerTestCase
 {
     use ProvideTestData;
@@ -86,6 +83,25 @@ class ApiFragmentRequestHandlerTest extends ContainerTestCase
         );
     }
 
+    public function testItRendersTheNotFoundPageForAnUnknownPage(): void
+    {
+        $response = $this->apiFragmentRequestHandler->handle('page', 'unknown');
+
+        $this->assertEquals('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
+        $this->assertStringContainsString('404', (string) $response->getContent());
+        $this->assertStringContainsString('wandered off the map', (string) $response->getContent());
+    }
+
+    public function testItLeavesAnUnknownPartialAndDataFragmentEmpty(): void
+    {
+        foreach (['partial', 'data'] as $type) {
+            $response = $this->apiFragmentRequestHandler->handle($type, 'unknown');
+
+            $this->assertEquals(404, $response->getStatusCode());
+            $this->assertEquals('', $response->getContent());
+        }
+    }
+
     public function testHandleWhenAFragmentResolverCannotResolveThePath(): void
     {
         $this->provideFullTestSet();
@@ -105,6 +121,7 @@ class ApiFragmentRequestHandlerTest extends ContainerTestCase
         $this->apiFragmentRequestHandler = new ApiFragmentRequestHandler(
             $this->getContainer()->get(FragmentRegistry::class),
             $this->getContainer()->get(FragmentRenderer::class),
+            $this->getContainer()->get(NotFoundFragment::class),
         );
     }
 }

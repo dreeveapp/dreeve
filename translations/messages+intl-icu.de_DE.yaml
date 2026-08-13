@@ -256,6 +256,7 @@ Oct: Okt
 'Older effort': 'Ältere Leistung'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'Im Schnitt ergibt das {dailyAverage} täglich, mit einem Wochenmittel von {weeklyAverage} und einem Monatsmittel von {monthlyAverage} 🐣.'
 'One of your gear maintenance tasks is due': 'Eine deiner Ausrüstungswartungsaufgaben steht an'
+"Oops, looks like you've wandered off the map! 🗺️": "Oops, looks like you've wandered off the map! 🗺️"
 'Open Water Swim': 'Open Water Swim'
 'Optimal training range': 'Optimale Trainingszone'
 Other: Andere
@@ -444,6 +445,7 @@ Tennis: Tennis
 "That's {number} days of at least {distance}": 'Das sind {number} Tage mit mindestens {distance}'
 "That's {percentage}% of all countries 🌍": 'Das sind {percentage}% aller Länder 🌍'
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'Die Eddington-Zahl im Zusammenhang mit Radfahren oder Laufen ist definiert als die höchste Zahl E, bei der der Athlet an mindestens E Tagen jeweils mindestens E km zurückgelegt hat.'
+"The page you're looking for doesn't exist or may have been moved.": "The page you're looking for doesn't exist or may have been moved."
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': 'Diese Abzeichen sind dynamisch erstellt. Du kannst sie in allen &lt;img&gt; Tags verwenden.'
 Thinking...: Denke...
 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.': 'Diese Grafik zeigt deinen Trainingsstil. Die Achsen stehen für verschiedene normalisierte Gewohnheiten. Höhere Werte bedeuten dabei eine stärkere Gewichtung.'
