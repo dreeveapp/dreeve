@@ -2,7 +2,6 @@
 
 namespace App\Tests\Controller\Api;
 
-use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -47,10 +46,7 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/activity/activity-9542782314/route.gpx');
 
         $this->assertResponseStatusCodeSame(404);
-        $this->assertEquals(
-            ['message' => 'Activity "activity-9542782314" has no GPX data'],
-            Json::decode((string) $this->client->getResponse()->getContent())
-        );
+        $this->assertSelectorTextContains('h1', '404');
     }
 
     public function testHandleWhenActivityNotFound(): void
@@ -58,10 +54,7 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/activity/activity-1/route.gpx');
 
         $this->assertResponseStatusCodeSame(404);
-        $this->assertEquals(
-            ['message' => 'Activity "activity-1" not found'],
-            Json::decode((string) $this->client->getResponse()->getContent())
-        );
+        $this->assertSelectorTextContains('h1', '404');
     }
 
     public function testItServesGpxFromTheEndpointAndNotFromTheBuildDirectory(): void

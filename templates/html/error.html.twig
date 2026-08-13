@@ -1,0 +1,33 @@
+{% autoescape false %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <title>{{ statusCode }}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <meta name="theme-color" content="#F26822">
+        <link rel="icon" type="image/x-icon" href="{{ relativeUrl('assets/images/logo.svg') }}">
+        <script>
+            document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+        </script>
+        <link href="{{ relativeUrl(asset('css/dist/tailwind.min.css')) }}" rel="stylesheet"/>
+    </head>
+    <body class="min-h-screen bg-gray-50 text-gray-900 antialiased">
+        {% if 404 == statusCode %}
+            {% include 'html/not-found.html.twig' %}
+        {% else %}
+            <div class="py-8 px-4 mx-auto max-w-(--breakpoint-xl) lg:py-16 lg:px-6">
+                <div class="mx-auto max-w-(--breakpoint-sm) text-center">
+                    <h1 class="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-gray-900">{{ statusCode }}</h1>
+                    <p class="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl">
+                        Something went wrong.
+                    </p>
+                    <p class="mb-4 text-lg font-light text-gray-500">
+                        Try again, or check the logs if the problem persists.
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </body>
+    </html>
+{% endautoescape %}

@@ -32,7 +32,6 @@ final class ClearRenderCacheConsoleCommand extends Command
     {
         $this->addOption(
             name: self::WITH_VERSION_CHECK_OPTION,
-            shortcut: null,
             mode: InputOption::VALUE_NONE,
             description: 'Only clear when the cache was written by another app version'
         );
