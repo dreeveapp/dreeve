@@ -169,7 +169,7 @@
                 {%- if trendSvgIcon %}
                 {%- set trendDescription = share.getTrend()|trans %}
                 <span class="flex items-center" title="{{ trendDescription }}">
-                    {{ svg(trendSvgIcon, 'size-3', share.getTextColor()) }}
+                    {{ svg(trendSvgIcon, share.getTrend().getSvgIconClasses()) }}
                     <span class="sr-only">{{ trendDescription }}</span>
                 </span>
                 {%- endif %}

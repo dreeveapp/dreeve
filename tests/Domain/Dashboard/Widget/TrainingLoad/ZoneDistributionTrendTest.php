@@ -26,7 +26,10 @@ class ZoneDistributionTrendTest extends ContainerTestCase
         $snapshot = [];
         foreach (ZoneDistributionTrend::cases() as $trend) {
             $svgIcon = $trend->getSvgIcon();
-            $snapshot[$trend->name] = $svgIcon;
+            $snapshot[$trend->name] = [
+                'svgIcon' => $svgIcon,
+                'svgIconClasses' => $trend->getSvgIconClasses(),
+            ];
 
             if (is_null($svgIcon)) {
                 continue;

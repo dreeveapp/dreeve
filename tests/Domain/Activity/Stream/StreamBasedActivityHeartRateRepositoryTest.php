@@ -199,10 +199,6 @@ class StreamBasedActivityHeartRateRepositoryTest extends ContainerTestCase
         $this->provideFullTestSet();
 
         $before = $this->activityHeartRateRepository->findTimeInHeartRateZonesForLast30Days();
-
-        // The clock is paused at 2023-10-17 16:15:04, so the current window starts at 2023-09-17 16:15:04
-        // while yesterday's window runs from 2023-09-16 16:15:04 up to and including 2023-10-16 16:15:04.
-        // 100 bpm lands in zone one and 180 bpm in zone five, so the two windows differ in shape as well as size.
         $this->addActivityWithHeartRateDistribution(
             activityId: ActivityId::fromUnprefixed('42'),
             heartRateDistribution: [180 => 600],

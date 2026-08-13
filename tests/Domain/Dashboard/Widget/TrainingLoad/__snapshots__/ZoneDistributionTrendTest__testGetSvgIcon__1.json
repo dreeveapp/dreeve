@@ -1,5 +1,14 @@
 {
-    "UP": "trend-up",
-    "DOWN": "trend-down",
-    "STEADY": null
+    "UP": {
+        "svgIcon": "chevron",
+        "svgIconClasses": "size-3 rotate-180"
+    },
+    "DOWN": {
+        "svgIcon": "chevron",
+        "svgIconClasses": "size-3"
+    },
+    "STEADY": {
+        "svgIcon": null,
+        "svgIconClasses": "size-3"
+    }
 }

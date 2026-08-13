@@ -2,19 +2,16 @@
     {
         "zone": "LOW",
         "percentage": 76.81,
-        "trend": "DOWN",
-        "textColor": "text-green-600"
+        "trend": "DOWN"
     },
     {
         "zone": "MODERATE",
         "percentage": 13.44,
-        "trend": "UP",
-        "textColor": "text-amber-500"
+        "trend": "UP"
     },
     {
         "zone": "HIGH",
         "percentage": 9.75,
-        "trend": "UP",
-        "textColor": "text-amber-500"
+        "trend": "UP"
     }
 ]

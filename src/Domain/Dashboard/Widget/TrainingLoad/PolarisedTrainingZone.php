@@ -23,13 +23,6 @@ enum PolarisedTrainingZone implements TranslatableInterface
         };
     }
 
-    public function isWithinRecommendedRange(float $percentage): bool
-    {
-        [$lowerBound, $upperBound] = $this->getRecommendedRangeBounds();
-
-        return $percentage >= $lowerBound && $percentage <= $upperBound;
-    }
-
     public function getRecommendedRange(): string
     {
         [$lowerBound, $upperBound] = $this->getRecommendedRangeBounds();

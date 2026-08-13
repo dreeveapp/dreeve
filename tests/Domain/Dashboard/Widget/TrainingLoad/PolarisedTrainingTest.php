@@ -38,7 +38,6 @@ class PolarisedTrainingTest extends ContainerTestCase
             'zone' => $share->getZone()->name,
             'percentage' => $share->getPercentage(),
             'trend' => $share->getTrend()->name,
-            'textColor' => $share->getTextColor(),
         ], $shares));
     }
 
@@ -82,15 +81,9 @@ class PolarisedTrainingTest extends ContainerTestCase
             $steady,
         ];
 
-        yield 'rounding lifts the high zone into its recommended range' => [
+        yield 'a raw percentage that rounds up to a whole number' => [
             TimeInHeartRateZones::create(0, 800004, 100000, 99996, 0),
             TimeInHeartRateZones::create(0, 800004, 100000, 99996, 0),
-            $steady,
-        ];
-
-        yield 'every zone sits exactly on a recommended boundary' => [
-            TimeInHeartRateZones::create(0, 7500, 500, 2000, 0),
-            TimeInHeartRateZones::create(0, 7500, 500, 2000, 0),
             $steady,
         ];
     }

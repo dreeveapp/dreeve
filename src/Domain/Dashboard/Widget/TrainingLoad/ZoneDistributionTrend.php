@@ -25,9 +25,16 @@ enum ZoneDistributionTrend implements TranslatableInterface
     public function getSvgIcon(): ?string
     {
         return match ($this) {
-            self::UP => 'trend-up',
-            self::DOWN => 'trend-down',
+            self::UP, self::DOWN => 'chevron',
             self::STEADY => null,
+        };
+    }
+
+    public function getSvgIconClasses(): string
+    {
+        return match ($this) {
+            self::UP => 'size-3 rotate-180',
+            self::DOWN, self::STEADY => 'size-3',
         };
     }
 

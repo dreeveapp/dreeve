@@ -39,11 +39,4 @@ final readonly class PolarisedTrainingZoneShare
     {
         return $this->trend;
     }
-
-    public function getTextColor(): string
-    {
-        return $this->zone->isWithinRecommendedRange($this->percentage)
-            ? 'text-green-600'
-            : 'text-amber-500';
-    }
 }
