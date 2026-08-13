@@ -4,6 +4,7 @@ namespace App\Tests\Console\Import;
 
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
+use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
 use App\Console\Import\RunFileImportConsoleCommand;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
@@ -68,14 +69,22 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
         $this->assertSame($withoutOptions, $withOptions);
     }
 
-    public function testSkipsWhenThereAreNoFiles(): void
+    public function testStillCalculatesMetricsWhenThereAreNoFiles(): void
     {
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: SettingsGroup::INTEGRATIONS->keyValueKey(),
+            value: Value::fromString(Json::encode(['notifications' => ['notifyOnSuccessfulBuild' => true]])),
+        ));
+
         $command = $this->getCommandInApplication(RunFileImportConsoleCommand::NAME);
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertEmpty($this->commandBus->getDispatchedCommands());
         $this->assertStringContainsString('No files left to process...', $commandTester->getDisplay());
+
+        $dispatchedCommands = $this->commandBus->getDispatchedCommands();
+        $this->assertCount(1, $dispatchedCommands);
+        $this->assertInstanceOf(CalculateActivityMetrics::class, $dispatchedCommands[0]);
     }
 
     public function testDoesNotSendANotificationWhenTheSuccessfulImportNotificationIsDisabled(): void

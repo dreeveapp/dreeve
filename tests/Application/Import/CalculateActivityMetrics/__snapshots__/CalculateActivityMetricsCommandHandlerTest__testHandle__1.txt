@@ -19,3 +19,6 @@ Calculating activity metrics. Please be patient, this can take a while...
 
   => Calculated value distribution for 0 streams (3 s)
   => Calculated value distribution for 0 streams (3 s)
+
+  => Calculated route signatures for 0 activities (3 s)
+  => Calculated route signatures for 0 activities (3 s)

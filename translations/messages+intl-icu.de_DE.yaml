@@ -33,7 +33,7 @@ Average: Durchschnitt
 'Average gradient': 'Ø Steigung'
 'Avg gradient': 'Ø Steigung'
 'Avg pace': 'Ø Tempo'
-'Avg speed': Ø Geschwindigkeit
+'Avg speed': 'Ø Geschwindigkeit'
 'Back Country Ski': Skitouren
 Badges: Abzeichen
 Badminton: Badminton
@@ -85,6 +85,7 @@ Day: Tag
 'Days needed': 'Benötigte Tage'
 'Daytime stats': Tageszeitstatistiken
 Dec: Dez
+Delta: Delta
 Density: Dichte
 Details: Details
 Device: Gerät
@@ -212,6 +213,7 @@ Low: Niedrig
 'Low training load': 'Niedrige Trainingsbelastung'
 Maintenance: Wartung
 Mar: Mär
+'Matched activities': 'Matched activities'
 Max: Max
 'Max gradient': 'Max Steigung'
 May: Mai
@@ -279,7 +281,7 @@ Photos: Fotos
 Pilates: Pilates
 'Pizza slices': Pizzastücke
 'Polarised training (last 30 days)': 'Polarized-Training (letzte 30 Tage)'
-'Pool Swim': 'Beckenschwimmen'
+'Pool Swim': Beckenschwimmen
 Power: Leistung
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Dabei wurden geschätzte {caloriesBurned} Kalorien verbraucht, was ungefähr {numberOfPizzaSlices} Pizzastücken entspricht 🍕.'
 'Prev year': Vorjahr
@@ -326,7 +328,7 @@ Sep: Sep
 'Show all columns': 'Show all columns'
 'Show information': 'Informationen anzeigen'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Hier siehst du, wie sich deine Form (TSB) und dein A:C-Verhältnis entwickeln, wenn du komplette Ruhetage einlegst.'
-"Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": "Seit ich vor {numberOfDaysAgo} am {startDate} mit dem Training begonnen habe, habe ich {totalDaysOfWorkingOut} aktive Trainings- und Abenteuertage gesammelt."
+"Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": 'Seit ich vor {numberOfDaysAgo} am {startDate} mit dem Training begonnen habe, habe ich {totalDaysOfWorkingOut} aktive Trainings- und Abenteuertage gesammelt.'
 Skateboard: Skateboard
 Skating: Skaten
 'Slightly fresh': 'Leicht regeneriert'
@@ -454,7 +456,7 @@ Thu: Do
 Thu.: Do.
 Time: Zeit
 'Time in zone': 'Zeit in Zone'
-'Times completed': 'Häufigkeit'
+'Times completed': Häufigkeit
 Title: Titel
 'To enable it, configure this in the admin panel': 'To enable it, configure this in the admin panel'
 'Toggle sidebar': 'Seitenleiste umschalten'
@@ -571,6 +573,7 @@ workouts: Trainingseinheiten
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} alle {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} Aktivitäten'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} Aktivitäten in {year}'
+'{numberOfActivities} activities on this route': '{numberOfActivities} activities on this route'
 '{numberOfMonths} months': '{numberOfMonths} Monate'
 '{numberOfResults} photos': '{numberOfResults} Bilder'
 '{numberOfResults} results': '{numberOfResults} Ergebnisse'

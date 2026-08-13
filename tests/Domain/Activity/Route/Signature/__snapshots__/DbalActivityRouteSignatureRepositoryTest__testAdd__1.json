@@ -1,0 +1,12 @@
+[
+    {
+        "activityId": "activity-test",
+        "polylineChecksum": "aaaaaaaa",
+        "cellCount": 3
+    },
+    {
+        "activityId": "activity-test-2",
+        "polylineChecksum": "bbbbbbbb",
+        "cellCount": 1
+    }
+]

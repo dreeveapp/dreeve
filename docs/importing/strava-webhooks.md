@@ -14,9 +14,6 @@ These will trigger an import in the background. It may take a few minutes for al
 > [!IMPORTANT]
 > **Important** Your Dreeve instance must be publicly accessible over HTTPS for Strava webhooks to work.
 
-> [!IMPORTANT]
-> **Important** Processing Strava webhooks requires the daemon Docker container to be configured. See the compose file [here](/getting-started/installation.md) for information about setting it up. 
-
 > [!TIP]
 > **Tip**  If you're hosting your Dreeve instance on Cloudflare, make sure to disable "Bot Fight Mode". 
 > Cloudflare can incorrectly flag Strava’s requests as bot traffic, 

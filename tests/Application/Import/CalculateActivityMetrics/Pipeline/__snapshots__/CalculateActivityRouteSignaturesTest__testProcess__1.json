@@ -1,0 +1,12 @@
+[
+    {
+        "activityId": "activity--1",
+        "polylineChecksum": "30214f23",
+        "cellCount": 21
+    },
+    {
+        "activityId": "activity--2",
+        "polylineChecksum": "5e5c0957",
+        "cellCount": 31
+    }
+]

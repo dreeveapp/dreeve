@@ -1,0 +1,7 @@
+  => Calculated route signatures for 0 activities (3 s)
+  => Calculated route signatures for 1 activities (3 s)
+  => Calculated route signatures for 2 activities (3 s)
+  => Calculated route signatures for 2 activities (3 s)
+
+  => Calculated route signatures for 0 activities (3 s)
+  => Calculated route signatures for 0 activities (3 s)

@@ -73,14 +73,3 @@ Navigate to http://localhost:8080/. You should see this page, just follow the st
 
 The first run takes a while. Strava enforces API rate limits and Dreeve deliberately paces itself to stay
 inside them, importing a bounded number of activities per run and picking up where it left off next time.
-
-## Import settings
-
-In `stravaApi` mode the admin panel gains an **Import** settings group and allows you to configure:
-
-* **Number of new activities to process per import**: the ceiling per run.
-* **Sport types to import**: restrict the import to the sports you care about.
-* **Activity visibilities to import**: e.g. skip activities you've marked as private on Strava.
-* **Skip activities recorded before**: a cutoff date, so you don't import a decade of history you don't want.
-* **Activities to skip during import**: exclude specific activities by id.
-* **Opt in to segment detail import**: pull full segment details. Costs extra API calls.

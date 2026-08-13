@@ -85,6 +85,7 @@ Day: Day
 'Days needed': 所需天数
 'Daytime stats': 白天统计
 Dec: 十二月
+Delta: Delta
 Density: Density
 Details: 详情
 Device: 设备
@@ -212,6 +213,7 @@ Low: 低
 'Low training load': 'Low training load'
 Maintenance: 维护
 Mar: 三月
+'Matched activities': 'Matched activities'
 Max: 最大
 'Max gradient': 'Max gradient'
 May: 五月
@@ -571,6 +573,7 @@ workouts: 锻炼
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel}每{interval}'
 '{numberOfActivities} activities': '{numberOfActivities}活动'
 '{numberOfActivities} activities in {year}': '{year}年内，{numberOfActivities}项活动'
+'{numberOfActivities} activities on this route': '{numberOfActivities} activities on this route'
 '{numberOfMonths} months': '{numberOfMonths} months'
 '{numberOfResults} photos': '{numberOfResults} photos'
 '{numberOfResults} results': '{numberOfResults} results'

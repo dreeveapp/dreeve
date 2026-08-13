@@ -1,0 +1,80 @@
+{% autoescape false %}
+    {% if routeMatches|length > 1 %}
+        <details class="group/section">
+            <summary class="list-none cursor-pointer flex items-center justify-between py-2 hover:text-primary transition select-none">
+                <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-gray-900 group-hover/section:text-primary transition">{{ "Matched activities"|trans }}</h3>
+                    <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ routeMatches|length }}</span>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/section:rotate-180" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m1 1 4 4 4-4"/>
+                </svg>
+            </summary>
+            <div class="text-xs text-gray-500 mt-1">{{ "{numberOfActivities} activities on this route"|trans({'{numberOfActivities}': routeMatches|length}) }}</div>
+            <div class="mt-3 space-y-2 max-h-125 overflow-y-auto p-1">
+                {% for routeMatch in routeMatches %}
+                    {% if routeMatch.isCurrentActivity() %}
+                        <div class="flex items-center gap-3 bg-white border border-gray-200 shadow-xs ring-2 ring-primary rounded-xl p-3">
+                            {{ _self.routeMatchRow(routeMatch) }}
+                        </div>
+                    {% else %}
+                        <a href="#" data-model-content-url="{{ relativeUrl('api/fragment/page/activity/' ~ routeMatch.getActivityId()) }}" rel="nofollow"
+                           class="group/route-match flex items-center gap-3 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs hover:ring-primary/30 rounded-xl p-3 transition">
+                            {{ _self.routeMatchRow(routeMatch) }}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </details>
+    {% endif %}
+{% endautoescape %}
+
+{% macro routeMatchRow(routeMatch) %}
+    {% autoescape false %}
+    <div title="Rank" class="shrink-0 w-12 h-10 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center font-bold text-sm gap-0.5">
+        {{ routeMatch.getRank() }}
+    </div>
+    <div class="flex-1 min-w-0">
+        <span class="font-semibold text-gray-900 truncate group-hover/route-match:text-primary transition">{{ routeMatch.getName() }}</span>
+        <div class="text-xs text-gray-500 mt-0.5">{{ routeMatch.getStartDateTime()|formatDate }}</div>
+    </div>
+    <div class="hidden sm:flex gap-4 text-right">
+        <div>
+            <div class="text-xxs uppercase text-gray-400 tracking-wider">{{ "Time"|trans }}</div>
+            <div class="text-sm font-bold text-gray-900">{{ routeMatch.getMovingTimeFormatted() }}</div>
+        </div>
+        <div>
+            <div class="text-xxs uppercase text-gray-400 tracking-wider">{{ "Distance"|trans }}</div>
+            <div class="text-sm font-bold text-gray-900">{{ routeMatch.getDistance()|renderMeasurement(2) }}</div>
+        </div>
+        <div>
+            <div class="text-xxs uppercase text-gray-400 tracking-wider">{{ "Delta"|trans }}</div>
+            {% set timeDelta = routeMatch.getTimeDeltaInSeconds() %}
+            {# Inverted against the yearly stats widget on purpose: less time is better. #}
+            {% set deltaColors = timeDelta < 0 ? 'pill--success' : (timeDelta > 0 ? 'pill--danger' : 'pill--neutral') %}
+            <div class="pill {{ deltaColors }} text-xs rounded">
+                {% if not routeMatch.isCurrentActivity() and timeDelta != 0 %}
+                    {% if timeDelta > 0 %}
+                        <svg class="size-4" fill="currentColor" viewBox="0 0 20 20"
+                             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path clip-rule="evenodd" fill-rule="evenodd"
+                                  d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
+                        </svg>
+                    {% else %}
+                        <svg class="size-4" fill="currentColor" viewBox="0 0 20 20"
+                             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path clip-rule="evenodd" fill-rule="evenodd"
+                                  d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"></path>
+                        </svg>
+                    {% endif %}
+                    <div>
+                        {{ routeMatch.getTimeDeltaFormatted() }}
+                    </div>
+                {% else %}
+                    -
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endautoescape %}
+{% endmacro %}

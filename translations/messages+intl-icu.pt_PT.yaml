@@ -85,6 +85,7 @@ Day: Day
 'Days needed': 'Dias necessários'
 'Daytime stats': 'Estatísticas por períodos do dia'
 Dec: Dez
+Delta: Delta
 Density: Density
 Details: Details
 Device: Dispositivo
@@ -212,6 +213,7 @@ Low: Baixa
 'Low training load': 'Low training load'
 Maintenance: Manutenção
 Mar: Mar
+'Matched activities': 'Matched activities'
 Max: Máx
 'Max gradient': 'Max gradient'
 May: Mai
@@ -571,6 +573,7 @@ workouts: treinos
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} a cada {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} activities'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} actividades em {year}'
+'{numberOfActivities} activities on this route': '{numberOfActivities} activities on this route'
 '{numberOfMonths} months': '{numberOfMonths} months'
 '{numberOfResults} photos': '{numberOfResults} photos'
 '{numberOfResults} results': '{numberOfResults} results'

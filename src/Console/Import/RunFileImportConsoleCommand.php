@@ -68,10 +68,9 @@ final class RunFileImportConsoleCommand extends Command
             return Command::SUCCESS;
         }
 
-        if (!$this->watchDirectory->hasFilesThatCanBeProcessed()) {
+        $hasFilesToProcess = $this->watchDirectory->hasFilesThatCanBeProcessed();
+        if (!$hasFilesToProcess) {
             $output->writeln('No files left to process...');
-
-            return Command::SUCCESS;
         }
 
         $this->resourceUsage->startTimer();
@@ -88,7 +87,9 @@ final class RunFileImportConsoleCommand extends Command
         try {
             $this->appStatusChecker->ensureIsReadyForFileImport();
 
-            $this->commandBus->dispatch(new ImportActivityFiles($output));
+            if ($hasFilesToProcess) {
+                $this->commandBus->dispatch(new ImportActivityFiles($output));
+            }
             $this->commandBus->dispatch(new CalculateActivityMetrics($output));
         } catch (AppIsNotReady $e) {
             $this->mutex->releaseLock();
@@ -104,6 +105,10 @@ final class RunFileImportConsoleCommand extends Command
         $this->mutex->releaseLock();
 
         $this->resourceUsage->stopTimer();
+        if (!$hasFilesToProcess) {
+            return Command::SUCCESS;
+        }
+
         if ($this->settingsRepository->integrations()->shouldNotifyOnSuccessfulImport()) {
             $this->commandBus->dispatch(new SendNotification(
                 title: 'Import successful',

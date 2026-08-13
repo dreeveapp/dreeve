@@ -85,6 +85,7 @@ Day: Nap
 'Days needed': 'Szükséges napok'
 'Daytime stats': 'Napszaki statisztikák'
 Dec: Dec
+Delta: Delta
 Density: Sűrűség
 Details: Részletek
 Device: Eszköz
@@ -212,6 +213,7 @@ Low: Alacsony
 'Low training load': 'Alacsony edzésterhelés'
 Maintenance: Karbantartás
 Mar: Már
+'Matched activities': 'Matched activities'
 Max: Max
 'Max gradient': 'Max. lejtés'
 May: Máj
@@ -571,6 +573,7 @@ workouts: edzések
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} minden {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} tevékenység'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} tevékenység {year}-ben'
+'{numberOfActivities} activities on this route': '{numberOfActivities} activities on this route'
 '{numberOfMonths} months': '{numberOfMonths} hónap'
 '{numberOfResults} photos': '{numberOfResults} photos'
 '{numberOfResults} results': '{numberOfResults} results'
