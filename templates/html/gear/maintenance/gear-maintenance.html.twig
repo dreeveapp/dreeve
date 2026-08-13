@@ -120,7 +120,11 @@
                                                                         {% endif %}
                                                                     </span>
                                                                 {% set progress = maintenanceTaskStatus.getProgress() %}
-                                                                {% if progress.isZero() %}
+                                                                {% if progress is null %}
+                                                                    {% set colors = {'bg':'bg-gray-200','text':'text-gray-700'} %}
+                                                                {% elseif progress.isOverdue() %}
+                                                                    {% set colors = {'bg':'bg-red-600', 'text':'text-red-600'} %}
+                                                                {% elseif progress.isZero() %}
                                                                     {% set colors = {'bg':'bg-gray-200','text':'text-gray-700'} %}
                                                                 {% elseif progress.isLow() %}
                                                                     {% set colors = {'bg':'bg-green-600','text':'text-green-600'} %}
@@ -130,12 +134,21 @@
                                                                     {% set colors = {'bg':'bg-red-600', 'text':'text-red-600'} %}
                                                                 {% endif %}
                                                                 <div class="mt-2">
-                                                                    <div class="mb-1">
-                                                                        <span class="{{ colors.text }} text-sm font-medium">{{ progress.getDescription() }}</span>
+                                                                    <div class="flex items-center justify-between mb-1">
+                                                                        <span class="{{ colors.text }} text-sm font-medium">{{ progress ? progress.getDescription() : '0' }}</span>
+                                                                        {% if progress %}
+                                                                            <span class="{{ colors.text }} text-xs font-medium">
+                                                                                {% if progress.isOverdue() %}
+                                                                                    {{ "Overdue by {amount}"|trans({'{amount}': progress.getRemainingDescription()}) }}
+                                                                                {% else %}
+                                                                                    {{ "{amount} left"|trans({'{amount}': progress.getRemainingDescription()}) }}
+                                                                                {% endif %}
+                                                                            </span>
+                                                                        {% endif %}
                                                                     </div>
                                                                     <div class="w-full bg-gray-200 rounded-full h-2.5">
                                                                         <div class="{{ colors.bg }} h-2.5 rounded-full"
-                                                                             style="width: {{ progress.getPercentage() }}%"></div>
+                                                                             style="width: {{ progress ? progress.getPercentage() : 0 }}%"></div>
                                                                     </div>
                                                                 </div>
                                                             </div>

@@ -264,6 +264,7 @@ Other: Outro
 Over-fatigued: Sobrecarregado
 'Over-fatigued (–30)': 'Sobrecarregado (–30)'
 'Overall weekly training stress': 'Estresse geral de treino semanal'
+'Overdue by {amount}': 'Overdue by {amount}'
 'PB badges': 'Emblemas de RP'
 'PET bottles produced': 'Garrafas PET produzidas'
 Pace: Ritmo
@@ -477,6 +478,7 @@ Title: Título
 Tue: Ter
 Tue.: Ter.
 Unspecified: 'Não especificado'
+'Upcoming maintenance': 'Upcoming maintenance'
 'User badge': 'Emblema do usuário'
 'Velo Mobiles': 'Velo Móveis'
 'Very high': 'Muito alta'
@@ -546,6 +548,7 @@ day(s): dia(s)
 days: dias
 'days needed for next Eddington': 'dias necessários para o próximo Eddington'
 'days to reach {n}': 'dias para alcançar {n}'
+'every {interval}': 'every {interval}'
 hours: horas
 hrs: hrs
 humidity: humidity
@@ -567,6 +570,7 @@ total: total
 watts: watts
 weeks: semanas
 workouts: treinos
+'{amount} left': '{amount} left'
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} dias'
 '{days} consecutive days of activity': '{days} dias consecutivos de atividade'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} horas'

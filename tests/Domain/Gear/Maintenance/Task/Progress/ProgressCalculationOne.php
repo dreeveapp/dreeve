@@ -18,6 +18,6 @@ class ProgressCalculationOne implements MaintenanceTaskProgressCalculation
 
     public function calculate(ProgressCalculationContext $context): MaintenanceTaskProgress
     {
-        return MaintenanceTaskProgress::from(10, 'test');
+        return MaintenanceTaskProgress::from(10, 100, 'test', 'test');
     }
 }

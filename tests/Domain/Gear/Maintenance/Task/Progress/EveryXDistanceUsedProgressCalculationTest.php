@@ -90,8 +90,8 @@ class EveryXDistanceUsedProgressCalculationTest extends ContainerTestCase
      */
     public static function provideIntervalUnits(): iterable
     {
-        yield 'kilometers' => [IntervalUnit::EVERY_X_KILOMETERS_USED, MaintenanceTaskProgress::from(25, '250 km')];
-        yield 'miles' => [IntervalUnit::EVERY_X_MILES_USED, MaintenanceTaskProgress::from(16, '155 mi')];
+        yield 'kilometers' => [IntervalUnit::EVERY_X_KILOMETERS_USED, MaintenanceTaskProgress::from(250, 1000, '250 km', '750 km')];
+        yield 'miles' => [IntervalUnit::EVERY_X_MILES_USED, MaintenanceTaskProgress::from(250 * Kilometer::FACTOR_TO_MILES, 1000, '155 mi', '844 mi')];
     }
 
     #[\Override]

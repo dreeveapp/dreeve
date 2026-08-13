@@ -7,54 +7,85 @@ namespace App\Domain\Gear\Maintenance\Task\Progress;
 final readonly class MaintenanceTaskProgress
 {
     private function __construct(
-        private int $percentage,
-        private string $description,
+        private float $elapsed,
+        private float $interval,
+        private string $elapsedDescription,
+        private string $remainingDescription,
     ) {
-        if ($this->percentage < 0 || $this->percentage > 100) {
-            throw new \InvalidArgumentException('Percentage must be between 0 and 100');
+        if ($this->interval <= 0) {
+            throw new \InvalidArgumentException('Interval must be greater than 0');
         }
     }
 
-    public static function from(int $percentage, string $description): self
-    {
+    public static function from(
+        float $elapsed,
+        float $interval,
+        string $elapsedDescription,
+        string $remainingDescription,
+    ): self {
         return new self(
-            percentage: $percentage,
-            description: $description
+            elapsed: $elapsed,
+            interval: $interval,
+            elapsedDescription: $elapsedDescription,
+            remainingDescription: $remainingDescription,
         );
     }
 
     public function getPercentage(): int
     {
-        return $this->percentage;
+        return min((int) round($this->getCompletionRatio() * 100), 100);
+    }
+
+    /**
+     * Unlike the percentage, this is not capped at 100%, which makes it the only way to rank overdue tasks.
+     */
+    public function getCompletionRatio(): float
+    {
+        return $this->elapsed / $this->interval;
+    }
+
+    public function getRemaining(): float
+    {
+        return $this->interval - $this->elapsed;
     }
 
     public function getDescription(): string
     {
-        return $this->description;
+        return $this->elapsedDescription;
+    }
+
+    public function getRemainingDescription(): string
+    {
+        return $this->remainingDescription;
+    }
+
+    public function isOverdue(): bool
+    {
+        return $this->getRemaining() < 0;
     }
 
     public function isDue(): bool
     {
-        return $this->percentage >= 98;
+        return $this->getPercentage() >= 98;
     }
 
     public function isZero(): bool
     {
-        return 0 === $this->percentage;
+        return 0 === $this->getPercentage();
     }
 
     public function isLow(): bool
     {
-        return $this->percentage < 70;
+        return $this->getPercentage() < 70;
     }
 
     public function isMedium(): bool
     {
-        return $this->percentage >= 70 && $this->percentage < 90;
+        return $this->getPercentage() >= 70 && $this->getPercentage() < 90;
     }
 
     public function isHigh(): bool
     {
-        return $this->percentage >= 90;
+        return $this->getPercentage() >= 90;
     }
 }

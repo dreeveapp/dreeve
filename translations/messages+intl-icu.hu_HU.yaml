@@ -264,6 +264,7 @@ Other: Egyéb
 Over-fatigued: Túlterhelve
 'Over-fatigued (–30)': 'Túlterhelve (–30)'
 'Overall weekly training stress': 'Heti összes edzésstressz'
+'Overdue by {amount}': 'Overdue by {amount}'
 'PB badges': 'Személyes rekord kitűzők'
 'PET bottles produced': 'Előállított PET palackok'
 Pace: Tempó
@@ -477,6 +478,7 @@ Title: Title
 Tue: K
 Tue.: Tue.
 Unspecified: Meghatározatlan
+'Upcoming maintenance': 'Upcoming maintenance'
 'User badge': 'Felhasználói kitűző'
 'Velo Mobiles': Velomobil
 'Very high': 'Nagyon magas'
@@ -546,6 +548,7 @@ day(s): nap(ok)
 days: napok
 'days needed for next Eddington': 'napok a következő Eddington-számhoz'
 'days to reach {n}': 'days to reach {n}'
+'every {interval}': 'every {interval}'
 hours: órák
 hrs: h
 humidity: humidity
@@ -567,6 +570,7 @@ total: összesen
 watts: watts
 weeks: hetek
 workouts: edzések
+'{amount} left': '{amount} left'
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} nap'
 '{days} consecutive days of activity': '{days} egymást követő aktív nap'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} óra'

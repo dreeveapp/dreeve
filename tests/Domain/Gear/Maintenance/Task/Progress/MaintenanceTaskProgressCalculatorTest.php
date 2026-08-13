@@ -31,7 +31,7 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
     public function testCalculateProgress(): void
     {
         $this->assertEquals(
-            MaintenanceTaskProgress::from(100, 'test'),
+            MaintenanceTaskProgress::from(100, 100, 'test', 'test'),
             new MaintenanceTaskProgressCalculator([
                 new ProgressCalculationOne(),
                 new ProgressCalculationTwo(),

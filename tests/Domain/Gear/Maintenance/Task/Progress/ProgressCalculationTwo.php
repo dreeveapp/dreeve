@@ -18,6 +18,6 @@ class ProgressCalculationTwo implements MaintenanceTaskProgressCalculation
 
     public function calculate(ProgressCalculationContext $context): MaintenanceTaskProgress
     {
-        return MaintenanceTaskProgress::from(100, 'test');
+        return MaintenanceTaskProgress::from(100, 100, 'test', 'test');
     }
 }

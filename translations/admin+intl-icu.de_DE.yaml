@@ -238,6 +238,7 @@ Monday: Montag
 'Number of challenges to display': 'Anzahl der anzuzeigenden Herausforderungen'
 'Number of milestones to display': 'Anzahl der anzuzeigenden Meilensteine'
 'Number of new activities to process per import': 'Anzahl der pro Import zu verarbeitenden neuen Aktivitäten'
+'Number of tasks to display': 'Number of tasks to display'
 'Number of widgets of this type you already have configured.': 'Anzahl der bereits konfigurierten Widgets dieses Typs.'
 'Only required for the Azure OpenAI provider.': 'Nur für den Azure OpenAI-Anbieter erforderlich.'
 'Only required for the Ollama provider.': 'Nur für den Ollama-Anbieter erforderlich.'

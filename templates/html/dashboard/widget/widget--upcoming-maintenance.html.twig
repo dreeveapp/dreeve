@@ -1,0 +1,52 @@
+{% autoescape false %}
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold">
+            {{ "Upcoming maintenance"|trans }}
+        </h3>
+        <a href="{{ relativeUrl('gear/maintenance') }}" data-router-content-url="{{ relativeUrl('api/fragment/page/gear/maintenance') }}"
+           class="shrink-0 inline-flex items-center p-2 text-sm font-medium rounded-lg text-blue-600 hover:bg-gray-100">
+            {{ "View all"|trans }}
+        </a>
+    </div>
+    <div class="flex flex-col h-0 min-h-92 grow gap-y-2 overflow-y-auto">
+        {% for upcomingMaintenanceTask in upcomingMaintenanceTasks %}
+            {% set progress = upcomingMaintenanceTask.getProgress() %}
+            {% if progress.isOverdue() %}
+                {% set colors = {'bg':'bg-red-600', 'text':'text-red-600'} %}
+            {% elseif progress.isZero() %}
+                {% set colors = {'bg':'bg-gray-200','text':'text-gray-700'} %}
+            {% elseif progress.isLow() %}
+                {% set colors = {'bg':'bg-green-600','text':'text-green-600'} %}
+            {% elseif progress.isMedium() %}
+                {% set colors = {'bg':'bg-yellow-400','text':'text-yellow-600'} %}
+            {% elseif progress.isHigh() %}
+                {% set colors = {'bg':'bg-red-600', 'text':'text-red-600'} %}
+            {% endif %}
+            <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+                <div class="flex items-center gap-x-1 mb-1">
+                    {% if progress.isOverdue() %}
+                        <span class="shrink-0 flex size-2 me-1 bg-red-500 rounded-full animate-pulse"></span>
+                    {% endif %}
+                    <h3 class="text-sm font-bold text-gray-900 truncate">
+                        {{ upcomingMaintenanceTask.getComponentLabel() }} &middot; {{ upcomingMaintenanceTask.getTaskLabel() }}
+                    </h3>
+                </div>
+                <div class="flex items-baseline justify-between gap-x-2">
+                    <span class="{{ colors.text }} text-sm font-medium truncate">
+                        {% if progress.isOverdue() %}
+                            {{ "Overdue by {amount}"|trans({'{amount}': progress.getRemainingDescription()}) }}
+                        {% else %}
+                            {{ "{amount} left"|trans({'{amount}': progress.getRemainingDescription()}) }}
+                        {% endif %}
+                    </span>
+                    <span class="shrink-0 text-xs text-gray-500">
+                        {{ "every {interval}"|trans({'{interval}': upcomingMaintenanceTask.getIntervalValue() ~ ' ' ~ upcomingMaintenanceTask.getIntervalUnit().value}) }}
+                    </span>
+                </div>
+                <div class="mt-2 w-full bg-gray-200 rounded-full h-2.5">
+                    <div class="{{ colors.bg }} h-2.5 rounded-full" style="width: {{ progress.getPercentage() }}%"></div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endautoescape %}

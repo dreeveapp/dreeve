@@ -264,6 +264,7 @@ Other: Annat
 Over-fatigued: Over-fatigued
 'Over-fatigued (–30)': 'Överdrivet utmattad (–30)'
 'Overall weekly training stress': 'Sammanfattning för träning veckovis'
+'Overdue by {amount}': 'Overdue by {amount}'
 'PB badges': PB-märken
 'PET bottles produced': 'PET flaskor producerade'
 Pace: Tempo
@@ -477,6 +478,7 @@ Title: Title
 Tue: Tis
 Tue.: Tue.
 Unspecified: Ospecificerad
+'Upcoming maintenance': 'Upcoming maintenance'
 'User badge': Användarmärke
 'Velo Mobiles': Velomobil
 'Very high': 'Väldigt hög'
@@ -546,6 +548,7 @@ day(s): day(s)
 days: dagar
 'days needed for next Eddington': 'dagar till nästa Eddington nivå'
 'days to reach {n}': 'days to reach {n}'
+'every {interval}': 'every {interval}'
 hours: timmar
 hrs: tim
 humidity: humidity
@@ -567,6 +570,7 @@ total: totalt
 watts: watts
 weeks: veckor
 workouts: träningspass
+'{amount} left': '{amount} left'
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} dagar'
 '{days} consecutive days of activity': '{days} consecutive days of activity'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} timmar'

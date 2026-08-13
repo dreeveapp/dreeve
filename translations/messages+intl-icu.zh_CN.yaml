@@ -264,6 +264,7 @@ Other: 其他
 Over-fatigued: Over-fatigued
 'Over-fatigued (–30)': '过度疲劳 （–30）'
 'Overall weekly training stress': 每周训练负荷总览
+'Overdue by {amount}': 'Overdue by {amount}'
 'PB badges': PB徽章
 'PET bottles produced': PET瓶量
 Pace: 步速
@@ -477,6 +478,7 @@ Title: Title
 Tue: 周二
 Tue.: Tue.
 Unspecified: 未指定
+'Upcoming maintenance': 'Upcoming maintenance'
 'User badge': 用户徽章
 'Velo Mobiles': 躺车
 'Very high': 非常高
@@ -546,6 +548,7 @@ day(s): day(s)
 days: 天
 'days needed for next Eddington': '天 - 下一个爱丁顿所需天数'
 'days to reach {n}': 'days to reach {n}'
+'every {interval}': 'every {interval}'
 hours: 小时
 hrs: hrs
 humidity: humidity
@@ -567,6 +570,7 @@ total: 总计
 watts: watts
 weeks: 周
 workouts: 锻炼
+'{amount} left': '{amount} left'
 '{daysSinceLastTagged} days': '{daysSinceLastTagged}天'
 '{days} consecutive days of activity': '{days} consecutive days of activity'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged}小时'

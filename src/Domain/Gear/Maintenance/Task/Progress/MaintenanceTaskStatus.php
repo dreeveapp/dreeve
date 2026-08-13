@@ -12,14 +12,14 @@ final readonly class MaintenanceTaskStatus
     private function __construct(
         private MaintenanceTaskId $maintenanceTaskId,
         private ?SerializableDateTime $lastPerformedOn,
-        private MaintenanceTaskProgress $progress,
+        private ?MaintenanceTaskProgress $progress,
     ) {
     }
 
     public static function from(
         MaintenanceTaskId $maintenanceTaskId,
         ?SerializableDateTime $lastPerformedOn,
-        MaintenanceTaskProgress $progress,
+        ?MaintenanceTaskProgress $progress,
     ): self {
         return new self(
             maintenanceTaskId: $maintenanceTaskId,
@@ -38,13 +38,13 @@ final readonly class MaintenanceTaskStatus
         return $this->lastPerformedOn;
     }
 
-    public function getProgress(): MaintenanceTaskProgress
+    public function getProgress(): ?MaintenanceTaskProgress
     {
         return $this->progress;
     }
 
     public function isDue(): bool
     {
-        return $this->progress->isDue();
+        return $this->progress?->isDue() ?? false;
     }
 }

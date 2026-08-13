@@ -104,7 +104,7 @@ final readonly class MaintenanceTaskProgressCalculator
                             intervalUnit: $maintenanceTask->getIntervalUnit(),
                             intervalValue: $maintenanceTask->getIntervalValue(),
                         )
-                    ) : MaintenanceTaskProgress::from(0, '0'),
+                    ) : null,
                 ));
             }
         }

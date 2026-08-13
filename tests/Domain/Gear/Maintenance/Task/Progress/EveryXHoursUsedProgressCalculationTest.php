@@ -72,8 +72,10 @@ class EveryXHoursUsedProgressCalculationTest extends ContainerTestCase
 
         $this->assertEquals(
             MaintenanceTaskProgress::from(
-                20,
-                '2 hours',
+                elapsed: 2,
+                interval: 10,
+                elapsedDescription: '2 hours',
+                remainingDescription: '8 hours',
             ),
             $this->calculation->calculate(
                 ProgressCalculationContext::from(

@@ -24,13 +24,21 @@ final readonly class EveryXDaysProgressCalculation implements MaintenanceTaskPro
     public function calculate(ProgressCalculationContext $context): MaintenanceTaskProgress
     {
         $today = $this->clock->getCurrentDateTimeImmutable();
-        $daysSinceLastTagged = $today->diff($context->getLastTaggedOn())->days;
+        $daysSinceLastTagged = (int) $today->diff($context->getLastTaggedOn())->days;
+        $intervalValue = $context->getIntervalValue();
 
         return MaintenanceTaskProgress::from(
-            percentage: min((int) round(($daysSinceLastTagged / $context->getIntervalValue()) * 100), 100),
-            description: $this->translator->trans('{daysSinceLastTagged} days', [
-                '{daysSinceLastTagged}' => $daysSinceLastTagged,
-            ]),
+            elapsed: $daysSinceLastTagged,
+            interval: $intervalValue,
+            elapsedDescription: $this->describeDays($daysSinceLastTagged),
+            remainingDescription: $this->describeDays(abs($intervalValue - $daysSinceLastTagged)),
         );
+    }
+
+    private function describeDays(float $days): string
+    {
+        return $this->translator->trans('{daysSinceLastTagged} days', [
+            '{daysSinceLastTagged}' => round($days),
+        ]);
     }
 }

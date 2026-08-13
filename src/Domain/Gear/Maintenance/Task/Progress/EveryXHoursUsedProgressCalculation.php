@@ -37,12 +37,20 @@ final readonly class EveryXHoursUsedProgressCalculation implements MaintenanceTa
             'gearIds' => ArrayParameterType::STRING,
         ]);
         $movingTimeInHoursSinceLastTagged = $movingTimeInSecondsSinceLastTagged / 3600;
+        $intervalValue = $context->getIntervalValue();
 
         return MaintenanceTaskProgress::from(
-            percentage: min((int) round(($movingTimeInHoursSinceLastTagged / $context->getIntervalValue()) * 100), 100),
-            description: $this->translator->trans('{hoursSinceLastTagged} hours', [
-                '{hoursSinceLastTagged}' => round($movingTimeInHoursSinceLastTagged),
-            ]),
+            elapsed: $movingTimeInHoursSinceLastTagged,
+            interval: $intervalValue,
+            elapsedDescription: $this->describeHours($movingTimeInHoursSinceLastTagged),
+            remainingDescription: $this->describeHours(abs($intervalValue - $movingTimeInHoursSinceLastTagged)),
         );
+    }
+
+    private function describeHours(float $hours): string
+    {
+        return $this->translator->trans('{hoursSinceLastTagged} hours', [
+            '{hoursSinceLastTagged}' => round($hours),
+        ]);
     }
 }

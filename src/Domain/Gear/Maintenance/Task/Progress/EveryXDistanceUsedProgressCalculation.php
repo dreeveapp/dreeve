@@ -43,9 +43,14 @@ final readonly class EveryXDistanceUsedProgressCalculation implements Maintenanc
             $distanceSinceLastTagged = $distanceSinceLastTagged->toMiles();
         }
 
+        $intervalValue = $context->getIntervalValue();
+        $symbol = $distanceSinceLastTagged->getSymbol();
+
         return MaintenanceTaskProgress::from(
-            percentage: min((int) round(($distanceSinceLastTagged->toFloat() / $context->getIntervalValue()) * 100), 100),
-            description: sprintf('%s %s', $distanceSinceLastTagged->toInt(), $distanceSinceLastTagged->getSymbol()),
+            elapsed: $distanceSinceLastTagged->toFloat(),
+            interval: $intervalValue,
+            elapsedDescription: sprintf('%s %s', $distanceSinceLastTagged->toInt(), $symbol),
+            remainingDescription: sprintf('%s %s', (int) abs($intervalValue - $distanceSinceLastTagged->toFloat()), $symbol),
         );
     }
 }

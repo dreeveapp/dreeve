@@ -21,8 +21,10 @@ class EveryXDaysProgressCalculationTest extends ContainerTestCase
     {
         $this->assertEquals(
             MaintenanceTaskProgress::from(
-                percentage: 50,
-                description: '2 days',
+                elapsed: 2,
+                interval: 4,
+                elapsedDescription: '2 days',
+                remainingDescription: '2 days',
             ),
             $this->calculation->calculate(
                 ProgressCalculationContext::from(

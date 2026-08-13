@@ -38,11 +38,20 @@ final readonly class EveryXDaysUsedProgressCalculation implements MaintenanceTas
             'gearIds' => ArrayParameterType::STRING,
         ]));
 
+        $intervalValue = $context->getIntervalValue();
+
         return MaintenanceTaskProgress::from(
-            percentage: min((int) round(($daysUsedSinceLastTagged / $context->getIntervalValue()) * 100), 100),
-            description: $this->translator->trans('{daysSinceLastTagged} days', [
-                '{daysSinceLastTagged}' => $daysUsedSinceLastTagged,
-            ]),
+            elapsed: $daysUsedSinceLastTagged,
+            interval: $intervalValue,
+            elapsedDescription: $this->describeDays($daysUsedSinceLastTagged),
+            remainingDescription: $this->describeDays(abs($intervalValue - $daysUsedSinceLastTagged)),
         );
+    }
+
+    private function describeDays(float $days): string
+    {
+        return $this->translator->trans('{daysSinceLastTagged} days', [
+            '{daysSinceLastTagged}' => round($days),
+        ]);
     }
 }
