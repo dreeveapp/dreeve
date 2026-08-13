@@ -31,6 +31,8 @@ class GearMaintenanceDueFragmentTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        // This fragment is shared by the sidebar and the gear sub menu, so it must not carry sidebar-only classes.
+        $this->assertStringNotContainsString('sidebar-collapsed', (string) $this->client->getResponse()->getContent());
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
