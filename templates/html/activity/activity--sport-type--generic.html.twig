@@ -333,11 +333,13 @@
                 {% endif %}
             </section>
         {% endif %}
-        <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activity/' ~ activity.getId() ~ '/best-efforts') }}"></div>
-        {% block splitsAndLaps %}
-        {% endblock splitsAndLaps %}
-        <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activity/' ~ activity.getId() ~ '/segments') }}"></div>
-        <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activity/' ~ activity.getId() ~ '/route-matches') }}"></div>
+        <section class="grid grid-cols-1 gap-4">
+            <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activity/' ~ activity.getId() ~ '/best-efforts') }}"></div>
+            {% block splitsAndLaps %}
+            {% endblock splitsAndLaps %}
+            <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activity/' ~ activity.getId() ~ '/segments') }}"></div>
+            <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activity/' ~ activity.getId() ~ '/route-matches') }}"></div>
+        </section>
         {% if distributionCharts is not empty %}
             <section>
                 <h3 class="font-bold text-gray-900 mb-3">Distribution</h3>

@@ -29,14 +29,11 @@ class FindRouteMatchesQueryHandlerTest extends ContainerTestCase
 
         $this->addActivityWithRouteCells('subject', $route);
         $this->addActivityWithRouteCells('faster', $route, movingTimeInSeconds: 3000);
-        // 16 of 20 cells shared, so 0.8 which clears the 0.75 threshold.
         $this->addActivityWithRouteCells('slower', [...range(1, 16), 901, 902, 903, 904], movingTimeInSeconds: 4200);
-        // Only 10 of 20 cells shared.
         $this->addActivityWithRouteCells('other-route', [...range(1, 10), ...range(901, 910)]);
         $this->addActivityWithRouteCells('other-activity-type', $route, sportType: SportType::RUN);
         $this->addActivityWithRouteCells('other-world-type', $route, worldType: WorldType::ZWIFT);
         $this->addActivityWithRouteCells('too-far', $route, distance: Kilometer::from(20));
-        // Same ground, but ridden the other way round, so the climbs become descents.
         $this->addActivityWithRouteCells('reversed', $route, waypoints: self::reversedWaypoints());
         $this->addActivityWithRouteCells('without-signature', null);
 
@@ -80,10 +77,6 @@ class FindRouteMatchesQueryHandlerTest extends ContainerTestCase
         );
     }
 
-    /**
-     * The subject's waypoints run north along a line; reversing them puts waypoint 1 where
-     * waypoint 7 was, which is what the direction test keys off.
-     */
     private static function reversedWaypoints(): RouteWaypoints
     {
         $forward = ActivityRouteSignatureBuilder::fromDefaults()->build()->getWaypoints()->toArray();

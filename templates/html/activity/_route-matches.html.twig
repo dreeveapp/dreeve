@@ -14,7 +14,7 @@
             <div class="mt-3 space-y-2 max-h-125 overflow-y-auto p-1">
                 {% for routeMatch in routeMatches %}
                     {% if routeMatch.isCurrentActivity() %}
-                        <div class="flex items-center gap-3 bg-white border border-gray-200 shadow-xs ring-2 ring-primary rounded-xl p-3">
+                        <div class="flex items-center gap-3 bg-white shadow-xs ring-2 ring-primary rounded-xl p-3">
                             {{ _self.routeMatchRow(routeMatch) }}
                         </div>
                     {% else %}

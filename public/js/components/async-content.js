@@ -51,7 +51,7 @@ export default function initAsyncContent(rootNode) {
                 return;
             }
 
-            if (!html.trim() && node.hasAttribute('data-async-content-remove-when-empty')) {
+            if (!html.trim()) {
                 node.remove();
                 return;
             }

@@ -47,7 +47,6 @@ class DbalActivityRouteSignatureRepositoryTest extends ContainerTestCase
             ->fetchAllAssociative();
 
         $this->assertMatchesJsonSnapshot(Json::encode($results));
-        // Cells and waypoints are compressed blobs, so they cannot be snapshotted stably.
         $this->assertEquals(
             [10, 20, 30],
             Json::uncompressAndDecode($this->getConnection()->executeQuery(
@@ -74,7 +73,6 @@ class DbalActivityRouteSignatureRepositoryTest extends ContainerTestCase
                 ->build()
         );
 
-        // Its polyline was rewritten by a re-import, so the stored checksum no longer matches.
         $this->addActivity('rerouted', $polyline);
         $this->activityRouteSignatureRepository->add(
             ActivityRouteSignatureBuilder::fromDefaults()

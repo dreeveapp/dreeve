@@ -20,7 +20,6 @@ final class ActivityRouteSignatureBuilder
     {
         $this->activityId = ActivityId::fromUnprefixed('test');
         $this->cells = RouteCells::fromArray([1, 2, 3]);
-        // A straight 10km line north, sampled at 1/8..7/8, matching the default 10km distance.
         $this->waypoints = RouteWaypoints::fromArray([
             5101125, 300000, 5102250, 300000, 5103375, 300000, 5104500, 300000,
             5105625, 300000, 5106750, 300000, 5107875, 300000,

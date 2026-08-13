@@ -25,7 +25,6 @@ class RouteGridTest extends TestCase
 
     public function testCellsForACoordinateOnAnExactGridBoundary(): void
     {
-        // Binning the float directly would land this on 51031 instead of 51032.
         $this->assertSame(51031, (int) floor(51.032 / 0.001));
 
         $this->assertEquals(
@@ -41,13 +40,11 @@ class RouteGridTest extends TestCase
             [51.01, 3.0],
         ]))->toArray();
 
-        // 0.01° of latitude at a 0.001° grid, both ends included.
         $this->assertCount(11, $cells);
         foreach ($cells as $index => $cell) {
             if (0 === $index) {
                 continue;
             }
-            // Consecutive rows of the same longitude column, so no gaps.
             $this->assertSame(360001, $cell - $cells[$index - 1]);
         }
     }
@@ -79,7 +76,6 @@ class RouteGridTest extends TestCase
 
         $this->assertCount(2 * RouteGrid::WAYPOINT_COUNT, $forward);
 
-        // Pairwise reversed: waypoint 1 forward is waypoint 7 backward.
         $reversed = [];
         for ($i = count($backward) - 2; $i >= 0; $i -= 2) {
             $reversed[] = $backward[$i];
