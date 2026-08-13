@@ -92,6 +92,14 @@ class ApiFragmentRequestHandlerTest extends ContainerTestCase
         $this->assertStringContainsString('wandered off the map', (string) $response->getContent());
     }
 
+    public function testItServesTheNotFoundPageTheRouterFallsBackTo(): void
+    {
+        $response = $this->apiFragmentRequestHandler->handle('page', 'not-found');
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertStringContainsString('wandered off the map', (string) $response->getContent());
+    }
+
     public function testItLeavesAnUnknownPartialAndDataFragmentEmpty(): void
     {
         foreach (['partial', 'data'] as $type) {

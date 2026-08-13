@@ -91,6 +91,16 @@ class RouteGridTest extends TestCase
         );
     }
 
+    public function testWaypointsForARouteThatNeverMoves(): void
+    {
+        $this->assertTrue(
+            $this->routeGrid->waypointsFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.0, 3.0]]))->isEmpty()
+        );
+        $this->assertFalse(
+            $this->routeGrid->waypointsFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.05, 3.04]]))->isEmpty()
+        );
+    }
+
     public function testMedianDistanceInMeterToIsZeroForAnIdenticalRoute(): void
     {
         $waypoints = $this->routeGrid->waypointsFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.05, 3.04]]));

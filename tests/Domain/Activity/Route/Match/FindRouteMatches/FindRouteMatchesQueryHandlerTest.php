@@ -57,6 +57,19 @@ class FindRouteMatchesQueryHandlerTest extends ContainerTestCase
         );
     }
 
+    public function testHandleDoesNotMatchALongerRouteThatMerelyContainsTheSubject(): void
+    {
+        $this->addActivityWithRouteCells('subject', range(1, 20));
+        $this->addActivityWithRouteCells('longer-route', range(1, 27));
+
+        $routeMatches = $this->queryBus->ask(new FindRouteMatches(ActivityId::fromUnprefixed('subject')))->getRouteMatches();
+
+        $this->assertEquals(
+            ['activity-subject'],
+            array_map(fn (RouteMatch $routeMatch): string => (string) $routeMatch->getActivityId(), $routeMatches->toArray())
+        );
+    }
+
     public function testHandleForAnActivityWithTooFewCells(): void
     {
         $this->addActivityWithRouteCells('subject', range(1, 5));
