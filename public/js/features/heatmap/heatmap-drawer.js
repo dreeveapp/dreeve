@@ -1,6 +1,7 @@
 import {pointToLineDistance, point, lineString} from "../../../libraries/turf";
 import L from 'leaflet';
 import {createFlyToPlacesControl, createMapToolsControl} from "../maps/leaflet-controls";
+import HeatmapCountriesLayer from "./heatmap-countries-layer";
 import '../maps/ctrl-scroll-zoom';
 
 export default class HeatmapDrawer {
@@ -33,6 +34,13 @@ export default class HeatmapDrawer {
             weight: 0,
             opacity: 0,
         }
+
+        const countriesUrl = this.wrapper.getAttribute('data-leaflet-countries');
+        this.countriesLabel = this.wrapper.getAttribute('data-leaflet-countries-label');
+        this.countriesLayer = countriesUrl
+            ? new HeatmapCountriesLayer(this.map, countriesUrl, this.config.polylineColor)
+            : null;
+
         this.map.on("click", (e) => this._handleMapClick(e));
         this.map.on("popupclose", () => this._resetRouteStyles());
         this.map.on("popupopen", (e) => this._handlePopupOpen(e));
@@ -165,13 +173,21 @@ export default class HeatmapDrawer {
                 bounds: bounds
             });
         });
+        this.countriesLayer?.setActiveCountryCodes([...countryBounds.keys()]);
         this.mainFeatureGroup.addTo(this.map);
 
         this.placesControl = createFlyToPlacesControl({places});
         this.map.addControl(this.placesControl);
 
         if (!this.mapToolsControl) {
-            this.mapToolsControl = createMapToolsControl({showReset: false});
+            this.mapToolsControl = createMapToolsControl({
+                showReset: false,
+                toggles: this.countriesLayer ? [{
+                    icon: HeatmapCountriesLayer.ICON,
+                    title: this.countriesLabel,
+                    onToggle: (active) => this.countriesLayer.setEnabled(active),
+                }] : [],
+            });
             this.map.addControl(this.mapToolsControl);
         }
 

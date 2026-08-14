@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Activity\Route;
+namespace App\Domain\Activity\Route\Heatmap;
 
+use App\Domain\Activity\Route\Route;
+use App\Domain\Activity\Route\RouteRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;

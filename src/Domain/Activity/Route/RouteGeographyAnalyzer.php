@@ -4,22 +4,16 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Route;
 
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\BoundingBox;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\Geography\Polygon;
 use App\Infrastructure\ValueObject\Geography\Polyline;
 
-final class RouteGeographyAnalyzer
+final readonly class RouteGeographyAnalyzer
 {
-    /** @var list<array{countryCode: string, polygonIndex: int, boundingBox: BoundingBox}>|null */
-    private ?array $index = null;
-
-    private readonly string $assetsDirectory;
-
-    public function __construct()
-    {
-        $this->assetsDirectory = __DIR__.'/assets/countries';
+    public function __construct(
+        private CountryGeographyAssets $assets,
+    ) {
     }
 
     /**
@@ -42,7 +36,7 @@ final class RouteGeographyAnalyzer
 
         /** @var array<string, list<int>> $candidates */
         $candidates = [];
-        foreach ($this->index() as $entry) {
+        foreach ($this->assets->index() as $entry) {
             // Bounding box overlap is a necessary condition for intersection.
             if (!$routeBounds->overlaps($entry['boundingBox'])) {
                 continue;
@@ -52,7 +46,7 @@ final class RouteGeographyAnalyzer
 
         $passedCountries = [];
         foreach ($candidates as $countryCode => $polygonIndexes) {
-            $polygons = $this->polygonsFor($countryCode);
+            $polygons = $this->assets->polygonsFor($countryCode);
 
             foreach ($polygonIndexes as $polygonIndex) {
                 if (!$rings = $polygons[$polygonIndex] ?? null) {
@@ -72,45 +66,5 @@ final class RouteGeographyAnalyzer
         sort($passedCountries);
 
         return $passedCountries;
-    }
-
-    /**
-     * @return list<array{countryCode: string, polygonIndex: int, boundingBox: BoundingBox}>
-     */
-    private function index(): array
-    {
-        if (null !== $this->index) {
-            return $this->index;
-        }
-
-        /** @var list<array{countryCode: string, polygonIndex: int, boundingBox: array{float, float, float, float}}> $rawIndex */
-        $rawIndex = Json::decode($this->readAsset('index.json'));
-
-        return $this->index = array_map(
-            fn (array $entry): array => [
-                ...$entry,
-                'boundingBox' => BoundingBox::fromArray($entry['boundingBox']),
-            ],
-            $rawIndex
-        );
-    }
-
-    /**
-     * @return array<int, list<list<array{float, float}>>>
-     */
-    private function polygonsFor(string $countryCode): array
-    {
-        return Json::decode($this->readAsset($countryCode.'.json'));
-    }
-
-    private function readAsset(string $fileName): string
-    {
-        $path = $this->assetsDirectory.'/'.$fileName;
-
-        if (!is_file($path) || false === $contents = file_get_contents($path)) {
-            throw new \RuntimeException(sprintf('Country boundary asset "%s" is missing or unreadable. Rebuild it with "make build-countries-asset".', $path)); // @codeCoverageIgnore
-        }
-
-        return $contents;
     }
 }

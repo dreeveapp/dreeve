@@ -219,8 +219,8 @@ final readonly class Polyline
         $dx = $p2[1] - $x;
         $dy = $p2[0] - $y;
 
-        if (0.0 !== $dx || 0.0 !== $dy) {
-            $t = (($p[1] - $x) * $dx + ($p[0] - $y) * $dy) / ($dx * $dx + $dy * $dy);
+        if (0.0 < $squaredSegmentLength = $dx * $dx + $dy * $dy) {
+            $t = (($p[1] - $x) * $dx + ($p[0] - $y) * $dy) / $squaredSegmentLength;
 
             if ($t > 1) {
                 $x = $p2[1];

@@ -43,6 +43,7 @@ const MapToolsControl = L.Control.extend({
         padding: [24, 24],
         showFullscreen: true,
         showReset: true,
+        toggles: [],
     },
     onAdd: function (map) {
         const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control--custom no-dark');
@@ -90,6 +91,35 @@ const MapToolsControl = L.Control.extend({
                 }
             });
         }
+
+        options.toggles.forEach(function (toggle) {
+            const button = makeButton(toggle.icon, toggle.title);
+            button.setAttribute('aria-pressed', 'false');
+            let isActive = false;
+            let isBusy = false;
+
+            L.DomEvent.on(button, 'click', function (e) {
+                L.DomEvent.preventDefault(e);
+                if (isBusy) return;
+
+                isActive = !isActive;
+                isBusy = true;
+                button.classList.toggle('is-active', isActive);
+                button.classList.add('is-busy');
+                button.setAttribute('aria-pressed', String(isActive));
+
+                Promise.resolve(toggle.onToggle(isActive))
+                    .catch(function () {
+                        isActive = false;
+                        button.classList.remove('is-active');
+                        button.setAttribute('aria-pressed', 'false');
+                    })
+                    .finally(function () {
+                        isBusy = false;
+                        button.classList.remove('is-busy');
+                    });
+            });
+        });
 
         L.DomEvent.disableClickPropagation(container);
 

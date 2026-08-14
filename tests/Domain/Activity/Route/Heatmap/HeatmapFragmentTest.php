@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\Activity\Route;
+namespace App\Tests\Domain\Activity\Route\Heatmap;
 
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;

@@ -64,6 +64,11 @@ final readonly class BoundingBox implements \JsonSerializable
         return $other->minLat <= $this->maxLat;
     }
 
+    public function diagonalInDegrees(): float
+    {
+        return hypot($this->maxLng - $this->minLng, $this->maxLat - $this->minLat);
+    }
+
     public function getMinLng(): float
     {
         return $this->minLng;

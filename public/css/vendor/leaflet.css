@@ -21,6 +21,14 @@
         & a[role="button"] {
             @apply flex! items-center justify-center;
         }
+
+        & a[role="button"].is-active {
+            @apply bg-primary-soft! text-primary!;
+        }
+
+        & a[role="button"].is-busy {
+            @apply opacity-50! cursor-wait!;
+        }
     }
 
     @keyframes leaflet-ctrl-scroll-zoom-fadein {

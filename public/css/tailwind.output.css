@@ -6621,6 +6621,14 @@ table.data-table {
       align-items: center;
       justify-content: center;
     }
+    & a[role="button"].is-active {
+      background-color: var(--color-primary-soft) !important;
+      color: var(--color-primary) !important;
+    }
+    & a[role="button"].is-busy {
+      cursor: wait !important;
+      opacity: 50% !important;
+    }
   }
   @keyframes leaflet-ctrl-scroll-zoom-fadein {
     from {

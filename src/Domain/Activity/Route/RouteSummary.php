@@ -48,8 +48,16 @@ final readonly class RouteSummary
         return $this->sportTypes;
     }
 
+    /**
+     * @return string[]
+     */
+    public function getCountries(): array
+    {
+        return $this->countries;
+    }
+
     public function getNumberOfCountries(): int
     {
-        return count($this->countries);
+        return count($this->getCountries());
     }
 }

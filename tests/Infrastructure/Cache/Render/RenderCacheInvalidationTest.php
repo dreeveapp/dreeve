@@ -6,7 +6,8 @@ use App\Application\IndexPage;
 use App\Domain\Activity\BestEffort\ActivityBestEffortsFragmentResolver;
 use App\Domain\Activity\Eddington\EddingtonFragment;
 use App\Domain\Activity\Image\PhotosFragment;
-use App\Domain\Activity\Route\HeatmapFragment;
+use App\Domain\Activity\Route\Heatmap\HeatmapCountriesFragment;
+use App\Domain\Activity\Route\Heatmap\HeatmapFragment;
 use App\Domain\Challenge\ChallengesFragment;
 use App\Domain\Gear\GearStatsFragment;
 use App\Domain\Gear\Maintenance\GearMaintenanceDueFragment;
@@ -100,6 +101,12 @@ class RenderCacheInvalidationTest extends ContainerTestCase
             RootCacheTag::SETTINGS_MAPS,
         ]];
 
+        yield 'heatmap-countries' => [HeatmapCountriesFragment::class, [
+            RootCacheTag::SETTINGS_APPEARANCE,
+            RootCacheTag::SETTINGS_GENERAL,
+            RootCacheTag::ACTIVITY_ROUTE,
+        ]];
+
         yield 'milestones' => [MilestonesFragment::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
@@ -108,8 +115,6 @@ class RenderCacheInvalidationTest extends ContainerTestCase
             RootCacheTag::SETTINGS_METRICS,
         ]];
 
-        // The year scoped rewinds cannot be expressed here, they are covered by
-        // ActivityInvalidateCacheTagsListenerTest and the rewind page tests.
         yield 'rewind' => [RewindFragmentResolver::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
@@ -118,8 +123,6 @@ class RenderCacheInvalidationTest extends ContainerTestCase
             RootCacheTag::GEAR,
         ], 'rewind/all-time'];
 
-        // Only the all time side contributes unscoped tags, the 2023 side is year scoped and therefore
-        // untouched by the root tags this test invalidates.
         yield 'rewind-compare' => [RewindCompareFragmentResolver::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,

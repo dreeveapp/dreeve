@@ -53,6 +53,7 @@ class AppRequestHandlerTest extends ContainerTestCase
         yield 'an unknown page' => ['dmzdmzd', 404];
         yield 'an unknown page below a known one' => ['dashboard/dmzdmzd', 404];
         yield 'a data fragment is not a page' => ['heatmap/routes', 404];
+        yield 'the countries data fragment is not a page' => ['heatmap/countries', 404];
     }
 
     #[\Override]
