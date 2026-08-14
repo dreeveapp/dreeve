@@ -39,7 +39,7 @@ Add this alongside the `app` and `daemon` services in your
     container_name: dreeve-wahoo-connector
     restart: unless-stopped
     ports:
-      - '8085:8080'
+      - '8085:8085'
     env_file: ./.env
     volumes:
       # The same ./watch folder the app and daemon mount.
@@ -88,7 +88,7 @@ Background sync runs according to `SYNC_CRON` (or on demand via the web dashboar
 ## How sync works
 
 - **Atomic file delivery**: Files are written as temporary files (`.tmp`) and atomically renamed to `.fit` upon completion, preventing Dreeve from parsing partial files.
-- **Smart deduplication**: Workouts are queried starting from newest first. Syncing stops early when encountering already downloaded activities.
+- **Smart deduplication**: Workouts are queried starting from newest first. Syncing stops early when encountering already downloaded activities. Download history is recorded persistently (`sync_history.json`), ensuring sync remains fast and avoids re-downloads even after Dreeve processes and removes `.fit` files from the watch folder.
 - **Dynamic rate limiting**: Monitors Wahoo API `X-RateLimit-Remaining` HTTP response headers in real time to avoid `429 Too Many Requests` errors.
 
 ## Configuration
@@ -102,6 +102,10 @@ Background sync runs according to `SYNC_CRON` (or on demand via the web dashboar
 | `SYNC_CRON` | `0 2 * * *` | 5-field Cron expression for scheduled background downloads. |
 | `PORT` | `8085` | Port for the web dashboard & OAuth callback server. |
 | `DATA_DIR` | `/data` | Internal container base path for configuration and downloaded files. |
+| `STATE_DIR` | `/data/config` | Directory path to store authentication tokens and sync history. |
+| `WATCH_DIR` | `/data/downloads` | Directory path to deliver downloaded `.fit` files (Dreeve watch folder). |
+| `LOG_LEVEL` | `INFO` | Logging verbosity level (`DEBUG`, `INFO`, `WARNING`, `ERROR`). |
+| `VERIFY_FILES_ON_DISK` | `false` | If `true`, requires `.fit` files to remain on disk during deduplication checks. |
 
 > [!IMPORTANT]
 > **Important** Just like Dreeve, the `.env` file is read when the container is **created**.
