@@ -10,7 +10,6 @@ use App\Infrastructure\ValueObject\Geography\Polyline;
 
 final readonly class CountryBoundaries
 {
-
     private const float SIMPLIFY_TOLERANCE_IN_DEGREES = 0.01;
     private const float ISLET_THRESHOLD_RATIO = 0.01;
     private const int COORDINATE_PRECISION = 4;

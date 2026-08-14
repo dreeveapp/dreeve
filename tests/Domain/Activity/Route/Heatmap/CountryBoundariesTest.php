@@ -52,7 +52,7 @@ class CountryBoundariesTest extends TestCase
 
     public function testItDropsIslets(): void
     {
-        $raw = (new CountryGeographyAssets())->polygonsFor('FR');
+        $raw = new CountryGeographyAssets()->polygonsFor('FR');
         $features = $this->countryBoundaries->geoJsonFor(['fr'])['features'];
 
         $this->assertLessThan(count($raw), count($features[0]['geometry']['coordinates']));
