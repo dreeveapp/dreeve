@@ -70,10 +70,6 @@ export default class ModalManager {
                     }
                     this.router.pushCurrentRouteToHistoryState();
                 }, {once: true});
-
-                // Re-register nav items that may have been added dynamically
-                const newNavItems = this.modalSkeletonNode.querySelectorAll('a[data-router-content-url]');
-                this.router.registerNavItems(newNavItems);
             },
             onHide: () => {
                 this.modalContent.innerHTML = '';

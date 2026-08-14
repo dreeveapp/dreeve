@@ -85,10 +85,6 @@ export default class Router {
 
         this.hideLoader();
 
-        // Re-register nav items that may have been added dynamically
-        const newNavItems = document.querySelectorAll('main a[data-router-content-url]');
-        this.registerNavItems(newNavItems);
-
         const fullPageName = page
             .slice(basePath().length)
             .replace(/^\/+/, '')
@@ -97,20 +93,21 @@ export default class Router {
         eventBus.emit(Events.PAGE_LOADED, {page: fullPageName, modalId});
     }
 
-    registerNavItems(items) {
-        items.forEach(link => {
-            link.addEventListener('click', async e => {
-                e.preventDefault();
-                const route = link.getAttribute('href');
+    registerNavigation() {
+        document.addEventListener('click', async e => {
+            const link = e.target.closest?.('a[data-router-content-url]');
+            if (!link) return;
 
-                await eventBus.emitAsync(Events.NAVIGATION_CLICKED, {link});
+            e.preventDefault();
+            const route = link.getAttribute('href');
 
-                this.navigateTo(
-                    route,
-                    null,
-                    link.hasAttribute('data-router-force-reload')
-                );
-            });
+            await eventBus.emitAsync(Events.NAVIGATION_CLICKED, {link});
+
+            this.navigateTo(
+                route,
+                null,
+                link.hasAttribute('data-router-force-reload')
+            );
         });
     }
 
@@ -161,7 +158,7 @@ export default class Router {
         const route = this.currentRoute();
         const modal = location.hash.replace('#', '');
 
-        this.registerNavItems(this.menuItems);
+        this.registerNavigation();
         this.registerBrowserBackAndForth();
         this.renderContent(route, modal);
 
