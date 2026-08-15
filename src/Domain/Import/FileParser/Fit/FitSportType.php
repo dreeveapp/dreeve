@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Domain\Import\FileParser\Fit;
 
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Import\FileParser\SportTypeName;
 
 final class FitSportType
 {
+    private const int SPORT_GENERIC = 0;
     private const int SPORT_RUNNING = 1;
     private const int SPORT_CYCLING = 2;
     private const int SPORT_FITNESS_EQUIPMENT = 4;
@@ -78,9 +80,10 @@ final class FitSportType
     private const int SUB_SPORT_ENDURO = 123;
     private const int SUB_SPORT_E_BIKE_ENDURO = 127;
 
-    public static function resolve(?int $sport, ?int $subSport): ?SportType
+    public static function resolve(?int $sport, ?int $subSport, ?string $sportProfileName = null): ?SportType
     {
         return match ($sport) {
+            self::SPORT_GENERIC => self::resolveGeneric($subSport, $sportProfileName),
             self::SPORT_RUNNING => match (true) {
                 self::SUB_SPORT_TRAIL === $subSport => SportType::TRAIL_RUN,
                 in_array($subSport, [self::SUB_SPORT_TREADMILL, self::SUB_SPORT_INDOOR_RUNNING, self::SUB_SPORT_VIRTUAL_ACTIVITY], true) => SportType::VIRTUAL_RUN,
@@ -155,6 +158,28 @@ final class FitSportType
             self::SPORT_VOLLEYBALL => SportType::VOLLEYBALL,
             self::SPORT_DANCE => SportType::DANCE,
             default => null,
+        };
+    }
+
+    private static function resolveGeneric(?int $subSport, ?string $sportProfileName): SportType
+    {
+        $resolvedByName = null !== $sportProfileName ? SportTypeName::tryResolve($sportProfileName) : null;
+        if ($resolvedByName instanceof SportType) {
+            return $resolvedByName;
+        }
+
+        return match (true) {
+            in_array($subSport, [self::SUB_SPORT_TREADMILL, self::SUB_SPORT_INDOOR_RUNNING], true) => SportType::VIRTUAL_RUN,
+            in_array($subSport, [self::SUB_SPORT_INDOOR_CYCLING, self::SUB_SPORT_SPIN], true) => SportType::VIRTUAL_RIDE,
+            self::SUB_SPORT_INDOOR_ROWING === $subSport => SportType::VIRTUAL_ROW,
+            self::SUB_SPORT_ELLIPTICAL === $subSport => SportType::ELLIPTICAL,
+            self::SUB_SPORT_STAIR_CLIMBING === $subSport => SportType::STAIR_STEPPER,
+            self::SUB_SPORT_STRENGTH_TRAINING === $subSport => SportType::WEIGHT_TRAINING,
+            self::SUB_SPORT_INDOOR_WALKING === $subSport => SportType::WALK,
+            self::SUB_SPORT_YOGA === $subSport => SportType::YOGA,
+            self::SUB_SPORT_PILATES === $subSport => SportType::PILATES,
+            self::SUB_SPORT_HIIT === $subSport => SportType::HIIT,
+            default => SportType::WORKOUT,
         };
     }
 }

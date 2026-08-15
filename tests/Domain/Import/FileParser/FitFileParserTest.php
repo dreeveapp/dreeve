@@ -178,6 +178,26 @@ class FitFileParserTest extends ActivityFileParserTestCase
         $this->assertSame(SportType::TRAIL_RUN, $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))->getActivity()->getSportType());
     }
 
+    public function testParseGenericSportWithCustomProfileName(): void
+    {
+        $this->givenFitToolReturns((string) file_get_contents(__DIR__.'/fixtures/fit-document-generic-sport-profile.json'));
+
+        $this->assertSame(SportType::WORKOUT, $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))->getActivity()->getSportType());
+    }
+
+    public function testParseResolvesGenericSportFromSportProfileName(): void
+    {
+        $document = $this->minimalFitDocument(sessionFields: [
+            ['name' => 'sport', 'value' => 0], // generic
+            ['name' => 'sub_sport', 'value' => 0], // generic
+            ['name' => 'sport_profile_name', 'value' => 'Indoor Rowing'],
+            ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
+        ]);
+        $this->givenFitToolReturns(Json::encode($document));
+
+        $this->assertSame(SportType::VIRTUAL_ROW, $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))->getActivity()->getSportType());
+    }
+
     public function testParseUnsuccessfulProcessThrows(): void
     {
         $process = $this->createStub(Process::class);

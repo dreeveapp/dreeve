@@ -139,7 +139,8 @@ final readonly class FitFileParser implements ActivityFileParser
 
         $sportType = FitSportType::resolve(
             sport: $session['sport'] ?? null,
-            subSport: $session['sub_sport'] ?? null
+            subSport: $session['sub_sport'] ?? null,
+            sportProfileName: is_string($session['sport_profile_name'] ?? null) ? trim($session['sport_profile_name']) : null
         );
 
         if (!$sportType instanceof SportType) {

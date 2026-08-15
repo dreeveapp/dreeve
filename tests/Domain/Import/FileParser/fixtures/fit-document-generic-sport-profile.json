@@ -1,0 +1,62 @@
+{
+    "files": [
+        {
+            "profileVersion": 21198,
+            "messages": [
+                {
+                    "name": "file_id",
+                    "fields": [
+                        {"name": "product_name", "value": "Forerunner 735XT"}
+                    ]
+                },
+                {
+                    "name": "sport",
+                    "fields": [
+                        {"name": "name", "value": "Foil"},
+                        {"name": "sport", "value": 0},
+                        {"name": "sub_sport", "value": 0}
+                    ]
+                },
+                {
+                    "name": "session",
+                    "fields": [
+                        {"name": "sport", "value": 0},
+                        {"name": "sub_sport", "value": 0},
+                        {"name": "sport_profile_name", "value": "Foil"},
+                        {"name": "start_time", "value": 1000000000},
+                        {"name": "total_distance", "value": 523.98},
+                        {"name": "total_timer_time", "value": 4},
+                        {"name": "total_elapsed_time", "value": 4},
+                        {"name": "total_calories", "value": 4},
+                        {"name": "avg_heart_rate", "value": 164},
+                        {"name": "max_heart_rate", "value": 182}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "value": 1000000000},
+                        {"name": "distance", "value": 0.0},
+                        {"name": "heart_rate", "value": 148}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "value": 1000000001},
+                        {"name": "distance", "value": 3.55},
+                        {"name": "heart_rate", "value": 164}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "value": 1000000002},
+                        {"name": "distance", "value": 7.1},
+                        {"name": "heart_rate", "value": 182}
+                    ]
+                }
+            ]
+        }
+    ]
+}
