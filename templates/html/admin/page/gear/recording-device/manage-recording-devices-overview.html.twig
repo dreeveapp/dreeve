@@ -17,7 +17,7 @@
                     <th scope="col">
                         {{ "Purchase price"|trans }}
                     </th>
-                    <th scope="col" class="narrow">
+                    <th scope="col" class="narrow sticky-actions">
                         <span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span>
                     </th>
                 </tr>
@@ -36,7 +36,7 @@
                                 -
                             {% endif %}
                         </td>
-                        <td class="narrow whitespace-nowrap">
+                        <td class="narrow whitespace-nowrap sticky-actions">
                             <a href="{{ relativeUrl(path('admin_edit_recording_device', {id: recordingDevice.getId()})) }}"
                                class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-primary"
                                title="{{ "Edit"|trans({}, 'admin') }}">

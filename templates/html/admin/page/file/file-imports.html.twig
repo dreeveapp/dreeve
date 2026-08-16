@@ -52,14 +52,14 @@
                             <th scope="col" class="text-left">
                                 {{ "Activity"|trans }}
                             </th>
-                            <th scope="col" class="narrow">
+                            <th scope="col" class="narrow sticky-actions">
                                 <span class="sr-only">{{ "Delete"|trans({}, 'admin') }}</span>
                             </th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for fileImport in overview %}
-                            <tr class="group/row {{ fileImport.isFailed() ? 'bg-red-50/60' : '' }}">
+                            <tr class="group/row {{ fileImport.isFailed() ? 'row--failed' : '' }}">
                                 <td class="whitespace-nowrap text-left font-medium text-gray-800">
                                     <div class="flex items-center justify-start gap-2">
                                         {% if fileImport.isFailed() %}
@@ -106,7 +106,7 @@
                                         </a>
                                     {% endif %}
                                 </td>
-                                <td class="narrow whitespace-nowrap">
+                                <td class="narrow whitespace-nowrap sticky-actions">
                                     <a href="{{ relativeUrl(path('admin_delete_file_import', {fileImportId: fileImport.getFileImportId()})) }}"
                                        class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600"
                                        title="{{ "Delete"|trans({}, 'admin') }}">

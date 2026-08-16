@@ -31,7 +31,7 @@
                     <th scope="col" class="text-left">
                         {{ "Gear"|trans }}
                     </th>
-                    <th scope="col" class="narrow">
+                    <th scope="col" class="narrow sticky-actions">
                         <span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span>
                     </th>
                 </tr>
@@ -53,7 +53,7 @@
                                 {{ item.getGearName() }}
                             </span>
                         </td>
-                        <td class="narrow whitespace-nowrap">
+                        <td class="narrow whitespace-nowrap sticky-actions">
                             <div class="inline-flex items-center gap-2">
                                 <a href="{{ relativeUrl(path('admin_edit_gear_maintenance_log', {gearMaintenanceLogId: item.getGearMaintenanceLogId()})) }}"
                                    class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-primary"

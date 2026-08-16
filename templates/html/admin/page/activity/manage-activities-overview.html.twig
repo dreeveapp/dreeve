@@ -101,7 +101,7 @@
                     <th scope="col" class="narrow">
                         {{ "Images"|trans({}, 'admin') }}
                     </th>
-                    <th scope="col" class="narrow">
+                    <th scope="col" class="narrow sticky-actions">
                         <span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span>
                     </th>
                 </tr>
@@ -151,7 +151,7 @@
                         <td class="narrow whitespace-nowrap">
                             {{ activity.getTotalImageCount() }}
                         </td>
-                        <td class="narrow whitespace-nowrap">
+                        <td class="narrow whitespace-nowrap sticky-actions">
                             <div class="inline-flex items-center gap-2">
                                 <a href="{{ relativeUrl(path('admin_edit_activity', {activityId: activity.getActivityId()})) }}"
                                    class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-primary"

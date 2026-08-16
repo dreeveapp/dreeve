@@ -72,7 +72,7 @@
                         <th scope="col" class="text-left">{{ "Attached to"|trans({}, 'admin') }}</th>
                         <th scope="col">{{ "Tasks"|trans({}, 'admin') }}</th>
                         <th scope="col">{{ "Purchase price"|trans }}</th>
-                        <th scope="col" class="narrow"><span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span></th>
+                        <th scope="col" class="narrow sticky-actions"><span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -107,7 +107,7 @@
                                 {% set purchasePrice = component.getPurchasePrice() %}
                                 {{ purchasePrice ? purchasePrice|formatMoney : '-' }}
                             </td>
-                            <td class="narrow whitespace-nowrap">
+                            <td class="narrow whitespace-nowrap sticky-actions">
                                 <div class="inline-flex items-center gap-2">
                                     <a href="{{ relativeUrl(path('admin_edit_gear_maintenance_component', {gearComponentId: component.getId()})) }}" class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-primary" title="{{ "Edit"|trans({}, 'admin') }}">
                                         <span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span>
