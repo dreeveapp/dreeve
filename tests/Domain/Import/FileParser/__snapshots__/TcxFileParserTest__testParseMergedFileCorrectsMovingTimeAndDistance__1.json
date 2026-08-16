@@ -26,6 +26,7 @@
         "movingTimeInSeconds": 20,
         "elapsedTimeInSeconds": 7210,
         "deviceName": "Garmin Edge 530",
+        "connectedSensors": null,
         "totalImageCount": 0,
         "localImagePaths": "",
         "polyline": "_atqG_pihCozDozD",

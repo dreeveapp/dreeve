@@ -21,6 +21,7 @@ Activity: Activity
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Rácio Agudo:Crónico - Rácio entre ATL e CTL. Indica risco de lesão.'
 'Adaptive & Inclusive Sports': 'Desportos Adaptativos e Inclusivos'
 'Admin panel': 'Admin panel'
+'Aero sensor': 'Aero sensor'
 Afternoon: Tarde
 All: All
 'All time': 'Desde sempre'
@@ -43,9 +44,12 @@ Best: Melhor
 'Best effort': 'Best effort'
 'Best efforts': 'Melhores esforços'
 'Best efforts for {sportType}': 'Melhores esforços para {sportType}'
+'Bike light': 'Bike light'
+'Bike radar': 'Bike radar'
 'Build zone (–10)': 'Zona de carga (–10)'
 'CTL (Fitness)': 'CTL (Forma)'
 Cadence: Cadência
+'Cadence sensor': 'Cadence sensor'
 Cal.: Cal.
 Calories: Calorias
 'Calories burned': 'Calories burned'
@@ -109,6 +113,7 @@ Eddington: Eddington
 'Edit this activity': 'Edit this activity'
 'Effort vs heart rate': 'Effort vs heart rate'
 'Elapsed time': 'Elapsed time'
+'Electronic shifting': 'Electronic shifting'
 Elev: Desnível
 Elev.: Elev.
 Elevation: Elevação
@@ -134,6 +139,7 @@ Firsts: Firsts
 Fitness: Forma
 'Fitness may be declining due to low recent training load': 'Fitness may be declining due to low recent training load'
 'Fitness may decline': 'Fitness may decline'
+'Foot pod': 'Foot pod'
 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.': 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.'
 'Form (TSB)': 'Forma (TSB)'
 Fri: Sex
@@ -156,6 +162,7 @@ HIIT: HIIT
 HR: FC
 'Hand Cycle': 'Ciclismo Manual'
 'Heart rate': 'Frequência cardíaca'
+'Heart rate monitor': 'Heart rate monitor'
 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones': 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones'
 'Heart rate zones': 'Zonas de frequência cardíaca'
 Heatmap: 'Mapa de calor'
@@ -237,6 +244,7 @@ Morning: Manhã
 'Moving time': 'Tempo em movimento'
 'Moving time by sport': 'Moving time by sport'
 'Moving time in hours': 'Moving time in hours'
+'Muscle oxygen sensor': 'Muscle oxygen sensor'
 Name: Name
 Neutral: Neutral
 'New personal best for': 'New personal best for'
@@ -285,6 +293,7 @@ Pilates: Pilates
 'Polarised training (last 30 days)': 'Polarised training (last 30 days)'
 'Pool Swim': 'Pool Swim'
 Power: Potência
+'Power meter': 'Power meter'
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.'
 'Prev year': 'Ano anterior'
 Previous: Previous
@@ -335,11 +344,14 @@ Sep: Set
 Skateboard: Skate
 Skating: Patinagem
 'Slightly fresh': 'Slightly fresh'
+'Smart trainer': 'Smart trainer'
 Snowboard: Snowboard
 Snowshoe: 'Raquetes de Neve'
 Soccer: Futebol
 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.': 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.'
 Speed: Velocidade
+'Speed & cadence sensor': 'Speed & cadence sensor'
+'Speed sensor': 'Speed sensor'
 Splits: Intervalos
 'Sport variety': 'Sport variety'
 Squash: Squash
@@ -359,6 +371,7 @@ Surfing: Surf
 'Table Tennis': 'Ténis de Mesa'
 'Taper sweet-spot (+15)': 'Ponto de foco (+15)'
 'Team Sports': 'Team Sports'
+'Temperature sensor': 'Temperature sensor'
 Tennis: Ténis
 "That's 1.5 times the distance to the edge of space": "That's 1.5 times the distance to the edge of space"
 "That's 100 days of commitment, triple digits!": "That's 100 days of commitment, triple digits!"

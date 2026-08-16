@@ -6,6 +6,7 @@ use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
+use App\Domain\Gear\Sensor\ConnectedSensors;
 use App\Domain\Integration\Weather\OpenMeteo\Weather;
 use App\Domain\Zwift\CouldNotDetermineZwiftMap;
 use App\Domain\Zwift\ZwiftMap;
@@ -109,6 +110,8 @@ final class Activity
         private readonly int $elapsedTimeInSeconds,
         #[ORM\Column(type: 'string', nullable: true)]
         private readonly ?string $deviceName,
+        #[ORM\Column(type: 'json', nullable: true)]
+        private readonly ?ConnectedSensors $connectedSensors,
         #[ORM\Column(type: 'integer')]
         private readonly int $totalImageCount,
         #[ORM\Column(type: 'text', nullable: true)]
@@ -168,6 +171,7 @@ final class Activity
             movingTimeInSeconds: $rawData['moving_time'] ?? 0,
             elapsedTimeInSeconds: $rawData['elapsed_time'] ?? 0,
             deviceName: $deviceName,
+            connectedSensors: null,
             totalImageCount: $rawData['total_photo_count'] ?? 0,
             localImagePaths: [],
             polyline: $rawData['map']['summary_polyline'] ?? null,
@@ -206,6 +210,7 @@ final class Activity
         int $movingTimeInSeconds,
         int $elapsedTimeInSeconds,
         ?string $deviceName,
+        ?ConnectedSensors $connectedSensors,
         int $totalImageCount,
         array $localImagePaths,
         ?string $polyline,
@@ -239,6 +244,7 @@ final class Activity
             movingTimeInSeconds: $movingTimeInSeconds,
             elapsedTimeInSeconds: $elapsedTimeInSeconds,
             deviceName: $deviceName,
+            connectedSensors: $connectedSensors,
             totalImageCount: $totalImageCount,
             localImagePaths: $localImagePaths,
             polyline: $polyline,
@@ -283,6 +289,7 @@ final class Activity
         int $movingTimeInSeconds,
         int $elapsedTimeInSeconds,
         ?string $deviceName,
+        ?ConnectedSensors $connectedSensors,
         int $totalImageCount,
         array $localImagePaths,
         ?string $polyline,
@@ -316,6 +323,7 @@ final class Activity
             movingTimeInSeconds: $movingTimeInSeconds,
             elapsedTimeInSeconds: $elapsedTimeInSeconds,
             deviceName: $deviceName,
+            connectedSensors: $connectedSensors,
             totalImageCount: $totalImageCount,
             localImagePaths: $localImagePaths,
             polyline: $polyline,
@@ -672,6 +680,11 @@ final class Activity
         return $this->recordUpdate(clone ($this, [
             'deviceName' => $deviceName,
         ]));
+    }
+
+    public function getConnectedSensors(): ?ConnectedSensors
+    {
+        return $this->connectedSensors;
     }
 
     public function getDeviceId(): RecordingDeviceId

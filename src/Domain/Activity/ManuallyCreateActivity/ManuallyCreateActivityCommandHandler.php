@@ -71,6 +71,7 @@ final readonly class ManuallyCreateActivityCommandHandler implements CommandHand
             movingTimeInSeconds: $durationInSeconds,
             elapsedTimeInSeconds: $durationInSeconds,
             deviceName: null,
+            connectedSensors: null,
             totalImageCount: 0,
             localImagePaths: [],
             polyline: null,

@@ -21,6 +21,7 @@ Activity: Tevékenység
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Akut:Krónikus arány – az ATL és CTL aránya. Sérülésveszélyt jelöl.'
 'Adaptive & Inclusive Sports': 'Adaptív és inkluzív sportok'
 'Admin panel': 'Admin panel'
+'Aero sensor': 'Aero sensor'
 Afternoon: Délután
 All: Mind
 'All time': Összesített
@@ -43,9 +44,12 @@ Best: Legjobb
 'Best effort': 'Legjobb teljesítmény'
 'Best efforts': 'Legjobb teljesítmények'
 'Best efforts for {sportType}': 'Legjobb teljesítmények ({sportType})'
+'Bike light': 'Bike light'
+'Bike radar': 'Bike radar'
 'Build zone (–10)': 'Építési zóna (–10)'
 'CTL (Fitness)': 'CTL (Fitnesz)'
 Cadence: Kadencia
+'Cadence sensor': 'Cadence sensor'
 Cal.: Cal.
 Calories: Kalória
 'Calories burned': 'Elégetett kalória'
@@ -109,6 +113,7 @@ Eddington: Eddington
 'Edit this activity': 'Edit this activity'
 'Effort vs heart rate': 'Erőfeszítés vs pulzus'
 'Elapsed time': 'Elapsed time'
+'Electronic shifting': 'Electronic shifting'
 Elev: Szintek
 Elev.: Elev.
 Elevation: Szintemelkedés
@@ -134,6 +139,7 @@ Firsts: Elsők
 Fitness: Fitnesz
 'Fitness may be declining due to low recent training load': 'A fitnesz csökkenhet az alacsony közelmúltbeli edzésterhelés miatt'
 'Fitness may decline': 'A fitnesz csökkenhet'
+'Foot pod': 'Foot pod'
 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.': 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.'
 'Form (TSB)': 'Forma (TSB)'
 Fri: P
@@ -156,6 +162,7 @@ HIIT: HIIT
 HR: Pulzus
 'Hand Cycle': Kézikerékpár
 'Heart rate': Pulzus
+'Heart rate monitor': 'Heart rate monitor'
 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones': 'Az elmúlt havi pulzuszóna eloszlás. A hatékony polarizált edzéshez az edzéseidnek elsősorban a következő zónákba kell esniük'
 'Heart rate zones': Pulzuszónák
 Heatmap: Hőtérkép
@@ -237,6 +244,7 @@ Morning: Reggel
 'Moving time': 'Mozgásban töltött idő'
 'Moving time by sport': 'Moving time by sport'
 'Moving time in hours': 'Moving time in hours'
+'Muscle oxygen sensor': 'Muscle oxygen sensor'
 Name: Név
 Neutral: Semleges
 'New personal best for': 'Új személyes rekord:'
@@ -285,6 +293,7 @@ Pilates: Pilates
 'Polarised training (last 30 days)': 'Polarizált edzés (utolsó 30 nap)'
 'Pool Swim': 'Pool Swim'
 Power: Teljesítmény
+'Power meter': 'Power meter'
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Ezt becsült {caloriesBurned} kalória hajtotta, ami nagyjából {numberOfPizzaSlices} szelet pizza.'
 'Prev year': 'Előző év'
 Previous: Előző
@@ -335,11 +344,14 @@ Sep: Szept
 Skateboard: Gördeszkázás
 Skating: Korcsolyázás
 'Slightly fresh': 'Kissé friss'
+'Smart trainer': 'Smart trainer'
 Snowboard: Snowboard
 Snowshoe: Hótalp
 Soccer: Labdarúgás
 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.': 'Aki rendszeresen 90 percet edz, magasabb pontszámot ér el, mint aki főleg rövid edzéseket végez.'
 Speed: Sebesség
+'Speed & cadence sensor': 'Speed & cadence sensor'
+'Speed sensor': 'Speed sensor'
 Splits: Részidők
 'Sport variety': Sporttípus-változatosság
 Squash: Squash
@@ -359,6 +371,7 @@ Surfing: Szörfözés
 'Table Tennis': Asztalitenisz
 'Taper sweet-spot (+15)': 'Taper édes pont (+15)'
 'Team Sports': Csapatsportok
+'Temperature sensor': 'Temperature sensor'
 Tennis: Tenisz
 "That's 1.5 times the distance to the edge of space": 'Ez 1,5-szere az űr határáig terjedő távolságnak'
 "That's 100 days of commitment, triple digits!": 'Ez 100 nap elkötelezettség, háromjegyű!'

@@ -139,6 +139,7 @@ final readonly class GpxFileParser implements ActivityFileParser
             movingTimeInSeconds: $movingTimeInSeconds,
             elapsedTimeInSeconds: $elapsedTimeInSeconds,
             deviceName: $deviceName,
+            connectedSensors: null,
             totalImageCount: 0,
             localImagePaths: [],
             polyline: StreamMath::encodePolyline($streams),

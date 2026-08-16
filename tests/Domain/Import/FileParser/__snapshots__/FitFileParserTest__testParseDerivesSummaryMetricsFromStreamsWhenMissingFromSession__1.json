@@ -26,6 +26,7 @@
         "movingTimeInSeconds": 10,
         "elapsedTimeInSeconds": 12,
         "deviceName": "Edge 530",
+        "connectedSensors": null,
         "totalImageCount": 0,
         "localImagePaths": "",
         "polyline": null,

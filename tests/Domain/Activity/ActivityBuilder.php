@@ -13,6 +13,7 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Activity\WorldType;
 use App\Domain\Gear\GearId;
+use App\Domain\Gear\Sensor\ConnectedSensors;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
@@ -45,6 +46,7 @@ final class ActivityBuilder
     private int $elapsedTimeInSeconds = 10;
     private int $totalImageCount = 0;
     private ?string $deviceName = null;
+    private ?ConnectedSensors $connectedSensors = null;
     /** @var array<string> */
     private array $localImagePaths = [];
     private ?string $polyline = null;
@@ -106,6 +108,7 @@ final class ActivityBuilder
             movingTimeInSeconds: $this->movingTimeInSeconds,
             elapsedTimeInSeconds: $this->elapsedTimeInSeconds,
             deviceName: $this->deviceName,
+            connectedSensors: $this->connectedSensors,
             totalImageCount: $this->totalImageCount,
             localImagePaths: $this->localImagePaths,
             polyline: $this->polyline,
@@ -143,6 +146,7 @@ final class ActivityBuilder
             movingTimeInSeconds: $this->movingTimeInSeconds,
             elapsedTimeInSeconds: $this->elapsedTimeInSeconds,
             deviceName: $this->deviceName,
+            connectedSensors: $this->connectedSensors,
             totalImageCount: $this->totalImageCount,
             localImagePaths: $this->localImagePaths,
             polyline: $this->polyline,
@@ -248,6 +252,20 @@ final class ActivityBuilder
     public function withoutDeviceName(): self
     {
         $this->deviceName = null;
+
+        return $this;
+    }
+
+    public function withConnectedSensors(ConnectedSensors $connectedSensors): self
+    {
+        $this->connectedSensors = $connectedSensors;
+
+        return $this;
+    }
+
+    public function withoutConnectedSensors(): self
+    {
+        $this->connectedSensors = null;
 
         return $this;
     }

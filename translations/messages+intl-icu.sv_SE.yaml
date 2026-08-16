@@ -21,6 +21,7 @@ Activity: Aktivitet
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Akut:Kronisk Ratio - Ratio av ATL till CTL. Indikerar skaderisk.'
 'Adaptive & Inclusive Sports': 'Adaptiva & Inkluderande Sporter'
 'Admin panel': 'Admin panel'
+'Aero sensor': 'Aero sensor'
 Afternoon: Eftermiddag
 All: Alla
 'All time': 'Från start'
@@ -43,9 +44,12 @@ Best: Bästa
 'Best effort': 'Bästa resultatet'
 'Best efforts': 'Bästa Insatser'
 'Best efforts for {sportType}': 'Bästa resultaten för {sportType}'
+'Bike light': 'Bike light'
+'Bike radar': 'Bike radar'
 'Build zone (–10)': 'Utvecklingsfas (–10)'
 'CTL (Fitness)': 'CTL (Träningsform)'
 Cadence: Kadens
+'Cadence sensor': 'Cadence sensor'
 Cal.: Cal.
 Calories: Kalorier
 'Calories burned': 'Brända kalorier'
@@ -109,6 +113,7 @@ Eddington: Eddington
 'Edit this activity': 'Edit this activity'
 'Effort vs heart rate': 'Effort vs heart rate'
 'Elapsed time': 'Elapsed time'
+'Electronic shifting': 'Electronic shifting'
 Elev: Höjd
 Elev.: Elev.
 Elevation: Höjdmeter
@@ -134,6 +139,7 @@ Firsts: Firsts
 Fitness: Träning
 'Fitness may be declining due to low recent training load': 'Fitness may be declining due to low recent training load'
 'Fitness may decline': 'Fitness may decline'
+'Foot pod': 'Foot pod'
 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.': 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.'
 'Form (TSB)': 'Träningsform (TSB)'
 Fri: Fre
@@ -156,6 +162,7 @@ HIIT: HIIT
 HR: Puls
 'Hand Cycle': Handcykel
 'Heart rate': Puls
+'Heart rate monitor': 'Heart rate monitor'
 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones': 'Pulszonfördelning under den senaste månaden. För effektiv polariserad träning bör dina träningspass huvudsakligen falla inom följande zoner'
 'Heart rate zones': Pulszoner
 Heatmap: Färgkarta
@@ -237,6 +244,7 @@ Morning: Morgon
 'Moving time': 'Tid i rörelse'
 'Moving time by sport': 'Moving time by sport'
 'Moving time in hours': 'Moving time in hours'
+'Muscle oxygen sensor': 'Muscle oxygen sensor'
 Name: Namn
 Neutral: Neutral
 'New personal best for': 'New personal best for'
@@ -285,6 +293,7 @@ Pilates: Pilates
 'Polarised training (last 30 days)': 'Polariserad träning (senaste 30 dagarna)'
 'Pool Swim': 'Pool Swim'
 Power: Effekt
+'Power meter': 'Power meter'
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.'
 'Prev year': 'Tidigare år'
 Previous: Previous
@@ -335,11 +344,14 @@ Sep: Sep
 Skateboard: Skateboard
 Skating: Skridskoåkning
 'Slightly fresh': 'Slightly fresh'
+'Smart trainer': 'Smart trainer'
 Snowboard: Snowboard
 Snowshoe: Snöskor
 Soccer: Fotboll
 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.': 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.'
 Speed: Fart
+'Speed & cadence sensor': 'Speed & cadence sensor'
+'Speed sensor': 'Speed sensor'
 Splits: Delar
 'Sport variety': 'Sport variety'
 Squash: Squash
@@ -359,6 +371,7 @@ Surfing: Surfning
 'Table Tennis': Bordtennis
 'Taper sweet-spot (+15)': 'Ideal träningsform (+15)'
 'Team Sports': 'Team Sports'
+'Temperature sensor': 'Temperature sensor'
 Tennis: Tennis
 "That's 1.5 times the distance to the edge of space": "That's 1.5 times the distance to the edge of space"
 "That's 100 days of commitment, triple digits!": "That's 100 days of commitment, triple digits!"

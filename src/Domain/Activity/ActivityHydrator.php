@@ -7,6 +7,7 @@ namespace App\Domain\Activity;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
+use App\Domain\Gear\Sensor\ConnectedSensors;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Serialization\Json;
@@ -27,8 +28,8 @@ final readonly class ActivityHydrator
         'startingCoordinateLatitude', 'startingCoordinateLongitude', 'calories', 'kilojoules',
         'averagePower', 'maxPower', 'averageSpeed', 'maxSpeed', 'averageHeartRate', 'maxHeartRate',
         'averageCadence', 'movingTimeInSeconds', 'elapsedTimeInSeconds', 'deviceName',
-        'totalImageCount', 'localImagePaths', 'polyline', 'routeGeography', 'weather', 'gearId',
-        'isCommute', 'workoutType',
+        'connectedSensors', 'totalImageCount', 'localImagePaths', 'polyline', 'routeGeography',
+        'weather', 'gearId', 'isCommute', 'workoutType',
     ];
 
     public static function columns(?string $alias = null): string
@@ -78,6 +79,9 @@ final readonly class ActivityHydrator
             movingTimeInSeconds: $result['movingTimeInSeconds'] ?: 0,
             elapsedTimeInSeconds: $result['elapsedTimeInSeconds'] ?: 0,
             deviceName: $result['deviceName'],
+            connectedSensors: null !== ($result['connectedSensors'] ?? null)
+                ? ConnectedSensors::fromArray(Json::decode($result['connectedSensors']))
+                : null,
             totalImageCount: $result['totalImageCount'] ?: 0,
             localImagePaths: $result['localImagePaths'] ? explode(',', (string) $result['localImagePaths']) : [],
             polyline: $result['polyline'],

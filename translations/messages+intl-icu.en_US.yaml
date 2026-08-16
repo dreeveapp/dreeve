@@ -21,6 +21,7 @@ Activity: Activity
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.'
 'Adaptive & Inclusive Sports': 'Adaptive & Inclusive Sports'
 'Admin panel': 'Admin panel'
+'Aero sensor': 'Aero sensor'
 Afternoon: Afternoon
 All: All
 'All time': 'All time'
@@ -43,9 +44,12 @@ Best: Best
 'Best effort': 'Best effort'
 'Best efforts': 'Best efforts'
 'Best efforts for {sportType}': 'Best efforts for {sportType}'
+'Bike light': 'Bike light'
+'Bike radar': 'Bike radar'
 'Build zone (–10)': 'Build zone (–10)'
 'CTL (Fitness)': 'CTL (Fitness)'
 Cadence: Cadence
+'Cadence sensor': 'Cadence sensor'
 Cal.: Cal.
 Calories: Calories
 'Calories burned': 'Calories burned'
@@ -109,6 +113,7 @@ Eddington: Eddington
 'Edit this activity': 'Edit this activity'
 'Effort vs heart rate': 'Effort vs heart rate'
 'Elapsed time': 'Elapsed time'
+'Electronic shifting': 'Electronic shifting'
 Elev: Elev
 Elev.: Elev.
 Elevation: Elevation
@@ -134,6 +139,7 @@ Firsts: Firsts
 Fitness: Fitness
 'Fitness may be declining due to low recent training load': 'Fitness may be declining due to low recent training load'
 'Fitness may decline': 'Fitness may decline'
+'Foot pod': 'Foot pod'
 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.': 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.'
 'Form (TSB)': 'Form (TSB)'
 Fri: Fri
@@ -156,6 +162,7 @@ HIIT: HIIT
 HR: HR
 'Hand Cycle': 'Hand Cycle'
 'Heart rate': 'Heart rate'
+'Heart rate monitor': 'Heart rate monitor'
 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones': 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones'
 'Heart rate zones': 'Heart rate zones'
 Heatmap: Heatmap
@@ -237,6 +244,7 @@ Morning: Morning
 'Moving time': 'Moving time'
 'Moving time by sport': 'Moving time by sport'
 'Moving time in hours': 'Moving time in hours'
+'Muscle oxygen sensor': 'Muscle oxygen sensor'
 Name: Name
 Neutral: Neutral
 'New personal best for': 'New personal best for'
@@ -285,6 +293,7 @@ Pilates: Pilates
 'Polarised training (last 30 days)': 'Polarised training (last 30 days)'
 'Pool Swim': 'Pool Swim'
 Power: Power
+'Power meter': 'Power meter'
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.'
 'Prev year': 'Prev year'
 Previous: Previous
@@ -335,11 +344,14 @@ Sep: Sep
 Skateboard: Skateboard
 Skating: Skating
 'Slightly fresh': 'Slightly fresh'
+'Smart trainer': 'Smart trainer'
 Snowboard: Snowboard
 Snowshoe: Snowshoe
 Soccer: Soccer
 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.': 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.'
 Speed: Speed
+'Speed & cadence sensor': 'Speed & cadence sensor'
+'Speed sensor': 'Speed sensor'
 Splits: Splits
 'Sport variety': 'Sport variety'
 Squash: Squash
@@ -359,6 +371,7 @@ Surfing: Surfing
 'Table Tennis': 'Table Tennis'
 'Taper sweet-spot (+15)': 'Taper sweet-spot (+15)'
 'Team Sports': 'Team Sports'
+'Temperature sensor': 'Temperature sensor'
 Tennis: Tennis
 "That's 1.5 times the distance to the edge of space": "That's 1.5 times the distance to the edge of space"
 "That's 100 days of commitment, triple digits!": "That's 100 days of commitment, triple digits!"

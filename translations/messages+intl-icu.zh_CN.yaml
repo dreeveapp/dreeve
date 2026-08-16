@@ -21,6 +21,7 @@ Activity: 活动
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': '短期/长期疲劳比率 – ATL与CTL的比值。表示受伤风险。'
 'Adaptive & Inclusive Sports': 适应性和包容性运动
 'Admin panel': 'Admin panel'
+'Aero sensor': 'Aero sensor'
 Afternoon: 下午
 All: All
 'All time': 所有时间
@@ -43,9 +44,12 @@ Best: 最佳
 'Best effort': 最佳努力
 'Best efforts': 最佳努力
 'Best efforts for {sportType}': '{sportType}最佳努力'
+'Bike light': 'Bike light'
+'Bike radar': 'Bike radar'
 'Build zone (–10)': '构建区 (–10)'
 'CTL (Fitness)': 'CTL (体能)'
 Cadence: 踏频
+'Cadence sensor': 'Cadence sensor'
 Cal.: Cal.
 Calories: 卡路里
 'Calories burned': 燃烧的卡路里
@@ -109,6 +113,7 @@ Eddington: 愛丁頓數
 'Edit this activity': 'Edit this activity'
 'Effort vs heart rate': 'Effort vs heart rate'
 'Elapsed time': 'Elapsed time'
+'Electronic shifting': 'Electronic shifting'
 Elev: 海拔
 Elev.: Elev.
 Elevation: 海拔高度
@@ -134,6 +139,7 @@ Firsts: Firsts
 Fitness: 健身
 'Fitness may be declining due to low recent training load': 'Fitness may be declining due to low recent training load'
 'Fitness may decline': 'Fitness may decline'
+'Foot pod': 'Foot pod'
 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.': 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.'
 'Form (TSB)': '状态 (TSB)'
 Fri: 周五
@@ -156,6 +162,7 @@ HIIT: 高强度间歇训练
 HR: 心率
 'Hand Cycle': 手动自行车
 'Heart rate': 心率
+'Heart rate monitor': 'Heart rate monitor'
 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones': 过去一个月的心率区间分布。为了进行有效的极化训练，您的训练应主要在以下区间内进行。
 'Heart rate zones': 心率区间
 Heatmap: 热图
@@ -237,6 +244,7 @@ Morning: 早晨
 'Moving time': 移动时间
 'Moving time by sport': 'Moving time by sport'
 'Moving time in hours': 'Moving time in hours'
+'Muscle oxygen sensor': 'Muscle oxygen sensor'
 Name: 名称
 Neutral: Neutral
 'New personal best for': 'New personal best for'
@@ -285,6 +293,7 @@ Pilates: 普拉提
 'Polarised training (last 30 days)': 极化训练（过去30天）
 'Pool Swim': 'Pool Swim'
 Power: 功率
+'Power meter': 'Power meter'
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': '消耗了约{caloriesBurned}卡路里，或大约{numberOfPizzaSlices}片披萨🍕。'
 'Prev year': 去年
 Previous: Previous
@@ -335,11 +344,14 @@ Sep: 九月
 Skateboard: 滑板
 Skating: 滑冰
 'Slightly fresh': 'Slightly fresh'
+'Smart trainer': 'Smart trainer'
 Snowboard: 单板滑雪
 Snowshoe: 雪鞋
 Soccer: 足球
 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.': 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.'
 Speed: 速度
+'Speed & cadence sensor': 'Speed & cadence sensor'
+'Speed sensor': 'Speed sensor'
 Splits: 分段
 'Sport variety': 'Sport variety'
 Squash: 壁球
@@ -359,6 +371,7 @@ Surfing: 冲浪
 'Table Tennis': 乒乓球
 'Taper sweet-spot (+15)': '最佳减量期 (+15)'
 'Team Sports': 'Team Sports'
+'Temperature sensor': 'Temperature sensor'
 Tennis: 网球
 "That's 1.5 times the distance to the edge of space": "That's 1.5 times the distance to the edge of space"
 "That's 100 days of commitment, triple digits!": "That's 100 days of commitment, triple digits!"

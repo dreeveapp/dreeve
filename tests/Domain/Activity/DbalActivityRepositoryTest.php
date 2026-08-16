@@ -11,6 +11,9 @@ use App\Domain\Activity\DbalActivityRepository;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
+use App\Domain\Gear\Sensor\ConnectedSensor;
+use App\Domain\Gear\Sensor\ConnectedSensors;
+use App\Domain\Gear\Sensor\SensorType;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\Length\Kilometer;
@@ -22,6 +25,7 @@ use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class DbalActivityRepositoryTest extends ContainerTestCase
 {
@@ -121,6 +125,29 @@ class DbalActivityRepositoryTest extends ContainerTestCase
             $activityWithRawData,
             $persisted,
         );
+    }
+
+    #[DataProvider('provideConnectedSensors')]
+    public function testAddAndFindPreservesTheDifferenceBetweenUnknownAndNoSensors(?ConnectedSensors $connectedSensors): void
+    {
+        $builder = ActivityBuilder::fromDefaults();
+        $activity = ($connectedSensors instanceof ConnectedSensors ? $builder->withConnectedSensors($connectedSensors) : $builder)->build();
+
+        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+
+        $this->assertEquals(
+            $connectedSensors,
+            $this->activityRepository->find($activity->getId())->getConnectedSensors()
+        );
+    }
+
+    public static function provideConnectedSensors(): iterable
+    {
+        yield 'unknown' => [null];
+        yield 'known, but none connected' => [ConnectedSensors::empty()];
+        yield 'known' => [ConnectedSensors::fromSensors(
+            ConnectedSensor::create(1, 3592, 3485049140, 'Garmin Varia', SensorType::BIKE_RADAR, SensorType::BIKE_LIGHT),
+        )];
     }
 
     public function testAddAndFindWithRawDataFromRawData(): void

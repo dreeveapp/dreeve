@@ -26,6 +26,7 @@
         "movingTimeInSeconds": 7,
         "elapsedTimeInSeconds": 7,
         "deviceName": "HUAWEI WATCH GT 3",
+        "connectedSensors": null,
         "totalImageCount": 0,
         "localImagePaths": "",
         "polyline": "gaiiGsd|V_A?",

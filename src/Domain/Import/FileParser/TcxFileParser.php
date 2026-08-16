@@ -126,6 +126,7 @@ final readonly class TcxFileParser implements ActivityFileParser
             movingTimeInSeconds: (int) $activityLaps->sum(static fn (ActivityLap $lap): int => $lap->getMovingTimeInSeconds()),
             elapsedTimeInSeconds: (int) $activityLaps->sum(static fn (ActivityLap $lap): int => $lap->getElapsedTimeInSeconds()),
             deviceName: $deviceName,
+            connectedSensors: null,
             totalImageCount: 0,
             localImagePaths: [],
             polyline: StreamMath::encodePolyline($streams),

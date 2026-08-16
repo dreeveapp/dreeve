@@ -21,6 +21,7 @@ Activity: Atividade
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Razão Aguda:Crônica - Razão entre ATL e CTL. Indica risco de lesão.'
 'Adaptive & Inclusive Sports': 'Esportes Adaptados e Inclusivos'
 'Admin panel': 'Painel de administração'
+'Aero sensor': 'Aero sensor'
 Afternoon: Tarde
 All: Todos
 'All time': 'Desde sempre'
@@ -43,9 +44,12 @@ Best: Melhor
 'Best effort': 'Melhor esforço'
 'Best efforts': 'Melhores Esforços'
 'Best efforts for {sportType}': 'Melhores esforços para {sportType}'
+'Bike light': 'Bike light'
+'Bike radar': 'Bike radar'
 'Build zone (–10)': 'Zona de construção (–10)'
 'CTL (Fitness)': 'CTL (Condicionamento)'
 Cadence: Cadência
+'Cadence sensor': 'Cadence sensor'
 Cal.: Cal.
 Calories: Calorias
 'Calories burned': 'Calorias queimadas'
@@ -109,6 +113,7 @@ Eddington: Eddington
 'Edit this activity': 'Edit this activity'
 'Effort vs heart rate': 'Esforço vs frequência cardíaca'
 'Elapsed time': 'Tempo decorrido'
+'Electronic shifting': 'Electronic shifting'
 Elev: Desnível
 Elev.: Elev.
 Elevation: Elevação
@@ -134,6 +139,7 @@ Firsts: Primeiros
 Fitness: Condicionamento
 'Fitness may be declining due to low recent training load': 'O condicionamento pode estar diminuindo devido à baixa carga de treino recente'
 'Fitness may decline': 'O condicionamento pode diminuir'
+'Foot pod': 'Foot pod'
 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.': 'Por exemplo, um número de Eddington de 70 implicaria que um ciclista pedalou pelo menos 70 km ou milhas em um dia em pelo menos 70 ocasiões. Alcançar um número de Eddington alto é difícil, já que passar, digamos, de 70 para 75 exigirá (provavelmente) mais de cinco novos treinos de longa distância, pois qualquer treino inferior a 75 km ou milhas não será mais incluído na contagem.'
 'Form (TSB)': 'Forma (TSB)'
 Fri: Sex
@@ -156,6 +162,7 @@ HIIT: HIIT
 HR: FC
 'Hand Cycle': 'Ciclismo Manual'
 'Heart rate': 'Frequência cardíaca'
+'Heart rate monitor': 'Heart rate monitor'
 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones': 'Distribuição da zona de frequência cardíaca no último mês. Para um treinamento polarizado eficaz, seus treinos devem cair principalmente nas seguintes zonas'
 'Heart rate zones': 'Zonas de frequência cardíaca'
 Heatmap: 'Mapa de calor'
@@ -237,6 +244,7 @@ Morning: Manhã
 'Moving time': 'Tempo em movimento'
 'Moving time by sport': 'Tempo em movimento por esporte'
 'Moving time in hours': 'Tempo em movimento em horas'
+'Muscle oxygen sensor': 'Muscle oxygen sensor'
 Name: Nome
 Neutral: Neutro
 'New personal best for': 'Novo recorde pessoal para'
@@ -285,6 +293,7 @@ Pilates: Pilates
 'Polarised training (last 30 days)': 'Treinamento polarizado (últimos 30 dias)'
 'Pool Swim': 'Pool Swim'
 Power: Potência
+'Power meter': 'Power meter'
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Alimentado por cerca de {caloriesBurned} calorias estimadas, ou aproximadamente {numberOfPizzaSlices} fatias de pizza 🍕.'
 'Prev year': 'Ano anterior'
 Previous: Anterior
@@ -335,11 +344,14 @@ Sep: Set
 Skateboard: Skate
 Skating: Patinação
 'Slightly fresh': 'Levemente descansado'
+'Smart trainer': 'Smart trainer'
 Snowboard: Snowboard
 Snowshoe: 'Raquetes de Neve'
 Soccer: Futebol
 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.': 'Alguém que treina regularmente por 90 minutos pontuará mais do que alguém que faz principalmente sessões curtas.'
 Speed: Velocidade
+'Speed & cadence sensor': 'Speed & cadence sensor'
+'Speed sensor': 'Speed sensor'
 Splits: Parciais
 'Sport variety': 'Variedade de esporte'
 Squash: Squash
@@ -359,6 +371,7 @@ Surfing: Surf
 'Table Tennis': 'Tênis de Mesa'
 'Taper sweet-spot (+15)': 'Ponto ideal de polimento (+15)'
 'Team Sports': 'Esportes Coletivos'
+'Temperature sensor': 'Temperature sensor'
 Tennis: Tênis
 "That's 1.5 times the distance to the edge of space": 'Isso é 1,5 vezes a distância até o limite do espaço'
 "That's 100 days of commitment, triple digits!": 'São 100 dias de compromisso, três dígitos!'

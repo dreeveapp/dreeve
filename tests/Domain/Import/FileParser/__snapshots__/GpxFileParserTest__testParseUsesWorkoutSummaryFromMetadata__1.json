@@ -26,6 +26,7 @@
         "movingTimeInSeconds": 3513,
         "elapsedTimeInSeconds": 3623,
         "deviceName": "FitoTrack",
+        "connectedSensors": null,
         "totalImageCount": 0,
         "localImagePaths": "",
         "polyline": "_}gvH_tqUkHkH",
