@@ -10,6 +10,7 @@ use App\Domain\Integration\AI\Chat\ChatCommands;
 use App\Domain\Integration\AI\HuggingFace;
 use App\Domain\Integration\AI\InvalidAIConfiguration;
 use App\Domain\Integration\Notification\Shoutrrr\ConfiguredNotificationUrls;
+use App\Infrastructure\ValueObject\String\Url;
 use NeuronAI\Providers\AIProviderInterface;
 use NeuronAI\Providers\Anthropic\Anthropic;
 use NeuronAI\Providers\Deepseek\Deepseek;
@@ -64,6 +65,10 @@ final readonly class IntegrationsSettings
                 if (empty($config[$key])) {
                     throw new InvalidAIConfiguration(sprintf('%s cannot be empty', ucfirst($key)));
                 }
+            }
+
+            if ('ollama' === $providerName) {
+                Url::fromString($config['url']);
             }
         }
 
@@ -143,7 +148,7 @@ final readonly class IntegrationsSettings
                 model: $this->aiConfig['configuration']['model'],
             ),
             'ollama' => new Ollama(
-                url: (string) $apiKey,
+                url: $this->aiConfig['configuration']['url'],
                 model: $this->aiConfig['configuration']['model'],
             ),
             'openAI' => new OpenAI(

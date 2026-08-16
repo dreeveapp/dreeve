@@ -116,6 +116,37 @@ class IntegrationsSettingsTest extends TestCase
         );
     }
 
+    public function testItGuardsAValidOllamaUrl(): void
+    {
+        $this->expectExceptionObject(new \InvalidArgumentException('Invalid url "dreeve-ollama:11434/api"'));
+
+        IntegrationsSettings::fromArray(['ai' => [
+            'enabled' => true,
+            'provider' => 'ollama',
+            'configuration' => [
+                'url' => 'dreeve-ollama:11434/api',
+                'model' => 'model',
+            ],
+        ]]);
+    }
+
+    public function testGetAIProviderUsesTheConfiguredOllamaUrl(): void
+    {
+        $settings = IntegrationsSettings::fromArray(['ai' => [
+            'enabled' => true,
+            'provider' => 'ollama',
+            'configuration' => [
+                'url' => 'http://dreeve-ollama:11434/api',
+                'model' => 'model',
+            ],
+        ]]);
+
+        $this->assertEquals(
+            new Ollama('http://dreeve-ollama:11434/api', 'model'),
+            $settings->getAIProvider()
+        );
+    }
+
     public function testItBuildsChatCommands(): void
     {
         $settings = IntegrationsSettings::fromArray([
@@ -240,11 +271,11 @@ class IntegrationsSettingsTest extends TestCase
             [
                 'provider' => 'ollama',
                 'configuration' => [
-                    'url' => 'url',
+                    'url' => 'http://dreeve-ollama:11434/api',
                     'model' => 'model',
                 ],
             ],
-            new Ollama('key', 'model'),
+            new Ollama('http://dreeve-ollama:11434/api', 'model'),
         ];
 
         yield 'openAI' => [

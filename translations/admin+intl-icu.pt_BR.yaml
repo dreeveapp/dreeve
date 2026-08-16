@@ -240,9 +240,6 @@ Monday: Monday
 'Number of new activities to process per import': 'Número de novas atividades para processar por importação'
 'Number of tasks to display': 'Number of tasks to display'
 'Number of widgets of this type you already have configured.': 'Número de widgets deste tipo que você já configurou.'
-'Only required for the Azure OpenAI provider.': 'Necessário apenas para o provedor Azure OpenAI.'
-'Only required for the Ollama provider.': 'Necessário apenas para o provedor Ollama.'
-'Only required for the OpenAI-like provider.': 'Necessário apenas para o provedor compatível com OpenAI.'
 "Oops, looks like you've wandered off the map! 🗺️": "Oops, looks like you've wandered off the map! 🗺️"
 Operator: Operator
 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'YAML opcional para zonas específicas por intervalo de datas e tipo de esporte. Deixe vazio a menos que saiba que precisa.'

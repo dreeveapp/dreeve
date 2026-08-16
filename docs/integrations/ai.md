@@ -52,7 +52,11 @@ Next, download the model you want to use. For example, to run `llama3.2`:
 > docker compose exec ollama ollama pull llama3.2
 ```
 
-Finally, enable the integration, choose the `ollama` provider, and set the model to the one you pulled.
+Finally, enable the integration, choose the `ollama` provider, and set:
+
+* **Model**: the model you pulled, e.g. `llama3.2`.
+* **URL**: the Ollama API root, e.g. `http://dreeve-ollama:11434/api`. Use the container name when Ollama
+  runs in the same Docker network as Dreeve. The URL must include the scheme and end with `/api`.
 
 > [!IMPORTANT]
 > **Important** Make sure you're running the latest version of Ollama. Streaming responses with tooling has been <a href="https://ollama.com/blog/streaming-tool">added on May 28, 2025.</a>

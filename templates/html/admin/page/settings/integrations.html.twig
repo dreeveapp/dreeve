@@ -64,23 +64,19 @@
                         </div>
                         <div data-dependent-on="aiProvider" data-visible-when="ollama">
                             <label for="aiUrl">{{ "URL"|trans({}, 'admin') }}</label>
-                            <input type="text" id="aiUrl" name="data[ai][configuration][url]" value="{{ aiConfiguration.url ?? '' }}">
-                            <p class="description">{{ "Only required for the Ollama provider."|trans({}, 'admin') }}</p>
+                            <input type="text" id="aiUrl" name="data[ai][configuration][url]" value="{{ aiConfiguration.url ?? '' }}" placeholder="http://dreeve-ollama:11434/api">
                         </div>
                         <div data-dependent-on="aiProvider" data-visible-when="openAILike">
                             <label for="aiBaseUri">{{ "Base URI"|trans({}, 'admin') }}</label>
                             <input type="text" id="aiBaseUri" name="data[ai][configuration][baseUri]" value="{{ aiConfiguration.baseUri ?? '' }}">
-                            <p class="description">{{ "Only required for the OpenAI-like provider."|trans({}, 'admin') }}</p>
                         </div>
                         <div data-dependent-on="aiProvider" data-visible-when="azureOpenAI">
                             <label for="aiEndpoint">{{ "Endpoint"|trans({}, 'admin') }}</label>
                             <input type="text" id="aiEndpoint" name="data[ai][configuration][endpoint]" value="{{ aiConfiguration.endpoint ?? '' }}">
-                            <p class="description">{{ "Only required for the Azure OpenAI provider."|trans({}, 'admin') }}</p>
                         </div>
                         <div data-dependent-on="aiProvider" data-visible-when="azureOpenAI">
                             <label for="aiVersion">{{ "Version"|trans({}, 'admin') }}</label>
                             <input type="text" id="aiVersion" name="data[ai][configuration][version]" value="{{ aiConfiguration.version ?? '' }}">
-                            <p class="description">{{ "Only required for the Azure OpenAI provider."|trans({}, 'admin') }}</p>
                         </div>
                     </div>
                 </div>
