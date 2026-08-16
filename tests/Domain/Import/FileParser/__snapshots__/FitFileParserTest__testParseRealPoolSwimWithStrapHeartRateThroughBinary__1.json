@@ -26,7 +26,7 @@
         "movingTimeInSeconds": 1362,
         "elapsedTimeInSeconds": 1385,
         "deviceName": "Garmin fenix 8 Solar",
-        "connectedSensors": null,
+        "connectedSensors": "[{\"manufacturer\":1,\"product\":3300,\"serialNumber\":3337768824,\"name\":\"Garmin HRM-Pro\",\"sensorTypes\":[\"heartRateMonitor\",\"footPod\"]}]",
         "totalImageCount": 0,
         "localImagePaths": "",
         "polyline": null,

@@ -26,7 +26,7 @@
         "movingTimeInSeconds": 10,
         "elapsedTimeInSeconds": 12,
         "deviceName": "Edge 530",
-        "connectedSensors": null,
+        "connectedSensors": "[{\"manufacturer\":1,\"product\":3592,\"serialNumber\":3485049140,\"name\":\"Garmin\",\"sensorTypes\":[\"bikeRadar\",\"bikeLight\"]},{\"manufacturer\":1,\"product\":3578,\"serialNumber\":3485828557,\"name\":\"Garmin Rally 200\",\"sensorTypes\":[\"powerMeter\"]},{\"manufacturer\":123,\"product\":3,\"serialNumber\":550082112,\"name\":\"Polar Electro\",\"sensorTypes\":[\"heartRateMonitor\"]}]",
         "totalImageCount": 0,
         "localImagePaths": "",
         "polyline": "_atqG_pihC",

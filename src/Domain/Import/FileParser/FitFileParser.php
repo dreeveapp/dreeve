@@ -17,6 +17,9 @@ use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\WorldType;
+use App\Domain\Gear\Sensor\ConnectedSensor;
+use App\Domain\Gear\Sensor\ConnectedSensors;
+use App\Domain\Import\FileParser\Fit\FitDeviceType;
 use App\Domain\Import\FileParser\Fit\FitManufacturer;
 use App\Domain\Import\FileParser\Fit\FitProduct;
 use App\Domain\Import\FileParser\Fit\FitSportType;
@@ -72,6 +75,8 @@ final readonly class FitFileParser implements ActivityFileParser
         $lapMessages = [];
         /** @var list<array<string, mixed>> $hrMessages */
         $hrMessages = [];
+        /** @var list<array<string, mixed>> $deviceInfoMessages */
+        $deviceInfoMessages = [];
         /** @var array<string, mixed>|null $session */
         $session = null;
         /** @var array<string, mixed>|null $workout */
@@ -98,6 +103,9 @@ final readonly class FitFileParser implements ActivityFileParser
                     break;
                 case 'hr':
                     $hrMessages[] = $fields;
+                    break;
+                case 'device_info':
+                    $deviceInfoMessages[] = $fields;
                     break;
                 case 'session':
                     $session ??= $fields;
@@ -195,7 +203,7 @@ final readonly class FitFileParser implements ActivityFileParser
             movingTimeInSeconds: is_numeric($session['total_timer_time'] ?? null) ? (int) round((float) $session['total_timer_time']) : 0,
             elapsedTimeInSeconds: is_numeric($session['total_elapsed_time'] ?? null) ? (int) round((float) $session['total_elapsed_time']) : 0,
             deviceName: $deviceName,
-            connectedSensors: null,
+            connectedSensors: $this->resolveConnectedSensors($deviceInfoMessages),
             totalImageCount: 0,
             localImagePaths: [],
             polyline: StreamMath::encodePolyline($streamMap),
@@ -259,6 +267,76 @@ final readonly class FitFileParser implements ActivityFileParser
         }
 
         return $laps;
+    }
+
+    /**
+     * @param list<array<string, mixed>> $deviceInfoMessages
+     */
+    private function resolveConnectedSensors(array $deviceInfoMessages): ?ConnectedSensors
+    {
+        if ([] === $deviceInfoMessages) {
+            return null;
+        }
+
+        return ConnectedSensors::fromSensors(...array_filter(array_map(
+            $this->toConnectedSensor(...),
+            $this->mergeDeviceInfoByDeviceIndex($deviceInfoMessages),
+        )));
+    }
+
+    /**
+     * @param array<string, mixed> $fields
+     */
+    private function toConnectedSensor(array $fields): ?ConnectedSensor
+    {
+        if (!($sensorType = FitDeviceType::resolveSensorType($fields)) instanceof \App\Domain\Gear\Sensor\SensorType) {
+            return null;
+        }
+        if (null === $manufacturer = $this->toInt($fields['manufacturer'] ?? null)) {
+            // Without a manufacturer there is nothing stable to identify the sensor by.
+            return null;
+        }
+
+        $product = $this->toInt($fields['product'] ?? null);
+
+        return ConnectedSensor::create(
+            $manufacturer,
+            $product,
+            $this->toInt($fields['serial_number'] ?? null),
+            (null !== $product ? FitProduct::name($manufacturer, $product) : null) ?? FitManufacturer::name($manufacturer),
+            $sensorType,
+        );
+    }
+
+    /**
+     * @param list<array<string, mixed>> $deviceInfoMessages
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function mergeDeviceInfoByDeviceIndex(array $deviceInfoMessages): array
+    {
+        $merged = [];
+
+        foreach ($deviceInfoMessages as $position => $fields) {
+            // A message without a device index cannot be tied to any other, so it is
+            // kept on its own instead of being folded into a shared bucket.
+            $deviceIndex = $this->toInt($fields['device_index'] ?? null);
+            $key = null !== $deviceIndex ? 'index-'.$deviceIndex : 'unindexed-'.$position;
+
+            foreach ($fields as $field => $value) {
+                if (null === $value) {
+                    continue;
+                }
+                $merged[$key][$field] ??= $value;
+            }
+        }
+
+        return array_values($merged);
+    }
+
+    private function toInt(mixed $value): ?int
+    {
+        return is_numeric($value) ? (int) round((float) $value) : null;
     }
 
     /**
