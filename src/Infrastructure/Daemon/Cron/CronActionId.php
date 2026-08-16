@@ -57,7 +57,9 @@ enum CronActionId: string implements TranslatableWithDescription
     public function defaultCronExpression(): string
     {
         return match ($this) {
-            self::RUN_STRAVA_IMPORT => '0 2 * * *',
+            // Deliberately not on the hour: open-meteo has a recurring outage window at 01:00 UTC,
+            // which whole-hour European timezones hit at 02:00 local time for part of the year.
+            self::RUN_STRAVA_IMPORT => '30 2 * * *',
             self::GEAR_MAINTENANCE_NOTIFICATION, self::APP_UPDATE_AVAILABLE_NOTIFICATION => '0 4 * * *',
         };
     }

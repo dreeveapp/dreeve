@@ -30,7 +30,7 @@ class CronActionIdTest extends TestCase
 
     public static function provideDefaultCronExpressions(): iterable
     {
-        yield [CronActionId::RUN_STRAVA_IMPORT, '0 2 * * *'];
+        yield [CronActionId::RUN_STRAVA_IMPORT, '30 2 * * *'];
         yield [CronActionId::GEAR_MAINTENANCE_NOTIFICATION, '0 4 * * *'];
         yield [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, '0 4 * * *'];
     }

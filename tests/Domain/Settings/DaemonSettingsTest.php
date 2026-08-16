@@ -67,7 +67,7 @@ class DaemonSettingsTest extends TestCase
 
         $actions = iterator_to_array($settings->getConfiguredCronActions());
         $this->assertCount(1, $actions);
-        $this->assertSame('0 2 * * *', (string) $actions[0]->getExpression());
+        $this->assertSame('30 2 * * *', (string) $actions[0]->getExpression());
     }
 
     public function testItThrowsForAnInvalidCronExpression(): void
