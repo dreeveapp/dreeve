@@ -67,6 +67,7 @@ Apply: Anwenden
 'Automation rules': Automatisierungsregeln
 'Automation rules are only available in file import mode': 'Automatisierungsregeln sind nur im Dateiimportmodus verfügbar.'
 'Available tokens': 'Verfügbare Tokens'
+'Average cadence': 'Average cadence'
 'Average power': 'Ø Leistung'
 'Back to app': 'Zurück zur App'
 'Back to the admin panel': 'Back to the admin panel'
@@ -95,6 +96,7 @@ Configure: Konfigurieren
 'Configure {widget}': '{widget} konfigurieren'
 'Configured via an environment variable and cannot be changed here.': 'Wird über eine Umgebungsvariable konfiguriert und kann hier nicht geändert werden.'
 'Configured via environment variables and cannot be changed here.': 'Wird über Umgebungsvariablen konfiguriert und kann hier nicht geändert werden.'
+'Connected sensors': 'Connected sensors'
 'Continues to next rule': 'Continues to next rule'
 'Cron expression': Cron-Ausdruck
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron-Ausdruck, der angibt, wann die Aktion ausgeführt werden soll, z. B. führt '0 14 * * *' sie jeden Tag um 14:00 Uhr aus. Siehe crontab.guru für Hilfe."
@@ -124,6 +126,7 @@ Edit: Bearbeiten
 'Edit gear': 'Ausrüstung bearbeiten'
 'Edit maintenance log': 'Wartungsprotokoll bearbeiten'
 'Edit recording device': 'Aufzeichnungsgerät bearbeiten'
+Elevation: Elevation
 'Enable AI integration': 'KI-Integration aktivieren'
 'Enable Strava webhooks': 'Strava webhooks aktivieren'
 Enabled: Aktiviert
@@ -308,15 +311,19 @@ Seconds: Sekunden
 'Select all': 'Alle auswählen'
 'Select at least one activity.': 'Select at least one activity.'
 'Select at least one rule.': 'Select at least one rule.'
+'Select at least one sensor.': 'Select at least one sensor.'
 'Select at least one sport type.': 'Wähle mindestens eine Sportart aus.'
 'Select at least one weekday.': 'Wähle mindestens einen Wochentag.'
 'Select device...': 'Gerät auswählen...'
 'Select gear...': 'Ausrüstung auswählen...'
+'Select sensors': 'Select sensors'
 'Select sport types': 'Sportarten auswählen'
 'Select the serviced gear…': 'Gewartete Ausrüstung auswählen…'
 'Sends a notification after every successful import.': 'Sends a notification after every successful import.'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sendet eine Benachrichtigung, wenn eine neue App-Version verfügbar ist. Erfordert einen konfigurierten Benachrichtigungsdienst.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sendet eine Benachrichtigung, wenn eine Ausrüstungswartung fällig ist. Erfordert einen konfigurierten Benachrichtigungsdienst.'
+Sensors: Sensors
+'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.'
 'Set description': 'Beschreibung festlegen'
 'Set name': 'Name festlegen'
 'Set recording device': 'Aufzeichnungsgerät festlegen'

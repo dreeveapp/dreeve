@@ -13,6 +13,7 @@ use App\Domain\Automation\DeleteAutomationRule\DeleteAutomationRule;
 use App\Domain\Automation\UpdateAutomationRule\UpdateAutomationRule;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
+use App\Domain\Gear\Sensor\SensorRepository;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -30,6 +31,7 @@ final readonly class ManageAutomationRuleFormRequestHandler
         private Actions $actions,
         private GearRepository $gearRepository,
         private RecordingDeviceRepository $recordingDeviceRepository,
+        private SensorRepository $sensorRepository,
         private ImportMode $importMode,
     ) {
     }
@@ -47,6 +49,7 @@ final readonly class ManageAutomationRuleFormRequestHandler
             'actions' => $this->actions->all(),
             'gears' => $this->gearRepository->findAll(),
             'recordingDevices' => $this->recordingDeviceRepository->findAll(),
+            'sensorTypes' => $this->sensorRepository->findAll()->getSensorTypes(),
         ]));
     }
 
@@ -64,6 +67,7 @@ final readonly class ManageAutomationRuleFormRequestHandler
             'actions' => $this->actions->all(),
             'gears' => $this->gearRepository->findAll(),
             'recordingDevices' => $this->recordingDeviceRepository->findAll(),
+            'sensorTypes' => $this->sensorRepository->findAll()->getSensorTypes(),
         ]));
     }
 

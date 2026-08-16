@@ -67,6 +67,7 @@ Apply: Apply
 'Automation rules': 'Automation rules'
 'Automation rules are only available in file import mode': 'Automation rules are only available in file import mode'
 'Available tokens': 'Available tokens'
+'Average cadence': 'Average cadence'
 'Average power': 'Average power'
 'Back to app': 'Back to app'
 'Back to the admin panel': 'Back to the admin panel'
@@ -95,6 +96,7 @@ Configure: Configure
 'Configure {widget}': 'Configure {widget}'
 'Configured via an environment variable and cannot be changed here.': 'Configured via an environment variable and cannot be changed here.'
 'Configured via environment variables and cannot be changed here.': 'Configured via environment variables and cannot be changed here.'
+'Connected sensors': 'Connected sensors'
 'Continues to next rule': 'Continues to next rule'
 'Cron expression': 'Cron expression'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."
@@ -124,6 +126,7 @@ Edit: Edit
 'Edit gear': 'Edit gear'
 'Edit maintenance log': 'Edit maintenance log'
 'Edit recording device': 'Edit recording device'
+Elevation: Elevation
 'Enable AI integration': 'Enable AI integration'
 'Enable Strava webhooks': 'Enable Strava webhooks'
 Enabled: Enabled
@@ -308,15 +311,19 @@ Seconds: Seconds
 'Select all': 'Select all'
 'Select at least one activity.': 'Select at least one activity.'
 'Select at least one rule.': 'Select at least one rule.'
+'Select at least one sensor.': 'Select at least one sensor.'
 'Select at least one sport type.': 'Select at least one sport type.'
 'Select at least one weekday.': 'Select at least one weekday.'
 'Select device...': 'Select device...'
 'Select gear...': 'Select gear...'
+'Select sensors': 'Select sensors'
 'Select sport types': 'Select sport types'
 'Select the serviced gear…': 'Select the serviced gear…'
 'Sends a notification after every successful import.': 'Sends a notification after every successful import.'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sends a notification when a new app version is available. Requires a configured notification service.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sends a notification when gear maintenance is due. Requires a configured notification service.'
+Sensors: Sensors
+'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.'
 'Set description': 'Set description'
 'Set name': 'Set name'
 'Set recording device': 'Set recording device'

@@ -1,0 +1,21 @@
+<div>
+    <label class="mt-0! text-xs">{{ "Operator"|trans({}, 'admin') }}</label>
+    <select name="{{ namePrefix }}[operator]" data-repeater-field="config.operator" class="mt-0">
+        {% for operator in enum('App\\Domain\\Automation\\Condition\\MatchOperator').cases()|filter(o => o.isForSet()) %}
+            <option value="{{ operator.value }}">{{ operator|trans }}</option>
+        {% endfor %}
+    </select>
+</div>
+<div class="mt-2">
+    <label class="mt-0! text-xs">{{ "Sensors"|trans({}, 'admin') }}</label>
+    {% include 'html/admin/component/checkbox-multiselect.html.twig' with {
+        name: namePrefix ~ '[sensorTypes][]',
+        options: sensorTypes|map(sensorType => {'value': sensorType.value, 'label': sensorType|trans}),
+        placeholder: "Select sensors"|trans({}, 'admin'),
+        requiredMessage: "Select at least one sensor."|trans({}, 'admin'),
+        repeaterField: 'config.sensorTypes',
+    } only %}
+    <p class="mt-1 text-xs text-gray-500">
+        {{ "Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition."|trans({}, 'admin') }}
+    </p>
+</div>

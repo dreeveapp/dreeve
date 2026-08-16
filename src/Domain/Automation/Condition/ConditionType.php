@@ -8,9 +8,12 @@ enum ConditionType: string
 {
     case NAME = 'name';
     case DEVICE = 'device';
+    case CONNECTED_SENSORS = 'connectedSensors';
     case SPORT_TYPE = 'sportType';
     case DISTANCE = 'distance';
+    case ELEVATION = 'elevation';
     case AVERAGE_POWER = 'averagePower';
+    case AVERAGE_CADENCE = 'averageCadence';
     case WEEKDAY = 'weekday';
     case TIME_OF_DAY = 'timeOfDay';
     case STARTS_NEAR = 'startsNear';

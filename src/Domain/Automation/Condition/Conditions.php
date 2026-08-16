@@ -39,7 +39,10 @@ final class Conditions
      */
     public function all(): array
     {
-        $conditions = $this->conditions;
+        $conditions = array_filter(
+            $this->conditions,
+            static fn (Condition $condition): bool => !$condition instanceof ConditionallyAvailable || $condition->isAvailable(),
+        );
         uasort($conditions, static fn (Condition $a, Condition $b): int => $a->getPriority() <=> $b->getPriority());
 
         return $conditions;

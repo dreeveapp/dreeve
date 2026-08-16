@@ -290,7 +290,6 @@ final readonly class FitFileParser implements ActivityFileParser
             return null;
         }
         if (null === $manufacturer = $this->toInt($fields['manufacturer'] ?? null)) {
-            // Without a manufacturer there is nothing stable to identify the sensor by.
             return null;
         }
 
@@ -315,8 +314,6 @@ final readonly class FitFileParser implements ActivityFileParser
         $merged = [];
 
         foreach ($deviceInfoMessages as $position => $fields) {
-            // A message without a device index cannot be tied to any other, so it is
-            // kept on its own instead of being folded into a shared bucket.
             $deviceIndex = $this->toInt($fields['device_index'] ?? null);
             $key = null !== $deviceIndex ? 'index-'.$deviceIndex : 'unindexed-'.$position;
 

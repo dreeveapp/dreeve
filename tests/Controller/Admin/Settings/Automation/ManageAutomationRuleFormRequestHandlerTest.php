@@ -14,6 +14,9 @@ use App\Domain\Automation\Condition\ConditionType;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredCondition;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredConditions;
 use App\Domain\Automation\RuleConfiguration;
+use App\Domain\Gear\Sensor\ConnectedSensor;
+use App\Domain\Gear\Sensor\ConnectedSensors;
+use App\Domain\Gear\Sensor\SensorType;
 use App\Domain\Import\ImportMode;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -97,7 +100,10 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->assertContains('name', $conditionOptions);
         $this->assertContains('device', $conditionOptions);
         $this->assertContains('averagePower', $conditionOptions);
+        $this->assertContains('averageCadence', $conditionOptions);
+        $this->assertContains('elevation', $conditionOptions);
         $this->assertContains('passesNear', $conditionOptions);
+        $this->assertNotContains('connectedSensors', $conditionOptions);
         $actionOptions = $crawler->filter('select[name="actions[__index__][type]"] option')->extract(['value']);
         $this->assertContains('assignGear', $actionOptions);
         $this->assertContains('setDescription', $actionOptions);
@@ -142,6 +148,35 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame(
             ['Garmin Edge 530'],
             $crawler->filter('[data-combobox-option]')->extract(['data-combobox-option'])
+        );
+    }
+
+    public function testItOnlyOffersTheSensorsTheAthleteActuallyOwns(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withConnectedSensors(ConnectedSensors::fromSensors(
+                    ConnectedSensor::create(1, 3592, 3485049140, 'Garmin Varia', SensorType::BIKE_RADAR, SensorType::BIKE_LIGHT),
+                ))
+                ->build(),
+            []
+        ));
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/settings/automation-rules/add');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertContains(
+            'connectedSensors',
+            $crawler->filter('select[name="conditions[__index__][type]"] option')->extract(['value'])
+        );
+        $this->assertSame(
+            ['bikeRadar', 'bikeLight'],
+            $crawler->filter('input[name="conditions[__index__][config][sensorTypes][]"]')->extract(['value'])
         );
     }
 
