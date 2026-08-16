@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace App\Domain\Import\FileParser;
 
 use App\Domain\Activity\Activity;
-use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIdFactory;
 use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\Lap\ActivityLap;
-use App\Domain\Activity\Lap\ActivityLapIdFactory;
-use App\Domain\Activity\Lap\ActivityLaps;
 use App\Domain\Activity\Math;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
@@ -36,7 +33,7 @@ final readonly class GpxFileParser implements ActivityFileParser
 
     public function __construct(
         private ActivityIdFactory $activityIdFactory,
-        private ActivityLapIdFactory $activityLapIdFactory,
+        private ActivityLapsMapper $activityLapsMapper,
         private ActivityStreamsMapper $activityStreamsMapper,
         private ?SerializableTimezone $timezone,
     ) {
@@ -89,7 +86,7 @@ final readonly class GpxFileParser implements ActivityFileParser
         $velocities = array_filter($streams[StreamType::VELOCITY->value], static fn (mixed $v): bool => null !== $v);
         $activityId = $this->activityIdFactory->random();
         $startDateTime = SerializableDateTime::fromTimestamp($startTimestamp)->toTimezone($this->timezone ?? SerializableTimezone::UTC());
-        $activityLaps = $this->buildActivityLaps($laps, $activityId);
+        $activityLaps = $this->activityLapsMapper->map($laps, $activityId);
 
         $distanceInMeter = $workoutSummary?->getDistanceInMeter()
             ?? $activityLaps->sum(static fn (ActivityLap $lap): float => $lap->getDistance()->toFloat());
@@ -158,7 +155,7 @@ final readonly class GpxFileParser implements ActivityFileParser
     }
 
     /**
-     * @return array{list<array<string, mixed>>, array<string, list<mixed>>, ?int}
+     * @return array{list<ParsedActivityLap>, array<string, list<mixed>>, ?int}
      */
     private function parseTracksAndStreams(\SimpleXMLElement $xml): array
     {
@@ -328,60 +325,28 @@ final readonly class GpxFileParser implements ActivityFileParser
     }
 
     /**
-     * @param list<array<string, mixed>> $rawLaps
-     */
-    private function buildActivityLaps(array $rawLaps, ActivityId $activityId): ActivityLaps
-    {
-        $averageSpeeds = array_map(static fn (array $lap): float => (float) ($lap['average_speed'] ?? 0.0), $rawLaps);
-        $minAverageSpeed = MetersPerSecond::from([] !== $averageSpeeds ? min($averageSpeeds) : 0.0);
-        $maxAverageSpeed = MetersPerSecond::from([] !== $averageSpeeds ? max($averageSpeeds) : 0.0);
-
-        $laps = ActivityLaps::empty();
-        foreach ($rawLaps as $lap) {
-            $laps->add(ActivityLap::create(
-                lapId: $this->activityLapIdFactory->random(),
-                activityId: $activityId,
-                lapNumber: (int) $lap['lap_index'],
-                name: (string) $lap['name'],
-                elapsedTimeInSeconds: (int) $lap['elapsed_time'],
-                movingTimeInSeconds: (int) $lap['moving_time'],
-                distance: Meter::from((float) $lap['distance']),
-                averageSpeed: MetersPerSecond::from((float) $lap['average_speed']),
-                minAverageSpeed: $minAverageSpeed,
-                maxAverageSpeed: $maxAverageSpeed,
-                maxSpeed: MetersPerSecond::from((float) $lap['max_speed']),
-                elevationDifference: Meter::from((float) ($lap['total_elevation_gain'] ?? 0)),
-                averageHeartRate: empty($lap['average_heartrate']) ? null : (int) round((float) $lap['average_heartrate']),
-            ));
-        }
-
-        return $laps;
-    }
-
-    /**
      * @param list<int>   $times
      * @param list<float> $speeds
      * @param list<int>   $heartRates
-     *
-     * @return array<string, mixed>
      */
-    private function buildLap(int $index, array $times, float $distance, array $speeds, array $heartRates, float $elevationGain, int $activeSeconds): array
+    private function buildLap(int $index, array $times, float $distance, array $speeds, array $heartRates, float $elevationGain, int $activeSeconds): ParsedActivityLap
     {
         $elapsed = [] !== $times ? max($times) - min($times) : 0;
         // Elapsed time keeps the segment's full duration. Moving time is capped at the active time.
         $movingTime = min($elapsed, $activeSeconds);
+        $averageHeartRate = [] !== $heartRates ? array_sum($heartRates) / count($heartRates) : null;
 
-        return [
-            'lap_index' => $index + 1,
-            'name' => sprintf('Lap %d', $index + 1),
-            'elapsed_time' => $elapsed,
-            'moving_time' => $movingTime,
-            'distance' => $distance,
-            'average_speed' => $movingTime > 0 ? $distance / $movingTime : 0.0,
-            'max_speed' => [] !== $speeds ? max($speeds) : 0.0,
-            'total_elevation_gain' => $elevationGain,
-            'average_heartrate' => [] !== $heartRates ? array_sum($heartRates) / count($heartRates) : null,
-        ];
+        return ParsedActivityLap::create(
+            lapNumber: $index + 1,
+            name: sprintf('Lap %d', $index + 1),
+            elapsedTimeInSeconds: $elapsed,
+            movingTimeInSeconds: $movingTime,
+            distance: Meter::from($distance),
+            averageSpeed: MetersPerSecond::from($movingTime > 0 ? $distance / $movingTime : 0.0),
+            maxSpeed: MetersPerSecond::from([] !== $speeds ? max($speeds) : 0.0),
+            elevationDifference: Meter::from($elevationGain),
+            averageHeartRate: empty($averageHeartRate) ? null : (int) round($averageHeartRate),
+        );
     }
 
     private function stringChild(\SimpleXMLElement $parent, string $child): ?string

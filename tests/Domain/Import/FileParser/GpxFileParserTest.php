@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Import\FileParser;
 
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Import\FileParser\ActivityLapsMapper;
 use App\Domain\Import\FileParser\ActivityStreamsMapper;
 use App\Domain\Import\FileParser\CouldNotParseActivityFile;
 use App\Domain\Import\FileParser\GpxFileParser;
@@ -121,7 +122,7 @@ class GpxFileParserTest extends ActivityFileParserTestCase
 
         $this->parser = new GpxFileParser(
             new IncrementingActivityIdFactory(),
-            new IncrementingActivityLapIdFactory(),
+            new ActivityLapsMapper(new IncrementingActivityLapIdFactory()),
             new ActivityStreamsMapper(PausedClock::fromString('2023-10-17 16:15:04')),
             SerializableTimezone::UTC(),
         );

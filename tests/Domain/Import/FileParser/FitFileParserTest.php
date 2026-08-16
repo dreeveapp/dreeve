@@ -6,6 +6,7 @@ namespace App\Tests\Domain\Import\FileParser;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Import\FileParser\ActivityLapsMapper;
 use App\Domain\Import\FileParser\ActivityStreamsMapper;
 use App\Domain\Import\FileParser\CouldNotParseActivityFile;
 use App\Domain\Import\FileParser\FitFileParser;
@@ -81,7 +82,7 @@ class FitFileParserTest extends ActivityFileParserTestCase
     {
         $parser = new FitFileParser(
             new IncrementingActivityIdFactory(),
-            new IncrementingActivityLapIdFactory(),
+            new ActivityLapsMapper(new IncrementingActivityLapIdFactory()),
             new SymfonyProcessFactory(),
             new ActivityStreamsMapper(PausedClock::fromString('2023-10-17 16:15:04')),
             SerializableTimezone::UTC(),
@@ -96,7 +97,7 @@ class FitFileParserTest extends ActivityFileParserTestCase
     {
         $parser = new FitFileParser(
             new IncrementingActivityIdFactory(),
-            new IncrementingActivityLapIdFactory(),
+            new ActivityLapsMapper(new IncrementingActivityLapIdFactory()),
             new SymfonyProcessFactory(),
             new ActivityStreamsMapper(PausedClock::fromString('2023-10-17 16:15:04')),
             SerializableTimezone::UTC(),
@@ -262,7 +263,7 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
         $this->parser = new FitFileParser(
             new IncrementingActivityIdFactory(),
-            new IncrementingActivityLapIdFactory(),
+            new ActivityLapsMapper(new IncrementingActivityLapIdFactory()),
             $this->processFactory = $this->createStub(ProcessFactory::class),
             new ActivityStreamsMapper(PausedClock::fromString('2023-10-17 16:15:04')),
             SerializableTimezone::UTC(),
