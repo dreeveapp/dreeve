@@ -1,3 +1,29 @@
+# [v5.2.2](https://github.com/dreeveapp/dreeve/releases/tag/v5.2.2) - 2026-08-16
+
+## New features
+* On the activity detail page, similar activities are displayed based on route geometry
+* New dashboard widget for upcoming maintenance
+* Allow to toggle visited countries overlay on the heatmap
+
+## Improvements
+* Show zone distribution trend on the training load dashboard widget
+
+## Bug fixes
+* Ollama provider ignored the configured URL in the admin panel
+
+## Technical details
+* ISSUE #2387: Similar activities by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2500
+* ISSUE #2428: Dashboard Card for upcoming Maintenance by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2501
+* ISSUE #2497: Show zone distribution trend on the Training Load widget by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2502
+* docs(wahoo-connector): update configuration options, port mapping, an… by @MattW2 in https://github.com/dreeveapp/dreeve/pull/2504
+* ISSUE #2505: Async loaded content is not routed through router.js by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2506
+* ISSUE #2507: Allow to toggle visited countries overlay on the heatmap by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2508
+* ISSUE #2510: Add support for sportType 0 in FIT file parser by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2512
+* ISSUE #2515: Adjust daemon's runStravaImportAndBuildApp Cron to avoid open-meteo API downtime by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2516
+* ISSUE #2513: Ollama provider ignored the configured URL by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2517
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.2.1...v5.2.2
+
 # [v5.2.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.2.1) - 2026-08-13
 
 > [!NOTE]
