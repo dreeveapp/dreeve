@@ -10,7 +10,6 @@ use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Gear\Sensor\ConnectedSensor;
 use App\Domain\Gear\Sensor\ConnectedSensors;
 use App\Domain\Gear\Sensor\Sensor;
-use App\Domain\Gear\Sensor\SensorId;
 use App\Domain\Gear\Sensor\SensorRepository;
 use App\Domain\Gear\Sensor\Sensors;
 use App\Domain\Gear\Sensor\SensorType;
@@ -68,7 +67,7 @@ class ConnectedSensorsConditionTest extends TestCase
 
     public function testItMatchesIsNoneOfWhenTheActivityIsKnownToHaveHadNoSensors(): void
     {
-        $activity = ActivityBuilder::fromDefaults()->withConnectedSensors(ConnectedSensors::empty())->build();
+        $activity = ActivityBuilder::fromDefaults()->withConnectedSensors(ConnectedSensors::fromSensors())->build();
 
         $this->assertTrue($this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'isNoneOf', 'sensorTypes' => ['powerMeter']])));
         $this->assertFalse($this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sensorTypes' => ['powerMeter']])));
@@ -78,7 +77,7 @@ class ConnectedSensorsConditionTest extends TestCase
     {
         $this->assertFalse($this->conditionFor(Sensors::empty())->isAvailable());
         $this->assertTrue($this->conditionFor(Sensors::fromArray([
-            Sensor::fromState(SensorId::fromUnprefixed('1-1'), 'Garmin Varia', [SensorType::BIKE_RADAR], 3),
+            Sensor::fromState('Garmin Varia', [SensorType::BIKE_RADAR], 3),
         ]))->isAvailable());
     }
 

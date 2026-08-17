@@ -19,10 +19,15 @@ class ConnectedSensorsTest extends TestCase
             ConnectedSensor::create(1, 3592, 3485049140, null, SensorType::BIKE_RADAR),
         );
 
-        $this->assertCount(1, $connectedSensors);
         $this->assertSame(
-            [SensorType::BIKE_RADAR, SensorType::BIKE_LIGHT],
-            $connectedSensors->getSensorTypes()
+            [[
+                'manufacturer' => 1,
+                'product' => 3592,
+                'serialNumber' => 3485049140,
+                'name' => null,
+                'sensorTypes' => ['bikeRadar', 'bikeLight'],
+            ]],
+            $connectedSensors->jsonSerialize()
         );
     }
 
@@ -33,7 +38,10 @@ class ConnectedSensorsTest extends TestCase
             ConnectedSensor::create(123, 3, 550082112, null, SensorType::HEART_RATE_MONITOR),
         );
 
-        $this->assertCount(2, $connectedSensors);
+        $this->assertSame(
+            ['Garmin Rally 200', null],
+            array_map(static fn (ConnectedSensor $sensor): ?string => $sensor->getName(), iterator_to_array($connectedSensors))
+        );
     }
 
     public function testItFillsInFieldsMissingFromOneOfTheMergedRows(): void
@@ -43,9 +51,16 @@ class ConnectedSensorsTest extends TestCase
             ConnectedSensor::create(1, 3592, 3485049140, 'Garmin Varia', SensorType::BIKE_RADAR),
         );
 
-        $sensor = iterator_to_array($connectedSensors)[0];
-        $this->assertSame(3592, $sensor->getProduct());
-        $this->assertSame('Garmin Varia', $sensor->getName());
+        $this->assertSame(
+            [[
+                'manufacturer' => 1,
+                'product' => 3592,
+                'serialNumber' => 3485049140,
+                'name' => 'Garmin Varia',
+                'sensorTypes' => ['bikeRadar', 'bikeLight'],
+            ]],
+            $connectedSensors->jsonSerialize()
+        );
     }
 
     public function testHasAnyOf(): void
@@ -59,10 +74,10 @@ class ConnectedSensorsTest extends TestCase
         $this->assertFalse($connectedSensors->hasAnyOf(SensorType::HEART_RATE_MONITOR));
     }
 
-    public function testAnEmptySetNeverHasAnySensor(): void
+    public function testASetWithoutSensorsNeverHasAnyOfThem(): void
     {
-        $this->assertTrue(ConnectedSensors::empty()->isEmpty());
-        $this->assertFalse(ConnectedSensors::empty()->hasAnyOf(SensorType::POWER_METER));
+        $this->assertSame([], ConnectedSensors::fromSensors()->jsonSerialize());
+        $this->assertFalse(ConnectedSensors::fromSensors()->hasAnyOf(SensorType::POWER_METER));
     }
 
     public function testItRoundTripsThroughJson(): void
@@ -78,22 +93,6 @@ class ConnectedSensorsTest extends TestCase
         );
     }
 
-    public function testItSerializesToTheStoredShape(): void
-    {
-        $this->assertSame(
-            [[
-                'manufacturer' => 123,
-                'product' => 3,
-                'serialNumber' => 550082112,
-                'name' => null,
-                'sensorTypes' => ['heartRateMonitor'],
-            ]],
-            ConnectedSensors::fromSensors(
-                ConnectedSensor::create(123, 3, 550082112, null, SensorType::HEART_RATE_MONITOR),
-            )->jsonSerialize()
-        );
-    }
-
     public function testItDropsSensorTypesItNoLongerKnows(): void
     {
         $connectedSensors = ConnectedSensors::fromArray([
@@ -101,14 +100,12 @@ class ConnectedSensorsTest extends TestCase
             ['manufacturer' => 1, 'product' => 1, 'serialNumber' => 2, 'name' => null, 'sensorTypes' => ['onlyRemovedOnes']],
         ]);
 
-        $this->assertCount(1, $connectedSensors);
-        $this->assertSame([SensorType::POWER_METER], $connectedSensors->getSensorTypes());
+        $this->assertTrue($connectedSensors->hasAnyOf(SensorType::POWER_METER));
+        $this->assertCount(1, iterator_to_array($connectedSensors));
     }
 
     public function testItIgnoresRecordsWithoutAManufacturer(): void
     {
-        $this->assertTrue(
-            ConnectedSensors::fromArray([['sensorTypes' => ['powerMeter']]])->isEmpty()
-        );
+        $this->assertSame([], ConnectedSensors::fromArray([['sensorTypes' => ['powerMeter']]])->jsonSerialize());
     }
 }

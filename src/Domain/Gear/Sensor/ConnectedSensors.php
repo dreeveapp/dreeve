@@ -7,7 +7,7 @@ namespace App\Domain\Gear\Sensor;
 /**
  * @implements \IteratorAggregate<int, ConnectedSensor>
  */
-final readonly class ConnectedSensors implements \JsonSerializable, \IteratorAggregate, \Countable
+final readonly class ConnectedSensors implements \JsonSerializable, \IteratorAggregate
 {
     /**
      * @param list<ConnectedSensor> $sensors
@@ -28,11 +28,6 @@ final readonly class ConnectedSensors implements \JsonSerializable, \IteratorAgg
         ksort($merged);
 
         return new self(array_values($merged));
-    }
-
-    public static function empty(): self
-    {
-        return new self([]);
     }
 
     /**
@@ -57,31 +52,6 @@ final readonly class ConnectedSensors implements \JsonSerializable, \IteratorAgg
         }
 
         return false;
-    }
-
-    /**
-     * @return list<SensorType>
-     */
-    public function getSensorTypes(): array
-    {
-        $sensorTypes = [];
-        foreach ($this->sensors as $sensor) {
-            foreach ($sensor->getSensorTypes() as $sensorType) {
-                $sensorTypes[$sensorType->value] = $sensorType;
-            }
-        }
-
-        return SensorType::sort(array_values($sensorTypes));
-    }
-
-    public function isEmpty(): bool
-    {
-        return [] === $this->sensors;
-    }
-
-    public function count(): int
-    {
-        return count($this->sensors);
     }
 
     public function getIterator(): \ArrayIterator

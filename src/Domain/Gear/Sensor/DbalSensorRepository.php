@@ -28,7 +28,6 @@ final readonly class DbalSensorRepository extends DbalRepository implements Sens
                 $known = $sensors[$sensorId] ?? null;
 
                 $sensors[$sensorId] = Sensor::fromState(
-                    sensorId: $connectedSensor->getId(),
                     name: $connectedSensor->getName() ?? $known?->getName(),
                     sensorTypes: SensorType::sort(array_values(array_unique(
                         [...$connectedSensor->getSensorTypes(), ...$known?->getSensorTypes() ?? []],

@@ -28,6 +28,12 @@ class FitDeviceTypeTest extends TestCase
         yield 'ant+ bike radar' => [['source_type' => 1, 'device_type' => 40], SensorType::BIKE_RADAR];
         yield 'ant+ shifting' => [['source_type' => 1, 'device_type' => 34], SensorType::ELECTRONIC_SHIFTING];
         yield 'ant+ fitness equipment' => [['source_type' => 1, 'device_type' => 17], SensorType::SMART_TRAINER];
+        yield 'ant+ speed and cadence' => [['source_type' => 1, 'device_type' => 121], SensorType::SPEED_CADENCE_SENSOR];
+        yield 'ant+ speed' => [['source_type' => 1, 'device_type' => 123], SensorType::SPEED_SENSOR];
+        yield 'ant+ cadence' => [['source_type' => 1, 'device_type' => 122], SensorType::CADENCE_SENSOR];
+        yield 'ant+ muscle oxygen' => [['source_type' => 1, 'device_type' => 31], SensorType::MUSCLE_OXYGEN_SENSOR];
+        yield 'ant+ aero' => [['source_type' => 1, 'device_type' => 46], SensorType::AERO_SENSOR];
+        yield 'ant+ env sensor' => [['source_type' => 1, 'device_type' => 25], SensorType::TEMPERATURE_SENSOR];
         yield 'ant+ environment sensor' => [['source_type' => 1, 'device_type' => 12], SensorType::TEMPERATURE_SENSOR];
         yield 'local sensor hub shares that number' => [['source_type' => 5, 'device_type' => 12], null];
         yield 'local barometer' => [['source_type' => 5, 'device_type' => 4], null];
@@ -35,6 +41,10 @@ class FitDeviceTypeTest extends TestCase
         yield 'local gps' => [['source_type' => 5, 'device_type' => 0], null];
         yield 'ble heart rate' => [['source_type' => 3, 'device_type' => 1], SensorType::HEART_RATE_MONITOR];
         yield 'ble power meter' => [['source_type' => 3, 'device_type' => 2], SensorType::POWER_METER];
+        yield 'ble speed and cadence' => [['source_type' => 3, 'device_type' => 3], SensorType::SPEED_CADENCE_SENSOR];
+        yield 'ble speed' => [['source_type' => 3, 'device_type' => 4], SensorType::SPEED_SENSOR];
+        yield 'ble cadence' => [['source_type' => 3, 'device_type' => 5], SensorType::CADENCE_SENSOR];
+        yield 'ble footpod' => [['source_type' => 3, 'device_type' => 6], SensorType::FOOT_POD];
         yield 'ble trainer' => [['source_type' => 3, 'device_type' => 7], SensorType::SMART_TRAINER];
         yield 'ant+ antfs is not a sensor, but is heart rate over ble' => [['source_type' => 1, 'device_type' => 1], null];
         yield 'raw ant' => [['source_type' => 0, 'device_type' => 1], null];

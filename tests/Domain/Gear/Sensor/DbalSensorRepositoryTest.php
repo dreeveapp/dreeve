@@ -27,7 +27,7 @@ class DbalSensorRepositoryTest extends ContainerTestCase
     public function testFindAllIgnoresActivitiesThatReportedNoSensors(): void
     {
         $this->addActivity('1', null);
-        $this->addActivity('2', ConnectedSensors::empty());
+        $this->addActivity('2', ConnectedSensors::fromSensors());
 
         $this->assertTrue($this->sensorRepository->findAll()->isEmpty());
     }

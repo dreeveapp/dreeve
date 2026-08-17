@@ -70,21 +70,6 @@ final readonly class ConnectedSensor implements \JsonSerializable
         );
     }
 
-    public function getManufacturer(): int
-    {
-        return $this->manufacturer;
-    }
-
-    public function getProduct(): ?int
-    {
-        return $this->product;
-    }
-
-    public function getSerialNumber(): ?int
-    {
-        return $this->serialNumber;
-    }
-
     public function getName(): ?string
     {
         return $this->name;

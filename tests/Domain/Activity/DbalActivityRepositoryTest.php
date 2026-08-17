@@ -144,7 +144,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
     public static function provideConnectedSensors(): iterable
     {
         yield 'unknown' => [null];
-        yield 'known, but none connected' => [ConnectedSensors::empty()];
+        yield 'known, but none connected' => [ConnectedSensors::fromSensors()];
         yield 'known' => [ConnectedSensors::fromSensors(
             ConnectedSensor::create(1, 3592, 3485049140, 'Garmin Varia', SensorType::BIKE_RADAR, SensorType::BIKE_LIGHT),
         )];

@@ -213,7 +213,10 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
                 ->withSortOrder(1)
                 ->withConditions(ConfiguredConditions::fromArray([
                     new ConfiguredCondition(ConditionType::DISTANCE, RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 10.0])),
+                    new ConfiguredCondition(ConditionType::ELEVATION, RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 100.0])),
                     new ConfiguredCondition(ConditionType::AVERAGE_POWER, RuleConfiguration::fromConfig(['operator' => 'gt', 'value' => 200])),
+                    new ConfiguredCondition(ConditionType::AVERAGE_CADENCE, RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 80])),
+                    new ConfiguredCondition(ConditionType::CONNECTED_SENSORS, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sensorTypes' => ['powerMeter', 'temperatureSensor']])),
                     new ConfiguredCondition(ConditionType::STARTS_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.2, 'longitude' => 3.1, 'radius' => 500.0])),
                     new ConfiguredCondition(ConditionType::ENDS_NEAR, RuleConfiguration::fromConfig(['operator' => 'outside', 'latitude' => 51.2, 'longitude' => 3.1, 'radius' => 500.0])),
                     new ConfiguredCondition(ConditionType::PASSES_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.2, 'longitude' => 3.1, 'radius' => 250.0])),
@@ -255,8 +258,14 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $secondRule = $items->eq(1)->text();
         $this->assertStringContainsString('Distance', $secondRule);
         $this->assertStringContainsString('at least 10 km', $secondRule);
+        $this->assertStringContainsString('Elevation', $secondRule);
+        $this->assertStringContainsString('at least 100 m', $secondRule);
         $this->assertStringContainsString('Average power', $secondRule);
         $this->assertStringContainsString('greater than 200 w', $secondRule);
+        $this->assertStringContainsString('Average cadence', $secondRule);
+        $this->assertStringContainsString('at least 80 rpm', $secondRule);
+        $this->assertStringContainsString('Connected sensors', $secondRule);
+        $this->assertStringContainsString('is one of Power meter, Temperature sensor', $secondRule);
         $this->assertStringContainsString('Starts near', $secondRule);
         $this->assertStringContainsString('within radius 500 m (51.2, 3.1)', $secondRule);
         $this->assertStringContainsString('Ends near', $secondRule);

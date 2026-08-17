@@ -10,7 +10,6 @@ final readonly class Sensor
      * @param list<SensorType> $sensorTypes
      */
     private function __construct(
-        private SensorId $sensorId,
         private ?string $name,
         private array $sensorTypes,
         private int $activityCount,
@@ -21,22 +20,15 @@ final readonly class Sensor
      * @param list<SensorType> $sensorTypes
      */
     public static function fromState(
-        SensorId $sensorId,
         ?string $name,
         array $sensorTypes,
         int $activityCount,
     ): self {
         return new self(
-            sensorId: $sensorId,
             name: $name,
             sensorTypes: $sensorTypes,
             activityCount: $activityCount,
         );
-    }
-
-    public function getId(): SensorId
-    {
-        return $this->sensorId;
     }
 
     public function getName(): ?string
