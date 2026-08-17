@@ -13,7 +13,7 @@ import initTabs from "./components/tabs";
 import LazyLoad from "../libraries/lazyload.min";
 import initDataTables from "./features/data-table/data-table-manager";
 import initFullscreen from "./components/fullscreen";
-import initLightGalleries from "./components/light-gallery-manager";
+import initLightGalleries from "./components/light-gallery";
 import initAsyncContent, {abortPendingAsyncContent} from "./components/async-content";
 import ScrollTo from "./components/scroll-to";
 import MilestoneFilter from "./features/milestones/milestone-filter";

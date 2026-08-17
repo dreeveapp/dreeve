@@ -1,21 +1,29 @@
-import lightGallery from 'lightgallery';
-import lgFullscreen from 'lightgallery/plugins/fullscreen'
-import lgZoom from 'lightgallery/plugins/zoom'
-
 const CONTAINER_SELECTOR = '[data-light-gallery]';
 const ELEMENT_SELECTOR = '[data-light-gallery-element]';
 const NAVIGATION_SELECTOR = 'a[data-model-content-url], a[data-router-content-url]';
 
 const instances = new Map();
 
+let libPromise = null;
+let lib = null;
+
+const loadLib = () => libPromise ??= Promise.all([
+    import(/* webpackChunkName: "lightgallery" */ 'lightgallery'),
+    import(/* webpackChunkName: "lightgallery" */ 'lightgallery/plugins/zoom'),
+    import(/* webpackChunkName: "lightgallery" */ 'lightgallery/plugins/fullscreen'),
+]).then(([lightGallery, zoom, fullscreen]) => ({
+    lightGallery: lightGallery.default,
+    plugins: [zoom.default, fullscreen.default],
+}));
+
 class LightGallery {
     constructor(container) {
         this.container = container;
         this.lastClicked = null;
-        this.gallery = lightGallery(container, {
+        this.gallery = lib.lightGallery(container, {
             dynamic: true,
             dynamicEl: [],
-            plugins: [lgZoom, lgFullscreen],
+            plugins: lib.plugins,
             backdropDuration: 200,
             mobileSettings: {controls: false, showCloseIcon: true, download: false},
             ...JSON.parse(container.getAttribute('data-light-gallery') || '{}'),
@@ -39,7 +47,6 @@ class LightGallery {
             this.gallery.closeGallery();
         };
 
-        // The gallery can sit on top of a modal, without this the same Escape closes both.
         this.onKeydown = e => {
             if ('Escape' !== e.key || !this.gallery.lgOpened) return;
 
@@ -56,7 +63,6 @@ class LightGallery {
     }
 
     open(element) {
-        // Items are read from the DOM on every open so that whatever filtered them out stays respected.
         const elements = Array.from(this.container.querySelectorAll(ELEMENT_SELECTOR))
             .filter(node => node.getClientRects().length > 0);
         if (0 === elements.length) return;
@@ -76,7 +82,7 @@ class LightGallery {
     }
 }
 
-export default function syncLightGalleries(rootNode) {
+export default async function initLightGalleries(rootNode) {
     for (const [container, instance] of instances) {
         if (container.isConnected) continue;
 
@@ -84,9 +90,11 @@ export default function syncLightGalleries(rootNode) {
         instances.delete(container);
     }
 
-    rootNode.querySelectorAll(CONTAINER_SELECTOR).forEach(container => {
-        if (instances.has(container)) return;
+    const containers = Array.from(rootNode.querySelectorAll(CONTAINER_SELECTOR))
+        .filter(container => !instances.has(container));
+    if (0 === containers.length) return;
 
-        instances.set(container, new LightGallery(container));
-    });
+    lib = await loadLib();
+
+    containers.forEach(container => instances.set(container, new LightGallery(container)));
 }
