@@ -1,9 +1,5 @@
 table.data-table {
     @apply w-full text-sm text-center text-gray-500;
-
-    /* Signals that the trailing column is pinned while the rest of the table scrolls under it.
-       A box-shadow rather than a border: preflight sets border-collapse on tables, and collapsed
-       borders are painted by the table instead of the cell, so a border would not travel along. */
     --data-table-pinned-shadow: -8px 0 8px -8px color-mix(in oklab, var(--color-gray-900) 25%, transparent);
 
     thead, tfoot {
@@ -16,8 +12,6 @@ table.data-table {
                 @apply px-2;
             }
 
-            /* Own background: the grey comes from the thead element, the cells are transparent,
-               so without it the header labels scrolling underneath would show through. */
             &.sticky-actions {
                 @apply sticky right-0 z-1 bg-gray-50;
                 box-shadow: var(--data-table-pinned-shadow);
@@ -48,8 +42,6 @@ table.data-table {
             &.row--failed {
                 @apply bg-red-50/60;
 
-                /* The pinned cell is opaque, so it has to repaint the row tint itself. Skipped
-                   while hovering, to let the row-hover grey take over like on any other row. */
                 &:not(:hover) > .sticky-actions {
                     background-color: color-mix(in oklab, var(--color-red-50) 60%, var(--color-white));
                 }
@@ -62,8 +54,6 @@ table.data-table {
                     @apply px-2;
                 }
 
-                /* Re-apply the row-hover background: this selector is more specific than the one
-                   above, so a bare bg-white would otherwise leave the pinned cell unhighlighted. */
                 &.sticky-actions {
                     @apply sticky right-0 z-1 bg-white group-hover/row:bg-gray-50;
                     box-shadow: var(--data-table-pinned-shadow);
