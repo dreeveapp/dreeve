@@ -20,6 +20,7 @@
   - [Garmin Connect](integrations/garmin-connect.md "Dreeve | Garmin Connect")
   - [Polar Flow](integrations/polar-flow.md "Dreeve | Polar Flow")
   - [Wahoo Connector](integrations/wahoo-connector.md "Dreeve | Wahoo Connector")
+  - [Hammerhead Connector](integrations/hammerhead-connector.md "Dreeve | Hammerhead Connector")
   - [Notifications](integrations/notifications.md "Dreeve | Notifications")
 
 - Troubleshooting
