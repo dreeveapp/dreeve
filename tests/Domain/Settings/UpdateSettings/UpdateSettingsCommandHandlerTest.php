@@ -214,6 +214,18 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
         $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::DAEMON));
     }
 
+    public function testItUpdatesSecuritySettings(): void
+    {
+        $data = ['requiresAuthentication' => false];
+
+        $this->commandBus->dispatch(UpdateSettings::fromPayload([
+            'group' => SettingsGroup::SECURITY->value,
+            'data' => $data,
+        ]));
+
+        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::SECURITY));
+    }
+
     public function testItRejectsInvalidDaemonSettings(): void
     {
         $this->expectExceptionObject(new CouldNotDeserializeCommand('"not-a-cron" is not a valid cron expression'));

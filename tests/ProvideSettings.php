@@ -106,5 +106,12 @@ trait ProvideSettings
                 ],
             ])),
         ));
+
+        $keyValueStore->save(KeyValue::fromState(
+            SettingsGroup::SECURITY->keyValueKey(),
+            Value::fromString(Json::encode([
+                'requiresAuthentication' => false,
+            ])),
+        ));
     }
 }

@@ -16,7 +16,9 @@ use App\Domain\Settings\UpdateSettings\UpdateSettings;
 use App\Domain\Strava\StravaClientId;
 use App\Domain\Strava\StravaClientSecret;
 use App\Domain\Strava\StravaRefreshToken;
+use App\Infrastructure\Config\AdminAllowedIpAddresses;
 use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Security\AdminUserName;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -41,6 +43,8 @@ final readonly class SettingsRequestHandler
         private StravaRefreshToken $stravaRefreshToken,
         private ImportMode $importMode,
         private UrlGeneratorInterface $urlGenerator,
+        private AdminUserName $adminUserName,
+        private AdminAllowedIpAddresses $adminAllowedIpAddresses,
     ) {
     }
 
@@ -87,6 +91,8 @@ final readonly class SettingsRequestHandler
                 'AIApiKey' => AIApiKey::fromServerVar(),
                 'sportTypes' => $this->settingsRepository->appearance()->getSportTypesSortingOrder(),
                 'defaultHeartRateZones' => HeartRateZoneConfiguration::getDefaultZones(),
+                'adminUsername' => $this->adminUserName,
+                'adminAllowedIpAddresses' => $this->adminAllowedIpAddresses,
             ],
         ));
     }

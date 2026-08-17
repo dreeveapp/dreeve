@@ -6,7 +6,7 @@ namespace App\Infrastructure\Config;
 
 use Symfony\Component\HttpFoundation\IpUtils;
 
-final readonly class AdminAllowedIpAddresses
+final readonly class AdminAllowedIpAddresses implements \Stringable
 {
     /**
      * @param string[] $ipAddresses
@@ -40,6 +40,11 @@ final readonly class AdminAllowedIpAddresses
     public function isEmpty(): bool
     {
         return [] === $this->ipAddresses;
+    }
+
+    public function __toString(): string
+    {
+        return implode(', ', $this->ipAddresses);
     }
 
     private static function isValidIpOrCidr(string $entry): bool

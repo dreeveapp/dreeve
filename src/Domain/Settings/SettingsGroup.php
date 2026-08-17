@@ -16,6 +16,7 @@ enum SettingsGroup: string
     case ZWIFT = 'zwift';
     case INTEGRATIONS = 'integrations';
     case DAEMON = 'daemon';
+    case SECURITY = 'security';
 
     public function keyValueKey(): Key
     {
@@ -28,6 +29,7 @@ enum SettingsGroup: string
             self::ZWIFT => Key::SETTINGS_ZWIFT,
             self::INTEGRATIONS => Key::SETTINGS_INTEGRATIONS,
             self::DAEMON => Key::SETTINGS_DAEMON,
+            self::SECURITY => Key::SETTINGS_SECURITY,
         };
     }
 
@@ -45,6 +47,7 @@ enum SettingsGroup: string
             self::ZWIFT => ZwiftSettings::fromArray($data),
             self::INTEGRATIONS => IntegrationsSettings::fromArray($data),
             self::DAEMON => DaemonSettings::fromArray($data),
+            self::SECURITY => SecuritySettings::fromArray($data),
         };
     }
 }

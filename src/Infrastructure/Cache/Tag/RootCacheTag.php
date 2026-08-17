@@ -27,6 +27,7 @@ enum RootCacheTag: string implements CacheTag
     case SETTINGS_ZWIFT = 'settings.zwift';
     case SETTINGS_INTEGRATIONS = 'settings.integrations';
     case SETTINGS_DAEMON = 'settings.daemon';
+    case SETTINGS_SECURITY = 'settings.security';
 
     public function toTagString(): string
     {
@@ -62,6 +63,7 @@ enum RootCacheTag: string implements CacheTag
             SettingsGroup::ZWIFT => self::SETTINGS_ZWIFT,
             SettingsGroup::INTEGRATIONS => self::SETTINGS_INTEGRATIONS,
             SettingsGroup::DAEMON => self::SETTINGS_DAEMON,
+            SettingsGroup::SECURITY => self::SETTINGS_SECURITY,
         };
     }
 }

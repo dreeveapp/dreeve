@@ -17,5 +17,6 @@ enum Key: string
     case SETTINGS_ZWIFT = 'settingsZwift';
     case SETTINGS_INTEGRATIONS = 'settingsIntegrations';
     case SETTINGS_DAEMON = 'settingsDaemon';
+    case SETTINGS_SECURITY = 'settingsSecurity';
     case AUTOMATION_RULES_BACKFILL = 'automationRulesBackfill';
 }

@@ -41,13 +41,16 @@ class CaddyfileFileAccessTest extends TestCase
     public static function provideAccessRules(): iterable
     {
         yield 'asset is served and cached' => ['/assets/app.css', 200, 'max-age=86400'];
-        yield 'top-level image is served, cached immutably' => ['/files/sample.png', 200, 'immutable'];
-        yield 'nested image is served (guards wildcard depth)' => ['/files/challenges/nested.png', 200, 'immutable'];
-        yield 'extension match is case-insensitive' => ['/files/UPPER.PNG', 200, 'immutable'];
-        yield 'activity photo is blocked (gated via /secured-image)' => ['/files/activities/secret.jpg', 404, null];
-        yield 'nested activity photo is blocked' => ['/files/activities/2024/secret.jpg', 404, null];
-        yield 'non-image file is blocked' => ['/files/secret.txt', 404, null];
-        yield 'log file is blocked' => ['/files/strava.log', 404, null];
+        // Caddy hands every /files/* request to the PHP front controller (LocalImageRequestHandler),
+        // which is the only place that knows whether authentication is required. Without a front
+        // controller in this test setup they all fall through to a 404.
+        yield 'top-level image is not served by Caddy' => ['/files/sample.png', 404, null];
+        yield 'nested image is not served by Caddy' => ['/files/challenges/nested.png', 404, null];
+        yield 'uppercase extension is not served by Caddy' => ['/files/UPPER.PNG', 404, null];
+        yield 'activity photo is not served by Caddy' => ['/files/activities/secret.jpg', 404, null];
+        yield 'nested activity photo is not served by Caddy' => ['/files/activities/2024/secret.jpg', 404, null];
+        yield 'non-image file is not served by Caddy' => ['/files/secret.txt', 404, null];
+        yield 'log file is not served by Caddy' => ['/files/strava.log', 404, null];
     }
 
     public static function setUpBeforeClass(): void

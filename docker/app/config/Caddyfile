@@ -30,9 +30,11 @@ import /etc/frankenphp/snippets/paths.caddyfile
 
 	# Disable Topics tracking if not enabled explicitly: https://github.com/jkarlin/topics
 	header {
-		Cache-Control "no-cache, no-store, must-revalidate"
 		?Permissions-Policy "browsing-topics=()"
 	}
+
+	@notAppServedFile not path /files/*
+	header @notAppServedFile Cache-Control "no-cache, no-store, must-revalidate"
 
 	# Path-routing rules (/files/*, /assets/*).
 	import paths

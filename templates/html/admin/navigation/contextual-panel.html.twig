@@ -56,6 +56,7 @@
         {% set inZwift = isActiveNavItem({'/admin/settings/zwift': false}) %}
         {% set inIntegrations = isActiveNavItem({'/admin/settings/integrations': false}) %}
         {% set inDaemon = isActiveNavItem({'/admin/settings/daemon': false}) %}
+        {% set inSecurity = isActiveNavItem({'/admin/settings/security': false}) %}
         {% set inDashboard = isActiveNavItem({'/admin/settings/dashboard': false}) %}
         {% set inAutomationRules = isActiveNavItem({'/admin/settings/automation-rules': false}) %}
         <nav class="contextual-panel" aria-label="{{ "Settings"|trans({}, 'admin') }}">
@@ -113,6 +114,11 @@
                 <li>
                     <a href="{{ relativeUrl(path('admin_settings', {'group': 'daemon'})) }}" {{ inDaemon ? 'aria-selected="true"' : '' }}>
                         {{ "Daemon"|trans({}, 'admin') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'security'})) }}" {{ inSecurity ? 'aria-selected="true"' : '' }}>
+                        {{ "Security"|trans({}, 'admin') }}
                     </a>
                 </li>
             </ul>

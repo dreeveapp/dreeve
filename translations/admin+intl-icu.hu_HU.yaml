@@ -41,12 +41,15 @@ Activity: Activity
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
 Admin: Admin
 'Admin panel': 'Admin panel'
+'Admin username': 'Admin username'
 'Advanced (per-date & per-sport-type overrides)': 'Advanced (per-date & per-sport-type overrides)'
 'Age-based estimate': 'Age-based estimate'
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'All associated maintenance tasks and logs will be removed. This action cannot be undone.'
 'All sport types': 'All sport types'
 'All sport types must belong to the same activity type.': 'All sport types must belong to the same activity type.'
+'Allowed IP addresses for the admin panel': 'Allowed IP addresses for the admin panel'
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.'
+'Any IP address': 'Any IP address'
 'App URL': 'App URL'
 'App subtitle': 'App subtitle'
 'App update available notification': 'App update available notification'
@@ -287,6 +290,8 @@ Remove: Remove
 Removing...: Removing...
 'Render the map tiles in greyscale': 'Render the map tiles in greyscale'
 "Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
+'Require a login for the entire app': 'Require a login for the entire app'
+'Require a login for the entire app, not just the admin panel. Recommended when your instance is reachable from the internet, which it has to be for the Strava webhook.': 'Require a login for the entire app, not just the admin panel. Recommended when your instance is reachable from the internet, which it has to be for the Strava webhook.'
 'Reset dashboard to default': 'Reset dashboard to default'
 'Reset to default': 'Reset to default'
 Resetting...: Resetting...
@@ -306,6 +311,7 @@ Saving...: Saving...
 'Scheduled actions the daemon runs at regular intervals.': 'Scheduled actions the daemon runs at regular intervals.'
 'Search by name, date or activity ID': 'Search by name, date or activity ID'
 Seconds: Seconds
+Security: Security
 'Select a component first...': 'Select a component first...'
 'Select a component…': 'Select a component…'
 'Select all': 'Select all'
@@ -447,6 +453,7 @@ Weekdays: Weekdays
 "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes."
 'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
+'When set, requests to the admin panel from any other IP address are rejected.': 'When set, requests to the admin panel from any other IP address are rejected.'
 'Workout type': 'Workout type'
 'You can add it back to your dashboard again later.': 'You can add it back to your dashboard again later.'
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.'

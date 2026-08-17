@@ -1,25 +1,5 @@
 # Path-routing rules cover every path directive EXCEPT the PHP front-controller handle.
 (paths) {
-	handle /files/* {
-		# Only serve image and SVG files from storage, except the activity photos:
-		# those are only reachable through the IP-gated /secured-image/* route.
-		# Everything else is blocked.
-		@allowedFiles {
-			path_regexp (?i)\.(jpe?g|png|gif|webp|avif|svg)$
-			path /files/*
-			not path /files/activities/*
-		}
-		handle @allowedFiles {
-			header {
-				Cache-Control "public, max-age=31536000, immutable"
-			}
-
-			root * /var/www/storage
-			file_server
-		}
-		error 404
-	}
-
 	# Cache static assets.
 	handle /assets/* {
 		header {

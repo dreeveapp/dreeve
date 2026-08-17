@@ -1,0 +1,47 @@
+{% extends "html/admin/page/template.html.twig" %}
+
+{% block main %}
+    <div class="flex flex-col gap-4">
+        <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            <input type="hidden" name="group" value="{{ group.value }}">
+            <div class="mb-5">
+                <h3 class="text-lg font-semibold">{{ "Security"|trans({}, 'admin') }}</h3>
+            </div>
+            <div data-form-error class="form-error hidden" role="alert"></div>
+            <div class="flex flex-col gap-4">
+                <div>
+                    <label for="adminUsername">{{ "Admin username"|trans({}, 'admin') }}</label>
+                    <input type="text" id="adminUsername" value="{{ adminUsername }}" disabled>
+                    <p class="description">
+                        {{ "Configured via an environment variable and cannot be changed here."|trans({}, 'admin') }}
+                    </p>
+                </div>
+                <div>
+                    <label for="adminAllowedIpAddresses">{{ "Allowed IP addresses for the admin panel"|trans({}, 'admin') }}</label>
+                    <input type="text" id="adminAllowedIpAddresses" value="{{ adminAllowedIpAddresses }}"
+                           placeholder="{{ "Any IP address"|trans({}, 'admin') }}" disabled>
+                    <p class="description">
+                        {{ "When set, requests to the admin panel from any other IP address are rejected."|trans({}, 'admin') }}
+                        {{ "Configured via an environment variable and cannot be changed here."|trans({}, 'admin') }}
+                    </p>
+                </div>
+                <div>
+                    <label class="flex items-center gap-2 mt-0! font-medium cursor-pointer">
+                        <input type="checkbox" name="data[requiresAuthentication]" value="1"
+                               {{ (settings.requiresAuthentication ?? false) ? 'checked' : '' }}>
+                        <span>{{ "Require a login for the entire app"|trans({}, 'admin') }}</span>
+                    </label>
+                    <p class="description">
+                        {{ "Require a login for the entire app, not just the admin panel. Recommended when your instance is reachable from the internet, which it has to be for the Strava webhook."|trans({}, 'admin') }}
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
+                <button type="submit" data-has-loading-state class="group btn--primary">
+                    <span class="label">{{ "Save settings"|trans({}, 'admin') }}</span>
+                    <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock main %}

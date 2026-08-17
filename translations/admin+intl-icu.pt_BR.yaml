@@ -41,12 +41,15 @@ Activity: Activity
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Adicione arquivos {fit}, {tcx} ou {gpx}. Eles são processados a cada poucos minutos.'
 Admin: Admin
 'Admin panel': 'Painel de administração'
+'Admin username': 'Admin username'
 'Advanced (per-date & per-sport-type overrides)': 'Avançado (substituições por data e por tipo de esporte)'
 'Age-based estimate': 'Estimativa baseada na idade'
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'Todas as tarefas de manutenção e registros associados serão removidos. Esta ação não pode ser desfeita.'
 'All sport types': 'All sport types'
 'All sport types must belong to the same activity type.': 'Todos os tipos de esporte devem pertencer ao mesmo tipo de atividade.'
+'Allowed IP addresses for the admin panel': 'Allowed IP addresses for the admin panel'
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Também expõe o assistente de treino na interface web. Requer que a integração de IA acima esteja ativada. Tenha cuidado ao ativar isso se o seu aplicativo for acessível publicamente.'
+'Any IP address': 'Any IP address'
 'App URL': 'URL do aplicativo'
 'App subtitle': 'Subtítulo do aplicativo'
 'App update available notification': 'Notificação de atualização do aplicativo disponível'
@@ -287,6 +290,8 @@ Remove: Remover
 Removing...: Removendo...
 'Render the map tiles in greyscale': 'Render the map tiles in greyscale'
 "Reorder widgets and set each widget's width.": 'Reordene os widgets e defina a largura de cada widget.'
+'Require a login for the entire app': 'Require a login for the entire app'
+'Require a login for the entire app, not just the admin panel. Recommended when your instance is reachable from the internet, which it has to be for the Strava webhook.': 'Require a login for the entire app, not just the admin panel. Recommended when your instance is reachable from the internet, which it has to be for the Strava webhook.'
 'Reset dashboard to default': 'Restaurar o painel para o padrão'
 'Reset to default': 'Restaurar para o padrão'
 Resetting...: Restaurando...
@@ -306,6 +311,7 @@ Saving...: Salvando...
 'Scheduled actions the daemon runs at regular intervals.': 'Ações programadas que o daemon executa em intervalos regulares.'
 'Search by name, date or activity ID': 'Search by name, date or activity ID'
 Seconds: Seconds
+Security: Security
 'Select a component first...': 'Selecione um componente primeiro...'
 'Select a component…': 'Selecione um componente…'
 'Select all': 'Select all'
@@ -447,6 +453,7 @@ Weekdays: Weekdays
 "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes."
 'When disabled, gear marked as retired is left out of the chart.': 'Quando desativado, o equipamento marcado como aposentado é deixado fora do gráfico.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Quando ativado, o equipamento marcado como aposentado é ignorado. Seus componentes não aumentarão o uso e nenhuma manutenção será registrada para eles.'
+'When set, requests to the admin panel from any other IP address are rejected.': 'When set, requests to the admin panel from any other IP address are rejected.'
 'Workout type': 'Workout type'
 'You can add it back to your dashboard again later.': 'Você pode adicioná-lo de volta ao seu painel mais tarde.'
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.'

@@ -19,6 +19,7 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
     private ?ZwiftSettings $zwiftSettings = null;
     private ?IntegrationsSettings $integrationsSettings = null;
     private ?DaemonSettings $daemonSettings = null;
+    private ?SecuritySettings $securitySettings = null;
 
     public function __construct(
         #[Autowire(service: KeyValueBasedSettingsRepository::class)]
@@ -49,6 +50,7 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
         $this->zwiftSettings = null;
         $this->integrationsSettings = null;
         $this->daemonSettings = null;
+        $this->securitySettings = null;
     }
 
     public function general(): GeneralSettings
@@ -89,5 +91,10 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
     public function daemon(): DaemonSettings
     {
         return $this->daemonSettings ??= $this->settingsRepository->daemon();
+    }
+
+    public function security(): SecuritySettings
+    {
+        return $this->securitySettings ??= $this->settingsRepository->security();
     }
 }

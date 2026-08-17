@@ -42,6 +42,12 @@ class AdminAllowedIpAddressesTest extends TestCase
         $this->assertFalse(AdminAllowedIpAddresses::fromString('192.168.1.1,,, ,10.0.0.1,')->isEmpty());
     }
 
+    public function testItCanBeRenderedAsANormalizedList(): void
+    {
+        $this->assertSame('192.168.1.1, 10.0.0.1', (string) AdminAllowedIpAddresses::fromString('192.168.1.1,,, 10.0.0.1 ,'));
+        $this->assertSame('', (string) AdminAllowedIpAddresses::fromString(''));
+    }
+
     public function testIsNotEmptyWhenPopulated(): void
     {
         $this->assertFalse(AdminAllowedIpAddresses::fromString('192.168.1.1')->isEmpty());

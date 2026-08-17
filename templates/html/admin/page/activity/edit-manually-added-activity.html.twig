@@ -104,7 +104,7 @@
                     {% set existingImages = [] %}
                     {% if activity %}
                         {% for path in activity.getLocalImagePaths() %}
-                            {% set existingImages = existingImages|merge([{ url: securedImageUrl(path), name: path|split('/')|last, path: path }]) %}
+                            {% set existingImages = existingImages|merge([{ url: relativeUrl(path), name: path|split('/')|last, path: path }]) %}
                         {% endfor %}
                     {% endif %}
                     {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'images', maxImages: 5, existingImages: existingImages } %}

@@ -179,7 +179,7 @@
                 <div class="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
                     {% for imagePath in activity.getLocalImagePaths() %}
                         <div class="shrink-0 h-32 rounded-lg overflow-hidden">
-                            <img src="{{ placeholderImage() }}" data-src="{{ securedImageUrl(imagePath) }}" alt="Activity photo" class="h-full w-auto block lazy" />
+                            <img src="{{ placeholderImage() }}" data-src="{{ relativeUrl(imagePath) }}" alt="Activity photo" class="h-full w-auto block lazy" />
                         </div>
                     {% endfor %}
                 </div>
