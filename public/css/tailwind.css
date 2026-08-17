@@ -71,8 +71,6 @@
         opacity: 0.9 !important;
     }
 
-    /* lightGallery keeps the closing gallery around for the backdrop transition, it must not
-       swallow clicks on whatever it just handed over to. */
     body .lg-outer:not(.lg-visible) {
         pointer-events: none;
     }
