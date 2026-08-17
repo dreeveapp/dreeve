@@ -5092,10 +5092,6 @@ table.data-table {
   font-size: var(--text-sm);
   line-height: var(--tw-leading, var(--text-sm--line-height));
   color: var(--color-gray-500);
-  --data-table-pinned-shadow: -8px 0 8px -8px color-mix(in srgb, #111827 25%, transparent);
-  @supports (color: color-mix(in lab, red, red)) {
-    --data-table-pinned-shadow: -8px 0 8px -8px color-mix(in oklab, var(--color-gray-900) 25%, transparent);
-  }
   thead, tfoot {
     position: sticky;
     top: 0px;
@@ -5118,7 +5114,6 @@ table.data-table {
         right: 0px;
         z-index: 1;
         background-color: var(--color-gray-50);
-        box-shadow: var(--data-table-pinned-shadow);
       }
       &[data-dataTable-sort] {
         cursor: pointer;
@@ -5184,7 +5179,6 @@ table.data-table {
               background-color: var(--color-gray-50);
             }
           }
-          box-shadow: var(--data-table-pinned-shadow);
         }
       }
     }

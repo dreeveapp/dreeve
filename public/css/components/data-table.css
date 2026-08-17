@@ -1,6 +1,5 @@
 table.data-table {
     @apply w-full text-sm text-center text-gray-500;
-    --data-table-pinned-shadow: -8px 0 8px -8px color-mix(in oklab, var(--color-gray-900) 25%, transparent);
 
     thead, tfoot {
         @apply z-10 sticky top-0 text-gray-500 text-xxs uppercase font-semibold bg-gray-50;
@@ -14,7 +13,6 @@ table.data-table {
 
             &.sticky-actions {
                 @apply sticky right-0 z-1 bg-gray-50;
-                box-shadow: var(--data-table-pinned-shadow);
             }
 
             &[data-dataTable-sort] {
@@ -56,7 +54,6 @@ table.data-table {
 
                 &.sticky-actions {
                     @apply sticky right-0 z-1 bg-white group-hover/row:bg-gray-50;
-                    box-shadow: var(--data-table-pinned-shadow);
                 }
             }
         }
