@@ -13,6 +13,7 @@ import initTabs from "./components/tabs";
 import LazyLoad from "../libraries/lazyload.min";
 import initDataTables from "./features/data-table/data-table-manager";
 import initFullscreen from "./components/fullscreen";
+import initLightGalleries from "./components/light-gallery-manager";
 import initAsyncContent, {abortPendingAsyncContent} from "./components/async-content";
 import ScrollTo from "./components/scroll-to";
 import MilestoneFilter from "./features/milestones/milestone-filter";
@@ -52,6 +53,7 @@ const initElements = (rootNode) => {
     chartManager.init(rootNode, darkModeManager.isDarkModeEnabled());
     initLeafletMaps(rootNode);
     initFullscreen(rootNode);
+    initLightGalleries(rootNode);
     scrollTo.init(rootNode);
     initAsyncContent(rootNode);
 }
@@ -87,11 +89,13 @@ eventBus.on(Events.PAGE_LOADED, async ({page, modalId}) => {
     }
     if (page === 'photos') {
         const $photoWallWrapper = document.querySelector('.photo-wall-wrapper');
-        await new PhotoWall($photoWallWrapper).render();
+        new PhotoWall($photoWallWrapper).render();
     }
 });
 eventBus.on(Events.MODAL_HISTORY_CHANGED, ({modalId}) => {
     modalManager.close();
+    // The only path that wipes modal content without initElements running afterwards.
+    initLightGalleries(document);
     if (modalId) {
         modalManager.open(modalId);
     }

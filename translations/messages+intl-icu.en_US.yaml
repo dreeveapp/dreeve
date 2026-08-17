@@ -150,6 +150,7 @@ Gear: Gear
 'Gear stats': 'Gear stats'
 "Gear that hasn't been used in the last three months, is disabled by default.": "Gear that hasn't been used in the last three months, is disabled by default."
 'Gear that is retired is disabled by default.': 'Gear that is retired is disabled by default.'
+'Go to activity': 'Go to activity'
 Goal: Goal
 Golf: Golf
 'Good training variety': 'Good training variety'
@@ -357,7 +358,6 @@ Splits: Splits
 Squash: Squash
 'Stair Stepper': 'Stair Stepper'
 'Stand Up Paddling': 'Stand Up Paddling'
-'Start slideshow': 'Start slideshow'
 'Start times': 'Start times'
 'Stats per weekday': 'Stats per weekday'
 Status: Status

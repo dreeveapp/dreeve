@@ -13,11 +13,7 @@ export default class PhotoWall {
         }));
     }
 
-    async render() {
-        const {default: LightGallery} = await import(
-            /* webpackChunkName: "lightgallery" */ './light-gallery'
-        );
-        this.lightGallery = new LightGallery(this.wrapper);
+    render() {
         const redraw = (updateStorage = true) => {
             const activeFilters = this.filterManager.getActiveFilters();
             this.filterManager.updateDropdownState(activeFilters);
@@ -32,18 +28,14 @@ export default class PhotoWall {
 
             this.resetBtn.classList.toggle('hidden', !(Object.keys(activeFilters).length > 0));
 
-            const activeImages = images.filter((image) => image.active);
             const resultCount = this.wrapper.querySelector('[data-dataTable-result-count]');
-            if (resultCount) resultCount.innerText = activeImages.length;
-
-            this.lightGallery.refresh(activeImages);
+            if (resultCount) resultCount.innerText = images.filter((image) => image.active).length;
         };
 
         this.filterManager.prefillFromStorage(FilterName.PHOTO_WALL);
         redraw(false);
 
         this.wrapper.querySelectorAll('[data-dataTable-filter]').forEach(el => el.addEventListener('input', redraw));
-        this.lightGallery.bindEvents();
 
         if (this.resetBtn) {
             this.resetBtn.addEventListener('click', e => {
