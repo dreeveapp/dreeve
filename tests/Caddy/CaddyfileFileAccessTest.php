@@ -41,9 +41,6 @@ class CaddyfileFileAccessTest extends TestCase
     public static function provideAccessRules(): iterable
     {
         yield 'asset is served and cached' => ['/assets/app.css', 200, 'max-age=86400'];
-        // Caddy hands every /files/* request to the PHP front controller (LocalImageRequestHandler),
-        // which is the only place that knows whether authentication is required. Without a front
-        // controller in this test setup they all fall through to a 404.
         yield 'top-level image is not served by Caddy' => ['/files/sample.png', 404, null];
         yield 'nested image is not served by Caddy' => ['/files/challenges/nested.png', 404, null];
         yield 'uppercase extension is not served by Caddy' => ['/files/UPPER.PNG', 404, null];
