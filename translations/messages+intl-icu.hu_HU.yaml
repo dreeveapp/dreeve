@@ -150,6 +150,7 @@ Gear: Felszerelés
 'Gear stats': 'Felszerelés statisztikák'
 "Gear that hasn't been used in the last three months, is disabled by default.": 'Az elmúlt három hónapban nem használt felszerelés alapértelmezés szerint le van tiltva.'
 'Gear that is retired is disabled by default.': 'A visszavont felszerelés alapértelmezés szerint le van tiltva.'
+'Go to activity': 'Ugrás a tevékenységhez'
 Goal: Cél
 Golf: Golf
 'Good training variety': 'Jó edzésváltozatosság'
@@ -357,7 +358,6 @@ Splits: Részidők
 Squash: Squash
 'Stair Stepper': 'Lépcső szimulátor'
 'Stand Up Paddling': SUP
-'Start slideshow': 'Diavetítés indítása'
 'Start times': 'Kezdési idők'
 'Stats per weekday': 'Statisztikák napokra bontva'
 Status: Állapot

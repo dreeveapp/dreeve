@@ -150,6 +150,7 @@ Gear: Utrustning
 'Gear stats': 'Sammanställning av utrustning'
 "Gear that hasn't been used in the last three months, is disabled by default.": 'Utrustning som inte har använts under de senaste tre månaderna blir inaktiverad.'
 'Gear that is retired is disabled by default.': 'Utrustning som är avställd blir inaktiverad.'
+'Go to activity': 'Gå till aktiviteten'
 Goal: Goal
 Golf: Golf
 'Good training variety': 'Bra variation av träningsformer'
@@ -357,7 +358,6 @@ Splits: Delar
 Squash: Squash
 'Stair Stepper': Trappmaskin
 'Stand Up Paddling': 'Stand Up Paddling'
-'Start slideshow': 'Starta bildspel'
 'Start times': Starttider
 'Stats per weekday': 'Sammanställning veckodagar'
 Status: Status

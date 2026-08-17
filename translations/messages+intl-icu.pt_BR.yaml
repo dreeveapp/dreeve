@@ -150,6 +150,7 @@ Gear: Equipamento
 'Gear stats': 'Estatísticas do equipamento'
 "Gear that hasn't been used in the last three months, is disabled by default.": 'Equipamento não utilizado nos últimos três meses é desativado por padrão.'
 'Gear that is retired is disabled by default.': 'Equipamento aposentado é desativado por padrão.'
+'Go to activity': 'Ir para a atividade'
 Goal: Meta
 Golf: Golfe
 'Good training variety': 'Boa variedade de treino'
@@ -357,7 +358,6 @@ Splits: Parciais
 Squash: Squash
 'Stair Stepper': 'Subida de Escadas'
 'Stand Up Paddling': 'Stand Up Paddle'
-'Start slideshow': 'Iniciar apresentação'
 'Start times': 'Horários de início'
 'Stats per weekday': 'Estatísticas por dia da semana'
 Status: Status

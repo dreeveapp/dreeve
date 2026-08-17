@@ -3517,6 +3517,9 @@
   .text-white {
     color: var(--color-white);
   }
+  .text-white\! {
+    color: var(--color-white) !important;
+  }
   .text-yellow-500 {
     color: var(--color-yellow-500);
   }
@@ -3538,6 +3541,9 @@
   .tabular-nums {
     --tw-numeric-spacing: tabular-nums;
     font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
+  }
+  .no-underline\! {
+    text-decoration-line: none !important;
   }
   .underline {
     text-decoration-line: underline;
@@ -3968,6 +3974,9 @@
     }
     .hover\:no-underline:hover {
       text-decoration-line: none;
+    }
+    .hover\:no-underline\!:hover {
+      text-decoration-line: none !important;
     }
     .hover\:underline:hover {
       text-decoration-line: underline;
@@ -6697,6 +6706,9 @@ table.data-table {
   body .lg-backdrop {
     z-index: 1490 !important;
     opacity: 0.9 !important;
+  }
+  body .lg-outer:not(.lg-visible) {
+    pointer-events: none;
   }
   .overflow-auto, .overflow-x-auto {
     &::-webkit-scrollbar-track {

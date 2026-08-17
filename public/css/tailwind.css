@@ -71,6 +71,10 @@
         opacity: 0.9 !important;
     }
 
+    body .lg-outer:not(.lg-visible) {
+        pointer-events: none;
+    }
+
     .overflow-auto, .overflow-x-auto {
         @apply scrollbar-thin;
     }

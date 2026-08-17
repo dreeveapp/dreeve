@@ -5,74 +5,64 @@
 {% autoescape false %}
 <div class="grid grid-cols-1 gap-y-2 photo-wall-wrapper">
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-        <div class="flex items-center justify-between">
-            <form class="flex flex-col gap-y-2 mb-2" autocomplete="off">
-                <div class="flex flex-wrap gap-2">
-                    {% if sportTypes|length > 0 %}
-                        <div class="filter-dropdown">
-                            <button id="dropdownSportTypesButton"
-                                    data-dropdown="dropdownSportTypes" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                <span>{{ "Filter on sport type"|trans }}</span>
-                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
-                            <div id="dropdownSportTypes" class="divide-y divide-gray-100">
-                                <ul aria-labelledby="dropdownSportTypesButton">
-                                    {% for sportType in sportTypes %}
-                                        <li>
-                                            <div>
-                                                <input type="checkbox" id="{{ sportType.value }}" data-dataTable-filter="sportType" name="sportType[{{ sportType.value }}]" value="{{ sportType.value }}" class="peer" />
-                                                <label for="{{ sportType.value }}" class="flex gap-x-1 items-center">
-                                                    {{ svgSportType(sportType) }}
-                                                    <div>{{ sportType|trans }}</div>
-                                                </label>
-                                                <a href="#" data-datatable-filter-clear="sportType[{{ sportType.value }}]">{{ "clear"|trans }}</a>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+        <form class="flex flex-col gap-y-2 mb-2" autocomplete="off">
+            <div class="flex flex-wrap gap-2">
+                {% if sportTypes|length > 0 %}
+                    <div class="filter-dropdown">
+                        <button id="dropdownSportTypesButton"
+                                data-dropdown="dropdownSportTypes" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
+                            <span>{{ "Filter on sport type"|trans }}</span>
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                            </svg>
+                        </button>
+                        <div id="dropdownSportTypes" class="divide-y divide-gray-100">
+                            <ul aria-labelledby="dropdownSportTypesButton">
+                                {% for sportType in sportTypes %}
+                                    <li>
+                                        <div>
+                                            <input type="checkbox" id="{{ sportType.value }}" data-dataTable-filter="sportType" name="sportType[{{ sportType.value }}]" value="{{ sportType.value }}" class="peer" />
+                                            <label for="{{ sportType.value }}" class="flex gap-x-1 items-center">
+                                                {{ svgSportType(sportType) }}
+                                                <div>{{ sportType|trans }}</div>
+                                            </label>
+                                            <a href="#" data-datatable-filter-clear="sportType[{{ sportType.value }}]">{{ "clear"|trans }}</a>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
-                    {% endif %}
-                    {% if countries|length > 0 %}
-                        <div class="filter-dropdown">
-                            <button id="dropdownCountriesButton"
-                                    data-dropdown="dropdownCountries" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                <span>{{ "Filter on country"|trans }}</span>
-                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
-                            <div id="dropdownCountries" class="divide-y divide-gray-100">
-                                <ul aria-labelledby="dropdownCountriesButton">
-                                    {% for countryCode,countryName in countries %}
-                                        <li>
-                                            <div>
-                                                <input type="radio" id="{{ countryCode }}" data-dataTable-filter="countryCode" name="countryCode" value="{{ countryCode }}" class="peer" />
-                                                <label for="{{ countryCode }}" class="flex gap-x-1 items-center">
-                                                    <img src="{{ countryCode|countryIcon }}" width="15" class="rounded-xs" title="{{ countryName }}" alt="{{ countryName }}">
-                                                    <span>{{ countryName }}</span>
-                                                </label>
-                                                <a href="#" data-datatable-filter-clear="countryCode">{{ "clear"|trans }}</a>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+                    </div>
+                {% endif %}
+                {% if countries|length > 0 %}
+                    <div class="filter-dropdown">
+                        <button id="dropdownCountriesButton"
+                                data-dropdown="dropdownCountries" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
+                            <span>{{ "Filter on country"|trans }}</span>
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                            </svg>
+                        </button>
+                        <div id="dropdownCountries" class="divide-y divide-gray-100">
+                            <ul aria-labelledby="dropdownCountriesButton">
+                                {% for countryCode,countryName in countries %}
+                                    <li>
+                                        <div>
+                                            <input type="radio" id="{{ countryCode }}" data-dataTable-filter="countryCode" name="countryCode" value="{{ countryCode }}" class="peer" />
+                                            <label for="{{ countryCode }}" class="flex gap-x-1 items-center">
+                                                <img src="{{ countryCode|countryIcon }}" width="15" class="rounded-xs" title="{{ countryName }}" alt="{{ countryName }}">
+                                                <span>{{ countryName }}</span>
+                                            </label>
+                                            <a href="#" data-datatable-filter-clear="countryCode">{{ "clear"|trans }}</a>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
-                    {% endif %}
-                </div>
-            </form>
-            <div class="text-gray-500 hover:text-primary">
-                <a href="#" class="inline-flex items-center gap-x-2 text-white bg-primary hover:bg-orange-600 rounded-lg py-2 px-4 text-sm font-medium whitespace-nowrap transition-all active:scale-[0.97]" title="{{ "Start slideshow"|trans }}" data-light-gallery-trigger>
-                    <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"></path>
-                    </svg>
-                    {{ "Start slideshow"|trans }}
-                </a>
+                    </div>
+                {% endif %}
             </div>
-        </div>
+        </form>
         <div class="flex items-center justify-between gap-x-2 text-xs text-gray-700">
             <div>
                 {% set numberOfResults = '<span class="font-bold" data-dataTable-result-count>' ~ totalPhotoCount ~ '</span>' %}
@@ -82,17 +72,22 @@
         </div>
     </div>
     <div class="flex flex-wrap gap-2 p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-        <div id="images" class="flex flex-wrap gap-2">
+        <div id="images" class="flex flex-wrap gap-2" data-light-gallery>
             {% for image in images %}
                 {% set activity = activitiesPerActivityId[image.getActivityId()] %}
                 {% set lightGalleryElement = {
                     'src': relativeUrl(image.getImageUrl()),
-                    'subHtml': '<p>' ~ activity.getSanitizedName() ~ '</p>',
+                    'subHtml': '<p>' ~ activity.getSanitizedName() ~ '</p>'
+                        ~ '<a href="#" data-model-content-url="' ~ relativeUrl('api/fragment/page/activity/' ~ image.getActivityId()) ~ '"'
+                        ~ ' class="mt-2 inline-flex items-center gap-x-1.5 rounded-lg bg-primary hover:bg-orange-600 py-2 px-4 text-sm font-medium text-white! no-underline! hover:no-underline! transition-all active:scale-[0.97]">'
+                        ~ ("Go to activity"|trans)
+                        ~ '<svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path></svg>'
+                        ~ '</a>',
                     'alt':  activity.getSanitizedName(),
                 } %}
-                <a data-image data-filterables='{{ image.getFilterables()|json_encode }}' data-light-gallery-element='{{ lightGalleryElement|json_encode }}'
+                <a data-image data-filterables='{{ image.getFilterables()|json_encode }}' data-light-gallery-element="{{ lightGalleryElement|json_encode|e('html_attr') }}"
                    class="no-dark grow h-[25vh] relative group/image overflow-hidden rounded-lg shadow-sm"
-                   href="#" data-model-content-url="{{ relativeUrl('api/fragment/page/activity/' ~ image.getActivityId()) }}">
+                   href="{{ relativeUrl(image.getImageUrl()) }}">
                     <img class="h-full w-full object-cover align-bottom transition-transform duration-500 group-hover/image:scale-105 lazy"
                          data-src="{{ relativeUrl(image.getImageUrl()) }}" alt="{{ activity.getName() }}" src="{{ placeholderImage(image.getOrientation()) }}" />
                     <div class="absolute inset-0 bg-black/0 group-hover/image:bg-black/20 transition-colors duration-300"></div>
