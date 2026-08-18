@@ -105,8 +105,14 @@ final readonly class FindRouteMatchesQueryHandler implements QueryHandler
             }
 
             $candidateDistance = (int) $candidate['distance'];
+            // Without the absolute ceiling the allowance grows with the route, leaving long routes
+            // without any geometric constraint at all.
+            $maxWaypointDrift = min(
+                RouteGrid::MAX_WAYPOINT_DRIFT_RATIO * min($subjectDistance, $candidateDistance),
+                RouteGrid::MAX_WAYPOINT_DRIFT_IN_METER,
+            );
             $waypointDrift = $subjectWaypoints->medianDistanceInMeterTo($this->decodeWaypoints($candidate['waypoints']));
-            if ($waypointDrift > RouteGrid::MAX_WAYPOINT_DRIFT_RATIO * min($subjectDistance, $candidateDistance)) {
+            if ($waypointDrift > $maxWaypointDrift) {
                 continue;
             }
 

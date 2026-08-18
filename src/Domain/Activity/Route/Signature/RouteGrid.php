@@ -16,6 +16,7 @@ final readonly class RouteGrid
     public const float MAX_DISTANCE_RATIO = 0.9;
     public const int WAYPOINT_COUNT = 7;
     public const float MAX_WAYPOINT_DRIFT_RATIO = 0.10;
+    public const float MAX_WAYPOINT_DRIFT_IN_METER = 750;
 
     private const int LAT_OFFSET = 9_000_000;
     private const int LNG_OFFSET = 18_000_000;
