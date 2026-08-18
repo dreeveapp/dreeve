@@ -34,7 +34,7 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
 
     private const array PATH_PER_RESOLVER = [
         ActivityFragmentResolver::class => 'activities/activity-9756441741',
-        MonthFragmentResolver::class => 'month/2023-06',
+        MonthFragmentResolver::class => 'monthly-stats/2023-06',
         RewindFragmentResolver::class => 'rewind/2023',
         RewindCompareFragmentResolver::class => 'rewind/2023/compare/2022',
         ActivityMetricsFragmentResolver::class => 'activities/activity-9756441741/metrics',

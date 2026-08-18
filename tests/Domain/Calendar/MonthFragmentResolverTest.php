@@ -17,7 +17,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/month/2023-06');
+        $this->client->request('GET', '/api/fragment/page/monthly-stats/2023-06');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -29,7 +29,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/month/2023-01');
+        $this->client->request('GET', '/api/fragment/page/monthly-stats/2023-01');
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -40,11 +40,11 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/month/2023-06');
+        $this->client->request('GET', '/api/fragment/page/monthly-stats/2023-06');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
-            'month.2023-06',
+            'monthly-stats.2023-06',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
@@ -54,7 +54,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/month/2023-06');
+        $this->client->request('GET', '/api/fragment/data/monthly-stats/2023-06');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -64,7 +64,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/month/2023-01');
+        $this->client->request('GET', '/api/fragment/page/monthly-stats/2023-01');
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
@@ -78,10 +78,10 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/month/2020-07');
+        $this->client->request('GET', '/api/fragment/page/monthly-stats/2020-07');
         $this->assertResponseIsSuccessful();
 
-        $this->client->request('GET', '/api/fragment/page/month/2023-10');
+        $this->client->request('GET', '/api/fragment/page/monthly-stats/2023-10');
         $this->assertResponseIsSuccessful();
     }
 
@@ -90,10 +90,10 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/month/2020-06');
+        $this->client->request('GET', '/api/fragment/page/monthly-stats/2020-06');
         $this->assertResponseStatusCodeSame(404);
 
-        $this->client->request('GET', '/api/fragment/page/month/2023-11');
+        $this->client->request('GET', '/api/fragment/page/monthly-stats/2023-11');
         $this->assertResponseStatusCodeSame(404);
     }
 
@@ -104,11 +104,11 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
 
         $monthFragmentResolver = $this->getContainer()->get(MonthFragmentResolver::class);
 
-        $this->assertNull($monthFragmentResolver->resolve('month/2023-13'));
-        $this->assertNull($monthFragmentResolver->resolve('month/2023-6'));
-        $this->assertNull($monthFragmentResolver->resolve('month/not-a-month'));
-        $this->assertNull($monthFragmentResolver->resolve('month'));
+        $this->assertNull($monthFragmentResolver->resolve('monthly-stats/2023-13'));
+        $this->assertNull($monthFragmentResolver->resolve('monthly-stats/2023-6'));
+        $this->assertNull($monthFragmentResolver->resolve('monthly-stats/not-a-month'));
         $this->assertNull($monthFragmentResolver->resolve('monthly-stats'));
+        $this->assertNull($monthFragmentResolver->resolve('monthly-stats/2023-06/extra'));
     }
 
     /**
@@ -117,7 +117,7 @@ class MonthFragmentResolverTest extends ControllerWebTestCase
      */
     public function testItDoesNotResolveWhenThereAreNoActivities(): void
     {
-        $this->assertNull($this->getContainer()->get(MonthFragmentResolver::class)->resolve('month/2023-06'));
+        $this->assertNull($this->getContainer()->get(MonthFragmentResolver::class)->resolve('monthly-stats/2023-06'));
     }
 
     #[\Override]

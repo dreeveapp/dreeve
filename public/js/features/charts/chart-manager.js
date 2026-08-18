@@ -2,11 +2,10 @@ import {basePath, fetchJson} from "../../utils";
 import {resolveEchartsCallbacks} from "./echarts-callbacks";
 import {v5Theme, v5DarkTheme} from "./echarts-themes";
 import {FilterStorage, FilterName} from "../data-table/storage";
+import {eventBus, Events} from "../../core/event-bus";
 
 export default class ChartManager {
-    constructor(router, modalManager) {
-        this.router = router;
-        this.modalManager = modalManager;
+    constructor() {
         this.allCharts = [];
         this.resizeObserver = new ResizeObserver(entries => {
             for (const entry of entries) {
@@ -66,9 +65,8 @@ export default class ChartManager {
                     return;
                 }
                 const month = (params.dataIndex + 1).toString().padStart(2, "0");
-                const modalId = `${basePath()}/api/fragment/page/month/${params.seriesName}-${month}`;
 
-                this.modalManager.openAndPushToHistoryState(modalId);
+                eventBus.emit(Events.NAVIGATION_REQUESTED, {route: `${basePath()}/monthly-stats/${params.seriesName}-${month}`});
             },
             handleWeeklyStatsClick: (params, clickData) => {
                 if (!params || !params.dataIndex) {
@@ -84,7 +82,7 @@ export default class ChartManager {
                     "start-date": {"from": weeks[params.dataIndex]['from'], "to": weeks[params.dataIndex]['to']},
                 });
 
-                this.router.navigateTo(`/activities`);
+                eventBus.emit(Events.NAVIGATION_REQUESTED, {route: `${basePath()}/activities`});
             },
             handleActivityGridChartClick: (params, clickData) => {
                 if (!params || !params.value || params.value < 1) {
@@ -95,7 +93,7 @@ export default class ChartManager {
                     "start-date": {"from": params.value[0], "to": params.value[0]},
                 });
 
-                this.router.navigateTo(`/activities`);
+                eventBus.emit(Events.NAVIGATION_REQUESTED, {route: `${basePath()}/activities`});
             },
         };
     }

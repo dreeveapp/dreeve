@@ -25,9 +25,11 @@ final readonly class MonthlyStatsFragment implements Fragment
     ) {
     }
 
+    public const string PATH = 'monthly-stats';
+
     public function getPath(): string
     {
-        return 'monthly-stats';
+        return self::PATH;
     }
 
     public function getType(): FragmentType

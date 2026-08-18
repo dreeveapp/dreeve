@@ -19,7 +19,7 @@ use Twig\Environment;
 
 final readonly class MonthFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'month';
+    private const string BASE_PATH = MonthlyStatsFragment::PATH;
 
     public function __construct(
         private ActivityRepository $activityRepository,

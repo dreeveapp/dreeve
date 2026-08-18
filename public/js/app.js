@@ -31,7 +31,7 @@ registerEchartsCallbacks();
 initDrawers();
 
 const modalManager = new ModalManager(router);
-const chartManager = new ChartManager(router, modalManager);
+const chartManager = new ChartManager();
 const scrollTo = new ScrollTo();
 const darkModeManager = new DarkModeManager();
 const lazyLoad = new LazyLoad({

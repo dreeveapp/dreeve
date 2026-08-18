@@ -50,8 +50,7 @@
                             </td>
                             <th scope="row"
                                 class="bg-white sticky left-0 text-right font-medium whitespace-nowrap">
-                                <a href="#"
-                                   data-model-content-url="{{ relativeUrl('api/fragment/page/month/' ~ month.getId()) }}"
+                                <a href="{{ relativeUrl('monthly-stats/' ~ month.getId()) }}" data-router-link
                                    class="text-blue-600 hover:underline">
                                     {{ month.getLabel() }}
                                 </a>
