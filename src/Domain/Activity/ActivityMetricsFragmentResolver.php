@@ -17,8 +17,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class ActivityMetricsFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'activities';
-
     public function __construct(
         private ActivityRepository $activityRepository,
         private CombinedActivityStreamRepository $combinedActivityStreamRepository,
@@ -29,13 +27,7 @@ final readonly class ActivityMetricsFragmentResolver implements FragmentResolver
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!preg_match('#^'.self::BASE_PATH.'/([^/]+)/metrics$#', $path, $matches)) {
-            return null;
-        }
-
-        try {
-            $activityId = ActivityId::fromString($matches[1]);
-        } catch (\InvalidArgumentException) {
+        if (!$activityId = ActivityFragmentPath::match($path, 'metrics')) {
             return null;
         }
 
@@ -51,9 +43,9 @@ final readonly class ActivityMetricsFragmentResolver implements FragmentResolver
         }
 
         return new ResolvedFragment(
-            path: sprintf('%s/%s/metrics', self::BASE_PATH, $activityId),
+            path: ActivityFragmentPath::for($activityId, 'metrics'),
             cacheability: Cacheability::for(
-                cacheKey: sprintf('%s.%s.metrics', self::BASE_PATH, $activityId->toUnprefixedString()),
+                cacheKey: ActivityFragmentPath::cacheKey($activityId, 'metrics'),
                 cacheTags: CacheTags::of(ActivityCacheTag::for($activityId)),
             ),
             render: fn (): string => Json::encode($this->profileChartsFor($activityId)->build()),

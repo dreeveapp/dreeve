@@ -29,7 +29,7 @@ final readonly class SegmentDataTableFragment implements Fragment
 
     public function getPath(): string
     {
-        return 'segments/data-table';
+        return SegmentFragmentPath::COLLECTION.'/data-table';
     }
 
     public function getType(): FragmentType
@@ -40,7 +40,7 @@ final readonly class SegmentDataTableFragment implements Fragment
     public function getCacheability(): Cacheability
     {
         return Cacheability::for(
-            cacheKey: 'segments.data-table',
+            cacheKey: SegmentFragmentPath::COLLECTION.'.data-table',
             cacheTags: CacheTags::of(RootCacheTag::SEGMENTS),
         );
     }

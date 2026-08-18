@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Route\Match;
 
+use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityCacheTag;
-use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Route\Match\FindRouteMatches\FindRouteMatches;
 use App\Infrastructure\Cache\Cacheability;
@@ -19,8 +19,6 @@ use Twig\Environment;
 
 final readonly class ActivityRouteMatchesFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'activities';
-
     public function __construct(
         private ActivityRepository $activityRepository,
         private QueryBus $queryBus,
@@ -30,13 +28,7 @@ final readonly class ActivityRouteMatchesFragmentResolver implements FragmentRes
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!preg_match('#^'.self::BASE_PATH.'/([^/]+)/route-matches$#', $path, $matches)) {
-            return null;
-        }
-
-        try {
-            $activityId = ActivityId::fromString($matches[1]);
-        } catch (\InvalidArgumentException) {
+        if (!$activityId = ActivityFragmentPath::match($path, 'route-matches')) {
             return null;
         }
 
@@ -45,9 +37,9 @@ final readonly class ActivityRouteMatchesFragmentResolver implements FragmentRes
         }
 
         return new ResolvedFragment(
-            path: sprintf('%s/%s/route-matches', self::BASE_PATH, $activityId),
+            path: ActivityFragmentPath::for($activityId, 'route-matches'),
             cacheability: Cacheability::for(
-                cacheKey: sprintf('%s.%s.route-matches', self::BASE_PATH, $activityId->toUnprefixedString()),
+                cacheKey: ActivityFragmentPath::cacheKey($activityId, 'route-matches'),
                 cacheTags: CacheTags::of(
                     ActivityCacheTag::for($activityId),
                     RootCacheTag::ACTIVITIES,

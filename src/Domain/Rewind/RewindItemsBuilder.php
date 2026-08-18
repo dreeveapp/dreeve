@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Rewind;
 
+use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Image\Image;
 use App\Domain\Activity\Image\ImageRepository;
@@ -126,7 +127,7 @@ final readonly class RewindItemsBuilder
                 content: $this->twig->render('html/rewind/rewind-biggest-activity.html.twig', [
                     'activity' => $longestActivity,
                     'leaflet' => $leafletMap ? [
-                        'polylineUrl' => sprintf('activities/%s/polylines', $longestActivity->getId()),
+                        'polylineUrl' => ActivityFragmentPath::for($longestActivity->getId(), 'polylines'),
                         'map' => $leafletMap,
                     ] : null,
                 ])

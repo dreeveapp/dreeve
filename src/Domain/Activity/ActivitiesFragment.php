@@ -31,7 +31,7 @@ final readonly class ActivitiesFragment implements Fragment
 
     public function getPath(): string
     {
-        return 'activities';
+        return ActivityFragmentPath::COLLECTION;
     }
 
     public function getType(): FragmentType

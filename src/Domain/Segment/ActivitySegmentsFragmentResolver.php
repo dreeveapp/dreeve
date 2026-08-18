@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Segment;
 
+use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityCacheTag;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
@@ -18,8 +19,6 @@ use Twig\Environment;
 
 final readonly class ActivitySegmentsFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'activities';
-
     public function __construct(
         private ActivityRepository $activityRepository,
         private SegmentEffortRepository $segmentEffortRepository,
@@ -29,13 +28,7 @@ final readonly class ActivitySegmentsFragmentResolver implements FragmentResolve
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!preg_match('#^'.self::BASE_PATH.'/([^/]+)/segments$#', $path, $matches)) {
-            return null;
-        }
-
-        try {
-            $activityId = ActivityId::fromString($matches[1]);
-        } catch (\InvalidArgumentException) {
+        if (!$activityId = ActivityFragmentPath::match($path, 'segments')) {
             return null;
         }
 
@@ -44,9 +37,9 @@ final readonly class ActivitySegmentsFragmentResolver implements FragmentResolve
         }
 
         return new ResolvedFragment(
-            path: sprintf('%s/%s/segments', self::BASE_PATH, $activityId),
+            path: ActivityFragmentPath::for($activityId, 'segments'),
             cacheability: Cacheability::for(
-                cacheKey: sprintf('%s.%s.segments', self::BASE_PATH, $activityId->toUnprefixedString()),
+                cacheKey: ActivityFragmentPath::cacheKey($activityId, 'segments'),
                 cacheTags: CacheTags::of(
                     ActivityCacheTag::for($activityId),
                     RootCacheTag::SEGMENTS,

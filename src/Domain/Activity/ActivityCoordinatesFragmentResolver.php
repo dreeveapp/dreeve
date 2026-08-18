@@ -15,8 +15,6 @@ use App\Infrastructure\Serialization\Json;
 
 final readonly class ActivityCoordinatesFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'activities';
-
     public function __construct(
         private ActivityRepository $activityRepository,
         private CombinedActivityStreamRepository $combinedActivityStreamRepository,
@@ -26,13 +24,7 @@ final readonly class ActivityCoordinatesFragmentResolver implements FragmentReso
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!preg_match('#^'.self::BASE_PATH.'/([^/]+)/coordinates$#', $path, $matches)) {
-            return null;
-        }
-
-        try {
-            $activityId = ActivityId::fromString($matches[1]);
-        } catch (\InvalidArgumentException) {
+        if (!$activityId = ActivityFragmentPath::match($path, 'coordinates')) {
             return null;
         }
 
@@ -48,9 +40,9 @@ final readonly class ActivityCoordinatesFragmentResolver implements FragmentReso
         }
 
         return new ResolvedFragment(
-            path: sprintf('%s/%s/coordinates', self::BASE_PATH, $activityId),
+            path: ActivityFragmentPath::for($activityId, 'coordinates'),
             cacheability: Cacheability::for(
-                cacheKey: sprintf('%s.%s.coordinates', self::BASE_PATH, $activityId->toUnprefixedString()),
+                cacheKey: ActivityFragmentPath::cacheKey($activityId, 'coordinates'),
                 cacheTags: CacheTags::of(ActivityCacheTag::for($activityId)),
             ),
             render: fn (): string => Json::encode($this->combinedActivityStreamRepository->findOneForActivityAndUnitSystem(

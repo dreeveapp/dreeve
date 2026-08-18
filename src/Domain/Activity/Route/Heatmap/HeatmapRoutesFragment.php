@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Route\Heatmap;
 
+use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\Route\Route;
 use App\Domain\Activity\Route\RouteRepository;
 use App\Domain\Settings\SettingsRepository;
@@ -61,7 +62,7 @@ final readonly class HeatmapRoutesFragment implements Fragment
                     unitSystem: $appearance->getUnitSystem(),
                     dateAndTimeFormat: $appearance->getDateAndTimeFormat(),
                 )
-                ->withRelativeActivityUri($this->urlTwigExtension->toRelativeUrl('api/fragment/page/activities/'.$route->getActivityId()));
+                ->withRelativeActivityUri($this->urlTwigExtension->toRelativeUrl('api/fragment/page/'.ActivityFragmentPath::for($route->getActivityId())));
         }
 
         return $enrichedRoutes;

@@ -25,7 +25,7 @@ final readonly class SegmentsFragment implements Fragment
 
     public function getPath(): string
     {
-        return 'segments';
+        return SegmentFragmentPath::COLLECTION;
     }
 
     public function getType(): FragmentType

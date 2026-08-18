@@ -26,8 +26,6 @@ use Twig\Environment;
 
 final readonly class ActivityFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'activities';
-
     public function __construct(
         private ActivityRepository $activityRepository,
         private EnrichedActivityRepository $enrichedActivityRepository,
@@ -45,13 +43,7 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!preg_match('#^'.self::BASE_PATH.'/([^/]+)$#', $path, $matches)) {
-            return null;
-        }
-
-        try {
-            $activityId = ActivityId::fromString($matches[1]);
-        } catch (\InvalidArgumentException) {
+        if (!$activityId = ActivityFragmentPath::match($path)) {
             return null;
         }
 
@@ -60,9 +52,9 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
         }
 
         return new ResolvedFragment(
-            path: self::BASE_PATH.'/'.$activityId,
+            path: ActivityFragmentPath::for($activityId),
             cacheability: Cacheability::for(
-                cacheKey: sprintf('%s.%s', self::BASE_PATH, $activityId->toUnprefixedString()),
+                cacheKey: ActivityFragmentPath::cacheKey($activityId),
                 cacheTags: CacheTags::of(
                     ActivityCacheTag::for($activityId),
                     RootCacheTag::GEAR,
@@ -97,7 +89,7 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
             'activity' => $activity,
             'enrichedActivity' => $enrichedActivity,
             'leaflet' => $leafletMap instanceof LeafletMap ? [
-                'polylineUrl' => sprintf('%s/%s/polylines', self::BASE_PATH, $activityId),
+                'polylineUrl' => ActivityFragmentPath::for($activityId, 'polylines'),
                 'map' => $leafletMap,
             ] : null,
             'gpxLink' => $this->activityStreamRepository->hasOneForActivityAndStreamType($activityId, StreamType::TIME)

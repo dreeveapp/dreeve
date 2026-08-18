@@ -16,8 +16,6 @@ use App\Infrastructure\Serialization\Json;
 
 final readonly class SegmentPolylinesFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'segments';
-
     public function __construct(
         private SegmentRepository $segmentRepository,
     ) {
@@ -25,13 +23,13 @@ final readonly class SegmentPolylinesFragmentResolver implements FragmentResolve
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!preg_match('#^'.self::BASE_PATH.'/([^/]+)/polylines$#', $path, $matches)) {
+        if (!$segmentId = SegmentFragmentPath::match($path, 'polylines')) {
             return null;
         }
 
         try {
-            $segment = $this->segmentRepository->find(SegmentId::fromString($matches[1]));
-        } catch (EntityNotFound|\InvalidArgumentException) {
+            $segment = $this->segmentRepository->find($segmentId);
+        } catch (EntityNotFound) {
             return null;
         }
 
@@ -40,9 +38,9 @@ final readonly class SegmentPolylinesFragmentResolver implements FragmentResolve
         }
 
         return new ResolvedFragment(
-            path: sprintf('%s/%s/polylines', self::BASE_PATH, $segment->getId()),
+            path: SegmentFragmentPath::for($segment->getId(), 'polylines'),
             cacheability: Cacheability::for(
-                cacheKey: sprintf('%s.%s.polylines', self::BASE_PATH, $segment->getId()->toUnprefixedString()),
+                cacheKey: SegmentFragmentPath::cacheKey($segment->getId(), 'polylines'),
                 cacheTags: CacheTags::of(RootCacheTag::SEGMENTS),
             ),
             render: fn (): string => Json::encode([$segment->getPolyline()?->decodeAndPairLatLng()]),

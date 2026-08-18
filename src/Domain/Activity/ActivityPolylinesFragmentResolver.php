@@ -16,8 +16,6 @@ use App\Infrastructure\Serialization\Json;
 
 final readonly class ActivityPolylinesFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'activities';
-
     public function __construct(
         private ActivityRepository $activityRepository,
         private ActivityStreamRepository $activityStreamRepository,
@@ -26,14 +24,13 @@ final readonly class ActivityPolylinesFragmentResolver implements FragmentResolv
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!preg_match('#^'.self::BASE_PATH.'/([^/]+)/polylines$#', $path, $matches)) {
+        if (!$activityId = ActivityFragmentPath::match($path, 'polylines')) {
             return null;
         }
 
         try {
-            $activityId = ActivityId::fromString($matches[1]);
             $activity = $this->activityRepository->find($activityId);
-        } catch (EntityNotFound|\InvalidArgumentException) {
+        } catch (EntityNotFound) {
             return null;
         }
 
@@ -42,9 +39,9 @@ final readonly class ActivityPolylinesFragmentResolver implements FragmentResolv
         }
 
         return new ResolvedFragment(
-            path: sprintf('%s/%s/polylines', self::BASE_PATH, $activityId),
+            path: ActivityFragmentPath::for($activityId, 'polylines'),
             cacheability: Cacheability::for(
-                cacheKey: sprintf('%s.%s.polylines', self::BASE_PATH, $activityId->toUnprefixedString()),
+                cacheKey: ActivityFragmentPath::cacheKey($activityId, 'polylines'),
                 cacheTags: CacheTags::of(ActivityCacheTag::for($activityId)),
             ),
             render: fn (): string => Json::encode([$this->routeCoordinates($activity)]),

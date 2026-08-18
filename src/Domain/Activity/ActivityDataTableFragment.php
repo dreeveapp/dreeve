@@ -26,7 +26,7 @@ final readonly class ActivityDataTableFragment implements Fragment
 
     public function getPath(): string
     {
-        return 'activities/data-table';
+        return ActivityFragmentPath::COLLECTION.'/data-table';
     }
 
     public function getType(): FragmentType
@@ -37,7 +37,7 @@ final readonly class ActivityDataTableFragment implements Fragment
     public function getCacheability(): Cacheability
     {
         return Cacheability::for(
-            cacheKey: 'activities.data-table',
+            cacheKey: ActivityFragmentPath::COLLECTION.'.data-table',
             cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
         );
     }

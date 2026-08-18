@@ -28,7 +28,6 @@ use Twig\Environment;
 
 final readonly class SegmentFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'segments';
     private const int NUMBER_OF_TOP_EFFORTS = 10;
 
     public function __construct(
@@ -43,13 +42,13 @@ final readonly class SegmentFragmentResolver implements FragmentResolver
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!preg_match('#^'.self::BASE_PATH.'/([^/]+)$#', $path, $matches)) {
+        if (!$segmentId = SegmentFragmentPath::match($path)) {
             return null;
         }
 
         try {
-            $segment = $this->segmentRepository->find(SegmentId::fromString($matches[1]));
-        } catch (EntityNotFound|\InvalidArgumentException) {
+            $segment = $this->segmentRepository->find($segmentId);
+        } catch (EntityNotFound) {
             return null;
         }
 
@@ -59,9 +58,9 @@ final readonly class SegmentFragmentResolver implements FragmentResolver
         );
 
         return new ResolvedFragment(
-            path: sprintf('%s/%s', self::BASE_PATH, $segment->getId()),
+            path: SegmentFragmentPath::for($segment->getId()),
             cacheability: Cacheability::for(
-                cacheKey: sprintf('%s.%s', self::BASE_PATH, $segment->getId()->toUnprefixedString()),
+                cacheKey: SegmentFragmentPath::cacheKey($segment->getId()),
                 cacheTags: CacheTags::of(
                     SegmentCacheTag::for($segment->getId()),
                     RootCacheTag::GEAR,
@@ -103,7 +102,7 @@ final readonly class SegmentFragmentResolver implements FragmentResolver
                 SegmentEffortHistoryChart::create($segmentEfforts)->build()
             ),
             'leaflet' => $leafletMap ? [
-                'polylineUrl' => sprintf('%s/%s/polylines', self::BASE_PATH, $segment->getId()),
+                'polylineUrl' => SegmentFragmentPath::for($segment->getId(), 'polylines'),
                 'map' => $leafletMap,
             ] : null,
         ]);
