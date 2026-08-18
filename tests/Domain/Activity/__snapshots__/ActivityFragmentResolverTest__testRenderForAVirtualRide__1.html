@@ -1,24 +1,39 @@
-<!-- Modal header --><html><body>
-<div class="modal-header z-10000 sticky top-0 bg-white">
+<html><body>
+<nav class="flex mb-5" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
+        <li class="inline-flex items-center">
+                            <a href="/dashboard" data-router-link class="inline-flex items-center text-gray-700 hover:text-primary-600 hover:underline">    <svg class="size-5 mr-2.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+    Dashboard
+</a>
+                    </li>
+                    <li>
+                <div class="flex items-center">
+                    <svg class="size-6 text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                                            <a href="/activities" data-router-link class="ml-1 text-gray-700 hover:text-primary-600 md:ml-2">Activities</a>
+                                    </div>
+            </li>
+                    <li>
+                <div class="flex items-center">
+                    <svg class="size-6 text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                                            <span aria-current="page" class="ml-1 text-gray-700 md:ml-2">Morning Ride</span>
+                                    </div>
+            </li>
+            </ol>
+</nav>
+    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs space-y-6">
         <div class="flex items-start justify-between gap-4">
             <div class="min-w-0">
-                <h3 class="text-lg md:text-xl font-extrabold flex items-center gap-2">
+                <h1 class="text-lg md:text-xl font-extrabold flex items-center gap-2">
                     <span class="line-clamp-1">Morning Ride</span>
                                             <a href="https://www.strava.com/activities/9542782314" class="text-gray-500 hover:text-primary transition" title="Open on Strava">
                             <svg xmlns="http://www.w3.org/2000/svg" class="size-3" viewbox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"></path>
                             </svg>
                         </a>
-                                    </h3>
+                                    </h1>
                             </div>
             <div class="flex items-center gap-2 shrink-0">
-                                                <button type="button" class="close inline-flex items-center justify-center">
-                    <svg class="size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
+                                            </div>
         </div>
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-gray-600">
              <span class="inline-flex items-center gap-1.5">
@@ -40,9 +55,6 @@
                      20.1<span class="text-xxs ml-px whitespace-nowrap">km/h</span> SW
                 </span>
                     </div>
-    </div>
-    <!-- Modal body -->
-    <div class="modal-body space-y-6">
                     <section>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs">

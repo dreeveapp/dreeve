@@ -2,13 +2,13 @@ import {pointToLineDistance, point, lineString} from "../../../libraries/turf";
 import L from 'leaflet';
 import {createFlyToPlacesControl, createMapToolsControl} from "../maps/leaflet-controls";
 import HeatmapCountriesLayer from "./heatmap-countries-layer";
+import {eventBus, Events} from "../../core/event-bus";
 import '../maps/ctrl-scroll-zoom';
 
 export default class HeatmapDrawer {
-    constructor(wrapper, config, modalManager) {
+    constructor(wrapper, config) {
         this.wrapper = wrapper;
         this.config = config;
-        this.modalManager = modalManager;
         this.placesControl = null;
         this.mapToolsControl = null;
         this.mainFeatureGroup = L.featureGroup();
@@ -56,11 +56,11 @@ export default class HeatmapDrawer {
         const container = e.popup.getElement();
         if (!container) return;
 
-        container.querySelectorAll('a[data-model-content-url]').forEach(node => {
+        container.querySelectorAll('a[data-router-link]').forEach(node => {
             node.addEventListener("click", (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                this.modalManager.openAndPushToHistoryState(node.getAttribute('data-model-content-url'));
+                eventBus.emit(Events.NAVIGATION_REQUESTED, {route: node.getAttribute('href')});
             });
         });
     };
@@ -98,8 +98,8 @@ export default class HeatmapDrawer {
                  <ul class="divide-default divide-y divide-gray-200">
                     ${nearby.map(entry => `
                      <li class="py-2">
-                      <a href="#" title="${entry.route.name}" class="block truncate font-medium text-blue-600 hover:underline" 
-                        data-model-content-url="${entry.route.activityUrl}">
+                      <a href="${entry.route.activityUrl}" title="${entry.route.name}" class="block truncate font-medium text-blue-600 hover:underline" 
+                        data-router-link>
                         ${entry.route.name}
                       </a>
                       <div class="flex items-center justify-between text-xs text-gray-500">

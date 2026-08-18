@@ -1802,9 +1802,6 @@
   .max-h-128 {
     max-height: calc(var(--spacing) * 128);
   }
-  .max-h-\[calc\(100vh-165px\)\] {
-    max-height: calc(100vh - 165px);
-  }
   .max-h-\[calc\(100vh-285px\)\] {
     max-height: calc(100vh - 285px);
   }
@@ -4298,8 +4295,8 @@
     .lg\:sticky {
       position: sticky;
     }
-    .lg\:top-23 {
-      top: calc(var(--spacing) * 23);
+    .lg\:top-20 {
+      top: calc(var(--spacing) * 20);
     }
     .lg\:left-0 {
       left: 0px;
@@ -5792,18 +5789,6 @@ table.data-table {
     padding: calc(var(--spacing) * 4);
     @media (width >= 48rem) {
       padding: calc(var(--spacing) * 5);
-    }
-  }
-  .page-header {
-    margin-bottom: calc(var(--spacing) * 4);
-    & h1 {
-      display: flex;
-      align-items: center;
-      font-size: var(--text-lg);
-      line-height: var(--tw-leading, var(--text-lg--line-height));
-      --tw-font-weight: var(--font-weight-semibold);
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-gray-900);
     }
   }
   .pill {

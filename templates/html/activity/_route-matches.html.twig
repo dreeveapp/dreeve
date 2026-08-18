@@ -18,7 +18,7 @@
                             {{ _self.routeMatchRow(routeMatch) }}
                         </div>
                     {% else %}
-                        <a href="#" data-model-content-url="{{ relativeUrl('api/fragment/page/activities/' ~ routeMatch.getActivityId()) }}" rel="nofollow"
+                        <a href="{{ relativeUrl('activities/' ~ routeMatch.getActivityId()) }}" data-router-link
                            class="group/route-match flex items-center gap-3 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs hover:ring-primary/30 rounded-xl p-3 transition">
                             {{ _self.routeMatchRow(routeMatch) }}
                         </a>

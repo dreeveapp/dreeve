@@ -60,8 +60,8 @@ final readonly class UrlTwigExtension
         $activityTitle = $activity->getName();
 
         return sprintf(
-            '<a href="#" data-model-content-url="%s" class="flex items-center gap-x-1 font-medium text-blue-600 hover:underline" rel="nofollow">%s<span class="%s">%s</span></a>',
-            $this->toRelativeUrl('api/fragment/page/'.ActivityFragmentPath::for($activity->getId())),
+            '<a href="%s" data-router-link class="flex items-center gap-x-1 font-medium text-blue-600 hover:underline">%s<span class="%s">%s</span></a>',
+            $this->toRelativeUrl(ActivityFragmentPath::for($activity->getId())),
             $activityIcon,
             $truncate ? 'truncate' : '',
             $ellipses ? $this->stringTwigExtension->doEllipses($activityTitle, $ellipses) : $activityTitle

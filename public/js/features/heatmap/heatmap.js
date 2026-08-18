@@ -4,14 +4,14 @@ import HeatmapDrawer from "./heatmap-drawer";
 import {fetchJson} from "../../utils";
 
 export default class Heatmap {
-    constructor(wrapper, modalManager) {
+    constructor(wrapper) {
         this.wrapper = wrapper;
         this.heatmap = wrapper.querySelector('[data-leaflet-routes]');
         this.resetBtn = wrapper.querySelector('[data-dataTable-reset]');
         this.config = JSON.parse(this.heatmap.getAttribute('data-heatmap-config'));
 
         this.filterManager = new FilterManager(wrapper);
-        this.drawer = new HeatmapDrawer(this.heatmap, this.config, modalManager);
+        this.drawer = new HeatmapDrawer(this.heatmap, this.config);
     }
 
     async render() {

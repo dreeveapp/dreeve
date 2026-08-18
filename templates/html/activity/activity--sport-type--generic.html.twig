@@ -1,9 +1,17 @@
+{% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [
+    {
+        'url': 'activities',
+        'label': 'Activities'|trans
+    },
+    {
+        'url': 'activities/' ~ activity.getId(),
+        'label': activity.getName()|ellipses(50)
+    }]} %}
 {% autoescape false %}
-    <!-- Modal header -->
-    <div class="modal-header z-10000 sticky top-0 bg-white">
+    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs space-y-6">
         <div class="flex items-start justify-between gap-4">
             <div class="min-w-0">
-                <h3 class="text-lg md:text-xl font-extrabold flex items-center gap-2">
+                <h1 class="text-lg md:text-xl font-extrabold flex items-center gap-2">
                     <span class="line-clamp-1">{{ activity.getName() }}</span>
                     {% if activity.getImportSource() == enum('App\\Domain\\Activity\\ImportSource').STRAVA_API %}
                         <a href="{{ activity.getUrl() }}" class="text-gray-500 hover:text-primary transition" title="Open on Strava">
@@ -12,7 +20,7 @@
                             </svg>
                         </a>
                     {% endif %}
-                </h3>
+                </h1>
                 {% if activity.getDescription() %}
                     <details class="group/desc mb-3 mt-1">
                         <summary class="list-none cursor-pointer text-xs text-gray-500 line-clamp-1 group-open/desc:line-clamp-none whitespace-pre-line">{{ activity.getDescription() }}</summary>
@@ -36,12 +44,6 @@
                         GPX
                     </a>
                 {% endif %}
-                <button type="button" class="close inline-flex items-center justify-center">
-                    <svg class="size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">{{ "Close modal"|trans }}</span>
-                </button>
             </div>
         </div>
         <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-gray-600">
@@ -67,9 +69,6 @@
                 </span>
             {% endif %}
         </div>
-    </div>
-    <!-- Modal body -->
-    <div class="modal-body space-y-6">
         {% block mainStatsOnTop %}
             <section>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -176,18 +175,24 @@
                     <h3 class="font-bold text-gray-900">{{ "Photos"|trans }}</h3>
                     <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ localImagePaths|length }}</span>
                 </div>
-                <div class="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
-                    {% for imagePath in activity.getLocalImagePaths() %}
-                        <div class="shrink-0 h-32 rounded-lg overflow-hidden">
-                            <img src="{{ placeholderImage() }}" data-src="{{ relativeUrl(imagePath) }}" alt="Activity photo" class="h-full w-auto block lazy" />
-                        </div>
+                <div class="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1" data-light-gallery>
+                    {% for imagePath in localImagePaths %}
+                        {% set lightGalleryElement = {
+                            'src': relativeUrl(imagePath),
+                            'subHtml': '<p>' ~ activity.getSanitizedName() ~ '</p>',
+                            'alt': activity.getSanitizedName(),
+                        } %}
+                        <a class="shrink-0 h-32 rounded-lg overflow-hidden" href="{{ relativeUrl(imagePath) }}"
+                           data-light-gallery-element="{{ lightGalleryElement|json_encode|e('html_attr') }}">
+                            <img src="{{ placeholderImage() }}" data-src="{{ relativeUrl(imagePath) }}" alt="{{ activity.getSanitizedName() }}" class="h-full w-auto block lazy" />
+                        </a>
                     {% endfor %}
                 </div>
             </section>
         {% endif %}
         <section class="rounded-lg overflow-clip border border-gray-200 shadow-xs bg-white">
             {% if leaflet %}
-                <div class="relative border-b border-gray-200 lg:sticky lg:top-23 lg:z-10 lg:bg-white">
+                <div class="relative border-b border-gray-200 lg:sticky lg:top-20 lg:z-10 lg:bg-white">
                     {% set leafletOptions = {
                         'polylineUrl': relativeUrl('api/fragment/data/' ~ leaflet.polylineUrl),
                         'tileLayer': leaflet.map.getTileLayer(),

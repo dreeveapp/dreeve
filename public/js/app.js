@@ -81,7 +81,7 @@ eventBus.on(Events.PAGE_LOADED, async ({page, modalId}) => {
         const {default: Heatmap} = await import(
             /* webpackChunkName: "leaflet" */ './features/heatmap/heatmap'
         );
-        await new Heatmap($heatmapWrapper, modalManager).render();
+        await new Heatmap($heatmapWrapper).render();
     }
     if (page === 'photos') {
         const $photoWallWrapper = document.querySelector('.photo-wall-wrapper');
@@ -99,6 +99,9 @@ eventBus.on(Events.MODAL_HISTORY_CHANGED, ({modalId}) => {
     if (modalId) {
         modalManager.open(modalId);
     }
+});
+eventBus.on(Events.NAVIGATION_REQUESTED, ({route}) => {
+    router.navigateTo(route, null);
 });
 eventBus.on(Events.NAVIGATION_CLICKED, ({link}) => {
     if (!link || !link.hasAttribute('data-filters')) {

@@ -8,6 +8,7 @@ export const Events = Object.freeze({
     TAB_CHANGED:                'tab:changed',
     SIDEBAR_RESIZED:            'sidebar:resized',
     NAVIGATION_CLICKED:         'navigation:clicked',
+    NAVIGATION_REQUESTED:       'navigation:requested',
     DATA_TABLE_CLUSTER_CHANGED: 'dataTable:clusterChanged',
     REPEATER_CHANGED:           'repeater:changed',
 });

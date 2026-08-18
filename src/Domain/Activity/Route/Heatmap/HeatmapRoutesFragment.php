@@ -62,7 +62,7 @@ final readonly class HeatmapRoutesFragment implements Fragment
                     unitSystem: $appearance->getUnitSystem(),
                     dateAndTimeFormat: $appearance->getDateAndTimeFormat(),
                 )
-                ->withRelativeActivityUri($this->urlTwigExtension->toRelativeUrl('api/fragment/page/'.ActivityFragmentPath::for($route->getActivityId())));
+                ->withRelativeActivityUri($this->urlTwigExtension->toRelativeUrl(ActivityFragmentPath::for($route->getActivityId())));
         }
 
         return $enrichedRoutes;

@@ -1,9 +1,0 @@
-@layer components {
-    .page-header {
-        @apply mb-4;
-
-        & h1 {
-            @apply flex items-center text-lg font-semibold text-gray-900;
-        }
-    }
-}

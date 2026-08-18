@@ -78,7 +78,7 @@
                 {% set lightGalleryElement = {
                     'src': relativeUrl(image.getImageUrl()),
                     'subHtml': '<p>' ~ activity.getSanitizedName() ~ '</p>'
-                        ~ '<a href="#" data-model-content-url="' ~ relativeUrl('api/fragment/page/activities/' ~ image.getActivityId()) ~ '"'
+                        ~ '<a href="' ~ relativeUrl('activities/' ~ image.getActivityId()) ~ '" data-router-link'
                         ~ ' class="mt-2 inline-flex items-center gap-x-1.5 rounded-lg bg-primary hover:bg-orange-600 py-2 px-4 text-sm font-medium text-white! no-underline! hover:no-underline! transition-all active:scale-[0.97]">'
                         ~ ("Go to activity"|trans)
                         ~ '<svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path></svg>'
