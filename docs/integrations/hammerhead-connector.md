@@ -1,4 +1,4 @@
-Dreeve imports anything dropped into its `watch/` folder. Getting your Wahoo workouts *into* that
+Dreeve imports anything dropped into its `watch/` folder. Getting your Hammerhead activities *into* that
 folder is what the **Hammerhead (Karoo) Connector** does: it periodically fetches workout activities from the Hammerhead Dashboard API, downloads the original `.fit` files, and drops them in. No manual exports.
 
 ```
