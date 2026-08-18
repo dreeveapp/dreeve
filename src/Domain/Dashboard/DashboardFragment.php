@@ -20,9 +20,11 @@ final readonly class DashboardFragment implements Fragment
     ) {
     }
 
+    public const string PATH = 'dashboard';
+
     public function getPath(): string
     {
-        return 'dashboard';
+        return self::PATH;
     }
 
     public function getType(): FragmentType

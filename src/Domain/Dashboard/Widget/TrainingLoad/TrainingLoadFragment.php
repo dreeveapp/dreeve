@@ -6,6 +6,7 @@ namespace App\Domain\Dashboard\Widget\TrainingLoad;
 
 use App\Domain\Activity\DailyTrainingLoad;
 use App\Domain\Activity\Stream\ActivityHeartRateRepository;
+use App\Domain\Dashboard\DashboardFragment;
 use App\Domain\Dashboard\Widget\TrainingLoad\FindNumberOfRestDays\FindNumberOfRestDays;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -33,7 +34,7 @@ final readonly class TrainingLoadFragment implements Fragment
 
     public function getPath(): string
     {
-        return 'training-load';
+        return DashboardFragment::PATH.'/training-load';
     }
 
     public function getType(): FragmentType

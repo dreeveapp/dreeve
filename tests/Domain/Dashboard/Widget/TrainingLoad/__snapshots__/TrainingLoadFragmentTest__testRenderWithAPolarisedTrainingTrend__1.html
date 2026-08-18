@@ -1,19 +1,26 @@
-<!-- Modal header --><html><body>
-<div class="modal-header flex items-center justify-between">
-        <h3>
+<html><body>
+<nav class="flex min-w-0 max-w-full overflow-hidden mb-4" aria-label="Breadcrumb">
+    <ol class="flex min-w-0 items-center gap-x-1 text-xs font-medium">
+        <li class="inline-flex items-center shrink-0">
+                            <a href="/dashboard" data-router-link class="inline-flex items-center whitespace-nowrap text-gray-700 hover:text-primary hover:underline">    <svg class="size-4 shrink-0 mr-1.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+    Dashboard
+</a>
+                    </li>
+                    <li class="min-w-0">
+                <div class="flex min-w-0 items-center">
+                    <svg class="size-4 shrink-0 text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                                            <span aria-current="page" title="Training Load Analysis" class="ml-1 min-w-0 truncate text-gray-700">Training Load Analysis</span>
+                                    </div>
+            </li>
+            </ol>
+</nav>
+    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <div class="mb-4 flex items-center justify-between">
+            <h1 class="flex items-center text-lg font-semibold text-gray-900">
             <span> Training Load Analysis</span>
-        </h3>
-        <div class="flex items-center">
-            <button type="button" class="close">
-                <svg class="size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
-                </svg>
-                <span class="sr-only">Close modal</span>
-            </button>
+            </h1>
         </div>
-    </div>
-    <!-- Modal body -->
-    <div class="modal-body space-y-4">
+        <div class="space-y-4">
         <!-- Tabs -->
         <div class="tabs tabs--default">
             <ul id="trainingLoadTab" data-tabs="#trainingLoadTabContent" role="tablist">
@@ -405,4 +412,5 @@
             </div>
         </div>
     </div>
+</div>
 </body></html>

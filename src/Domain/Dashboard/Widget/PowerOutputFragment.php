@@ -11,6 +11,7 @@ use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Activity\Stream\ActivityPowerRepository;
 use App\Domain\Activity\Stream\BestPowerOutputs;
 use App\Domain\Activity\Stream\PowerOutputChart;
+use App\Domain\Dashboard\DashboardFragment;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -38,7 +39,7 @@ final readonly class PowerOutputFragment implements Fragment
 
     public function getPath(): string
     {
-        return 'power-output';
+        return DashboardFragment::PATH.'/power-output';
     }
 
     public function getType(): FragmentType
