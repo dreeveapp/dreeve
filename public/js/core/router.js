@@ -9,7 +9,7 @@ export default class Router {
         this.spinner = app.querySelector('#spinner');
         this.menu = document.querySelector('aside');
         this.menuItems = document.querySelectorAll(
-            'nav a[data-router-content-url], aside li a[data-router-content-url]'
+            'nav a[data-router-link], aside li a[data-router-link]'
         );
         this.mobileNavTriggerEl = document.querySelector('[data-drawer-target="drawer-navigation"]');
     }
@@ -27,17 +27,9 @@ export default class Router {
     }
 
     determineActiveMenuLink(url) {
-        const activeLink = document.querySelector(`aside li a[href="${url}"][data-router-content-url]`);
-        if (activeLink) {
-            return activeLink;
-        }
+        const activeMenuLink = this.toPath(url).split('/')[0];
 
-        const newUrl = url.replace(/\/[^\/]*$/, '');
-        if (newUrl === url || newUrl === '') {
-            return null;
-        }
-
-        return this.determineActiveMenuLink(newUrl);
+        return document.querySelector(`aside li a[href="${basePath()}/${activeMenuLink}"][data-router-link]`);
     }
 
     toPath(url) {
@@ -45,10 +37,11 @@ export default class Router {
     }
 
     determineContentUrl(page) {
+        const {baseUrl, pathPattern} = window.dreeve.pageFragment;
         const path = this.toPath(page);
-        const fragmentPath = /^[a-zA-Z0-9_\-\/]+$/.test(path) ? path : 'not-found';
+        const fragmentPath = new RegExp(`^${pathPattern}$`).test(path) ? path : 'not-found';
 
-        return `${basePath()}/api/fragment/page/${fragmentPath}`;
+        return `${baseUrl}/${fragmentPath}`;
     }
 
     async renderContent(page, modalId, restoreScroll = false) {
@@ -86,7 +79,7 @@ export default class Router {
 
     registerNavigation() {
         document.addEventListener('click', async e => {
-            const link = e.target.closest?.('a[data-router-content-url]');
+            const link = e.target.closest?.('a[data-router-link]');
             if (!link) return;
 
             e.preventDefault();

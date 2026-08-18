@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application;
 
+use App\Controller\Api\ApiFragmentRequestHandler;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\Image\ImageRepository;
@@ -14,7 +15,9 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Cacheable;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\String\RelativeUrl;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Translation\LocaleSwitcher;
 use Twig\Environment;
@@ -78,6 +81,10 @@ final readonly class IndexPage implements Cacheable
                     'elevationSymbol' => $unitSystem->elevationSymbol(),
                 ],
                 'leafletConfig' => $this->settingsRepository->maps()->getLeafletConfig(),
+                'pageFragment' => [
+                    'baseUrl' => RelativeUrl::from(ApiFragmentRequestHandler::PATH_PREFIX.'/'.FragmentType::PAGE->value, $this->appUrl)->toRelativeUrl(),
+                    'pathPattern' => ApiFragmentRequestHandler::PATH_REQUIREMENT,
+                ],
             ]),
         ]);
     }

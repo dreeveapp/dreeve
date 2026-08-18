@@ -7,109 +7,107 @@
     <!-- MONTHLY STATS -->
     <div class="grid grid-cols-1 mb-4">
         <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-            <div class="overflow-auto max-h-[calc(100vh-165px)] relative">
-                <table class="data-table" data-accordion="table-months"
-                       data-active-classes="text-gray-500" data-inactive-classes="text-gray-500">
-                    <thead>
-                    <tr class="group/row">
-                        <th class="narrow"></th>
-                        <th scope="col" class="narrow sticky left-0 bg-gray-50">
+            <table class="data-table" data-accordion="table-months"
+                   data-active-classes="text-gray-500" data-inactive-classes="text-gray-500">
+                <thead>
+                <tr class="group/row">
+                    <th class="narrow"></th>
+                    <th scope="col" class="narrow sticky left-0 bg-gray-50">
 
-                        </th>
-                        <th scope="col" class="narrow">
-                            # {{ "workouts"|trans }}
-                        </th>
-                        <th scope="col">
-                            {{ "Dist."|trans }}
-                        </th>
-                        <th scope="col">
-                            {{ "Elev."|trans }}
-                        </th>
-                        <th scope="col">
-                            {{ "Moving time"|trans }}
-                        </th>
-                        <th scope="col">
-                            {{ "Cal."|trans }}
-                        </th>
-                    </tr>
-                    </thead>
-                    {% for month in months %}
-                        {% set statsForCurrentMonth = monthlyStatistics.getForMonth(month) %}
-                        {% if statsForCurrentMonth|length > 0 %}
-                            <tbody>
-                            <tr class="group/row cursor-pointer"
-                                id="table-months-header-{{ loop.index0 }}"
-                                data-accordion-target="#table-months-content-{{ loop.index0 }}"
-                                aria-expanded="false" aria-controls="table-months-content-{{ loop.index0 }}">
-                                <td class="w-4 text-gray-700">
-                                    <svg data-accordion-icon class="size-2 rotate-180 shrink-0" aria-hidden="true"
-                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                              stroke-width="2"
-                                              d="M9 5 5 1 1 5"/>
-                                    </svg>
-                                </td>
-                                <th scope="row"
-                                    class="bg-white sticky left-0 text-right font-medium whitespace-nowrap">
-                                    <a href="#"
-                                       data-model-content-url="{{ relativeUrl('api/fragment/page/month/' ~ month.getId()) }}"
-                                       class="text-blue-600 hover:underline">
-                                        {{ month.getLabel() }}
-                                    </a>
-                                </th>
-                                <td class="truncate">
-                                    {{ statsForCurrentMonth.numberOfActivities }}
-                                </td>
-                                <td class="ptruncate">
-                                    {{ statsForCurrentMonth.distance|renderMeasurement(0) }}
-                                </td>
-                                <td class="truncate">
-                                    {{ statsForCurrentMonth.elevation|renderMeasurement(0) }}
-                                </td>
-                                <td class="truncate" title="{{ statsForCurrentMonth.movingTime.toHour().toFloat()|formatNumber(1) }}h">
-                                    {{ statsForCurrentMonth.movingTime|formatSeconds }}
-                                </td>
-                                <td class="truncate">
-                                    {{ statsForCurrentMonth.calories|formatNumber(0) }}<span class="text-xxs ml-px">kcal</span>
-                                </td>
-                            </tr>
-                            </tbody>
-                            <tbody class="hidden border-b"
-                                   id="table-months-content-{{ loop.index0 }}"
-                                   aria-labelledby="table-months-header-{{ loop.index0 }}">
-                            {% for sportType in sportTypes %}
-                                {% set totalsForSportType = monthlyStatistics.getForMonthAndSportType(month, sportType) %}
-                                {% if totalsForSportType.numberOfActivities > 0 %}
-                                    <tr>
-                                        <td class="w-4 p-2">
+                    </th>
+                    <th scope="col" class="narrow">
+                        # {{ "workouts"|trans }}
+                    </th>
+                    <th scope="col">
+                        {{ "Dist."|trans }}
+                    </th>
+                    <th scope="col">
+                        {{ "Elev."|trans }}
+                    </th>
+                    <th scope="col">
+                        {{ "Moving time"|trans }}
+                    </th>
+                    <th scope="col">
+                        {{ "Cal."|trans }}
+                    </th>
+                </tr>
+                </thead>
+                {% for month in months %}
+                    {% set statsForCurrentMonth = monthlyStatistics.getForMonth(month) %}
+                    {% if statsForCurrentMonth|length > 0 %}
+                        <tbody>
+                        <tr class="group/row cursor-pointer"
+                            id="table-months-header-{{ loop.index0 }}"
+                            data-accordion-target="#table-months-content-{{ loop.index0 }}"
+                            aria-expanded="false" aria-controls="table-months-content-{{ loop.index0 }}">
+                            <td class="w-4 text-gray-700">
+                                <svg data-accordion-icon class="size-2 rotate-180 shrink-0" aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="M9 5 5 1 1 5"/>
+                                </svg>
+                            </td>
+                            <th scope="row"
+                                class="bg-white sticky left-0 text-right font-medium whitespace-nowrap">
+                                <a href="#"
+                                   data-model-content-url="{{ relativeUrl('api/fragment/page/month/' ~ month.getId()) }}"
+                                   class="text-blue-600 hover:underline">
+                                    {{ month.getLabel() }}
+                                </a>
+                            </th>
+                            <td class="truncate">
+                                {{ statsForCurrentMonth.numberOfActivities }}
+                            </td>
+                            <td class="ptruncate">
+                                {{ statsForCurrentMonth.distance|renderMeasurement(0) }}
+                            </td>
+                            <td class="truncate">
+                                {{ statsForCurrentMonth.elevation|renderMeasurement(0) }}
+                            </td>
+                            <td class="truncate" title="{{ statsForCurrentMonth.movingTime.toHour().toFloat()|formatNumber(1) }}h">
+                                {{ statsForCurrentMonth.movingTime|formatSeconds }}
+                            </td>
+                            <td class="truncate">
+                                {{ statsForCurrentMonth.calories|formatNumber(0) }}<span class="text-xxs ml-px">kcal</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody class="hidden border-b"
+                               id="table-months-content-{{ loop.index0 }}"
+                               aria-labelledby="table-months-header-{{ loop.index0 }}">
+                        {% for sportType in sportTypes %}
+                            {% set totalsForSportType = monthlyStatistics.getForMonthAndSportType(month, sportType) %}
+                            {% if totalsForSportType.numberOfActivities > 0 %}
+                                <tr>
+                                    <td class="w-4 p-2">
 
-                                        </td>
-                                        <td class="text-gray-700 bg-white sticky left-0 text-right font-medium whitespace-nowrap">
-                                            {{ sportType|trans }}
-                                        </td>
-                                        <td class="truncate">
-                                            {{ totalsForSportType.numberOfActivities }}
-                                        </td>
-                                        <td class="truncate">
-                                            {{ totalsForSportType.distance|renderMeasurement(0) }}
-                                        </td>
-                                        <td class="truncate">
-                                            {{ totalsForSportType.elevation|renderMeasurement(0) }}
-                                        </td>
-                                        <td class="truncate" title="{{ totalsForSportType.movingTime.toHour().toFloat()|formatNumber(1) }}h">
-                                            {{ totalsForSportType.movingTime|formatSeconds }}
-                                        </td>
-                                        <td class="truncate">
-                                            {{ totalsForSportType.calories|formatNumber(0) }}<span class="text-xs">kcal</span>
-                                        </td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
-                            </tbody>
-                        {% endif %}
-                    {% endfor %}
-                </table>
-            </div>
+                                    </td>
+                                    <td class="text-gray-700 bg-white sticky left-0 text-right font-medium whitespace-nowrap">
+                                        {{ sportType|trans }}
+                                    </td>
+                                    <td class="truncate">
+                                        {{ totalsForSportType.numberOfActivities }}
+                                    </td>
+                                    <td class="truncate">
+                                        {{ totalsForSportType.distance|renderMeasurement(0) }}
+                                    </td>
+                                    <td class="truncate">
+                                        {{ totalsForSportType.elevation|renderMeasurement(0) }}
+                                    </td>
+                                    <td class="truncate" title="{{ totalsForSportType.movingTime.toHour().toFloat()|formatNumber(1) }}h">
+                                        {{ totalsForSportType.movingTime|formatSeconds }}
+                                    </td>
+                                    <td class="truncate">
+                                        {{ totalsForSportType.calories|formatNumber(0) }}<span class="text-xs">kcal</span>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    {% endif %}
+                {% endfor %}
+            </table>
         </div>
     </div>
 {% endautoescape %}

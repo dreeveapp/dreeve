@@ -154,13 +154,13 @@
                             {% endif %}
                         </span>
                     </div>
-                    <a href="{{ relativeUrl('activities') }}" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group" data-router-force-reload data-router-content-url="{{ relativeUrl('api/fragment/page/activities') }}" data-filters='{{ dataFilters('activities', {gear: activity.getGearIdIncludingNone()}) }}'>
+                    <a href="{{ relativeUrl('activities') }}" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group" data-router-force-reload data-router-link data-filters='{{ dataFilters('activities', {gear: activity.getGearIdIncludingNone()}) }}'>
                         <span class="text-xs text-gray-500 shrink-0">{{ "Gear"|trans }}</span>
                         <span class="text-xs font-bold text-gray-900 group-hover:text-primary truncate" title="{{ enrichedActivity.getGearName() }}">
                             {{ enrichedActivity.getGearName() ?: 'Unspecified'|trans }}
                         </span>
                     </a>
-                    <a href="{{ relativeUrl('activities') }}" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group" data-router-force-reload data-router-content-url="{{ relativeUrl('api/fragment/page/activities') }}" data-filters='{{ dataFilters('activities', {device: activity.getDeviceId()}) }}'>
+                    <a href="{{ relativeUrl('activities') }}" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group" data-router-force-reload data-router-link data-filters='{{ dataFilters('activities', {device: activity.getDeviceId()}) }}'>
                         <span class="text-xs text-gray-500 shrink-0">{{ "Device"|trans }}</span>
                         <span class="text-xs font-bold text-gray-900 group-hover:text-primary truncate" title="{{ activity.getDeviceName() }}">
                             {{ activity.getDeviceName() ?: 'None'|trans }}
@@ -204,8 +204,8 @@
             {% if hasProfileChart is not empty %}
                 <div>
                     <div style="height: {{ profileChartHeight }}px"
-                         data-echarts-options-url='{{ relativeUrl('api/fragment/data/activity/' ~ activity.getId() ~ '/metrics') }}'
-                         data-leaflet-echart-connect='{{ relativeUrl('api/fragment/data/activity/' ~ activity.getId() ~ '/coordinates') }}'
+                         data-echarts-options-url='{{ relativeUrl('api/fragment/data/activities/' ~ activity.getId() ~ '/metrics') }}'
+                         data-leaflet-echart-connect='{{ relativeUrl('api/fragment/data/activities/' ~ activity.getId() ~ '/coordinates') }}'
                     ></div>
                 </div>
             {% endif %}
@@ -334,11 +334,11 @@
             </section>
         {% endif %}
         <section class="grid grid-cols-1 gap-4">
-            <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activity/' ~ activity.getId() ~ '/best-efforts') }}"></div>
+            <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activities/' ~ activity.getId() ~ '/best-efforts') }}"></div>
             {% block splitsAndLaps %}
             {% endblock splitsAndLaps %}
-            <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activity/' ~ activity.getId() ~ '/segments') }}"></div>
-            <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activity/' ~ activity.getId() ~ '/route-matches') }}"></div>
+            <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activities/' ~ activity.getId() ~ '/segments') }}"></div>
+            <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activities/' ~ activity.getId() ~ '/route-matches') }}"></div>
         </section>
         {% if distributionCharts is not empty %}
             <section>

@@ -5794,6 +5794,18 @@ table.data-table {
       padding: calc(var(--spacing) * 5);
     }
   }
+  .page-header {
+    margin-bottom: calc(var(--spacing) * 4);
+    & h1 {
+      display: flex;
+      align-items: center;
+      font-size: var(--text-lg);
+      line-height: var(--tw-leading, var(--text-lg--line-height));
+      --tw-font-weight: var(--font-weight-semibold);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-gray-900);
+    }
+  }
   .pill {
     display: inline-flex;
     align-items: center;

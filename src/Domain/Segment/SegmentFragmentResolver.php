@@ -28,7 +28,7 @@ use Twig\Environment;
 
 final readonly class SegmentFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'segment';
+    private const string BASE_PATH = 'segments';
     private const int NUMBER_OF_TOP_EFFORTS = 10;
 
     public function __construct(

@@ -16,7 +16,7 @@ class ActivityMetricsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activity/activity-9756441741/metrics');
+        $this->client->request('GET', '/api/fragment/data/activities/activity-9756441741/metrics');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
@@ -28,11 +28,11 @@ class ActivityMetricsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activity/activity-9756441741/metrics');
+        $this->client->request('GET', '/api/fragment/data/activities/activity-9756441741/metrics');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
-            'activity.9756441741.metrics',
+            'activities.9756441741.metrics',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
         $this->assertResponseHeaderSame(
@@ -46,7 +46,7 @@ class ActivityMetricsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741/metrics');
+        $this->client->request('GET', '/api/fragment/page/activities/activity-9756441741/metrics');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -56,7 +56,7 @@ class ActivityMetricsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activity/activity-9830227112/metrics');
+        $this->client->request('GET', '/api/fragment/data/activities/activity-9830227112/metrics');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -66,7 +66,7 @@ class ActivityMetricsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activity/activity-1/metrics');
+        $this->client->request('GET', '/api/fragment/data/activities/activity-1/metrics');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -76,7 +76,7 @@ class ActivityMetricsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activity/9756441741/metrics');
+        $this->client->request('GET', '/api/fragment/data/activities/9756441741/metrics');
 
         $this->assertResponseStatusCodeSame(404);
     }

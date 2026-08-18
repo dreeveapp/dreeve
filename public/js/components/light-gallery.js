@@ -1,6 +1,6 @@
 const CONTAINER_SELECTOR = '[data-light-gallery]';
 const ELEMENT_SELECTOR = '[data-light-gallery-element]';
-const NAVIGATION_SELECTOR = 'a[data-model-content-url], a[data-router-content-url]';
+const NAVIGATION_SELECTOR = 'a[data-model-content-url], a[data-router-link]';
 
 const instances = new Map();
 

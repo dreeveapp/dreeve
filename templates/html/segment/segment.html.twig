@@ -1,16 +1,24 @@
+{% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [
+    {
+        'url': 'segments',
+        'label': 'Segments'|trans
+    },
+    {
+        'url': 'segments/' ~ segment.getId(),
+        'label': segment.getName()|ellipses(50)
+    }]} %}
 {% autoescape false %}
-    <!-- Modal header -->
-    <div class="modal-header flex items-center justify-between z-10000 sticky top-0 bg-white">
-        <h3>
-            <a class="flex items-center gap-x-1 hover:underline" href="{{ segment.getUrl() }}" target="_blank" rel="nofollow">
-                {{ segment.getName() }}
-                <svg class="size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"/>
-                </svg>
-            </a>
-        </h3>
-        <div class="flex items-center">
-            <ul class="hidden md:flex text-center mr-2 divide-x divide-gray-200">
+    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <div class="page-header flex items-center justify-between">
+            <h1>
+                <a class="flex items-center gap-x-1 hover:underline" href="{{ segment.getUrl() }}" target="_blank" rel="nofollow">
+                    {{ segment.getName() }}
+                    <svg class="size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"/>
+                    </svg>
+                </a>
+            </h1>
+            <ul class="hidden md:flex text-center divide-x divide-gray-200">
                 <li class="flex flex-col pr-2 text-sm" title="{{ "Distance"|trans }}">
                     <div>{{ segment.getDistance()|formatMeasurement(2) }}</div>
                     <div class="text-xs text-gray-500">{{ segment.getDistance().getSymbol() }}</div>
@@ -19,156 +27,149 @@
                     <div>{{ segment.getAverageGradient() }}%</div>
                     <div class="text-xs text-gray-500">{{ "Avg gradient"|trans|lower }}</div>
                 </li>
-                <li class="flex flex-col px-2 text-sm" title="{{ "Max gradient"|trans }}">
+                <li class="flex flex-col pl-2 text-sm" title="{{ "Max gradient"|trans }}">
                     <div>{{ segment.getMaxGradient() }}%</div>
                     <div class="text-xs text-gray-500">{{ "Max gradient"|trans|lower }}</div>
                 </li>
             </ul>
-            <button type="button" class="close">
-                <svg class="size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                </svg>
-                <span class="sr-only">{{ "Close modal"|trans }}</span>
-            </button>
         </div>
-    </div>
-    <!-- Modal body -->
-    <div class="modal-body space-y-4">
-        <div class="grid grid-cols-1 gap-y-1">
-            {% if leaflet %}
-                {% set leafletOptions = {
-                    'polylineUrl': relativeUrl('api/fragment/data/' ~ leaflet.polylineUrl),
-                    'tileLayer': leaflet.map.getTileLayer(),
-                    'minZoom': leaflet.map.getMinZoom(),
-                    'maxZoom': leaflet.map.getMaxZoom(),
-                    'imageOverlay': leaflet.map.getOverlayImageUrl(),
-                    'bounds': leaflet.map.getBounds(),
-                    'showStartMarker': true,
-                    'showEndMarker': true
-                } %}
-                <div class="h-87.5" style="background-color:{{ leaflet.map.getBackgroundColor() }}"
-                     data-leaflet='{{ leafletOptions|json_encode }}'></div>
-            {% endif %}
-            <div class="tabs tabs--default">
-                <ul id="segmentTabs" data-tabs="#segmentTabsContent" role="tablist">
-                    <li role="presentation">
-                        <a href="#" data-tabs-target="#segmentTabsTopTen" role="tab" aria-controls="segmentTabsTopTen">
-                            {{ "Top 10"|trans }}
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#" data-tabs-target="#segmentTabsEffortHeartRateChart" role="tab" aria-controls="segmentTabsEffortHeartRateChart">
-                            {{ "Effort vs heart rate"|trans }}
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#" data-tabs-target="#segmentTabsHistoryChart" role="tab" aria-controls="segmentTabsHistoryChart">
-                            {{ "History"|trans }}
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div id="segmentTabsContent">
-                <div id="segmentTabsTopTen" role="tabpanel" aria-labelledby="segmentTabsTopTen-tab">
-                    <div class="relative overflow-x-auto">
-                        <table class="data-table">
-                            <thead>
-                            <tr>
-                                <th scope="col" class="bg-gray-50 lg:sticky lg:left-0">
-                                    {{ "Ranking"|trans }}
-                                </th>
-                                <th scope="col" class="narrow">
-                                    <div class="flex items-center justify-center" title="{{ "Date"|trans }}">
-                                        {{ "Date"|trans }}
-                                    </div>
-                                </th>
-                                <th scope="col" class="text-left narrow">
-                                    {{ "Activity"|trans }}
-                                </th>
-                                <th scope="col" >
-                                    {{ "Time"|trans }}
-                                </th>
-                                <th scope="col" >
-                                    {{ "Speed"|trans }}
-                                </th>
-                                <th scope="col" >
-                                    {{ "HR"|trans }}
-                                </th>
-                                <th scope="col" >
-                                    {{ "Power"|trans }}
-                                </th>
-                                <th scope="col">
-                                    {{ "Gear"|trans }}
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for segmentEffort in segmentEffortsTopTen %}
-                                {% set enrichedActivity = enrichedActivitiesPerSegmentEffortId[segmentEffort.getId()] %}
-                                {% set activity = enrichedActivity.getActivity() %}
+        <div class="space-y-4">
+            <div class="grid grid-cols-1 gap-y-1">
+                {% if leaflet %}
+                    {% set leafletOptions = {
+                        'polylineUrl': relativeUrl('api/fragment/data/' ~ leaflet.polylineUrl),
+                        'tileLayer': leaflet.map.getTileLayer(),
+                        'minZoom': leaflet.map.getMinZoom(),
+                        'maxZoom': leaflet.map.getMaxZoom(),
+                        'imageOverlay': leaflet.map.getOverlayImageUrl(),
+                        'bounds': leaflet.map.getBounds(),
+                        'showStartMarker': true,
+                        'showEndMarker': true
+                    } %}
+                    <div class="h-87.5" style="background-color:{{ leaflet.map.getBackgroundColor() }}"
+                         data-leaflet='{{ leafletOptions|json_encode }}'></div>
+                {% endif %}
+                <div class="tabs tabs--default">
+                    <ul id="segmentTabs" data-tabs="#segmentTabsContent" role="tablist">
+                        <li role="presentation">
+                            <a href="#" data-tabs-target="#segmentTabsTopTen" role="tab" aria-controls="segmentTabsTopTen">
+                                {{ "Top 10"|trans }}
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#" data-tabs-target="#segmentTabsEffortHeartRateChart" role="tab" aria-controls="segmentTabsEffortHeartRateChart">
+                                {{ "Effort vs heart rate"|trans }}
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#" data-tabs-target="#segmentTabsHistoryChart" role="tab" aria-controls="segmentTabsHistoryChart">
+                                {{ "History"|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="segmentTabsContent">
+                    <div id="segmentTabsTopTen" role="tabpanel" aria-labelledby="segmentTabsTopTen-tab">
+                        <div class="relative overflow-x-auto">
+                            <table class="data-table">
+                                <thead>
                                 <tr>
-                                    <td class="truncate lg:sticky lg:left-0">
-                                        {{ loop.index }}
-                                    </td>
-                                    <td class="narrow">
-                                        <div class="flex justify-center">
-                                            <div class="w-18">{{ segmentEffort.getStartDateTime()|formatDate() }}</div>
+                                    <th scope="col" class="bg-gray-50 lg:sticky lg:left-0">
+                                        {{ "Ranking"|trans }}
+                                    </th>
+                                    <th scope="col" class="narrow">
+                                        <div class="flex items-center justify-center" title="{{ "Date"|trans }}">
+                                            {{ "Date"|trans }}
                                         </div>
-                                    </td>
-                                    <td class="narrow truncate">
-                                        <div class="flex items-center gap-x-1">
-                                            {{ activity|activityLink(ellipses: 180) }}
-                                            <a href="{{ activity.getUrl() }}" target="_blank" rel="nofollow">
-                                                <svg class="size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                     viewBox="0 0 18 18">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                          d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"/>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td >
-                                        {{ segmentEffort.getElapsedTimeFormatted() }}
-                                    </td>
-                                    <td>
-                                        {% set velocityPreference = activity.getSportType().getVelocityDisplayPreference() %}
-                                        {% if velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPer100Meter') %}
-                                            {{ segmentEffort.getPaceInSecPer100Meter()|formatPace }}<span class="text-xxs ml-px">/100m</span>
-                                        {% elseif velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPerKm') %}
-                                            {{ segmentEffort.getPaceInSecPerKm()|formatPace }}<span class="text-xxs ml-px">{{ renderUnitSymbol('pace') }}</span>
-                                        {% else %}
-                                            {{ activity.getSportType().toDisplaySpeed(segmentEffort.getAverageSpeed())|renderMeasurement(1) }}
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {{ segmentEffort.getAverageHeartRate() ?? 'n/a' }}
-                                    </td>
-                                    <td>
-                                        {% if segmentEffort.getAverageWatts() %}
-                                            {{ segmentEffort.getAverageWatts()|formatNumber(1) }}<span class="text-xxs ml-px">w</span>
-                                        {% else %}
-                                            {{ "n/a"|trans }}
-                                        {% endif %}
-                                    </td>
-                                    <td class="truncate">
-                                        {% set gearName = enrichedActivity.getGearName() %}
-                                        {% if gearName %}
-                                            {{ gearName }}
-                                        {% else %}
-                                            {{ "Unspecified"|trans }}
-                                        {% endif %}
-                                    </td>
+                                    </th>
+                                    <th scope="col" class="text-left narrow">
+                                        {{ "Activity"|trans }}
+                                    </th>
+                                    <th scope="col" >
+                                        {{ "Time"|trans }}
+                                    </th>
+                                    <th scope="col" >
+                                        {{ "Speed"|trans }}
+                                    </th>
+                                    <th scope="col" >
+                                        {{ "HR"|trans }}
+                                    </th>
+                                    <th scope="col" >
+                                        {{ "Power"|trans }}
+                                    </th>
+                                    <th scope="col">
+                                        {{ "Gear"|trans }}
+                                    </th>
                                 </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                {% for segmentEffort in segmentEffortsTopTen %}
+                                    {% set enrichedActivity = enrichedActivitiesPerSegmentEffortId[segmentEffort.getId()] %}
+                                    {% set activity = enrichedActivity.getActivity() %}
+                                    <tr>
+                                        <td class="truncate lg:sticky lg:left-0">
+                                            {{ loop.index }}
+                                        </td>
+                                        <td class="narrow">
+                                            <div class="flex justify-center">
+                                                <div class="w-18">{{ segmentEffort.getStartDateTime()|formatDate() }}</div>
+                                            </div>
+                                        </td>
+                                        <td class="narrow truncate">
+                                            <div class="flex items-center gap-x-1">
+                                                {{ activity|activityLink(ellipses: 180) }}
+                                                <a href="{{ activity.getUrl() }}" target="_blank" rel="nofollow">
+                                                    <svg class="size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                         viewBox="0 0 18 18">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                              d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"/>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td >
+                                            {{ segmentEffort.getElapsedTimeFormatted() }}
+                                        </td>
+                                        <td>
+                                            {% set velocityPreference = activity.getSportType().getVelocityDisplayPreference() %}
+                                            {% if velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPer100Meter') %}
+                                                {{ segmentEffort.getPaceInSecPer100Meter()|formatPace }}<span class="text-xxs ml-px">/100m</span>
+                                            {% elseif velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPerKm') %}
+                                                {{ segmentEffort.getPaceInSecPerKm()|formatPace }}<span class="text-xxs ml-px">{{ renderUnitSymbol('pace') }}</span>
+                                            {% else %}
+                                                {{ activity.getSportType().toDisplaySpeed(segmentEffort.getAverageSpeed())|renderMeasurement(1) }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ segmentEffort.getAverageHeartRate() ?? 'n/a' }}
+                                        </td>
+                                        <td>
+                                            {% if segmentEffort.getAverageWatts() %}
+                                                {{ segmentEffort.getAverageWatts()|formatNumber(1) }}<span class="text-xxs ml-px">w</span>
+                                            {% else %}
+                                                {{ "n/a"|trans }}
+                                            {% endif %}
+                                        </td>
+                                        <td class="truncate">
+                                            {% set gearName = enrichedActivity.getGearName() %}
+                                            {% if gearName %}
+                                                {{ gearName }}
+                                            {% else %}
+                                                {{ "Unspecified"|trans }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <div id="segmentTabsEffortHeartRateChart" role="tabpanel" aria-labelledby="segmentTabsEffortHeartRateChart">
-                    <div class="h-100" data-echarts-options='{{ segmentEffortsVsHeartRateChart }}'></div>
-                </div>
-                <div id="segmentTabsHistoryChart" role="tabpanel" aria-labelledby="segmentTabsHistoryChart-tab">
-                    <div class="h-100" data-echarts-options='{{ segmentEffortsHistoryChart }}'></div>
+                    <div id="segmentTabsEffortHeartRateChart" role="tabpanel" aria-labelledby="segmentTabsEffortHeartRateChart">
+                        <div class="h-100" data-echarts-options='{{ segmentEffortsVsHeartRateChart }}'></div>
+                    </div>
+                    <div id="segmentTabsHistoryChart" role="tabpanel" aria-labelledby="segmentTabsHistoryChart-tab">
+                        <div class="h-100" data-echarts-options='{{ segmentEffortsHistoryChart }}'></div>
+                    </div>
                 </div>
             </div>
         </div>

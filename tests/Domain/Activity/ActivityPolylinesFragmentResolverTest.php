@@ -21,7 +21,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activity/activity-9830227112/polylines');
+        $this->client->request('GET', '/api/fragment/data/activities/activity-9830227112/polylines');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
@@ -33,11 +33,11 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activity/activity-9830227112/polylines');
+        $this->client->request('GET', '/api/fragment/data/activities/activity-9830227112/polylines');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
-            'activity.9830227112.polylines',
+            'activities.9830227112.polylines',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
         $this->assertResponseHeaderSame(
@@ -51,7 +51,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activity/activity-9830227112/polylines');
+        $this->client->request('GET', '/api/fragment/page/activities/activity-9830227112/polylines');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -65,7 +65,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
             [[51.2, 3.18], [51.21, 3.19], [51.22, 3.2]],
         );
 
-        $this->client->request('GET', '/api/fragment/data/activity/activity-9830227112/polylines');
+        $this->client->request('GET', '/api/fragment/data/activities/activity-9830227112/polylines');
 
         $this->assertResponseIsSuccessful();
         $this->assertEquals(
@@ -79,12 +79,12 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activity/activity-9830227112/polylines');
+        $this->client->request('GET', '/api/fragment/data/activities/activity-9830227112/polylines');
         $fromPolyline = (string) $this->client->getResponse()->getContent();
 
         $this->addLatLngStreamFor(ActivityId::fromUnprefixed('9830227112'), []);
 
-        $this->client->request('GET', '/api/fragment/data/activity/activity-9830227112/polylines');
+        $this->client->request('GET', '/api/fragment/data/activities/activity-9830227112/polylines');
 
         $this->assertResponseIsSuccessful();
         $this->assertEquals($fromPolyline, $this->client->getResponse()->getContent());
@@ -95,7 +95,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activity/activity-9756441741/polylines');
+        $this->client->request('GET', '/api/fragment/data/activities/activity-9756441741/polylines');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -105,7 +105,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activity/activity-1/polylines');
+        $this->client->request('GET', '/api/fragment/data/activities/activity-1/polylines');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -115,7 +115,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activity/9830227112/polylines');
+        $this->client->request('GET', '/api/fragment/data/activities/9830227112/polylines');
 
         $this->assertResponseStatusCodeSame(404);
     }

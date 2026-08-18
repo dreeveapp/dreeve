@@ -1,20 +1,20 @@
 {% autoescape false %}
     <ul class="tabs tabs--menu-item">
         <li>
-            <a href="{{ relativeUrl('gear') }}" data-router-content-url="{{ relativeUrl('api/fragment/page/gear') }}"
+            <a href="{{ relativeUrl('gear') }}" data-router-link
                class="{{ activeMenuItem == 'gear' ? 'active' : '' }}">
                 {{ "Gear"|trans }}
             </a>
         </li>
         <li>
-            <a href="{{ relativeUrl('gear/maintenance') }}" data-router-content-url="{{ relativeUrl('api/fragment/page/gear/maintenance') }}"
+            <a href="{{ relativeUrl('gear/maintenance') }}" data-router-link
                class="flex items-center {{ activeMenuItem == 'gearMaintenance' ? 'active' : '' }}">
                 <div class="contents" data-async-content-url="{{ relativeUrl('api/fragment/partial/gear/maintenance-due') }}"></div>
                 {{ "Maintenance"|trans }}
             </a>
         </li>
         <li>
-            <a href="{{ relativeUrl('gear/recording-devices') }}" data-router-content-url="{{ relativeUrl('api/fragment/page/gear/recording-devices') }}"
+            <a href="{{ relativeUrl('gear/recording-devices') }}" data-router-link
                class="{{ activeMenuItem == 'recordingDevices' ? 'active' : '' }}">
                 {{ "Recording devices"|trans }}
             </a>

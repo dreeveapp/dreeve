@@ -184,13 +184,13 @@ class RenderCacheInvalidationTest extends ContainerTestCase
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
             RootCacheTag::SEGMENTS,
-        ], 'activity/activity-9542782314/segments'];
+        ], 'activities/activity-9542782314/segments'];
 
         yield 'activity-best-efforts' => [ActivityBestEffortsFragmentResolver::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,
             RootCacheTag::ACTIVITIES,
-        ], 'activity/activity-9542782314/best-efforts'];
+        ], 'activities/activity-9542782314/best-efforts'];
     }
 
     #[\Override]

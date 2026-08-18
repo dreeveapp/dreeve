@@ -17,7 +17,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
-        $this->client->request('GET', '/api/fragment/data/segment/segment-10/polylines');
+        $this->client->request('GET', '/api/fragment/data/segments/segment-10/polylines');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
@@ -30,11 +30,11 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
-        $this->client->request('GET', '/api/fragment/data/segment/segment-10/polylines');
+        $this->client->request('GET', '/api/fragment/data/segments/segment-10/polylines');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
-            'segment.10.polylines',
+            'segments.10.polylines',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
@@ -45,7 +45,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
-        $this->client->request('GET', '/api/fragment/data/segment/segment-10/polylines');
+        $this->client->request('GET', '/api/fragment/data/segments/segment-10/polylines');
 
         // Without this tag a re-imported segment would keep serving its old route forever.
         $this->assertResponseHeaderSame(
@@ -60,7 +60,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
-        $this->client->request('GET', '/api/fragment/page/segment/segment-10/polylines');
+        $this->client->request('GET', '/api/fragment/page/segments/segment-10/polylines');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -70,7 +70,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/segment/segment-1/polylines');
+        $this->client->request('GET', '/api/fragment/data/segments/segment-1/polylines');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -80,7 +80,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/segment/segment-999/polylines');
+        $this->client->request('GET', '/api/fragment/data/segments/segment-999/polylines');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -91,7 +91,7 @@ class SegmentPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
-        $this->client->request('GET', '/api/fragment/data/segment/10/polylines');
+        $this->client->request('GET', '/api/fragment/data/segments/10/polylines');
 
         $this->assertResponseStatusCodeSame(404);
     }

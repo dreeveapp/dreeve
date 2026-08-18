@@ -15,6 +15,9 @@ use Symfony\Component\Routing\Attribute\Route;
 #[AsController]
 final readonly class ApiFragmentRequestHandler
 {
+    public const string PATH_PREFIX = '/api/fragment';
+    public const string PATH_REQUIREMENT = '[a-zA-Z0-9_\-/]+';
+
     public function __construct(
         private FragmentRegistry $fragmentRegistry,
         private FragmentRenderer $fragmentRenderer,
@@ -22,7 +25,7 @@ final readonly class ApiFragmentRequestHandler
     ) {
     }
 
-    #[Route(path: '/api/fragment/{type}/{path}', name: 'api_fragment', requirements: ['type' => 'page|partial|data', 'path' => '[a-zA-Z0-9_\-/]+'], methods: ['GET'], priority: 3)]
+    #[Route(path: self::PATH_PREFIX.'/{type}/{path}', name: 'api_fragment', requirements: ['type' => 'page|partial|data', 'path' => self::PATH_REQUIREMENT], methods: ['GET'], priority: 3)]
     public function handle(string $type, string $path): Response
     {
         $fragmentType = FragmentType::from($type);

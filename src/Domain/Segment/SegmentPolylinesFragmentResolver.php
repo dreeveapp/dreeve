@@ -16,7 +16,7 @@ use App\Infrastructure\Serialization\Json;
 
 final readonly class SegmentPolylinesFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'segment';
+    private const string BASE_PATH = 'segments';
 
     public function __construct(
         private SegmentRepository $segmentRepository,

@@ -23,7 +23,7 @@
                     <span class="sr-only">{{ "Toggle sidebar"|trans }}</span>
                 </button>
             {% endif %}
-            <a href="{{ relativeUrl('dashboard') }}" data-router-content-url="{{ relativeUrl('api/fragment/page/dashboard') }}" class="flex items-center justify-between mr-4">
+            <a href="{{ relativeUrl('dashboard') }}" data-router-link class="flex items-center justify-between mr-4">
                 <img src="{{ relativeUrl('assets/images/logo.svg') }}" class="rounded-full mr-3 h-8" alt="Logo"/>
                 <div class="flex gap-x-1 sm:text-lg font-extrabold whitespace-nowrap">
                     <div>{{ appName }}</div>

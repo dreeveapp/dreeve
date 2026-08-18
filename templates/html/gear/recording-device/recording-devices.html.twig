@@ -57,7 +57,7 @@
                     {% for recordingDevice in devices %}
                         <tr class="group/row">
                             <th scope="row" class="bg-white sticky left-0 font-medium whitespace-nowrap">
-                                <a href="{{ relativeUrl('activities') }}" data-router-content-url="{{ relativeUrl('api/fragment/page/activities') }}" data-filters='{{ dataFilters('activities', {device: recordingDevice.getId()}) }}' class="font-medium text-blue-600 hover:underline">
+                                <a href="{{ relativeUrl('activities') }}" data-router-link data-filters='{{ dataFilters('activities', {device: recordingDevice.getId()}) }}' class="font-medium text-blue-600 hover:underline">
                                     {{ recordingDevice.getName() }}
                                 </a>
                             </th>

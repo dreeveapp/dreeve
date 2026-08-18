@@ -32,7 +32,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
+        $this->client->request('GET', '/api/fragment/page/activities/activity-9756441741');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -44,7 +44,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activity/activity-9542782314');
+        $this->client->request('GET', '/api/fragment/page/activities/activity-9542782314');
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -77,7 +77,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
                 ->build()
         );
 
-        $this->client->request('GET', '/api/fragment/page/activity/'.$activityId);
+        $this->client->request('GET', '/api/fragment/page/activities/'.$activityId);
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -94,7 +94,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activity/activity-45326441741');
+        $this->client->request('GET', '/api/fragment/page/activities/activity-45326441741');
 
         $this->assertResponseIsSuccessful();
         $this->assertDistributionChartIsTitled('Pace');
@@ -112,7 +112,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
             data: [10 => 5, 20 => 9, 30 => 4],
         ));
 
-        $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
+        $this->client->request('GET', '/api/fragment/page/activities/activity-9756441741');
 
         $this->assertResponseIsSuccessful();
         $this->assertDistributionChartIsTitled('Speed');
@@ -131,11 +131,11 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
+        $this->client->request('GET', '/api/fragment/page/activities/activity-9756441741');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
-            'activity.9756441741.auth=anon',
+            'activities.9756441741.auth=anon',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
@@ -145,7 +145,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activity/activity-9756441741');
+        $this->client->request('GET', '/api/fragment/data/activities/activity-9756441741');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -155,14 +155,14 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
+        $this->client->request('GET', '/api/fragment/page/activities/activity-9756441741');
         $this->assertStringNotContainsString(
             'admin/activities/activity-9756441741/edit',
             (string) $this->client->getResponse()->getContent(),
         );
 
         $this->client->loginUser($this->adminUser());
-        $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
+        $this->client->request('GET', '/api/fragment/page/activities/activity-9756441741');
         $this->assertStringContainsString(
             'admin/activities/activity-9756441741/edit',
             (string) $this->client->getResponse()->getContent(),
@@ -174,12 +174,12 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
+        $this->client->request('GET', '/api/fragment/page/activities/activity-9756441741');
         $anonymousCacheKey = (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key');
         $this->assertResponseHeaderSame('Cache-Control', 'max-age=0, must-revalidate, no-store, private');
 
         $this->client->loginUser($this->adminUser());
-        $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
+        $this->client->request('GET', '/api/fragment/page/activities/activity-9756441741');
 
         $this->assertNotEquals(
             $anonymousCacheKey,
@@ -192,7 +192,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activity/activity-9756441741');
+        $this->client->request('GET', '/api/fragment/page/activities/activity-9756441741');
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
@@ -211,10 +211,10 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
 
     public static function providePathsToResolve(): \Generator
     {
-        yield 'an activity that does not exist' => ['activity/activity-1'];
-        yield 'the unprefixed id is not a valid activity id' => ['activity/9756441741'];
+        yield 'an activity that does not exist' => ['activities/activity-1'];
+        yield 'the unprefixed id is not a valid activity id' => ['activities/9756441741'];
         yield 'the bare base path' => ['activity'];
-        yield 'a nested path' => ['activity/activity-9756441741/metrics'];
+        yield 'a nested path' => ['activities/activity-9756441741/metrics'];
         yield 'another page entirely' => ['milestones'];
     }
 

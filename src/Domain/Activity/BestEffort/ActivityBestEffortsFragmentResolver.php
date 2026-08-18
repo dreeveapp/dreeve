@@ -17,7 +17,7 @@ use Twig\Environment;
 
 final readonly class ActivityBestEffortsFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'activity';
+    private const string BASE_PATH = 'activities';
 
     public function __construct(
         private ActivityRepository $activityRepository,

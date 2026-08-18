@@ -16,7 +16,7 @@ use App\Infrastructure\Serialization\Json;
 
 final readonly class ActivityPolylinesFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'activity';
+    private const string BASE_PATH = 'activities';
 
     public function __construct(
         private ActivityRepository $activityRepository,

@@ -16,7 +16,7 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/partial/activity/activity-9542782314/best-efforts');
+        $this->client->request('GET', '/api/fragment/partial/activities/activity-9542782314/best-efforts');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -28,7 +28,7 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/partial/activity/activity-9542782314/best-efforts');
+        $this->client->request('GET', '/api/fragment/partial/activities/activity-9542782314/best-efforts');
 
         $this->assertResponseHeaderSame('X-Dreeve-Cache', 'MISS');
         $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activities.9542782314, activities');
@@ -39,7 +39,7 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activity/activity-9542782314/best-efforts');
+        $this->client->request('GET', '/api/fragment/page/activities/activity-9542782314/best-efforts');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -49,7 +49,7 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/partial/activity/activity-1/best-efforts');
+        $this->client->request('GET', '/api/fragment/partial/activities/activity-1/best-efforts');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -59,7 +59,7 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/partial/activity/9542782314/best-efforts');
+        $this->client->request('GET', '/api/fragment/partial/activities/9542782314/best-efforts');
 
         $this->assertResponseStatusCodeSame(404);
     }

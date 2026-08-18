@@ -1,15 +1,36 @@
-<!-- Modal header --><html><body>
-<div class="modal-header flex items-center justify-between z-10000 sticky top-0 bg-white">
-        <h3>
-            <a class="flex items-center gap-x-1 hover:underline" href="https://www.strava.com/segments/10" target="_blank" rel="nofollow">
-                Segment Ten
-                <svg class="size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"></path>
-                </svg>
-            </a>
-        </h3>
-        <div class="flex items-center">
-            <ul class="hidden md:flex text-center mr-2 divide-x divide-gray-200">
+<html><body>
+<nav class="flex mb-5" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
+        <li class="inline-flex items-center">
+                            <a href="/dashboard" data-router-link class="inline-flex items-center text-gray-700 hover:text-primary-600 hover:underline">    <svg class="size-5 mr-2.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+    Dashboard
+</a>
+                    </li>
+                    <li>
+                <div class="flex items-center">
+                    <svg class="size-6 text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                                            <a href="/segments" data-router-link class="ml-1 text-gray-700 hover:text-primary-600 md:ml-2">Segments</a>
+                                    </div>
+            </li>
+                    <li>
+                <div class="flex items-center">
+                    <svg class="size-6 text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                                            <span aria-current="page" class="ml-1 text-gray-700 md:ml-2">Segment Ten</span>
+                                    </div>
+            </li>
+            </ol>
+</nav>
+    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <div class="page-header flex items-center justify-between">
+            <h1>
+                <a class="flex items-center gap-x-1 hover:underline" href="https://www.strava.com/segments/10" target="_blank" rel="nofollow">
+                    Segment Ten
+                    <svg class="size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 18 18">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"></path>
+                    </svg>
+                </a>
+            </h1>
+            <ul class="hidden md:flex text-center divide-x divide-gray-200">
                 <li class="flex flex-col pr-2 text-sm" title="Distance">
                     <div>0.10</div>
                     <div class="text-xs text-gray-500">km</div>
@@ -18,86 +39,79 @@
                     <div>2.7%</div>
                     <div class="text-xs text-gray-500">avg gradient</div>
                 </li>
-                <li class="flex flex-col px-2 text-sm" title="Max gradient">
+                <li class="flex flex-col pl-2 text-sm" title="Max gradient">
                     <div>5.3%</div>
                     <div class="text-xs text-gray-500">max gradient</div>
                 </li>
             </ul>
-            <button type="button" class="close">
-                <svg class="size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
-                </svg>
-                <span class="sr-only">Close modal</span>
-            </button>
         </div>
-    </div>
-    <!-- Modal body -->
-    <div class="modal-body space-y-4">
-        <div class="grid grid-cols-1 gap-y-1">
-                                            <div class="h-87.5" style="background-color:#bbbbb7" data-leaflet='{"polylineUrl":"\/api\/fragment\/data\/segment\/segment-10\/polylines","tileLayer":"https:\/\/tile.openstreetmap.org\/{z}\/{x}\/{y}.png","minZoom":1,"maxZoom":17,"imageOverlay":null,"bounds":[],"showStartMarker":true,"showEndMarker":true}'></div>
-                        <div class="tabs tabs--default">
-                <ul id="segmentTabs" data-tabs="#segmentTabsContent" role="tablist">
-                    <li role="presentation">
-                        <a href="#" data-tabs-target="#segmentTabsTopTen" role="tab" aria-controls="segmentTabsTopTen">
-                            Top 10
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#" data-tabs-target="#segmentTabsEffortHeartRateChart" role="tab" aria-controls="segmentTabsEffortHeartRateChart">
-                            Effort vs heart rate
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#" data-tabs-target="#segmentTabsHistoryChart" role="tab" aria-controls="segmentTabsHistoryChart">
-                            History
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div id="segmentTabsContent">
-                <div id="segmentTabsTopTen" role="tabpanel" aria-labelledby="segmentTabsTopTen-tab">
-                    <div class="relative overflow-x-auto">
-                        <table class="data-table">
-                            <thead>
-                            <tr>
-                                <th scope="col" class="bg-gray-50 lg:sticky lg:left-0">
-                                    Ranking
-                                </th>
-                                <th scope="col" class="narrow">
-                                    <div class="flex items-center justify-center" title="Date">
-                                        Date
-                                    </div>
-                                </th>
-                                <th scope="col" class="text-left narrow">
-                                    Activity
-                                </th>
-                                <th scope="col">
-                                    Time
-                                </th>
-                                <th scope="col">
-                                    Speed
-                                </th>
-                                <th scope="col">
-                                    HR
-                                </th>
-                                <th scope="col">
-                                    Power
-                                </th>
-                                <th scope="col">
-                                    Gear
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                                        </tbody>
-                        </table>
+        <div class="space-y-4">
+            <div class="grid grid-cols-1 gap-y-1">
+                                                        <div class="h-87.5" style="background-color:#bbbbb7" data-leaflet='{"polylineUrl":"\/api\/fragment\/data\/segments\/segment-10\/polylines","tileLayer":"https:\/\/tile.openstreetmap.org\/{z}\/{x}\/{y}.png","minZoom":1,"maxZoom":17,"imageOverlay":null,"bounds":[],"showStartMarker":true,"showEndMarker":true}'></div>
+                                <div class="tabs tabs--default">
+                    <ul id="segmentTabs" data-tabs="#segmentTabsContent" role="tablist">
+                        <li role="presentation">
+                            <a href="#" data-tabs-target="#segmentTabsTopTen" role="tab" aria-controls="segmentTabsTopTen">
+                                Top 10
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#" data-tabs-target="#segmentTabsEffortHeartRateChart" role="tab" aria-controls="segmentTabsEffortHeartRateChart">
+                                Effort vs heart rate
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#" data-tabs-target="#segmentTabsHistoryChart" role="tab" aria-controls="segmentTabsHistoryChart">
+                                History
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="segmentTabsContent">
+                    <div id="segmentTabsTopTen" role="tabpanel" aria-labelledby="segmentTabsTopTen-tab">
+                        <div class="relative overflow-x-auto">
+                            <table class="data-table">
+                                <thead>
+                                <tr>
+                                    <th scope="col" class="bg-gray-50 lg:sticky lg:left-0">
+                                        Ranking
+                                    </th>
+                                    <th scope="col" class="narrow">
+                                        <div class="flex items-center justify-center" title="Date">
+                                            Date
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="text-left narrow">
+                                        Activity
+                                    </th>
+                                    <th scope="col">
+                                        Time
+                                    </th>
+                                    <th scope="col">
+                                        Speed
+                                    </th>
+                                    <th scope="col">
+                                        HR
+                                    </th>
+                                    <th scope="col">
+                                        Power
+                                    </th>
+                                    <th scope="col">
+                                        Gear
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <div id="segmentTabsEffortHeartRateChart" role="tabpanel" aria-labelledby="segmentTabsEffortHeartRateChart">
-                    <div class="h-100" data-echarts-options="[]"></div>
-                </div>
-                <div id="segmentTabsHistoryChart" role="tabpanel" aria-labelledby="segmentTabsHistoryChart-tab">
-                    <div class="h-100" data-echarts-options='{"animation":false,"grid":{"top":"30px","left":"10px","right":"10px","bottom":"50px","containLabel":true},"tooltip":{"show":true,"trigger":"axis","valueFormatter":"callback:formatSecondsTrimZero"},"xAxis":[{"type":"time","boundaryGap":false,"axisTick":{"show":false},"axisLabel":{"formatter":{"year":"{yyyy}","month":"{MMM}","day":"{d}","hour":"{HH}:{mm}","minute":"{HH}:{mm}","second":"{HH}:{mm}:{ss}","millisecond":"{hh}:{mm}:{ss} {SSS}","none":"{yyyy}-{MM}-{dd}"}}}],"yAxis":[{"type":"value","min":100000,"axisLabel":{"formatter":"callback:formatSecondsTrimZero"}}],"series":[{"color":["#E34902"],"type":"scatter","data":[]}],"toolbox":{"show":true,"feature":{"restore":{"show":true}}},"dataZoom":[{"type":"slider","startValue":null,"end":100,"brushSelect":true,"zoomLock":false,"zoomOnMouseWheel":false,"labelFormatter":""}]}'></div>
+                    <div id="segmentTabsEffortHeartRateChart" role="tabpanel" aria-labelledby="segmentTabsEffortHeartRateChart">
+                        <div class="h-100" data-echarts-options="[]"></div>
+                    </div>
+                    <div id="segmentTabsHistoryChart" role="tabpanel" aria-labelledby="segmentTabsHistoryChart-tab">
+                        <div class="h-100" data-echarts-options='{"animation":false,"grid":{"top":"30px","left":"10px","right":"10px","bottom":"50px","containLabel":true},"tooltip":{"show":true,"trigger":"axis","valueFormatter":"callback:formatSecondsTrimZero"},"xAxis":[{"type":"time","boundaryGap":false,"axisTick":{"show":false},"axisLabel":{"formatter":{"year":"{yyyy}","month":"{MMM}","day":"{d}","hour":"{HH}:{mm}","minute":"{HH}:{mm}","second":"{HH}:{mm}:{ss}","millisecond":"{hh}:{mm}:{ss} {SSS}","none":"{yyyy}-{MM}-{dd}"}}}],"yAxis":[{"type":"value","min":100000,"axisLabel":{"formatter":"callback:formatSecondsTrimZero"}}],"series":[{"color":["#E34902"],"type":"scatter","data":[]}],"toolbox":{"show":true,"feature":{"restore":{"show":true}}},"dataZoom":[{"type":"slider","startValue":null,"end":100,"brushSelect":true,"zoomLock":false,"zoomOnMouseWheel":false,"labelFormatter":""}]}'></div>
+                    </div>
                 </div>
             </div>
         </div>

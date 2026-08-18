@@ -63,7 +63,7 @@
                         <span class="text-sm font-bold text-gray-900">{{ activity.getKilojoules() }} <span class="text-xxs font-medium text-gray-400">kJ</span></span>
                     </div>
                 {% endif %}
-                <a href="{{ relativeUrl('activities') }}" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group" data-router-force-reload data-router-content-url="{{ relativeUrl('api/fragment/page/activities') }}" data-filters='{{ dataFilters('activities', {device: activity.getDeviceId()}) }}'>
+                <a href="{{ relativeUrl('activities') }}" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group" data-router-force-reload data-router-link data-filters='{{ dataFilters('activities', {device: activity.getDeviceId()}) }}'>
                     <span class="text-xs text-gray-500 shrink-0">{{ "Device"|trans }}</span>
                     <span class="text-xs font-bold text-gray-900 group-hover:text-primary truncate" title="{{ activity.getDeviceName() }}">
                             {{ activity.getDeviceName() ?: 'None'|trans }}

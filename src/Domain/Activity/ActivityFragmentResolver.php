@@ -26,7 +26,7 @@ use Twig\Environment;
 
 final readonly class ActivityFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'activity';
+    private const string BASE_PATH = 'activities';
 
     public function __construct(
         private ActivityRepository $activityRepository,
@@ -97,7 +97,7 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
             'activity' => $activity,
             'enrichedActivity' => $enrichedActivity,
             'leaflet' => $leafletMap instanceof LeafletMap ? [
-                'polylineUrl' => sprintf('activity/%s/polylines', $activityId),
+                'polylineUrl' => sprintf('%s/%s/polylines', self::BASE_PATH, $activityId),
                 'map' => $leafletMap,
             ] : null,
             'gpxLink' => $this->activityStreamRepository->hasOneForActivityAndStreamType($activityId, StreamType::TIME)
