@@ -134,8 +134,11 @@ export default class Router {
     }
 
     pushRouteToHistoryState(route, modal) {
-        const fullRoute = modal ? `${route}#${modal}` : route;
-        window.history.pushState({route, modal}, '', fullRoute);
+        window.history.pushState({route, modal}, '', this.buildUrl(route, modal));
+    }
+
+    buildUrl(route, modal) {
+        return modal ? `${route}?modal=${modal}` : route;
     }
 
     pushCurrentRouteToHistoryState(modal) {
@@ -156,12 +159,12 @@ export default class Router {
 
     boot() {
         const route = this.currentRoute();
-        const modal = location.hash.replace('#', '');
+        const modal = new URLSearchParams(location.search).get('modal') ?? '';
 
         this.registerNavigation();
         this.registerBrowserBackAndForth();
         this.renderContent(route, modal);
 
-        window.history.replaceState({route, modal}, '', route + location.hash);
+        window.history.replaceState({route, modal}, '', this.buildUrl(route, modal));
     }
 }
