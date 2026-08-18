@@ -39,28 +39,19 @@ export default class Router {
         return this.determineActiveMenuLink(newUrl);
     }
 
-    determineContentUrlLink(url) {
-        const link = document.querySelector(`a[href="${url}"][data-router-content-url]`);
-        if (link) {
-            return {link: link, route: url};
-        }
-
-        const newUrl = url.replace(/\/[^\/]*$/, '');
-        if (newUrl === url || newUrl === '') {
-            return null;
-        }
-
-        return this.determineContentUrlLink(newUrl);
+    toPath(url) {
+        return url.slice(basePath().length).replace(/^\/+/, '');
     }
 
     determineContentUrl(page) {
-        const match = this.determineContentUrlLink(page);
+        const path = this.toPath(page);
+        const fragmentPath = /^[a-zA-Z0-9_\-\/]+$/.test(path) ? path : 'not-found';
 
-        return match ? match.link.getAttribute('data-router-content-url') + page.slice(match.route.length) : null;
+        return `${basePath()}/api/fragment/page/${fragmentPath}`;
     }
 
     async renderContent(page, modalId) {
-        const contentUrl = this.determineContentUrl(page) ?? `${basePath()}/api/fragment/page/not-found`;
+        const contentUrl = this.determineContentUrl(page);
 
         // Close mobile nav if open
         if (!this.menu.hasAttribute('aria-hidden')) {
@@ -85,10 +76,7 @@ export default class Router {
 
         this.hideLoader();
 
-        const fullPageName = page
-            .slice(basePath().length)
-            .replace(/^\/+/, '')
-            .replaceAll('/', '-');
+        const fullPageName = this.toPath(page).replaceAll('/', '-');
 
         eventBus.emit(Events.PAGE_LOADED, {page: fullPageName, modalId});
     }
