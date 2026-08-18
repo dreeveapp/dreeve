@@ -73,10 +73,6 @@ eventBus.on(Events.PAGE_LOADED, async ({page, modalId}) => {
     chartManager.reset();
     initElements(document);
 
-    if (modalId) {
-        modalManager.open(modalId);
-    }
-
     if (page === 'milestones') {
         new MilestoneFilter(document).init();
     }
@@ -90,6 +86,10 @@ eventBus.on(Events.PAGE_LOADED, async ({page, modalId}) => {
     if (page === 'photos') {
         const $photoWallWrapper = document.querySelector('.photo-wall-wrapper');
         new PhotoWall($photoWallWrapper).render();
+    }
+
+    if (modalId) {
+        modalManager.open(modalId);
     }
 });
 eventBus.on(Events.MODAL_HISTORY_CHANGED, ({modalId}) => {
@@ -128,9 +128,7 @@ if ($modalAIChat) {
         e.preventDefault();
         e.stopPropagation();
         const modalId = $modalAIChat.getAttribute('data-modal-custom-ai');
-        if (!modalManager.open(modalId)) {
-            return;
-        }
+        modalManager.open(modalId);
         router.pushCurrentRouteToHistoryState(modalId);
     });
 }

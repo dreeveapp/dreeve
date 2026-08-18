@@ -22,40 +22,30 @@ export default class ModalManager {
             e.preventDefault();
             e.stopPropagation();
             const modalId = node.getAttribute('data-model-content-url');
-            if (!this.open(modalId)) {
-                return;
-            }
+            this.open(modalId);
             this.router.pushCurrentRouteToHistoryState(modalId);
         });
     }
 
     // The modal URL reaches us from the address bar, so it is attacker-controllable:
     // without this, a crafted link makes us innerHTML a remote document.
-    isSameOriginPath(modalId) {
+    assertSameOriginPath(modalId) {
         if (!modalId?.trim()) {
-            return false;
+            throw new Error('Modal url is empty');
         }
 
-        let url;
-        try {
-            url = new URL(modalId, window.location.origin);
-        } catch {
-            return false;
-        }
-
-        // An empty path or the base path itself resolves to the app root, which would
-        // inject the whole shell document into the modal.
+        const url = new URL(modalId, window.location.origin);
         const prefix = `${basePath()}/`;
 
-        return url.origin === window.location.origin
-            && url.pathname.startsWith(prefix)
-            && url.pathname.length > prefix.length;
+        if (url.origin !== window.location.origin
+            || !url.pathname.startsWith(prefix)
+            || url.pathname.length <= prefix.length) {
+            throw new Error(`Modal url "${modalId}" is not an url within this app`);
+        }
     }
 
     open(modalId) {
-        if (!this.isSameOriginPath(modalId)) {
-            return false;
-        }
+        this.assertSameOriginPath(modalId);
 
         this.close();
 
@@ -107,8 +97,6 @@ export default class ModalManager {
         });
 
         this.modal.show();
-
-        return true;
     }
 
     close() {
