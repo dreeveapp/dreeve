@@ -1,5 +1,6 @@
 import {eventBus, Events} from "./event-bus";
 import {basePath} from "../utils";
+import {beginScrollRestore, rememberScrollPosition} from "./scroll-memory";
 
 export default class Router {
     constructor(app) {
@@ -50,8 +51,10 @@ export default class Router {
         return `${basePath()}/api/fragment/page/${fragmentPath}`;
     }
 
-    async renderContent(page, modalId) {
+    async renderContent(page, modalId, restoreScroll = false) {
         const contentUrl = this.determineContentUrl(page);
+
+        rememberScrollPosition(this.app.getAttribute('data-router-current'));
 
         // Close mobile nav if open
         if (!this.menu.hasAttribute('aria-hidden')) {
@@ -65,20 +68,20 @@ export default class Router {
 
         // Update active states
         this.menuItems.forEach(node => node.setAttribute('aria-selected', 'false'));
-
         this.determineActiveMenuLink(page)?.setAttribute('aria-selected', 'true');
 
         this.showLoader();
 
         const response = await fetch(contentUrl, {cache: 'no-store'});
         this.appContent.innerHTML = await response.text();
-        window.scrollTo(0, 0);
 
         this.hideLoader();
+        const scrollY = beginScrollRestore(page, restoreScroll);
 
         const fullPageName = this.toPath(page).replaceAll('/', '-');
 
         eventBus.emit(Events.PAGE_LOADED, {page: fullPageName, modalId});
+        window.scrollTo(0, scrollY);
     }
 
     registerNavigation() {
@@ -109,7 +112,7 @@ export default class Router {
                 return;
             }
 
-            this.renderContent(e.state.route, e.state.modal);
+            this.renderContent(e.state.route, e.state.modal, true);
         };
     }
 

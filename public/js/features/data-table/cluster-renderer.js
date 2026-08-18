@@ -30,9 +30,11 @@ export class ClusterRenderer {
         });
     }
 
-    update(dataRows) {
+    update(dataRows, resetScroll = true) {
         if (!this.cluster) return;
         this.cluster.update(dataRows.filter(r => r.active).map(r => r.markup));
-        this.scrollElem.scrollTop = 0;
+        if (resetScroll) {
+            this.scrollElem.scrollTop = 0;
+        }
     }
 }

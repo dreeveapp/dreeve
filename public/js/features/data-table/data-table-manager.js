@@ -3,6 +3,7 @@ import {ColumnManager} from "./column-manager";
 import {FilterManager} from "./filter-manager";
 import {Sorter} from "./sorter";
 import {debounce} from "../../utils";
+import {restoreScrollArea} from "../../core/scroll-memory";
 
 export default function initDataTables(rootNode) {
     rootNode.querySelectorAll('div[data-dataTable-settings]').forEach((wrapper) => {
@@ -29,7 +30,7 @@ export default function initDataTables(rootNode) {
             // Init cluster.
             clusterRenderer.init(dataRows);
 
-            const updateState = (updateStorage = true) => {
+            const updateState = (updateStorage = true, resetScroll = true) => {
                 const search = searchInput.value.trim();
                 const activeFilters = filterManager.getActiveFilters();
 
@@ -38,13 +39,14 @@ export default function initDataTables(rootNode) {
                     filterManager.updateStorage(settings.name, activeFilters);
                 }
                 const rows = filterManager.applyFiltersToRows(dataRows, search);
-                clusterRenderer.update(rows);
+                clusterRenderer.update(rows, resetScroll);
                 resetBtn.classList.toggle('hidden', !(Object.keys(activeFilters).length > 0 || search.length > 0));
             };
 
             // Prefill filters.
             filterManager.prefillFromStorage(settings.name);
-            updateState(false);
+            updateState(false, false);
+            restoreScrollArea(scrollElem);
 
             // Attach events.
             searchInput.addEventListener('input', debounce(updateState));
