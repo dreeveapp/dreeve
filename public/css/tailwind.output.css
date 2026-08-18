@@ -1440,9 +1440,6 @@
   .mr-2 {
     margin-right: calc(var(--spacing) * 2);
   }
-  .mr-2\.5 {
-    margin-right: calc(var(--spacing) * 2.5);
-  }
   .mr-3 {
     margin-right: calc(var(--spacing) * 3);
   }
@@ -4223,9 +4220,6 @@
     .md\:inset-0 {
       inset: 0px;
     }
-    .md\:ml-2 {
-      margin-left: calc(var(--spacing) * 2);
-    }
     .md\:ml-16 {
       margin-left: calc(var(--spacing) * 16);
     }
@@ -4265,11 +4259,6 @@
     }
     .md\:flex-row {
       flex-direction: row;
-    }
-    :where(.md\:space-x-2 > :not(:last-child)) {
-      --tw-space-x-reverse: 0;
-      margin-inline-start: calc(calc(var(--spacing) * 2) * var(--tw-space-x-reverse));
-      margin-inline-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-x-reverse)));
     }
     .md\:rounded-none {
       border-radius: 0;
