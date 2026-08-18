@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Segment;
 
-use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityCacheTag;
+use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;

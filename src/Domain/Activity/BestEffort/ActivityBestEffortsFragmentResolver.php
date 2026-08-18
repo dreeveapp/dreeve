@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\BestEffort;
 
-use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityCacheTag;
+use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
