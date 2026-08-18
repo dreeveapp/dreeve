@@ -17,7 +17,7 @@ use Twig\Environment;
 
 final readonly class BestEffortsHistoryFragmentResolver implements FragmentResolver
 {
-    private const string BASE_PATH = 'best-efforts';
+    private const string BASE_PATH = BestEffortsFragment::PATH;
 
     public function __construct(
         private BestEffortsCalculator $bestEffortsCalculator,

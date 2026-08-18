@@ -28,9 +28,11 @@ final readonly class BestEffortsFragment implements Fragment
     ) {
     }
 
+    public const string PATH = 'best-efforts';
+
     public function getPath(): string
     {
-        return 'best-efforts';
+        return self::PATH;
     }
 
     public function getType(): FragmentType
