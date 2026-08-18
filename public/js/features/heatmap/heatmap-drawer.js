@@ -60,7 +60,7 @@ export default class HeatmapDrawer {
             node.addEventListener("click", (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                this.modalManager.open(node.getAttribute('data-model-content-url'));
+                this.modalManager.openAndPushToHistoryState(node.getAttribute('data-model-content-url'));
             });
         });
     };

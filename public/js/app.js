@@ -127,9 +127,7 @@ if ($modalAIChat) {
     $modalAIChat.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        const modalId = $modalAIChat.getAttribute('data-modal-custom-ai');
-        modalManager.open(modalId);
-        router.pushCurrentRouteToHistoryState(modalId);
+        modalManager.openAndPushToHistoryState($modalAIChat.getAttribute('data-modal-custom-ai'));
     });
 }
 

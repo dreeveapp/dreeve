@@ -21,10 +21,13 @@ export default class ModalManager {
 
             e.preventDefault();
             e.stopPropagation();
-            const modalId = node.getAttribute('data-model-content-url');
-            this.open(modalId);
-            this.router.pushCurrentRouteToHistoryState(modalId);
+            this.openAndPushToHistoryState(node.getAttribute('data-model-content-url'));
         });
+    }
+
+    openAndPushToHistoryState(modalId) {
+        this.open(modalId);
+        this.router.pushCurrentRouteToHistoryState(modalId);
     }
 
     // The modal URL reaches us from the address bar, so it is attacker-controllable:
