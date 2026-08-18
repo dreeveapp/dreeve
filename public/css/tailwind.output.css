@@ -4295,8 +4295,8 @@
     .lg\:sticky {
       position: sticky;
     }
-    .lg\:top-20 {
-      top: calc(var(--spacing) * 20);
+    .lg\:top-14 {
+      top: calc(var(--spacing) * 14);
     }
     .lg\:left-0 {
       left: 0px;

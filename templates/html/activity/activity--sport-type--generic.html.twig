@@ -192,7 +192,7 @@
         {% endif %}
         <section class="rounded-lg overflow-clip border border-gray-200 shadow-xs bg-white">
             {% if leaflet %}
-                <div class="relative border-b border-gray-200 lg:sticky lg:top-20 lg:z-10 lg:bg-white">
+                <div class="relative border-b border-gray-200 lg:sticky lg:top-14 lg:z-10 lg:bg-white">
                     {% set leafletOptions = {
                         'polylineUrl': relativeUrl('api/fragment/data/' ~ leaflet.polylineUrl),
                         'tileLayer': leaflet.map.getTileLayer(),

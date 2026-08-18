@@ -94,8 +94,6 @@ eventBus.on(Events.PAGE_LOADED, async ({page, modalId}) => {
 });
 eventBus.on(Events.MODAL_HISTORY_CHANGED, ({modalId}) => {
     modalManager.close();
-    // The only path that wipes modal content without initElements running afterwards.
-    initLightGalleries(document);
     if (modalId) {
         modalManager.open(modalId);
     }

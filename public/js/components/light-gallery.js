@@ -1,6 +1,6 @@
 const CONTAINER_SELECTOR = '[data-light-gallery]';
 const ELEMENT_SELECTOR = '[data-light-gallery-element]';
-const NAVIGATION_SELECTOR = 'a[data-model-content-url], a[data-router-link]';
+const NAVIGATION_SELECTOR = 'a[data-router-link]';
 
 const instances = new Map();
 
@@ -38,7 +38,6 @@ class LightGallery {
             this.open(element);
         };
 
-        // Capture phase: the gallery has to be gone before the modal it links to opens underneath it.
         this.onNavigate = e => {
             if (!this.gallery.lgOpened) return;
             if (!e.target.closest('.lg-outer')) return;
