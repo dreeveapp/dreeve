@@ -128,7 +128,9 @@ if ($modalAIChat) {
         e.preventDefault();
         e.stopPropagation();
         const modalId = $modalAIChat.getAttribute('data-modal-custom-ai');
-        modalManager.open(modalId);
+        if (!modalManager.open(modalId)) {
+            return;
+        }
         router.pushCurrentRouteToHistoryState(modalId);
     });
 }

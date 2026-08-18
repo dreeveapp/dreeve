@@ -68,7 +68,9 @@ export default class ChartManager {
                 const month = (params.dataIndex + 1).toString().padStart(2, "0");
                 const modalId = `${basePath()}/api/fragment/page/month/${params.seriesName}-${month}`;
 
-                this.modalManager.open(modalId);
+                if (!this.modalManager.open(modalId)) {
+                    return;
+                }
                 this.router.pushCurrentRouteToHistoryState(modalId);
             },
             handleWeeklyStatsClick: (params, clickData) => {

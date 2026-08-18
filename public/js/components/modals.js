@@ -1,4 +1,5 @@
 import {eventBus, Events} from "../core/event-bus";
+import {basePath} from "../utils";
 import { Modal } from 'flowbite';
 
 export default class ModalManager {
@@ -21,12 +22,41 @@ export default class ModalManager {
             e.preventDefault();
             e.stopPropagation();
             const modalId = node.getAttribute('data-model-content-url');
-            this.open(modalId);
+            if (!this.open(modalId)) {
+                return;
+            }
             this.router.pushCurrentRouteToHistoryState(modalId);
         });
     }
 
+    // The modal URL reaches us from the address bar, so it is attacker-controllable:
+    // without this, a crafted link makes us innerHTML a remote document.
+    isSameOriginPath(modalId) {
+        if (!modalId?.trim()) {
+            return false;
+        }
+
+        let url;
+        try {
+            url = new URL(modalId, window.location.origin);
+        } catch {
+            return false;
+        }
+
+        // An empty path or the base path itself resolves to the app root, which would
+        // inject the whole shell document into the modal.
+        const prefix = `${basePath()}/`;
+
+        return url.origin === window.location.origin
+            && url.pathname.startsWith(prefix)
+            && url.pathname.length > prefix.length;
+    }
+
     open(modalId) {
+        if (!this.isSameOriginPath(modalId)) {
+            return false;
+        }
+
         this.close();
 
         // Show loading state.
@@ -77,6 +107,8 @@ export default class ModalManager {
         });
 
         this.modal.show();
+
+        return true;
     }
 
     close() {
