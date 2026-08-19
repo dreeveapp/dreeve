@@ -1,9 +1,13 @@
 export default class ScrollTo {
     constructor() {
         this.pendingObservers = new WeakMap();
+        this.boundRoots = new WeakSet();
     }
 
     init(rootNode) {
+        if (this.boundRoots.has(rootNode)) return;
+        this.boundRoots.add(rootNode);
+
         rootNode.addEventListener('click', (e) => {
             const trigger = e.target.closest('[data-scroll-to]');
             if (!trigger) return;
