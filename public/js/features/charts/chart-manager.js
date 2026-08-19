@@ -29,7 +29,6 @@ export default class ChartManager {
     init(rootNode, isDarkMode) {
         this.theme = isDarkMode ? 'v5-dark' : 'v5';
         const handlers = this.getClickHandlers();
-        const connectedCharts = [];
         rootNode.querySelectorAll('[data-echarts-options], [data-echarts-options-url]').forEach(chartNode => {
             const chart = echarts.init(chartNode, this.theme);
             const chartOptionsUrl = chartNode.getAttribute('data-echarts-options-url');
@@ -55,14 +54,10 @@ export default class ChartManager {
                     handlers[clickHandlerName](params, clickData);
                 });
             }
-            if (chartNode.hasAttribute('data-echarts-connect')) {
-                connectedCharts.push(chart);
-            }
 
             this.allCharts.push(chart);
             this.resizeObserver.observe(chartNode);
         });
-        echarts.connect(connectedCharts);
     }
 
     getClickHandlers() {

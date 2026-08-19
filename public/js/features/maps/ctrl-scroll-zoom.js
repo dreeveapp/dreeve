@@ -9,7 +9,7 @@ const defaultMessage = isMac
     ? 'Use ⌘ + scroll to zoom the map'
     : 'Use ctrl + scroll to zoom the map';
 
-export const CtrlScrollZoom = L.Handler.extend({
+const CtrlScrollZoom = L.Handler.extend({
     addHooks: function() {
         this._onWheel = this._onWheel.bind(this);
 
@@ -43,5 +43,3 @@ export const CtrlScrollZoom = L.Handler.extend({
 });
 
 L.Map.addInitHook('addHandler', 'ctrlScrollZoom', CtrlScrollZoom);
-
-export default CtrlScrollZoom;

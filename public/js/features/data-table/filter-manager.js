@@ -4,7 +4,6 @@ import {DatePreset} from "./date-preset";
 export class FilterManager {
     constructor(wrapper) {
         this.wrapper = wrapper;
-        this.filters = {};
     }
 
     _isRangeFilter(value) {

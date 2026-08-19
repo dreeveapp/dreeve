@@ -1,4 +1,4 @@
-import {FilterStorage, FilterName} from "../data-table/storage";
+import {FilterName} from "../data-table/storage";
 import {FilterManager} from "../data-table/filter-manager";
 
 export default class PhotoWall {

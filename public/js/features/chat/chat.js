@@ -1,6 +1,7 @@
 import autoComplete from "../../../libraries/autocomplete";
 import ChatMessageRenderer from "./message-renderer";
 import {eventBus, Events} from "../../core/event-bus";
+import {basePath} from "../../utils";
 
 let activeSource = null;
 
@@ -24,8 +25,7 @@ export default class Chat {
         this.commands = JSON.parse(this.chatWrapper.getAttribute('data-chat-commands') || '{}');
         this.autoCompleteJS = null;
 
-        const raw = window.dreeve?.appUrl?.basePath || '';
-        this.basePath = raw ? '/' + raw.replace(/^\/+|\/+$/g, '') : '';
+        this.basePath = basePath();
     }
 
     toggleElements(disabled) {
