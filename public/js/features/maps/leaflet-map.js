@@ -99,6 +99,10 @@ export default class LeafletMap {
         }
     }
 
+    destroy() {
+        this.map.remove();
+    }
+
     addCircleMarker(latLng, fillColor, {radius = 8, opacity = 1} = {}) {
         return L.circleMarker(latLng, {
             radius,
