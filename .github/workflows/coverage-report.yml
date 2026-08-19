@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - master
-  schedule:
-    - cron: '0 2 * * *'
+permissions:
+  contents: read
 jobs:
-  coverage-artifact:
-    name: Generate coverage artifact
+  coverage:
+    name: Upload coverage to Codecov
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,12 +18,11 @@ jobs:
         uses: ./.github/actions/setup-env
 
       - name: Run test suite
-        run: vendor/bin/phpunit --order-by=random --fail-on-incomplete --log-junit junit.xml --coverage-clover=clover.xml
+        run: vendor/bin/paratest --order-by=random --fail-on-incomplete --log-junit junit.xml --coverage-clover=clover.xml
 
-      - name: Generate coverage report
-        uses: clearlyip/code-coverage-report-action@v7
-        id: code_coverage_report_action
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
         with:
-          filename: 'clover.xml'
-          only_list_changed_files: true
-          fail_on_negative_difference: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: clover.xml
+          fail_ci_if_error: false

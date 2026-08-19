@@ -88,8 +88,8 @@ final readonly class FindRouteMatchesQueryHandler implements QueryHandler
             ]
         )->fetchAllAssociative();
 
-        $routeMatches = RouteMatches::empty();
-        $rank = 0;
+        $matches = [];
+        $startDateTimes = [];
 
         foreach ($candidates as $candidate) {
             $candidateCellCount = (int) $candidate['cellCount'];
@@ -116,16 +116,31 @@ final readonly class FindRouteMatchesQueryHandler implements QueryHandler
                 continue;
             }
 
-            $activityId = ActivityId::fromString((string) $candidate['activityId']);
+            $activityId = (string) $candidate['activityId'];
+            $matches[] = $candidate;
+            $startDateTimes[$activityId] = SerializableDateTime::fromString((string) $candidate['startDateTime']);
+        }
+
+        $timestamps = array_map(fn (SerializableDateTime $startDateTime): int => $startDateTime->getTimestamp(), $startDateTimes);
+        // Sorting a copy keeps $matches in fastest-first order; ties fall back to that same order.
+        arsort($timestamps);
+        $recencyRanks = array_flip(array_keys($timestamps));
+
+        $routeMatches = RouteMatches::empty();
+        $rank = 0;
+
+        foreach ($matches as $match) {
+            $activityId = (string) $match['activityId'];
 
             $routeMatches->add(RouteMatch::fromState(
-                activityId: $activityId,
+                activityId: ActivityId::fromString($activityId),
                 rank: ++$rank,
-                name: (string) $candidate['name'],
-                distance: Meter::from($candidateDistance)->toKilometer(),
-                movingTimeInSeconds: (int) $candidate['movingTimeInSeconds'],
-                startDateTime: SerializableDateTime::fromString((string) $candidate['startDateTime']),
-                isCurrentActivity: (string) $activityId === (string) $query->getActivityId(),
+                recencyRank: $recencyRanks[$activityId] + 1,
+                name: (string) $match['name'],
+                distance: Meter::from((int) $match['distance'])->toKilometer(),
+                movingTimeInSeconds: (int) $match['movingTimeInSeconds'],
+                startDateTime: $startDateTimes[$activityId],
+                isCurrentActivity: $activityId === (string) $query->getActivityId(),
             ));
         }
 

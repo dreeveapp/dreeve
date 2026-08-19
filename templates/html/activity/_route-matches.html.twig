@@ -1,6 +1,6 @@
 {% autoescape false %}
     {% if routeMatches|length > 1 %}
-        <details class="group/section">
+        <details class="group/section" data-sort-scope>
             <summary class="list-none cursor-pointer flex items-center justify-between py-2 hover:text-primary transition select-none">
                 <div class="flex items-center gap-2">
                     <h3 class="font-bold text-gray-900 group-hover/section:text-primary transition">{{ "Similar activities"|trans }}</h3>
@@ -10,16 +10,27 @@
                     <path d="m1 1 4 4 4-4"/>
                 </svg>
             </summary>
-            <div class="text-xs text-gray-500 mt-1">{{ "{numberOfActivities} activities on this route"|trans({'{numberOfActivities}': routeMatches|length}) }}</div>
-            <div class="mt-3 space-y-2 max-h-125 overflow-y-auto p-1">
+            <div class="mt-1 flex items-center justify-between gap-2">
+                <div class="text-xs text-gray-500">{{ "{numberOfActivities} activities on this route"|trans({'{numberOfActivities}': routeMatches|length}) }}</div>
+                <div role="group" aria-label="{{ "Sort"|trans }}" class="shrink-0 inline-flex items-center bg-gray-100 rounded-lg p-0.5 text-xxs font-medium">
+                    <input type="radio" name="routeMatchSort" id="routeMatchSortRank" data-sort-option="rank" class="sr-only peer/rank" checked>
+                    <label for="routeMatchSortRank" class="cursor-pointer rounded-md px-2 py-1 text-gray-500 transition peer-checked/rank:bg-white peer-checked/rank:text-gray-900 peer-checked/rank:shadow-xs peer-focus-visible/rank:ring-2 peer-focus-visible/rank:ring-primary/40">{{ "Fastest"|trans }}</label>
+                    <input type="radio" name="routeMatchSort" id="routeMatchSortDate" data-sort-option="date" class="sr-only peer/date">
+                    <label for="routeMatchSortDate" class="cursor-pointer rounded-md px-2 py-1 text-gray-500 transition peer-checked/date:bg-white peer-checked/date:text-gray-900 peer-checked/date:shadow-xs peer-focus-visible/date:ring-2 peer-focus-visible/date:ring-primary/40">{{ "Recent"|trans }}</label>
+                </div>
+            </div>
+            <div class="mt-3 flex flex-col gap-2 max-h-125 overflow-y-auto p-1">
                 {% for routeMatch in routeMatches %}
+                    {% set sortOrder = '--sort-order-rank: ' ~ routeMatch.getRank() ~ '; --sort-order-date: ' ~ routeMatch.getRecencyRank() ~ ';' %}
                     {% if routeMatch.isCurrentActivity() %}
-                        <div class="flex items-center gap-3 bg-white shadow-xs ring-2 ring-primary rounded-xl p-3">
+                        <div style="{{ sortOrder }}"
+                             class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) flex items-center gap-3 bg-white shadow-xs ring-2 ring-primary rounded-xl p-3">
                             {{ _self.routeMatchRow(routeMatch) }}
                         </div>
                     {% else %}
                         <a href="{{ relativeUrl('activities/' ~ routeMatch.getActivityId()) }}" data-router-link
-                           class="group/route-match flex items-center gap-3 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs hover:ring-primary/30 rounded-xl p-3 transition">
+                           style="{{ sortOrder }}"
+                           class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) group/route-match flex items-center gap-3 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs hover:ring-primary/30 rounded-xl p-3 transition">
                             {{ _self.routeMatchRow(routeMatch) }}
                         </a>
                     {% endif %}

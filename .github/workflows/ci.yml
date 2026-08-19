@@ -6,7 +6,7 @@ concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 permissions:
-  pull-requests: write
+  contents: read
 jobs:
   ci:
     name: Run CI
@@ -47,18 +47,10 @@ jobs:
       - name: Run Caddy test suite
         run: vendor/bin/paratest --testsuite caddy
 
-      - name: Generate coverage report
-        uses: clearlyip/code-coverage-report-action@v7
-        id: code_coverage_report_action
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
         with:
-          filename: 'clover.xml'
-          only_list_changed_files: true
-          fail_on_negative_difference: false
-          artifact_download_workflow_names: 'coverage-report'
-
-      - name: Add coverage PR comment
-        uses: marocchino/sticky-pull-request-comment@v3
-        if: github.event.pull_request.user.login == 'robiningelbrecht' && steps.code_coverage_report_action.outputs.file != '' && github.event_name == 'pull_request' && (success() || failure())
-        with:
-          recreate: false
-          path: code-coverage-results.md
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: dreeveapp/dreeve
+          files: clover.xml
+          fail_ci_if_error: false

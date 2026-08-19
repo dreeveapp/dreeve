@@ -1063,6 +1063,9 @@
   .z-10000 {
     z-index: 10000;
   }
+  .order-\(--sort-order-rank\) {
+    order: var(--sort-order-rank);
+  }
   .col-span-2 {
     grid-column: span 2 / span 2;
   }
@@ -3784,6 +3787,26 @@
   .peer-checked\:text-primary:is(:where(.peer):checked ~ *) {
     color: var(--color-primary);
   }
+  .peer-checked\/date\:bg-white:is(:where(.peer\/date):checked ~ *) {
+    background-color: var(--color-white);
+  }
+  .peer-checked\/date\:text-gray-900:is(:where(.peer\/date):checked ~ *) {
+    color: var(--color-gray-900);
+  }
+  .peer-checked\/date\:shadow-xs:is(:where(.peer\/date):checked ~ *) {
+    --tw-shadow: 0 1px 2px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .peer-checked\/rank\:bg-white:is(:where(.peer\/rank):checked ~ *) {
+    background-color: var(--color-white);
+  }
+  .peer-checked\/rank\:text-gray-900:is(:where(.peer\/rank):checked ~ *) {
+    color: var(--color-gray-900);
+  }
+  .peer-checked\/rank\:shadow-xs:is(:where(.peer\/rank):checked ~ *) {
+    --tw-shadow: 0 1px 2px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
   .peer-focus\:ring-2:is(:where(.peer):focus ~ *) {
     --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -3794,6 +3817,26 @@
   .peer-focus\:outline-none:is(:where(.peer):focus ~ *) {
     --tw-outline-style: none;
     outline-style: none;
+  }
+  .peer-focus-visible\/date\:ring-2:is(:where(.peer\/date):focus-visible ~ *) {
+    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .peer-focus-visible\/date\:ring-primary\/40:is(:where(.peer\/date):focus-visible ~ *) {
+    --tw-ring-color: color-mix(in srgb, #F26722 40%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      --tw-ring-color: color-mix(in oklab, var(--color-primary) 40%, transparent);
+    }
+  }
+  .peer-focus-visible\/rank\:ring-2:is(:where(.peer\/rank):focus-visible ~ *) {
+    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .peer-focus-visible\/rank\:ring-primary\/40:is(:where(.peer\/rank):focus-visible ~ *) {
+    --tw-ring-color: color-mix(in srgb, #F26722 40%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      --tw-ring-color: color-mix(in oklab, var(--color-primary) 40%, transparent);
+    }
   }
   .after\:absolute::after {
     content: var(--tw-content);
@@ -4501,6 +4544,9 @@
   }
   .drawer-open\:opacity-0:where(body:has(#drawer-navigation[aria-modal="true"]) *) {
     opacity: 0%;
+  }
+  [data-sort-scope]:has([data-sort-option="date"]:checked) .sorted-by-date\:order-\(--sort-order-date\) {
+    order: var(--sort-order-date);
   }
   .\[\&\.disabled\]\:bg-gray-100.disabled {
     background-color: var(--color-gray-100);

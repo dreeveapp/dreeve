@@ -16,6 +16,7 @@ final readonly class RouteMatch
     private function __construct(
         private ActivityId $activityId,
         private int $rank,
+        private int $recencyRank,
         private string $name,
         private Kilometer $distance,
         private int $movingTimeInSeconds,
@@ -27,6 +28,7 @@ final readonly class RouteMatch
     public static function fromState(
         ActivityId $activityId,
         int $rank,
+        int $recencyRank,
         string $name,
         Kilometer $distance,
         int $movingTimeInSeconds,
@@ -36,6 +38,7 @@ final readonly class RouteMatch
         return new self(
             activityId: $activityId,
             rank: $rank,
+            recencyRank: $recencyRank,
             name: $name,
             distance: $distance,
             movingTimeInSeconds: $movingTimeInSeconds,
@@ -52,6 +55,11 @@ final readonly class RouteMatch
     public function getRank(): int
     {
         return $this->rank;
+    }
+
+    public function getRecencyRank(): int
+    {
+        return $this->recencyRank;
     }
 
     public function getName(): string

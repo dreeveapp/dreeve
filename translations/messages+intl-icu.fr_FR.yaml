@@ -127,6 +127,7 @@ Energy: Energy
 Evening: Soirée
 'Excludes commutes': 'Trajets domicile-travail exclus'
 'FTP history': 'Historique FTP'
+Fastest: Fastest
 Favourite: Favori
 Feb: Fév
 'Filling up the bottles...': 'Filling up the bottles...'
@@ -313,6 +314,7 @@ Ranking: Classement
 'Reached {threshold} total distance': '{threshold} distance au total'
 'Reached {threshold} total elevation': '{threshold} élévation au total'
 'Recalculating your suffer score...': 'Recalculating your suffer score...'
+Recent: Recent
 'Recent effort': 'Effort récent'
 'Recording devices': "Appareils d'enregistrement"
 'Recovery Timeline': 'Ligne de temps de récupération'
@@ -356,6 +358,7 @@ Snowboard: Snowboard
 Snowshoe: 'Raquettes à neige'
 Soccer: Football
 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.': 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.'
+Sort: Sort
 Speed: Vitesse
 'Speed & cadence sensor': 'Speed & cadence sensor'
 'Speed sensor': 'Speed sensor'

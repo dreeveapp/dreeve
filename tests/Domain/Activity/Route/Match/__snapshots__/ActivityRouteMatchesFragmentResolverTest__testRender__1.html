@@ -1,5 +1,5 @@
 <html><body>
-<details class="group/section">
+<details class="group/section" data-sort-scope>
             <summary class="list-none cursor-pointer flex items-center justify-between py-2 hover:text-primary transition select-none">
                 <div class="flex items-center gap-2">
                     <h3 class="font-bold text-gray-900 group-hover/section:text-primary transition">Similar activities</h3>
@@ -9,9 +9,17 @@
                     <path d="m1 1 4 4 4-4"></path>
                 </svg>
             </summary>
-            <div class="text-xs text-gray-500 mt-1">4 activities on this route</div>
-            <div class="mt-3 space-y-2 max-h-125 overflow-y-auto p-1">
-                                                            <div class="flex items-center gap-3 bg-white shadow-xs ring-2 ring-primary rounded-xl p-3">
+            <div class="mt-1 flex items-center justify-between gap-2">
+                <div class="text-xs text-gray-500">4 activities on this route</div>
+                <div role="group" aria-label="Sort" class="shrink-0 inline-flex items-center bg-gray-100 rounded-lg p-0.5 text-xxs font-medium">
+                    <input type="radio" name="routeMatchSort" id="routeMatchSortRank" data-sort-option="rank" class="sr-only peer/rank" checked>
+                    <label for="routeMatchSortRank" class="cursor-pointer rounded-md px-2 py-1 text-gray-500 transition peer-checked/rank:bg-white peer-checked/rank:text-gray-900 peer-checked/rank:shadow-xs peer-focus-visible/rank:ring-2 peer-focus-visible/rank:ring-primary/40">Fastest</label>
+                    <input type="radio" name="routeMatchSort" id="routeMatchSortDate" data-sort-option="date" class="sr-only peer/date">
+                    <label for="routeMatchSortDate" class="cursor-pointer rounded-md px-2 py-1 text-gray-500 transition peer-checked/date:bg-white peer-checked/date:text-gray-900 peer-checked/date:shadow-xs peer-focus-visible/date:ring-2 peer-focus-visible/date:ring-primary/40">Recent</label>
+                </div>
+            </div>
+            <div class="mt-3 flex flex-col gap-2 max-h-125 overflow-y-auto p-1">
+                                                                                <div style="--sort-order-rank: 1; --sort-order-date: 4;" class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) flex items-center gap-3 bg-white shadow-xs ring-2 ring-primary rounded-xl p-3">
                                     <div title="Rank" class="shrink-0 w-12 h-10 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center font-bold text-sm gap-0.5">
         1
     </div>
@@ -32,7 +40,7 @@
     </div>
     
                         </div>
-                                                                                <a href="/activities/activity-9830227112" data-router-link class="group/route-match flex items-center gap-3 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs hover:ring-primary/30 rounded-xl p-3 transition">
+                                                                                                    <a href="/activities/activity-9830227112" data-router-link style="--sort-order-rank: 2; --sort-order-date: 3;" class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) group/route-match flex items-center gap-3 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs hover:ring-primary/30 rounded-xl p-3 transition">
                                     <div title="Rank" class="shrink-0 w-12 h-10 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center font-bold text-sm gap-0.5">
         2
     </div>
@@ -53,7 +61,7 @@
     </div>
     
                         </a>
-                                                                                <a href="/activities/activity-9830227182" data-router-link class="group/route-match flex items-center gap-3 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs hover:ring-primary/30 rounded-xl p-3 transition">
+                                                                                                    <a href="/activities/activity-9830227182" data-router-link style="--sort-order-rank: 3; --sort-order-date: 2;" class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) group/route-match flex items-center gap-3 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs hover:ring-primary/30 rounded-xl p-3 transition">
                                     <div title="Rank" class="shrink-0 w-12 h-10 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center font-bold text-sm gap-0.5">
         3
     </div>
@@ -74,7 +82,7 @@
     </div>
     
                         </a>
-                                                                                <a href="/activities/activity-9830232182" data-router-link class="group/route-match flex items-center gap-3 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs hover:ring-primary/30 rounded-xl p-3 transition">
+                                                                                                    <a href="/activities/activity-9830232182" data-router-link style="--sort-order-rank: 4; --sort-order-date: 1;" class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) group/route-match flex items-center gap-3 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs hover:ring-primary/30 rounded-xl p-3 transition">
                                     <div title="Rank" class="shrink-0 w-12 h-10 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center font-bold text-sm gap-0.5">
         4
     </div>

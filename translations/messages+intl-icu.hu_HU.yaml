@@ -127,6 +127,7 @@ Energy: Energy
 Evening: Este
 'Excludes commutes': 'Ingázások nélkül'
 'FTP history': 'FTP előzmények'
+Fastest: Fastest
 Favourite: Kedvenc
 Feb: Feb
 'Filling up the bottles...': 'Filling up the bottles...'
@@ -313,6 +314,7 @@ Ranking: Ranglista
 'Reached {threshold} total distance': '{threshold} összes távolság elérve'
 'Reached {threshold} total elevation': '{threshold} összes szintemelkedés elérve'
 'Recalculating your suffer score...': 'Recalculating your suffer score...'
+Recent: Recent
 'Recent effort': 'Közelmúltbeli teljesítmény'
 'Recording devices': 'Rögzítő eszközök'
 'Recovery Timeline': 'Regenerációs idővonal'
@@ -356,6 +358,7 @@ Snowboard: Snowboard
 Snowshoe: Hótalp
 Soccer: Labdarúgás
 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.': 'Aki rendszeresen 90 percet edz, magasabb pontszámot ér el, mint aki főleg rövid edzéseket végez.'
+Sort: Sort
 Speed: Sebesség
 'Speed & cadence sensor': 'Speed & cadence sensor'
 'Speed sensor': 'Speed sensor'
