@@ -135,7 +135,7 @@ export default class Chat {
     parseExistingMessages() {
         const messages = this.chatWrapper.querySelectorAll('div.message');
         messages.forEach(messageEl => {
-            if (messageEl.dataset.parsed === 'true') return;
+            if (messageEl.dataset.markdownParsed === 'true') return;
 
             const rawText = messageEl.textContent;
             if (!rawText) return;
