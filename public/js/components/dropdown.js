@@ -1,5 +1,7 @@
 import { Dropdown } from 'flowbite';
 
+const instances = new WeakMap();
+
 export default function initDropdowns(rootNode) {
     rootNode.querySelectorAll('[data-dropdown]').forEach(($triggerEl) => {
         const $dropdownEl = document.getElementById($triggerEl.getAttribute('data-dropdown'));
@@ -21,9 +23,13 @@ export default function initDropdowns(rootNode) {
                 : false,
         });
 
-        $dropdownEl.addEventListener('click', (e) => {
-            if (!e.target.closest('[data-close-dropdown]')) return;
-            dropdown.hide();
-        });
+        if (!$dropdownEl.hasAttribute('data-close-dropdown-bound')) {
+            $dropdownEl.setAttribute('data-close-dropdown-bound', '');
+            $dropdownEl.addEventListener('click', (e) => {
+                if (!e.target.closest('[data-close-dropdown]')) return;
+                instances.get($dropdownEl)?.hide();
+            });
+        }
+        instances.set($dropdownEl, dropdown);
     });
 }
