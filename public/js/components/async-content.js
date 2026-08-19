@@ -10,7 +10,6 @@ export function abortPendingAsyncContent() {
     controller.abort();
     controller = new AbortController();
     queue = [];
-    inFlight = 0;
 }
 
 function drain() {
