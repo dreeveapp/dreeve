@@ -112,7 +112,7 @@
                         <td class="whitespace-nowrap text-left">
                             <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
                                title="{{ activity.getName() }}"
-                               href="{{ relativeUrl('/activities?modal=/api/fragment/page/activities/' ~ activity.getActivityId()) }}">
+                               href="{{ relativeUrl('/activities/' ~ activity.getActivityId()) }}">
                                 {{ activity.getName() }}
                             </a>
                         </td>

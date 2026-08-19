@@ -8,7 +8,7 @@
         'label': calendar.getMonth().getLabel()
     }]} %}
 {% autoescape false %}
-    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs space-y-4">
         <div class="mb-4 flex items-center justify-between">
             <h1 class="flex items-center text-lg font-semibold text-gray-900">
             {% set previousMonth = calendar.getMonth().getPreviousMonth() %}
@@ -60,7 +60,6 @@
                 </li>
             </ul>
         </div>
-        <div class="space-y-4">
         <div class="grid grid-cols-1 gap-4">
             <div class="flex flex-col">
                 <div class="grid grid-cols-7 gap-px leading-6 font-semibold text-xs text-center border border-b-0">

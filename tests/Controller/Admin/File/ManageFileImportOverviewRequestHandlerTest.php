@@ -218,10 +218,10 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
 
-        $detailLinks = $crawler->filter('table.data-table tbody a[href*="?modal=/api/fragment/page/activities/"]');
+        $detailLinks = $crawler->filter('table.data-table tbody a[href^="/activities/"]');
         $this->assertCount(2, $detailLinks);
         $this->assertStringContainsString(
-            '/activities?modal=/api/fragment/page/activities/'.ActivityId::fromUnprefixed('1'),
+            '/activities/'.ActivityId::fromUnprefixed('1'),
             $detailLinks->first()->attr('href')
         );
         $this->assertSame('Activity 1', trim($detailLinks->first()->text()));
