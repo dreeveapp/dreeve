@@ -2,12 +2,12 @@
 {% block main %}
     {% autoescape false %}
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-        <div class="flex items-center justify-between mb-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
             <h3 class="text-lg font-semibold">
                 {{ "Activity management"|trans({}, 'admin') }}
             </h3>
             {% if importMode.isFiles() %}
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2">
                     <a href="{{ relativeUrl(path('admin_file_upload')) }}" type="button" class="btn--add">
                         <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01"/>

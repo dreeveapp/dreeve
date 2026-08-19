@@ -108,7 +108,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
 
         $this->assertCount(1, $crawler->filter('a[href*="automation-rules/test"]'));
-        $this->assertCount(2, $crawler->filter('a[href*="automation-rules/backfill"]'));
+        $this->assertCount(1, $crawler->filter('a[href*="automation-rules/backfill"]'));
 
         $list = $crawler->filter('[data-sortable-list]');
         $this->assertCount(1, $list);
@@ -146,7 +146,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(2, $distancePill->children());
     }
 
-    public function testItRendersTheQueuedBannerInsteadOfTheBackfillButton(): void
+    public function testItRendersTheQueuedBanner(): void
     {
         $this->withImportMode(ImportMode::FILES);
 

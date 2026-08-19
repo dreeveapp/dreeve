@@ -8,7 +8,7 @@
         {% embed 'html/admin/component/gated-panel.html.twig' with { 'locked': not importMode.isFiles() } %}
             {% block lockTitle %}{% autoescape false %}{{ "Automation rules are only available in file import mode"|trans({}, 'admin') }}{% endautoescape %}{% endblock %}
             {% block content %}{% autoescape false %}
-        <div class="flex items-center justify-between mb-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div>
                 <h3 class="text-lg font-semibold">{{ "Automation rules"|trans({}, 'admin') }}</h3>
                 <p class="mt-1 text-sm text-gray-500">
@@ -16,11 +16,6 @@
                 </p>
             </div>
             <div class="flex items-center gap-2">
-                {% if hasEnabledRules and not backfillIsQueued %}
-                    <a href="{{ relativeUrl(path('admin_backfill_automation_rules')) }}" type="button" class="btn--secondary">
-                        <span>{{ "Apply to existing activities"|trans({}, 'admin') }}</span>
-                    </a>
-                {% endif %}
                 <a href="{{ relativeUrl(path('admin_add_automation_rule')) }}" type="button" class="btn--add">
                     <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
