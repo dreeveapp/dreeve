@@ -100,6 +100,12 @@ export default class ChartManager {
 
     reset() {
         this.resizeObserver.disconnect();
+        // Dropping the references is not enough: echarts keeps its own registry.
+        this.allCharts.forEach(chart => {
+            if (!chart.isDisposed()) {
+                chart.dispose();
+            }
+        });
         this.allCharts = [];
     }
 
