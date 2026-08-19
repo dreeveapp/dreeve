@@ -16,6 +16,7 @@ import {initImageDropZones} from "./features/file-upload/image-dropzone-upload";
 import initDashboardLayout from "./features/dashboard/dashboard-layout";
 import initSortableLists from "./components/sortable-list";
 import initAsyncContent from "./components/async-content";
+import {eventBus, Events} from "./core/event-bus";
 import {initDrawers, initCollapses} from "flowbite";
 
 initDrawers();
@@ -38,4 +39,21 @@ new FileDropzoneUpload(document).init();
 initImageDropZones(document);
 initDashboardLayout(document);
 initSortableLists(document);
+
+// Async fragments arrive after the initial pass, so their components need initialising
+// too. Only the node-scoped, re-entrant initialisers belong here.
+eventBus.on(Events.ASYNC_CONTENT_LOADED, ({node}) => {
+    initCheckboxMultiselects(node);
+    initComboboxes(node);
+    initCoordinatePickers(node);
+    initDropdowns(node);
+    initDispatchCommandForm(node);
+    initImageDropZones(node);
+    initDashboardLayout(node);
+    initSortableLists(node);
+    // Scans document-wide and is guarded against re-binding, so pass the document.
+    initDependentFormInputs(document);
+    initAsyncContent(node);
+});
+
 initAsyncContent(document);

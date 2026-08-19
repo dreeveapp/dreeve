@@ -24,7 +24,15 @@ const isVisible = (field) => {
     return allowedValuesOf(field).includes(controllerValueOf(controller));
 };
 
+const boundRoots = new WeakMap();
+
 export default function initDependentFormInputs(rootNode = document) {
+    const bound = boundRoots.get(rootNode);
+    if (bound) {
+        bound();
+        return;
+    }
+
     const originalDisabled = new WeakMap();
 
     const apply = () => {
@@ -61,6 +69,8 @@ export default function initDependentFormInputs(rootNode = document) {
             control.disabled = originalDisabled.get(control) || hidden;
         });
     };
+
+    boundRoots.set(rootNode, apply);
 
     rootNode.addEventListener('change', apply);
     eventBus.on(Events.REPEATER_CHANGED, apply);
