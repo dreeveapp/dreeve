@@ -52,6 +52,10 @@ export default class HeatmapDrawer {
         });
     }
 
+    destroy() {
+        this.map.remove();
+    }
+
     _handlePopupOpen(e) {
         const container = e.popup.getElement();
         if (!container) return;

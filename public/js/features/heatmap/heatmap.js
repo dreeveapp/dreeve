@@ -2,6 +2,14 @@ import {FilterName} from "../data-table/storage";
 import {FilterManager} from "../data-table/filter-manager";
 import HeatmapDrawer from "./heatmap-drawer";
 import {fetchJson} from "../../utils";
+import {eventBus, Events} from "../../core/event-bus";
+
+let activeHeatmap = null;
+
+eventBus.on(Events.PAGE_LOADED, () => {
+    activeHeatmap?.destroy();
+    activeHeatmap = null;
+});
 
 export default class Heatmap {
     constructor(wrapper) {
@@ -14,7 +22,13 @@ export default class Heatmap {
         this.drawer = new HeatmapDrawer(this.heatmap, this.config);
     }
 
+    destroy() {
+        this.drawer.destroy();
+    }
+
     async render() {
+        activeHeatmap = this;
+
         const apiUrl = this.heatmap.getAttribute('data-leaflet-routes');
         const allRoutes = await fetchJson(apiUrl);
 
