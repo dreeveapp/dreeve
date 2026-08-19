@@ -7,12 +7,18 @@ import {router} from "../../core/router";
 export default class ChartManager {
     constructor() {
         this.allCharts = [];
+        this.theme = null;
+        this.pendingTheme = new Set();
         this.resizeObserver = new ResizeObserver(entries => {
             for (const entry of entries) {
                 const chart = echarts.getInstanceByDom(entry.target);
-                if (chart && entry.target.offsetParent) {
-                    chart.resize();
+                if (!chart || !entry.target.offsetParent) {
+                    continue;
                 }
+                if (this.pendingTheme.delete(chart)) {
+                    chart.setTheme(this.theme);
+                }
+                chart.resize();
             }
         });
 
@@ -21,10 +27,11 @@ export default class ChartManager {
     }
 
     init(rootNode, isDarkMode) {
+        this.theme = isDarkMode ? 'v5-dark' : 'v5';
         const handlers = this.getClickHandlers();
         const connectedCharts = [];
         rootNode.querySelectorAll('[data-echarts-options], [data-echarts-options-url]').forEach(chartNode => {
-            const chart = echarts.init(chartNode, isDarkMode ? 'v5-dark' : 'v5');
+            const chart = echarts.init(chartNode, this.theme);
             const chartOptionsUrl = chartNode.getAttribute('data-echarts-options-url');
 
             const loadOptions = chartOptionsUrl
@@ -107,11 +114,19 @@ export default class ChartManager {
             }
         });
         this.allCharts = [];
+        this.pendingTheme.clear();
     }
 
     toggleDarkTheme(isDarkMode) {
-        this.allCharts
-            .filter(chart => chart.getDom().offsetParent)
-            .forEach(chart => chart.setTheme(isDarkMode ? 'v5-dark' : 'v5'));
+        this.theme = isDarkMode ? 'v5-dark' : 'v5';
+
+        this.allCharts.forEach(chart => {
+            if (!chart.getDom().offsetParent) {
+                this.pendingTheme.add(chart);
+                return;
+            }
+            this.pendingTheme.delete(chart);
+            chart.setTheme(this.theme);
+        });
     }
 }
