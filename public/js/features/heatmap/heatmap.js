@@ -41,7 +41,7 @@ export default class Heatmap {
         if (this.resetBtn) {
             this.resetBtn.addEventListener('click', e => {
                 e.preventDefault();
-                this.filterManager.resetAll();
+                this.filterManager.resetAll(FilterName.HEATMAP);
                 redraw();
             });
         }
