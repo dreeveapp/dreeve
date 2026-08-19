@@ -87,6 +87,12 @@ eventBus.on(Events.PAGE_LOADED, async ({page, modalId}) => {
         const $photoWallWrapper = document.querySelector('.photo-wall-wrapper');
         new PhotoWall($photoWallWrapper).render();
     }
+    if (page === 'chat') {
+        const {default: Chat} = await import(
+            /* webpackChunkName: "chat" */ './features/chat/chat'
+        );
+        new Chat(document).render();
+    }
 
     if (modalId) {
         modalManager.open(modalId);
@@ -113,25 +119,9 @@ eventBus.on(Events.NAVIGATION_CLICKED, ({link}) => {
 eventBus.on(Events.ASYNC_CONTENT_LOADED, ({node}) => {
     initElements(node);
 });
-eventBus.on(Events.MODAL_LOADED, async ({node, modalName}) => {
+eventBus.on(Events.MODAL_LOADED, ({node}) => {
     initElements(node);
-
-    if (modalName === 'ai-chat') {
-        const {default: Chat} = await import(
-            /* webpackChunkName: "chat" */ './features/chat/chat'
-            );
-        new Chat(node).render();
-    }
 });
-const $modalAIChat = document.querySelector('a[data-modal-custom-ai]');
-if ($modalAIChat) {
-    $modalAIChat.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        modalManager.openAndPushToHistoryState($modalAIChat.getAttribute('data-modal-custom-ai'));
-    });
-}
-
 (async () => {
     await updateGithubLatestRelease();
 })();

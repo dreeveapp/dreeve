@@ -1757,11 +1757,11 @@
   .h-\[calc\(100\%-1rem\)\] {
     height: calc(100% - 1rem);
   }
-  .h-\[calc\(100vh-15\.4rem\)\] {
-    height: calc(100vh - 15.4rem);
-  }
   .h-\[calc\(100vh-235px\)\] {
     height: calc(100vh - 235px);
+  }
+  .h-\[calc\(100vh-265px\)\] {
+    height: calc(100vh - 265px);
   }
   .h-auto {
     height: auto;

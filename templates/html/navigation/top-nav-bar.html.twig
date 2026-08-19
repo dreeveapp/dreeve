@@ -103,7 +103,7 @@
                     <ul class="px-2 pb-2 text-sm text-body font-medium" aria-labelledby="profileDropdownMenuButton">
                         {% if isAIIntegrationWithUIEnabled() %}
                             <li>
-                                <a href="#" data-modal-custom-ai="{{ relativeUrl('/ai/chat') }}" data-close-dropdown
+                                <a href="{{ relativeUrl('chat') }}" data-router-link data-close-dropdown
                                    class="inline-flex items-center w-full p-2 hover:bg-gray-50 rounded">
                                     <svg class="size-4 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17h6l3 3v-3h2V9h-2M4 4h11v8H9l-3 3v-3H4V4Z"/>

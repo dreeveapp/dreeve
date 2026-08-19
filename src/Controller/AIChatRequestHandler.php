@@ -4,26 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Application\AppUrl;
-use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
-use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Http\ServerSentEvent;
-use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\String\RelativeUrl;
 use GuzzleHttp\Exception\ClientException;
 use NeuronAI\Agent\AgentInterface;
 use NeuronAI\Chat\Enums\MessageRole;
 use NeuronAI\Chat\Messages\Stream\Chunks\TextChunk;
 use NeuronAI\Chat\Messages\UserMessage;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\EventStreamResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -34,41 +25,12 @@ use Twig\Environment;
 final readonly class AIChatRequestHandler
 {
     public function __construct(
-        private ActivityIdRepository $activityIdRepository,
         private AgentInterface $neuronAIAgent,
         private ChatRepository $chatRepository,
         private CommandBus $commandBus,
-        private AppUrl $appUrl,
-        private FormFactoryInterface $formFactory,
         private Environment $twig,
         private SettingsRepository $settingsRepository,
     ) {
-    }
-
-    #[Route(path: '/ai/chat', name: 'ai_chat', methods: ['GET'], priority: 2)]
-    public function handle(): Response
-    {
-        if ($this->activityIdRepository->count() <= 0) {
-            return new RedirectResponse(RelativeUrl::from('/', $this->appUrl)->toRelativeUrl(), Response::HTTP_FOUND);
-        }
-        if (!$this->settingsRepository->integrations()->isAIIntegrationWithUIEnabled()) {
-            return new Response('UI for AI not enabled', Response::HTTP_OK);
-        }
-        $formBuilder = $this->formFactory->createBuilder();
-        $form = $formBuilder
-            ->setAction(RelativeUrl::from('/ai/chat/user-message', $this->appUrl)->toRelativeUrl())
-            ->add('message', TextType::class, [
-                'label' => 'Message',
-                'required' => true,
-            ])
-            ->add('submit', SubmitType::class)
-            ->getForm();
-
-        return new HtmlResponse($this->twig->render('html/chat/chat.html.twig', [
-            'chatHistory' => $this->chatRepository->findAll(),
-            'form' => $form->createView(),
-            'chatCommands' => Json::encode($this->settingsRepository->integrations()->getChatCommands()),
-        ]));
     }
 
     #[Route(path: '/chat/clear', name: 'ai_chat_clear', methods: ['POST'], priority: 2)]

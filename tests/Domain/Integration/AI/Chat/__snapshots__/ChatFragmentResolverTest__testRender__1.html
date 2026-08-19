@@ -1,0 +1,54 @@
+<html><body>
+<nav class="flex min-w-0 max-w-full overflow-hidden mb-4" aria-label="Breadcrumb">
+    <ol class="flex min-w-0 items-center gap-x-1 text-xs font-medium">
+        <li class="inline-flex items-center shrink-0">
+                            <a href="/dashboard" data-router-link class="inline-flex items-center whitespace-nowrap text-gray-700 hover:text-primary hover:underline">    <svg class="size-4 shrink-0 mr-1.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+    Dashboard
+</a>
+                    </li>
+                    <li class="min-w-0">
+                <div class="flex min-w-0 items-center">
+                    <svg class="size-4 shrink-0 text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                                            <span aria-current="page" title="Virtual workout assistant" class="ml-1 min-w-0 truncate text-gray-700">Virtual workout assistant</span>
+                                    </div>
+            </li>
+            </ol>
+</nav>
+<div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs space-y-4">
+  <div class="mb-4 flex items-center justify-between">
+    <h1 class="flex items-center text-lg font-semibold text-gray-900">
+      Virtual workout assistant
+    </h1>
+    <div class="flex items-center gap-1">
+      <button type="button" class="cursor-pointer clear-chat text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm size-8 inline-flex justify-center items-center" title="Clear chat">
+        <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+        </svg>
+        <span class="sr-only">Clear chat</span>
+      </button>
+    </div>
+  </div>
+  <div class="grid grid-cols-1">
+    <div class="flex flex-col-reverse items-center border rounded-t bg-gray-50 h-[calc(100vh-15.4rem)] overflow-y-auto">
+      <div class="chat--wrapper w-full flex flex-col gap-6 p-8" data-chat-commands="[]">
+              </div>
+    </div>
+      <form name="form" method="post" action="/ai/chat/user-message" class="[&amp;.disabled]:bg-gray-100 flex gap-x-4 items-center border border-t-0 rounded-b text-gray-900 py-2 px-2">
+        <div class="hidden">Message</div>
+        <input required name="form[message]" id="form_message" value="" placeholder="Ask Mark something..." data-placeholder-idle="Ask Mark something..." data-placeholder-processing="Thinking..." class="message disabled:bg-gray-100 disabled:cursor-not-allowed border-0 w-full px-1 py-2.5 focus:ring-0 focus-visible:outline-0">
+
+        <button type="submit" name="form[submit]" id="form_submit" class="send-message disabled:cursor-not-allowed cursor-pointer text-primary hover:bg-primary/30 disabled:hover:bg-white rounded-full text-sm p-2.5 inline-flex items-center">
+            <svg class="size-4 rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 18 20">
+                <path d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z"></path>
+            </svg>
+            <span class="sr-only">Send message</span>
+        </button>
+        <div role="status" class="spinner hidden p-2.5">
+          <div class="loader loader--sm"></div>
+          <span class="sr-only">Loading...</span>
+        </div>
+      <input type="hidden" id="form__token" name="form[_token]" data-controller="csrf-protection" class="" value="csrf-token">
+</form>
+  </div>
+</div>
+</body></html>

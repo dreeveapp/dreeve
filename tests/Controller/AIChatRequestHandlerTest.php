@@ -2,14 +2,8 @@
 
 namespace App\Tests\Controller;
 
-use App\Application\AppUrl;
 use App\Controller\AIChatRequestHandler;
-use App\Domain\Activity\ActivityIdRepository;
-use App\Domain\Activity\ActivityRepository;
-use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
-use App\Domain\Integration\AI\Chat\ChatMessage;
-use App\Domain\Integration\AI\Chat\ChatMessageId;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Integration\AI\Chat\DbalChatRepository;
 use App\Domain\Settings\KeyValueBasedSettingsRepository;
@@ -22,20 +16,17 @@ use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
-use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
 use App\Tests\Infrastructure\Eventing\SpyEventBus;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use NeuronAI\Agent\Agent;
 use NeuronAI\Agent\AgentInterface;
-use NeuronAI\Chat\Enums\MessageRole;
 use NeuronAI\Chat\Messages\AssistantMessage;
 use NeuronAI\Testing\FakeAIProvider;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use Spatie\Snapshots\MatchesSnapshots;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\EventStreamResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
@@ -54,61 +45,6 @@ class AIChatRequestHandlerTest extends ContainerTestCase
      * @var MockObject&ChatRepository
      */
     private MockObject $chatRepository;
-
-    public function testHandle(): void
-    {
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()->build(),
-            [],
-        ));
-
-        $this->chatRepository
-            ->expects($this->once())
-            ->method('findAll')
-            ->willReturn([new ChatMessage(
-                messageId: ChatMessageId::random(),
-                message: 'message',
-                messageRole: MessageRole::USER,
-                on: SerializableDateTime::fromString('2025-05-05')
-            )->withFirstLetterOfFirstName('R')]);
-
-        $requestHandler = $this->buildRequestHandler(
-            true
-        );
-
-        $this->assertMatchesHtmlSnapshot($requestHandler->handle()->getContent());
-    }
-
-    public function testHandleWhenNoActivitiesHaveBeenImportedYet(): void
-    {
-        $this->chatRepository
-            ->expects($this->never())
-            ->method('findAll');
-
-        $requestHandler = $this->buildRequestHandler(
-            true
-        );
-
-        $this->assertMatchesHtmlSnapshot($requestHandler->handle()->getContent());
-    }
-
-    public function testHandleAINotEnabled(): void
-    {
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()->build(),
-            [],
-        ));
-
-        $this->chatRepository
-            ->expects($this->never())
-            ->method('findAll');
-
-        $requestHandler = $this->buildRequestHandler(
-            false
-        );
-
-        $this->assertMatchesHtmlSnapshot($requestHandler->handle()->getContent());
-    }
 
     public function testClearChat(): void
     {
@@ -226,12 +162,9 @@ class AIChatRequestHandlerTest extends ContainerTestCase
     private function buildRequestHandler(bool $aiUIEnabled): AIChatRequestHandler
     {
         return new AIChatRequestHandler(
-            activityIdRepository: $this->getContainer()->get(ActivityIdRepository::class),
             neuronAIAgent: $this->neuronAIAgent,
             chatRepository: $this->chatRepository,
             commandBus: $this->getContainer()->get(CommandBus::class),
-            appUrl: AppUrl::fromString('http://localhost'),
-            formFactory: $this->getContainer()->get(FormFactoryInterface::class),
             twig: $this->getContainer()->get(Environment::class),
             settingsRepository: $this->buildSettingsRepository($aiUIEnabled),
         );
@@ -243,12 +176,9 @@ class AIChatRequestHandlerTest extends ContainerTestCase
         CommandBus $commandBus,
     ): AIChatRequestHandler {
         return new AIChatRequestHandler(
-            activityIdRepository: $this->getContainer()->get(ActivityIdRepository::class),
             neuronAIAgent: $agent,
             chatRepository: $chatRepository,
             commandBus: $commandBus,
-            appUrl: AppUrl::fromString('http://localhost'),
-            formFactory: $this->getContainer()->get(FormFactoryInterface::class),
             twig: $this->getContainer()->get(Environment::class),
             settingsRepository: $this->buildSettingsRepository(true),
         );

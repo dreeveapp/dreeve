@@ -2,13 +2,13 @@ import autoComplete from "../../../libraries/autocomplete";
 import ChatMessageRenderer from "./message-renderer";
 
 export default class Chat {
-    constructor(chatModal) {
-        this.chatWrapper = chatModal.querySelector('.chat--wrapper');
-        this.form = chatModal.querySelector('form');
+    constructor(rootNode) {
+        this.chatWrapper = rootNode.querySelector('.chat--wrapper');
+        this.form = rootNode.querySelector('form');
         this.button = this.form.querySelector('button.send-message');
         this.textInput = this.form.querySelector('input.message');
         this.spinner = this.form.querySelector('div.spinner');
-        this.clearButton = chatModal.querySelector('button.clear-chat');
+        this.clearButton = rootNode.querySelector('button.clear-chat');
 
         this.placeholderIdle = this.textInput.getAttribute('data-placeholder-idle');
         this.placeholderProcessing = this.textInput.getAttribute('data-placeholder-processing');

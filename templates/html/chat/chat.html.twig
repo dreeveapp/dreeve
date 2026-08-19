@@ -1,10 +1,14 @@
+{% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [
+    {
+        'url': 'chat',
+        'label': 'Virtual workout assistant'|trans
+    }]} %}
 {% autoescape false %}
-<!-- Modal header -->
-<div class="modal-header">
-  <div class="flex items-center justify-between">
-    <h3>
+<div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs space-y-4">
+  <div class="mb-4 flex items-center justify-between">
+    <h1 class="flex items-center text-lg font-semibold text-gray-900">
       {{ "Virtual workout assistant"|trans }}
-    </h3>
+    </h1>
     <div class="flex items-center gap-1">
       <button type="button" class="cursor-pointer clear-chat text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm size-8 inline-flex justify-center items-center" title="{{ "Clear chat"|trans }}">
         <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -12,19 +16,10 @@
         </svg>
         <span class="sr-only">{{ "Clear chat"|trans }}</span>
       </button>
-      <button type="button" class="close">
-        <svg class="size-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-        </svg>
-        <span class="sr-only">{{ "Close modal"|trans }}</span>
-      </button>
     </div>
   </div>
-</div>
-<!-- Modal body -->
-<div class="modal-body">
   <div class="grid grid-cols-1">
-    <div class="flex flex-col-reverse items-center border rounded-t bg-gray-50 h-[calc(100vh-15.4rem)] overflow-y-auto">
+    <div class="flex flex-col-reverse items-center border rounded-t bg-gray-50 h-[calc(100vh-265px)] overflow-y-auto">
       <div class="chat--wrapper w-full flex flex-col gap-6 p-8" data-chat-commands='{{ chatCommands }}'>
         {% for chatMessage in chatHistory %}
             {% include 'html/chat/message.html.twig' with {'chatMessage': chatMessage, 'isThinking': false } %}
