@@ -125,7 +125,7 @@ final class FitSportType
             self::SPORT_WALKING => SportType::WALK,
             self::SPORT_CROSS_COUNTRY_SKIING => SportType::NORDIC_SKI,
             self::SPORT_ALPINE_SKIING => self::SUB_SPORT_BACKCOUNTRY === $subSport ? SportType::BACK_COUNTRY_SKI : SportType::ALPINE_SKI,
-            self::SPORT_SNOWBOARDING => SportType::SNOWBOARD,
+            self::SPORT_SNOWBOARDING => self::SUB_SPORT_BACKCOUNTRY === $subSport ? SportType::BACK_COUNTRY_SKI : SportType::SNOWBOARD,
             self::SPORT_ROWING => self::SUB_SPORT_INDOOR_ROWING === $subSport ? SportType::VIRTUAL_ROW : SportType::ROWING,
             self::SPORT_HIKING => SportType::HIKE,
             self::SPORT_PADDLING, self::SPORT_CANOEING => SportType::CANOEING,

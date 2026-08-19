@@ -56,6 +56,8 @@ final class SportTypeName
         'downhillskiing' => SportType::ALPINE_SKI,
         'resortskiingsnowboarding' => SportType::ALPINE_SKI,
         'backcountryskiing' => SportType::BACK_COUNTRY_SKI,
+        'backcountrysnowboarding' => SportType::BACK_COUNTRY_SKI,
+        'backcountrysnowboard' => SportType::BACK_COUNTRY_SKI,
         'snowboarding' => SportType::SNOWBOARD,
         'snowshoeing' => SportType::SNOWSHOE,
         'iceskating' => SportType::ICE_SKATE,

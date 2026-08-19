@@ -36,6 +36,7 @@ class FitSportTypeTest extends TestCase
             'alias table' => ['Indoor Rowing', SportType::VIRTUAL_ROW],
             'sport type value' => ['Padel', SportType::PADEL],
             'case and spacing insensitive' => ['trail running', SportType::TRAIL_RUN],
+            'backcountry snowboard profile' => ['Backcountry Snowboard', SportType::BACK_COUNTRY_SKI],
         ];
     }
 
@@ -90,6 +91,8 @@ class FitSportTypeTest extends TestCase
             'alpine skiing / resort' => [13, 38, SportType::ALPINE_SKI],
             'alpine skiing / backcountry' => [13, 37, SportType::BACK_COUNTRY_SKI],
             'snowboarding' => [14, null, SportType::SNOWBOARD],
+            'snowboarding / resort' => [14, 38, SportType::SNOWBOARD],
+            'snowboarding / backcountry' => [14, 37, SportType::BACK_COUNTRY_SKI],
             'rowing' => [15, null, SportType::ROWING],
             'rowing / indoor rowing' => [15, 14, SportType::VIRTUAL_ROW],
             'hiking' => [17, null, SportType::HIKE],

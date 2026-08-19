@@ -52,6 +52,8 @@ class SportTypeNameTest extends TestCase
             'downhill skiing' => ['Downhill Skiing', SportType::ALPINE_SKI],
             'resort skiing snowboarding' => ['resort_skiing_snowboarding', SportType::ALPINE_SKI],
             'backcountry skiing' => ['Backcountry Skiing', SportType::BACK_COUNTRY_SKI],
+            'backcountry snowboarding' => ['Backcountry Snowboarding', SportType::BACK_COUNTRY_SKI],
+            'backcountry snowboard' => ['Backcountry Snowboard', SportType::BACK_COUNTRY_SKI],
             'snowboarding' => ['Snowboarding', SportType::SNOWBOARD],
             'snowshoeing' => ['Snowshoeing', SportType::SNOWSHOE],
             'ice skating' => ['Ice Skating', SportType::ICE_SKATE],
