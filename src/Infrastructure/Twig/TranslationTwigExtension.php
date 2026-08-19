@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Twig;
 
+use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\Localisation\TranslatableWithDescription;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -31,5 +32,11 @@ final readonly class TranslationTwigExtension
             parameters: $arguments,
             domain: $domain
         );
+    }
+
+    #[AsTwigFilter('transSingular')]
+    public function transSingular(SportType $message): string
+    {
+        return $message->transSingular($this->translator);
     }
 }

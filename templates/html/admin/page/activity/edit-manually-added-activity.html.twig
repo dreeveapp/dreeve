@@ -37,7 +37,7 @@
                         <label for="activity-sport-type">{{ "Sport type"|trans({}, 'admin') }}</label>
                         <select id="activity-sport-type" name="sportType" required>
                             {% for sportType in sportTypes %}
-                                <option value="{{ sportType.value }}" {{ activity and sportType == activity.getSportType() ? 'selected' }}>{{ sportType|trans }}</option>
+                                <option value="{{ sportType.value }}" {{ activity and sportType == activity.getSportType() ? 'selected' }}>{{ sportType|transSingular }}</option>
                             {% endfor %}
                         </select>
                     </div>
