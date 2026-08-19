@@ -175,19 +175,6 @@
             </div>
             <!-- JS LOADED CONTENT -->
             <div id="js-loaded-content"></div>
-            <div id="modal-skeleton" tabindex="-1" aria-hidden="true"
-                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-1500 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                <div class="relative p-4 w-full max-w-7xl max-h-full">
-                    <!-- Modal spinner -->
-                    <div class="spinner hidden p-4 items-center justify-center h-auto bg-white rounded-lg shadow-sm">
-                        {% include 'html/loader.html.twig' with {modifier: 'loader--md'} %}
-                    </div>
-                    <!-- Modal content -->
-                    <div id="modal-content" class="relative bg-white rounded-lg shadow-sm">
-
-                    </div>
-                </div>
-            </div>
         {% endblock %}
     </main>
 </div>

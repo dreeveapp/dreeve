@@ -44,7 +44,7 @@ export default class Router {
         return `${baseUrl}/${fragmentPath}`;
     }
 
-    async renderContent(page, modalId, restoreScroll = false) {
+    async renderContent(page, restoreScroll = false) {
         const contentUrl = this.determineContentUrl(page);
 
         rememberScrollPosition(this.app.getAttribute('data-router-current'));
@@ -57,7 +57,6 @@ export default class Router {
         }
 
         this.app.setAttribute('data-router-current', page);
-        this.app.setAttribute('data-modal-current', modalId);
 
         // Update active states
         this.menuItems.forEach(node => node.setAttribute('aria-selected', 'false'));
@@ -73,7 +72,7 @@ export default class Router {
 
         const fullPageName = this.toPath(page).replaceAll('/', '-');
 
-        eventBus.emit(Events.PAGE_LOADED, {page: fullPageName, modalId});
+        eventBus.emit(Events.PAGE_LOADED, {page: fullPageName});
         window.scrollTo(0, scrollY);
     }
 
@@ -87,11 +86,7 @@ export default class Router {
 
             await eventBus.emitAsync(Events.NAVIGATION_CLICKED, {link});
 
-            this.navigateTo(
-                route,
-                null,
-                link.hasAttribute('data-router-force-reload')
-            );
+            this.navigateTo(route, link.hasAttribute('data-router-force-reload'));
         });
     }
 
@@ -99,34 +94,16 @@ export default class Router {
         window.onpopstate = e => {
             if (!e.state) return;
 
-            if (e.state.route === this.app.getAttribute('data-router-current')) {
-                this.app.setAttribute('data-modal-current', e.state.modal);
-                eventBus.emit(Events.MODAL_HISTORY_CHANGED, {modalId: e.state.modal});
-                return;
-            }
-
-            this.renderContent(e.state.route, e.state.modal, true);
+            this.renderContent(e.state.route, true);
         };
     }
 
-    navigateTo(route, modal, force = false) {
+    navigateTo(route, force = false) {
         const currentRoute = this.app.getAttribute('data-router-current');
         if (currentRoute === route && !force) return; // Avoid reloading same page.
 
-        this.renderContent(route, modal);
-        this.pushRouteToHistoryState(route, modal);
-    }
-
-    pushRouteToHistoryState(route, modal) {
-        window.history.pushState({route, modal}, '', this.buildUrl(route, modal));
-    }
-
-    buildUrl(route, modal) {
-        return modal ? `${route}?modal=${modal}` : route;
-    }
-
-    pushCurrentRouteToHistoryState(modal) {
-        this.pushRouteToHistoryState(this.currentRoute(), modal);
+        this.renderContent(route);
+        window.history.pushState({route}, '', route);
     }
 
     currentRoute() {
@@ -143,12 +120,11 @@ export default class Router {
 
     boot() {
         const route = this.currentRoute();
-        const modal = new URLSearchParams(location.search).get('modal') ?? '';
 
         this.registerNavigation();
         this.registerBrowserBackAndForth();
-        this.renderContent(route, modal);
+        this.renderContent(route);
 
-        window.history.replaceState({route, modal}, '', this.buildUrl(route, modal));
+        window.history.replaceState({route}, '', route);
     }
 }

@@ -6,7 +6,6 @@ import {updateGithubLatestRelease} from "./services/github";
 import initSidebar from "./components/sidebar";
 import ChartManager from "./features/charts/chart-manager";
 import {registerEchartsCallbacks} from "./features/charts/echarts-callbacks";
-import ModalManager from "./components/modals";
 import PhotoWall from "./features/photos/photo-wall";
 import initLeafletMaps from "./features/maps/map-manager";
 import initTabs from "./components/tabs";
@@ -30,7 +29,6 @@ router.boot();
 registerEchartsCallbacks();
 initDrawers();
 
-const modalManager = new ModalManager(router);
 const chartManager = new ChartManager();
 const scrollTo = new ScrollTo();
 const darkModeManager = new DarkModeManager();
@@ -59,16 +57,13 @@ const initElements = (rootNode) => {
 }
 
 initSidebar();
-modalManager.init();
 darkModeManager.attachEventListeners();
 
 eventBus.on(Events.DARK_MODE_TOGGLED, ({darkModeEnabled}) => {
     chartManager.toggleDarkTheme(darkModeEnabled);
 });
 
-eventBus.on(Events.PAGE_LOADED, async ({page, modalId}) => {
-    modalManager.close();
-
+eventBus.on(Events.PAGE_LOADED, async ({page}) => {
     abortPendingAsyncContent();
     chartManager.reset();
     initElements(document);
@@ -93,16 +88,6 @@ eventBus.on(Events.PAGE_LOADED, async ({page, modalId}) => {
         );
         new Chat(document).render();
     }
-
-    if (modalId) {
-        modalManager.open(modalId);
-    }
-});
-eventBus.on(Events.MODAL_HISTORY_CHANGED, ({modalId}) => {
-    modalManager.close();
-    if (modalId) {
-        modalManager.open(modalId);
-    }
 });
 eventBus.on(Events.NAVIGATION_REQUESTED, ({route}) => {
     router.navigateTo(route, null);
@@ -117,9 +102,6 @@ eventBus.on(Events.NAVIGATION_CLICKED, ({link}) => {
     });
 });
 eventBus.on(Events.ASYNC_CONTENT_LOADED, ({node}) => {
-    initElements(node);
-});
-eventBus.on(Events.MODAL_LOADED, ({node}) => {
     initElements(node);
 });
 (async () => {

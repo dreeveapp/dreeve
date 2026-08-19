@@ -30,7 +30,7 @@
             <div id="history" role="tabpanel" aria-labelledby="history-tab">
                 <div class="h-120" data-echarts-options='{{ trainingLoadChart }}'></div>
                 <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {% include 'html/dashboard/training-metrics.html.twig' with {'trainingMetrics': trainingMetrics, 'context': 'modal' } %}
+                    {% include 'html/dashboard/training-metrics.html.twig' with {'trainingMetrics': trainingMetrics, 'context': 'detail' } %}
                 </div>
             </div>
             <!-- Forecast Tab -->
