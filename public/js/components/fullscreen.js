@@ -1,5 +1,3 @@
-import {eventBus, Events} from "../core/event-bus";
-
 export default function initFullscreen(rootNode) {
     rootNode.querySelectorAll('[data-fullscreen-trigger]').forEach((el) => {
         el.addEventListener('click', (e) => {
@@ -10,9 +8,7 @@ export default function initFullscreen(rootNode) {
             }
 
             const fullScreenContent = el.closest('[data-fullscreen-content]');
-            fullScreenContent.requestFullscreen().then(() => {
-                eventBus.emit(Events.FULLSCREEN_ENABLED);
-            });
+            fullScreenContent.requestFullscreen();
 
             fullScreenContent.addEventListener('fullscreenchange', () => {
                 fullScreenContent.toggleAttribute('data-fullscreen-enabled', Boolean(document.fullscreenElement))

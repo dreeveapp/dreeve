@@ -2,12 +2,7 @@ export const Events = Object.freeze({
     PAGE_LOADED:                'page:loaded',
     ASYNC_CONTENT_LOADED:       'asyncContent:loaded',
     DARK_MODE_TOGGLED:          'darkMode:toggled',
-    FULLSCREEN_ENABLED:         'fullscreen:enabled',
-    TAB_CHANGED:                'tab:changed',
-    SIDEBAR_RESIZED:            'sidebar:resized',
     NAVIGATION_CLICKED:         'navigation:clicked',
-    NAVIGATION_REQUESTED:       'navigation:requested',
-    DATA_TABLE_CLUSTER_CHANGED: 'dataTable:clusterChanged',
     REPEATER_CHANGED:           'repeater:changed',
 });
 

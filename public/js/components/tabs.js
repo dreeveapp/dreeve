@@ -1,4 +1,3 @@
-import {eventBus, Events} from "../core/event-bus";
 import { Tabs } from 'flowbite';
 
 export default function initTabs(rootNode) {
@@ -24,11 +23,6 @@ export default function initTabs(rootNode) {
             defaultTabId: defaultTabId,
             activeClasses: 'active',
             inactiveClasses: 'inactive',
-            onShow: (tabs, activeTab) => {
-                const activeTabId = activeTab.id.replace('#', '');
-                // Trigger a chart resize to make sure charts are rendered and displayed.
-                eventBus.emit(Events.TAB_CHANGED, {activeTabId});
-            },
         });
     });
 }

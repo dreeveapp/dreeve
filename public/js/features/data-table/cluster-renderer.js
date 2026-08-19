@@ -1,6 +1,5 @@
 import Clusterize from '../../../libraries/clusterize/clusterize.min';
 import {SummableCalculator} from "./summable-calculator";
-import {eventBus, Events} from "../../core/event-bus";
 
 export class ClusterRenderer {
     constructor(wrapper, tbody, scrollElem) {
@@ -23,8 +22,6 @@ export class ClusterRenderer {
 
                     const resultCount = this.wrapper.querySelector('[data-dataTable-result-count]');
                     if (resultCount) resultCount.innerText = dataRows.filter(r => r.active).length;
-
-                    eventBus.emit(Events.DATA_TABLE_CLUSTER_CHANGED, {node: this.wrapper});
                 }
             }
         });

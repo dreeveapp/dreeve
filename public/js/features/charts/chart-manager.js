@@ -2,7 +2,7 @@ import {basePath, fetchJson} from "../../utils";
 import {resolveEchartsCallbacks} from "./echarts-callbacks";
 import {v5Theme, v5DarkTheme} from "./echarts-themes";
 import {FilterStorage, FilterName} from "../data-table/storage";
-import {eventBus, Events} from "../../core/event-bus";
+import {router} from "../../core/router";
 
 export default class ChartManager {
     constructor() {
@@ -66,7 +66,7 @@ export default class ChartManager {
                 }
                 const month = (params.dataIndex + 1).toString().padStart(2, "0");
 
-                eventBus.emit(Events.NAVIGATION_REQUESTED, {route: `${basePath()}/monthly-stats/${params.seriesName}-${month}`});
+                router.navigateTo(`${basePath()}/monthly-stats/${params.seriesName}-${month}`);
             },
             handleWeeklyStatsClick: (params, clickData) => {
                 if (!params || !params.dataIndex) {
@@ -82,7 +82,7 @@ export default class ChartManager {
                     "start-date": {"from": weeks[params.dataIndex]['from'], "to": weeks[params.dataIndex]['to']},
                 });
 
-                eventBus.emit(Events.NAVIGATION_REQUESTED, {route: `${basePath()}/activities`});
+                router.navigateTo(`${basePath()}/activities`);
             },
             handleActivityGridChartClick: (params, clickData) => {
                 if (!params || !params.value || params.value < 1) {
@@ -93,7 +93,7 @@ export default class ChartManager {
                     "start-date": {"from": params.value[0], "to": params.value[0]},
                 });
 
-                eventBus.emit(Events.NAVIGATION_REQUESTED, {route: `${basePath()}/activities`});
+                router.navigateTo(`${basePath()}/activities`);
             },
         };
     }

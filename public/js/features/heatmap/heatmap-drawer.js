@@ -2,7 +2,7 @@ import {pointToLineDistance, point, lineString} from "../../../libraries/turf";
 import L from 'leaflet';
 import {createFlyToPlacesControl, createMapToolsControl} from "../maps/leaflet-controls";
 import HeatmapCountriesLayer from "./heatmap-countries-layer";
-import {eventBus, Events} from "../../core/event-bus";
+import {router} from "../../core/router";
 import '../maps/ctrl-scroll-zoom';
 
 export default class HeatmapDrawer {
@@ -60,7 +60,7 @@ export default class HeatmapDrawer {
             node.addEventListener("click", (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                eventBus.emit(Events.NAVIGATION_REQUESTED, {route: node.getAttribute('href')});
+                router.navigateTo(node.getAttribute('href'));
             });
         });
     };

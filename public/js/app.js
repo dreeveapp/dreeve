@@ -1,7 +1,7 @@
 import "./core/public-path";
 import {eventBus, Events} from "./core/event-bus";
 import {FilterStorage} from "./features/data-table/storage";
-import Router from "./core/router";
+import {router} from "./core/router";
 import {updateGithubLatestRelease} from "./services/github";
 import initSidebar from "./components/sidebar";
 import ChartManager from "./features/charts/chart-manager";
@@ -20,10 +20,7 @@ import DarkModeManager from "./components/dark-mode";
 import initDropdowns from "./components/dropdown";
 import {initAccordions, initPopovers, initDrawers} from "flowbite";
 
-const $main = document.querySelector("main");
-
 // Boot router.
-const router = new Router($main);
 router.boot();
 
 registerEchartsCallbacks();
@@ -88,9 +85,6 @@ eventBus.on(Events.PAGE_LOADED, async ({page}) => {
         );
         new Chat(document).render();
     }
-});
-eventBus.on(Events.NAVIGATION_REQUESTED, ({route}) => {
-    router.navigateTo(route, null);
 });
 eventBus.on(Events.NAVIGATION_CLICKED, ({link}) => {
     if (!link || !link.hasAttribute('data-filters')) {
