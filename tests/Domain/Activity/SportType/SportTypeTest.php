@@ -62,4 +62,13 @@ class SportTypeTest extends ContainerTestCase
         }
         $this->assertMatchesJsonSnapshot($snapshot);
     }
+
+    public function testGetSingularTranslations(): void
+    {
+        $snapshot = [];
+        foreach (SportType::cases() as $sportType) {
+            $snapshot[$sportType->value] = $sportType->transSingular($this->getContainer()->get(TranslatorInterface::class));
+        }
+        $this->assertMatchesJsonSnapshot($snapshot);
+    }
 }

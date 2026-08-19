@@ -140,6 +140,7 @@ class ActivityTokenProviderTest extends TestCase
     {
         return [
             ['name', 'Morning Ride'],
+            ['sport-type', 'Ride'],
             ['workout-type', 'Race'],
             ['start-date', '10-10-23'],
             ['distance', '10.0 km'],

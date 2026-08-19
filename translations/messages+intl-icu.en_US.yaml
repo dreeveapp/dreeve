@@ -104,7 +104,9 @@ Distance: Distance
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.'
 Duration: Duration
 'Dusting off the record books...': 'Dusting off the record books...'
+'E-Bike Ride': 'E-Bike Ride'
 'E-Bike Rides': 'E-Bike Rides'
+'E-Mountain Bike Ride': 'E-Mountain Bike Ride'
 'E-Mountain Bike Rides': 'E-Mountain Bike Rides'
 Eddington: Eddington
 'Eddington number': 'Eddington number'
@@ -156,6 +158,7 @@ Golf: Golf
 'Google searches': 'Google searches'
 Grad.: Grad.
 Gradient: Gradient
+'Gravel Ride': 'Gravel Ride'
 'Gravel Rides': 'Gravel Rides'
 "Guidelines vary by individual; for more information see Joe Friel's 'The Cyclist's Training Bible' or TrainingPeaks' research documentation.": "Guidelines vary by individual; for more information see Joe Friel's 'The Cyclist's Training Bible' or TrainingPeaks' research documentation."
 HIIT: HIIT
@@ -172,6 +175,7 @@ High: High
 'High risk': 'High risk'
 'Highlight visited countries': 'Highlight visited countries'
 'Highly recovered and ready to perform': 'Highly recovered and ready to perform'
+Hike: Hike
 Hikes: Hikes
 History: History
 'History (6 weeks)': 'History (6 weeks)'
@@ -240,6 +244,7 @@ Morning: Morning
 'Most recent activities': 'Most recent activities'
 'Most recent challenges': 'Most recent challenges'
 'Most recent milestones': 'Most recent milestones'
+'Mountain Bike Ride': 'Mountain Bike Ride'
 'Mountain Bike Rides': 'Mountain Bike Rides'
 'Moving time': 'Moving time'
 'Moving time by sport': 'Moving time by sport'
@@ -321,11 +326,13 @@ Ranking: Ranking
 'Retired gear': 'Retired gear'
 Rewind: Rewind
 'Rewind comparisons are only available on larger screens.': 'Rewind comparisons are only available on larger screens.'
+Ride: Ride
 Rides: Rides
 'Risk of detraining': 'Risk of detraining'
 'Rock Climbing': 'Rock Climbing'
 'Roller Ski': 'Roller Ski'
 Rowing: Rowing
+Run: Run
 Running: Running
 Runs: Runs
 Sail: Sail
@@ -482,6 +489,7 @@ Title: Title
 'Total hours spent per gear': 'Total hours spent per gear'
 'Total hours spent per sport type': 'Total hours spent per sport type'
 'Total moving time per month': 'Total moving time per month'
+'Trail Run': 'Trail Run'
 'Trail Runs': 'Trail Runs'
 'Training 4–5 days every week scores higher than doing everything in one or two days.': 'Training 4–5 days every week scores higher than doing everything in one or two days.'
 'Training Impulse - Training load metric that accounts for intensity and duration.': 'Training Impulse - Training load metric that accounts for intensity and duration.'
@@ -496,17 +504,21 @@ Tue.: Tue.
 Unspecified: Unspecified
 'Upcoming maintenance': 'Upcoming maintenance'
 'User badge': 'User badge'
+'Velo Mobile': 'Velo Mobile'
 'Velo Mobiles': 'Velo Mobiles'
 'Very high': 'Very high'
 'View all': 'View all'
 'View details': 'View details'
 'View this month': 'View this month'
+'Virtual Ride': 'Virtual Ride'
 'Virtual Rides': 'Virtual Rides'
 'Virtual Row': 'Virtual Row'
+'Virtual Run': 'Virtual Run'
 'Virtual Runs': 'Virtual Runs'
 'Virtual workout assistant': 'Virtual workout assistant'
 Volleyball: Volleyball
 Volume: Volume
+Walk: Walk
 Walking: Walking
 Walks: Walks
 'Water Sports': 'Water Sports'

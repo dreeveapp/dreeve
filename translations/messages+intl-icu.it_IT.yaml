@@ -104,7 +104,9 @@ Distance: Distanza
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Alternare ciclismo, corsa, nuoto e lavoro di forza aumenta il tuo punteggio di varietà.'
 Duration: Duration
 'Dusting off the record books...': 'Dusting off the record books...'
+'E-Bike Ride': 'E-Bike Ride'
 'E-Bike Rides': 'Uscite in e-bike'
+'E-Mountain Bike Ride': 'E-Mountain Bike Ride'
 'E-Mountain Bike Rides': 'Uscite in e-mountain bike'
 Eddington: Eddington
 'Eddington number': 'Eddington number'
@@ -156,6 +158,7 @@ Golf: Golf
 'Google searches': 'Ricerche Google'
 Grad.: Grad.
 Gradient: Gradient
+'Gravel Ride': 'Gravel Ride'
 'Gravel Rides': 'Uscite gravel'
 "Guidelines vary by individual; for more information see Joe Friel's 'The Cyclist's Training Bible' or TrainingPeaks' research documentation.": "Le linee guida variano da persona a persona; per maggiori informazioni consulta 'The Cyclist's Training Bible' di Joe Friel o la documentazione di ricerca di TrainingPeaks."
 HIIT: HIIT
@@ -172,6 +175,7 @@ High: Alto
 'High risk': 'Rischio alto'
 'Highlight visited countries': 'Evidenzia i paesi visitati'
 'Highly recovered and ready to perform': 'Recupero elevato e pronto a performare'
+Hike: Hike
 Hikes: Escursioni
 History: Cronologia
 'History (6 weeks)': 'Storico (6 settimane)'
@@ -240,6 +244,7 @@ Morning: Mattina
 'Most recent activities': 'Attività più recenti'
 'Most recent challenges': 'Sfide più recenti'
 'Most recent milestones': 'Traguardi più recenti'
+'Mountain Bike Ride': 'Mountain Bike Ride'
 'Mountain Bike Rides': 'Uscite in mountain bike'
 'Moving time': 'Tempo in movimento'
 'Moving time by sport': 'Moving time by sport'
@@ -321,11 +326,13 @@ Ranking: Classifica
 'Retired gear': 'Attrezzatura in disuso'
 Rewind: Indietro
 'Rewind comparisons are only available on larger screens.': 'I confronti Rewind sono disponibili solo su schermi più grandi.'
+Ride: Ride
 Rides: Gare
 'Risk of detraining': 'Rischio di detraining'
 'Rock Climbing': 'Arrampicata su roccia'
 'Roller Ski': Skiroll
 Rowing: Canottaggio
+Run: Run
 Running: Running
 Runs: Corse
 Sail: Vela
@@ -482,6 +489,7 @@ Title: Title
 'Total hours spent per gear': 'Ore totali per attrezzatura'
 'Total hours spent per sport type': 'Ore totali per tipo di sport'
 'Total moving time per month': 'Total moving time per month'
+'Trail Run': 'Trail Run'
 'Trail Runs': 'Corse trail'
 'Training 4–5 days every week scores higher than doing everything in one or two days.': 'Allenarsi 4–5 giorni ogni settimana ottiene un punteggio più alto rispetto a concentrare tutto in uno o due giorni.'
 'Training Impulse - Training load metric that accounts for intensity and duration.': 'Training Impulse - metrica del carico di allenamento che tiene conto di intensità e durata.'
@@ -496,17 +504,21 @@ Tue.: Tue.
 Unspecified: 'Non specificato'
 'Upcoming maintenance': 'Upcoming maintenance'
 'User badge': 'Badge utente'
+'Velo Mobile': 'Velo Mobile'
 'Velo Mobiles': Velomobili
 'Very high': 'Molto alto'
 'View all': 'Vedi tutto'
 'View details': 'Vedi dettagli'
 'View this month': 'View this month'
+'Virtual Ride': 'Virtual Ride'
 'Virtual Rides': 'Uscite virtuali'
 'Virtual Row': 'Canottaggio virtuale'
+'Virtual Run': 'Virtual Run'
 'Virtual Runs': 'Corse virtuali'
 'Virtual workout assistant': 'Assistente virtuale agli allenamenti'
 Volleyball: Volleyball
 Volume: Volume
+Walk: Walk
 Walking: Walking
 Walks: Passeggiate
 'Water Sports': 'Sport acquatici'

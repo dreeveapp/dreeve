@@ -39,8 +39,13 @@ final readonly class ActivityTokenProvider implements TokenProvider
             ),
             TokenDefinition::create(
                 prefix: self::PREFIX,
+                key: 'sport-type',
+                description: static fn (TranslatorInterface $translator, ?string $locale): string => $translator->trans('The sport type, e.g. "Walk" or "Trail Run"', domain: 'admin', locale: $locale),
+            ),
+            TokenDefinition::create(
+                prefix: self::PREFIX,
                 key: 'workout-type',
-                description: static fn (TranslatorInterface $translator, ?string $locale): string => $translator->trans('The workout type', domain: 'admin', locale: $locale),
+                description: static fn (TranslatorInterface $translator, ?string $locale): string => $translator->trans('The workout type as set on Strava (Race, Workout or Long run), empty for most activities', domain: 'admin', locale: $locale),
             ),
             TokenDefinition::create(
                 prefix: self::PREFIX,
@@ -127,6 +132,7 @@ final readonly class ActivityTokenProvider implements TokenProvider
 
         return match ($token->getKey()) {
             'name' => $activity->getName(),
+            'sport-type' => $activity->getSportType()->transSingular($this->translator),
             'workout-type' => $activity->getWorkoutType()?->trans($this->translator),
             'start-date' => $activity->getStartDate()->translatedFormat(
                 $token->getModifier() ?? (string) $this->settingsRepository->appearance()->getDateAndTimeFormat()->getDateFormatShort()

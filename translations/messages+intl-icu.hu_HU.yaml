@@ -104,7 +104,9 @@ Distance: Távolság
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'A kerékpározás, futás, úszás és erőedzés vegyítése növeli a változatossági pontszámodat.'
 Duration: Időtartam
 'Dusting off the record books...': 'Dusting off the record books...'
+'E-Bike Ride': 'E-Bike Ride'
 'E-Bike Rides': 'E-Bike túrák'
+'E-Mountain Bike Ride': 'E-Mountain Bike Ride'
 'E-Mountain Bike Rides': 'E-MTB túrák'
 Eddington: Eddington
 'Eddington number': 'Eddington number'
@@ -156,6 +158,7 @@ Golf: Golf
 'Google searches': 'Google keresések'
 Grad.: Grad.
 Gradient: Lejtés
+'Gravel Ride': 'Gravel Ride'
 'Gravel Rides': 'Gravel túrák'
 "Guidelines vary by individual; for more information see Joe Friel's 'The Cyclist's Training Bible' or TrainingPeaks' research documentation.": "Az irányelvek egyénenként változnak; további információkért lásd Joe Friel 'The Cyclist's Training Bible' c. könyvét vagy a TrainingPeaks kutatási dokumentációját."
 HIIT: HIIT
@@ -172,6 +175,7 @@ High: Magas
 'High risk': 'Magas kockázat'
 'Highlight visited countries': 'Meglátogatott országok kiemelése'
 'Highly recovered and ready to perform': 'Teljesen regenerálódva, készen a teljesítésre'
+Hike: Hike
 Hikes: Túrák
 History: Előzmények
 'History (6 weeks)': 'Előzmények (6 hét)'
@@ -240,6 +244,7 @@ Morning: Reggel
 'Most recent activities': 'Legutóbbi tevékenységek'
 'Most recent challenges': 'Legutóbbi kihívások'
 'Most recent milestones': 'Legutóbbi mérföldkövek'
+'Mountain Bike Ride': 'Mountain Bike Ride'
 'Mountain Bike Rides': 'MTB túrák'
 'Moving time': 'Mozgásban töltött idő'
 'Moving time by sport': 'Moving time by sport'
@@ -321,11 +326,13 @@ Ranking: Ranglista
 'Retired gear': 'Visszavont felszerelés'
 Rewind: Visszatekintő
 'Rewind comparisons are only available on larger screens.': 'A visszatekintő összehasonlítások csak nagyobb képernyőkön érhetők el.'
+Ride: Ride
 Rides: 'Kerékpáros túrák'
 'Risk of detraining': 'Edzettség elvesztésének kockázata'
 'Rock Climbing': Sziklamászás
 'Roller Ski': 'Görkorcsolyás sí'
 Rowing: Evezés
+Run: Run
 Running: Futás
 Runs: Futások
 Sail: Vitorlázás
@@ -482,6 +489,7 @@ Title: Title
 'Total hours spent per gear': 'Összes óra felszerelésenkén'
 'Total hours spent per sport type': 'Összes óra sporttípusonként'
 'Total moving time per month': 'Total moving time per month'
+'Trail Run': 'Trail Run'
 'Trail Runs': Terepfutások
 'Training 4–5 days every week scores higher than doing everything in one or two days.': 'A heti 4–5 napos edzés magasabb pontszámot ér el, mint ha mindent egy-két napra zsúfolnak.'
 'Training Impulse - Training load metric that accounts for intensity and duration.': 'Edzési impulzus – az intenzitást és az időtartamot figyelembe vevő edzésterhelési mutató.'
@@ -496,17 +504,21 @@ Tue.: Tue.
 Unspecified: Meghatározatlan
 'Upcoming maintenance': 'Upcoming maintenance'
 'User badge': 'Felhasználói kitűző'
+'Velo Mobile': 'Velo Mobile'
 'Velo Mobiles': Velomobil
 'Very high': 'Nagyon magas'
 'View all': 'Összes megtekintése'
 'View details': 'Részletek megtekintése'
 'View this month': 'View this month'
+'Virtual Ride': 'Virtual Ride'
 'Virtual Rides': 'Virtuális kerékpározás'
 'Virtual Row': 'Virtuális evezés'
+'Virtual Run': 'Virtual Run'
 'Virtual Runs': 'Virtuális futások'
 'Virtual workout assistant': 'Virtuális edzési asszisztens'
 Volleyball: Röplabda
 Volume: Mennyiség
+Walk: Walk
 Walking: Gyaloglás
 Walks: Séták
 'Water Sports': 'Vízi sportok'

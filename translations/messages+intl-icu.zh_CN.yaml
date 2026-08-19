@@ -104,7 +104,9 @@ Distance: 距离
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.'
 Duration: Duration
 'Dusting off the record books...': 'Dusting off the record books...'
+'E-Bike Ride': 'E-Bike Ride'
 'E-Bike Rides': 电动自行车骑行
+'E-Mountain Bike Ride': 'E-Mountain Bike Ride'
 'E-Mountain Bike Rides': 电动山地车骑行
 Eddington: 愛丁頓數
 'Eddington number': 'Eddington number'
@@ -156,6 +158,7 @@ Golf: 高尔夫
 'Google searches': Google搜索
 Grad.: Grad.
 Gradient: Gradient
+'Gravel Ride': 'Gravel Ride'
 'Gravel Rides': 砾石骑行
 "Guidelines vary by individual; for more information see Joe Friel's 'The Cyclist's Training Bible' or TrainingPeaks' research documentation.": '指导原则因人而异；欲了解更多信息，请参阅乔·弗里尔的《自行车训练圣经》或 TrainingPeaks 的研究文档。'
 HIIT: 高强度间歇训练
@@ -172,6 +175,7 @@ High: 高
 'High risk': 'High risk'
 'Highlight visited countries': 高亮显示去过的国家
 'Highly recovered and ready to perform': 'Highly recovered and ready to perform'
+Hike: Hike
 Hikes: 徒步
 History: 历史
 'History (6 weeks)': 'History (6 weeks)'
@@ -240,6 +244,7 @@ Morning: 早晨
 'Most recent activities': 最近的活动
 'Most recent challenges': 最近的挑战
 'Most recent milestones': 'Most recent milestones'
+'Mountain Bike Ride': 'Mountain Bike Ride'
 'Mountain Bike Rides': 山地车骑行
 'Moving time': 移动时间
 'Moving time by sport': 'Moving time by sport'
@@ -321,11 +326,13 @@ Ranking: Ranking
 'Retired gear': 退役装备
 Rewind: 回顾
 'Rewind comparisons are only available on larger screens.': 回顾对比仅适用于大屏幕。
+Ride: Ride
 Rides: 骑行
 'Risk of detraining': 'Risk of detraining'
 'Rock Climbing': 攀岩
 'Roller Ski': 轮滑
 Rowing: 划船
+Run: Run
 Running: 跑步
 Runs: 跑步
 Sail: 帆船
@@ -482,6 +489,7 @@ Title: Title
 'Total hours spent per gear': 每种装备总时长
 'Total hours spent per sport type': 每种运动的总时长
 'Total moving time per month': 'Total moving time per month'
+'Trail Run': 'Trail Run'
 'Trail Runs': 越野跑
 'Training 4–5 days every week scores higher than doing everything in one or two days.': 'Training 4–5 days every week scores higher than doing everything in one or two days.'
 'Training Impulse - Training load metric that accounts for intensity and duration.': '训练脉冲 - 训练负荷指标，综合考虑强度和持续时间。'
@@ -496,17 +504,21 @@ Tue.: Tue.
 Unspecified: 未指定
 'Upcoming maintenance': 'Upcoming maintenance'
 'User badge': 用户徽章
+'Velo Mobile': 'Velo Mobile'
 'Velo Mobiles': 躺车
 'Very high': 非常高
 'View all': 查看全部
 'View details': 查看详情
 'View this month': 'View this month'
+'Virtual Ride': 'Virtual Ride'
 'Virtual Rides': 虚拟骑行
 'Virtual Row': 虚拟划船
+'Virtual Run': 'Virtual Run'
 'Virtual Runs': 虚拟跑步
 'Virtual workout assistant': 虚拟锻炼助手
 Volleyball: Volleyball
 Volume: Volume
+Walk: Walk
 Walking: 健步
 Walks: 散步
 'Water Sports': 水上运动
