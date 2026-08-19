@@ -1,56 +1,73 @@
-import {FilterStorage} from "./storage";
 import {DatePreset} from "./date-preset";
 
 export class FilterManager {
-    constructor(wrapper, tableName) {
+    constructor(wrapper) {
         this.wrapper = wrapper;
-        this.tableName = tableName;
     }
 
     _isRangeFilter(value) {
         return typeof value === 'object' && value !== null && 'from' in value && 'to' in value;
     }
 
-    prefillFromStorage() {
-        const stored = FilterStorage.get(this.tableName);
-        if (!stored) return;
-
-        Object.keys(stored).forEach(key => {
-            if (this._isRangeFilter(stored[key])) {
+    prefillFromUrl(filters) {
+        Object.entries(filters).forEach(([key, value]) => {
+            if (this._isRangeFilter(value)) {
                 return;
             }
-            const value = stored[key];
 
             this.wrapper.querySelectorAll(`input[data-dataTable-filter="${key}"]`).forEach(input => {
                 const inputValue = input.value.toLowerCase();
 
                 if (Array.isArray(value)) {
                     // Multiple checkbox values.
-                    if (value.filter(v => v !== null).map(v => v.toLowerCase()).includes(inputValue)) {
+                    if (value.map(v => v.toLowerCase()).includes(inputValue)) {
                         input.checked = true;
                     }
-                } else if (value !== null && inputValue === value.toLowerCase()) {
+                } else if (inputValue === value.toLowerCase()) {
                     input.checked = true;
                 }
             });
         });
 
         // Handle range filters (date and number).
-        Object.entries(stored)
-            .filter(([_, v]) => this._isRangeFilter(v))
+        Object.entries(filters)
+            .filter(([_, value]) => this._isRangeFilter(value))
             .forEach(([name, range]) => {
-                const from = this.wrapper.querySelector(`input[name="${name}[from]"]`);
-                const to = this.wrapper.querySelector(`input[name="${name}[to]"]`);
-
-                if (from?.type === 'date') {
-                    if (from && range.from) from.valueAsDate = new Date(range.from);
-                    if (to && range.to) to.valueAsDate = new Date(range.to);
-                } else if (from?.type === 'number') {
-                    const multiplier = range.multiplier || 1;
-                    if (from && range.from != null) from.value = range.from / multiplier;
-                    if (to && range.to != null) to.value = range.to / multiplier;
-                }
+                ['from', 'to'].forEach(bound => {
+                    const input = this.wrapper.querySelector(`input[name="${name}[${bound}]"]`);
+                    if (input && range[bound] !== null) input.value = range[bound];
+                });
             });
+    }
+
+    toUrlFilters() {
+        const filters = {};
+
+        this.wrapper.querySelectorAll('[data-dataTable-filter]:checked').forEach(el => {
+            const key = el.getAttribute('data-dataTable-filter');
+            const value = el.value.toLowerCase();
+
+            if (!filters[key]) {
+                filters[key] = value;
+            } else if (Array.isArray(filters[key])) {
+                filters[key].push(value);
+            } else {
+                filters[key] = [filters[key], value];
+            }
+        });
+
+        this.wrapper.querySelectorAll('[data-dataTable-filter*="[]"]').forEach(group => {
+            const name = group.getAttribute('data-dataTable-filter').replace('[]', '');
+            const from = group.querySelector(`input[name="${name}[from]"]`);
+            const to = group.querySelector(`input[name="${name}[to]"]`);
+            if (!from || !to) return;
+
+            if ('' !== from.value || '' !== to.value) {
+                filters[name] = {from: from.value || null, to: to.value || null};
+            }
+        });
+
+        return filters;
     }
 
     getActiveFilters() {
@@ -174,7 +191,6 @@ export class FilterManager {
                 el.value = '';
             }
         });
-        FilterStorage.clearAll(this.tableName);
     }
 
     applyDatePreset(presetName, filterName) {
@@ -196,9 +212,5 @@ export class FilterManager {
                 el.value = '';
             }
         });
-    }
-
-    updateStorage(activeFilters) {
-        FilterStorage.set(this.tableName, activeFilters);
     }
 }

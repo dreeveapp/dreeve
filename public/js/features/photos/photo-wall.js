@@ -1,11 +1,12 @@
-import {FilterName} from "../data-table/storage";
 import {FilterManager} from "../data-table/filter-manager";
+import {parse, serialize} from "../data-table/filter-url";
+import {router} from "../../core/router";
 
 export default class PhotoWall {
     constructor(wrapper) {
         this.wrapper = wrapper;
         this.resetBtn = wrapper.querySelector('[data-dataTable-reset]');
-        this.filterManager = new FilterManager(wrapper, FilterName.PHOTO_WALL);
+        this.filterManager = new FilterManager(wrapper);
         this.allImages = Array.from(this.wrapper.querySelectorAll('[data-image]')).map(el => ({
             element: el,
             filterables: JSON.parse(el.getAttribute('data-filterables')),
@@ -14,11 +15,11 @@ export default class PhotoWall {
     }
 
     render() {
-        const redraw = (updateStorage = true) => {
+        const redraw = (syncUrl = true) => {
             const activeFilters = this.filterManager.getActiveFilters();
             this.filterManager.updateDropdownState(activeFilters);
-            if (updateStorage) {
-                this.filterManager.updateStorage(activeFilters);
+            if (syncUrl) {
+                router.replaceQuery(serialize({filters: this.filterManager.toUrlFilters()}));
             }
 
             const images = this.filterManager.applyFiltersToRows(this.allImages);
@@ -32,7 +33,7 @@ export default class PhotoWall {
             if (resultCount) resultCount.innerText = images.filter((image) => image.active).length;
         };
 
-        this.filterManager.prefillFromStorage();
+        this.filterManager.prefillFromUrl(parse(new URLSearchParams(location.search)).filters);
         redraw(false);
 
         this.wrapper.querySelectorAll('[data-dataTable-filter]').forEach(el => el.addEventListener('input', redraw));

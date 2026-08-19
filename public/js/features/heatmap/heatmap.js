@@ -1,5 +1,6 @@
-import {FilterName} from "../data-table/storage";
 import {FilterManager} from "../data-table/filter-manager";
+import {parse, serialize} from "../data-table/filter-url";
+import {router} from "../../core/router";
 import HeatmapDrawer from "./heatmap-drawer";
 import {fetchJson} from "../../utils";
 import {eventBus, Events} from "../../core/event-bus";
@@ -18,7 +19,7 @@ export default class Heatmap {
         this.resetBtn = wrapper.querySelector('[data-dataTable-reset]');
         this.config = JSON.parse(this.heatmap.getAttribute('data-heatmap-config'));
 
-        this.filterManager = new FilterManager(wrapper, FilterName.HEATMAP);
+        this.filterManager = new FilterManager(wrapper);
         this.drawer = new HeatmapDrawer(this.heatmap, this.config);
     }
 
@@ -32,11 +33,11 @@ export default class Heatmap {
         const apiUrl = this.heatmap.getAttribute('data-leaflet-routes');
         const allRoutes = await fetchJson(apiUrl);
 
-        const redraw = (updateStorage = true) => {
+        const redraw = (syncUrl = true) => {
             const activeFilters = this.filterManager.getActiveFilters();
             this.filterManager.updateDropdownState(activeFilters);
-            if(updateStorage){
-                this.filterManager.updateStorage(activeFilters);
+            if (syncUrl) {
+                router.replaceQuery(serialize({filters: this.filterManager.toUrlFilters()}));
             }
 
             const routes = this.filterManager.applyFiltersToRows(allRoutes);
@@ -47,7 +48,7 @@ export default class Heatmap {
             if (resultCount) resultCount.innerText = routes.filter((route) => route.active).length;
         };
 
-        this.filterManager.prefillFromStorage();
+        this.filterManager.prefillFromUrl(parse(new URLSearchParams(location.search)).filters);
         redraw(false);
 
         this.wrapper.querySelectorAll('[data-dataTable-filter]').forEach(el => el.addEventListener('input', redraw));

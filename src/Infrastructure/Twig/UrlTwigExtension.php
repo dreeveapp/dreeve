@@ -11,6 +11,7 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Image\ImageOrientation;
 use App\Domain\Segment\Segment;
 use App\Domain\Segment\SegmentFragmentPath;
+use App\Infrastructure\ValueObject\String\FilteredUrl;
 use App\Infrastructure\ValueObject\String\RelativeUrl;
 use Twig\Attribute\AsTwigFilter;
 use Twig\Attribute\AsTwigFunction;
@@ -28,6 +29,15 @@ final readonly class UrlTwigExtension
     public function toRelativeUrl(string $path): string
     {
         return RelativeUrl::from($path, $this->appUrl)->toRelativeUrl();
+    }
+
+    /**
+     * @param array<string, mixed> $filters
+     */
+    #[AsTwigFunction('filteredUrl')]
+    public function toFilteredUrl(string $path, array $filters): string
+    {
+        return FilteredUrl::from($path, $filters, $this->appUrl)->toRelativeUrl();
     }
 
     #[AsTwigFunction('placeholderImage')]

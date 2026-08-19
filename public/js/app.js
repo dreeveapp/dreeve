@@ -1,6 +1,5 @@
 import "./core/public-path";
 import {eventBus, Events} from "./core/event-bus";
-import {FilterStorage} from "./features/data-table/storage";
 import {router} from "./core/router";
 import {updateGithubLatestRelease} from "./services/github";
 import initSidebar from "./components/sidebar";
@@ -85,15 +84,6 @@ eventBus.on(Events.PAGE_LOADED, async ({page}) => {
         );
         new Chat(document).render();
     }
-});
-eventBus.on(Events.NAVIGATION_CLICKED, ({link}) => {
-    if (!link || !link.hasAttribute('data-filters')) {
-        return;
-    }
-    const filters = JSON.parse(link.getAttribute('data-filters'));
-    Object.entries(filters).forEach(([tableName, tableFilters]) => {
-        FilterStorage.set(tableName, tableFilters);
-    });
 });
 eventBus.on(Events.ASYNC_CONTENT_LOADED, ({node}) => {
     initElements(node);

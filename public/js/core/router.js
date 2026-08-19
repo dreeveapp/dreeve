@@ -23,12 +23,20 @@ class Router {
         window.history.replaceState({route}, '', route);
     }
 
-    navigateTo(route, force = false) {
+    navigateTo(route) {
         const currentRoute = this._app().getAttribute('data-router-current');
-        if (currentRoute === route && !force) return; // Avoid reloading same page.
+        if (currentRoute === route) return; // Avoid reloading same page.
 
         this._renderContent(route);
         window.history.pushState({route}, '', route);
+    }
+
+    replaceQuery(queryString) {
+        const path = (this._app().getAttribute('data-router-current') ?? '').split('?')[0];
+        const route = queryString ? `${path}?${queryString}` : path;
+
+        this._app().setAttribute('data-router-current', route);
+        window.history.replaceState({route}, '', route);
     }
 
     _app() {
@@ -74,7 +82,7 @@ class Router {
     }
 
     _toPath(url) {
-        return url.slice(basePath().length).replace(/^\/+/, '');
+        return url.split('?')[0].slice(basePath().length).replace(/^\/+/, '');
     }
 
     _determineContentUrl(page) {
@@ -152,16 +160,13 @@ class Router {
     }
 
     _registerNavigation() {
-        document.addEventListener('click', async e => {
+        document.addEventListener('click', e => {
             const link = e.target.closest?.('a[data-router-link]');
             if (!link) return;
 
             e.preventDefault();
-            const route = link.getAttribute('href');
 
-            await eventBus.emitAsync(Events.NAVIGATION_CLICKED, {link});
-
-            this.navigateTo(route, link.hasAttribute('data-router-force-reload'));
+            this.navigateTo(link.getAttribute('href'));
         });
     }
 
@@ -175,13 +180,11 @@ class Router {
 
     _currentRoute() {
         const base = basePath();
-        if ('' === base) {
-            return location.pathname.replace('/', '') ? location.pathname : DEFAULT_ROUTE;
-        }
+        const path = '' === base
+            ? (location.pathname.replace('/', '') ? location.pathname : DEFAULT_ROUTE)
+            : (location.pathname.replace(/\/+$/, '') === base ? base + DEFAULT_ROUTE : location.pathname);
 
-        return location.pathname.replace(/\/+$/, '') === base
-            ? base + DEFAULT_ROUTE
-            : location.pathname;
+        return path + location.search;
     }
 }
 

@@ -54,7 +54,7 @@ jobs:
           filename: 'clover.xml'
           only_list_changed_files: true
           fail_on_negative_difference: false
-          artifact_download_workflow_names: 'ci,coverage-report'
+          artifact_download_workflow_names: 'coverage-report'
 
       - name: Add coverage PR comment
         uses: marocchino/sticky-pull-request-comment@v3

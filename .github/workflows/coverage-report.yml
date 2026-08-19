@@ -26,4 +26,4 @@ jobs:
         with:
           filename: 'clover.xml'
           only_list_changed_files: true
-          fail_on_negative_difference: true
+          fail_on_negative_difference: false

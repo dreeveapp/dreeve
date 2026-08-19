@@ -1,7 +1,7 @@
 import {basePath, fetchJson} from "../../utils";
 import {resolveEchartsCallbacks} from "./echarts-callbacks";
 import {v5Theme, v5DarkTheme} from "./echarts-themes";
-import {FilterStorage, FilterName} from "../data-table/storage";
+import {serialize} from "../data-table/filter-url";
 import {router} from "../../core/router";
 
 export default class ChartManager {
@@ -79,23 +79,23 @@ export default class ChartManager {
                 if (!params.dataIndex in weeks) {
                     return;
                 }
-                FilterStorage.set(FilterName.ACTIVITIES, {
+                const filters = serialize({filters: {
                     "sportType": clickData.sportTypes,
                     "start-date": {"from": weeks[params.dataIndex]['from'], "to": weeks[params.dataIndex]['to']},
-                });
+                }});
 
-                router.navigateTo(`${basePath()}/activities`);
+                router.navigateTo(`${basePath()}/activities?${filters}`);
             },
             handleActivityGridChartClick: (params, clickData) => {
                 if (!params || !params.value || params.value < 1) {
                     return;
                 }
 
-                FilterStorage.set(FilterName.ACTIVITIES, {
+                const filters = serialize({filters: {
                     "start-date": {"from": params.value[0], "to": params.value[0]},
-                });
+                }});
 
-                router.navigateTo(`${basePath()}/activities`);
+                router.navigateTo(`${basePath()}/activities?${filters}`);
             },
         };
     }
