@@ -18,7 +18,7 @@ export default class Heatmap {
         this.resetBtn = wrapper.querySelector('[data-dataTable-reset]');
         this.config = JSON.parse(this.heatmap.getAttribute('data-heatmap-config'));
 
-        this.filterManager = new FilterManager(wrapper);
+        this.filterManager = new FilterManager(wrapper, FilterName.HEATMAP);
         this.drawer = new HeatmapDrawer(this.heatmap, this.config);
     }
 
@@ -36,7 +36,7 @@ export default class Heatmap {
             const activeFilters = this.filterManager.getActiveFilters();
             this.filterManager.updateDropdownState(activeFilters);
             if(updateStorage){
-                this.filterManager.updateStorage(FilterName.HEATMAP, activeFilters);
+                this.filterManager.updateStorage(activeFilters);
             }
 
             const routes = this.filterManager.applyFiltersToRows(allRoutes);
@@ -47,7 +47,7 @@ export default class Heatmap {
             if (resultCount) resultCount.innerText = routes.filter((route) => route.active).length;
         };
 
-        this.filterManager.prefillFromStorage(FilterName.HEATMAP);
+        this.filterManager.prefillFromStorage();
         redraw(false);
 
         this.wrapper.querySelectorAll('[data-dataTable-filter]').forEach(el => el.addEventListener('input', redraw));
@@ -55,7 +55,7 @@ export default class Heatmap {
         if (this.resetBtn) {
             this.resetBtn.addEventListener('click', e => {
                 e.preventDefault();
-                this.filterManager.resetAll(FilterName.HEATMAP);
+                this.filterManager.resetAll();
                 redraw();
             });
         }

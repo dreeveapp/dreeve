@@ -2,16 +2,17 @@ import {FilterStorage} from "./storage";
 import {DatePreset} from "./date-preset";
 
 export class FilterManager {
-    constructor(wrapper) {
+    constructor(wrapper, tableName) {
         this.wrapper = wrapper;
+        this.tableName = tableName;
     }
 
     _isRangeFilter(value) {
         return typeof value === 'object' && value !== null && 'from' in value && 'to' in value;
     }
 
-    prefillFromStorage(tableName) {
-        const stored = FilterStorage.get(tableName);
+    prefillFromStorage() {
+        const stored = FilterStorage.get(this.tableName);
         if (!stored) return;
 
         Object.keys(stored).forEach(key => {
@@ -164,7 +165,7 @@ export class FilterManager {
         return rows;
     }
 
-    resetAll(tableName) {
+    resetAll() {
         const elements = this.wrapper.querySelectorAll('[data-dataTable-filter], [data-dataTable-filter*="[]"] input');
         elements.forEach(el => {
             if (el.type === 'radio' || el.type === 'checkbox') {
@@ -173,7 +174,7 @@ export class FilterManager {
                 el.value = '';
             }
         });
-        FilterStorage.clearAll(tableName);
+        FilterStorage.clearAll(this.tableName);
     }
 
     applyDatePreset(presetName, filterName) {
@@ -197,7 +198,7 @@ export class FilterManager {
         });
     }
 
-    updateStorage(tableName, activeFilters) {
-        FilterStorage.set(tableName, activeFilters);
+    updateStorage(activeFilters) {
+        FilterStorage.set(this.tableName, activeFilters);
     }
 }

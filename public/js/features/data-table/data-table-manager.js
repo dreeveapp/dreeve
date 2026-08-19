@@ -31,7 +31,7 @@ export default function initDataTables(rootNode) {
 
         if (!table || !tbody || !searchInput) return;
 
-        const filterManager = new FilterManager(wrapper);
+        const filterManager = new FilterManager(wrapper, settings.name);
         const clusterRenderer = new ClusterRenderer(wrapper, tbody, scrollElem);
         const sorter = new Sorter(wrapper.querySelectorAll('thead th[data-dataTable-sort]'));
 
@@ -53,7 +53,7 @@ export default function initDataTables(rootNode) {
 
                 filterManager.updateDropdownState(activeFilters);
                 if (updateStorage) {
-                    filterManager.updateStorage(settings.name, activeFilters);
+                    filterManager.updateStorage(activeFilters);
                 }
                 const rows = filterManager.applyFiltersToRows(dataRows, search);
                 clusterRenderer.update(rows, resetScroll);
@@ -61,7 +61,7 @@ export default function initDataTables(rootNode) {
             };
 
             // Prefill filters.
-            filterManager.prefillFromStorage(settings.name);
+            filterManager.prefillFromStorage();
             updateState(false, false);
             restoreScrollArea(scrollElem);
 
@@ -74,7 +74,7 @@ export default function initDataTables(rootNode) {
                 resetBtn.addEventListener('click', e => {
                     e.preventDefault();
                     searchInput.value = '';
-                    filterManager.resetAll(settings.name);
+                    filterManager.resetAll();
                     updateState();
                 });
             }

@@ -5,7 +5,7 @@ export default class PhotoWall {
     constructor(wrapper) {
         this.wrapper = wrapper;
         this.resetBtn = wrapper.querySelector('[data-dataTable-reset]');
-        this.filterManager = new FilterManager(wrapper);
+        this.filterManager = new FilterManager(wrapper, FilterName.PHOTO_WALL);
         this.allImages = Array.from(this.wrapper.querySelectorAll('[data-image]')).map(el => ({
             element: el,
             filterables: JSON.parse(el.getAttribute('data-filterables')),
@@ -18,7 +18,7 @@ export default class PhotoWall {
             const activeFilters = this.filterManager.getActiveFilters();
             this.filterManager.updateDropdownState(activeFilters);
             if (updateStorage) {
-                this.filterManager.updateStorage(FilterName.PHOTO_WALL, activeFilters);
+                this.filterManager.updateStorage(activeFilters);
             }
 
             const images = this.filterManager.applyFiltersToRows(this.allImages);
@@ -32,7 +32,7 @@ export default class PhotoWall {
             if (resultCount) resultCount.innerText = images.filter((image) => image.active).length;
         };
 
-        this.filterManager.prefillFromStorage(FilterName.PHOTO_WALL);
+        this.filterManager.prefillFromStorage();
         redraw(false);
 
         this.wrapper.querySelectorAll('[data-dataTable-filter]').forEach(el => el.addEventListener('input', redraw));
@@ -40,7 +40,7 @@ export default class PhotoWall {
         if (this.resetBtn) {
             this.resetBtn.addEventListener('click', e => {
                 e.preventDefault();
-                this.filterManager.resetAll(FilterName.PHOTO_WALL);
+                this.filterManager.resetAll();
                 redraw();
             });
         }
