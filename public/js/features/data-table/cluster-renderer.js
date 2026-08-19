@@ -27,6 +27,13 @@ export class ClusterRenderer {
         });
     }
 
+    destroy() {
+        if (!this.cluster) return;
+
+        this.cluster.destroy();
+        this.cluster = null;
+    }
+
     update(dataRows, resetScroll = true) {
         if (!this.cluster) return;
         this.cluster.update(dataRows.filter(r => r.active).map(r => r.markup));

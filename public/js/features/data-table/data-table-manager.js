@@ -5,8 +5,23 @@ import {Sorter} from "./sorter";
 import {debounce} from "../../utils";
 import {restoreScrollArea} from "../../core/scroll-memory";
 
+const renderers = new Map();
+
+const destroyDetachedTables = () => {
+    for (const [wrapper, renderer] of renderers) {
+        if (wrapper.isConnected) continue;
+
+        renderer.destroy();
+        renderers.delete(wrapper);
+    }
+};
+
 export default function initDataTables(rootNode) {
+    destroyDetachedTables();
+
     rootNode.querySelectorAll('div[data-dataTable-settings]').forEach((wrapper) => {
+        if (renderers.has(wrapper)) return;
+
         const table = wrapper.querySelector('table');
         const tbody = table?.querySelector('tbody');
         const scrollElem = wrapper.querySelector('.scroll-area');
@@ -14,11 +29,13 @@ export default function initDataTables(rootNode) {
         const resetBtn = wrapper.querySelector('[data-dataTable-reset]');
         const settings = JSON.parse(wrapper.getAttribute('data-dataTable-settings'));
 
+        if (!table || !tbody || !searchInput) return;
+
         const filterManager = new FilterManager(wrapper);
         const clusterRenderer = new ClusterRenderer(wrapper, tbody, scrollElem);
         const sorter = new Sorter(wrapper.querySelectorAll('thead th[data-dataTable-sort]'));
 
-        if (!table || !tbody || !searchInput) return;
+        renderers.set(wrapper, clusterRenderer);
 
         if (settings.toggleableColumns) {
             new ColumnManager(wrapper, settings.name).init();
