@@ -9,6 +9,7 @@ parameters:
     env(ADMIN_USERNAME): 'admin'
     env(ADMIN_PASSWORD_HASH): ''
     env(ADMIN_ALLOWED_IPS): ''
+    env(TRUSTED_PROXIES): 'private_ranges'
     env(STRAVA_CLIENT_ID): 'replace-me'
     env(STRAVA_CLIENT_SECRET): 'replace-me'
     env(STRAVA_REFRESH_TOKEN): 'replace-me'

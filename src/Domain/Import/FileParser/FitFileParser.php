@@ -40,6 +40,9 @@ final readonly class FitFileParser implements ActivityFileParser
     // FIT timestamps are stored as seconds since the FIT epoch.
     private const int FIT_EPOCH_OFFSET = 631065600;
     private const float MAX_AVG_POWER_DEVIANCE = 0.1;
+    // A multi-sport file groups its legs with transition sessions, they carry no sport of their own.
+    private const int FIT_SPORT_TRANSITION = 3;
+    private const int FIT_SPORT_MULTISPORT = 18;
 
     public function __construct(
         private ActivityIdFactory $activityIdFactory,
@@ -74,8 +77,8 @@ final readonly class FitFileParser implements ActivityFileParser
         $hrMessages = [];
         /** @var list<array<string, mixed>> $deviceInfoMessages */
         $deviceInfoMessages = [];
-        /** @var array<string, mixed>|null $session */
-        $session = null;
+        /** @var list<array<string, mixed>> $sessionMessages */
+        $sessionMessages = [];
         /** @var array<string, mixed>|null $workout */
         $workout = null;
         $productName = null;
@@ -105,7 +108,7 @@ final readonly class FitFileParser implements ActivityFileParser
                     $deviceInfoMessages[] = $fields;
                     break;
                 case 'session':
-                    $session ??= $fields;
+                    $sessionMessages[] = $fields;
                     break;
                 case 'workout':
                     $workout ??= $fields;
@@ -134,7 +137,20 @@ final readonly class FitFileParser implements ActivityFileParser
             throw new CouldNotParseActivityFile(message: sprintf('No FIT "record" messages found in "%s"', $file->getPath()->getFilename()), activityFile: $file);
         }
 
-        $session ??= [];
+        $sportsInFile = [];
+        foreach ($sessionMessages as $sessionMessage) {
+            $sport = is_numeric($sessionMessage['sport'] ?? null) ? (int) round((float) $sessionMessage['sport']) : null;
+            if (null === $sport || self::FIT_SPORT_TRANSITION === $sport) {
+                continue;
+            }
+            $sportsInFile[$sport] = $sport;
+        }
+
+        if (count($sportsInFile) > 1 || isset($sportsInFile[self::FIT_SPORT_MULTISPORT])) {
+            throw new CouldNotParseActivityFile(message: sprintf('Multi-sport FIT file "%s" import not supported, each leg needs to be imported as a separate file', $file->getPath()->getFilename()), activityFile: $file);
+        }
+
+        $session = $sessionMessages[0] ?? [];
 
         $startTimestamp = (is_numeric($session['start_time'] ?? null) ? (int) round((float) $session['start_time']) : null)
             ?? (is_numeric($records[0]['timestamp'] ?? null) ? (int) round((float) $records[0]['timestamp']) : null);

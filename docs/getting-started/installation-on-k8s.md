@@ -50,8 +50,6 @@ stringData:
   IMPORT_MODE: "stravaApi"
   # Must match the hostname on your Ingress
   APP_URL: "https://dreeve.example.com/"
-  PROXY_HOST: "https://dreeve.example.com"
-  PROXY_PORT: "80"
   # Generate a long random string
   APP_SECRET: "CHANGE-ME"
   ADMIN_USERNAME: "admin"
@@ -240,8 +238,8 @@ spec:
 ---
 # ---------------------------------------------------------------------
 # Ingress - ingress-nginx example. TLS terminates here; the pod speaks
-# plain HTTP on 8080, which matches PROXY_HOST=https + PROXY_PORT=80
-# in the Secret above.
+# plain HTTP on 8080 and reads the original scheme and client IP from the
+# X-Forwarded-* headers the ingress sets.
 # ---------------------------------------------------------------------
 apiVersion: networking.k8s.io/v1
 kind: Ingress

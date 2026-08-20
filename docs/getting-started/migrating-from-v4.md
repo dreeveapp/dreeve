@@ -87,7 +87,8 @@ ADMIN_PASSWORD_HASH=''
 ```
 
 Your `STRAVA_CLIENT_ID`, `STRAVA_CLIENT_SECRET` and `STRAVA_REFRESH_TOKEN` stay exactly as they are, and
-`PUID`, `PGID`, `PROXY_HOST` and `PROXY_PORT` are unchanged too.
+`PUID` and `PGID` are unchanged too. `PROXY_HOST` and `PROXY_PORT` no longer do anything and can be
+deleted.
 
 ### 5. Pull the new image and migrate
 

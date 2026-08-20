@@ -29,6 +29,10 @@ class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
         // The environment driven credentials, shown for reference only.
         $this->assertEquals(self::ADMIN_USERNAME, $crawler->filter('input#adminUsername[disabled]')->attr('value'));
         $this->assertEquals('', $crawler->filter('input#adminAllowedIpAddresses[disabled]')->attr('value'));
+        $this->assertStringContainsString(
+            'Your current IP address, as seen by Dreeve, is 127.0.0.1.',
+            $crawler->filter('input#adminAllowedIpAddresses[disabled] + p.description')->text()
+        );
 
         // The settings navigation, with "Security" active.
         $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');

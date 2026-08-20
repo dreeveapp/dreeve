@@ -462,6 +462,7 @@ Weekdays: Weekdays
 "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": 'Atualmente você está importando da API do Strava. Configure {importMode} para enviar arquivos de atividade diretamente, sem depender da API do Strava.'
 'Your birthday. Needed to calculate heart rate zones.': 'Sua data de nascimento. Necessária para calcular as zonas de frequência cardíaca.'
 'Your changes have been saved.': 'Suas alterações foram salvas.'
+'Your current IP address, as seen by Dreeve, is {ipAddress}.': 'Your current IP address, as seen by Dreeve, is {ipAddress}.'
 'Your gender. Used to determine activity training load.': 'Seu gênero. Usado para determinar a carga de treinamento da atividade.'
 'Your measured max heart rate, applied from the given date onwards.': 'Sua frequência cardíaca máxima medida, aplicada a partir da data informada em diante.'
 'Your measured resting heart rate, applied from the given date onwards.': 'Sua frequência cardíaca de repouso medida, aplicada a partir da data informada em diante.'

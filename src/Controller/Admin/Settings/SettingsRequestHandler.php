@@ -17,10 +17,12 @@ use App\Domain\Strava\StravaClientId;
 use App\Domain\Strava\StravaClientSecret;
 use App\Domain\Strava\StravaRefreshToken;
 use App\Infrastructure\Config\AdminAllowedIpAddresses;
+use App\Infrastructure\Http\ClientIpResolver;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Security\AdminUserName;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -45,6 +47,7 @@ final readonly class SettingsRequestHandler
         private UrlGeneratorInterface $urlGenerator,
         private AdminUserName $adminUserName,
         private AdminAllowedIpAddresses $adminAllowedIpAddresses,
+        private ClientIpResolver $clientIpResolver,
     ) {
     }
 
@@ -69,7 +72,7 @@ final readonly class SettingsRequestHandler
     }
 
     #[Route(path: '/admin/settings/{group}', name: 'admin_settings', methods: ['GET'], priority: 5)]
-    public function handle(string $group): HtmlResponse
+    public function handle(string $group, Request $request): HtmlResponse
     {
         $settingsGroup = SettingsGroup::tryFrom($group)
             ?? throw new NotFoundHttpException(sprintf('Unknown settings group "%s"', $group));
@@ -93,6 +96,7 @@ final readonly class SettingsRequestHandler
                 'defaultHeartRateZones' => HeartRateZoneConfiguration::getDefaultZones(),
                 'adminUsername' => $this->adminUserName,
                 'adminAllowedIpAddresses' => $this->adminAllowedIpAddresses,
+                'clientIpAddress' => $this->clientIpResolver->resolve($request),
             ],
         ));
     }
