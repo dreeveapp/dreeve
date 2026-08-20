@@ -74,7 +74,7 @@
                             </div>
                             {% for type, condition in conditions %}
                                 <div data-dependent-on="condition-__index__-type" data-visible-when="{{ type }}" class="hidden">
-                                    {% include 'html/admin/page/settings/automation-rules/rule-config/' ~ condition.getTemplateName() ~ '.html.twig' with {
+                                    {% include 'html/admin/page/automation-rules/rule-config/' ~ condition.getTemplateName() ~ '.html.twig' with {
                                         namePrefix: 'conditions[__index__][config]',
                                     } %}
                                 </div>
@@ -109,7 +109,7 @@
                             </div>
                             {% for type, action in actions %}
                                 <div data-dependent-on="action-__index__-type" data-visible-when="{{ type }}" class="hidden">
-                                    {% include 'html/admin/page/settings/automation-rules/rule-config/' ~ action.getTemplateName() ~ '.html.twig' with {
+                                    {% include 'html/admin/page/automation-rules/rule-config/' ~ action.getTemplateName() ~ '.html.twig' with {
                                         namePrefix: 'actions[__index__][config]',
                                     } %}
                                 </div>

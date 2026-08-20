@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Settings\Automation;
+namespace App\Controller\Admin\Automation;
 
 use App\Domain\Automation\Action\Actions;
 use App\Domain\Automation\AutomationRuleRepository;
@@ -26,15 +26,14 @@ final readonly class ManageAutomationRuleOverviewRequestHandler
     ) {
     }
 
-    #[Route(path: '/admin/settings/automation-rules', name: 'admin_manage_automation_rules_overview', methods: ['GET'], priority: 10)]
+    #[Route(path: '/admin/automation-rules', name: 'admin_manage_automation_rules_overview', methods: ['GET'], priority: 10)]
     public function handle(): HtmlResponse
     {
         $automationRules = $this->automationRuleRepository->findAll();
 
-        return new HtmlResponse($this->twig->render('html/admin/page/settings/automation-rules/manage-automation-rules-overview.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/automation-rules/manage-automation-rules-overview.html.twig', [
             'saveOrderCommand' => SaveAutomationRuleOrder::getCommandName(),
             'automationRules' => $automationRules,
-            'hasEnabledRules' => !$automationRules->enabled()->isEmpty(),
             'backfillIsQueued' => $this->backfillQueue->isQueued(),
             'conditions' => $this->conditions->all(),
             'actions' => $this->actions->all(),

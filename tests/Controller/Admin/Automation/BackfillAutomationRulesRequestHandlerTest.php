@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller\Admin\Settings\Automation;
+namespace App\Tests\Controller\Admin\Automation;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
@@ -32,7 +32,7 @@ class BackfillAutomationRulesRequestHandlerTest extends AdminWebTestCase
 {
     public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
     {
-        $this->client->request('GET', '/admin/settings/automation-rules/backfill');
+        $this->client->request('GET', '/admin/automation-rules/backfill');
 
         $this->assertResponseRedirects('/admin/login');
     }
@@ -59,7 +59,7 @@ class BackfillAutomationRulesRequestHandlerTest extends AdminWebTestCase
 
     public static function provideNotFoundScenarios(): iterable
     {
-        $page = '/admin/settings/automation-rules/backfill';
+        $page = '/admin/automation-rules/backfill';
         $preview = $page.'/preview';
 
         yield 'strava import mode' => [ImportMode::STRAVA_API, true, false, $page];
@@ -76,12 +76,15 @@ class BackfillAutomationRulesRequestHandlerTest extends AdminWebTestCase
         $this->saveAssignGearRule();
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules/backfill');
+        $crawler = $this->client->request('GET', '/admin/automation-rules/backfill');
 
         $this->assertResponseIsSuccessful();
 
-        $this->assertCount(1, $crawler->filter('.tabs a[href*="automation-rules/test"]'));
-        $this->assertCount(1, $crawler->filter('.tabs a[href*="automation-rules/backfill"]'));
+        $panel = $crawler->filter('nav.contextual-panel[aria-label="Automation rules"]');
+        $this->assertCount(1, $panel);
+        $this->assertCount(1, $panel->filter('a[href*="automation-rules/test"]'));
+        $this->assertCount(1, $panel->filter('a[href*="automation-rules/backfill"]'));
+        $this->assertSame('Apply to existing activities', $panel->filter('a[aria-selected="true"]')->text());
 
         $ruleCheckboxes = $crawler->filter('form[method="GET"] input[name="automationRuleIds[]"]');
         $this->assertCount(1, $ruleCheckboxes);
@@ -90,14 +93,14 @@ class BackfillAutomationRulesRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(0, $crawler->filter('[data-async-content-url]'));
         $this->assertStringContainsString('No rules selected yet.', $crawler->filter('body')->text());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules/backfill?automationRuleIds[]=automationRule-1');
+        $crawler = $this->client->request('GET', '/admin/automation-rules/backfill?automationRuleIds[]=automationRule-1');
 
         $this->assertResponseIsSuccessful();
         $this->assertNotNull($crawler->filter('form[method="GET"] input[name="automationRuleIds[]"]')->attr('checked'));
 
         $placeholder = $crawler->filter('[data-async-content-url]');
         $this->assertCount(1, $placeholder);
-        $this->assertStringStartsWith('/admin/settings/automation-rules/backfill/preview', (string) $placeholder->attr('data-async-content-url'));
+        $this->assertStringStartsWith('/admin/automation-rules/backfill/preview', (string) $placeholder->attr('data-async-content-url'));
         $this->assertCount(1, $placeholder->filter('.loader'));
         $this->assertNull($placeholder->attr('class'));
 
@@ -133,7 +136,7 @@ class BackfillAutomationRulesRequestHandlerTest extends AdminWebTestCase
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules/backfill/preview?automationRuleIds[]=automationRule-1');
+        $crawler = $this->client->request('GET', '/admin/automation-rules/backfill/preview?automationRuleIds[]=automationRule-1');
 
         $this->assertResponseIsSuccessful();
 
@@ -170,7 +173,7 @@ class BackfillAutomationRulesRequestHandlerTest extends AdminWebTestCase
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules/backfill');
+        $crawler = $this->client->request('GET', '/admin/automation-rules/backfill');
 
         $this->assertResponseIsSuccessful();
         $this->assertCount(0, $crawler->filter('[data-async-content-url]'));

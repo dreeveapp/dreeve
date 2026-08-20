@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller\Admin\Settings\Automation;
+namespace App\Tests\Controller\Admin\Automation;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
@@ -26,21 +26,21 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
 {
     public function testAnonymousUsersAreRedirectedToTheLoginPageOnAdd(): void
     {
-        $this->client->request('GET', '/admin/settings/automation-rules/add');
+        $this->client->request('GET', '/admin/automation-rules/add');
 
         $this->assertResponseRedirects('/admin/login');
     }
 
     public function testAnonymousUsersAreRedirectedToTheLoginPageOnEdit(): void
     {
-        $this->client->request('GET', '/admin/settings/automation-rules/'.AutomationRuleId::fromUnprefixed('1').'/edit');
+        $this->client->request('GET', '/admin/automation-rules/'.AutomationRuleId::fromUnprefixed('1').'/edit');
 
         $this->assertResponseRedirects('/admin/login');
     }
 
     public function testAnonymousUsersAreRedirectedToTheLoginPageOnDelete(): void
     {
-        $this->client->request('GET', '/admin/settings/automation-rules/'.AutomationRuleId::fromUnprefixed('1').'/delete');
+        $this->client->request('GET', '/admin/automation-rules/'.AutomationRuleId::fromUnprefixed('1').'/delete');
 
         $this->assertResponseRedirects('/admin/login');
     }
@@ -50,7 +50,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->withImportMode(ImportMode::STRAVA_API);
         $this->client->loginUser($this->adminUser());
 
-        $this->client->request('GET', '/admin/settings/automation-rules/add');
+        $this->client->request('GET', '/admin/automation-rules/add');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -60,7 +60,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->withImportMode(ImportMode::STRAVA_API);
         $this->client->loginUser($this->adminUser());
 
-        $this->client->request('GET', '/admin/settings/automation-rules/'.AutomationRuleId::fromUnprefixed('1').'/edit');
+        $this->client->request('GET', '/admin/automation-rules/'.AutomationRuleId::fromUnprefixed('1').'/edit');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -70,7 +70,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->withImportMode(ImportMode::STRAVA_API);
         $this->client->loginUser($this->adminUser());
 
-        $this->client->request('GET', '/admin/settings/automation-rules/'.AutomationRuleId::fromUnprefixed('1').'/delete');
+        $this->client->request('GET', '/admin/automation-rules/'.AutomationRuleId::fromUnprefixed('1').'/delete');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -80,7 +80,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->withImportMode(ImportMode::FILES);
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules/add');
+        $crawler = $this->client->request('GET', '/admin/automation-rules/add');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('Add automation rule', $crawler->filter('h3')->text());
@@ -102,6 +102,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->assertContains('averagePower', $conditionOptions);
         $this->assertContains('averageCadence', $conditionOptions);
         $this->assertContains('elevation', $conditionOptions);
+        $this->assertContains('movingTime', $conditionOptions);
         $this->assertContains('passesNear', $conditionOptions);
         $this->assertNotContains('connectedSensors', $conditionOptions);
         $actionOptions = $crawler->filter('select[name="actions[__index__][type]"] option')->extract(['value']);
@@ -141,7 +142,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules/add');
+        $crawler = $this->client->request('GET', '/admin/automation-rules/add');
 
         $this->assertResponseIsSuccessful();
         $this->assertCount(1, $crawler->filter('[data-combobox-toggle]'));
@@ -167,7 +168,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules/add');
+        $crawler = $this->client->request('GET', '/admin/automation-rules/add');
 
         $this->assertResponseIsSuccessful();
         $this->assertContains(
@@ -200,7 +201,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules/'.AutomationRuleId::fromUnprefixed('42').'/edit');
+        $crawler = $this->client->request('GET', '/admin/automation-rules/'.AutomationRuleId::fromUnprefixed('42').'/edit');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('Edit automation rule', $crawler->filter('h3')->text());
@@ -232,7 +233,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules/'.AutomationRuleId::fromUnprefixed('7').'/delete');
+        $crawler = $this->client->request('GET', '/admin/automation-rules/'.AutomationRuleId::fromUnprefixed('7').'/delete');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('Delete automation rule', $crawler->filter('h3')->text());

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller\Admin\Settings\Automation;
+namespace App\Tests\Controller\Admin\Automation;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
@@ -30,7 +30,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
 {
     public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
     {
-        $this->client->request('GET', '/admin/settings/automation-rules');
+        $this->client->request('GET', '/admin/automation-rules');
 
         $this->assertResponseRedirects('/admin/login');
     }
@@ -40,7 +40,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->withImportMode(ImportMode::STRAVA_API);
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules');
+        $crawler = $this->client->request('GET', '/admin/automation-rules');
 
         $this->assertResponseIsSuccessful();
         $gatedPanel = $crawler->filter('[role="alert"][type="gated-panel"]');
@@ -49,6 +49,8 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
             'Automation rules are only available in file import mode',
             $gatedPanel->text()
         );
+        $this->assertCount(0, $crawler->filter('nav.contextual-panel'), 'The contextual panel is hidden in Strava API mode.');
+        $this->assertCount(1, $crawler->filter('aside#drawer-navigation > div a[href$="/admin/automation-rules"]'), 'The icon rail item stays visible and leads to the gated page.');
     }
 
     public function testItRendersTheEmptyState(): void
@@ -56,7 +58,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->withImportMode(ImportMode::FILES);
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules');
+        $crawler = $this->client->request('GET', '/admin/automation-rules');
 
         $this->assertResponseIsSuccessful();
         $this->assertCount(0, $crawler->filter('[role="alert"][type="gated-panel"]'));
@@ -64,6 +66,11 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(0, $crawler->filter('[data-sortable-list]'));
         $this->assertCount(0, $crawler->filter('a[href*="automation-rules/test"]'));
         $this->assertCount(0, $crawler->filter('a[href*="automation-rules/backfill"]'));
+
+        $panel = $crawler->filter('nav.contextual-panel[aria-label="Automation rules"]');
+        $this->assertCount(1, $panel);
+        $this->assertSame('Rules', $panel->filter('a[aria-selected="true"]')->text());
+        $this->assertSame('true', $crawler->filter('aside#drawer-navigation > div a[href$="/admin/automation-rules"]')->attr('aria-selected'));
     }
 
     public function testItRendersTheRulesWithTheirConditionsActionsAndState(): void
@@ -103,7 +110,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules');
+        $crawler = $this->client->request('GET', '/admin/automation-rules');
 
         $this->assertResponseIsSuccessful();
 
@@ -163,7 +170,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules');
+        $crawler = $this->client->request('GET', '/admin/automation-rules');
 
         $this->assertResponseIsSuccessful();
         $this->assertCount(1, $crawler->filter('a[href*="automation-rules/backfill"]'));
@@ -231,7 +238,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules');
+        $crawler = $this->client->request('GET', '/admin/automation-rules');
 
         $this->assertResponseIsSuccessful();
 

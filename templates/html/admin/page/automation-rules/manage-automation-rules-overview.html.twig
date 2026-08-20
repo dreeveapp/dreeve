@@ -1,9 +1,6 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
     {% autoescape false %}
-    {% if importMode.isFiles() and not automationRules.isEmpty() %}
-        {% include 'html/admin/page/settings/automation-rules/_sub-menu.html.twig' with {activeMenuItem: 'rules', hasEnabledRules: hasEnabledRules} only %}
-    {% endif %}
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         {% embed 'html/admin/component/gated-panel.html.twig' with { 'locked': not importMode.isFiles() } %}
             {% block lockTitle %}{% autoescape false %}{{ "Automation rules are only available in file import mode"|trans({}, 'admin') }}{% endautoescape %}{% endblock %}
@@ -62,7 +59,7 @@
                                     <span class="pill pill--info ml-auto shrink-0">{{ "Continues to next rule"|trans({}, 'admin') }}</span>
                                 {% endif %}
                             </div>
-                            {% include 'html/admin/page/settings/automation-rules/_rule-summary.html.twig' with {
+                            {% include 'html/admin/page/automation-rules/_rule-summary.html.twig' with {
                                 conditions: rule.getConditions(),
                                 actions: rule.getActions(),
                             } only %}

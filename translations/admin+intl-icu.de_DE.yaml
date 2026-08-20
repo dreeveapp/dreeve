@@ -3,7 +3,7 @@
 'A rule applies': 'Eine Regel trifft zu'
 AI: KI
 AM/PM: AM/PM
-'API key': 'API-Schlüssel'
+'API key': API-Schlüssel
 Active: Aktiv
 'Activities excluded from peak power outputs': 'Aktivitäten, die von Maximalleistungswerten ausgeschlossen werden'
 'Activities scanned': 'untersuchte Aktivitäten'
@@ -11,10 +11,10 @@ Active: Aktiv
 'Activities to update': 'zu aktualisierende Aktivitäten'
 'Activities will appear here once they are imported.': 'Aktivitäten werden hier angezeigt, sobald sie importiert wurden.'
 Activity: Aktivität
-'Activity ID': 'Aktivitäts-ID'
+'Activity ID': Aktivitäts-ID
 'Activity IDs to exclude when calculating peak power outputs.': 'Aktivität-IDs, die bei der Berechnung der Maximalleistungswerte ausgeschlossen werden.'
 'Activity management': Aktivitätenverwaltung
-'Activity name': 'Aktivitätsname'
+'Activity name': Aktivitätsname
 'Activity visibilities to import': 'Import der Aktivitätssichtbarkeit'
 'Add Eddington': 'Eddington hinzufügen'
 'Add FTP': 'FTP hinzufügen'
@@ -223,6 +223,7 @@ Mode: Modus
 Model: Modell
 Monday: Montag
 'More pages': 'Weitere Seiten'
+'Moving time': 'Moving time'
 'No activities imported yet.': 'Noch keine Aktivitäten importiert.'
 'No activities match the current filters.': 'Keine Aktivitäten entsprechen den aktuellen Filtern.'
 'No activity found for that ID.': 'Keine Aktivität für diese ID gefunden.'
@@ -246,7 +247,7 @@ Monday: Montag
 'Number of new activities to process per import': 'Anzahl der pro Import zu verarbeitenden neuen Aktivitäten'
 'Number of tasks to display': 'Anzahl der anzuzeigenden Aufgaben'
 'Number of widgets of this type you already have configured.': 'Anzahl der bereits konfigurierten Widgets dieses Typs.'
-"Oops, looks like you've wandered off the map! 🗺️": "Hoppla, da scheinst du dich verirrt zu haben! 🗺️"
+"Oops, looks like you've wandered off the map! 🗺️": 'Hoppla, da scheinst du dich verirrt zu haben! 🗺️'
 Operator: Operator
 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optionales YAML für datumsbereichs- und sportartspezifische Zonen. Leer lassen, es sei denn, du weißt, dass du es brauchst.'
 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Optionaler Link zu deinem Profilbild, das in der Navigationsleiste angezeigt wird. Ein quadratisches Bild wird empfohlen. Leer lassen, um es zu deaktivieren.'
@@ -266,7 +267,7 @@ Password: Passwort
 'Pick a device you already recorded with, or type a new name.': 'Wähle ein Gerät, mit dem du bereits aufgezeichnet hast, oder gib einen neuen Namen ein.'
 'Pick the rules you want to apply to see which activities would change.': 'Wähle die Regeln aus, die du anwenden möchten, um zu sehen, welche Aktivitäten sich ändern würden.'
 'Polyline color': Routenfarbe
-'Preview selection': 'Vorschaubereich'
+'Preview selection': Vorschaubereich
 'Processed on': 'Verarbeitet am'
 'Profile picture URL': Profilbild-URL
 Provider: Anbieter
@@ -374,7 +375,7 @@ Success: Erfolgreich
 Sunday: Sonntag
 'Supported types': 'Unterstützte Typen'
 Task: Aufgabe
-'Task name': 'Aufgabenname'
+'Task name': Aufgabenname
 Tasks: Aufgaben
 'Test automation rules': 'Automatisierungsregeln testen'
 'Test rules': 'Regeln testen'
@@ -404,7 +405,7 @@ Tasks: Aufgaben
 "The name is derived from the device recorded on your activities and can't be edited.": 'Der Name wird aus dem Gerät abgeleitet, das bei deinen Aktivitäten aufgezeichnet wurde, und kann nicht bearbeitet werden.'
 'The name of the gear assigned to the activity': 'Der Name der Ausrüstung, die der Aktivität zugewiesen ist'
 'The number of activities recorded with the gear': 'Die Anzahl der mit der Ausrüstung aufgezeichneten Aktivitäten'
-"The page you're looking for doesn't exist or may have been moved.": "Die gesuchte Seite existiert nicht oder wurde möglicherweise verschoben."
+"The page you're looking for doesn't exist or may have been moved.": 'Die gesuchte Seite existiert nicht oder wurde möglicherweise verschoben.'
 'The sport type, e.g. "Walk" or "Trail Run"': 'Die Sportart, z.B. "Spaziergang" oder "Trail-Lauf"'
 'The start date, optionally with a custom PHP date format': 'Das Startdatum, optional mit einem benutzerdefinierten PHP-Datumsformat'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'Die Kachelebenen-URLs (Tile Layers), die zum Rendern der Karten verwendet werden. Füge mehrere hinzu, um sie zu stapeln, z.B. um Ortsnamen über eine Satellitenebene zu legen.'
@@ -426,7 +427,7 @@ Thursday: Donnerstag
 'Time of day': Tageszeit
 To: bis
 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.': 'Token zur Validierung eingehender Strava-Webhook-Anfragen. Erforderlich, wenn Webhooks aktiviert sind.'
-"Tokens are replaced with the activity's values when the rule runs.": "Die Platzhalter werden beim Ausführen der Regel durch die Werte der Aktivität ersetzt."
+"Tokens are replaced with the activity's values when the rule runs.": 'Die Platzhalter werden beim Ausführen der Regel durch die Werte der Aktivität ersetzt.'
 'Total size exceeds {max} MB': 'Gesamtgröße überschreitet {max} MB'
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Verfolge die Nutzung deiner Ausrüstung anhand deiner Aktivitäten und behalte nutzungs- sowie zeitbasierte Wartungen im Blick.'
 Tuesday: Dienstag
@@ -451,7 +452,7 @@ Wednesday: Mittwoch
 Weekday: Wochentag
 Weekdays: Wochentage
 'What is my FTP?': 'Was ist meine FTP?'
-"When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": "Wenn diese Option aktiviert ist, werden keine weiteren Regeln verarbeitet, sobald diese Regel zutrifft. Deaktiviere die Option, damit auch spätere Regeln ausgeführt werden. Diese können die Änderungen dieser Regel überschreiben."
+"When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": 'Wenn diese Option aktiviert ist, werden keine weiteren Regeln verarbeitet, sobald diese Regel zutrifft. Deaktiviere die Option, damit auch spätere Regeln ausgeführt werden. Diese können die Änderungen dieser Regel überschreiben.'
 'When disabled, gear marked as retired is left out of the chart.': 'Wenn deaktiviert, wird als ausgemustert markierte Ausrüstung nicht im Diagramm angezeigt.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Wenn aktiviert, wird als ausgemustert markierte Ausrüstung übersprungen. Ihre Komponenten erhöhen die Nutzung nicht und es wird keine Wartung dafür verfolgt.'
 'When set, requests to the admin panel from any other IP address are rejected.': 'Wenn diese Einstellung aktiviert ist, werden Anfragen an das Admin-Panel von allen anderen IP-Adressen abgewiesen.'

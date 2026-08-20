@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Settings\Automation;
+namespace App\Controller\Admin\Automation;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
@@ -33,7 +33,7 @@ final readonly class TestAutomationRulesRequestHandler
     ) {
     }
 
-    #[Route(path: '/admin/settings/automation-rules/test', name: 'admin_test_automation_rules', methods: ['GET'], priority: 20)]
+    #[Route(path: '/admin/automation-rules/test', name: 'admin_test_automation_rules', methods: ['GET'], priority: 20)]
     public function handle(Request $request): HtmlResponse
     {
         if (!$this->importMode->isFiles()) {
@@ -59,13 +59,12 @@ final readonly class TestAutomationRulesRequestHandler
             }
         }
 
-        return new HtmlResponse($this->twig->render('html/admin/page/settings/automation-rules/test-automation-rules.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/automation-rules/test-automation-rules.html.twig', [
             'activityId' => $activityId,
             'dryRun' => $dryRun,
             'notFound' => $notFound,
             'conditions' => $this->conditions->all(),
             'actions' => $this->actions->all(),
-            'hasEnabledRules' => !$automationRules->enabled()->isEmpty(),
         ]));
     }
 }

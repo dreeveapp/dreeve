@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller\Admin\Settings\Automation;
+namespace App\Tests\Controller\Admin\Automation;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
@@ -24,7 +24,7 @@ class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
 {
     public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
     {
-        $this->client->request('GET', '/admin/settings/automation-rules/test');
+        $this->client->request('GET', '/admin/automation-rules/test');
 
         $this->assertResponseRedirects('/admin/login');
     }
@@ -38,7 +38,7 @@ class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
 
         $this->client->loginUser($this->adminUser());
 
-        $this->client->request('GET', '/admin/settings/automation-rules/test');
+        $this->client->request('GET', '/admin/automation-rules/test');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -48,7 +48,7 @@ class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
         $this->withImportMode(ImportMode::FILES);
         $this->client->loginUser($this->adminUser());
 
-        $this->client->request('GET', '/admin/settings/automation-rules/test');
+        $this->client->request('GET', '/admin/automation-rules/test');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -62,14 +62,17 @@ class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules/test');
+        $crawler = $this->client->request('GET', '/admin/automation-rules/test');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('Test automation rules', $crawler->filter('h3')->text());
         $this->assertCount(1, $crawler->filter('input[name="activityId"][data-autocomplete-url]'));
 
-        $this->assertCount(1, $crawler->filter('.tabs a[href*="automation-rules/test"]'));
-        $this->assertCount(1, $crawler->filter('.tabs a[href*="automation-rules/backfill"]'));
+        $panel = $crawler->filter('nav.contextual-panel[aria-label="Automation rules"]');
+        $this->assertCount(1, $panel);
+        $this->assertCount(1, $panel->filter('a[href*="automation-rules/test"]'));
+        $this->assertCount(1, $panel->filter('a[href*="automation-rules/backfill"]'));
+        $this->assertSame('Test rules', $panel->filter('a[aria-selected="true"]')->text());
     }
 
     public function testItRendersTheTraceForAValidActivityId(): void
@@ -97,7 +100,7 @@ class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules/test?activityId=1');
+        $crawler = $this->client->request('GET', '/admin/automation-rules/test?activityId=1');
 
         $this->assertResponseIsSuccessful();
         $body = $crawler->filter('body')->text();
@@ -123,7 +126,7 @@ class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/automation-rules/test?activityId=does-not-exist');
+        $crawler = $this->client->request('GET', '/admin/automation-rules/test?activityId=does-not-exist');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('No activity found for that ID.', $crawler->filter('body')->text());

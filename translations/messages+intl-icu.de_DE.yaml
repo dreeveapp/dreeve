@@ -21,7 +21,7 @@ Activity: Aktivität
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Aktuelle vs. dauerhafte Trainingsbelastung - Verhältnis von ATL zu CTL. Gibt das Verletzungsrisiko an.'
 'Adaptive & Inclusive Sports': 'Adaptive & inklusive Sportarten'
 'Admin panel': Adminbereich
-'Aero sensor': 'Aerodynamiksensor'
+'Aero sensor': Aerodynamiksensor
 Afternoon: Nachmittag
 All: Alle
 'All time': Gesamtzeit
@@ -44,12 +44,12 @@ Best: Beste
 'Best effort': Bestzeit
 'Best efforts': Bestzeiten
 'Best efforts for {sportType}': 'Bestzeiten für {sportType}'
-'Bike light': 'Fahrradlicht'
-'Bike radar': 'Fahrradradar'
+'Bike light': Fahrradlicht
+'Bike radar': Fahrradradar
 'Build zone (–10)': 'Aufbauzone (–10)'
 'CTL (Fitness)': 'CTL (Fitness)'
 Cadence: Trittfrequenz
-'Cadence sensor': 'Trittfrequenzsensor'
+'Cadence sensor': Trittfrequenzsensor
 Cal.: Kal.
 Calories: Kalorien
 'Calories burned': 'Verbrannte Kalorien'
@@ -141,7 +141,7 @@ Firsts: Premieren
 Fitness: Fitness
 'Fitness may be declining due to low recent training load': 'Rückgang der Fitness durch zu niedriges Trainingspensum.'
 'Fitness may decline': 'Fitness lässt nach'
-'Foot pod': 'Laufsensor'
+'Foot pod': Laufsensor
 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.': 'Eine Eddington-Zahl von 70 bedeutet beispielsweise, dass ein Radfahrer an mindestens 70 Tagen jeweils mindestens 70 km oder Meilen gefahren ist. Eine hohe Eddington-Zahl zu erreichen ist schwierig, da der Sprung von beispielsweise 70 auf 75 vermutlich mehr als fünf neue Langstreckeneinheiten erfordert, weil Einheiten unter 75 km oder Meilen dann nicht mehr in die Berechnung einfließen.'
 'Form (TSB)': 'Form (TSB)'
 Fri: Fr
@@ -166,7 +166,7 @@ HIIT: HIIT
 HR: HF
 'Hand Cycle': Handbike
 'Heart rate': Herzfrequenz
-'Heart rate monitor': 'Herzfrequenzsensor'
+'Heart rate monitor': Herzfrequenzsensor
 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones': 'Herzfrequenz-Verteilung des letzten Monats. Für ein effektives Polarized-Training sollten deine Workouts primär in die folgenden Zonen fallen'
 'Heart rate zones': Herzfrequenz-Zonen
 Heatmap: Heatmap
@@ -274,7 +274,7 @@ Oct: Okt
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'Im Schnitt ergibt das {dailyAverage} täglich, mit einem Wochenmittel von {weeklyAverage} und einem Monatsmittel von {monthlyAverage} 🐣.'
 'One of your gear maintenance tasks is due': 'Eine deiner Ausrüstungswartungsaufgaben steht an'
 "Oops, looks like you've wandered off the map! 🗺️": "Oops, looks like you've wandered off the map! 🗺️"
-'Open Water Swim': 'Freiwasserschwimmen'
+'Open Water Swim': Freiwasserschwimmen
 'Optimal training range': 'Optimale Trainingszone'
 Other: Andere
 'Outdoor Sports': Outdoor-Sportarten
@@ -299,7 +299,7 @@ Pilates: Pilates
 'Polarised training (last 30 days)': 'Polarized-Training (letzte 30 Tage)'
 'Pool Swim': Beckenschwimmen
 Power: Leistung
-'Power meter': 'Leistungsmesser'
+'Power meter': Leistungsmesser
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Dabei wurden geschätzte {caloriesBurned} Kalorien verbraucht, was ungefähr {numberOfPizzaSlices} Pizzastücken entspricht 🍕.'
 'Prev year': Vorjahr
 Previous: Vorherige
@@ -353,7 +353,7 @@ Sep: Sep
 Skateboard: Skateboard
 Skating: Skaten
 'Slightly fresh': 'Leicht regeneriert'
-'Smart trainer': 'Rollentrainer'
+'Smart trainer': Rollentrainer
 Snowboard: Snowboard
 Snowshoe: Schneeschuhwandern
 Soccer: Fußball
@@ -380,7 +380,7 @@ Surfing: Surfen
 'Table Tennis': Tischtennis
 'Taper sweet-spot (+15)': 'Taper sweet-spot (+15)'
 'Team Sports': Teamsportarten
-'Temperature sensor': 'Temperatursensor'
+'Temperature sensor': Temperatursensor
 Tennis: Tennis
 "That's 1.5 times the distance to the edge of space": 'Das ist das 1,5-fache der Entfernung bis zum Rand des Weltraums'
 "That's 100 days of commitment, triple digits!": 'Das sind 100 Tage voller Einsatz - dreistellig!'
@@ -471,7 +471,7 @@ Tennis: Tennis
 "That's {number} days of at least {distance}": 'Das sind {number} Tage mit mindestens {distance}'
 "That's {percentage}% of all countries 🌍": 'Das sind {percentage}% aller Länder 🌍'
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'Die Eddington-Zahl im Zusammenhang mit Radfahren oder Laufen ist definiert als die höchste Zahl E, bei der der Athlet an mindestens E Tagen jeweils mindestens E km zurückgelegt hat.'
-"The page you're looking for doesn't exist or may have been moved.": "Die gesuchte Seite existiert nicht oder wurde verschoben."
+"The page you're looking for doesn't exist or may have been moved.": 'Die gesuchte Seite existiert nicht oder wurde verschoben.'
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': 'Diese Abzeichen sind dynamisch erstellt. Du kannst sie in allen &lt;img&gt; Tags verwenden.'
 Thinking...: Denke...
 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.': 'Diese Grafik zeigt deinen Trainingsstil. Die Achsen stehen für verschiedene normalisierte Gewohnheiten. Höhere Werte bedeuten dabei eine stärkere Gewichtung.'

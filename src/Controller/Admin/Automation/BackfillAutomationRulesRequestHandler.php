@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Settings\Automation;
+namespace App\Controller\Admin\Automation;
 
 use App\Domain\Automation\AutomationRule;
 use App\Domain\Automation\AutomationRuleId;
@@ -33,7 +33,7 @@ final readonly class BackfillAutomationRulesRequestHandler
     ) {
     }
 
-    #[Route(path: '/admin/settings/automation-rules/backfill', name: 'admin_backfill_automation_rules', methods: ['GET'], priority: 20)]
+    #[Route(path: '/admin/automation-rules/backfill', name: 'admin_backfill_automation_rules', methods: ['GET'], priority: 20)]
     public function handle(Request $request): HtmlResponse
     {
         if (!$this->importMode->isFiles()) {
@@ -49,7 +49,7 @@ final readonly class BackfillAutomationRulesRequestHandler
             static fn (AutomationRule $automationRule): string => (string) $automationRule->getId()
         );
 
-        return new HtmlResponse($this->twig->render('html/admin/page/settings/automation-rules/backfill-automation-rules.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/automation-rules/backfill-automation-rules.html.twig', [
             'isQueued' => $this->backfillQueue->isQueued(),
             'automationRules' => $enabledRules->map(
                 static fn (AutomationRule $automationRule): array => [
@@ -62,7 +62,7 @@ final readonly class BackfillAutomationRulesRequestHandler
         ]));
     }
 
-    #[Route(path: '/admin/settings/automation-rules/backfill/preview', name: 'admin_backfill_automation_rules_preview', methods: ['GET'], priority: 20)]
+    #[Route(path: '/admin/automation-rules/backfill/preview', name: 'admin_backfill_automation_rules_preview', methods: ['GET'], priority: 20)]
     public function preview(Request $request): HtmlResponse
     {
         if (!$this->importMode->isFiles()) {
@@ -90,7 +90,7 @@ final readonly class BackfillAutomationRulesRequestHandler
             $ruleLabels[(string) $automationRule->getId()] = $automationRule->getLabel();
         }
 
-        return new HtmlResponse($this->twig->render('html/admin/page/settings/automation-rules/_backfill-preview.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/automation-rules/_backfill-preview.html.twig', [
             'totalScanned' => $preview->getTotalScanned(),
             'totalMatched' => count($preview->getMatchedActivities()),
             'matchedActivities' => array_map(

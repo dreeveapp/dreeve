@@ -12,6 +12,7 @@ enum ConditionType: string
     case SPORT_TYPE = 'sportType';
     case DISTANCE = 'distance';
     case ELEVATION = 'elevation';
+    case MOVING_TIME = 'movingTime';
     case AVERAGE_POWER = 'averagePower';
     case AVERAGE_CADENCE = 'averageCadence';
     case WEEKDAY = 'weekday';

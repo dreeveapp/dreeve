@@ -47,6 +47,35 @@
             </ul>
         </nav>
     {% endif %}
+    {% if isActiveNavItem({'/admin/automation-rules': false}) and importMode.isFiles() %}
+        {% set inTestRules = isActiveNavItem({'/admin/automation-rules/test': false}) %}
+        {% set inBackfill = isActiveNavItem({'/admin/automation-rules/backfill': false}) %}
+        {% set inRules = not inTestRules and not inBackfill %}
+        <nav class="contextual-panel" aria-label="{{ "Automation rules"|trans({}, 'admin') }}">
+            <p class="px-2 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                {{ "Automation rules"|trans({}, 'admin') }}
+            </p>
+            <ul class="space-y-1">
+                <li>
+                    <a href="{{ relativeUrl(path('admin_manage_automation_rules_overview')) }}" {{ inRules ? 'aria-selected="true"' : '' }}>
+                        {{ "Rules"|trans({}, 'admin') }}
+                    </a>
+                </li>
+                {% if has_enabled_automation_rules() %}
+                    <li>
+                        <a href="{{ relativeUrl(path('admin_test_automation_rules')) }}" {{ inTestRules ? 'aria-selected="true"' : '' }}>
+                            {{ "Test rules"|trans({}, 'admin') }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ relativeUrl(path('admin_backfill_automation_rules')) }}" {{ inBackfill ? 'aria-selected="true"' : '' }}>
+                            {{ "Apply to existing activities"|trans({}, 'admin') }}
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
     {% if isActiveNavItem({'/admin/settings': false}) %}
         {% set inGeneral = isActiveNavItem({'/admin/settings/general': false}) %}
         {% set inAppearance = isActiveNavItem({'/admin/settings/appearance': false}) %}
@@ -58,7 +87,6 @@
         {% set inDaemon = isActiveNavItem({'/admin/settings/daemon': false}) %}
         {% set inSecurity = isActiveNavItem({'/admin/settings/security': false}) %}
         {% set inDashboard = isActiveNavItem({'/admin/settings/dashboard': false}) %}
-        {% set inAutomationRules = isActiveNavItem({'/admin/settings/automation-rules': false}) %}
         <nav class="contextual-panel" aria-label="{{ "Settings"|trans({}, 'admin') }}">
             <p class="px-2 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
                 {{ "Settings"|trans({}, 'admin') }}
@@ -82,11 +110,6 @@
                 <li>
                     <a href="{{ relativeUrl(path('admin_settings_dashboard')) }}" {{ inDashboard ? 'aria-selected="true"' : '' }}>
                         {{ "Dashboard"|trans }}
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ relativeUrl(path('admin_manage_automation_rules_overview')) }}" {{ inAutomationRules ? 'aria-selected="true"' : '' }}>
-                        {{ "Automation rules"|trans({}, 'admin') }}
                     </a>
                 </li>
                 {% if importMode.isStravaApi() %}

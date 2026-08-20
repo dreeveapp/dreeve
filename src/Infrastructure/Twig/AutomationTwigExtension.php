@@ -6,6 +6,7 @@ namespace App\Infrastructure\Twig;
 
 use App\Domain\Automation\Action\Actions;
 use App\Domain\Automation\Action\ActionType;
+use App\Domain\Automation\AutomationRuleRepository;
 use App\Domain\Automation\Condition\Conditions;
 use App\Domain\Automation\Condition\ConditionType;
 use App\Domain\Automation\RuleConfiguration;
@@ -17,8 +18,15 @@ final readonly class AutomationTwigExtension
     public function __construct(
         private Conditions $conditions,
         private Actions $actions,
+        private AutomationRuleRepository $automationRuleRepository,
         private TranslatorInterface $translator,
     ) {
+    }
+
+    #[AsTwigFunction('has_enabled_automation_rules')]
+    public function hasEnabledAutomationRules(): bool
+    {
+        return !$this->automationRuleRepository->findAll()->enabled()->isEmpty();
     }
 
     #[AsTwigFunction('describe_condition_type')]

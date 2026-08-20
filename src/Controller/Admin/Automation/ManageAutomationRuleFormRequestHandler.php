@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Settings\Automation;
+namespace App\Controller\Admin\Automation;
 
 use App\Domain\Automation\Action\Actions;
 use App\Domain\Automation\AddAutomationRule\AddAutomationRule;
@@ -36,14 +36,14 @@ final readonly class ManageAutomationRuleFormRequestHandler
     ) {
     }
 
-    #[Route(path: '/admin/settings/automation-rules/add', name: 'admin_add_automation_rule', methods: ['GET'], priority: 10)]
+    #[Route(path: '/admin/automation-rules/add', name: 'admin_add_automation_rule', methods: ['GET'], priority: 10)]
     public function handleAdd(): HtmlResponse
     {
         if (!$this->importMode->isFiles()) {
             throw new NotFoundHttpException('Automation rules are only available in file import mode');
         }
 
-        return new HtmlResponse($this->twig->render('html/admin/page/settings/automation-rules/edit-automation-rule.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/automation-rules/edit-automation-rule.html.twig', [
             'dispatchCommand' => AddAutomationRule::getCommandName(),
             'conditions' => $this->conditions->all(),
             'actions' => $this->actions->all(),
@@ -53,14 +53,14 @@ final readonly class ManageAutomationRuleFormRequestHandler
         ]));
     }
 
-    #[Route(path: '/admin/settings/automation-rules/{id}/edit', name: 'admin_edit_automation_rule', methods: ['GET'], priority: 10)]
+    #[Route(path: '/admin/automation-rules/{id}/edit', name: 'admin_edit_automation_rule', methods: ['GET'], priority: 10)]
     public function handleEdit(string $id): HtmlResponse
     {
         if (!$this->importMode->isFiles()) {
             throw new NotFoundHttpException('Automation rules are only available in file import mode');
         }
 
-        return new HtmlResponse($this->twig->render('html/admin/page/settings/automation-rules/edit-automation-rule.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/automation-rules/edit-automation-rule.html.twig', [
             'dispatchCommand' => UpdateAutomationRule::getCommandName(),
             'automationRule' => $this->automationRuleRepository->find(AutomationRuleId::fromString($id)),
             'conditions' => $this->conditions->all(),
@@ -71,14 +71,14 @@ final readonly class ManageAutomationRuleFormRequestHandler
         ]));
     }
 
-    #[Route(path: '/admin/settings/automation-rules/{id}/delete', name: 'admin_delete_automation_rule', methods: ['GET'], priority: 10)]
+    #[Route(path: '/admin/automation-rules/{id}/delete', name: 'admin_delete_automation_rule', methods: ['GET'], priority: 10)]
     public function handleDelete(string $id): HtmlResponse
     {
         if (!$this->importMode->isFiles()) {
             throw new NotFoundHttpException('Automation rules are only available in file import mode');
         }
 
-        return new HtmlResponse($this->twig->render('html/admin/page/settings/automation-rules/delete-automation-rule.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/automation-rules/delete-automation-rule.html.twig', [
             'dispatchCommand' => DeleteAutomationRule::getCommandName(),
             'automationRule' => $this->automationRuleRepository->find(AutomationRuleId::fromString($id)),
         ]));
