@@ -54,24 +54,16 @@
     </div>
 </nav><section class="flex min-h-screen flex-col justify-center px-6 py-12 sm:px-12">
     <div class="mx-auto w-full max-w-xl p-6 bg-white border border-gray-200 rounded-lg shadow-xs">
-        <h2 class="text-2xl font-bold tracking-tight">Connect your Strava account</h2>
-        <p class="mt-1 text-sm text-gray-500">You haven't completed the Strava authorization yet. We'll redirect you to Strava. Just click <strong>Authorize</strong> when the page loads.</p>
-        <a href="http://www.strava.com/oauth/authorize?client_id=client&amp;response_type=code&amp;redirect_uri=http://:/strava-oauth&amp;approval_prompt=force&amp;scope=activity:read_all" class="mt-6 inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-primary px-5 py-3 font-semibold text-white shadow-sm transition hover:brightness-95">
-            <svg class="size-5" fill="currentColor" viewbox="0 0 24 24"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"></path></svg>
-            Connect with Strava
-        </a>
-        <p class="mt-2.5 flex items-center gap-1.5 text-xs text-gray-400">
-            <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-            We only request the <code class="font-mono text-[11px]">activity:read_all</code> scope.
+        <h2 class="text-2xl font-bold tracking-tight">Hmmm, something went wrong</h2>
+        <p class="mt-1 text-sm text-gray-500">We hit a snag while talking to Strava. The details are below.</p>
+        <div class="mt-6 overflow-hidden rounded-xl border border-red-200 bg-red-50">
+            <div class="border-b border-red-200 bg-red-100/60 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-red-700">Error details</div>
+            <p class="px-4 py-3 font-mono text-sm text-red-800">Your Strava API application is inactive, so Dreeve can no longer access the Strava API. Reactivate it on https://www.strava.com/settings/api, or switch to IMPORT_MODE=files</p>
+        </div>
+        <p class="mt-4 text-sm text-gray-500">
+            Please check the <a class="font-medium text-primary hover:underline" href="https://docs.dreeve.app/#/troubleshooting/strava-api-errors">troubleshooting guide</a> for help resolving this.
         </p>
-                    <div class="mt-6 overflow-hidden rounded-xl border border-red-200 bg-red-50">
-                <div class="border-b border-red-200 bg-red-100/60 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-red-700">Error details</div>
-                <p class="px-4 py-3 font-mono text-sm text-red-800">{"error":"The error"}</p>
-            </div>
-            <p class="mt-2.5 text-xs text-gray-500">
-                Stuck? Check the <a class="font-medium text-primary hover:underline" href="https://docs.dreeve.app/#/troubleshooting/strava-api-errors">troubleshooting guide</a>.
-            </p>
-            </div>
+    </div>
 </section>
 </body>
 </html>

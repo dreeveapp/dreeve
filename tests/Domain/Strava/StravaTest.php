@@ -10,6 +10,7 @@ use App\Domain\Strava\InsufficientStravaAccessTokenScopes;
 use App\Domain\Strava\InvalidStravaAccessToken;
 use App\Domain\Strava\RateLimit\StravaRateLimitHasBeenReached;
 use App\Domain\Strava\Strava;
+use App\Domain\Strava\StravaApplicationIsInactive;
 use App\Domain\Strava\StravaClientId;
 use App\Domain\Strava\StravaClientSecret;
 use App\Domain\Strava\StravaRefreshToken;
@@ -158,6 +159,78 @@ class StravaTest extends TestCase
             });
 
         $this->expectExceptionObject(new InsufficientStravaAccessTokenScopes());
+
+        $this->strava->verifyAccessToken();
+    }
+
+    public function testVerifyAccessTokenWhenTheApplicationIsInactive(): void
+    {
+        $this->filesystemOperator
+            ->expects($this->never())
+            ->method('fileExists');
+
+        $this->logger
+            ->expects($this->never())
+            ->method('log');
+
+        $matcher = $this->exactly(2);
+        $this->client
+            ->expects($matcher)
+            ->method('request')
+            ->willReturnCallback(function (string $method, string $path) use ($matcher): Response {
+                if (1 === $matcher->numberOfInvocations()) {
+                    $this->assertEquals('POST', $method);
+                    $this->assertEquals('oauth/token', $path);
+
+                    return new Response(200, [], Json::encode(['access_token' => 'theAccessToken']));
+                }
+
+                $this->assertEquals('GET', $method);
+                $this->assertEquals('api/v3/athlete/activities', $path);
+
+                throw new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(403, [], Json::encode(['message' => 'Forbidden', 'errors' => [['resource' => 'Application', 'field' => 'Status', 'code' => 'Inactive']]])));
+            });
+
+        $this->expectExceptionObject(StravaApplicationIsInactive::create());
+
+        $this->strava->verifyAccessToken();
+    }
+
+    public function testVerifyAccessTokenWhenAnotherForbiddenErrorIsThrown(): void
+    {
+        $this->filesystemOperator
+            ->expects($this->never())
+            ->method('fileExists');
+
+        $this->logger
+            ->expects($this->never())
+            ->method('log');
+
+        $exception = new RequestException(
+            message: 'The error',
+            request: new Request('GET', 'uri'),
+            response: new Response(403, [], Json::encode(['message' => 'Forbidden']))
+        );
+
+        $matcher = $this->exactly(2);
+        $this->client
+            ->expects($matcher)
+            ->method('request')
+            ->willReturnCallback(function (string $method, string $path) use ($matcher, $exception): Response {
+                if (1 === $matcher->numberOfInvocations()) {
+                    $this->assertEquals('POST', $method);
+                    $this->assertEquals('oauth/token', $path);
+
+                    return new Response(200, [], Json::encode(['access_token' => 'theAccessToken']));
+                }
+
+                $this->assertEquals('GET', $method);
+                $this->assertEquals('api/v3/athlete/activities', $path);
+
+                throw $exception;
+            });
+
+        $this->expectExceptionObject($exception);
 
         $this->strava->verifyAccessToken();
     }

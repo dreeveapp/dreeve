@@ -145,8 +145,16 @@ class Strava
                 ]
             );
         } catch (ClientException|RequestException $e) {
-            if (401 === $e->getResponse()?->getStatusCode()) {
+            $response = $e->getResponse();
+            if (401 === $response?->getStatusCode()) {
                 throw new InsufficientStravaAccessTokenScopes();
+            }
+
+            if (403 === $response?->getStatusCode()) {
+                $body = (string) $response->getBody();
+                if (str_contains($body, '"Forbidden"') && str_contains($body, '"Inactive"')) {
+                    throw StravaApplicationIsInactive::create();
+                }
             }
 
             throw $e;

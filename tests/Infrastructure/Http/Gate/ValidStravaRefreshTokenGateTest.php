@@ -6,6 +6,7 @@ use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Import\ImportMode;
 use App\Domain\Strava\InvalidStravaAccessToken;
 use App\Domain\Strava\Strava;
+use App\Domain\Strava\StravaApplicationIsInactive;
 use App\Infrastructure\Http\Gate\ValidStravaRefreshTokenGate;
 use App\Tests\ContainerTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -63,6 +64,31 @@ class ValidStravaRefreshTokenGateTest extends ContainerTestCase
             ->expects($this->once())
             ->method('verifyAccessToken')
             ->willThrowException(new InvalidStravaAccessToken());
+
+        $gate = new ValidStravaRefreshTokenGate(
+            $this->urlGenerator,
+            ImportMode::STRAVA_API,
+            $this->strava,
+            $this->activityIdRepository,
+        );
+
+        $response = $gate->handle(Request::create('/dashboard'))->getResponse();
+
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertSame('/strava-oauth', $response->getTargetUrl());
+        $this->assertSame(Response::HTTP_FOUND, $response->getStatusCode());
+    }
+
+    public function testItRedirectsWhenTheStravaApplicationIsInactive(): void
+    {
+        $this->activityIdRepository
+            ->expects($this->once())
+            ->method('hasImportedFromStravaApi')
+            ->willReturn(false);
+        $this->strava
+            ->expects($this->once())
+            ->method('verifyAccessToken')
+            ->willThrowException(StravaApplicationIsInactive::create());
 
         $gate = new ValidStravaRefreshTokenGate(
             $this->urlGenerator,

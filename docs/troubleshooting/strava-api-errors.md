@@ -67,6 +67,28 @@ Ensure that the `Website` and `Authorization Callback Domain` match the URL/doma
 }
 ```
 
+#### **Inactive application**
+
+If Strava responds with a `403 Forbidden` and the error below, your refresh token is fine,
+but the Strava API application itself no longer has access to the API.
+This happens when the application is deactivated or when your Strava API subscription lapses.
+
+To resolve this, either reactivate the application on [Strava's API settings page](https://www.strava.com/settings/api),
+or switch to file import by setting `IMPORT_MODE=files` in your `.env` file and recreating your Docker container.
+
+```json
+{
+  "message": "Forbidden",
+  "errors": [
+    {
+      "resource": "Application",
+      "field": "Status",
+      "code": "Inactive"
+    }
+  ]
+}
+```
+
 #### **500 Internal Server Error**
 
 If you receive an error like the following:

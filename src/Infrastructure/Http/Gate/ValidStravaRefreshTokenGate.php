@@ -9,6 +9,7 @@ use App\Domain\Import\ImportMode;
 use App\Domain\Strava\InsufficientStravaAccessTokenScopes;
 use App\Domain\Strava\InvalidStravaAccessToken;
 use App\Domain\Strava\Strava;
+use App\Domain\Strava\StravaApplicationIsInactive;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -38,7 +39,7 @@ final class ValidStravaRefreshTokenGate extends ConditionalRedirectGate
             $this->strava->verifyAccessToken();
 
             return false;
-        } catch (InvalidStravaAccessToken|InsufficientStravaAccessTokenScopes) {
+        } catch (InvalidStravaAccessToken|InsufficientStravaAccessTokenScopes|StravaApplicationIsInactive) {
             return true;
         }
     }
