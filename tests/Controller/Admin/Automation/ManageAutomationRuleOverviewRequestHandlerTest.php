@@ -221,6 +221,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
                 ->withConditions(ConfiguredConditions::fromArray([
                     new ConfiguredCondition(ConditionType::DISTANCE, RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 10.0])),
                     new ConfiguredCondition(ConditionType::ELEVATION, RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 100.0])),
+                    new ConfiguredCondition(ConditionType::MOVING_TIME, RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 90])),
                     new ConfiguredCondition(ConditionType::AVERAGE_POWER, RuleConfiguration::fromConfig(['operator' => 'gt', 'value' => 200])),
                     new ConfiguredCondition(ConditionType::AVERAGE_CADENCE, RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 80])),
                     new ConfiguredCondition(ConditionType::CONNECTED_SENSORS, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sensorTypes' => ['powerMeter', 'temperatureSensor']])),
@@ -267,6 +268,8 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('at least 10 km', $secondRule);
         $this->assertStringContainsString('Elevation', $secondRule);
         $this->assertStringContainsString('at least 100 m', $secondRule);
+        $this->assertStringContainsString('Moving time', $secondRule);
+        $this->assertStringContainsString('at least 90 min', $secondRule);
         $this->assertStringContainsString('Average power', $secondRule);
         $this->assertStringContainsString('greater than 200 w', $secondRule);
         $this->assertStringContainsString('Average cadence', $secondRule);
