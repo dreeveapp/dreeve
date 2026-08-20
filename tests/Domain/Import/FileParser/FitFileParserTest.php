@@ -212,6 +212,37 @@ class FitFileParserTest extends ActivityFileParserTestCase
         $this->parser->parse($rawActivityFile);
     }
 
+    public function testParseMultiSportFileThrows(): void
+    {
+        $this->givenFitToolReturns((string) file_get_contents(__DIR__.'/fixtures/fit-document-multisport.json'));
+
+        $rawActivityFile = RawActivityFile::from(Path::fromString('/tmp/activity.fit'), '');
+
+        $this->expectExceptionObject(new CouldNotParseActivityFile('Multi-sport FIT file "activity.fit" import not supported, each leg needs to be imported as a separate file', $rawActivityFile));
+        $this->parser->parse($rawActivityFile);
+    }
+
+    public function testParseMultiSportSessionThrows(): void
+    {
+        $document = $this->minimalFitDocument(sessionFields: [
+            ['name' => 'sport', 'value' => 18], // multisport
+            ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
+        ]);
+        $this->givenFitToolReturns(Json::encode($document));
+
+        $rawActivityFile = RawActivityFile::from(Path::fromString('/tmp/activity.fit'), '');
+
+        $this->expectExceptionObject(new CouldNotParseActivityFile('Multi-sport FIT file "activity.fit" import not supported, each leg needs to be imported as a separate file', $rawActivityFile));
+        $this->parser->parse($rawActivityFile);
+    }
+
+    public function testParseAllowsMultipleSessionsOfTheSameSport(): void
+    {
+        $this->givenFitToolReturns((string) file_get_contents(__DIR__.'/fixtures/fit-document-with-multiple-sessions-of-the-same-sport.json'));
+
+        $this->assertSame(SportType::RIDE, $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))->getActivity()->getSportType());
+    }
+
     public function testParseUnsupportedSportThrows(): void
     {
         $document = $this->minimalFitDocument(sessionFields: [

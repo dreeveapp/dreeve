@@ -3,6 +3,7 @@
 namespace App\Tests\Infrastructure\Http\Gate;
 
 use App\Infrastructure\Config\AdminAllowedIpAddresses;
+use App\Infrastructure\Http\ClientIpResolver;
 use App\Infrastructure\Http\Gate\AdminAllowedIpGate;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -19,13 +20,13 @@ class AdminAllowedIpGateTest extends TestCase
     {
         $this->expectExceptionObject(new NotFoundHttpException('Not found'));
 
-        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'));
+        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'), new ClientIpResolver());
         $gate->handle($this->adminRequestFromIp('10.0.0.1'));
     }
 
     public function testItAllowsAdminAccessFromAnAllowedIp(): void
     {
-        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'));
+        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'), new ClientIpResolver());
 
         $this->assertFalse($gate->handle($this->adminRequestFromIp('192.168.1.1'))->hasBeenApplied());
     }
@@ -39,7 +40,7 @@ class AdminAllowedIpGateTest extends TestCase
 
         $this->expectExceptionObject(new NotFoundHttpException('Not found'));
 
-        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'));
+        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'), new ClientIpResolver());
         $gate->handle($request);
     }
 
@@ -50,13 +51,49 @@ class AdminAllowedIpGateTest extends TestCase
 
         $this->expectExceptionObject(new NotFoundHttpException('Not found'));
 
-        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'));
+        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'), new ClientIpResolver());
+        $gate->handle($request);
+    }
+
+    public function testItResolvesTheClientBehindAReverseProxyThroughTheForwardedForHeader(): void
+    {
+        Request::setTrustedProxies(['private_ranges'], Request::HEADER_X_FORWARDED_FOR);
+
+        $request = $this->adminRequestFromIp('172.30.0.1');
+        $request->headers->set('X-Forwarded-For', '192.168.1.40');
+
+        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.0/24'), new ClientIpResolver());
+
+        $this->assertFalse($gate->handle($request)->hasBeenApplied());
+    }
+
+    public function testItDeniesAClientOutsideTheAllowedRangeBehindAReverseProxy(): void
+    {
+        Request::setTrustedProxies(['private_ranges'], Request::HEADER_X_FORWARDED_FOR);
+
+        $request = $this->adminRequestFromIp('172.30.0.1');
+        $request->headers->set('X-Forwarded-For', '203.0.113.5');
+
+        $this->expectExceptionObject(new NotFoundHttpException('Not found'));
+
+        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.0/24'), new ClientIpResolver());
+        $gate->handle($request);
+    }
+
+    public function testItIgnoresTheForwardedForHeaderWhenNoProxiesAreTrusted(): void
+    {
+        $request = $this->adminRequestFromIp('172.30.0.1');
+        $request->headers->set('X-Forwarded-For', '192.168.1.40');
+
+        $this->expectExceptionObject(new NotFoundHttpException('Not found'));
+
+        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.0/24'), new ClientIpResolver());
         $gate->handle($request);
     }
 
     public function testItAllowsEveryoneWhenNoAllowListIsConfigured(): void
     {
-        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString(''));
+        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString(''), new ClientIpResolver());
 
         $this->assertFalse($gate->handle($this->adminRequestFromIp('10.0.0.1'))->hasBeenApplied());
     }
@@ -67,7 +104,7 @@ class AdminAllowedIpGateTest extends TestCase
         $request = Request::create($path);
         $request->server->set('REMOTE_ADDR', '10.0.0.1');
 
-        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'));
+        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'), new ClientIpResolver());
 
         $this->assertFalse($gate->handle($request)->hasBeenApplied());
     }

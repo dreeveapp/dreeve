@@ -73,8 +73,3 @@ import /etc/frankenphp/snippets/paths.caddyfile
 		hide *.php *.yaml *.yml */log
 	}
 }
-
-# Reverse proxy for custom domain
-{$PROXY_HOST}:{$PROXY_PORT} {
-	reverse_proxy localhost:8080
-}

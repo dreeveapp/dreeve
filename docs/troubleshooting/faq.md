@@ -31,6 +31,17 @@ No. `IMPORT_MODE` is either `files` or `stravaApi`, you can switch between them 
 </details>
 
 <details>
+<summary>Can I import a multi-sport <code>.fit</code> file (triathlon, brick workout)?</summary>
+
+No. Dreeve imports **one activity per file**. A `.fit` file that contains multiple sport legs (a triathlon
+recorded as swim → transition → bike → run, for example) is rejected, the import will fail.
+
+Export each leg as its own file and import those separately. Most platforms let you split a multi-sport
+activity into its individual activities before exporting.
+
+</details>
+
+<details>
 <summary>Why is my activity not visible in the app after uploading it?</summary>
 
 Almost always one of three things:

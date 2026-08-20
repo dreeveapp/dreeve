@@ -98,7 +98,11 @@ ADMIN_USERNAME=admin
 ADMIN_PASSWORD_HASH='replace-me'
 
 # Takes a comma-separated allowlist. When it is set, requests to /admin* from any other IP are rejected.
-# ADMIN_ALLOWED_IPS=192.168.1.10,192.168.1.11
+# CIDR ranges are supported, so 192.168.1.0/24 allows your whole home network.
+# ADMIN_ALLOWED_IPS=192.168.1.10,192.168.1.11,10.0.0.0/24
+# Which peers Dreeve accepts X-Forwarded-* headers from. Defaults to private_ranges,
+# which is what you want in Docker. See the "Running behind a reverse proxy" section below.
+# TRUSTED_PROXIES=private_ranges
 
 # Only needed when IMPORT_MODE=stravaApi.
 # See https://docs.dreeve.app/#/importing/strava-import
@@ -114,20 +118,26 @@ ADMIN_PASSWORD_HASH='replace-me'
 # Each worker holds a booted copy of the app in memory, so raise it if pages feel
 # queued up on a machine with cores to spare, and lower it to 2 on a low-memory NAS.
 # FRANKENPHP_NUM_WORKERS=4
-
-# !! IMPORTANT If you want to serve Dreeve via a reverse proxy, 
-# uncomment the following lines and configure them accordingly:
-
-# The domain where Dreeve will be available.
-# PROXY_HOST=https://your-domain.com
-# The port on which the app will be served.
-# PROXY_PORT=8080
 ```
 
 > [!WARNING]
 > **Subdirectory hosting is not fully supported.** 
 > `APP_URL` should point at the root of a domain or subdomain, for example `https://dreeve.your-domain.com` or `http://localhost:8080`. 
 > Serving Dreeve from a subdirectory such as `https://your-domain.com/dreeve/` is not supported.
+
+## Running behind a reverse proxy
+
+Dreeve never sees your browser's IP address directly. When Dreeve runs behind Docker, 
+incoming connections typically arrive from the Docker bridge network’s gateway (something like `172.30.0.1`), 
+so Dreeve uses the `X-Forwarded-For` header set by your reverse proxy to determine the original client IP address.
+
+`TRUSTED_PROXIES` decides which peers are allowed to set that header, and defaults to `private_ranges`
+which trusts proxies running on private network ranges.
+
+If you expose Dreeve's port directly to an untrusted network without a reverse proxy, 
+set `TRUSTED_PROXIES` to an empty value. This disables proxy trust, causing Dreeve to use the IP address of the direct connection instead.
+
+You can see which client IP address Dreeve resolved for your current request in the admin panel under **Settings → Security**.
 
 ## Admin password
 

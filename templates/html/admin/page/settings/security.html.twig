@@ -23,6 +23,10 @@
                     <p class="description">
                         {{ "When set, requests to the admin panel from any other IP address are rejected."|trans({}, 'admin') }}
                         {{ "Configured via an environment variable and cannot be changed here."|trans({}, 'admin') }}
+                        {% if clientIpAddress %}
+                            <br>
+                            {{ "Your current IP address, as seen by Dreeve, is {ipAddress}."|trans({'ipAddress': clientIpAddress}, 'admin') }}
+                        {% endif %}
                     </p>
                 </div>
                 <div>

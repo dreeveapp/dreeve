@@ -2,6 +2,9 @@
 framework:
     secret: '%env(APP_SECRET)%'
     session: true
+    # Set TRUSTED_PROXIES to an empty value to stop trusting forwarded headers altogether.
+    trusted_proxies: '%env(string:TRUSTED_PROXIES)%'
+    trusted_headers: [ 'x-forwarded-for', 'x-forwarded-proto', 'x-forwarded-port' ]
     assets:
         version_strategy: 'App\Infrastructure\Http\AssetVersioningStrategy'
 

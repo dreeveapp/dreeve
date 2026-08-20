@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http\Gate;
 
 use App\Infrastructure\Config\AdminAllowedIpAddresses;
+use App\Infrastructure\Http\ClientIpResolver;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -14,6 +15,7 @@ final readonly class AdminAllowedIpGate implements Gate
 {
     public function __construct(
         private AdminAllowedIpAddresses $allowedIps,
+        private ClientIpResolver $clientIpResolver,
     ) {
     }
 
@@ -28,10 +30,7 @@ final readonly class AdminAllowedIpGate implements Gate
             return GateDecision::defer();
         }
 
-        $clientIp = $request->isFromTrustedProxy()
-            ? $request->headers->get('CF-Connecting-IP') ?? $request->getClientIp()
-            : $request->getClientIp();
-        if ($this->allowedIps->contains($clientIp)) {
+        if ($this->allowedIps->contains($this->clientIpResolver->resolve($request))) {
             // Only the IP check passed, the other gates still get to decide.
             return GateDecision::defer();
         }
