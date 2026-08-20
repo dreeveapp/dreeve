@@ -10,6 +10,7 @@ use App\Domain\Activity\Stream\ActivityHeartRateRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamProfileCharts;
+use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
@@ -73,8 +74,13 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
         $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
         $leafletMap = $activity->getLeafletMap();
         $numberOfProfileChartLanes = $this->combinedActivityStreamRepository->countChartableStreamTypesFor(
-            $activityId,
-            $unitSystem
+            activityId: $activityId,
+            unitSystem: $unitSystem
+        );
+        $hasTemperatureRibbon = $this->combinedActivityStreamRepository->hasStreamTypeFor(
+            activityId: $activityId,
+            unitSystem: $unitSystem,
+            streamType: CombinedStreamType::TEMP
         );
 
         $timeInHeartRateZones = null;
@@ -85,7 +91,7 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
 
         $templateName = sprintf('html/activity/%s.html.twig', $activity->getSportType()->getTemplateName());
 
-        return $this->twig->load($templateName)->render([
+        return $this->twig->load($templateName)->render(context: [
             'activity' => $activity,
             'enrichedActivity' => $enrichedActivity,
             'leaflet' => $leafletMap instanceof LeafletMap ? [
@@ -106,7 +112,10 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
                 unitSystem: $unitSystem
             ),
             'laps' => $this->activityLapRepository->findBy($activityId),
-            'profileChartHeight' => CombinedStreamProfileCharts::totalHeightFor($numberOfProfileChartLanes),
+            'profileChartHeight' => CombinedStreamProfileCharts::totalHeightFor(
+                numberOfLanes: $numberOfProfileChartLanes,
+                hasTemperatureRibbon: $hasTemperatureRibbon
+            ),
             'hasProfileChart' => $numberOfProfileChartLanes > 0,
             'heartRateZones' => $timeInHeartRateZones,
             'isAuthenticated' => $this->authenticatedVisitor->isAuthenticated(),

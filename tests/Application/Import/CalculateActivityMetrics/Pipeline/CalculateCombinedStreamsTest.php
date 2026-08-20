@@ -196,6 +196,70 @@ class CalculateCombinedStreamsTest extends ContainerTestCase
         );
     }
 
+    public function testProcessItShouldConvertFreezingTemperaturesInsteadOfTreatingThemAsMissing(): void
+    {
+        $output = new SpyOutput();
+
+        $activityRepository = $this->getContainer()->get(ActivityRepository::class);
+        $streamRepository = $this->getContainer()->get(ActivityStreamRepository::class);
+
+        $activityId = ActivityId::fromUnprefixed('one');
+        $activityRepository->add(
+            ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withSportType(SportType::RIDE)
+                    ->withActivityId($activityId)
+                    ->build(),
+                []
+            )
+        );
+        $streamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withStreamType(StreamType::TIME)
+                ->withData([0, 1, 2, 3])
+                ->build()
+        );
+        $streamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withStreamType(StreamType::HEART_RATE)
+                ->withData([120, 125, 130, 135])
+                ->build()
+        );
+        $streamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withStreamType(StreamType::TEMP)
+                ->withData([-5, 0, 10, 20])
+                ->build()
+        );
+
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::APPEARANCE, ['unitSystem' => UnitSystem::IMPERIAL->value]);
+
+        new CalculateCombinedStreams(
+            activityRepository: $activityRepository,
+            combinedActivityStreamRepository: $this->getContainer()->get(CombinedActivityStreamRepository::class),
+            activityStreamRepository: $streamRepository,
+            settingsRepository: $settingsRepository,
+            mutex: new Mutex(
+                connection: $this->getConnection(),
+                clock: PausedClock::fromString('2025-12-04'),
+                lockName: LockName::IMPORT_DATA,
+            )
+        )->process($output);
+
+        $combinedStream = $this->getContainer()->get(CombinedActivityStreamRepository::class)
+            ->findOneForActivityAndUnitSystem($activityId, UnitSystem::IMPERIAL);
+
+        // 0 degrees Celsius is a reading, not a gap: it has to come out as 32 Fahrenheit.
+        $this->assertEquals(
+            [23.0, 32.0, 50.0, 68.0],
+            $combinedStream->getTemperatures()
+        );
+    }
+
     public function testProcessWithoutAMovingStreamFallsBackToElapsedTime(): void
     {
         $output = new SpyOutput();
@@ -331,6 +395,13 @@ class CalculateCombinedStreamsTest extends ContainerTestCase
                 ->withActivityId($activityId)
                 ->withStreamType(StreamType::HEART_RATE)
                 ->withData([92, 108, 122, 134, 141, 138, 132, 145, 151, 147, 158])
+                ->build()
+        );
+        $streamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withStreamType(StreamType::TEMP)
+                ->withData([14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19])
                 ->build()
         );
         $streamRepository->add(

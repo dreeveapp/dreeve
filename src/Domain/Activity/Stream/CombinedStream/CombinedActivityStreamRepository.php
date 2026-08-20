@@ -22,4 +22,6 @@ interface CombinedActivityStreamRepository
     public function findActivityIdsThatNeedStreamCombining(UnitSystem $unitSystem): ActivityIds;
 
     public function countChartableStreamTypesFor(ActivityId $activityId, UnitSystem $unitSystem): int;
+
+    public function hasStreamTypeFor(ActivityId $activityId, UnitSystem $unitSystem, CombinedStreamType $streamType): bool;
 }

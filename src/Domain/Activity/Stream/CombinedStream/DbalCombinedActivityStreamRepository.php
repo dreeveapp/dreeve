@@ -58,6 +58,22 @@ final readonly class DbalCombinedActivityStreamRepository extends DbalRepository
         ));
     }
 
+    public function hasStreamTypeFor(ActivityId $activityId, UnitSystem $unitSystem, CombinedStreamType $streamType): bool
+    {
+        $sql = 'SELECT streamTypes FROM CombinedActivityStream
+                WHERE activityId = :activityId AND unitSystem = :unitSystem';
+        if (!$streamTypes = $this->connection->executeQuery($sql,
+            [
+                'activityId' => $activityId,
+                'unitSystem' => $unitSystem->value,
+            ],
+        )->fetchOne()) {
+            return false;
+        }
+
+        return in_array($streamType->value, explode(',', (string) $streamTypes), true);
+    }
+
     public function findOneForActivityAndUnitSystem(ActivityId $activityId, UnitSystem $unitSystem): CombinedActivityStream
     {
         $sql = 'SELECT * FROM CombinedActivityStream 

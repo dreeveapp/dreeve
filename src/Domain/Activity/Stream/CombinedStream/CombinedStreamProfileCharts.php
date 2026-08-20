@@ -18,6 +18,7 @@ final readonly class CombinedStreamProfileCharts
     private const int TOP_MARGIN = 90;
     private const int BOTTOM_MARGIN = 35;
     private const int GAP = 5;
+    private const int RIBBON_HEIGHT = 18;
     private const string LANE_BACKGROUND_COLOR = '#3E444D';
     private const float ZONE_BAND_OPACITY = 0.35;
 
@@ -29,6 +30,7 @@ final readonly class CombinedStreamProfileCharts
      * @param array<int, int|float> $topXAxisData
      * @param array<int, int|float> $bottomXAxisData
      * @param array<int, int|float> $grades
+     * @param array<int, int|float> $temperatures
      */
     private function __construct(
         private array $items,
@@ -36,6 +38,7 @@ final readonly class CombinedStreamProfileCharts
         private array $bottomXAxisData,
         private ?string $bottomXAxisSuffix,
         private array $grades,
+        private array $temperatures,
         private int $maximumNumberOfDigitsOnYAxis,
         private UnitSystem $unitSystem,
         private SportType $sportType,
@@ -53,6 +56,7 @@ final readonly class CombinedStreamProfileCharts
      * @param array<int, int|float> $topXAxisData
      * @param array<int, int|float> $bottomXAxisData
      * @param array<int, int|float> $grades
+     * @param array<int, int|float> $temperatures
      */
     public static function create(
         array $items,
@@ -60,6 +64,7 @@ final readonly class CombinedStreamProfileCharts
         array $bottomXAxisData,
         ?string $bottomXAxisSuffix,
         array $grades,
+        array $temperatures,
         int $maximumNumberOfDigitsOnYAxis,
         UnitSystem $unitSystem,
         SportType $sportType,
@@ -73,6 +78,7 @@ final readonly class CombinedStreamProfileCharts
             bottomXAxisData: $bottomXAxisData,
             bottomXAxisSuffix: $bottomXAxisSuffix,
             grades: $grades,
+            temperatures: $temperatures,
             maximumNumberOfDigitsOnYAxis: $maximumNumberOfDigitsOnYAxis,
             unitSystem: $unitSystem,
             sportType: $sportType,
@@ -82,10 +88,11 @@ final readonly class CombinedStreamProfileCharts
         );
     }
 
-    public static function totalHeightFor(int $numberOfLanes): int
+    public static function totalHeightFor(int $numberOfLanes, bool $hasTemperatureRibbon = false): int
     {
         return self::TOP_MARGIN + $numberOfLanes * self::GRID_HEIGHT
-            + ($numberOfLanes - 1) * self::GAP + self::BOTTOM_MARGIN;
+            + ($numberOfLanes - 1) * self::GAP + self::BOTTOM_MARGIN
+            + ($hasTemperatureRibbon ? self::RIBBON_HEIGHT + self::GAP : 0);
     }
 
     /**
@@ -105,6 +112,19 @@ final readonly class CombinedStreamProfileCharts
             5 => '85px',
             default => '65px',
         };
+
+        $hasRibbon = [] !== $this->temperatures;
+        $gridIndexOffset = $hasRibbon ? 1 : 0;
+        $topOffset = $hasRibbon ? self::RIBBON_HEIGHT + self::GAP : 0;
+
+        if ([] !== $this->temperatures) {
+            $ribbon = $this->buildTemperatureRibbon($gridLeft, $this->temperatures);
+            $grids[] = $ribbon['grid'];
+            $xAxes[] = $ribbon['xAxis'];
+            $yAxes[] = $ribbon['yAxis'];
+            $series[] = $ribbon['series'];
+            $xAxisIndices[] = 0;
+        }
 
         foreach ($this->items as $index => $item) {
             $yAxisData = $item['yAxisData'];
@@ -129,7 +149,8 @@ final readonly class CombinedStreamProfileCharts
                 $minYAxis = (int) floor($min - $margin);
             }
 
-            $top = self::TOP_MARGIN + $index * (self::GRID_HEIGHT + self::GAP);
+            $gridIndex = $index + $gridIndexOffset;
+            $top = self::TOP_MARGIN + $topOffset + $index * (self::GRID_HEIGHT + self::GAP);
 
             $grids[] = [
                 'left' => $gridLeft,
@@ -140,7 +161,7 @@ final readonly class CombinedStreamProfileCharts
             ];
 
             $xAxisPosition = match (true) {
-                $isFirst => Theme::POSITION_TOP,
+                $isFirst && !$hasRibbon => Theme::POSITION_TOP,
                 $isLast => Theme::POSITION_BOTTOM,
                 default => null,
             };
@@ -154,7 +175,7 @@ final readonly class CombinedStreamProfileCharts
             };
 
             $xAxes[] = [
-                'gridIndex' => $index,
+                'gridIndex' => $gridIndex,
                 'position' => $xAxisPosition,
                 'type' => 'category',
                 'boundaryGap' => false,
@@ -168,10 +189,10 @@ final readonly class CombinedStreamProfileCharts
                     'show' => false,
                 ],
             ];
-            $xAxisIndices[] = $index;
+            $xAxisIndices[] = $gridIndex;
 
             $yAxes[] = [
-                'gridIndex' => $index,
+                'gridIndex' => $gridIndex,
                 'type' => 'value',
                 'name' => $yAxisStreamType->trans($this->translator),
                 'nameRotate' => 90,
@@ -225,8 +246,8 @@ final readonly class CombinedStreamProfileCharts
 
             $series[] = [
                 'name' => CombinedStreamType::PACE === $yAxisStreamType ? '__pace' : $yAxisSuffix,
-                'xAxisIndex' => $index,
-                'yAxisIndex' => $index,
+                'xAxisIndex' => $gridIndex,
+                'yAxisIndex' => $gridIndex,
                 'markArea' => $this->buildMarkArea(
                     streamType: $yAxisStreamType,
                     minYAxis: $minYAxis,
@@ -312,6 +333,105 @@ final readonly class CombinedStreamProfileCharts
             'xAxis' => $xAxes,
             'yAxis' => $yAxes,
             'series' => $series,
+        ];
+    }
+
+    /**
+     * @param non-empty-array<int, int|float> $temperatures
+     *
+     * @return array{
+     *     grid: array<string, mixed>,
+     *     xAxis: array<string, mixed>,
+     *     yAxis: array<string, mixed>,
+     *     series: array<string, mixed>,
+     * }
+     */
+    private function buildTemperatureRibbon(string $gridLeft, array $temperatures): array
+    {
+        [$min, $max] = [min($temperatures), max($temperatures)];
+        $margin = ($max - $min) * 0.1;
+        $minYAxis = (int) floor($min - $margin);
+        $maxYAxis = (int) ceil($max + $margin);
+        if ($minYAxis === $maxYAxis) {
+            --$minYAxis;
+            ++$maxYAxis;
+        }
+
+        return [
+            'grid' => [
+                'left' => $gridLeft,
+                'right' => '20px',
+                'top' => self::TOP_MARGIN.'px',
+                'height' => self::RIBBON_HEIGHT.'px',
+                'containLabel' => false,
+            ],
+            'xAxis' => [
+                'gridIndex' => 0,
+                'position' => Theme::POSITION_TOP,
+                'type' => 'category',
+                'boundaryGap' => false,
+                'axisLabel' => [
+                    'show' => true,
+                    'formatter' => '{value} ',
+                ],
+                'data' => $this->topXAxisData,
+                'min' => 0,
+                'axisTick' => [
+                    'show' => false,
+                ],
+                'axisLine' => [
+                    'show' => false,
+                ],
+            ],
+            'yAxis' => [
+                'gridIndex' => 0,
+                'type' => 'value',
+                'name' => CombinedStreamType::TEMP->getSuffix(
+                    unitSystem: $this->unitSystem,
+                    sportType: $this->sportType
+                ),
+                'nameLocation' => 'middle',
+                'nameGap' => 22,
+                'nameTextStyle' => [
+                    'color' => '#aaa',
+                    'fontSize' => 11,
+                ],
+                'min' => $minYAxis,
+                'max' => $maxYAxis,
+                'splitLine' => [
+                    'show' => false,
+                ],
+                'axisLine' => [
+                    'show' => false,
+                ],
+                'axisTick' => [
+                    'show' => false,
+                ],
+                'axisLabel' => [
+                    'show' => false,
+                ],
+            ],
+            'series' => [
+                'name' => CombinedStreamType::TEMP->getSuffix(
+                    unitSystem: $this->unitSystem,
+                    sportType: $this->sportType
+                ),
+                'xAxisIndex' => 0,
+                'yAxisIndex' => 0,
+                'data' => $temperatures,
+                'type' => 'line',
+                'showSymbol' => false,
+                'progressive' => 5000,
+                'progressiveThreshold' => 10000,
+                'smooth' => true,
+                'color' => CombinedStreamType::TEMP->getSeriesColor(),
+                'lineStyle' => [
+                    'width' => 2,
+                ],
+                'emphasis' => [
+                    'disabled' => true,
+                ],
+            ],
         ];
     }
 

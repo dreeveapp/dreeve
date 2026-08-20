@@ -78,6 +78,7 @@ final readonly class ActivityMetricsFragmentResolver implements FragmentResolver
             bottomXAxisData: $combinedActivityStream->getDistances(),
             bottomXAxisSuffix: $activity->getSportType()->distanceSymbol($unitSystem),
             grades: $combinedActivityStream->getGrades(),
+            temperatures: $combinedActivityStream->getTemperatures(),
             maximumNumberOfDigitsOnYAxis: $combinedActivityStream->getMaximumNumberOfDigits(),
             unitSystem: $unitSystem,
             sportType: $activity->getSportType(),

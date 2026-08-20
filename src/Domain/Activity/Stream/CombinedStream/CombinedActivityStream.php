@@ -127,6 +127,14 @@ final class CombinedActivityStream
     }
 
     /**
+     * @return array<int, float>
+     */
+    public function getTemperatures(): array
+    {
+        return $this->getChartStreamData(CombinedStreamType::TEMP);
+    }
+
+    /**
      * @return array<int, array<float, float>>
      */
     public function getCoordinates(): array

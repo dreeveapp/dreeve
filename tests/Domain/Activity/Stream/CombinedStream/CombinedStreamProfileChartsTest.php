@@ -7,6 +7,7 @@ use App\Domain\Activity\Stream\CombinedStream\CombinedStreamProfileCharts;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Athlete\HeartRateZone\HeartRateZoneMode;
 use App\Domain\Athlete\HeartRateZone\HeartRateZones;
+use App\Domain\Theme\Theme;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Tests\ContainerTestCase;
 use PHPUnit\Framework\Attributes\TestWith;
@@ -32,11 +33,16 @@ class CombinedStreamProfileChartsTest extends ContainerTestCase
         );
     }
 
-    #[TestWith(data: [1, 245])]
-    #[TestWith(data: [4, 620])]
-    public function testTotalHeightFor(int $numberOfLanes, int $expectedHeight): void
+    #[TestWith(data: [1, false, 245])]
+    #[TestWith(data: [4, false, 620])]
+    #[TestWith(data: [1, true, 268])]
+    #[TestWith(data: [4, true, 643])]
+    public function testTotalHeightFor(int $numberOfLanes, bool $hasTemperatureRibbon, int $expectedHeight): void
     {
-        $this->assertEquals($expectedHeight, CombinedStreamProfileCharts::totalHeightFor($numberOfLanes));
+        $this->assertEquals(
+            $expectedHeight,
+            CombinedStreamProfileCharts::totalHeightFor($numberOfLanes, $hasTemperatureRibbon)
+        );
     }
 
     public function testItShouldThrowWhenYAxisDataIsEmpty(): void
@@ -186,19 +192,167 @@ class CombinedStreamProfileChartsTest extends ContainerTestCase
         );
     }
 
+    public function testItShouldNotRenderARibbonWithoutTemperatures(): void
+    {
+        $chart = $this->buildChart(items: [
+            ['yAxisData' => [100, 120, 140, 160, 175], 'yAxisStreamType' => CombinedStreamType::WATTS],
+        ]);
+
+        $this->assertCount(1, $chart['grid']);
+        $this->assertArrayNotHasKey('visualMap', $chart);
+        $this->assertEquals(Theme::POSITION_TOP, $chart['xAxis'][0]['position']);
+    }
+
+    public function testItShouldRenderTheTemperatureAsAShortRibbonAboveTheLanes(): void
+    {
+        $chart = $this->buildChart(
+            items: [
+                ['yAxisData' => [100, 120, 140, 160, 175], 'yAxisStreamType' => CombinedStreamType::WATTS],
+            ],
+            temperatures: [14, 15, 18, 22, 21],
+        );
+
+        $this->assertCount(2, $chart['grid']);
+        $this->assertEquals('18px', $chart['grid'][0]['height']);
+        $this->assertEquals('90px', $chart['grid'][0]['top']);
+        // The lane sits below the 18px ribbon plus the 5px gap.
+        $this->assertEquals('120px', $chart['grid'][1]['height']);
+        $this->assertEquals('113px', $chart['grid'][1]['top']);
+    }
+
+    public function testItShouldHandTheTopXAxisToTheRibbon(): void
+    {
+        $chart = $this->buildChart(
+            items: [
+                ['yAxisData' => [100, 120, 140], 'yAxisStreamType' => CombinedStreamType::WATTS],
+                ['yAxisData' => [10, 12, 14], 'yAxisStreamType' => CombinedStreamType::ALTITUDE],
+            ],
+            temperatures: [14, 18, 22],
+        );
+
+        $this->assertEquals(Theme::POSITION_TOP, $chart['xAxis'][0]['position']);
+        $this->assertNull($chart['xAxis'][1]['position']);
+        $this->assertEquals(Theme::POSITION_BOTTOM, $chart['xAxis'][2]['position']);
+    }
+
+    public function testItShouldPointEveryLaneAtItsOwnGridWhenARibbonIsPresent(): void
+    {
+        $chart = $this->buildChart(
+            items: [
+                ['yAxisData' => [100, 120, 140], 'yAxisStreamType' => CombinedStreamType::WATTS],
+                ['yAxisData' => [10, 12, 14], 'yAxisStreamType' => CombinedStreamType::ALTITUDE],
+            ],
+            temperatures: [14, 18, 22],
+        );
+
+        $this->assertCount(3, $chart['grid']);
+        $this->assertEquals([0, 1, 2], array_column($chart['xAxis'], 'gridIndex'));
+        $this->assertEquals([0, 1, 2], array_column($chart['yAxis'], 'gridIndex'));
+        $this->assertEquals([0, 1, 2], array_column($chart['series'], 'xAxisIndex'));
+        $this->assertEquals([0, 1, 2], array_column($chart['series'], 'yAxisIndex'));
+        $this->assertEquals([0, 1, 2], $chart['dataZoom'][0]['xAxisIndex']);
+    }
+
+    public function testItShouldRenderTheRibbonAsASolidLineWithoutArea(): void
+    {
+        $chart = $this->buildChart(
+            items: [
+                ['yAxisData' => [100, 120, 140], 'yAxisStreamType' => CombinedStreamType::WATTS],
+            ],
+            temperatures: [14, 18, 22],
+        );
+
+        $this->assertArrayNotHasKey('visualMap', $chart);
+        $this->assertArrayNotHasKey('areaStyle', $chart['series'][0]);
+        $this->assertEquals('#fc8452', $chart['series'][0]['color']);
+        $this->assertEquals(2, $chart['series'][0]['lineStyle']['width']);
+    }
+
+    public function testItShouldLeaveTheRibbonBackgroundTransparent(): void
+    {
+        $chart = $this->buildChart(
+            items: [
+                ['yAxisData' => [100, 120, 140], 'yAxisStreamType' => CombinedStreamType::WATTS],
+            ],
+            temperatures: [14, 18, 22],
+        );
+
+        $this->assertArrayNotHasKey('markArea', $chart['series'][0]);
+        // The lanes below it keep theirs.
+        $this->assertEquals('#3E444D', $chart['series'][1]['markArea']['data'][0][0]['itemStyle']['color']);
+    }
+
+    public function testItShouldNotDrawAnAxisRuleAboveTheRibbon(): void
+    {
+        $chart = $this->buildChart(
+            items: [
+                ['yAxisData' => [100, 120, 140], 'yAxisStreamType' => CombinedStreamType::WATTS],
+            ],
+            temperatures: [14, 18, 22],
+        );
+
+        $this->assertFalse($chart['xAxis'][0]['axisLine']['show']);
+        $this->assertTrue($chart['xAxis'][0]['axisLabel']['show']);
+    }
+
+    public function testItShouldSmoothTheRibbonLine(): void
+    {
+        $chart = $this->buildChart(
+            items: [
+                ['yAxisData' => [100, 120, 140], 'yAxisStreamType' => CombinedStreamType::WATTS],
+            ],
+            temperatures: [14, 18, 22],
+        );
+
+        $this->assertTrue($chart['series'][0]['smooth']);
+    }
+
+    public function testItShouldKeepTheRibbonAxisVisibleWhenTheSensorNeverMoves(): void
+    {
+        $chart = $this->buildChart(
+            items: [
+                ['yAxisData' => [100, 120, 140], 'yAxisStreamType' => CombinedStreamType::WATTS],
+            ],
+            temperatures: [20, 20, 20],
+        );
+
+        $this->assertEquals(19, $chart['yAxis'][0]['min']);
+        $this->assertEquals(21, $chart['yAxis'][0]['max']);
+    }
+
+    public function testItShouldLabelTheRibbonWithTheUnitSymbol(): void
+    {
+        $chart = $this->buildChart(
+            items: [
+                ['yAxisData' => [100, 120, 140], 'yAxisStreamType' => CombinedStreamType::WATTS],
+            ],
+            temperatures: [14, 18, 22],
+        );
+
+        $this->assertEquals('°C', $chart['yAxis'][0]['name']);
+        $this->assertFalse($chart['yAxis'][0]['axisLabel']['show']);
+        $this->assertEquals('°C', $chart['series'][0]['name']);
+        $this->assertEquals([14, 18, 22], $chart['series'][0]['data']);
+    }
+
     /**
      * @param list<array{yAxisData: array<int, int|float>, yAxisStreamType: CombinedStreamType}> $items
+     * @param array<int, int|float>                                                              $temperatures
      *
      * @return array<string, mixed>
      */
-    private function buildChart(array $items, int $maximumNumberOfDigitsOnYAxis = 3): array
-    {
+    private function buildChart(
+        array $items,
+        int $maximumNumberOfDigitsOnYAxis = 3,
+        array $temperatures = [],
+    ): array {
         return CombinedStreamProfileCharts::create(
             items: $items,
             topXAxisData: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             bottomXAxisData: [],
             bottomXAxisSuffix: null,
             grades: [],
+            temperatures: $temperatures,
             maximumNumberOfDigitsOnYAxis: $maximumNumberOfDigitsOnYAxis,
             unitSystem: UnitSystem::METRIC,
             sportType: SportType::RIDE,

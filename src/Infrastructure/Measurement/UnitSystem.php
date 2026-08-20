@@ -10,6 +10,8 @@ use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Length\Mile;
 use App\Infrastructure\Measurement\Mass\Kilogram;
 use App\Infrastructure\Measurement\Mass\Pound;
+use App\Infrastructure\Measurement\Temperature\Celsius;
+use App\Infrastructure\Measurement\Temperature\Fahrenheit;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Measurement\Velocity\MilesPerHour;
 use Symfony\Contracts\Translation\TranslatableInterface;
@@ -91,6 +93,20 @@ enum UnitSystem: string implements TranslatableInterface
     public function weightSymbol(): string
     {
         return $this->weight(1)->getSymbol();
+    }
+
+    public function temperature(float $value): Celsius|Fahrenheit
+    {
+        if (UnitSystem::METRIC === $this) {
+            return Celsius::from($value);
+        }
+
+        return Fahrenheit::from($value);
+    }
+
+    public function temperatureSymbol(): string
+    {
+        return $this->temperature(1)->getSymbol();
     }
 
     public function paceSymbol(): string

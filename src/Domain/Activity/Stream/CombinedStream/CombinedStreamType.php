@@ -23,6 +23,7 @@ enum CombinedStreamType: string implements TranslatableInterface
     case LAT_LNG = 'latlng';
     case TIME = 'time';
     case GRADE = 'grade';
+    case TEMP = 'temp';
 
     public function getStreamType(): StreamType
     {
@@ -45,6 +46,7 @@ enum CombinedStreamType: string implements TranslatableInterface
             CombinedStreamType::WATTS => $translator->trans('Power'),
             CombinedStreamType::PACE => $translator->trans('Pace'),
             CombinedStreamType::VELOCITY => $translator->trans('Speed'),
+            CombinedStreamType::TEMP => $translator->trans('Temperature'),
             default => throw new \RuntimeException(sprintf('Cannot translate CombinedStreamType "%s"', $this->value)),
         };
     }
@@ -59,6 +61,7 @@ enum CombinedStreamType: string implements TranslatableInterface
             CombinedStreamType::PACE => $unitSystem->paceSymbol(),
             CombinedStreamType::ALTITUDE => $unitSystem->elevationSymbol(),
             CombinedStreamType::VELOCITY => $sportType->speedSymbol($unitSystem),
+            CombinedStreamType::TEMP => $unitSystem->temperatureSymbol(),
             default => throw new \RuntimeException('Suffix not supported for '.$this->value),
         };
     }
@@ -73,6 +76,7 @@ enum CombinedStreamType: string implements TranslatableInterface
             CombinedStreamType::WATTS => '#73c0de',
             CombinedStreamType::PACE,
             CombinedStreamType::VELOCITY => '#fac858',
+            CombinedStreamType::TEMP => '#fc8452',
             default => '#cccccc',
         };
     }
@@ -80,7 +84,7 @@ enum CombinedStreamType: string implements TranslatableInterface
     public function isChartable(): bool
     {
         return match ($this) {
-            self::DISTANCE, self::LAT_LNG, self::TIME, self::GRADE => false,
+            self::DISTANCE, self::LAT_LNG, self::TIME, self::GRADE, self::TEMP => false,
             default => true,
         };
     }

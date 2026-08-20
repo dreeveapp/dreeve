@@ -17,6 +17,7 @@ use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Console\ProgressIndicator;
 use App\Infrastructure\DependencyInjection\Mutex\WithMutex;
 use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Temperature\Celsius;
 use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
@@ -81,6 +82,12 @@ final readonly class CalculateCombinedStreams implements CalculateActivityMetric
                     $combinedStreamTypes->add(CombinedStreamType::GRADE);
                 }
             }
+            $temperatureData = [];
+            if (($temperatureStream = $streams->filterOnType(StreamType::TEMP)) instanceof ActivityStream) {
+                if ($temperatureStream->hasValidData() && ($temperatureData = $temperatureStream->getData())) {
+                    $combinedStreamTypes->add(CombinedStreamType::TEMP);
+                }
+            }
 
             /** @var array<int, array{0: CombinedStreamType, 1: array<int, int|float>}> $otherStreams */
             $otherStreams = [];
@@ -119,6 +126,7 @@ final readonly class CalculateCombinedStreams implements CalculateActivityMetric
             $hasDistanceData = $combinedStreamTypes->has(CombinedStreamType::DISTANCE);
             $hasLatLngData = $combinedStreamTypes->has(CombinedStreamType::LAT_LNG);
             $hasGradeData = $combinedStreamTypes->has(CombinedStreamType::GRADE);
+            $hasTemperatureData = $combinedStreamTypes->has(CombinedStreamType::TEMP);
 
             $maxYAxisValue = PHP_INT_MIN;
             $maxTimeDataIndex = count($timeData) - 1;
@@ -159,6 +167,12 @@ final readonly class CalculateCombinedStreams implements CalculateActivityMetric
 
                 if ($hasGradeData) {
                     $combinedPoint[] = $gradeData[$i];
+                }
+
+                if ($hasTemperatureData) {
+                    $combinedPoint[] = round(
+                        Celsius::from($temperatureData[$i] ?? 0)->toUnitSystem($unitSystem)->toFloat()
+                    );
                 }
 
                 foreach ($otherStreams as $otherStream) {
