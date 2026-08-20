@@ -6,11 +6,14 @@ namespace App\Tests\Infrastructure\Twig;
 
 use App\Domain\Automation\Action\Actions;
 use App\Domain\Automation\Action\ActionType;
+use App\Domain\Automation\AutomationRuleId;
+use App\Domain\Automation\AutomationRuleRepository;
 use App\Domain\Automation\Condition\Conditions;
 use App\Domain\Automation\Condition\ConditionType;
 use App\Domain\Automation\RuleConfiguration;
 use App\Infrastructure\Twig\AutomationTwigExtension;
 use App\Tests\ContainerTestCase;
+use App\Tests\Domain\Automation\AutomationRuleBuilder;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AutomationTwigExtensionTest extends ContainerTestCase
@@ -54,6 +57,7 @@ class AutomationTwigExtensionTest extends ContainerTestCase
         $extension = new AutomationTwigExtension(
             new Conditions([]),
             new Actions([]),
+            $this->getContainer()->get(AutomationRuleRepository::class),
             $this->getContainer()->get(TranslatorInterface::class),
         );
 
@@ -61,6 +65,22 @@ class AutomationTwigExtensionTest extends ContainerTestCase
         $this->assertNull($extension->describeConditionValue(ConditionType::SPORT_TYPE, RuleConfiguration::empty()));
         $this->assertSame('setName', $extension->describeActionType(ActionType::SET_NAME));
         $this->assertNull($extension->describeActionValue(ActionType::SET_NAME, RuleConfiguration::empty()));
+    }
+
+    public function testHasEnabledAutomationRules(): void
+    {
+        $automationRuleRepository = $this->getContainer()->get(AutomationRuleRepository::class);
+
+        $this->assertFalse($this->extension->hasEnabledAutomationRules());
+
+        $automationRuleRepository->add(AutomationRuleBuilder::fromDefaults()->withIsEnabled(false)->build());
+        $this->assertFalse($this->extension->hasEnabledAutomationRules());
+
+        $automationRuleRepository->add(AutomationRuleBuilder::fromDefaults()
+            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('2'))
+            ->withIsEnabled(true)
+            ->build());
+        $this->assertTrue($this->extension->hasEnabledAutomationRules());
     }
 
     #[\Override]
@@ -71,6 +91,7 @@ class AutomationTwigExtensionTest extends ContainerTestCase
         $this->extension = new AutomationTwigExtension(
             $this->getContainer()->get(Conditions::class),
             $this->getContainer()->get(Actions::class),
+            $this->getContainer()->get(AutomationRuleRepository::class),
             $this->getContainer()->get(TranslatorInterface::class),
         );
     }
