@@ -14,6 +14,7 @@ final readonly class LeafletConfig implements \JsonSerializable
         /** @var Url[] */
         private array $tileLayerUrls,
         private bool $enableGreyScale,
+        private bool $requireCtrlToZoom,
     ) {
     }
 
@@ -24,11 +25,13 @@ final readonly class LeafletConfig implements \JsonSerializable
         string $polylineColor,
         array $tileLayerUrls,
         bool $enableGreyScale,
+        bool $requireCtrlToZoom,
     ): self {
         return new self(
             polylineColor: CssColor::fromString($polylineColor),
             tileLayerUrls: array_map(Url::fromString(...), $tileLayerUrls),
             enableGreyScale: $enableGreyScale,
+            requireCtrlToZoom: $requireCtrlToZoom,
         );
     }
 
@@ -50,6 +53,11 @@ final readonly class LeafletConfig implements \JsonSerializable
         return $this->enableGreyScale;
     }
 
+    public function requireCtrlToZoom(): bool
+    {
+        return $this->requireCtrlToZoom;
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -59,6 +67,7 @@ final readonly class LeafletConfig implements \JsonSerializable
             'polylineColor' => $this->getPolylineColor(),
             'tileLayerUrls' => $this->getTileLayerUrls(),
             'enableGreyScale' => $this->enableGreyScale(),
+            'requireCtrlToZoom' => $this->requireCtrlToZoom(),
         ];
     }
 }

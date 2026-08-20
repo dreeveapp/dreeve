@@ -26,6 +26,7 @@ class MapsSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="maps"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[polylineColor]"]'));
         $this->assertCount(1, $crawler->filter('input[type="checkbox"][name="data[enableGreyScale]"]'));
+        $this->assertCount(1, $crawler->filter('input[type="checkbox"][name="data[requireCtrlToZoom]"]'));
 
         // The tile layer list, rendered by the repeater component.
         $this->assertCount(1, $crawler->filter('[data-repeater] [data-repeater-list]'));

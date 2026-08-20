@@ -199,8 +199,7 @@
                         'minZoom': leaflet.map.getMinZoom(),
                         'maxZoom': leaflet.map.getMaxZoom(),
                         'imageOverlay': leaflet.map.getOverlayImageUrl(),
-                        'bounds': leaflet.map.getBounds(),
-                        'scrollWheelZoom': true
+                        'bounds': leaflet.map.getBounds()
                     } %}
                     <div class="h-80 md:h-96 w-full z-0" data-leaflet='{{ leafletOptions|json_encode }}' data-leaflet-echart-connect>
                     </div>

@@ -37,6 +37,7 @@ final readonly class MapsSettings
             polylineColor: (string) ($data['polylineColor'] ?? self::DEFAULT_POLYLINE_COLOR),
             tileLayerUrls: array_values(array_filter($tileLayerUrls)) ?: [self::DEFAULT_TILE_LAYER_URL],
             enableGreyScale: filter_var($data['enableGreyScale'] ?? true, FILTER_VALIDATE_BOOLEAN),
+            requireCtrlToZoom: filter_var($data['requireCtrlToZoom'] ?? true, FILTER_VALIDATE_BOOLEAN),
         );
 
         return new self(

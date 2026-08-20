@@ -20,6 +20,7 @@ class MapsSettingsTest extends TestCase
             array_map(strval(...), $settings->getLeafletConfig()->getTileLayerUrls()),
         );
         $this->assertTrue($settings->getLeafletConfig()->enableGreyScale());
+        $this->assertTrue($settings->getLeafletConfig()->requireCtrlToZoom());
         $this->assertNull($settings->getHeatmapConfig()->getInitialCenter());
         $this->assertSame(12, $settings->getHeatmapConfig()->getInitialZoom()?->getValue());
     }
@@ -33,6 +34,7 @@ class MapsSettingsTest extends TestCase
                 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}.png',
             ],
             'enableGreyScale' => false,
+            'requireCtrlToZoom' => false,
             'heatmap' => [
                 'initialCenter' => [51.0, 3.7],
                 'initialZoom' => 8,
@@ -42,6 +44,7 @@ class MapsSettingsTest extends TestCase
         $this->assertSame('#000000', (string) $settings->getLeafletConfig()->getPolylineColor());
         $this->assertCount(2, $settings->getLeafletConfig()->getTileLayerUrls());
         $this->assertFalse($settings->getLeafletConfig()->enableGreyScale());
+        $this->assertFalse($settings->getLeafletConfig()->requireCtrlToZoom());
         $this->assertSame(51.0, $settings->getHeatmapConfig()->getInitialCenter()?->getLatitude()->toFloat());
         $this->assertSame(3.7, $settings->getHeatmapConfig()->getInitialCenter()?->getLongitude()->toFloat());
         $this->assertSame(8, $settings->getHeatmapConfig()->getInitialZoom()?->getValue());
@@ -78,6 +81,12 @@ class MapsSettingsTest extends TestCase
     {
         $this->assertFalse(MapsSettings::fromArray(['enableGreyScale' => '0'])->getLeafletConfig()->enableGreyScale());
         $this->assertTrue(MapsSettings::fromArray(['enableGreyScale' => '1'])->getLeafletConfig()->enableGreyScale());
+    }
+
+    public function testItReadsTheCtrlToZoomCheckboxSubmittedAsAString(): void
+    {
+        $this->assertFalse(MapsSettings::fromArray(['requireCtrlToZoom' => '0'])->getLeafletConfig()->requireCtrlToZoom());
+        $this->assertTrue(MapsSettings::fromArray(['requireCtrlToZoom' => '1'])->getLeafletConfig()->requireCtrlToZoom());
     }
 
     public function testItHasNoInitialCenterWhenTheAdminFormSubmitsBlankCoordinates(): void

@@ -10,7 +10,7 @@ export default class LeafletMap {
         this.config = config;
 
         this.map = L.map(mapNode, {
-            ctrlScrollZoom: true,
+            ctrlScrollZoom: config.requireCtrlToZoom,
             minZoom: data.minZoom,
             maxZoom: data.maxZoom,
             zoomSnap: .5,

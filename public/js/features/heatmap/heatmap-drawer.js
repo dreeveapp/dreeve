@@ -14,7 +14,7 @@ export default class HeatmapDrawer {
         this.mainFeatureGroup = L.featureGroup();
         this.routePolylines = [];
         this.map = L.map(this.wrapper, {
-            ctrlScrollZoom: true,
+            ctrlScrollZoom: this.config.requireCtrlToZoom,
             minZoom: 1,
             maxZoom: 21,
             preferCanvas: true,

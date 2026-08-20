@@ -55,9 +55,7 @@ final readonly class HeatmapConfig implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'polylineColor' => $this->getLeafletConfig()->getPolylineColor(),
-            'tileLayerUrls' => $this->getLeafletConfig()->getTileLayerUrls(),
-            'enableGreyScale' => $this->getLeafletConfig()->enableGreyScale(),
+            ...$this->getLeafletConfig()->jsonSerialize(),
             'initialCenter' => $this->getInitialCenter(),
             'initialZoom' => $this->getInitialZoom()?->getValue(),
         ];

@@ -36,6 +36,17 @@
                         <span>{{ "Render the map tiles in greyscale"|trans({}, 'admin') }}</span>
                     </label>
                 </div>
+                <div>
+                    <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
+                        <input type="hidden" name="data[requireCtrlToZoom]" value="0">
+                        <input type="checkbox" name="data[requireCtrlToZoom]" value="1"
+                               {{ (settings.requireCtrlToZoom ?? true) ? 'checked' : '' }}>
+                        <span>{{ "Hold ctrl (⌘ on Mac) to zoom the map with the scroll wheel"|trans({}, 'admin') }}</span>
+                    </label>
+                    <p class="description">
+                        {{ "When disabled, scrolling over a map zooms it instead of scrolling the page."|trans({}, 'admin') }}
+                    </p>
+                </div>
             </div>
             <div class="mt-6 border-t border-gray-200 pt-6" data-repeater data-repeater-min="1">
                 <label class="mt-0!">{{ "Tile layers"|trans({}, 'admin') }}</label>
