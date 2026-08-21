@@ -35,7 +35,7 @@ final readonly class CompressedString implements \Stringable
         $uncompressed = @zstd_uncompress($this->compressedValue);
         if (false === $uncompressed) {
             throw new CorruptedData('ZSTD decompression failed. This is usually caused by corrupted activity data.
-Please see the troubleshooting guide for steps to resolve the issue: https://docs.dreeve.app/#/troubleshooting/import-build-fails for more information.');
+Please see the troubleshooting guide for steps to resolve the issue: https://docs.dreeve.app/troubleshooting/import-build-fails/ for more information.');
         }
 
         return $uncompressed;

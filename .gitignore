@@ -38,3 +38,8 @@ phpstan.neon
 /watch
 *.db*
 ###> app-build ###
+
+###> docs ###
+/docs/dist
+/docs/.astro
+###< docs ###

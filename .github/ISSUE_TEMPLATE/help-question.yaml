@@ -9,7 +9,7 @@ body:
       value: |
         ## Before opening an issue
         
-        * Be sure to check the [documentation](https://docs.getsfs.app/). A lot of common issues are already addressed in the troubleshooting section.
+        * Be sure to check the [documentation](https://docs.dreeve.app/). A lot of common issues are already addressed in the troubleshooting section.
         * Search the [existing GitHub issues](https://github.com/dreeveapp/dreeve/issues?q=is:issue) to verify that your issue has not been addressed yet
         * Join our [Discord server](https://discord.gg/p4zpZyCHNc) to ask for help if you have trouble setting up the app
   - type: textarea

@@ -2,7 +2,7 @@
 
 > [!NOTE]
 > We released a separate __Hammerhead Wahoo Connector__ container to automatically sync your Hammerhead FIT files
-> to Dreeve's watch folder. Read all about it in the docs: https://docs.dreeve.app/#/integrations/hammerhead-connector
+> to Dreeve's watch folder. Read all about it in the docs: https://docs.dreeve.app/integrations/hammerhead-connector/
 > A big thank you to @goatie999 for setting this up 👏
 
 ## New features
@@ -77,7 +77,7 @@
 
 > [!NOTE]
 > We released a separate __Dreeve Wahoo Connector__ container to automatically sync your Wahoo FIT files
-> to Dreeve's watch folder. Read all about it in the docs: https://docs.dreeve.app/#/integrations/wahoo-connector
+> to Dreeve's watch folder. Read all about it in the docs: https://docs.dreeve.app/integrations/wahoo-connector/
 > A big thank you to @MattW2 for setting this up 👏
 
 ## New features
@@ -218,7 +218,7 @@ This release fixes a critical bug in the v4 -> v5 migration path.
 # [v5.1.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.1.1) - 2026-07-28
 
 We released a separate __Dreeve Garmin Connector__ container to automatically sync your Garmin FIT files
-to Dreeve's watch folder. Read all about it in the docs: https://docs.dreeve.app/#/integrations/garmin-connect
+to Dreeve's watch folder. Read all about it in the docs: https://docs.dreeve.app/integrations/garmin-connect/
 
 ## New features
 * Added a new automation rule action to automatically update an activity's recording device.
@@ -325,7 +325,7 @@ This is the biggest release since the project began as Statistics for Strava.
 
 > [!WARNING]
 > **Back up first.** Make a copy of `storage/database` **and** of your `config` directory before you upgrade to this new version.
-> The migration guide will walk you through the upgrade process:: https://docs.dreeve.app/#/getting-started/migrating-from-v4
+> The migration guide will walk you through the upgrade process:: https://docs.dreeve.app/getting-started/migrating-from-v4/
 
 Here are the three biggest changes:
 
@@ -351,7 +351,7 @@ All settings have been moved from YAML configuration files into a built-in admin
 making Dreeve easier to configure and maintain.
 
 
-For detailed upgrade instructions, see the migration guide: https://docs.dreeve.app/#/getting-started/migrating-from-v4
+For detailed upgrade instructions, see the migration guide: https://docs.dreeve.app/getting-started/migrating-from-v4/
 
 ## Technical details
 * ISSUE #2174: Enable sqlite journal_mode=WAL by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2176
@@ -1336,7 +1336,7 @@ Learn how to enable and configure webhooks in the documentation: https://docs.dr
 > If you are using the internal cron to manage your app imports and builds,
 > make sure you configured the correct volumes on the Daemon container.
 > The docs were missing a volume and have been updated:
-> https://docs.dreeve.app/#/getting-started/installation?id=docker-composeyml
+> https://docs.dreeve.app/getting-started/installation/#docker-composeyml
 
 ## What's Changed
 * ISSUE #1410: Build crashes when VelocityDistributionChart has no valid data by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/1411
@@ -1403,7 +1403,7 @@ The highlight is the addition of an internal scheduler, allowing you to define a
 If you prefer, you can still use external tools to trigger the import and build scripts.
 However, to use the internal scheduler, you’ll need to configure two things:
 
-* An extra container in your `docker-compose.yml` file: https://docs.dreeve.app/#/getting-started/installation?id=docker-composeyml
+* An extra container in your `docker-compose.yml` file: https://docs.dreeve.app/getting-started/installation/#docker-composeyml
 * The recurring tasks in your main config file under `daemin.cron`: https://docs.dreeve.app/#/configuration/main-configuration
 
 ## What's Changed
@@ -1643,7 +1643,7 @@ Read more in the documentation: https://docs.dreeve.app/#/configuration/main-con
 
 > [!WARNING]  
 > This release comes with a new Docker-based architecture.  Before upgrading, review and update the required `.env` values for your setup:  
-> https://docs.dreeve.app/#/getting-started/installation?id=env
+> https://docs.dreeve.app/getting-started/installation/#env
 
 ```.env
 # !! IMPORTANT If you want to serve Dreeve from a custom domain (not localhost), 

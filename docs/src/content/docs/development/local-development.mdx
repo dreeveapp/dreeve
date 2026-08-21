@@ -1,0 +1,43 @@
+---
+title: "Local setup"
+---
+
+## Clone the repository
+
+```bash
+> git clone git@github.com:your-name/your-fork.git
+```
+
+## Create a local .env file
+
+The repository ships a committed `.env` holding nothing but placeholders. Your own values go in
+**`.env.local`**, which is git ignored.
+
+This is the minimal `.env.local` to get the app running locally:
+
+```dotenv title=".env.local"
+APP_URL=http://localhost:8081
+TZ=Europe/Brussels
+
+APP_SECRET=change-me-to-a-long-random-string
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD_HASH='replace-me'
+
+IMPORT_MODE=files
+DEV_MODE_IS_ENABLED=1
+```
+
+## Install dependencies and boot containers
+
+```bash
+> make composer arg="install --no-scripts"
+> make build-countries-asset
+> make up
+```
+
+The app is now available on http://localhost:8081.
+
+:::note[Important]
+Pages are rendered on request and cached under the current app version, 
+so clear the render cache any time you change templates or rendered HTML: `make clear-cache`
+:::
