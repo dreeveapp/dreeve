@@ -26,9 +26,6 @@ class TokenTest extends TestCase
     {
         $token = Token::generate();
 
-        // Every route a secret usually escapes through: a dumped stack trace, a logged context,
-        // an encoded aggregate. var_export() is the one exception, it reads the real properties
-        // and PHP offers no hook to intercept it.
         $this->assertStringNotContainsString((string) $token, print_r($token, true));
         $this->assertStringNotContainsString((string) $token, Json::encode(['token' => $token]));
 

@@ -24,9 +24,6 @@ class TokenHashTest extends TestCase
         $this->assertFalse(TokenHash::fromToken(Token::generate())->matches($token));
     }
 
-    /**
-     * @return iterable<string, array{string}>
-     */
     public static function provideTokensThatDoNotMatch(): iterable
     {
         yield 'another token' => [(string) Token::generate()];
@@ -43,12 +40,8 @@ class TokenHashTest extends TestCase
         TokenHash::fromString($hash);
     }
 
-    /**
-     * @return iterable<string, array{string}>
-     */
     public static function provideInvalidHashes(): iterable
     {
-        // A hash that can never be constructed is a hash that can never accidentally authenticate.
         yield 'an empty hash' => [''];
         yield 'not hexadecimal' => [str_repeat('z', 64)];
         yield 'too short' => [str_repeat('a', 63)];

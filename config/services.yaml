@@ -39,10 +39,6 @@ services:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
 
-    App\Infrastructure\Http\ErrorResponseExceptionListener:
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception }
-
     App\Infrastructure\KeyValue\KeyValueStore:
       class: App\Infrastructure\KeyValue\DbalKeyValueStore
       public: true
