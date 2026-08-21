@@ -1,17 +1,3 @@
-:root {
-	--sl-hue-accent: 160;
-	--sl-color-accent-low: oklch(19% 0.02 var(--sl-hue-accent));
-	--sl-color-accent: oklch(50% 0.085 var(--sl-hue-accent));
-	--sl-color-accent-high: oklch(61% 0.085 var(--sl-hue-accent));
-}
-
-:root[data-theme='light'] {
-	--sl-hue-accent: 164;
-	--sl-color-accent-low: oklch(96% 0.015 var(--sl-hue-accent));
-	--sl-color-accent: oklch(53% 0.1197 var(--sl-hue-accent));
-	--sl-color-accent-high: oklch(46% 0.104 var(--sl-hue-accent));
-}
-
 a.site-title {
 	color: var(--sl-color-white);
 }

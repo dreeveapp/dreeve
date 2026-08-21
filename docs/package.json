@@ -14,6 +14,7 @@
     "remark-gemoji": "^8.0.0",
     "sharp": "^0.35.3",
     "starlight-image-zoom": "^0.15.0",
-    "starlight-links-validator": "^0.25.3"
+    "starlight-links-validator": "^0.25.3",
+    "starlight-theme-rapide": "^0.5.2"
   }
 }

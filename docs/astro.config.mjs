@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightThemeRapide from 'starlight-theme-rapide';
 import starlightImageZoom from 'starlight-image-zoom';
 import starlightLinksValidator from 'starlight-links-validator';
 import remarkGemoji from 'remark-gemoji';
@@ -17,7 +18,7 @@ export default defineConfig({
 			favicon: '/assets/images/logo.svg',
 			logo: { src: './src/assets/logo.svg' },
 			customCss: ['./src/styles/custom.css'],
-			plugins: [starlightImageZoom(), starlightLinksValidator({ errorOnLocalLinks: false })],
+			plugins: [starlightThemeRapide(), starlightImageZoom(), starlightLinksValidator({ errorOnLocalLinks: false })],
 			social: [
 				{ icon: 'rocket', label: 'Live demo', href: 'https://demo.dreeve.app/' },
 				{ icon: 'discord', label: 'Discord', href: 'https://discord.gg/p4zpZyCHNc' },
