@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Import;
 
+use App\Domain\Import\ActivityFileName;
 use App\Domain\Import\WatchDirectory;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Infrastructure\ValueObject\String\Path;
@@ -89,9 +90,42 @@ class WatchDirectoryTest extends TestCase
 
     public function testWriteFile(): void
     {
-        $this->watchDirectory->writeFile('ride.fit', 'raw-fit-bytes');
+        $writtenAs = $this->watchDirectory->writeFile(ActivityFileName::fromString('ride.fit'), 'raw-fit-bytes');
 
+        $this->assertSame('ride.fit', (string) $writtenAs);
         $this->assertSame('raw-fit-bytes', $this->filesystem->read('watch/ride.fit'));
+    }
+
+    public function testWriteFileDoesNotOverwriteAnExistingFile(): void
+    {
+        $this->watchDirectory->writeFile(ActivityFileName::fromString('ride.fit'), 'first');
+        $writtenAs = $this->watchDirectory->writeFile(ActivityFileName::fromString('ride.fit'), 'second');
+        $alsoWrittenAs = $this->watchDirectory->writeFile(ActivityFileName::fromString('ride.fit'), 'third');
+
+        $this->assertSame('ride-1.fit', (string) $writtenAs);
+        $this->assertSame('ride-2.fit', (string) $alsoWrittenAs);
+        $this->assertSame('first', $this->filesystem->read('watch/ride.fit'));
+        $this->assertSame('second', $this->filesystem->read('watch/ride-1.fit'));
+        $this->assertSame('third', $this->filesystem->read('watch/ride-2.fit'));
+    }
+
+    public function testWriteFileLeavesNothingBehindInTheStagingFolder(): void
+    {
+        $this->watchDirectory->writeFile(ActivityFileName::fromString('ride.fit'), 'raw-fit-bytes');
+
+        $this->assertFalse($this->filesystem->fileExists('watch/.uploads/ride.fit'));
+    }
+
+    public function testListFilesIgnoresTheStagingFolder(): void
+    {
+        $this->filesystem->write('watch/.uploads/half-written.fit', 'partial');
+        $this->filesystem->write('watch/ride.fit', 'raw-fit-bytes');
+
+        $paths = $this->watchDirectory->listFiles()
+            ->map(fn (StorageAttributes $file): string => $file->path())
+            ->toArray();
+
+        $this->assertSame(['watch/ride.fit'], $paths);
     }
 
     public function testDeleteFile(): void

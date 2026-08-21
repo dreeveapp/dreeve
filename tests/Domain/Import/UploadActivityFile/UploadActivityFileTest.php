@@ -18,18 +18,28 @@ class UploadActivityFileTest extends TestCase
             'content' => base64_encode('raw-fit-bytes'),
         ]);
 
-        $this->assertSame('ride.fit', $command->getFilename());
+        $this->assertSame('ride.fit', (string) $command->getFilename());
         $this->assertSame('raw-fit-bytes', $command->getContents());
     }
 
-    public function testFromPayloadStripsPathTraversal(): void
+    #[DataProvider('provideNamesThatAreStripped')]
+    public function testFromPayloadStripsPathTraversal(string $filename, string $expected): void
     {
         $command = UploadActivityFile::fromPayload([
-            'filename' => '../../etc/foo.gpx',
+            'filename' => $filename,
             'content' => base64_encode('raw-gpx-bytes'),
         ]);
 
-        $this->assertSame('foo.gpx', $command->getFilename());
+        $this->assertSame($expected, (string) $command->getFilename());
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideNamesThatAreStripped(): iterable
+    {
+        yield 'a unix path' => ['../../etc/foo.gpx', 'foo.gpx'];
+        yield 'a backslash escape' => ['..\\foo.gpx', 'foo.gpx'];
     }
 
     /**
@@ -61,6 +71,21 @@ class UploadActivityFileTest extends TestCase
         yield 'unsupported extension' => [
             ['filename' => 'notes.txt', 'content' => base64_encode('some text')],
             'The file type is not supported.',
+        ];
+
+        yield 'only an extension' => [
+            ['filename' => '.fit', 'content' => base64_encode('raw-fit-bytes')],
+            'The file name is not valid.',
+        ];
+
+        yield 'a null byte in the filename' => [
+            ['filename' => "ride\0.fit", 'content' => base64_encode('raw-fit-bytes')],
+            'The file name is not valid.',
+        ];
+
+        yield 'a filename longer than the limit' => [
+            ['filename' => str_repeat('a', 200).'.fit', 'content' => base64_encode('raw-fit-bytes')],
+            'The file name cannot be longer than 200 bytes.',
         ];
 
         yield 'malformed base64 content' => [

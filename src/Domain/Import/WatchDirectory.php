@@ -13,6 +13,7 @@ use League\Flysystem\StorageAttributes;
 final readonly class WatchDirectory
 {
     private const string FOLDER_NAME = 'watch';
+    private const string STAGING_FOLDER_NAME = self::FOLDER_NAME.'/.uploads';
 
     public function __construct(
         private KernelProjectDir $projectDir,
@@ -51,9 +52,19 @@ final readonly class WatchDirectory
         return $this->defaultStorage->read(self::FOLDER_NAME.'/'.$filePath->getBasename());
     }
 
-    public function writeFile(string $filename, string $contents): void
+    public function writeFile(ActivityFileName $filename, string $contents): ActivityFileName
     {
-        $this->defaultStorage->write(self::FOLDER_NAME.'/'.$filename, $contents);
+        $availableFilename = $filename;
+        $suffix = 1;
+        while ($this->defaultStorage->fileExists(self::FOLDER_NAME.'/'.$availableFilename)) {
+            $availableFilename = $filename->withSuffix((string) $suffix++);
+        }
+
+        $stagedPath = self::STAGING_FOLDER_NAME.'/'.$availableFilename;
+        $this->defaultStorage->write($stagedPath, $contents);
+        $this->defaultStorage->move($stagedPath, self::FOLDER_NAME.'/'.$availableFilename);
+
+        return $availableFilename;
     }
 
     public function deleteFile(Path $filePath): void
