@@ -23,6 +23,16 @@ class AppAccessMapTest extends TestCase
         $this->assertEquals([['ROLE_ADMIN'], null], $appAccessMap->getPatterns(Request::create('/admin/settings')));
     }
 
+    public function testItLeavesApiPathsToTheApiFirewall(): void
+    {
+        $accessMap = new AccessMap();
+        $accessMap->add(new PathRequestMatcher('^/api/v1'), ['ROLE_API']);
+
+        $appAccessMap = new AppAccessMap($accessMap, $this->settingsRepository(requiresAuthentication: true));
+
+        $this->assertEquals([['ROLE_API'], null], $appAccessMap->getPatterns(Request::create('/api/v1/status')));
+    }
+
     public function testItRequiresNothingWhenAuthenticationIsNotRequired(): void
     {
         $appAccessMap = new AppAccessMap(new AccessMap(), $this->settingsRepository(requiresAuthentication: false));

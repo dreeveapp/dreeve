@@ -7,12 +7,24 @@ security:
     providers:
         admin_provider:
             id: App\Infrastructure\Security\AdminUserProvider
+        api_provider:
+            id: App\Infrastructure\Security\Api\ApiUserProvider
 
     firewalls:
         dev:
             # Ensure dev tools and static assets are always allowed
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        api:
+            pattern: ^/api/v1(/|$)
+            stateless: true
+            provider: api_provider
+            entry_point: App\Infrastructure\Security\Api\ApiAuthenticationEntryPoint
+            access_token:
+                realm: 'Dreeve'
+                token_handler: App\Infrastructure\Security\Api\ApiTokenHandler
+                failure_handler: App\Infrastructure\Security\Api\ApiAuthenticationEntryPoint
 
         main:
             lazy: true
@@ -34,6 +46,7 @@ security:
     # Note: Only the *first* matching rule is applied.
     # The ^/admin/login PUBLIC_ACCESS rule must precede ^/admin to avoid a redirect loop.
     access_control:
+        - { path: '^/api/v1(/|$)', roles: ROLE_API }
         - { path: ^/admin/login, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
 
