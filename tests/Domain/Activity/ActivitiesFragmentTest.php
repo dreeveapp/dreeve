@@ -16,7 +16,7 @@ class ActivitiesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activities');
+        $this->client->request('GET', '/api/internal/fragment/page/activities');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -28,7 +28,7 @@ class ActivitiesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activities');
+        $this->client->request('GET', '/api/internal/fragment/page/activities');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -42,7 +42,7 @@ class ActivitiesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activities');
+        $this->client->request('GET', '/api/internal/fragment/data/activities');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -52,7 +52,7 @@ class ActivitiesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activities');
+        $this->client->request('GET', '/api/internal/fragment/page/activities');
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',

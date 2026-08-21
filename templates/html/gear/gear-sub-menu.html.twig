@@ -9,7 +9,7 @@
         <li>
             <a href="{{ relativeUrl('gear/maintenance') }}" data-router-link
                class="flex items-center {{ activeMenuItem == 'gearMaintenance' ? 'active' : '' }}">
-                <div class="contents" data-async-content-url="{{ relativeUrl('api/fragment/partial/gear/maintenance-due') }}"></div>
+                <div class="contents" data-async-content-url="{{ fragmentPartialUrl('gear/maintenance-due') }}"></div>
                 {{ "Maintenance"|trans }}
             </a>
         </li>

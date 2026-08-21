@@ -16,7 +16,7 @@ class EddingtonFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/eddington');
+        $this->client->request('GET', '/api/internal/fragment/page/eddington');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -28,7 +28,7 @@ class EddingtonFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/eddington');
+        $this->client->request('GET', '/api/internal/fragment/page/eddington');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -42,7 +42,7 @@ class EddingtonFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/eddington');
+        $this->client->request('GET', '/api/internal/fragment/data/eddington');
         $this->assertResponseStatusCodeSame(404);
     }
 

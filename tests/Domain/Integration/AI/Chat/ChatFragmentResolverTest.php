@@ -18,7 +18,7 @@ class ChatFragmentResolverTest extends ControllerWebTestCase
     {
         $this->enableAssistant(true);
 
-        $this->client->request('GET', '/api/fragment/page/chat');
+        $this->client->request('GET', '/api/internal/fragment/page/chat');
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -28,7 +28,7 @@ class ChatFragmentResolverTest extends ControllerWebTestCase
     {
         $this->enableAssistant(false);
 
-        $this->client->request('GET', '/api/fragment/page/chat');
+        $this->client->request('GET', '/api/internal/fragment/page/chat');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -37,7 +37,7 @@ class ChatFragmentResolverTest extends ControllerWebTestCase
     {
         $this->enableAssistant(true);
 
-        $this->client->request('GET', '/api/fragment/data/chat');
+        $this->client->request('GET', '/api/internal/fragment/data/chat');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -46,10 +46,10 @@ class ChatFragmentResolverTest extends ControllerWebTestCase
     {
         $this->enableAssistant(true);
 
-        $this->client->request('GET', '/api/fragment/page/chat');
+        $this->client->request('GET', '/api/internal/fragment/page/chat');
         $this->assertResponseHeaderSame('X-Dreeve-Cache', 'MISS');
 
-        $this->client->request('GET', '/api/fragment/page/chat');
+        $this->client->request('GET', '/api/internal/fragment/page/chat');
         $this->assertResponseHeaderSame('X-Dreeve-Cache', 'MISS');
     }
 

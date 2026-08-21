@@ -28,7 +28,7 @@ class DashboardWidgetFragmentTest extends ControllerWebTestCase
         foreach ($this->getContainer()->get(ConfiguredWidgets::class) as $configuredWidget) {
             $this->snapshotName = (string) $configuredWidget->getName();
 
-            $this->client->request('GET', '/api/fragment/partial/dashboard/widget/'.$configuredWidget->getId());
+            $this->client->request('GET', '/api/internal/fragment/partial/dashboard/widget/'.$configuredWidget->getId());
 
             $this->assertResponseIsSuccessful();
             $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -39,7 +39,7 @@ class DashboardWidgetFragmentTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/fragment/partial/dashboard/widget/dashboardWidget-doesNotExist');
+        $this->client->request('GET', '/api/internal/fragment/partial/dashboard/widget/dashboardWidget-doesNotExist');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -48,7 +48,7 @@ class DashboardWidgetFragmentTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/fragment/partial/dashboard/widget/doesNotExist');
+        $this->client->request('GET', '/api/internal/fragment/partial/dashboard/widget/doesNotExist');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -57,7 +57,7 @@ class DashboardWidgetFragmentTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/fragment/page/dashboard/widget/dashboardWidget-introText');
+        $this->client->request('GET', '/api/internal/fragment/page/dashboard/widget/dashboardWidget-introText');
 
         $this->assertResponseStatusCodeSame(404);
     }

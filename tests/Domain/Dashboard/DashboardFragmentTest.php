@@ -15,7 +15,7 @@ class DashboardFragmentTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/fragment/page/dashboard');
+        $this->client->request('GET', '/api/internal/fragment/page/dashboard');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -26,7 +26,7 @@ class DashboardFragmentTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/fragment/partial/dashboard');
+        $this->client->request('GET', '/api/internal/fragment/partial/dashboard');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -35,7 +35,7 @@ class DashboardFragmentTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/fragment/page/dashboard');
+        $this->client->request('GET', '/api/internal/fragment/page/dashboard');
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',

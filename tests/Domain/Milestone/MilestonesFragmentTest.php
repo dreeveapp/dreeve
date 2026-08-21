@@ -16,7 +16,7 @@ class MilestonesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/milestones');
+        $this->client->request('GET', '/api/internal/fragment/page/milestones');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -28,7 +28,7 @@ class MilestonesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/milestones');
+        $this->client->request('GET', '/api/internal/fragment/page/milestones');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -42,7 +42,7 @@ class MilestonesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/milestones');
+        $this->client->request('GET', '/api/internal/fragment/data/milestones');
 
         $this->assertResponseStatusCodeSame(404);
     }

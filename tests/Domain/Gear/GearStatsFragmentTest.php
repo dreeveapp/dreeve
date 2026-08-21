@@ -29,7 +29,7 @@ class GearStatsFragmentTest extends ControllerWebTestCase
             rawData: []
         ));
 
-        $this->client->request('GET', '/api/fragment/page/gear');
+        $this->client->request('GET', '/api/internal/fragment/page/gear');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -59,7 +59,7 @@ class GearStatsFragmentTest extends ControllerWebTestCase
 
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/gear');
+        $this->client->request('GET', '/api/internal/fragment/page/gear');
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -70,7 +70,7 @@ class GearStatsFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/gear');
+        $this->client->request('GET', '/api/internal/fragment/page/gear');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -84,7 +84,7 @@ class GearStatsFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/gear');
+        $this->client->request('GET', '/api/internal/fragment/data/gear');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -94,7 +94,7 @@ class GearStatsFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/gear');
+        $this->client->request('GET', '/api/internal/fragment/page/gear');
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',

@@ -16,7 +16,7 @@ class HeatmapRoutesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/heatmap/routes');
+        $this->client->request('GET', '/api/internal/fragment/data/heatmap/routes');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
@@ -29,7 +29,7 @@ class HeatmapRoutesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/heatmap/routes');
+        $this->client->request('GET', '/api/internal/fragment/data/heatmap/routes');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -43,7 +43,7 @@ class HeatmapRoutesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/heatmap/routes');
+        $this->client->request('GET', '/api/internal/fragment/data/heatmap/routes');
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
@@ -56,7 +56,7 @@ class HeatmapRoutesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/heatmap/routes');
+        $this->client->request('GET', '/api/internal/fragment/page/heatmap/routes');
 
         $this->assertResponseStatusCodeSame(404);
     }

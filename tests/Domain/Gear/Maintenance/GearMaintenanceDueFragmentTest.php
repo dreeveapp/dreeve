@@ -27,7 +27,7 @@ class GearMaintenanceDueFragmentTest extends ControllerWebTestCase
         // The chain needs lubing every 500km, this ride alone blows through that.
         $this->rideSinceTheChainWasLubed(Kilometer::from(750));
 
-        $this->client->request('GET', '/api/fragment/partial/gear/maintenance-due');
+        $this->client->request('GET', '/api/internal/fragment/partial/gear/maintenance-due');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -41,7 +41,7 @@ class GearMaintenanceDueFragmentTest extends ControllerWebTestCase
         $this->importGearMaintenanceConfig();
         $this->rideSinceTheChainWasLubed(Kilometer::from(10));
 
-        $this->client->request('GET', '/api/fragment/partial/gear/maintenance-due');
+        $this->client->request('GET', '/api/internal/fragment/partial/gear/maintenance-due');
 
         $this->assertResponseIsSuccessful();
         $this->assertEmpty(trim((string) $this->client->getResponse()->getContent()));
@@ -51,7 +51,7 @@ class GearMaintenanceDueFragmentTest extends ControllerWebTestCase
     {
         $this->rideSinceTheChainWasLubed(Kilometer::from(750));
 
-        $this->client->request('GET', '/api/fragment/partial/gear/maintenance-due');
+        $this->client->request('GET', '/api/internal/fragment/partial/gear/maintenance-due');
 
         $this->assertResponseIsSuccessful();
         $this->assertEmpty(trim((string) $this->client->getResponse()->getContent()));
@@ -62,7 +62,7 @@ class GearMaintenanceDueFragmentTest extends ControllerWebTestCase
         $this->importGearMaintenanceConfig();
         $this->rideSinceTheChainWasLubed(Kilometer::from(750));
 
-        $this->client->request('GET', '/api/fragment/partial/gear/maintenance-due');
+        $this->client->request('GET', '/api/internal/fragment/partial/gear/maintenance-due');
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
@@ -75,7 +75,7 @@ class GearMaintenanceDueFragmentTest extends ControllerWebTestCase
         $this->importGearMaintenanceConfig();
         $this->rideSinceTheChainWasLubed(Kilometer::from(750));
 
-        $this->client->request('GET', '/api/fragment/page/gear/maintenance-due');
+        $this->client->request('GET', '/api/internal/fragment/page/gear/maintenance-due');
 
         $this->assertResponseStatusCodeSame(404);
     }

@@ -26,7 +26,7 @@ class PowerOutputFragmentTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/fragment/page/dashboard/power-output');
+        $this->client->request('GET', '/api/internal/fragment/page/dashboard/power-output');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -52,7 +52,7 @@ class PowerOutputFragmentTest extends ControllerWebTestCase
             data: Json::decode('{"1":390,"5":361,"10":344,"15":333,"30":316,"45":305,"60":298,"120":284,"180":277,"240":272,"300":268,"390":263,"480":259,"720":251,"960":246,"1200":242,"1800":234,"2400":229,"3000":225,"3600":221}'),
         ));
 
-        $this->client->request('GET', '/api/fragment/page/dashboard/power-output');
+        $this->client->request('GET', '/api/internal/fragment/page/dashboard/power-output');
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -76,7 +76,7 @@ class PowerOutputFragmentTest extends ControllerWebTestCase
             data: [5 => 900, 60 => 500, 3600 => 250],
         ));
 
-        $this->client->request('GET', '/api/fragment/page/dashboard/power-output');
+        $this->client->request('GET', '/api/internal/fragment/page/dashboard/power-output');
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -86,7 +86,7 @@ class PowerOutputFragmentTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/fragment/partial/dashboard/power-output');
+        $this->client->request('GET', '/api/internal/fragment/partial/dashboard/power-output');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -95,7 +95,7 @@ class PowerOutputFragmentTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/fragment/page/dashboard/power-output');
+        $this->client->request('GET', '/api/internal/fragment/page/dashboard/power-output');
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',

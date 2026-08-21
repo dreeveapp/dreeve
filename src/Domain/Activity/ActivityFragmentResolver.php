@@ -98,9 +98,7 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
                 'polylineUrl' => ActivityFragmentPath::for($activityId, 'polylines'),
                 'map' => $leafletMap,
             ] : null,
-            'gpxLink' => $this->activityStreamRepository->hasOneForActivityAndStreamType($activityId, StreamType::TIME)
-                ? sprintf('api/activity/%s/route.gpx', $activityId)
-                : null,
+            'hasGpxLink' => $this->activityStreamRepository->hasOneForActivityAndStreamType($activityId, StreamType::TIME),
             'gpxFileName' => sprintf(
                 '%s-%s.gpx',
                 $activity->getStartDate()->format('Y-m-d'),

@@ -18,7 +18,7 @@ class MonthlyStatsFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/monthly-stats');
+        $this->client->request('GET', '/api/internal/fragment/page/monthly-stats');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -37,7 +37,7 @@ class MonthlyStatsFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/monthly-stats');
+        $this->client->request('GET', '/api/internal/fragment/page/monthly-stats');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -51,7 +51,7 @@ class MonthlyStatsFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/monthly-stats');
+        $this->client->request('GET', '/api/internal/fragment/data/monthly-stats');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -61,7 +61,7 @@ class MonthlyStatsFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/monthly-stats');
+        $this->client->request('GET', '/api/internal/fragment/page/monthly-stats');
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',

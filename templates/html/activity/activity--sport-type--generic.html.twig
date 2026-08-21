@@ -36,8 +36,8 @@
                         {{ "Edit"|trans({}, 'admin') }}
                     </a>
                 {% endif %}
-                {% if gpxLink %}
-                    <a href="{{ gpxLink }}" download="{{ gpxFileName }}" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs rounded-lg px-3 py-1.5 transition">
+                {% if hasGpxLink %}
+                    <a href="{{ relativeUrl(path('api_activity_gpx', {'activityId': activity.getId()})) }}" download="{{ gpxFileName }}" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs rounded-lg px-3 py-1.5 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
                         </svg>
@@ -194,7 +194,7 @@
             {% if leaflet %}
                 <div class="relative border-b border-gray-200 lg:sticky lg:top-14 lg:z-10 lg:bg-white">
                     {% set leafletOptions = {
-                        'polylineUrl': relativeUrl('api/fragment/data/' ~ leaflet.polylineUrl),
+                        'polylineUrl': fragmentDataUrl(leaflet.polylineUrl),
                         'tileLayer': leaflet.map.getTileLayer(),
                         'minZoom': leaflet.map.getMinZoom(),
                         'maxZoom': leaflet.map.getMaxZoom(),
@@ -208,8 +208,8 @@
             {% if hasProfileChart is not empty %}
                 <div>
                     <div style="height: {{ profileChartHeight }}px"
-                         data-echarts-options-url='{{ relativeUrl('api/fragment/data/activities/' ~ activity.getId() ~ '/metrics') }}'
-                         data-leaflet-echart-connect='{{ relativeUrl('api/fragment/data/activities/' ~ activity.getId() ~ '/coordinates') }}'
+                         data-echarts-options-url='{{ fragmentDataUrl(activityFragmentPath(activity.getId(), 'metrics')) }}'
+                         data-leaflet-echart-connect='{{ fragmentDataUrl(activityFragmentPath(activity.getId(), 'coordinates')) }}'
                     ></div>
                 </div>
             {% endif %}
@@ -338,11 +338,11 @@
             </section>
         {% endif %}
         <section class="grid grid-cols-1 gap-4">
-            <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activities/' ~ activity.getId() ~ '/best-efforts') }}"></div>
+            <div data-async-content-url="{{ fragmentPartialUrl(activityFragmentPath(activity.getId(), 'best-efforts')) }}"></div>
             {% block splitsAndLaps %}
             {% endblock splitsAndLaps %}
-            <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activities/' ~ activity.getId() ~ '/segments') }}"></div>
-            <div data-async-content-url="{{ relativeUrl('api/fragment/partial/activities/' ~ activity.getId() ~ '/route-matches') }}"></div>
+            <div data-async-content-url="{{ fragmentPartialUrl(activityFragmentPath(activity.getId(), 'segments')) }}"></div>
+            <div data-async-content-url="{{ fragmentPartialUrl(activityFragmentPath(activity.getId(), 'route-matches')) }}"></div>
         </section>
         {% if distributionCharts is not empty %}
             <section>

@@ -19,7 +19,7 @@ class ActivityRouteMatchesFragmentResolverTest extends ControllerWebTestCase
         $this->seedActivity();
         $this->calculateRouteSignatures();
 
-        $this->client->request('GET', '/api/fragment/partial/activities/activity-9830227167/route-matches');
+        $this->client->request('GET', '/api/internal/fragment/partial/activities/activity-9830227167/route-matches');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -31,7 +31,7 @@ class ActivityRouteMatchesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/partial/activities/activity-9830227167/route-matches');
+        $this->client->request('GET', '/api/internal/fragment/partial/activities/activity-9830227167/route-matches');
 
         $this->assertResponseHeaderSame('X-Dreeve-Cache', 'MISS');
         $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activities.9830227167, activities');
@@ -42,7 +42,7 @@ class ActivityRouteMatchesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activities/activity-9830227167/route-matches');
+        $this->client->request('GET', '/api/internal/fragment/page/activities/activity-9830227167/route-matches');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -52,7 +52,7 @@ class ActivityRouteMatchesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/partial/activities/activity-1/route-matches');
+        $this->client->request('GET', '/api/internal/fragment/partial/activities/activity-1/route-matches');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -62,7 +62,7 @@ class ActivityRouteMatchesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/partial/activities/9830227167/route-matches');
+        $this->client->request('GET', '/api/internal/fragment/partial/activities/9830227167/route-matches');
 
         $this->assertResponseStatusCodeSame(404);
     }

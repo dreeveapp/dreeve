@@ -16,7 +16,7 @@ class ActivityDataTableFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activities/data-table');
+        $this->client->request('GET', '/api/internal/fragment/data/activities/data-table');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
@@ -28,7 +28,7 @@ class ActivityDataTableFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activities/data-table');
+        $this->client->request('GET', '/api/internal/fragment/data/activities/data-table');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -42,7 +42,7 @@ class ActivityDataTableFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activities/data-table');
+        $this->client->request('GET', '/api/internal/fragment/data/activities/data-table');
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
@@ -55,7 +55,7 @@ class ActivityDataTableFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activities/data-table');
+        $this->client->request('GET', '/api/internal/fragment/page/activities/data-table');
 
         $this->assertResponseStatusCodeSame(404);
     }

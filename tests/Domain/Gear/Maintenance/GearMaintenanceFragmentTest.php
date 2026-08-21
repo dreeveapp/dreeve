@@ -29,7 +29,7 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
         $this->provideGearWithMaintenanceHistory();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/gear/maintenance');
+        $this->client->request('GET', '/api/internal/fragment/page/gear/maintenance');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -40,7 +40,7 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
     {
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/gear/maintenance');
+        $this->client->request('GET', '/api/internal/fragment/page/gear/maintenance');
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -52,7 +52,7 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
         $this->provideGearWithMaintenanceHistory();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/gear/maintenance');
+        $this->client->request('GET', '/api/internal/fragment/page/gear/maintenance');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -67,7 +67,7 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
         $this->provideGearWithMaintenanceHistory();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/gear/maintenance');
+        $this->client->request('GET', '/api/internal/fragment/data/gear/maintenance');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -78,7 +78,7 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
         $this->provideGearWithMaintenanceHistory();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/gear/maintenance');
+        $this->client->request('GET', '/api/internal/fragment/page/gear/maintenance');
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',

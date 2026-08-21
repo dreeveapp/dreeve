@@ -142,7 +142,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/badge/dreeve');
+        $this->client->request('GET', '/api/internal/fragment/page/badge/dreeve');
 
         $this->assertResponseStatusCodeSame(404);
     }

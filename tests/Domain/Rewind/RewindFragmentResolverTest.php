@@ -18,7 +18,7 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/rewind');
+        $this->client->request('GET', '/api/internal/fragment/page/rewind');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -30,7 +30,7 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/rewind/2023');
+        $this->client->request('GET', '/api/internal/fragment/page/rewind/2023');
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -41,7 +41,7 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/rewind/2023');
+        $this->client->request('GET', '/api/internal/fragment/data/rewind/2023');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -74,7 +74,7 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/rewind/all-time');
+        $this->client->request('GET', '/api/internal/fragment/page/rewind/all-time');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -92,7 +92,7 @@ class RewindFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/rewind/2023');
+        $this->client->request('GET', '/api/internal/fragment/page/rewind/2023');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(

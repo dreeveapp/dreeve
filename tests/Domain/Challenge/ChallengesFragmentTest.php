@@ -16,7 +16,7 @@ class ChallengesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/challenges');
+        $this->client->request('GET', '/api/internal/fragment/page/challenges');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -28,7 +28,7 @@ class ChallengesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/challenges');
+        $this->client->request('GET', '/api/internal/fragment/page/challenges');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -42,7 +42,7 @@ class ChallengesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/challenges');
+        $this->client->request('GET', '/api/internal/fragment/data/challenges');
 
         $this->assertResponseStatusCodeSame(404);
     }

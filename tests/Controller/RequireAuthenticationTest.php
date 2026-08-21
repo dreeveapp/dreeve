@@ -30,7 +30,7 @@ class RequireAuthenticationTest extends AdminWebTestCase
     public static function provideProtectedPaths(): iterable
     {
         yield 'dashboard' => ['/'];
-        yield 'fragment api' => ['/api/fragment/page/dashboard'];
+        yield 'fragment api' => ['/api/internal/fragment/page/dashboard'];
         yield 'badge' => ['/badge/strava.svg'];
         yield 'images' => ['/files/gear/bike.png'];
     }

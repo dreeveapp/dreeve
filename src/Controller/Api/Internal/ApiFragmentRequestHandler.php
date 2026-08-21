@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\Internal;
 
 use App\Application\NotFoundFragment;
 use App\Infrastructure\Http\Fragment\FragmentRegistry;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[AsController]
 final readonly class ApiFragmentRequestHandler
 {
-    public const string PATH_PREFIX = '/api/fragment';
+    public const string PATH_PREFIX = '/api/internal/fragment';
     public const string PATH_REQUIREMENT = '[a-zA-Z0-9_\-/]+';
 
     public function __construct(

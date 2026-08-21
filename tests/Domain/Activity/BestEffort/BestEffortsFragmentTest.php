@@ -16,7 +16,7 @@ class BestEffortsFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/best-efforts');
+        $this->client->request('GET', '/api/internal/fragment/page/best-efforts');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -28,7 +28,7 @@ class BestEffortsFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/best-efforts');
+        $this->client->request('GET', '/api/internal/fragment/page/best-efforts');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -42,7 +42,7 @@ class BestEffortsFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/best-efforts');
+        $this->client->request('GET', '/api/internal/fragment/data/best-efforts');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -52,7 +52,7 @@ class BestEffortsFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/best-efforts');
+        $this->client->request('GET', '/api/internal/fragment/page/best-efforts');
         $this->assertResponseHeaderSame('X-Dreeve-Cache-TTL', '27896');
     }
 

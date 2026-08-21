@@ -20,7 +20,7 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
 
         foreach (ActivityType::RIDE->getDistancesForBestEffortCalculation() as $distance) {
             $this->client->request('GET', sprintf(
-                '/api/fragment/page/best-efforts/%s/%d',
+                '/api/internal/fragment/page/best-efforts/%s/%d',
                 ActivityType::RIDE->value,
                 $distance->toMeter()->toInt(),
             ));
@@ -36,7 +36,7 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/best-efforts/Ride/10000');
+        $this->client->request('GET', '/api/internal/fragment/page/best-efforts/Ride/10000');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('Morning Ride', (string) $this->client->getResponse()->getContent());
@@ -55,7 +55,7 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/best-efforts/Ride/10000');
+        $this->client->request('GET', '/api/internal/fragment/data/best-efforts/Ride/10000');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -65,7 +65,7 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/best-efforts/Snorkeling/10000');
+        $this->client->request('GET', '/api/internal/fragment/page/best-efforts/Snorkeling/10000');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -75,7 +75,7 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/best-efforts/Walk/10000');
+        $this->client->request('GET', '/api/internal/fragment/page/best-efforts/Walk/10000');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -85,7 +85,7 @@ class BestEffortsHistoryFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/best-efforts/Ride/12345');
+        $this->client->request('GET', '/api/internal/fragment/page/best-efforts/Ride/12345');
 
         $this->assertResponseStatusCodeSame(404);
     }

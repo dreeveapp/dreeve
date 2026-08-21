@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\Internal;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
@@ -22,7 +22,7 @@ final readonly class ActivityGpxRequestHandler
     ) {
     }
 
-    #[Route(path: '/api/activity/{activityId}/route.gpx', name: 'api_activity_gpx', methods: ['GET'], priority: 3)]
+    #[Route(path: '/api/internal/activity/{activityId}/route.gpx', name: 'api_activity_gpx', methods: ['GET'], priority: 3)]
     public function handle(string $activityId): Response
     {
         try {

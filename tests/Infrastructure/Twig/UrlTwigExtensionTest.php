@@ -13,6 +13,7 @@ use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Segment\SegmentBuilder;
 use Spatie\Snapshots\MatchesSnapshots;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UrlTwigExtensionTest extends ContainerTestCase
 {
@@ -20,6 +21,7 @@ class UrlTwigExtensionTest extends ContainerTestCase
 
     private StringTwigExtension $stringTwigExtension;
     private SvgsTwigExtension $svgsTwigExtension;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function testToAbsoluteUrl(): void
     {
@@ -27,6 +29,7 @@ class UrlTwigExtensionTest extends ContainerTestCase
             '/test/path',
             new UrlTwigExtension(
                 appUrl: AppUrl::fromString('http://localhost:8081'),
+                urlGenerator: $this->urlGenerator,
                 stringTwigExtension: $this->stringTwigExtension,
                 svgsTwigExtension: $this->svgsTwigExtension,
             )->toRelativeUrl('test/path')
@@ -35,6 +38,7 @@ class UrlTwigExtensionTest extends ContainerTestCase
             '/test/path',
             new UrlTwigExtension(
                 appUrl: AppUrl::fromString('http://localhost:8081'),
+                urlGenerator: $this->urlGenerator,
                 stringTwigExtension: $this->stringTwigExtension,
                 svgsTwigExtension: $this->svgsTwigExtension,
             )->toRelativeUrl('/test/path')
@@ -43,6 +47,7 @@ class UrlTwigExtensionTest extends ContainerTestCase
             '/base/test/path',
             new UrlTwigExtension(
                 appUrl: AppUrl::fromString('http://localhost:8081/base/'),
+                urlGenerator: $this->urlGenerator,
                 stringTwigExtension: $this->stringTwigExtension,
                 svgsTwigExtension: $this->svgsTwigExtension,
             )->toRelativeUrl('test/path')
@@ -51,6 +56,7 @@ class UrlTwigExtensionTest extends ContainerTestCase
             '/base/test/path',
             new UrlTwigExtension(
                 appUrl: AppUrl::fromString('http://localhost:8081/base/'),
+                urlGenerator: $this->urlGenerator,
                 stringTwigExtension: $this->stringTwigExtension,
                 svgsTwigExtension: $this->svgsTwigExtension,
             )->toRelativeUrl('/test/path')
@@ -63,6 +69,7 @@ class UrlTwigExtensionTest extends ContainerTestCase
             '/assets/placeholder.webp',
             new UrlTwigExtension(
                 appUrl: AppUrl::fromString('http://localhost:8081'),
+                urlGenerator: $this->urlGenerator,
                 stringTwigExtension: $this->stringTwigExtension,
                 svgsTwigExtension: $this->svgsTwigExtension,
             )->placeholderImage()
@@ -72,6 +79,7 @@ class UrlTwigExtensionTest extends ContainerTestCase
             '/assets/placeholder-portrait.webp',
             new UrlTwigExtension(
                 appUrl: AppUrl::fromString('http://localhost:8081'),
+                urlGenerator: $this->urlGenerator,
                 stringTwigExtension: $this->stringTwigExtension,
                 svgsTwigExtension: $this->svgsTwigExtension,
             )->placeholderImage(ImageOrientation::PORTRAIT)
@@ -82,6 +90,7 @@ class UrlTwigExtensionTest extends ContainerTestCase
     {
         $extension = new UrlTwigExtension(
             appUrl: AppUrl::fromString('http://localhost:8081'),
+            urlGenerator: $this->urlGenerator,
             stringTwigExtension: $this->stringTwigExtension,
             svgsTwigExtension: $this->svgsTwigExtension,
         );
@@ -103,5 +112,6 @@ class UrlTwigExtensionTest extends ContainerTestCase
     {
         $this->stringTwigExtension = new StringTwigExtension();
         $this->svgsTwigExtension = new SvgsTwigExtension($this->getContainer()->get(KernelProjectDir::class));
+        $this->urlGenerator = $this->getContainer()->get(UrlGeneratorInterface::class);
     }
 }

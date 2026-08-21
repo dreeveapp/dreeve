@@ -16,7 +16,7 @@ class RecordingDevicesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/gear/recording-devices');
+        $this->client->request('GET', '/api/internal/fragment/page/gear/recording-devices');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -28,7 +28,7 @@ class RecordingDevicesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/gear/recording-devices');
+        $this->client->request('GET', '/api/internal/fragment/page/gear/recording-devices');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -42,7 +42,7 @@ class RecordingDevicesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/gear/recording-devices');
+        $this->client->request('GET', '/api/internal/fragment/data/gear/recording-devices');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -52,7 +52,7 @@ class RecordingDevicesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/gear/recording-devices');
+        $this->client->request('GET', '/api/internal/fragment/page/gear/recording-devices');
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',

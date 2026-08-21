@@ -16,7 +16,7 @@ class ActivityCoordinatesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activities/activity-9756441741/coordinates');
+        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9756441741/coordinates');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
@@ -28,7 +28,7 @@ class ActivityCoordinatesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activities/activity-9756441741/coordinates');
+        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9756441741/coordinates');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -46,7 +46,7 @@ class ActivityCoordinatesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/activities/activity-9756441741/coordinates');
+        $this->client->request('GET', '/api/internal/fragment/page/activities/activity-9756441741/coordinates');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -56,7 +56,7 @@ class ActivityCoordinatesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activities/activity-9830227112/coordinates');
+        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9830227112/coordinates');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -66,7 +66,7 @@ class ActivityCoordinatesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activities/activity-1/coordinates');
+        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-1/coordinates');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -76,7 +76,7 @@ class ActivityCoordinatesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/activities/9756441741/coordinates');
+        $this->client->request('GET', '/api/internal/fragment/data/activities/9756441741/coordinates');
 
         $this->assertResponseStatusCodeSame(404);
     }

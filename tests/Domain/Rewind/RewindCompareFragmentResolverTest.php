@@ -18,7 +18,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/2022');
+        $this->client->request('GET', '/api/internal/fragment/page/rewind/2023/compare/2022');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -30,7 +30,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/rewind/2023/compare/2022');
+        $this->client->request('GET', '/api/internal/fragment/data/rewind/2023/compare/2022');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -65,7 +65,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
         $this->addActivityOneFixtures();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/all-time');
+        $this->client->request('GET', '/api/internal/fragment/page/rewind/2023/compare/all-time');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -75,7 +75,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/2022');
+        $this->client->request('GET', '/api/internal/fragment/page/rewind/2023/compare/2022');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -97,7 +97,7 @@ class RewindCompareFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/rewind/2023/compare/all-time');
+        $this->client->request('GET', '/api/internal/fragment/page/rewind/2023/compare/all-time');
 
         $this->assertResponseIsSuccessful();
         $this->assertEqualsCanonicalizing(

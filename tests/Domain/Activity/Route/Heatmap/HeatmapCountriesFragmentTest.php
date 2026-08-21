@@ -16,7 +16,7 @@ class HeatmapCountriesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/heatmap/countries');
+        $this->client->request('GET', '/api/internal/fragment/data/heatmap/countries');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
@@ -28,7 +28,7 @@ class HeatmapCountriesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/heatmap/countries');
+        $this->client->request('GET', '/api/internal/fragment/data/heatmap/countries');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -42,7 +42,7 @@ class HeatmapCountriesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/heatmap/countries');
+        $this->client->request('GET', '/api/internal/fragment/data/heatmap/countries');
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
@@ -55,7 +55,7 @@ class HeatmapCountriesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/heatmap/countries');
+        $this->client->request('GET', '/api/internal/fragment/page/heatmap/countries');
 
         $this->assertResponseStatusCodeSame(404);
     }

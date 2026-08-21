@@ -16,7 +16,7 @@ class BadgesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/badges');
+        $this->client->request('GET', '/api/internal/fragment/page/badges');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -28,7 +28,7 @@ class BadgesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/badges');
+        $this->client->request('GET', '/api/internal/fragment/page/badges');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -42,7 +42,7 @@ class BadgesFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/badges');
+        $this->client->request('GET', '/api/internal/fragment/data/badges');
 
         $this->assertResponseStatusCodeSame(404);
     }

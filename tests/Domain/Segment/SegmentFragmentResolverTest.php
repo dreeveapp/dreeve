@@ -23,7 +23,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/segments/segment-1');
+        $this->client->request('GET', '/api/internal/fragment/page/segments/segment-1');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -64,7 +64,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
                 ->build()
         );
 
-        $this->client->request('GET', '/api/fragment/page/segments/segment-10');
+        $this->client->request('GET', '/api/internal/fragment/page/segments/segment-10');
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -90,7 +90,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
                 ->build()
         );
 
-        $this->client->request('GET', '/api/fragment/page/segments/segment-10');
+        $this->client->request('GET', '/api/internal/fragment/page/segments/segment-10');
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -102,7 +102,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
         $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
-        $this->client->request('GET', '/api/fragment/page/segments/segment-10');
+        $this->client->request('GET', '/api/internal/fragment/page/segments/segment-10');
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -113,7 +113,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/segments/segment-1');
+        $this->client->request('GET', '/api/internal/fragment/page/segments/segment-1');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -127,7 +127,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/segments/segment-1');
+        $this->client->request('GET', '/api/internal/fragment/page/segments/segment-1');
 
         // Scoped to this segment, so importing an activity that rode another segment leaves it alone.
         $this->assertResponseHeaderSame(
@@ -141,7 +141,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/segments/segment-1');
+        $this->client->request('GET', '/api/internal/fragment/data/segments/segment-1');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -151,7 +151,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/segments/data-table');
+        $this->client->request('GET', '/api/internal/fragment/page/segments/data-table');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -161,7 +161,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/segments/segment-999');
+        $this->client->request('GET', '/api/internal/fragment/page/segments/segment-999');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -171,7 +171,7 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/segments/1');
+        $this->client->request('GET', '/api/internal/fragment/page/segments/1');
 
         $this->assertResponseStatusCodeSame(404);
     }

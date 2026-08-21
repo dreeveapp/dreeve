@@ -7,7 +7,7 @@
     <div class="grid grid-cols-1">
         <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
             <!--HTML-->
-            <div data-dataTable-settings='{"url":"{{ relativeUrl('api/fragment/data/activities/data-table') }}","name":"activities","toggleableColumns":true}' class="relative">
+            <div data-dataTable-settings='{"url":"{{ fragmentDataUrl('activities/data-table') }}","name":"activities","toggleableColumns":true}' class="relative">
                 <form class="flex flex-col gap-y-2 mb-2" autocomplete="off">
                     <div class="flex items-center">
                         <label for="search" class="sr-only">Search</label>

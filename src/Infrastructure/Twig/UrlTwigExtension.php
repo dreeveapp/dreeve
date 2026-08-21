@@ -7,12 +7,15 @@ namespace App\Infrastructure\Twig;
 use App\Application\AppUrl;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityFragmentPath;
+use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Image\ImageOrientation;
 use App\Domain\Segment\Segment;
 use App\Domain\Segment\SegmentFragmentPath;
+use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\ValueObject\String\FilteredUrl;
 use App\Infrastructure\ValueObject\String\RelativeUrl;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Attribute\AsTwigFilter;
 use Twig\Attribute\AsTwigFunction;
 
@@ -20,6 +23,7 @@ final readonly class UrlTwigExtension
 {
     public function __construct(
         private AppUrl $appUrl,
+        private UrlGeneratorInterface $urlGenerator,
         private StringTwigExtension $stringTwigExtension,
         private SvgsTwigExtension $svgsTwigExtension,
     ) {
@@ -38,6 +42,30 @@ final readonly class UrlTwigExtension
     public function toFilteredUrl(string $path, array $filters): string
     {
         return FilteredUrl::from($path, $filters, $this->appUrl)->toRelativeUrl();
+    }
+
+    #[AsTwigFunction('fragmentDataUrl')]
+    public function toFragmentDataUrl(string $path): string
+    {
+        return $this->toRelativeUrl($this->urlGenerator->generate('api_fragment', [
+            'type' => FragmentType::DATA->value,
+            'path' => $path,
+        ]));
+    }
+
+    #[AsTwigFunction('fragmentPartialUrl')]
+    public function toFragmentPartialUrl(string $path): string
+    {
+        return $this->toRelativeUrl($this->urlGenerator->generate('api_fragment', [
+            'type' => FragmentType::PARTIAL->value,
+            'path' => $path,
+        ]));
+    }
+
+    #[AsTwigFunction('activityFragmentPath')]
+    public function activityFragmentPath(ActivityId $activityId, ?string $subResource = null): string
+    {
+        return ActivityFragmentPath::for($activityId, $subResource);
     }
 
     #[AsTwigFunction('placeholderImage')]

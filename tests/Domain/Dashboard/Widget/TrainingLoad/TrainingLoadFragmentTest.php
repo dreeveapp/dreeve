@@ -25,7 +25,7 @@ class TrainingLoadFragmentTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/fragment/page/dashboard/training-load');
+        $this->client->request('GET', '/api/internal/fragment/page/dashboard/training-load');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -51,7 +51,7 @@ class TrainingLoadFragmentTest extends ControllerWebTestCase
             startDate: SerializableDateTime::fromString('2023-09-17 10:00:00'),
         );
 
-        $this->client->request('GET', '/api/fragment/page/dashboard/training-load');
+        $this->client->request('GET', '/api/internal/fragment/page/dashboard/training-load');
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -85,7 +85,7 @@ class TrainingLoadFragmentTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/fragment/partial/dashboard/training-load');
+        $this->client->request('GET', '/api/internal/fragment/partial/dashboard/training-load');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -94,7 +94,7 @@ class TrainingLoadFragmentTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/fragment/page/dashboard/training-load');
+        $this->client->request('GET', '/api/internal/fragment/page/dashboard/training-load');
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',

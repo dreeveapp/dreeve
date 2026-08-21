@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application;
 
-use App\Controller\Api\ApiFragmentRequestHandler;
+use App\Controller\Api\Internal\ApiFragmentRequestHandler;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\Image\ImageRepository;

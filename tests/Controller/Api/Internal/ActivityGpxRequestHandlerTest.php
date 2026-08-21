@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller\Api;
+namespace App\Tests\Controller\Api\Internal;
 
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;
@@ -15,7 +15,7 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/activity/activity-9756441741/route.gpx');
+        $this->client->request('GET', '/api/internal/activity/activity-9756441741/route.gpx');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/gpx+xml; charset=UTF-8');
@@ -30,7 +30,7 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
         try {
             $this->provideFullTestSet();
 
-            $this->client->request('GET', '/api/activity/activity-9756441741/route.gpx');
+            $this->client->request('GET', '/api/internal/activity/activity-9756441741/route.gpx');
 
             $this->assertResponseIsSuccessful();
             $this->assertMatchesXmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -43,7 +43,7 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/activity/activity-9542782314/route.gpx');
+        $this->client->request('GET', '/api/internal/activity/activity-9542782314/route.gpx');
 
         $this->assertResponseStatusCodeSame(404);
         $this->assertSelectorTextContains('h1', '404');
@@ -51,7 +51,7 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
 
     public function testHandleWhenActivityNotFound(): void
     {
-        $this->client->request('GET', '/api/activity/activity-1/route.gpx');
+        $this->client->request('GET', '/api/internal/activity/activity-1/route.gpx');
 
         $this->assertResponseStatusCodeSame(404);
         $this->assertSelectorTextContains('h1', '404');
@@ -61,7 +61,7 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/activity/activity-9756441741/route.gpx');
+        $this->client->request('GET', '/api/internal/activity/activity-9756441741/route.gpx');
 
         $this->assertEquals(
             'api_activity_gpx',

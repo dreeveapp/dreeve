@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Controller\Api;
+namespace App\Tests\Controller\Api\Internal;
 
 use App\Application\NotFoundFragment;
-use App\Controller\Api\ApiFragmentRequestHandler;
+use App\Controller\Api\Internal\ApiFragmentRequestHandler;
 use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\Http\Fragment\FragmentRegistry;
 use App\Infrastructure\Http\Fragment\FragmentRenderer;

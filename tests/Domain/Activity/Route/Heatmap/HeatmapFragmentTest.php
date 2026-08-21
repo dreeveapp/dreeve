@@ -16,7 +16,7 @@ class HeatmapFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/heatmap');
+        $this->client->request('GET', '/api/internal/fragment/page/heatmap');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -28,7 +28,7 @@ class HeatmapFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/page/heatmap');
+        $this->client->request('GET', '/api/internal/fragment/page/heatmap');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -42,7 +42,7 @@ class HeatmapFragmentTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/fragment/data/heatmap');
+        $this->client->request('GET', '/api/internal/fragment/data/heatmap');
 
         $this->assertResponseStatusCodeSame(404);
     }
