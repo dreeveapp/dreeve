@@ -43,6 +43,16 @@ final readonly class GeneralSettings
             throw AthleteHasNotBeenConfigured::because('A "birthday" is required for the athlete in the general settings');
         }
 
+        $firstName = $athlete['firstName'] ?? null;
+        if (!is_string($firstName) || '' === trim($firstName)) {
+            throw AthleteHasNotBeenConfigured::because('A "firstName" is required for the athlete in the general settings');
+        }
+
+        $lastName = $athlete['lastName'] ?? null;
+        if (!is_string($lastName) || '' === trim($lastName)) {
+            throw AthleteHasNotBeenConfigured::because('A "lastName" is required for the athlete in the general settings');
+        }
+
         $maxHeartRateFormula = $athlete['maxHeartRateFormula'] ?? null;
         if (!is_string($maxHeartRateFormula) && !is_array($maxHeartRateFormula)) {
             throw AthleteHasNotBeenConfigured::because('A "maxHeartRateFormula" is required for the athlete in the general settings');
@@ -55,15 +65,13 @@ final readonly class GeneralSettings
         }
 
         $athleteBirthDate = AthleteBirthDate::fromString($birthday);
-        $firstName = $athlete['firstName'] ?? null;
-        $lastName = $athlete['lastName'] ?? null;
         $gender = $athlete['gender'] ?? null;
 
         return new self(
             appSubTitle: AppSubTitle::fromOptionalString($data['appSubTitle'] ?? null),
             profilePictureUrl: ProfilePictureUrl::fromOptionalString(is_string($data['profilePictureUrl'] ?? null) ? $data['profilePictureUrl'] : null),
             athlete: Athlete::create(
-                athleteId: substr(hash('sha256', sprintf('%s|%s|%s', $firstName ?? '', $lastName ?? '', $athleteBirthDate->format('Y-m-d'))), 0, 12),
+                athleteId: substr(hash('sha256', sprintf('%s|%s|%s', $firstName, $lastName, $athleteBirthDate->format('Y-m-d'))), 0, 12),
                 birthDate: $athleteBirthDate,
                 firstName: $firstName,
                 lastName: $lastName,

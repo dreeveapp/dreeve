@@ -27,6 +27,8 @@ class ValidAppSettingsGateTest extends ContainerTestCase
             ->willReturn(GeneralSettings::fromArray([
                 'athlete' => [
                     'birthday' => '1989-08-14',
+                    'firstName' => 'Robin',
+                    'lastName' => 'Ingelbrecht',
                     'maxHeartRateFormula' => 'fox',
                 ],
             ]));

@@ -36,7 +36,7 @@ class CachingSettingsRepositoryTest extends TestCase
 
     public static function cachedAccessorProvider(): iterable
     {
-        yield 'general' => ['general', GeneralSettings::fromArray(['athlete' => ['birthday' => '1989-08-14', 'maxHeartRateFormula' => 'fox']]), fn (SettingsRepository $r) => $r->general()];
+        yield 'general' => ['general', GeneralSettings::fromArray(['athlete' => ['birthday' => '1989-08-14', 'firstName' => 'Robin', 'lastName' => 'Ingelbrecht', 'maxHeartRateFormula' => 'fox']]), fn (SettingsRepository $r) => $r->general()];
         yield 'appearance' => ['appearance', AppearanceSettings::fromArray(null), fn (SettingsRepository $r) => $r->appearance()];
         yield 'maps' => ['maps', MapsSettings::fromArray(null), fn (SettingsRepository $r) => $r->maps()];
         yield 'import' => ['import', ImportSettings::fromArray(null), fn (SettingsRepository $r) => $r->import()];
@@ -70,6 +70,8 @@ class CachingSettingsRepositoryTest extends TestCase
             ->willReturn(GeneralSettings::fromArray([
                 'athlete' => [
                     'birthday' => '1989-08-14',
+                    'firstName' => 'Robin',
+                    'lastName' => 'Ingelbrecht',
                     'maxHeartRateFormula' => 'fox',
                 ],
             ]));

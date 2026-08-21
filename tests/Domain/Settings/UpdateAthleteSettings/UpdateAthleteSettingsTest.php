@@ -42,8 +42,23 @@ class UpdateAthleteSettingsTest extends TestCase
             'A "birthday" is required for the athlete in the general settings',
         ];
 
-        yield 'maxHeartRateFormula is missing' => [
+        yield 'firstName is missing' => [
             ['athlete' => ['birthday' => '1990-01-01']],
+            'A "firstName" is required for the athlete in the general settings',
+        ];
+
+        yield 'firstName is blank' => [
+            ['athlete' => ['birthday' => '1990-01-01', 'firstName' => '  ']],
+            'A "firstName" is required for the athlete in the general settings',
+        ];
+
+        yield 'lastName is blank' => [
+            ['athlete' => ['birthday' => '1990-01-01', 'firstName' => 'Jane', 'lastName' => '']],
+            'A "lastName" is required for the athlete in the general settings',
+        ];
+
+        yield 'maxHeartRateFormula is missing' => [
+            ['athlete' => ['birthday' => '1990-01-01', 'firstName' => 'Jane', 'lastName' => 'Doe']],
             'A "maxHeartRateFormula" is required for the athlete in the general settings',
         ];
 
@@ -76,6 +91,8 @@ class UpdateAthleteSettingsTest extends TestCase
     {
         $command = UpdateAthleteSettings::fromPayload(['athlete' => [
             'birthday' => '1990-01-01',
+            'firstName' => 'Jane',
+            'lastName' => 'Doe',
             'maxHeartRateFormula' => 'dateRangeBased',
             'maxHeartRateFormulaRanges' => [['on' => '2023-01-01', 'bpm' => '180']],
             'restingHeartRateFormula' => 'fixed',
@@ -84,6 +101,8 @@ class UpdateAthleteSettingsTest extends TestCase
 
         $this->assertSame([
             'birthday' => '1990-01-01',
+            'firstName' => 'Jane',
+            'lastName' => 'Doe',
             'maxHeartRateFormula' => ['2023-01-01' => 180],
             'restingHeartRateFormula' => 58,
         ], $command->getAthlete());
