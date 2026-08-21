@@ -47,7 +47,7 @@ Admin: Admin
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'Alle zugehörigen Wartungsaufgaben und Protokolle werden entfernt. Diese Aktion kann nicht rückgängig gemacht werden'
 'All sport types': 'Alle Sportarten'
 'All sport types must belong to the same activity type.': 'Alle Sportarten müssen demselben Aktivitätstyp angehören.'
-'Allowed IP addresses for the admin panel': 'Allowed IP addresses for the admin panel'
+'Allowed IP addresses for the admin panel': 'Zulässige IP-Adressen für den Adminbereich'
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Stellt außerdem den Trainingsassistenten in der Weboberfläche zur Verfügung. Erfordert die Aktivierung der oben genannten KI-Integration. Seien Sie vorsichtig, wenn Sie diese Option aktivieren, falls Ihre App öffentlich zugänglich ist.'
 'Any IP address': 'Any IP address'
 'App URL': App-URL
@@ -134,7 +134,7 @@ Elevation: Höhenmeter
 'Enable Strava webhooks': 'Strava webhooks aktivieren'
 Enabled: Aktiviert
 Endpoint: Endpunkt
-'Ends near': 'Verschleiß erreicht'
+'Ends near': 'Endet in der Nähe'
 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.': 'Gib eine bestehende Aktivität ein, um eine Vorschau der anzuwendenden Regeln und deren Auswirkungen anzuzeigen. Es werden keine Daten gespeichert.'
 'Enter your password': 'Gib dein Passwort ein'
 'Enter your username': 'Gib deinen Benutzernamen ein'
@@ -207,7 +207,7 @@ Longitude: Längengrad
 'Maintenance logs will appear here once maintenance has been registered.': 'Wartungsprotokolle werden hier angezeigt, sobald eine Wartung erfasst wurde.'
 'Maintenance tasks': Wartungsaufgaben
 Male: Männlich
-Maps: Maps
+Maps: Karte
 'Mark as commute': 'Als Pendelfahrt markieren'
 Match: Übereinstimmung
 "Matches on the activity's finishing point.": 'Übereinstimmungen am Ende der Aktivität.'
@@ -219,7 +219,7 @@ Match: Übereinstimmung
 Message: Nachricht
 'Metric display order': 'Anzeigereihenfolge der Metriken'
 Metrics: Metriken
-Minutes: Minutes
+Minutes: Minuten
 Mode: Modus
 Model: Modell
 Monday: Montag
@@ -292,8 +292,8 @@ Remove: Entfernen
 Removing...: Entfernen...
 'Render the map tiles in greyscale': 'Karte in Graustufen anzeigen'
 "Reorder widgets and set each widget's width.": 'Widgets neu anordnen und die Breite jedes Widgets festlegen.'
-'Require a login for the entire app': 'Require a login for the entire app'
-'Require a login for the entire app, not just the admin panel. Recommended when your instance is reachable from the internet, which it has to be for the Strava webhook.': 'Für die gesamte App, nicht nur für das Admin-Panel, ist ein Login erforderlich. Dies wird empfohlen, wenn die Instanz über das Internet erreichbar ist, was für den Strava-Webhook notwendig ist.'
+'Require a login for the entire app': 'Für die gesamte App ist eine Anmeldung erforderlich.'
+'Require a login for the entire app, not just the admin panel. Recommended when your instance is reachable from the internet, which it has to be for the Strava webhook.': 'Für die gesamte App, nicht nur für den Adminbereich, ist ein Login erforderlich. Dies wird empfohlen, wenn die Instanz über das Internet erreichbar ist, was für den Strava-Webhook notwendig ist.'
 'Reset dashboard to default': 'Dashboard auf Standard zurücksetzen'
 'Reset to default': 'Auf Standard zurücksetzen'
 Resetting...: 'Wird zurückgesetzt...'
@@ -457,7 +457,7 @@ Weekdays: Wochentage
 'When disabled, gear marked as retired is left out of the chart.': 'Wenn deaktiviert, wird als ausgemustert markierte Ausrüstung nicht im Diagramm angezeigt.'
 'When disabled, scrolling over a map zooms it instead of scrolling the page.': 'Wenn diese Option deaktiviert ist, wird beim Überfahren einer Karte mit der Maus die Karte gezoomt, anstatt die Seite zu scrollen.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Wenn aktiviert, wird als ausgemustert markierte Ausrüstung übersprungen. Ihre Komponenten erhöhen die Nutzung nicht und es wird keine Wartung dafür verfolgt.'
-'When set, requests to the admin panel from any other IP address are rejected.': 'Wenn diese Einstellung aktiviert ist, werden Anfragen an das Admin-Panel von allen anderen IP-Adressen abgewiesen.'
+'When set, requests to the admin panel from any other IP address are rejected.': 'Wenn diese Einstellung aktiviert ist, werden Anfragen an den Adminbereich von allen anderen IP-Adressen abgewiesen.'
 'Workout type': Trainingstyp
 'You can add it back to your dashboard again later.': 'Du kannst es später wieder zu deinem Dashboard hinzufügen.'
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'Du kannst Dateien auch direkt in den Ordner {watchFolder} kopieren oder {linkOpen}manuell eine Aktivität hinzufügen{linkClose}.'
