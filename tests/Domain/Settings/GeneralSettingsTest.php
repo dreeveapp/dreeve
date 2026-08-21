@@ -13,9 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 class GeneralSettingsTest extends TestCase
 {
-    /**
-     * @return array<string, mixed>
-     */
     private static function validData(): array
     {
         return [
@@ -78,6 +75,25 @@ class GeneralSettingsTest extends TestCase
         $this->assertEmpty($settings->getAthleteWeightHistory(UnitSystem::METRIC)->findAll());
         // Resting heart rate defaults to the heuristic age-based formula.
         $this->assertGreaterThan(0, $settings->getAthlete()->getRestingHeartRate(SerializableDateTime::fromString('2024-01-01')));
+    }
+
+    public function testItFallsBackToAPlaceholderNameWhenTheNameIsBlank(): void
+    {
+        $data = self::validData();
+        $data['athlete']['firstName'] = '';
+        $data['athlete']['lastName'] = '';
+
+        $athlete = GeneralSettings::fromArray($data)->getAthlete();
+
+        $this->assertSame('John Doe', (string) $athlete->getName());
+        $this->assertSame('J', $athlete->getFirstLetterOfFirstName());
+    }
+
+    public function testItIgnoresANonArrayAthlete(): void
+    {
+        $this->expectExceptionObject(new AthleteHasNotBeenConfigured('A "birthday" is required for the athlete in the general settings'));
+
+        GeneralSettings::fromArray(['athlete' => 'Robin']);
     }
 
     public function testItThrowsWhenBirthdayIsMissing(): void

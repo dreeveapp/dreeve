@@ -15,8 +15,8 @@ final readonly class Athlete implements SupportsAITooling
     private function __construct(
         private string $athleteId,
         private SerializableDateTime $birthDate,
-        private ?string $firstName,
-        private ?string $lastName,
+        private ?Name $firstName,
+        private ?Name $lastName,
         private ?string $gender,
         private MaxHeartRateFormula $maxHeartRateFormula,
         private RestingHeartRateFormula $restingHeartRateFormula,
@@ -32,12 +32,14 @@ final readonly class Athlete implements SupportsAITooling
         MaxHeartRateFormula $maxHeartRateFormula,
         RestingHeartRateFormula $restingHeartRateFormula,
     ): self {
+        $gender = trim($gender ?? '');
+
         return new self(
             athleteId: $athleteId,
             birthDate: $birthDate,
-            firstName: $firstName,
-            lastName: $lastName,
-            gender: $gender,
+            firstName: Name::fromOptionalString($firstName),
+            lastName: Name::fromOptionalString($lastName),
+            gender: '' === $gender ? null : $gender,
             maxHeartRateFormula: $maxHeartRateFormula,
             restingHeartRateFormula: $restingHeartRateFormula,
         );
@@ -81,7 +83,7 @@ final readonly class Athlete implements SupportsAITooling
 
     public function getFirstLetterOfFirstName(): string
     {
-        return substr($this->firstName ?? 'J', 0, 1);
+        return substr((string) ($this->firstName ?? 'J'), 0, 1);
     }
 
     public function isMale(): bool

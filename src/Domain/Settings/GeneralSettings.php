@@ -36,7 +36,7 @@ final readonly class GeneralSettings
     public static function fromArray(?array $data): self
     {
         $data ??= [];
-        $athlete = $data['athlete'] ?? [];
+        $athlete = is_array($data['athlete'] ?? null) ? $data['athlete'] : [];
 
         $birthday = $athlete['birthday'] ?? null;
         if (!is_string($birthday) || '' === trim($birthday)) {
@@ -57,6 +57,7 @@ final readonly class GeneralSettings
         $athleteBirthDate = AthleteBirthDate::fromString($birthday);
         $firstName = $athlete['firstName'] ?? null;
         $lastName = $athlete['lastName'] ?? null;
+        $gender = $athlete['gender'] ?? null;
 
         return new self(
             appSubTitle: AppSubTitle::fromOptionalString($data['appSubTitle'] ?? null),
@@ -66,7 +67,7 @@ final readonly class GeneralSettings
                 birthDate: $athleteBirthDate,
                 firstName: $firstName,
                 lastName: $lastName,
-                gender: $athlete['gender'] ?? null,
+                gender: $gender,
                 maxHeartRateFormula: new MaxHeartRateFormulas()->determineFormula($maxHeartRateFormula),
                 restingHeartRateFormula: new RestingHeartRateFormulas()->determineFormula($restingHeartRateFormula),
             ),

@@ -21,9 +21,15 @@ class NonEmptyStringLiteralTest extends TestCase
     public function testFromOptionalString(): void
     {
         self::assertNull(TestNonEmptyStringLiteral::fromOptionalString());
+        self::assertNull(TestNonEmptyStringLiteral::fromOptionalString(''));
+        self::assertNull(TestNonEmptyStringLiteral::fromOptionalString('   '));
         self::assertEquals(
             'test',
             (string) TestNonEmptyStringLiteral::fromOptionalString('test')
+        );
+        self::assertEquals(
+            'test',
+            (string) TestNonEmptyStringLiteral::fromOptionalString('  test  ')
         );
     }
 

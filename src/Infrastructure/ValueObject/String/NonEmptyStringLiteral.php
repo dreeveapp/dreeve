@@ -29,6 +29,7 @@ abstract readonly class NonEmptyStringLiteral implements \JsonSerializable, \Str
 
     public static function fromOptionalString(?string $string = null): ?static
     {
+        $string = trim($string ?? '');
         if (!$string) {
             return null;
         }

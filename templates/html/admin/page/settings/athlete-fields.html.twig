@@ -20,11 +20,11 @@
     <div class="grid gap-4 sm:grid-cols-2">
         <div>
             <label for="firstName">{{ "First name"|trans({}, 'admin') }}</label>
-            <input type="text" id="firstName" name="{{ fieldPrefix }}[firstName]" value="{{ athlete.firstName ?? '' }}">
+            <input type="text" id="firstName" name="{{ fieldPrefix }}[firstName]" value="{{ athlete.firstName ?? '' }}" required>
         </div>
         <div>
             <label for="lastName">{{ "Last name"|trans({}, 'admin') }}</label>
-            <input type="text" id="lastName" name="{{ fieldPrefix }}[lastName]" value="{{ athlete.lastName ?? '' }}">
+            <input type="text" id="lastName" name="{{ fieldPrefix }}[lastName]" value="{{ athlete.lastName ?? '' }}" required>
         </div>
     </div>
     <div class="grid gap-4 sm:grid-cols-2">

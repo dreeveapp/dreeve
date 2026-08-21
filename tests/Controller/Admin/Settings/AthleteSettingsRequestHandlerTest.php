@@ -26,8 +26,8 @@ class AthleteSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-athlete-settings"]'));
 
         $this->assertCount(0, $crawler->filter('input[name="group"]'));
-        $this->assertCount(1, $crawler->filter('input[name="athlete[firstName]"]'));
-        $this->assertCount(1, $crawler->filter('input[name="athlete[lastName]"]'));
+        $this->assertCount(1, $crawler->filter('input[name="athlete[firstName]"][required]'));
+        $this->assertCount(1, $crawler->filter('input[name="athlete[lastName]"][required]'));
         $this->assertCount(1, $crawler->filter('input[name="athlete[birthday]"]'));
         $this->assertCount(1, $crawler->filter('select[name="athlete[gender]"]'));
         $this->assertCount(1, $crawler->filter('select[name="athlete[maxHeartRateFormula]"]'));
