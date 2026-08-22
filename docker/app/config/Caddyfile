@@ -4,6 +4,9 @@
 
 	servers {
 		trusted_proxies static private_ranges
+		timeouts {
+			read_body 60s
+		}
 	}
 
 	frankenphp {
