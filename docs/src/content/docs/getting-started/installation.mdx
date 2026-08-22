@@ -111,6 +111,11 @@ ADMIN_PASSWORD_HASH='replace-me'
 # which is what you want in Docker. See the "Running behind a reverse proxy" section below.
 # TRUSTED_PROXIES=private_ranges
 
+# Enables the HTTP API that lets an external client upload activity files. Leave it unset
+# to keep the API closed; while it is unset every API request is rejected.
+# Generate a value under Settings -> Security -> API access in the admin panel.
+# DREEVE_API_KEY=drv_...
+
 # Only needed when IMPORT_MODE=stravaApi.
 # See https://docs.dreeve.app/importing/strava-import/
 # STRAVA_CLIENT_ID=

@@ -3,6 +3,7 @@
 'A rule applies': 'A rule applies'
 AI: AI
 AM/PM: AM/PM
+'API access': 'API access'
 'API key': 'API key'
 Active: Active
 'Activities excluded from peak power outputs': 'Activities excluded from peak power outputs'
@@ -97,10 +98,12 @@ Config: Config
 Configure: Configure
 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.'
 'Configure {widget}': 'Configure {widget}'
+Configured: Configured
 'Configured via an environment variable and cannot be changed here.': 'Configured via an environment variable and cannot be changed here.'
 'Configured via environment variables and cannot be changed here.': 'Configured via environment variables and cannot be changed here.'
 'Connected sensors': 'Connected sensors'
 'Continues to next rule': 'Continues to next rule'
+'Copy this API key': 'Copy this API key'
 'Cron expression': 'Cron expression'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."
 Daemon: Daemon
@@ -119,6 +122,7 @@ Description: Description
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.'
 Disabled: Disabled
 Distance: Distance
+Done: Done
 'Drag to reorder': 'Drag to reorder'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Drag to set the order in which sport types are displayed throughout the app.'
 Duration: Duration
@@ -161,6 +165,7 @@ From: From
 'Gear will appear here once you add them.': 'Gear will appear here once you add them.'
 Gender: Gender
 General: General
+'Generate an API key': 'Generate an API key'
 'Go to first page': 'Go to first page'
 'Go to last page': 'Go to last page'
 'Go to next page': 'Go to next page'
@@ -200,6 +205,7 @@ Latitude: Latitude
 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.': 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.'
 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.'
 'Leave empty to include all sport types.': 'Leave empty to include all sport types.'
+'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.'
 Locale: Locale
 Log: Log
 Longitude: Longitude
@@ -240,6 +246,7 @@ Monday: Monday
 'No sport types selected': 'No sport types selected'
 'No unit': 'No unit'
 'Normal date format': 'Normal date format'
+'Not configured, the API is closed': 'Not configured, the API is closed'
 'Notification services': 'Notification services'
 'Notify when an import was successful': 'Notify when an import was successful'
 'Number of activities to display': 'Number of activities to display'
@@ -263,6 +270,7 @@ Operator: Operator
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Parts you track maintenance for, eg: chains, cassettes, brake pads...'
 'Passes near': 'Passes near'
 Password: Password
+'Paste the value above, replacing any key that is already there.': 'Paste the value above, replacing any key that is already there.'
 'Performed on': 'Performed on'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
 'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
@@ -277,6 +285,7 @@ Radius: Radius
 'Recording device': 'Recording device'
 'Recording device management': 'Recording device management'
 'Recording devices will appear here once activities have been imported.': 'Recording devices will appear here once activities have been imported.'
+'Recreate your containers': 'Recreate your containers'
 'Register maintenance': 'Register maintenance'
 'Remember me for 7 days': 'Remember me for 7 days'
 Remove: Remove
@@ -336,7 +345,9 @@ Sensors: Sensors
 'Set name': 'Set name'
 'Set recording device': 'Set recording device'
 'Set sport type': 'Set sport type'
+'Set through the {envVar} environment variable and cannot be changed here.': 'Set through the {envVar} environment variable and cannot be changed here.'
 'Set workout type': 'Set workout type'
+'Set {envVar} in your {envFile} file': 'Set {envVar} in your {envFile} file'
 Settings: Settings
 'Short date format': 'Short date format'
 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.'
@@ -383,6 +394,7 @@ Tasks: Tasks
 'The URL the app is hosted on.': 'The URL the app is hosted on.'
 'The activity started': 'The activity started'
 'The activity will be marked as a commute.': 'The activity will be marked as a commute.'
+'The allowed IP addresses above do not apply to it, the key is the only access control there.': 'The allowed IP addresses above do not apply to it, the key is the only access control there.'
 'The average cadence': 'The average cadence'
 'The average heart rate': 'The average heart rate'
 'The average power': 'The average power'
@@ -397,6 +409,7 @@ Tasks: Tasks
 'The elevation gain': 'The elevation gain'
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
 'The formula used to calculate your resting heart rate. The default is an age-based estimate.': 'The formula used to calculate your resting heart rate. The default is an age-based estimate.'
+'The key lets an external client upload activity files over HTTP. It is the only thing guarding that endpoint, so treat it like a password.': 'The key lets an external client upload activity files over HTTP. It is the only thing guarding that endpoint, so treat it like a password.'
 'The last zone has no upper bound.': 'The last zone has no upper bound.'
 'The locale used to render the app.': 'The locale used to render the app.'
 'The max heart rate': 'The max heart rate'
@@ -419,6 +432,7 @@ Tasks: Tasks
 'This action cannot be undone.': 'This action cannot be undone.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'This component is fitted to multiple gears, pick the one you serviced.'
 'This only removes the import record, the imported activity is kept.': 'This only removes the import record, the imported activity is kept.'
+'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'This page shows a different key every time it is opened, and only the one in your environment file is applied.'
 "This value is imported from Strava and can't be edited here.": "This value is imported from Strava and can't be edited here."
 'This widget still needs to be configured.': 'This widget still needs to be configured.'
 'This will discard your current dashboard layout and restore the default widgets.': 'This will discard your current dashboard layout and restore the default widgets.'
@@ -510,6 +524,7 @@ then: then
 '{count} files uploaded': '{count} files uploaded'
 '{count} images selected': '{count} images selected'
 '{count} rules apply': '{count} rules apply'
+'{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it.'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images'

@@ -26,6 +26,7 @@
         <env name="AI_API_KEY" value="the-key" force="true" />
         <env name="DEV_MODE_IS_ENABLED" value="0" force="true" />
         <env name="TRUSTED_PROXIES" value="" force="true" />
+        <env name="DREEVE_API_KEY" value="" force="true" />
     </php>
     <extensions>
         <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />

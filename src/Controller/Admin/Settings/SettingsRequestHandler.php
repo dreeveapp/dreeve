@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Settings;
 
 use App\Application\AppUrl;
+use App\Domain\Api\Token;
 use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
 use App\Domain\Import\ImportMode;
 use App\Domain\Integration\AI\AIApiKey;
@@ -48,6 +49,7 @@ final readonly class SettingsRequestHandler
         private AdminUserName $adminUserName,
         private AdminAllowedIpAddresses $adminAllowedIpAddresses,
         private ClientIpResolver $clientIpResolver,
+        private Token $apiKey,
     ) {
     }
 
@@ -97,6 +99,7 @@ final readonly class SettingsRequestHandler
                 'adminUsername' => $this->adminUserName,
                 'adminAllowedIpAddresses' => $this->adminAllowedIpAddresses,
                 'clientIpAddress' => $this->clientIpResolver->resolve($request),
+                'apiKey' => $this->apiKey,
             ],
         ));
     }

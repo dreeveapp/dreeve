@@ -37,7 +37,7 @@ class ActivityFileNameTest extends TestCase
     public function testFromStringThrows(string $name, string $expectedExceptionMessage): void
     {
         $this->expectException(InvalidActivityFileName::class);
-        $this->expectExceptionMessage($expectedExceptionMessage);
+        $this->expectExceptionMessageIsOrContains($expectedExceptionMessage);
 
         ActivityFileName::fromString($name);
     }

@@ -15,12 +15,12 @@ final readonly class ApiAuthenticationEntryPoint implements AuthenticationEntryP
 {
     private const string REALM = 'Dreeve';
 
-    public function start(Request $request, ?AuthenticationException $authException = null): Response
+    public function start(Request $request, ?AuthenticationException $authException = null): ApiErrorResponse
     {
         return $this->unauthorized();
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ApiErrorResponse
     {
         return $this->unauthorized();
     }

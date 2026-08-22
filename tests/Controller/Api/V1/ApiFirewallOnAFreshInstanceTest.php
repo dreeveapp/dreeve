@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Api\V1;
 
-use App\Domain\Api\KeyValueBasedTokenRepository;
-use App\Domain\Api\StoredToken;
 use App\Domain\Api\Token;
 use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -48,6 +45,13 @@ class ApiFirewallOnAFreshInstanceTest extends ControllerWebTestCase
     }
 
     #[\Override]
+    protected function prepareEnvironment(): void
+    {
+        $this->token = Token::generate();
+        $_SERVER['DREEVE_API_KEY'] = $_ENV['DREEVE_API_KEY'] = (string) $this->token;
+    }
+
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -55,10 +59,5 @@ class ApiFirewallOnAFreshInstanceTest extends ControllerWebTestCase
         /** @var KeyValueStore $keyValueStore */
         $keyValueStore = $this->getContainer()->get(KeyValueStore::class);
         $keyValueStore->clear(SettingsGroup::GENERAL->keyValueKey());
-
-        $this->token = Token::generate();
-        (new KeyValueBasedTokenRepository($keyValueStore))->save(
-            StoredToken::create($this->token->hash(), SerializableDateTime::some()),
-        );
     }
 }

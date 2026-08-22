@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Api\V1;
 
-use App\Domain\Api\KeyValueBasedTokenRepository;
-use App\Domain\Api\StoredToken;
 use App\Domain\Api\Token;
 use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\KeyValue\KeyValue;
@@ -13,7 +11,6 @@ use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Security\AuthenticatedVisitor;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Response;
@@ -105,23 +102,30 @@ class ApiFirewallTest extends ControllerWebTestCase
         $this->assertSame(Response::HTTP_UNAUTHORIZED, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testItRejectsEverythingWhenNoTokenHasBeenGenerated(): void
+    public function testItRejectsEverythingWhenNoKeyIsConfigured(): void
     {
-        (new KeyValueBasedTokenRepository($this->getContainer()->get(KeyValueStore::class)))->revoke();
+        $this->withApiKey('');
 
         $this->client->request('GET', '/api/v1/status', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertSame(Response::HTTP_UNAUTHORIZED, $this->client->getResponse()->getStatusCode());
     }
 
-    #[\Override]
-    protected function setUp(): void
+    public function testItRejectsEverythingWhenTheConfiguredKeyIsMalformed(): void
     {
-        parent::setUp();
+        // Strict format validation makes this reachable: the key is set, but unusable.
+        $this->withApiKey('replace-me');
 
+        $this->client->request('GET', '/api/v1/status', server: ['HTTP_AUTHORIZATION' => 'Bearer replace-me']);
+
+        $this->assertSame(Response::HTTP_UNAUTHORIZED, $this->client->getResponse()->getStatusCode());
+    }
+
+    #[\Override]
+    protected function prepareEnvironment(): void
+    {
+        // Runs before createClient(), so the container is built with the key already in place.
         $this->token = Token::generate();
-        (new KeyValueBasedTokenRepository($this->getContainer()->get(KeyValueStore::class)))->save(
-            StoredToken::create($this->token->hash(), SerializableDateTime::some()),
-        );
+        $_SERVER['DREEVE_API_KEY'] = $_ENV['DREEVE_API_KEY'] = (string) $this->token;
     }
 }

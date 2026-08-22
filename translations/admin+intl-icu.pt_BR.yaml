@@ -3,6 +3,7 @@
 'A rule applies': 'A rule applies'
 AI: IA
 AM/PM: AM/PM
+'API access': 'API access'
 'API key': 'Chave da API'
 Active: Ativo
 'Activities excluded from peak power outputs': 'Atividades excluídas dos picos de potência'
@@ -97,10 +98,12 @@ Config: Configuração
 Configure: Configurar
 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.'
 'Configure {widget}': 'Configurar {widget}'
+Configured: Configured
 'Configured via an environment variable and cannot be changed here.': 'Configurado por meio de uma variável de ambiente e não pode ser alterado aqui.'
 'Configured via environment variables and cannot be changed here.': 'Configurado por meio de variáveis de ambiente e não pode ser alterado aqui.'
 'Connected sensors': 'Connected sensors'
 'Continues to next rule': 'Continues to next rule'
+'Copy this API key': 'Copy this API key'
 'Cron expression': 'Expressão Cron'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Expressão Cron especificando quando a ação deve ser executada, ex. '0 14 * * *' executa todos os dias às 14:00. Consulte crontab.guru para obter ajuda."
 Daemon: Daemon
@@ -119,6 +122,7 @@ Description: Descrição
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Instruções detalhadas estão disponíveis {linkOpen}na documentação{linkClose}.'
 Disabled: Disabled
 Distance: Distance
+Done: Done
 'Drag to reorder': 'Arraste para reordenar'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Arraste para definir a ordem em que os tipos de esporte são exibidos em todo o aplicativo.'
 Duration: Duration
@@ -161,6 +165,7 @@ From: De
 'Gear will appear here once you add them.': 'Os equipamentos aparecerão aqui assim que você os adicionar.'
 Gender: Gênero
 General: Geral
+'Generate an API key': 'Generate an API key'
 'Go to first page': 'Ir para a primeira página'
 'Go to last page': 'Ir para a última página'
 'Go to next page': 'Ir para a próxima página'
@@ -200,6 +205,7 @@ Latitude: Latitude
 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.': 'Deixe tudo desmarcado para importar todos os tipos de esporte. ⚠️ Restringir isso após a importação das atividades excluirá as atividades dos tipos de esporte excluídos.'
 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Deixe tudo desmarcado para importar todas as visibilidades. ⚠️ Restringir isso após a importação das atividades excluirá as atividades das visibilidades excluídas.'
 'Leave empty to include all sport types.': 'Deixe vazio para incluir todos os tipos de esporte.'
+'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.'
 Locale: Localidade
 Log: Registro
 Longitude: Longitude
@@ -240,6 +246,7 @@ Monday: Monday
 'No sport types selected': 'No sport types selected'
 'No unit': 'No unit'
 'Normal date format': 'Formato de data normal'
+'Not configured, the API is closed': 'Not configured, the API is closed'
 'Notification services': 'Serviços de notificação'
 'Notify when an import was successful': 'Notify when an import was successful'
 'Number of activities to display': 'Número de atividades para exibir'
@@ -263,6 +270,7 @@ Operator: Operator
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Peças para as quais você acompanha a manutenção, ex: correntes, cassetes, pastilhas de freio...'
 'Passes near': 'Passes near'
 Password: Senha
+'Paste the value above, replacing any key that is already there.': 'Paste the value above, replacing any key that is already there.'
 'Performed on': 'Realizado em'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos dos tipos de esporte selecionados são excluídas da galeria de fotos.'
 'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
@@ -277,6 +285,7 @@ Radius: Radius
 'Recording device': 'Recording device'
 'Recording device management': 'Gerenciamento de dispositivos de gravação'
 'Recording devices will appear here once activities have been imported.': 'Os dispositivos de gravação aparecerão aqui assim que as atividades forem importadas.'
+'Recreate your containers': 'Recreate your containers'
 'Register maintenance': 'Registrar manutenção'
 'Remember me for 7 days': 'Lembrar-me por 7 dias'
 Remove: Remover
@@ -336,7 +345,9 @@ Sensors: Sensors
 'Set name': 'Set name'
 'Set recording device': 'Set recording device'
 'Set sport type': 'Set sport type'
+'Set through the {envVar} environment variable and cannot be changed here.': 'Set through the {envVar} environment variable and cannot be changed here.'
 'Set workout type': 'Set workout type'
+'Set {envVar} in your {envFile} file': 'Set {envVar} in your {envFile} file'
 Settings: Configurações
 'Short date format': 'Formato de data curto'
 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Atalhos que um usuário pode escolher no assistente de treino. Não coloque uma barra (/) no início do comando.'
@@ -383,6 +394,7 @@ Tasks: Tarefas
 'The URL the app is hosted on.': 'O URL onde o aplicativo está hospedado.'
 'The activity started': 'The activity started'
 'The activity will be marked as a commute.': 'The activity will be marked as a commute.'
+'The allowed IP addresses above do not apply to it, the key is the only access control there.': 'The allowed IP addresses above do not apply to it, the key is the only access control there.'
 'The average cadence': 'The average cadence'
 'The average heart rate': 'The average heart rate'
 'The average power': 'The average power'
@@ -397,6 +409,7 @@ Tasks: Tarefas
 'The elevation gain': 'The elevation gain'
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'A fórmula usada para calcular sua frequência cardíaca máxima. O padrão é Fox (220 − idade).'
 'The formula used to calculate your resting heart rate. The default is an age-based estimate.': 'A fórmula usada para calcular sua frequência cardíaca de repouso. O padrão é uma estimativa baseada na idade.'
+'The key lets an external client upload activity files over HTTP. It is the only thing guarding that endpoint, so treat it like a password.': 'The key lets an external client upload activity files over HTTP. It is the only thing guarding that endpoint, so treat it like a password.'
 'The last zone has no upper bound.': 'A última zona não tem limite superior.'
 'The locale used to render the app.': 'A localidade usada para renderizar o aplicativo.'
 'The max heart rate': 'The max heart rate'
@@ -419,6 +432,7 @@ Tasks: Tarefas
 'This action cannot be undone.': 'Esta ação não pode ser desfeita.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Este componente está instalado em vários equipamentos, escolha aquele em que você fez a manutenção.'
 'This only removes the import record, the imported activity is kept.': 'This only removes the import record, the imported activity is kept.'
+'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'This page shows a different key every time it is opened, and only the one in your environment file is applied.'
 "This value is imported from Strava and can't be edited here.": 'Este valor é importado do Strava e não pode ser editado aqui.'
 'This widget still needs to be configured.': 'Este widget ainda precisa ser configurado.'
 'This will discard your current dashboard layout and restore the default widgets.': 'Isso descartará o layout atual do seu painel e restaurará os widgets padrão.'
@@ -510,6 +524,7 @@ then: then
 '{count} files uploaded': '{count} arquivos enviados'
 '{count} images selected': '{count} imagens selecionadas'
 '{count} rules apply': '{count} rules apply'
+'{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it.'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': 'URLs de serviços de notificação {shoutrrr} (ex. discord://token@id, telegram://token@telegram/?channels=canal). Deixe vazio para desativar as notificações totalmente.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Arraste e solte{strongClose} ou {strongOpen}navegue{strongClose} para escolher os arquivos'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Arraste e solte{strongClose} ou {strongOpen}navegue{strongClose} para escolher imagens'

@@ -19,5 +19,4 @@ enum Key: string
     case SETTINGS_DAEMON = 'settingsDaemon';
     case SETTINGS_SECURITY = 'settingsSecurity';
     case AUTOMATION_RULES_BACKFILL = 'automationRulesBackfill';
-    case API_TOKEN = 'apiToken';
 }

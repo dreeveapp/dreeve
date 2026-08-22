@@ -4,24 +4,20 @@ declare(strict_types=1);
 
 namespace App\Tests\Infrastructure\Security\Api;
 
-use App\Domain\Api\StoredToken;
 use App\Domain\Api\Token;
 use App\Infrastructure\Security\Api\ApiTokenHandler;
 use App\Infrastructure\Security\Api\ApiUser;
-use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 class ApiTokenHandlerTest extends TestCase
 {
-    public function testItResolvesTheApiUserForTheStoredToken(): void
+    public function testItResolvesTheApiUserForTheConfiguredToken(): void
     {
         $token = Token::generate();
-        $handler = new ApiTokenHandler(TokenRepositoryStub::holding(
-            StoredToken::create($token->hash(), SerializableDateTime::some()),
-        ));
 
-        $userBadge = $handler->getUserBadgeFrom((string) $token);
+        $userBadge = new ApiTokenHandler($token)->getUserBadgeFrom((string) $token);
 
         $this->assertSame(ApiUser::IDENTIFIER, $userBadge->getUserIdentifier());
     }
@@ -29,40 +25,17 @@ class ApiTokenHandlerTest extends TestCase
     public function testItSuppliesItsOwnUserLoader(): void
     {
         $token = Token::generate();
-        $handler = new ApiTokenHandler(TokenRepositoryStub::holding(
-            StoredToken::create($token->hash(), SerializableDateTime::some()),
-        ));
 
         // Without a loader the authenticator falls back to the user provider.
-        $userLoader = $handler->getUserBadgeFrom((string) $token)->getUserLoader();
+        $userLoader = new ApiTokenHandler($token)->getUserBadgeFrom((string) $token)->getUserLoader();
 
         $this->assertNotNull($userLoader);
         $this->assertEquals(new ApiUser(), $userLoader(ApiUser::IDENTIFIER));
     }
 
-    public function testItRejectsEveryTokenWhenNoneHasBeenGenerated(): void
-    {
-        $handler = new ApiTokenHandler(TokenRepositoryStub::empty());
-
-        $this->expectException(BadCredentialsException::class);
-
-        $handler->getUserBadgeFrom((string) Token::generate());
-    }
-
-    public function testItRejectsAnEmptyTokenWhenNoneHasBeenGenerated(): void
-    {
-        $handler = new ApiTokenHandler(TokenRepositoryStub::empty());
-
-        $this->expectException(BadCredentialsException::class);
-
-        $handler->getUserBadgeFrom('');
-    }
-
     public function testItRejectsAnotherToken(): void
     {
-        $handler = new ApiTokenHandler(TokenRepositoryStub::holding(
-            StoredToken::create(Token::generate()->hash(), SerializableDateTime::some()),
-        ));
+        $handler = new ApiTokenHandler(Token::generate());
 
         $this->expectException(BadCredentialsException::class);
 
@@ -72,9 +45,7 @@ class ApiTokenHandlerTest extends TestCase
     public function testItRejectsTheTokenWithoutItsPrefix(): void
     {
         $token = Token::generate();
-        $handler = new ApiTokenHandler(TokenRepositoryStub::holding(
-            StoredToken::create($token->hash(), SerializableDateTime::some()),
-        ));
+        $handler = new ApiTokenHandler($token);
 
         $this->expectException(BadCredentialsException::class);
 
@@ -83,26 +54,37 @@ class ApiTokenHandlerTest extends TestCase
 
     public function testItRejectsAnEmptyToken(): void
     {
-        $handler = new ApiTokenHandler(TokenRepositoryStub::holding(
-            StoredToken::create(Token::generate()->hash(), SerializableDateTime::some()),
-        ));
+        $handler = new ApiTokenHandler(Token::generate());
 
         $this->expectException(BadCredentialsException::class);
 
         $handler->getUserBadgeFrom('');
     }
 
-    public function testItRejectsARevokedToken(): void
+    #[DataProvider('provideValuesThatCloseTheApi')]
+    public function testItRejectsEveryTokenWhenTheKeyIsNotUsable(string $configured, string $sent): void
     {
-        $token = Token::generate();
-        $tokenRepository = TokenRepositoryStub::holding(
-            StoredToken::create($token->hash(), SerializableDateTime::some()),
-        );
-        $handler = new ApiTokenHandler($tokenRepository);
-        $tokenRepository->revoke();
+        $handler = new ApiTokenHandler(Token::fromString($configured));
 
         $this->expectException(BadCredentialsException::class);
 
-        $handler->getUserBadgeFrom((string) $token);
+        $handler->getUserBadgeFrom($sent);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideValuesThatCloseTheApi(): iterable
+    {
+        // hash_equals('', '') is true, so an unconfigured instance must reject an empty bearer
+        // token rather than hand it ROLE_API.
+        yield 'not configured, empty token sent' => ['', ''];
+        yield 'not configured, real token sent' => ['', (string) Token::generate()];
+        yield 'whitespace only' => ['   ', ''];
+        // Copying the sentinel the Strava vars use is the mistake most likely to be made.
+        yield 'the replace-me sentinel' => ['replace-me', 'replace-me'];
+        yield 'a password someone typed' => ['hunter2', 'hunter2'];
+        yield 'right length, no prefix' => [str_repeat('a', 64), str_repeat('a', 64)];
+        yield 'uppercase hex' => ['drv_'.str_repeat('A', 64), 'drv_'.str_repeat('A', 64)];
     }
 }

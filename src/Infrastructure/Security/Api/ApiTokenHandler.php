@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Security\Api;
 
-use App\Domain\Api\TokenRepository;
+use App\Domain\Api\Token;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -12,15 +12,13 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 final readonly class ApiTokenHandler implements AccessTokenHandlerInterface
 {
     public function __construct(
-        private TokenRepository $tokenRepository,
+        private Token $token,
     ) {
     }
 
     public function getUserBadgeFrom(#[\SensitiveParameter] string $accessToken): UserBadge
     {
-        $storedToken = $this->tokenRepository->find();
-
-        if (!$storedToken?->getHash()->matches($accessToken)) {
+        if ($this->token->isEmpty() || !$this->token->hasValidFormat() || !$this->token->matches($accessToken)) {
             throw new BadCredentialsException();
         }
 

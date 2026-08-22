@@ -58,6 +58,8 @@ stringData:
   ADMIN_USERNAME: "admin"
   # bcrypt hash - generate per the Dreeve docs
   ADMIN_PASSWORD_HASH: "CHANGE-ME"
+  # Optional. Enables the activity upload API; omit it to keep the API closed.
+  # DREEVE_API_KEY: "drv_..."
 ---
 # Replaces the bind-mounted php.ini from the compose setup. Large
 # imports are memory-hungry; 4G matches the upstream guidance.
