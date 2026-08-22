@@ -19,9 +19,11 @@ class ApiFirewallOnAFreshInstanceTest extends ControllerWebTestCase
     {
         $this->client->request('GET', '/api/v1/status', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
+        // Pairing a device is the first thing a user does, so this has to work before the athlete
+        // is configured and before a single activity exists.
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $this->assertSame('not_found', Json::decode((string) $response->getContent())['error']);
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertSame('dreeve', Json::decode((string) $response->getContent())['app']);
     }
 
     public function testItStillRejectsAnAnonymousRequest(): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Import\UploadActivityFile;
 
+use App\Domain\Import\InvalidActivityFileName;
 use App\Domain\Import\UploadActivityFile\UploadActivityFile;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -97,5 +98,21 @@ class UploadActivityFileTest extends TestCase
             ['filename' => 'ride.fit', 'content' => ''],
             'The file content must be valid, non-empty base64.',
         ];
+    }
+
+    public function testFromFile(): void
+    {
+        $command = UploadActivityFile::fromFile('ride.fit', 'raw-fit-bytes');
+
+        $this->assertSame('ride.fit', (string) $command->getFilename());
+        // No base64 round trip: the API path already holds the raw bytes.
+        $this->assertSame('raw-fit-bytes', $command->getContents());
+    }
+
+    public function testFromFileWithAnInvalidName(): void
+    {
+        $this->expectException(InvalidActivityFileName::class);
+
+        UploadActivityFile::fromFile('notes.txt', 'raw-bytes');
     }
 }

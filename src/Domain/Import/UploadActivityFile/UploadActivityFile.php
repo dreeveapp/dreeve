@@ -48,6 +48,14 @@ final readonly class UploadActivityFile extends DomainCommand implements Deseria
         );
     }
 
+    public static function fromFile(string $filename, string $contents): self
+    {
+        return new self(
+            filename: ActivityFileName::fromString($filename),
+            contents: $contents,
+        );
+    }
+
     public function getFilename(): ActivityFileName
     {
         return $this->filename;
