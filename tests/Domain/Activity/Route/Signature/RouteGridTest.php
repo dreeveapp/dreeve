@@ -101,18 +101,18 @@ class RouteGridTest extends TestCase
         );
     }
 
-    public function testMedianDistanceInMeterToIsZeroForAnIdenticalRoute(): void
+    public function testMaxDistanceInMeterToIsZeroForAnIdenticalRoute(): void
     {
         $waypoints = $this->routeGrid->waypointsFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.05, 3.04]]));
 
-        $this->assertSame(0.0, $waypoints->medianDistanceInMeterTo($waypoints));
+        $this->assertSame(0.0, $waypoints->maxDistanceInMeterTo($waypoints));
     }
 
-    public function testMedianDistanceInMeterToIsInfiniteWhenTheWaypointCountsDiffer(): void
+    public function testMaxDistanceInMeterToIsInfiniteWhenTheWaypointCountsDiffer(): void
     {
         $waypoints = $this->routeGrid->waypointsFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.05, 3.04]]));
 
-        $this->assertSame(INF, $waypoints->medianDistanceInMeterTo(RouteWaypoints::empty()));
+        $this->assertSame(INF, $waypoints->maxDistanceInMeterTo(RouteWaypoints::empty()));
     }
 
     public function testChecksumFor(): void

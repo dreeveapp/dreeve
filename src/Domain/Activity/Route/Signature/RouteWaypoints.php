@@ -40,7 +40,11 @@ final readonly class RouteWaypoints
         return [] === $this->waypoints;
     }
 
-    public function medianDistanceInMeterTo(self $other): float
+    /**
+     * The largest deviation across the sampled waypoints. A median of seven discards the three
+     * worst by construction, which let a multi-kilometre detour through untouched (issue #2572).
+     */
+    public function maxDistanceInMeterTo(self $other): float
     {
         $theirs = $other->toArray();
         if (count($theirs) !== count($this->waypoints)) {
@@ -57,9 +61,7 @@ final readonly class RouteWaypoints
             return INF;
         }
 
-        sort($distances);
-
-        return $distances[intdiv(count($distances), 2)];
+        return max($distances);
     }
 
     private function distanceInMeter(int $latitudeA, int $longitudeA, int $latitudeB, int $longitudeB): float

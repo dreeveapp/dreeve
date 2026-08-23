@@ -111,7 +111,7 @@ final readonly class FindRouteMatchesQueryHandler implements QueryHandler
                 RouteGrid::MAX_WAYPOINT_DRIFT_RATIO * min($subjectDistance, $candidateDistance),
                 RouteGrid::MAX_WAYPOINT_DRIFT_IN_METER,
             );
-            $waypointDrift = $subjectWaypoints->medianDistanceInMeterTo($this->decodeWaypoints($candidate['waypoints']));
+            $waypointDrift = $subjectWaypoints->maxDistanceInMeterTo($this->decodeWaypoints($candidate['waypoints']));
             if ($waypointDrift > $maxWaypointDrift) {
                 continue;
             }
