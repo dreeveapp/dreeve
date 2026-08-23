@@ -540,6 +540,13 @@ final class Activity
         return $this->calories;
     }
 
+    public function withCalories(?int $calories): self
+    {
+        return $this->recordUpdate(clone ($this, [
+            'calories' => $calories,
+        ]));
+    }
+
     public function getKilojoules(): ?int
     {
         return $this->kilojoules;
@@ -811,6 +818,7 @@ final class Activity
             'movingTimeInSeconds' => $this->movingTimeInSeconds,
             'elapsedTimeInSeconds' => $this->elapsedTimeInSeconds,
             'elevation' => $this->elevation->toFloat(),
+            'calories' => $this->calories,
             'polyline' => $this->polyline,
             'startingCoordinateLatitude' => $this->startingCoordinate?->getLatitude()->toFloat(),
             'startingCoordinateLongitude' => $this->startingCoordinate?->getLongitude()->toFloat(),

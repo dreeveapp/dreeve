@@ -6,6 +6,7 @@ namespace App\Domain\Activity\UpdateActivity;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityName;
+use App\Domain\Activity\ProvideCaloriesFromPayload;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
 use App\Domain\Image\NewImage;
@@ -18,6 +19,7 @@ use App\Infrastructure\CQRS\Command\DomainCommand;
 
 final readonly class UpdateActivity extends DomainCommand implements DeserializableCommand
 {
+    use ProvideCaloriesFromPayload;
     use ProvideLocalImageFromDropZonePayload;
     use ProvidesCommandName;
 
@@ -32,6 +34,7 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
         private ?string $description,
         private ?string $deviceName,
         private ?GearId $gearId,
+        private ?int $calories,
         private bool $isCommute,
         private array $newImages,
         private array $removedImages,
@@ -71,6 +74,7 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
             description: '' !== $description ? $description : null,
             deviceName: '' !== $deviceName ? $deviceName : null,
             gearId: $gearId,
+            calories: self::parseCalories($payload),
             isCommute: filter_var($payload['isCommute'] ?? false, FILTER_VALIDATE_BOOLEAN),
             newImages: $newImages,
             removedImages: $removedImages,
@@ -105,6 +109,11 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
     public function getGearId(): ?GearId
     {
         return $this->gearId;
+    }
+
+    public function getCalories(): ?int
+    {
+        return $this->calories;
     }
 
     public function isCommute(): bool

@@ -6,6 +6,7 @@
     {% set distance = activity ? (activity.getDistance()|convertMeasurement).toFloat()|round(2) : 0 %}
     {% set elevation = activity ? (activity.getElevation()|convertMeasurement).toFloat()|round : 0 %}
     {% set durationInSeconds = activity ? activity.getMovingTimeInSeconds() : 0 %}
+    {% set calories = activity ? activity.getCalories() : null %}
     <div class="modal-like-form">
         <div class="w-full max-w-3xl overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
             <div class="flex items-center justify-between mb-4">
@@ -73,7 +74,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     <div>
                         <label for="activity-distance">{{ "Distance"|trans }} ({{ renderUnitSymbol('distance') }})</label>
                         <input type="number" min="0" step="0.01" id="activity-distance" name="distance" value="{{ distance }}" required>
@@ -81,6 +82,10 @@
                     <div>
                         <label for="activity-elevation">{{ "Elevation"|trans }} ({{ renderUnitSymbol('elevation') }})</label>
                         <input type="number" min="0" step="1" id="activity-elevation" name="elevation" value="{{ elevation }}">
+                    </div>
+                    <div>
+                        <label for="activity-calories">{{ "Calories"|trans }} (kcal)</label>
+                        <input type="number" min="0" step="1" id="activity-calories" name="calories" value="{{ calories }}">
                     </div>
                 </div>
                 <div>

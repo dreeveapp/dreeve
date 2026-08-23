@@ -34,7 +34,7 @@ final class ActivityBuilder
     private Kilometer $distance;
     private Meter $elevation;
     private ?Coordinate $startingCoordinate = null;
-    private int $calories;
+    private ?int $calories;
     private ?int $averagePower = null;
     private ?int $maxPower;
     private KmPerHour $averageSpeed;
@@ -193,7 +193,7 @@ final class ActivityBuilder
         return $this;
     }
 
-    public function withCalories(int $calories): self
+    public function withCalories(?int $calories): self
     {
         $this->calories = $calories;
 

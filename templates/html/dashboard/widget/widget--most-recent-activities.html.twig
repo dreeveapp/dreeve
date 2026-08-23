@@ -74,7 +74,7 @@
                         {{ activity.getAverageHeartRate() ?? 'n/a' }}
                     </td>
                     <td>
-                        {{ activity.getCalories() }}<span class="text-xxs ml-px">kcal</span>
+                        {{ activity.getCalories() is not null ? activity.getCalories() ~ '<span class="text-xxs ml-px">kcal</span>' : '-' }}
                     </td>
                     <td>
                         {{ activity.getAveragePower() ? activity.getAveragePower() ~ '<span class="text-xxs ml-px">w</span>': 'n/a' }}

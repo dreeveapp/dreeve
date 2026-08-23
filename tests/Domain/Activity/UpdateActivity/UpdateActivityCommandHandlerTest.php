@@ -40,6 +40,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
             'description' => 'Updated description',
             'deviceName' => 'Garmin Edge',
             'gearId' => 'gear-1',
+            'calories' => '500',
             'isCommute' => 'true',
         ]));
 
@@ -49,7 +50,28 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
         $this->assertSame('Updated description', $activity->getDescription());
         $this->assertSame('Garmin Edge', $activity->getDeviceName());
         $this->assertEquals(GearId::fromUnprefixed('1'), $activity->getGearId());
+        $this->assertSame(500, $activity->getCalories());
         $this->assertTrue($activity->isCommute());
+    }
+
+    public function testHandleClearsCalories(): void
+    {
+        $this->activityRepository->add(ActivityWithRawData::fromState(
+            activity: ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withCalories(500)
+                ->build(),
+            rawData: [],
+        ));
+
+        $this->commandBus->dispatch(UpdateActivity::fromPayload([
+            'activityId' => 'activity-1',
+            'name' => 'Updated activity',
+            'sportType' => 'Ride',
+            'calories' => '',
+        ]));
+
+        $this->assertNull($this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getCalories());
     }
 
     public function testHandleLeavesImagesUntouchedWhenImagesKeyIsMissing(): void

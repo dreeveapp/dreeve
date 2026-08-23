@@ -134,7 +134,7 @@
                     </div>
                     <div class="bg-gray-50 rounded-lg p-3 flex gap-x-2 items-center justify-between">
                         <span class="text-xs text-gray-500">{{ "Calories"|trans }}</span>
-                        <span class="text-sm font-bold text-gray-900">{{ activity.getCalories() }} <span class="text-xxs font-medium text-gray-400">kcal</span></span>
+                        <span class="text-sm font-bold text-gray-900">{{ activity.getCalories() is not null ? activity.getCalories() ~ ' <span class="text-xxs font-medium text-gray-400">kcal</span>' : '-' }}</span>
                     </div>
                     {% if activity.getKilojoules() %}
                         <div class="bg-gray-50 rounded-lg p-3 flex gap-x-2 items-center justify-between">

@@ -51,6 +51,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
             'duration' => ['hours' => 0, 'minutes' => 50, 'seconds' => 0],
             'distance' => '10',
             'elevation' => '120',
+            'calories' => '750',
             'gearId' => 'gear-1',
             'isCommute' => 'true',
         ]));
@@ -71,6 +72,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
         $this->assertSame(12.0, $activity->getAverageSpeed()->toFloat());
         $this->assertSame(12.0, $activity->getMaxSpeed()->toFloat());
         $this->assertEquals(GearId::fromUnprefixed('1'), $activity->getGearId());
+        $this->assertSame(750, $activity->getCalories());
         $this->assertNull($activity->getDeviceName());
         $this->assertTrue($activity->isCommute());
     }
@@ -93,6 +95,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
         $this->assertNull($activity->getDeviceName());
         $this->assertNull($activity->getGearId());
         $this->assertNull($activity->getWorkoutType());
+        $this->assertNull($activity->getCalories());
         $this->assertFalse($activity->isCommute());
         $this->assertSame(0.0, $activity->getDistance()->toFloat());
         $this->assertSame(0.0, $activity->getAverageSpeed()->toFloat());

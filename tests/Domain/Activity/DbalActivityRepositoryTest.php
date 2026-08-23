@@ -188,6 +188,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
             ->withMaxSpeed(MetersPerSecond::from(99.99)->toKmPerHour())
             ->withMovingTimeInSeconds(999)
             ->withElevation(Meter::from(9999))
+            ->withCalories(1234)
             ->withPolyline('updated polyline')
             ->withStartingCoordinate(Coordinate::createFromLatAndLng(
                 latitude: Latitude::fromString('20'),
@@ -207,6 +208,10 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             ['updated' => 'lol'],
             $persisted->getRawData()
+        );
+        $this->assertSame(
+            1234,
+            $persistedActivity->getCalories()
         );
         $this->assertEquals(
             'Updated name',

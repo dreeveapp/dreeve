@@ -33,6 +33,7 @@ final readonly class UpdateActivityCommandHandler implements CommandHandler
             ->withDescription($command->getDescription())
             ->withDeviceName($command->getDeviceName())
             ->withGear($command->getGearId())
+            ->withCalories($command->getCalories())
             ->withCommute($command->isCommute());
 
         $newImages = $command->getNewImages();

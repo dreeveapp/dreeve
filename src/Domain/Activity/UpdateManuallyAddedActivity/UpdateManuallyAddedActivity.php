@@ -6,6 +6,7 @@ namespace App\Domain\Activity\UpdateManuallyAddedActivity;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityName;
+use App\Domain\Activity\ProvideCaloriesFromPayload;
 use App\Domain\Activity\ProvideManuallyAddedActivityPayload;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
@@ -21,6 +22,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class UpdateManuallyAddedActivity extends DomainCommand implements DeserializableCommand
 {
+    use ProvideCaloriesFromPayload;
     use ProvideLocalImageFromDropZonePayload;
     use ProvideManuallyAddedActivityPayload;
     use ProvidesCommandName;
@@ -40,6 +42,7 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
         private float $distance,
         private float $elevation,
         private ?GearId $gearId,
+        private ?int $calories,
         private bool $isCommute,
         private array $newImages,
         private array $removedImages,
@@ -65,6 +68,7 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
             distance: self::parsePositiveNumber($payload, 'distance'),
             elevation: self::parsePositiveNumber($payload, 'elevation'),
             gearId: self::parseGearId($payload),
+            calories: self::parseCalories($payload),
             isCommute: self::parseIsCommute($payload),
             newImages: $newImages,
             removedImages: $removedImages,
@@ -119,6 +123,11 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
     public function getGearId(): ?GearId
     {
         return $this->gearId;
+    }
+
+    public function getCalories(): ?int
+    {
+        return $this->calories;
     }
 
     public function isCommute(): bool

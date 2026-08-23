@@ -292,6 +292,7 @@ class ActivityTest extends TestCase
         yield 'world type' => [fn (Activity $activity): Activity => $activity->withWorldType(WorldType::ZWIFT)];
         yield 'distance' => [fn (Activity $activity): Activity => $activity->withDistance(Kilometer::from(42))];
         yield 'elevation' => [fn (Activity $activity): Activity => $activity->withElevation(Meter::from(666))];
+        yield 'calories' => [fn (Activity $activity): Activity => $activity->withCalories(500)];
         yield 'average speed' => [fn (Activity $activity): Activity => $activity->withAverageSpeed(KmPerHour::from(42))];
         yield 'max speed' => [fn (Activity $activity): Activity => $activity->withMaxSpeed(KmPerHour::from(42))];
         yield 'moving time' => [fn (Activity $activity): Activity => $activity->withMovingTimeInSeconds(4242)];
@@ -324,6 +325,7 @@ class ActivityTest extends TestCase
             ActivityName::fromString('Test activity')
         )];
         yield 'the same distance' => [fn (Activity $activity): Activity => $activity->withDistance(Kilometer::from(10))];
+        yield 'the same calories' => [fn (Activity $activity): Activity => $activity->withCalories(0)];
         yield 'the same start date' => [fn (Activity $activity): Activity => $activity->withStartDateTime(
             SerializableDateTime::fromString('2023-10-10')
         )];

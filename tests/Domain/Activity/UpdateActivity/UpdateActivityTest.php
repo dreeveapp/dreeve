@@ -24,6 +24,7 @@ class UpdateActivityTest extends TestCase
             'description' => 'A nice run',
             'deviceName' => 'Garmin Edge',
             'gearId' => 'gear-1',
+            'calories' => '500',
             'isCommute' => 'true',
         ]);
 
@@ -33,6 +34,7 @@ class UpdateActivityTest extends TestCase
         $this->assertSame('A nice run', $command->getDescription());
         $this->assertSame('Garmin Edge', $command->getDeviceName());
         $this->assertEquals(GearId::fromUnprefixed('1'), $command->getGearId());
+        $this->assertSame(500, $command->getCalories());
         $this->assertTrue($command->isCommute());
     }
 
@@ -157,11 +159,13 @@ class UpdateActivityTest extends TestCase
             'description' => '   ',
             'deviceName' => '',
             'gearId' => '',
+            'calories' => '',
         ]);
 
         $this->assertNull($command->getDescription());
         $this->assertNull($command->getDeviceName());
         $this->assertNull($command->getGearId());
+        $this->assertNull($command->getCalories());
         $this->assertFalse($command->isCommute());
     }
 
@@ -204,6 +208,16 @@ class UpdateActivityTest extends TestCase
         yield 'empty name' => [
             ['activityId' => 'activity-1', 'name' => '   ', 'sportType' => 'Ride'],
             'The name cannot be empty.',
+        ];
+
+        yield 'non numeric calories' => [
+            ['activityId' => 'activity-1', 'name' => 'My custom activity', 'sportType' => 'Ride', 'calories' => 'a lot'],
+            'The "calories" must be a positive number.',
+        ];
+
+        yield 'negative calories' => [
+            ['activityId' => 'activity-1', 'name' => 'My custom activity', 'sportType' => 'Ride', 'calories' => '-1'],
+            'The "calories" must be a positive number.',
         ];
     }
 

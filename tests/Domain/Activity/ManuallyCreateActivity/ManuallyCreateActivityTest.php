@@ -27,6 +27,7 @@ class ManuallyCreateActivityTest extends TestCase
             'duration' => ['hours' => '1', 'minutes' => '2', 'seconds' => '3'],
             'distance' => '10.5',
             'elevation' => '120',
+            'calories' => '750',
             'gearId' => 'gear-1',
             'isCommute' => 'true',
         ]);
@@ -40,6 +41,7 @@ class ManuallyCreateActivityTest extends TestCase
         $this->assertSame(10.5, $command->getDistance());
         $this->assertSame(120.0, $command->getElevation());
         $this->assertEquals(GearId::fromUnprefixed('1'), $command->getGearId());
+        $this->assertSame(750, $command->getCalories());
         $this->assertTrue($command->isCommute());
         $this->assertSame([], $command->getNewImages());
     }
@@ -61,11 +63,13 @@ class ManuallyCreateActivityTest extends TestCase
             'description' => '   ',
             'gearId' => '',
             'elevation' => '',
+            'calories' => '',
             'workoutType' => '',
         ]);
 
         $this->assertNull($command->getDescription());
         $this->assertNull($command->getGearId());
+        $this->assertNull($command->getCalories());
         $this->assertNull($command->getWorkoutType());
         $this->assertSame(0.0, $command->getElevation());
         $this->assertFalse($command->isCommute());

@@ -67,7 +67,7 @@ final readonly class ActivityHydrator
                 Latitude::fromOptionalString((string) $result['startingCoordinateLatitude']),
                 Longitude::fromOptionalString((string) $result['startingCoordinateLongitude'])
             ),
-            calories: (int) ($result['calories'] ?? 0),
+            calories: null !== ($result['calories'] ?? null) ? (int) $result['calories'] : null,
             kilojoules: ((int) $result['kilojoules']) ?: null,
             averagePower: ((int) $result['averagePower']) ?: null,
             maxPower: ((int) $result['maxPower']) ?: null,

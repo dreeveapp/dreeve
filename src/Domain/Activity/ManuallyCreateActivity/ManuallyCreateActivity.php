@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Activity\ManuallyCreateActivity;
 
 use App\Domain\Activity\ActivityName;
+use App\Domain\Activity\ProvideCaloriesFromPayload;
 use App\Domain\Activity\ProvideManuallyAddedActivityPayload;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
@@ -18,6 +19,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class ManuallyCreateActivity extends DomainCommand implements DeserializableCommand
 {
+    use ProvideCaloriesFromPayload;
     use ProvideLocalImageFromDropZonePayload;
     use ProvideManuallyAddedActivityPayload;
     use ProvidesCommandName;
@@ -35,6 +37,7 @@ final readonly class ManuallyCreateActivity extends DomainCommand implements Des
         private float $distance,
         private float $elevation,
         private ?GearId $gearId,
+        private ?int $calories,
         private bool $isCommute,
         private array $newImages,
     ) {
@@ -54,6 +57,7 @@ final readonly class ManuallyCreateActivity extends DomainCommand implements Des
             distance: self::parsePositiveNumber($payload, 'distance'),
             elevation: self::parsePositiveNumber($payload, 'elevation'),
             gearId: self::parseGearId($payload),
+            calories: self::parseCalories($payload),
             isCommute: self::parseIsCommute($payload),
             newImages: $newImages,
         );
@@ -102,6 +106,11 @@ final readonly class ManuallyCreateActivity extends DomainCommand implements Des
     public function getGearId(): ?GearId
     {
         return $this->gearId;
+    }
+
+    public function getCalories(): ?int
+    {
+        return $this->calories;
     }
 
     public function isCommute(): bool

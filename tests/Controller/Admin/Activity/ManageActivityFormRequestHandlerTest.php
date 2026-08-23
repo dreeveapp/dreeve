@@ -79,6 +79,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $form->filter('input[name="startDateTime"][type="datetime-local"]'));
         $this->assertCount(1, $form->filter('input[name="distance"]'));
         $this->assertCount(1, $form->filter('input[name="elevation"]'));
+        $this->assertCount(1, $form->filter('input[name="calories"]'));
         $this->assertCount(1, $form->filter('input[name="duration[hours]"]'));
         $this->assertCount(1, $form->filter('input[name="duration[minutes]"]'));
         $this->assertCount(1, $form->filter('input[name="duration[seconds]"]'));
@@ -129,6 +130,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
                 ->withMovingTimeInSeconds(3723)
                 ->withDistance(Kilometer::from(10.5))
                 ->withElevation(Meter::from(120))
+                ->withCalories(750)
                 ->withGearId(GearId::fromUnprefixed('custom-gear'))
                 ->withIsCommute(true)
                 ->withLocalImagePaths('activity-1/image.jpg')
@@ -161,6 +163,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         // Distance and elevation are rendered in the configured unit system.
         $this->assertSame('10.5', $form->filter('input[name="distance"]')->attr('value'));
         $this->assertSame('120', $form->filter('input[name="elevation"]')->attr('value'));
+        $this->assertSame('750', $form->filter('input[name="calories"]')->attr('value'));
 
         $this->assertNotNull($form->filter('select#activity-gear option[value="gear-custom-gear"]')->attr('selected'));
         $this->assertNotNull($form->filter('input#activity-is-commute')->attr('checked'));
@@ -194,6 +197,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
                 ->withName('Morning Run')
                 ->withGearId(GearId::fromUnprefixed('5'))
                 ->withDeviceName('Garmin Edge')
+                ->withCalories(500)
                 ->withIsCommute(true)
                 ->withLocalImagePaths('activity-1/image.jpg')
                 ->build(),
@@ -218,6 +222,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertNotNull($crawler->filter('select#activity-sport-type')->attr('disabled'));
         $this->assertNotNull($crawler->filter('select#activity-gear')->attr('disabled'));
         $this->assertNotNull($crawler->filter('select#activity-device-name')->attr('disabled'));
+        $this->assertNotNull($crawler->filter('input#activity-calories')->attr('disabled'));
         $this->assertNotNull($crawler->filter('input#activity-is-commute')->attr('disabled'));
 
         // Disabled fields are not submitted, so their values are mirrored into hidden inputs.
@@ -225,6 +230,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('input[type="hidden"][name="sportType"]'));
         $this->assertSame((string) GearId::fromUnprefixed('5'), $crawler->filter('input[type="hidden"][name="gearId"]')->attr('value'));
         $this->assertSame('Garmin Edge', $crawler->filter('input[type="hidden"][name="deviceName"]')->attr('value'));
+        $this->assertSame('500', $crawler->filter('input[type="hidden"][name="calories"]')->attr('value'));
         // The commute checkbox can't submit while disabled, so its real value is preserved.
         $this->assertSame('true', $crawler->filter('input[type="hidden"][name="isCommute"]')->attr('value'));
 
@@ -358,12 +364,14 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertNull($crawler->filter('select#activity-sport-type')->attr('disabled'));
         $this->assertNull($crawler->filter('select#activity-gear')->attr('disabled'));
         $this->assertNull($crawler->filter('select#activity-device-name')->attr('disabled'));
+        $this->assertNull($crawler->filter('input#activity-calories')->attr('disabled'));
         $this->assertNull($crawler->filter('input#activity-is-commute')->attr('disabled'));
 
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="name"]'));
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="sportType"]'));
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="gearId"]'));
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="deviceName"]'));
+        $this->assertCount(0, $crawler->filter('input[type="hidden"][name="calories"]'));
         $this->assertSame('false', $crawler->filter('input[type="hidden"][name="isCommute"]')->attr('value'));
 
         // In files mode all gears are selectable, imported or custom.
