@@ -91,9 +91,6 @@ app-build-assets:
 app-docs-install:
 	@make dcr cmd="npm --prefix docs ci"
 
-# Astro writes its dev lock to docs/.astro/dev.json, which lives on the bind mount and so outlives
-# the disposable container. A killed server leaves a stale PID that a fresh container happily
-# reuses, making Astro refuse to start (or, with --force, kill itself). Clear it first.
 app-docs-serve:
 	@rm -f docs/.astro/dev.json
 	@make dc cmd="run --rm -p 4321:4321 php-cli npm --prefix docs run dev -- --host 0.0.0.0"
