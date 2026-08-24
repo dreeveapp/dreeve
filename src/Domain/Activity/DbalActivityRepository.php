@@ -49,13 +49,17 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
         return Activities::fromArray(array_map(ActivityHydrator::hydrate(...), $results));
     }
 
-    public function findMostRecent(int $limit, ?SportTypes $restrictToSportTypes = null): Activities
+    public function findMostRecent(int $limit, ?SportTypes $restrictToSportTypes = null, bool $onlyActivitiesWithARoute = false): Activities
     {
         $queryBuilder = $this->connection->createQueryBuilder();
         $queryBuilder->select(ActivityHydrator::columns())
             ->from('Activity')
             ->orderBy('startDateTime', 'DESC')
             ->setMaxResults($limit);
+
+        if ($onlyActivitiesWithARoute) {
+            $queryBuilder->andWhere("polyline IS NOT NULL AND polyline != ''");
+        }
 
         if ($restrictToSportTypes instanceof SportTypes && !$restrictToSportTypes->isEmpty()) {
             $queryBuilder->andWhere('sportType IN (:sportTypes)')

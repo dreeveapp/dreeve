@@ -10,6 +10,7 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\DbalActivityRepository;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Sensor\ConnectedSensor;
 use App\Domain\Gear\Sensor\ConnectedSensors;
@@ -342,6 +343,87 @@ class DbalActivityRepositoryTest extends ContainerTestCase
             from: SerializableDateTime::fromString('2024-01-01 00:00:00'),
             till: SerializableDateTime::fromString('2024-02-01 00:00:00'),
         )->isEmpty());
+    }
+
+    public function testFindMostRecent(): void
+    {
+        foreach ([
+            1 => '2023-10-01 00:00:00',
+            2 => '2023-10-02 00:00:00',
+            3 => '2023-10-03 00:00:00',
+        ] as $activityId => $startDateTime) {
+            $this->activityRepository->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withStartDateTime(SerializableDateTime::fromString($startDateTime))
+                    ->build(),
+                ['raw' => 'data']
+            ));
+        }
+
+        $this->assertEquals(
+            [
+                ActivityId::fromUnprefixed(3),
+                ActivityId::fromUnprefixed(2),
+            ],
+            $this->activityRepository->findMostRecent(2)->map(fn (Activity $activity): ActivityId => $activity->getId())
+        );
+    }
+
+    public function testFindMostRecentRestrictedToSportTypes(): void
+    {
+        foreach ([
+            1 => SportType::RIDE,
+            2 => SportType::RUN,
+            3 => SportType::RIDE,
+        ] as $activityId => $sportType) {
+            $this->activityRepository->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withStartDateTime(SerializableDateTime::fromString(sprintf('2023-10-0%d 00:00:00', $activityId)))
+                    ->withSportType($sportType)
+                    ->build(),
+                ['raw' => 'data']
+            ));
+        }
+
+        $this->assertEquals(
+            [ActivityId::fromUnprefixed(2)],
+            $this->activityRepository->findMostRecent(
+                limit: 5,
+                restrictToSportTypes: SportTypes::fromArray([SportType::RUN]),
+            )->map(fn (Activity $activity): ActivityId => $activity->getId())
+        );
+    }
+
+    public function testFindMostRecentOnlyActivitiesWithARoute(): void
+    {
+        foreach ([
+            1 => 'a-polyline',
+            2 => null,
+            3 => '',
+            4 => 'another-polyline',
+        ] as $activityId => $polyline) {
+            $this->activityRepository->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withStartDateTime(SerializableDateTime::fromString(sprintf('2023-10-0%d 00:00:00', $activityId)))
+                    ->withPolyline($polyline)
+                    ->build(),
+                ['raw' => 'data']
+            ));
+        }
+
+        $this->assertEquals(
+            [
+                ActivityId::fromUnprefixed(4),
+                ActivityId::fromUnprefixed(1),
+            ],
+            $this->activityRepository->findMostRecent(
+                limit: 10,
+                onlyActivitiesWithARoute: true,
+            )->map(fn (Activity $activity): ActivityId => $activity->getId())
+        );
     }
 
     public function testDelete(): void

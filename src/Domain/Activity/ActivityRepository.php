@@ -13,7 +13,7 @@ interface ActivityRepository
 
     public function findAll(): Activities;
 
-    public function findMostRecent(int $limit, ?SportTypes $restrictToSportTypes = null): Activities;
+    public function findMostRecent(int $limit, ?SportTypes $restrictToSportTypes = null, bool $onlyActivitiesWithARoute = false): Activities;
 
     public function findByIds(ActivityIds $activityIds): Activities;
 
