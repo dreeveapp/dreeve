@@ -96,7 +96,7 @@ app-docs-serve:
 	npm --prefix docs run dev
 
 app-docs-build:
-	@make npm --prefix docs run build
+	npm --prefix docs run build
 
 clear-cache:
 	docker compose exec app bin/console app:cache:render:clear

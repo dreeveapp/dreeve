@@ -35,7 +35,7 @@ export default defineConfig({
 					[
 						{
 							label: 'Documentation',
-							link: '/getting-started/prerequisites/',
+							link: '/',
 							icon: 'open-book',
 							items: [
 								{
@@ -102,7 +102,7 @@ export default defineConfig({
 							items: [...openAPISidebarGroups],
 						},
 					],
-					{ topics: { api: ['/api/**'] }, exclude: ['/'] },
+					{ topics: { api: ['/api/**'] }},
 				),
 			],
 			social: [
