@@ -323,7 +323,7 @@
             "sportType": "Ride",
             "start-date": 1690616043000,
             "isCommute": "false",
-            "isGroupActivity": "false",
+            "isGroupActivity": "true",
             "gear": "gear-b12659861",
             "device": "recordingDevice-polar-vantage-m",
             "distance": 1124,

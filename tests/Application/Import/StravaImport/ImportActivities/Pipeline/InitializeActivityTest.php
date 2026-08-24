@@ -67,9 +67,6 @@ class InitializeActivityTest extends ContainerTestCase
         $this->assertTrue($context->getActivity()->isGroupActivity());
     }
 
-    /**
-     * @return \Generator<string, array{bool, int, bool}>
-     */
     public static function provideAthleteCounts(): \Generator
     {
         yield 'other athletes joined after the first import' => [false, 5, true];

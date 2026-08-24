@@ -1,0 +1,25 @@
+{% autoescape false %}
+    <div class="w-full flex flex-col justify-center items-center gap-y-6 text-center">
+        <div>
+            <div class="text-3xl font-extrabold">
+                {{ (totalActivityCount ? groupActivityCount / totalActivityCount * 100 : 0)|round|formatNumber(0) }}%
+            </div>
+            <div class="text-sm">{{ "of your activities"|trans }}</div>
+        </div>
+        <hr class="w-50" />
+        <div class="flex gap-x-4">
+            <div>
+                <div class="text-xl font-extrabold">
+                    {{ groupActivityCount|formatNumber(0) }}
+                </div>
+                <div class="text-xs">{{ "With others"|trans }}</div>
+            </div>
+            <div>
+                <div class="text-xl font-extrabold">
+                    {{ (totalActivityCount - groupActivityCount)|formatNumber(0) }}
+                </div>
+                <div class="text-xs">{{ "On your own"|trans }}</div>
+            </div>
+        </div>
+    </div>
+{% endautoescape %}

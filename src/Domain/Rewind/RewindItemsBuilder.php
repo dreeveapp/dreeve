@@ -19,6 +19,7 @@ use App\Domain\Rewind\FindActivityStartTimesPerHour\FindActivityStartTimesPerHou
 use App\Domain\Rewind\FindAvailableRewindOptions\FindAvailableRewindOptions;
 use App\Domain\Rewind\FindCaloriesBurnt\FindCaloriesBurnt;
 use App\Domain\Rewind\FindCarbonSaved\FindCarbonSaved;
+use App\Domain\Rewind\FindGroupActivityCount\FindGroupActivityCount;
 use App\Domain\Rewind\FindLongestActivity\FindLongestActivity;
 use App\Domain\Rewind\FindMovingTimePerDay\FindMovingTimePerDay;
 use App\Domain\Rewind\FindMovingTimePerSportType\FindMovingTimePerSportType;
@@ -74,6 +75,7 @@ final readonly class RewindItemsBuilder
         $totalActivityCountResponse = $this->queryBus->ask(new FindTotalActivityCount($yearsToQuery));
         $kilogramCarbonSaved = $this->queryBus->ask(new FindCarbonSaved($yearsToQuery))->getKgCoCarbonSaved();
         $calories = $this->queryBus->ask(new FindCaloriesBurnt($yearsToQuery))->getCalories();
+        $groupActivityCount = $this->queryBus->ask(new FindGroupActivityCount($yearsToQuery))->getGroupActivityCount();
 
         $rewindItems = RewindItems::empty();
 
@@ -246,6 +248,17 @@ final readonly class RewindItemsBuilder
                 ]),
                 totalMetric: (int) round($kilogramCarbonSaved->toFloat()),
                 totalMetricLabel: 'kg CO₂',
+            ))
+            ->add(RewindItem::from(
+                icon: 'group',
+                title: $this->translator->trans('Group activities'),
+                subTitle: $this->translator->trans("You weren't alone out there"),
+                content: $this->twig->render('html/rewind/rewind-group-activities.html.twig', [
+                    'groupActivityCount' => $groupActivityCount,
+                    'totalActivityCount' => $totalActivityCountResponse->getTotalActivityCount(),
+                ]),
+                totalMetric: $groupActivityCount,
+                totalMetricLabel: $this->translator->trans('activities'),
             ))
             ->add(RewindItem::from(
                 icon: 'calories',

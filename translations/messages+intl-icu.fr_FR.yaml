@@ -275,6 +275,7 @@ Now: Now
 Oct: Oct
 'Older effort': 'Older effort'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'En moyenne, cela représente {dailyAverage} par jour, une moyenne hebdomadaire de {weeklyAverage} et une moyenne mensuelle de {monthlyAverage} 🐣.'
+'On your own': 'On your own'
 'One of your gear maintenance tasks is due': 'Une de vos tâches de maintenance de matériel est à effectuer'
 "Oops, looks like you've wandered off the map! 🗺️": "Oops, looks like you've wandered off the map! 🗺️"
 'Open Water Swim': 'Open Water Swim'
@@ -544,6 +545,7 @@ Weight: Poids
 Wheelchair: 'Fauteuil roulant'
 'Wind Surf': 'Planche à voile'
 'Winter Sports': "Sports d'hiver"
+'With others': 'With others'
 Workout: Entraînement
 'Workout assistant': 'Workout assistant'
 'Workout type': "Type d'entraînement"
@@ -552,6 +554,7 @@ Year: Année
 Yearly: Annuel
 'Yearly stats': 'Statistiques annuelles'
 Yoga: Yoga
+"You weren't alone out there": "You weren't alone out there"
 'Your Dreeve badge': 'Votre badge Dreeve'
 'Your PB badge': 'Votre badge PB'
 'Your Zwift badge': 'Votre badge Zwift'
@@ -594,6 +597,7 @@ months: mois
 more: plus
 n/a: s/o
 never: jamais
+'of your activities': 'of your activities'
 'on': 'on'
 per: par
 'per activity': 'par activité'
