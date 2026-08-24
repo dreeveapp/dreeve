@@ -31,10 +31,11 @@ class FinishSetupRequestHandlerTest extends ContainerTestCase
             [],
         ));
 
-        $this->assertEquals(
-            new RedirectResponse('/', Response::HTTP_FOUND),
-            $this->finishSetupRequestHandler->handle(),
-        );
+        $response = $this->finishSetupRequestHandler->handle();
+
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertSame('/', $response->getTargetUrl());
+        $this->assertSame(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
     #[\Override]

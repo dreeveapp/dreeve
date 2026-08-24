@@ -40,18 +40,19 @@ class StravaOAuthRequestHandlerTest extends ContainerTestCase
             ->expects($this->never())
             ->method('post');
 
-        $this->assertEquals(
-            new RedirectResponse('/', \Symfony\Component\HttpFoundation\Response::HTTP_FOUND),
-            $this->stravaOAuthRequestHandler->handle(new Request(
-                query: ['code' => 'the-code'],
-                request: [],
-                attributes: [],
-                cookies: [],
-                files: [],
-                server: [],
-                content: [],
-            ))
-        );
+        $response = $this->stravaOAuthRequestHandler->handle(new Request(
+            query: ['code' => 'the-code'],
+            request: [],
+            attributes: [],
+            cookies: [],
+            files: [],
+            server: [],
+            content: [],
+        ));
+
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertSame('/', $response->getTargetUrl());
+        $this->assertSame(\Symfony\Component\HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
     }
 
     public function testHandleWithCode(): void
