@@ -39,6 +39,7 @@ final class SportTypeName
         'casualwalking' => SportType::WALK,
         'speedwalking' => SportType::WALK,
         'hiking' => SportType::HIKE,
+        'mountaineering' => SportType::HIKE,
         'swimming' => SportType::POOL_SWIM,
         'lapswimming' => SportType::POOL_SWIM,
         'poolswimming' => SportType::POOL_SWIM,

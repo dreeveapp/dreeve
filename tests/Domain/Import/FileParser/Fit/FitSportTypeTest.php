@@ -95,6 +95,7 @@ class FitSportTypeTest extends TestCase
             'snowboarding / backcountry' => [14, 37, SportType::BACK_COUNTRY_SKI],
             'rowing' => [15, null, SportType::ROWING],
             'rowing / indoor rowing' => [15, 14, SportType::VIRTUAL_ROW],
+            'mountaineering' => [16, null, SportType::HIKE],
             'hiking' => [17, null, SportType::HIKE],
             'paddling' => [19, null, SportType::CANOEING],
             'e-biking' => [21, null, SportType::E_BIKE_RIDE],

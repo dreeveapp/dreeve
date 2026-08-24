@@ -23,6 +23,7 @@ final class FitSportType
     private const int SPORT_ALPINE_SKIING = 13;
     private const int SPORT_SNOWBOARDING = 14;
     private const int SPORT_ROWING = 15;
+    private const int SPORT_MOUNTAINEERING = 16;
     private const int SPORT_HIKING = 17;
     private const int SPORT_PADDLING = 19;
     private const int SPORT_E_BIKING = 21;
@@ -127,7 +128,7 @@ final class FitSportType
             self::SPORT_ALPINE_SKIING => self::SUB_SPORT_BACKCOUNTRY === $subSport ? SportType::BACK_COUNTRY_SKI : SportType::ALPINE_SKI,
             self::SPORT_SNOWBOARDING => self::SUB_SPORT_BACKCOUNTRY === $subSport ? SportType::BACK_COUNTRY_SKI : SportType::SNOWBOARD,
             self::SPORT_ROWING => self::SUB_SPORT_INDOOR_ROWING === $subSport ? SportType::VIRTUAL_ROW : SportType::ROWING,
-            self::SPORT_HIKING => SportType::HIKE,
+            self::SPORT_MOUNTAINEERING, self::SPORT_HIKING => SportType::HIKE,
             self::SPORT_PADDLING, self::SPORT_CANOEING => SportType::CANOEING,
             self::SPORT_E_BIKING => SportType::E_BIKE_RIDE,
             self::SPORT_GOLF => SportType::GOLF,

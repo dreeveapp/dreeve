@@ -29,6 +29,7 @@ class SportTypeNameTest extends TestCase
             'cycling' => ['Cycling', SportType::RIDE],
             'walking' => ['Walking', SportType::WALK],
             'hiking' => ['hiking', SportType::HIKE],
+            'mountaineering' => ['Mountaineering', SportType::HIKE],
             'swimming' => ['Swimming', SportType::POOL_SWIM],
             'trail running with space' => ['Trail Running', SportType::TRAIL_RUN],
             'trail running snake cased' => ['trail_running', SportType::TRAIL_RUN],
