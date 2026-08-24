@@ -87,6 +87,14 @@
                         {% if isImportedFromStrava %}{% include 'html/admin/component/strava-imported-badge.html.twig' %}{% endif %}
                     </label>
                 </div>
+                <div class="flex items-center gap-2">
+                    <input type="hidden" name="isGroupActivity" value="{{ isImportedFromStrava and activity.isGroupActivity() ? 'true' : 'false' }}">
+                    <input type="checkbox" id="activity-is-group-activity" name="isGroupActivity" value="true" {{ activity.isGroupActivity() ? 'checked' }} {{ isImportedFromStrava ? 'disabled' }}>
+                    <label for="activity-is-group-activity" class="flex items-center gap-1.5 mt-0!">
+                        {{ "Group activity"|trans({}, 'admin') }}
+                        {% if isImportedFromStrava %}{% include 'html/admin/component/strava-imported-badge.html.twig' %}{% endif %}
+                    </label>
+                </div>
                 {% if not isImportedFromStrava %}
                     <div>
                         <label>{{ "Images"|trans({}, 'admin') }}</label>

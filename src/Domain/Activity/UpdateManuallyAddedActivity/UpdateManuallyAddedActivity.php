@@ -44,6 +44,7 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
         private ?GearId $gearId,
         private ?int $calories,
         private bool $isCommute,
+        private bool $isGroupActivity,
         private array $newImages,
         private array $removedImages,
     ) {
@@ -70,6 +71,7 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
             gearId: self::parseGearId($payload),
             calories: self::parseCalories($payload),
             isCommute: self::parseIsCommute($payload),
+            isGroupActivity: self::parseIsGroupActivity($payload),
             newImages: $newImages,
             removedImages: $removedImages,
         );
@@ -133,6 +135,11 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
     public function isCommute(): bool
     {
         return $this->isCommute;
+    }
+
+    public function isGroupActivity(): bool
+    {
+        return $this->isGroupActivity;
     }
 
     /**

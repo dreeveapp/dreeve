@@ -54,6 +54,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
             'calories' => '750',
             'gearId' => 'gear-1',
             'isCommute' => 'true',
+            'isGroupActivity' => 'true',
         ]));
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
@@ -75,6 +76,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
         $this->assertSame(750, $activity->getCalories());
         $this->assertNull($activity->getDeviceName());
         $this->assertTrue($activity->isCommute());
+        $this->assertTrue($activity->isGroupActivity());
     }
 
     public function testHandleClearsOptionalFields(): void
@@ -97,6 +99,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
         $this->assertNull($activity->getWorkoutType());
         $this->assertNull($activity->getCalories());
         $this->assertFalse($activity->isCommute());
+        $this->assertFalse($activity->isGroupActivity());
         $this->assertSame(0.0, $activity->getDistance()->toFloat());
         $this->assertSame(0.0, $activity->getAverageSpeed()->toFloat());
     }

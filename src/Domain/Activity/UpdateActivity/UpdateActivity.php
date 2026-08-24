@@ -36,6 +36,7 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
         private ?GearId $gearId,
         private ?int $calories,
         private bool $isCommute,
+        private bool $isGroupActivity,
         private array $newImages,
         private array $removedImages,
     ) {
@@ -76,6 +77,7 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
             gearId: $gearId,
             calories: self::parseCalories($payload),
             isCommute: filter_var($payload['isCommute'] ?? false, FILTER_VALIDATE_BOOLEAN),
+            isGroupActivity: filter_var($payload['isGroupActivity'] ?? false, FILTER_VALIDATE_BOOLEAN),
             newImages: $newImages,
             removedImages: $removedImages,
         );
@@ -119,6 +121,11 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
     public function isCommute(): bool
     {
         return $this->isCommute;
+    }
+
+    public function isGroupActivity(): bool
+    {
+        return $this->isGroupActivity;
     }
 
     /**

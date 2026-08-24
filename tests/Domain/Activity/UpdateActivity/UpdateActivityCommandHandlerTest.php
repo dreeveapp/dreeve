@@ -42,6 +42,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
             'gearId' => 'gear-1',
             'calories' => '500',
             'isCommute' => 'true',
+            'isGroupActivity' => 'true',
         ]));
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
@@ -52,6 +53,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
         $this->assertEquals(GearId::fromUnprefixed('1'), $activity->getGearId());
         $this->assertSame(500, $activity->getCalories());
         $this->assertTrue($activity->isCommute());
+        $this->assertTrue($activity->isGroupActivity());
     }
 
     public function testHandleClearsCalories(): void

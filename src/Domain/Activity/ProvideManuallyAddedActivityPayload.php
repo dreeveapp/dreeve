@@ -162,4 +162,12 @@ trait ProvideManuallyAddedActivityPayload
     {
         return filter_var($payload['isCommute'] ?? false, FILTER_VALIDATE_BOOLEAN);
     }
+
+    /**
+     * @param array<string, mixed> $payload
+     */
+    private static function parseIsGroupActivity(array $payload): bool
+    {
+        return filter_var($payload['isGroupActivity'] ?? false, FILTER_VALIDATE_BOOLEAN);
+    }
 }

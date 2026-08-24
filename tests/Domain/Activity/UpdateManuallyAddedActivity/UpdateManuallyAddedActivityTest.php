@@ -32,6 +32,7 @@ class UpdateManuallyAddedActivityTest extends TestCase
             'calories' => '750',
             'gearId' => 'gear-1',
             'isCommute' => 'true',
+            'isGroupActivity' => 'true',
         ]);
 
         $this->assertEquals(ActivityId::fromUnprefixed('1'), $command->getActivityId());
@@ -46,6 +47,7 @@ class UpdateManuallyAddedActivityTest extends TestCase
         $this->assertEquals(GearId::fromUnprefixed('1'), $command->getGearId());
         $this->assertSame(750, $command->getCalories());
         $this->assertTrue($command->isCommute());
+        $this->assertTrue($command->isGroupActivity());
         $this->assertSame([], $command->getNewImages());
         $this->assertSame([], $command->getRemovedImages());
     }
@@ -67,6 +69,7 @@ class UpdateManuallyAddedActivityTest extends TestCase
         $this->assertNull($command->getWorkoutType());
         $this->assertSame(0.0, $command->getElevation());
         $this->assertFalse($command->isCommute());
+        $this->assertFalse($command->isGroupActivity());
     }
 
     public function testFromPayloadParsesNewAndRemovedImages(): void

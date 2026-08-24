@@ -26,6 +26,7 @@ class UpdateActivityTest extends TestCase
             'gearId' => 'gear-1',
             'calories' => '500',
             'isCommute' => 'true',
+            'isGroupActivity' => 'true',
         ]);
 
         $this->assertEquals(ActivityId::fromUnprefixed('1'), $command->getActivityId());
@@ -36,6 +37,7 @@ class UpdateActivityTest extends TestCase
         $this->assertEquals(GearId::fromUnprefixed('1'), $command->getGearId());
         $this->assertSame(500, $command->getCalories());
         $this->assertTrue($command->isCommute());
+        $this->assertTrue($command->isGroupActivity());
     }
 
     public function testFromPayloadWithoutImagesKeyLeavesImagesUntouched(): void
@@ -167,6 +169,7 @@ class UpdateActivityTest extends TestCase
         $this->assertNull($command->getGearId());
         $this->assertNull($command->getCalories());
         $this->assertFalse($command->isCommute());
+        $this->assertFalse($command->isGroupActivity());
     }
 
     /**

@@ -79,7 +79,7 @@ final readonly class ManuallyCreateActivityCommandHandler implements CommandHand
             weather: null,
             gearId: $command->getGearId(),
             isCommute: $command->isCommute(),
-            isGroupActivity: false,
+            isGroupActivity: $command->isGroupActivity(),
             workoutType: $command->getWorkoutType(),
         );
 

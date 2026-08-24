@@ -47,6 +47,7 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
             'calories' => '750',
             'gearId' => 'gear-1',
             'isCommute' => 'true',
+            'isGroupActivity' => 'true',
         ]));
 
         $activity = $this->activityRepository->findAll()->getFirst();
@@ -68,6 +69,7 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
         $this->assertSame(750, $activity->getCalories());
         $this->assertNull($activity->getDeviceName());
         $this->assertTrue($activity->isCommute());
+        $this->assertTrue($activity->isGroupActivity());
         $this->assertNull($activity->getEncodedPolyline());
         $this->assertNull($activity->getStartingCoordinate());
         $this->assertSame([], $activity->getLocalImagePaths());
@@ -93,6 +95,7 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
         $this->assertNull($activity->getAverageHeartRate());
         $this->assertNull($activity->getAveragePower());
         $this->assertFalse($activity->isCommute());
+        $this->assertFalse($activity->isGroupActivity());
         $this->assertSame(0.0, $activity->getDistance()->toFloat());
         $this->assertSame(0.0, $activity->getAverageSpeed()->toFloat());
     }

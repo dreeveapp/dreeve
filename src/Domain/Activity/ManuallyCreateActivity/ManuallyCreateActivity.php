@@ -39,6 +39,7 @@ final readonly class ManuallyCreateActivity extends DomainCommand implements Des
         private ?GearId $gearId,
         private ?int $calories,
         private bool $isCommute,
+        private bool $isGroupActivity,
         private array $newImages,
     ) {
     }
@@ -59,6 +60,7 @@ final readonly class ManuallyCreateActivity extends DomainCommand implements Des
             gearId: self::parseGearId($payload),
             calories: self::parseCalories($payload),
             isCommute: self::parseIsCommute($payload),
+            isGroupActivity: self::parseIsGroupActivity($payload),
             newImages: $newImages,
         );
     }
@@ -116,6 +118,11 @@ final readonly class ManuallyCreateActivity extends DomainCommand implements Des
     public function isCommute(): bool
     {
         return $this->isCommute;
+    }
+
+    public function isGroupActivity(): bool
+    {
+        return $this->isGroupActivity;
     }
 
     /**

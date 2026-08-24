@@ -133,6 +133,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
                 ->withCalories(750)
                 ->withGearId(GearId::fromUnprefixed('custom-gear'))
                 ->withIsCommute(true)
+                ->withIsGroupActivity(true)
                 ->withLocalImagePaths('activity-1/image.jpg')
                 ->build(),
             [],
@@ -167,6 +168,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 
         $this->assertNotNull($form->filter('select#activity-gear option[value="gear-custom-gear"]')->attr('selected'));
         $this->assertNotNull($form->filter('input#activity-is-commute')->attr('checked'));
+        $this->assertNotNull($form->filter('input#activity-is-group-activity')->attr('checked'));
 
         // A manually added activity was never recorded, so there is no device to pick.
         $this->assertCount(0, $form->filter('select#activity-device-name'));
@@ -199,6 +201,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
                 ->withDeviceName('Garmin Edge')
                 ->withCalories(500)
                 ->withIsCommute(true)
+                ->withIsGroupActivity(true)
                 ->withLocalImagePaths('activity-1/image.jpg')
                 ->build(),
             [],
@@ -224,6 +227,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertNotNull($crawler->filter('select#activity-device-name')->attr('disabled'));
         $this->assertNotNull($crawler->filter('input#activity-calories')->attr('disabled'));
         $this->assertNotNull($crawler->filter('input#activity-is-commute')->attr('disabled'));
+        $this->assertNotNull($crawler->filter('input#activity-is-group-activity')->attr('disabled'));
 
         // Disabled fields are not submitted, so their values are mirrored into hidden inputs.
         $this->assertSame('Morning Run', $crawler->filter('input[type="hidden"][name="name"]')->attr('value'));
@@ -233,6 +237,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('500', $crawler->filter('input[type="hidden"][name="calories"]')->attr('value'));
         // The commute checkbox can't submit while disabled, so its real value is preserved.
         $this->assertSame('true', $crawler->filter('input[type="hidden"][name="isCommute"]')->attr('value'));
+        $this->assertSame('true', $crawler->filter('input[type="hidden"][name="isGroupActivity"]')->attr('value'));
 
         // The image upload is hidden entirely, since images can't be managed in Strava API mode.
         $this->assertCount(0, $crawler->filter('[data-image-dropzone]'));

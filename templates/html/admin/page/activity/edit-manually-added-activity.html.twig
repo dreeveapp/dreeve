@@ -104,6 +104,13 @@
                         {{ "Commute"|trans({}, 'admin') }}
                     </label>
                 </div>
+                <div class="flex items-center gap-2">
+                    <input type="hidden" name="isGroupActivity" value="false">
+                    <input type="checkbox" id="activity-is-group-activity" name="isGroupActivity" value="true" {{ activity and activity.isGroupActivity() ? 'checked' }}>
+                    <label for="activity-is-group-activity" class="flex items-center gap-1.5 mt-0!">
+                        {{ "Group activity"|trans({}, 'admin') }}
+                    </label>
+                </div>
                 <div>
                     <label>{{ "Images"|trans({}, 'admin') }}</label>
                     {% set existingImages = [] %}
