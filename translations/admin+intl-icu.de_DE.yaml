@@ -256,6 +256,7 @@ Monday: Montag
 'Number of new activities to process per import': 'Anzahl der pro Import zu verarbeitenden neuen Aktivitäten'
 'Number of tasks to display': 'Anzahl der anzuzeigenden Aufgaben'
 'Number of widgets of this type you already have configured.': 'Anzahl der bereits konfigurierten Widgets dieses Typs.'
+'Only show activities with a map': 'Only show activities with a map'
 "Oops, looks like you've wandered off the map! 🗺️": 'Hoppla, da scheinst du dich verirrt zu haben! 🗺️'
 Operator: Operator
 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optionales YAML für datumsbereichs- und sportartspezifische Zonen. Leer lassen, es sei denn, du weißt, dass du es brauchst.'
@@ -427,6 +428,7 @@ Tasks: Aufgaben
 'The total distance ridden with the gear': 'Die mit der Ausrüstung zurückgelegte Gesamtstrecke'
 'The unit system used to render distances, elevations, temperatures, etc.': 'Das Einheitensystem für Entfernungen, Höhen, Temperaturen usw.'
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'Der sichtbare Bereich, in dem sich die Heatmap öffnet. Sowohl das Zentrum als auch die Zoomstufe werden benötigt. Lass sie leer, um automatisch auf deinen aktivsten Bereich zu zoomen.'
+'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr'
 'The workout type as set on Strava (Race, Workout or Long run), empty for most activities': 'Der auf Strava eingestellte Trainingstyp (Wettkampf, Training oder Langer Lauf), bei den meisten Aktivitäten leer'
 'Then do this': 'Dann ausführen'
 'These rules will be applied to your existing activities on the next import cycle.': 'Diese Regeln werden beim nächsten Importvorgang auf Ihre bestehenden Aktivitäten angewendet.'
@@ -471,6 +473,7 @@ Weekdays: Wochentage
 "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": 'Wenn diese Option aktiviert ist, werden keine weiteren Regeln verarbeitet, sobald diese Regel zutrifft. Deaktiviere die Option, damit auch spätere Regeln ausgeführt werden. Diese können die Änderungen dieser Regel überschreiben.'
 'When disabled, gear marked as retired is left out of the chart.': 'Wenn deaktiviert, wird als ausgemustert markierte Ausrüstung nicht im Diagramm angezeigt.'
 'When disabled, scrolling over a map zooms it instead of scrolling the page.': 'Wenn diese Option deaktiviert ist, wird beim Überfahren einer Karte mit der Maus die Karte gezoomt, anstatt die Seite zu scrollen.'
+'When enabled, activities without a route, like indoor rides, are left out.': 'When enabled, activities without a route, like indoor rides, are left out.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Wenn aktiviert, wird als ausgemustert markierte Ausrüstung übersprungen. Ihre Komponenten erhöhen die Nutzung nicht und es wird keine Wartung dafür verfolgt.'
 'When set, requests to the admin panel from any other IP address are rejected.': 'Wenn diese Einstellung aktiviert ist, werden Anfragen an den Adminbereich von allen anderen IP-Adressen abgewiesen.'
 'Workout type': Trainingstyp

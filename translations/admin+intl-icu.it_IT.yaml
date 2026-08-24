@@ -256,6 +256,7 @@ Monday: Monday
 'Number of new activities to process per import': 'Number of new activities to process per import'
 'Number of tasks to display': 'Number of tasks to display'
 'Number of widgets of this type you already have configured.': 'Number of widgets of this type you already have configured.'
+'Only show activities with a map': 'Only show activities with a map'
 "Oops, looks like you've wandered off the map! 🗺️": "Oops, looks like you've wandered off the map! 🗺️"
 Operator: Operator
 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.'
@@ -427,6 +428,7 @@ Tasks: Tasks
 'The total distance ridden with the gear': 'The total distance ridden with the gear'
 'The unit system used to render distances, elevations, temperatures, etc.': 'The unit system used to render distances, elevations, temperatures, etc.'
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.'
+'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr'
 'The workout type as set on Strava (Race, Workout or Long run), empty for most activities': 'The workout type as set on Strava (Race, Workout or Long run), empty for most activities'
 'Then do this': 'Then do this'
 'These rules will be applied to your existing activities on the next import cycle.': 'These rules will be applied to your existing activities on the next import cycle.'
@@ -471,6 +473,7 @@ Weekdays: Weekdays
 "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes."
 'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
 'When disabled, scrolling over a map zooms it instead of scrolling the page.': 'When disabled, scrolling over a map zooms it instead of scrolling the page.'
+'When enabled, activities without a route, like indoor rides, are left out.': 'When enabled, activities without a route, like indoor rides, are left out.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
 'When set, requests to the admin panel from any other IP address are rejected.': 'When set, requests to the admin panel from any other IP address are rejected.'
 'Workout type': 'Workout type'
