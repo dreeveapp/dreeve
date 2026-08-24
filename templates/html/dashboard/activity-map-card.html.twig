@@ -1,0 +1,95 @@
+{% autoescape false %}
+    <div class="flex flex-col gap-3 rounded-lg border border-gray-200 p-3 shadow-xs">
+        <div>
+            {{ activity|activityLink(truncate: true) }}
+            <div class="flex items-center gap-1.5 mt-1 text-xs text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                {{ activity.getStartDate().translatedFormat('F j, Y') }} · {{ activity.getStartDate()|formatTime() }}
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+            <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-xxs uppercase tracking-wider font-semibold text-gray-500">{{ "Distance"|trans }}</span>
+                    <div class="size-5 rounded-md bg-primary-soft text-primary flex items-center justify-center">
+                        {{ svg('distance', 'size-3') }}
+                    </div>
+                </div>
+                <div class="flex items-baseline gap-1">
+                    {% set distance = activity.getDistanceInDisplayUnit() %}
+                    <span class="text-lg font-black tracking-tight text-gray-900">{{ distance|formatMeasurement(activity.getSportType().getDistancePrecision()) }}</span>
+                    <span class="text-xs font-medium text-gray-500">{{ distance|measurementSymbol }}</span>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-xxs uppercase tracking-wider font-semibold text-gray-500">{{ "Moving time"|trans }}</span>
+                    <div class="size-5 rounded-md bg-primary-soft text-primary flex items-center justify-center">
+                        {{ svg('time', 'size-3') }}
+                    </div>
+                </div>
+                <div class="flex items-baseline gap-1">
+                    <span class="text-lg font-black tracking-tight text-gray-900">{{ activity.getMovingTimeFormatted() }}</span>
+                </div>
+            </div>
+            {% set velocityPreference = activity.getSportType().getVelocityDisplayPreference() %}
+            <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-xxs uppercase tracking-wider font-semibold text-gray-500">
+                        {% if velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPer100Meter') or velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPerKm') %}{{ "Avg pace"|trans }}{% else %}{{ "Avg speed"|trans }}{% endif %}
+                    </span>
+                    <div class="size-5 rounded-md bg-primary-soft text-primary flex items-center justify-center">
+                        {{ svg('speed', 'size-3') }}
+                    </div>
+                </div>
+                <div class="flex items-baseline gap-1">
+                    {% if velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPer100Meter') %}
+                        <span class="text-lg font-black tracking-tight text-gray-900">{{ activity.getPaceInSecPer100Meter()|formatPace }}</span>
+                        <span class="text-xs font-medium text-gray-500">/100m</span>
+                    {% elseif velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPerKm') %}
+                        <span class="text-lg font-black tracking-tight text-gray-900">{{ activity.getPaceInSecPerKm()|convertMeasurement|formatPace }}</span>
+                        <span class="text-xs font-medium text-gray-500">{{ renderUnitSymbol('pace') }}</span>
+                    {% else %}
+                        {% set averageSpeed = activity.getAverageSpeedInDisplayUnit() %}
+                        {% if averageSpeed %}
+                            <span class="text-lg font-black tracking-tight text-gray-900">{{ averageSpeed|formatMeasurement(1) }}</span>
+                            <span class="text-xs font-medium text-gray-500">{{ averageSpeed|measurementSymbol }}</span>
+                        {% else %}
+                            <span class="text-lg font-black tracking-tight text-gray-900">{{ "n/a"|trans }}</span>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-xxs uppercase tracking-wider font-semibold text-gray-500">{{ "Elevation"|trans }}</span>
+                    <div class="size-5 rounded-md bg-primary-soft text-primary flex items-center justify-center">
+                        {{ svg('elevation', 'size-3') }}
+                    </div>
+                </div>
+                <div class="flex items-baseline gap-1">
+                    <span class="text-lg font-black tracking-tight text-gray-900">{{ activity.getElevation()|formatMeasurement(0) }}</span>
+                    <span class="text-xs font-medium text-gray-500">{{ renderUnitSymbol('elevation') }}</span>
+                </div>
+            </div>
+        </div>
+        {% if leaflet %}
+            {% set leafletOptions = {
+                'polylineUrl': fragmentDataUrl(leaflet.polylineUrl),
+                'tileLayer': leaflet.map.getTileLayer(),
+                'minZoom': leaflet.map.getMinZoom(),
+                'maxZoom': leaflet.map.getMaxZoom(),
+                'imageOverlay': leaflet.map.getOverlayImageUrl(),
+                'bounds': leaflet.map.getBounds(),
+            } %}
+            <div class="h-64 rounded-lg overflow-hidden" style="background-color:{{ leaflet.map.getBackgroundColor() }}"
+                 data-leaflet='{{ leafletOptions|json_encode }}'></div>
+        {% else %}
+            <div class="flex h-64 justify-center">
+                <img class="w-full object-cover rounded-lg lazy" src="{{ placeholderImage() }}"
+                     data-src="{{ relativeUrl('assets/images/maps/not-found.webp') }}"
+                     alt="No map"/>
+            </div>
+        {% endif %}
+    </div>
+{% endautoescape %}
