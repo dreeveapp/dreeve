@@ -144,6 +144,7 @@ final readonly class GpxFileParser implements ActivityFileParser
             weather: null,
             gearId: null,
             isCommute: false,
+            isGroupActivity: false,
             workoutType: null,
         );
 

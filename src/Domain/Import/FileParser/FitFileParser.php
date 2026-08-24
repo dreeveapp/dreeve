@@ -224,6 +224,7 @@ final readonly class FitFileParser implements ActivityFileParser
             weather: null,
             gearId: null,
             isCommute: false,
+            isGroupActivity: false,
             workoutType: null,
         );
 

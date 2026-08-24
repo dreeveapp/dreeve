@@ -18,6 +18,7 @@ use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
+use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
@@ -306,6 +307,7 @@ class ActivityTest extends TestCase
         )];
         yield 'gear' => [fn (Activity $activity): Activity => $activity->withGear(GearId::fromUnprefixed('42'))];
         yield 'commute' => [fn (Activity $activity): Activity => $activity->withCommute(true)];
+        yield 'group activity' => [fn (Activity $activity): Activity => $activity->withGroupActivity(true)];
         yield 'workout type' => [fn (Activity $activity): Activity => $activity->withWorkoutType(WorkoutType::RACE)];
     }
 
@@ -396,5 +398,29 @@ class ActivityTest extends TestCase
             [new ActivityWasAdded(SerializableDateTime::fromString('2023-10-10'))],
             ActivityBuilder::fromDefaults()->buildAsNewlyCreated()->getRecordedEvents()
         );
+    }
+
+    #[DataProvider('provideAthleteCounts')]
+    public function testItShouldDeriveGroupActivityFromAthleteCount(?int $athleteCount, bool $expected): void
+    {
+        $rawData = Json::decode(file_get_contents(__DIR__.'/fixtures/raw-strava-activity.json') ?: '');
+        if (is_null($athleteCount)) {
+            unset($rawData['athlete_count']);
+        } else {
+            $rawData['athlete_count'] = $athleteCount;
+        }
+
+        $this->assertEquals($expected, Activity::createFromRawStravaData($rawData)->isGroupActivity());
+    }
+
+    /**
+     * @return \Generator<string, array{?int, bool}>
+     */
+    public static function provideAthleteCounts(): \Generator
+    {
+        yield 'solo' => [1, false];
+        yield 'with one other athlete' => [2, true];
+        yield 'group ride' => [42, true];
+        yield 'not reported by Strava' => [null, false];
     }
 }

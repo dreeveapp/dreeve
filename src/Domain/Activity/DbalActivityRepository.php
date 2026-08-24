@@ -136,13 +136,13 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             elevation, startingCoordinateLatitude, startingCoordinateLongitude, calories, kilojoules,
             averagePower, maxPower, averageSpeed, maxSpeed, averageHeartRate, maxHeartRate,
             averageCadence,movingTimeInSeconds, elapsedTimeInSeconds, deviceName, connectedSensors, totalImageCount, localImagePaths,
-            polyline, routeGeography, weather, gearId, data, isCommute, streamsAreImported, workoutType
+            polyline, routeGeography, weather, gearId, data, isCommute, isGroupActivity, streamsAreImported, workoutType
         ) VALUES(
             :activityId, :startDateTime, :sportType, :activityType, :worldType, :importSource, :externalReferenceId, :name, :description, :distance,
             :elevation, :startingCoordinateLatitude, :startingCoordinateLongitude, :calories, :kilojoules,
             :averagePower, :maxPower, :averageSpeed, :maxSpeed, :averageHeartRate, :maxHeartRate,
             :averageCadence, :movingTimeInSeconds, :elapsedTimeInSeconds, :deviceName, :connectedSensors, :totalImageCount, :localImagePaths,
-            :polyline, :routeGeography, :weather, :gearId, :data, :isCommute, :streamsAreImported, :workoutType
+            :polyline, :routeGeography, :weather, :gearId, :data, :isCommute, :isGroupActivity, :streamsAreImported, :workoutType
         )';
 
         $activity = $activityWithRawData->getActivity();
@@ -181,6 +181,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'gearId' => $activity->getGearId(),
             'data' => Json::encode($this->cleanData($activityWithRawData->getRawData())),
             'isCommute' => (int) $activity->isCommute(),
+            'isGroupActivity' => (int) $activity->isGroupActivity(),
             'streamsAreImported' => 0,
             'workoutType' => $activity->getWorkoutType()?->value,
         ]);
@@ -214,6 +215,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
                     localImagePaths = :localImagePaths,
                     data = :data,
                     isCommute = :isCommute,
+                    isGroupActivity = :isGroupActivity,
                     workoutType = :workoutType    
                     WHERE activityId = :activityId';
 
@@ -242,6 +244,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'totalImageCount' => $activity->getTotalImageCount(),
             'localImagePaths' => implode(',', $activity->getLocalImagePaths()),
             'isCommute' => (int) $activity->isCommute(),
+            'isGroupActivity' => (int) $activity->isGroupActivity(),
             'workoutType' => $activity->getWorkoutType()?->value,
             'data' => Json::encode($this->cleanData($activityWithRawData->getRawData())),
         ]);

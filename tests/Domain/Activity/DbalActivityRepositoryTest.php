@@ -196,7 +196,8 @@ class DbalActivityRepositoryTest extends ContainerTestCase
             ))
             ->withGear(GearId::fromUnprefixed('updated'))
             ->withRouteGeography(RouteGeography::create(['state' => 'updated location']))
-            ->withCommute(true);
+            ->withCommute(true)
+            ->withGroupActivity(true);
 
         $this->activityRepository->update(ActivityWithRawData::fromState(
             activity: $activity,
@@ -258,6 +259,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
             $persistedActivity->getRouteGeography()
         );
         $this->assertTrue($persistedActivity->isCommute());
+        $this->assertTrue($persistedActivity->isGroupActivity());
         $this->assertEquals(
             Coordinate::createFromLatAndLng(
                 latitude: Latitude::fromString('20'),

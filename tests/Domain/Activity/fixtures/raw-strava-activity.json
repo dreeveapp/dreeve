@@ -1,0 +1,21 @@
+{
+    "id": 9542782814,
+    "name": "Morning Ride",
+    "description": "",
+    "sport_type": "Ride",
+    "workout_type": 10,
+    "start_date_local": "2023-07-29T07:34:03Z",
+    "distance": 12415.1,
+    "total_elevation_gain": 15.1,
+    "moving_time": 1916,
+    "elapsed_time": 15265,
+    "average_speed": 6.48,
+    "max_speed": 10.38,
+    "athlete_count": 1,
+    "commute": false,
+    "gear_id": "b12659861",
+    "external_id": "GOTOES_5812292553058048.tcx",
+    "total_photo_count": 0,
+    "start_latlng": [51.19, 3.24],
+    "map": {"summary_polyline": "tqafAua~y^vG{D"}
+}

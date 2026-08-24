@@ -126,6 +126,8 @@ final class Activity
         private readonly ?GearId $gearId,
         #[ORM\Column(type: 'boolean', nullable: true)]
         private readonly bool $isCommute,
+        #[ORM\Column(type: 'boolean', nullable: true)]
+        private readonly bool $isGroupActivity,
         #[ORM\Column(type: 'string', nullable: true)]
         private readonly ?WorkoutType $workoutType,
     ) {
@@ -179,6 +181,7 @@ final class Activity
             weather: null,
             gearId: GearId::fromOptionalUnprefixed($rawData['gear_id'] ?? null),
             isCommute: $rawData['commute'] ?? false,
+            isGroupActivity: ($rawData['athlete_count'] ?? 1) > 1,
             workoutType: WorkoutType::fromStravaInt($rawData['workout_type'] ?? null),
         );
     }
@@ -218,6 +221,7 @@ final class Activity
         ?string $weather,
         ?GearId $gearId,
         bool $isCommute,
+        bool $isGroupActivity,
         ?WorkoutType $workoutType,
     ): self {
         $activity = self::fromState(
@@ -252,6 +256,7 @@ final class Activity
             weather: $weather,
             gearId: $gearId,
             isCommute: $isCommute,
+            isGroupActivity: $isGroupActivity,
             workoutType: $workoutType,
         );
         $activity->recordThat(new ActivityWasAdded($activity->getStartDate()));
@@ -297,6 +302,7 @@ final class Activity
         ?string $weather,
         ?GearId $gearId,
         bool $isCommute,
+        bool $isGroupActivity,
         ?WorkoutType $workoutType,
     ): self {
         return new self(
@@ -331,6 +337,7 @@ final class Activity
             weather: $weather,
             gearId: $gearId,
             isCommute: $isCommute,
+            isGroupActivity: $isGroupActivity,
             workoutType: $workoutType
         );
     }
@@ -711,6 +718,18 @@ final class Activity
         ]));
     }
 
+    public function isGroupActivity(): bool
+    {
+        return $this->isGroupActivity;
+    }
+
+    public function withGroupActivity(bool $isGroupActivity): self
+    {
+        return $this->recordUpdate(clone ($this, [
+            'isGroupActivity' => $isGroupActivity,
+        ]));
+    }
+
     public function getWorkoutType(): ?WorkoutType
     {
         return $this->workoutType;
@@ -825,6 +844,7 @@ final class Activity
             'routeGeography' => $this->routeGeography->jsonSerialize(),
             'gearId' => (string) $this->gearId,
             'isCommute' => $this->isCommute,
+            'isGroupActivity' => $this->isGroupActivity,
             'workoutType' => $this->workoutType?->value,
         ];
     }

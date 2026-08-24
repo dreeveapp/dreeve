@@ -29,7 +29,7 @@ final readonly class ActivityHydrator
         'averagePower', 'maxPower', 'averageSpeed', 'maxSpeed', 'averageHeartRate', 'maxHeartRate',
         'averageCadence', 'movingTimeInSeconds', 'elapsedTimeInSeconds', 'deviceName',
         'connectedSensors', 'totalImageCount', 'localImagePaths', 'polyline', 'routeGeography',
-        'weather', 'gearId', 'isCommute', 'workoutType',
+        'weather', 'gearId', 'isCommute', 'isGroupActivity', 'workoutType',
     ];
 
     public static function columns(?string $alias = null): string
@@ -89,6 +89,7 @@ final readonly class ActivityHydrator
             weather: $result['weather'],
             gearId: GearId::fromOptionalString($result['gearId']),
             isCommute: (bool) $result['isCommute'],
+            isGroupActivity: (bool) $result['isGroupActivity'],
             workoutType: WorkoutType::tryFrom($result['workoutType'] ?? ''),
         );
     }

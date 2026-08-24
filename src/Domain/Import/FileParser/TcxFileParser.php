@@ -131,6 +131,7 @@ final readonly class TcxFileParser implements ActivityFileParser
             weather: null,
             gearId: null,
             isCommute: false,
+            isGroupActivity: false,
             workoutType: null,
         );
 

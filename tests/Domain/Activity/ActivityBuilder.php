@@ -54,6 +54,7 @@ final class ActivityBuilder
     private readonly ?string $weather;
     private ?GearId $gearId = null;
     private bool $isCommute;
+    private bool $isGroupActivity;
     private ?WorkoutType $workoutType;
 
     private function __construct()
@@ -73,6 +74,7 @@ final class ActivityBuilder
         $this->weather = null;
         $this->routeGeography = RouteGeography::create([]);
         $this->isCommute = false;
+        $this->isGroupActivity = false;
         $this->workoutType = null;
         $this->externalReferenceId = ExternalReferenceId::fromString('1234567');
     }
@@ -116,6 +118,7 @@ final class ActivityBuilder
             weather: $this->weather,
             gearId: $this->gearId,
             isCommute: $this->isCommute,
+            isGroupActivity: $this->isGroupActivity,
             workoutType: $this->workoutType,
         );
     }
@@ -154,6 +157,7 @@ final class ActivityBuilder
             weather: $this->weather,
             gearId: $this->gearId,
             isCommute: $this->isCommute,
+            isGroupActivity: $this->isGroupActivity,
             workoutType: $this->workoutType,
         );
     }
@@ -273,6 +277,13 @@ final class ActivityBuilder
     public function withIsCommute(bool $isCommute): self
     {
         $this->isCommute = $isCommute;
+
+        return $this;
+    }
+
+    public function withIsGroupActivity(bool $isGroupActivity): self
+    {
+        $this->isGroupActivity = $isGroupActivity;
 
         return $this;
     }
