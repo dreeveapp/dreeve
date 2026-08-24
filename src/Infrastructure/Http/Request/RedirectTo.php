@@ -8,7 +8,7 @@ use App\Application\AppUrl;
 use Symfony\Component\HttpFoundation\Request;
 use Uri\WhatWg\Url;
 
-final readonly class RedirectTo
+final readonly class RedirectTo implements \Stringable
 {
     public const string QUERY_PARAM = 'redirectTo';
 
