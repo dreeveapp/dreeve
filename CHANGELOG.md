@@ -1,3 +1,39 @@
+# [v5.3.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.3.0) - 2026-08-24
+
+## New features
+* Added a public API to add proper support for [GadgetBridge](https://gadgetbridge.org/)
+* Added a movingTime condition for automation rules
+* Added an option to disable Ctrl+scroll zooming on maps
+* Added the ability to manually edit calories
+
+## Improvements
+* Added support for ADMIN_ALLOWED_IPS behind a reverse proxy
+* Added temperature to the combined profile chart
+* Improved handling of inactive Strava API applications
+* Hardened file processing in the watch directory
+* Fixed inconsistent numbers of similar routes
+
+## Bug fixes
+* Fixed an HTTP 500 error caused by an empty athlete name
+
+## Technical details
+* ISSUE #2557: Make ADMIN_ALLOWED_IPS work behind a reverse proxy by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2558
+* ISSUE #2559: Introduced movingTime automation rule condition by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2560
+* ISSUE #2556: Option to disable ctrl+scroll for zoom on map by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2561
+* ISSUE #2563: Show temperature in the combined profile chart by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2564
+* ISSUE #2562: Handle inactive Strava API applications gracefully by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2566
+* ISSUE #2567: Move the current /api routes to /api/internal in preparation of GadgetBride integration by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2568
+* ISSUE #2569: Harden watch directory file processing by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2571
+* ISSUE #2573: Migrate docs over to Starlight by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2574
+* ISSUE #2575: Unhandled empty athlete name causes HTTP 500 by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2576
+* ISSUE #2577 German Translation by @effectpears in https://github.com/dreeveapp/dreeve/pull/2578
+* ISSUE #2511: Gadgetbridge support by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2587
+* ISSUE #2585: Allow to manually edit calories by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2588
+* ISSUE #2572: Inconsistent number of similar routes by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2589
+
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.2.3...v5.3.0
+
 # [v5.2.3](https://github.com/dreeveapp/dreeve/releases/tag/v5.2.3) - 2026-08-19
 
 > [!NOTE]

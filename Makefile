@@ -35,7 +35,7 @@ composer:
 download-database:
 	@make stop
 	rm -Rf storage/database/dreeve.*
-	scp $(user)@$(server):/home/docker/stacks/dreeve/storage/database/dreeve.db ./storage/database/dreeve.db
+	scp $(user)@$(server):/home/docker/volumes/dreeve/storage/database/dreeve.db ./storage/database/dreeve.db
 	@make dc cmd="up -d --build"
 
 download-assets:
@@ -89,14 +89,14 @@ app-build-assets:
 	@make dcr cmd="node_modules/.bin/webpack --config webpack.config.js"
 
 app-docs-install:
-	@make dcr cmd="npm --prefix docs ci"
+	npm --prefix docs ci
 
 app-docs-serve:
 	@rm -f docs/.astro/dev.json
-	@make dc cmd="run --rm -p 4321:4321 php-cli npm --prefix docs run dev -- --host 0.0.0.0"
+	npm --prefix docs run dev
 
 app-docs-build:
-	@make dcr cmd="npm --prefix docs run build"
+	@make npm --prefix docs run build
 
 clear-cache:
 	docker compose exec app bin/console app:cache:render:clear
