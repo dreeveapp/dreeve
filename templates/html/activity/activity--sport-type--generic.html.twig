@@ -22,10 +22,45 @@
                     {% endif %}
                 </h1>
                 {% if activity.getDescription() %}
-                    <details class="group/desc mb-3 mt-1">
+                    <details class="group/desc mt-1">
                         <summary class="list-none cursor-pointer text-xs text-gray-500 line-clamp-1 group-open/desc:line-clamp-none whitespace-pre-line">{{ activity.getDescription() }}</summary>
                     </details>
                 {% endif %}
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-gray-600 mt-2">
+             <span class="inline-flex items-center gap-1.5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                <a href="{{ relativeUrl('monthly-stats/' ~ activity.getStartDate().translatedFormat('Y-m')) }}" data-router-link class="hover:underline hover:text-primary transition" title="{{ "View this month"|trans }}">
+                    {{ activity.getStartDate().translatedFormat('F j, Y') }}
+                </a> · {{ activity.getStartDate()|formatTime() }}
+             </span>
+                    {% if activity.isCommute() %}
+                        <span class="inline-flex items-center gap-1.5">
+                    {{ svg('commute', 'size-3.5', 'text-gray-400') }}
+                            {{ "Commute"|trans }}
+                </span>
+                    {% endif %}
+                    {% if activity.isGroupActivity() %}
+                        <span class="inline-flex items-center gap-1.5">
+                    {{ svg('group', 'size-3.5', 'text-gray-400') }}
+                            {{ "Group activity"|trans }}
+                </span>
+                    {% endif %}
+                    {% set weather = activity.getWeather() %}
+                    {% if weather %}
+                        <span class="inline-flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 text-yellow-500" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" fill="none"/></svg>
+                    {{ weather.getWeatherCodeDescription() }}, {{ weather.getTemperatureInCelsius()|renderMeasurement(1) }}
+                </span>
+                        <span class="inline-flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/></svg>
+                    {{ weather.getRelativeHumidity() }}% {{ "humidity"|trans }}
+                </span>
+                        <span class="inline-flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+                     {{ weather.getWindSpeed()|renderMeasurement(1) }} {{ weather.getWindDirection() }}
+                </span>
+                    {% endif %}
+                </div>
             </div>
             <div class="flex items-center gap-2 shrink-0">
                 {% if isAuthenticated %}
@@ -45,29 +80,6 @@
                     </a>
                 {% endif %}
             </div>
-        </div>
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-gray-600">
-             <span class="inline-flex items-center gap-1.5">
-                <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-                <a href="{{ relativeUrl('monthly-stats/' ~ activity.getStartDate().translatedFormat('Y-m')) }}" data-router-link class="hover:underline hover:text-primary transition" title="{{ "View this month"|trans }}">
-                    {{ activity.getStartDate().translatedFormat('F j, Y') }}
-                </a> · {{ activity.getStartDate()|formatTime() }}
-             </span>
-            {% set weather = activity.getWeather() %}
-            {% if weather %}
-                <span class="inline-flex items-center gap-1.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 text-yellow-500" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" fill="none"/></svg>
-                    {{ weather.getWeatherCodeDescription() }}, {{ weather.getTemperatureInCelsius()|renderMeasurement(1) }}
-                </span>
-                <span class="inline-flex items-center gap-1.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/></svg>
-                    {{ weather.getRelativeHumidity() }}% {{ "humidity"|trans }}
-                </span>
-                <span class="inline-flex items-center gap-1.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
-                     {{ weather.getWindSpeed()|renderMeasurement(1) }} {{ weather.getWindDirection() }}
-                </span>
-            {% endif %}
         </div>
         {% block mainStatsOnTop %}
             <section>

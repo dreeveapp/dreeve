@@ -61,6 +61,8 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId($activityId)
                 ->withSportType($sportType)
+                ->withIsCommute(true)
+                ->withIsGroupActivity(true)
                 ->build(),
             [],
         ));
