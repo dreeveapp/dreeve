@@ -1,0 +1,11 @@
+<div>
+    <label for="config-numberOfActivitiesToDisplay">{{ "Number of activities to display"|trans({}, 'admin') }}</label>
+    <input type="number" min="1" max="3" step="1" required id="config-numberOfActivitiesToDisplay" name="config[numberOfActivitiesToDisplay]" value="{{ configuration.get('numberOfActivitiesToDisplay') }}">
+</div>
+<div class="flex items-start gap-2">
+    <input type="checkbox" id="config-onlyShowActivitiesWithAMap" name="config[onlyShowActivitiesWithAMap]" value="true" {{ configuration.get('onlyShowActivitiesWithAMap') ? 'checked' }} class="mt-0.5">
+    <div>
+        <label for="config-onlyShowActivitiesWithAMap" class="mt-0!">{{ "Only show activities with a map"|trans({}, 'admin') }}</label>
+        <p class="mt-0.5 text-xxs text-gray-500">{{ "When enabled, activities without a route, like indoor rides, are left out."|trans({}, 'admin') }}</p>
+    </div>
+</div>
