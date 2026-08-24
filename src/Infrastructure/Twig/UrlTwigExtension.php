@@ -13,8 +13,10 @@ use App\Domain\Image\ImageOrientation;
 use App\Domain\Segment\Segment;
 use App\Domain\Segment\SegmentFragmentPath;
 use App\Infrastructure\Http\Fragment\FragmentType;
+use App\Infrastructure\Http\Request\RedirectTo;
 use App\Infrastructure\ValueObject\String\FilteredUrl;
 use App\Infrastructure\ValueObject\String\RelativeUrl;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Attribute\AsTwigFilter;
 use Twig\Attribute\AsTwigFunction;
@@ -23,6 +25,7 @@ final readonly class UrlTwigExtension
 {
     public function __construct(
         private AppUrl $appUrl,
+        private RequestStack $requestStack,
         private UrlGeneratorInterface $urlGenerator,
         private StringTwigExtension $stringTwigExtension,
         private SvgsTwigExtension $svgsTwigExtension,
@@ -33,6 +36,28 @@ final readonly class UrlTwigExtension
     public function toRelativeUrl(string $path): string
     {
         return RelativeUrl::from($path, $this->appUrl)->toRelativeUrl();
+    }
+
+    #[AsTwigFunction('relativeUrlWithRedirectTo')]
+    public function toRelativeUrlWithRedirectTo(string $path, string $redirectTo): string
+    {
+        $url = RelativeUrl::from($path, $this->appUrl)->toRelativeUrl();
+
+        return $url
+            .(str_contains($url, '?') ? '&' : '?')
+            .RedirectTo::QUERY_PARAM
+            .'='.rawurlencode(RelativeUrl::from($redirectTo, $this->appUrl)->toRelativeUrl());
+    }
+
+    #[AsTwigFunction('redirectUrl')]
+    public function toRedirectUrl(string $default): string
+    {
+        if (!$request = $this->requestStack->getCurrentRequest()) {
+            return $default;
+        }
+        $redirectTo = RedirectTo::fromRequest($request, $this->appUrl);
+
+        return $redirectTo instanceof RedirectTo ? (string) $redirectTo : $default;
     }
 
     /**

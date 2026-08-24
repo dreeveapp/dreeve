@@ -20,6 +20,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 {
@@ -241,6 +242,38 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 
         // The image upload is hidden entirely, since images can't be managed in Strava API mode.
         $this->assertCount(0, $crawler->filter('[data-image-dropzone]'));
+    }
+
+    #[DataProvider('provideRedirectToQueryParams')]
+    public function testItHonoursASafeRedirectToOnEveryExit(string $redirectTo, string $expected): void
+    {
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->build(),
+            [],
+        ));
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request(
+            'GET',
+            '/admin/activities/'.ActivityId::fromUnprefixed('1').'/edit?redirectTo='.urlencode($redirectTo)
+        );
+
+        $this->assertResponseIsSuccessful();
+
+        $this->assertSame($expected, $crawler->filter('form[data-dispatch-command]')->attr('data-redirect'));
+        $this->assertSame($expected, $crawler->filter('a[aria-label="Close"]')->attr('href'));
+        $this->assertSame($expected, $crawler->filter('.btn--secondary')->attr('href'));
+    }
+
+    public static function provideRedirectToQueryParams(): \Generator
+    {
+        yield 'a path within the app' => ['/activities/activity-1', '/activities/activity-1'];
+        yield 'protocol relative' => ['//evil.com', '/admin/activities'];
+        yield 'javascript uri' => ['javascript:alert(1)', '/admin/activities'];
+        yield 'absolute url' => ['https://evil.com', '/admin/activities'];
     }
 
     public function testStravaApiModeAllowsAssigningCustomGear(): void

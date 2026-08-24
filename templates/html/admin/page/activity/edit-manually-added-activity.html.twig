@@ -2,7 +2,7 @@
 {% block main %}
     {% autoescape false %}
     {% set activity = activity is defined ? activity : null %}
-    {% set overviewUrl = relativeUrl(path('admin_manage_activity_overview')) %}
+    {% set overviewUrl = redirectUrl(relativeUrl(path('admin_manage_activity_overview'))) %}
     {% set distance = activity ? (activity.getDistance()|convertMeasurement).toFloat()|round(2) : 0 %}
     {% set elevation = activity ? (activity.getElevation()|convertMeasurement).toFloat()|round : 0 %}
     {% set durationInSeconds = activity ? activity.getMovingTimeInSeconds() : 0 %}

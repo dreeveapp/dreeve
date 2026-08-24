@@ -166,7 +166,7 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
         $this->client->loginUser($this->adminUser());
         $this->client->request('GET', '/api/internal/fragment/page/activities/activity-9756441741');
         $this->assertStringContainsString(
-            'admin/activities/activity-9756441741/edit',
+            'admin/activities/activity-9756441741/edit?redirectTo=%2Factivities%2Factivity-9756441741',
             (string) $this->client->getResponse()->getContent(),
         );
     }
