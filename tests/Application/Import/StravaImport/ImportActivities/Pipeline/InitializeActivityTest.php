@@ -32,7 +32,7 @@ class InitializeActivityTest extends ContainerTestCase
             [],
         ));
 
-        $rawStravaData = $this->rawStravaData();
+        $rawStravaData = Json::decode(file_get_contents(__DIR__.'/fixtures/raw-strava-activity.json') ?: '');
         $rawStravaData['athlete_count'] = $athleteCount;
 
         $context = $this->initializeActivity->process(ActivityImportContext::create(
@@ -55,7 +55,7 @@ class InitializeActivityTest extends ContainerTestCase
             [],
         ));
 
-        $rawStravaData = $this->rawStravaData();
+        $rawStravaData = Json::decode(file_get_contents(__DIR__.'/fixtures/raw-strava-activity.json') ?: '');
         unset($rawStravaData['athlete_count']);
 
         $context = $this->initializeActivity->process(ActivityImportContext::create(
@@ -76,14 +76,6 @@ class InitializeActivityTest extends ContainerTestCase
         yield 'the other athletes are gone' => [true, 1, false];
         yield 'still a group activity' => [true, 3, true];
         yield 'still a solo activity' => [false, 1, false];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function rawStravaData(): array
-    {
-        return Json::decode(file_get_contents(__DIR__.'/fixtures/raw-strava-activity.json') ?: '');
     }
 
     #[\Override]

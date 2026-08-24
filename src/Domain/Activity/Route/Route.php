@@ -29,6 +29,7 @@ final readonly class Route implements \JsonSerializable
         private RouteGeography $routeGeography,
         private SportType $sportType,
         private bool $isCommute,
+        private bool $isGroupActivity,
         private ?WorkoutType $workoutType,
         private SerializableDateTime $on,
         private ?UnitSystem $unitSystem,
@@ -48,6 +49,7 @@ final readonly class Route implements \JsonSerializable
         RouteGeography $routeGeography,
         SportType $sportType,
         bool $isCommute,
+        bool $isGroupActivity,
         ?WorkoutType $workoutType,
         SerializableDateTime $on,
     ): self {
@@ -59,6 +61,7 @@ final readonly class Route implements \JsonSerializable
             routeGeography: $routeGeography,
             sportType: $sportType,
             isCommute: $isCommute,
+            isGroupActivity: $isGroupActivity,
             workoutType: $workoutType,
             on: $on,
             unitSystem: null,
@@ -103,6 +106,11 @@ final readonly class Route implements \JsonSerializable
     public function isCommute(): bool
     {
         return $this->isCommute;
+    }
+
+    public function isGroupActivity(): bool
+    {
+        return $this->isGroupActivity;
     }
 
     public function getWorkoutType(): ?WorkoutType
@@ -164,6 +172,7 @@ final readonly class Route implements \JsonSerializable
                 'sportType' => $this->getSportType(),
                 'start-date' => $this->getOn()->getTimestamp() * 1000, // JS timestamp is in milliseconds,
                 'isCommute' => $this->isCommute() ? 'true' : 'false',
+                'isGroupActivity' => $this->isGroupActivity() ? 'true' : 'false',
                 'workoutType' => $this->getWorkoutType()?->value,
             ],
             'coordinates' => $this->getCoordinates(),

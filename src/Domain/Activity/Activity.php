@@ -815,6 +815,7 @@ final class Activity
             'sportType' => $this->sportType->value,
             'startDateTime' => $this->startDateTime->getTimestamp(),
             'isCommute' => $this->isCommute,
+            'isGroupActivity' => $this->isGroupActivity,
             'workoutType' => $this->workoutType?->value,
         ];
     }
@@ -883,6 +884,7 @@ final class Activity
             'start-date' => $this->getStartDate()->getTimestamp() * 1000, // JS timestamp is in milliseconds,
             'countryCode' => $this->getRouteGeography()->getPassedThroughCountries(),
             'isCommute' => $this->isCommute() ? 'true' : 'false',
+            'isGroupActivity' => $this->isGroupActivity() ? 'true' : 'false',
             'gear' => $this->getGearIdIncludingNone(),
             'workoutType' => $this->getWorkoutType()?->value,
             'device' => $this->getDeviceId(),

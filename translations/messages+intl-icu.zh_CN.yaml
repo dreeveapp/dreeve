@@ -126,6 +126,7 @@ Energy: Energy
 'Enter fullscreen mode': 'Enter fullscreen mode'
 Evening: 晚上
 'Excludes commutes': 筛除通勤
+'Excludes group activities': 'Excludes group activities'
 'FTP history': FTP历史
 Fastest: Fastest
 Favourite: 收藏夹
@@ -161,6 +162,8 @@ Grad.: Grad.
 Gradient: Gradient
 'Gravel Ride': 'Gravel Ride'
 'Gravel Rides': 砾石骑行
+'Group activities': 'Group activities'
+'Group activities only': 'Group activities only'
 "Guidelines vary by individual; for more information see Joe Friel's 'The Cyclist's Training Bible' or TrainingPeaks' research documentation.": '指导原则因人而异；欲了解更多信息，请参阅乔·弗里尔的《自行车训练圣经》或 TrainingPeaks 的研究文档。'
 HIIT: 高强度间歇训练
 HR: 心率

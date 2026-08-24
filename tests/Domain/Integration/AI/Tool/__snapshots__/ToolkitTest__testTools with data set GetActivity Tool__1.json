@@ -23,5 +23,6 @@
     "gearId": "b12659861",
     "gearName": "Retro Race Bike",
     "isCommute": false,
+    "isGroupActivity": false,
     "workoutType": null
 }

@@ -267,6 +267,29 @@
                                         </ul>
                                     </div>
                                     <div class="flex flex-col items-center">
+                                        <div class="text-xs font-medium items-center">{{ "Group activities"|trans }}</div>
+                                        <ul class="text-sm text-gray-700">
+                                            <li>
+                                                <div>
+                                                    <input type="radio" id="isGroupActivity-true" data-dataTable-filter="isGroupActivity" name="isGroupActivity" value="true" class="peer" />
+                                                    <label for="isGroupActivity-true">
+                                                        {{ "Group activities only"|trans }}
+                                                    </label>
+                                                    <a href="#" data-datatable-filter-clear="isGroupActivity">{{ "clear"|trans }}</a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    <input type="radio" id="isGroupActivity-false" data-dataTable-filter="isGroupActivity" name="isGroupActivity" value="false" class="peer" />
+                                                    <label for="isGroupActivity-false">
+                                                        {{ "Excludes group activities"|trans }}
+                                                    </label>
+                                                    <a href="#" data-datatable-filter-clear="isGroupActivity">{{ "clear"|trans }}</a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="flex flex-col items-center">
                                         <div class="text-xs font-medium">{{ "Workout type"|trans }}</div>
                                         <ul class="text-sm text-gray-700">
                                             {% for workoutType in enum('App\\Domain\\Activity\\WorkoutType').cases() %}

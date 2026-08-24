@@ -16,6 +16,7 @@
             "sportType": "Ride",
             "start-date": 1696946434000,
             "isCommute": "false",
+            "isGroupActivity": "false",
             "workoutType": null
         },
         "coordinates": [
@@ -47,6 +48,7 @@
             "sportType": "Ride",
             "start-date": 1696946434000,
             "isCommute": "false",
+            "isGroupActivity": "true",
             "workoutType": null
         },
         "coordinates": [

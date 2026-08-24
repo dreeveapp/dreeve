@@ -115,6 +115,7 @@ final readonly class EnrichedActivity implements SupportsAITooling
             'gearId' => $this->activity->getGearId()?->toUnprefixedString(),
             'gearName' => $this->gearName,
             'isCommute' => $this->activity->isCommute(),
+            'isGroupActivity' => $this->activity->isGroupActivity(),
             'workoutType' => $this->activity->getWorkoutType()?->value,
         ];
     }

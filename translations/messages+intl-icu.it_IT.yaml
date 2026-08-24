@@ -126,6 +126,7 @@ Energy: Energy
 'Enter fullscreen mode': 'Entra in modalità schermo intero'
 Evening: Sera
 'Excludes commutes': 'Esclude gli spostamenti casa-lavoro'
+'Excludes group activities': 'Excludes group activities'
 'FTP history': 'Storico FTP'
 Fastest: Fastest
 Favourite: Preferito
@@ -161,6 +162,8 @@ Grad.: Grad.
 Gradient: Gradient
 'Gravel Ride': 'Gravel Ride'
 'Gravel Rides': 'Uscite gravel'
+'Group activities': 'Group activities'
+'Group activities only': 'Group activities only'
 "Guidelines vary by individual; for more information see Joe Friel's 'The Cyclist's Training Bible' or TrainingPeaks' research documentation.": "Le linee guida variano da persona a persona; per maggiori informazioni consulta 'The Cyclist's Training Bible' di Joe Friel o la documentazione di ricerca di TrainingPeaks."
 HIIT: HIIT
 HR: FC

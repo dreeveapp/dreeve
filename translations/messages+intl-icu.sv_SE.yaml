@@ -126,6 +126,7 @@ Energy: Energy
 'Enter fullscreen mode': 'Enter fullscreen mode'
 Evening: Kväll
 'Excludes commutes': 'Uteslut pendling'
+'Excludes group activities': 'Excludes group activities'
 'FTP history': 'FTP historik'
 Fastest: Fastest
 Favourite: Favoriter
@@ -161,6 +162,8 @@ Grad.: Grad.
 Gradient: Gradient
 'Gravel Ride': 'Gravel Ride'
 'Gravel Rides': Grusvägscykling
+'Group activities': 'Group activities'
+'Group activities only': 'Group activities only'
 "Guidelines vary by individual; for more information see Joe Friel's 'The Cyclist's Training Bible' or TrainingPeaks' research documentation.": "Riktlinjerna varierar från individ till individ; för mer information se Joe Friel's 'The Cyclist's Training Bible' eller 'TrainingPeaks' forskningsdokumentation."
 HIIT: HIIT
 HR: Puls

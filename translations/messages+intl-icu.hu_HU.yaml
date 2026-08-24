@@ -126,6 +126,7 @@ Energy: Energy
 'Enter fullscreen mode': 'Teljes képernyős mód'
 Evening: Este
 'Excludes commutes': 'Ingázások nélkül'
+'Excludes group activities': 'Excludes group activities'
 'FTP history': 'FTP előzmények'
 Fastest: Fastest
 Favourite: Kedvenc
@@ -161,6 +162,8 @@ Grad.: Grad.
 Gradient: Lejtés
 'Gravel Ride': 'Gravel Ride'
 'Gravel Rides': 'Gravel túrák'
+'Group activities': 'Group activities'
+'Group activities only': 'Group activities only'
 "Guidelines vary by individual; for more information see Joe Friel's 'The Cyclist's Training Bible' or TrainingPeaks' research documentation.": "Az irányelvek egyénenként változnak; további információkért lásd Joe Friel 'The Cyclist's Training Bible' c. könyvét vagy a TrainingPeaks kutatási dokumentációját."
 HIIT: HIIT
 HR: Pulzus
