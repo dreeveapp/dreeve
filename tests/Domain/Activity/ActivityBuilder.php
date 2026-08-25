@@ -35,6 +35,7 @@ final class ActivityBuilder
     private Meter $elevation;
     private ?Coordinate $startingCoordinate = null;
     private ?int $calories;
+    private ?int $kilojoules = null;
     private ?int $averagePower = null;
     private ?int $maxPower;
     private KmPerHour $averageSpeed;
@@ -99,7 +100,7 @@ final class ActivityBuilder
             elevation: $this->elevation,
             startingCoordinate: $this->startingCoordinate,
             calories: $this->calories,
-            kilojoules: null,
+            kilojoules: $this->kilojoules,
             averagePower: $this->averagePower,
             maxPower: $this->maxPower,
             averageSpeed: $this->averageSpeed,
@@ -138,7 +139,7 @@ final class ActivityBuilder
             elevation: $this->elevation,
             startingCoordinate: $this->startingCoordinate,
             calories: $this->calories,
-            kilojoules: null,
+            kilojoules: $this->kilojoules,
             averagePower: $this->averagePower,
             maxPower: $this->maxPower,
             averageSpeed: $this->averageSpeed,
@@ -186,6 +187,13 @@ final class ActivityBuilder
     public function withAveragePower(int $averagePower): self
     {
         $this->averagePower = $averagePower;
+
+        return $this;
+    }
+
+    public function withKilojoules(?int $kilojoules): self
+    {
+        $this->kilojoules = $kilojoules;
 
         return $this;
     }

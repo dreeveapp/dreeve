@@ -13,4 +13,5 @@ enum ActionType: string
     case SET_WORKOUT_TYPE = 'setWorkoutType';
     case SET_NAME = 'setName';
     case SET_DESCRIPTION = 'setDescription';
+    case CALCULATE_KILOJOULES = 'calculateKilojoules';
 }

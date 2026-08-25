@@ -78,6 +78,7 @@ Apply: Aplicar
 'Base URI': 'URI Base'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Antes de poder usar o aplicativo, precisamos saber algumas coisas sobre você. Elas são usadas para calcular suas zonas de frequência cardíaca e carga de treinamento. Você pode ajustar todas as outras configurações mais tarde.'
 Birthday: 'Data de nascimento'
+'Calculate energy (kJ)': 'Calculate energy (kJ)'
 Cancel: Cancelar
 'Challenge name': 'Nome do desafio'
 'Changes still need to be processed before they appear on the app': 'As alterações ainda precisam ser processadas antes de aparecerem no aplicativo'
@@ -139,6 +140,7 @@ Elevation: Elevation
 Enabled: Ativado
 Endpoint: Endpoint
 'Ends near': 'Ends near'
+'Energy in kJ will be calculated from average power × moving time, for activities that do not already provide it.': 'Energy in kJ will be calculated from average power × moving time, for activities that do not already provide it.'
 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.': 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.'
 'Enter your password': 'Digite sua senha'
 'Enter your username': 'Digite seu nome de usuário'

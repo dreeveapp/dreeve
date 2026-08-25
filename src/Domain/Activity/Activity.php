@@ -559,6 +559,13 @@ final class Activity
         return $this->kilojoules;
     }
 
+    public function withKilojoules(?int $kilojoules): self
+    {
+        return $this->recordUpdate(clone ($this, [
+            'kilojoules' => $kilojoules,
+        ]));
+    }
+
     public function getAveragePower(): ?int
     {
         return $this->averagePower;
@@ -839,6 +846,7 @@ final class Activity
             'elapsedTimeInSeconds' => $this->elapsedTimeInSeconds,
             'elevation' => $this->elevation->toFloat(),
             'calories' => $this->calories,
+            'kilojoules' => $this->kilojoules,
             'polyline' => $this->polyline,
             'startingCoordinateLatitude' => $this->startingCoordinate?->getLatitude()->toFloat(),
             'startingCoordinateLongitude' => $this->startingCoordinate?->getLongitude()->toFloat(),
