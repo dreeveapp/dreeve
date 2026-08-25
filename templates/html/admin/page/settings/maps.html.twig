@@ -4,7 +4,6 @@
     <link href="{{ relativeUrl(asset('libraries/leaflet/leaflet.min.css')) }}" rel="stylesheet"/>
 {% endblock %}
 {% block main %}
-    {# Empty unless the visitor arrived from a public page; the form JS then just reloads. #}
     {% set returnUrl = redirectUrl('') %}
     {% set heatmap = settings.heatmap ?? {} %}
     {% set initialCenter = heatmap.initialCenter ?? [] %}

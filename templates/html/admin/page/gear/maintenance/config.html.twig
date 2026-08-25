@@ -1,6 +1,5 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
-    {# Empty unless the visitor arrived from a public page; the form JS then just reloads. #}
     {% set returnUrl = redirectUrl('') %}
     {% autoescape false %}
     <div class="flex flex-col gap-4">

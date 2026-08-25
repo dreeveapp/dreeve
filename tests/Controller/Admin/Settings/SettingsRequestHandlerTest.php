@@ -76,7 +76,6 @@ class SettingsRequestHandlerTest extends AdminWebTestCase
         $crawler = $this->client->request('GET', '/admin/settings/'.$group);
 
         $this->assertResponseIsSuccessful();
-        // The form JS falls back to reloading when data-redirect is empty.
         $this->assertSame('', $crawler->filter('form[data-dispatch-command]')->attr('data-redirect'));
         $this->assertSame('/', $crawler->filter('nav a:has(span:contains("Return to app"))')->attr('href'));
     }
