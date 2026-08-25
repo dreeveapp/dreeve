@@ -1,7 +1,15 @@
-{% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [{
-    'url': 'activities',
-    'label': 'Activities'|trans
-}]} %}
+<div class="flex items-center justify-between gap-4 mb-4">
+    {% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [{
+        'url': 'activities',
+        'label': 'Activities'|trans
+    }], 'disableMargin': true} %}
+    {% include 'html/navigation/admin-edit-link.html.twig' with {
+        path: 'admin/activities',
+        redirectTo: 'activities',
+        title: "Manage activities"|trans,
+        label: "Manage"|trans({}, 'admin')
+    } %}
+</div>
 {% autoescape false %}
     <!-- ALL ACTIVITIES -->
     <div class="grid grid-cols-1">

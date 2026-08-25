@@ -1,0 +1,16 @@
+{% if isAuthenticated() %}
+    {% autoescape false %}
+        {% set label = label|default("Edit"|trans({}, 'admin')) %}
+        {% set iconOnly = iconOnly|default(false) %}
+        <a href="{{ relativeUrlWithRedirectTo(path, redirectTo) }}"
+           class="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs rounded-lg {{ iconOnly ? 'p-1.5' : 'px-3 py-1.5' }} transition"
+           title="{{ title }}">
+            {{ svg(icon|default('pencil'), 'size-3.5') }}
+            {% if iconOnly %}
+                <span class="sr-only">{{ label }}</span>
+            {% else %}
+                {{ label }}
+            {% endif %}
+        </a>
+    {% endautoescape %}
+{% endif %}

@@ -91,4 +91,30 @@ class ManageGearOverviewRequestHandlerTest extends AdminWebTestCase
         $placeholderSources = array_filter($sources, fn (?string $src): bool => str_contains((string) $src, 'placeholder'));
         $this->assertCount(1, $placeholderSources);
     }
+
+    public function testReturnToAppLinksBackToThePageTheVisitorCameFrom(): void
+    {
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/gear?redirectTo=%2Fgear');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertEquals(
+            '/gear',
+            $crawler->filter('nav a:has(span:contains("Return to app"))')->attr('href'),
+        );
+    }
+
+    public function testReturnToAppFallsBackToTheAppRootWithoutARedirect(): void
+    {
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/gear');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertEquals(
+            '/',
+            $crawler->filter('nav a:has(span:contains("Return to app"))')->attr('href'),
+        );
+    }
 }

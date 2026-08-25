@@ -2,11 +2,11 @@
 
 namespace App\Tests\Domain\Gear\RecordingDevice;
 
-use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class RecordingDevicesFragmentTest extends ControllerWebTestCase
+class RecordingDevicesFragmentTest extends AdminWebTestCase
 {
     use MatchesSnapshots;
     use ProvideTestData;
@@ -32,7 +32,7 @@ class RecordingDevicesFragmentTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
-            'gear.recording-devices',
+            'gear.recording-devices.auth=anon',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
@@ -64,5 +64,42 @@ class RecordingDevicesFragmentTest extends ControllerWebTestCase
     protected function shouldSeedActivity(): bool
     {
         return false;
+    }
+
+    public function testItOnlyRendersTheAdminLinkForAuthenticatedVisitors(): void
+    {
+        $this->provideFullTestSet();
+        $this->seedActivity();
+
+        $this->client->request('GET', '/api/internal/fragment/page/gear/recording-devices');
+        $this->assertStringNotContainsString(
+            'admin/gear/recording-devices',
+            (string) $this->client->getResponse()->getContent(),
+        );
+
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/api/internal/fragment/page/gear/recording-devices');
+        $this->assertStringContainsString(
+            'admin/gear/recording-devices?redirectTo=%2Fgear%2Frecording-devices',
+            (string) $this->client->getResponse()->getContent(),
+        );
+    }
+
+    public function testItVariesByAuthentication(): void
+    {
+        $this->provideFullTestSet();
+        $this->seedActivity();
+
+        $this->client->request('GET', '/api/internal/fragment/page/gear/recording-devices');
+        $anonymousCacheKey = (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key');
+        $this->assertResponseHeaderSame('Cache-Control', 'max-age=0, must-revalidate, no-store, private');
+
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/api/internal/fragment/page/gear/recording-devices');
+
+        $this->assertNotEquals(
+            $anonymousCacheKey,
+            $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
+        );
     }
 }

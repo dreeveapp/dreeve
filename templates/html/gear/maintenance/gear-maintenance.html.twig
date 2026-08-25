@@ -9,6 +9,23 @@
             'label': 'Maintenance'|trans
         }],
         'disableMargin': true} %}
+    <div class="flex items-center gap-x-2">
+        {% if isFeatureEnabled %}
+            {% include 'html/navigation/admin-edit-link.html.twig' with {
+                path: 'admin/gear/maintenance-logs/register',
+                redirectTo: 'gear/maintenance',
+                title: "Register maintenance"|trans,
+                label: "Log maintenance"|trans({}, 'admin')
+            } %}
+        {% endif %}
+        {% include 'html/navigation/admin-edit-link.html.twig' with {
+            path: 'admin/gear/maintenance-config',
+            redirectTo: 'gear/maintenance',
+            title: "Configure gear maintenance"|trans,
+            label: "Configure"|trans({}, 'admin'),
+            icon: 'cog'
+        } %}
+    </div>
 </div>
 {% block content %}
     {% autoescape false %}

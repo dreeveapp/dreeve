@@ -7,6 +7,8 @@ namespace App\Domain\Integration\AI\Chat;
 use App\Application\AppUrl;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
+use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\Fragment\FragmentResolver;
@@ -46,6 +48,7 @@ final readonly class ChatFragmentResolver implements FragmentResolver
             cacheability: Cacheability::for(
                 cacheKey: self::PATH,
                 cacheTags: CacheTags::of(RootCacheTag::SETTINGS_INTEGRATIONS),
+                cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
                 ttlInSeconds: 0,
             ),
             render: fn (): string => $this->renderFor(),

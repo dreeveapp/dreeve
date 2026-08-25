@@ -8,6 +8,7 @@
 'A high score means you concentrate more training into fewer, heavier days.': 'A high score means you concentrate more training into fewer, heavier days.'
 'A:C Ratio': 'A:C Förhållande'
 'A:C optimal in': 'A:C optimal in'
+'AI integration settings': 'AI integration settings'
 'ATL (Fatigue)': 'ATL (Utmattning)'
 'Accumulated fatigue': 'Accumulated fatigue'
 'Active days': 'Aktiva dagar'
@@ -69,6 +70,7 @@ Compare: Jämför
 'Compare to': 'Jämför med'
 'Completed {threshold} activities': 'Completed {threshold} activities'
 Components: Components
+'Configure gear maintenance': 'Configure gear maintenance'
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Congrats! You achieved {numberOfPRs} PRs in this activity.'
 'Consider reducing load': 'Consider reducing load'
 Consistency: Consistency
@@ -231,12 +233,17 @@ Low: Låg
 'Low risk': 'Low risk'
 'Low training load': 'Low training load'
 Maintenance: Underhåll
+'Manage activities': 'Manage activities'
+'Manage gear': 'Manage gear'
+'Manage recording devices': 'Manage recording devices'
+'Map settings': 'Map settings'
 Mar: Mar
 Max: Max
 'Max gradient': 'Max gradient'
 May: May
 Medium: Mellan
 Metric: Metric
+'Metrics settings': 'Metrics settings'
 Milestones: Milestones
 'Mind & Body Sports': 'Sinne- och kroppssporter'
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training'
@@ -328,6 +335,7 @@ Recent: Recent
 'Recovery Timeline': 'Recovery Timeline'
 'Recovery forecast': 'Recovery forecast'
 'Reduced carbon emission by commuting': 'Minskade koldioxidutsläpp tack vare pendling'
+'Register maintenance': 'Register maintenance'
 'Relative cost': 'Relativ kostnad'
 'Rest Days': Vilodagar
 'Rest days': Vilodagar

@@ -7,6 +7,8 @@ namespace App\Domain\Activity\Route\Heatmap;
 use App\Domain\Activity\Route\RouteRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
+use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\Fragment\Fragment;
@@ -37,6 +39,7 @@ final readonly class HeatmapFragment implements Fragment
         return Cacheability::for(
             cacheKey: $this->getPath(),
             cacheTags: CacheTags::of(RootCacheTag::ACTIVITY_ROUTE, RootCacheTag::SETTINGS_MAPS),
+            cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
         );
     }
 

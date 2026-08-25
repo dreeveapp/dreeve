@@ -21,7 +21,6 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\Fragment\FragmentResolver;
 use App\Infrastructure\Http\Fragment\ResolvedFragment;
-use App\Infrastructure\Security\AuthenticatedVisitor;
 use App\Infrastructure\ValueObject\String\Slug;
 use Twig\Environment;
 
@@ -37,7 +36,6 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
         private ActivitySplitRepository $activitySplitRepository,
         private ActivityLapRepository $activityLapRepository,
         private SettingsRepository $settingsRepository,
-        private AuthenticatedVisitor $authenticatedVisitor,
         private Environment $twig,
     ) {
     }
@@ -116,7 +114,6 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
             ),
             'hasProfileChart' => $numberOfProfileChartLanes > 0,
             'heartRateZones' => $timeInHeartRateZones,
-            'isAuthenticated' => $this->authenticatedVisitor->isAuthenticated(),
         ]);
     }
 }

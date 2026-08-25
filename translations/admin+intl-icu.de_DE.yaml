@@ -211,11 +211,13 @@ Latitude: Breitengrad
 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.'
 Locale: Sprache
 Log: Protokoll
+'Log maintenance': 'Log maintenance'
 Longitude: Längengrad
 'Maintenance log': Wartungsprotokoll
 'Maintenance logs will appear here once maintenance has been registered.': 'Wartungsprotokolle werden hier angezeigt, sobald eine Wartung erfasst wurde.'
 'Maintenance tasks': Wartungsaufgaben
 Male: Männlich
+Manage: Manage
 Maps: Karte
 'Mark as commute': 'Als Pendelfahrt markieren'
 Match: Übereinstimmung

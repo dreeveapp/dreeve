@@ -8,6 +8,7 @@
 'A high score means you concentrate more training into fewer, heavier days.': 'Un punteggio alto significa che concentri più allenamento in meno giorni, ma più intensi.'
 'A:C Ratio': 'Rapporto A:C'
 'A:C optimal in': 'A:C ottimale tra'
+'AI integration settings': 'AI integration settings'
 'ATL (Fatigue)': 'ATL (Fatica)'
 'Accumulated fatigue': 'Fatica accumulata'
 'Active days': 'Giornate attive'
@@ -69,6 +70,7 @@ Compare: Confronta
 'Compare to': 'Confronta con'
 'Completed {threshold} activities': 'Completate {threshold} attività'
 Components: Components
+'Configure gear maintenance': 'Configure gear maintenance'
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Congrats! You achieved {numberOfPRs} PRs in this activity.'
 'Consider reducing load': 'Valuta di ridurre il carico'
 Consistency: Consistency
@@ -231,12 +233,17 @@ Low: Basso
 'Low risk': 'Rischio basso'
 'Low training load': 'Carico di allenamento basso'
 Maintenance: Manutenzione
+'Manage activities': 'Manage activities'
+'Manage gear': 'Manage gear'
+'Manage recording devices': 'Manage recording devices'
+'Map settings': 'Map settings'
 Mar: Mar
 Max: Massimo
 'Max gradient': 'Pendenza massima'
 May: Mag
 Medium: Medio
 Metric: Metric
+'Metrics settings': 'Metrics settings'
 Milestones: Milestones
 'Mind & Body Sports': 'Sport Mente e Corpo'
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Fatica moderata con forma stabile. Ben adatto a un allenamento costante giorno dopo giorno'
@@ -328,6 +335,7 @@ Recent: Recent
 'Recovery Timeline': 'Timeline del recupero'
 'Recovery forecast': 'Previsione di recupero'
 'Reduced carbon emission by commuting': 'Emissioni di carbonio ridotte grazie agli spostamenti casa-lavoro'
+'Register maintenance': 'Register maintenance'
 'Relative cost': 'Costo relativo'
 'Rest Days': 'Giorni di riposo'
 'Rest days': 'Giorni di riposo'

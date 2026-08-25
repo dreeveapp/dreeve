@@ -4,6 +4,8 @@
     <link href="{{ relativeUrl(asset('libraries/leaflet/leaflet.min.css')) }}" rel="stylesheet"/>
 {% endblock %}
 {% block main %}
+    {# Empty unless the visitor arrived from a public page; the form JS then just reloads. #}
+    {% set returnUrl = redirectUrl('') %}
     {% set heatmap = settings.heatmap ?? {} %}
     {% set initialCenter = heatmap.initialCenter ?? [] %}
     {% set tileLayerUrl = settings.tileLayerUrl ?? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png' %}
@@ -13,7 +15,8 @@
         {% set tileLayerRows = tileLayerRows|merge([{'value': tileLayerUrl}]) %}
     {% endfor %}
     <div class="flex flex-col gap-4">
-        <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ returnUrl }}"
+              class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
             <input type="hidden" name="group" value="{{ group.value }}">
             <div class="mb-5">
                 <h3 class="text-lg font-semibold">{{ "Maps"|trans({}, 'admin') }}</h3>

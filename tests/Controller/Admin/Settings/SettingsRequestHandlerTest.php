@@ -3,6 +3,7 @@
 namespace App\Tests\Controller\Admin\Settings;
 
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class SettingsRequestHandlerTest extends AdminWebTestCase
 {
@@ -50,5 +51,68 @@ class SettingsRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/admin/settings/does-not-exist');
 
         $this->assertResponseStatusCodeSame(404);
+    }
+
+    #[DataProvider('provideDeepLinkedSettingsGroups')]
+    public function testSavingReturnsTheVisitorToThePublicPageTheyCameFrom(string $group, string $redirectTo): void
+    {
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request(
+            'GET',
+            '/admin/settings/'.$group.'?redirectTo='.urlencode($redirectTo)
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame($redirectTo, $crawler->filter('form[data-dispatch-command]')->attr('data-redirect'));
+        $this->assertSame($redirectTo, $crawler->filter('nav a:has(span:contains("Return to app"))')->attr('href'));
+    }
+
+    #[DataProvider('provideDeepLinkedSettingsGroupNames')]
+    public function testSavingWithoutARedirectToKeepsTheVisitorOnTheSettingsPage(string $group): void
+    {
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/settings/'.$group);
+
+        $this->assertResponseIsSuccessful();
+        // The form JS falls back to reloading when data-redirect is empty.
+        $this->assertSame('', $crawler->filter('form[data-dispatch-command]')->attr('data-redirect'));
+        $this->assertSame('/', $crawler->filter('nav a:has(span:contains("Return to app"))')->attr('href'));
+    }
+
+    #[DataProvider('provideUnsafeRedirectTos')]
+    public function testItRefusesAnUnsafeRedirectTo(string $redirectTo): void
+    {
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request(
+            'GET',
+            '/admin/settings/maps?redirectTo='.urlencode($redirectTo)
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame('', $crawler->filter('form[data-dispatch-command]')->attr('data-redirect'));
+    }
+
+    public static function provideDeepLinkedSettingsGroups(): \Generator
+    {
+        yield 'maps, linked from the heatmap' => ['maps', '/heatmap'];
+        yield 'metrics, linked from eddington' => ['metrics', '/eddington'];
+        yield 'integrations, linked from the chat' => ['integrations', '/chat'];
+    }
+
+    public static function provideDeepLinkedSettingsGroupNames(): \Generator
+    {
+        foreach (self::provideDeepLinkedSettingsGroups() as $name => [$group]) {
+            yield $name => [$group];
+        }
+    }
+
+    public static function provideUnsafeRedirectTos(): \Generator
+    {
+        yield 'protocol relative' => ['//evil.com'];
+        yield 'javascript uri' => ['javascript:alert(1)'];
+        yield 'absolute url' => ['https://evil.com'];
     }
 }

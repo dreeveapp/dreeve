@@ -39,7 +39,7 @@
         </div>
         {% if showReturnToApp ?? true %}
             <div class="flex items-center lg:order-2">
-                <a href="{{ relativeUrl('/') }}"
+                <a href="{{ redirectUrl(relativeUrl('/')) }}"
                    class="inline-flex items-center gap-x-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100">
                     <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
                     <span class="hidden sm:inline">{{ "Return to app"|trans({}, 'admin') }}</span>

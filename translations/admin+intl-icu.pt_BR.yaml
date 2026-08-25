@@ -211,11 +211,13 @@ Latitude: Latitude
 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.'
 Locale: Localidade
 Log: Registro
+'Log maintenance': 'Log maintenance'
 Longitude: Longitude
 'Maintenance log': 'Registro de manutenção'
 'Maintenance logs will appear here once maintenance has been registered.': 'Os registros de manutenção aparecerão aqui assim que a manutenção for registrada.'
 'Maintenance tasks': 'Tarefas de manutenção'
 Male: Masculino
+Manage: Manage
 Maps: Maps
 'Mark as commute': 'Mark as commute'
 Match: Match

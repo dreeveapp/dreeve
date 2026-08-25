@@ -7,10 +7,10 @@ use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Serialization\Json;
-use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\Controller\Admin\AdminWebTestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class ChatFragmentResolverTest extends ControllerWebTestCase
+class ChatFragmentResolverTest extends AdminWebTestCase
 {
     use MatchesSnapshots;
 
@@ -69,5 +69,40 @@ class ChatFragmentResolverTest extends ControllerWebTestCase
                 ],
             ])),
         ));
+    }
+
+    public function testItOnlyRendersTheAdminLinkForAuthenticatedVisitors(): void
+    {
+        $this->enableAssistant(true);
+
+        $this->client->request('GET', '/api/internal/fragment/page/chat');
+        $this->assertStringNotContainsString(
+            'admin/settings/integrations',
+            (string) $this->client->getResponse()->getContent(),
+        );
+
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/api/internal/fragment/page/chat');
+        $this->assertStringContainsString(
+            'admin/settings/integrations?redirectTo=%2Fchat',
+            (string) $this->client->getResponse()->getContent(),
+        );
+    }
+
+    public function testItVariesByAuthentication(): void
+    {
+        $this->enableAssistant(true);
+
+        $this->client->request('GET', '/api/internal/fragment/page/chat');
+        $anonymousCacheKey = (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key');
+        $this->assertResponseHeaderSame('Cache-Control', 'max-age=0, must-revalidate, no-store, private');
+
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/api/internal/fragment/page/chat');
+
+        $this->assertNotEquals(
+            $anonymousCacheKey,
+            $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
+        );
     }
 }

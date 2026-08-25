@@ -16,6 +16,14 @@
         </svg>
         <span class="sr-only">{{ "Clear chat"|trans }}</span>
       </button>
+      {% include 'html/navigation/admin-edit-link.html.twig' with {
+          path: 'admin/settings/integrations',
+          redirectTo: 'chat',
+          title: "AI integration settings"|trans,
+          label: "Settings"|trans({}, 'admin'),
+          icon: 'cog',
+          iconOnly: true
+      } %}
     </div>
   </div>
   <div class="grid grid-cols-1">

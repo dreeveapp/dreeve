@@ -68,4 +68,28 @@ class ManageGearMaintenanceConfigRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('table.data-table tbody td[colspan="5"]'));
         $this->assertCount(0, $crawler->filter('.alert.alert--warning'));
     }
+
+    public function testSavingReturnsTheVisitorToThePublicMaintenancePageTheyCameFrom(): void
+    {
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/gear/maintenance-config?redirectTo=%2Fgear%2Fmaintenance');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame('/gear/maintenance', $crawler->filter('form[data-dispatch-command]')->attr('data-redirect'));
+        $this->assertSame(
+            '/gear/maintenance',
+            $crawler->filter('nav a:has(span:contains("Return to app"))')->attr('href'),
+        );
+    }
+
+    public function testSavingWithoutARedirectToKeepsTheVisitorInTheAdminPanel(): void
+    {
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/gear/maintenance-config');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame('', $crawler->filter('form[data-dispatch-command]')->attr('data-redirect'));
+    }
 }

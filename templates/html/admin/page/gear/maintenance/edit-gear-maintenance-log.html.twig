@@ -2,7 +2,7 @@
 {% block main %}
     {% autoescape false %}
     {% set gearMaintenanceLog = gearMaintenanceLog is defined ? gearMaintenanceLog : null %}
-    {% set overviewUrl = relativeUrl(path('admin_manage_gear_maintenance_logs_overview')) %}
+    {% set overviewUrl = redirectUrl(relativeUrl(path('admin_manage_gear_maintenance_logs_overview'))) %}
     <div class="modal-like-form">
         <div class="w-full max-w-lg overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
             <div class="flex items-center justify-between mb-4">

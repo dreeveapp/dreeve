@@ -12,13 +12,13 @@ use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
-use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class GearMaintenanceFragmentTest extends ControllerWebTestCase
+class GearMaintenanceFragmentTest extends AdminWebTestCase
 {
     use MatchesSnapshots;
     use ProvideGearMaintenanceConfig;
@@ -56,7 +56,7 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
-            'gear.maintenance',
+            'gear.maintenance.auth=anon',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
@@ -163,5 +163,56 @@ class GearMaintenanceFragmentTest extends ControllerWebTestCase
     protected function shouldSeedActivity(): bool
     {
         return false;
+    }
+
+    public function testItOnlyRendersTheAdminLinkForAuthenticatedVisitors(): void
+    {
+        $this->importGearMaintenanceConfig();
+        $this->provideGearWithMaintenanceHistory();
+        $this->seedActivity();
+
+        $this->client->request('GET', '/api/internal/fragment/page/gear/maintenance');
+        $this->assertStringNotContainsString(
+            'admin/gear/maintenance-config',
+            (string) $this->client->getResponse()->getContent(),
+        );
+
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/api/internal/fragment/page/gear/maintenance');
+        $this->assertStringContainsString(
+            'admin/gear/maintenance-config?redirectTo=%2Fgear%2Fmaintenance',
+            (string) $this->client->getResponse()->getContent(),
+        );
+    }
+
+    public function testItDoesNotOfferToLogMaintenanceWhenTheFeatureIsNotEnabled(): void
+    {
+        $this->seedActivity();
+
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/api/internal/fragment/page/gear/maintenance');
+
+        $content = (string) $this->client->getResponse()->getContent();
+        $this->assertStringNotContainsString('admin/gear/maintenance-logs/register', $content);
+        $this->assertStringContainsString('admin/gear/maintenance-config?redirectTo=%2Fgear%2Fmaintenance', $content);
+    }
+
+    public function testItVariesByAuthentication(): void
+    {
+        $this->importGearMaintenanceConfig();
+        $this->provideGearWithMaintenanceHistory();
+        $this->seedActivity();
+
+        $this->client->request('GET', '/api/internal/fragment/page/gear/maintenance');
+        $anonymousCacheKey = (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key');
+        $this->assertResponseHeaderSame('Cache-Control', 'max-age=0, must-revalidate, no-store, private');
+
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/api/internal/fragment/page/gear/maintenance');
+
+        $this->assertNotEquals(
+            $anonymousCacheKey,
+            $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
+        );
     }
 }

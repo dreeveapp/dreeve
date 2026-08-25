@@ -13,6 +13,8 @@ use App\Domain\Activity\Stream\BestPowerOutputs;
 use App\Domain\Activity\Stream\PowerOutputChart;
 use App\Domain\Dashboard\DashboardFragment;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
+use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
@@ -53,6 +55,7 @@ final readonly class PowerOutputFragment implements Fragment
             cacheKey: $this->getPath(),
             cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_METRICS),
             ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
+            cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
         );
     }
 

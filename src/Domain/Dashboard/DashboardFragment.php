@@ -12,14 +12,12 @@ use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentType;
-use App\Infrastructure\Security\AuthenticatedVisitor;
 use Twig\Environment;
 
 final readonly class DashboardFragment implements Fragment
 {
     public function __construct(
         private ConfiguredWidgets $configuredWidgets,
-        private AuthenticatedVisitor $authenticatedVisitor,
         private Environment $twig,
     ) {
     }
@@ -49,7 +47,6 @@ final readonly class DashboardFragment implements Fragment
     {
         return $this->twig->load('html/dashboard/dashboard.html.twig')->render([
             'configuredWidgets' => $this->configuredWidgets,
-            'isAuthenticated' => $this->authenticatedVisitor->isAuthenticated(),
         ]);
     }
 }

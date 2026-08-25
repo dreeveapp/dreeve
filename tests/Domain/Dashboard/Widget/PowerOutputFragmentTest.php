@@ -12,12 +12,12 @@ use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
-use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class PowerOutputFragmentTest extends ControllerWebTestCase
+class PowerOutputFragmentTest extends AdminWebTestCase
 {
     use MatchesSnapshots;
     use ProvideTestData;
@@ -100,6 +100,41 @@ class PowerOutputFragmentTest extends ControllerWebTestCase
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, activities, settings.metrics',
+        );
+    }
+
+    public function testItOnlyRendersTheAdminLinkForAuthenticatedVisitors(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->client->request('GET', '/api/internal/fragment/page/dashboard/power-output');
+        $this->assertStringNotContainsString(
+            'admin/settings/metrics',
+            (string) $this->client->getResponse()->getContent(),
+        );
+
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/api/internal/fragment/page/dashboard/power-output');
+        $this->assertStringContainsString(
+            'admin/settings/metrics?redirectTo=%2Fdashboard%2Fpower-output',
+            (string) $this->client->getResponse()->getContent(),
+        );
+    }
+
+    public function testItVariesByAuthentication(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->client->request('GET', '/api/internal/fragment/page/dashboard/power-output');
+        $anonymousCacheKey = (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key');
+        $this->assertResponseHeaderSame('Cache-Control', 'max-age=0, must-revalidate, no-store, private');
+
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/api/internal/fragment/page/dashboard/power-output');
+
+        $this->assertNotEquals(
+            $anonymousCacheKey,
+            $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
 }

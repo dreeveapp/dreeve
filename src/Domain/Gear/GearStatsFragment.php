@@ -12,6 +12,8 @@ use App\Domain\Gear\FindGearStatsPerDay\FindGearStatsPerDay;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Theme\Theme;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
+use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
@@ -57,6 +59,7 @@ final readonly class GearStatsFragment implements Fragment
                 RootCacheTag::GEAR,
                 RootCacheTag::ACTIVITIES,
             ),
+            cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
             ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
         );
     }

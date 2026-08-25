@@ -6,12 +6,12 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Gear\GearId;
-use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class GearStatsFragmentTest extends ControllerWebTestCase
+class GearStatsFragmentTest extends AdminWebTestCase
 {
     use MatchesSnapshots;
     use ProvideTestData;
@@ -74,7 +74,7 @@ class GearStatsFragmentTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
-            'gear',
+            'gear.auth=anon',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
     }
@@ -106,5 +106,42 @@ class GearStatsFragmentTest extends ControllerWebTestCase
     protected function shouldSeedActivity(): bool
     {
         return false;
+    }
+
+    public function testItOnlyRendersTheAdminLinkForAuthenticatedVisitors(): void
+    {
+        $this->provideFullTestSet();
+        $this->seedActivity();
+
+        $this->client->request('GET', '/api/internal/fragment/page/gear');
+        $this->assertStringNotContainsString(
+            'admin/gear',
+            (string) $this->client->getResponse()->getContent(),
+        );
+
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/api/internal/fragment/page/gear');
+        $this->assertStringContainsString(
+            'admin/gear?redirectTo=%2Fgear',
+            (string) $this->client->getResponse()->getContent(),
+        );
+    }
+
+    public function testItVariesByAuthentication(): void
+    {
+        $this->provideFullTestSet();
+        $this->seedActivity();
+
+        $this->client->request('GET', '/api/internal/fragment/page/gear');
+        $anonymousCacheKey = (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key');
+        $this->assertResponseHeaderSame('Cache-Control', 'max-age=0, must-revalidate, no-store, private');
+
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/api/internal/fragment/page/gear');
+
+        $this->assertNotEquals(
+            $anonymousCacheKey,
+            $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
+        );
     }
 }

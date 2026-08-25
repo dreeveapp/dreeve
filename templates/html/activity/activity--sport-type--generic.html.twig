@@ -63,14 +63,11 @@
                 </div>
             </div>
             <div class="flex items-center gap-2 shrink-0">
-                {% if isAuthenticated %}
-                    <a href="{{ relativeUrlWithRedirectTo('admin/activities/' ~ activity.getId() ~ '/edit', 'activities/' ~ activity.getId()) }}" class="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs rounded-lg px-3 py-1.5 transition" title="{{ "Edit this activity"|trans }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
-                        </svg>
-                        {{ "Edit"|trans({}, 'admin') }}
-                    </a>
-                {% endif %}
+                {% include 'html/navigation/admin-edit-link.html.twig' with {
+                    path: 'admin/activities/' ~ activity.getId() ~ '/edit',
+                    redirectTo: 'activities/' ~ activity.getId(),
+                    title: "Edit this activity"|trans
+                } %}
                 {% if hasGpxLink %}
                     <a href="{{ relativeUrl(path('api_activity_gpx', {'activityId': activity.getId()})) }}" download="{{ gpxFileName }}" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs rounded-lg px-3 py-1.5 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

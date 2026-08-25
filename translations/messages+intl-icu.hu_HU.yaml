@@ -8,6 +8,7 @@
 'A high score means you concentrate more training into fewer, heavier days.': 'A magas pontszám azt jelenti, hogy több edzést koncentrálsz kevesebb, de nehezebb napra.'
 'A:C Ratio': 'A:C arány'
 'A:C optimal in': 'A:C optimális ezután:'
+'AI integration settings': 'AI integration settings'
 'ATL (Fatigue)': 'ATL (Fáradtság)'
 'Accumulated fatigue': 'Felhalmozott fáradtság'
 'Active days': 'Aktív napok'
@@ -69,6 +70,7 @@ Compare: Összehasonlítás
 'Compare to': 'Összehasonlítás:'
 'Completed {threshold} activities': '{threshold} tevékenység teljesítve'
 Components: Components
+'Configure gear maintenance': 'Configure gear maintenance'
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Congrats! You achieved {numberOfPRs} PRs in this activity.'
 'Consider reducing load': 'Fontold meg a terhelés csökkentését'
 Consistency: Következetesség
@@ -231,12 +233,17 @@ Low: Alacsony
 'Low risk': 'Alacsony kockázat'
 'Low training load': 'Alacsony edzésterhelés'
 Maintenance: Karbantartás
+'Manage activities': 'Manage activities'
+'Manage gear': 'Manage gear'
+'Manage recording devices': 'Manage recording devices'
+'Map settings': 'Map settings'
 Mar: Már
 Max: Max
 'Max gradient': 'Max. lejtés'
 May: Máj
 Medium: Közepes
 Metric: Metrikus
+'Metrics settings': 'Metrics settings'
 Milestones: Mérföldkövek
 'Mind & Body Sports': 'Test-lélek sportok'
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Mérsékelt fáradtság stabil fittséggel. Kiváló a következetes napi edzéshez'
@@ -328,6 +335,7 @@ Recent: Recent
 'Recovery Timeline': 'Regenerációs idővonal'
 'Recovery forecast': 'Regenerációs előrejelzés'
 'Reduced carbon emission by commuting': 'Csökkentett szén-dioxid kibocsátás ingázással'
+'Register maintenance': 'Register maintenance'
 'Relative cost': 'Relatív költség'
 'Rest Days': Pihenőnapok
 'Rest days': Pihenőnapok

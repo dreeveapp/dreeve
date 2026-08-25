@@ -13,16 +13,25 @@
             <p class="p-3">{{ "For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning."|trans }}</p>
         </div>
     </div>
-    <ul class="tabs tabs--pills" id="eddingtonUnitSystemTab" data-tabs="#eddingtonUnitSystemTabContent" role="tablist">
-        {% for unitSystem in activeUnitSystem.casesWithPreferredFirst() %}
-            <li role="presentation">
-                <a href="#" data-tabs-target="#eddingtonUnitSystem{{ unitSystem.value }}Tab" role="tab" aria-controls="eddingtonUnitSystem{{ unitSystem.value }}Tab">
-                    {{ svg(unitSystem.getSvgIcon(), 'size-4', '') }}
-                    <span class="hidden md:block">{{ unitSystem|trans }}</span>
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="flex items-center gap-x-2">
+        <ul class="tabs tabs--pills" id="eddingtonUnitSystemTab" data-tabs="#eddingtonUnitSystemTabContent" role="tablist">
+            {% for unitSystem in activeUnitSystem.casesWithPreferredFirst() %}
+                <li role="presentation">
+                    <a href="#" data-tabs-target="#eddingtonUnitSystem{{ unitSystem.value }}Tab" role="tab" aria-controls="eddingtonUnitSystem{{ unitSystem.value }}Tab">
+                        {{ svg(unitSystem.getSvgIcon(), 'size-4', '') }}
+                        <span class="hidden md:block">{{ unitSystem|trans }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        {% include 'html/navigation/admin-edit-link.html.twig' with {
+            path: 'admin/settings/metrics',
+            redirectTo: 'eddington',
+            title: "Metrics settings"|trans,
+            label: "Settings"|trans({}, 'admin'),
+            icon: 'cog'
+        } %}
+    </div>
 </div>
 {% autoescape false %}
      <div class="grid grid-cols-1 gap-4">

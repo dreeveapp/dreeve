@@ -13,6 +13,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestWith;
 
 class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
@@ -173,5 +174,31 @@ class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
                 ->withName('Race bike')
                 ->build()
         );
+    }
+
+    #[DataProvider('provideRedirectToQueryParams')]
+    public function testItHonoursASafeRedirectToOnEveryExit(string $redirectTo, string $expected): void
+    {
+        $this->importGearMaintenanceConfig();
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request(
+            'GET',
+            '/admin/gear/maintenance-logs/register?redirectTo='.urlencode($redirectTo)
+        );
+
+        $this->assertResponseIsSuccessful();
+
+        $this->assertSame($expected, $crawler->filter('form[data-dispatch-command]')->attr('data-redirect'));
+        $this->assertSame($expected, $crawler->filter('a[aria-label="Close"]')->attr('href'));
+        $this->assertSame($expected, $crawler->filter('a.btn--secondary')->attr('href'));
+    }
+
+    public static function provideRedirectToQueryParams(): \Generator
+    {
+        yield 'a path within the app' => ['/gear/maintenance', '/gear/maintenance'];
+        yield 'protocol relative' => ['//evil.com', '/admin/gear/maintenance-logs'];
+        yield 'javascript uri' => ['javascript:alert(1)', '/admin/gear/maintenance-logs'];
+        yield 'absolute url' => ['https://evil.com', '/admin/gear/maintenance-logs'];
     }
 }

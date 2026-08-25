@@ -6,6 +6,8 @@ namespace App\Domain\Activity\Eddington;
 
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
+use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\Fragment\Fragment;
@@ -40,6 +42,7 @@ final readonly class EddingtonFragment implements Fragment
         return Cacheability::for(
             cacheKey: $this->getPath(),
             cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_METRICS),
+            cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
         );
     }
 

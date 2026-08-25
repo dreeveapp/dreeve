@@ -9,6 +9,8 @@ use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Gears;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
+use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\Fragment\Fragment;
@@ -46,6 +48,7 @@ final readonly class GearMaintenanceFragment implements Fragment
                 RootCacheTag::ACTIVITIES,
                 RootCacheTag::GEAR,
             ),
+            cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
             ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
         );
     }
@@ -56,7 +59,9 @@ final readonly class GearMaintenanceFragment implements Fragment
         $gears = $this->gearRepository->findAll();
 
         if (!$gearMaintenanceConfig->isFeatureEnabled()) {
-            return $this->twig->load('html/gear/maintenance/gear-maintenance-disabled.html.twig')->render();
+            return $this->twig->load('html/gear/maintenance/gear-maintenance-disabled.html.twig')->render([
+                'isFeatureEnabled' => false,
+            ]);
         }
 
         $gearsThatAreAttachedToComponents = Gears::empty();
@@ -84,6 +89,7 @@ final readonly class GearMaintenanceFragment implements Fragment
             'gearComponents' => $gearMaintenanceConfig->getGearComponents(),
             'gearIdsThatHaveDueTasks' => $this->maintenanceTaskProgressCalculator->getGearIdsThatHaveDueTasks(),
             'maintenanceTaskStatuses' => $this->maintenanceTaskProgressCalculator->calculateStatuses(),
+            'isFeatureEnabled' => true,
         ]);
     }
 }

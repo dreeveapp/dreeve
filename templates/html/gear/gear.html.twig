@@ -3,6 +3,12 @@
         'url': 'gear',
         'label': 'Gear'|trans
     }], 'disableMargin': true} %}
+    {% include 'html/navigation/admin-edit-link.html.twig' with {
+        path: 'admin/gear',
+        redirectTo: 'gear',
+        title: "Manage gear"|trans,
+        label: "Manage"|trans({}, 'admin')
+    } %}
 </div>
 {% autoescape false %}
     <!-- GEAR SUB MENU -->

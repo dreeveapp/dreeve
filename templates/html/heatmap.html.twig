@@ -1,7 +1,16 @@
-{% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [{
-    'url': 'heatmap',
-    'label': 'Heatmap'|trans
-}]} %}
+<div class="flex items-center justify-between gap-4 mb-4">
+    {% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [{
+        'url': 'heatmap',
+        'label': 'Heatmap'|trans
+    }], 'disableMargin': true} %}
+    {% include 'html/navigation/admin-edit-link.html.twig' with {
+        path: 'admin/settings/maps',
+        redirectTo: 'heatmap',
+        title: "Map settings"|trans,
+        label: "Settings"|trans({}, 'admin'),
+        icon: 'cog'
+    } %}
+</div>
 {% autoescape false %}
     <div class="grid grid-cols-1 gap-y-2 heatmap-wrapper relative">
         <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">

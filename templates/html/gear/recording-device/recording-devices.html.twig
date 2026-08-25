@@ -9,6 +9,12 @@
             'label': 'Recording devices'|trans
         }],
         'disableMargin': true} %}
+    {% include 'html/navigation/admin-edit-link.html.twig' with {
+        path: 'admin/gear/recording-devices',
+        redirectTo: 'gear/recording-devices',
+        title: "Manage recording devices"|trans,
+        label: "Manage"|trans({}, 'admin')
+    } %}
 </div>
 {% autoescape false %}
     <!-- GEAR SUB MENU -->
