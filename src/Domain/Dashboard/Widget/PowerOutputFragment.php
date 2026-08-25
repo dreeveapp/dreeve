@@ -54,8 +54,8 @@ final readonly class PowerOutputFragment implements Fragment
         return Cacheability::for(
             cacheKey: $this->getPath(),
             cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_METRICS),
-            ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
             cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
+            ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
         );
     }
 
