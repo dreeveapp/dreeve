@@ -3,7 +3,7 @@ Dreevev5.3.0
 
 
 
-Runtime:PHP8.5.x(cli)Symfony8.1.4Linux
+Runtime:PHP8.5.x(cli)Symfony8.1.5Linux
 
 Configuredimportmode:stravaApi
 
