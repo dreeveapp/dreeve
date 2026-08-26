@@ -1,14 +1,17 @@
-[
-    {
-        "id": "test",
-        "activityId": "123456789",
-        "lapNumber": 1,
-        "elapsedTimeInSeconds": 120,
-        "movingTimeInSeconds": 110,
-        "distanceInMeter": 100,
-        "averageSpeedInMetersPerSecond": 3,
-        "maxSpeedInMetersPerSecond": 8,
-        "elevationDifferenceInMeter": 2,
-        "averageHeartRate": null
-    }
-]
+{
+    "laps": [
+        {
+            "id": "test",
+            "activityId": "123456789",
+            "lapNumber": 1,
+            "elapsedTimeInSeconds": 120,
+            "movingTimeInSeconds": 110,
+            "distanceInMeter": 100,
+            "averageSpeedInMetersPerSecond": 3,
+            "maxSpeedInMetersPerSecond": 8,
+            "elevationDifferenceInMeter": 2,
+            "averageHeartRate": null
+        }
+    ],
+    "totalLapCount": 1
+}

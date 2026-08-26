@@ -13,6 +13,8 @@ use NeuronAI\Tools\ToolProperty;
 
 final class GetActivitySegmentEfforts extends Tool
 {
+    private const int MAX_RESULTS = 30;
+
     public function __construct(
         private readonly SegmentEffortRepository $segmentEffortRepository,
     ) {
@@ -23,6 +25,7 @@ final class GetActivitySegmentEfforts extends Tool
             Use this tool when the user asks about segments or segment efforts within an activity, or requests all details for a specific activity. 
             It requires the activity ID as input and provides the full segment-level data needed for analysis, comparisons, or summaries. 
             Example requests include “Show all segment efforts for activity 12345” or “Give me detailed segment stats for my last ride.”
+            Returns at most 30 segment efforts. Compare "totalSegmentEffortCount" with the number of returned efforts: if it is higher, tell the user you are only showing some of them.
             DESC
         );
     }
@@ -48,7 +51,7 @@ final class GetActivitySegmentEfforts extends Tool
     #[\Override]
     public function getMaxRuns(): int
     {
-        return 100;
+        return 25;
     }
 
     /**
@@ -59,8 +62,11 @@ final class GetActivitySegmentEfforts extends Tool
         $activityId = ActivityId::fromUnprefixed($activityId);
         $segmentEfforts = $this->segmentEffortRepository->findByActivityId($activityId);
 
-        return $segmentEfforts->map(
-            fn (SegmentEffort $segmentEffort): array => $segmentEffort->exportForAITooling()
-        );
+        return [
+            'segmentEfforts' => $segmentEfforts
+                ->slice(0, self::MAX_RESULTS)
+                ->map(fn (SegmentEffort $segmentEffort): array => $segmentEffort->exportForAITooling()),
+            'totalSegmentEffortCount' => count($segmentEfforts),
+        ];
     }
 }

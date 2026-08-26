@@ -1,8 +1,11 @@
-[
-    {
-        "id": "4022",
-        "obtainedOn": "2023-10-13",
-        "name": "Castelli Keep It Up",
-        "slug": "castelli-keep-it-up-2023"
-    }
-]
+{
+    "challenges": [
+        {
+            "id": "4022",
+            "obtainedOn": "2023-10-13",
+            "name": "Castelli Keep It Up",
+            "slug": "castelli-keep-it-up-2023"
+        }
+    ],
+    "totalChallengeCount": 1
+}

@@ -1,13 +1,16 @@
-[
-    {
-        "activityId": "123456789",
-        "unitSystem": "metric",
-        "splitNumber": 3,
-        "elapsedTimeInSeconds": 120,
-        "movingTimeInSeconds": 110,
-        "distanceInMeter": 100,
-        "averageSpeedInMetersPerSecond": 3,
-        "elevationDifferenceInMeter": 2,
-        "paceZone": 0
-    }
-]
+{
+    "splits": [
+        {
+            "activityId": "123456789",
+            "unitSystem": "metric",
+            "splitNumber": 3,
+            "elapsedTimeInSeconds": 120,
+            "movingTimeInSeconds": 110,
+            "distanceInMeter": 100,
+            "averageSpeedInMetersPerSecond": 3,
+            "elevationDifferenceInMeter": 2,
+            "paceZone": 0
+        }
+    ],
+    "totalSplitCount": 1
+}

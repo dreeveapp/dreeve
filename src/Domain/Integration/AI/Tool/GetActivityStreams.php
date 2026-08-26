@@ -19,10 +19,11 @@ final class GetActivityStreams extends Tool
         parent::__construct(
             'get_activity_streams',
             <<<DESC
-            Retrieves detailed stream information for a specific activity using its unique activity ID.
-            Use this tool when the user asks about stream data within an activity or requests all details for a specific activity. 
-            It requires the activity ID as input and provides the full stream data (e.g., time, distance, heart rate, power) needed for analysis, summaries, or comparisons. 
-            Example requests include “Show the stream data for activity 12345” or “Give me detailed time-series stats for my last ride.”
+            Retrieves aggregated stream statistics for a specific activity using its unique activity ID.
+            Use this tool when the user asks about heart rate, power or speed ranges within an activity.
+            It requires the activity ID as input and returns, per available stream, the number of recorded points plus the minimum, maximum and average value.
+            It does NOT return the raw time-series, so it cannot be used to analyse how a value evolved over the course of the activity.
+            Example requests include “What was my average and max power on activity 12345?”
             DESC
         );
     }
@@ -48,7 +49,7 @@ final class GetActivityStreams extends Tool
     #[\Override]
     public function getMaxRuns(): int
     {
-        return 100;
+        return 25;
     }
 
     /**

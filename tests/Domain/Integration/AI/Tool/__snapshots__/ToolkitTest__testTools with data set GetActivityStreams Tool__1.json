@@ -1,7 +1,7 @@
 [
     {
         "activityId": "123456789",
-        "steamType": "watts",
+        "streamType": "watts",
         "totalPoints": 4253,
         "maxPower": 540,
         "minPower": 7,
@@ -9,13 +9,13 @@
     },
     {
         "activityId": "123456789",
-        "steamType": "cadence",
+        "streamType": "cadence",
         "totalPoints": 4253
     },
     [],
     {
         "activityId": "123456789",
-        "steamType": "velocity_smooth",
+        "streamType": "velocity_smooth",
         "totalPoints": 4253,
         "maxMeterPerSecond": 540,
         "minMeterPerSecond": 7,

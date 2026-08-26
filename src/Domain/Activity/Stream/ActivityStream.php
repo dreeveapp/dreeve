@@ -160,7 +160,7 @@ final readonly class ActivityStream implements SupportsAITooling
 
         return [
             'activityId' => $this->getActivityId()->toUnprefixedString(),
-            'steamType' => $this->getStreamType()->value,
+            'streamType' => $this->getStreamType()->value,
             'totalPoints' => count($data),
             ...$streamTypeSpecificStats,
         ];

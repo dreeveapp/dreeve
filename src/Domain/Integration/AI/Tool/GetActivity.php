@@ -47,7 +47,7 @@ final class GetActivity extends Tool
     #[\Override]
     public function getMaxRuns(): int
     {
-        return 100;
+        return 25;
     }
 
     /**
