@@ -52,14 +52,6 @@ RUN docker-php-ext-enable xdebug
 COPY docker/php-cli/xdebug.ini "${PHP_INI_DIR}/conf.d"
 RUN rm pie.phar
 
-# Install Blackfire.
-#RUN mkdir -p /tmp/blackfire \
-#    && architecture=$(uname -m) \
-#    && curl -A "Docker" -L https://blackfire.io/api/v1/releases/cli/linux/$architecture | tar zxp -C /tmp/blackfire \
-#    && mv /tmp/blackfire/blackfire /usr/bin/blackfire \
-#    && rm -Rf /tmp/blackfire
-# RUN blackfire php:install
-
 # Download Caddy to be able to format config file.
 RUN curl -L -o "/tmp/caddy.tar.gz" https://github.com/caddyserver/caddy/releases/download/v2.10.2/caddy_2.10.2_linux_amd64.tar.gz
 RUN tar -xzf /tmp/caddy.tar.gz -C /usr/bin caddy
@@ -73,7 +65,7 @@ RUN apt-get install -y nodejs
 # Install Shoutrrr.
 ARG TARGETARCH
 ENV TARGETARCH=${TARGETARCH}
-ARG SHOUTRRR_VERSION="0.17.1"
+ARG SHOUTRRR_VERSION="0.18.0"
 
 RUN if [ "${TARGETARCH}" = "arm64" ]; then \
       curl -fL -o shoutrrr.tar.gz "https://github.com/nicholas-fedor/shoutrrr/releases/download/v$SHOUTRRR_VERSION/shoutrrr_linux_arm64v8_${SHOUTRRR_VERSION}.tar.gz"; \
