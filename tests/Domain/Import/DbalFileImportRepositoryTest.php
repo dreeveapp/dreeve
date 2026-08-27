@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Import\DbalFileImportRepository;
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportRepository;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Tests\ContainerTestCase;
 
 class DbalFileImportRepositoryTest extends ContainerTestCase
@@ -45,6 +46,47 @@ class DbalFileImportRepositoryTest extends ContainerTestCase
                 ['activityId' => (string) ActivityId::fromUnprefixed('2')]
             )->fetchOne()
         );
+    }
+
+    public function testFind(): void
+    {
+        $this->fileImportRepository->add(
+            FileImportBuilder::fromDefaults()
+                ->withFileImportId(FileImportId::fromUnprefixed('1'))
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withFileContents('the raw FIT bytes')
+                ->build()
+        );
+
+        $fileImport = $this->fileImportRepository->find(FileImportId::fromUnprefixed('1'));
+
+        $this->assertEquals(
+            FileImportBuilder::fromDefaults()
+                ->withFileImportId(FileImportId::fromUnprefixed('1'))
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withFileContents('the raw FIT bytes')
+                ->build(),
+            $fileImport
+        );
+    }
+
+    public function testFindWithoutFileContents(): void
+    {
+        $this->fileImportRepository->add(
+            FileImportBuilder::fromDefaults()
+                ->withFileImportId(FileImportId::fromUnprefixed('1'))
+                ->withFileContents(null)
+                ->build()
+        );
+
+        $this->assertNull($this->fileImportRepository->find(FileImportId::fromUnprefixed('1'))->getFileContents());
+    }
+
+    public function testFindWhenItDoesNotExist(): void
+    {
+        $this->expectException(EntityNotFound::class);
+
+        $this->fileImportRepository->find(FileImportId::fromUnprefixed('1'));
     }
 
     #[\Override]

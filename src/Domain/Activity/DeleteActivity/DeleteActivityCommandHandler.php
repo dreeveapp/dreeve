@@ -9,6 +9,7 @@ use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Activity\Lap\ActivityLapRepository;
 use App\Domain\Activity\Route\Signature\ActivityRouteSignatureRepository;
+use App\Domain\Activity\Shifting\ActivityGearUsageRepository;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
@@ -32,6 +33,7 @@ final readonly class DeleteActivityCommandHandler implements CommandHandler
         private ActivityLapRepository $activityLapRepository,
         private ActivityBestEffortRepository $activityBestEffortRepository,
         private ActivityRouteSignatureRepository $activityRouteSignatureRepository,
+        private ActivityGearUsageRepository $activityGearUsageRepository,
         private FileImportRepository $fileImportRepository,
         private ImageRepository $imageRepository,
     ) {
@@ -52,6 +54,7 @@ final readonly class DeleteActivityCommandHandler implements CommandHandler
         $this->activityLapRepository->deleteForActivity($activityId);
         $this->activityBestEffortRepository->deleteForActivity($activityId);
         $this->activityRouteSignatureRepository->deleteForActivity($activityId);
+        $this->activityGearUsageRepository->deleteForActivity($activityId);
         $this->fileImportRepository->deleteForActivity($activityId);
         $this->imageRepository->deleteForActivity($activityId);
         $this->activityRepository->delete($activityId);
