@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Import;
+namespace App\Domain\Activity\Shifting;
 
 use App\Infrastructure\ValueObject\Collection;
 
 /**
- * @extends Collection<FileImportId>
+ * @extends Collection<GearShift>
  */
-final class FileImportIds extends Collection
+final class GearShifts extends Collection
 {
     public function getItemClassName(): string
     {
-        return FileImportId::class;
+        return GearShift::class;
     }
 }

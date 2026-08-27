@@ -8,5 +8,4 @@ enum GearPosition: string
 {
     case FRONT = 'front';
     case REAR = 'rear';
-    case NONE = 'none';
 }

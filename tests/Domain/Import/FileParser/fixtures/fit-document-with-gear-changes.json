@@ -1,0 +1,196 @@
+{
+    "files": [
+        {
+            "profileVersion": 21198,
+            "messages": [
+                {
+                    "name": "file_id",
+                    "fields": [
+                        {"name": "product_name", "value": "Edge 540"}
+                    ]
+                },
+                {
+                    "name": "session",
+                    "fields": [
+                        {"name": "sport", "value": 2},
+                        {"name": "sub_sport", "value": 0},
+                        {"name": "start_time", "value": 1000000000},
+                        {"name": "total_distance", "value": 1000.0},
+                        {"name": "total_timer_time", "value": 8},
+                        {"name": "total_elapsed_time", "value": 8}
+                    ]
+                },
+                {
+                    "name": "event",
+                    "fields": [
+                        {"name": "timestamp", "value": 1000000000},
+                        {"name": "event", "value": 0},
+                        {"name": "event_type", "value": 0}
+                    ]
+                },
+                {
+                    "name": "event",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000000},
+                        {"name": "event", "value": 43},
+                        {"name": "event_type", "value": 3},
+                        {"name": "front_gear_num", "value": 255},
+                        {"name": "front_gear", "value": null},
+                        {"name": "rear_gear_num", "value": 4},
+                        {"name": "rear_gear", "value": 19}
+                    ]
+                },
+                {
+                    "name": "event",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000001},
+                        {"name": "event", "value": 42},
+                        {"name": "event_type", "value": 3},
+                        {"name": "front_gear_num", "value": 2},
+                        {"name": "front_gear", "value": 53},
+                        {"name": "rear_gear_num", "value": 4},
+                        {"name": "rear_gear", "value": 19}
+                    ]
+                },
+                {
+                    "name": "event",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000003},
+                        {"name": "event", "value": 43},
+                        {"name": "event_type", "value": 3},
+                        {"name": "front_gear_num", "value": 2},
+                        {"name": "front_gear", "value": 53},
+                        {"name": "rear_gear_num", "value": 5},
+                        {"name": "rear_gear", "value": 17}
+                    ]
+                },
+                {
+                    "name": "event",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000003},
+                        {"name": "event", "value": 43},
+                        {"name": "event_type", "value": 3},
+                        {"name": "front_gear_num", "value": 2},
+                        {"name": "front_gear", "value": 53},
+                        {"name": "rear_gear_num", "value": 6},
+                        {"name": "rear_gear", "value": 16}
+                    ]
+                },
+                {
+                    "name": "event",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000006},
+                        {"name": "event", "value": 43},
+                        {"name": "event_type", "value": 3},
+                        {"name": "front_gear_num", "value": 1},
+                        {"name": "front_gear", "value": 39},
+                        {"name": "rear_gear_num", "value": 8},
+                        {"name": "rear_gear", "value": 14}
+                    ]
+                },
+                {
+                    "name": "event",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000005},
+                        {"name": "event", "value": 43},
+                        {"name": "event_type", "value": 3},
+                        {"name": "front_gear_num", "value": 1},
+                        {"name": "front_gear", "value": 39},
+                        {"name": "rear_gear_num", "value": 7},
+                        {"name": "rear_gear", "value": 15}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000000},
+                        {"name": "distance", "units": "m", "value": 0.0},
+                        {"name": "enhanced_speed", "units": "m/s", "value": 10.0},
+                        {"name": "power", "units": "watts", "value": 200},
+                        {"name": "cadence", "units": "rpm", "value": 90}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000001},
+                        {"name": "distance", "units": "m", "value": 10.0},
+                        {"name": "enhanced_speed", "units": "m/s", "value": 10.0},
+                        {"name": "power", "units": "watts", "value": 200},
+                        {"name": "cadence", "units": "rpm", "value": 90}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000002},
+                        {"name": "distance", "units": "m", "value": 20.0},
+                        {"name": "enhanced_speed", "units": "m/s", "value": 10.0},
+                        {"name": "power", "units": "watts", "value": 200},
+                        {"name": "cadence", "units": "rpm", "value": 90}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000003},
+                        {"name": "distance", "units": "m", "value": 30.0},
+                        {"name": "enhanced_speed", "units": "m/s", "value": 10.0},
+                        {"name": "power", "units": "watts", "value": 200},
+                        {"name": "cadence", "units": "rpm", "value": 90}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000004},
+                        {"name": "distance", "units": "m", "value": 40.0},
+                        {"name": "enhanced_speed", "units": "m/s", "value": 10.0},
+                        {"name": "power", "units": "watts", "value": 200},
+                        {"name": "cadence", "units": "rpm", "value": 90}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000005},
+                        {"name": "distance", "units": "m", "value": 50.0},
+                        {"name": "enhanced_speed", "units": "m/s", "value": 10.0},
+                        {"name": "power", "units": "watts", "value": 200},
+                        {"name": "cadence", "units": "rpm", "value": 90}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000006},
+                        {"name": "distance", "units": "m", "value": 60.0},
+                        {"name": "enhanced_speed", "units": "m/s", "value": 10.0},
+                        {"name": "power", "units": "watts", "value": 200},
+                        {"name": "cadence", "units": "rpm", "value": 90}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000007},
+                        {"name": "distance", "units": "m", "value": 70.0},
+                        {"name": "enhanced_speed", "units": "m/s", "value": 10.0},
+                        {"name": "power", "units": "watts", "value": 200},
+                        {"name": "cadence", "units": "rpm", "value": 90}
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {"name": "timestamp", "units": "s", "value": 1000000008},
+                        {"name": "distance", "units": "m", "value": 80.0},
+                        {"name": "enhanced_speed", "units": "m/s", "value": 10.0},
+                        {"name": "power", "units": "watts", "value": 200},
+                        {"name": "cadence", "units": "rpm", "value": 90}
+                    ]
+                }
+            ]
+        }
+    ]
+}

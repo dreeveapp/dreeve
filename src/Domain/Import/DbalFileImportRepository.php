@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Import;
 
 use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\ImportSource;
-use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\ValueObject\String\CompressedString;
-use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class DbalFileImportRepository extends DbalRepository implements FileImportRepository
 {
@@ -46,27 +43,5 @@ final readonly class DbalFileImportRepository extends DbalRepository implements 
         $this->connection->executeStatement($sql, [
             'activityId' => $activityId,
         ]);
-    }
-
-    public function find(FileImportId $fileImportId): FileImport
-    {
-        $sql = 'SELECT * FROM FileImport WHERE fileImportId = :fileImportId';
-
-        if (!$result = $this->connection->executeQuery($sql, [
-            'fileImportId' => $fileImportId,
-        ])->fetchAssociative()) {
-            throw new EntityNotFound(sprintf('FileImport "%s" not found', $fileImportId));
-        }
-
-        return FileImport::fromState(
-            fileImportId: FileImportId::fromString($result['fileImportId']),
-            originalFilename: $result['originalFilename'],
-            fileContents: null !== $result['fileContents'] ? CompressedString::fromCompressed($result['fileContents'])->uncompress() : null,
-            source: ImportSource::from($result['source']),
-            status: FileImportStatus::from($result['status']),
-            errorMessage: $result['errorMessage'],
-            activityId: null !== $result['activityId'] ? ActivityId::fromString($result['activityId']) : null,
-            importedOn: SerializableDateTime::fromString($result['importedOn']),
-        );
     }
 }

@@ -49,18 +49,6 @@ final readonly class ActivityGearUsage
         );
     }
 
-    public static function none(ActivityId $activityId): self
-    {
-        return new self(
-            activityId: $activityId,
-            position: GearPosition::NONE,
-            gearNumber: 0,
-            teeth: 0,
-            timeInSeconds: 0,
-            shiftCount: 0,
-        );
-    }
-
     public static function fromState(
         ActivityId $activityId,
         GearPosition $position,
