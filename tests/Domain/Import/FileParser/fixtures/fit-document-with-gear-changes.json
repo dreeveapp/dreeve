@@ -31,7 +31,7 @@
                 {
                     "name": "event",
                     "fields": [
-                        {"name": "timestamp", "units": "s", "value": 1000000000},
+                        {"name": "timestamp", "units": "s", "value": 1000000001},
                         {"name": "event", "value": 43},
                         {"name": "event_type", "value": 3},
                         {"name": "front_gear_num", "value": 255},
@@ -43,7 +43,7 @@
                 {
                     "name": "event",
                     "fields": [
-                        {"name": "timestamp", "units": "s", "value": 1000000001},
+                        {"name": "timestamp", "units": "s", "value": 1000000002},
                         {"name": "event", "value": 42},
                         {"name": "event_type", "value": 3},
                         {"name": "front_gear_num", "value": 2},
