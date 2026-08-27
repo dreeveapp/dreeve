@@ -20,12 +20,9 @@ class FitGearUsageExtractorTest extends TestCase
     {
         $this->assertSame(
             [
-                // The front derailleur had not reported yet on the first shift, so its chainring is
-                // taken from the next one. Without that, the 53T would count as shifted into.
                 'front 1 (39T) 4s 1x',
                 'front 2 (53T) 4s 0x',
                 'rear 4 (19T) 2s 0x',
-                // Shifted straight through in the same second it was entered.
                 'rear 5 (17T) 0s 1x',
                 'rear 6 (16T) 2s 1x',
                 'rear 7 (15T) 1s 1x',
@@ -37,7 +34,6 @@ class FitGearUsageExtractorTest extends TestCase
 
     public function testExtractIgnoresSamplesRecordedBeforeTheFirstShift(): void
     {
-        // Nine samples were recorded, but the first shift only lands at second one.
         $this->assertSame(
             8,
             $this->extract(range(0, 8))
@@ -48,7 +44,6 @@ class FitGearUsageExtractorTest extends TestCase
 
     public function testExtractIgnoresStoppedTime(): void
     {
-        // Six of the nine seconds were not recorded at all.
         $this->assertSame(
             [
                 'front 1 (39T) 1s 1x',

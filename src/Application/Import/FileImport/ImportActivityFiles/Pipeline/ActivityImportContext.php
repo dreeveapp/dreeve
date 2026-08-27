@@ -7,6 +7,7 @@ namespace App\Application\Import\FileImport\ImportActivityFiles\Pipeline;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\Lap\ActivityLaps;
+use App\Domain\Activity\Shifting\ActivityGearUsages;
 use App\Domain\Activity\Stream\ActivityStreams;
 use App\Domain\Import\FileParser\RawActivityFile;
 use App\Infrastructure\ValueObject\String\Path;
@@ -19,6 +20,7 @@ final readonly class ActivityImportContext
         private ?Activity $activity,
         private ActivityStreams $streams,
         private ActivityLaps $laps,
+        private ActivityGearUsages $gearUsages,
     ) {
     }
 
@@ -31,6 +33,7 @@ final readonly class ActivityImportContext
             activity: null,
             streams: ActivityStreams::empty(),
             laps: ActivityLaps::empty(),
+            gearUsages: ActivityGearUsages::empty(),
         );
     }
 
@@ -65,6 +68,13 @@ final readonly class ActivityImportContext
         ]);
     }
 
+    public function withGearUsages(ActivityGearUsages $gearUsages): self
+    {
+        return clone ($this, [
+            'gearUsages' => $gearUsages,
+        ]);
+    }
+
     public function withFile(RawActivityFile $file): self
     {
         return clone ($this, [
@@ -95,5 +105,10 @@ final readonly class ActivityImportContext
     public function getLaps(): ActivityLaps
     {
         return $this->laps;
+    }
+
+    public function getGearUsages(): ActivityGearUsages
+    {
+        return $this->gearUsages;
     }
 }

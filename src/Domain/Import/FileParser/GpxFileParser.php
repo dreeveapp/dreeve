@@ -11,6 +11,7 @@ use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\Lap\ActivityLap;
 use App\Domain\Activity\Math;
 use App\Domain\Activity\Route\RouteGeography;
+use App\Domain\Activity\Shifting\ActivityGearUsages;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\WorldType;
@@ -152,6 +153,7 @@ final readonly class GpxFileParser implements ActivityFileParser
             activity: $activity,
             streams: $this->activityStreamsMapper->fromStreamMap($streams, $activityId),
             laps: $activityLaps,
+            gearUsages: ActivityGearUsages::empty(),
         );
     }
 

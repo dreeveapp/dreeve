@@ -1,0 +1,58 @@
+[
+    {
+        "activityId": "activity-1",
+        "position": "front",
+        "gearNumber": 1,
+        "teeth": 39,
+        "timeInSeconds": 4,
+        "shiftCount": 1
+    },
+    {
+        "activityId": "activity-1",
+        "position": "front",
+        "gearNumber": 2,
+        "teeth": 53,
+        "timeInSeconds": 4,
+        "shiftCount": 0
+    },
+    {
+        "activityId": "activity-1",
+        "position": "rear",
+        "gearNumber": 4,
+        "teeth": 19,
+        "timeInSeconds": 2,
+        "shiftCount": 0
+    },
+    {
+        "activityId": "activity-1",
+        "position": "rear",
+        "gearNumber": 5,
+        "teeth": 17,
+        "timeInSeconds": 0,
+        "shiftCount": 1
+    },
+    {
+        "activityId": "activity-1",
+        "position": "rear",
+        "gearNumber": 6,
+        "teeth": 16,
+        "timeInSeconds": 2,
+        "shiftCount": 1
+    },
+    {
+        "activityId": "activity-1",
+        "position": "rear",
+        "gearNumber": 7,
+        "teeth": 15,
+        "timeInSeconds": 1,
+        "shiftCount": 1
+    },
+    {
+        "activityId": "activity-1",
+        "position": "rear",
+        "gearNumber": 8,
+        "teeth": 14,
+        "timeInSeconds": 3,
+        "shiftCount": 1
+    }
+]

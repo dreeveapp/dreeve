@@ -16,6 +16,7 @@ use App\Domain\Activity\WorldType;
 use App\Domain\Gear\Sensor\ConnectedSensor;
 use App\Domain\Gear\Sensor\ConnectedSensors;
 use App\Domain\Import\FileParser\Fit\FitDeviceType;
+use App\Domain\Import\FileParser\Fit\FitGearUsageExtractor;
 use App\Domain\Import\FileParser\Fit\FitManufacturer;
 use App\Domain\Import\FileParser\Fit\FitProduct;
 use App\Domain\Import\FileParser\Fit\FitSportType;
@@ -77,6 +78,8 @@ final readonly class FitFileParser implements ActivityFileParser
         $hrMessages = [];
         /** @var list<array<string, mixed>> $deviceInfoMessages */
         $deviceInfoMessages = [];
+        /** @var list<array<string, mixed>> $eventMessages */
+        $eventMessages = [];
         /** @var list<array<string, mixed>> $sessionMessages */
         $sessionMessages = [];
         /** @var array<string, mixed>|null $workout */
@@ -106,6 +109,9 @@ final readonly class FitFileParser implements ActivityFileParser
                     break;
                 case 'device_info':
                     $deviceInfoMessages[] = $fields;
+                    break;
+                case 'event':
+                    $eventMessages[] = $fields;
                     break;
                 case 'session':
                     $sessionMessages[] = $fields;
@@ -232,6 +238,12 @@ final readonly class FitFileParser implements ActivityFileParser
             activity: $activity,
             streams: $this->activityStreamsMapper->fromStreamMap($streamMap, $activityId),
             laps: $this->activityLapsMapper->map($this->buildParsedLaps($lapMessages), $activityId),
+            gearUsages: FitGearUsageExtractor::extract(
+                eventMessages: $eventMessages,
+                startTimestamp: $startTimestamp,
+                timeStream: $streamMap[StreamType::TIME->value],
+                activityId: $activityId,
+            ),
         );
     }
 

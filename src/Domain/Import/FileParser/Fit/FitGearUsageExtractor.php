@@ -155,7 +155,6 @@ final readonly class FitGearUsageExtractor
                 ++$index;
             }
             if ($gearChanges[$index]['timeOffset'] > $timeOffset) {
-                // Recorded before the first shift, the gear it was ridden in is unknown.
                 continue;
             }
 

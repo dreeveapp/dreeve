@@ -10,6 +10,7 @@ use App\Application\Import\FileImport\ImportActivityFiles\Pipeline\SkipDuplicate
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Lap\ActivityLapRepository;
+use App\Domain\Activity\Shifting\ActivityGearUsageRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Import\FileImport;
 use App\Domain\Import\FileImportId;
@@ -40,6 +41,7 @@ final readonly class ImportActivityFilesCommandHandler implements CommandHandler
         private ActivityRepository $activityRepository,
         private ActivityStreamRepository $activityStreamRepository,
         private ActivityLapRepository $activityLapRepository,
+        private ActivityGearUsageRepository $activityGearUsageRepository,
         private FileImportRepository $fileImportRepository,
         private Mutex $mutex,
         private Clock $clock,
@@ -126,6 +128,10 @@ final readonly class ImportActivityFilesCommandHandler implements CommandHandler
 
             foreach ($context->getLaps() as $lap) {
                 $this->activityLapRepository->add($lap);
+            }
+
+            foreach ($context->getGearUsages() as $gearUsage) {
+                $this->activityGearUsageRepository->add($gearUsage);
             }
 
             $file = $context->getFile();

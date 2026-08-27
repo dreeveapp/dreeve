@@ -44,6 +44,15 @@ class FitFileParserTest extends ActivityFileParserTestCase
         );
     }
 
+    public function testParseWithGearChanges(): void
+    {
+        $this->givenFitToolReturns((string) file_get_contents(__DIR__.'/fixtures/fit-document-with-gear-changes.json'));
+
+        $this->assertParsedFileMatchesSnapshot(
+            $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))
+        );
+    }
+
     public function testParseDerivesSummaryMetricsFromStreamsWhenMissingFromSession(): void
     {
         $this->givenFitToolReturns((string) file_get_contents(__DIR__.'/fixtures/fit-document-without-session-summary-metrics.json'));

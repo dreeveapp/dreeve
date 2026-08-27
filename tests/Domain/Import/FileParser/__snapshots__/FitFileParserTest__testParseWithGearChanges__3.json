@@ -1,0 +1,37 @@
+[
+    {
+        "dataSize": 9,
+        "activityId": "activity-1",
+        "streamType": "cadence",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[90,90,90,90,90,90,90,90,90]"
+    },
+    {
+        "dataSize": 9,
+        "activityId": "activity-1",
+        "streamType": "distance",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[0,10,20,30,40,50,60,70,80]"
+    },
+    {
+        "dataSize": 9,
+        "activityId": "activity-1",
+        "streamType": "time",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[0,1,2,3,4,5,6,7,8]"
+    },
+    {
+        "dataSize": 9,
+        "activityId": "activity-1",
+        "streamType": "velocity_smooth",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[10,10,10,10,10,10,10,10,10]"
+    },
+    {
+        "dataSize": 9,
+        "activityId": "activity-1",
+        "streamType": "watts",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[200,200,200,200,200,200,200,200,200]"
+    }
+]
