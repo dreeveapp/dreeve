@@ -9,9 +9,9 @@ use App\Infrastructure\Time\Format\ProvideTimeFormats;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'ActivityGearUsage')]
-#[ORM\Index(name: 'ActivityGearUsage_positionTeeth', columns: ['position', 'teeth'])]
-final readonly class ActivityGearUsage
+#[ORM\Table(name: 'ActivityDrivetrainUsage')]
+#[ORM\Index(name: 'ActivityDrivetrainUsage_positionTeeth', columns: ['position', 'teeth'])]
+final readonly class ActivityDrivetrainUsage
 {
     use ProvideTimeFormats;
 
@@ -19,7 +19,7 @@ final readonly class ActivityGearUsage
         #[ORM\Id, ORM\Column(type: 'string')]
         private ActivityId $activityId,
         #[ORM\Id, ORM\Column(type: 'string')]
-        private GearPosition $position,
+        private DrivetrainPosition $position,
         #[ORM\Id, ORM\Column(type: 'integer')]
         private int $gearNumber,
         #[ORM\Column(type: 'integer')]
@@ -33,7 +33,7 @@ final readonly class ActivityGearUsage
 
     public static function create(
         ActivityId $activityId,
-        GearPosition $position,
+        DrivetrainPosition $position,
         int $gearNumber,
         int $teeth,
         int $timeInSeconds,
@@ -51,7 +51,7 @@ final readonly class ActivityGearUsage
 
     public static function fromState(
         ActivityId $activityId,
-        GearPosition $position,
+        DrivetrainPosition $position,
         int $gearNumber,
         int $teeth,
         int $timeInSeconds,
@@ -72,7 +72,7 @@ final readonly class ActivityGearUsage
         return $this->activityId;
     }
 
-    public function getPosition(): GearPosition
+    public function getPosition(): DrivetrainPosition
     {
         return $this->position;
     }

@@ -151,6 +151,8 @@ Fitness: 'Forma fisica'
 'Form (TSB)': 'Forma (TSB)'
 Fri: Ven
 Fri.: Fri.
+'Front rings': 'Front rings'
+'Front shifts': 'Front shifts'
 GAP: GAP
 Gear: Attrezzatura
 'Gear maintenance': 'Manutenzione attrezzatura'
@@ -328,6 +330,8 @@ Ranking: Classifica
 'Reached {threshold} hours total moving time': 'Raggiunte {threshold} ore di tempo totale in movimento'
 'Reached {threshold} total distance': 'Raggiunta distanza totale di {threshold}'
 'Reached {threshold} total elevation': 'Raggiunto dislivello totale di {threshold}'
+'Rear cogs': 'Rear cogs'
+'Rear shifts': 'Rear shifts'
 'Recalculating your suffer score...': 'Recalculating your suffer score...'
 Recent: Recent
 'Recent effort': 'Sforzo recente'
@@ -361,6 +365,7 @@ Search: Cerca
 'Search segment...': 'Cerca segmento...'
 Segments: Segmenti
 Sep: Set
+Shifting: Shifting
 'Show all columns': 'Show all columns'
 'Show information': 'Mostra Informazione'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Mostra come il tuo TSB (Forma) e il rapporto A:C recupereranno nel tempo se fai giorni di riposo completo.'
@@ -498,6 +503,7 @@ Thinking...: Elaborazione...
 Thu: Gio
 Thu.: Thu.
 Time: Tempo
+'Time in gear': 'Time in gear'
 'Time in zone': 'Time in zone'
 'Times completed': 'Volte completate'
 Title: Title

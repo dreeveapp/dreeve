@@ -151,6 +151,8 @@ Fitness: Fitnesz
 'Form (TSB)': 'Forma (TSB)'
 Fri: P
 Fri.: Fri.
+'Front rings': 'Front rings'
+'Front shifts': 'Front shifts'
 GAP: GAP
 Gear: Felszerelés
 'Gear maintenance': 'Felszerelés karbantartás'
@@ -328,6 +330,8 @@ Ranking: Ranglista
 'Reached {threshold} hours total moving time': '{threshold} óra összes mozgásidő elérve'
 'Reached {threshold} total distance': '{threshold} összes távolság elérve'
 'Reached {threshold} total elevation': '{threshold} összes szintemelkedés elérve'
+'Rear cogs': 'Rear cogs'
+'Rear shifts': 'Rear shifts'
 'Recalculating your suffer score...': 'Recalculating your suffer score...'
 Recent: Recent
 'Recent effort': 'Közelmúltbeli teljesítmény'
@@ -361,6 +365,7 @@ Search: Keresés
 'Search segment...': 'Szegmens keresése...'
 Segments: Szegmensek
 Sep: Szept
+Shifting: Shifting
 'Show all columns': 'Show all columns'
 'Show information': 'Információ megjelenítése'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Megmutatja, hogyan fog a TSB (Forma) és az A:C arány idővel helyreállni, ha teljes pihenőnapokat tartasz.'
@@ -498,6 +503,7 @@ Thinking...: Gondolkodás...
 Thu: Cs
 Thu.: Thu.
 Time: Idő
+'Time in gear': 'Time in gear'
 'Time in zone': 'Time in zone'
 'Times completed': 'Teljesítések száma'
 Title: Title

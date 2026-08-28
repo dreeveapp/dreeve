@@ -39,6 +39,15 @@ class SportTypeTest extends ContainerTestCase
         $this->assertMatchesJsonSnapshot($snapshot);
     }
 
+    public function testSupportsShiftingStats(): void
+    {
+        $snapshot = [];
+        foreach (SportType::cases() as $sportType) {
+            $snapshot[$sportType->value] = $sportType->supportsShiftingStats();
+        }
+        $this->assertMatchesJsonSnapshot($snapshot);
+    }
+
     public function testGetDisplaySymbols(): void
     {
         $snapshot = [];

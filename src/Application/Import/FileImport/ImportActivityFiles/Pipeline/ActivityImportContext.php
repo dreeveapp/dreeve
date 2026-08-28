@@ -7,7 +7,7 @@ namespace App\Application\Import\FileImport\ImportActivityFiles\Pipeline;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\Lap\ActivityLaps;
-use App\Domain\Activity\Shifting\ActivityGearUsages;
+use App\Domain\Activity\Shifting\ActivityDrivetrainUsages;
 use App\Domain\Activity\Stream\ActivityStreams;
 use App\Domain\Import\FileParser\RawActivityFile;
 use App\Infrastructure\ValueObject\String\Path;
@@ -20,7 +20,7 @@ final readonly class ActivityImportContext
         private ?Activity $activity,
         private ActivityStreams $streams,
         private ActivityLaps $laps,
-        private ActivityGearUsages $gearUsages,
+        private ActivityDrivetrainUsages $drivetrainUsages,
     ) {
     }
 
@@ -33,7 +33,7 @@ final readonly class ActivityImportContext
             activity: null,
             streams: ActivityStreams::empty(),
             laps: ActivityLaps::empty(),
-            gearUsages: ActivityGearUsages::empty(),
+            drivetrainUsages: ActivityDrivetrainUsages::empty(),
         );
     }
 
@@ -68,10 +68,10 @@ final readonly class ActivityImportContext
         ]);
     }
 
-    public function withGearUsages(ActivityGearUsages $gearUsages): self
+    public function withDrivetrainUsages(ActivityDrivetrainUsages $drivetrainUsages): self
     {
         return clone ($this, [
-            'gearUsages' => $gearUsages,
+            'drivetrainUsages' => $drivetrainUsages,
         ]);
     }
 
@@ -107,8 +107,8 @@ final readonly class ActivityImportContext
         return $this->laps;
     }
 
-    public function getGearUsages(): ActivityGearUsages
+    public function getDrivetrainUsages(): ActivityDrivetrainUsages
     {
-        return $this->gearUsages;
+        return $this->drivetrainUsages;
     }
 }

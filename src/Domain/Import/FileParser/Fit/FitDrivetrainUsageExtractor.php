@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Domain\Import\FileParser\Fit;
 
 use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\Shifting\ActivityGearUsage;
-use App\Domain\Activity\Shifting\ActivityGearUsages;
-use App\Domain\Activity\Shifting\GearPosition;
+use App\Domain\Activity\Shifting\ActivityDrivetrainUsage;
+use App\Domain\Activity\Shifting\ActivityDrivetrainUsages;
+use App\Domain\Activity\Shifting\DrivetrainPosition;
 
 /**
  * @phpstan-type GearChange array{timeOffset: int, front: array{0: ?int, 1: ?int}, rear: array{0: ?int, 1: ?int}}
  */
-final readonly class FitGearUsageExtractor
+final readonly class FitDrivetrainUsageExtractor
 {
     private const int FIT_EVENT_FRONT_GEAR_CHANGE = 42;
     private const int FIT_EVENT_REAR_GEAR_CHANGE = 43;
@@ -26,21 +26,21 @@ final readonly class FitGearUsageExtractor
         int $startTimestamp,
         array $timeStream,
         ActivityId $activityId,
-    ): ActivityGearUsages {
+    ): ActivityDrivetrainUsages {
         if ([] === $gearChanges = self::gearChanges($eventMessages, $startTimestamp)) {
-            return ActivityGearUsages::empty();
+            return ActivityDrivetrainUsages::empty();
         }
 
         $gears = self::countShifts($gearChanges);
         self::attributeRecordedTime($gears, $gearChanges, $timeStream);
 
-        $gearUsages = ActivityGearUsages::empty();
+        $drivetrainUsages = ActivityDrivetrainUsages::empty();
         foreach ($gears as $position => $perGearNumber) {
             ksort($perGearNumber);
             foreach ($perGearNumber as $gearNumber => $gear) {
-                $gearUsages->add(ActivityGearUsage::create(
+                $drivetrainUsages->add(ActivityDrivetrainUsage::create(
                     activityId: $activityId,
-                    position: GearPosition::from($position),
+                    position: DrivetrainPosition::from($position),
                     gearNumber: $gearNumber,
                     teeth: $gear['teeth'],
                     timeInSeconds: $gear['timeInSeconds'],
@@ -49,7 +49,7 @@ final readonly class FitGearUsageExtractor
             }
         }
 
-        return $gearUsages;
+        return $drivetrainUsages;
     }
 
     /**
@@ -120,7 +120,7 @@ final readonly class FitGearUsageExtractor
     private static function countShifts(array $gearChanges): array
     {
         $gears = [];
-        foreach ([GearPosition::FRONT, GearPosition::REAR] as $position) {
+        foreach ([DrivetrainPosition::FRONT, DrivetrainPosition::REAR] as $position) {
             $previousGearNumber = null;
             foreach ($gearChanges as $gearChange) {
                 [$gearNumber, $teeth] = $gearChange[$position->value];
@@ -158,7 +158,7 @@ final readonly class FitGearUsageExtractor
                 continue;
             }
 
-            foreach ([GearPosition::FRONT, GearPosition::REAR] as $position) {
+            foreach ([DrivetrainPosition::FRONT, DrivetrainPosition::REAR] as $position) {
                 [$gearNumber] = $gearChanges[$index][$position->value];
                 if (null === $gearNumber || !isset($gears[$position->value][$gearNumber])) {
                     continue;

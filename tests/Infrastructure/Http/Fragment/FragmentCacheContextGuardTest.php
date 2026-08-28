@@ -9,6 +9,7 @@ use App\Domain\Activity\ActivityPolylinesFragmentResolver;
 use App\Domain\Activity\BestEffort\ActivityBestEffortsFragmentResolver;
 use App\Domain\Activity\BestEffort\BestEffortsHistoryFragmentResolver;
 use App\Domain\Activity\Route\Match\ActivityRouteMatchesFragmentResolver;
+use App\Domain\Activity\Shifting\ActivityShiftingFragmentResolver;
 use App\Domain\Badge\BadgeFragmentResolver;
 use App\Domain\Calendar\MonthFragmentResolver;
 use App\Domain\Dashboard\DashboardWidgetFragmentResolver;
@@ -49,6 +50,7 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
         ActivityBestEffortsFragmentResolver::class => 'activities/activity-9542782314/best-efforts',
         ActivitySegmentsFragmentResolver::class => 'activities/activity-9542782314/segments',
         ActivityRouteMatchesFragmentResolver::class => 'activities/activity-9542782314/route-matches',
+        ActivityShiftingFragmentResolver::class => 'activities/activity-9542782314/shifting',
         SegmentPolylinesFragmentResolver::class => 'segments/segment-10/polylines',
         SegmentFragmentResolver::class => 'segments/segment-10',
         BestEffortsHistoryFragmentResolver::class => 'best-efforts/Ride/10000',

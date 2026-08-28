@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Activity\Shifting;
 
 use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\Shifting\ActivityGearUsage;
-use App\Domain\Activity\Shifting\GearPosition;
+use App\Domain\Activity\Shifting\ActivityDrivetrainUsage;
+use App\Domain\Activity\Shifting\DrivetrainPosition;
 
-final class ActivityGearUsageBuilder
+final class ActivityDrivetrainUsageBuilder
 {
     private ActivityId $activityId;
-    private GearPosition $position = GearPosition::REAR;
+    private DrivetrainPosition $position = DrivetrainPosition::REAR;
     private int $gearNumber = 6;
     private int $teeth = 16;
     private int $timeInSeconds = 7219;
@@ -27,9 +27,9 @@ final class ActivityGearUsageBuilder
         return new self();
     }
 
-    public function build(): ActivityGearUsage
+    public function build(): ActivityDrivetrainUsage
     {
-        return ActivityGearUsage::create(
+        return ActivityDrivetrainUsage::create(
             activityId: $this->activityId,
             position: $this->position,
             gearNumber: $this->gearNumber,
@@ -46,7 +46,7 @@ final class ActivityGearUsageBuilder
         return $this;
     }
 
-    public function withGear(GearPosition $position, int $gearNumber, int $teeth): self
+    public function withGear(DrivetrainPosition $position, int $gearNumber, int $teeth): self
     {
         $this->position = $position;
         $this->gearNumber = $gearNumber;

@@ -1,0 +1,45 @@
+{% autoescape false %}
+    <section class="rounded-lg bg-white border border-gray-200 shadow-xs p-5">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="size-8 rounded-lg bg-primary-soft text-primary flex items-center justify-center">
+                {{ svg('cog', 'size-5') }}
+            </div>
+            <h3 class="font-bold text-gray-900">{{ "Shifting"|trans }}</h3>
+        </div>
+        <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="rounded-lg bg-gray-50 p-3">
+                <div class="text-xxs uppercase text-gray-500 tracking-wider">{{ "Front shifts"|trans }}</div>
+                <div class="text-3xl font-black text-gray-900 mt-0.5">{{ frontShiftCount }}</div>
+                {% if frontShiftsPerDistanceUnit is not null %}
+                    <div class="text-xxs text-gray-500 mt-0.5 tabular-nums">{{ frontShiftsPerDistanceUnit|round(2) }}/{{ distanceSymbol }}</div>
+                {% endif %}
+            </div>
+            <div class="rounded-lg bg-gray-50 p-3">
+                <div class="text-xxs uppercase text-gray-500 tracking-wider">{{ "Rear shifts"|trans }}</div>
+                <div class="text-3xl font-black text-gray-900 mt-0.5">{{ rearShiftCount }}</div>
+                {% if rearShiftsPerDistanceUnit is not null %}
+                    <div class="text-xxs text-gray-500 mt-0.5 tabular-nums">{{ rearShiftsPerDistanceUnit|round(2) }}/{{ distanceSymbol }}</div>
+                {% endif %}
+            </div>
+        </div>
+        {% for section in [{'label': "Front rings"|trans, 'rows': frontRings}, {'label': "Rear cogs"|trans, 'rows': rearCogs}] %}
+            {% if section.rows|length > 0 %}
+                <div class="flex items-center justify-between mb-1.5 {{ not loop.first ? 'mt-4' }}">
+                    <div class="text-xxs uppercase text-gray-500 font-semibold tracking-wider">{{ section.label }}</div>
+                    <div class="text-xxs uppercase text-gray-400 tracking-wider">{{ "Time in gear"|trans }}</div>
+                </div>
+                <div class="space-y-1.5">
+                    {% for row in section.rows %}
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="w-8 text-gray-500 font-medium tabular-nums">{{ row.teeth }}T</span>
+                            <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-primary" style="width: {{ row.barPercentage|round(1) }}%"></div>
+                            </div>
+                            <span class="w-14 text-right text-gray-700 font-medium tabular-nums">{{ row.formattedTime }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </section>
+{% endautoescape %}

@@ -352,6 +352,9 @@
             {% endblock splitsAndLaps %}
             <div data-async-content-url="{{ fragmentPartialUrl(activityFragmentPath(activity.getId(), 'segments')) }}"></div>
             <div data-async-content-url="{{ fragmentPartialUrl(activityFragmentPath(activity.getId(), 'route-matches')) }}"></div>
+            {% if activity.getSportType().supportsShiftingStats() %}
+                <div data-async-content-url="{{ fragmentPartialUrl(activityFragmentPath(activity.getId(), 'shifting')) }}"></div>
+            {% endif %}
         </section>
         {% if distributionCharts is not empty %}
             <section>

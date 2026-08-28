@@ -43,6 +43,6 @@ final readonly class ParseActivityFile implements ImportActivityFileStep
             ->withActivity($activity)
             ->withStreams($parsedFile->getStreams())
             ->withLaps($parsedFile->getLaps())
-            ->withGearUsages($parsedFile->getGearUsages());
+            ->withDrivetrainUsages($parsedFile->getDrivetrainUsages());
     }
 }

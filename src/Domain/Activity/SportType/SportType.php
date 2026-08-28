@@ -351,6 +351,18 @@ enum SportType: string implements TranslatableInterface
         ]);
     }
 
+    public function supportsShiftingStats(): bool
+    {
+        return in_array($this, [
+            self::RIDE,
+            self::MOUNTAIN_BIKE_RIDE,
+            self::GRAVEL_RIDE,
+            self::E_BIKE_RIDE,
+            self::E_MOUNTAIN_BIKE_RIDE,
+            self::VELO_MOBILE,
+        ]);
+    }
+
     public function supportsReverseGeocoding(): bool
     {
         return !in_array($this, [

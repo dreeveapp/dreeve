@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Import\FileParser\Fit;
 
 use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\Shifting\ActivityGearUsage;
-use App\Domain\Activity\Shifting\ActivityGearUsages;
-use App\Domain\Activity\Shifting\GearPosition;
-use App\Domain\Import\FileParser\Fit\FitGearUsageExtractor;
+use App\Domain\Activity\Shifting\ActivityDrivetrainUsage;
+use App\Domain\Activity\Shifting\ActivityDrivetrainUsages;
+use App\Domain\Activity\Shifting\DrivetrainPosition;
+use App\Domain\Import\FileParser\Fit\FitDrivetrainUsageExtractor;
 use App\Infrastructure\Serialization\Json;
 use PHPUnit\Framework\TestCase;
 
-class FitGearUsageExtractorTest extends TestCase
+class FitDrivetrainUsageExtractorTest extends TestCase
 {
     private const int START_FIT_SECONDS = 1000000000;
 
@@ -37,8 +37,8 @@ class FitGearUsageExtractorTest extends TestCase
         $this->assertSame(
             8,
             $this->extract(range(0, 8))
-                ->filterOnPosition(GearPosition::REAR)
-                ->sum(fn (ActivityGearUsage $gearUsage): int => $gearUsage->getTimeInSeconds())
+                ->filterOnPosition(DrivetrainPosition::REAR)
+                ->sum(fn (ActivityDrivetrainUsage $drivetrainUsage): int => $drivetrainUsage->getTimeInSeconds())
         );
     }
 
@@ -66,17 +66,17 @@ class FitGearUsageExtractorTest extends TestCase
     public function testExtractWithoutEventMessages(): void
     {
         $this->assertEquals(
-            ActivityGearUsages::empty(),
-            FitGearUsageExtractor::extract([], self::START_FIT_SECONDS, range(0, 8), ActivityId::fromUnprefixed('test'))
+            ActivityDrivetrainUsages::empty(),
+            FitDrivetrainUsageExtractor::extract([], self::START_FIT_SECONDS, range(0, 8), ActivityId::fromUnprefixed('test'))
         );
     }
 
     /**
      * @param array<int, mixed> $timeStream
      */
-    private function extract(array $timeStream, string $fixture = 'fit-document-with-gear-changes.json'): ActivityGearUsages
+    private function extract(array $timeStream, string $fixture = 'fit-document-with-gear-changes.json'): ActivityDrivetrainUsages
     {
-        return FitGearUsageExtractor::extract(
+        return FitDrivetrainUsageExtractor::extract(
             $this->eventMessagesFromFixture($fixture),
             self::START_FIT_SECONDS,
             $timeStream,
@@ -108,15 +108,15 @@ class FitGearUsageExtractorTest extends TestCase
     /**
      * @return list<string>
      */
-    private function describe(ActivityGearUsages $gearUsages): array
+    private function describe(ActivityDrivetrainUsages $drivetrainUsages): array
     {
-        return $gearUsages->map(fn (ActivityGearUsage $gearUsage): string => sprintf(
+        return $drivetrainUsages->map(fn (ActivityDrivetrainUsage $drivetrainUsage): string => sprintf(
             '%s %d (%dT) %ds %dx',
-            $gearUsage->getPosition()->value,
-            $gearUsage->getGearNumber(),
-            $gearUsage->getTeeth(),
-            $gearUsage->getTimeInSeconds(),
-            $gearUsage->getShiftCount(),
+            $drivetrainUsage->getPosition()->value,
+            $drivetrainUsage->getGearNumber(),
+            $drivetrainUsage->getTeeth(),
+            $drivetrainUsage->getTimeInSeconds(),
+            $drivetrainUsage->getShiftCount(),
         ));
     }
 }

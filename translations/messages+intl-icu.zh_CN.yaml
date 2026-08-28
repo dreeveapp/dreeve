@@ -151,6 +151,8 @@ Fitness: 健身
 'Form (TSB)': '状态 (TSB)'
 Fri: 周五
 Fri.: Fri.
+'Front rings': 'Front rings'
+'Front shifts': 'Front shifts'
 GAP: GAP
 Gear: 装备
 'Gear maintenance': 装备维护
@@ -328,6 +330,8 @@ Ranking: Ranking
 'Reached {threshold} hours total moving time': 'Reached {threshold} hours total moving time'
 'Reached {threshold} total distance': 'Reached {threshold} total distance'
 'Reached {threshold} total elevation': 'Reached {threshold} total elevation'
+'Rear cogs': 'Rear cogs'
+'Rear shifts': 'Rear shifts'
 'Recalculating your suffer score...': 'Recalculating your suffer score...'
 Recent: Recent
 'Recent effort': 'Recent effort'
@@ -361,6 +365,7 @@ Search: 搜索
 'Search segment...': 搜索路段...
 Segments: 路段
 Sep: 九月
+Shifting: Shifting
 'Show all columns': 'Show all columns'
 'Show information': 显示信息
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.'
@@ -498,6 +503,7 @@ Thinking...: 思考中...
 Thu: 周四
 Thu.: Thu.
 Time: 时间
+'Time in gear': 'Time in gear'
 'Time in zone': 'Time in zone'
 'Times completed': 完成次数
 Title: Title
