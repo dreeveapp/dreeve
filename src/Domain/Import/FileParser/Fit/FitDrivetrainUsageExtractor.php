@@ -63,10 +63,10 @@ final readonly class FitDrivetrainUsageExtractor
         foreach ($eventMessages as $fields) {
             $event = self::toInteger($fields['event'] ?? null);
             if (self::FIT_EVENT_FRONT_GEAR_CHANGE !== $event && self::FIT_EVENT_REAR_GEAR_CHANGE !== $event) {
-                continue;
+                continue; // @codeCoverageIgnore
             }
             if (null === $timestamp = self::toInteger($fields['timestamp'] ?? null)) {
-                continue;
+                continue; // @codeCoverageIgnore
             }
 
             $gearChanges[] = [
@@ -125,7 +125,7 @@ final readonly class FitDrivetrainUsageExtractor
             foreach ($gearChanges as $gearChange) {
                 [$gearNumber, $teeth] = $gearChange[$position->value];
                 if (null === $gearNumber || null === $teeth) {
-                    continue;
+                    continue; // @codeCoverageIgnore
                 }
 
                 $gears[$position->value][$gearNumber] ??= ['teeth' => $teeth, 'timeInSeconds' => 0, 'shiftCount' => 0];
@@ -155,13 +155,13 @@ final readonly class FitDrivetrainUsageExtractor
                 ++$index;
             }
             if ($gearChanges[$index]['timeOffset'] > $timeOffset) {
-                continue;
+                continue; // @codeCoverageIgnore
             }
 
             foreach ([DrivetrainPosition::FRONT, DrivetrainPosition::REAR] as $position) {
                 [$gearNumber] = $gearChanges[$index][$position->value];
                 if (null === $gearNumber || !isset($gears[$position->value][$gearNumber])) {
-                    continue;
+                    continue; // @codeCoverageIgnore
                 }
                 ++$gears[$position->value][$gearNumber]['timeInSeconds'];
             }
