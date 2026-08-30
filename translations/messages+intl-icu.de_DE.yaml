@@ -8,7 +8,7 @@
 'A high score means you concentrate more training into fewer, heavier days.': 'Ein hoher Wert bedeutet, dass du dein Training auf weniger, dafür intensivere Tage konzentrierst.'
 'A:C Ratio': 'A:C-Verhältnis'
 'A:C optimal in': 'A:C-Verhältnis optimal in'
-'AI integration settings': 'AI integration settings'
+'AI integration settings': 'KI-Integrationseinstellungen'
 'ATL (Fatigue)': 'ATL (Ermüdung)'
 'Accumulated fatigue': 'Angestaute Ermüdung'
 'Active days': 'Aktive Tage'
@@ -43,7 +43,7 @@ Bananas: Bananen
 Basketball: Basketball
 Best: Beste
 'Best effort': Bestzeit
-'Best efforts': Bestzeiten
+'Best efforts': Bestleistungen
 'Best efforts for {sportType}': 'Bestzeiten für {sportType}'
 'Bike light': Fahrradlicht
 'Bike radar': Fahrradradar
@@ -70,7 +70,7 @@ Compare: Vergleich
 'Compare to': 'Vergleich zu'
 'Completed {threshold} activities': '{threshold} Aktivitäten abgeschlossen'
 Components: Komponenten
-'Configure gear maintenance': 'Configure gear maintenance'
+'Configure gear maintenance': 'Ausrüstungswartung konfigurieren'
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Glückwunsch! Du hast {numberOfPRs} PRs in der Aktivität.'
 'Consider reducing load': 'Belastungsreduzierung in Erwägung ziehen'
 Consistency: Konstanz
@@ -114,7 +114,7 @@ Duration: Dauer
 Eddington: Eddington
 'Eddington number': 'Eddington Zahl'
 'Eddington over time': 'Eddington im zeitlichen Verlauf'
-'Edit dashboard': 'Edit dashboard'
+'Edit dashboard': 'Dashboard bearbeiten'
 'Edit this activity': 'Diese Aktivität bearbeiten'
 'Effort vs heart rate': 'Anstrengung vs Herzfrequenz'
 'Elapsed time': 'Verstrichene Zeit'
@@ -130,7 +130,7 @@ Energy: Energie
 'Enter fullscreen mode': 'Vollbildmodus aktivieren'
 Evening: Abend
 'Excludes commutes': 'Pendelfahrten ausschließen'
-'Excludes group activities': 'Excludes group activities'
+'Excludes group activities': 'Gruppenaktivitäten ausschließen'
 'FTP history': FTP-Verlauf
 Fastest: Schnellste
 Favourite: Favorit
@@ -168,9 +168,9 @@ Grad.: Grad.
 Gradient: Steigung
 'Gravel Ride': Schotterfahrt
 'Gravel Rides': Schotterfahrt
-'Group activities': 'Group activities'
-'Group activities only': 'Group activities only'
-'Group activity': 'Group activity'
+'Group activities': 'Gruppenaktivitäten'
+'Group activities only': 'nur Gruppenaktivitäten'
+'Group activity': 'Gruppenaktivität'
 "Guidelines vary by individual; for more information see Joe Friel's 'The Cyclist's Training Bible' or TrainingPeaks' research documentation.": "Die Richtlinien variieren von Person zu Person; weitere Informationen findest du in Joe Friels ‚The Cyclist's Training Bible‘ oder in den Forschungsunterlagen von TrainingPeaks."
 HIIT: HIIT
 HR: HF
@@ -235,17 +235,17 @@ Low: Niedrig
 'Low risk': 'Geringes Risiko'
 'Low training load': 'Niedrige Trainingsbelastung'
 Maintenance: Wartung
-'Manage activities': 'Manage activities'
-'Manage gear': 'Manage gear'
-'Manage recording devices': 'Manage recording devices'
-'Map settings': 'Map settings'
+'Manage activities': 'Aktivitäten verwalten'
+'Manage gear': 'Ausrüstung verwalten'
+'Manage recording devices': 'Aufzeichnungsgeräte verwalten'
+'Map settings': 'Karteneinstellungen'
 Mar: Mär
 Max: Max
 'Max gradient': 'Max Steigung'
 May: Mai
 Medium: Mittel
 Metric: Metrisch
-'Metrics settings': 'Metrics settings'
+'Metrics settings': 'Metrik-Einstellungen'
 Milestones: Meilensteine
 'Mind & Body Sports': 'Geist & Körper Sportarten'
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Moderate Ermüdung bei stabilem Fitnesslevel. Gut geeignet für regelmäßiges tägliches Training'
@@ -258,7 +258,7 @@ Monthly: Monatlich
 Morning: Morgen
 'Most elevation': 'Meiste Höhenmeter'
 'Most recent activities': 'Neueste Aktivitäten'
-'Most recent activities with map': 'Most recent activities with map'
+'Most recent activities with map': 'Neueste Aktivitäten mit Strecke'
 'Most recent challenges': 'Neueste Herausforderungen'
 'Most recent milestones': 'Neueste Meilensteine'
 'Mountain Bike Ride': Mountainbike-Fahrt
@@ -266,7 +266,7 @@ Morning: Morgen
 'Moving time': Bewegungszeit
 'Moving time by sport': 'Bewegungszeit nach Sportart'
 'Moving time in hours': 'Bewegungszeit in Stunden'
-'Muscle oxygen sensor': 'Muscle oxygen sensor'
+'Muscle oxygen sensor': 'Muskel-Sauerstoff-Sensor'
 Name: Name
 Neutral: Neutral
 'New personal best for': 'Neue persönliche Bestleistung für'
@@ -288,7 +288,7 @@ Now: Jetzt
 Oct: Okt
 'Older effort': 'Ältere Leistung'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'Im Schnitt ergibt das {dailyAverage} täglich, mit einem Wochenmittel von {weeklyAverage} und einem Monatsmittel von {monthlyAverage} 🐣.'
-'On your own': 'On your own'
+'On your own': 'Solo'
 'One of your gear maintenance tasks is due': 'Eine deiner Ausrüstungswartungsaufgaben steht an'
 "Oops, looks like you've wandered off the map! 🗺️": "Oops, looks like you've wandered off the map! 🗺️"
 'Open Water Swim': Freiwasserschwimmen
@@ -339,7 +339,7 @@ Recent: Neueste
 'Recovery Timeline': Erholungszeitplan
 'Recovery forecast': Erholungsprognose
 'Reduced carbon emission by commuting': 'Reduzierter CO₂-Ausstoß durch Pendeln'
-'Register maintenance': 'Register maintenance'
+'Register maintenance': 'Wartung erfassen'
 'Relative cost': 'Relative Kosten'
 'Rest Days': Ruhetage
 'Rest days': Ruhetage
@@ -379,9 +379,9 @@ Snowboard: Snowboard
 Snowshoe: Schneeschuhwandern
 Soccer: Fußball
 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.': 'Regelmäßige 90-Minuten-Sessions bringen einen höheren Wert als viele kurze Einheiten.'
-Sort: Sort
+Sort: Sortieren
 Speed: Geschwindigkeit
-'Speed & cadence sensor': 'Speed & cadence sensor'
+'Speed & cadence sensor': 'Geschwindigkeits- & Trittfrequenzsensor'
 'Speed sensor': Geschwindigkeitssensor
 Splits: Zwischenzeiten
 'Sport variety': Sportvielfalt
@@ -563,7 +563,7 @@ Weight: Gewicht
 Wheelchair: Rollstuhl
 'Wind Surf': Windsurfen
 'Winter Sports': Wintersport
-'With others': 'With others'
+'With others': 'Mit anderen'
 Workout: Training
 'Workout assistant': Trainingsassistent
 'Workout type': Trainingseinheitstyp
@@ -572,7 +572,7 @@ Year: Jahr
 Yearly: Jährlich
 'Yearly stats': 'Jährliche Statistiken'
 Yoga: Yoga
-"You weren't alone out there": "You weren't alone out there"
+"You weren't alone out there": "Du warst nicht alleine unterwegs"
 'Your Dreeve badge': 'Dein Dreeve-Abzeichen'
 'Your PB badge': 'Dein PB Abzeichen'
 'Your Zwift badge': 'Dein Zwift-Abzeichen'
@@ -615,7 +615,7 @@ months: Monate
 more: mehr
 n/a: n/v
 never: nie
-'of your activities': 'of your activities'
+'of your activities': 'deiner Aktivitäten'
 'on': am
 per: pro
 'per activity': 'pro Aktivität'
