@@ -33,8 +33,9 @@
                         <div class="flex items-center gap-2 text-xs">
                             <span class="w-8 text-gray-500 font-medium tabular-nums">{{ row.teeth }}T</span>
                             <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                                <div class="h-full bg-primary" style="width: {{ row.barPercentage|round(1) }}%"></div>
+                                <div class="h-full min-w-[5px] bg-primary rounded-full" style="width: {{ row.percentage|round(1) }}%"></div>
                             </div>
+                            <span class="w-10 text-right text-gray-500 tabular-nums">{{ row.percentage > 0 and row.percentage < 0.5 ? '&lt;1' : row.percentage|round(0) }}%</span>
                             <span class="w-14 text-right text-gray-700 font-medium tabular-nums">{{ row.formattedTime }}</span>
                         </div>
                     {% endfor %}

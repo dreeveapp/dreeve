@@ -4,7 +4,7 @@
     "GravelRide": true,
     "EBikeRide": true,
     "EMountainBikeRide": true,
-    "VirtualRide": true,
+    "VirtualRide": false,
     "Velomobile": true,
     "Run": false,
     "TrailRun": false,

@@ -74,7 +74,7 @@ final readonly class ActivityShiftingFragmentResolver implements FragmentResolve
     }
 
     /**
-     * @return list<array{teeth: int, formattedTime: string, barPercentage: float}>
+     * @return list<array{teeth: int, formattedTime: string, percentage: float}>
      */
     private function buildRows(ActivityDrivetrainUsages $drivetrainUsages): array
     {
@@ -82,14 +82,14 @@ final readonly class ActivityShiftingFragmentResolver implements FragmentResolve
             return [];
         }
 
-        $mostUsedTimeInSeconds = (int) $drivetrainUsages->max(fn (ActivityDrivetrainUsage $drivetrainUsage): int => $drivetrainUsage->getTimeInSeconds());
+        $totalTimeInSeconds = (int) $drivetrainUsages->sum(fn (ActivityDrivetrainUsage $drivetrainUsage): int => $drivetrainUsage->getTimeInSeconds());
 
         $rows = [];
         foreach ($drivetrainUsages as $drivetrainUsage) {
             $rows[] = [
                 'teeth' => $drivetrainUsage->getTeeth(),
                 'formattedTime' => $drivetrainUsage->getFormattedTime(),
-                'barPercentage' => $mostUsedTimeInSeconds > 0 ? $drivetrainUsage->getTimeInSeconds() / $mostUsedTimeInSeconds * 100 : 0.0,
+                'percentage' => $totalTimeInSeconds > 0 ? $drivetrainUsage->getTimeInSeconds() / $totalTimeInSeconds * 100 : 0.0,
             ];
         }
 
