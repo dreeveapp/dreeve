@@ -6,6 +6,7 @@ namespace App\Controller\Admin\Automation;
 
 use App\Domain\Automation\Action\Actions;
 use App\Domain\Automation\AddAutomationRule\AddAutomationRule;
+use App\Domain\Automation\AutomationRule;
 use App\Domain\Automation\AutomationRuleId;
 use App\Domain\Automation\AutomationRuleRepository;
 use App\Domain\Automation\Condition\Conditions;
@@ -15,7 +16,9 @@ use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Domain\Gear\Sensor\SensorRepository;
 use App\Domain\Import\ImportMode;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\HtmlResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -37,14 +40,24 @@ final readonly class ManageAutomationRuleFormRequestHandler
     }
 
     #[Route(path: '/admin/automation-rules/add', name: 'admin_add_automation_rule', methods: ['GET'], priority: 10)]
-    public function handleAdd(): HtmlResponse
+    public function handleAdd(Request $request): HtmlResponse
     {
         if (!$this->importMode->isFiles()) {
             throw new NotFoundHttpException('Automation rules are only available in file import mode');
         }
 
+        $automationRuleToCopy = null;
+        if ($copyFrom = $request->query->get('copyFrom')) {
+            try {
+                $automationRuleToCopy = $this->automationRuleRepository->find(AutomationRuleId::fromPrefixedOrUnprefixed($copyFrom));
+            } catch (EntityNotFound|\InvalidArgumentException) {
+            }
+        }
+
         return new HtmlResponse($this->twig->render('html/admin/page/automation-rules/edit-automation-rule.html.twig', [
             'dispatchCommand' => AddAutomationRule::getCommandName(),
+            'automationRule' => $automationRuleToCopy,
+            'isCopy' => $automationRuleToCopy instanceof AutomationRule,
             'conditions' => $this->conditions->all(),
             'actions' => $this->actions->all(),
             'gears' => $this->gearRepository->findAll(),

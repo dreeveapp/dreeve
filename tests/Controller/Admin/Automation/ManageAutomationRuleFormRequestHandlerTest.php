@@ -21,6 +21,7 @@ use App\Domain\Import\ImportMode;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Automation\AutomationRuleBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
 {
@@ -218,6 +219,71 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('garmin-edge-530', $conditionsInitial);
         $actionsInitial = (string) $crawler->filter('[data-repeater-list]')->eq(1)->attr('data-repeater-initial');
         $this->assertStringContainsString('"type":"markAsCommute"', $actionsInitial);
+    }
+
+    public function testItRendersTheAddFormPrefilledWithTheRuleToCopy(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+
+        static::getContainer()->get(AutomationRuleRepository::class)->add(
+            AutomationRuleBuilder::fromDefaults()
+                ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('42'))
+                ->withLabel('Tag commutes')
+                ->withStopProcessing(false)
+                ->withConditions(ConfiguredConditions::fromArray([
+                    new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceId' => 'garmin-edge-530'])),
+                ]))
+                ->withActions(ConfiguredActions::fromArray([
+                    new ConfiguredAction(ActionType::MARK_AS_COMMUTE, RuleConfiguration::fromConfig(['isCommute' => true])),
+                ]))
+                ->build()
+        );
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/automation-rules/add?copyFrom='.AutomationRuleId::fromUnprefixed('42'));
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringContainsString('Add automation rule', $crawler->filter('h3')->text());
+
+        $form = $crawler->filter('form[data-dispatch-command="add-automation-rule"]');
+        $this->assertCount(1, $form);
+
+        // A copy is a new rule, so it carries no id.
+        $this->assertCount(0, $form->filter('input[type="hidden"][name="automationRuleId"]'));
+        $this->assertSame('Tag commutes (copy)', $form->filter('input[name="label"]')->attr('value'));
+        // The copied rule mirrors the source, not the add form defaults.
+        $this->assertCount(0, $form->filter('input[type="checkbox"][name="stopProcessing"][checked]'));
+
+        $conditionsInitial = (string) $crawler->filter('[data-repeater-list]')->eq(0)->attr('data-repeater-initial');
+        $this->assertStringContainsString('"type":"device"', $conditionsInitial);
+        $this->assertStringContainsString('garmin-edge-530', $conditionsInitial);
+        $actionsInitial = (string) $crawler->filter('[data-repeater-list]')->eq(1)->attr('data-repeater-initial');
+        $this->assertStringContainsString('"type":"markAsCommute"', $actionsInitial);
+    }
+
+    #[DataProvider('provideInvalidRuleToCopy')]
+    public function testItRendersAnEmptyAddFormWhenTheRuleToCopyCannotBeResolved(string $copyFrom): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/automation-rules/add?copyFrom='.$copyFrom);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringContainsString('Add automation rule', $crawler->filter('h3')->text());
+
+        $form = $crawler->filter('form[data-dispatch-command="add-automation-rule"]');
+        $this->assertCount(0, $form->filter('input[type="hidden"][name="automationRuleId"]'));
+        $this->assertSame('', $form->filter('input[name="label"]')->attr('value'));
+        $this->assertSame('[]', $crawler->filter('[data-repeater-list]')->eq(0)->attr('data-repeater-initial'));
+        $this->assertSame('[]', $crawler->filter('[data-repeater-list]')->eq(1)->attr('data-repeater-initial'));
+    }
+
+    public static function provideInvalidRuleToCopy(): iterable
+    {
+        yield 'unknown rule' => ['automationRule-does-not-exist'];
+        yield 'empty value' => [''];
     }
 
     public function testItRendersTheDeleteConfirmation(): void

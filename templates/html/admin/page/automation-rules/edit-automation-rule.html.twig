@@ -5,6 +5,7 @@
 {% block main %}
     {% autoescape false %}
     {% set rule = automationRule is defined ? automationRule : null %}
+    {% set isCopy = isCopy is defined and isCopy %}
     {% set overviewUrl = relativeUrl(path('admin_manage_automation_rules_overview')) %}
     {% set initialConditions = rule ? rule.getConditions()|json_encode : '[]' %}
     {% set initialActions = rule ? rule.getActions()|json_encode : '[]' %}
@@ -12,7 +13,7 @@
         <div class="w-full max-w-3xl overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold">
-                    {{ rule ? "Edit automation rule"|trans({}, 'admin') : "Add automation rule"|trans({}, 'admin') }}
+                    {{ (rule and not isCopy) ? "Edit automation rule"|trans({}, 'admin') : "Add automation rule"|trans({}, 'admin') }}
                 </h3>
                 <a href="{{ overviewUrl }}" aria-label="{{ "Close"|trans({}, 'admin') }}"
                    class="grid place-items-center size-8 rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900">
@@ -22,13 +23,13 @@
                 </a>
             </div>
             <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ overviewUrl }}" class="flex flex-col gap-4">
-                {% if rule %}
+                {% if rule and not isCopy %}
                     <input type="hidden" name="automationRuleId" value="{{ rule.getId() }}">
                 {% endif %}
                 <div data-form-error class="form-error hidden" role="alert"></div>
                 <div>
                     <label for="rule-label">{{ "Name"|trans }}</label>
-                    <input type="text" id="rule-label" name="label" required value="{{ rule ? rule.getLabel() }}"
+                    <input type="text" id="rule-label" name="label" required value="{{ isCopy ? "{label} (copy)"|trans({'{label}': rule.getLabel()}, 'admin') : (rule ? rule.getLabel()) }}"
                            placeholder="{{ "eg: Commuter bike on short rides"|trans({}, 'admin') }}">
                 </div>
                 <div class="flex items-start gap-2">

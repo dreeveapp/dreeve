@@ -126,6 +126,20 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('automationRule-1', $items->eq(0)->attr('data-sort-id'));
         $this->assertSame('automationRule-2', $items->eq(1)->attr('data-sort-id'));
 
+        // Every rule can be edited, duplicated into a prefilled add form, or deleted.
+        $this->assertSame(
+            '/admin/automation-rules/automationRule-1/edit',
+            $items->eq(0)->filter('a[href*="/edit"]')->attr('href')
+        );
+        $this->assertSame(
+            '/admin/automation-rules/add?copyFrom=automationRule-1',
+            $items->eq(0)->filter('a[href*="copyFrom"]')->attr('href')
+        );
+        $this->assertSame(
+            '/admin/automation-rules/automationRule-1/delete',
+            $items->eq(0)->filter('a[href*="/delete"]')->attr('href')
+        );
+
         $body = $crawler->filter('body')->text();
         $this->assertStringContainsString('Tag commutes', $body);
         $this->assertStringContainsString('Assign the gravel bike', $body);
