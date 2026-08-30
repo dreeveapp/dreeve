@@ -1,3 +1,34 @@
+# [v5.3.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.3.1) - 2026-08-30
+
+## New features
+* Added an option to mark group rides and group activities
+* Added a dashboard widget showing your most recent activity with its map
+* Added CalculateKiloJoules as an automation rule condition action
+* Added the ability to copy existing automation rules
+* Added shifting info for electronic shifting on the activity detail page
+
+## Improvements
+* Improved mapping for mountaineering activities
+* Added more buttons throughout the app to quickly navigate to the relevant admin panel settings
+* Limited AI tool results to prevent context window overflows
+* Added German translations.
+
+## Technical details
+* ISSUE 2570: Investigate mountaineering sport type mapping by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2592
+* ISSUE #2583: Option to mark grouprides / group activities by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2594
+* ISSUE 2586: Most recent activity with map dashboard widget by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2595
+* ISSUE #2596: Add CalculateKiloJoules as a automation condition action by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2598
+* ISSUE #2599: Add more action buttons throughout the app that navigate  to the admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2600
+* Bump actions/setup-node from 4 to 7 by @dependabot[bot] in https://github.com/dreeveapp/dreeve/pull/2602
+* Bump codecov/codecov-action from 5 to 7 by @dependabot[bot] in https://github.com/dreeveapp/dreeve/pull/2603
+* ISSUE #2604: New Shoutrrr release available: v0.18.0 by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2605
+* ISSUE #2601: Cap AI tool results to prevent context window overflow by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2606
+* ISSUE #2608 German Translation by @effectpears in https://github.com/dreeveapp/dreeve/pull/2609
+* ISSUE #2612: Copy existing automation rules by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2617
+* ISSUE #2611: Shifting Distribution / overview for eletronic shifting by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2616
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.3.0...v5.3.1
+
 # [v5.3.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.3.0) - 2026-08-24
 
 ## New features

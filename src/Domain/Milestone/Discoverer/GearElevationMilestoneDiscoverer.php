@@ -61,14 +61,12 @@ final readonly class GearElevationMilestoneDiscoverer implements MilestoneDiscov
             $gearName = $row['gearName'];
             $achievedOn = SerializableDateTime::fromString($row['startDateTime']);
 
-            if (!isset($gearState[$gearId])) {
-                $gearState[$gearId] = [
-                    'elevationM' => 0.0,
-                    'name' => $gearName,
-                    'idx' => 0,
-                    'prev' => null,
-                ];
-            }
+            $gearState[$gearId] ??= [
+                'elevationM' => 0.0,
+                'name' => $gearName,
+                'idx' => 0,
+                'prev' => null,
+            ];
 
             $state = &$gearState[$gearId];
             $state['elevationM'] += $elevationM;

@@ -336,10 +336,7 @@ final class HeartRateZoneConfiguration
                 throw new InvalidHeartZoneConfiguration(sprintf('%s "to" value cannot be higher than 99, got %s', $key, $zoneTo));
             }
 
-            // First zone sets the baseline
-            if (null === $expectedFrom) {
-                $expectedFrom = $zoneFrom;
-            }
+            $expectedFrom ??= $zoneFrom;
 
             // Validate the 'from' matches expected
             if ($zoneFrom !== $expectedFrom) {

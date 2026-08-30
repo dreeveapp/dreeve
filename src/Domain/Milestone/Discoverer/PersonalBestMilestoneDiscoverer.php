@@ -102,9 +102,7 @@ final readonly class PersonalBestMilestoneDiscoverer implements MilestoneDiscove
         foreach (ActivityType::cases() as $activityType) {
             foreach ($activityType->getDistancesForBestEffortCalculation() as $distance) {
                 $meter = $distance->toMeter()->toInt();
-                if (!isset($map[$meter])) {
-                    $map[$meter] = $distance;
-                }
+                $map[$meter] ??= $distance;
             }
         }
 

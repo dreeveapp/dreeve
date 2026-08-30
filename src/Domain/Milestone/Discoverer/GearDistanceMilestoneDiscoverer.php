@@ -61,14 +61,12 @@ final readonly class GearDistanceMilestoneDiscoverer implements MilestoneDiscove
             $gearName = $row['gearName'];
             $achievedOn = SerializableDateTime::fromString($row['startDateTime']);
 
-            if (!isset($gearState[$gearId])) {
-                $gearState[$gearId] = [
-                    'distanceM' => 0.0,
-                    'name' => $gearName,
-                    'idx' => 0,
-                    'prev' => null,
-                ];
-            }
+            $gearState[$gearId] ??= [
+                'distanceM' => 0.0,
+                'name' => $gearName,
+                'idx' => 0,
+                'prev' => null,
+            ];
 
             $state = &$gearState[$gearId];
             $state['distanceM'] += $distanceM;
