@@ -351,6 +351,18 @@ enum SportType: string implements TranslatableInterface
         ]);
     }
 
+    public function supportsSplits(): bool
+    {
+        if (in_array($this->getActivityType(), [ActivityType::RUN, ActivityType::WALK])) {
+            return true;
+        }
+
+        return in_array($this, [
+            self::POOL_SWIM,
+            self::OPEN_WATER_SWIM,
+        ]);
+    }
+
     public function supportsShiftingStats(): bool
     {
         return in_array($this, [
