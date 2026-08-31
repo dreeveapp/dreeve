@@ -126,7 +126,7 @@ Distance: Distanz
 Done: Done
 'Drag to reorder': 'Ziehen zum Neuordnen'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Ziehen, um die Reihenfolge festzulegen, in der Sportarten in der gesamten App angezeigt werden.'
-Duplicate: Duplicate
+Duplicate: Kopieren
 Duration: Dauer
 Edit: Bearbeiten
 'Edit activity': 'Aktivität bearbeiten'
@@ -534,7 +534,7 @@ then: dann
 '{count} images selected': '{count} Bilder ausgewählt'
 '{count} rules apply': '{count} Regeln treffen zu'
 '{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it.': '{envVar} ist gesetzt, aber es ist kein Schlüssel, den diese App generiert hat – die API bleibt daher geschlossen. Generiere einen neuen Schlüssel und ersetze ihn.'
-'{label} (copy)': '{label} (copy)'
+'{label} (copy)': '{label} (Kopie)'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr}-Benachrichtigungsdienst-URLs (z. B. discord://token@id, telegram://token@telegram/?channels=channel). Leer lassen, um Benachrichtigungen vollständig zu deaktivieren.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & Drop{strongClose} oder {strongOpen}Durchsuchen{strongClose}, um Dateien auszuwählen'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & Drop{strongClose} oder {strongOpen}Durchsuchen{strongClose}, um Bilder auszuwählen'
