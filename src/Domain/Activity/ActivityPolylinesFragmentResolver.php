@@ -24,7 +24,7 @@ final readonly class ActivityPolylinesFragmentResolver implements FragmentResolv
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!$activityId = ActivityFragmentPath::match($path, 'polylines')) {
+        if (!($activityId = ActivityFragmentPath::match($path, 'polylines')) instanceof ActivityId) {
             return null;
         }
 
@@ -60,7 +60,7 @@ final readonly class ActivityPolylinesFragmentResolver implements FragmentResolv
                 streamType: StreamType::LAT_LNG,
             )->getData();
 
-            if ($latLng) {
+            if ([] !== $latLng) {
                 return $latLng;
             }
         } catch (EntityNotFound) {

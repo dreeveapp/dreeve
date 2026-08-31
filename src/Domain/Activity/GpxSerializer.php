@@ -24,7 +24,7 @@ final readonly class GpxSerializer
         $activity = $this->activityRepository->find($activityId);
         $activitySteams = $this->activityStreamRepository->findByActivityId($activity->getId());
 
-        if (!$timeStream = $activitySteams->filterOnType(StreamType::TIME)) {
+        if (!($timeStream = $activitySteams->filterOnType(StreamType::TIME)) instanceof Stream\ActivityStream) {
             return null;
         }
         $latLngStream = $activitySteams->filterOnType(StreamType::LAT_LNG)?->getData() ?? [];

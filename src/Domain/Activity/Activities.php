@@ -55,7 +55,7 @@ final class Activities extends Collection
     {
         $startDate = null;
         foreach ($this as $activity) {
-            if ($startDate && $activity->getStartDate()->isAfterOrOn($startDate)) {
+            if ($startDate instanceof SerializableDateTime && $activity->getStartDate()->isAfterOrOn($startDate)) {
                 continue;
             }
             $startDate = $activity->getStartDate();

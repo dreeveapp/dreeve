@@ -30,7 +30,7 @@ final readonly class ApiFragmentRequestHandler
     {
         $fragmentType = FragmentType::from($type);
 
-        if (!$fragment = $this->fragmentRegistry->findOfType($path, $fragmentType)) {
+        if (!($fragment = $this->fragmentRegistry->findOfType($path, $fragmentType)) instanceof \App\Infrastructure\Http\Fragment\Fragment) {
             $response = FragmentType::PAGE === $fragmentType
                 ? $this->fragmentRenderer->render($this->notFoundFragment)
                 : new Response('');

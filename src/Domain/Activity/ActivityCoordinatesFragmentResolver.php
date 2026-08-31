@@ -24,7 +24,7 @@ final readonly class ActivityCoordinatesFragmentResolver implements FragmentReso
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!$activityId = ActivityFragmentPath::match($path, 'coordinates')) {
+        if (!($activityId = ActivityFragmentPath::match($path, 'coordinates')) instanceof ActivityId) {
             return null;
         }
 

@@ -52,7 +52,7 @@ final readonly class UrlTwigExtension
     #[AsTwigFunction('redirectUrl')]
     public function toRedirectUrl(string $default): string
     {
-        if (!$request = $this->requestStack->getCurrentRequest()) {
+        if (!($request = $this->requestStack->getCurrentRequest()) instanceof \Symfony\Component\HttpFoundation\Request) {
             return $default;
         }
         $redirectTo = RedirectTo::fromRequest($request, $this->appUrl);

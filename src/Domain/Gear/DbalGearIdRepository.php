@@ -27,7 +27,7 @@ final readonly class DbalGearIdRepository extends DbalRepository implements Gear
             ->from('Activity')
             ->andWhere('stravaGearId IS NOT NULL');
 
-        if ($restrictToActivityIds && !$restrictToActivityIds->isEmpty()) {
+        if ($restrictToActivityIds instanceof ActivityIds && !$restrictToActivityIds->isEmpty()) {
             $queryBuilder->andWhere('activityId IN (:activityIds)');
             $queryBuilder->setParameter(
                 key: 'activityIds',

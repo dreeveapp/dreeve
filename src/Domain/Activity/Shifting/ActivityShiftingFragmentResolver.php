@@ -29,7 +29,7 @@ final readonly class ActivityShiftingFragmentResolver implements FragmentResolve
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!$activityId = ActivityFragmentPath::match($path, self::SUB_RESOURCE)) {
+        if (!($activityId = ActivityFragmentPath::match($path, self::SUB_RESOURCE)) instanceof ActivityId) {
             return null;
         }
 

@@ -66,7 +66,7 @@ final readonly class CountryBoundaries
             fn (array $rings): float => Polygon::fromLngLatRings($rings)->boundingBox()->diagonalInDegrees(),
             $polygons
         );
-        if (!$diagonals) {
+        if ([] === $diagonals) {
             return []; // @codeCoverageIgnore
         }
         $largest = max($diagonals);
@@ -86,7 +86,7 @@ final readonly class CountryBoundaries
                 $simplifiedRings[] = $this->simplifyRing($ring);
             }
 
-            if ($simplifiedRings) {
+            if ([] !== $simplifiedRings) {
                 $simplified[] = $simplifiedRings;
             }
         }

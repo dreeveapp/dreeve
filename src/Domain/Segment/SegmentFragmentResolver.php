@@ -42,7 +42,7 @@ final readonly class SegmentFragmentResolver implements FragmentResolver
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!$segmentId = SegmentFragmentPath::match($path)) {
+        if (!($segmentId = SegmentFragmentPath::match($path)) instanceof SegmentId) {
             return null;
         }
 
@@ -101,7 +101,7 @@ final readonly class SegmentFragmentResolver implements FragmentResolver
             'segmentEffortsHistoryChart' => Json::encode(
                 SegmentEffortHistoryChart::create($segmentEfforts)->build()
             ),
-            'leaflet' => $leafletMap ? [
+            'leaflet' => $leafletMap instanceof \App\Domain\Activity\LeafletMap ? [
                 'polylineUrl' => SegmentFragmentPath::for($segment->getId(), 'polylines'),
                 'map' => $leafletMap,
             ] : null,

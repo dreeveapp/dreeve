@@ -25,7 +25,7 @@ final readonly class AnalyzeRouteGeography implements ActivityImportStep
         $sportType = $activity->getSportType();
 
         $routeGeography = $activity->getRouteGeography();
-        if (!$routeGeography->isReversedGeocoded() && $activity->getStartingCoordinate()) {
+        if (!$routeGeography->isReversedGeocoded() && $activity->getStartingCoordinate() instanceof \App\Infrastructure\ValueObject\Geography\Coordinate) {
             if ($sportType->supportsReverseGeocoding()) {
                 try {
                     $routeGeography = $routeGeography->updateWith(
@@ -41,7 +41,7 @@ final readonly class AnalyzeRouteGeography implements ActivityImportStep
         }
 
         if (!$activity->getRouteGeography()->hasBeenAnalyzedForRouteGeography()
-            && $sportType->supportsReverseGeocoding() && $activity->getEncodedPolyline()) {
+            && $sportType->supportsReverseGeocoding() && $activity->getEncodedPolyline() instanceof \App\Infrastructure\ValueObject\Geography\EncodedPolyline) {
             $routeGeography = $routeGeography->updateWith([
                 RouteGeography::PASSED_TROUGH_COUNTRIES => $this->routeGeographyAnalyzer->analyzeForPolyline(
                     $activity->getEncodedPolyline()

@@ -23,7 +23,7 @@ final readonly class SegmentPolylinesFragmentResolver implements FragmentResolve
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!$segmentId = SegmentFragmentPath::match($path, 'polylines')) {
+        if (!($segmentId = SegmentFragmentPath::match($path, 'polylines')) instanceof SegmentId) {
             return null;
         }
 

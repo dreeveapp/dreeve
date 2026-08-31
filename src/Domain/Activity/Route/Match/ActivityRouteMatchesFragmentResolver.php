@@ -28,7 +28,7 @@ final readonly class ActivityRouteMatchesFragmentResolver implements FragmentRes
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!$activityId = ActivityFragmentPath::match($path, 'route-matches')) {
+        if (!($activityId = ActivityFragmentPath::match($path, 'route-matches')) instanceof \App\Domain\Activity\ActivityId) {
             return null;
         }
 

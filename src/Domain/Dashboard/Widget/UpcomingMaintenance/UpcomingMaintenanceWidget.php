@@ -87,7 +87,7 @@ final readonly class UpcomingMaintenanceWidget implements Widget, DependsOnCurre
 
             foreach ($gearComponent->getMaintenanceTasks() as $maintenanceTask) {
                 // A task that was never performed has no anchor date, so there is no countdown to show.
-                if (!$progress = $maintenanceTaskStatuses->getForTask($maintenanceTask->getId())?->getProgress()) {
+                if (!($progress = $maintenanceTaskStatuses->getForTask($maintenanceTask->getId())?->getProgress()) instanceof \App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgress) {
                     continue;
                 }
 
@@ -101,7 +101,7 @@ final readonly class UpcomingMaintenanceWidget implements Widget, DependsOnCurre
             }
         }
 
-        if (!$upcomingMaintenanceTasks) {
+        if ([] === $upcomingMaintenanceTasks) {
             return null;
         }
 

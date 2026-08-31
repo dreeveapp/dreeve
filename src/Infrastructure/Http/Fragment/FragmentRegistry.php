@@ -21,7 +21,7 @@ final readonly class FragmentRegistry
     {
         foreach ($this->fragments as $fragment) {
             if ($fragment instanceof FragmentResolver) {
-                if ($resolvedFragment = $fragment->resolve($path)) {
+                if (($resolvedFragment = $fragment->resolve($path)) instanceof ResolvedFragment) {
                     return $resolvedFragment;
                 }
                 continue;

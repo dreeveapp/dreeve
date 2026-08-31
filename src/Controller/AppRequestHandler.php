@@ -33,7 +33,7 @@ final readonly class AppRequestHandler
         }
 
         $path = trim($wildcard ?? '', '/');
-        $pageExists = '' === $path || $this->fragmentRegistry->findOfType($path, FragmentType::PAGE);
+        $pageExists = '' === $path || $this->fragmentRegistry->findOfType($path, FragmentType::PAGE) instanceof \App\Infrastructure\Http\Fragment\Fragment;
 
         $response = $this->fragmentRenderer->render($this->indexPage);
         $response->setStatusCode($pageExists ? Response::HTTP_OK : Response::HTTP_NOT_FOUND);

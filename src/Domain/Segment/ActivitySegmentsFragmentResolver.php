@@ -28,7 +28,7 @@ final readonly class ActivitySegmentsFragmentResolver implements FragmentResolve
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!$activityId = ActivityFragmentPath::match($path, 'segments')) {
+        if (!($activityId = ActivityFragmentPath::match($path, 'segments')) instanceof ActivityId) {
             return null;
         }
 

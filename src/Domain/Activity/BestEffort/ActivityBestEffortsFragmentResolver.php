@@ -26,7 +26,7 @@ final readonly class ActivityBestEffortsFragmentResolver implements FragmentReso
 
     public function resolve(string $path): ?ResolvedFragment
     {
-        if (!$activityId = ActivityFragmentPath::match($path, 'best-efforts')) {
+        if (!($activityId = ActivityFragmentPath::match($path, 'best-efforts')) instanceof \App\Domain\Activity\ActivityId) {
             return null;
         }
 
