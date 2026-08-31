@@ -44,11 +44,36 @@ final readonly class ActivitySplitCalculator
             return ActivitySplits::empty();
         }
 
-        return $this->toActivitySplits(
-            calculatedSplits: $this->calculateSplits($samples, $splitLengthInMeters),
-            activityId: $activityId,
-            unitSystem: $unitSystem,
-        );
+        $calculatedSplits = $this->calculateSplits($samples, $splitLengthInMeters);
+
+        $slowestFullSplit = null;
+        $fastestFullSplit = null;
+        foreach ($calculatedSplits as $calculatedSplit) {
+            if (!$calculatedSplit['isFullLength']) {
+                continue;
+            }
+            $slowestFullSplit = null === $slowestFullSplit ? $calculatedSplit['averageSpeed'] : min($slowestFullSplit, $calculatedSplit['averageSpeed']);
+            $fastestFullSplit = null === $fastestFullSplit ? $calculatedSplit['averageSpeed'] : max($fastestFullSplit, $calculatedSplit['averageSpeed']);
+        }
+
+        $splits = ActivitySplits::empty();
+        foreach ($calculatedSplits as $index => $calculatedSplit) {
+            $splits->add(ActivitySplit::create(
+                activityId: $activityId,
+                unitSystem: $unitSystem,
+                splitNumber: $index + 1,
+                distance: Meter::from($calculatedSplit['distance']),
+                elapsedTimeInSeconds: $calculatedSplit['elapsedTimeInSeconds'],
+                movingTimeInSeconds: $calculatedSplit['movingTimeInSeconds'],
+                elevationDifference: Meter::from($calculatedSplit['elevationDifference']),
+                averageSpeed: MetersPerSecond::from($calculatedSplit['averageSpeed']),
+                minAverageSpeed: MetersPerSecond::fromOptional($slowestFullSplit),
+                maxAverageSpeed: MetersPerSecond::fromOptional($fastestFullSplit),
+                paceZone: 0,
+            ));
+        }
+
+        return $splits;
     }
 
     /**
@@ -77,31 +102,21 @@ final readonly class ActivitySplitCalculator
             $maxDistance = null === $maxDistance ? $distance : max($maxDistance, $distance);
             $altitude = $altitudes[$i] ?? null;
 
+            $elapsedSeconds = null === $previousTime ? 0.0 : $time - $previousTime;
+            $isMoving = $hasMovingStream
+                ? (bool) ($movingFlags[$i] ?? true)
+                : $elapsedSeconds <= self::MAX_RECORDING_GAP_IN_SECONDS;
+
             $samples[] = [
                 'distance' => $maxDistance,
                 'time' => $time,
                 'altitude' => is_numeric($altitude) ? (float) $altitude : null,
-                'movingSeconds' => $this->movingSeconds(
-                    elapsedSeconds: null === $previousTime ? 0.0 : $time - $previousTime,
-                    isMoving: $hasMovingStream ? (bool) ($movingFlags[$i] ?? true) : null,
-                ),
+                'movingSeconds' => $elapsedSeconds > 0.0 && $isMoving ? $elapsedSeconds : 0.0,
             ];
             $previousTime = $time;
         }
 
         return $samples;
-    }
-
-    private function movingSeconds(float $elapsedSeconds, ?bool $isMoving): float
-    {
-        if ($elapsedSeconds <= 0.0) {
-            return 0.0;
-        }
-        if (null !== $isMoving) {
-            return $isMoving ? $elapsedSeconds : 0.0;
-        }
-
-        return $elapsedSeconds <= self::MAX_RECORDING_GAP_IN_SECONDS ? $elapsedSeconds : 0.0;
     }
 
     /**
@@ -130,14 +145,16 @@ final readonly class ActivitySplitCalculator
             while ($deltaDistance > 0.0 && $current['distance'] >= $targetDistance) {
                 $fraction = ($targetDistance - $previous['distance']) / $deltaDistance;
                 $crossingTime = $previous['time'] + $fraction * $deltaTime;
-                $crossingAltitude = $this->interpolateAltitude($previous['altitude'], $current['altitude'], $fraction);
+                $crossingAltitude = null !== $previous['altitude'] && null !== $current['altitude']
+                    ? $previous['altitude'] + $fraction * ($current['altitude'] - $previous['altitude'])
+                    : $current['altitude'] ?? $previous['altitude'];
                 $movingSeconds += $intervalMovingSeconds * ($fraction - $consumedFraction);
 
                 $splits[] = $this->buildSplit(
                     distance: $splitLengthInMeters,
                     elapsedSeconds: $crossingTime - $startTime,
                     movingSeconds: $movingSeconds,
-                    elevationDifference: $this->elevationDifference($startAltitude, $crossingAltitude),
+                    elevationDifference: null !== $startAltitude && null !== $crossingAltitude ? $crossingAltitude - $startAltitude : 0.0,
                     isFullLength: true,
                 );
 
@@ -159,30 +176,12 @@ final readonly class ActivitySplitCalculator
                 distance: $trailingDistance,
                 elapsedSeconds: $lastSample['time'] - $startTime,
                 movingSeconds: $movingSeconds,
-                elevationDifference: $this->elevationDifference($startAltitude, $lastSample['altitude']),
+                elevationDifference: null !== $startAltitude && null !== $lastSample['altitude'] ? $lastSample['altitude'] - $startAltitude : 0.0,
                 isFullLength: false,
             );
         }
 
         return $splits;
-    }
-
-    private function interpolateAltitude(?float $from, ?float $to, float $fraction): ?float
-    {
-        if (null === $from || null === $to) {
-            return $to ?? $from;
-        }
-
-        return $from + $fraction * ($to - $from);
-    }
-
-    private function elevationDifference(?float $from, ?float $to): float
-    {
-        if (null === $from || null === $to) {
-            return 0.0;
-        }
-
-        return $to - $from;
     }
 
     /**
@@ -207,43 +206,5 @@ final readonly class ActivitySplitCalculator
             'averageSpeed' => $timeForAverageSpeed > 0 ? round($distance / $timeForAverageSpeed, 3) : 0.0,
             'isFullLength' => $isFullLength,
         ];
-    }
-
-    /**
-     * @param list<CalculatedSplit> $calculatedSplits
-     */
-    private function toActivitySplits(array $calculatedSplits, ActivityId $activityId, UnitSystem $unitSystem): ActivitySplits
-    {
-        $slowestFullSplit = null;
-        $fastestFullSplit = null;
-        foreach ($calculatedSplits as $calculatedSplit) {
-            if (!$calculatedSplit['isFullLength']) {
-                continue;
-            }
-            $slowestFullSplit = null === $slowestFullSplit ? $calculatedSplit['averageSpeed'] : min($slowestFullSplit, $calculatedSplit['averageSpeed']);
-            $fastestFullSplit = null === $fastestFullSplit ? $calculatedSplit['averageSpeed'] : max($fastestFullSplit, $calculatedSplit['averageSpeed']);
-        }
-
-        $minAverageSpeed = MetersPerSecond::fromOptional($slowestFullSplit);
-        $maxAverageSpeed = MetersPerSecond::fromOptional($fastestFullSplit);
-
-        $splits = ActivitySplits::empty();
-        foreach ($calculatedSplits as $index => $calculatedSplit) {
-            $splits->add(ActivitySplit::create(
-                activityId: $activityId,
-                unitSystem: $unitSystem,
-                splitNumber: $index + 1,
-                distance: Meter::from($calculatedSplit['distance']),
-                elapsedTimeInSeconds: $calculatedSplit['elapsedTimeInSeconds'],
-                movingTimeInSeconds: $calculatedSplit['movingTimeInSeconds'],
-                elevationDifference: Meter::from($calculatedSplit['elevationDifference']),
-                averageSpeed: MetersPerSecond::from($calculatedSplit['averageSpeed']),
-                minAverageSpeed: $minAverageSpeed,
-                maxAverageSpeed: $maxAverageSpeed,
-                paceZone: 0,
-            ));
-        }
-
-        return $splits;
     }
 }
