@@ -18,6 +18,8 @@ interface ActivitySplitRepository
 
     public function findActivityIdsWithoutGap(): ActivityIds;
 
+    public function findActivityIdsThatNeedSplitCalculation(): ActivityIds;
+
     public function isImportedForActivity(ActivityId $activityId): bool;
 
     public function deleteForActivity(ActivityId $activityId): void;

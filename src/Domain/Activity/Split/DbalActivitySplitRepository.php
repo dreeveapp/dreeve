@@ -6,7 +6,9 @@ namespace App\Domain\Activity\Split;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
@@ -104,6 +106,50 @@ final readonly class DbalActivitySplitRepository extends DbalRepository implemen
                 'sportTypes' => $supportedSportTypes,
             ], [
                 'sportTypes' => ArrayParameterType::STRING,
+            ])->fetchFirstColumn()
+        ));
+    }
+
+    public function findActivityIdsThatNeedSplitCalculation(): ActivityIds
+    {
+        $supportedSportTypes = array_map(
+            fn (SportType $sportType) => $sportType->value,
+            array_filter(
+                SportType::cases(),
+                fn (SportType $sportType): bool => $sportType->supportsSplits(),
+            ),
+        );
+        $supportedImportSources = array_map(
+            fn (ImportSource $importSource) => $importSource->value,
+            ImportSource::fileBasedSources(),
+        );
+
+        $sql = 'SELECT Activity.activityId FROM Activity
+                WHERE Activity.sportType IN (:sportTypes)
+                AND Activity.importSource IN (:importSources)
+                AND NOT EXISTS (
+                    SELECT 1 FROM ActivitySplit s WHERE s.activityId = Activity.activityId
+                )
+                AND EXISTS (
+                    SELECT 1 FROM ActivityStream x
+                    WHERE x.activityId = Activity.activityId AND x.streamType = :timeStreamType AND x.dataSize > 0
+                )
+                AND EXISTS (
+                    SELECT 1 FROM ActivityStream y
+                    WHERE y.activityId = Activity.activityId AND y.streamType = :distanceStreamType AND y.dataSize > 0
+                )
+                ORDER BY Activity.activityId';
+
+        return ActivityIds::fromArray(array_map(
+            ActivityId::fromString(...),
+            $this->connection->executeQuery($sql, [
+                'sportTypes' => $supportedSportTypes,
+                'importSources' => $supportedImportSources,
+                'timeStreamType' => StreamType::TIME->value,
+                'distanceStreamType' => StreamType::DISTANCE->value,
+            ], [
+                'sportTypes' => ArrayParameterType::STRING,
+                'importSources' => ArrayParameterType::STRING,
             ])->fetchFirstColumn()
         ));
     }
