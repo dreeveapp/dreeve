@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\Import\CalculateActivityMetrics\Pipeline;
 
-use App\Domain\Activity\ActivityCacheTag;
 use App\Domain\Activity\Split\ActivitySplitCalculator;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
-use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\Console\ProgressIndicator;
 use App\Infrastructure\Measurement\UnitSystem;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,7 +19,6 @@ final readonly class CalculateActivitySplits implements CalculateActivityMetrics
         private ActivitySplitRepository $activitySplitRepository,
         private ActivityStreamRepository $activityStreamRepository,
         private ActivitySplitCalculator $activitySplitCalculator,
-        private RenderCache $renderCache,
     ) {
     }
 
@@ -30,7 +27,7 @@ final readonly class CalculateActivitySplits implements CalculateActivityMetrics
         $progressIndicator = new ProgressIndicator($output);
         $progressIndicator->start('=> Calculated splits for 0 activities');
 
-        $cacheTags = [];
+        $countActivitiesProcessed = 0;
         foreach ($this->activitySplitRepository->findActivityIdsThatNeedSplitCalculation() as $activityId) {
             $streams = $this->activityStreamRepository->findByActivityId($activityId);
 
@@ -46,11 +43,10 @@ final readonly class CalculateActivitySplits implements CalculateActivityMetrics
                 continue;
             }
 
-            $cacheTags[] = ActivityCacheTag::for($activityId);
-            $progressIndicator->updateMessage(sprintf('=> Calculated splits for %d activities', count($cacheTags)));
+            ++$countActivitiesProcessed;
+            $progressIndicator->updateMessage(sprintf('=> Calculated splits for %d activities', $countActivitiesProcessed));
         }
 
-        $this->renderCache->invalidateTags(...$cacheTags);
-        $progressIndicator->finish(sprintf('=> Calculated splits for %d activities', count($cacheTags)));
+        $progressIndicator->finish(sprintf('=> Calculated splits for %d activities', $countActivitiesProcessed));
     }
 }
