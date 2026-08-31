@@ -1,0 +1,46 @@
+[
+    {
+        "splitNumber": 1,
+        "distance": 1000,
+        "elapsedTimeInSeconds": 300,
+        "movingTimeInSeconds": 300,
+        "elevationDifference": 10,
+        "averageSpeed": 3.333,
+        "minAverageSpeed": 3.125,
+        "maxAverageSpeed": 3.571,
+        "paceZone": 0
+    },
+    {
+        "splitNumber": 2,
+        "distance": 1000,
+        "elapsedTimeInSeconds": 280,
+        "movingTimeInSeconds": 280,
+        "elevationDifference": 10,
+        "averageSpeed": 3.571,
+        "minAverageSpeed": 3.125,
+        "maxAverageSpeed": 3.571,
+        "paceZone": 0
+    },
+    {
+        "splitNumber": 3,
+        "distance": 1000,
+        "elapsedTimeInSeconds": 320,
+        "movingTimeInSeconds": 320,
+        "elevationDifference": 10,
+        "averageSpeed": 3.125,
+        "minAverageSpeed": 3.125,
+        "maxAverageSpeed": 3.571,
+        "paceZone": 0
+    },
+    {
+        "splitNumber": 4,
+        "distance": 500,
+        "elapsedTimeInSeconds": 150,
+        "movingTimeInSeconds": 150,
+        "elevationDifference": 5,
+        "averageSpeed": 3.333,
+        "minAverageSpeed": 3.125,
+        "maxAverageSpeed": 3.571,
+        "paceZone": 0
+    }
+]
