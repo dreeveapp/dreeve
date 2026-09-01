@@ -66,6 +66,7 @@ export default defineConfig({
 										{ slug: 'integrations/polar-flow', label: 'Polar Flow' },
 										{ slug: 'integrations/wahoo-connector', label: 'Wahoo Connector' },
 										{ slug: 'integrations/hammerhead-connector', label: 'Hammerhead Connector' },
+										{ slug: 'integrations/zepp-connector', label: 'Zepp Connector' },
 										{ slug: 'integrations/notifications', label: 'Notifications' },
 									],
 								},

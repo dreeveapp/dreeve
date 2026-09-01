@@ -1,0 +1,136 @@
+---
+title: "Zepp Connector"
+---
+
+Dreeve imports anything dropped into its `watch/` folder. Getting your Zepp / Amazfit workouts
+*into* that folder is what the **Zepp connector** does: it periodically lists new workouts, decodes
+Zepp's raw per-sample track data and synthesizes `.fit` files from it, then drops them in. No manual
+exports.
+
+```
+Zepp Cloud → connector → watch/ → Dreeve imports it
+```
+
+The connector is a **separate container** from its own repository,
+[dreeveapp/dreeve-zepp-connector](https://github.com/dreeveapp/dreeve-zepp-connector). It is not
+part of Dreeve itself, it only writes files into the folder you already mount.
+
+:::note[Important]
+Zepp has no native `.fit` export — its cloud API only returns JSON with per-sample track data
+encoded as delta-compressed strings, which this connector decodes and synthesizes into a `.fit`
+file. It also talks to Zepp's unofficial, reverse-engineered cloud API, so expect occasional
+breakage. Read [An unofficial API](/integrations/zepp-connector/#an-unofficial-api) before you rely
+on it.
+:::
+
+## Setup
+
+### 1. Add the container
+
+Add this alongside the `app` and `daemon` services in your
+[docker-compose.yml](/getting-started/installation/#docker-composeyml):
+
+```yaml title="docker-compose.yml"
+  # Pulls workouts out of Zepp / Amazfit into the watch folder.
+  zepp-connector:
+    image: ghcr.io/dreeveapp/dreeve-zepp-connector:latest
+    container_name: dreeve-zepp-connector
+    restart: unless-stopped
+    volumes:
+      # The same ./watch folder the app and daemon mount.
+      - ./watch:/watch
+      - ./zepp/state:/state
+    env_file: ./.env
+```
+
+### 2. Configure it
+
+Add to your `.env`:
+
+```dotenv title=".env"
+ZEPP_EMAIL=you@example.com
+ZEPP_PASSWORD=your-zepp-password
+# How far back to reach on the very first run. A date (2026-01-01), a relative
+# offset (-30d) or 'all' (default).
+SINCE=-30d
+```
+
+There is no separate login step — the connector logs in on its first cycle and caches the resulting
+token in the state volume, so it only needs your password again if that token is ever rejected.
+
+### 3. Start it
+
+```bash
+> docker compose up -d
+> docker compose logs -f zepp-connector
+```
+
+A cycle runs immediately, then one every `POLL_INTERVAL` seconds (default 3600 = hourly). Files land
+in the watch folder, and the daemon container will import them, exactly as if you had dropped them
+there yourself.
+
+## Devices without a name
+
+Zepp's cloud API never exposes the recording device's model, not even in the raw workout data, so
+the connector can't detect it from your account. Common devices already get a name in each `.fit`
+file's device info automatically, from a built-in table sourced from Zepp's own developer docs. If
+yours isn't in it (or you want to override the name), set `ZEPP_DEVICE_NAMES` per device:
+
+```dotenv title=".env"
+ZEPP_DEVICE_NAMES=9568513=Amazfit Balance 2;1234567=Amazfit GTR 4
+```
+
+To find your device ID(s), run a dry run and check the logs — it lists each workout's device ID and,
+if known, the name it resolves to, without exporting anything:
+
+```bash
+> docker compose run --rm zepp-connector dreeve-zepp-connector --dry-run
+```
+
+## Configuration
+
+| Variable | Default | What it does |
+|---|---|---|
+| `ZEPP_EMAIL` | - | **Required.** |
+| `ZEPP_PASSWORD` | - | Only needed to log in. Not required again once a token is cached, unless it gets rejected. |
+| `ZEPP_COUNTRY` | `US` | Country code passed to Zepp's login flow. Try your account's actual country if login fails. |
+| `WATCH_DIR` | `/watch` | Dreeve's watch folder. |
+| `STATE_DIR` | `/state` | Where the ledger (already-exported workouts + the cached login token) is stored. Mount it as a volume. |
+| `LEDGER_PATH` | `$STATE_DIR/ledger.json` | Overrides the ledger's exact file path, independent of `STATE_DIR`. |
+| `SINCE` | `all` | Where import starts from: a date (`2026-07-24`), a relative offset (`-30d`), or `all`. Already-exported workouts are always skipped regardless. |
+| `LIMIT` | `200` | Max workouts considered per run/cycle, paging back through history as needed to satisfy `SINCE`. Raise it for a deep backfill. |
+| `ZEPP_DEVICE_NAMES` | - | `device_id=name` pairs, semicolon-separated, for devices missing from the built-in name table (or to override it). |
+| `POLL_INTERVAL` | `3600` | Seconds between cycles (the continuous daemon only). |
+| `HEALTH_PORT` | `8080` | Serves `/healthz` (liveness) and `/status` (JSON cycle history) for monitoring. |
+| `MAX_DOWNLOADS_PER_CYCLE` | unlimited | Caps new workouts exported per run/cycle; anything past the cap rolls over to the next one automatically via the ledger. Useful so a large first-time backfill doesn't hammer the API in one go. |
+| `DOWNLOAD_DELAY_SECONDS` | `0` | Pause after each workout's detail is fetched. |
+| `ZEPP_MAX_RETRIES` / `ZEPP_RETRY_BASE_DELAY` | `5` / `2.0` | Retry Zepp API calls on connection errors and HTTP 429s with exponential backoff (a 429's `Retry-After` header is honored if present). |
+
+:::note[Important]
+Just like Dreeve, the `.env` file is read when the container is **created**.
+After changing it, run `docker compose up -d --force-recreate`.
+:::
+
+## Commands & Endpoints
+
+```bash
+# Run a single cycle and exit.
+> docker compose run --rm zepp-connector dreeve-zepp-connector
+
+# Show what it would fetch, without downloading anything.
+> docker compose run --rm zepp-connector dreeve-zepp-connector --dry-run
+
+# Ask a running connector what it is doing.
+> curl http://localhost:8080/status
+> curl http://localhost:8080/healthz
+```
+
+## An unofficial API
+
+The connector talks to Zepp's cloud API the same way the Zepp mobile app does — an unofficial,
+reverse-engineered protocol that Zepp neither documents nor supports, and using it is at your own
+risk. Login goes through Zepp's *web-app* flow rather than its mobile-app flow, specifically so
+logging in here does not sign your phone's Zepp app out.
+
+**When Zepp changes something**, the symptom is a burst of authentication or decoding errors in the
+logs. Check for a newer version of the Docker image first.
