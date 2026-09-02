@@ -115,6 +115,17 @@ class GpxFileParserTest extends ActivityFileParserTestCase
         $this->assertSame(SportType::RUN, $parsed->getActivity()->getSportType());
     }
 
+    public function testParseFileWithBomAndLeadingWhitespace(): void
+    {
+        $parsed = $this->parser->parse($this->rawFileFromFixture('activity-leading-whitespace.gpx'));
+        $activity = $parsed->getActivity();
+
+        $this->assertSame(SportType::RIDE, $activity->getSportType());
+        $this->assertSame('Garmin Edge 530', $activity->getDeviceName());
+        $this->assertSame('Morning Ride', $activity->getName());
+        $this->assertSame(42, $activity->getCalories());
+    }
+
     #[\Override]
     protected function setUp(): void
     {

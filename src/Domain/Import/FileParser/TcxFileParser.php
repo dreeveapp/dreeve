@@ -45,16 +45,8 @@ final readonly class TcxFileParser implements ActivityFileParser
             throw new CouldNotParseActivityFile(message: sprintf('Could not read "%s"', $file->getPath()->getFilename()), activityFile: $file);
         }
 
-        // Strip namespace declarations and prefixes so SimpleXML element access is uniform
-        // regardless of the file's (default + ActivityExtension) namespaces.
-        $contents = (string) preg_replace('/xmlns(:\w+)?="[^"]*"/', '', $contents);
-        $contents = (string) preg_replace('/(<\/?)\w+:/', '$1', $contents);
-
-        $previousErrorState = libxml_use_internal_errors(true);
-        $xml = simplexml_load_string($contents);
-        libxml_use_internal_errors($previousErrorState);
-
-        if (false === $xml) {
+        $xml = Xml::load($contents);
+        if (null === $xml) {
             throw new CouldNotParseActivityFile(message: sprintf('"%s" is not valid TCX XML', $file->getPath()->getFilename()), activityFile: $file);
         }
 

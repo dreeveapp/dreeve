@@ -1,0 +1,42 @@
+﻿
+      <?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Garmin Edge 530"
+     xmlns="http://www.topografix.com/GPX/1/1"
+     xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1"
+     xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+  <metadata>
+    <name>Morning Ride</name>
+    <time>2021-09-08T00:00:00Z</time>
+  </metadata>
+  <trk>
+    <name>Morning Ride</name>
+    <type>cycling</type>
+    <extensions>
+      <gpxx:Calories>42</gpxx:Calories>
+    </extensions>
+    <trkseg>
+      <trkpt lat="45.0" lon="22.5">
+        <ele>100</ele>
+        <time>2021-09-08T00:00:00Z</time>
+        <extensions>
+          <gpxtpx:TrackPointExtension>
+            <gpxtpx:hr>120</gpxtpx:hr>
+            <gpxtpx:cad>80</gpxtpx:cad>
+          </gpxtpx:TrackPointExtension>
+          <power>200</power>
+        </extensions>
+      </trkpt>
+      <trkpt lat="45.001" lon="22.501">
+        <ele>110</ele>
+        <time>2021-09-08T00:00:10Z</time>
+        <extensions>
+          <gpxtpx:TrackPointExtension>
+            <gpxtpx:hr>130</gpxtpx:hr>
+            <gpxtpx:cad>82</gpxtpx:cad>
+          </gpxtpx:TrackPointExtension>
+          <power>210</power>
+        </extensions>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>

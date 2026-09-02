@@ -99,6 +99,17 @@ class TcxFileParserTest extends ActivityFileParserTestCase
         $this->assertNull($parsed->getStreams()->filterOnType(StreamType::ALTITUDE));
     }
 
+    public function testParseFileWithBomAndLeadingWhitespace(): void
+    {
+        $parsed = $this->parser->parse($this->rawFileFromFixture('activity-leading-whitespace.tcx'));
+        $activity = $parsed->getActivity();
+
+        $this->assertSame(SportType::RIDE, $activity->getSportType());
+        $this->assertSame('Garmin Edge 530', $activity->getDeviceName());
+        $this->assertSame(0.05, $activity->getDistance()->toFloat());
+        $this->assertSame(42, $activity->getCalories());
+    }
+
     #[\Override]
     protected function setUp(): void
     {
