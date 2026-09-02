@@ -12,9 +12,9 @@ use App\Domain\Automation\Condition\Conditions;
 use App\Domain\Automation\Condition\ConditionType;
 use App\Domain\Automation\RuleConfiguration;
 use App\Infrastructure\Twig\AutomationTwigExtension;
-use PHPUnit\Framework\Attributes\DataProvider;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Automation\AutomationRuleBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AutomationTwigExtensionTest extends ContainerTestCase
