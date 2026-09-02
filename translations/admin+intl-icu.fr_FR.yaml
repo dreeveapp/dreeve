@@ -1,10 +1,10 @@
-24-hour: 24-hour
+24-hour: 24 heures
 'A backfill is already queued. It runs on the next import cycle, within five minutes.': 'A backfill is already queued. It runs on the next import cycle, within five minutes.'
 'A rule applies': 'A rule applies'
-AI: AI
+AI: IA
 AM/PM: AM/PM
-'API access': 'API access'
-'API key': 'API key'
+'API access': 'accès API'
+'API key': 'clé API'
 Active: Active
 'Activities excluded from peak power outputs': 'Activities excluded from peak power outputs'
 'Activities scanned': 'Activities scanned'
@@ -15,23 +15,23 @@ Activity: Activity
 'Activity ID': 'Activity ID'
 'Activity IDs to exclude when calculating peak power outputs.': 'Activity IDs to exclude when calculating peak power outputs.'
 'Activity management': 'Activity management'
-'Activity name': 'Activity name'
+'Activity name': "Nom de l'activité"
 'Activity visibilities to import': 'Activity visibilities to import'
-'Add Eddington': 'Add Eddington'
-'Add FTP': 'Add FTP'
+'Add Eddington': 'Ajouter Eddington'
+'Add FTP': 'Ajouter FTP'
 'Add a component to start tracking maintenance.': 'Add a component to start tracking maintenance.'
 'Add a rule to start automating your activity details.': 'Add a rule to start automating your activity details.'
-'Add a widget': 'Add a widget'
-'Add action': 'Add action'
+'Add a widget': 'Ajouter un widget'
+'Add action': 'Ajouter une action'
 'Add activity': 'Add activity'
 'Add automation rule': 'Add automation rule'
 'Add challenge': 'Add challenge'
 'Add command': 'Add command'
 'Add component': 'Add component'
 'Add condition': 'Add condition'
-'Add gear': 'Add gear'
-'Add goal': 'Add goal'
-'Add max heart rate': 'Add max heart rate'
+'Add gear': 'Ajouter un matériel'
+'Add goal': 'Ajouter un objectif'
+'Add max heart rate': 'Ajouter fréquence cardiaque maximale'
 'Add resting heart rate': 'Add resting heart rate'
 'Add rule': 'Add rule'
 'Add service': 'Add service'
@@ -41,8 +41,8 @@ Activity: Activity
 'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
 Admin: Admin
-'Admin panel': 'Admin panel'
-'Admin username': 'Admin username'
+'Admin panel': 'Panneau admin'
+'Admin username': "Nom d'utilisateur de l'admin"
 'Advanced (per-date & per-sport-type overrides)': 'Advanced (per-date & per-sport-type overrides)'
 'Age-based estimate': 'Age-based estimate'
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'All associated maintenance tasks and logs will be removed. This action cannot be undone.'
@@ -64,17 +64,17 @@ Apply: Appliquer
 'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?'
 'Are you sure you want to remove the {widget} widget?': 'Are you sure you want to remove the {widget} widget?'
-'Assign gear': 'Assign gear'
+'Assign gear': 'Associer un matériel'
 'Athlete settings': 'Athlete settings'
 'Attached to': 'Attached to'
 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom, and can also be applied to activities you already imported.': 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom, and can also be applied to activities you already imported.'
 'Automation rules': 'Automation rules'
 'Automation rules are only available in file import mode': 'Automation rules are only available in file import mode'
 'Available tokens': 'Available tokens'
-'Average cadence': 'Average cadence'
-'Average power': 'Average power'
-'Back to app': 'Back to app'
-'Back to the admin panel': 'Back to the admin panel'
+'Average cadence': 'Cadence moyenne'
+'Average power': 'Puissance moyenne'
+'Back to app': "Retour à l'application"
+'Back to the admin panel': 'Retour au panneau admin'
 'Base URI': 'Base URI'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.'
 Birthday: Birthday
@@ -90,7 +90,7 @@ Clear: Clear
 'Clear filters': 'Clear filters'
 'Click the map to set the center, or drag the marker to fine-tune it.': 'Click the map to set the center, or drag the marker to fine-tune it.'
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Click the map to set the location, or drag the marker to fine-tune it.'
-Close: Close
+Close: Fermer
 Command: Command
 Commute: Commute
 Component: Component
@@ -111,7 +111,7 @@ Daemon: Daemon
 'Dashboard layout': 'Dashboard layout'
 'Date range based': 'Date range based'
 'Define what needs doing and how often.': 'Define what needs doing and how often.'
-Delete: Delete
+Delete: Supprimer
 'Delete activity': 'Delete activity'
 'Delete automation rule': 'Delete automation rule'
 'Delete component': 'Delete component'
@@ -121,21 +121,21 @@ Delete: Delete
 Deleting...: Deleting...
 Description: Description
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.'
-Disabled: Disabled
+Disabled: Désactiver
 Distance: Distance
 Done: Done
 'Drag to reorder': 'Drag to reorder'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Drag to set the order in which sport types are displayed throughout the app.'
 Duplicate: Duplicate
 Duration: Duration
-Edit: Edit
+Edit: Editer
 'Edit activity': 'Edit activity'
 'Edit automation rule': 'Edit automation rule'
 'Edit component': 'Edit component'
 'Edit gear': 'Edit gear'
 'Edit maintenance log': 'Edit maintenance log'
 'Edit recording device': 'Edit recording device'
-Elevation: Elevation
+Elevation: Altitude
 'Enable AI integration': 'Enable AI integration'
 'Enable Strava webhooks': 'Enable Strava webhooks'
 Enabled: Enabled
@@ -166,7 +166,7 @@ From: From
 'Gear maintenance notification': 'Gear maintenance notification'
 'Gear management': 'Gear management'
 'Gear will appear here once you add them.': 'Gear will appear here once you add them.'
-Gender: Gender
+Gender: Sexe
 General: General
 'Generate an API key': 'Generate an API key'
 'Go to first page': 'Go to first page'
@@ -234,7 +234,7 @@ Metrics: Metrics
 Minutes: Minutes
 Mode: Mode
 Model: Model
-Monday: Monday
+Monday: Lundi
 'More pages': 'More pages'
 'Moving time': 'Moving time'
 'No activities imported yet.': 'No activities imported yet.'

@@ -63,7 +63,7 @@ Challenges: Défis
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Effacer le chat'
 Columns: Columns
-Commute: Commute
+Commute: Trajet domicile-travail
 Commutes: 'Trajets domicile-travail'
 'Commutes only': 'Trajets domicile-travail uniquement'
 Compare: Comparer
@@ -87,7 +87,7 @@ Dance: Dance
 'Dark mode': 'Mode sombre'
 Dashboard: 'Tableau de bord'
 Date: Date
-Day: Day
+Day: Jour
 'Days needed': 'Jours nécessaires'
 'Daytime stats': 'Statistiques diurnes'
 Dec: Déc
@@ -186,7 +186,7 @@ High: Élevé
 'High risk': 'Risque élevé'
 'Highlight visited countries': 'Mettre en évidence les pays visités'
 'Highly recovered and ready to perform': 'Bien reposé et prêt à performer'
-Hike: Hike
+Hike: Randonnée
 Hikes: Randonnées
 History: Historique
 'History (6 weeks)': 'Historique (6 semaines)'
@@ -325,7 +325,7 @@ Race: Course
 'Racing Score': 'Score de course'
 'Racquet & Paddle Sports': 'Sports de raquette et paddle'
 'Racquet Ball': Racquetball
-Rank: Rank
+Rank: Rang
 Ranking: Classement
 'Reached {threshold} hours total moving time': '{threshold} heures de temps en mouvement au total'
 'Reached {threshold} total distance': '{threshold} distance au total'
