@@ -36,6 +36,17 @@ class AutomationTwigExtensionTest extends ContainerTestCase
         );
     }
 
+    public function testDescribeConditionValueForAStartDate(): void
+    {
+        $this->assertSame(
+            'on or before 2024-01-01',
+            $this->extension->describeConditionValue(
+                ConditionType::START_DATE,
+                RuleConfiguration::fromConfig(['operator' => 'lte', 'date' => '2024-01-01'])
+            )
+        );
+    }
+
     public function testDescribeActionType(): void
     {
         $this->assertSame('Set name', $this->extension->describeActionType(ActionType::SET_NAME));

@@ -377,6 +377,7 @@ Source: Fonte
 'Sport types sorting order': 'Ordem de classificação dos tipos de esporte'
 'Sport types to import': 'Tipos de esporte a importar'
 'Sport types to include': 'Tipos de esporte a incluir'
+'Start date': 'Start date'
 'Start date and time': 'Start date and time'
 'Starts near': 'Starts near'
 'Stop processing further rules when this rule matches': 'Stop processing further rules when this rule matches'
@@ -526,6 +527,9 @@ is: is
 'max {max} MB each': 'máximo de {max} MB cada'
 'miles used': 'milhas de uso'
 minutes: minutos
+'on': 'on'
+'on or after': 'on or after'
+'on or before': 'on or before'
 'outside radius': 'outside radius'
 then: then
 'within radius': 'within radius'

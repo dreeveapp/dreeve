@@ -16,6 +16,7 @@ enum ConditionType: string
     case AVERAGE_POWER = 'averagePower';
     case AVERAGE_CADENCE = 'averageCadence';
     case WEEKDAY = 'weekday';
+    case START_DATE = 'startDate';
     case TIME_OF_DAY = 'timeOfDay';
     case STARTS_NEAR = 'startsNear';
     case ENDS_NEAR = 'endsNear';

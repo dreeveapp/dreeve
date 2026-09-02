@@ -104,6 +104,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->assertContains('averageCadence', $conditionOptions);
         $this->assertContains('elevation', $conditionOptions);
         $this->assertContains('movingTime', $conditionOptions);
+        $this->assertContains('startDate', $conditionOptions);
         $this->assertContains('passesNear', $conditionOptions);
         $this->assertNotContains('connectedSensors', $conditionOptions);
         $actionOptions = $crawler->filter('select[name="actions[__index__][type]"] option')->extract(['value']);

@@ -37,6 +37,17 @@ enum ComparisonOperator: string implements TranslatableInterface
         };
     }
 
+    public function transForDate(TranslatorInterface $translator, ?string $locale = null): string
+    {
+        return match ($this) {
+            self::LESS_THAN => $translator->trans('before', domain: 'admin', locale: $locale),
+            self::LESS_THAN_OR_EQUAL => $translator->trans('on or before', domain: 'admin', locale: $locale),
+            self::GREATER_THAN => $translator->trans('after', domain: 'admin', locale: $locale),
+            self::GREATER_THAN_OR_EQUAL => $translator->trans('on or after', domain: 'admin', locale: $locale),
+            self::EQUAL => $translator->trans('on', domain: 'admin', locale: $locale),
+        };
+    }
+
     public function isSatisfiedBy(float $actual, float $expected): bool
     {
         return match ($this) {
