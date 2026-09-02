@@ -22,7 +22,7 @@ Activity: Activité
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Ratio Aiguë:Chronique (A:C) - Rapport entre ATL et CTL. Indique le risque de blessure.'
 'Adaptive & Inclusive Sports': 'Sports adaptés et inclusifs'
 'Admin panel': 'Admin panel'
-'Aero sensor': 'Aero sensor'
+'Aero sensor': 'Capteur aero'
 Afternoon: Après-midi
 All: Tous
 'All time': 'Depuis toujours'
@@ -31,7 +31,7 @@ Apr: Avr
 'Ask Mark something...': 'Demandez quelque chose à Mark...'
 'Athlete profile': "Profil de l'athlète"
 Aug: Aoû
-Average: Average
+Average: Moyen
 'Average gradient': 'Average gradient'
 'Avg gradient': 'Avg gradient'
 'Avg pace': 'Avg pace'
@@ -97,7 +97,7 @@ Details: Détails
 Device: Appareil
 Dist.: Dist.
 Distance: Distance
-'Distance & Elevation': 'Distance & Elevation'
+'Distance & Elevation': 'Distance & Dénivelé'
 'Distance (single activity)': 'Distance (single activity)'
 'Distance breakdown': 'Répartition des distances'
 'Distance distribution': 'Distance distribution'
@@ -112,27 +112,27 @@ Duration: Durée
 'E-Mountain Bike Ride': 'E-Mountain Bike Ride'
 'E-Mountain Bike Rides': 'Sorties en VTT électrique'
 Eddington: Eddington
-'Eddington number': 'Eddington number'
+'Eddington number': "Nombre d'Eddington"
 'Eddington over time': 'Eddington over time'
-'Edit dashboard': 'Edit dashboard'
-'Edit this activity': 'Edit this activity'
-'Effort vs heart rate': 'Effort vs heart rate'
+'Edit dashboard': 'Editer le dashboard'
+'Edit this activity': "Editer l'activité"
+'Effort vs heart rate': 'Effort vs fréquence cardiaque'
 'Elapsed time': 'Elapsed time'
 'Electronic shifting': 'Electronic shifting'
 Elev: Dénivelé
-Elev.: Elev.
+Elev.: Déniv.
 Elevation: Dénivelé
 'Elevation (single activity)': 'Elevation (single activity)'
 'Elevation in {unit}': 'Dénivelé en {unit}'
 Elliptical: Elliptique
-Energy: Energy
+Energy: Energie
 'Energy burned across your activities': 'Energy burned across your activities'
 'Enter fullscreen mode': 'Mode plein-écran'
 Evening: Soirée
 'Excludes commutes': 'Trajets domicile-travail exclus'
 'Excludes group activities': 'Excludes group activities'
 'FTP history': 'Historique FTP'
-Fastest: Fastest
+Fastest: Le plus rapide
 Favourite: Favori
 Feb: Fév
 'Filling up the bottles...': 'Filling up the bottles...'
@@ -209,7 +209,7 @@ Jun: Juin
 KOM: KOM
 Kayaking: Kayak
 'Kite Surf': 'Kite Surf'
-Lap: Lap
+Lap: Tour
 'Last 30 days': 'Last 30 days'
 'Last 7 days training load': "Charge d'entraînement des 7 derniers jours"
 'Last activity': 'Dernière activité'
@@ -245,7 +245,7 @@ Max: Max
 May: Mai
 Medium: Moyen
 Metric: Métrique
-'Metrics settings': 'Metrics settings'
+'Metrics settings': 'Paramètres métriques'
 Milestones: Milestones
 'Mind & Body Sports': "Sports du corps et de l'esprit"
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training'
@@ -268,7 +268,7 @@ Morning: Matin
 'Moving time in hours': 'Moving time in hours'
 'Muscle oxygen sensor': 'Muscle oxygen sensor'
 Name: Nom
-Neutral: Neutral
+Neutral: Neutre
 'New personal best for': 'Nouveau record personnel pour'
 'Next milestone': 'Next milestone'
 Night: Nuit
@@ -281,7 +281,7 @@ None: Aucun
 'Normalized power': 'Normalized power'
 'Not supported': 'Non pris en charge'
 Nov: Nov
-Now: Now
+Now: Maintenant
 'Number of activities': 'Number of activities'
 'Number of activities per month': "Nombre d'activités par mois"
 'Number of times completed': 'Nombre de fois complété'
@@ -359,7 +359,7 @@ Running: 'Course à pied'
 Runs: 'Courses à pied'
 Sail: Voile
 Sat: Sam
-Sat.: Sat.
+Sat.: Sam.
 Search: Rechercher
 'Search activity...': 'Rechercher une activité...'
 'Search segment...': 'Rechercher un segment...'
@@ -382,7 +382,7 @@ Soccer: Football
 Sort: Sort
 Speed: Vitesse
 'Speed & cadence sensor': 'Speed & cadence sensor'
-'Speed sensor': 'Speed sensor'
+'Speed sensor': 'Capteur de vitesse'
 Splits: Splits
 'Sport variety': 'Sport variety'
 Squash: Squash
@@ -394,15 +394,15 @@ Status: Statut
 'Streak started on {date}': 'La série a commencé le {date}'
 Streaks: Séries
 Sun: Dim
-Sun.: Sun.
+Sun.: Dim.
 Surfing: Surf
 'TSB (Form)': 'TSB (État de forme)'
 'TSB positive in': 'TSB positive in'
 'Table Tennis': 'Tennis de table'
 'Taper sweet-spot (+15)': "Zone optimale d'affûtage (+15)"
 'Team Sports': "Sports d'équipe"
-Temperature: Temperature
-'Temperature sensor': 'Temperature sensor'
+Temperature: Température
+'Temperature sensor': 'Capteur de température'
 Tennis: Tennis
 "That's 1.5 times the distance to the edge of space": "That's 1.5 times the distance to the edge of space"
 "That's 100 days of commitment, triple digits!": "That's 100 days of commitment, triple digits!"
@@ -498,8 +498,8 @@ Tennis: Tennis
 Thinking...: Réfléchit...
 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.': 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.'
 'This feature is currently disabled': 'Cette fonctionnalité est actuellement désactivée'
-'This month': 'This month'
-'This week': 'This week'
+'This month': 'Ce mois'
+'This week': 'Cette semaine'
 Thu: Jeu
 Thu.: Thu.
 Time: Temps
@@ -507,7 +507,7 @@ Time: Temps
 'Time in zone': 'Time in zone'
 'Times completed': 'Fois accompli'
 Title: Title
-'To enable it, configure this in the admin panel': 'To enable it, configure this in the admin panel'
+'To enable it, configure this in the admin panel': "Pour l'activer, cofigurer dans le panneau d'administration"
 'Toggle sidebar': 'Basculer la barre latérale'
 'Top 10': 'Top 10'
 'Total distance per month': 'Distance totale par mois'
@@ -544,7 +544,7 @@ Unspecified: 'Non spécifié'
 'Virtual workout assistant': "Assistant d'entraînement virtuel"
 Volleyball: Volleyball
 Volume: Volume
-Walk: Walk
+Walk: Marche
 Walking: Marche
 Walks: Marches
 'Water Sports': 'Sports nautiques'
