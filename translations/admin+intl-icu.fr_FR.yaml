@@ -42,7 +42,7 @@ Activity: Activity
 'Add widget': 'Ajouter un widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Ajoutez des fichiers {fit}, {tcx} ou {gpx}. Ils sont traités toutes les minutes.'
 Admin: Admin
-'Admin panel': "Panneau d'admin"
+'Admin panel': 'Panneau admin'
 'Admin username': "Nom d'utilisateur de l'admin"
 'Advanced (per-date & per-sport-type overrides)': 'Advanced (per-date & per-sport-type overrides)'
 'Age-based estimate': "Estimation basée sur l'âge"
