@@ -53,7 +53,7 @@ final readonly class GpxFileParser implements ActivityFileParser
         }
 
         $xml = Xml::load($contents);
-        if (null === $xml) {
+        if (!$xml instanceof \SimpleXMLElement) {
             throw new CouldNotParseActivityFile(message: sprintf('"%s" is not valid GPX XML', $file->getPath()->getFilename()), activityFile: $file);
         }
 
