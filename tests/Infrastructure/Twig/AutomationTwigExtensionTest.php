@@ -12,6 +12,7 @@ use App\Domain\Automation\Condition\Conditions;
 use App\Domain\Automation\Condition\ConditionType;
 use App\Domain\Automation\RuleConfiguration;
 use App\Infrastructure\Twig\AutomationTwigExtension;
+use PHPUnit\Framework\Attributes\DataProvider;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Automation\AutomationRuleBuilder;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -36,13 +37,14 @@ class AutomationTwigExtensionTest extends ContainerTestCase
         );
     }
 
-    public function testDescribeConditionValueForAStartDate(): void
+    #[DataProvider('provideStartDateOperators')]
+    public function testDescribeConditionValueForAStartDate(string $operator, string $expected): void
     {
         $this->assertSame(
-            'on or before 2024-01-01',
+            $expected,
             $this->extension->describeConditionValue(
                 ConditionType::START_DATE,
-                RuleConfiguration::fromConfig(['operator' => 'lte', 'date' => '2024-01-01'])
+                RuleConfiguration::fromConfig(['operator' => $operator, 'date' => '2024-01-01'])
             )
         );
     }
@@ -92,6 +94,15 @@ class AutomationTwigExtensionTest extends ContainerTestCase
             ->withIsEnabled(true)
             ->build());
         $this->assertTrue($this->extension->hasEnabledAutomationRules());
+    }
+
+    public static function provideStartDateOperators(): iterable
+    {
+        yield 'before' => ['lt', 'before 2024-01-01'];
+        yield 'on or before' => ['lte', 'on or before 2024-01-01'];
+        yield 'after' => ['gt', 'after 2024-01-01'];
+        yield 'on or after' => ['gte', 'on or after 2024-01-01'];
+        yield 'on' => ['eq', 'on 2024-01-01'];
     }
 
     #[\Override]
