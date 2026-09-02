@@ -23,28 +23,28 @@ Activity: Activity
 'Add a rule to start automating your activity details.': 'Add a rule to start automating your activity details.'
 'Add a widget': 'Ajouter un widget'
 'Add action': 'Ajouter une action'
-'Add activity': 'Add activity'
+'Add activity': 'Ajouter une activité'
 'Add automation rule': 'Add automation rule'
 'Add challenge': 'Add challenge'
 'Add command': 'Add command'
 'Add component': 'Add component'
-'Add condition': 'Add condition'
+'Add condition': 'Ajouter une condition'
 'Add gear': 'Ajouter un matériel'
 'Add goal': 'Ajouter un objectif'
 'Add max heart rate': 'Ajouter fréquence cardiaque maximale'
-'Add resting heart rate': 'Add resting heart rate'
-'Add rule': 'Add rule'
-'Add service': 'Add service'
-'Add task': 'Add task'
+'Add resting heart rate': 'Ajouter une fréquence cardiaque au repos'
+'Add rule': 'Ajouter une règle'
+'Add service': 'Ajouter un service'
+'Add task': 'Ajouter une tâche'
 'Add tile layer': 'Add tile layer'
-'Add weight': 'Add weight'
-'Add widget': 'Add widget'
-'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
+'Add weight': 'Ajouter un poids'
+'Add widget': 'Ajouter un widget'
+'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Ajoutez des fichiers {fit}, {tcx} ou {gpx}. Ils sont traités toutes les minutes.'
 Admin: Admin
 'Admin panel': 'Panneau admin'
 'Admin username': "Nom d'utilisateur de l'admin"
 'Advanced (per-date & per-sport-type overrides)': 'Advanced (per-date & per-sport-type overrides)'
-'Age-based estimate': 'Age-based estimate'
+'Age-based estimate': "Estimation basée sur l'âge"
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'All associated maintenance tasks and logs will be removed. This action cannot be undone.'
 'All sport types': 'All sport types'
 'All sport types must belong to the same activity type.': 'All sport types must belong to the same activity type.'
@@ -54,8 +54,8 @@ Admin: Admin
 'App URL': 'App URL'
 'App subtitle': 'App subtitle'
 'App update available notification': 'App update available notification'
-Appearance: Appearance
-Applied: Applied
+Appearance: Apparance
+Applied: Appliqué
 Apply: Appliquer
 'Apply to existing activities': 'Apply to existing activities'
 'Are you sure you want to delete the import of {name}?': 'Are you sure you want to delete the import of {name}?'
@@ -102,7 +102,7 @@ Configure: Configure
 Configured: Configured
 'Configured via an environment variable and cannot be changed here.': 'Configured via an environment variable and cannot be changed here.'
 'Configured via environment variables and cannot be changed here.': 'Configured via environment variables and cannot be changed here.'
-'Connected sensors': 'Connected sensors'
+'Connected sensors': 'Capteurs connectés'
 'Continues to next rule': 'Continues to next rule'
 'Copy this API key': 'Copy this API key'
 'Cron expression': 'Cron expression'
@@ -129,23 +129,23 @@ Done: Done
 Duplicate: Duplicate
 Duration: Duration
 Edit: Editer
-'Edit activity': 'Edit activity'
+'Edit activity': "Editer l'activité"
 'Edit automation rule': 'Edit automation rule'
 'Edit component': 'Edit component'
-'Edit gear': 'Edit gear'
+'Edit gear': 'Editer le matériel'
 'Edit maintenance log': 'Edit maintenance log'
 'Edit recording device': 'Edit recording device'
-Elevation: Altitude
+Elevation: Dénivelé
 'Enable AI integration': 'Enable AI integration'
 'Enable Strava webhooks': 'Enable Strava webhooks'
-Enabled: Enabled
-Endpoint: Endpoint
+Enabled: Activé
+Endpoint: Point de passage
 'Ends near': 'Ends near'
 'Energy in kJ will be calculated from average power × moving time, for activities that do not already provide it.': 'Energy in kJ will be calculated from average power × moving time, for activities that do not already provide it.'
 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.': 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.'
 'Enter your password': 'Enter your password'
 'Enter your username': 'Enter your username'
-Every: Every
+Every: Chaque
 FTP: FTP
 'FTP history (cycling)': 'FTP history (cycling)'
 'FTP history (running)': 'FTP history (running)'

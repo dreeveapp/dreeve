@@ -150,7 +150,7 @@ Fitness: Forme
 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.': 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.'
 'Form (TSB)': 'Forme (TSB)'
 Fri: Ven
-Fri.: Fri.
+Fri.: Ven.
 'Front rings': 'Front rings'
 'Front shifts': 'Front shifts'
 GAP: GAP
@@ -246,12 +246,12 @@ May: Mai
 Medium: Moyen
 Metric: Métrique
 'Metrics settings': 'Paramètres métriques'
-Milestones: Milestones
+Milestones: Jalons
 'Mind & Body Sports': "Sports du corps et de l'esprit"
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training'
 'Moderate monotony': 'Monotonie modérée'
 Mon: Lun
-Mon.: Mon.
+Mon.: Lun.
 Monotony: Monotonie
 Monthly: Mensuel
 'Monthly stats': 'Statistiques mensuelles'
@@ -370,7 +370,7 @@ Shifting: Shifting
 'Show information': 'Afficher les informations'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.'
 'Similar activities': 'Similar activities'
-"Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure."
+"Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": "Depuis le début des activités le {startDate} depuis {numberOfDaysAgo}, j'ai enregistré {totalDaysOfWorkingOut} jours actifs d'entraînement et d'aventures."
 Skateboard: Skateboard
 Skating: Patinage
 'Slightly fresh': 'Slightly fresh'
@@ -525,7 +525,7 @@ Title: Title
 'Training goals': "Objectifs d'entraînement"
 'Training load is accumulating, recovery days are important': "Charge d'entraînement en accumulation, les jours de récupération sont importants"
 Tue: Mar
-Tue.: Tue.
+Tue.: Mar.
 'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
 Unspecified: 'Non spécifié'
 'Upcoming maintenance': 'Upcoming maintenance'
@@ -551,7 +551,7 @@ Walks: Marches
 'Waxing the chain...': 'Waxing the chain...'
 'We detected following issues': 'Nous avons détecté les problèmes suivants'
 Wed: Mer
-Wed.: Wed.
+Wed.: Mer.
 Weekly: Hebdomadaire
 'Weekly Strain': 'Stress hebdomadaire'
 'Weekly Strain - Product of weekly training load and monotony. Overall training stress.': "Stress Hebdomadaire - Produit de la charge d'entraînement hebdomadaire et de la monotonie. Stress d'entraînement global."
