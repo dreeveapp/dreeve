@@ -320,7 +320,7 @@ Retired: Décommissionné
 'Return to app': "Retour à l'application"
 Ride: Ride
 Rules: Règles
-'Rules to apply': 'Rules to apply'
+'Rules to apply': 'Règles à appliquer'
 Saturday: Samedi
 Save: Enregistrer
 'Save settings': 'Enregistrer les paramètres'
@@ -353,7 +353,7 @@ Sensors: Capteurs
 'Set recording device': "Définir l'équipement d'enregistrement"
 'Set sport type': 'Définir le type de sport'
 'Set through the {envVar} environment variable and cannot be changed here.': 'Set through the {envVar} environment variable and cannot be changed here.'
-'Set workout type': 'Définir type workout'
+'Set workout type': "Définir type d'activité"
 'Set {envVar} in your {envFile} file': 'Set {envVar} in your {envFile} file'
 Settings: Paramètres
 'Short date format': 'Short date format'
@@ -377,7 +377,7 @@ Source: Source
 'Sport types sorting order': 'Sport types sorting order'
 'Sport types to import': 'Sport types to import'
 'Sport types to include': 'Sport types to include'
-'Start date': 'Start date'
+'Start date': 'Date de début'
 'Start date and time': 'Start date and time'
 'Starts near': 'Starts near'
 'Stop processing further rules when this rule matches': 'Stop processing further rules when this rule matches'
@@ -498,7 +498,7 @@ Zone: Zone
 Zwift: Zwift
 'Zwift level': 'Zwift level'
 'Zwift racing score': 'Zwift racing score'
-'active days': 'active days'
+'active days': 'jours actifs'
 after: après
 'at least': 'au moins'
 'at most': 'au plus'
@@ -512,7 +512,7 @@ contains: contient
 'eg: Commuter bike on short rides': 'eg: Commuter bike on short rides'
 'eg: Imported automatically': 'eg: Imported automatically'
 'eg: Morning commute': 'eg: Morning commute'
-'eg: commute': 'eg: commute'
+'eg: commute': 'ie: trajet domicile-travail'
 exactly: exactement
 'exactly at': 'exactly at'
 ftp: ftp
@@ -524,7 +524,7 @@ is: est
 'is one of': 'est un de'
 'kilometers used': 'kilometers used'
 'less than': 'moins que'
-'max {max} MB each': 'max {max} MB each'
+'max {max} MB each': 'max {max} Mo chacun'
 'miles used': 'miles used'
 minutes: minutes
 'on': 'on'
