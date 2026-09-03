@@ -60,7 +60,7 @@ Canoeing: Canoë
 'Challenge consistency': 'Défi de régularité'
 Challenges: Défis
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': "Charge d'Entraînement Chronique (Forme) - Moyenne pondérée exponentiellement sur 42 jours de votre charge d'entraînement quotidienne. Représente l'adaptation d'entraînement à long terme."
-'Clear all filters': 'Clear all filters'
+'Clear all filters': 'Effacer tous les filtres'
 'Clear chat': 'Effacer le chat'
 Columns: Columns
 Commute: Trajet domicile-travail
@@ -77,7 +77,7 @@ Consistency: Uniformité
 Country: Pays
 Cricket: Cricket
 Crossfit: Crossfit
-'Crunching the numbers...': 'Crunching the numbers...'
+'Crunching the numbers...': 'Calculs en cours...'
 'Current Status': 'Status actuel'
 'Current streaks': 'Séries actuelles'
 Cycling: Cyclisme
@@ -97,7 +97,7 @@ Details: Détails
 Device: Appareil
 Dist.: Dist.
 Distance: Distance
-'Distance & Elevation': 'Distance & Dénivelé'
+'Distance & Elevation': 'Distance & dénivelé'
 'Distance (single activity)': 'Distance (single activity)'
 'Distance breakdown': 'Répartition des distances'
 'Distance distribution': 'Distance distribution'
@@ -117,8 +117,8 @@ Eddington: Eddington
 'Edit dashboard': 'Editer le dashboard'
 'Edit this activity': "Editer l'activité"
 'Effort vs heart rate': 'Effort vs fréquence cardiaque'
-'Elapsed time': 'Elapsed time'
-'Electronic shifting': 'Electronic shifting'
+'Elapsed time': 'Temps passé'
+'Electronic shifting': 'Passage de vitesses électronique'
 Elev: Dénivelé
 Elev.: Déniv.
 Elevation: Dénivelé
@@ -126,7 +126,7 @@ Elevation: Dénivelé
 'Elevation in {unit}': 'Dénivelé en {unit}'
 Elliptical: Elliptique
 Energy: Energie
-'Energy burned across your activities': 'Energy burned across your activities'
+'Energy burned across your activities': 'Energie brulée dans toutes vos activités'
 'Enter fullscreen mode': 'Mode plein-écran'
 Evening: Soirée
 'Excludes commutes': 'Trajets domicile-travail exclus'
@@ -135,7 +135,7 @@ Evening: Soirée
 Fastest: Le plus rapide
 Favourite: Favori
 Feb: Fév
-'Filling up the bottles...': 'Filling up the bottles...'
+'Filling up the bottles...': 'Remplissage des gourdes...'
 'Filter on KOM segments': 'Filtrer sur les segments KOM'
 'Filter on country': 'Filtrer par pays'
 'Filter on sport type': 'Filtrer par type de sport'
@@ -216,8 +216,8 @@ Lap: Tour
 'Last effort': 'Dernier effort'
 'Last effort date': 'Date du dernier effort'
 'Last maintenance': 'Dernière maintenance'
-'Last month': 'Last month'
-'Last week': 'Last week'
+'Last month': 'Mois dernier'
+'Last week': 'Semaine dernière'
 'Last {numberOfDays} days': 'Derniers {numberOfDays} jours'
 Lifetime: Lifetime
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Fatigue légère avec une bonne préparation. Un super équilibre pour un entraînement de qualité ou des efforts plus longs'
@@ -238,7 +238,7 @@ Maintenance: Maintenance
 'Manage activities': 'Manage activities'
 'Manage gear': 'Manage gear'
 'Manage recording devices': 'Manage recording devices'
-'Map settings': 'Map settings'
+'Map settings': 'Paramètres de carte'
 Mar: Mar
 Max: Max
 'Max gradient': 'Max gradient'
@@ -316,7 +316,7 @@ Pilates: Pilates
 'Polarised training (last 30 days)': 'Entraînement polarisé (30 derniers jours)'
 'Pool Swim': 'Pool Swim'
 Power: Puissance
-'Power meter': 'Power meter'
+'Power meter': 'Capteur de puissance'
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Alimenté par une estimation de {caloriesBurned} calories, soit environ {numberOfPizzaSlices} parts de pizza 🍕.'
 'Prev year': 'Année précédente'
 Previous: Précédent
@@ -332,7 +332,7 @@ Ranking: Classement
 'Reached {threshold} total elevation': '{threshold} élévation au total'
 'Rear cogs': 'Rear cogs'
 'Rear shifts': 'Rear shifts'
-'Recalculating your suffer score...': 'Recalculating your suffer score...'
+'Recalculating your suffer score...': 'Recalcul du score de souffrance...'
 Recent: Recent
 'Recent effort': 'Effort récent'
 'Recording devices': "Appareils d'enregistrement"
@@ -379,7 +379,7 @@ Snowboard: Snowboard
 Snowshoe: 'Raquettes à neige'
 Soccer: Football
 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.': 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.'
-Sort: Sort
+Sort: Tri
 Speed: Vitesse
 'Speed & cadence sensor': 'Speed & cadence sensor'
 'Speed sensor': 'Capteur de vitesse'
@@ -404,96 +404,96 @@ Surfing: Surf
 Temperature: Température
 'Temperature sensor': 'Capteur de température'
 Tennis: Tennis
-"That's 1.5 times the distance to the edge of space": "That's 1.5 times the distance to the edge of space"
-"That's 100 days of commitment, triple digits!": "That's 100 days of commitment, triple digits!"
-"That's 2 activities per week for nearly 5 years": "That's 2 activities per week for nearly 5 years"
-"That's 2 full days of non-stop activity": "That's 2 full days of non-stop activity"
-"That's 2 full years of daily activity, incredible!": "That's 2 full years of daily activity, incredible!"
-"That's 2 months without missing a day": "That's 2 months without missing a day"
-"That's 2 months without stopping": "That's 2 months without stopping"
-"That's 250 days, over two thirds of a year": "That's 250 days, over two thirds of a year"
-"That's 3 activities per week for nearly 5 years": "That's 3 activities per week for nearly 5 years"
-"That's 3 weeks straight, they say it takes 21 days to build a habit": "That's 3 weeks straight, they say it takes 21 days to build a habit"
-"That's 4 months of unbroken daily activity": "That's 4 months of unbroken daily activity"
-"That's 45 days, halfway to a full quarter": "That's 45 days, halfway to a full quarter"
-"That's 5 months, nearly half a year without a rest day": "That's 5 months, nearly half a year without a rest day"
-"That's 500 days, well beyond a year of daily activity": "That's 500 days, well beyond a year of daily activity"
-"That's a full day of non-stop movement": "That's a full day of non-stop movement"
-"That's a full fortnight of daily activity": "That's a full fortnight of daily activity"
-"That's a full month of non-stop activity": "That's a full month of non-stop activity"
-"That's a full month without a rest day": "That's a full month without a rest day"
-"That's a full quarter of daily activity": "That's a full quarter of daily activity"
-"That's a full week of daily activity": "That's a full week of daily activity"
-"That's a full week of non-stop movement": "That's a full week of non-stop movement"
-"That's a full year of daily activity": "That's a full year of daily activity"
-"That's about 3.5 months of continuous movement": "That's about 3.5 months of continuous movement"
-"That's about one activity per week for a year": "That's about one activity per week for a year"
-"That's about one activity per week for half a year": "That's about one activity per week for half a year"
-"That's about one activity per week for two months": "That's about one activity per week for two months"
-"That's almost 2 activities per week for a year": "That's almost 2 activities per week for a year"
-"That's almost 21 days of continuous movement": "That's almost 21 days of continuous movement"
-"That's almost 3 activities per week for 7 years": "That's almost 3 activities per week for 7 years"
-"That's an activity almost every day for 27 years": "That's an activity almost every day for 27 years"
-"That's an activity every day for almost 7 years": "That's an activity every day for almost 7 years"
-"That's an activity every day for nearly 11 years": "That's an activity every day for nearly 11 years"
-"That's an activity every day for nearly 14 years": "That's an activity every day for nearly 14 years"
-"That's an activity every day for over 20 years": "That's an activity every day for over 20 years"
-"That's an activity every day for over 8 years": "That's an activity every day for over 8 years"
-"That's climbing Mount Everest twice": "That's climbing Mount Everest twice"
-"That's climbing to the edge of space and back 5 times": "That's climbing to the edge of space and back 5 times"
-"That's cruising altitude of a commercial airplane": "That's cruising altitude of a commercial airplane"
-"That's deeper than the deepest known cave on Earth": "That's deeper than the deepest known cave on Earth"
-"That's five times around the Earth": "That's five times around the Earth"
-"That's half a year without skipping a single day": "That's half a year without skipping a single day"
-"That's higher than Felix Baumgartner's space jump": "That's higher than Felix Baumgartner's space jump"
-"That's higher than the International Space Station's orbit": "That's higher than the International Space Station's orbit"
-"That's higher than the summit of Mont Blanc": "That's higher than the summit of Mont Blanc"
-"That's more than 10 days of non-stop movement": "That's more than 10 days of non-stop movement"
-"That's more than 10 months of continuous movement": "That's more than 10 months of continuous movement"
-"That's more than 2 Eiffel Towers stacked up": "That's more than 2 Eiffel Towers stacked up"
-"That's more than 2.5 times around the Earth": "That's more than 2.5 times around the Earth"
-"That's more than 4 days of continuous activity": "That's more than 4 days of continuous activity"
-"That's more than 4 months of non-stop activity": "That's more than 4 months of non-stop activity"
-"That's more than 41 days of non-stop movement": "That's more than 41 days of non-stop movement"
-"That's more than 5 activities per week for 7 years": "That's more than 5 activities per week for 7 years"
-"That's more than 8 times the height of Mount Everest": "That's more than 8 times the height of Mount Everest"
-"That's more than a full year of non-stop movement": "That's more than a full year of non-stop movement"
-"That's more than halfway around the Earth": "That's more than halfway around the Earth"
-"That's more than halfway to the ISS": "That's more than halfway to the ISS"
-"That's more than the circumference of Mars": "That's more than the circumference of Mars"
-"That's more than the distance from Earth to the Moon": "That's more than the distance from Earth to the Moon"
-"That's nearly 3 months of non-stop activity": "That's nearly 3 months of non-stop activity"
-"That's nearly 4 activities per week for 7 years": "That's nearly 4 activities per week for 7 years"
-"That's nearly 5 activities per week for a year": "That's nearly 5 activities per week for a year"
-"That's nearly 7 months of non-stop activity": "That's nearly 7 months of non-stop activity"
-"That's nearly climbing Mount Everest 3 times": "That's nearly climbing Mount Everest 3 times"
-"That's nearly the altitude of the International Space Station": "That's nearly the altitude of the International Space Station"
-"That's nearly twice around the Earth": "That's nearly twice around the Earth"
-"That's nearly twice the altitude of the International Space Station": "That's nearly twice the altitude of the International Space Station"
-"That's over 5.5 months of continuous movement": "That's over 5.5 months of continuous movement"
-"That's roughly a quarter of the way around the Earth": "That's roughly a quarter of the way around the Earth"
-"That's roughly the diameter of Jupiter": "That's roughly the diameter of Jupiter"
-"That's roughly the diameter of Neptune": "That's roughly the diameter of Neptune"
-"That's roughly the distance from London to Perth": "That's roughly the distance from London to Perth"
-"That's roughly the distance from Madrid to Barcelona": "That's roughly the distance from Madrid to Barcelona"
-"That's roughly the distance light travels in one second": "That's roughly the distance light travels in one second"
+"That's 1.5 times the distance to the edge of space": "C'est 1,5 fois la distance jusqu'aux limites de l'espace"
+"That's 100 days of commitment, triple digits!": "C'est 100 jours d'engagement, trois chiffres !"
+"That's 2 activities per week for nearly 5 years": "C'est 2 activités par semaine pendant près de 5 ans"
+"That's 2 full days of non-stop activity": "C'est 2 journées entières d'activité sans interruption"
+"That's 2 full years of daily activity, incredible!": "C'est 2 années entières d'activité quotidienne, incroyable !"
+"That's 2 months without missing a day": "C'est 2 mois sans manquer un seul jour"
+"That's 2 months without stopping": "C'est 2 mois sans s'arrêter"
+"That's 250 days, over two thirds of a year": "C'est 250 jours, soit plus des deux tiers d'une année"
+"That's 3 activities per week for nearly 5 years": "C'est 3 activités par semaine pendant près de 5 ans"
+"That's 3 weeks straight, they say it takes 21 days to build a habit": "C'est 3 semaines d'affilée, on dit qu'il faut 21 jours pour créer une habitude"
+"That's 4 months of unbroken daily activity": "C'est 4 mois d'activité quotidienne sans interruption"
+"That's 45 days, halfway to a full quarter": "C'est 45 jours, soit la moitié d'un trimestre complet"
+"That's 5 months, nearly half a year without a rest day": "C'est 5 mois, soit presque la moitié d'une année sans jour de repos"
+"That's 500 days, well beyond a year of daily activity": "C'est 500 jours, bien plus d'une année d'activité quotidienne"
+"That's a full day of non-stop movement": "C'est une journée entière de mouvement sans interruption"
+"That's a full fortnight of daily activity": "C'est deux semaines entières d'activité quotidienne"
+"That's a full month of non-stop activity": "C'est un mois entier d'activité sans interruption"
+"That's a full month without a rest day": "C'est un mois entier sans jour de repos"
+"That's a full quarter of daily activity": "C'est un trimestre entier d'activité quotidienne"
+"That's a full week of daily activity": "C'est une semaine entière d'activité quotidienne"
+"That's a full week of non-stop movement": "C'est une semaine entière de mouvement sans interruption"
+"That's a full year of daily activity": "C'est une année entière d'activité quotidienne"
+"That's about 3.5 months of continuous movement": "C'est environ 3,5 mois de mouvement continu"
+"That's about one activity per week for a year": "C'est environ une activité par semaine pendant un an"
+"That's about one activity per week for half a year": "C'est environ une activité par semaine pendant six mois"
+"That's about one activity per week for two months": "C'est environ une activité par semaine pendant deux mois"
+"That's almost 2 activities per week for a year": "C'est presque 2 activités par semaine pendant un an"
+"That's almost 21 days of continuous movement": "C'est presque 21 jours de mouvement continu"
+"That's almost 3 activities per week for 7 years": "C'est presque 3 activités par semaine pendant 7 ans"
+"That's an activity almost every day for 27 years": "C'est une activité presque tous les jours pendant 27 ans"
+"That's an activity every day for almost 7 years": "C'est une activité tous les jours pendant presque 7 ans"
+"That's an activity every day for nearly 11 years": "C'est une activité tous les jours pendant près de 11 ans"
+"That's an activity every day for nearly 14 years": "C'est une activité tous les jours pendant près de 14 ans"
+"That's an activity every day for over 20 years": "C'est une activité tous les jours pendant plus de 20 ans"
+"That's an activity every day for over 8 years": "C'est une activité tous les jours pendant plus de 8 ans"
+"That's climbing Mount Everest twice": "C'est l'équivalent de gravir deux fois le mont Everest"
+"That's climbing to the edge of space and back 5 times": "C'est l'équivalent d'aller jusqu'aux limites de l'espace et d'en revenir 5 fois"
+"That's cruising altitude of a commercial airplane": "C'est l'altitude de croisière d'un avion de ligne"
+"That's deeper than the deepest known cave on Earth": "C'est plus profond que la grotte connue la plus profonde de la Terre"
+"That's five times around the Earth": "C'est cinq fois le tour de la Terre"
+"That's half a year without skipping a single day": "C'est six mois sans manquer un seul jour"
+"That's higher than Felix Baumgartner's space jump": "C'est plus haut que le saut stratosphérique de Felix Baumgartner"
+"That's higher than the International Space Station's orbit": "C'est plus haut que l'orbite de la Station spatiale internationale"
+"That's higher than the summit of Mont Blanc": "C'est plus haut que le sommet du mont Blanc"
+"That's more than 10 days of non-stop movement": "C'est plus de 10 jours de mouvement sans interruption"
+"That's more than 10 months of continuous movement": "C'est plus de 10 mois de mouvement continu"
+"That's more than 2 Eiffel Towers stacked up": "C'est plus de 2 tours Eiffel empilées"
+"That's more than 2.5 times around the Earth": "C'est plus de 2,5 fois le tour de la Terre"
+"That's more than 4 days of continuous activity": "C'est plus de 4 jours d'activité continue"
+"That's more than 4 months of non-stop activity": "C'est plus de 4 mois d'activité sans interruption"
+"That's more than 41 days of non-stop movement": "C'est plus de 41 jours de mouvement sans interruption"
+"That's more than 5 activities per week for 7 years": "C'est plus de 5 activités par semaine pendant 7 ans"
+"That's more than 8 times the height of Mount Everest": "C'est plus de 8 fois la hauteur du mont Everest"
+"That's more than a full year of non-stop movement": "C'est plus d'une année entière de mouvement sans interruption"
+"That's more than halfway around the Earth": "C'est plus de la moitié du tour de la Terre"
+"That's more than halfway to the ISS": "C'est plus de la moitié de la distance jusqu'à l'ISS"
+"That's more than the circumference of Mars": "C'est plus que la circonférence de Mars"
+"That's more than the distance from Earth to the Moon": "C'est plus que la distance entre la Terre et la Lune"
+"That's nearly 3 months of non-stop activity": "C'est près de 3 mois d'activité sans interruption"
+"That's nearly 4 activities per week for 7 years": "C'est près de 4 activités par semaine pendant 7 ans"
+"That's nearly 5 activities per week for a year": "C'est près de 5 activités par semaine pendant un an"
+"That's nearly 7 months of non-stop activity": "C'est près de 7 mois d'activité sans interruption"
+"That's nearly climbing Mount Everest 3 times": "C'est presque l'équivalent de gravir 3 fois le mont Everest"
+"That's nearly the altitude of the International Space Station": "C'est presque l'altitude de la Station spatiale internationale"
+"That's nearly twice around the Earth": "C'est presque deux fois le tour de la Terre"
+"That's nearly twice the altitude of the International Space Station": "C'est presque deux fois l'altitude de la Station spatiale internationale"
+"That's over 5.5 months of continuous movement": "C'est plus de 5,5 mois de mouvement continu"
+"That's roughly a quarter of the way around the Earth": "C'est environ un quart du tour de la Terre"
+"That's roughly the diameter of Jupiter": "C'est environ le diamètre de Jupiter"
+"That's roughly the diameter of Neptune": "C'est environ le diamètre de Neptune"
+"That's roughly the distance from London to Perth": "C'est environ la distance entre Londres et Perth"
+"That's roughly the distance from Madrid to Barcelona": "C'est environ la distance entre Madrid et Barcelone"
+"That's roughly the distance light travels in one second": "C'est environ la distance parcourue par la lumière en une seconde"
 "That's roughly the length of France": "C'est à peu près la longueur de la France"
-"That's roughly the length of the Danube river": "That's roughly the length of the Danube river"
-"That's roughly the length of the island of Jamaica": "That's roughly the length of the island of Jamaica"
-"That's taller than the Empire State Building": "That's taller than the Empire State Building"
-"That's the altitude of a satellite in low Earth orbit": "That's the altitude of a satellite in low Earth orbit"
-"That's the circumference of the Earth": "That's the circumference of the Earth"
-"That's the distance from Earth to the Moon": "That's the distance from Earth to the Moon"
-"That's the distance to the edge of space, straight up": "That's the distance to the edge of space, straight up"
-"That's the edge of space, the Kármán line": "That's the edge of space, the Kármán line"
-"That's the height of Mount Everest": "That's the height of Mount Everest"
-"That's the height of the Eiffel Tower": "That's the height of the Eiffel Tower"
-"That's the length of the Great Wall of China": "That's the length of the Great Wall of China"
-"That's three quarters of the way around the Earth": "That's three quarters of the way around the Earth"
-"That's {number} days of at least {distance}": "That's {number} days of at least {distance}"
-"That's {percentage}% of all countries 🌍": "That's {percentage}% of all countries 🌍"
+"That's roughly the length of the Danube river": "C'est environ la longueur du Danube"
+"That's roughly the length of the island of Jamaica": "C'est environ la longueur de l'île de la Jamaïque"
+"That's taller than the Empire State Building": "C'est plus haut que l'Empire State Building"
+"That's the altitude of a satellite in low Earth orbit": "C'est l'altitude d'un satellite en orbite terrestre basse"
+"That's the circumference of the Earth": "C'est la circonférence de la Terre"
+"That's the distance from Earth to the Moon": "C'est la distance entre la Terre et la Lune"
+"That's the distance to the edge of space, straight up": "C'est la distance jusqu'aux limites de l'espace, à la verticale"
+"That's the edge of space, the Kármán line": "C'est la limite de l'espace, la ligne de Kármán"
+"That's the height of Mount Everest": "C'est la hauteur du mont Everest"
+"That's the height of the Eiffel Tower": "C'est la hauteur de la tour Eiffel"
+"That's the length of the Great Wall of China": "C'est la longueur de la Grande Muraille de Chine"
+"That's three quarters of the way around the Earth": "C'est les trois quarts du tour de la Terre"
+"That's {number} days of at least {distance}": "C'est {number} jours d'au moins {distance}"
+"That's {percentage}% of all countries 🌍": "C'est {percentage} % de tous les pays 🌍"
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.'
-"The page you're looking for doesn't exist or may have been moved.": "The page you're looking for doesn't exist or may have been moved."
+"The page you're looking for doesn't exist or may have been moved.": "La page n'existe pas ou a été déplacée."
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': "Ces badges sont créés dynamiquement. Vous pouvez les utiliser dans n'importe quelle balise &lt;img&gt;"
 Thinking...: Réfléchit...
 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.': 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.'
@@ -503,8 +503,8 @@ Thinking...: Réfléchit...
 Thu: Jeu
 Thu.: Thu.
 Time: Temps
-'Time in gear': 'Time in gear'
-'Time in zone': 'Time in zone'
+'Time in gear': 'Temps par matériel'
+'Time in zone': 'Temps dans la zone'
 'Times completed': 'Fois accompli'
 Title: Title
 'To enable it, configure this in the admin panel': "Pour l'activer, cofigurer dans le panneau d'administration"
@@ -528,14 +528,14 @@ Tue: Mar
 Tue.: Mar.
 'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
 Unspecified: 'Non spécifié'
-'Upcoming maintenance': 'Upcoming maintenance'
+'Upcoming maintenance': 'Maintenance à venir'
 'User badge': "Badge d'utilisateur"
 'Velo Mobile': 'Velo Mobile'
 'Velo Mobiles': Vélomobiles
 'Very high': 'Très élevé'
 'View all': 'Voir tout'
 'View details': 'Voir les détails'
-'View this month': 'View this month'
+'View this month': 'Voir ce mois'
 'Virtual Ride': 'Virtual Ride'
 'Virtual Rides': 'Sorties virtuelles'
 'Virtual Row': 'Rameur virtuel'
@@ -548,7 +548,7 @@ Walk: Marche
 Walking: Marche
 Walks: Marches
 'Water Sports': 'Sports nautiques'
-'Waxing the chain...': 'Waxing the chain...'
+'Waxing the chain...': 'Lubrification de la chaine...'
 'We detected following issues': 'Nous avons détecté les problèmes suivants'
 Wed: Mer
 Wed.: Mer.

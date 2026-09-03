@@ -105,8 +105,8 @@ Configured: Configured
 'Connected sensors': 'Capteurs connectés'
 'Continues to next rule': 'Continues to next rule'
 'Copy this API key': 'Copy this API key'
-'Cron expression': 'Cron expression'
-"Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."
+'Cron expression': 'Expression Cron'
+"Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Expression Cron définissant comment l'action doit s'executer, par exemple '0 14 * * *' s'execute chaque jour a 14h00. Se reporter à crontab.guru pour de l'aide."
 Daemon: Daemon
 'Dashboard layout': 'Dashboard layout'
 'Date range based': 'Date range based'
@@ -123,7 +123,7 @@ Description: Description
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.'
 Disabled: Désactivé
 Distance: Distance
-Done: Done
+Done: Fait
 'Drag to reorder': 'Drag to reorder'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Drag to set the order in which sport types are displayed throughout the app.'
 Duplicate: Duplicate
@@ -152,11 +152,11 @@ FTP: FTP
 Failed: Failed
 Female: Femme
 'File exceeds {max} MB': 'File exceeds {max} MB'
-'File imports': 'File imports'
-'File imports are only available in file import mode': 'File imports are only available in file import mode'
-'File upload': 'File upload'
-'File upload is only available in file import mode': 'File upload is only available in file import mode'
-Filename: Filename
+'File imports': 'Import de fichiers'
+'File imports are only available in file import mode': "L'import de fichiers est uniquement disponible en mode import de fichier"
+'File upload': 'Téléversement de fichier'
+'File upload is only available in file import mode': 'Le Téléversement de fichiers est uniquement disponible en mode import de fichier'
+Filename: Nom du fichier
 Filter: Filtre
 'First name': 'Prénom'
 'Fixed value': 'Fixed value'
@@ -164,15 +164,15 @@ Friday: Vendredi
 From: Origine
 'Gear "{gearId}" is attached to one of your components, but does not exist. It will be ignored.': 'Le matériel "{gearId}" est attaché à l''un de vos composants, mais n''existe pas. Il sera ignoré.'
 'Gear maintenance notification': 'Gear maintenance notification'
-'Gear management': 'Gear management'
+'Gear management': 'Management des matériels'
 'Gear will appear here once you add them.': 'Gear will appear here once you add them.'
 Gender: Sexe
 General: Géneral
 'Generate an API key': 'Generate an API key'
-'Go to first page': 'Go to first page'
-'Go to last page': 'Go to last page'
-'Go to next page': 'Go to next page'
-'Go to previous page': 'Go to previous page'
+'Go to first page': 'Aller à la première page'
+'Go to last page': 'Aller à la dernière page'
+'Go to next page': 'Aller à la page suivante'
+'Go to previous page': 'Aller à la page précédente'
 'Group activity': 'Group activity'
 Heatmap: Heatmap
 'Hide photos for sport types': 'Hide photos for sport types'
@@ -253,7 +253,7 @@ Monday: Lundi
 'No unit': "Pas d'unité"
 'Normal date format': 'Normal date format'
 'Not configured, the API is closed': 'Not configured, the API is closed'
-'Notification services': 'Notification services'
+'Notification services': 'Services de notifications'
 'Notify when an import was successful': 'Notify when an import was successful'
 'Number of activities to display': 'Number of activities to display'
 'Number of challenges to display': 'Number of challenges to display'
@@ -332,7 +332,7 @@ Seconds: Secondes
 Security: Securité
 'Select a component first...': 'Select a component first...'
 'Select a component…': 'Select a component…'
-'Select all': 'Select all'
+'Select all': 'Tout sélectionner'
 'Select at least one activity.': 'Select at least one activity.'
 'Select at least one rule.': 'Select at least one rule.'
 'Select at least one sensor.': 'Select at least one sensor.'
@@ -365,7 +365,7 @@ Settings: Paramètres
 'Show the workout assistant in the UI.': 'Show the workout assistant in the UI.'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'
 'Sign in': 'Connexion'
-'Sign in to the admin panel': 'Sign in to the admin panel'
+'Sign in to the admin panel': "Connexion au panneau d'administration"
 'Sign out': 'Déconnexion'
 'Signing in...': 'Connexion en cours...'
 'Skip activities recorded before': 'Skip activities recorded before'
@@ -391,7 +391,7 @@ Source: Source
 'Strava import': 'Strava import'
 'Strava refresh token': 'Strava refresh token'
 Subtitle: Subtitle
-Success: Success
+Success: Succès
 Sunday: Dimanche
 'Supported types': 'Supported types'
 Task: Task
@@ -412,7 +412,7 @@ Tasks: Tâches
 'The color of the routes drawn on every map. Accepts any valid CSS color, e.g. red, #FF0000 or rgb(255,0,0).': 'The color of the routes drawn on every map. Accepts any valid CSS color, e.g. red, #FF0000 or rgb(255,0,0).'
 'The current name of the activity': 'The current name of the activity'
 'The device used to record the activity': 'The device used to record the activity'
-'The distance': 'The distance'
+'The distance': 'La distance'
 'The elapsed time': 'The elapsed time'
 'The elevation gain': 'The elevation gain'
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'The formula used to calculate your max heart rate. The default is Fox (220 − age).'
@@ -449,7 +449,7 @@ Thursday: Jeudi
 'Tile layers': 'Tile layers'
 'Time format': 'Time format'
 'Time of day': 'Time of day'
-To: To
+To: Vers
 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.': 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.'
 "Tokens are replaced with the activity's values when the rule runs.": "Tokens are replaced with the activity's values when the rule runs."
 'Total size exceeds {max} MB': 'Total size exceeds {max} MB'
