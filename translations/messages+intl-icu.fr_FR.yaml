@@ -639,6 +639,7 @@ workouts: entraînements
 '{numberOfResults} photos': '{numberOfResults} photos'
 '{numberOfResults} results': '{numberOfResults} results'
 '{numberOfResults} routes': '{numberOfResults} routes'
+'{numberOfRoutes} nearby route(s)': '{numberOfRoutes} nearby route(s)'
 '{numberOfWeeks} weeks': '{numberOfWeeks} semaines'
 '{threshold} hours using {gearName}': '{threshold} heures en utilisant {gearName}'
 '{threshold} total distance using {gearName}': '{threshold} distance totale en utilisant {gearName}'

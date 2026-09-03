@@ -37,6 +37,7 @@ export default class HeatmapDrawer {
 
         const countriesUrl = this.wrapper.getAttribute('data-leaflet-countries');
         this.countriesLabel = this.wrapper.getAttribute('data-leaflet-countries-label');
+        this.popupLabels = JSON.parse(this.wrapper.getAttribute('data-leaflet-popup-labels') ?? '{}');
         this.countriesLayer = countriesUrl
             ? new HeatmapCountriesLayer(this.map, countriesUrl, this.config.polylineColor)
             : null;
@@ -96,9 +97,11 @@ export default class HeatmapDrawer {
             entry.polyline.setStyle(this.inactivePolylineStyle);
         });
 
+        nearby.sort((a, b) => b.route.filterables['start-date'] - a.route.filterables['start-date']);
+
         const html = `
             <div class="m-4 text-sm max-h-50 overflow-y-auto no-dark">
-                <div class="font-medium">${nearby.length} nearby route(s):</div>
+                <div class="font-medium">${this.popupLabels.nearbyRoutes.replace('{numberOfRoutes}', nearby.length)}</div>
                  <ul class="divide-default divide-y divide-gray-200">
                     ${nearby.map(entry => `
                      <li class="py-2">

@@ -639,6 +639,7 @@ workouts: 锻炼
 '{numberOfResults} photos': '{numberOfResults} photos'
 '{numberOfResults} results': '{numberOfResults} results'
 '{numberOfResults} routes': '{numberOfResults} routes'
+'{numberOfRoutes} nearby route(s)': '{numberOfRoutes} nearby route(s)'
 '{numberOfWeeks} weeks': '{numberOfWeeks} weeks'
 '{threshold} hours using {gearName}': '{threshold} hours using {gearName}'
 '{threshold} total distance using {gearName}': '{threshold} total distance using {gearName}'

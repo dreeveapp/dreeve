@@ -639,6 +639,7 @@ workouts: edzések
 '{numberOfResults} photos': '{numberOfResults} fotó'
 '{numberOfResults} results': '{numberOfResults} találat'
 '{numberOfResults} routes': '{numberOfResults} útvonal'
+'{numberOfRoutes} nearby route(s)': '{numberOfRoutes} nearby route(s)'
 '{numberOfWeeks} weeks': '{numberOfWeeks} hét'
 '{threshold} hours using {gearName}': '{threshold} óra {gearName} felhasználásával'
 '{threshold} total distance using {gearName}': '{threshold} össztávolság {gearName} felhasználásával'

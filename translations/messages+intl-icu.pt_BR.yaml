@@ -639,6 +639,7 @@
 '{numberOfResults} photos': '{numberOfResults} fotos'
 '{numberOfResults} results': '{numberOfResults} resultados'
 '{numberOfResults} routes': '{numberOfResults} rotas'
+'{numberOfRoutes} nearby route(s)': '{numberOfRoutes} nearby route(s)'
 '{numberOfWeeks} weeks': '{numberOfWeeks} semanas'
 '{threshold} hours using {gearName}': '{threshold} horas usando {gearName}'
 '{threshold} total distance using {gearName}': 'distância total de {threshold} usando {gearName}'
