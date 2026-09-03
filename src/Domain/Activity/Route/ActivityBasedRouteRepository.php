@@ -25,7 +25,8 @@ final readonly class ActivityBasedRouteRepository extends DbalRepository impleme
                     AND polyline IS NOT NULL AND polyline <> ""
                     AND routeGeography IS NOT NULL AND routeGeography <> ""
                     AND JSON_EXTRACT(routeGeography, "$.country_code") IS NOT NULL
-                    AND worldType = :worldType';
+                    AND worldType = :worldType
+                    ORDER BY startDateTime DESC';
 
         $results = $this->connection->executeQuery(
             sql: $query,

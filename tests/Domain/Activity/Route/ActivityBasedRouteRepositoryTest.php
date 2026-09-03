@@ -66,7 +66,7 @@ class ActivityBasedRouteRepositoryTest extends ContainerTestCase
         $this->activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed(5))
-                ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 14:00:34'))
+                ->withStartDateTime(SerializableDateTime::fromString('2025-01-02 09:12:00'))
                 ->withPolyline('tqafAua~y^vG{D')
                 ->withIsGroupActivity(true)
                 ->withRouteGeography(RouteGeography::create([
@@ -77,7 +77,13 @@ class ActivityBasedRouteRepositoryTest extends ContainerTestCase
             rawData: []
         ));
 
-        $this->assertMatchesJsonSnapshot(Json::encode($this->routeRepository->findAll()));
+        $routes = $this->routeRepository->findAll();
+
+        $this->assertEquals(
+            ['02-01-2025', '10-10-2023'],
+            $routes->map(fn (Route $route): string => $route->getOn()->format('d-m-Y'))
+        );
+        $this->assertMatchesJsonSnapshot(Json::encode($routes));
     }
 
     /**

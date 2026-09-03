@@ -97,8 +97,6 @@ export default class HeatmapDrawer {
             entry.polyline.setStyle(this.inactivePolylineStyle);
         });
 
-        nearby.sort((a, b) => b.route.filterables['start-date'] - a.route.filterables['start-date']);
-
         const html = `
             <div class="m-4 text-sm max-h-50 overflow-y-auto no-dark">
                 <div class="font-medium">${this.popupLabels.nearbyRoutes.replace('{numberOfRoutes}', nearby.length)}</div>
