@@ -1,3 +1,48 @@
+# [v5.3.2](https://github.com/dreeveapp/dreeve/releases/tag/v5.3.2) - 2026-09-04
+
+> [!NOTE]
+> We released a separate __Zepp Connector__ container to automatically sync your Zepp FIT files
+> to Dreeve's watch folder. Read all about it in the docs: https://docs.dreeve.app/integrations/zepp-connector/
+> A big thank you to @fjuliofontes and @effectpears for setting this up 👏
+
+## New features
+* Calculate laps during file import
+* Added StartDateCondition to automation rules
+* Added an option to backfill already imported activities with weather and reverse geocoded data
+* Added a "mark as group activity" automation action
+
+## Improvements
+* Improved XML import handling to tolerate leading whitespace or a BOM before the XML declaration
+* sort nearby heatmap routes by date, newest first
+
+## Bug fixes
+* Fixed dashboard widgets that failed to load
+* Fixed a bug where the gear page would not load when calories where empty
+
+## Technical details
+* ISSUE #2613: Add an option to calculate laps during the file import by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2619
+* ISSUE #2622 German Translation by @effectpears in https://github.com/dreeveapp/dreeve/pull/2623
+* Add Zepp Connector integration docs by @fjuliofontes in https://github.com/dreeveapp/dreeve/pull/2624
+* Complete Hungarian (hu_HU) translations (admin panel + dashboard) by @czdanika in https://github.com/dreeveapp/dreeve/pull/2626
+* feat: some french translations by @masfaraud in https://github.com/dreeveapp/dreeve/pull/2628
+* ISSUE #2627: Added StartDateCondition to automation rules by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2629
+* ISSUE #2630: Tolerate leading whitespace/BOM before the XML declaration by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2631
+* Complete Hungarian (hu_HU) dashboard translations by @czdanika in https://github.com/dreeveapp/dreeve/pull/2633
+* Update Brazilian Portuguese translation by @gustavobim in https://github.com/dreeveapp/dreeve/pull/2635
+* Update admin+intl-icu.de_DE.yaml #2627 by @effectpears in https://github.com/dreeveapp/dreeve/pull/2636
+* ISSUE #2637: Sort nearby routes on heatmap by Date DESC by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2640
+* update FR Translations by @masfaraud in https://github.com/dreeveapp/dreeve/pull/2632
+* ISSUE #2638: Allow to backfill already imported activities with by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2644
+* ISSUE #2639: Add 'mark as group activity' condition action by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2645
+* ISSUE #2643: Some widgets don't load in the dashboard by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2646
+* ISSUE #2642: Gear page not working after v5.2.3 by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2647
+
+## New Contributors
+* @fjuliofontes made their first contribution in https://github.com/dreeveapp/dreeve/pull/2624
+* @masfaraud made their first contribution in https://github.com/dreeveapp/dreeve/pull/2628
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.3.1...v5.3.2
+
 # [v5.3.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.3.1) - 2026-08-30
 
 ## New features
