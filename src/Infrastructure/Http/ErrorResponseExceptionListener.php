@@ -18,6 +18,7 @@ final readonly class ErrorResponseExceptionListener implements EventSubscriberIn
     public function __construct(
         private PlatformEnvironment $platformEnvironment,
         private Environment $twig,
+        private ServerErrorLogger $serverErrorLogger,
     ) {
     }
 
@@ -38,8 +39,15 @@ final readonly class ErrorResponseExceptionListener implements EventSubscriberIn
             default => HttpStatusCode::INTERNAL_SERVER_ERROR,
         };
 
+        $errorReference = $this->serverErrorLogger->log(
+            exception: $exception,
+            statusCode: $statusCode->value,
+            request: $event->getRequest()
+        );
+
         $response = new HtmlResponse($this->twig->render('html/error.html.twig', [
             'statusCode' => $statusCode->value,
+            'errorReference' => $errorReference,
         ]));
         $response->setStatusCode($statusCode->value);
 

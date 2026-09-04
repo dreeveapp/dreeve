@@ -83,4 +83,21 @@ These logs capture all incoming notifications from Strava.
 
 </TabItem>
 
+<TabItem label="Application errors">
+
+These logs capture every request that ended in a `500 Internal Server Error`, including the full stack trace.
+
+Each entry starts with a short reference that is also shown on the error page the visitor sees, so you can ask whoever reported the problem for that reference and search the log for it.
+
+```log
+[2025-11-10T09:28:55.650390+00:00] errors.ERROR: 1c8226ae - GET /api/internal/fragment/partial/dashboard/widget/dashboardWidget-activityGrid - App\Domain\Athlete\InvalidHeartRateFormula: HEART_RATE_FORMULA: could not determine heart rate for given date "2025-10-23" in /var/www/src/Domain/Athlete/ProvideDateRangeBasedFormula.php:37
+Stack trace:
+#0 /var/www/src/Domain/Athlete/Athlete.php(65): App\Domain\Athlete\RestingHeartRate\DateRangeBased->calculate(30, Object(App\Infrastructure\ValueObject\Time\SerializableDateTime))
+#1 /var/www/src/Domain/Activity/ActivityIntensity.php(61): App\Domain\Athlete\Athlete->getRestingHeartRate(Object(App\Infrastructure\ValueObject\Time\SerializableDateTime))
+#2 /var/www/src/Domain/Dashboard/DashboardWidgetFragmentResolver.php(58): App\Domain\Dashboard\Widget\ActivityGrid\ActivityGridWidget->render(...)
+#3 {main}
+```
+
+</TabItem>
+
 </Tabs>

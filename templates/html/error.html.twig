@@ -25,6 +25,11 @@
                     <p class="mb-4 text-lg font-light text-gray-500">
                         Try again, or check the logs if the problem persists.
                     </p>
+                    {% if errorReference %}
+                        <p class="text-sm font-light text-gray-400">
+                            Reference: <span class="font-mono">{{ errorReference }}</span>
+                        </p>
+                    {% endif %}
                 </div>
             </div>
         {% endif %}

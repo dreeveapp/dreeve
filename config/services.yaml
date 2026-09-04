@@ -130,3 +130,9 @@ services:
 
     Money\MoneyFormatter:
         factory: '@App\Infrastructure\DependencyInjection\MoneyFormatterFactory'
+
+    monolog.formatter.errors:
+        class: Monolog\Formatter\LineFormatter
+        arguments:
+            $format: "[%%datetime%%] %%channel%%.%%level_name%%: %%message%%\n"
+            $allowInlineLineBreaks: true

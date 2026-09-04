@@ -6,9 +6,13 @@ namespace App\Tests\Infrastructure\Http\Api;
 
 use App\Infrastructure\Config\PlatformEnvironment;
 use App\Infrastructure\Http\Api\ApiExceptionListener;
+use App\Infrastructure\Http\ServerErrorLogger;
 use App\Infrastructure\Serialization\Json;
+use App\Tests\Infrastructure\ValueObject\Identifier\FakeUuidFactory;
+use App\Tests\NullLogger;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -19,6 +23,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class ApiExceptionListenerTest extends TestCase
 {
+    private ServerErrorLogger $serverErrorLogger;
+
     #[DataProvider('providePathsOutsideTheApi')]
     public function testItIgnoresRequestsOutsideTheApi(string $path): void
     {
@@ -29,7 +35,7 @@ class ApiExceptionListenerTest extends TestCase
             new NotFoundHttpException('Not found'),
         );
 
-        new ApiExceptionListener(PlatformEnvironment::PROD)->onKernelException($event);
+        new ApiExceptionListener(PlatformEnvironment::PROD, $this->serverErrorLogger)->onKernelException($event);
 
         $this->assertNull($event->getResponse());
     }
@@ -52,7 +58,7 @@ class ApiExceptionListenerTest extends TestCase
             new NotFoundHttpException('No route found'),
         );
 
-        new ApiExceptionListener(PlatformEnvironment::PROD)->onKernelException($event);
+        new ApiExceptionListener(PlatformEnvironment::PROD, $this->serverErrorLogger)->onKernelException($event);
 
         $response = $event->getResponse();
         $this->assertNotNull($response);
@@ -73,7 +79,7 @@ class ApiExceptionListenerTest extends TestCase
             new MethodNotAllowedHttpException(['POST'], 'Method Not Allowed'),
         );
 
-        new ApiExceptionListener(PlatformEnvironment::PROD)->onKernelException($event);
+        new ApiExceptionListener(PlatformEnvironment::PROD, $this->serverErrorLogger)->onKernelException($event);
 
         $response = $event->getResponse();
         $this->assertNotNull($response);
@@ -90,7 +96,7 @@ class ApiExceptionListenerTest extends TestCase
             new UnauthorizedHttpException('Bearer realm="Dreeve"', 'Invalid token'),
         );
 
-        new ApiExceptionListener(PlatformEnvironment::PROD)->onKernelException($event);
+        new ApiExceptionListener(PlatformEnvironment::PROD, $this->serverErrorLogger)->onKernelException($event);
 
         $response = $event->getResponse();
         $this->assertNotNull($response);
@@ -108,7 +114,7 @@ class ApiExceptionListenerTest extends TestCase
             new \InvalidArgumentException('The file name is not valid.'),
         );
 
-        new ApiExceptionListener(PlatformEnvironment::PROD)->onKernelException($event);
+        new ApiExceptionListener(PlatformEnvironment::PROD, $this->serverErrorLogger)->onKernelException($event);
 
         $response = $event->getResponse();
         $this->assertNotNull($response);
@@ -128,7 +134,7 @@ class ApiExceptionListenerTest extends TestCase
             new \RuntimeException('SQLSTATE[HY000]: near "SELECT"'),
         );
 
-        new ApiExceptionListener(PlatformEnvironment::PROD)->onKernelException($event);
+        new ApiExceptionListener(PlatformEnvironment::PROD, $this->serverErrorLogger)->onKernelException($event);
 
         $response = $event->getResponse();
         $this->assertNotNull($response);
@@ -148,13 +154,46 @@ class ApiExceptionListenerTest extends TestCase
             new \RuntimeException('Something exploded'),
         );
 
-        new ApiExceptionListener(PlatformEnvironment::DEV)->onKernelException($event);
+        new ApiExceptionListener(PlatformEnvironment::DEV, $this->serverErrorLogger)->onKernelException($event);
 
         $response = $event->getResponse();
         $this->assertNotNull($response);
         $this->assertSame(
             'RuntimeException: Something exploded',
             Json::decode((string) $response->getContent())['message'],
+        );
+    }
+
+    public function testItLogsAnUnexpectedException(): void
+    {
+        $exception = new \RuntimeException('Something exploded');
+        $event = new ExceptionEvent(
+            $this->createStub(HttpKernelInterface::class),
+            Request::create('/api/v1/status'),
+            HttpKernelInterface::MAIN_REQUEST,
+            $exception,
+        );
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger
+            ->expects($this->once())
+            ->method('error')
+            ->with($this->anything(), ['exception' => $exception]);
+
+        new ApiExceptionListener(
+            PlatformEnvironment::PROD,
+            new ServerErrorLogger($logger, new FakeUuidFactory()),
+        )->onKernelException($event);
+    }
+
+    #[\Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->serverErrorLogger = new ServerErrorLogger(
+            new NullLogger(),
+            new FakeUuidFactory(),
         );
     }
 }

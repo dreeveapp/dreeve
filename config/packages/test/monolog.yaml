@@ -1,0 +1,4 @@
+monolog:
+    handlers:
+        errors:
+            type: test
