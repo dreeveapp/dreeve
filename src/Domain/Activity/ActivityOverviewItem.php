@@ -20,6 +20,7 @@ final readonly class ActivityOverviewItem implements Item
         private ?string $deviceName,
         private bool $isCommute,
         private int $totalImageCount,
+        private bool $canBeEnriched,
     ) {
     }
 
@@ -33,6 +34,7 @@ final readonly class ActivityOverviewItem implements Item
         ?string $deviceName,
         bool $isCommute,
         int $totalImageCount,
+        bool $canBeEnriched,
     ): self {
         return new self(
             activityId: $activityId,
@@ -44,6 +46,7 @@ final readonly class ActivityOverviewItem implements Item
             deviceName: $deviceName,
             isCommute: $isCommute,
             totalImageCount: $totalImageCount,
+            canBeEnriched: $canBeEnriched,
         );
     }
 
@@ -90,5 +93,10 @@ final readonly class ActivityOverviewItem implements Item
     public function getTotalImageCount(): int
     {
         return $this->totalImageCount;
+    }
+
+    public function canBeEnriched(): bool
+    {
+        return $this->canBeEnriched;
     }
 }

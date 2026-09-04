@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Activity;
 
 use App\Domain\Activity\ActivityOverviewRepository;
+use App\Domain\Activity\EnrichActivity\EnrichActivity;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Gear\GearRepository;
@@ -41,6 +42,7 @@ final readonly class ManageActivityOverviewRequestHandler
                 $filters,
             ),
             'filters' => $filters,
+            'enrichCommand' => EnrichActivity::getCommandName(),
             'sportTypeOptions' => $this->sportTypeRepository->findAll(),
             'gearOptions' => $this->gearRepository->findAllUsed(),
             'deviceOptions' => $this->recordingDeviceRepository->findAll(),

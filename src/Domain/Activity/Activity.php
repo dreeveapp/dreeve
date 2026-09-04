@@ -797,6 +797,20 @@ final class Activity
         ]));
     }
 
+    public function isMissingReverseGeocoding(): bool
+    {
+        return !$this->routeGeography->isReversedGeocoded()
+            && $this->startingCoordinate instanceof Coordinate
+            && $this->sportType->supportsReverseGeocoding();
+    }
+
+    public function isMissingWeather(): bool
+    {
+        return !$this->getWeather() instanceof Weather
+            && $this->startingCoordinate instanceof Coordinate
+            && $this->sportType->supportsWeather();
+    }
+
     public function hasMappableRoute(): bool
     {
         return $this->sportType->supportsReverseGeocoding()
@@ -851,6 +865,7 @@ final class Activity
             'startingCoordinateLatitude' => $this->startingCoordinate?->getLatitude()->toFloat(),
             'startingCoordinateLongitude' => $this->startingCoordinate?->getLongitude()->toFloat(),
             'routeGeography' => $this->routeGeography->jsonSerialize(),
+            'weather' => $this->weather,
             'gearId' => (string) $this->gearId,
             'isCommute' => $this->isCommute,
             'isGroupActivity' => $this->isGroupActivity,

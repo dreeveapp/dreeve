@@ -10,6 +10,9 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Import\ImportMode;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
+use App\Infrastructure\ValueObject\Geography\Latitude;
+use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -96,6 +99,53 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
             $detailLinks->first()->attr('href')
         );
         $this->assertSame('Activity 1', trim($detailLinks->first()->text()));
+    }
+
+    public function testWarnsAboutActivitiesThatCanBeEnriched(): void
+    {
+        $activityRepository = static::getContainer()->get(ActivityRepository::class);
+        $activityRepository->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withSportType(SportType::WALK)
+                ->withStartDateTime(SerializableDateTime::fromString('2026-06-02 08:00:00'))
+                ->withStartingCoordinate(Coordinate::createFromLatAndLng(
+                    Latitude::fromString('50.80'),
+                    Longitude::fromString('4.94'),
+                ))
+                ->build(),
+            [],
+        ));
+        $activityRepository->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('2'))
+                ->withSportType(SportType::VIRTUAL_RIDE)
+                ->withStartDateTime(SerializableDateTime::fromString('2026-06-01 08:00:00'))
+                ->build(),
+            [],
+        ));
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/activities');
+
+        $this->assertResponseIsSuccessful();
+
+        $rows = $crawler->filter('table.data-table tbody tr');
+        $this->assertCount(1, $rows->eq(0)->filter('span.text-amber-500 svg'));
+        $this->assertCount(1, $rows->eq(0)->filter('form[data-dispatch-command="enrich-activity"]'));
+        $this->assertCount(1, $rows->eq(0)->filter('form[data-dispatch-command="enrich-activity"] button[data-has-loading-state]'));
+        $this->assertStringContainsString(
+            'group-[.is-loading]:animate-spin',
+            $rows->eq(0)->filter('form[data-dispatch-command="enrich-activity"] svg')->attr('class')
+        );
+        $this->assertSame(
+            (string) ActivityId::fromUnprefixed('1'),
+            $rows->eq(0)->filter('form[data-dispatch-command="enrich-activity"] input[name="activityId"]')->attr('value')
+        );
+
+        $this->assertCount(0, $rows->eq(1)->filter('span.text-amber-500 svg'));
+        $this->assertCount(0, $rows->eq(1)->filter('form[data-dispatch-command="enrich-activity"]'));
     }
 
     #[DataProvider('provideSportTypeFilterScenarios')]

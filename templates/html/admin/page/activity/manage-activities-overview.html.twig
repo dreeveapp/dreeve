@@ -110,11 +110,20 @@
                 {% for activity in overview %}
                     <tr class="group/row">
                         <td class="whitespace-nowrap text-left">
-                            <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
-                               title="{{ activity.getName() }}"
-                               href="{{ relativeUrl('/activities/' ~ activity.getActivityId()) }}">
-                                {{ activity.getName() }}
-                            </a>
+                            <div class="flex items-center gap-1.5">
+                                <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
+                                   title="{{ activity.getName() }}"
+                                   href="{{ relativeUrl('/activities/' ~ activity.getActivityId()) }}">
+                                    {{ activity.getName() }}
+                                </a>
+                                {% if activity.canBeEnriched() %}
+                                    <span class="shrink-0 text-amber-500" title="{{ "Weather and/or reverse geocoding could not be retrieved when this activity was imported."|trans({}, 'admin') }}">
+                                        <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                        </svg>
+                                    </span>
+                                {% endif %}
+                            </div>
                         </td>
                         <td class="whitespace-nowrap text-left">
                             {{ activity.getSportType()|trans }}
@@ -153,6 +162,19 @@
                         </td>
                         <td class="narrow whitespace-nowrap sticky-actions">
                             <div class="inline-flex items-center gap-2">
+                                {% if activity.canBeEnriched() %}
+                                    <form data-dispatch-command="{{ enrichCommand }}" class="inline-flex">
+                                        <input type="hidden" name="activityId" value="{{ activity.getActivityId() }}">
+                                        <button type="submit" data-has-loading-state
+                                                class="group unstyled cursor-pointer inline-flex items-center justify-center text-gray-500 transition-colors hover:text-primary"
+                                                title="{{ "Retry weather and reverse geocoding"|trans({}, 'admin') }}">
+                                            <span class="sr-only">{{ "Retry weather and reverse geocoding"|trans({}, 'admin') }}</span>
+                                            <svg class="size-5 group-[.is-loading]:animate-spin" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                {% endif %}
                                 <a href="{{ relativeUrl(path('admin_edit_activity', {activityId: activity.getActivityId()})) }}"
                                    class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-primary"
                                    title="{{ "Edit"|trans({}, 'admin') }}">

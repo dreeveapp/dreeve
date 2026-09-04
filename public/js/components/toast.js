@@ -48,6 +48,13 @@ const buildToast = (type, message, index) => {
     return toast;
 };
 
+export const showToast = (type, message) => {
+    const toast = buildToast(type, message, 0);
+    ensureContainer().appendChild(toast);
+    setTimeout(() => removeToast(toast), AUTO_DISMISS_MS);
+    initDismisses();
+}
+
 export default function initToasts(root = document) {
     const holder = root.querySelector('#flash-messages');
     if (!holder) {

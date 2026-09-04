@@ -14,12 +14,16 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\DbalActivityOverviewRepository;
 use App\Domain\Activity\DbalActivityRepository;
 use App\Domain\Activity\ImportSource;
+use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\DbalGearRepository;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Repository\Pagination;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
+use App\Infrastructure\ValueObject\Geography\Latitude;
+use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
@@ -74,11 +78,52 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
                     deviceName: 'Garmin Forerunner',
                     isCommute: true,
                     totalImageCount: 3,
+                    canBeEnriched: false,
                 ),
             ],
             $overview->getItems()
         );
         $this->assertEquals(1, $overview->getTotal());
+    }
+
+    #[DataProvider('provideEnrichableActivities')]
+    public function testFindFlagsActivitiesThatCanBeEnriched(ActivityBuilder $builder, bool $expected): void
+    {
+        $this->activityRepository->add(ActivityWithRawData::fromState($builder->build(), []));
+
+        $overview = $this->activityOverviewRepository->find(
+            Pagination::fromOffsetAndLimit(0, 10),
+            ActivityOverviewFilters::fromRequest(new Request())
+        );
+
+        $this->assertSame($expected, $overview->getItems()[0]->canBeEnriched());
+    }
+
+    public static function provideEnrichableActivities(): iterable
+    {
+        $withStartingCoordinate = fn (): ActivityBuilder => ActivityBuilder::fromDefaults()
+            ->withSportType(SportType::WALK)
+            ->withStartingCoordinate(Coordinate::createFromLatAndLng(
+                Latitude::fromString('50.80'),
+                Longitude::fromString('4.94'),
+            ));
+
+        yield 'neither the geocoding nor the weather came through' => [
+            $withStartingCoordinate(),
+            true,
+        ];
+        yield 'already reverse geocoded but still without weather' => [
+            $withStartingCoordinate()->withRouteGeography(RouteGeography::create([RouteGeography::IS_REVERSE_GEOCODED => true])),
+            true,
+        ];
+        yield 'sport type supports neither' => [
+            $withStartingCoordinate()->withSportType(SportType::VIRTUAL_RIDE),
+            false,
+        ];
+        yield 'without starting coordinate' => [
+            ActivityBuilder::fromDefaults()->withSportType(SportType::WALK),
+            false,
+        ];
     }
 
     #[DataProvider('providePaginationScenarios')]
@@ -165,6 +210,7 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
                     deviceName: 'Garmin Forerunner',
                     isCommute: true,
                     totalImageCount: 3,
+                    canBeEnriched: false,
                 ),
             ],
             $this->activityOverviewRepository->search('Morning', 10)

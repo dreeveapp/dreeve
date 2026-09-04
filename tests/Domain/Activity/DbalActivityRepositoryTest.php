@@ -15,6 +15,7 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\Sensor\ConnectedSensor;
 use App\Domain\Gear\Sensor\ConnectedSensors;
 use App\Domain\Gear\Sensor\SensorType;
+use App\Domain\Integration\Weather\OpenMeteo\Weather;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\Length\Kilometer;
@@ -198,6 +199,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
             ))
             ->withGear(GearId::fromUnprefixed('updated'))
             ->withRouteGeography(RouteGeography::create(['state' => 'updated location']))
+            ->withWeather(Weather::fromState(['temperature_2m' => 18.5]))
             ->withCommute(true)
             ->withGroupActivity(true);
 
@@ -219,6 +221,10 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         $this->assertSame(
             4321,
             $persistedActivity->getKilojoules()
+        );
+        $this->assertSame(
+            18.5,
+            $persistedActivity->getWeather()?->getTemperatureInCelsius()->toFloat()
         );
         $this->assertEquals(
             'Updated name',

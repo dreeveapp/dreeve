@@ -123,6 +123,10 @@ services:
 
     GuzzleHttp\Client:
       class: GuzzleHttp\Client
+      arguments:
+        $config:
+          connect_timeout: 5
+          timeout: 30
 
     Money\MoneyFormatter:
         factory: '@App\Infrastructure\DependencyInjection\MoneyFormatterFactory'

@@ -317,6 +317,7 @@ Resetting...: Resetting...
 'Resting heart rate formula': 'Resting heart rate formula'
 'Restrict to date range': 'Restrict to date range'
 Retired: Retired
+'Retry weather and reverse geocoding': 'Retry weather and reverse geocoding'
 'Return to app': 'Return to app'
 Ride: Ride
 Rules: Rules
@@ -471,6 +472,7 @@ Username: Username
 'Verify token': 'Verify token'
 Version: Version
 Warning: 警告
+'Weather and/or reverse geocoding could not be retrieved when this activity was imported.': 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.'
 Webhooks: Webhooks
 Wednesday: Wednesday
 Weekday: Weekday

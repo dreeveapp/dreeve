@@ -133,6 +133,46 @@ class ActivityTest extends TestCase
         );
     }
 
+    #[DataProvider('provideEnrichableActivities')]
+    public function testIsMissingReverseGeocodingAndWeather(ActivityBuilder $builder, bool $isMissingReverseGeocoding, bool $isMissingWeather): void
+    {
+        $activity = $builder->build();
+
+        $this->assertSame($isMissingReverseGeocoding, $activity->isMissingReverseGeocoding());
+        $this->assertSame($isMissingWeather, $activity->isMissingWeather());
+    }
+
+    public static function provideEnrichableActivities(): \Generator
+    {
+        $withStartingCoordinate = fn (): ActivityBuilder => ActivityBuilder::fromDefaults()
+            ->withSportType(SportType::WALK)
+            ->withStartingCoordinate(Coordinate::createFromLatAndLng(
+                Latitude::fromString('50.80'),
+                Longitude::fromString('4.94'),
+            ));
+
+        yield 'neither the geocoding nor the weather came through' => [
+            $withStartingCoordinate(),
+            true,
+            true,
+        ];
+        yield 'already reverse geocoded' => [
+            $withStartingCoordinate()->withRouteGeography(RouteGeography::create([RouteGeography::IS_REVERSE_GEOCODED => true])),
+            false,
+            true,
+        ];
+        yield 'sport type supports neither' => [
+            $withStartingCoordinate()->withSportType(SportType::VIRTUAL_RIDE),
+            false,
+            false,
+        ];
+        yield 'without starting coordinate' => [
+            ActivityBuilder::fromDefaults()->withSportType(SportType::WALK),
+            false,
+            false,
+        ];
+    }
+
     public function testHasMappableRoute(): void
     {
         $this->assertTrue(ActivityBuilder::fromDefaults()

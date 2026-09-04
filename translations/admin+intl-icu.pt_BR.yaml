@@ -317,6 +317,7 @@ Resetting...: Restaurando...
 'Resting heart rate formula': 'Fórmula da frequência cardíaca de repouso'
 'Restrict to date range': 'Restringir a intervalo de datas'
 Retired: Aposentado
+'Retry weather and reverse geocoding': 'Retry weather and reverse geocoding'
 'Return to app': 'Retornar ao aplicativo'
 Ride: Pedal
 Rules: Regras
@@ -471,6 +472,7 @@ Username: 'Nome de usuário'
 'Verify token': 'Token de verificação'
 Version: Versão
 Warning: Aviso
+'Weather and/or reverse geocoding could not be retrieved when this activity was imported.': 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.'
 Webhooks: Webhooks
 Wednesday: Quarta-feira
 Weekday: 'Dia da semana'

@@ -26,6 +26,9 @@ final readonly class DbalActivityOverviewRepository extends DbalRepository imple
                 'a.deviceName',
                 'a.isCommute',
                 'a.totalImageCount',
+                'a.startingCoordinateLatitude',
+                'a.weather IS NULL AS weatherIsMissing',
+                'JSON_EXTRACT(a.routeGeography, "$.is_reverse_geocoded") AS isReverseGeocoded',
                 'g.name AS gearName',
             )
             ->from('Activity', 'a')
@@ -93,6 +96,9 @@ final readonly class DbalActivityOverviewRepository extends DbalRepository imple
                 'a.deviceName',
                 'a.isCommute',
                 'a.totalImageCount',
+                'a.startingCoordinateLatitude',
+                'a.weather IS NULL AS weatherIsMissing',
+                'JSON_EXTRACT(a.routeGeography, "$.is_reverse_geocoded") AS isReverseGeocoded',
                 'g.name AS gearName',
             )
             ->from('Activity', 'a')
@@ -135,6 +141,9 @@ final readonly class DbalActivityOverviewRepository extends DbalRepository imple
             deviceName: $result['deviceName'] ?? null,
             isCommute: (bool) ($result['isCommute'] ?? false),
             totalImageCount: (int) ($result['totalImageCount'] ?? 0),
+            canBeEnriched: !is_null($result['startingCoordinateLatitude'])
+                && (($sportType->supportsReverseGeocoding() && is_null($result['isReverseGeocoded']))
+                    || ($sportType->supportsWeather() && (bool) $result['weatherIsMissing'])),
         );
     }
 }

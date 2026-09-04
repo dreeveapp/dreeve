@@ -317,6 +317,7 @@ Resetting...: 'Réinitialisation en cours...'
 'Resting heart rate formula': 'Formule de la fréquence cardiaque au repos'
 'Restrict to date range': 'Restrict to date range'
 Retired: Décommissionné
+'Retry weather and reverse geocoding': 'Retry weather and reverse geocoding'
 'Return to app': "Retour à l'application"
 Ride: Ride
 Rules: Règles
@@ -471,6 +472,7 @@ Username: "Nom d'utilisateur"
 'Verify token': 'Vérifier le jeton'
 Version: Version
 Warning: Avertissement
+'Weather and/or reverse geocoding could not be retrieved when this activity was imported.': 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.'
 Webhooks: Webhooks
 Wednesday: Mercredi
 Weekday: "Jour de la semaine"
