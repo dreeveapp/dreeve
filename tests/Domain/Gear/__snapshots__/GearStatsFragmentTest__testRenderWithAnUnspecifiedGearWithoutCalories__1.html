@@ -1,0 +1,171 @@
+<html><body>
+<div class="flex items-center justify-between mb-4">
+    <nav class="flex min-w-0 max-w-full overflow-hidden " aria-label="Breadcrumb">
+    <ol class="flex min-w-0 items-center gap-x-1 text-xs font-medium">
+        <li class="inline-flex items-center shrink-0">
+                            <a href="/dashboard" data-router-link class="inline-flex items-center whitespace-nowrap text-gray-700 hover:text-primary hover:underline">    <svg class="size-4 shrink-0 mr-1.5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+    Dashboard
+</a>
+                    </li>
+                    <li class="min-w-0">
+                <div class="flex min-w-0 items-center">
+                    <svg class="size-4 shrink-0 text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                                            <span aria-current="page" title="Gear" class="ml-1 min-w-0 truncate text-gray-700">Gear</span>
+                                    </div>
+            </li>
+            </ol>
+</nav>
+    </div>
+    <!-- GEAR SUB MENU -->
+        <ul class="tabs tabs--menu-item">
+        <li>
+            <a href="/gear" data-router-link class="active">
+                Gear
+            </a>
+        </li>
+        <li>
+            <a href="/gear/maintenance" data-router-link class="flex items-center ">
+                <div class="contents" data-async-content-url="/api/internal/fragment/partial/gear/maintenance-due"></div>
+                Maintenance
+            </a>
+        </li>
+        <li>
+            <a href="/gear/recording-devices" data-router-link class="">
+                Recording devices
+            </a>
+        </li>
+    </ul>
+    <!-- GEAR STATS -->
+    <div class="grid grid-cols-1 mb-4">
+        <!-- STATS PER GEAR -->
+        <div class="mb-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            <div class="mb-4 flex items-center justify-between">
+                <h3 class="text-lg font-semibold">
+                    Gear stats
+                </h3>
+            </div>
+            <div class="relative overflow-x-auto">
+                <table id="table-gear" class="data-table" data-accordion="table-gear" data-active-classes="text-gray-500" data-inactive-classes="text-gray-500">
+                    <thead>
+                    <tr>
+                        <th rowspan="2" scope="col" class="sticky left-0 bg-gray-50">
+
+                        </th>
+                        <th rowspan="2" scope="col">
+                            # workouts
+                        </th>
+                        <th rowspan="2" scope="col">
+                            Dist.
+                        </th>
+                        <th rowspan="2" scope="col">
+                            Elev.
+                        </th>
+                        <th rowspan="2" scope="col">
+                            Moving time
+                        </th>
+                        <th rowspan="2" scope="col">
+                            Speed
+                        </th>
+                        <th rowspan="2" scope="col">
+                            Cal.
+                        </th>
+                        <th rowspan="2" scope="col">
+                            Purchase price
+                        </th>
+                        <th colspan="3" scope="col">
+                            Relative cost
+                            <div class="font-normal normal-case">
+                                per hour /
+                                per activity /
+                                per km
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                                                        <tr class="group/row">
+            <th scope="row" class="px-2 py-2 sticky left-0 font-medium bg-white whitespace-nowrap">
+                <a href="/activities?filters%5Bgear%5D=gear-none" data-router-link class="font-medium text-blue-600 hover:underline">
+                    Unspecified
+                </a>
+            </th>
+            <td class="truncate">
+                1
+            </td>
+            <td class="truncate">
+                                    10<span class="text-xxs ml-px">km avg</span> /
+                    10<span class="text-xxs ml-px">km total</span>
+                            </td>
+            <td class="truncate">
+                0<span class="text-xxs ml-px whitespace-nowrap">m</span>
+            </td>
+            <td class="truncate" title="0.0h">
+                0m
+            </td>
+            <td class="truncate">
+                3&Acirc;&nbsp;600<span class="text-xxs ml-px whitespace-nowrap">km/h</span>
+            </td>
+            <td class="truncate">
+                0<span class="text-xxs ml-px">kcal</span>
+            </td>
+            <td class="truncate">
+                                                    -
+                            </td>
+            <td class="truncate">
+                                                    -
+                            </td>
+            <td class="truncate">
+                                                    -
+                            </td>
+            <td class="truncate">
+                                                    -
+                            </td>
+        </tr>
+    
+                                                        </tbody>
+</table>
+            </div>
+        </div>
+        <!-- DISTANCE PER MONTH PER GEAR -->
+        <div class="mb-4  p-4 bg-white border border-gray-200 rounded-lg shadow-xs ">
+            <div class="mb-4 flex items-center">
+                <h3 class="text-lg font-semibold">
+                    Distance per month per gear
+                </h3>
+                <button data-popover-target="popover-distance-per-month" data-popover-placement="right" type="button">
+                    <svg class="size-4 ml-1 text-gray-400 hover:text-gray-500" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                    <span class="sr-only">Show information</span>
+                </button>
+                <div data-popover id="popover-distance-per-month" role="tooltip" class="w-50 lg:w-md inline-block text-sm">
+                    <p class="p-3">
+                        Gear that hasn't been used in the last three months, is disabled by default.
+                    </p>
+                </div>
+            </div>
+            <div class="relative overflow-x-auto">
+                <div class="h-96" data-echarts-options='{"animation":true,"grid":{"left":"3%","right":"4%","bottom":"50px","containLabel":true},"tooltip":{"trigger":"axis","axisPointer":{"type":"none"}},"legend":{"selected":[],"data":[],"type":"scroll","pageButtonItemGap":2,"pageIconSize":10},"xAxis":[{"type":"category","axisTick":{"show":false},"data":["October 2023"]}],"yAxis":[{"type":"value"}],"dataZoom":[{"type":"slider","startValue":-3,"endValue":1,"minValueSpan":4,"maxValueSpan":4,"brushSelect":false,"zoomLock":true}],"series":[]}'></div>
+            </div>
+        </div>
+        <!-- DISTANCE OVER TIME PER GEAR -->
+        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            <div class="mb-4 flex items-center">
+                <h3 class="text-lg font-semibold">
+                    Distance over time per gear
+                </h3>
+                <button data-popover-target="popover-distance-overtime" data-popover-placement="right" type="button">
+                    <svg class="size-4 ml-1 text-gray-400 hover:text-gray-500" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                    <span class="sr-only">Show information</span>
+                </button>
+                <div data-popover id="popover-distance-overtime" role="tooltip" class="w-50 lg:w-md inline-block text-sm">
+                    <p class="p-3">
+                        Gear that is retired is disabled by default.
+                    </p>
+                </div>
+            </div>
+            <div class="relative overflow-x-auto">
+                <div class="h-96" data-echarts-options='{"animation":true,"grid":{"left":"3%","right":"4%","bottom":"50px","containLabel":true},"tooltip":{"show":true,"trigger":"axis"},"legend":{"selected":[],"data":[],"type":"scroll","pageButtonItemGap":2,"pageIconSize":10},"dataZoom":[{"type":"slider","start":0,"end":100,"brushSelect":true,"zoomLock":false,"zoomOnMouseWheel":false,"labelFormatter":""}],"xAxis":[{"type":"time","axisLabel":{"formatter":{"year":"{yyyy}","month":"{MMM}","day":"{d} {MMM}","hour":"","minute":"","second":"","millisecond":"","none":""}},"axisTick":{"show":false}}],"yAxis":[{"type":"value","name":"Distance in km","nameRotate":90,"nameLocation":"middle","nameGap":50}],"series":[]}'></div>
+            </div>
+        </div>
+    </div>
+
+</body></html>

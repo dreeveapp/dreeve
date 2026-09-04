@@ -65,6 +65,28 @@ class GearStatsFragmentTest extends AdminWebTestCase
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
+    public function testRenderWithAnUnspecifiedGearWithoutCalories(): void
+    {
+        $this->addGeneralFixtures();
+        $this->addGearFixtures();
+
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            activity: ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withoutGearId()
+                ->withCalories(null)
+                ->build(),
+            rawData: []
+        ));
+
+        $this->seedActivity();
+
+        $this->client->request('GET', '/api/internal/fragment/page/gear');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
     public function testGetPath(): void
     {
         $this->provideFullTestSet();

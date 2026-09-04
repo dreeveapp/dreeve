@@ -190,7 +190,7 @@ abstract class Collection implements \Countable, \IteratorAggregate, \JsonSerial
     public function sum(\Closure $closure): int|float
     {
         /** @var array<float|int> $numbers */
-        $numbers = $this->map(fn (mixed $item): int|float => $closure($item));
+        $numbers = $this->map(fn (mixed $item): int|float => $closure($item) ?? 0);
 
         return array_sum($numbers);
     }

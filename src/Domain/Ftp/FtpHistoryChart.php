@@ -127,7 +127,9 @@ final readonly class FtpHistoryChart
                     'axisLabel' => [
                         'formatter' => '{value} w/kg',
                     ],
-                    'min' => $this->ftps->min(fn (Ftp $ftp): ?float => $ftp->getRelativeFtp()) - 1,
+                    'min' => $this->ftps
+                        ->filter(fn (Ftp $ftp): bool => null !== $ftp->getRelativeFtp())
+                        ->min(fn (Ftp $ftp): float => (float) $ftp->getRelativeFtp()) - 1,
                 ] : [],
             ],
             'series' => [

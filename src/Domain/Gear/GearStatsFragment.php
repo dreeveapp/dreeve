@@ -121,7 +121,7 @@ final readonly class GearStatsFragment implements Fragment
         $distanceInMeter = Meter::from($activitiesWithoutGear->sum(fn (Activity $activity): float => $activity->getDistance()->toMeter()->toFloat()));
         $movingTimeInSeconds = (int) $activitiesWithoutGear->sum(fn (Activity $activity): int => $activity->getMovingTimeInSeconds());
         $elevation = Meter::from($activitiesWithoutGear->sum(fn (Activity $activity): float => $activity->getElevation()->toFloat()));
-        $totalCalories = (int) $activitiesWithoutGear->sum(fn (Activity $activity): ?int => $activity->getCalories());
+        $totalCalories = (int) $activitiesWithoutGear->sum(fn (Activity $activity): int => $activity->getCalories() ?? 0);
 
         return Gear::fromState(
             gearId: GearId::none(),
