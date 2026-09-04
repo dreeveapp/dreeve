@@ -225,6 +225,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
                     new ConfiguredAction(ActionType::ASSIGN_GEAR, RuleConfiguration::fromConfig(['gearId' => 'gear-1'])),
                     new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Automated ride name'])),
                     new ConfiguredAction(ActionType::MARK_AS_COMMUTE, RuleConfiguration::empty()),
+                    new ConfiguredAction(ActionType::MARK_AS_GROUP_ACTIVITY, RuleConfiguration::empty()),
                 ]))
                 ->build()
         );
@@ -276,6 +277,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Set name', $firstRule);
         $this->assertStringContainsString('Automated ride name', $firstRule);
         $this->assertStringContainsString('Mark as commute', $firstRule);
+        $this->assertStringContainsString('Mark as group activity', $firstRule);
 
         $secondRule = $items->eq(1)->text();
         $this->assertStringContainsString('Distance', $secondRule);

@@ -221,6 +221,7 @@ Male: Férfi
 Manage: Kezelés
 Maps: Térképek
 'Mark as commute': 'Megjelölés ingázásként'
+'Mark as group activity': 'Megjelölés csoportos tevékenységként'
 Match: Illeszkedés
 "Matches on the activity's finishing point.": 'A tevékenység végpontjára illeszkedik.'
 "Matches on the activity's starting point.": 'A tevékenység kezdőpontjára illeszkedik.'
@@ -403,6 +404,7 @@ Tasks: Feladatok
 'The URL the app is hosted on.': 'Az URL, amelyen az alkalmazás elérhető.'
 'The activity started': 'A tevékenység elkezdődött'
 'The activity will be marked as a commute.': 'A tevékenység ingázásként lesz megjelölve.'
+'The activity will be marked as a group activity.': 'A tevékenység csoportos tevékenységként lesz megjelölve.'
 'The allowed IP addresses above do not apply to it, the key is the only access control there.': 'A fenti engedélyezett IP-címek erre nem vonatkoznak, ott a kulcs az egyetlen hozzáférés-vezérlés.'
 'The average cadence': 'Az átlagos kadencia'
 'The average heart rate': 'Az átlagos pulzus'

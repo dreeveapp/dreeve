@@ -110,6 +110,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $actionOptions = $crawler->filter('select[name="actions[__index__][type]"] option')->extract(['value']);
         $this->assertContains('assignGear', $actionOptions);
         $this->assertContains('setDescription', $actionOptions);
+        $this->assertContains('markAsGroupActivity', $actionOptions);
 
         // The set device action ships a combobox around a plain, submittable text input.
         $this->assertCount(1, $crawler->filter('[data-combobox]'));

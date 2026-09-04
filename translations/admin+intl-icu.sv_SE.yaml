@@ -221,6 +221,7 @@ Male: Male
 Manage: Manage
 Maps: Maps
 'Mark as commute': 'Mark as commute'
+'Mark as group activity': 'Mark as group activity'
 Match: Match
 "Matches on the activity's finishing point.": "Matches on the activity's finishing point."
 "Matches on the activity's starting point.": "Matches on the activity's starting point."
@@ -403,6 +404,7 @@ Tasks: Tasks
 'The URL the app is hosted on.': 'The URL the app is hosted on.'
 'The activity started': 'The activity started'
 'The activity will be marked as a commute.': 'The activity will be marked as a commute.'
+'The activity will be marked as a group activity.': 'The activity will be marked as a group activity.'
 'The allowed IP addresses above do not apply to it, the key is the only access control there.': 'The allowed IP addresses above do not apply to it, the key is the only access control there.'
 'The average cadence': 'The average cadence'
 'The average heart rate': 'The average heart rate'

@@ -221,6 +221,7 @@ Male: Männlich
 Manage: Verwalten
 Maps: Karte
 'Mark as commute': 'Als Pendelfahrt markieren'
+'Mark as group activity': 'Als Gruppenaktivität markieren'
 Match: Übereinstimmung
 "Matches on the activity's finishing point.": 'Übereinstimmungen am Ende der Aktivität.'
 "Matches on the activity's starting point.": 'Übereinstimmungen am Beginn der Aktivität'
@@ -403,6 +404,7 @@ Tasks: Aufgaben
 'The URL the app is hosted on.': 'Die URL, unter der die App gehostet wird.'
 'The activity started': 'Die Aktivität begann'
 'The activity will be marked as a commute.': 'Die Aktivität wird als Pendelfahrt markiert.'
+'The activity will be marked as a group activity.': 'Die Aktivität wird als Gruppenaktivität markiert.'
 'The allowed IP addresses above do not apply to it, the key is the only access control there.': 'Die oben angegebenen zulässigen IP-Adressen gelten nicht dafür – der Schlüssel ist der einzige Zugriffschutz.'
 'The average cadence': 'Die durchschnittliche Trittfrequenz'
 'The average heart rate': 'Die durchschnittliche Herzfrequenz'
