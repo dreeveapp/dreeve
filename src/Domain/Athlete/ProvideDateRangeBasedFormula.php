@@ -27,13 +27,21 @@ trait ProvideDateRangeBasedFormula
     public function calculate(int $age, SerializableDateTime $on): int
     {
         $on = SerializableDateTime::fromString($on->format('Y-m-d'));
-        foreach ($this->getRanges() as $range) {
+        $ranges = $this->getRanges();
+
+        foreach ($ranges as $range) {
             [$date, $maxHeartRate] = $range;
             if ($on->isAfterOrOn($date)) {
                 return $maxHeartRate;
             }
         }
 
-        throw new InvalidHeartRateFormula(sprintf('HEART_RATE_FORMULA: could not determine heart rate for given date "%s"', $on->format('Y-m-d')));
+        if ([] === $ranges) {
+            throw new InvalidHeartRateFormula(sprintf('HEART_RATE_FORMULA: could not determine heart rate for given date "%s"', $on->format('Y-m-d')));
+        }
+
+        [, $maxHeartRate] = $ranges[array_key_last($ranges)];
+
+        return $maxHeartRate;
     }
 }
