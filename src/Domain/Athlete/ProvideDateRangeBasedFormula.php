@@ -40,7 +40,7 @@ trait ProvideDateRangeBasedFormula
             throw new InvalidHeartRateFormula(sprintf('HEART_RATE_FORMULA: could not determine heart rate for given date "%s"', $on->format('Y-m-d')));
         }
 
-        [, $maxHeartRate] = $ranges[array_key_last($ranges)];
+        [, $maxHeartRate] = array_last($ranges);
 
         return $maxHeartRate;
     }
