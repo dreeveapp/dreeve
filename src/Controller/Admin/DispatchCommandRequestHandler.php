@@ -8,6 +8,7 @@ use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\CommandDeserializer;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
+use App\Infrastructure\CQRS\Command\ProvidesFlashMessage;
 use App\Infrastructure\CQRS\Command\SuppressesFlashMessage;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,7 +60,9 @@ final readonly class DispatchCommandRequestHandler
         if (!$suppressesFlash && $session instanceof FlashBagAwareSessionInterface) {
             $session->getFlashBag()->add(
                 type: 'success',
-                message: $this->translator->trans('Your changes have been saved.', [], 'admin')
+                message: $command instanceof ProvidesFlashMessage
+                    ? $command->getFlashMessage($this->translator)
+                    : $this->translator->trans('Your changes have been saved.', [], 'admin')
             );
         }
 

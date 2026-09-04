@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller\Admin;
 
+use App\Domain\Activity\EnrichActivity\EnrichActivity;
 use App\Domain\Dashboard\AddWidget\AddWidget;
 use App\Domain\Import\UploadActivityFile\UploadActivityFile;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
@@ -83,6 +84,38 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
 
         $this->assertSame(
             ['Your changes have been saved.'],
+            $this->client->getRequest()->getSession()->getFlashBag()->peek('success'),
+        );
+    }
+
+    public function testHandleUsesTheFlashMessageProvidedByTheCommand(): void
+    {
+        $this->client->loginUser($this->adminUser());
+        $this->client->disableReboot();
+
+        $spyCommandBus = new SpyCommandBus();
+        static::getContainer()->set(CommandBus::class, $spyCommandBus);
+
+        $this->client->request(
+            method: 'POST',
+            uri: '/admin/dispatchCommand',
+            server: ['HTTP_X_CSRF_TOKEN' => $this->validCsrfToken()],
+            content: Json::encode([
+                'commandName' => 'enrich-activity',
+                'payload' => [
+                    'activityId' => 'activity-1',
+                ],
+            ]),
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
+
+        $dispatchedCommands = $spyCommandBus->getDispatchedCommands();
+        $this->assertCount(1, $dispatchedCommands);
+        $this->assertInstanceOf(EnrichActivity::class, $dispatchedCommands[0]);
+
+        $this->assertSame(
+            ['Weather and reverse geocoding have been retrieved.'],
             $this->client->getRequest()->getSession()->getFlashBag()->peek('success'),
         );
     }

@@ -222,8 +222,8 @@ Manage: Gerenciar
 Maps: Mapas
 'Mark as commute': 'Marcar como deslocamento'
 Match: Corresponder
-"Matches on the activity's finishing point.": "Corresponde ao ponto final da atividade."
-"Matches on the activity's starting point.": "Corresponde ao ponto inicial da atividade."
+"Matches on the activity's finishing point.": 'Corresponde ao ponto final da atividade.'
+"Matches on the activity's starting point.": 'Corresponde ao ponto inicial da atividade.'
 'Matches when any point of the route comes near the location.': 'Corresponde quando qualquer ponto da rota passa perto do local.'
 'Matching activities': 'Atividades correspondentes'
 'Max heart rate (bpm)': 'Frequência cardíaca máxima (bpm)'
@@ -262,7 +262,7 @@ Monday: Segunda-feira
 'Number of tasks to display': 'Número de tarefas para exibir'
 'Number of widgets of this type you already have configured.': 'Número de widgets deste tipo que você já configurou.'
 'Only show activities with a map': 'Mostrar apenas atividades com mapa'
-"Oops, looks like you've wandered off the map! 🗺️": "Ops, parece que você saiu do mapa! 🗺️"
+"Oops, looks like you've wandered off the map! 🗺️": 'Ops, parece que você saiu do mapa! 🗺️'
 Operator: Operador
 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'YAML opcional para zonas específicas por intervalo de datas e tipo de esporte. Deixe vazio a menos que saiba que precisa.'
 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Link opcional para sua foto de perfil, exibida na barra de navegação. Recomenda-se uma imagem quadrada. Deixe vazio para desativar.'
@@ -472,6 +472,7 @@ Username: 'Nome de usuário'
 'Verify token': 'Token de verificação'
 Version: Versão
 Warning: Aviso
+'Weather and reverse geocoding have been retrieved.': 'Weather and reverse geocoding have been retrieved.'
 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.': 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.'
 Webhooks: Webhooks
 Wednesday: Quarta-feira

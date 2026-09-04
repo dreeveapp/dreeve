@@ -20,17 +20,22 @@ use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\Domain\Integration\Geocoding\Nominatim\SpyNominatim;
+use App\Tests\Domain\Integration\Weather\OpenMeteo\SpyOpenMeteo;
 
 class EnrichActivityCommandHandlerTest extends ContainerTestCase
 {
     private ActivityRepository $activityRepository;
+    private SpyNominatim $nominatim;
+    private SpyOpenMeteo $openMeteo;
+    private EnrichActivityCommandHandler $handler;
 
     public function testHandle(): void
     {
         $this->addActivityThatNeedsEnriching(ActivityId::fromUnprefixed('needs-both'));
+        $this->openMeteo->returnHourlyWeatherStats();
 
-        $this->handlerWith(new ReverseGeocodingNominatimStub(), new RespondingOpenMeteoStub())
-            ->handle(new EnrichActivity(ActivityId::fromUnprefixed('needs-both')));
+        $this->handler->handle(new EnrichActivity(ActivityId::fromUnprefixed('needs-both')));
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('needs-both'));
 
@@ -47,9 +52,9 @@ class EnrichActivityCommandHandlerTest extends ContainerTestCase
             activityId: ActivityId::fromUnprefixed('has-countries'),
             routeGeography: RouteGeography::create([RouteGeography::PASSED_TROUGH_COUNTRIES => ['BE']]),
         );
+        $this->openMeteo->returnHourlyWeatherStats();
 
-        $this->handlerWith(new ReverseGeocodingNominatimStub(), new RespondingOpenMeteoStub())
-            ->handle(new EnrichActivity(ActivityId::fromUnprefixed('has-countries')));
+        $this->handler->handle(new EnrichActivity(ActivityId::fromUnprefixed('has-countries')));
 
         $this->assertSame(
             ['be'],
@@ -60,10 +65,11 @@ class EnrichActivityCommandHandlerTest extends ContainerTestCase
     public function testHandleWhenNominatimCannotBeReached(): void
     {
         $this->addActivityThatNeedsEnriching(ActivityId::fromUnprefixed('no-nominatim'));
+        $this->openMeteo->returnHourlyWeatherStats();
+        $this->nominatim->triggerExceptionOnNextCall();
 
         try {
-            $this->handlerWith(new UnreachableNominatimStub(), new RespondingOpenMeteoStub())
-                ->handle(new EnrichActivity(ActivityId::fromUnprefixed('no-nominatim')));
+            $this->handler->handle(new EnrichActivity(ActivityId::fromUnprefixed('no-nominatim')));
             $this->fail('Expected CouldNotProcessCommand');
         } catch (CouldNotProcessCommand $exception) {
             $this->assertSame(
@@ -81,10 +87,10 @@ class EnrichActivityCommandHandlerTest extends ContainerTestCase
     public function testHandleWhenOpenMeteoCannotBeReached(): void
     {
         $this->addActivityThatNeedsEnriching(ActivityId::fromUnprefixed('no-open-meteo'));
+        $this->openMeteo->triggerExceptionOnNextCall();
 
         try {
-            $this->handlerWith(new ReverseGeocodingNominatimStub(), new UnreachableOpenMeteoStub())
-                ->handle(new EnrichActivity(ActivityId::fromUnprefixed('no-open-meteo')));
+            $this->handler->handle(new EnrichActivity(ActivityId::fromUnprefixed('no-open-meteo')));
             $this->fail('Expected CouldNotProcessCommand');
         } catch (CouldNotProcessCommand $exception) {
             $this->assertSame(
@@ -108,9 +114,10 @@ class EnrichActivityCommandHandlerTest extends ContainerTestCase
                 ->build(),
             []
         ));
+        $this->nominatim->triggerExceptionOnNextCall();
+        $this->openMeteo->triggerExceptionOnNextCall();
 
-        $this->handlerWith(new UnreachableNominatimStub(), new UnreachableOpenMeteoStub())
-            ->handle(new EnrichActivity(ActivityId::fromUnprefixed('virtual')));
+        $this->handler->handle(new EnrichActivity(ActivityId::fromUnprefixed('virtual')));
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('virtual'));
 
@@ -135,20 +142,19 @@ class EnrichActivityCommandHandlerTest extends ContainerTestCase
         ));
     }
 
-    private function handlerWith(Nominatim $nominatim, OpenMeteo $openMeteo): EnrichActivityCommandHandler
-    {
-        return new EnrichActivityCommandHandler(
-            $this->activityRepository,
-            $nominatim,
-            $openMeteo,
-        );
-    }
-
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->activityRepository = $this->getContainer()->get(ActivityRepository::class);
+        $this->nominatim = $this->getContainer()->get(Nominatim::class);
+        $this->openMeteo = $this->getContainer()->get(OpenMeteo::class);
+
+        $this->handler = new EnrichActivityCommandHandler(
+            $this->activityRepository,
+            $this->nominatim,
+            $this->openMeteo,
+        );
     }
 }

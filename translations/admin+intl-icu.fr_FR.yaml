@@ -1,4 +1,4 @@
-24-hour: 24 heures
+24-hour: '24 heures'
 'A backfill is already queued. It runs on the next import cycle, within five minutes.': 'A backfill is already queued. It runs on the next import cycle, within five minutes.'
 'A rule applies': 'A rule applies'
 AI: IA
@@ -92,7 +92,7 @@ Clear: Effacer
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Click the map to set the location, or drag the marker to fine-tune it.'
 Close: Fermer
 Command: Command
-Commute: Trajet domicile-travail
+Commute: 'Trajet domicile-travail'
 Component: Component
 'Conditions are combined with AND.': 'Conditions are combined with AND.'
 Config: Config
@@ -118,7 +118,7 @@ Delete: Supprimer
 'Delete file import': 'Delete file import'
 'Delete maintenance log': 'Delete maintenance log'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.'
-Deleting...: Suppression en cours...
+Deleting...: 'Suppression en cours...'
 Description: Description
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.'
 Disabled: Désactivé
@@ -139,7 +139,7 @@ Elevation: Dénivelé
 'Enable AI integration': 'Enable AI integration'
 'Enable Strava webhooks': 'Enable Strava webhooks'
 Enabled: Activé
-Endpoint: Point de passage
+Endpoint: 'Point de passage'
 'Ends near': 'Ends near'
 'Energy in kJ will be calculated from average power × moving time, for activities that do not already provide it.': 'Energy in kJ will be calculated from average power × moving time, for activities that do not already provide it.'
 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.': 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.'
@@ -156,9 +156,9 @@ Female: Femme
 'File imports are only available in file import mode': "L'import de fichiers est uniquement disponible en mode import de fichier"
 'File upload': 'Téléversement de fichier'
 'File upload is only available in file import mode': 'Le Téléversement de fichiers est uniquement disponible en mode import de fichier'
-Filename: Nom du fichier
+Filename: 'Nom du fichier'
 Filter: Filtre
-'First name': 'Prénom'
+'First name': Prénom
 'Fixed value': 'Fixed value'
 Friday: Vendredi
 From: Origine
@@ -305,7 +305,7 @@ Remove: Supprimer
 'Remove task': 'Remove task'
 'Remove tile layer': 'Remove tile layer'
 'Remove widget': 'Remove widget'
-Removing...: "Suppression en cours"
+Removing...: 'Suppression en cours'
 'Render the map tiles in greyscale': 'Render the map tiles in greyscale'
 "Reorder widgets and set each widget's width.": "Reorder widgets and set each widget's width."
 'Require a login for the entire app': 'Require a login for the entire app'
@@ -326,7 +326,7 @@ Saturday: Samedi
 Save: Enregistrer
 'Save settings': 'Enregistrer les paramètres'
 Saved: Enregistré
-Saving...: "Enregistrement en cours"
+Saving...: 'Enregistrement en cours'
 'Scheduled actions the daemon runs at regular intervals.': 'Scheduled actions the daemon runs at regular intervals.'
 'Search by name, date or activity ID': 'Search by name, date or activity ID'
 Seconds: Secondes
@@ -365,9 +365,9 @@ Settings: Paramètres
 'Show password': 'Voir le mot de passe'
 'Show the workout assistant in the UI.': 'Show the workout assistant in the UI.'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'
-'Sign in': 'Connexion'
+'Sign in': Connexion
 'Sign in to the admin panel': "Connexion au panneau d'administration"
-'Sign out': 'Déconnexion'
+'Sign out': Déconnexion
 'Signing in...': 'Connexion en cours...'
 'Skip activities recorded before': 'Skip activities recorded before'
 Skipped: Skipped
@@ -472,11 +472,12 @@ Username: "Nom d'utilisateur"
 'Verify token': 'Vérifier le jeton'
 Version: Version
 Warning: Avertissement
+'Weather and reverse geocoding have been retrieved.': 'Weather and reverse geocoding have been retrieved.'
 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.': 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.'
 Webhooks: Webhooks
 Wednesday: Mercredi
-Weekday: "Jour de la semaine"
-Weekdays: "Jours de la semaine"
+Weekday: 'Jour de la semaine'
+Weekdays: 'Jours de la semaine'
 'What is my FTP?': 'What is my FTP?'
 "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes."
 'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'

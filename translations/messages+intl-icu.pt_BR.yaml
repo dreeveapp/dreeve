@@ -12,8 +12,8 @@
 'ATL (Fatigue)': 'ATL (Fadiga)'
 'Accumulated fatigue': 'Fadiga acumulada'
 'Active days': 'Dias ativos'
-'Activities': 'Atividades'
-'Activity': 'Atividade'
+Activities: Atividades
+Activity: Atividade
 'Activity count': 'Contagem de atividades'
 'Activity heatmap': 'Mapa de calor de atividades'
 'Activity locations': 'Locais de atividades'
@@ -23,25 +23,25 @@
 'Adaptive & Inclusive Sports': 'Esportes Adaptados e Inclusivos'
 'Admin panel': 'Painel de administração'
 'Aero sensor': 'Sensor aerodinâmico'
-'Afternoon': 'Tarde'
-'All': 'Todos'
+Afternoon: Tarde
+All: Todos
 'All time': 'Desde o início'
 'Alpine Ski': 'Esqui Alpino'
-'Apr': 'Abr'
+Apr: Abr
 'Ask Mark something...': 'Pergunte algo ao Mark...'
 'Athlete profile': 'Perfil do atleta'
-'Aug': 'Ago'
-'Average': 'Média'
+Aug: Ago
+Average: Média
 'Average gradient': 'Inclinação média'
 'Avg gradient': 'Inclinação média'
 'Avg pace': 'Ritmo médio'
 'Avg speed': 'Velocidade média'
 'Back Country Ski': 'Esqui Fora de Pista'
-'Badges': 'Emblemas'
-'Badminton': 'Badminton'
-'Bananas': 'Bananas'
-'Basketball': 'Basquete'
-'Best': 'Melhor'
+Badges: Emblemas
+Badminton: Badminton
+Bananas: Bananas
+Basketball: Basquete
+Best: Melhor
 'Best effort': 'Melhor esforço'
 'Best efforts': 'Melhores Esforços'
 'Best efforts for {sportType}': 'Melhores esforços para {sportType}'
@@ -49,54 +49,54 @@
 'Bike radar': 'Radar de bicicleta'
 'Build zone (–10)': 'Zona de construção (–10)'
 'CTL (Fitness)': 'CTL (Condicionamento)'
-'Cadence': 'Cadência'
+Cadence: Cadência
 'Cadence sensor': 'Sensor de cadência'
-'Cal.': 'Cal.'
-'Calories': 'Calorias'
+Cal.: Cal.
+Calories: Calorias
 'Calories burned': 'Calorias queimadas'
 'Calories burnt': 'Calorias queimadas'
-'Canoeing': 'Canoagem'
+Canoeing: Canoagem
 'Carbon saved': 'Carbono economizado'
 'Challenge consistency': 'Consistência nos desafios'
-'Challenges': 'Desafios'
+Challenges: Desafios
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Carga Crônica de Treinamento (Condicionamento) - Média móvel exponencial de 42 dias da sua carga de treino diária. Representa a adaptação ao treinamento de longo prazo.'
 'Clear all filters': 'Limpar todos os filtros'
 'Clear chat': 'Limpar conversa'
-'Columns': 'Colunas'
-'Commute': 'Deslocamento'
-'Commutes': 'Deslocamentos'
+Columns: Colunas
+Commute: Deslocamento
+Commutes: Deslocamentos
 'Commutes only': 'Apenas deslocamentos'
-'Compare': 'Comparar'
+Compare: Comparar
 'Compare to': 'Comparar com'
 'Completed {threshold} activities': 'Concluiu {threshold} atividades'
-'Components': 'Componentes'
+Components: Componentes
 'Configure gear maintenance': 'Configurar manutenção do equipamento'
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Parabéns! Você alcançou {numberOfPRs} RPs nesta atividade.'
 'Consider reducing load': 'Considere reduzir a carga'
-'Consistency': 'Consistência'
-'Country': 'País'
-'Cricket': 'Críquete'
-'Crossfit': 'Crossfit'
+Consistency: Consistência
+Country: País
+Cricket: Críquete
+Crossfit: Crossfit
 'Crunching the numbers...': 'Calculando os números...'
 'Current Status': 'Status atual'
 'Current streaks': 'Sequências atuais'
-'Cycling': 'Ciclismo'
+Cycling: Ciclismo
 'Daily TRIMP': 'TRIMP Diário'
 'Daily activities': 'Atividades diárias'
-'Dance': 'Dança'
+Dance: Dança
 'Dark mode': 'Modo escuro'
-'Dashboard': 'Painel'
-'Date': 'Data'
-'Day': 'Dia'
+Dashboard: Painel
+Date: Data
+Day: Dia
 'Days needed': 'Dias necessários'
 'Daytime stats': 'Estatísticas por período do dia'
-'Dec': 'Dez'
+Dec: Dez
 'Decreased compared to yesterday': 'Diminuiu em comparação a ontem'
-'Density': 'Densidade'
-'Details': 'Detalhes'
-'Device': 'Dispositivo'
-'Dist.': 'Dist.'
-'Distance': 'Distância'
+Density: Densidade
+Details: Detalhes
+Device: Dispositivo
+Dist.: Dist.
+Distance: Distância
 'Distance & Elevation': 'Distância e Elevação'
 'Distance (single activity)': 'Distância (atividade única)'
 'Distance breakdown': 'Divisão da distância'
@@ -105,13 +105,13 @@
 'Distance over time per gear': 'Distância ao longo do tempo por equipamento'
 'Distance per month per gear': 'Distância por mês por equipamento'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Variar entre ciclismo, corrida, natação e treino de força aumenta sua pontuação de variedade.'
-'Duration': 'Duração'
+Duration: Duração
 'Dusting off the record books...': 'Consultando os recordes...'
 'E-Bike Ride': 'Pedal de E-Bike'
 'E-Bike Rides': 'Pedais de E-Bike'
 'E-Mountain Bike Ride': 'Pedal de E-MTB'
 'E-Mountain Bike Rides': 'Pedais de E-MTB'
-'Eddington': 'Eddington'
+Eddington: Eddington
 'Eddington number': 'Número de Eddington'
 'Eddington over time': 'Eddington ao longo do tempo'
 'Edit dashboard': 'Editar painel'
@@ -119,22 +119,22 @@
 'Effort vs heart rate': 'Esforço vs. frequência cardíaca'
 'Elapsed time': 'Tempo decorrido'
 'Electronic shifting': 'Câmbio eletrônico'
-'Elev': 'Desnível'
-'Elev.': 'Elev.'
-'Elevation': 'Elevação'
+Elev: Desnível
+Elev.: Elev.
+Elevation: Elevação
 'Elevation (single activity)': 'Elevação (atividade única)'
 'Elevation in {unit}': 'Elevação em {unit}'
-'Elliptical': 'Elíptico'
-'Energy': 'Energia'
+Elliptical: Elíptico
+Energy: Energia
 'Energy burned across your activities': 'Energia gasta ao longo das suas atividades'
 'Enter fullscreen mode': 'Entrar no modo tela cheia'
-'Evening': 'Noite'
+Evening: Noite
 'Excludes commutes': 'Ocultar deslocamentos'
 'Excludes group activities': 'Ocultar atividades em grupo'
 'FTP history': 'Histórico de FTP'
-'Fastest': 'Mais rápido'
-'Favourite': 'Favorito'
-'Feb': 'Fev'
+Fastest: 'Mais rápido'
+Favourite: Favorito
+Feb: Fev
 'Filling up the bottles...': 'Enchendo as garrafinhas...'
 'Filter on KOM segments': 'Filtrar por segmentos KOM'
 'Filter on country': 'Filtrar por país'
@@ -142,53 +142,53 @@
 'Filter on starred segments': 'Filtrar por segmentos favoritos'
 'First activity in {countryName}': 'Primeira atividade em {countryName}'
 'First-ever activity recorded': 'Primeira atividade registrada'
-'Firsts': 'Primeiras conquistas'
-'Fitness': 'Condicionamento'
+Firsts: 'Primeiras conquistas'
+Fitness: Condicionamento
 'Fitness may be declining due to low recent training load': 'O condicionamento pode estar diminuindo devido à baixa carga de treino recente'
 'Fitness may decline': 'O condicionamento pode diminuir'
 'Foot pod': 'Sensor de passada (Foot pod)'
 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.': 'Por exemplo, um número de Eddington de 70 significa que um ciclista pedalou pelo menos 70 km ou milhas em um dia em pelo menos 70 ocasiões. Alcançar um número de Eddington alto é difícil, pois passar de 70 para 75 exigirá (provavelmente) mais de cinco novos treinos de longa distância, já que qualquer treino menor que 75 km ou milhas não será mais incluído na contagem.'
 'Form (TSB)': 'Forma (TSB)'
-'Fri': 'Sex'
-'Fri.': 'Sex.'
+Fri: Sex
+Fri.: Sex.
 'Front rings': 'Coroas dianteiras'
 'Front shifts': 'Trocas dianteiras'
-'GAP': 'GAP'
-'Gear': 'Equipamento'
+GAP: GAP
+Gear: Equipamento
 'Gear maintenance': 'Manutenção de equipamento'
 'Gear stats': 'Estatísticas do equipamento'
-'Gear that hasn''t been used in the last three months, is disabled by default.': 'Equipamento não utilizado nos últimos três meses é desativado por padrão.'
+"Gear that hasn't been used in the last three months, is disabled by default.": 'Equipamento não utilizado nos últimos três meses é desativado por padrão.'
 'Gear that is retired is disabled by default.': 'Equipamento aposentado é desativado por padrão.'
 'Go to activity': 'Ir para a atividade'
-'Goal': 'Meta'
-'Golf': 'Golfe'
+Goal: Meta
+Golf: Golfe
 'Good training variety': 'Boa variedade de treino'
 'Google searches': 'Pesquisas no Google'
-'Grad.': 'Incl.'
-'Gradient': 'Inclinação'
+Grad.: Incl.
+Gradient: Inclinação
 'Gravel Ride': 'Pedal de Gravel'
 'Gravel Rides': 'Pedais de Gravel'
 'Group activities': 'Atividades em grupo'
 'Group activities only': 'Apenas atividades em grupo'
 'Group activity': 'Atividade em grupo'
-'Guidelines vary by individual; for more information see Joe Friel''s ''The Cyclist''s Training Bible'' or TrainingPeaks'' research documentation.': 'As diretrizes variam de acordo com o indivíduo; para mais informações, consulte ''A Bíblia de Treinamento do Ciclista'' de Joe Friel ou a documentação de pesquisa do TrainingPeaks.'
-'HIIT': 'HIIT'
-'HR': 'FC'
+"Guidelines vary by individual; for more information see Joe Friel's 'The Cyclist's Training Bible' or TrainingPeaks' research documentation.": "As diretrizes variam de acordo com o indivíduo; para mais informações, consulte 'A Bíblia de Treinamento do Ciclista' de Joe Friel ou a documentação de pesquisa do TrainingPeaks."
+HIIT: HIIT
+HR: FC
 'Hand Cycle': 'Ciclismo Manual'
 'Heart rate': 'Frequência cardíaca'
 'Heart rate monitor': 'Monitor de frequência cardíaca'
 'Heart rate zone distribution over the past month. For effective polarized training, your workouts should primarily fall within the following zones': 'Distribuição das zonas de frequência cardíaca no último mês. Para um treinamento polarizado eficaz, seus treinos devem estar concentrados principalmente nas seguintes zonas'
 'Heart rate zones': 'Zonas de frequência cardíaca'
-'Heatmap': 'Mapa de calor'
-'High': 'Alta'
+Heatmap: 'Mapa de calor'
+High: Alta
 'High fatigue levels may increase injury or burnout risk. Consider reducing load and prioritizing recovery': 'Altos níveis de fadiga podem aumentar o risco de lesões ou esgotamento. Considere reduzir a carga e priorizar a recuperação'
 'High monotony - increase variety': 'Alta monotonia - aumente a variedade'
 'High risk': 'Alto risco'
 'Highlight visited countries': 'Destacar países visitados'
 'Highly recovered and ready to perform': 'Totalmente recuperado e pronto para render'
-'Hike': 'Trilha'
-'Hikes': 'Trilhas'
-'History': 'Histórico'
+Hike: Trilha
+Hikes: Trilhas
+History: Histórico
 'History (6 weeks)': 'Histórico (6 semanas)'
 'How diverse is your training': 'Quão diversificado é o seu treino'
 'How hard is your typical training session': 'Qual a intensidade da sua sessão de treino típica'
@@ -197,19 +197,19 @@
 'How much training you do in total on days you train.': 'Quanto treino você faz no total nos dias em que treina.'
 'How often do you train': 'Com que frequência você treina'
 'Ice Skate': 'Patinação no Gelo'
-'Imperial': 'Imperial'
-'In that time, I’ve covered {totalDistance}, that''s {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that''s {totalTimeRecorded} of moving time 🎉.': 'Nesse tempo, percorri {totalDistance}, o que equivale a {numberOfTripsAroundTheWorld} voltas ao mundo 🌍 ou {numberOfTripsToTheMoonPercent}% do caminho até a Lua 🌕, e acumulei uma elevação de {totalElevation}, o que representa {timesMountEverest} vezes o Monte Everest 🏔. No total, são {totalTimeRecorded} de tempo em movimento 🎉.'
+Imperial: Imperial
+"In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'Nesse tempo, percorri {totalDistance}, o que equivale a {numberOfTripsAroundTheWorld} voltas ao mundo 🌍 ou {numberOfTripsToTheMoonPercent}% do caminho até a Lua 🌕, e acumulei uma elevação de {totalElevation}, o que representa {timesMountEverest} vezes o Monte Everest 🏔. No total, são {totalTimeRecorded} de tempo em movimento 🎉.'
 'Increased compared to yesterday': 'Aumentou em comparação a ontem'
 'Individual thresholds vary based on fitness level.': 'Os limiares individuais variam de acordo com o nível de condicionamento físico.'
 'Inline Skate': 'Patinação em Linha'
-'Intensity': 'Intensidade'
-'Jan': 'Jan'
-'Jul': 'Jul'
-'Jun': 'Jun'
-'KOM': 'KOM'
-'Kayaking': 'Caiaque'
-'Kite Surf': 'Kitesurf'
-'Lap': 'Volta'
+Intensity: Intensidade
+Jan: Jan
+Jul: Jul
+Jun: Jun
+KOM: KOM
+Kayaking: Caiaque
+'Kite Surf': Kitesurf
+Lap: Volta
 'Last 30 days': 'Últimos 30 dias'
 'Last 7 days training load': 'Carga de treino dos últimos 7 dias'
 'Last activity': 'Última atividade'
@@ -219,11 +219,11 @@
 'Last month': 'Último mês'
 'Last week': 'Última semana'
 'Last {numberOfDays} days': 'Últimos {numberOfDays} dias'
-'Lifetime': 'Vitalício'
+Lifetime: Vitalício
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Fadiga leve com boa prontidão. Um ótimo equilíbrio para treinos de qualidade ou esforços mais longos'
-'Load': 'Carga'
+Load: Carga
 'Load (CTL/ATL)': 'Carga (CTL/ATL)'
-'Loading...': 'Carregando...'
+Loading...: Carregando...
 'Locations over the globe': 'Locais ao redor do globo'
 'Long run': 'Corrida longa'
 'Longest activity': 'Atividade mais longa'
@@ -231,31 +231,31 @@
 'Longest day': 'Dia mais longo'
 'Longest distance': 'Maior distância'
 'Longest streaks': 'Maiores sequências'
-'Low': 'Baixa'
+Low: Baixa
 'Low risk': 'Baixo risco'
 'Low training load': 'Baixa carga de treino'
-'Maintenance': 'Manutenção'
+Maintenance: Manutenção
 'Manage activities': 'Gerenciar atividades'
 'Manage gear': 'Gerenciar equipamentos'
 'Manage recording devices': 'Gerenciar dispositivos de gravação'
 'Map settings': 'Configurações de mapa'
-'Mar': 'Mar'
-'Max': 'Máx'
+Mar: Mar
+Max: Máx
 'Max gradient': 'Inclinação máxima'
-'May': 'Mai'
-'Medium': 'Média'
-'Metric': 'Métrico'
+May: Mai
+Medium: Média
+Metric: Métrico
 'Metrics settings': 'Configurações de métricas'
-'Milestones': 'Marcos'
+Milestones: Marcos
 'Mind & Body Sports': 'Esportes para Corpo e Mente'
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Fadiga moderada com condicionamento estável. Bem adequado para treinos consistentes no dia a dia'
 'Moderate monotony': 'Monotonia moderada'
-'Mon': 'Seg'
-'Mon.': 'Seg.'
-'Monotony': 'Monotonia'
-'Monthly': 'Mensal'
+Mon: Seg
+Mon.: Seg.
+Monotony: Monotonia
+Monthly: Mensal
 'Monthly stats': 'Estatísticas mensais'
-'Morning': 'Manhã'
+Morning: Manhã
 'Most elevation': 'Maior ganho de elevação'
 'Most recent activities': 'Atividades mais recentes'
 'Most recent activities with map': 'Atividades mais recentes com mapa'
@@ -267,73 +267,73 @@
 'Moving time by sport': 'Tempo em movimento por esporte'
 'Moving time in hours': 'Tempo em movimento em horas'
 'Muscle oxygen sensor': 'Sensor de oxigênio muscular'
-'Name': 'Nome'
-'Neutral': 'Neutro'
+Name: Nome
+Neutral: Neutro
 'New personal best for': 'Novo recorde pessoal em'
 'Next milestone': 'Próximo marco'
-'Night': 'Noite'
+Night: Noite
 'No activities': 'Sem atividades'
 'No data available': 'Nenhum dado disponível'
 'No milestones achieved yet': 'Nenhum marco alcançado ainda'
 'No other options to compare with': 'Nenhuma outra opção para comparar'
-'None': 'Nenhum'
+None: Nenhum
 'Nordic Ski': 'Esqui Nórdico'
 'Normalized power': 'Potência normalizada'
 'Not supported': 'Não suportado'
-'Nov': 'Nov'
-'Now': 'Agora'
+Nov: Nov
+Now: Agora
 'Number of activities': 'Número de atividades'
 'Number of activities per month': 'Número de atividades por mês'
 'Number of times completed': 'Número de vezes concluído'
-'Oct': 'Out'
+Oct: Out
 'Older effort': 'Esforço mais antigo'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'Em média, isso dá {dailyAverage} por dia, uma média semanal de {weeklyAverage} e uma média mensal de {monthlyAverage} 🐣.'
-'On your own': 'Individual'
+'On your own': Individual
 'One of your gear maintenance tasks is due': 'Uma das suas tarefas de manutenção de equipamento está vencida'
-'Oops, looks like you''ve wandered off the map! 🗺️': 'Ops, parece que você saiu do mapa! 🗺️'
+"Oops, looks like you've wandered off the map! 🗺️": 'Ops, parece que você saiu do mapa! 🗺️'
 'Open Water Swim': 'Natação em Águas Abertas'
 'Optimal training range': 'Faixa ideal de treinamento'
-'Other': 'Outro'
+Other: Outro
 'Outdoor Sports': 'Esportes ao Ar Livre'
-'Over-fatigued': 'Sobrecarregado'
+Over-fatigued: Sobrecarregado
 'Over-fatigued (–30)': 'Sobrecarregado (–30)'
 'Overall weekly training stress': 'Estresse geral de treino semanal'
 'Overdue by {amount}': 'Atrasado em {amount}'
 'PB badges': 'Emblemas de RP'
 'PET bottles produced': 'Garrafas PET produzidas'
-'Pace': 'Ritmo'
-'Padel': 'Padel'
+Pace: Ritmo
+Padel: Padel
 'Peak fresh': 'Prontidão máxima'
 'Peak power outputs': 'Picos de potência'
 'Per {unit}': 'Por {unit}'
 'Personal bests': 'Recordes pessoais'
-'Photo': 'Foto'
-'Photos': 'Fotos'
-'Physical Therapy': 'Fisioterapia'
-'Pickle Ball': 'Pickleball'
-'Pilates': 'Pilates'
+Photo: Foto
+Photos: Fotos
+'Physical Therapy': Fisioterapia
+'Pickle Ball': Pickleball
+Pilates: Pilates
 'Pizza slices': 'Fatias de pizza'
 'Polarised training (last 30 days)': 'Treinamento polarizado (últimos 30 dias)'
 'Pool Swim': 'Natação em Piscina'
-'Power': 'Potência'
+Power: Potência
 'Power meter': 'Medidor de potência'
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Alimentado por cerca de {caloriesBurned} calorias estimadas, ou aproximadamente {numberOfPizzaSlices} fatias de pizza 🍕.'
 'Prev year': 'Ano anterior'
-'Previous': 'Anterior'
+Previous: Anterior
 'Purchase price': 'Preço de compra'
-'Race': 'Prova'
+Race: Prova
 'Racing Score': 'Pontuação de Corrida'
 'Racquet & Paddle Sports': 'Esportes de Raquete e Padel'
-'Racquet Ball': 'Racquetball'
-'Rank': 'Posição'
-'Ranking': 'Classificação'
+'Racquet Ball': Racquetball
+Rank: Posição
+Ranking: Classificação
 'Reached {threshold} hours total moving time': 'Alcançou {threshold} horas de tempo total em movimento'
 'Reached {threshold} total distance': 'Alcançou {threshold} de distância total'
 'Reached {threshold} total elevation': 'Alcançou {threshold} de elevação total'
 'Rear cogs': 'Pinhões traseiros'
 'Rear shifts': 'Trocas traseiras'
 'Recalculating your suffer score...': 'Recalculando sua pontuação de esforço...'
-'Recent': 'Recente'
+Recent: Recente
 'Recent effort': 'Esforço recente'
 'Recording devices': 'Dispositivos de gravação'
 'Recovery Timeline': 'Linha do Tempo de Recuperação'
@@ -346,167 +346,167 @@
 'Rest days in last 7 days': 'Dias de descanso nos últimos 7 dias'
 'Rest days vs. active days': 'Dias de descanso vs. dias ativos'
 'Retired gear': 'Equipamento aposentado'
-'Rewind': 'Retrospectiva'
+Rewind: Retrospectiva
 'Rewind comparisons are only available on larger screens.': 'Comparações da retrospectiva só estão disponíveis em telas maiores.'
-'Ride': 'Pedal'
-'Rides': 'Pedais'
+Ride: Pedal
+Rides: Pedais
 'Risk of detraining': 'Risco de perda de condicionamento'
-'Rock Climbing': 'Escalada'
+'Rock Climbing': Escalada
 'Roller Ski': 'Esqui de Rodas'
-'Rowing': 'Remo'
-'Run': 'Corrida'
-'Running': 'Corrida'
-'Runs': 'Corridas'
-'Sail': 'Vela'
-'Sat': 'Sáb'
-'Sat.': 'Sáb.'
-'Search': 'Pesquisar'
+Rowing: Remo
+Run: Corrida
+Running: Corrida
+Runs: Corridas
+Sail: Vela
+Sat: Sáb
+Sat.: Sáb.
+Search: Pesquisar
 'Search activity...': 'Pesquisar atividade...'
 'Search segment...': 'Pesquisar segmento...'
-'Segments': 'Segmentos'
-'Sep': 'Set'
-'Shifting': 'Troca de marchas'
+Segments: Segmentos
+Sep: Set
+Shifting: 'Troca de marchas'
 'Show all columns': 'Mostrar todas as colunas'
 'Show information': 'Mostrar informação'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Mostra como seu TSB (Forma) e Razão A:C se recuperarão ao longo do tempo se você tirar dias completos de descanso.'
 'Similar activities': 'Atividades semelhantes'
-'Since I began working out {numberOfDaysAgo} ago on {startDate}, I''ve logged {totalDaysOfWorkingOut} active days of training and adventure.': 'Desde que comecei a treinar há {numberOfDaysAgo} em {startDate}, registrei {totalDaysOfWorkingOut} dias ativos de treino e aventura.'
-'Skateboard': 'Skate'
-'Skating': 'Patinação'
+"Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": 'Desde que comecei a treinar há {numberOfDaysAgo} em {startDate}, registrei {totalDaysOfWorkingOut} dias ativos de treino e aventura.'
+Skateboard: Skate
+Skating: Patinação
 'Slightly fresh': 'Levemente descansado'
 'Smart trainer': 'Rolo de treino inteligente'
-'Snowboard': 'Snowboard'
-'Snowshoe': 'Raquetes de Neve'
-'Soccer': 'Futebol'
+Snowboard: Snowboard
+Snowshoe: 'Raquetes de Neve'
+Soccer: Futebol
 'Someone who regularly trains for 90 minutes will score higher than someone doing mostly short sessions.': 'Alguém que treina regularmente por 90 minutos pontuará mais do que alguém que faz principalmente sessões curtas.'
-'Sort': 'Ordenar'
-'Speed': 'Velocidade'
+Sort: Ordenar
+Speed: Velocidade
 'Speed & cadence sensor': 'Sensor de velocidade e cadência'
 'Speed sensor': 'Sensor de velocidade'
-'Splits': 'Parciais'
+Splits: Parciais
 'Sport variety': 'Variedade de esportes'
-'Squash': 'Squash'
+Squash: Squash
 'Stair Stepper': 'Subida de Escadas'
 'Stand Up Paddling': 'Stand Up Paddle'
 'Start times': 'Horários de início'
 'Stats per weekday': 'Estatísticas por dia da semana'
-'Status': 'Status'
+Status: Status
 'Streak started on {date}': 'Sequência iniciada em {date}'
-'Streaks': 'Sequências'
-'Sun': 'Dom'
-'Sun.': 'Dom.'
-'Surfing': 'Surf'
+Streaks: Sequências
+Sun: Dom
+Sun.: Dom.
+Surfing: Surf
 'TSB (Form)': 'TSB (Forma)'
 'TSB positive in': 'TSB positivo em'
 'Table Tennis': 'Tênis de Mesa'
 'Taper sweet-spot (+15)': 'Ponto ideal de polimento (+15)'
 'Team Sports': 'Esportes Coletivos'
-'Temperature': 'Temperatura'
+Temperature: Temperatura
 'Temperature sensor': 'Sensor de temperatura'
-'Tennis': 'Tênis'
-'That''s 1.5 times the distance to the edge of space': 'Isso é 1,5 vezes a distância até o limite do espaço'
-'That''s 100 days of commitment, triple digits!': 'São 100 dias de compromisso, três dígitos!'
-'That''s 2 activities per week for nearly 5 years': 'São 2 atividades por semana durante quase 5 anos'
-'That''s 2 full days of non-stop activity': 'São 2 dias inteiros de atividade ininterrupta'
-'That''s 2 full years of daily activity, incredible!': 'São 2 anos completos de atividade diária, incrível!'
-'That''s 2 months without missing a day': 'São 2 meses sem perder um dia'
-'That''s 2 months without stopping': 'São 2 meses sem parar'
-'That''s 250 days, over two thirds of a year': 'São 250 dias, mais de dois terços de um ano'
-'That''s 3 activities per week for nearly 5 years': 'São 3 atividades por semana durante quase 5 anos'
-'That''s 3 weeks straight, they say it takes 21 days to build a habit': 'São 3 semanas seguidas, dizem que leva 21 dias para criar um hábito'
-'That''s 4 months of unbroken daily activity': 'São 4 meses de atividade diária ininterrupta'
-'That''s 45 days, halfway to a full quarter': 'São 45 dias, metade do caminho para um trimestre inteiro'
-'That''s 5 months, nearly half a year without a rest day': 'São 5 meses, quase meio ano sem um dia de descanso'
-'That''s 500 days, well beyond a year of daily activity': 'São 500 dias, muito além de um ano de atividade diária'
-'That''s a full day of non-stop movement': 'É um dia inteiro de movimento ininterrupto'
-'That''s a full fortnight of daily activity': 'É uma quinzena completa de atividade diária'
-'That''s a full month of non-stop activity': 'É um mês inteiro de atividade ininterrupta'
-'That''s a full month without a rest day': 'É um mês inteiro sem um dia de descanso'
-'That''s a full quarter of daily activity': 'É um trimestre inteiro de atividade diária'
-'That''s a full week of daily activity': 'É uma semana inteira de atividade diária'
-'That''s a full week of non-stop movement': 'É uma semana inteira de movimento ininterrupto'
-'That''s a full year of daily activity': 'É um ano inteiro de atividade diária'
-'That''s about 3.5 months of continuous movement': 'São cerca de 3,5 meses de movimento contínuo'
-'That''s about one activity per week for a year': 'É cerca de uma atividade por semana durante um ano'
-'That''s about one activity per week for half a year': 'É cerca de uma atividade por semana durante meio ano'
-'That''s about one activity per week for two months': 'É cerca de uma atividade por semana durante dois meses'
-'That''s almost 2 activities per week for a year': 'São quase 2 atividades por semana durante um ano'
-'That''s almost 21 days of continuous movement': 'São quase 21 dias de movimento contínuo'
-'That''s almost 3 activities per week for 7 years': 'São quase 3 atividades por semana durante 7 anos'
-'That''s an activity almost every day for 27 years': 'É uma atividade quase todos os dias durante 27 anos'
-'That''s an activity every day for almost 7 years': 'É uma atividade todos os dias durante quase 7 anos'
-'That''s an activity every day for nearly 11 years': 'É uma atividade todos os dias durante quase 11 anos'
-'That''s an activity every day for nearly 14 years': 'É uma atividade todos os dias durante quase 14 anos'
-'That''s an activity every day for over 20 years': 'É uma atividade todos os dias durante mais de 20 anos'
-'That''s an activity every day for over 8 years': 'É uma atividade todos os dias durante mais de 8 anos'
-'That''s climbing Mount Everest twice': 'Isso é como escalar o Monte Everest duas vezes'
-'That''s climbing to the edge of space and back 5 times': 'Isso é escalar até o limite do espaço e voltar 5 vezes'
-'That''s cruising altitude of a commercial airplane': 'Isso é a altitude de cruzeiro de um avião comercial'
-'That''s deeper than the deepest known cave on Earth': 'Isso é mais profundo que a caverna conhecida mais profunda da Terra'
-'That''s five times around the Earth': 'Isso é cinco vezes ao redor da Terra'
-'That''s half a year without skipping a single day': 'É meio ano sem pular um único dia'
-'That''s higher than Felix Baumgartner''s space jump': 'Isso é mais alto que o salto espacial de Felix Baumgartner'
-'That''s higher than the International Space Station''s orbit': 'Isso é mais alto que a órbita da Estação Espacial Internacional'
-'That''s higher than the summit of Mont Blanc': 'Isso é mais alto que o cume do Mont Blanc'
-'That''s more than 10 days of non-stop movement': 'Isso é mais de 10 dias de movimento ininterrupto'
-'That''s more than 10 months of continuous movement': 'Isso é mais de 10 meses de movimento contínuo'
-'That''s more than 2 Eiffel Towers stacked up': 'São mais de 2 Torres Eiffel empilhadas'
-'That''s more than 2.5 times around the Earth': 'São mais de 2,5 vezes ao redor da Terra'
-'That''s more than 4 days of continuous activity': 'São mais de 4 dias de atividade contínua'
-'That''s more than 4 months of non-stop activity': 'São mais de 4 meses de atividade ininterrupta'
-'That''s more than 41 days of non-stop movement': 'São mais de 41 dias de movimento ininterrupto'
-'That''s more than 5 activities per week for 7 years': 'São mais de 5 atividades por semana durante 7 anos'
-'That''s more than 8 times the height of Mount Everest': 'É mais de 8 vezes a altura do Monte Everest'
-'That''s more than a full year of non-stop movement': 'É mais do que um ano inteiro de movimento ininterrupto'
-'That''s more than halfway around the Earth': 'Isso é mais da metade do caminho ao redor da Terra'
-'That''s more than halfway to the ISS': 'Isso é mais da metade do caminho até a ISS'
-'That''s more than the circumference of Mars': 'Isso é mais que a circunferência de Marte'
-'That''s more than the distance from Earth to the Moon': 'Isso é mais que a distância da Terra à Lua'
-'That''s nearly 3 months of non-stop activity': 'São quase 3 meses de atividade ininterrupta'
-'That''s nearly 4 activities per week for 7 years': 'São quase 4 atividades por semana durante 7 anos'
-'That''s nearly 5 activities per week for a year': 'São quase 5 atividades por semana durante um ano'
-'That''s nearly 7 months of non-stop activity': 'São quase 7 meses de atividade ininterrupta'
-'That''s nearly climbing Mount Everest 3 times': 'É quase o mesmo que escalar o Monte Everest 3 vezes'
-'That''s nearly the altitude of the International Space Station': 'É quase a altitude da Estação Espacial Internacional'
-'That''s nearly twice around the Earth': 'Isso é quase duas vezes ao redor da Terra'
-'That''s nearly twice the altitude of the International Space Station': 'Isso é quase o dobro da altitude da Estação Espacial Internacional'
-'That''s over 5.5 months of continuous movement': 'São mais de 5,5 meses de movimento contínuo'
-'That''s roughly a quarter of the way around the Earth': 'Isso é cerca de um quarto do caminho ao redor da Terra'
-'That''s roughly the diameter of Jupiter': 'Isso é aproximadamente o diâmetro de Júpiter'
-'That''s roughly the diameter of Neptune': 'Isso é aproximadamente o diâmetro de Netuno'
-'That''s roughly the distance from London to Perth': 'Isso é aproximadamente a distância de Londres a Perth'
-'That''s roughly the distance from Madrid to Barcelona': 'Isso é aproximadamente a distância de Madri a Barcelona'
-'That''s roughly the distance light travels in one second': 'Isso é aproximadamente a distância que a luz percorre em um segundo'
-'That''s roughly the length of France': 'Isso é aproximadamente o comprimento da França'
-'That''s roughly the length of the Danube river': 'Isso é aproximadamente a extensão do rio Danúbio'
-'That''s roughly the length of the island of Jamaica': 'Isso é aproximadamente o comprimento da ilha da Jamaica'
-'That''s taller than the Empire State Building': 'Isso é mais alto que o Empire State Building'
-'That''s the altitude of a satellite in low Earth orbit': 'Essa é a altitude de um satélite em órbita baixa da Terra'
-'That''s the circumference of the Earth': 'Essa é a circunferência da Terra'
-'That''s the distance from Earth to the Moon': 'Essa é a distância da Terra à Lua'
-'That''s the distance to the edge of space, straight up': 'Essa é a distância até o limite do espaço, em linha reta'
-'That''s the edge of space, the Kármán line': 'Esse é o limite do espaço, a linha de Kármán'
-'That''s the height of Mount Everest': 'Essa é a altura do Monte Everest'
-'That''s the height of the Eiffel Tower': 'Essa é a altura da Torre Eiffel'
-'That''s the length of the Great Wall of China': 'Esse é o comprimento da Grande Muralha da China'
-'That''s three quarters of the way around the Earth': 'São três quartos do caminho ao redor da Terra'
-'That''s {number} days of at least {distance}': 'São {number} dias de pelo menos {distance}'
-'That''s {percentage}% of all countries 🌍': 'Isso representa {percentage}% de todos os países 🌍'
+Tennis: Tênis
+"That's 1.5 times the distance to the edge of space": 'Isso é 1,5 vezes a distância até o limite do espaço'
+"That's 100 days of commitment, triple digits!": 'São 100 dias de compromisso, três dígitos!'
+"That's 2 activities per week for nearly 5 years": 'São 2 atividades por semana durante quase 5 anos'
+"That's 2 full days of non-stop activity": 'São 2 dias inteiros de atividade ininterrupta'
+"That's 2 full years of daily activity, incredible!": 'São 2 anos completos de atividade diária, incrível!'
+"That's 2 months without missing a day": 'São 2 meses sem perder um dia'
+"That's 2 months without stopping": 'São 2 meses sem parar'
+"That's 250 days, over two thirds of a year": 'São 250 dias, mais de dois terços de um ano'
+"That's 3 activities per week for nearly 5 years": 'São 3 atividades por semana durante quase 5 anos'
+"That's 3 weeks straight, they say it takes 21 days to build a habit": 'São 3 semanas seguidas, dizem que leva 21 dias para criar um hábito'
+"That's 4 months of unbroken daily activity": 'São 4 meses de atividade diária ininterrupta'
+"That's 45 days, halfway to a full quarter": 'São 45 dias, metade do caminho para um trimestre inteiro'
+"That's 5 months, nearly half a year without a rest day": 'São 5 meses, quase meio ano sem um dia de descanso'
+"That's 500 days, well beyond a year of daily activity": 'São 500 dias, muito além de um ano de atividade diária'
+"That's a full day of non-stop movement": 'É um dia inteiro de movimento ininterrupto'
+"That's a full fortnight of daily activity": 'É uma quinzena completa de atividade diária'
+"That's a full month of non-stop activity": 'É um mês inteiro de atividade ininterrupta'
+"That's a full month without a rest day": 'É um mês inteiro sem um dia de descanso'
+"That's a full quarter of daily activity": 'É um trimestre inteiro de atividade diária'
+"That's a full week of daily activity": 'É uma semana inteira de atividade diária'
+"That's a full week of non-stop movement": 'É uma semana inteira de movimento ininterrupto'
+"That's a full year of daily activity": 'É um ano inteiro de atividade diária'
+"That's about 3.5 months of continuous movement": 'São cerca de 3,5 meses de movimento contínuo'
+"That's about one activity per week for a year": 'É cerca de uma atividade por semana durante um ano'
+"That's about one activity per week for half a year": 'É cerca de uma atividade por semana durante meio ano'
+"That's about one activity per week for two months": 'É cerca de uma atividade por semana durante dois meses'
+"That's almost 2 activities per week for a year": 'São quase 2 atividades por semana durante um ano'
+"That's almost 21 days of continuous movement": 'São quase 21 dias de movimento contínuo'
+"That's almost 3 activities per week for 7 years": 'São quase 3 atividades por semana durante 7 anos'
+"That's an activity almost every day for 27 years": 'É uma atividade quase todos os dias durante 27 anos'
+"That's an activity every day for almost 7 years": 'É uma atividade todos os dias durante quase 7 anos'
+"That's an activity every day for nearly 11 years": 'É uma atividade todos os dias durante quase 11 anos'
+"That's an activity every day for nearly 14 years": 'É uma atividade todos os dias durante quase 14 anos'
+"That's an activity every day for over 20 years": 'É uma atividade todos os dias durante mais de 20 anos'
+"That's an activity every day for over 8 years": 'É uma atividade todos os dias durante mais de 8 anos'
+"That's climbing Mount Everest twice": 'Isso é como escalar o Monte Everest duas vezes'
+"That's climbing to the edge of space and back 5 times": 'Isso é escalar até o limite do espaço e voltar 5 vezes'
+"That's cruising altitude of a commercial airplane": 'Isso é a altitude de cruzeiro de um avião comercial'
+"That's deeper than the deepest known cave on Earth": 'Isso é mais profundo que a caverna conhecida mais profunda da Terra'
+"That's five times around the Earth": 'Isso é cinco vezes ao redor da Terra'
+"That's half a year without skipping a single day": 'É meio ano sem pular um único dia'
+"That's higher than Felix Baumgartner's space jump": 'Isso é mais alto que o salto espacial de Felix Baumgartner'
+"That's higher than the International Space Station's orbit": 'Isso é mais alto que a órbita da Estação Espacial Internacional'
+"That's higher than the summit of Mont Blanc": 'Isso é mais alto que o cume do Mont Blanc'
+"That's more than 10 days of non-stop movement": 'Isso é mais de 10 dias de movimento ininterrupto'
+"That's more than 10 months of continuous movement": 'Isso é mais de 10 meses de movimento contínuo'
+"That's more than 2 Eiffel Towers stacked up": 'São mais de 2 Torres Eiffel empilhadas'
+"That's more than 2.5 times around the Earth": 'São mais de 2,5 vezes ao redor da Terra'
+"That's more than 4 days of continuous activity": 'São mais de 4 dias de atividade contínua'
+"That's more than 4 months of non-stop activity": 'São mais de 4 meses de atividade ininterrupta'
+"That's more than 41 days of non-stop movement": 'São mais de 41 dias de movimento ininterrupto'
+"That's more than 5 activities per week for 7 years": 'São mais de 5 atividades por semana durante 7 anos'
+"That's more than 8 times the height of Mount Everest": 'É mais de 8 vezes a altura do Monte Everest'
+"That's more than a full year of non-stop movement": 'É mais do que um ano inteiro de movimento ininterrupto'
+"That's more than halfway around the Earth": 'Isso é mais da metade do caminho ao redor da Terra'
+"That's more than halfway to the ISS": 'Isso é mais da metade do caminho até a ISS'
+"That's more than the circumference of Mars": 'Isso é mais que a circunferência de Marte'
+"That's more than the distance from Earth to the Moon": 'Isso é mais que a distância da Terra à Lua'
+"That's nearly 3 months of non-stop activity": 'São quase 3 meses de atividade ininterrupta'
+"That's nearly 4 activities per week for 7 years": 'São quase 4 atividades por semana durante 7 anos'
+"That's nearly 5 activities per week for a year": 'São quase 5 atividades por semana durante um ano'
+"That's nearly 7 months of non-stop activity": 'São quase 7 meses de atividade ininterrupta'
+"That's nearly climbing Mount Everest 3 times": 'É quase o mesmo que escalar o Monte Everest 3 vezes'
+"That's nearly the altitude of the International Space Station": 'É quase a altitude da Estação Espacial Internacional'
+"That's nearly twice around the Earth": 'Isso é quase duas vezes ao redor da Terra'
+"That's nearly twice the altitude of the International Space Station": 'Isso é quase o dobro da altitude da Estação Espacial Internacional'
+"That's over 5.5 months of continuous movement": 'São mais de 5,5 meses de movimento contínuo'
+"That's roughly a quarter of the way around the Earth": 'Isso é cerca de um quarto do caminho ao redor da Terra'
+"That's roughly the diameter of Jupiter": 'Isso é aproximadamente o diâmetro de Júpiter'
+"That's roughly the diameter of Neptune": 'Isso é aproximadamente o diâmetro de Netuno'
+"That's roughly the distance from London to Perth": 'Isso é aproximadamente a distância de Londres a Perth'
+"That's roughly the distance from Madrid to Barcelona": 'Isso é aproximadamente a distância de Madri a Barcelona'
+"That's roughly the distance light travels in one second": 'Isso é aproximadamente a distância que a luz percorre em um segundo'
+"That's roughly the length of France": 'Isso é aproximadamente o comprimento da França'
+"That's roughly the length of the Danube river": 'Isso é aproximadamente a extensão do rio Danúbio'
+"That's roughly the length of the island of Jamaica": 'Isso é aproximadamente o comprimento da ilha da Jamaica'
+"That's taller than the Empire State Building": 'Isso é mais alto que o Empire State Building'
+"That's the altitude of a satellite in low Earth orbit": 'Essa é a altitude de um satélite em órbita baixa da Terra'
+"That's the circumference of the Earth": 'Essa é a circunferência da Terra'
+"That's the distance from Earth to the Moon": 'Essa é a distância da Terra à Lua'
+"That's the distance to the edge of space, straight up": 'Essa é a distância até o limite do espaço, em linha reta'
+"That's the edge of space, the Kármán line": 'Esse é o limite do espaço, a linha de Kármán'
+"That's the height of Mount Everest": 'Essa é a altura do Monte Everest'
+"That's the height of the Eiffel Tower": 'Essa é a altura da Torre Eiffel'
+"That's the length of the Great Wall of China": 'Esse é o comprimento da Grande Muralha da China'
+"That's three quarters of the way around the Earth": 'São três quartos do caminho ao redor da Terra'
+"That's {number} days of at least {distance}": 'São {number} dias de pelo menos {distance}'
+"That's {percentage}% of all countries 🌍": 'Isso representa {percentage}% de todos os países 🌍'
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'O número de Eddington no contexto de ciclismo ou corrida é definido como o número máximo E tal que o atleta percorreu pelo menos E km em pelo menos E dias.'
-'The page you''re looking for doesn''t exist or may have been moved.': 'A página que você está procurando não existe ou pode ter sido movida.'
+"The page you're looking for doesn't exist or may have been moved.": 'A página que você está procurando não existe ou pode ter sido movida.'
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': 'Esses emblemas são criados dinamicamente. Você pode usá-los em qualquer tag &lt;img&gt;'
-'Thinking...': 'Pensando...'
+Thinking...: Pensando...
 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.': 'Este gráfico resume como você treina. Cada eixo reflete um hábito de treino normalizado diferente, portanto, valores maiores significam maior ênfase.'
 'This feature is currently disabled': 'Esta funcionalidade está desativada no momento'
 'This month': 'Este mês'
 'This week': 'Esta semana'
-'Thu': 'Qui'
-'Thu.': 'Qui.'
-'Time': 'Tempo'
+Thu: Qui
+Thu.: Qui.
+Time: Tempo
 'Time in gear': 'Tempo por marcha'
 'Time in zone': 'Tempo na zona'
 'Times completed': 'Vezes concluído'
-'Title': 'Título'
+Title: Título
 'To enable it, configure this in the admin panel': 'Para ativá-la, configure no painel de administração'
 'Toggle sidebar': 'Alternar barra lateral'
 'Top 10': 'Top 10'
@@ -524,14 +524,14 @@
 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.': 'Balanço de Estresse de Treinamento (Forma) – A diferença entre o condicionamento (CTL) e a fadiga (ATL). Reflete o quão pronto você está para render.'
 'Training goals': 'Metas de treinamento'
 'Training load is accumulating, recovery days are important': 'A carga de treino está acumulando, dias de recuperação são importantes'
-'Tue': 'Ter'
-'Tue.': 'Ter.'
+Tue: Ter
+Tue.: Ter.
 'Unchanged compared to yesterday': 'Inalterado em comparação a ontem'
-'Unspecified': 'Não especificado'
+Unspecified: 'Não especificado'
 'Upcoming maintenance': 'Manutenção futura'
 'User badge': 'Emblema do usuário'
-'Velo Mobile': 'Velomóvel'
-'Velo Mobiles': 'Velomóveis'
+'Velo Mobile': Velomóvel
+'Velo Mobiles': Velomóveis
 'Very high': 'Muito alta'
 'View all': 'Ver tudo'
 'View details': 'Ver detalhes'
@@ -542,49 +542,49 @@
 'Virtual Run': 'Corrida Virtual'
 'Virtual Runs': 'Corridas Virtuais'
 'Virtual workout assistant': 'Assistente de treino virtual'
-'Volleyball': 'Vôlei'
-'Volume': 'Volume'
-'Walk': 'Caminhada'
-'Walking': 'Caminhada'
-'Walks': 'Caminhadas'
+Volleyball: Vôlei
+Volume: Volume
+Walk: Caminhada
+Walking: Caminhada
+Walks: Caminhadas
 'Water Sports': 'Esportes Aquáticos'
 'Waxing the chain...': 'Encerando a corrente...'
 'We detected following issues': 'Detectamos os seguintes problemas'
-'Wed': 'Qua'
-'Wed.': 'Qua.'
-'Weekly': 'Semanal'
+Wed: Qua
+Wed.: Qua.
+Weekly: Semanal
 'Weekly Strain': 'Tensão Semanal'
 'Weekly Strain - Product of weekly training load and monotony. Overall training stress.': 'Tensão Semanal - Produto da carga de treinamento semanal e monotonia. Estresse geral do treinamento.'
 'Weekly TRIMP': 'TRIMP Semanal'
 'Weekly stats': 'Estatísticas semanais'
-'Weight': 'Peso'
+Weight: Peso
 'Weight Training': 'Treino de Força'
 'Weight history': 'Histórico de peso'
-'Wheelchair': 'Cadeira de Rodas'
-'Wind Surf': 'Windsurf'
+Wheelchair: 'Cadeira de Rodas'
+'Wind Surf': Windsurf
 'Winter Sports': 'Esportes de Inverno'
 'With others': 'Com outras pessoas'
-'Workout': 'Treino'
+Workout: Treino
 'Workout assistant': 'Assistente de treino'
 'Workout type': 'Tipo de treino'
-'World': 'Mundo'
-'Year': 'Ano'
-'Yearly': 'Anual'
+World: Mundo
+Year: Ano
+Yearly: Anual
 'Yearly stats': 'Estatísticas anuais'
-'Yoga': 'Yoga'
-'You weren''t alone out there': 'Você não estava sozinho lá fora'
+Yoga: Yoga
+"You weren't alone out there": 'Você não estava sozinho lá fora'
 'Your Dreeve badge': 'Seu emblema do Dreeve'
 'Your PB badge': 'Seu emblema de RP'
 'Your Zwift badge': 'Seu emblema do Zwift'
 'Your badge(s)': 'Seu(s) emblema(s)'
-'Z1': 'Z1'
+Z1: Z1
 'Z1-2 (Low)': 'Z1-2 (Baixa)'
-'Z2': 'Z2'
-'Z3': 'Z3'
+Z2: Z2
+Z3: Z3
 'Z3 (Mod)': 'Z3 (Mod)'
-'Z4': 'Z4'
+Z4: Z4
 'Z4-5 (High)': 'Z4-5 (Alta)'
-'Z5': 'Z5'
+Z5: Z5
 'Zone 1 (recovery)': 'Zona 1 (recuperação)'
 'Zone 2 (aerobic)': 'Zona 2 (aeróbica)'
 'Zone 3 (aerobic/anaerobic)': 'Zona 3 (aeróbica/anaeróbica)'
@@ -593,40 +593,40 @@
 'Zwift Statistics': 'Estatísticas do Zwift'
 'Zwift badge': 'Emblema do Zwift'
 'Zwift stats': 'Estatísticas do Zwift'
-'activities': 'atividades'
-'and': 'e'
-'avg': 'méd'
-'bpm': 'bpm'
-'clear': 'limpar'
-'compare': 'comparar'
-'countries': 'países'
-'day(s)': 'dia(s)'
-'days': 'dias'
+activities: atividades
+and: e
+avg: méd
+bpm: bpm
+clear: limpar
+compare: comparar
+countries: países
+day(s): dia(s)
+days: dias
 'days needed for next Eddington': 'dias necessários para o próximo Eddington'
 'days to reach {n}': 'dias para alcançar {n}'
 'every {interval}': 'a cada {interval}'
-'hours': 'horas'
-'hrs': 'hrs'
-'humidity': 'umidade'
+hours: horas
+hrs: hrs
+humidity: umidade
 'last {numberOfDays} days': 'últimos {numberOfDays} dias'
-'max': 'máx'
-'min': 'min'
-'months': 'meses'
-'more': 'mais'
-'n/a': 'n/d'
-'never': 'nunca'
+max: máx
+min: min
+months: meses
+more: mais
+n/a: n/d
+never: nunca
 'of your activities': 'das suas atividades'
-'on': 'em'
-'per': 'por'
+'on': em
+per: por
 'per activity': 'por atividade'
 'per hour': 'por hora'
 'reached Eddington number {number}': 'alcançou o número de Eddington {number}'
-'rpm': 'rpm'
-'to': 'até'
-'total': 'total'
-'watts': 'watts'
-'weeks': 'semanas'
-'workouts': 'treinos'
+rpm: rpm
+to: até
+total: total
+watts: watts
+weeks: semanas
+workouts: treinos
 '{amount} left': 'restam {amount}'
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} dias'
 '{days} consecutive days of activity': '{days} dias consecutivos de atividade'

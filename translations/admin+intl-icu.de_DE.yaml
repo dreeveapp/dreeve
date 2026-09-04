@@ -3,7 +3,7 @@
 'A rule applies': 'Eine Regel trifft zu'
 AI: KI
 AM/PM: AM/PM
-'API access': 'API-Zugriff'
+'API access': API-Zugriff
 'API key': API-Schlüssel
 Active: Aktiv
 'Activities excluded from peak power outputs': 'Aktivitäten, die von Maximalleistungswerten ausgeschlossen werden'
@@ -42,7 +42,7 @@ Activity: Aktivität
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Füge {fit}, {tcx} oder {gpx} Dateien hinzu. Sie werden alle paar Minuten verarbeitet'
 Admin: Admin
 'Admin panel': Adminbereich
-'Admin username': 'Admin-Benutzername'
+'Admin username': Admin-Benutzername
 'Advanced (per-date & per-sport-type overrides)': 'Erweiterte (Datums- & sportartspezifische Anpassung)'
 'Age-based estimate': 'Altersbasierte Schätzung'
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'Alle zugehörigen Wartungsaufgaben und Protokolle werden entfernt. Diese Aktion kann nicht rückgängig gemacht werden'
@@ -173,7 +173,7 @@ General: Allgemein
 'Go to last page': 'Zur letzten Seite'
 'Go to next page': 'Zur nächsten Seite'
 'Go to previous page': 'Zur vorherigen Seite'
-'Group activity': 'Gruppenaktivität'
+'Group activity': Gruppenaktivität
 Heatmap: Heatmap
 'Hide photos for sport types': 'Fotos für Sportarten ausblenden'
 'History of cycling FTP. Needed to calculate activity stress level.': 'Verlauf der Radfahr-FTP. Wird benötigt, um das Belastungsniveau der Aktivität zu berechnen.'
@@ -236,7 +236,7 @@ Mode: Modus
 Model: Modell
 Monday: Montag
 'More pages': 'Weitere Seiten'
-'Moving time': 'Bewegungszeit'
+'Moving time': Bewegungszeit
 'No activities imported yet.': 'Noch keine Aktivitäten importiert.'
 'No activities match the current filters.': 'Keine Aktivitäten entsprechen den aktuellen Filtern.'
 'No activity found for that ID.': 'Keine Aktivität für diese ID gefunden.'
@@ -378,7 +378,7 @@ Source: Quelle
 'Sport types sorting order': 'Sortierreihenfolge der Sportarten'
 'Sport types to import': 'Zu importierende Sportarten'
 'Sport types to include': 'Einzubeziehende Sportarten'
-'Start date': 'Startdatum'
+'Start date': Startdatum
 'Start date and time': 'Startdatum und -uhrzeit'
 'Starts near': 'Beginnt in der Nähe'
 'Stop processing further rules when this rule matches': 'Weitere Regeln ignorieren, wenn diese Regel zutrifft'
@@ -447,7 +447,7 @@ Tasks: Aufgaben
 'This widget still needs to be configured.': 'Dieses Widget muss noch konfiguriert werden.'
 'This will discard your current dashboard layout and restore the default widgets.': 'Dadurch wird dein aktuelles Dashboard-Layout verworfen und die Standard-Widgets werden wiederhergestellt.'
 Thursday: Donnerstag
-'Tile layers': 'Kachel-Layer'
+'Tile layers': Kachel-Layer
 'Time format': Zeitformat
 'Time of day': Tageszeit
 To: bis
@@ -472,6 +472,7 @@ Username: Benutzername
 'Verify token': 'Token verifizieren'
 Version: Version
 Warning: Warnung
+'Weather and reverse geocoding have been retrieved.': 'Weather and reverse geocoding have been retrieved.'
 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.': 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.'
 Webhooks: Webhooks
 Wednesday: Mittwoch
@@ -529,7 +530,7 @@ is: ist
 'max {max} MB each': 'max {max} MB je Datei'
 'miles used': 'genutzte Meilen'
 minutes: Minuten
-'on': 'am'
+'on': am
 'on or after': 'am oder danach'
 'on or before': 'am oder davor'
 'outside radius': 'außerhalb des Radius'

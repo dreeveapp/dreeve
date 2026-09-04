@@ -3,16 +3,16 @@
 'A rule applies': 'Egy szabály érvényes'
 AI: AI
 AM/PM: AM/PM
-'API access': 'API-hozzáférés'
-'API key': 'API-kulcs'
-Active: 'Aktív'
+'API access': API-hozzáférés
+'API key': API-kulcs
+Active: Aktív
 'Activities excluded from peak power outputs': 'A csúcsteljesítményből kizárt tevékenységek'
 'Activities scanned': 'Átvizsgált tevékenységek'
 'Activities to skip during import': 'Importáláskor kihagyandó tevékenységek'
 'Activities to update': 'Frissítendő tevékenységek'
 'Activities will appear here once they are imported.': 'A tevékenységek itt jelennek meg, miután importáltad őket.'
-Activity: 'Tevékenység'
-'Activity ID': 'Tevékenység-azonosító'
+Activity: Tevékenység
+'Activity ID': Tevékenység-azonosító
 'Activity IDs to exclude when calculating peak power outputs.': 'A csúcsteljesítmény számításakor kizárandó tevékenység-azonosítók.'
 'Activity management': 'Tevékenységek kezelése'
 'Activity name': 'Tevékenység neve'
@@ -41,7 +41,7 @@ Activity: 'Tevékenység'
 'Add widget': 'Widget hozzáadása'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Adj hozzá {fit}, {tcx} vagy {gpx} fájlokat. Néhány percenként feldolgozásra kerülnek.'
 Admin: Admin
-'Admin panel': 'Adminfelület'
+'Admin panel': Adminfelület
 'Admin username': 'Admin felhasználónév'
 'Advanced (per-date & per-sport-type overrides)': 'Speciális (dátum és sporttípus szerinti felülírások)'
 'Age-based estimate': 'Életkor alapú becslés'
@@ -54,8 +54,8 @@ Admin: Admin
 'App URL': 'Alkalmazás URL'
 'App subtitle': 'Alkalmazás alcíme'
 'App update available notification': 'Értesítés elérhető frissítésről'
-Appearance: 'Megjelenés'
-Applied: 'Alkalmazva'
+Appearance: Megjelenés
+Applied: Alkalmazva
 Apply: Alkalmaz
 'Apply to existing activities': 'Alkalmazás a meglévő tevékenységekre'
 'Are you sure you want to delete the import of {name}?': 'Biztosan törölni szeretnéd a(z) {name} importját?'
@@ -77,41 +77,41 @@ Apply: Alkalmaz
 'Back to the admin panel': 'Vissza az adminfelülethez'
 'Base URI': 'Alap URI'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Mielőtt használni tudnád az alkalmazást, néhány dolgot tudnunk kell rólad. Ezeket a pulzuszónáid és edzésterhelésed kiszámításához használjuk. A többi beállítást később finomhangolhatod.'
-Birthday: 'Születésnap'
+Birthday: Születésnap
 'Calculate energy (kJ)': 'Energia számítása (kJ)'
-Cancel: 'Mégse'
+Cancel: Mégse
 'Challenge name': 'Kihívás neve'
 'Changes still need to be processed before they appear on the app': 'A változásokat még fel kell dolgozni, mielőtt megjelennek az alkalmazásban'
 'Changes to these settings only take effect after you restart the daemon container.': 'Ezek a beállítások csak a daemon konténer újraindítása után lépnek életbe.'
-'Chat commands': 'Chat-parancsok'
+'Chat commands': Chat-parancsok
 'Check interval (minutes)': 'Ellenőrzési időköz (perc)'
 'Choose the order the metrics are shown in.': 'Válaszd ki, milyen sorrendben jelenjenek meg a mérőszámok.'
-Clear: 'Törlés'
+Clear: Törlés
 'Clear filters': 'Szűrők törlése'
 'Click the map to set the center, or drag the marker to fine-tune it.': 'Kattints a térképre a középpont beállításához, vagy húzd a jelölőt a finomhangoláshoz.'
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Kattints a térképre a hely beállításához, vagy húzd a jelölőt a finomhangoláshoz.'
-Close: 'Bezárás'
-Command: 'Parancs'
-Commute: 'Ingázás'
-Component: 'Komponens'
+Close: Bezárás
+Command: Parancs
+Commute: Ingázás
+Component: Komponens
 'Conditions are combined with AND.': 'A feltételek ÉS kapcsolattal vannak összekötve.'
-Config: 'Konfiguráció'
-Configure: 'Beállítás'
+Config: Konfiguráció
+Configure: Beállítás
 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Állítsd be a kiszámítandó Eddington-számokat. Legfeljebb kettőt jeleníthetsz meg a dashboard widgetben.'
 'Configure {widget}': '{widget} beállítása'
-Configured: 'Beállítva'
+Configured: Beállítva
 'Configured via an environment variable and cannot be changed here.': 'Környezeti változón keresztül van beállítva, itt nem módosítható.'
 'Configured via environment variables and cannot be changed here.': 'Környezeti változókon keresztül van beállítva, itt nem módosítható.'
 'Connected sensors': 'Csatlakoztatott érzékelők'
 'Continues to next rule': 'Folytatja a következő szabállyal'
 'Copy this API key': 'Másold ki ezt az API-kulcsot'
 'Cron expression': 'Cron kifejezés'
-'Cron expression specifying when the action should run, e.g. ''0 14 * * *'' runs every day at 14:00. See crontab.guru for help.': 'Cron kifejezés, amely megadja, mikor fusson a művelet, pl. a „0 14 * * *" minden nap 14:00-kor fut. Segítségért lásd: crontab.guru.'
+"Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": 'Cron kifejezés, amely megadja, mikor fusson a művelet, pl. a „0 14 * * *" minden nap 14:00-kor fut. Segítségért lásd: crontab.guru.'
 Daemon: Daemon
 'Dashboard layout': 'Dashboard elrendezés'
 'Date range based': 'Dátumtartomány alapú'
 'Define what needs doing and how often.': 'Add meg, mit kell csinálni és milyen gyakran.'
-Delete: 'Törlés'
+Delete: Törlés
 'Delete activity': 'Tevékenység törlése'
 'Delete automation rule': 'Automatizálási szabály törlése'
 'Delete component': 'Komponens törlése'
@@ -119,76 +119,76 @@ Delete: 'Törlés'
 'Delete maintenance log': 'Karbantartási napló törlése'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Egy szabály törlése nem vonja vissza a tevékenységeken már elvégzett módosításokat. Ez a művelet nem vonható vissza.'
 Deleting...: 'Törlés folyamatban...'
-Description: 'Leírás'
+Description: Leírás
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Részletes útmutató elérhető {linkOpen}a dokumentációban{linkClose}.'
-Disabled: 'Letiltva'
-Distance: 'Távolság'
-Done: 'Kész'
+Disabled: Letiltva
+Distance: Távolság
+Done: Kész
 'Drag to reorder': 'Húzással átrendezhető'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Húzással állítsd be, milyen sorrendben jelenjenek meg a sporttípusok az alkalmazásban.'
-Duplicate: 'Másolat'
-Duration: 'Időtartam'
-Edit: 'Szerkesztés'
+Duplicate: Másolat
+Duration: Időtartam
+Edit: Szerkesztés
 'Edit activity': 'Tevékenység szerkesztése'
 'Edit automation rule': 'Automatizálási szabály szerkesztése'
 'Edit component': 'Komponens szerkesztése'
 'Edit gear': 'Felszerelés szerkesztése'
 'Edit maintenance log': 'Karbantartási napló szerkesztése'
 'Edit recording device': 'Rögzítő eszköz szerkesztése'
-Elevation: 'Szintemelkedés'
+Elevation: Szintemelkedés
 'Enable AI integration': 'AI-integráció engedélyezése'
 'Enable Strava webhooks': 'Strava webhookok engedélyezése'
-Enabled: 'Engedélyezve'
-Endpoint: 'Végpont'
+Enabled: Engedélyezve
+Endpoint: Végpont
 'Ends near': 'A közelében ér véget'
 'Energy in kJ will be calculated from average power × moving time, for activities that do not already provide it.': 'Az energia kJ-ban az átlagos teljesítmény × mozgásidő alapján kerül kiszámításra azoknál a tevékenységeknél, amelyek ezt még nem tartalmazzák.'
 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.': 'Adj meg egy meglévő tevékenységet, hogy megnézd, mely szabályok érvényesülnének és mit módosítanának. Semmi nem kerül mentésre.'
 'Enter your password': 'Add meg a jelszavad'
 'Enter your username': 'Add meg a felhasználóneved'
-Every: 'Minden'
+Every: Minden
 FTP: FTP
 'FTP history (cycling)': 'FTP-előzmények (kerékpározás)'
 'FTP history (running)': 'FTP-előzmények (futás)'
-Failed: 'Sikertelen'
-Female: 'Nő'
+Failed: Sikertelen
+Female: Nő
 'File exceeds {max} MB': 'A fájl meghaladja a(z) {max} MB-ot'
-'File imports': 'Fájlimportok'
+'File imports': Fájlimportok
 'File imports are only available in file import mode': 'A fájlimportok csak fájlimportálás módban érhetők el'
-'File upload': 'Fájlfeltöltés'
+'File upload': Fájlfeltöltés
 'File upload is only available in file import mode': 'A fájlfeltöltés csak fájlimportálás módban érhető el'
-Filename: 'Fájlnév'
-Filter: 'Szűrő'
-'First name': 'Keresztnév'
+Filename: Fájlnév
+Filter: Szűrő
+'First name': Keresztnév
 'Fixed value': 'Rögzített érték'
-Friday: 'Péntek'
-From: 'Ettől'
+Friday: Péntek
+From: Ettől
 'Gear "{gearId}" is attached to one of your components, but does not exist. It will be ignored.': 'A(z) „{gearId}" felszerelés az egyik komponensedhez van rendelve, de nem létezik. Figyelmen kívül lesz hagyva.'
 'Gear maintenance notification': 'Felszerelés-karbantartási értesítés'
 'Gear management': 'Felszerelések kezelése'
 'Gear will appear here once you add them.': 'A felszerelések itt jelennek meg, miután hozzáadtad őket.'
-Gender: 'Nem'
-General: 'Általános'
+Gender: Nem
+General: Általános
 'Generate an API key': 'API-kulcs generálása'
 'Go to first page': 'Ugrás az első oldalra'
 'Go to last page': 'Ugrás az utolsó oldalra'
 'Go to next page': 'Ugrás a következő oldalra'
 'Go to previous page': 'Ugrás az előző oldalra'
 'Group activity': 'Csoportos tevékenység'
-Heatmap: 'Hőtérkép'
+Heatmap: Hőtérkép
 'Hide photos for sport types': 'Fotók elrejtése sporttípusonként'
 'History of cycling FTP. Needed to calculate activity stress level.': 'A kerékpáros FTP előzményei. A tevékenység terhelési szintjének kiszámításához szükséges.'
 'History of running FTP. Needed to calculate activity stress level.': 'A futó FTP előzményei. A tevékenység terhelési szintjének kiszámításához szükséges.'
 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'A testsúly előzményei (kg-ban vagy fontban, a megjelenítési mértékegységrendszertől függően). A relatív W/kg kiszámításához szükséges.'
 'Hold ctrl (⌘ on Mac) to zoom the map with the scroll wheel': 'Tartsd lenyomva a Ctrl-t (⌘ Mac-en) a térkép nagyításához a görgővel'
-Hours: 'Óra'
+Hours: Óra
 'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'Milyen gyakran (percben, 1 és 60 között) kerülnek feldolgozásra a sorban álló webhook-események.'
-If: 'Ha'
+If: Ha
 'If all of these match': 'Ha mindegyik illeszkedik'
-'If you''re not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm.': 'Ha nem vagy biztos a zónáidban, hagyd őket változatlanul, az alapértékek ésszerűek. Relatív módban a számok a maximális pulzusod százalékai; abszolút módban tényleges bpm-értékek.'
+"If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm.": 'Ha nem vagy biztos a zónáidban, hagyd őket változatlanul, az alapértékek ésszerűek. Relatív módban a számok a maximális pulzusod százalékai; abszolút módban tényleges bpm-értékek.'
 'Ignore retired gear': 'Nyugdíjazott felszerelés figyelmen kívül hagyása'
-Image: 'Kép'
-Images: 'Képek'
-Import: 'Importálás'
+Image: Kép
+Images: Képek
+Import: Importálás
 'Import Strava data': 'Strava-adatok importálása'
 'Import activities': 'Tevékenységek importálása'
 'Import pending': 'Importálás függőben'
@@ -199,44 +199,44 @@ Import: 'Importálás'
 'Imported from Strava': 'Stravából importálva'
 'Imports new Strava activities.': 'Importálja az új Strava-tevékenységeket.'
 'Include retired gear': 'Nyugdíjazott felszerelés belefoglalása'
-Info: 'Infó'
-Integrations: 'Integrációk'
+Info: Infó
+Integrations: Integrációk
 'Intro text': 'Bevezető szöveg'
 'Invalid CSRF token.': 'Érvénytelen CSRF-token.'
-Label: 'Címke'
-'Last name': 'Vezetéknév'
-Latitude: 'Szélesség'
+Label: Címke
+'Last name': Vezetéknév
+Latitude: Szélesség
 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.': 'Hagyj mindent bejelöletlenül az összes sporttípus importálásához. ⚠️ Ennek korlátozása a tevékenységek importálása után törli a kizárt sporttípusú tevékenységeket.'
 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Hagyj mindent bejelöletlenül az összes láthatóság importálásához. ⚠️ Ennek korlátozása a tevékenységek importálása után törli a kizárt láthatóságú tevékenységeket.'
 'Leave empty to include all sport types.': 'Hagyd üresen az összes sporttípus belefoglalásához.'
 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Lehetővé teszi egy külső kliens számára, hogy HTTP-n keresztül tevékenységfájlokat töltsön fel. A kulcs az egyetlen, ami védi ezt a végpontot, ezért kezeld jelszóként.'
-Locale: 'Nyelv'
-Log: 'Napló'
+Locale: Nyelv
+Log: Napló
 'Log maintenance': 'Karbantartás naplózása'
-Longitude: 'Hosszúság'
+Longitude: Hosszúság
 'Maintenance log': 'Karbantartási napló'
 'Maintenance logs will appear here once maintenance has been registered.': 'A karbantartási naplók itt jelennek meg, miután rögzítettél egy karbantartást.'
 'Maintenance tasks': 'Karbantartási feladatok'
-Male: 'Férfi'
-Manage: 'Kezelés'
-Maps: 'Térképek'
+Male: Férfi
+Manage: Kezelés
+Maps: Térképek
 'Mark as commute': 'Megjelölés ingázásként'
-Match: 'Illeszkedés'
-'Matches on the activity''s finishing point.': 'A tevékenység végpontjára illeszkedik.'
-'Matches on the activity''s starting point.': 'A tevékenység kezdőpontjára illeszkedik.'
+Match: Illeszkedés
+"Matches on the activity's finishing point.": 'A tevékenység végpontjára illeszkedik.'
+"Matches on the activity's starting point.": 'A tevékenység kezdőpontjára illeszkedik.'
 'Matches when any point of the route comes near the location.': 'Akkor illeszkedik, ha az útvonal bármely pontja a hely közelébe kerül.'
 'Matching activities': 'Illeszkedő tevékenységek'
 'Max heart rate (bpm)': 'Maximális pulzus (bpm)'
 'Max heart rate formula': 'Maximális pulzus képlete'
-Message: 'Üzenet'
+Message: Üzenet
 'Metric display order': 'Mérőszámok megjelenítési sorrendje'
-Metrics: 'Mérőszámok'
-Minutes: 'Perc'
-Mode: 'Mód'
-Model: 'Modell'
-Monday: 'Hétfő'
+Metrics: Mérőszámok
+Minutes: Perc
+Mode: Mód
+Model: Modell
+Monday: Hétfő
 'More pages': 'További oldalak'
-'Moving time': 'Mozgásidő'
+'Moving time': Mozgásidő
 'No activities imported yet.': 'Még nincs importált tevékenység.'
 'No activities match the current filters.': 'Egyetlen tevékenység sem felel meg a jelenlegi szűrőknek.'
 'No activity found for that ID.': 'Nem található tevékenység ehhez az azonosítóhoz.'
@@ -262,8 +262,8 @@ Monday: 'Hétfő'
 'Number of tasks to display': 'Megjelenítendő feladatok száma'
 'Number of widgets of this type you already have configured.': 'Az ilyen típusú, már beállított widgetek száma.'
 'Only show activities with a map': 'Csak térképpel rendelkező tevékenységek megjelenítése'
-'Oops, looks like you''ve wandered off the map! 🗺️': 'Hoppá, úgy tűnik, letértél a térképről! 🗺️'
-Operator: 'Operátor'
+"Oops, looks like you've wandered off the map! 🗺️": 'Hoppá, úgy tűnik, letértél a térképről! 🗺️'
+Operator: Operátor
 'Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it.': 'Opcionális YAML a dátumtartomány- és sporttípus-specifikus zónákhoz. Hagyd üresen, hacsak nem tudod biztosan, hogy szükséged van rá.'
 'Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable.': 'Opcionális link a profilképedhez, amely a navigációs sávban jelenik meg. Négyzet alakú kép ajánlott. Hagyd üresen a letiltásához.'
 'Optional subtitle': 'Opcionális alcím'
@@ -276,7 +276,7 @@ Operator: 'Operátor'
 'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.': 'PHP dátumformátum a rövid dátumokhoz, pl. a d-m-y így jelenik meg: 01-01-25.'
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Alkatrészek, amelyek karbantartását követed, pl.: láncok, kazetták, fékbetétek...'
 'Passes near': 'Elhalad a közelében'
-Password: 'Jelszó'
+Password: Jelszó
 'Paste the value above, replacing any key that is already there.': 'Illeszd be a fenti értéket, felülírva a már ott lévő kulcsot.'
 'Performed on': 'Elvégezve ekkor'
 'Photos of the selected sport types are excluded from the photo gallery.': 'A kiválasztott sporttípusok fotói ki vannak zárva a fotógalériából.'
@@ -286,16 +286,16 @@ Password: 'Jelszó'
 'Preview selection': 'Kiválasztás előnézete'
 'Processed on': 'Feldolgozva ekkor'
 'Profile picture URL': 'Profilkép URL'
-Provider: 'Szolgáltató'
+Provider: Szolgáltató
 Queueing...: 'Sorba állítás...'
-Radius: 'Sugár'
+Radius: Sugár
 'Recording device': 'Rögzítő eszköz'
 'Recording device management': 'Rögzítő eszközök kezelése'
 'Recording devices will appear here once activities have been imported.': 'A rögzítő eszközök itt jelennek meg, miután tevékenységeket importáltál.'
 'Recreate your containers': 'Hozd létre újra a konténereket'
 'Register maintenance': 'Karbantartás rögzítése'
 'Remember me for 7 days': 'Emlékezz rám 7 napig'
-Remove: 'Eltávolítás'
+Remove: Eltávolítás
 'Remove Eddington': 'Eddington eltávolítása'
 'Remove action': 'Művelet eltávolítása'
 'Remove challenge': 'Kihívás eltávolítása'
@@ -305,32 +305,32 @@ Remove: 'Eltávolítás'
 'Remove task': 'Feladat eltávolítása'
 'Remove tile layer': 'Csempe-réteg eltávolítása'
 'Remove widget': 'Widget eltávolítása'
-Removing...: 'Eltávolítás...'
+Removing...: Eltávolítás...
 'Render the map tiles in greyscale': 'A térképcsempék szürkeárnyalatos megjelenítése'
-'Reorder widgets and set each widget''s width.': 'Rendezd át a widgeteket, és állítsd be mindegyik szélességét.'
+"Reorder widgets and set each widget's width.": 'Rendezd át a widgeteket, és állítsd be mindegyik szélességét.'
 'Require a login for the entire app': 'Bejelentkezés megkövetelése a teljes alkalmazáshoz'
 'Require a login for the entire app, not just the admin panel. Recommended when your instance is reachable from the internet, which it has to be for the Strava webhook.': 'Bejelentkezés megkövetelése a teljes alkalmazáshoz, nem csak az adminfelülethez. Ajánlott, ha a példányod elérhető az internetről, aminek a Strava webhookhoz így is lennie kell.'
 'Reset dashboard to default': 'Dashboard visszaállítása alapértelmezettre'
 'Reset to default': 'Visszaállítás alapértelmezettre'
-Resetting...: 'Visszaállítás...'
+Resetting...: Visszaállítás...
 'Resting heart rate (bpm)': 'Nyugalmi pulzus (bpm)'
 'Resting heart rate formula': 'Nyugalmi pulzus képlete'
 'Restrict to date range': 'Korlátozás dátumtartományra'
-Retired: 'Nyugdíjazott'
+Retired: Nyugdíjazott
 'Retry weather and reverse geocoding': 'Retry weather and reverse geocoding'
 'Return to app': 'Vissza az alkalmazáshoz'
-Ride: 'Kerékpározás'
-Rules: 'Szabályok'
+Ride: Kerékpározás
+Rules: Szabályok
 'Rules to apply': 'Alkalmazandó szabályok'
-Saturday: 'Szombat'
-Save: 'Mentés'
+Saturday: Szombat
+Save: Mentés
 'Save settings': 'Beállítások mentése'
-Saved: 'Mentve'
-Saving...: 'Mentés...'
+Saved: Mentve
+Saving...: Mentés...
 'Scheduled actions the daemon runs at regular intervals.': 'Ütemezett műveletek, amelyeket a daemon rendszeres időközönként futtat.'
 'Search by name, date or activity ID': 'Keresés név, dátum vagy tevékenység-azonosító alapján'
-Seconds: 'Másodperc'
-Security: 'Biztonság'
+Seconds: Másodperc
+Security: Biztonság
 'Select a component first...': 'Előbb válassz egy komponenst...'
 'Select a component…': 'Válassz egy komponenst…'
 'Select all': 'Összes kijelölése'
@@ -347,7 +347,7 @@ Security: 'Biztonság'
 'Sends a notification after every successful import.': 'Értesítést küld minden sikeres importálás után.'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Értesítést küld, ha új alkalmazásverzió érhető el. Beállított értesítési szolgáltatást igényel.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Értesítést küld, ha esedékes a felszerelés karbantartása. Beállított értesítési szolgáltatást igényel.'
-Sensors: 'Érzékelők'
+Sensors: Érzékelők
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Az érzékelők csak a FIT-fájlokból importált tevékenységeknél kerülnek rögzítésre. A Stravából, GPX- vagy TCX-fájlokból származó tevékenységek soha nem illeszkednek erre a feltételre.'
 'Set description': 'Leírás beállítása'
 'Set name': 'Név beállítása'
@@ -356,7 +356,7 @@ Sensors: 'Érzékelők'
 'Set through the {envVar} environment variable and cannot be changed here.': 'A(z) {envVar} környezeti változón keresztül van beállítva, itt nem módosítható.'
 'Set workout type': 'Edzéstípus beállítása'
 'Set {envVar} in your {envFile} file': 'Állítsd be a(z) {envVar} változót a(z) {envFile} fájlban'
-Settings: 'Beállítások'
+Settings: Beállítások
 'Short date format': 'Rövid dátumformátum'
 'Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash.': 'Gyorsparancsok, amelyeket a felhasználó kiválaszthat az edzésasszisztensben. Ne tedd perjel elé a parancsot.'
 'Show in dashboard widget': 'Megjelenítés a dashboard widgetben'
@@ -365,16 +365,16 @@ Settings: 'Beállítások'
 'Show password': 'Jelszó megjelenítése'
 'Show the workout assistant in the UI.': 'Az edzésasszisztens megjelenítése a felületen.'
 'Showing {first} - {last} of {total}': '{first} – {last} megjelenítve, összesen {total}'
-'Sign in': 'Bejelentkezés'
+'Sign in': Bejelentkezés
 'Sign in to the admin panel': 'Bejelentkezés az adminfelületre'
-'Sign out': 'Kijelentkezés'
-'Signing in...': 'Bejelentkezés...'
+'Sign out': Kijelentkezés
+'Signing in...': Bejelentkezés...
 'Skip activities recorded before': 'Az ezen dátum előtt rögzített tevékenységek kihagyása'
-Skipped: 'Kihagyva'
+Skipped: Kihagyva
 'Skipped (an earlier rule stopped processing).': 'Kihagyva (egy korábbi szabály leállította a feldolgozást).'
-Source: 'Forrás'
-'Sport type': 'Sporttípus'
-'Sport types': 'Sporttípusok'
+Source: Forrás
+'Sport type': Sporttípus
+'Sport types': Sporttípusok
 'Sport types sorting order': 'Sporttípusok rendezési sorrendje'
 'Sport types to import': 'Importálandó sporttípusok'
 'Sport types to include': 'Belefoglalandó sporttípusok'
@@ -391,13 +391,13 @@ Source: 'Forrás'
 'Strava client secret': 'Strava kliens-titok'
 'Strava import': 'Strava importálás'
 'Strava refresh token': 'Strava frissítési token'
-Subtitle: 'Alcím'
-Success: 'Sikeres'
-Sunday: 'Vasárnap'
+Subtitle: Alcím
+Success: Sikeres
+Sunday: Vasárnap
 'Supported types': 'Támogatott típusok'
-Task: 'Feladat'
+Task: Feladat
 'Task name': 'Feladat neve'
-Tasks: 'Feladatok'
+Tasks: Feladatok
 'Test automation rules': 'Automatizálási szabályok tesztelése'
 'Test rules': 'Szabályok tesztelése'
 'The URL the app is hosted on.': 'Az URL, amelyen az alkalmazás elérhető.'
@@ -425,10 +425,10 @@ Tasks: 'Feladatok'
 'The max power': 'A maximális teljesítmény'
 'The max speed': 'A maximális sebesség'
 'The moving time': 'A mozgásidő'
-'The name is derived from the device recorded on your activities and can''t be edited.': 'A név a tevékenységeiden rögzített eszközből származik, és nem szerkeszthető.'
+"The name is derived from the device recorded on your activities and can't be edited.": 'A név a tevékenységeiden rögzített eszközből származik, és nem szerkeszthető.'
 'The name of the gear assigned to the activity': 'A tevékenységhez rendelt felszerelés neve'
 'The number of activities recorded with the gear': 'A felszereléssel rögzített tevékenységek száma'
-'The page you''re looking for doesn''t exist or may have been moved.': 'A keresett oldal nem létezik, vagy áthelyezték.'
+"The page you're looking for doesn't exist or may have been moved.": 'A keresett oldal nem létezik, vagy áthelyezték.'
 'The sport type, e.g. "Walk" or "Trail Run"': 'A sporttípus, pl. „Walk" vagy „Trail Run"'
 'The start date, optionally with a custom PHP date format': 'A kezdő dátum, opcionálisan egyéni PHP dátumformátummal'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'A térképek megjelenítéséhez használt csempe-réteg URL-ek. Adj hozzá többet is az egymásra helyezéshez, például helynevek rárakásához egy műholdas rétegre.'
@@ -443,84 +443,85 @@ Tasks: 'Feladatok'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Ez a komponens több felszerelésre is fel van szerelve, válaszd ki azt, amelyiket szervizelted.'
 'This only removes the import record, the imported activity is kept.': 'Ez csak az importálási rekordot távolítja el, az importált tevékenység megmarad.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Ez az oldal minden megnyitáskor más kulcsot mutat, és csak a környezeti fájlodban lévő érvényesül.'
-'This value is imported from Strava and can''t be edited here.': 'Ez az érték a Stravából van importálva, és itt nem szerkeszthető.'
+"This value is imported from Strava and can't be edited here.": 'Ez az érték a Stravából van importálva, és itt nem szerkeszthető.'
 'This widget still needs to be configured.': 'Ezt a widgetet még be kell állítani.'
 'This will discard your current dashboard layout and restore the default widgets.': 'Ez elveti a jelenlegi dashboard-elrendezésedet, és visszaállítja az alapértelmezett widgeteket.'
-Thursday: 'Csütörtök'
-'Tile layers': 'Csempe-rétegek'
-'Time format': 'Időformátum'
-'Time of day': 'Napszak'
-To: 'Eddig'
+Thursday: Csütörtök
+'Tile layers': Csempe-rétegek
+'Time format': Időformátum
+'Time of day': Napszak
+To: Eddig
 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.': 'A bejövő Strava webhook-kérések ellenőrzéséhez használt token. Kötelező, ha a webhookok engedélyezve vannak.'
-'Tokens are replaced with the activity''s values when the rule runs.': 'A tokenek a szabály futásakor a tevékenység értékeire cserélődnek.'
+"Tokens are replaced with the activity's values when the rule runs.": 'A tokenek a szabály futásakor a tevékenység értékeire cserélődnek.'
 'Total size exceeds {max} MB': 'A teljes méret meghaladja a(z) {max} MB-ot'
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Kövesd a felszerelés használatát a tevékenységeidből, és tartsd kézben a használat- és időalapú karbantartást.'
-Tuesday: 'Kedd'
+Tuesday: Kedd
 'Turn gear maintenance tracking on or off.': 'A felszerelés-karbantartás követésének be- vagy kikapcsolása.'
 'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Bekapcsolja az AI-alapú edzésasszisztenst, amely ezután a parancssorból használható.'
-Type: 'Típus'
+Type: Típus
 URL: URL
-Unit: 'Mértékegység'
-'Unit system': 'Mértékegységrendszer'
+Unit: Mértékegység
+'Unit system': Mértékegységrendszer
 'Unsupported file type': 'Nem támogatott fájltípus'
 'Upload activity files': 'Tevékenységfájlok feltöltése'
 'Upload failed': 'A feltöltés sikertelen'
 'Upload files': 'Fájlok feltöltése'
-Uploaded: 'Feltöltve'
-Uploading...: 'Feltöltés...'
-Username: 'Felhasználónév'
+Uploaded: Feltöltve
+Uploading...: Feltöltés...
+Username: Felhasználónév
 'Verify token': 'Ellenőrző token'
-Version: 'Verzió'
+Version: Verzió
 Warning: Figyelmeztetés
+'Weather and reverse geocoding have been retrieved.': 'Weather and reverse geocoding have been retrieved.'
 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.': 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.'
-Webhooks: 'Webhookok'
-Wednesday: 'Szerda'
+Webhooks: Webhookok
+Wednesday: Szerda
 Weekday: 'Hét napja'
 Weekdays: 'Hét napjai'
 'What is my FTP?': 'Mi az én FTP-m?'
-'When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule''s changes.': 'Ha be van jelölve, ennek a szabálynak az illeszkedése után nem kerül feldolgozásra több szabály. Szüntesd meg a jelölést, hogy a későbbi szabályok is fussanak. Ezek felülírhatják ennek a szabálynak a módosításait.'
+"When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": 'Ha be van jelölve, ennek a szabálynak az illeszkedése után nem kerül feldolgozásra több szabály. Szüntesd meg a jelölést, hogy a későbbi szabályok is fussanak. Ezek felülírhatják ennek a szabálynak a módosításait.'
 'When disabled, gear marked as retired is left out of the chart.': 'Ha ki van kapcsolva, a nyugdíjazottként megjelölt felszerelés kimarad a diagramból.'
 'When disabled, scrolling over a map zooms it instead of scrolling the page.': 'Ha ki van kapcsolva, a térkép feletti görgetés nagyítja azt, ahelyett hogy az oldalt görgetné.'
 'When enabled, activities without a route, like indoor rides, are left out.': 'Ha be van kapcsolva, az útvonal nélküli tevékenységek, például a beltéri edzések, kimaradnak.'
-'When enabled, gear marked as retired is skipped. Its components won''t increase usage and no maintenance is tracked for them.': 'Ha be van kapcsolva, a nyugdíjazottként megjelölt felszerelés kihagyásra kerül. A komponensei nem növelik a használatot, és nem történik karbantartás-követés rájuk.'
+"When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Ha be van kapcsolva, a nyugdíjazottként megjelölt felszerelés kihagyásra kerül. A komponensei nem növelik a használatot, és nem történik karbantartás-követés rájuk.'
 'When set, requests to the admin panel from any other IP address are rejected.': 'Ha be van állítva, az adminfelületre bármely más IP-címről érkező kérések elutasításra kerülnek.'
-'Workout type': 'Edzéstípus'
+'Workout type': Edzéstípus
 'You can add it back to your dashboard again later.': 'Később bármikor visszateheted a dashboardodra.'
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'A fájlokat közvetlenül a(z) {watchFolder} mappába is másolhatod, vagy {linkOpen}kézzel hozzáadhatsz egy tevékenységet{linkClose}.'
 'You can select up to {max} images': 'Legfeljebb {max} képet választhatsz'
-'You''re currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava''s API': 'Jelenleg a Strava API-ból importálsz. Állítsd be a(z) {importMode} értéket, hogy közvetlenül tölthess fel tevékenységfájlokat, a Strava API-jától függetlenül.'
+"You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": 'Jelenleg a Strava API-ból importálsz. Állítsd be a(z) {importMode} értéket, hogy közvetlenül tölthess fel tevékenységfájlokat, a Strava API-jától függetlenül.'
 'Your birthday. Needed to calculate heart rate zones.': 'A születésnapod. A pulzuszónák kiszámításához szükséges.'
 'Your changes have been saved.': 'A módosításaid mentésre kerültek.'
 'Your current IP address, as seen by Dreeve, is {ipAddress}.': 'A jelenlegi IP-címed, ahogy a Dreeve látja: {ipAddress}.'
 'Your gender. Used to determine activity training load.': 'A nemed. A tevékenység edzésterhelésének meghatározásához használt.'
 'Your measured max heart rate, applied from the given date onwards.': 'A mért maximális pulzusod, amely a megadott dátumtól kezdve érvényes.'
 'Your measured resting heart rate, applied from the given date onwards.': 'A mért nyugalmi pulzusod, amely a megadott dátumtól kezdve érvényes.'
-Zone: 'Zóna'
+Zone: Zóna
 'Zoom level': 'Nagyítási szint'
 Zwift: Zwift
-'Zwift level': 'Zwift-szint'
+'Zwift level': Zwift-szint
 'Zwift racing score': 'Zwift versenypontszám'
 'active days': 'aktív napok'
-after: 'után'
-'at least': 'legalább'
-'at most': 'legfeljebb'
+after: után
+'at least': legalább
+'at most': legfeljebb
 'at or after': 'ekkor vagy ezután'
 'at or before': 'ekkor vagy ez előtt'
-before: 'előtt'
+before: előtt
 'calendar days': 'naptári napok'
-contains: 'tartalmazza'
+contains: tartalmazza
 'discord://token@id': 'discord://token@id'
 'does not contain': 'nem tartalmazza'
 'eg: Commuter bike on short rides': 'pl.: Városi bicikli rövid túrákon'
 'eg: Imported automatically': 'pl.: Automatikusan importálva'
 'eg: Morning commute': 'pl.: Reggeli ingázás'
 'eg: commute': 'pl.: ingázás'
-exactly: 'pontosan'
+exactly: pontosan
 'exactly at': 'pontosan ekkor'
 ftp: ftp
 'greater than': 'nagyobb mint'
 'hours used': 'felhasznált órák'
-is: 'egyenlő'
+is: egyenlő
 'is none of': 'egyike sem'
 'is not': 'nem egyenlő'
 'is one of': 'egyike a következőknek'
@@ -528,12 +529,12 @@ is: 'egyenlő'
 'less than': 'kevesebb mint'
 'max {max} MB each': 'egyenként max. {max} MB'
 'miles used': 'felhasznált mérföldek'
-minutes: 'perc'
+minutes: perc
 'on': 'on'
 'on or after': 'on or after'
 'on or before': 'on or before'
 'outside radius': 'sugáron kívül'
-then: 'akkor'
+then: akkor
 'within radius': 'sugáron belül'
 '{count} files ready to upload': '{count} fájl készen áll a feltöltésre'
 '{count} files uploaded': '{count} fájl feltöltve'
