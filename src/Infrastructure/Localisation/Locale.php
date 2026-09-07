@@ -8,6 +8,7 @@ enum Locale: string
 {
     case de_DE = 'de_DE';
     case en_US = 'en_US';
+    case es_ES = 'es_ES';
     case fr_FR = 'fr_FR';
     case hu_HU = 'hu_HU';
     case it_IT = 'it_IT';
