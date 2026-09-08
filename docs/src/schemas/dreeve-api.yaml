@@ -29,6 +29,7 @@ security:
 tags:
   - name: Status
   - name: Activities
+  - name: Athlete
 paths:
   /api/v1/status:
     get:
@@ -164,6 +165,57 @@ paths:
               examples:
                 cannotStore:
                   value: { error: internal_error, message: The upload could not be stored. }
+  /api/v1/athlete/weights:
+    post:
+      operationId: recordAthleteWeight
+      tags: [Athlete]
+      summary: Record a weight measurement
+      description: >-
+        Creates a weight measurement for a calendar date, or replaces the existing measurement for
+        that date. When `on` is omitted, Dreeve uses the current date in its configured timezone.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [weight]
+              properties:
+                weight:
+                  type: number
+                  exclusiveMinimum: 0
+                  description: >-
+                    The measurement in the configured Appearance unit system: kilograms for Metric
+                    and pounds for Imperial.
+                  examples: [71.4]
+                on:
+                  type: string
+                  format: date
+                  description: The measurement date as `YYYY-MM-DD`. Defaults to today when omitted.
+                  examples: ['2026-09-08']
+      responses:
+        '200':
+          description: The measurement for the date was replaced.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WeightRecorded' }
+        '201':
+          description: A new measurement was recorded.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WeightRecorded' }
+        '400':
+          description: The JSON body, date, or weight is invalid.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '415':
+          description: The body was not `application/json`.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
 components:
   securitySchemes:
     apiKey:
@@ -172,6 +224,21 @@ components:
       description: >-
         Send your key as `Authorization: Bearer drv_...`
   schemas:
+    WeightRecorded:
+      type: object
+      required: [status, on, weight]
+      properties:
+        status:
+          type: string
+          enum: [created, updated]
+        on:
+          type: string
+          format: date
+        weight:
+          type: number
+          description: >-
+            The measurement in the configured Appearance unit system: kilograms for Metric and
+            pounds for Imperial.
     Error:
       type: object
       required: [error, message]
