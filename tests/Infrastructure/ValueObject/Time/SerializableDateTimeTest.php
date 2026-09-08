@@ -16,6 +16,13 @@ class SerializableDateTimeTest extends TestCase
         );
     }
 
+    public function testDateStringValidation(): void
+    {
+        $this->assertTrue(SerializableDateTime::isValidDateString('2024-02-29'));
+        $this->assertFalse(SerializableDateTime::isValidDateString('2026-02-29'));
+        $this->assertFalse(SerializableDateTime::isValidDateString('2026-9-08'));
+    }
+
     public function testGetSecondsUntilMidnight(): void
     {
         $this->assertEquals(
@@ -36,7 +43,7 @@ class SerializableDateTimeTest extends TestCase
     {
         $this->assertEquals(
             new \DateTimeImmutable('2023-10-05 18:56:31'),
-            SerializableDateTime::fromTimestamp('1696532191')
+            SerializableDateTime::fromTimestamp(1696532191)
         );
     }
 

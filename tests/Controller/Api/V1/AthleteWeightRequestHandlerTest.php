@@ -50,15 +50,35 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
         ], $this->weightHistory());
     }
 
-    public function testItUsesTheCurrentDateWhenDateIsOmitted(): void
+    public function testItListsWeightHistory(): void
     {
-        $this->request(['weight' => 71.4]);
+        $this->request(['weight' => 71.4, 'on' => '2026-09-08']);
+        $this->client->request(
+            'GET',
+            self::PATH,
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token],
+        );
 
-        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
-        $this->assertSame('2023-10-17', $this->response()['on']);
-        $this->assertSame(['on' => '2023-10-17', 'weight' => 71.4], $this->weightHistory()[4]);
+        $this->assertResponseIsSuccessful();
+        $this->assertSame(['on' => '2026-09-08', 'weight' => 71.4], $this->response()['weights'][0]);
     }
 
+    public function testItDeletesAWeightForADate(): void
+    {
+        $this->request(['weight' => 71.4, 'on' => '2026-09-08']);
+        $this->client->request(
+            'DELETE',
+            self::PATH.'/2026-09-08',
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token],
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
+        $this->assertNotContains(['on' => '2026-09-08', 'weight' => 71.4], $this->weightHistory());
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[DataProvider('provideInvalidPayloads')]
     public function testItRejectsInvalidPayloads(array $payload): void
     {
@@ -75,6 +95,7 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
     {
         yield 'missing weight' => [[]];
         yield 'kilogram-only field' => [['weightKg' => 71.4]];
+        yield 'missing date' => [['weight' => 71.4]];
         yield 'empty date' => [['weight' => 71.4, 'on' => '']];
         yield 'invalid date' => [['weight' => 71.4, 'on' => '2026-02-29']];
     }
@@ -120,6 +141,8 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
     {
         parent::setUp();
 
-        $this->settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
+        assert($settingsRepository instanceof SettingsRepository);
+        $this->settingsRepository = $settingsRepository;
     }
 }
