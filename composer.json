@@ -60,8 +60,10 @@
         "symfony/process": "8.1.*",
         "symfony/runtime": "8.1.*",
         "symfony/security-bundle": "8.1.*",
+        "symfony/serializer": "8.1.*",
         "symfony/translation": "8.1.*",
         "symfony/twig-bundle": "8.1.*",
+        "symfony/validator": "8.1.*",
         "symfony/yaml": "8.1.*",
         "twig/twig": "^3.28",
         "wyrihaximus/react-cron": "^5.3"

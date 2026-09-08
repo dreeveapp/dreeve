@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\V1;
 
+use App\Domain\Athlete\Weight\AthleteWeight;
+use App\Domain\Athlete\Weight\DeleteAthleteWeight\DeleteAthleteWeight;
+use App\Domain\Athlete\Weight\UpsertAthleteWeight\UpsertAthleteWeight;
 use App\Domain\Settings\KeyValueBasedSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
-use App\Domain\Settings\UpdateAthleteSettings\UpdateAthleteSettings;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
-use App\Infrastructure\Time\Clock\Clock;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\HttpFoundation\Exception\JsonException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
@@ -26,50 +27,33 @@ final readonly class AthleteWeightRequestHandler
         #[Autowire(service: KeyValueBasedSettingsRepository::class)]
         private SettingsRepository $settingsRepository,
         private CommandBus $commandBus,
-        private Clock $clock,
     ) {
     }
 
-    #[Route(path: '/api/v1/athlete/weights', name: 'api_v1_athlete_weights', methods: ['POST'], priority: 3)]
-    public function handle(Request $request): Response
+    #[Route(path: '/api/v1/athlete/weights', name: 'api_v1_athlete_weights', methods: ['GET'], priority: 3)]
+    public function list(): JsonResponse
     {
-        if (!str_starts_with((string) $request->headers->get('Content-Type'), 'application/json')) {
-            return new ApiErrorResponse(
-                statusCode: Response::HTTP_UNSUPPORTED_MEDIA_TYPE,
-                error: 'unsupported_media_type',
-                message: 'Send the weight as application/json.',
-            );
-        }
+        $weights = $this->settingsRepository->general()
+            ->getAthleteWeightHistory($this->settingsRepository->appearance()->getUnitSystem())
+            ->findAll();
 
-        try {
-            $payload = $request->toArray();
-        } catch (JsonException) {
-            return new ApiErrorResponse(
-                statusCode: Response::HTTP_BAD_REQUEST,
-                error: 'bad_request',
-                message: 'The request body must be valid JSON.',
-            );
-        }
+        return new JsonResponse([
+            'weights' => array_values(array_map(
+                static fn (AthleteWeight $weight): array => [
+                    'on' => $weight->getOn()->format('Y-m-d'),
+                    'weight' => $weight->getWeight()->toFloat(),
+                ],
+                $weights,
+            )),
+        ]);
+    }
 
-        $weight = $payload['weight'] ?? null;
-        if ((!is_int($weight) && !is_float($weight)) || !is_finite((float) $weight) || $weight <= 0) {
-            return new ApiErrorResponse(
-                statusCode: Response::HTTP_BAD_REQUEST,
-                error: 'bad_request',
-                message: 'A positive numeric "weight" is required.',
-            );
-        }
-
-        $on = array_key_exists('on', $payload)
-            ? $payload['on']
-            : $this->clock->getCurrentDateTimeImmutable()->format('Y-m-d');
-        if (!is_string($on) || !$this->isDate($on)) {
-            return new ApiErrorResponse(
-                statusCode: Response::HTTP_BAD_REQUEST,
-                error: 'bad_request',
-                message: '"on" must be a date in YYYY-MM-DD format.',
-            );
-        }
+    #[Route(path: '/api/v1/athlete/weights', name: 'api_v1_athlete_weights_record', methods: ['POST'], priority: 3)]
+    public function record(
+        #[MapRequestPayload(acceptFormat: 'json', validationFailedStatusCode: Response::HTTP_BAD_REQUEST)]
+        AthleteWeightRequest $request,
+    ): JsonResponse {
+        $on = $request->on;
 
         $general = $this->settingsRepository->find(SettingsGroup::GENERAL);
         /** @var array<string, mixed> $athlete */
@@ -78,34 +62,37 @@ final readonly class AthleteWeightRequestHandler
         $weightHistory = is_array($athlete['weightHistory'] ?? null) ? $athlete['weightHistory'] : [];
 
         $exists = false;
-        $updatedWeightHistory = [];
         foreach ($weightHistory as $entry) {
             if (is_array($entry) && $on === ($entry['on'] ?? null)) {
                 $exists = true;
-                continue;
             }
-
-            $updatedWeightHistory[] = $entry;
         }
-        $updatedWeightHistory[] = ['on' => $on, 'weight' => (float) $weight];
-        $athlete['weightHistory'] = $updatedWeightHistory;
 
-        $this->commandBus->dispatch(UpdateAthleteSettings::fromPayload(['athlete' => $athlete]));
+        $this->commandBus->dispatch(UpsertAthleteWeight::from(
+            on: SerializableDateTime::fromString($on),
+            weight: $request->weight,
+        ));
 
         return new JsonResponse([
             'status' => $exists ? 'updated' : 'created',
             'on' => $on,
-            'weight' => (float) $weight,
+            'weight' => $request->weight,
         ], $exists ? Response::HTTP_OK : Response::HTTP_CREATED);
     }
 
-    private function isDate(string $date): bool
+    #[Route(path: '/api/v1/athlete/weights/{on}', name: 'api_v1_athlete_weights_delete', methods: ['DELETE'], priority: 3)]
+    public function delete(string $on): Response
     {
-        $parsed = \DateTimeImmutable::createFromFormat('!Y-m-d', $date);
-        $errors = \DateTimeImmutable::getLastErrors();
+        if (!SerializableDateTime::isValidDateString($on)) {
+            return new ApiErrorResponse(
+                statusCode: Response::HTTP_BAD_REQUEST,
+                error: 'bad_request',
+                message: '"on" must be a date in YYYY-MM-DD format.',
+            );
+        }
 
-        return $parsed instanceof \DateTimeImmutable
-            && false === $errors
-            && $date === $parsed->format('Y-m-d');
+        $this->commandBus->dispatch(DeleteAthleteWeight::from(SerializableDateTime::fromString($on)));
+
+        return new Response(status: Response::HTTP_NO_CONTENT);
     }
 }

@@ -26,6 +26,16 @@ class SerializableDateTime extends \DateTimeImmutable implements \JsonSerializab
         return self::fromString('now', $timezone)->setTimestamp($unixTimestamp);
     }
 
+    public static function isValidDateString(string $date): bool
+    {
+        $parsed = \DateTimeImmutable::createFromFormat('!Y-m-d', $date);
+        $errors = \DateTimeImmutable::getLastErrors();
+
+        return $parsed instanceof \DateTimeImmutable
+            && false === $errors
+            && $date === $parsed->format('Y-m-d');
+    }
+
     public static function createFromFormat(string $format, string $datetime, ?\DateTimeZone $timezone = null): self
     {
         if (!$datetime = parent::createFromFormat($format, $datetime, $timezone)) {

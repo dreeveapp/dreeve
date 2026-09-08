@@ -63,6 +63,7 @@ final readonly class ApiExceptionListener implements EventSubscriberInterface
             Response::HTTP_FORBIDDEN => 'forbidden',
             Response::HTTP_NOT_FOUND => 'not_found',
             Response::HTTP_METHOD_NOT_ALLOWED => 'method_not_allowed',
+            Response::HTTP_UNSUPPORTED_MEDIA_TYPE => 'unsupported_media_type',
             Response::HTTP_TOO_MANY_REQUESTS => 'too_many_requests',
             default => 'internal_error',
         };

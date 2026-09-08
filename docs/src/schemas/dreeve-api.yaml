@@ -166,20 +166,32 @@ paths:
                 cannotStore:
                   value: { error: internal_error, message: The upload could not be stored. }
   /api/v1/athlete/weights:
+    get:
+      operationId: listAthleteWeights
+      tags: [Athlete]
+      summary: List weight measurements
+      responses:
+        '200':
+          description: Weight measurements, ordered from newest to oldest.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WeightHistory' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
     post:
       operationId: recordAthleteWeight
       tags: [Athlete]
       summary: Record a weight measurement
       description: >-
         Creates a weight measurement for a calendar date, or replaces the existing measurement for
-        that date. When `on` is omitted, Dreeve uses the current date in its configured timezone.
+        that date.
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required: [weight]
+              required: [weight, on]
               properties:
                 weight:
                   type: number
@@ -191,7 +203,7 @@ paths:
                 on:
                   type: string
                   format: date
-                  description: The measurement date as `YYYY-MM-DD`. Defaults to today when omitted.
+                  description: The measurement date as `YYYY-MM-DD`.
                   examples: ['2026-09-08']
       responses:
         '200':
@@ -216,6 +228,28 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/Error' }
+  /api/v1/athlete/weights/{on}:
+    delete:
+      operationId: deleteAthleteWeight
+      tags: [Athlete]
+      summary: Delete a weight measurement
+      parameters:
+        - name: on
+          in: path
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '204':
+          description: The measurement was deleted, if one existed for the date.
+        '400':
+          description: The date is invalid.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
 components:
   securitySchemes:
     apiKey:
@@ -224,6 +258,25 @@ components:
       description: >-
         Send your key as `Authorization: Bearer drv_...`
   schemas:
+    WeightHistory:
+      type: object
+      required: [weights]
+      properties:
+        weights:
+          type: array
+          items: { $ref: '#/components/schemas/WeightMeasurement' }
+    WeightMeasurement:
+      type: object
+      required: [on, weight]
+      properties:
+        on:
+          type: string
+          format: date
+        weight:
+          type: number
+          description: >-
+            The measurement in the configured Appearance unit system: kilograms for Metric and
+            pounds for Imperial.
     WeightRecorded:
       type: object
       required: [status, on, weight]
