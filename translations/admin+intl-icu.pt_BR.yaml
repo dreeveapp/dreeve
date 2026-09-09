@@ -5,6 +5,7 @@ AI: IA
 AM/PM: AM/PM
 'API access': 'Acesso à API'
 'API key': 'Chave da API'
+Actions: Actions
 Active: Ativo
 'Activities excluded from peak power outputs': 'Atividades excluídas dos picos de potência'
 'Activities scanned': 'Atividades analisadas'
@@ -124,6 +125,7 @@ Description: Descrição
 Disabled: Desativado
 Distance: Distância
 Done: Concluído
+'Download original file': 'Download original file'
 'Drag to reorder': 'Arraste para reordenar'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Arraste para definir a ordem em que os tipos de esporte são exibidos em todo o aplicativo.'
 Duplicate: Duplicar

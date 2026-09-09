@@ -5,6 +5,7 @@ AI: IA
 AM/PM: AM/PM
 'API access': 'accès API'
 'API key': 'clé API'
+Actions: Actions
 Active: Active
 'Activities excluded from peak power outputs': 'Activities excluded from peak power outputs'
 'Activities scanned': 'Activities scanned'
@@ -124,6 +125,7 @@ Description: Description
 Disabled: Désactivé
 Distance: Distance
 Done: Fait
+'Download original file': 'Download original file'
 'Drag to reorder': 'Drag to reorder'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Drag to set the order in which sport types are displayed throughout the app.'
 Duplicate: Duplicate

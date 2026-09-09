@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Domain\Import;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ImportSource;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\ValueObject\String\CompressedString;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class DbalFileImportRepository extends DbalRepository implements FileImportRepository
 {
@@ -25,6 +28,32 @@ final readonly class DbalFileImportRepository extends DbalRepository implements 
             'activityId' => $fileImport->getActivityId() instanceof ActivityId ? (string) $fileImport->getActivityId() : null,
             'importedOn' => $fileImport->getImportedOn(),
         ]);
+    }
+
+    public function find(FileImportId $fileImportId): FileImport
+    {
+        $result = $this->connection->createQueryBuilder()
+            ->select('*')
+            ->from('FileImport')
+            ->andWhere('fileImportId = :fileImportId')
+            ->setParameter('fileImportId', (string) $fileImportId)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if (false === $result) {
+            throw new EntityNotFound(sprintf('File import "%s" is no longer available', $fileImportId));
+        }
+
+        return FileImport::fromState(
+            fileImportId: FileImportId::fromString($result['fileImportId']),
+            originalFilename: $result['originalFilename'],
+            fileContents: null !== $result['fileContents'] ? CompressedString::fromCompressed($result['fileContents'])->uncompress() : null,
+            source: ImportSource::from($result['source']),
+            status: FileImportStatus::from($result['status']),
+            errorMessage: $result['errorMessage'],
+            activityId: ActivityId::fromOptionalString($result['activityId']),
+            importedOn: SerializableDateTime::fromString($result['importedOn']),
+        );
     }
 
     public function delete(FileImportId $fileImportId): void

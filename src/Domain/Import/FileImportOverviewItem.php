@@ -20,6 +20,7 @@ final readonly class FileImportOverviewItem implements Item
         private ?string $errorMessage,
         private ?ActivityId $activityId,
         private ?string $activityName,
+        private bool $hasFileContents,
     ) {
     }
 
@@ -32,6 +33,7 @@ final readonly class FileImportOverviewItem implements Item
         ?string $errorMessage,
         ?ActivityId $activityId,
         ?string $activityName,
+        bool $hasFileContents,
     ): self {
         return new self(
             fileImportId: $fileImportId,
@@ -42,6 +44,7 @@ final readonly class FileImportOverviewItem implements Item
             errorMessage: $errorMessage,
             activityId: $activityId,
             activityName: $activityName,
+            hasFileContents: $hasFileContents,
         );
     }
 
@@ -68,6 +71,11 @@ final readonly class FileImportOverviewItem implements Item
     public function wasSkipped(): bool
     {
         return FileImportStatus::SKIPPED === $this->status;
+    }
+
+    public function hasFileContents(): bool
+    {
+        return $this->hasFileContents;
     }
 
     public function getErrorMessage(): ?string

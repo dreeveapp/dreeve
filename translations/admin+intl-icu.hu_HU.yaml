@@ -5,6 +5,7 @@ AI: AI
 AM/PM: AM/PM
 'API access': API-hozzáférés
 'API key': API-kulcs
+Actions: Actions
 Active: Aktív
 'Activities excluded from peak power outputs': 'A csúcsteljesítményből kizárt tevékenységek'
 'Activities scanned': 'Átvizsgált tevékenységek'
@@ -124,6 +125,7 @@ Description: Leírás
 Disabled: Letiltva
 Distance: Távolság
 Done: Kész
+'Download original file': 'Download original file'
 'Drag to reorder': 'Húzással átrendezhető'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Húzással állítsd be, milyen sorrendben jelenjenek meg a sporttípusok az alkalmazásban.'
 Duplicate: Másolat

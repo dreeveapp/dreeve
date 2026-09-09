@@ -53,7 +53,7 @@
                                 {{ "Activity"|trans }}
                             </th>
                             <th scope="col" class="narrow sticky-actions">
-                                <span class="sr-only">{{ "Delete"|trans({}, 'admin') }}</span>
+                                <span class="sr-only">{{ "Actions"|trans({}, 'admin') }}</span>
                             </th>
                         </tr>
                         </thead>
@@ -107,14 +107,27 @@
                                     {% endif %}
                                 </td>
                                 <td class="narrow whitespace-nowrap sticky-actions">
-                                    <a href="{{ relativeUrl(path('admin_delete_file_import', {fileImportId: fileImport.getFileImportId()})) }}"
-                                       class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600"
-                                       title="{{ "Delete"|trans({}, 'admin') }}">
-                                        <span class="sr-only">{{ "Delete"|trans({}, 'admin') }}</span>
-                                        <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
-                                        </svg>
-                                    </a>
+                                    <div class="inline-flex items-center gap-2">
+                                        {% if fileImport.hasFileContents() %}
+                                            <a href="{{ relativeUrl(path('admin_download_file_import', {fileImportId: fileImport.getFileImportId()})) }}"
+                                               download="{{ fileImport.getOriginalFilename()|e('html_attr') }}"
+                                               class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-primary"
+                                               title="{{ "Download original file"|trans({}, 'admin') }}">
+                                                <span class="sr-only">{{ "Download original file"|trans({}, 'admin') }}</span>
+                                                <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01"/>
+                                                </svg>
+                                            </a>
+                                        {% endif %}
+                                        <a href="{{ relativeUrl(path('admin_delete_file_import', {fileImportId: fileImport.getFileImportId()})) }}"
+                                           class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600"
+                                           title="{{ "Delete"|trans({}, 'admin') }}">
+                                            <span class="sr-only">{{ "Delete"|trans({}, 'admin') }}</span>
+                                            <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         {% endfor %}
