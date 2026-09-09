@@ -43,6 +43,7 @@ final class FitSportType
     private const int SPORT_RACKET = 64;
     private const int SPORT_WHEELCHAIR_PUSH_WALK = 65;
     private const int SPORT_WHEELCHAIR_PUSH_RUN = 66;
+    private const int SPORT_DISC_GOLF = 69;
     private const int SPORT_CRICKET = 71;
     private const int SPORT_VOLLEYBALL = 75;
     private const int SPORT_DANCE = 83;
@@ -132,6 +133,7 @@ final class FitSportType
             self::SPORT_PADDLING, self::SPORT_CANOEING => SportType::CANOEING,
             self::SPORT_E_BIKING => SportType::E_BIKE_RIDE,
             self::SPORT_GOLF => SportType::GOLF,
+            self::SPORT_DISC_GOLF => SportType::WORKOUT,
             self::SPORT_INLINE_SKATING => SportType::INLINE_SKATE,
             self::SPORT_ROCK_CLIMBING => SportType::ROCK_CLIMBING,
             self::SPORT_SAILING => SportType::SAIL,
