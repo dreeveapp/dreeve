@@ -77,6 +77,13 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertCount(3, $crawler->filter('table.data-table tbody tr'));
         $this->assertCount(3, $crawler->filter('table.data-table tbody a[href$="/delete"]'));
+        $downloadLinks = $crawler->filter('table.data-table tbody a[href$="/download"]');
+        $this->assertCount(2, $downloadLinks);
+        $this->assertStringContainsString(
+            '/admin/file-imports/'.FileImportId::fromUnprefixed('2').'/download',
+            (string) $downloadLinks->first()->attr('href')
+        );
+        $this->assertSame('activity-2.fit', $downloadLinks->first()->attr('download'));
         $this->assertStringContainsString('activity-1.fit', $crawler->filter('table.data-table')->text());
         $this->assertStringNotContainsString('No files imported yet.', $crawler->filter('body')->text());
         $this->assertCount(0, $crawler->filter('[aria-label="Go to next page"]'));
@@ -233,11 +240,13 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
 
         for ($i = 1; $i <= $count; ++$i) {
             $failed = 0 === $i % 2;
+            $originalFileWasKept = 0 !== $i % 3;
 
             $fileImportRepository->add(
                 FileImportBuilder::fromDefaults()
                     ->withFileImportId(FileImportId::fromUnprefixed((string) $i))
                     ->withOriginalFilename(sprintf('activity-%d.fit', $i))
+                    ->withFileContents($originalFileWasKept ? 'raw fit bytes' : null)
                     ->withStatus($failed ? FileImportStatus::FAILED : FileImportStatus::SUCCESS)
                     ->withErrorMessage($failed ? sprintf('Could not parse activity-%d.fit', $i) : null)
                     ->withImportedOn(SerializableDateTime::fromString(sprintf('2026-06-01 %02d:%02d:00', 8 + intdiv($i, 60), $i % 60)))
