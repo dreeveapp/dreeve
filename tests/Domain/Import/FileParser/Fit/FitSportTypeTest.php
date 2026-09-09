@@ -123,6 +123,7 @@ class FitSportTypeTest extends TestCase
             'racket / table tennis' => [64, 97, SportType::TABLE_TENNIS],
             'wheelchair push walk' => [65, null, SportType::WHEELCHAIR],
             'wheelchair push run' => [66, null, SportType::WHEELCHAIR],
+            'disc golf' => [69, null, SportType::WORKOUT],
             'cricket' => [71, null, SportType::CRICKET],
             'volleyball' => [75, null, SportType::VOLLEYBALL],
             'dance' => [83, null, SportType::DANCE],
