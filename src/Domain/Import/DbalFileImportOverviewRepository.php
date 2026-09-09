@@ -18,7 +18,7 @@ final readonly class DbalFileImportOverviewRepository extends DbalRepository imp
     public function find(Pagination $pagination, FileImportOverviewFilters $filters): Overview
     {
         $queryBuilder = $this->connection->createQueryBuilder()
-            ->select('fi.fileImportId', 'fi.originalFilename', 'fi.source', 'fi.status', 'fi.errorMessage', 'fi.activityId', 'fi.importedOn', 'a.name AS activityName')
+            ->select('fi.fileImportId', 'fi.originalFilename', 'fi.source', 'fi.status', 'fi.errorMessage', 'fi.activityId', 'fi.importedOn', 'fi.fileContents IS NOT NULL AS hasFileContents', 'a.name AS activityName')
             ->from('FileImport', 'fi')
             ->leftJoin('fi', 'Activity', 'a', 'a.activityId = fi.activityId')
             ->orderBy('fi.importedOn', 'DESC')
@@ -60,7 +60,7 @@ final readonly class DbalFileImportOverviewRepository extends DbalRepository imp
     public function findOneByFileImportId(FileImportId $fileImportId): FileImportOverviewItem
     {
         $result = $this->connection->createQueryBuilder()
-            ->select('fi.fileImportId', 'fi.originalFilename', 'fi.source', 'fi.status', 'fi.errorMessage', 'fi.activityId', 'fi.importedOn', 'a.name AS activityName')
+            ->select('fi.fileImportId', 'fi.originalFilename', 'fi.source', 'fi.status', 'fi.errorMessage', 'fi.activityId', 'fi.importedOn', 'fi.fileContents IS NOT NULL AS hasFileContents', 'a.name AS activityName')
             ->from('FileImport', 'fi')
             ->leftJoin('fi', 'Activity', 'a', 'a.activityId = fi.activityId')
             ->andWhere('fi.fileImportId = :fileImportId')
@@ -89,6 +89,7 @@ final readonly class DbalFileImportOverviewRepository extends DbalRepository imp
             errorMessage: $result['errorMessage'],
             activityId: ActivityId::fromOptionalString($result['activityId']),
             activityName: $result['activityName'],
+            hasFileContents: (bool) $result['hasFileContents'],
         );
     }
 }

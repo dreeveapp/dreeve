@@ -10,6 +10,8 @@ interface FileImportRepository
 {
     public function add(FileImport $fileImport): void;
 
+    public function find(FileImportId $fileImportId): FileImport;
+
     public function delete(FileImportId $fileImportId): void;
 
     public function deleteForActivity(ActivityId $activityId): void;
