@@ -8,7 +8,7 @@ use App\Infrastructure\Measurement\Mass\Kilogram;
 use App\Infrastructure\Measurement\Mass\Weight;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
-final readonly class AthleteWeight
+final readonly class AthleteWeight implements \JsonSerializable
 {
     private function __construct(
         private SerializableDateTime $on,
@@ -39,5 +39,16 @@ final readonly class AthleteWeight
     public function getWeightInKg(): Kilogram
     {
         return $this->getWeight()->toKilogram();
+    }
+
+    /**
+     * @return array<string, string|float>
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'on' => $this->on->format('Y-m-d'),
+            'weight' => $this->weight->toFloat(),
+        ];
     }
 }
