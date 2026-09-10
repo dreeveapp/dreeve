@@ -74,6 +74,18 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
         $this->assertNotContains(['on' => '2026-09-08', 'weight' => 71.4], $this->weightHistory());
     }
 
+    public function testItRejectsAnInvalidDateWhenDeletingAWeight(): void
+    {
+        $this->client->request(
+            'DELETE',
+            self::PATH.'/2026-02-29',
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token],
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertSame('bad_request', $this->response()['error']);
+    }
+
     /**
      * @param array<string, mixed> $payload
      */
@@ -98,16 +110,39 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
         yield 'invalid date' => [['weight' => 71.4, 'on' => '2026-02-29']];
     }
 
+    #[DataProvider('provideInvalidRequestBodies')]
+    public function testItRejectsInvalidRequestBodies(string $content): void
+    {
+        $this->requestRaw($content);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertSame('bad_request', $this->response()['error']);
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function provideInvalidRequestBodies(): iterable
+    {
+        yield 'invalid JSON' => ['{'];
+        yield 'JSON scalar' => ['71.4'];
+    }
+
     /**
      * @param array<string, mixed> $payload
      */
     private function request(array $payload): void
     {
+        $this->requestRaw(Json::encode($payload));
+    }
+
+    private function requestRaw(string $content): void
+    {
         $this->client->request(
             'POST',
             self::PATH,
             server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
-            content: Json::encode($payload),
+            content: $content,
         );
     }
 

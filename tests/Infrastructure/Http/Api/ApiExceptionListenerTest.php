@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class ApiExceptionListenerTest extends TestCase
@@ -121,6 +122,26 @@ class ApiExceptionListenerTest extends TestCase
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame(
             ['error' => 'bad_request', 'message' => 'The request could not be processed.'],
+            Json::decode((string) $response->getContent()),
+        );
+    }
+
+    public function testItMapsUnsupportedMediaTypeToTheApiError(): void
+    {
+        $event = new ExceptionEvent(
+            $this->createStub(HttpKernelInterface::class),
+            Request::create('/api/v1/athlete/weights'),
+            HttpKernelInterface::MAIN_REQUEST,
+            new UnsupportedMediaTypeHttpException('Unsupported format.'),
+        );
+
+        new ApiExceptionListener(PlatformEnvironment::PROD, $this->serverErrorLogger)->onKernelException($event);
+
+        $response = $event->getResponse();
+        $this->assertNotNull($response);
+        $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode());
+        $this->assertSame(
+            ['error' => 'unsupported_media_type', 'message' => 'Unsupported format.'],
             Json::decode((string) $response->getContent()),
         );
     }
