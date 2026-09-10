@@ -73,7 +73,9 @@ final readonly class AthleteWeightRequestHandler
     #[Route(path: '/api/v1/athlete/weights/{on}', name: 'api_v1_athlete_weights_delete', methods: ['DELETE'], priority: 3)]
     public function delete(string $on): Response
     {
-        if (!SerializableDateTime::isValidDateString($on)) {
+        try {
+            $onDate = SerializableDateTime::createFromFormat(AthleteWeightRequest::DATE_FORMAT, $on);
+        } catch (\InvalidArgumentException) {
             return new ApiErrorResponse(
                 statusCode: Response::HTTP_BAD_REQUEST,
                 error: 'bad_request',
@@ -81,7 +83,7 @@ final readonly class AthleteWeightRequestHandler
             );
         }
 
-        $this->commandBus->dispatch(DeleteAthleteWeight::from(SerializableDateTime::fromString($on)));
+        $this->commandBus->dispatch(DeleteAthleteWeight::from($onDate));
 
         return new Response(status: Response::HTTP_NO_CONTENT);
     }
