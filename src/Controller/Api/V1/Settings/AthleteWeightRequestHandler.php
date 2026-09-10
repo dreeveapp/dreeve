@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\V1;
+namespace App\Controller\Api\V1\Settings;
 
-use App\Domain\Athlete\Weight\AthleteWeight;
 use App\Domain\Athlete\Weight\DeleteAthleteWeight\DeleteAthleteWeight;
 use App\Domain\Athlete\Weight\UpsertAthleteWeight\UpsertAthleteWeight;
 use App\Domain\Settings\KeyValueBasedSettingsRepository;
@@ -15,9 +14,9 @@ use App\Infrastructure\Http\Api\ApiErrorResponse;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
@@ -37,23 +36,14 @@ final readonly class AthleteWeightRequestHandler
             ->getAthleteWeightHistory($this->settingsRepository->appearance()->getUnitSystem())
             ->findAll();
 
-        return new JsonResponse([
-            'weights' => array_values(array_map(
-                static fn (AthleteWeight $weight): array => [
-                    'on' => $weight->getOn()->format('Y-m-d'),
-                    'weight' => $weight->getWeight()->toFloat(),
-                ],
-                $weights,
-            )),
-        ]);
+        return new JsonResponse(['weights' => array_values($weights)]);
     }
 
-    #[Route(path: '/api/v1/athlete/weights', name: 'api_v1_athlete_weights_record', methods: ['POST'], priority: 3)]
-    public function record(
-        #[MapRequestPayload(acceptFormat: 'json', validationFailedStatusCode: Response::HTTP_BAD_REQUEST)]
-        AthleteWeightRequest $request,
-    ): JsonResponse {
-        $on = $request->on;
+    #[Route(path: '/api/v1/athlete/weights', name: 'api_v1_athlete_weights_update', methods: ['POST'], priority: 3)]
+    public function update(Request $request): JsonResponse
+    {
+        $athleteWeightRequest = AthleteWeightRequest::fromRequest($request);
+        $on = $athleteWeightRequest->getOn()->format('Y-m-d');
 
         $general = $this->settingsRepository->find(SettingsGroup::GENERAL);
         /** @var array<string, mixed> $athlete */
@@ -69,14 +59,14 @@ final readonly class AthleteWeightRequestHandler
         }
 
         $this->commandBus->dispatch(UpsertAthleteWeight::from(
-            on: SerializableDateTime::fromString($on),
-            weight: $request->weight,
+            on: $athleteWeightRequest->getOn(),
+            weight: $athleteWeightRequest->getWeight(),
         ));
 
         return new JsonResponse([
             'status' => $exists ? 'updated' : 'created',
             'on' => $on,
-            'weight' => $request->weight,
+            'weight' => $athleteWeightRequest->getWeight(),
         ], $exists ? Response::HTTP_OK : Response::HTTP_CREATED);
     }
 
