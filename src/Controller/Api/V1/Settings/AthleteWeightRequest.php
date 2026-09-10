@@ -14,6 +14,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 #[Exclude]
 final readonly class AthleteWeightRequest
 {
+    public const string DATE_FORMAT = '!Y-m-d';
+
     private function __construct(
         private float $weight,
         private SerializableDateTime $on,
@@ -42,13 +44,15 @@ final readonly class AthleteWeightRequest
             throw new BadRequestHttpException('"on" is required.');
         }
 
-        if (!SerializableDateTime::isValidDateString($on)) {
+        try {
+            $onDate = SerializableDateTime::createFromFormat(self::DATE_FORMAT, $on);
+        } catch (\InvalidArgumentException) {
             throw new BadRequestHttpException('"on" must be a date in YYYY-MM-DD format.');
         }
 
         return new self(
             weight: (float) $weight,
-            on: SerializableDateTime::fromString($on),
+            on: $onDate,
         );
     }
 

@@ -4,6 +4,7 @@ namespace App\Tests\Infrastructure\ValueObject\Time;
 
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class SerializableDateTimeTest extends TestCase
@@ -16,11 +17,33 @@ class SerializableDateTimeTest extends TestCase
         );
     }
 
-    public function testDateStringValidation(): void
+    public function testCreateFromFormat(): void
     {
-        $this->assertTrue(SerializableDateTime::isValidDateString('2024-02-29'));
-        $this->assertFalse(SerializableDateTime::isValidDateString('2026-02-29'));
-        $this->assertFalse(SerializableDateTime::isValidDateString('2026-9-08'));
+        $this->assertEquals(
+            new \DateTimeImmutable('2024-02-29 00:00:00'),
+            SerializableDateTime::createFromFormat('!Y-m-d', '2024-02-29')
+        );
+    }
+
+    #[DataProvider('provideInvalidDates')]
+    public function testCreateFromFormatItShouldThrowOnInvalidDate(string $date): void
+    {
+        $this->expectExceptionObject(new \InvalidArgumentException(sprintf('Invalid date format !Y-m-d for %s', $date)));
+
+        SerializableDateTime::createFromFormat('!Y-m-d', $date);
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function provideInvalidDates(): iterable
+    {
+        yield 'non existing day' => ['2026-02-29'];
+        yield 'out of range month and day' => ['2026-13-45'];
+        yield 'other format' => ['08-09-2026'];
+        yield 'relative date' => ['now'];
+        yield 'trailing time' => ['2026-09-08 10:00:00'];
+        yield 'empty' => [''];
     }
 
     public function testGetSecondsUntilMidnight(): void
