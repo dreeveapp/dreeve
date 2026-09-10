@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Athlete\Weight\UpsertAthleteWeight;
+namespace App\Domain\Athlete\Weight\UpdateAthleteWeight;
 
 use App\Domain\Settings\KeyValueBasedSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
@@ -11,7 +11,7 @@ use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-final readonly class UpsertAthleteWeightCommandHandler implements CommandHandler
+final readonly class UpdateAthleteWeightCommandHandler implements CommandHandler
 {
     public function __construct(
         #[Autowire(service: KeyValueBasedSettingsRepository::class)]
@@ -21,7 +21,7 @@ final readonly class UpsertAthleteWeightCommandHandler implements CommandHandler
 
     public function handle(Command $command): void
     {
-        assert($command instanceof UpsertAthleteWeight);
+        assert($command instanceof UpdateAthleteWeight);
 
         $data = $this->settingsRepository->find(SettingsGroup::GENERAL);
         /** @var array<string, mixed> $athlete */
