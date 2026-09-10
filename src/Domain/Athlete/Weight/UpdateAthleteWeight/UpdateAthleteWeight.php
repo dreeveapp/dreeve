@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Athlete\Weight\UpsertAthleteWeight;
+namespace App\Domain\Athlete\Weight\UpdateAthleteWeight;
 
 use App\Infrastructure\CQRS\Command\DomainCommand;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
-final readonly class UpsertAthleteWeight extends DomainCommand
+final readonly class UpdateAthleteWeight extends DomainCommand
 {
     private function __construct(
         private SerializableDateTime $on,
