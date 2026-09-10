@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Athlete\Weight\UpdateAthleteWeight;
 
+use App\Domain\Athlete\Weight\AthleteWeightHistoryPayload;
 use App\Domain\Settings\KeyValueBasedSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
@@ -26,16 +27,10 @@ final readonly class UpdateAthleteWeightCommandHandler implements CommandHandler
         $data = $this->settingsRepository->find(SettingsGroup::GENERAL);
         /** @var array<string, mixed> $athlete */
         $athlete = $data['athlete'] ?? [];
-        /** @var list<mixed> $weightHistory */
-        $weightHistory = is_array($athlete['weightHistory'] ?? null) ? $athlete['weightHistory'] : [];
-        $on = $command->getOn()->format('Y-m-d');
 
-        $weightHistory = array_values(array_filter(
-            $weightHistory,
-            static fn (mixed $entry): bool => !is_array($entry) || $on !== ($entry['on'] ?? null),
-        ));
-        $weightHistory[] = ['on' => $on, 'weight' => $command->getWeight()];
-        $athlete['weightHistory'] = $weightHistory;
+        $athlete['weightHistory'] = AthleteWeightHistoryPayload::fromStoredValue($athlete['weightHistory'] ?? null)
+            ->with($command->getOn(), $command->getWeight())
+            ->toArray();
         $data['athlete'] = $athlete;
 
         $this->settingsRepository->save(SettingsGroup::GENERAL, $data);
