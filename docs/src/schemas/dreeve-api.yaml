@@ -207,12 +207,7 @@ paths:
                   examples: ['2026-09-08']
       responses:
         '200':
-          description: The measurement for the date was replaced.
-          content:
-            application/json:
-              schema: { $ref: '#/components/schemas/WeightRecorded' }
-        '201':
-          description: A new measurement was recorded.
+          description: The measurement for the date was recorded.
           content:
             application/json:
               schema: { $ref: '#/components/schemas/WeightRecorded' }
@@ -279,11 +274,8 @@ components:
             pounds for Imperial.
     WeightRecorded:
       type: object
-      required: [status, on, weight]
+      required: [on, weight]
       properties:
-        status:
-          type: string
-          enum: [created, updated]
         on:
           type: string
           format: date
