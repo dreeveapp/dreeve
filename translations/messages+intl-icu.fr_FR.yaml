@@ -21,7 +21,7 @@ Activity: Activité
 'Acute Training Load (Fatigue) - 7-day exponentially weighted average of your daily training load. Represents short-term fatigue.': "Charge d'Entraînement Aiguë (Fatigue) - Moyenne pondérée exponentiellement sur 7 jours de votre charge d'entraînement quotidienne. Représente la fatigue à court terme."
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Ratio Aiguë:Chronique (A:C) - Rapport entre ATL et CTL. Indique le risque de blessure.'
 'Adaptive & Inclusive Sports': 'Sports adaptés et inclusifs'
-'Admin panel': 'Admin panel'
+'Admin panel': 'Panneau admin'
 'Aero sensor': 'Capteur aero'
 Afternoon: Après-midi
 All: Tous
@@ -32,10 +32,10 @@ Apr: Avr
 'Athlete profile': "Profil de l'athlète"
 Aug: Aoû
 Average: Moyen
-'Average gradient': 'Average gradient'
-'Avg gradient': 'Avg gradient'
-'Avg pace': 'Avg pace'
-'Avg speed': 'Avg speed'
+'Average gradient': 'Pente moyenne'
+'Avg gradient': 'Pente moyenne'
+'Avg pace': 'Rhytme moyen'
+'Avg speed': 'Vitesse moyenne'
 'Back Country Ski': 'Ski de randonnée'
 Badges: Badges
 Badminton: Badminton
@@ -62,7 +62,7 @@ Challenges: Défis
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': "Charge d'Entraînement Chronique (Forme) - Moyenne pondérée exponentiellement sur 42 jours de votre charge d'entraînement quotidienne. Représente l'adaptation d'entraînement à long terme."
 'Clear all filters': 'Effacer tous les filtres'
 'Clear chat': 'Effacer le chat'
-Columns: Columns
+Columns: Colonnes
 Commute: 'Trajet domicile-travail'
 Commutes: 'Trajets domicile-travail'
 'Commutes only': 'Trajets domicile-travail uniquement'
@@ -113,7 +113,7 @@ Duration: Durée
 'E-Mountain Bike Rides': 'Sorties en VTT électrique'
 Eddington: Eddington
 'Eddington number': "Nombre d'Eddington"
-'Eddington over time': 'Eddington over time'
+'Eddington over time': "Nombre d'Eddington en fonction du temps"
 'Edit dashboard': 'Editer le dashboard'
 'Edit this activity': "Editer l'activité"
 'Effort vs heart rate': 'Effort vs fréquence cardiaque'
@@ -199,7 +199,7 @@ History: Historique
 'Ice Skate': 'Patin à glace'
 Imperial: Impérial
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": "Pendant ce temps, j'ai parcouru {totalDistance}, soit {numberOfTripsAroundTheWorld} tours du monde 🌍 ou {numberOfTripsToTheMoonPercent}% du chemin vers la Lune 🌕, et gravi une altitude de {totalElevation}, soit {timesMountEverest} fois la hauteur du mont Everest 🏔. Au total, cela représente {totalTimeRecorded} de temps de déplacement 🎉."
-'Increased compared to yesterday': 'Increased compared to yesterday'
+'Increased compared to yesterday': 'En hausse par rapport à hier'
 'Individual thresholds vary based on fitness level.': 'Les seuils individuels varient selon le niveau de forme physique.'
 'Inline Skate': 'Roller en ligne'
 Intensity: Intensité
@@ -228,7 +228,7 @@ Loading...: Chargement...
 'Long run': 'Course longue'
 'Longest activity': 'Activité la plus longue'
 'Longest activity (h)': 'Activité la plus longue (h)'
-'Longest day': 'Longest day'
+'Longest day': 'Distance journalière maximum'
 'Longest distance': 'Distance la plus longue'
 'Longest streaks': 'Plus longues séries'
 Low: Bas
@@ -237,11 +237,11 @@ Low: Bas
 Maintenance: Maintenance
 'Manage activities': 'Manage activities'
 'Manage gear': 'Manage gear'
-'Manage recording devices': 'Manage recording devices'
+'Manage recording devices': 'Gérer les appareils d'enregistrement'
 'Map settings': 'Paramètres de carte'
 Mar: Mar
 Max: Max
-'Max gradient': 'Max gradient'
+'Max gradient': 'Pente maximum'
 May: Mai
 Medium: Moyen
 Metric: Métrique
@@ -270,11 +270,11 @@ Morning: Matin
 Name: Nom
 Neutral: Neutre
 'New personal best for': 'Nouveau record personnel pour'
-'Next milestone': 'Next milestone'
+'Next milestone': 'Prochain jalon'
 Night: Nuit
 'No activities': 'Aucune activité'
 'No data available': 'Aucune donnée disponible'
-'No milestones achieved yet': 'No milestones achieved yet'
+'No milestones achieved yet': 'Aucun jalon atteint'
 'No other options to compare with': 'Aucune autre option à comparer'
 None: Aucun
 'Nordic Ski': 'Ski nordique'
@@ -288,7 +288,7 @@ Now: Maintenant
 Oct: Oct
 'Older effort': 'Older effort'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'En moyenne, cela représente {dailyAverage} par jour, une moyenne hebdomadaire de {weeklyAverage} et une moyenne mensuelle de {monthlyAverage} 🐣.'
-'On your own': 'On your own'
+'On your own': 'Tout seul'
 'One of your gear maintenance tasks is due': 'Une de vos tâches de maintenance de matériel est à effectuer'
 "Oops, looks like you've wandered off the map! 🗺️": "Oops, looks like you've wandered off the map! 🗺️"
 'Open Water Swim': 'Open Water Swim'
@@ -348,7 +348,7 @@ Recent: Recent
 'Retired gear': 'Équipement retiré du service'
 Rewind: Bilan
 'Rewind comparisons are only available on larger screens.': 'Les comparaisons de récapitulatif ne sont disponibles que sur les grands écrans.'
-Ride: Ride
+Ride: Sortie
 Rides: 'Sorties vélo'
 'Risk of detraining': 'Risque de désentraînement'
 'Rock Climbing': Escalade
@@ -366,14 +366,14 @@ Search: Rechercher
 Segments: Segments
 Sep: Sep
 Shifting: Shifting
-'Show all columns': 'Show all columns'
+'Show all columns': 'Voir toutes les colonnes'
 'Show information': 'Afficher les informations'
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.'
 'Similar activities': 'Similar activities'
 "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": "Depuis le début des activités le {startDate} depuis {numberOfDaysAgo}, j'ai enregistré {totalDaysOfWorkingOut} jours actifs d'entraînement et d'aventures."
 Skateboard: Skateboard
 Skating: Patinage
-'Slightly fresh': 'Slightly fresh'
+'Slightly fresh': 'Légèrement frais'
 'Smart trainer': 'Smart trainer'
 Snowboard: Snowboard
 Snowshoe: 'Raquettes à neige'
@@ -536,7 +536,7 @@ Unspecified: 'Non spécifié'
 'View all': 'Voir tout'
 'View details': 'Voir les détails'
 'View this month': 'Voir ce mois'
-'Virtual Ride': 'Virtual Ride'
+'Virtual Ride': 'Sortie virtuelle'
 'Virtual Rides': 'Sorties virtuelles'
 'Virtual Row': 'Rameur virtuel'
 'Virtual Run': 'Virtual Run'
@@ -599,15 +599,15 @@ avg: moy
 bpm: bpm
 clear: effacer
 compare: comparer
-countries: countries
+countries: pays
 day(s): jour(s)
 days: jours
 'days needed for next Eddington': 'jours nécessaires pour le prochain Eddington'
-'days to reach {n}': 'days to reach {n}'
-'every {interval}': 'every {interval}'
+'days to reach {n}': 'jours pour atteindre {n}'
+'every {interval}': 'chaque {interval}'
 hours: heures
 hrs: h
-humidity: humidity
+humidity: humidité
 'last {numberOfDays} days': 'derniers {numberOfDays} jours'
 max: max
 min: min
@@ -620,7 +620,7 @@ never: jamais
 per: par
 'per activity': 'par activité'
 'per hour': 'par heure'
-'reached Eddington number {number}': 'reached Eddington number {number}'
+'reached Eddington number {number}': "a atteint le nombre d'Eddington {number}"
 rpm: rpm
 to: à
 total: total
@@ -634,12 +634,12 @@ workouts: entraînements
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} toutes les {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} activités'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} activités en {year}'
-'{numberOfActivities} activities on this route': '{numberOfActivities} activities on this route'
+'{numberOfActivities} activities on this route': '{numberOfActivities} activities sur ce parcours'
 '{numberOfMonths} months': '{numberOfMonths} mois'
 '{numberOfResults} photos': '{numberOfResults} photos'
 '{numberOfResults} results': '{numberOfResults} results'
 '{numberOfResults} routes': '{numberOfResults} routes'
-'{numberOfRoutes} nearby route(s)': '{numberOfRoutes} nearby route(s)'
+'{numberOfRoutes} nearby route(s)': '{numberOfRoutes} parcours à proximité'
 '{numberOfWeeks} weeks': '{numberOfWeeks} semaines'
 '{threshold} hours using {gearName}': '{threshold} heures en utilisant {gearName}'
 '{threshold} total distance using {gearName}': '{threshold} distance totale en utilisant {gearName}'
