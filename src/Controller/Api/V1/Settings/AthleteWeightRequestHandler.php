@@ -7,7 +7,6 @@ namespace App\Controller\Api\V1\Settings;
 use App\Domain\Athlete\Weight\DeleteAthleteWeight\DeleteAthleteWeight;
 use App\Domain\Athlete\Weight\UpsertAthleteWeight\UpsertAthleteWeight;
 use App\Domain\Settings\KeyValueBasedSettingsRepository;
-use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
@@ -43,20 +42,6 @@ final readonly class AthleteWeightRequestHandler
     public function update(Request $request): JsonResponse
     {
         $athleteWeightRequest = AthleteWeightRequest::fromRequest($request);
-        $on = $athleteWeightRequest->getOn()->format('Y-m-d');
-
-        $general = $this->settingsRepository->find(SettingsGroup::GENERAL);
-        /** @var array<string, mixed> $athlete */
-        $athlete = $general['athlete'] ?? [];
-        /** @var list<mixed> $weightHistory */
-        $weightHistory = is_array($athlete['weightHistory'] ?? null) ? $athlete['weightHistory'] : [];
-
-        $exists = false;
-        foreach ($weightHistory as $entry) {
-            if (is_array($entry) && $on === ($entry['on'] ?? null)) {
-                $exists = true;
-            }
-        }
 
         $this->commandBus->dispatch(UpsertAthleteWeight::from(
             on: $athleteWeightRequest->getOn(),
@@ -64,10 +49,9 @@ final readonly class AthleteWeightRequestHandler
         ));
 
         return new JsonResponse([
-            'status' => $exists ? 'updated' : 'created',
-            'on' => $on,
+            'on' => $athleteWeightRequest->getOn()->format('Y-m-d'),
             'weight' => $athleteWeightRequest->getWeight(),
-        ], $exists ? Response::HTTP_OK : Response::HTTP_CREATED);
+        ], Response::HTTP_OK);
     }
 
     #[Route(path: '/api/v1/athlete/weights/{on}', name: 'api_v1_athlete_weights_delete', methods: ['DELETE'], priority: 3)]

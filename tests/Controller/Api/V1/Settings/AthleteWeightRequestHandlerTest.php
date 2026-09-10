@@ -23,9 +23,8 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
     {
         $this->request(['weight' => 71.4, 'on' => '2026-09-08']);
 
-        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSame([
-            'status' => 'created',
             'on' => '2026-09-08',
             'weight' => 71.4,
         ], $this->response());
@@ -38,7 +37,6 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSame([
-            'status' => 'updated',
             'on' => '2020-01-01',
             'weight' => 71.4,
         ], $this->response());
