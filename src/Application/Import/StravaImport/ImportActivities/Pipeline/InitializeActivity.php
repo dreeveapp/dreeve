@@ -61,6 +61,10 @@ final readonly class InitializeActivity implements ActivityImportStep
                 ->withGear($gearId)
                 ->withWorkoutType(WorkoutType::fromStravaInt($rawStravaData['workout_type'] ?? null));
 
+            if (array_key_exists('description', $rawStravaData)) {
+                $activity = $activity->withDescription($rawStravaData['description']);
+            }
+
             if (array_key_exists('commute', $rawStravaData)) {
                 $activity = $activity->withCommute($rawStravaData['commute']);
             }
