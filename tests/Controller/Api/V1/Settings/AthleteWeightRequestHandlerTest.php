@@ -21,36 +21,51 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
 
     public function testItCreatesAWeightForTheSpecifiedDate(): void
     {
-        $this->request(['weight' => 71.4, 'on' => '2026-09-08']);
+        $this->client->request(
+            'POST',
+            self::PATH,
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
+            content: Json::encode(['weight' => 71.4, 'on' => '2026-09-08']),
+        );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSame([
             'on' => '2026-09-08',
             'weight' => 71.4,
-        ], $this->response());
-        $this->assertSame(['on' => '2026-09-08', 'weight' => 71.4], $this->weightHistory()[4]);
+        ], Json::decode((string) $this->client->getResponse()->getContent()));
+        $this->assertSame(['on' => '2026-09-08', 'weight' => 71.4], $this->settingsRepository->find(SettingsGroup::GENERAL)['athlete']['weightHistory'][4]);
     }
 
     public function testItUpdatesTheExistingWeightForADate(): void
     {
-        $this->request(['weight' => 71.4, 'on' => '2020-01-01']);
+        $this->client->request(
+            'POST',
+            self::PATH,
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
+            content: Json::encode(['weight' => 71.4, 'on' => '2020-01-01']),
+        );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSame([
             'on' => '2020-01-01',
             'weight' => 71.4,
-        ], $this->response());
+        ], Json::decode((string) $this->client->getResponse()->getContent()));
         $this->assertSame([
             ['on' => '2019-12-01', 'weight' => 69],
             ['on' => '2019-08-01', 'weight' => 70],
             ['on' => '2019-07-01', 'weight' => 71],
             ['on' => '2020-01-01', 'weight' => 71.4],
-        ], $this->weightHistory());
+        ], $this->settingsRepository->find(SettingsGroup::GENERAL)['athlete']['weightHistory']);
     }
 
     public function testItListsWeightHistory(): void
     {
-        $this->request(['weight' => 71.4, 'on' => '2026-09-08']);
+        $this->client->request(
+            'POST',
+            self::PATH,
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
+            content: Json::encode(['weight' => 71.4, 'on' => '2026-09-08']),
+        );
         $this->client->request(
             'GET',
             self::PATH,
@@ -58,12 +73,17 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
         );
 
         $this->assertResponseIsSuccessful();
-        $this->assertSame(['on' => '2026-09-08', 'weight' => 71.4], $this->response()['weights'][0]);
+        $this->assertSame(['on' => '2026-09-08', 'weight' => 71.4], Json::decode((string) $this->client->getResponse()->getContent())['weights'][0]);
     }
 
     public function testItDeletesAWeightForADate(): void
     {
-        $this->request(['weight' => 71.4, 'on' => '2026-09-08']);
+        $this->client->request(
+            'POST',
+            self::PATH,
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
+            content: Json::encode(['weight' => 71.4, 'on' => '2026-09-08']),
+        );
         $this->client->request(
             'DELETE',
             self::PATH.'/2026-09-08',
@@ -71,7 +91,7 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
         );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
-        $this->assertNotContains(['on' => '2026-09-08', 'weight' => 71.4], $this->weightHistory());
+        $this->assertNotContains(['on' => '2026-09-08', 'weight' => 71.4], $this->settingsRepository->find(SettingsGroup::GENERAL)['athlete']['weightHistory']);
     }
 
     public function testItRejectsAnInvalidDateWhenDeletingAWeight(): void
@@ -83,24 +103,23 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
         );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
-        $this->assertSame('bad_request', $this->response()['error']);
+        $this->assertSame('bad_request', Json::decode((string) $this->client->getResponse()->getContent())['error']);
     }
 
-    /**
-     * @param array<string, mixed> $payload
-     */
     #[DataProvider('provideInvalidPayloads')]
     public function testItRejectsInvalidPayloads(array $payload): void
     {
-        $this->request($payload);
+        $this->client->request(
+            'POST',
+            self::PATH,
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
+            content: Json::encode($payload),
+        );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
-        $this->assertSame('bad_request', $this->response()['error']);
+        $this->assertSame('bad_request', Json::decode((string) $this->client->getResponse()->getContent())['error']);
     }
 
-    /**
-     * @return iterable<string, array{array<string, mixed>}>
-     */
     public static function provideInvalidPayloads(): iterable
     {
         yield 'missing weight' => [[]];
@@ -113,53 +132,21 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
     #[DataProvider('provideInvalidRequestBodies')]
     public function testItRejectsInvalidRequestBodies(string $content): void
     {
-        $this->requestRaw($content);
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
-        $this->assertSame('bad_request', $this->response()['error']);
-    }
-
-    /**
-     * @return iterable<string, array{string}>
-     */
-    public static function provideInvalidRequestBodies(): iterable
-    {
-        yield 'invalid JSON' => ['{'];
-        yield 'JSON scalar' => ['71.4'];
-    }
-
-    /**
-     * @param array<string, mixed> $payload
-     */
-    private function request(array $payload): void
-    {
-        $this->requestRaw(Json::encode($payload));
-    }
-
-    private function requestRaw(string $content): void
-    {
         $this->client->request(
             'POST',
             self::PATH,
             server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
             content: $content,
         );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertSame('bad_request', Json::decode((string) $this->client->getResponse()->getContent())['error']);
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    private function response(): array
+    public static function provideInvalidRequestBodies(): iterable
     {
-        return Json::decode((string) $this->client->getResponse()->getContent());
-    }
-
-    /**
-     * @return list<array{on: string, weight: float|int}>
-     */
-    private function weightHistory(): array
-    {
-        return $this->settingsRepository->find(SettingsGroup::GENERAL)['athlete']['weightHistory'];
+        yield 'invalid JSON' => ['{'];
+        yield 'JSON scalar' => ['71.4'];
     }
 
     #[\Override]
