@@ -1,3 +1,34 @@
+# [v5.3.3](https://github.com/dreeveapp/dreeve/releases/tag/v5.3.3) - 2026-09-11
+
+## New features
+* Added the ability to export original uploaded files.
+* Added API endpoints for athlete weight
+
+## Improvements
+* Added support for importing disc golf .fit files
+* Updated activity descriptions when importing activities from Strava
+* Activity management filters are now preserved after deleting or editing an activity
+
+## Bug fixes
+Updated the device automation condition to retain devices that no longer exist
+
+## Technical details
+* ISSUE #2615: Spanish locale by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2650
+* ISSUE #2655:  Support disc golf .fit files by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2656
+* ISSUE #2657: Allow to export original uploaded files by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2658
+* Translate 'Actions' and 'Download original file' to German #2657 by @effectpears in https://github.com/dreeveapp/dreeve/pull/2659
+* Add bearer-authenticated athlete weight API by @sanglt in https://github.com/dreeveapp/dreeve/pull/2653
+* ISSUE #2651: Update description when importing Strava activities by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2661
+* Translations by @masfaraud in https://github.com/dreeveapp/dreeve/pull/2660
+* ISSUE #2663: Let the device condition keep devices that no longer exist by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2664
+* ISSUE #2662: Refactor settings storage by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2665
+* ISSUE #2666: Keep activity management filters after deleting or editing an activity by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2667
+
+## New Contributors
+* @sanglt made their first contribution in https://github.com/dreeveapp/dreeve/pull/2653
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.3.2...v5.3.3
+
 # [v5.3.2](https://github.com/dreeveapp/dreeve/releases/tag/v5.3.2) - 2026-09-04
 
 > [!NOTE]
