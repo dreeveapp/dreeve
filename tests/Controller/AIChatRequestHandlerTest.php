@@ -6,14 +6,10 @@ use App\Controller\AIChatRequestHandler;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Integration\AI\Chat\DbalChatRepository;
-use App\Domain\Settings\KeyValueBasedSettingsRepository;
+use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
@@ -36,7 +32,6 @@ class AIChatRequestHandlerTest extends ContainerTestCase
 {
     use MatchesSnapshots;
 
-    private KeyValueStore $keyValueStore;
     /**
      * @var Stub&AgentInterface
      */
@@ -186,24 +181,20 @@ class AIChatRequestHandlerTest extends ContainerTestCase
 
     private function buildSettingsRepository(bool $aiUIEnabled): SettingsRepository
     {
-        /** @var KeyValueStore $keyValueStore */
-        $keyValueStore = $this->getContainer()->get(KeyValueStore::class);
-        $keyValueStore->save(KeyValue::fromState(
-            SettingsGroup::INTEGRATIONS->keyValueKey(),
-            Value::fromString(Json::encode([
-                'ai' => [
-                    'enabled' => true,
-                    'enableUI' => $aiUIEnabled,
-                    'provider' => 'openAI',
-                    'configuration' => [
-                        'key' => 'my-key',
-                        'model' => 'cool-model',
-                    ],
+        $settingsRepository = new DbalSettingsRepository($this->getConnection(), new SpyEventBus());
+        $settingsRepository->save(SettingsGroup::INTEGRATIONS, [
+            'ai' => [
+                'enabled' => true,
+                'enableUI' => $aiUIEnabled,
+                'provider' => 'openAI',
+                'configuration' => [
+                    'key' => 'my-key',
+                    'model' => 'cool-model',
                 ],
-            ])),
-        ));
+            ],
+        ]);
 
-        return new KeyValueBasedSettingsRepository($keyValueStore, new SpyEventBus());
+        return $settingsRepository;
     }
 
     #[\Override]
@@ -211,7 +202,6 @@ class AIChatRequestHandlerTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->keyValueStore = $this->getContainer()->get(KeyValueStore::class);
         $this->neuronAIAgent = $this->createStub(AgentInterface::class);
         $this->chatRepository = $this->createMock(ChatRepository::class);
     }

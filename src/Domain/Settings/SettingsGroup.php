@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Settings;
 
-use App\Infrastructure\KeyValue\Key;
-
 enum SettingsGroup: string
 {
     case GENERAL = 'general';
@@ -17,21 +15,6 @@ enum SettingsGroup: string
     case INTEGRATIONS = 'integrations';
     case DAEMON = 'daemon';
     case SECURITY = 'security';
-
-    public function keyValueKey(): Key
-    {
-        return match ($this) {
-            self::GENERAL => Key::SETTINGS_GENERAL,
-            self::APPEARANCE => Key::SETTINGS_APPEARANCE,
-            self::MAPS => Key::SETTINGS_MAPS,
-            self::IMPORT => Key::SETTINGS_IMPORT,
-            self::METRICS => Key::SETTINGS_METRICS,
-            self::ZWIFT => Key::SETTINGS_ZWIFT,
-            self::INTEGRATIONS => Key::SETTINGS_INTEGRATIONS,
-            self::DAEMON => Key::SETTINGS_DAEMON,
-            self::SECURITY => Key::SETTINGS_SECURITY,
-        };
-    }
 
     /**
      * @param array<string, mixed> $data

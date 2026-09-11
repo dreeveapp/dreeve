@@ -2,7 +2,7 @@
 
 namespace App\Tests\Controller\Admin\Settings;
 
-use App\Domain\Settings\KeyValueBasedSettingsRepository;
+use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Tests\Controller\Admin\AdminWebTestCase;
@@ -47,7 +47,7 @@ class AthleteSettingsRequestHandlerTest extends AdminWebTestCase
     public function testItRendersDateRangeBasedFormulasAsRows(): void
     {
         /** @var SettingsRepository $settingsRepository */
-        $settingsRepository = $this->getContainer()->get(KeyValueBasedSettingsRepository::class);
+        $settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
         $settings = $settingsRepository->find(SettingsGroup::GENERAL);
         $settings['athlete']['maxHeartRateFormula'] = ['2023-01-01' => 180];
         $settings['athlete']['restingHeartRateFormula'] = ['2023-01-01' => 58];

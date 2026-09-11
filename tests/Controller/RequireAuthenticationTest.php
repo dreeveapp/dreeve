@@ -2,13 +2,10 @@
 
 namespace App\Tests\Controller;
 
+use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\UpdateSettings\UpdateSettings;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
-use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -92,11 +89,8 @@ class RequireAuthenticationTest extends AdminWebTestCase
 
     private function requireAuthentication(): void
     {
-        /** @var KeyValueStore $keyValueStore */
-        $keyValueStore = $this->getContainer()->get(KeyValueStore::class);
-        $keyValueStore->save(KeyValue::fromState(
-            SettingsGroup::SECURITY->keyValueKey(),
-            Value::fromString(Json::encode(['requiresAuthentication' => true])),
-        ));
+        /** @var DbalSettingsRepository $settingsRepository */
+        $settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::SECURITY, ['requiresAuthentication' => true]);
     }
 }

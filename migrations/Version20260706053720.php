@@ -44,13 +44,13 @@ final class Version20260706053720 extends AbstractMigration
     public function down(Schema $schema): void
     {
         $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => Key::DASHBOARD->value]);
-        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::GENERAL->keyValueKey()->value]);
-        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::APPEARANCE->keyValueKey()->value]);
-        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::IMPORT->keyValueKey()->value]);
-        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::METRICS->keyValueKey()->value]);
-        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::ZWIFT->keyValueKey()->value]);
-        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::INTEGRATIONS->keyValueKey()->value]);
-        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => SettingsGroup::DAEMON->keyValueKey()->value]);
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => 'settingsGeneral']);
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => 'settingsAppearance']);
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => 'settingsImport']);
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => 'settingsMetrics']);
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => 'settingsZwift']);
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => 'settingsIntegrations']);
+        $this->addSql('DELETE FROM KeyValue WHERE `key` = :key', ['key' => 'settingsDaemon']);
     }
 
     /**
@@ -133,7 +133,7 @@ final class Version20260706053720 extends AbstractMigration
         $this->addSql(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
-                'key' => SettingsGroup::GENERAL->keyValueKey()->value,
+                'key' => 'settingsGeneral',
                 'value' => Json::encode($subtree),
             ]
         );
@@ -163,7 +163,7 @@ final class Version20260706053720 extends AbstractMigration
         $this->addSql(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
-                'key' => SettingsGroup::APPEARANCE->keyValueKey()->value,
+                'key' => 'settingsAppearance',
                 'value' => Json::encode($subtree),
             ]
         );
@@ -184,7 +184,7 @@ final class Version20260706053720 extends AbstractMigration
         $this->addSql(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
-                'key' => SettingsGroup::IMPORT->keyValueKey()->value,
+                'key' => 'settingsImport',
                 'value' => Json::encode($subtree),
             ]
         );
@@ -205,7 +205,7 @@ final class Version20260706053720 extends AbstractMigration
         $this->addSql(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
-                'key' => SettingsGroup::METRICS->keyValueKey()->value,
+                'key' => 'settingsMetrics',
                 'value' => Json::encode($subtree),
             ]
         );
@@ -226,7 +226,7 @@ final class Version20260706053720 extends AbstractMigration
         $this->addSql(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
-                'key' => SettingsGroup::ZWIFT->keyValueKey()->value,
+                'key' => 'settingsZwift',
                 'value' => Json::encode($subtree),
             ]
         );
@@ -271,7 +271,7 @@ final class Version20260706053720 extends AbstractMigration
         $this->addSql(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
-                'key' => SettingsGroup::INTEGRATIONS->keyValueKey()->value,
+                'key' => 'settingsIntegrations',
                 'value' => Json::encode($subtree),
             ]
         );
@@ -309,7 +309,7 @@ final class Version20260706053720 extends AbstractMigration
         $this->addSql(
             'REPLACE INTO KeyValue (`key`, `value`) VALUES (:key, :value)',
             [
-                'key' => SettingsGroup::DAEMON->keyValueKey()->value,
+                'key' => 'settingsDaemon',
                 'value' => Json::encode(['cron' => $actions]),
             ]
         );

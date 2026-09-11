@@ -15,13 +15,11 @@ use App\Domain\Activity\WorldType;
 use App\Domain\Gear\GearId;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Import\ImportMode;
+use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -164,17 +162,14 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
 
     private function provideAppearanceSettingsWithUnitSystem(string $unitSystem): void
     {
-        /** @var KeyValueStore $keyValueStore */
-        $keyValueStore = $this->getContainer()->get(KeyValueStore::class);
-        $keyValueStore->save(KeyValue::fromState(
-            SettingsGroup::APPEARANCE->keyValueKey(),
-            Value::fromString(Json::encode([
-                'locale' => 'en_US',
-                'unitSystem' => $unitSystem,
-                'timeFormat' => 24,
-                'dateFormat' => ['short' => 'd-m-y', 'normal' => 'd-m-Y'],
-            ])),
-        ));
+        /** @var DbalSettingsRepository $settingsRepository */
+        $settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::APPEARANCE, [
+            'locale' => 'en_US',
+            'unitSystem' => $unitSystem,
+            'timeFormat' => 24,
+            'dateFormat' => ['short' => 'd-m-y', 'normal' => 'd-m-Y'],
+        ]);
     }
 
     #[\Override]

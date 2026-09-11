@@ -9,7 +9,7 @@ use App\Domain\Api\Token;
 use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
 use App\Domain\Import\ImportMode;
 use App\Domain\Integration\AI\AIApiKey;
-use App\Domain\Settings\KeyValueBasedSettingsRepository;
+use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Settings\UpdateAthleteSettings\UpdateAthleteSettings;
@@ -35,7 +35,7 @@ final readonly class SettingsRequestHandler
 {
     public function __construct(
         private Environment $twig,
-        #[Autowire(service: KeyValueBasedSettingsRepository::class)]
+        #[Autowire(service: DbalSettingsRepository::class)]
         private SettingsRepository $settingsRepository,
         private AppUrl $appUrl,
         #[\SensitiveParameter]

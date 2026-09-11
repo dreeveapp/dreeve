@@ -9,14 +9,11 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Import\ImportMode;
 use App\Domain\Integration\Notification\SendNotification\SendNotification;
-use App\Domain\Settings\KeyValueBasedSettingsRepository;
+use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Strava\Strava;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\DomainCommand;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
 use App\Infrastructure\Serialization\Json;
@@ -42,7 +39,7 @@ class RunStravaImportConsoleCommandTest extends ConsoleCommandTestCase
 
     private RunStravaImportConsoleCommand $command;
     private SpyCommandBus $commandBus;
-    private KeyValueStore $keyValueStore;
+    private DbalSettingsRepository $settingsRepository;
 
     public function testRun(): void
     {
@@ -75,10 +72,9 @@ class RunStravaImportConsoleCommandTest extends ConsoleCommandTestCase
 
     public function testDoesNotSendANotificationWhenTheSuccessfulImportNotificationIsDisabled(): void
     {
-        $this->keyValueStore->save(KeyValue::fromState(
-            key: SettingsGroup::INTEGRATIONS->keyValueKey(),
-            value: Value::fromString(Json::encode(['notifications' => ['notifyOnSuccessfulBuild' => false]])),
-        ));
+        $this->settingsRepository->save(SettingsGroup::INTEGRATIONS, [
+            'notifications' => ['notifyOnSuccessfulBuild' => false],
+        ]);
 
         $command = $this->getCommandInApplication(RunStravaImportConsoleCommand::NAME);
         $commandTester = new CommandTester($command);
@@ -178,7 +174,7 @@ class RunStravaImportConsoleCommandTest extends ConsoleCommandTestCase
     {
         parent::setUp();
 
-        $this->keyValueStore = $this->getContainer()->get(KeyValueStore::class);
+        $this->settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
 
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()->build(),
@@ -223,7 +219,7 @@ class RunStravaImportConsoleCommandTest extends ConsoleCommandTestCase
             appStatusChecker: $appStatusChecker ?? new AppStatusChecker(new SuccessfulPermissionChecker()),
             appUrl: AppUrl::fromString('http://localhost'),
             importMode: $importMode,
-            settingsRepository: $this->getContainer()->get(KeyValueBasedSettingsRepository::class),
+            settingsRepository: $this->getContainer()->get(DbalSettingsRepository::class),
         );
     }
 
