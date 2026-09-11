@@ -50,12 +50,10 @@ class DailyTrainingLoadTest extends ContainerTestCase
     {
         // Remove the FTP history so the power-based calculation falls back to heart rate.
         $this->getContainer()->get(SettingsRepository::class)->save(SettingsGroup::GENERAL, [
-            'athlete' => [
-                'birthday' => '1989-08-14',
-                'firstName' => 'Robin',
-                'lastName' => 'Ingelbrecht',
-                'maxHeartRateFormula' => 'fox',
-            ],
+            'birthday' => '1989-08-14',
+            'firstName' => 'Robin',
+            'lastName' => 'Ingelbrecht',
+            'maxHeartRateFormula' => 'fox',
         ]);
 
         $activity = ActivityBuilder::fromDefaults()

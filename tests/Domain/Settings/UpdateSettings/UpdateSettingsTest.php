@@ -46,7 +46,7 @@ class UpdateSettingsTest extends TestCase
         yield 'general data without a birthday' => [
             [
                 'group' => 'general',
-                'data' => ['athlete' => ['firstName' => 'Jane']],
+                'data' => ['firstName' => 'Jane'],
             ],
             'A "birthday" is required for the athlete in the general settings',
         ];

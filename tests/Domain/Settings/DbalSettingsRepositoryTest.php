@@ -57,16 +57,14 @@ class DbalSettingsRepositoryTest extends ContainerTestCase
     public function testFindAppliesTheDefaultHeartRateFormulas(): void
     {
         $this->settingsRepository->save(SettingsGroup::GENERAL, [
-            'athlete' => ['birthday' => '1990-01-01'],
+            'birthday' => '1990-01-01',
         ]);
 
         $this->assertEquals(
             [
-                'athlete' => [
-                    'birthday' => '1990-01-01',
-                    'maxHeartRateFormula' => 'fox',
-                    'restingHeartRateFormula' => 'heuristicAgeBased',
-                ],
+                'birthday' => '1990-01-01',
+                'maxHeartRateFormula' => 'fox',
+                'restingHeartRateFormula' => 'heuristicAgeBased',
             ],
             $this->settingsRepository->find(SettingsGroup::GENERAL)
         );
@@ -75,18 +73,14 @@ class DbalSettingsRepositoryTest extends ContainerTestCase
     public function testFindDoesNotOverrideConfiguredHeartRateFormulas(): void
     {
         $this->settingsRepository->save(SettingsGroup::GENERAL, [
-            'athlete' => [
-                'maxHeartRateFormula' => ['2023-01-01' => 180],
-                'restingHeartRateFormula' => 58,
-            ],
+            'maxHeartRateFormula' => ['2023-01-01' => 180],
+            'restingHeartRateFormula' => 58,
         ]);
 
         $this->assertEquals(
             [
-                'athlete' => [
-                    'maxHeartRateFormula' => ['2023-01-01' => 180],
-                    'restingHeartRateFormula' => 58,
-                ],
+                'maxHeartRateFormula' => ['2023-01-01' => 180],
+                'restingHeartRateFormula' => 58,
             ],
             $this->settingsRepository->find(SettingsGroup::GENERAL)
         );

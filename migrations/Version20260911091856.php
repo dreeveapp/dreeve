@@ -42,6 +42,12 @@ final class Version20260911091856 extends AbstractMigration
             $settings = Json::decode((string) $value);
 
             if (is_array($settings)) {
+                if ('general' === self::SETTINGS_GROUP_PER_KEY[$key] && is_array($settings['athlete'] ?? null)) {
+                    $athlete = $settings['athlete'];
+                    unset($settings['athlete']);
+                    $settings = [...$settings, ...$athlete];
+                }
+
                 foreach ($settings as $name => $setting) {
                     $this->addSql(
                         'INSERT INTO Setting (settingsGroup, name, value) VALUES (:settingsGroup, :name, :value)',

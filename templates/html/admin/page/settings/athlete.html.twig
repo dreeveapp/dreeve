@@ -1,7 +1,6 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% set hideAdminNavigation = true %}
 {% block main %}
-    {% set athlete = settings.athlete ?? {} %}
     {% set generalSettingsUrl = relativeUrl(path('admin_settings', {group: 'general'})) %}
     <div class="modal-like-form">
         <div class="w-full max-w-2xl overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
@@ -15,7 +14,7 @@
                 <div data-form-error class="form-error hidden" role="alert"></div>
                 {% include 'html/admin/page/settings/athlete-fields.html.twig' with {
                     fieldPrefix: 'athlete',
-                    athlete: athlete,
+                    athlete: settings,
                 } only %}
                 <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
                     <button type="submit" data-has-loading-state class="group btn--primary">

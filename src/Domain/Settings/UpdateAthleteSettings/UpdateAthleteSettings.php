@@ -32,7 +32,7 @@ final readonly class UpdateAthleteSettings extends DomainCommand implements Dese
 
         try {
             $athlete = AthleteSettingsPayload::normalize($athlete);
-            GeneralSettings::fromArray(['athlete' => $athlete]);
+            GeneralSettings::fromArray($athlete);
         } catch (\RuntimeException|\InvalidArgumentException $e) {
             throw CouldNotDeserializeCommand::invalidPayload($e->getMessage());
         }

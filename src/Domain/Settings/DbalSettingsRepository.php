@@ -44,17 +44,12 @@ final readonly class DbalSettingsRepository extends DbalRepository implements Se
         }
 
         if (SettingsGroup::GENERAL === $group) {
-            /** @var array<string, mixed> $athlete */
-            $athlete = is_array($data['athlete'] ?? null) ? $data['athlete'] : [];
-
-            if (empty($athlete['maxHeartRateFormula'])) {
-                $athlete['maxHeartRateFormula'] = 'fox';
+            if (empty($data['maxHeartRateFormula'])) {
+                $data['maxHeartRateFormula'] = 'fox';
             }
-            if (empty($athlete['restingHeartRateFormula'])) {
-                $athlete['restingHeartRateFormula'] = 'heuristicAgeBased';
+            if (empty($data['restingHeartRateFormula'])) {
+                $data['restingHeartRateFormula'] = 'heuristicAgeBased';
             }
-
-            $data['athlete'] = $athlete;
         }
 
         return $data;
