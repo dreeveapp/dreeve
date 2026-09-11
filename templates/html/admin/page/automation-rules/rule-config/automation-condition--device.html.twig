@@ -9,11 +9,13 @@
     </div>
     <div>
         <label class="mt-0! text-xs">{{ "Recording device"|trans({}, 'admin') }}</label>
-        <select name="{{ namePrefix }}[deviceId]" data-repeater-field="config.deviceId" class="mt-0">
-            <option value="">{{ "Select device..."|trans({}, 'admin') }}</option>
-            {% for device in recordingDevices %}
-                <option value="{{ device.getId().toUnprefixedString() }}">{{ device.getName() }}</option>
-            {% endfor %}
-        </select>
+        {% include 'html/admin/component/combobox.html.twig' with {
+            name: namePrefix ~ '[deviceName]',
+            options: recordingDevices|map(device => {'value': device.getName(), 'label': device.getName()}),
+            placeholder: "eg: Garmin Edge 1040",
+            required: true,
+            repeaterField: 'config.deviceName',
+        } only %}
+        <p class="mt-0.5 text-xxs text-gray-500">{{ "Pick a device you already recorded with, or type a new name."|trans({}, 'admin') }}</p>
     </div>
 </div>

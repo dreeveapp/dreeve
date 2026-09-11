@@ -15,7 +15,6 @@ use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredCondition;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredConditions;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Gear\GearRepository;
-use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
@@ -86,7 +85,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
                 ->withStopProcessing(false)
                 ->withSortOrder(0)
                 ->withConditions(ConfiguredConditions::fromArray([
-                    new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceId' => 'garmin-edge-530'])),
+                    new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceName' => 'Garmin Edge 530'])),
                 ]))
                 ->withActions(ConfiguredActions::fromArray([
                     new ConfiguredAction(ActionType::MARK_AS_COMMUTE, RuleConfiguration::fromConfig(['isCommute' => true])),
@@ -156,7 +155,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
 
         // Condition/action labels come from the translatable components.
         $this->assertStringContainsString('Recording device', $items->eq(0)->text());
-        $this->assertStringContainsString('is garmin-edge-530', $items->eq(0)->text());
+        $this->assertStringContainsString('is Garmin Edge 530', $items->eq(0)->text());
         $this->assertStringContainsString('Mark as commute', $items->eq(0)->text());
         $this->assertStringContainsString('Distance', $items->eq(1)->text());
         $this->assertStringContainsString('at least 50 km', $items->eq(1)->text());
@@ -219,7 +218,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
                     new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride', 'Run']])),
                     new ConfiguredCondition(ConditionType::WEEKDAY, RuleConfiguration::fromConfig(['operator' => 'isNoneOf', 'weekdays' => [1, 6]])),
                     new ConfiguredCondition(ConditionType::TIME_OF_DAY, RuleConfiguration::fromConfig(['operator' => 'lt', 'time' => '09:30'])),
-                    new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceId' => RecordingDeviceId::fromName('Garmin Edge 530')->toUnprefixedString()])),
+                    new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceName' => 'Garmin Edge 530'])),
                 ]))
                 ->withActions(ConfiguredActions::fromArray([
                     new ConfiguredAction(ActionType::ASSIGN_GEAR, RuleConfiguration::fromConfig(['gearId' => 'gear-1'])),

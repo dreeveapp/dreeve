@@ -112,8 +112,9 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->assertContains('setDescription', $actionOptions);
         $this->assertContains('markAsGroupActivity', $actionOptions);
 
-        // The set device action ships a combobox around a plain, submittable text input.
-        $this->assertCount(1, $crawler->filter('[data-combobox]'));
+        // The device condition and set device action ship a combobox around a plain, submittable text input.
+        $this->assertCount(2, $crawler->filter('[data-combobox]'));
+        $this->assertCount(1, $crawler->filter('[data-combobox] input[type="text"][name="conditions[__index__][config][deviceName]"][data-repeater-field="config.deviceName"][required]'));
         $this->assertCount(1, $crawler->filter('[data-combobox] input[type="text"][name="actions[__index__][config][deviceName]"][data-repeater-field="config.deviceName"][required]'));
         // Without recorded devices there is nothing to pick from.
         $this->assertCount(0, $crawler->filter('[data-combobox-toggle]'));
@@ -148,9 +149,9 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $crawler = $this->client->request('GET', '/admin/automation-rules/add');
 
         $this->assertResponseIsSuccessful();
-        $this->assertCount(1, $crawler->filter('[data-combobox-toggle]'));
+        $this->assertCount(2, $crawler->filter('[data-combobox-toggle]'));
         $this->assertSame(
-            ['Garmin Edge 530'],
+            ['Garmin Edge 530', 'Garmin Edge 530'],
             $crawler->filter('[data-combobox-option]')->extract(['data-combobox-option'])
         );
     }
@@ -194,7 +195,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
                 ->withLabel('Tag commutes')
                 ->withStopProcessing(false)
                 ->withConditions(ConfiguredConditions::fromArray([
-                    new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceId' => 'garmin-edge-530'])),
+                    new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceName' => 'Garmin Edge 530'])),
                 ]))
                 ->withActions(ConfiguredActions::fromArray([
                     new ConfiguredAction(ActionType::MARK_AS_COMMUTE, RuleConfiguration::fromConfig(['isCommute' => true])),
@@ -218,7 +219,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         // The repeaters are seeded with the stored conditions/actions as JSON.
         $conditionsInitial = (string) $crawler->filter('[data-repeater-list]')->eq(0)->attr('data-repeater-initial');
         $this->assertStringContainsString('"type":"device"', $conditionsInitial);
-        $this->assertStringContainsString('garmin-edge-530', $conditionsInitial);
+        $this->assertStringContainsString('Garmin Edge 530', $conditionsInitial);
         $actionsInitial = (string) $crawler->filter('[data-repeater-list]')->eq(1)->attr('data-repeater-initial');
         $this->assertStringContainsString('"type":"markAsCommute"', $actionsInitial);
     }
@@ -233,7 +234,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
                 ->withLabel('Tag commutes')
                 ->withStopProcessing(false)
                 ->withConditions(ConfiguredConditions::fromArray([
-                    new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceId' => 'garmin-edge-530'])),
+                    new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceName' => 'Garmin Edge 530'])),
                 ]))
                 ->withActions(ConfiguredActions::fromArray([
                     new ConfiguredAction(ActionType::MARK_AS_COMMUTE, RuleConfiguration::fromConfig(['isCommute' => true])),
@@ -259,7 +260,7 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
 
         $conditionsInitial = (string) $crawler->filter('[data-repeater-list]')->eq(0)->attr('data-repeater-initial');
         $this->assertStringContainsString('"type":"device"', $conditionsInitial);
-        $this->assertStringContainsString('garmin-edge-530', $conditionsInitial);
+        $this->assertStringContainsString('Garmin Edge 530', $conditionsInitial);
         $actionsInitial = (string) $crawler->filter('[data-repeater-list]')->eq(1)->attr('data-repeater-initial');
         $this->assertStringContainsString('"type":"markAsCommute"', $actionsInitial);
     }

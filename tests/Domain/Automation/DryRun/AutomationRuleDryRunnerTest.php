@@ -17,7 +17,6 @@ use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredConditions;
 use App\Domain\Automation\DbalAutomationRuleRepository;
 use App\Domain\Automation\DryRun\AutomationRuleDryRunner;
 use App\Domain\Automation\RuleConfiguration;
-use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Tokenizer\Tokenizer;
@@ -260,7 +259,7 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
             conditions: ConfiguredConditions::fromArray([
                 new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig([
                     'operator' => 'is',
-                    'deviceId' => RecordingDeviceId::fromName('Garmin Edge 130')->toUnprefixedString(),
+                    'deviceName' => 'Garmin Edge 130',
                 ])),
             ]),
             actions: ConfiguredActions::fromArray([
