@@ -100,7 +100,7 @@ class DbalSportTypeRepositoryTest extends ContainerTestCase
     private function sportTypeRepositoryFor(array $sportTypesSortingOrder, array $hidePhotosForSportTypes = []): DbalSportTypeRepository
     {
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::APPEARANCE, [
+        $settingsRepository->saveGroup(SettingsGroup::APPEARANCE, [
             'sportTypesSortingOrder' => array_map(fn (SportType $sportType): string => $sportType->value, $sportTypesSortingOrder),
             'photos' => [
                 'hidePhotosForSportTypes' => array_map(fn (SportType $sportType): string => $sportType->value, $hidePhotosForSportTypes),

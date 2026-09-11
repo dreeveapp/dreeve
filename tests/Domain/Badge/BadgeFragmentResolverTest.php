@@ -104,7 +104,7 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->getContainer()->get(DbalSettingsRepository::class)->save(SettingsGroup::ZWIFT, [
+        $this->getContainer()->get(DbalSettingsRepository::class)->saveGroup(SettingsGroup::ZWIFT, [
             'level' => null,
             'racingScore' => null,
         ]);

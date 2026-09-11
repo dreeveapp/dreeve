@@ -49,7 +49,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
     {
         $this->withImportMode(ImportMode::FILES);
 
-        static::getContainer()->get(SettingsRepository::class)->save(SettingsGroup::APPEARANCE, [
+        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::APPEARANCE, [
             'sportTypesSortingOrder' => [SportType::WALK->value, SportType::RUN->value],
         ]);
 

@@ -265,7 +265,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
     {
         /** @var DbalSettingsRepository $settingsRepository */
         $settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::APPEARANCE, [
+        $settingsRepository->saveGroup(SettingsGroup::APPEARANCE, [
             'locale' => 'en_US',
             'unitSystem' => $unitSystem,
             'timeFormat' => 24,

@@ -52,7 +52,7 @@ class ChatFragmentResolverTest extends AdminWebTestCase
 
     private function enableAssistant(bool $enabled): void
     {
-        $this->getContainer()->get(DbalSettingsRepository::class)->save(SettingsGroup::INTEGRATIONS, [
+        $this->getContainer()->get(DbalSettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
             'ai' => [
                 'enabled' => true,
                 'enableUI' => $enabled,

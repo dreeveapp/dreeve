@@ -60,6 +60,6 @@ class ApiFirewallOnAFreshInstanceTest extends ControllerWebTestCase
 
         /** @var DbalSettingsRepository $settingsRepository */
         $settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::GENERAL, []);
+        $settingsRepository->saveGroup(SettingsGroup::GENERAL, []);
     }
 }

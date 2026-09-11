@@ -22,7 +22,7 @@ final readonly class UpdateSettingsCommandHandler implements CommandHandler
     {
         assert($command instanceof UpdateSettings);
 
-        $this->settingsRepository->save(
+        $this->settingsRepository->saveGroup(
             group: $command->getGroup(),
             data: $command->getData(),
         );

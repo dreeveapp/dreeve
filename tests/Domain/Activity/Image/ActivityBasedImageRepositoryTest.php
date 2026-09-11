@@ -134,7 +134,7 @@ class ActivityBasedImageRepositoryTest extends ContainerTestCase
 
         $this->assertEquals(12, $this->imageRepository->count());
 
-        $this->getContainer()->get(SettingsRepository::class)->save(SettingsGroup::APPEARANCE, [
+        $this->getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::APPEARANCE, [
             'photos' => [
                 'hidePhotosForSportTypes' => [SportType::RIDE->value, SportType::WALK->value],
             ],

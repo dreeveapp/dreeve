@@ -512,7 +512,7 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
      */
     private function seedImportSettings(array $overrides): void
     {
-        $this->getContainer()->get(SettingsRepository::class)->save(SettingsGroup::IMPORT, [
+        $this->getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::IMPORT, [
             'numberOfNewActivitiesToProcessPerImport' => 250,
             'sportTypesToImport' => [],
             'activityVisibilitiesToImport' => [],

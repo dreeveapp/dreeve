@@ -19,7 +19,19 @@ final readonly class DbalSettingsRepository extends DbalRepository implements Se
         parent::__construct($connection);
     }
 
-    public function find(SettingsGroup $group): array
+    public function find(SettingsGroup $group, SettingsName $name): mixed
+    {
+        $value = $this->connection->fetchOne(
+            'SELECT value FROM Setting WHERE settingsGroup = :settingsGroup AND name = :name',
+            ['settingsGroup' => $group->value, 'name' => $name->value]
+        );
+
+        return $this->applyDefaults($group, [
+            $name->value => false === $value ? null : Json::decode((string) $value),
+        ])[$name->value];
+    }
+
+    public function findGroup(SettingsGroup $group): array
     {
         $values = $this->connection->executeQuery(
             'SELECT name, value FROM Setting WHERE settingsGroup = :settingsGroup ORDER BY rowid',
@@ -39,23 +51,38 @@ final readonly class DbalSettingsRepository extends DbalRepository implements Se
      */
     private function applyDefaults(SettingsGroup $group, array $data): array
     {
-        if (SettingsGroup::METRICS === $group && empty($data['eddington'])) {
-            $data['eddington'] = EddingtonConfiguration::getDefaultConfig();
+        if (SettingsGroup::METRICS === $group && empty($data[SettingsName::EDDINGTON->value])) {
+            $data[SettingsName::EDDINGTON->value] = EddingtonConfiguration::getDefaultConfig();
         }
 
         if (SettingsGroup::GENERAL === $group) {
-            if (empty($data['maxHeartRateFormula'])) {
-                $data['maxHeartRateFormula'] = 'fox';
+            if (empty($data[SettingsName::MAX_HEART_RATE_FORMULA->value])) {
+                $data[SettingsName::MAX_HEART_RATE_FORMULA->value] = 'fox';
             }
-            if (empty($data['restingHeartRateFormula'])) {
-                $data['restingHeartRateFormula'] = 'heuristicAgeBased';
+            if (empty($data[SettingsName::RESTING_HEART_RATE_FORMULA->value])) {
+                $data[SettingsName::RESTING_HEART_RATE_FORMULA->value] = 'heuristicAgeBased';
             }
         }
 
         return $data;
     }
 
-    public function save(SettingsGroup $group, array $data): void
+    public function save(SettingsGroup $group, SettingsName $name, mixed $value): void
+    {
+        $this->connection->executeStatement(
+            'INSERT INTO Setting (settingsGroup, name, value) VALUES (:settingsGroup, :name, :value)
+             ON CONFLICT (settingsGroup, name) DO UPDATE SET value = excluded.value',
+            [
+                'settingsGroup' => $group->value,
+                'name' => $name->value,
+                'value' => Json::encode($value),
+            ]
+        );
+
+        $this->eventBus->publishEvents([new SettingsWereUpdated($group)]);
+    }
+
+    public function saveGroup(SettingsGroup $group, array $data): void
     {
         $this->connection->transactional(static function (Connection $connection) use ($group, $data): void {
             $connection->executeStatement(
@@ -80,46 +107,46 @@ final readonly class DbalSettingsRepository extends DbalRepository implements Se
 
     public function general(): GeneralSettings
     {
-        return GeneralSettings::fromArray($this->find(SettingsGroup::GENERAL));
+        return GeneralSettings::fromArray($this->findGroup(SettingsGroup::GENERAL));
     }
 
     public function appearance(): AppearanceSettings
     {
-        return AppearanceSettings::fromArray($this->find(SettingsGroup::APPEARANCE));
+        return AppearanceSettings::fromArray($this->findGroup(SettingsGroup::APPEARANCE));
     }
 
     public function maps(): MapsSettings
     {
-        return MapsSettings::fromArray($this->find(SettingsGroup::MAPS));
+        return MapsSettings::fromArray($this->findGroup(SettingsGroup::MAPS));
     }
 
     public function import(): ImportSettings
     {
-        return ImportSettings::fromArray($this->find(SettingsGroup::IMPORT));
+        return ImportSettings::fromArray($this->findGroup(SettingsGroup::IMPORT));
     }
 
     public function metrics(): MetricsSettings
     {
-        return MetricsSettings::fromArray($this->find(SettingsGroup::METRICS));
+        return MetricsSettings::fromArray($this->findGroup(SettingsGroup::METRICS));
     }
 
     public function zwift(): ZwiftSettings
     {
-        return ZwiftSettings::fromArray($this->find(SettingsGroup::ZWIFT));
+        return ZwiftSettings::fromArray($this->findGroup(SettingsGroup::ZWIFT));
     }
 
     public function integrations(): IntegrationsSettings
     {
-        return IntegrationsSettings::fromArray($this->find(SettingsGroup::INTEGRATIONS));
+        return IntegrationsSettings::fromArray($this->findGroup(SettingsGroup::INTEGRATIONS));
     }
 
     public function daemon(): DaemonSettings
     {
-        return DaemonSettings::fromArray($this->find(SettingsGroup::DAEMON));
+        return DaemonSettings::fromArray($this->findGroup(SettingsGroup::DAEMON));
     }
 
     public function security(): SecuritySettings
     {
-        return SecuritySettings::fromArray($this->find(SettingsGroup::SECURITY));
+        return SecuritySettings::fromArray($this->findGroup(SettingsGroup::SECURITY));
     }
 }

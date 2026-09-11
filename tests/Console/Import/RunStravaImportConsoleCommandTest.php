@@ -72,7 +72,7 @@ class RunStravaImportConsoleCommandTest extends ConsoleCommandTestCase
 
     public function testDoesNotSendANotificationWhenTheSuccessfulImportNotificationIsDisabled(): void
     {
-        $this->settingsRepository->save(SettingsGroup::INTEGRATIONS, [
+        $this->settingsRepository->saveGroup(SettingsGroup::INTEGRATIONS, [
             'notifications' => ['notifyOnSuccessfulBuild' => false],
         ]);
 

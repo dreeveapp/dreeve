@@ -68,7 +68,7 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
 
     public function testStillCalculatesMetricsWhenThereAreNoFiles(): void
     {
-        $this->settingsRepository->save(SettingsGroup::INTEGRATIONS, [
+        $this->settingsRepository->saveGroup(SettingsGroup::INTEGRATIONS, [
             'notifications' => ['notifyOnSuccessfulBuild' => true],
         ]);
 
@@ -91,7 +91,7 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
         ));
         $this->watchStorage->write('watch/ride.fit', 'raw-fit-bytes');
 
-        $this->settingsRepository->save(SettingsGroup::INTEGRATIONS, [
+        $this->settingsRepository->saveGroup(SettingsGroup::INTEGRATIONS, [
             'notifications' => ['notifyOnSuccessfulBuild' => false],
         ]);
 

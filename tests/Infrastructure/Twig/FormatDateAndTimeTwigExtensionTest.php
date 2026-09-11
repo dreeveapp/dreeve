@@ -45,7 +45,7 @@ class FormatDateAndTimeTwigExtensionTest extends ContainerTestCase
     private function extensionFor(string $shortDateFormat, string $normalDateFormat, TimeFormat $timeFormat): FormatDateAndTimeTwigExtension
     {
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::APPEARANCE, [
+        $settingsRepository->saveGroup(SettingsGroup::APPEARANCE, [
             'dateFormat' => [
                 'short' => $shortDateFormat,
                 'normal' => $normalDateFormat,

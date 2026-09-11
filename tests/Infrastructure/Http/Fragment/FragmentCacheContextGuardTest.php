@@ -105,7 +105,7 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
         $this->provideFullTestSet();
         $this->addSegmentWithAPolylineFixtures();
         // The chat fragment only resolves while the assistant is switched on.
-        $this->getContainer()->get(DbalSettingsRepository::class)->save(SettingsGroup::INTEGRATIONS, [
+        $this->getContainer()->get(DbalSettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
             'ai' => [
                 'enabled' => true,
                 'enableUI' => true,

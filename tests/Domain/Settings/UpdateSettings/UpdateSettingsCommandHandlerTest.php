@@ -39,7 +39,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
             'data' => $data,
         ]));
 
-        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::GENERAL));
+        $this->assertSame($data, $this->settingsRepository->findGroup(SettingsGroup::GENERAL));
     }
 
     public function testItUpdatesAppearanceSettings(): void
@@ -62,7 +62,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
             'data' => $data,
         ]));
 
-        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::APPEARANCE));
+        $this->assertSame($data, $this->settingsRepository->findGroup(SettingsGroup::APPEARANCE));
     }
 
     public function testItUpdatesImportSettings(): void
@@ -85,7 +85,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
             'data' => $data,
         ]));
 
-        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::IMPORT));
+        $this->assertSame($data, $this->settingsRepository->findGroup(SettingsGroup::IMPORT));
     }
 
     public function testItUpdatesMetricsSettings(): void
@@ -106,7 +106,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
             'data' => $data,
         ]));
 
-        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::METRICS));
+        $this->assertSame($data, $this->settingsRepository->findGroup(SettingsGroup::METRICS));
     }
 
     public function testItUpdatesIntegrationsSettings(): void
@@ -136,7 +136,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
             'data' => $data,
         ]));
 
-        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::INTEGRATIONS));
+        $this->assertSame($data, $this->settingsRepository->findGroup(SettingsGroup::INTEGRATIONS));
     }
 
     public function testItOnlyInvalidatesRendersOfTheGroupThatWasSaved(): void
@@ -191,7 +191,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
             'data' => $data,
         ]));
 
-        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::ZWIFT));
+        $this->assertSame($data, $this->settingsRepository->findGroup(SettingsGroup::ZWIFT));
     }
 
     public function testItUpdatesDaemonSettings(): void
@@ -209,7 +209,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
             'data' => $data,
         ]));
 
-        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::DAEMON));
+        $this->assertSame($data, $this->settingsRepository->findGroup(SettingsGroup::DAEMON));
     }
 
     public function testItUpdatesSecuritySettings(): void
@@ -221,7 +221,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
             'data' => $data,
         ]));
 
-        $this->assertSame($data, $this->settingsRepository->find(SettingsGroup::SECURITY));
+        $this->assertSame($data, $this->settingsRepository->findGroup(SettingsGroup::SECURITY));
     }
 
     public function testItRejectsInvalidDaemonSettings(): void

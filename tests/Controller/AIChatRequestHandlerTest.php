@@ -182,7 +182,7 @@ class AIChatRequestHandlerTest extends ContainerTestCase
     private function buildSettingsRepository(bool $aiUIEnabled): SettingsRepository
     {
         $settingsRepository = new DbalSettingsRepository($this->getConnection(), new SpyEventBus());
-        $settingsRepository->save(SettingsGroup::INTEGRATIONS, [
+        $settingsRepository->saveGroup(SettingsGroup::INTEGRATIONS, [
             'ai' => [
                 'enabled' => true,
                 'enableUI' => $aiUIEnabled,

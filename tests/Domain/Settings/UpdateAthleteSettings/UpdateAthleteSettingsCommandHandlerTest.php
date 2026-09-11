@@ -17,7 +17,7 @@ class UpdateAthleteSettingsCommandHandlerTest extends ContainerTestCase
 
     public function testItOnlyUpdatesTheAthlete(): void
     {
-        $this->settingsRepository->save(
+        $this->settingsRepository->saveGroup(
             group: SettingsGroup::GENERAL,
             data: [
                 'appSubTitle' => 'A subtitle that should be left alone',
@@ -50,7 +50,7 @@ class UpdateAthleteSettingsCommandHandlerTest extends ContainerTestCase
             'heartRateZones' => ['mode' => 'absolute'],
             'restingHeartRateFormula' => 'heuristicAgeBased',
             'lastName' => 'Doe',
-        ], $this->settingsRepository->find(SettingsGroup::GENERAL));
+        ], $this->settingsRepository->findGroup(SettingsGroup::GENERAL));
     }
 
     #[\Override]

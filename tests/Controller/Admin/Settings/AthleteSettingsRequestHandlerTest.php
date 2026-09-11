@@ -48,10 +48,10 @@ class AthleteSettingsRequestHandlerTest extends AdminWebTestCase
     {
         /** @var SettingsRepository $settingsRepository */
         $settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
-        $settings = $settingsRepository->find(SettingsGroup::GENERAL);
+        $settings = $settingsRepository->findGroup(SettingsGroup::GENERAL);
         $settings['maxHeartRateFormula'] = ['2023-01-01' => 180];
         $settings['restingHeartRateFormula'] = ['2023-01-01' => 58];
-        $settingsRepository->save(SettingsGroup::GENERAL, $settings);
+        $settingsRepository->saveGroup(SettingsGroup::GENERAL, $settings);
 
         $this->client->loginUser($this->adminUser());
 

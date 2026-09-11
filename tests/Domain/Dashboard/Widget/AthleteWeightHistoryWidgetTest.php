@@ -17,7 +17,7 @@ class AthleteWeightHistoryWidgetTest extends ContainerTestCase
     public function testRenderWhenNoWeights(): void
     {
         // Remove the weight history from the general settings.
-        $this->getContainer()->get(SettingsRepository::class)->save(SettingsGroup::GENERAL, [
+        $this->getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::GENERAL, [
             'birthday' => '1989-08-14',
             'firstName' => 'Robin',
             'lastName' => 'Ingelbrecht',

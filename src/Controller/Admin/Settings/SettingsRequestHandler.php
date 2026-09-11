@@ -68,7 +68,7 @@ final readonly class SettingsRequestHandler
             'html/admin/page/settings/athlete.html.twig',
             [
                 'dispatchCommand' => UpdateAthleteSettings::getCommandName(),
-                'settings' => $this->settingsRepository->find(SettingsGroup::GENERAL),
+                'settings' => $this->settingsRepository->findGroup(SettingsGroup::GENERAL),
             ],
         ));
     }
@@ -88,7 +88,7 @@ final readonly class SettingsRequestHandler
             [
                 'dispatchCommand' => UpdateSettings::getCommandName(),
                 'group' => $settingsGroup,
-                'settings' => $this->settingsRepository->find($settingsGroup),
+                'settings' => $this->settingsRepository->findGroup($settingsGroup),
                 'appUrl' => $this->appUrl,
                 'stravaClientId' => $this->stravaClientId,
                 'stravaClientSecret' => $this->stravaClientSecret,
