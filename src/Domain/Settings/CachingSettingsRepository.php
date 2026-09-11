@@ -22,7 +22,7 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
     private ?SecuritySettings $securitySettings = null;
 
     public function __construct(
-        #[Autowire(service: KeyValueBasedSettingsRepository::class)]
+        #[Autowire(service: DbalSettingsRepository::class)]
         private readonly SettingsRepository $settingsRepository,
     ) {
     }

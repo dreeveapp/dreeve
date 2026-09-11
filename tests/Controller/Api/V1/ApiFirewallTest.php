@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Api\V1;
 
 use App\Domain\Api\Token;
+use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Security\AuthenticatedVisitor;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
@@ -90,12 +88,9 @@ class ApiFirewallTest extends ControllerWebTestCase
 
     public function testItAnswers401RatherThanRedirectingToTheLoginPage(): void
     {
-        /** @var KeyValueStore $keyValueStore */
-        $keyValueStore = $this->getContainer()->get(KeyValueStore::class);
-        $keyValueStore->save(KeyValue::fromState(
-            SettingsGroup::SECURITY->keyValueKey(),
-            Value::fromString(Json::encode(['requiresAuthentication' => true])),
-        ));
+        /** @var DbalSettingsRepository $settingsRepository */
+        $settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::SECURITY, ['requiresAuthentication' => true]);
 
         $this->client->request('GET', '/api/v1/status');
 

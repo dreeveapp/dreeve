@@ -5,11 +5,8 @@ namespace App\Tests\Domain\Badge;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -107,10 +104,10 @@ class BadgeFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->getContainer()->get(KeyValueStore::class)->save(KeyValue::fromState(
-            SettingsGroup::ZWIFT->keyValueKey(),
-            Value::fromString(Json::encode(['level' => null, 'racingScore' => null])),
-        ));
+        $this->getContainer()->get(DbalSettingsRepository::class)->save(SettingsGroup::ZWIFT, [
+            'level' => null,
+            'racingScore' => null,
+        ]);
 
         $this->client->request('GET', '/badge/zwift.svg');
 

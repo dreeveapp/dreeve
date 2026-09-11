@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Api\V1;
 
 use App\Domain\Api\Token;
+use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
-use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,8 +58,8 @@ class ApiFirewallOnAFreshInstanceTest extends ControllerWebTestCase
     {
         parent::setUp();
 
-        /** @var KeyValueStore $keyValueStore */
-        $keyValueStore = $this->getContainer()->get(KeyValueStore::class);
-        $keyValueStore->clear(SettingsGroup::GENERAL->keyValueKey());
+        /** @var DbalSettingsRepository $settingsRepository */
+        $settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
+        $settingsRepository->save(SettingsGroup::GENERAL, []);
     }
 }

@@ -6,7 +6,7 @@ namespace App\Controller\Api\V1\Settings;
 
 use App\Domain\Athlete\Weight\DeleteAthleteWeight\DeleteAthleteWeight;
 use App\Domain\Athlete\Weight\UpdateAthleteWeight\UpdateAthleteWeight;
-use App\Domain\Settings\KeyValueBasedSettingsRepository;
+use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final readonly class AthleteWeightRequestHandler
 {
     public function __construct(
-        #[Autowire(service: KeyValueBasedSettingsRepository::class)]
+        #[Autowire(service: DbalSettingsRepository::class)]
         private SettingsRepository $settingsRepository,
         private CommandBus $commandBus,
     ) {

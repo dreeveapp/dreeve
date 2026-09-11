@@ -6,30 +6,30 @@ namespace App\Domain\Settings;
 
 use App\Domain\Activity\Eddington\Config\EddingtonConfiguration;
 use App\Infrastructure\Eventing\EventBus;
-use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
+use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Serialization\Json;
+use Doctrine\DBAL\Connection;
 
-final readonly class KeyValueBasedSettingsRepository implements SettingsRepository
+final readonly class DbalSettingsRepository extends DbalRepository implements SettingsRepository
 {
     public function __construct(
-        private KeyValueStore $keyValueStore,
+        Connection $connection,
         private EventBus $eventBus,
     ) {
+        parent::__construct($connection);
     }
 
     public function find(SettingsGroup $group): array
     {
-        try {
-            /** @var array<string, mixed>|null $data */
-            $data = Json::decode((string) $this->keyValueStore->find($group->keyValueKey()));
-        } catch (EntityNotFound) {
-            $data = null;
-        }
+        $values = $this->connection->executeQuery(
+            'SELECT name, value FROM Setting WHERE settingsGroup = :settingsGroup ORDER BY rowid',
+            ['settingsGroup' => $group->value]
+        )->fetchAllKeyValue();
 
-        return $this->applyDefaults($group, is_array($data) ? $data : []);
+        return $this->applyDefaults($group, array_map(
+            static fn (string $value): mixed => Json::decode($value),
+            $values,
+        ));
     }
 
     /**
@@ -62,10 +62,23 @@ final readonly class KeyValueBasedSettingsRepository implements SettingsReposito
 
     public function save(SettingsGroup $group, array $data): void
     {
-        $this->keyValueStore->save(KeyValue::fromState(
-            $group->keyValueKey(),
-            Value::fromString(Json::encode($data)),
-        ));
+        $this->connection->transactional(static function (Connection $connection) use ($group, $data): void {
+            $connection->executeStatement(
+                'DELETE FROM Setting WHERE settingsGroup = :settingsGroup',
+                ['settingsGroup' => $group->value]
+            );
+
+            foreach ($data as $name => $value) {
+                $connection->executeStatement(
+                    'INSERT INTO Setting (settingsGroup, name, value) VALUES (:settingsGroup, :name, :value)',
+                    [
+                        'settingsGroup' => $group->value,
+                        'name' => $name,
+                        'value' => Json::encode($value),
+                    ]
+                );
+            }
+        });
 
         $this->eventBus->publishEvents([new SettingsWereUpdated($group)]);
     }

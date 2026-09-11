@@ -11,14 +11,11 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Import\ImportMode;
 use App\Domain\Import\WatchDirectory;
 use App\Domain\Integration\Notification\SendNotification\SendNotification;
-use App\Domain\Settings\KeyValueBasedSettingsRepository;
+use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\DomainCommand;
 use App\Infrastructure\FileSystem\PermissionChecker;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
 use App\Infrastructure\Serialization\Json;
@@ -46,7 +43,7 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
     private RunFileImportConsoleCommand $command;
     private SpyCommandBus $commandBus;
     private FilesystemOperator $watchStorage;
-    private KeyValueStore $keyValueStore;
+    private DbalSettingsRepository $settingsRepository;
 
     public function testRunsWhenFilesArePresent(): void
     {
@@ -71,10 +68,9 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
 
     public function testStillCalculatesMetricsWhenThereAreNoFiles(): void
     {
-        $this->keyValueStore->save(KeyValue::fromState(
-            key: SettingsGroup::INTEGRATIONS->keyValueKey(),
-            value: Value::fromString(Json::encode(['notifications' => ['notifyOnSuccessfulBuild' => true]])),
-        ));
+        $this->settingsRepository->save(SettingsGroup::INTEGRATIONS, [
+            'notifications' => ['notifyOnSuccessfulBuild' => true],
+        ]);
 
         $command = $this->getCommandInApplication(RunFileImportConsoleCommand::NAME);
         $commandTester = new CommandTester($command);
@@ -95,10 +91,9 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
         ));
         $this->watchStorage->write('watch/ride.fit', 'raw-fit-bytes');
 
-        $this->keyValueStore->save(KeyValue::fromState(
-            key: SettingsGroup::INTEGRATIONS->keyValueKey(),
-            value: Value::fromString(Json::encode(['notifications' => ['notifyOnSuccessfulBuild' => false]])),
-        ));
+        $this->settingsRepository->save(SettingsGroup::INTEGRATIONS, [
+            'notifications' => ['notifyOnSuccessfulBuild' => false],
+        ]);
 
         $command = $this->getCommandInApplication(RunFileImportConsoleCommand::NAME);
         $commandTester = new CommandTester($command);
@@ -211,7 +206,7 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
 
         $this->watchStorage = $this->getContainer()->get('default.storage');
         $this->watchStorage->deleteDirectory('watch');
-        $this->keyValueStore = $this->getContainer()->get(KeyValueStore::class);
+        $this->settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
 
         $this->command = $this->buildCommand($this->commandBus = new SpyCommandBus());
     }
@@ -251,7 +246,7 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
             appUrl: AppUrl::fromString('http://localhost'),
             logger: $logger,
             importMode: $importMode,
-            settingsRepository: $this->getContainer()->get(KeyValueBasedSettingsRepository::class),
+            settingsRepository: $this->getContainer()->get(DbalSettingsRepository::class),
         );
     }
 
