@@ -127,7 +127,7 @@ class ImportSegmentsCommandHandlerTest extends ContainerTestCase
     private function seedOptInToSegmentDetailsImport(bool $optIn): SettingsRepository
     {
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::IMPORT, [
+        $settingsRepository->saveGroup(SettingsGroup::IMPORT, [
             'optInToSegmentDetailImport' => $optIn,
         ]);
 

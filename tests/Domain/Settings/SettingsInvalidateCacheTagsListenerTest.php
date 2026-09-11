@@ -3,6 +3,7 @@
 namespace App\Tests\Domain\Settings;
 
 use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Render\RenderCache;
@@ -28,7 +29,7 @@ class SettingsInvalidateCacheTagsListenerTest extends ContainerTestCase
             );
         }
 
-        $this->settingsRepository->save($updatedGroup, ['some' => 'setting']);
+        $this->settingsRepository->saveGroup($updatedGroup, ['some' => 'setting']);
 
         $updatedGroupIsCrossCutting = in_array(
             RootCacheTag::forSettingsGroup($updatedGroup),
@@ -40,6 +41,32 @@ class SettingsInvalidateCacheTagsListenerTest extends ContainerTestCase
             $cacheTag = RootCacheTag::forSettingsGroup($group);
             $this->assertEquals(
                 !$updatedGroupIsCrossCutting && $group !== $updatedGroup,
+                $this->renderCache->get(
+                    cacheKey: $cacheTag->value,
+                    cacheability: Cacheability::for('stub', CacheTags::of($cacheTag)),
+                    callback: fn (): string => 'rendered',
+                )->wasServedFromCache()
+            );
+        }
+    }
+
+    public function testSavingASingleSettingInvalidatesItsGroup(): void
+    {
+        foreach ([SettingsGroup::SECURITY, SettingsGroup::IMPORT] as $group) {
+            $cacheTag = RootCacheTag::forSettingsGroup($group);
+            $this->renderCache->get(
+                cacheKey: $cacheTag->value,
+                cacheability: Cacheability::for('stub', CacheTags::of($cacheTag)),
+                callback: fn (): string => 'rendered',
+            );
+        }
+
+        $this->settingsRepository->save(SettingsGroup::SECURITY, SettingsName::REQUIRES_AUTHENTICATION, true);
+
+        foreach ([SettingsGroup::SECURITY->value => false, SettingsGroup::IMPORT->value => true] as $group => $servedFromCache) {
+            $cacheTag = RootCacheTag::forSettingsGroup(SettingsGroup::from($group));
+            $this->assertSame(
+                $servedFromCache,
                 $this->renderCache->get(
                     cacheKey: $cacheTag->value,
                     cacheability: Cacheability::for('stub', CacheTags::of($cacheTag)),

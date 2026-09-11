@@ -10,6 +10,7 @@ use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Automation\Condition\EndsNearCondition;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Tests\ContainerTestCase;
@@ -102,7 +103,7 @@ class EndsNearConditionTest extends ContainerTestCase
         $activity = ActivityBuilder::fromDefaults()
             ->withPolyline((string) EncodedPolyline::fromCoordinates([[50.0, 3.0], [51.055, 4.0]]))
             ->build();
-        $this->getContainer()->get(SettingsRepository::class)->save(SettingsGroup::APPEARANCE, ['unitSystem' => 'imperial']);
+        $this->getContainer()->get(SettingsRepository::class)->save(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM, 'imperial');
 
         $this->assertFalse($this->condition->matches($activity, RuleConfiguration::fromConfig([
             'operator' => 'within',

@@ -135,7 +135,7 @@ class StreamBasedActivityPowerRepositoryTest extends ContainerTestCase
             startDate: SerializableDateTime::fromString('2020-06-02 10:00:00'),
             bestAverages: [5 => 400],
         );
-        $this->getContainer()->get(DbalSettingsRepository::class)->save(SettingsGroup::METRICS, [
+        $this->getContainer()->get(DbalSettingsRepository::class)->saveGroup(SettingsGroup::METRICS, [
             'excludeActivitiesFromPeakPowerOutputs' => ['1'],
         ]);
 

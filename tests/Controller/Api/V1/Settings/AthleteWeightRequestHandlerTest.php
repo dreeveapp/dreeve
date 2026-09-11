@@ -6,6 +6,7 @@ namespace App\Tests\Controller\Api\V1\Settings;
 
 use App\Domain\Api\Token;
 use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
@@ -33,7 +34,7 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
             'on' => '2026-09-08',
             'weight' => 71.4,
         ], Json::decode((string) $this->client->getResponse()->getContent()));
-        $this->assertSame(['on' => '2026-09-08', 'weight' => 71.4], $this->settingsRepository->find(SettingsGroup::GENERAL)['weightHistory'][4]);
+        $this->assertSame(['on' => '2026-09-08', 'weight' => 71.4], $this->settingsRepository->find(SettingsGroup::GENERAL, SettingsName::WEIGHT_HISTORY)[4]);
     }
 
     public function testItUpdatesTheExistingWeightForADate(): void
@@ -55,7 +56,7 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
             ['on' => '2019-08-01', 'weight' => 70],
             ['on' => '2019-07-01', 'weight' => 71],
             ['on' => '2020-01-01', 'weight' => 71.4],
-        ], $this->settingsRepository->find(SettingsGroup::GENERAL)['weightHistory']);
+        ], $this->settingsRepository->find(SettingsGroup::GENERAL, SettingsName::WEIGHT_HISTORY));
     }
 
     public function testItListsWeightHistory(): void
@@ -91,7 +92,7 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
         );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
-        $this->assertNotContains(['on' => '2026-09-08', 'weight' => 71.4], $this->settingsRepository->find(SettingsGroup::GENERAL)['weightHistory']);
+        $this->assertNotContains(['on' => '2026-09-08', 'weight' => 71.4], $this->settingsRepository->find(SettingsGroup::GENERAL, SettingsName::WEIGHT_HISTORY));
     }
 
     public function testItRejectsAnInvalidDateWhenDeletingAWeight(): void

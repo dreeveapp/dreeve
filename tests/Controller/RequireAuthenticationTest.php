@@ -4,6 +4,7 @@ namespace App\Tests\Controller;
 
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\UpdateSettings\UpdateSettings;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Tests\Controller\Admin\AdminWebTestCase;
@@ -91,6 +92,6 @@ class RequireAuthenticationTest extends AdminWebTestCase
     {
         /** @var DbalSettingsRepository $settingsRepository */
         $settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::SECURITY, ['requiresAuthentication' => true]);
+        $settingsRepository->save(SettingsGroup::SECURITY, SettingsName::REQUIRES_AUTHENTICATION, true);
     }
 }

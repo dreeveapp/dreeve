@@ -77,7 +77,7 @@ class StravaCreateWebhookSubscriptionConsoleCommandTest extends ConsoleCommandTe
     private function settingsWithWebhooks(bool $enabled, string $verifyToken): SettingsRepository
     {
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::IMPORT, [
+        $settingsRepository->saveGroup(SettingsGroup::IMPORT, [
             'webhooks' => ['enabled' => $enabled, 'verifyToken' => $verifyToken],
         ]);
 

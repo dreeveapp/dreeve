@@ -27,14 +27,26 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
     ) {
     }
 
-    public function find(SettingsGroup $group): array
+    public function find(SettingsGroup $group, SettingsName $name): mixed
     {
-        return $this->findCache[$group->value] ??= $this->settingsRepository->find($group);
+        return $this->findGroup($group)[$name->value] ?? null;
     }
 
-    public function save(SettingsGroup $group, array $data): void
+    public function findGroup(SettingsGroup $group): array
     {
-        $this->settingsRepository->save($group, $data);
+        return $this->findCache[$group->value] ??= $this->settingsRepository->findGroup($group);
+    }
+
+    public function save(SettingsGroup $group, SettingsName $name, mixed $value): void
+    {
+        $this->settingsRepository->save($group, $name, $value);
+
+        $this->reset();
+    }
+
+    public function saveGroup(SettingsGroup $group, array $data): void
+    {
+        $this->settingsRepository->saveGroup($group, $data);
 
         $this->reset();
     }

@@ -14,6 +14,7 @@ use App\Domain\Settings\IntegrationsSettings;
 use App\Domain\Settings\MapsSettings;
 use App\Domain\Settings\MetricsSettings;
 use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Settings\ZwiftSettings;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -46,22 +47,36 @@ class CachingSettingsRepositoryTest extends TestCase
         yield 'daemon' => ['daemon', DaemonSettings::fromArray(null), fn (SettingsRepository $r) => $r->daemon()];
     }
 
-    public function testFindIsReadFromInnerOncePerGroup(): void
+    public function testFindGroupIsReadFromInnerOncePerGroup(): void
     {
         $inner = $this->createMock(SettingsRepository::class);
         $inner->expects($this->exactly(2))
-            ->method('find')
+            ->method('findGroup')
             ->willReturnCallback(fn (SettingsGroup $group): array => ['group' => $group->value]);
 
         $repository = new CachingSettingsRepository($inner);
 
-        $this->assertSame(['group' => 'general'], $repository->find(SettingsGroup::GENERAL));
-        $this->assertSame(['group' => 'general'], $repository->find(SettingsGroup::GENERAL));
-        $this->assertSame(['group' => 'zwift'], $repository->find(SettingsGroup::ZWIFT));
-        $this->assertSame(['group' => 'zwift'], $repository->find(SettingsGroup::ZWIFT));
+        $this->assertSame(['group' => 'general'], $repository->findGroup(SettingsGroup::GENERAL));
+        $this->assertSame(['group' => 'general'], $repository->findGroup(SettingsGroup::GENERAL));
+        $this->assertSame(['group' => 'zwift'], $repository->findGroup(SettingsGroup::ZWIFT));
+        $this->assertSame(['group' => 'zwift'], $repository->findGroup(SettingsGroup::ZWIFT));
     }
 
-    public function testSaveDelegatesToInnerAndInvalidatesTheMemo(): void
+    public function testFindReadsASingleSettingFromTheCachedGroup(): void
+    {
+        $inner = $this->createMock(SettingsRepository::class);
+        $inner->expects($this->once())
+            ->method('findGroup')
+            ->with(SettingsGroup::APPEARANCE)
+            ->willReturn(['unitSystem' => 'metric']);
+
+        $repository = new CachingSettingsRepository($inner);
+
+        $this->assertSame('metric', $repository->find(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM));
+        $this->assertNull($repository->find(SettingsGroup::APPEARANCE, SettingsName::LOCALE));
+    }
+
+    public function testSaveGroupDelegatesToInnerAndInvalidatesTheMemo(): void
     {
         $inner = $this->createMock(SettingsRepository::class);
         // general() is re-read after the save invalidation => inner is hit twice.
@@ -74,14 +89,32 @@ class CachingSettingsRepositoryTest extends TestCase
                 'maxHeartRateFormula' => 'fox',
             ]));
         $inner->expects($this->once())
-            ->method('save')
+            ->method('saveGroup')
             ->with(SettingsGroup::GENERAL, ['foo' => 'bar']);
 
         $repository = new CachingSettingsRepository($inner);
 
         $repository->general();
-        $repository->save(SettingsGroup::GENERAL, ['foo' => 'bar']);
+        $repository->saveGroup(SettingsGroup::GENERAL, ['foo' => 'bar']);
         $repository->general();
+    }
+
+    public function testSaveDelegatesToInnerAndInvalidatesTheMemo(): void
+    {
+        $inner = $this->createMock(SettingsRepository::class);
+        $inner->expects($this->exactly(2))
+            ->method('findGroup')
+            ->with(SettingsGroup::APPEARANCE)
+            ->willReturn(['unitSystem' => 'metric']);
+        $inner->expects($this->once())
+            ->method('save')
+            ->with(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM, 'imperial');
+
+        $repository = new CachingSettingsRepository($inner);
+
+        $repository->find(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM);
+        $repository->save(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM, 'imperial');
+        $repository->find(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM);
     }
 
     public function testAthleteNotConfiguredExceptionIsNotCached(): void

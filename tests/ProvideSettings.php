@@ -21,7 +21,7 @@ trait ProvideSettings
             new SpyEventBus(),
         );
 
-        $settingsRepository->save(SettingsGroup::GENERAL, [
+        $settingsRepository->saveGroup(SettingsGroup::GENERAL, [
             'profilePictureUrl' => null,
             'appSubTitle' => 'Robin The King 👑',
             'birthday' => '1989-08-14',
@@ -50,7 +50,7 @@ trait ProvideSettings
             ],
         ]);
 
-        $settingsRepository->save(SettingsGroup::APPEARANCE, [
+        $settingsRepository->saveGroup(SettingsGroup::APPEARANCE, [
             'locale' => 'en_US',
             'unitSystem' => 'metric',
             'timeFormat' => 24,
@@ -60,7 +60,7 @@ trait ProvideSettings
             ],
         ]);
 
-        $settingsRepository->save(SettingsGroup::IMPORT, [
+        $settingsRepository->saveGroup(SettingsGroup::IMPORT, [
             'numberOfNewActivitiesToProcessPerImport' => 250,
             'sportTypesToImport' => [],
             'activityVisibilitiesToImport' => [],
@@ -74,12 +74,12 @@ trait ProvideSettings
         ]);
 
         // Baseline the whole suite gets today from config/app/test/config.yaml, normalized to camelCase.
-        $settingsRepository->save(SettingsGroup::ZWIFT, [
+        $settingsRepository->saveGroup(SettingsGroup::ZWIFT, [
             'level' => 80,
             'racingScore' => 495,
         ]);
 
-        $settingsRepository->save(SettingsGroup::INTEGRATIONS, [
+        $settingsRepository->saveGroup(SettingsGroup::INTEGRATIONS, [
             'notifications' => [
                 'services' => [
                     'ntfy://admin:pass@ntfy.sh/el-test',
@@ -91,7 +91,7 @@ trait ProvideSettings
             ],
         ]);
 
-        $settingsRepository->save(SettingsGroup::SECURITY, [
+        $settingsRepository->saveGroup(SettingsGroup::SECURITY, [
             'requiresAuthentication' => false,
         ]);
     }
