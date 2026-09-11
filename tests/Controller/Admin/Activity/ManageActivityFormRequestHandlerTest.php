@@ -268,9 +268,34 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame($expected, $crawler->filter('.btn--secondary')->attr('href'));
     }
 
+    #[DataProvider('provideRedirectToQueryParams')]
+    public function testDeleteHonoursASafeRedirectToOnEveryExit(string $redirectTo, string $expected): void
+    {
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->build(),
+            [],
+        ));
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request(
+            'GET',
+            '/admin/activities/'.ActivityId::fromUnprefixed('1').'/delete?redirectTo='.urlencode($redirectTo)
+        );
+
+        $this->assertResponseIsSuccessful();
+
+        $this->assertSame($expected, $crawler->filter('form[data-dispatch-command]')->attr('data-redirect'));
+        $this->assertSame($expected, $crawler->filter('a[aria-label="Close"]')->attr('href'));
+        $this->assertSame($expected, $crawler->filter('.btn--secondary')->attr('href'));
+    }
+
     public static function provideRedirectToQueryParams(): \Generator
     {
         yield 'a path within the app' => ['/activities/activity-1', '/activities/activity-1'];
+        yield 'a filtered overview' => ['/admin/activities?filters%5BsportType%5D=Run&pagination%5Bpage%5D=2', '/admin/activities?filters%5BsportType%5D=Run&pagination%5Bpage%5D=2'];
         yield 'protocol relative' => ['//evil.com', '/admin/activities'];
         yield 'javascript uri' => ['javascript:alert(1)', '/admin/activities'];
         yield 'absolute url' => ['https://evil.com', '/admin/activities'];

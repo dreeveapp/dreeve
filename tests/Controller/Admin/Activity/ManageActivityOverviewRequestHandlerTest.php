@@ -239,6 +239,27 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         );
     }
 
+    public function testEditAndDeleteLinksRedirectBackToTheFilteredPage(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+
+        $this->seedActivities(30);
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/activities?filters[sportType]=Ride&pagination[page]=2&pagination[size]=10');
+
+        $this->assertResponseIsSuccessful();
+        $expectedRedirectTo = 'redirectTo='.rawurlencode('/admin/activities?filters%5BsportType%5D=Ride&pagination%5Bpage%5D=2&pagination%5Bsize%5D=10');
+        $this->assertStringContainsString(
+            $expectedRedirectTo,
+            (string) $crawler->filter('table.data-table tbody a[title="Edit"]')->first()->attr('href')
+        );
+        $this->assertStringContainsString(
+            $expectedRedirectTo,
+            (string) $crawler->filter('table.data-table tbody a[title="Delete"]')->first()->attr('href')
+        );
+    }
+
     public function testShowsTheImportSourceOfEveryActivity(): void
     {
         $this->withImportMode(ImportMode::FILES);

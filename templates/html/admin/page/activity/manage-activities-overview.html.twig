@@ -1,6 +1,7 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
     {% autoescape false %}
+    {% set overviewUrl = path('admin_manage_activity_overview', app.request.query.all) %}
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
             <h3 class="text-lg font-semibold">
@@ -175,7 +176,7 @@
                                         </button>
                                     </form>
                                 {% endif %}
-                                <a href="{{ relativeUrl(path('admin_edit_activity', {activityId: activity.getActivityId()})) }}"
+                                <a href="{{ relativeUrlWithRedirectTo(path('admin_edit_activity', {activityId: activity.getActivityId()}), overviewUrl) }}"
                                    class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-primary"
                                    title="{{ "Edit"|trans({}, 'admin') }}">
                                     <span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span>
@@ -184,7 +185,7 @@
                                     </svg>
                                 </a>
                                 {% if importMode.isFiles() %}
-                                    <a href="{{ relativeUrl(path('admin_delete_activity', {activityId: activity.getActivityId()})) }}"
+                                    <a href="{{ relativeUrlWithRedirectTo(path('admin_delete_activity', {activityId: activity.getActivityId()}), overviewUrl) }}"
                                        class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600"
                                        title="{{ "Delete"|trans({}, 'admin') }}">
                                         <span class="sr-only">{{ "Delete"|trans({}, 'admin') }}</span>
