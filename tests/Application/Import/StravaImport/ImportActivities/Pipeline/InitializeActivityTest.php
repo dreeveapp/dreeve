@@ -67,6 +67,52 @@ class InitializeActivityTest extends ContainerTestCase
         $this->assertTrue($context->getActivity()->isGroupActivity());
     }
 
+    public function testProcessReAppliesTheDescriptionOfAnActivityWeAlreadyKnow(): void
+    {
+        $activityId = ActivityId::fromUnprefixed('1');
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withDescription('Old description')
+                ->build(),
+            [],
+        ));
+
+        $rawStravaData = Json::decode(file_get_contents(__DIR__.'/fixtures/raw-strava-activity.json') ?: '');
+        $rawStravaData['description'] = 'Updated description';
+
+        $context = $this->initializeActivity->process(ActivityImportContext::create(
+            activityId: $activityId,
+            rawStravaData: $rawStravaData,
+            isNewActivity: false,
+        ));
+
+        $this->assertEquals('Updated description', $context->getActivity()->getDescription());
+    }
+
+    public function testProcessKeepsTheDescriptionWhenStravaDoesNotReportOne(): void
+    {
+        $activityId = ActivityId::fromUnprefixed('1');
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withDescription('Old description')
+                ->build(),
+            [],
+        ));
+
+        $rawStravaData = Json::decode(file_get_contents(__DIR__.'/fixtures/raw-strava-activity.json') ?: '');
+        unset($rawStravaData['description']);
+
+        $context = $this->initializeActivity->process(ActivityImportContext::create(
+            activityId: $activityId,
+            rawStravaData: $rawStravaData,
+            isNewActivity: false,
+        ));
+
+        $this->assertEquals('Old description', $context->getActivity()->getDescription());
+    }
+
     public static function provideAthleteCounts(): \Generator
     {
         yield 'other athletes joined after the first import' => [false, 5, true];
