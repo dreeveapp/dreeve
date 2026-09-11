@@ -39,7 +39,7 @@ class SettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"]'));
         $this->assertSame(
             ['50', '61', '71', '81', '91'],
-            $crawler->filter('input[name^="data[athlete][heartRateZones][zones]"][name$="[from]"]')
+            $crawler->filter('input[name^="data[heartRateZones][zones]"][name$="[from]"]')
                 ->each(fn ($node) => $node->attr('value')),
         );
     }

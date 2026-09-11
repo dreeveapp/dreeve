@@ -25,13 +25,9 @@ final readonly class UpdateAthleteWeightCommandHandler implements CommandHandler
         assert($command instanceof UpdateAthleteWeight);
 
         $data = $this->settingsRepository->find(SettingsGroup::GENERAL);
-        /** @var array<string, mixed> $athlete */
-        $athlete = $data['athlete'] ?? [];
-
-        $athlete['weightHistory'] = AthleteWeightHistoryPayload::fromStoredValue($athlete['weightHistory'] ?? null)
+        $data['weightHistory'] = AthleteWeightHistoryPayload::fromStoredValue($data['weightHistory'] ?? null)
             ->with($command->getOn(), $command->getWeight())
             ->toArray();
-        $data['athlete'] = $athlete;
 
         $this->settingsRepository->save(SettingsGroup::GENERAL, $data);
     }

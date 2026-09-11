@@ -37,8 +37,8 @@ final readonly class UpdateSettings extends DomainCommand implements Deserializa
         }
 
         try {
-            if (SettingsGroup::GENERAL === $group && is_array($data['athlete'] ?? null)) {
-                $data['athlete'] = AthleteSettingsPayload::normalize($data['athlete']);
+            if (SettingsGroup::GENERAL === $group) {
+                $data = AthleteSettingsPayload::normalize($data);
             }
             $group->settingsFromArray($data);
         } catch (\RuntimeException|\InvalidArgumentException $e) {

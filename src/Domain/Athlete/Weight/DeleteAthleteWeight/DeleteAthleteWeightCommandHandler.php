@@ -25,13 +25,9 @@ final readonly class DeleteAthleteWeightCommandHandler implements CommandHandler
         assert($command instanceof DeleteAthleteWeight);
 
         $data = $this->settingsRepository->find(SettingsGroup::GENERAL);
-        /** @var array<string, mixed> $athlete */
-        $athlete = $data['athlete'] ?? [];
-
-        $athlete['weightHistory'] = AthleteWeightHistoryPayload::fromStoredValue($athlete['weightHistory'] ?? null)
+        $data['weightHistory'] = AthleteWeightHistoryPayload::fromStoredValue($data['weightHistory'] ?? null)
             ->without($command->getOn())
             ->toArray();
-        $data['athlete'] = $athlete;
 
         $this->settingsRepository->save(SettingsGroup::GENERAL, $data);
     }

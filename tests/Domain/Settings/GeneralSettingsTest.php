@@ -19,15 +19,13 @@ class GeneralSettingsTest extends TestCase
         return [
             'appSubTitle' => 'The King',
             'profilePictureUrl' => 'https://example.com/me.png',
-            'athlete' => [
-                'birthday' => '1989-08-14',
-                'firstName' => 'Robin',
-                'lastName' => 'Ingelbrecht',
-                'gender' => 'M',
-                'maxHeartRateFormula' => 'fox',
-                'weightHistory' => [['on' => '2024-01-01', 'weight' => 70]],
-                'ftpHistory' => [['on' => '2023-01-01', 'ftp' => 250]],
-            ],
+            'birthday' => '1989-08-14',
+            'firstName' => 'Robin',
+            'lastName' => 'Ingelbrecht',
+            'gender' => 'M',
+            'maxHeartRateFormula' => 'fox',
+            'weightHistory' => [['on' => '2024-01-01', 'weight' => 70]],
+            'ftpHistory' => [['on' => '2023-01-01', 'ftp' => 250]],
         ];
     }
 
@@ -65,12 +63,10 @@ class GeneralSettingsTest extends TestCase
     public function testItAppliesDefaultsForOptionalSettings(): void
     {
         $settings = GeneralSettings::fromArray([
-            'athlete' => [
-                'birthday' => '1989-08-14',
-                'firstName' => 'Robin',
-                'lastName' => 'Ingelbrecht',
-                'maxHeartRateFormula' => 'fox',
-            ],
+            'birthday' => '1989-08-14',
+            'firstName' => 'Robin',
+            'lastName' => 'Ingelbrecht',
+            'maxHeartRateFormula' => 'fox',
         ]);
 
         $this->assertNull($settings->getAppSubTitle());
@@ -86,7 +82,7 @@ class GeneralSettingsTest extends TestCase
         $this->expectExceptionObject(new AthleteHasNotBeenConfigured(sprintf('A "%s" is required for the athlete in the general settings', $key)));
 
         $data = self::validData();
-        $data['athlete'][$key] = $value;
+        $data[$key] = $value;
 
         GeneralSettings::fromArray($data);
     }
@@ -104,35 +100,28 @@ class GeneralSettingsTest extends TestCase
     public function testItTrimsTheName(): void
     {
         $data = self::validData();
-        $data['athlete']['firstName'] = '  Robin  ';
-        $data['athlete']['lastName'] = "\tIngelbrecht\n";
+        $data['firstName'] = '  Robin  ';
+        $data['lastName'] = "\tIngelbrecht\n";
 
         $this->assertSame('Robin Ingelbrecht', (string) GeneralSettings::fromArray($data)->getAthlete()->getName());
-    }
-
-    public function testItIgnoresANonArrayAthlete(): void
-    {
-        $this->expectExceptionObject(new AthleteHasNotBeenConfigured('A "birthday" is required for the athlete in the general settings'));
-
-        GeneralSettings::fromArray(['athlete' => 'Robin']);
     }
 
     public function testItThrowsWhenBirthdayIsMissing(): void
     {
         $this->expectExceptionObject(new AthleteHasNotBeenConfigured('A "birthday" is required for the athlete in the general settings'));
 
-        GeneralSettings::fromArray(['athlete' => ['maxHeartRateFormula' => 'fox']]);
+        GeneralSettings::fromArray(['maxHeartRateFormula' => 'fox']);
     }
 
     public function testItThrowsWhenMaxHeartRateFormulaIsMissing(): void
     {
         $this->expectExceptionObject(new AthleteHasNotBeenConfigured('A "maxHeartRateFormula" is required for the athlete in the general settings'));
 
-        GeneralSettings::fromArray(['athlete' => [
+        GeneralSettings::fromArray([
             'birthday' => '1989-08-14',
             'firstName' => 'Robin',
             'lastName' => 'Ingelbrecht',
-        ]]);
+        ]);
     }
 
     public function testItThrowsWhenNothingIsConfigured(): void

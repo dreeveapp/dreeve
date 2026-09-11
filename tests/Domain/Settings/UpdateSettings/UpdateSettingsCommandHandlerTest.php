@@ -27,13 +27,11 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
         $data = [
             'profilePictureUrl' => null,
             'appSubTitle' => 'A brand new subtitle',
-            'athlete' => [
-                'birthday' => '1990-01-01',
-                'firstName' => 'Jane',
-                'lastName' => 'Doe',
-                'maxHeartRateFormula' => 'fox',
-                'restingHeartRateFormula' => 'heuristicAgeBased',
-            ],
+            'birthday' => '1990-01-01',
+            'firstName' => 'Jane',
+            'lastName' => 'Doe',
+            'maxHeartRateFormula' => 'fox',
+            'restingHeartRateFormula' => 'heuristicAgeBased',
         ];
 
         $this->commandBus->dispatch(UpdateSettings::fromPayload([

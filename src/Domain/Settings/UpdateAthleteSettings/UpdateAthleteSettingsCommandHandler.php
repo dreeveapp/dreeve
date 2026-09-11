@@ -23,10 +23,10 @@ final readonly class UpdateAthleteSettingsCommandHandler implements CommandHandl
     {
         assert($command instanceof UpdateAthleteSettings);
 
-        $data = $this->settingsRepository->find(SettingsGroup::GENERAL);
-        /** @var array<string, mixed> $athlete */
-        $athlete = $data['athlete'] ?? [];
-        $data['athlete'] = [...$athlete, ...$command->getAthlete()];
+        $data = [
+            ...$this->settingsRepository->find(SettingsGroup::GENERAL),
+            ...$command->getAthlete(),
+        ];
 
         $this->settingsRepository->save(
             group: SettingsGroup::GENERAL,
