@@ -11,7 +11,6 @@ use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Activity\Stream\StreamType;
-use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\UnitSystem;
@@ -57,7 +56,7 @@ class CalculateCombinedStreamsTest extends ContainerTestCase
         );
 
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM, UnitSystem::IMPERIAL->value);
+        $settingsRepository->save(SettingsName::UNIT_SYSTEM, UnitSystem::IMPERIAL->value);
 
         new CalculateCombinedStreams(
             activityRepository: $this->getContainer()->get(ActivityRepository::class),
@@ -120,7 +119,7 @@ class CalculateCombinedStreamsTest extends ContainerTestCase
         );
 
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM, UnitSystem::IMPERIAL->value);
+        $settingsRepository->save(SettingsName::UNIT_SYSTEM, UnitSystem::IMPERIAL->value);
 
         new CalculateCombinedStreams(
             activityRepository: $this->getContainer()->get(ActivityRepository::class),
@@ -237,7 +236,7 @@ class CalculateCombinedStreamsTest extends ContainerTestCase
         );
 
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM, UnitSystem::IMPERIAL->value);
+        $settingsRepository->save(SettingsName::UNIT_SYSTEM, UnitSystem::IMPERIAL->value);
 
         new CalculateCombinedStreams(
             activityRepository: $activityRepository,

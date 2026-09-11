@@ -9,7 +9,6 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Milestone\Context\CumulativeDistanceContext;
 use App\Domain\Milestone\Discoverer\CumulativeDistanceMilestoneDiscoverer;
 use App\Domain\Milestone\MilestoneIdFactory;
-use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
@@ -65,7 +64,7 @@ class CumulativeDistanceMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(1, '2024-01-01', 161.0);
 
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM, 'imperial');
+        $settingsRepository->save(SettingsName::UNIT_SYSTEM, 'imperial');
         $discoverer = new CumulativeDistanceMilestoneDiscoverer(
             $this->getConnection(),
             $settingsRepository,

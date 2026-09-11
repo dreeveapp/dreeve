@@ -92,6 +92,6 @@ class RequireAuthenticationTest extends AdminWebTestCase
     {
         /** @var DbalSettingsRepository $settingsRepository */
         $settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::SECURITY, SettingsName::REQUIRES_AUTHENTICATION, true);
+        $settingsRepository->save(SettingsName::REQUIRES_AUTHENTICATION, true);
     }
 }

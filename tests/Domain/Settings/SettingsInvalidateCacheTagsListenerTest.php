@@ -61,7 +61,7 @@ class SettingsInvalidateCacheTagsListenerTest extends ContainerTestCase
             );
         }
 
-        $this->settingsRepository->save(SettingsGroup::SECURITY, SettingsName::REQUIRES_AUTHENTICATION, true);
+        $this->settingsRepository->save(SettingsName::REQUIRES_AUTHENTICATION, true);
 
         foreach ([SettingsGroup::SECURITY->value => false, SettingsGroup::IMPORT->value => true] as $group => $servedFromCache) {
             $cacheTag = RootCacheTag::forSettingsGroup(SettingsGroup::from($group));

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Settings;
 
-use App\Domain\Activity\Eddington\Config\EddingtonConfiguration;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Serialization\Json;
@@ -19,67 +18,58 @@ final readonly class DbalSettingsRepository extends DbalRepository implements Se
         parent::__construct($connection);
     }
 
-    public function find(SettingsGroup $group, SettingsName $name): mixed
+    public function find(SettingsName $name): mixed
     {
         $value = $this->connection->fetchOne(
             'SELECT value FROM Setting WHERE settingsGroup = :settingsGroup AND name = :name',
-            ['settingsGroup' => $group->value, 'name' => $name->value]
+            ['settingsGroup' => $name->group()->value, 'name' => $name->value]
         );
 
-        return $this->applyDefaults($group, [
-            $name->value => false === $value ? null : Json::decode((string) $value),
-        ])[$name->value];
+        return $this->applyDefault($name, false === $value ? null : Json::decode((string) $value));
     }
 
     public function findGroup(SettingsGroup $group): array
     {
-        $values = $this->connection->executeQuery(
-            'SELECT name, value FROM Setting WHERE settingsGroup = :settingsGroup ORDER BY rowid',
-            ['settingsGroup' => $group->value]
-        )->fetchAllKeyValue();
-
-        return $this->applyDefaults($group, array_map(
+        $data = array_map(
             static fn (string $value): mixed => Json::decode($value),
-            $values,
-        ));
-    }
+            $this->connection->executeQuery(
+                'SELECT name, value FROM Setting WHERE settingsGroup = :settingsGroup',
+                ['settingsGroup' => $group->value]
+            )->fetchAllKeyValue(),
+        );
 
-    /**
-     * @param array<string, mixed> $data
-     *
-     * @return array<string, mixed>
-     */
-    private function applyDefaults(SettingsGroup $group, array $data): array
-    {
-        if (SettingsGroup::METRICS === $group && empty($data[SettingsName::EDDINGTON->value])) {
-            $data[SettingsName::EDDINGTON->value] = EddingtonConfiguration::getDefaultConfig();
-        }
-
-        if (SettingsGroup::GENERAL === $group) {
-            if (empty($data[SettingsName::MAX_HEART_RATE_FORMULA->value])) {
-                $data[SettingsName::MAX_HEART_RATE_FORMULA->value] = 'fox';
+        foreach (SettingsName::cases() as $name) {
+            if ($group !== $name->group()) {
+                continue;
             }
-            if (empty($data[SettingsName::RESTING_HEART_RATE_FORMULA->value])) {
-                $data[SettingsName::RESTING_HEART_RATE_FORMULA->value] = 'heuristicAgeBased';
+
+            $value = $this->applyDefault($name, $data[$name->value] ?? null);
+            if (null !== $value) {
+                $data[$name->value] = $value;
             }
         }
 
         return $data;
     }
 
-    public function save(SettingsGroup $group, SettingsName $name, mixed $value): void
+    private function applyDefault(SettingsName $name, mixed $value): mixed
+    {
+        return empty($value) ? ($name->defaultValue() ?? $value) : $value;
+    }
+
+    public function save(SettingsName $name, mixed $value): void
     {
         $this->connection->executeStatement(
             'INSERT INTO Setting (settingsGroup, name, value) VALUES (:settingsGroup, :name, :value)
              ON CONFLICT (settingsGroup, name) DO UPDATE SET value = excluded.value',
             [
-                'settingsGroup' => $group->value,
+                'settingsGroup' => $name->group()->value,
                 'name' => $name->value,
                 'value' => Json::encode($value),
             ]
         );
 
-        $this->eventBus->publishEvents([new SettingsWereUpdated($group)]);
+        $this->eventBus->publishEvents([new SettingsWereUpdated($name->group())]);
     }
 
     public function saveGroup(SettingsGroup $group, array $data): void

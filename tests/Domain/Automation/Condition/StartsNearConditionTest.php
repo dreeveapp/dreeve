@@ -10,7 +10,6 @@ use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Automation\Condition\StartsNearCondition;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
-use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
@@ -117,7 +116,7 @@ class StartsNearConditionTest extends ContainerTestCase
         $activity = ActivityBuilder::fromDefaults()
             ->withStartingCoordinate(Coordinate::createFromLatAndLng(Latitude::fromString('51.055'), Longitude::fromString('4.0')))
             ->build();
-        $this->getContainer()->get(SettingsRepository::class)->save(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM, 'imperial');
+        $this->getContainer()->get(SettingsRepository::class)->save(SettingsName::UNIT_SYSTEM, 'imperial');
 
         $this->assertFalse($this->condition->matches($activity, RuleConfiguration::fromConfig([
             'operator' => 'within',

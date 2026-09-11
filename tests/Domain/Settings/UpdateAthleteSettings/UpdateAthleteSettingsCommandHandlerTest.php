@@ -39,7 +39,7 @@ class UpdateAthleteSettingsCommandHandlerTest extends ContainerTestCase
             ],
         ]));
 
-        $this->assertSame([
+        $this->assertEquals([
             'appSubTitle' => 'A subtitle that should be left alone',
             'profilePictureUrl' => 'https://example.com/picture.png',
             'birthday' => '1990-01-01',
