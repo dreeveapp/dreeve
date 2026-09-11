@@ -20,7 +20,6 @@ use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredConditions;
 use App\Domain\Automation\DbalAutomationRuleRepository;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Gear\GearId;
-use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Tokenizer\Tokenizer;
@@ -365,12 +364,10 @@ class AutomationRuleEngineTest extends ContainerTestCase
 
     public function testMatchesOnDeviceAndNegativeSportTypeOperator(): void
     {
-        $deviceId = RecordingDeviceId::fromName('Garmin Edge 130')->toUnprefixedString();
-
         $this->saveRule(
             id: '1',
             conditions: ConfiguredConditions::fromArray([
-                new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceId' => $deviceId])),
+                new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceName' => 'Garmin Edge 130'])),
                 new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isNoneOf', 'sportTypes' => ['Run', 'Walk']])),
             ]),
             actions: ConfiguredActions::fromArray([

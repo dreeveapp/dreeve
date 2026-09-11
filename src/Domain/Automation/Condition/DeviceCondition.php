@@ -8,17 +8,10 @@ use App\Domain\Activity\Activity;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
-use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
-use App\Infrastructure\Exception\EntityNotFound;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class DeviceCondition implements Condition
 {
-    public function __construct(
-        private RecordingDeviceRepository $recordingDeviceRepository,
-    ) {
-    }
-
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
         return $translator->trans('Recording device', domain: 'admin', locale: $locale);
@@ -26,18 +19,10 @@ final readonly class DeviceCondition implements Condition
 
     public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): string
     {
-        $deviceId = $configuration->getString('deviceId');
-
-        try {
-            $device = $this->recordingDeviceRepository->find(RecordingDeviceId::fromUnprefixed($deviceId))->getName();
-        } catch (EntityNotFound) {
-            $device = $deviceId;
-        }
-
         return sprintf(
             '%s %s',
             MatchOperator::from($configuration->getString('operator'))->trans($translator),
-            $device,
+            $configuration->getString('deviceName'),
         );
     }
 
@@ -55,7 +40,7 @@ final readonly class DeviceCondition implements Condition
     {
         return RuleConfiguration::fromConfig([
             'operator' => MatchOperator::IS->value,
-            'deviceId' => '',
+            'deviceName' => '',
         ]);
     }
 
@@ -66,20 +51,20 @@ final readonly class DeviceCondition implements Condition
             throw new InvalidAutomationRule(sprintf('Invalid device operator "%s".', is_scalar($operator) ? (string) $operator : ''));
         }
 
-        $deviceId = $configuration->get('deviceId');
-        if (!is_string($deviceId) || '' === trim($deviceId)) {
-            throw new InvalidAutomationRule('A "deviceId" is required.');
+        $deviceName = $configuration->get('deviceName');
+        if (!is_string($deviceName) || '' === trim($deviceName)) {
+            throw new InvalidAutomationRule('A "deviceName" is required.');
         }
     }
 
     public function matches(Activity $activity, RuleConfiguration $configuration): bool
     {
         $operator = $configuration->getString('operator');
-        $deviceId = $configuration->getString('deviceId');
+        $deviceName = $configuration->getString('deviceName');
 
-        $deviceName = $activity->getDeviceName();
-        $activityMatchesDevice = null !== $deviceName
-            && (string) RecordingDeviceId::fromName($deviceName) === (string) RecordingDeviceId::fromUnprefixed($deviceId);
+        $activityDeviceName = $activity->getDeviceName();
+        $activityMatchesDevice = null !== $activityDeviceName
+            && (string) RecordingDeviceId::fromName($activityDeviceName) === (string) RecordingDeviceId::fromName($deviceName);
 
         return MatchOperator::from($operator)->isSatisfiedBy($activityMatchesDevice);
     }
