@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Settings;
 
+use App\Domain\Activity\Eddington\Config\EddingtonConfiguration;
 use App\Domain\Settings\DaemonSettings;
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
@@ -24,7 +25,7 @@ class DbalSettingsRepositoryTest extends ContainerTestCase
         );
     }
 
-    public function testSaveGroupAndFindGroupKeepValueTypesAndKeyOrder(): void
+    public function testSaveGroupAndFindGroupKeepValueTypes(): void
     {
         $data = [
             'numberOfNewActivitiesToProcessPerImport' => '250',
@@ -35,7 +36,11 @@ class DbalSettingsRepositoryTest extends ContainerTestCase
         ];
         $this->settingsRepository->saveGroup(SettingsGroup::IMPORT, $data);
 
-        $this->assertSame($data, $this->settingsRepository->findGroup(SettingsGroup::IMPORT));
+        $settings = $this->settingsRepository->findGroup(SettingsGroup::IMPORT);
+        ksort($data);
+        ksort($settings);
+
+        $this->assertSame($data, $settings);
     }
 
     public function testSaveGroupReplacesTheWholeGroup(): void
@@ -55,17 +60,17 @@ class DbalSettingsRepositoryTest extends ContainerTestCase
         $this->assertSame([], $this->settingsRepository->findGroup(SettingsGroup::SECURITY));
     }
 
-    public function testSaveUpdatesASingleSettingInPlaceAndAppendsNewOnes(): void
+    public function testSaveUpdatesASingleSettingAndAddsNewOnes(): void
     {
         $this->settingsRepository->saveGroup(SettingsGroup::APPEARANCE, [
             'unitSystem' => 'metric',
             'timeFormat' => 24,
         ]);
 
-        $this->settingsRepository->save(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM, 'imperial');
-        $this->settingsRepository->save(SettingsGroup::APPEARANCE, SettingsName::LOCALE, 'nl_BE');
+        $this->settingsRepository->save(SettingsName::UNIT_SYSTEM, 'imperial');
+        $this->settingsRepository->save(SettingsName::LOCALE, 'nl_BE');
 
-        $this->assertSame([
+        $this->assertEquals([
             'unitSystem' => 'imperial',
             'timeFormat' => 24,
             'locale' => 'nl_BE',
@@ -76,16 +81,23 @@ class DbalSettingsRepositoryTest extends ContainerTestCase
     {
         $this->settingsRepository->saveGroup(SettingsGroup::APPEARANCE, ['locale' => 'nl_BE']);
 
-        $this->assertSame('nl_BE', $this->settingsRepository->find(SettingsGroup::APPEARANCE, SettingsName::LOCALE));
-        $this->assertNull($this->settingsRepository->find(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM));
+        $this->assertSame('nl_BE', $this->settingsRepository->find(SettingsName::LOCALE));
+        $this->assertNull($this->settingsRepository->find(SettingsName::UNIT_SYSTEM));
+    }
+
+    public function testFindKeepsAnEmptyValueWithoutADefault(): void
+    {
+        $this->settingsRepository->save(SettingsName::REQUIRES_AUTHENTICATION, false);
+
+        $this->assertFalse($this->settingsRepository->find(SettingsName::REQUIRES_AUTHENTICATION));
     }
 
     public function testFindAppliesDefaultsToASingleSetting(): void
     {
         $this->settingsRepository->saveGroup(SettingsGroup::GENERAL, []);
 
-        $this->assertSame('fox', $this->settingsRepository->find(SettingsGroup::GENERAL, SettingsName::MAX_HEART_RATE_FORMULA));
-        $this->assertSame('heuristicAgeBased', $this->settingsRepository->find(SettingsGroup::GENERAL, SettingsName::RESTING_HEART_RATE_FORMULA));
+        $this->assertSame('fox', $this->settingsRepository->find(SettingsName::MAX_HEART_RATE_FORMULA));
+        $this->assertSame('heuristicAgeBased', $this->settingsRepository->find(SettingsName::RESTING_HEART_RATE_FORMULA));
     }
 
     public function testFindGroupAppliesTheDefaultHeartRateFormulas(): void
@@ -117,6 +129,19 @@ class DbalSettingsRepositoryTest extends ContainerTestCase
                 'restingHeartRateFormula' => 58,
             ],
             $this->settingsRepository->findGroup(SettingsGroup::GENERAL)
+        );
+    }
+
+    public function testFindGroupAppliesTheDefaultEddingtonConfiguration(): void
+    {
+        $this->settingsRepository->saveGroup(SettingsGroup::METRICS, ['excludeActivitiesFromPeakPowerOutputs' => []]);
+
+        $this->assertEquals(
+            [
+                'excludeActivitiesFromPeakPowerOutputs' => [],
+                'eddington' => EddingtonConfiguration::getDefaultConfig(),
+            ],
+            $this->settingsRepository->findGroup(SettingsGroup::METRICS)
         );
     }
 

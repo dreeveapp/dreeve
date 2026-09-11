@@ -6,7 +6,6 @@ namespace App\Domain\Athlete\Weight\DeleteAthleteWeight;
 
 use App\Domain\Athlete\Weight\AthleteWeightHistoryPayload;
 use App\Domain\Settings\DbalSettingsRepository;
-use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
@@ -26,9 +25,8 @@ final readonly class DeleteAthleteWeightCommandHandler implements CommandHandler
         assert($command instanceof DeleteAthleteWeight);
 
         $this->settingsRepository->save(
-            group: SettingsGroup::GENERAL,
             name: SettingsName::WEIGHT_HISTORY,
-            value: AthleteWeightHistoryPayload::fromStoredValue($this->settingsRepository->find(SettingsGroup::GENERAL, SettingsName::WEIGHT_HISTORY))
+            value: AthleteWeightHistoryPayload::fromStoredValue($this->settingsRepository->find(SettingsName::WEIGHT_HISTORY))
                 ->without($command->getOn())
                 ->toArray(),
         );

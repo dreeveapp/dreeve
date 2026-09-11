@@ -6,14 +6,14 @@ namespace App\Domain\Settings;
 
 interface SettingsRepository
 {
-    public function find(SettingsGroup $group, SettingsName $name): mixed;
+    public function find(SettingsName $name): mixed;
 
     /**
      * @return array<string, mixed>
      */
     public function findGroup(SettingsGroup $group): array;
 
-    public function save(SettingsGroup $group, SettingsName $name, mixed $value): void;
+    public function save(SettingsName $name, mixed $value): void;
 
     /**
      * @param array<string, mixed> $data

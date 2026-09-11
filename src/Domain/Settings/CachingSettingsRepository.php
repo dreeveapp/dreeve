@@ -27,9 +27,9 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
     ) {
     }
 
-    public function find(SettingsGroup $group, SettingsName $name): mixed
+    public function find(SettingsName $name): mixed
     {
-        return $this->findGroup($group)[$name->value] ?? null;
+        return $this->findGroup($name->group())[$name->value] ?? null;
     }
 
     public function findGroup(SettingsGroup $group): array
@@ -37,9 +37,9 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
         return $this->findCache[$group->value] ??= $this->settingsRepository->findGroup($group);
     }
 
-    public function save(SettingsGroup $group, SettingsName $name, mixed $value): void
+    public function save(SettingsName $name, mixed $value): void
     {
-        $this->settingsRepository->save($group, $name, $value);
+        $this->settingsRepository->save($name, $value);
 
         $this->reset();
     }

@@ -6,7 +6,6 @@ namespace App\Tests\Controller\Api\V1;
 
 use App\Domain\Api\Token;
 use App\Domain\Settings\DbalSettingsRepository;
-use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsName;
 use App\Infrastructure\Security\AuthenticatedVisitor;
 use App\Infrastructure\Serialization\Json;
@@ -91,7 +90,7 @@ class ApiFirewallTest extends ControllerWebTestCase
     {
         /** @var DbalSettingsRepository $settingsRepository */
         $settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::SECURITY, SettingsName::REQUIRES_AUTHENTICATION, true);
+        $settingsRepository->save(SettingsName::REQUIRES_AUTHENTICATION, true);
 
         $this->client->request('GET', '/api/v1/status');
 

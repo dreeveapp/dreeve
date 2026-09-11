@@ -10,7 +10,6 @@ use App\Domain\Gear\GearRepository;
 use App\Domain\Milestone\Context\GearElevationContext;
 use App\Domain\Milestone\Discoverer\GearElevationMilestoneDiscoverer;
 use App\Domain\Milestone\MilestoneIdFactory;
-use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Meter;
@@ -133,7 +132,7 @@ class GearElevationMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity('1', '2024-01-01', $gearId, 500.0);
 
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM, 'imperial');
+        $settingsRepository->save(SettingsName::UNIT_SYSTEM, 'imperial');
         $discoverer = new GearElevationMilestoneDiscoverer(
             $this->getConnection(),
             $settingsRepository,

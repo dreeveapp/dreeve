@@ -2,7 +2,6 @@
 
 namespace App\Tests\Infrastructure\Http;
 
-use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Http\AppLocaleRequestListener;
@@ -59,7 +58,7 @@ class AppLocaleRequestListenerTest extends ContainerTestCase
     private function settingsRepositoryFor(Locale $locale): SettingsRepository
     {
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::APPEARANCE, SettingsName::LOCALE, $locale->value);
+        $settingsRepository->save(SettingsName::LOCALE, $locale->value);
 
         return $settingsRepository;
     }

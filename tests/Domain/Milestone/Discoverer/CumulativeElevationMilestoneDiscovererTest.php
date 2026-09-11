@@ -9,7 +9,6 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Milestone\Context\CumulativeElevationContext;
 use App\Domain\Milestone\Discoverer\CumulativeElevationMilestoneDiscoverer;
 use App\Domain\Milestone\MilestoneIdFactory;
-use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Meter;
@@ -65,7 +64,7 @@ class CumulativeElevationMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(1, '2024-01-01', 500.0);
 
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $settingsRepository->save(SettingsGroup::APPEARANCE, SettingsName::UNIT_SYSTEM, 'imperial');
+        $settingsRepository->save(SettingsName::UNIT_SYSTEM, 'imperial');
         $discoverer = new CumulativeElevationMilestoneDiscoverer(
             $this->getConnection(),
             $settingsRepository,
