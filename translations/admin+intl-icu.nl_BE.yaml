@@ -73,6 +73,7 @@ Apply: Toepassen
 'Automation rules are only available in file import mode': 'Automation rules are only available in file import mode'
 'Available tokens': 'Available tokens'
 'Average cadence': 'Average cadence'
+'Average heart rate (bpm)': 'Average heart rate (bpm)'
 'Average power': 'Average power'
 'Back to app': 'Back to app'
 'Back to the admin panel': 'Back to the admin panel'
@@ -471,6 +472,7 @@ Unit: Unit
 'Upload files': 'Upload files'
 Uploaded: Uploaded
 Uploading...: Uploading...
+'Used to calculate the training load of this activity': 'Used to calculate the training load of this activity'
 Username: Username
 'Verify token': 'Verify token'
 Version: Version

@@ -192,6 +192,8 @@ class DbalActivityRepositoryTest extends ContainerTestCase
             ->withElevation(Meter::from(9999))
             ->withCalories(1234)
             ->withKilojoules(4321)
+            ->withAverageHeartRate(142)
+            ->withMaxHeartRate(175)
             ->withPolyline('updated polyline')
             ->withStartingCoordinate(Coordinate::createFromLatAndLng(
                 latitude: Latitude::fromString('20'),
@@ -221,6 +223,14 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         $this->assertSame(
             4321,
             $persistedActivity->getKilojoules()
+        );
+        $this->assertSame(
+            142,
+            $persistedActivity->getAverageHeartRate()
+        );
+        $this->assertSame(
+            175,
+            $persistedActivity->getMaxHeartRate()
         );
         $this->assertSame(
             18.5,

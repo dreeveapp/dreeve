@@ -334,6 +334,8 @@ class ActivityTest extends TestCase
         yield 'distance' => [fn (Activity $activity): Activity => $activity->withDistance(Kilometer::from(42))];
         yield 'elevation' => [fn (Activity $activity): Activity => $activity->withElevation(Meter::from(666))];
         yield 'calories' => [fn (Activity $activity): Activity => $activity->withCalories(500)];
+        yield 'average heart rate' => [fn (Activity $activity): Activity => $activity->withAverageHeartRate(140)];
+        yield 'max heart rate' => [fn (Activity $activity): Activity => $activity->withMaxHeartRate(180)];
         yield 'kilojoules' => [fn (Activity $activity): Activity => $activity->withKilojoules(500)];
         yield 'average speed' => [fn (Activity $activity): Activity => $activity->withAverageSpeed(KmPerHour::from(42))];
         yield 'max speed' => [fn (Activity $activity): Activity => $activity->withMaxSpeed(KmPerHour::from(42))];
@@ -370,6 +372,7 @@ class ActivityTest extends TestCase
         yield 'the same distance' => [fn (Activity $activity): Activity => $activity->withDistance(Kilometer::from(10))];
         yield 'the same calories' => [fn (Activity $activity): Activity => $activity->withCalories(0)];
         yield 'the same kilojoules' => [fn (Activity $activity): Activity => $activity->withKilojoules(null)];
+        yield 'the same average heart rate' => [fn (Activity $activity): Activity => $activity->withAverageHeartRate(null)];
         yield 'the same start date' => [fn (Activity $activity): Activity => $activity->withStartDateTime(
             SerializableDateTime::fromString('2023-10-10')
         )];

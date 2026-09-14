@@ -73,6 +73,7 @@ Apply: Aplicar
 'Automation rules are only available in file import mode': 'Regras de automação estão disponíveis apenas no modo de importação de arquivo'
 'Available tokens': 'Tokens disponíveis'
 'Average cadence': 'Cadência média'
+'Average heart rate (bpm)': 'Average heart rate (bpm)'
 'Average power': 'Potência média'
 'Back to app': 'Voltar para o aplicativo'
 'Back to the admin panel': 'Voltar ao painel de administração'
@@ -471,6 +472,7 @@ Unit: Unidade
 'Upload files': 'Enviar arquivos'
 Uploaded: Enviado
 Uploading...: Enviando...
+'Used to calculate the training load of this activity': 'Used to calculate the training load of this activity'
 Username: 'Nome de usuário'
 'Verify token': 'Token de verificação'
 Version: Versão

@@ -58,6 +58,7 @@ Admin: Admin
 Appearance: Apparance
 Applied: Appliqué
 Apply: Appliquer
+'Average heart rate (bpm)': 'Average heart rate (bpm)'
 'Apply to existing activities': 'Apply to existing activities'
 'Are you sure you want to delete the import of {name}?': 'Are you sure you want to delete the import of {name}?'
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
@@ -471,6 +472,7 @@ Unit: Unité
 'Upload files': 'Téléverser des fichiers'
 Uploaded: Téléversé
 Uploading...: Téléversement en cours
+'Used to calculate the training load of this activity': 'Used to calculate the training load of this activity'
 Username: "Nom d'utilisateur"
 'Verify token': 'Vérifier le jeton'
 Version: Version

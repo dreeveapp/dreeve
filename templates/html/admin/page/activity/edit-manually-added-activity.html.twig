@@ -7,6 +7,8 @@
     {% set elevation = activity ? (activity.getElevation()|convertMeasurement).toFloat()|round : 0 %}
     {% set durationInSeconds = activity ? activity.getMovingTimeInSeconds() : 0 %}
     {% set calories = activity ? activity.getCalories() : null %}
+    {% set averageHeartRate = activity ? activity.getAverageHeartRate() : null %}
+    {% set maxHeartRate = activity ? activity.getMaxHeartRate() : null %}
     <div class="modal-like-form">
         <div class="w-full max-w-3xl overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
             <div class="flex items-center justify-between mb-4">
@@ -86,6 +88,17 @@
                     <div>
                         <label for="activity-calories">{{ "Calories"|trans }} (kcal)</label>
                         <input type="number" min="0" step="1" id="activity-calories" name="calories" value="{{ calories }}">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="activity-average-heart-rate">{{ "Average heart rate (bpm)"|trans({}, 'admin') }}</label>
+                        <input type="number" min="1" step="1" id="activity-average-heart-rate" name="averageHeartRate" value="{{ averageHeartRate }}">
+                        <span class="description">{{ "Used to calculate the training load of this activity"|trans({}, 'admin') }}</span>
+                    </div>
+                    <div>
+                        <label for="activity-max-heart-rate">{{ "Max heart rate (bpm)"|trans({}, 'admin') }}</label>
+                        <input type="number" min="1" step="1" id="activity-max-heart-rate" name="maxHeartRate" value="{{ maxHeartRate }}">
                     </div>
                 </div>
                 <div>

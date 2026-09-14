@@ -625,9 +625,23 @@ final class Activity
         return $this->averageHeartRate;
     }
 
+    public function withAverageHeartRate(?int $averageHeartRate): self
+    {
+        return $this->recordUpdate(clone ($this, [
+            'averageHeartRate' => $averageHeartRate,
+        ]));
+    }
+
     public function getMaxHeartRate(): ?int
     {
         return $this->maxHeartRate;
+    }
+
+    public function withMaxHeartRate(?int $maxHeartRate): self
+    {
+        return $this->recordUpdate(clone ($this, [
+            'maxHeartRate' => $maxHeartRate,
+        ]));
     }
 
     public function getAverageCadence(): ?int
@@ -856,6 +870,8 @@ final class Activity
             'distance' => $this->distance->toFloat(),
             'averageSpeed' => $this->averageSpeed->toFloat(),
             'maxSpeed' => $this->maxSpeed->toFloat(),
+            'averageHeartRate' => $this->averageHeartRate,
+            'maxHeartRate' => $this->maxHeartRate,
             'movingTimeInSeconds' => $this->movingTimeInSeconds,
             'elapsedTimeInSeconds' => $this->elapsedTimeInSeconds,
             'elevation' => $this->elevation->toFloat(),

@@ -30,6 +30,8 @@ class UpdateManuallyAddedActivityTest extends TestCase
             'distance' => '10.5',
             'elevation' => '120',
             'calories' => '750',
+            'averageHeartRate' => '142.6',
+            'maxHeartRate' => '171',
             'gearId' => 'gear-1',
             'isCommute' => 'true',
             'isGroupActivity' => 'true',
@@ -46,6 +48,8 @@ class UpdateManuallyAddedActivityTest extends TestCase
         $this->assertSame(120.0, $command->getElevation());
         $this->assertEquals(GearId::fromUnprefixed('1'), $command->getGearId());
         $this->assertSame(750, $command->getCalories());
+        $this->assertSame(143, $command->getAverageHeartRate());
+        $this->assertSame(171, $command->getMaxHeartRate());
         $this->assertTrue($command->isCommute());
         $this->assertTrue($command->isGroupActivity());
         $this->assertSame([], $command->getNewImages());
@@ -60,12 +64,16 @@ class UpdateManuallyAddedActivityTest extends TestCase
             'gearId' => '',
             'elevation' => '',
             'calories' => '',
+            'averageHeartRate' => '',
+            'maxHeartRate' => ' ',
             'workoutType' => '',
         ]);
 
         $this->assertNull($command->getDescription());
         $this->assertNull($command->getGearId());
         $this->assertNull($command->getCalories());
+        $this->assertNull($command->getAverageHeartRate());
+        $this->assertNull($command->getMaxHeartRate());
         $this->assertNull($command->getWorkoutType());
         $this->assertSame(0.0, $command->getElevation());
         $this->assertFalse($command->isCommute());
@@ -115,6 +123,10 @@ class UpdateManuallyAddedActivityTest extends TestCase
         yield 'malformed startDateTime' => [['startDateTime' => '17-10-2023 16:15'], 'The "startDateTime" is invalid.'];
         yield 'zero duration' => [['duration' => ['hours' => 0, 'minutes' => 0, 'seconds' => 0]], 'The duration must be greater than zero.'];
         yield 'negative distance' => [['distance' => '-1'], 'The "distance" must be a positive number.'];
+        yield 'zero averageHeartRate' => [['averageHeartRate' => '0'], 'The "averageHeartRate" must be a number greater than zero.'];
+        yield 'non numeric averageHeartRate' => [['averageHeartRate' => 'fast'], 'The "averageHeartRate" must be a number greater than zero.'];
+        yield 'negative maxHeartRate' => [['maxHeartRate' => '-1'], 'The "maxHeartRate" must be a number greater than zero.'];
+        yield 'maxHeartRate lower than averageHeartRate' => [['averageHeartRate' => '150', 'maxHeartRate' => '140'], 'The "maxHeartRate" cannot be lower than the "averageHeartRate".'];
     }
 
     /**

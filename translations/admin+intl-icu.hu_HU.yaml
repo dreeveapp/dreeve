@@ -73,6 +73,7 @@ Apply: Alkalmaz
 'Automation rules are only available in file import mode': 'Az automatizálási szabályok csak fájlimportálás módban érhetők el'
 'Available tokens': 'Elérhető tokenek'
 'Average cadence': 'Átlagos kadencia'
+'Average heart rate (bpm)': 'Average heart rate (bpm)'
 'Average power': 'Átlagos teljesítmény'
 'Back to app': 'Vissza az alkalmazáshoz'
 'Back to the admin panel': 'Vissza az adminfelülethez'
@@ -471,6 +472,7 @@ Unit: Mértékegység
 'Upload files': 'Fájlok feltöltése'
 Uploaded: Feltöltve
 Uploading...: Feltöltés...
+'Used to calculate the training load of this activity': 'Used to calculate the training load of this activity'
 Username: Felhasználónév
 'Verify token': 'Ellenőrző token'
 Version: Verzió

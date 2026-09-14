@@ -6,6 +6,7 @@ use App\Domain\Activity\ActivityFragmentResolver;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\Lap\ActivityLapId;
 use App\Domain\Activity\Lap\ActivityLapRepository;
 use App\Domain\Activity\Split\ActivitySplitRepository;
@@ -89,6 +90,32 @@ class ActivityFragmentResolverTest extends AdminWebTestCase
     {
         yield 'run' => [SportType::RUN];
         yield 'swim' => [SportType::POOL_SWIM];
+    }
+
+    public function testItRendersTheHeartRateWithoutTimeInZoneWhenThereAreNoHeartRateStreams(): void
+    {
+        $this->provideFullTestSet();
+        $this->seedActivity();
+
+        $activityId = ActivityId::fromUnprefixed('123456789');
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withImportSource(ImportSource::MANUAL)
+                ->withSportType(SportType::WEIGHT_TRAINING)
+                ->withAverageHeartRate(141)
+                ->withMaxHeartRate(173)
+                ->build(),
+            [],
+        ));
+
+        $this->client->request('GET', '/api/internal/fragment/page/activities/'.$activityId);
+
+        $this->assertResponseIsSuccessful();
+        $content = (string) $this->client->getResponse()->getContent();
+        $this->assertStringContainsString('>141</div>', $content);
+        $this->assertStringContainsString('173', $content);
+        $this->assertStringNotContainsString('Time in zone', $content);
     }
 
     public function testItLabelsTheVelocityDistributionOfARunAsPace(): void

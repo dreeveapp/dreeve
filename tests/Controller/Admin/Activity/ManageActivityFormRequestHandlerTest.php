@@ -81,6 +81,8 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $form->filter('input[name="distance"]'));
         $this->assertCount(1, $form->filter('input[name="elevation"]'));
         $this->assertCount(1, $form->filter('input[name="calories"]'));
+        $this->assertCount(1, $form->filter('input[name="averageHeartRate"]'));
+        $this->assertCount(1, $form->filter('input[name="maxHeartRate"]'));
         $this->assertCount(1, $form->filter('input[name="duration[hours]"]'));
         $this->assertCount(1, $form->filter('input[name="duration[minutes]"]'));
         $this->assertCount(1, $form->filter('input[name="duration[seconds]"]'));
@@ -132,6 +134,8 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
                 ->withDistance(Kilometer::from(10.5))
                 ->withElevation(Meter::from(120))
                 ->withCalories(750)
+                ->withAverageHeartRate(140)
+                ->withMaxHeartRate(172)
                 ->withGearId(GearId::fromUnprefixed('custom-gear'))
                 ->withIsCommute(true)
                 ->withIsGroupActivity(true)
@@ -166,6 +170,8 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('10.5', $form->filter('input[name="distance"]')->attr('value'));
         $this->assertSame('120', $form->filter('input[name="elevation"]')->attr('value'));
         $this->assertSame('750', $form->filter('input[name="calories"]')->attr('value'));
+        $this->assertSame('140', $form->filter('input[name="averageHeartRate"]')->attr('value'));
+        $this->assertSame('172', $form->filter('input[name="maxHeartRate"]')->attr('value'));
 
         $this->assertNotNull($form->filter('select#activity-gear option[value="gear-custom-gear"]')->attr('selected'));
         $this->assertNotNull($form->filter('input#activity-is-commute')->attr('checked'));
