@@ -60,7 +60,7 @@
                     </div>
                 </div>
                 <div>
-                    <label>{{ "Duration"|trans({}, 'admin') }}</label>
+                    <label class="required">{{ "Duration"|trans({}, 'admin') }}</label>
                     <div class="grid grid-cols-3 gap-4">
                         <div>
                             <input type="number" min="0" step="1" id="activity-duration-hours" name="duration[hours]" value="{{ durationInSeconds // 3600 }}" required>

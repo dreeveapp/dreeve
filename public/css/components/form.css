@@ -8,6 +8,20 @@
             @apply block text-sm font-medium text-gray-700;
         }
 
+        label:has(
+            + :is(input, select, textarea)[required]:enabled,
+            + * > :is(input, select, textarea)[required]:enabled,
+            + [data-multiselect-required]
+        ),
+        [data-required-checkbox-group] > label:not(:has(input)),
+        label.required {
+            &::after {
+                content: "*";
+                content: "*" / "";
+                @apply ms-0.5 text-red-600;
+            }
+        }
+
         .description {
             @apply mt-0.5 text-xs text-gray-500;
         }

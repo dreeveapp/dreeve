@@ -5464,6 +5464,12 @@ table.data-table {
     font-weight: var(--font-weight-medium);
     color: var(--color-gray-700);
   }
+  :is(body.admin label:has( + :is(input, select, textarea)[required]:enabled, + * > :is(input, select, textarea)[required]:enabled, + [data-multiselect-required] ), body.admin  [data-required-checkbox-group] > label:not(:has(input)), body.admin  label.required)::after {
+    content: "*";
+    content: "*" / "";
+    margin-inline-start: calc(var(--spacing) * 0.5);
+    color: var(--color-red-600);
+  }
   body.admin .description {
     margin-top: calc(var(--spacing) * 0.5);
     font-size: var(--text-xs);
