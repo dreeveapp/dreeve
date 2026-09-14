@@ -9,8 +9,8 @@ use Doctrine\DBAL\Connection;
 
 final readonly class MigrationSquashHandler
 {
-    private const string SQUASHED_MIGRATION = 'DoctrineMigrations\\Version20260130000000';
-    private const string LAST_MIGRATION_BEFORE_SQUASH = 'DoctrineMigrations\\Version20260128120916';
+    private const string SQUASHED_MIGRATION = 'DoctrineMigrations\\Version20260912000000';
+    private const string LAST_MIGRATION_BEFORE_SQUASH = 'DoctrineMigrations\\Version20260911091856';
 
     public function __construct(
         private Connection $connection,
