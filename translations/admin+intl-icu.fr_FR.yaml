@@ -58,7 +58,6 @@ Admin: Admin
 Appearance: Apparance
 Applied: Appliqué
 Apply: Appliquer
-'Average heart rate (bpm)': 'Average heart rate (bpm)'
 'Apply to existing activities': 'Apply to existing activities'
 'Are you sure you want to delete the import of {name}?': 'Are you sure you want to delete the import of {name}?'
 'Are you sure you want to delete the {component} component?': 'Are you sure you want to delete the {component} component?'
@@ -74,6 +73,7 @@ Apply: Appliquer
 'Automation rules are only available in file import mode': 'Automation rules are only available in file import mode'
 'Available tokens': 'Available tokens'
 'Average cadence': 'Cadence moyenne'
+'Average heart rate (bpm)': 'Average heart rate (bpm)'
 'Average power': 'Puissance moyenne'
 'Back to app': "Retour à l'application"
 'Back to the admin panel': 'Retour au panneau admin'
@@ -471,7 +471,7 @@ Unit: Unité
 'Upload failed': 'Echec du téléversement'
 'Upload files': 'Téléverser des fichiers'
 Uploaded: Téléversé
-Uploading...: Téléversement en cours
+Uploading...: 'Téléversement en cours'
 'Used to calculate the training load of this activity': 'Used to calculate the training load of this activity'
 Username: "Nom d'utilisateur"
 'Verify token': 'Vérifier le jeton'
@@ -479,7 +479,7 @@ Version: Version
 Warning: Avertissement
 'Weather and reverse geocoding have been retrieved.': 'Weather and reverse geocoding have been retrieved.'
 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.': 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.'
-Webhooks: Crochets web
+Webhooks: 'Crochets web'
 Wednesday: Mercredi
 Weekday: 'Jour de la semaine'
 Weekdays: 'Jours de la semaine'

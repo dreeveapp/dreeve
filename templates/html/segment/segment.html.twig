@@ -18,20 +18,28 @@
                     </svg>
                 </a>
             </h1>
-            <ul class="hidden md:flex text-center divide-x divide-gray-200">
-                <li class="flex flex-col pr-2 text-sm" title="{{ "Distance"|trans }}">
-                    <div>{{ segment.getDistance()|formatMeasurement(2) }}</div>
-                    <div class="text-xs text-gray-500">{{ segment.getDistance().getSymbol() }}</div>
-                </li>
-                <li class="flex flex-col px-2 text-sm" title="{{ "Avg gradient"|trans }}">
-                    <div>{{ segment.getAverageGradient() }}%</div>
-                    <div class="text-xs text-gray-500">{{ "Avg gradient"|trans|lower }}</div>
-                </li>
-                <li class="flex flex-col pl-2 text-sm" title="{{ "Max gradient"|trans }}">
-                    <div>{{ segment.getMaxGradient() }}%</div>
-                    <div class="text-xs text-gray-500">{{ "Max gradient"|trans|lower }}</div>
-                </li>
-            </ul>
+            <div class="flex items-center gap-x-4">
+                {% if segment.getWindAheadUrl() %}
+                    <a href="{{ segment.getWindAheadUrl() }}" target="_blank" rel="noopener" title="{{ "Analyze with WindAhead"|trans }}" class="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs rounded-lg px-3 py-1.5 transition">
+                        {{ svg('windahead-logo', 'size-4') }}
+                        WindAhead
+                    </a>
+                {% endif %}
+                <ul class="hidden md:flex text-center divide-x divide-gray-200">
+                    <li class="flex flex-col pr-2 text-sm" title="{{ "Distance"|trans }}">
+                        <div>{{ segment.getDistance()|formatMeasurement(2) }}</div>
+                        <div class="text-xs text-gray-500">{{ segment.getDistance().getSymbol() }}</div>
+                    </li>
+                    <li class="flex flex-col px-2 text-sm" title="{{ "Avg gradient"|trans }}">
+                        <div>{{ segment.getAverageGradient() }}%</div>
+                        <div class="text-xs text-gray-500">{{ "Avg gradient"|trans|lower }}</div>
+                    </li>
+                    <li class="flex flex-col pl-2 text-sm" title="{{ "Max gradient"|trans }}">
+                        <div>{{ segment.getMaxGradient() }}%</div>
+                        <div class="text-xs text-gray-500">{{ "Max gradient"|trans|lower }}</div>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="space-y-4">
             <div class="grid grid-cols-1 gap-y-1">

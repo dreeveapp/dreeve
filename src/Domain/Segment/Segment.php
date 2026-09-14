@@ -275,6 +275,25 @@ final class Segment implements SupportsAITooling
         return 'https://www.strava.com/segments/'.$this->getId()->toUnprefixedString();
     }
 
+    public function getWindAheadUrl(): ?string
+    {
+        if (!($polyline = $this->getPolyline()) instanceof EncodedPolyline) {
+            return null;
+        }
+        if ($this->isZwiftSegment() || $this->isRouvySegment() || $this->isMyWhooshSegment()) {
+            return null;
+        }
+
+        return 'https://windahead.app/#'.http_build_query(
+            data: [
+                'polyline' => (string) $polyline,
+                'name' => (string) $this->getOriginalName(),
+            ],
+            arg_separator: '&',
+            encoding_type: PHP_QUERY_RFC3986,
+        );
+    }
+
     public function getLeafletMap(): ?LeafletMap
     {
         if (!$this->getPolyline() instanceof EncodedPolyline) {

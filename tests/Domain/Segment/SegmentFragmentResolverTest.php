@@ -6,7 +6,10 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
+use App\Domain\Segment\SegmentRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
+use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Segment\SegmentEffort\SegmentEffortBuilder;
@@ -106,6 +109,38 @@ class SegmentFragmentResolverTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
+    public function testRenderWithWindAheadLink(): void
+    {
+        $this->provideFullTestSet();
+        $this->seedActivity();
+
+        $segment = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed('20'))
+            ->withName(Name::fromString('Oude Kwaremont'))
+            ->withPolyline(EncodedPolyline::fromString('tqafAua~y^vG{D'))
+            ->build();
+        $segmentRepository = $this->getContainer()->get(SegmentRepository::class);
+        $segmentRepository->add($segment);
+        $segmentRepository->update($segment);
+
+        $this->client->request('GET', '/api/internal/fragment/page/segments/segment-20');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorExists('a[href="https://windahead.app/#polyline=tqafAua~y%5EvG%7BD&name=Oude%20Kwaremont"][target="_blank"]');
+    }
+
+    public function testRenderWithoutWindAheadLinkForVirtualSegment(): void
+    {
+        $this->provideFullTestSet();
+        $this->seedActivity();
+        $this->addSegmentWithAPolylineFixtures();
+
+        $this->client->request('GET', '/api/internal/fragment/page/segments/segment-10');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorNotExists('a[href^="https://windahead.app/"]');
     }
 
     public function testGetPath(): void
