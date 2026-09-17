@@ -1,3 +1,21 @@
+# [v5.4.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.4.0) - 2026-09-17
+
+> [!WARNING]
+> Before upgrading to this release, you'll need to upgrade to `v5.3.3` first. Skipping this step will result in an error.
+
+## New features
+* Added an option to disable image downloads
+* Integrated WindAhead with Dreeve segments
+* Added average heart rate and TRIMP calculations to manual trainings
+
+## Technical details
+* ISSUE #2674: Squash database migrations by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2675
+* ISSUE #2671: Add avg heart rate and TRIMP calculation to manual trainings by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2676
+* ISSUE #2673: Integrate WindAhead with Dreeve segments by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2677
+* ISSUE #2682: Added option to disable image downloads by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2683
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.3.3...v5.4.0
+
 # [v5.3.3](https://github.com/dreeveapp/dreeve/releases/tag/v5.3.3) - 2026-09-11
 
 ## New features
