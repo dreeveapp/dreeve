@@ -32,7 +32,7 @@ final readonly class ImportSegmentsCommandHandler implements CommandHandler
     {
         assert($command instanceof ImportSegments);
 
-        if (!$this->settingsRepository->import()->getOptInToSegmentDetailsImport()->hasOptedIn()) {
+        if (!$this->settingsRepository->import()->shouldImportSegmentDetails()) {
             return;
         }
         $this->strava->setConsoleOutput($command->getOutput());

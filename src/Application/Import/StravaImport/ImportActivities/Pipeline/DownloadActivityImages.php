@@ -33,7 +33,7 @@ final readonly class DownloadActivityImages implements ActivityImportStep
             return $context->withActivity($activity->withLocalImagePaths([]));
         }
 
-        $shouldDownloadImages = !$this->settingsRepository->import()->getSkipImageDownloadDuringImport()->shouldSkip()
+        $shouldDownloadImages = !$this->settingsRepository->import()->shouldSkipImageDownloadDuringImport()
             && ($context->isNewActivity() || count($activity->getLocalImagePaths()) !== $totalImageCount);
         if (!$shouldDownloadImages) {
             return $context->withActivity($context->isNewActivity() ? $activity->withLocalImagePaths([]) : $activity);

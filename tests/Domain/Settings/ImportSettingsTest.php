@@ -21,8 +21,8 @@ class ImportSettingsTest extends TestCase
         $this->assertCount(count(ActivityVisibility::cases()), $settings->getActivityVisibilitiesToImport());
         $this->assertCount(0, $settings->getActivitiesToSkipDuringImport());
         $this->assertNull($settings->getSkipActivitiesRecordedBefore());
-        $this->assertFalse($settings->getOptInToSegmentDetailsImport()->hasOptedIn());
-        $this->assertFalse($settings->getSkipImageDownloadDuringImport()->shouldSkip());
+        $this->assertFalse($settings->shouldImportSegmentDetails());
+        $this->assertFalse($settings->shouldSkipImageDownloadDuringImport());
         $this->assertFalse($settings->getWebhookConfig()->isEnabled());
     }
 
@@ -49,8 +49,8 @@ class ImportSettingsTest extends TestCase
         $this->assertCount(1, $settings->getActivityVisibilitiesToImport());
         $this->assertCount(2, $settings->getActivitiesToSkipDuringImport());
         $this->assertSame('2023-09-01', $settings->getSkipActivitiesRecordedBefore()?->format('Y-m-d'));
-        $this->assertTrue($settings->getOptInToSegmentDetailsImport()->hasOptedIn());
-        $this->assertTrue($settings->getSkipImageDownloadDuringImport()->shouldSkip());
+        $this->assertTrue($settings->shouldImportSegmentDetails());
+        $this->assertTrue($settings->shouldSkipImageDownloadDuringImport());
         $this->assertTrue($settings->getWebhookConfig()->isEnabled());
         $this->assertSame('el-token', $settings->getWebhookConfig()->getVerifyToken());
         $this->assertSame('*/5 * * * *', (string) $settings->getWebhookConfig()->getCronExpression());
