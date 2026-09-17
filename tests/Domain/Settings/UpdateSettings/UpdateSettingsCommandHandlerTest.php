@@ -74,6 +74,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
             'skipActivitiesRecordedBefore' => '2023-09-01',
             'activitiesToSkipDuringImport' => ['123'],
             'optInToSegmentDetailImport' => false,
+            'skipImageDownloadDuringImport' => true,
             'webhooks' => [
                 'enabled' => true,
                 'verifyToken' => 'el-token',

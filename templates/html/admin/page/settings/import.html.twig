@@ -62,6 +62,16 @@
                         {{ "Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly."|trans({}, 'admin') }}
                     </p>
                 </div>
+                <div>
+                    <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
+                        <input type="checkbox" name="data[skipImageDownloadDuringImport]" value="1"
+                               {{ (settings.skipImageDownloadDuringImport ?? false) ? 'checked' : '' }}>
+                        <span>{{ "Do not download activity photos"|trans({}, 'admin') }}</span>
+                    </label>
+                    <p class="description">
+                        {{ "Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept."|trans({}, 'admin') }}
+                    </p>
+                </div>
             </div>
             <div class="mt-6">
                 <label class="mt-0!">{{ "Sport types to import"|trans({}, 'admin') }}</label>

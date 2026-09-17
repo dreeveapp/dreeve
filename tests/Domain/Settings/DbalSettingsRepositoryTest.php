@@ -31,6 +31,7 @@ class DbalSettingsRepositoryTest extends ContainerTestCase
             'numberOfNewActivitiesToProcessPerImport' => '250',
             'skipActivitiesRecordedBefore' => null,
             'optInToSegmentDetailImport' => true,
+            'skipImageDownloadDuringImport' => false,
             'sportTypesToImport' => ['Ride', 'GravelRide'],
             'webhooks' => ['enabled' => false, 'checkIntervalInMinutes' => 5],
         ];

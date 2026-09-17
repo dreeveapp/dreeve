@@ -27,6 +27,7 @@ class ImportSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="import"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[numberOfNewActivitiesToProcessPerImport]"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[webhooks][verifyToken]"]'));
+        $this->assertCount(1, $crawler->filter('input[name="data[skipImageDownloadDuringImport]"]'));
 
         // The settings navigation, with "Strava import" active.
         $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');

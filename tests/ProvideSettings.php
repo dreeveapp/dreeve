@@ -67,6 +67,7 @@ trait ProvideSettings
             'skipActivitiesRecordedBefore' => null,
             'activitiesToSkipDuringImport' => ['skip'],
             'optInToSegmentDetailImport' => true,
+            'skipImageDownloadDuringImport' => false,
             'webhooks' => [
                 'enabled' => true,
                 'verifyToken' => 'ffc26d52-d3ff-4797-a2b7-780a593a3547',

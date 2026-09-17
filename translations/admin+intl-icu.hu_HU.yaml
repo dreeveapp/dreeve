@@ -125,6 +125,7 @@ Description: Leírás
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Részletes útmutató elérhető {linkOpen}a dokumentációban{linkClose}.'
 Disabled: Letiltva
 Distance: Távolság
+'Do not download activity photos': 'Do not download activity photos'
 Done: Kész
 'Download original file': 'Download original file'
 'Drag to reorder': 'Húzással átrendezhető'
@@ -283,6 +284,7 @@ Operator: Operátor
 Password: Jelszó
 'Paste the value above, replacing any key that is already there.': 'Illeszd be a fenti értéket, felülírva a már ott lévő kulcsot.'
 'Performed on': 'Elvégezve ekkor'
+'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'A kiválasztott sporttípusok fotói ki vannak zárva a fotógalériából.'
 'Pick a device you already recorded with, or type a new name.': 'Válassz egy eszközt, amellyel már rögzítettél, vagy írj be egy új nevet.'
 'Pick the rules you want to apply to see which activities would change.': 'Válaszd ki az alkalmazandó szabályokat, hogy lásd, mely tevékenységek változnának.'

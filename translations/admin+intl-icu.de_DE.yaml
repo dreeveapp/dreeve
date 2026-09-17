@@ -125,6 +125,7 @@ Description: Beschreibung
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Ausführliche Anleitungen findest du in {linkOpen}der Dokumentation{linkClose}.'
 Disabled: Deaktiviert
 Distance: Distanz
+'Do not download activity photos': 'Do not download activity photos'
 Done: Done
 'Download original file': 'Originaldatei herunterladen'
 'Drag to reorder': 'Ziehen zum Neuordnen'
@@ -283,6 +284,7 @@ Operator: Operator
 Password: Passwort
 'Paste the value above, replacing any key that is already there.': 'Füge den oben stehenden Wert ein und ersetze alle bereits vorhandenen Schlüssel.'
 'Performed on': 'Durchgeführt am'
+'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos der ausgewählten Sportarten werden von der Fotogalerie ausgeschlossen.'
 'Pick a device you already recorded with, or type a new name.': 'Wähle ein Gerät, mit dem du bereits aufgezeichnet hast, oder gib einen neuen Namen ein.'
 'Pick the rules you want to apply to see which activities would change.': 'Wähle die Regeln aus, die du anwenden möchten, um zu sehen, welche Aktivitäten sich ändern würden.'

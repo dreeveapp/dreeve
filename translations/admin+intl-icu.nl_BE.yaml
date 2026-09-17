@@ -125,6 +125,7 @@ Description: Description
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.'
 Disabled: Disabled
 Distance: Distance
+'Do not download activity photos': 'Do not download activity photos'
 Done: Done
 'Download original file': 'Download original file'
 'Drag to reorder': 'Drag to reorder'
@@ -283,6 +284,7 @@ Operator: Operator
 Password: Password
 'Paste the value above, replacing any key that is already there.': 'Paste the value above, replacing any key that is already there.'
 'Performed on': 'Performed on'
+'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
 'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
 'Pick the rules you want to apply to see which activities would change.': 'Pick the rules you want to apply to see which activities would change.'

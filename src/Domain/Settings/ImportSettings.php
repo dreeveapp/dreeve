@@ -8,6 +8,7 @@ use App\Application\Import\StravaImport\ImportActivities\ActivitiesToSkipDuringI
 use App\Application\Import\StravaImport\ImportActivities\ActivityVisibilitiesToImport;
 use App\Application\Import\StravaImport\ImportActivities\NumberOfNewActivitiesToProcessPerImport;
 use App\Application\Import\StravaImport\ImportActivities\SkipActivitiesRecordedBefore;
+use App\Application\Import\StravaImport\ImportActivities\SkipImageDownloadDuringImport;
 use App\Application\Import\StravaImport\ImportSegments\OptInToSegmentDetailsImport;
 use App\Domain\Activity\SportType\SportTypesToImport;
 use App\Domain\Strava\Webhook\WebhookConfig;
@@ -21,6 +22,7 @@ final readonly class ImportSettings
         private ActivitiesToSkipDuringImport $activitiesToSkipDuringImport,
         private ?SkipActivitiesRecordedBefore $skipActivitiesRecordedBefore,
         private OptInToSegmentDetailsImport $optInToSegmentDetailsImport,
+        private SkipImageDownloadDuringImport $skipImageDownloadDuringImport,
         private WebhookConfig $webhookConfig,
     ) {
     }
@@ -53,6 +55,7 @@ final readonly class ImportSettings
             activitiesToSkipDuringImport: ActivitiesToSkipDuringImport::from($activitiesToSkip),
             skipActivitiesRecordedBefore: SkipActivitiesRecordedBefore::fromOptionalString($data['skipActivitiesRecordedBefore'] ?? null),
             optInToSegmentDetailsImport: OptInToSegmentDetailsImport::fromBool(filter_var($data['optInToSegmentDetailImport'] ?? false, FILTER_VALIDATE_BOOLEAN)),
+            skipImageDownloadDuringImport: SkipImageDownloadDuringImport::fromBool(filter_var($data['skipImageDownloadDuringImport'] ?? false, FILTER_VALIDATE_BOOLEAN)),
             webhookConfig: WebhookConfig::fromArray($webhooks),
         );
     }
@@ -85,6 +88,11 @@ final readonly class ImportSettings
     public function getOptInToSegmentDetailsImport(): OptInToSegmentDetailsImport
     {
         return $this->optInToSegmentDetailsImport;
+    }
+
+    public function getSkipImageDownloadDuringImport(): SkipImageDownloadDuringImport
+    {
+        return $this->skipImageDownloadDuringImport;
     }
 
     public function getWebhookConfig(): WebhookConfig

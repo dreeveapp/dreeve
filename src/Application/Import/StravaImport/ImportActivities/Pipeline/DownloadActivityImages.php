@@ -3,6 +3,7 @@
 namespace App\Application\Import\StravaImport\ImportActivities\Pipeline;
 
 use App\Domain\Image\ImagePath;
+use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Strava;
 use App\Infrastructure\ValueObject\Identifier\UuidFactory;
 use App\Infrastructure\ValueObject\String\Path;
@@ -19,6 +20,7 @@ final readonly class DownloadActivityImages implements ActivityImportStep
         private Strava $strava,
         private FilesystemOperator $fileStorage,
         private UuidFactory $uuidFactory,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -31,9 +33,10 @@ final readonly class DownloadActivityImages implements ActivityImportStep
             return $context->withActivity($activity->withLocalImagePaths([]));
         }
 
-        $shouldDownloadImages = $context->isNewActivity() || count($activity->getLocalImagePaths()) !== $totalImageCount;
+        $shouldDownloadImages = !$this->settingsRepository->import()->getSkipImageDownloadDuringImport()->shouldSkip()
+            && ($context->isNewActivity() || count($activity->getLocalImagePaths()) !== $totalImageCount);
         if (!$shouldDownloadImages) {
-            return $context->withActivity($activity);
+            return $context->withActivity($context->isNewActivity() ? $activity->withLocalImagePaths([]) : $activity);
         }
 
         try {
