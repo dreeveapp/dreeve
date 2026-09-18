@@ -323,7 +323,7 @@ Resetting...: 'Wird zurückgesetzt...'
 'Resting heart rate formula': Ruhepuls-Formel
 'Restrict to date range': 'Auf Datumsbereich beschränken'
 Retired: Ausgemustert
-'Retry weather and reverse geocoding': 'Retry weather and reverse geocoding'
+'Retry weather and reverse geocoding': 'Wetterdaten und Reverse-Geocoding abfragen'
 'Return to app': 'Zurück zur App'
 Ride: Radfahrt
 Rules: Regeln
@@ -479,8 +479,8 @@ Username: Benutzername
 'Verify token': 'Token verifizieren'
 Version: Version
 Warning: Warnung
-'Weather and reverse geocoding have been retrieved.': 'Weather and reverse geocoding have been retrieved.'
-'Weather and/or reverse geocoding could not be retrieved when this activity was imported.': 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.'
+'Weather and reverse geocoding have been retrieved.': 'Wetterdaten und Reverse-Geocoding wurden abgerufen.'
+'Weather and/or reverse geocoding could not be retrieved when this activity was imported.': 'Wetterdaten und/oder Reverse-Geocoding konnten beim Import dieser Aktivität nicht abgerufen werden.'
 Webhooks: Webhooks
 Wednesday: Mittwoch
 Weekday: Wochentag
