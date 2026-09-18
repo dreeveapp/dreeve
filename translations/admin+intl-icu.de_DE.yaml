@@ -73,7 +73,7 @@ Apply: Anwenden
 'Automation rules are only available in file import mode': 'Automatisierungsregeln sind nur im Dateiimportmodus verfügbar.'
 'Available tokens': 'Verfügbare Platzhalter'
 'Average cadence': 'Ø Trittfrequenz'
-'Average heart rate (bpm)': 'Average heart rate (bpm)'
+'Average heart rate (bpm)': 'Ø Herzfrequenz'
 'Average power': 'Ø Leistung'
 'Back to app': 'Zurück zur App'
 'Back to the admin panel': 'Zurück zum Adminbereich'
@@ -125,7 +125,7 @@ Description: Beschreibung
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Ausführliche Anleitungen findest du in {linkOpen}der Dokumentation{linkClose}.'
 Disabled: Deaktiviert
 Distance: Distanz
-'Do not download activity photos': 'Do not download activity photos'
+'Do not download activity photos': 'Keine Bilder von Aktivitäten herunterladen.'
 Done: Done
 'Download original file': 'Originaldatei herunterladen'
 'Drag to reorder': 'Ziehen zum Neuordnen'
@@ -284,7 +284,7 @@ Operator: Operator
 Password: Passwort
 'Paste the value above, replacing any key that is already there.': 'Füge den oben stehenden Wert ein und ersetze alle bereits vorhandenen Schlüssel.'
 'Performed on': 'Durchgeführt am'
-'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.'
+'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Fotos von Strava-Aktivitäten werden nicht heruntergeladen oder auf der Festplatte gespeichert. Bereits heruntergeladene Fotos bleiben erhalten.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos der ausgewählten Sportarten werden von der Fotogalerie ausgeschlossen.'
 'Pick a device you already recorded with, or type a new name.': 'Wähle ein Gerät, mit dem du bereits aufgezeichnet hast, oder gib einen neuen Namen ein.'
 'Pick the rules you want to apply to see which activities would change.': 'Wähle die Regeln aus, die du anwenden möchten, um zu sehen, welche Aktivitäten sich ändern würden.'
@@ -474,7 +474,7 @@ Unit: Einheit
 'Upload files': 'Dateien hochladen'
 Uploaded: Hochgeladen
 Uploading...: 'Wird hochgeladen...'
-'Used to calculate the training load of this activity': 'Used to calculate the training load of this activity'
+'Used to calculate the training load of this activity': 'Wird verwendet, um die Trainingsbelastung dieser Aktivität zu berechnen.'
 Username: Benutzername
 'Verify token': 'Token verifizieren'
 Version: Version
