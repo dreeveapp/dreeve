@@ -9,13 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AttachmentResponse extends Response
 {
-    public function __construct(string $contents, string $filename)
+    public function __construct(string $contents, string $filename, string $contentType = 'application/octet-stream')
     {
         $filename = basename(str_replace('\\', '/', $filename));
         $filenameFallback = (string) preg_replace('/[^A-Za-z0-9._-]/', '_', $filename);
 
         parent::__construct($contents, Response::HTTP_OK, [
-            'Content-Type' => 'application/octet-stream',
+            'Content-Type' => $contentType,
             'Content-Disposition' => HeaderUtils::makeDisposition(
                 disposition: HeaderUtils::DISPOSITION_ATTACHMENT,
                 filename: $filename,
