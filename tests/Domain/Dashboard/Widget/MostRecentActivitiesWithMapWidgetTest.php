@@ -5,6 +5,7 @@ namespace App\Tests\Domain\Dashboard\Widget;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\SportType\SportType;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\Widget\MostRecentActivitiesWithMapWidget;
@@ -33,6 +34,7 @@ class MostRecentActivitiesWithMapWidgetTest extends ContainerTestCase
             configuration: WidgetConfiguration::empty()
                 ->add('numberOfActivitiesToDisplay', 1)
                 ->add('onlyShowActivitiesWithAMap', false)
+                ->add('sportTypesToInclude', [])
         );
         $this->assertMatchesHtmlSnapshot($render);
     }
@@ -47,6 +49,7 @@ class MostRecentActivitiesWithMapWidgetTest extends ContainerTestCase
             configuration: WidgetConfiguration::empty()
                 ->add('numberOfActivitiesToDisplay', 3)
                 ->add('onlyShowActivitiesWithAMap', false)
+                ->add('sportTypesToInclude', [])
         );
         $this->assertMatchesHtmlSnapshot($render);
     }
@@ -62,6 +65,7 @@ class MostRecentActivitiesWithMapWidgetTest extends ContainerTestCase
             configuration: WidgetConfiguration::empty()
                 ->add('numberOfActivitiesToDisplay', 1)
                 ->add('onlyShowActivitiesWithAMap', false)
+                ->add('sportTypesToInclude', [])
         );
         $this->assertMatchesHtmlSnapshot($render);
     }
@@ -77,10 +81,60 @@ class MostRecentActivitiesWithMapWidgetTest extends ContainerTestCase
             configuration: WidgetConfiguration::empty()
                 ->add('numberOfActivitiesToDisplay', 1)
                 ->add('onlyShowActivitiesWithAMap', true)
+                ->add('sportTypesToInclude', [])
         );
 
         $this->assertStringNotContainsString('Indoor Ride', (string) $render);
         $this->assertStringContainsString('data-leaflet', (string) $render);
+    }
+
+    public function testRenderWithSportTypesToInclude(): void
+    {
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('theRun'))
+                ->withStartDateTime(SerializableDateTime::fromString('2025-01-03 00:00:00'))
+                ->withSportType(SportType::RUN)
+                ->withName('Morning Run')
+                ->build(),
+            ['raw' => 'data']
+        ));
+
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('theRide'))
+                ->withStartDateTime(SerializableDateTime::fromString('2025-01-02 00:00:00'))
+                ->withSportType(SportType::RIDE)
+                ->withName('Evening Ride')
+                ->build(),
+            ['raw' => 'data']
+        ));
+
+        $render = (string) $this->widget->render(
+            dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
+            now: SerializableDateTime::fromString('2025-10-16'),
+            configuration: WidgetConfiguration::empty()
+                ->add('numberOfActivitiesToDisplay', 1)
+                ->add('onlyShowActivitiesWithAMap', false)
+                ->add('sportTypesToInclude', ['Ride'])
+        );
+
+        $this->assertStringContainsString('Evening Ride', $render);
+        $this->assertStringNotContainsString('Morning Run', $render);
+    }
+
+    public function testRenderWhenNoActivityMatchesTheSportTypesToInclude(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->assertNull($this->widget->render(
+            dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
+            now: SerializableDateTime::fromString('2025-10-16'),
+            configuration: WidgetConfiguration::empty()
+                ->add('numberOfActivitiesToDisplay', 1)
+                ->add('onlyShowActivitiesWithAMap', false)
+                ->add('sportTypesToInclude', ['AlpineSki'])
+        ));
     }
 
     private function addActivityWithoutARoute(): void
@@ -104,6 +158,7 @@ class MostRecentActivitiesWithMapWidgetTest extends ContainerTestCase
             configuration: WidgetConfiguration::empty()
                 ->add('numberOfActivitiesToDisplay', 1)
                 ->add('onlyShowActivitiesWithAMap', false)
+                ->add('sportTypesToInclude', [])
         );
         $this->assertNull($render);
     }
@@ -123,6 +178,8 @@ class MostRecentActivitiesWithMapWidgetTest extends ContainerTestCase
         yield 'too high "numberOfActivitiesToDisplay" key' => [WidgetConfiguration::empty()->add('numberOfActivitiesToDisplay', 4), 'Configuration item "numberOfActivitiesToDisplay" must be set to a value of 3 or lower.'];
         yield 'missing "onlyShowActivitiesWithAMap" key' => [WidgetConfiguration::empty()->add('numberOfActivitiesToDisplay', 1), 'Configuration item "onlyShowActivitiesWithAMap" is required for MostRecentActivitiesWithMapWidget.'];
         yield 'invalid "onlyShowActivitiesWithAMap" key' => [WidgetConfiguration::empty()->add('numberOfActivitiesToDisplay', 1)->add('onlyShowActivitiesWithAMap', 'lol'), 'Configuration item "onlyShowActivitiesWithAMap" must be a boolean.'];
+        yield 'invalid "sportTypesToInclude" key' => [WidgetConfiguration::empty()->add('numberOfActivitiesToDisplay', 1)->add('onlyShowActivitiesWithAMap', false)->add('sportTypesToInclude', 'lol'), 'Configuration item "sportTypesToInclude" must be an array for MostRecentActivitiesWithMapWidget.'];
+        yield 'unknown sport type in "sportTypesToInclude" key' => [WidgetConfiguration::empty()->add('numberOfActivitiesToDisplay', 1)->add('onlyShowActivitiesWithAMap', false)->add('sportTypesToInclude', ['lol']), '"lol" is not a valid sport type'];
     }
 
     #[\Override]

@@ -7,6 +7,8 @@ namespace App\Domain\Dashboard\Widget;
 use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\LeafletMap;
+use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -45,7 +47,8 @@ final readonly class MostRecentActivitiesWithMapWidget implements Widget
     {
         return WidgetConfiguration::empty()
             ->add('numberOfActivitiesToDisplay', 1)
-            ->add('onlyShowActivitiesWithAMap', false);
+            ->add('onlyShowActivitiesWithAMap', false)
+            ->add('sportTypesToInclude', []);
     }
 
     public function guardValidConfiguration(WidgetConfiguration $configuration): void
@@ -73,12 +76,30 @@ final readonly class MostRecentActivitiesWithMapWidget implements Widget
         if (!is_bool($configuration->get('onlyShowActivitiesWithAMap'))) {
             throw new InvalidDashboardLayout('Configuration item "onlyShowActivitiesWithAMap" must be a boolean.');
         }
+
+        if (empty($configuration->get('sportTypesToInclude'))) {
+            return;
+        }
+
+        if (!is_array($configuration->get('sportTypesToInclude'))) {
+            throw new InvalidDashboardLayout('Configuration item "sportTypesToInclude" must be an array for MostRecentActivitiesWithMapWidget.');
+        }
+
+        foreach ($configuration->get('sportTypesToInclude') as $sportTypeToInclude) {
+            if (!SportType::tryFrom($sportTypeToInclude)) {
+                throw new InvalidDashboardLayout(sprintf('"%s" is not a valid sport type', $sportTypeToInclude));
+            }
+        }
     }
 
     public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): ?string
     {
         $activities = $this->activityRepository->findMostRecent(
             limit: (int) $configuration->get('numberOfActivitiesToDisplay'),
+            restrictToSportTypes: SportTypes::fromArray(array_map(
+                SportType::from(...),
+                $configuration->get('sportTypesToInclude'),  // @phpstan-ignore argument.type
+            )),
             onlyActivitiesWithARoute: (bool) $configuration->get('onlyShowActivitiesWithAMap'),
         );
 

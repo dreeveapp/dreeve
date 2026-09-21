@@ -10,3 +10,13 @@
         <p class="mt-0.5 text-xxs text-gray-500">{{ "When enabled, activities without a route, like indoor rides, are left out."|trans({}, 'admin') }}</p>
     </div>
 </div>
+<div>
+    <label>{{ "Sport types to include"|trans({}, 'admin') }}</label>
+    {% include 'html/admin/component/checkbox-multiselect.html.twig' with {
+        name: 'config[sportTypesToInclude][]',
+        options: sportTypeOptions(),
+        selected: configuration.get('sportTypesToInclude'),
+        placeholder: "All sport types"|trans({}, 'admin'),
+    } only %}
+    <p class="mt-1 text-xxs text-gray-500">{{ "Leave empty to include all sport types."|trans({}, 'admin') }}</p>
+</div>
