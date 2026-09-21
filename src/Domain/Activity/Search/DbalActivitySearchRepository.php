@@ -38,12 +38,12 @@ final readonly class DbalActivitySearchRepository extends DbalRepository impleme
             if ($from = $filters->getFrom()) {
                 $builder
                     ->andWhere('a.startDateTime >= :from')
-                    ->setParameter('from', $from->format('Y-m-d H:i:s'));
+                    ->setParameter('from', $from->format('Y-m-d 00:00:00'));
             }
-            if ($till = $filters->getTill()) {
+            if ($to = $filters->getTo()) {
                 $builder
-                    ->andWhere('a.startDateTime < :till')
-                    ->setParameter('till', $till->format('Y-m-d H:i:s'));
+                    ->andWhere('a.startDateTime <= :to')
+                    ->setParameter('to', $to->format('Y-m-d 23:59:59'));
             }
             if (!$filters->getSportTypes()->isEmpty()) {
                 $builder

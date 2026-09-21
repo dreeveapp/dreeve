@@ -57,15 +57,34 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
         );
     }
 
-    public function testItExcludesActivitiesStartingExactlyOnTheTillBoundary(): void
+    public function testItIncludesActivitiesStartingOnTheToBoundary(): void
     {
         $this->provideActivities();
 
         $this->assertEquals(
-            ['activity-100'],
+            ['activity-200', 'activity-100'],
             $this->activityIdsIn($this->activitySearchRepository->find(
                 Pagination::fromOffsetAndLimit(0, 10),
-                $this->filters(['to' => '2026-06-01']),
+                $this->filters(['to' => '2026-06-02']),
+            ))
+        );
+    }
+
+    public function testItIncludesAnActivityStartingLateOnTheToBoundaryDay(): void
+    {
+        $this->activityRepository->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('400'))
+                ->withStartDateTime(SerializableDateTime::fromString('2026-06-02 23:59:59'))
+                ->build(),
+            [],
+        ));
+
+        $this->assertEquals(
+            ['activity-400'],
+            $this->activityIdsIn($this->activitySearchRepository->find(
+                Pagination::fromOffsetAndLimit(0, 10),
+                $this->filters(['from' => '2026-06-02', 'to' => '2026-06-02']),
             ))
         );
     }

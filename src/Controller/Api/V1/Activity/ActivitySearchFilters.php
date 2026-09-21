@@ -29,7 +29,7 @@ final readonly class ActivitySearchFilters extends Filters
         return $this->getDate('from');
     }
 
-    public function getTill(): ?SerializableDateTime
+    public function getTo(): ?SerializableDateTime
     {
         if (null === $to = $this->getDate('to')) {
             return null;
@@ -39,7 +39,7 @@ final readonly class ActivitySearchFilters extends Filters
             throw new BadRequestHttpException('"filters[from]" must not be later than "filters[to]".');
         }
 
-        return $to->modify('+1 day');
+        return $to;
     }
 
     public function getSportTypes(): SportTypes
