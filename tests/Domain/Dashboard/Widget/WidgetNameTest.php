@@ -22,4 +22,12 @@ class WidgetNameTest extends TestCase
             (string) WidgetName::fromConfigValue('yearlyDistances')
         );
     }
+
+    public function testMostRecentActivitiesWithMapBackwardsCompatibility(): void
+    {
+        $this->assertEquals(
+            'mostRecentActivityCards',
+            (string) WidgetName::fromConfigValue('mostRecentActivitiesWithMap')
+        );
+    }
 }

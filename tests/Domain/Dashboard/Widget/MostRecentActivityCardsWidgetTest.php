@@ -8,7 +8,7 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
-use App\Domain\Dashboard\Widget\MostRecentActivitiesWithMapWidget;
+use App\Domain\Dashboard\Widget\MostRecentActivityCardsWidget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -17,12 +17,12 @@ use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class MostRecentActivitiesWithMapWidgetTest extends ContainerTestCase
+class MostRecentActivityCardsWidgetTest extends ContainerTestCase
 {
     use ProvideTestData;
     use MatchesSnapshots;
 
-    private MostRecentActivitiesWithMapWidget $widget;
+    private MostRecentActivityCardsWidget $widget;
 
     public function testRender(): void
     {
@@ -172,13 +172,13 @@ class MostRecentActivitiesWithMapWidgetTest extends ContainerTestCase
 
     public static function provideInvalidConfig(): iterable
     {
-        yield 'missing "numberOfActivitiesToDisplay" key' => [WidgetConfiguration::empty(), 'Configuration item "numberOfActivitiesToDisplay" is required for MostRecentActivitiesWithMapWidget.'];
+        yield 'missing "numberOfActivitiesToDisplay" key' => [WidgetConfiguration::empty(), 'Configuration item "numberOfActivitiesToDisplay" is required for MostRecentActivityCardsWidget.'];
         yield 'invalid "numberOfActivitiesToDisplay" key' => [WidgetConfiguration::empty()->add('numberOfActivitiesToDisplay', 'lol'), 'Configuration item "numberOfActivitiesToDisplay" must be an integer.'];
         yield 'too low "numberOfActivitiesToDisplay" key' => [WidgetConfiguration::empty()->add('numberOfActivitiesToDisplay', 0), 'Configuration item "numberOfActivitiesToDisplay" must be set to a value of 1 or greater.'];
         yield 'too high "numberOfActivitiesToDisplay" key' => [WidgetConfiguration::empty()->add('numberOfActivitiesToDisplay', 4), 'Configuration item "numberOfActivitiesToDisplay" must be set to a value of 3 or lower.'];
-        yield 'missing "onlyShowActivitiesWithAMap" key' => [WidgetConfiguration::empty()->add('numberOfActivitiesToDisplay', 1), 'Configuration item "onlyShowActivitiesWithAMap" is required for MostRecentActivitiesWithMapWidget.'];
+        yield 'missing "onlyShowActivitiesWithAMap" key' => [WidgetConfiguration::empty()->add('numberOfActivitiesToDisplay', 1), 'Configuration item "onlyShowActivitiesWithAMap" is required for MostRecentActivityCardsWidget.'];
         yield 'invalid "onlyShowActivitiesWithAMap" key' => [WidgetConfiguration::empty()->add('numberOfActivitiesToDisplay', 1)->add('onlyShowActivitiesWithAMap', 'lol'), 'Configuration item "onlyShowActivitiesWithAMap" must be a boolean.'];
-        yield 'invalid "sportTypesToInclude" key' => [WidgetConfiguration::empty()->add('numberOfActivitiesToDisplay', 1)->add('onlyShowActivitiesWithAMap', false)->add('sportTypesToInclude', 'lol'), 'Configuration item "sportTypesToInclude" must be an array for MostRecentActivitiesWithMapWidget.'];
+        yield 'invalid "sportTypesToInclude" key' => [WidgetConfiguration::empty()->add('numberOfActivitiesToDisplay', 1)->add('onlyShowActivitiesWithAMap', false)->add('sportTypesToInclude', 'lol'), 'Configuration item "sportTypesToInclude" must be an array for MostRecentActivityCardsWidget.'];
         yield 'unknown sport type in "sportTypesToInclude" key' => [WidgetConfiguration::empty()->add('numberOfActivitiesToDisplay', 1)->add('onlyShowActivitiesWithAMap', false)->add('sportTypesToInclude', ['lol']), '"lol" is not a valid sport type'];
     }
 
@@ -186,6 +186,6 @@ class MostRecentActivitiesWithMapWidgetTest extends ContainerTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->widget = $this->getContainer()->get(MostRecentActivitiesWithMapWidget::class);
+        $this->widget = $this->getContainer()->get(MostRecentActivityCardsWidget::class);
     }
 }

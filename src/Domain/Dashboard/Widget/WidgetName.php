@@ -26,6 +26,10 @@ final readonly class WidgetName implements \Stringable
         if ('yearlyDistances' === $name) {
             $name = 'yearlyStats';
         }
+        // We renamed MostRecentActivitiesWithMapWidget to MostRecentActivityCardsWidget but want to keep the old name for backwards compatibility.
+        if ('mostRecentActivitiesWithMap' === $name) {
+            $name = 'mostRecentActivityCards';
+        }
 
         return new self($name);
     }

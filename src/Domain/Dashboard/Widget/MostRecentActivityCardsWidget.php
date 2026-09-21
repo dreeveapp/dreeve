@@ -17,7 +17,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class MostRecentActivitiesWithMapWidget implements Widget
+final readonly class MostRecentActivityCardsWidget implements Widget
 {
     private const int MAX_NUMBER_OF_ACTIVITIES_TO_DISPLAY = 3;
 
@@ -30,12 +30,12 @@ final readonly class MostRecentActivitiesWithMapWidget implements Widget
 
     public function getLabel(): string
     {
-        return $this->translator->trans('Most recent activities with map');
+        return $this->translator->trans('Most recent activity cards');
     }
 
     public function getTemplateName(): string
     {
-        return 'widget--most-recent-activities-with-map';
+        return 'widget--most-recent-activity-cards';
     }
 
     public function getCacheTags(): CacheTags
@@ -54,7 +54,7 @@ final readonly class MostRecentActivitiesWithMapWidget implements Widget
     public function guardValidConfiguration(WidgetConfiguration $configuration): void
     {
         if (!$configuration->exists('numberOfActivitiesToDisplay')) {
-            throw new InvalidDashboardLayout('Configuration item "numberOfActivitiesToDisplay" is required for MostRecentActivitiesWithMapWidget.');
+            throw new InvalidDashboardLayout('Configuration item "numberOfActivitiesToDisplay" is required for MostRecentActivityCardsWidget.');
         }
 
         if (!is_int($configuration->get('numberOfActivitiesToDisplay'))) {
@@ -70,7 +70,7 @@ final readonly class MostRecentActivitiesWithMapWidget implements Widget
         }
 
         if (!$configuration->exists('onlyShowActivitiesWithAMap')) {
-            throw new InvalidDashboardLayout('Configuration item "onlyShowActivitiesWithAMap" is required for MostRecentActivitiesWithMapWidget.');
+            throw new InvalidDashboardLayout('Configuration item "onlyShowActivitiesWithAMap" is required for MostRecentActivityCardsWidget.');
         }
 
         if (!is_bool($configuration->get('onlyShowActivitiesWithAMap'))) {
@@ -82,7 +82,7 @@ final readonly class MostRecentActivitiesWithMapWidget implements Widget
         }
 
         if (!is_array($configuration->get('sportTypesToInclude'))) {
-            throw new InvalidDashboardLayout('Configuration item "sportTypesToInclude" must be an array for MostRecentActivitiesWithMapWidget.');
+            throw new InvalidDashboardLayout('Configuration item "sportTypesToInclude" must be an array for MostRecentActivityCardsWidget.');
         }
 
         foreach ($configuration->get('sportTypesToInclude') as $sportTypeToInclude) {
