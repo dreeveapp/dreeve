@@ -165,6 +165,140 @@ paths:
               examples:
                 cannotStore:
                   value: { error: internal_error, message: The upload could not be stored. }
+  /api/v1/activities:
+    get:
+      operationId: listActivities
+      tags: [Activities]
+      summary: Search activities
+      description: |
+        Returns activities newest first. All filters are optional; without any, you get the most
+        recent page.
+
+        ```
+        GET /api/v1/activities?filters[from]=2023-09-04&filters[to]=2023-09-04&pagination[size]=50
+        ```
+      parameters:
+        - name: filters
+          in: query
+          required: false
+          style: deepObject
+          explode: true
+          schema:
+            type: object
+            properties:
+              from:
+                type: string
+                format: date
+                description: >-
+                  Only activities that started on this day or later
+                examples: ['2023-09-04']
+              to:
+                type: string
+                format: date
+                description: >-
+                  Only activities that started on this day or earlier
+                examples: ['2023-09-11']
+              sportType:
+                type: string
+                description: >-
+                  One sport type, or several separated by commas
+                examples: ['Ride', 'Run,TrailRun,Hike']
+              hasGpx:
+                type: string
+                enum: ['true', 'false']
+        - name: pagination
+          in: query
+          required: false
+          style: deepObject
+          explode: true
+          schema:
+            type: object
+            properties:
+              page:
+                type: integer
+                minimum: 1
+                default: 1
+              size:
+                type: integer
+                minimum: 1
+                maximum: 100
+                default: 25
+      responses:
+        '200':
+          description: A page of activities, newest first.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ActivityList' }
+        '400':
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                unknownSportType:
+                  value:
+                    error: bad_request
+                    message: '"filters[sportType]" contains an unknown sport type.'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v1/activities/{activityId}:
+    get:
+      operationId: getActivity
+      tags: [Activities]
+      summary: Get one activity
+      parameters:
+        - $ref: '#/components/parameters/ActivityId'
+      responses:
+        '200':
+          description: The activity.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [activity]
+                properties:
+                  activity: { $ref: '#/components/schemas/ActivityDetail' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/ActivityNotFound'
+  /api/v1/activities/{activityId}/gpx:
+    get:
+      operationId: getActivityGpx
+      tags: [Activities]
+      summary: Download an activity as GPX
+      description: >-
+        Only activities recorded with GPS data can be exported. Check `hasGpx` on the activity
+        first
+      parameters:
+        - $ref: '#/components/parameters/ActivityId'
+      responses:
+        '200':
+          description: The route as a GPX 1.1 document.
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+                examples: ['attachment; filename=2023-09-04-evening-ride.gpx']
+          content:
+            application/gpx+xml:
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: The activity does not exist, or it exists but has no GPS data.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                unknownActivity:
+                  summary: No such activity
+                  value: { error: not_found, message: 'Activity "activity-1" not found' }
+                withoutGps:
+                  summary: A manual or indoor activity
+                  value:
+                    error: gpx_not_available
+                    message: 'Activity "activity-9542782314" has no GPS or time data to export as GPX.'
   /api/v1/athlete/weights:
     get:
       operationId: listAthleteWeights
@@ -253,6 +387,157 @@ components:
       description: >-
         Send your key as `Authorization: Bearer drv_...`
   schemas:
+    ActivityList:
+      type: object
+      required: [activities, pagination]
+      properties:
+        activities:
+          type: array
+          items: { $ref: '#/components/schemas/ActivitySummary' }
+        pagination: { $ref: '#/components/schemas/PaginationMeta' }
+    PaginationMeta:
+      type: object
+      required: [page, size, total, totalPages]
+      properties:
+        page:
+          type: integer
+        size:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+    ActivitySummary:
+      type: object
+      required:
+        - id
+        - name
+        - sportType
+        - startDateLocal
+        - distanceInMeter
+        - elevationInMeter
+        - movingTimeInSeconds
+        - elapsedTimeInSeconds
+        - averageSpeedInKmPerHour
+        - maxSpeedInKmPerHour
+        - isCommute
+        - location
+        - hasGpx
+      properties:
+        id:
+          type: string
+          examples: ['activity-9756441741']
+        name:
+          type: string
+          examples: ['Evening Ride']
+        sportType:
+          type: string
+          description: Strava's sport type vocabulary.
+          examples: ['Ride', 'TrailRun', 'Hike']
+        startDateLocal:
+          type: string
+          examples: ['2023-09-04T21:05:38']
+        distanceInMeter:
+          type: integer
+        elevationInMeter:
+          type: integer
+        movingTimeInSeconds:
+          type: integer
+        elapsedTimeInSeconds:
+          type: integer
+        averageSpeedInKmPerHour:
+          type: number
+        maxSpeedInKmPerHour:
+          type: number
+        calories:
+          type: [integer, 'null']
+        averageHeartRate:
+          type: [integer, 'null']
+        maxHeartRate:
+          type: [integer, 'null']
+        averagePower:
+          type: [integer, 'null']
+        averageCadence:
+          type: [integer, 'null']
+        isCommute:
+          type: boolean
+        deviceName:
+          type: [string, 'null']
+        location: { $ref: '#/components/schemas/ActivityLocation' }
+        startLatLng:
+          type: [array, 'null']
+          description: The starting point as `[latitude, longitude]`, null without GPS data.
+          minItems: 2
+          maxItems: 2
+          items:
+            type: number
+          examples: [[51.2, 3.18]]
+        hasGpx:
+          type: boolean
+          description: >-
+            Whether `GET /api/v1/activities/{activityId}/gpx` will return a file for this activity.
+    ActivityDetail:
+      type: object
+      description: Everything in `ActivitySummary`, plus the fields below.
+      required:
+        - id
+        - name
+        - sportType
+        - startDateLocal
+        - distanceInMeter
+        - elevationInMeter
+        - movingTimeInSeconds
+        - elapsedTimeInSeconds
+        - averageSpeedInKmPerHour
+        - maxSpeedInKmPerHour
+        - isCommute
+        - location
+        - hasGpx
+        - description
+        - passedThroughCountries
+      allOf:
+        - $ref: '#/components/schemas/ActivitySummary'
+        - type: object
+          properties:
+            description:
+              type: string
+            kilojoules:
+              type: [integer, 'null']
+            maxPower:
+              type: [integer, 'null']
+            gearId:
+              type: [string, 'null']
+              examples: ['gear-b12659861']
+            workoutType:
+              type: [string, 'null']
+            worldType:
+              type: string
+              examples: ['realWorld', 'zwift']
+            importSource:
+              type: string
+              examples: ['stravaApi', 'file', 'manual']
+            encodedPolyline:
+              type: [string, 'null']
+            passedThroughCountries:
+              type: array
+              description: Lowercased ISO 3166-1 alpha-2 codes, empty when not reverse geocoded.
+              items:
+                type: string
+              examples: [['be', 'nl']]
+    ActivityLocation:
+      type: object
+      required: [countryCode, state, city]
+      properties:
+        countryCode:
+          type: [string, 'null']
+          description: Lowercased ISO 3166-1 alpha-2.
+          examples: ['be']
+        state:
+          type: [string, 'null']
+          examples: ['West-Vlaanderen']
+        city:
+          type: [string, 'null']
+          examples: ['Brugge']
     WeightHistory:
       type: object
       required: [weights]
@@ -300,6 +585,7 @@ components:
             - unsupported_file_type
             - file_too_large
             - import_mode_not_files
+            - gpx_not_available
             - not_found
             - method_not_allowed
             - bad_request
@@ -307,7 +593,24 @@ components:
             - internal_error
         message:
           type: string
+  parameters:
+    ActivityId:
+      name: activityId
+      in: path
+      required: true
+      description: The prefixed activity identifier, `activity-` included.
+      schema:
+        type: string
+        examples: ['activity-9756441741']
   responses:
+    ActivityNotFound:
+      description: No activity with this identifier exists.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          examples:
+            unknownActivity:
+              value: { error: not_found, message: 'Activity "activity-1" not found' }
     Unauthorized:
       description: >-
         The `Authorization` header was missing, malformed, or did not match the configured key.
