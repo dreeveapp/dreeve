@@ -21,7 +21,6 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\Fragment\FragmentResolver;
 use App\Infrastructure\Http\Fragment\ResolvedFragment;
-use App\Infrastructure\ValueObject\String\Slug;
 use Twig\Environment;
 
 final readonly class ActivityFragmentResolver implements FragmentResolver
@@ -97,11 +96,7 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
                 'map' => $leafletMap,
             ] : null,
             'hasGpxLink' => $this->activityStreamRepository->hasOneForActivityAndStreamType($activityId, StreamType::TIME),
-            'gpxFileName' => sprintf(
-                '%s-%s.gpx',
-                $activity->getStartDate()->format('Y-m-d'),
-                Slug::fromString($activity->getName()),
-            ),
+            'gpxFileName' => GpxFileName::for($activity),
             'distributionCharts' => $this->distributionChartsBuilder->buildFor($activity),
             'splits' => $this->activitySplitRepository->findBy(
                 activityId: $activityId,
