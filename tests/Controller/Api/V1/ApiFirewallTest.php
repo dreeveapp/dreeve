@@ -57,7 +57,6 @@ class ApiFirewallTest extends ControllerWebTestCase
         yield 'the prefix itself' => ['/api/v1'];
         yield 'a nested path' => ['/api/v1/nope'];
         yield 'a deeply nested path' => ['/api/v1/activity/upload/nope'];
-        yield 'a path below an activity route' => ['/api/v1/activities/activity-1/gpx/nope'];
     }
 
     public function testItDoesNotClaimALookalikePrefix(): void

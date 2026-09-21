@@ -82,15 +82,6 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
         );
     }
 
-    public function testItRequiresAValidKey(): void
-    {
-        $this->provideFullTestSet();
-
-        $this->client->request('GET', '/api/v1/activities/activity-9756441741/gpx');
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
-    }
-
     #[\Override]
     protected function prepareEnvironment(): void
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Search;
 
+use App\Controller\Api\V1\Activity\ActivitySearchFilters;
 use App\Domain\Activity\ActivityHydrator;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\StreamType;
@@ -16,7 +17,7 @@ final readonly class DbalActivitySearchRepository extends DbalRepository impleme
 {
     private const string HAS_GPX_EXPRESSION = 'EXISTS (SELECT 1 FROM ActivityStream s WHERE s.activityId = a.activityId AND s.streamType = :gpxStreamType)';
 
-    public function find(ActivitySearchCriteria $criteria, Pagination $pagination): Overview
+    public function find(Pagination $pagination, ActivitySearchFilters $filters): Overview
     {
         $queryBuilder = $this->connection->createQueryBuilder()
             ->select(
@@ -34,29 +35,29 @@ final readonly class DbalActivitySearchRepository extends DbalRepository impleme
             ->from('Activity', 'a');
 
         foreach ([$queryBuilder, $countQueryBuilder] as $builder) {
-            if ($from = $criteria->getFrom()) {
+            if ($from = $filters->getFrom()) {
                 $builder
                     ->andWhere('a.startDateTime >= :from')
                     ->setParameter('from', $from->format('Y-m-d H:i:s'));
             }
-            if ($till = $criteria->getTill()) {
+            if ($till = $filters->getTill()) {
                 $builder
                     ->andWhere('a.startDateTime < :till')
                     ->setParameter('till', $till->format('Y-m-d H:i:s'));
             }
-            if (!$criteria->getSportTypes()->isEmpty()) {
+            if (!$filters->getSportTypes()->isEmpty()) {
                 $builder
                     ->andWhere('a.sportType IN (:sportTypes)')
                     ->setParameter(
                         key: 'sportTypes',
                         value: array_map(
                             static fn (SportType $sportType): string => $sportType->value,
-                            $criteria->getSportTypes()->toArray()
+                            $filters->getSportTypes()->toArray()
                         ),
                         type: ArrayParameterType::STRING
                     );
             }
-            if (null !== $hasGpx = $criteria->hasGpx()) {
+            if (null !== $hasGpx = $filters->hasGpx()) {
                 $builder
                     ->andWhere($hasGpx ? self::HAS_GPX_EXPRESSION : 'NOT '.self::HAS_GPX_EXPRESSION)
                     ->setParameter('gpxStreamType', StreamType::TIME->value);

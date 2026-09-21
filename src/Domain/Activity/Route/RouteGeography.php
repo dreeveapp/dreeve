@@ -30,6 +30,11 @@ final readonly class RouteGeography implements \JsonSerializable
         return $this->data['country_code'] ?? null;
     }
 
+    public function getStartingPointCity(): ?string
+    {
+        return $this->data['city'] ?? $this->data['town'] ?? $this->data['village'] ?? $this->data['municipality'] ?? null;
+    }
+
     public function getStartingPointState(): ?string
     {
         return $this->data['state'] ?? $this->data['county'] ?? null;

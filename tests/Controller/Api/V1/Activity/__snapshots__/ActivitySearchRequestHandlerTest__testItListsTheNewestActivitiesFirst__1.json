@@ -1,0 +1,442 @@
+{
+    "activities": [
+        {
+            "id": "activity-9830232182",
+            "name": "Night Ride",
+            "sportType": "Ride",
+            "startDateLocal": "2023-09-12T21:05:38",
+            "distanceInMeter": 6106,
+            "elevationInMeter": 9,
+            "movingTimeInSeconds": 1001,
+            "elapsedTimeInSeconds": 1157,
+            "averageSpeedInKmPerHour": 21.96,
+            "maxSpeedInKmPerHour": 53.35,
+            "calories": 163,
+            "averageHeartRate": 133,
+            "maxHeartRate": 159,
+            "averagePower": 93,
+            "averageCadence": null,
+            "isCommute": false,
+            "deviceName": "Polar Vantage M",
+            "location": {
+                "countryCode": null,
+                "state": null,
+                "city": null
+            },
+            "startLatLng": null,
+            "hasGpx": false
+        },
+        {
+            "id": "activity-9830227182",
+            "name": "Night Ride",
+            "sportType": "Ride",
+            "startDateLocal": "2023-09-11T21:05:38",
+            "distanceInMeter": 6106,
+            "elevationInMeter": 9,
+            "movingTimeInSeconds": 1001,
+            "elapsedTimeInSeconds": 1157,
+            "averageSpeedInKmPerHour": 21.96,
+            "maxSpeedInKmPerHour": 53.35,
+            "calories": 163,
+            "averageHeartRate": 133,
+            "maxHeartRate": 159,
+            "averagePower": 93,
+            "averageCadence": null,
+            "isCommute": false,
+            "deviceName": "Polar Vantage M",
+            "location": {
+                "countryCode": null,
+                "state": null,
+                "city": null
+            },
+            "startLatLng": [
+                51.2,
+                3.18
+            ],
+            "hasGpx": false
+        },
+        {
+            "id": "activity-9830227112",
+            "name": "Night Ride",
+            "sportType": "Ride",
+            "startDateLocal": "2023-09-05T21:05:38",
+            "distanceInMeter": 6106,
+            "elevationInMeter": 9,
+            "movingTimeInSeconds": 1001,
+            "elapsedTimeInSeconds": 1157,
+            "averageSpeedInKmPerHour": 21.96,
+            "maxSpeedInKmPerHour": 53.35,
+            "calories": 163,
+            "averageHeartRate": 133,
+            "maxHeartRate": 159,
+            "averagePower": 93,
+            "averageCadence": null,
+            "isCommute": false,
+            "deviceName": "Polar Vantage M",
+            "location": {
+                "countryCode": "be",
+                "state": "West-Vlaanderen",
+                "city": "Brugge"
+            },
+            "startLatLng": [
+                51.2,
+                3.18
+            ],
+            "hasGpx": false
+        },
+        {
+            "id": "activity-9830227167",
+            "name": "Night Ride",
+            "sportType": "Ride",
+            "startDateLocal": "2023-09-04T21:05:38",
+            "distanceInMeter": 6106,
+            "elevationInMeter": 9,
+            "movingTimeInSeconds": 1001,
+            "elapsedTimeInSeconds": 1157,
+            "averageSpeedInKmPerHour": 21.96,
+            "maxSpeedInKmPerHour": 53.35,
+            "calories": 163,
+            "averageHeartRate": 133,
+            "maxHeartRate": 159,
+            "averagePower": 93,
+            "averageCadence": null,
+            "isCommute": false,
+            "deviceName": "Polar Vantage M",
+            "location": {
+                "countryCode": null,
+                "state": null,
+                "city": null
+            },
+            "startLatLng": [
+                51.2,
+                3.18
+            ],
+            "hasGpx": false
+        },
+        {
+            "id": "activity-9756441741123",
+            "name": "Watopia Flat Forward in London",
+            "sportType": "Run",
+            "startDateLocal": "2023-08-31T16:35:35",
+            "distanceInMeter": 33548,
+            "elevationInMeter": 278,
+            "movingTimeInSeconds": 3786,
+            "elapsedTimeInSeconds": 3786,
+            "averageSpeedInKmPerHour": 12,
+            "maxSpeedInKmPerHour": 76.82,
+            "calories": 695,
+            "averageHeartRate": 154,
+            "maxHeartRate": 174,
+            "averagePower": 192,
+            "averageCadence": 84,
+            "isCommute": false,
+            "deviceName": "Zwift",
+            "location": {
+                "countryCode": null,
+                "state": null,
+                "city": null
+            },
+            "startLatLng": [
+                51.51,
+                -0.08
+            ],
+            "hasGpx": false
+        },
+        {
+            "id": "activity-9756441741",
+            "name": "Watopia Flat Forward in London",
+            "sportType": "VirtualRide",
+            "startDateLocal": "2023-08-31T16:35:35",
+            "distanceInMeter": 33548,
+            "elevationInMeter": 278,
+            "movingTimeInSeconds": 3786,
+            "elapsedTimeInSeconds": 3786,
+            "averageSpeedInKmPerHour": 31.9,
+            "maxSpeedInKmPerHour": 76.82,
+            "calories": 695,
+            "averageHeartRate": 154,
+            "maxHeartRate": 174,
+            "averagePower": 192,
+            "averageCadence": 84,
+            "isCommute": false,
+            "deviceName": "Zwift",
+            "location": {
+                "countryCode": null,
+                "state": "Watopia",
+                "city": null
+            },
+            "startLatLng": [
+                51.51,
+                -0.08
+            ],
+            "hasGpx": true
+        },
+        {
+            "id": "activity-8756441741",
+            "name": "Virtual ride non Zwift",
+            "sportType": "VirtualRide",
+            "startDateLocal": "2023-07-31T16:35:35",
+            "distanceInMeter": 33548,
+            "elevationInMeter": 278,
+            "movingTimeInSeconds": 3786,
+            "elapsedTimeInSeconds": 3786,
+            "averageSpeedInKmPerHour": 31.9,
+            "maxSpeedInKmPerHour": 76.82,
+            "calories": 695,
+            "averageHeartRate": 154,
+            "maxHeartRate": 174,
+            "averagePower": 192,
+            "averageCadence": 84,
+            "isCommute": false,
+            "deviceName": "Rouvy",
+            "location": {
+                "countryCode": null,
+                "state": null,
+                "city": null
+            },
+            "startLatLng": [
+                51.51,
+                -0.08
+            ],
+            "hasGpx": false
+        },
+        {
+            "id": "activity-877521741",
+            "name": "Virtual ride Zwift",
+            "sportType": "VirtualRide",
+            "startDateLocal": "2023-07-30T16:35:35",
+            "distanceInMeter": 0,
+            "elevationInMeter": 278,
+            "movingTimeInSeconds": 3786,
+            "elapsedTimeInSeconds": 3786,
+            "averageSpeedInKmPerHour": 31.9,
+            "maxSpeedInKmPerHour": 76.82,
+            "calories": 695,
+            "averageHeartRate": 154,
+            "maxHeartRate": 174,
+            "averagePower": 192,
+            "averageCadence": 84,
+            "isCommute": false,
+            "deviceName": null,
+            "location": {
+                "countryCode": null,
+                "state": null,
+                "city": null
+            },
+            "startLatLng": [
+                51.51,
+                -0.08
+            ],
+            "hasGpx": false
+        },
+        {
+            "id": "activity-87756441741",
+            "name": "Virtual ride non Zwift",
+            "sportType": "VirtualRide",
+            "startDateLocal": "2023-07-30T16:35:35",
+            "distanceInMeter": 0,
+            "elevationInMeter": 278,
+            "movingTimeInSeconds": 3786,
+            "elapsedTimeInSeconds": 3786,
+            "averageSpeedInKmPerHour": 31.9,
+            "maxSpeedInKmPerHour": 76.82,
+            "calories": 695,
+            "averageHeartRate": 154,
+            "maxHeartRate": 174,
+            "averagePower": 192,
+            "averageCadence": 84,
+            "isCommute": false,
+            "deviceName": null,
+            "location": {
+                "countryCode": null,
+                "state": null,
+                "city": null
+            },
+            "startLatLng": [
+                51.51,
+                -0.08
+            ],
+            "hasGpx": false
+        },
+        {
+            "id": "activity-9542782814",
+            "name": "Morning Ride",
+            "sportType": "Ride",
+            "startDateLocal": "2023-07-29T09:34:03",
+            "distanceInMeter": 12415,
+            "elevationInMeter": 15,
+            "movingTimeInSeconds": 1916,
+            "elapsedTimeInSeconds": 15265,
+            "averageSpeedInKmPerHour": 23.33,
+            "maxSpeedInKmPerHour": 37.37,
+            "calories": 293,
+            "averageHeartRate": 129,
+            "maxHeartRate": 161,
+            "averagePower": 92,
+            "averageCadence": null,
+            "isCommute": true,
+            "deviceName": "Polar Vantage M",
+            "location": {
+                "countryCode": null,
+                "state": null,
+                "city": null
+            },
+            "startLatLng": [
+                51.19,
+                3.24
+            ],
+            "hasGpx": false
+        },
+        {
+            "id": "activity-95427823814",
+            "name": "Morning Ride",
+            "sportType": "Ride",
+            "startDateLocal": "2023-07-29T07:34:03",
+            "distanceInMeter": 112415,
+            "elevationInMeter": 15,
+            "movingTimeInSeconds": 1916,
+            "elapsedTimeInSeconds": 15265,
+            "averageSpeedInKmPerHour": 23.33,
+            "maxSpeedInKmPerHour": 37.37,
+            "calories": 293,
+            "averageHeartRate": 185,
+            "maxHeartRate": 161,
+            "averagePower": 92,
+            "averageCadence": null,
+            "isCommute": false,
+            "deviceName": "Polar Vantage M",
+            "location": {
+                "countryCode": null,
+                "state": null,
+                "city": null
+            },
+            "startLatLng": [
+                51.19,
+                3.24
+            ],
+            "hasGpx": false
+        },
+        {
+            "id": "activity-9542782314",
+            "name": "Morning Ride",
+            "sportType": "Ride",
+            "startDateLocal": "2023-07-28T09:34:03",
+            "distanceInMeter": 12415,
+            "elevationInMeter": 15,
+            "movingTimeInSeconds": 1916,
+            "elapsedTimeInSeconds": 15265,
+            "averageSpeedInKmPerHour": 23.33,
+            "maxSpeedInKmPerHour": 37.37,
+            "calories": 293,
+            "averageHeartRate": 129,
+            "maxHeartRate": 161,
+            "averagePower": 92,
+            "averageCadence": null,
+            "isCommute": false,
+            "deviceName": "Polar Vantage M",
+            "location": {
+                "countryCode": null,
+                "state": null,
+                "city": null
+            },
+            "startLatLng": [
+                51.19,
+                3.24
+            ],
+            "hasGpx": false
+        },
+        {
+            "id": "activity-45326441741",
+            "name": "Running activity",
+            "sportType": "Run",
+            "startDateLocal": "2022-07-30T16:35:35",
+            "distanceInMeter": 50000,
+            "elevationInMeter": 278,
+            "movingTimeInSeconds": 3786,
+            "elapsedTimeInSeconds": 3786,
+            "averageSpeedInKmPerHour": 31.9,
+            "maxSpeedInKmPerHour": 76.82,
+            "calories": 695,
+            "averageHeartRate": 154,
+            "maxHeartRate": 174,
+            "averagePower": 192,
+            "averageCadence": 84,
+            "isCommute": false,
+            "deviceName": null,
+            "location": {
+                "countryCode": null,
+                "state": null,
+                "city": null
+            },
+            "startLatLng": [
+                51.51,
+                -0.08
+            ],
+            "hasGpx": false
+        },
+        {
+            "id": "activity-87726441741",
+            "name": "Virtual ride non Zwift",
+            "sportType": "VirtualRide",
+            "startDateLocal": "2022-07-30T16:35:35",
+            "distanceInMeter": 0,
+            "elevationInMeter": 278,
+            "movingTimeInSeconds": 3786,
+            "elapsedTimeInSeconds": 3786,
+            "averageSpeedInKmPerHour": 31.9,
+            "maxSpeedInKmPerHour": 76.82,
+            "calories": 695,
+            "averageHeartRate": 154,
+            "maxHeartRate": 174,
+            "averagePower": 192,
+            "averageCadence": 84,
+            "isCommute": false,
+            "deviceName": null,
+            "location": {
+                "countryCode": null,
+                "state": null,
+                "city": null
+            },
+            "startLatLng": [
+                51.51,
+                -0.08
+            ],
+            "hasGpx": false
+        },
+        {
+            "id": "activity-9756441709",
+            "name": "Virtual ride Zwift",
+            "sportType": "VirtualRide",
+            "startDateLocal": "2020-07-30T16:35:35",
+            "distanceInMeter": 0,
+            "elevationInMeter": 278,
+            "movingTimeInSeconds": 3786,
+            "elapsedTimeInSeconds": 3786,
+            "averageSpeedInKmPerHour": 31.9,
+            "maxSpeedInKmPerHour": 76.82,
+            "calories": 695,
+            "averageHeartRate": 154,
+            "maxHeartRate": 174,
+            "averagePower": 192,
+            "averageCadence": 84,
+            "isCommute": false,
+            "deviceName": null,
+            "location": {
+                "countryCode": null,
+                "state": null,
+                "city": null
+            },
+            "startLatLng": [
+                51.51,
+                -0.08
+            ],
+            "hasGpx": false
+        }
+    ],
+    "pagination": {
+        "page": 1,
+        "size": 25,
+        "total": 15,
+        "totalPages": 1
+    }
+}

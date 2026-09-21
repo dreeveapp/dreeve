@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Activity\Search;
 
+use App\Controller\Api\V1\Activity\ActivitySearchFilters;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\DbalActivityRepository;
-use App\Domain\Activity\Search\ActivitySearchCriteria;
 use App\Domain\Activity\Search\ActivitySearchRepository;
 use App\Domain\Activity\Search\ActivitySearchResult;
 use App\Domain\Activity\Search\DbalActivitySearchRepository;
 use App\Domain\Activity\SportType\SportType;
-use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\DbalActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
@@ -24,6 +23,7 @@ use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\Infrastructure\Eventing\SpyEventBus;
+use Symfony\Component\HttpFoundation\Request;
 
 class DbalActivitySearchRepositoryTest extends ContainerTestCase
 {
@@ -38,8 +38,8 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             ['activity-300', 'activity-200', 'activity-100'],
             $this->activityIdsIn($this->activitySearchRepository->find(
-                ActivitySearchCriteria::create(),
                 Pagination::fromOffsetAndLimit(0, 10),
+                $this->filters([]),
             ))
         );
     }
@@ -51,8 +51,8 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             ['activity-300', 'activity-200'],
             $this->activityIdsIn($this->activitySearchRepository->find(
-                ActivitySearchCriteria::create(from: SerializableDateTime::fromString('2026-06-02 08:00:00')),
                 Pagination::fromOffsetAndLimit(0, 10),
+                $this->filters(['from' => '2026-06-02']),
             ))
         );
     }
@@ -64,8 +64,8 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             ['activity-100'],
             $this->activityIdsIn($this->activitySearchRepository->find(
-                ActivitySearchCriteria::create(till: SerializableDateTime::fromString('2026-06-02 08:00:00')),
                 Pagination::fromOffsetAndLimit(0, 10),
+                $this->filters(['to' => '2026-06-01']),
             ))
         );
     }
@@ -77,11 +77,8 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             ['activity-200'],
             $this->activityIdsIn($this->activitySearchRepository->find(
-                ActivitySearchCriteria::create(
-                    from: SerializableDateTime::fromString('2026-06-02 00:00:00'),
-                    till: SerializableDateTime::fromString('2026-06-03 00:00:00'),
-                ),
                 Pagination::fromOffsetAndLimit(0, 10),
+                $this->filters(['from' => '2026-06-02', 'to' => '2026-06-02']),
             ))
         );
     }
@@ -93,8 +90,8 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             ['activity-300', 'activity-100'],
             $this->activityIdsIn($this->activitySearchRepository->find(
-                ActivitySearchCriteria::create(sportTypes: SportTypes::fromArray([SportType::RUN, SportType::POOL_SWIM])),
                 Pagination::fromOffsetAndLimit(0, 10),
+                $this->filters(['sportType' => 'Run,Swim']),
             ))
         );
     }
@@ -106,8 +103,8 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             ['activity-200'],
             $this->activityIdsIn($this->activitySearchRepository->find(
-                ActivitySearchCriteria::create(hasGpx: true),
                 Pagination::fromOffsetAndLimit(0, 10),
+                $this->filters(['hasGpx' => 'true']),
             ))
         );
     }
@@ -119,8 +116,8 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             ['activity-300', 'activity-100'],
             $this->activityIdsIn($this->activitySearchRepository->find(
-                ActivitySearchCriteria::create(hasGpx: false),
                 Pagination::fromOffsetAndLimit(0, 10),
+                $this->filters(['hasGpx' => 'false']),
             ))
         );
     }
@@ -130,8 +127,8 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
         $this->provideActivities();
 
         $overview = $this->activitySearchRepository->find(
-            ActivitySearchCriteria::create(),
             Pagination::fromOffsetAndLimit(0, 10),
+            $this->filters([]),
         );
 
         $this->assertEquals(
@@ -148,8 +145,8 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
         $this->provideActivities();
 
         $overview = $this->activitySearchRepository->find(
-            ActivitySearchCriteria::create(),
             Pagination::fromPageNumberAndSize(2, 2),
+            $this->filters([]),
         );
 
         $this->assertEquals(3, $overview->getTotal());
@@ -161,8 +158,8 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
         $this->provideActivities();
 
         $this->assertEquals(1, $this->activitySearchRepository->find(
-            ActivitySearchCriteria::create(sportTypes: SportTypes::fromArray([SportType::RUN])),
             Pagination::fromOffsetAndLimit(0, 10),
+            $this->filters(['sportType' => 'Run']),
         )->getTotal());
     }
 
@@ -177,6 +174,14 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
             static fn (ActivitySearchResult $result): string => (string) $result->getActivity()->getId(),
             $overview->getItems()
         );
+    }
+
+    /**
+     * @param array<string, string> $filters
+     */
+    private function filters(array $filters): ActivitySearchFilters
+    {
+        return ActivitySearchFilters::fromRequest(new Request(query: ['filters' => $filters]));
     }
 
     private function provideActivities(): void
