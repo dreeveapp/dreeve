@@ -9,6 +9,7 @@ use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\Widget\DependsOnCurrentDay;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
+use App\Domain\Dashboard\Widget\WidgetRenderer;
 use App\Domain\Gear\GearIdRepository;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\GearComponent;
@@ -18,7 +19,6 @@ use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class UpcomingMaintenanceWidget implements Widget, DependsOnCurrentDay
 {
@@ -27,7 +27,7 @@ final readonly class UpcomingMaintenanceWidget implements Widget, DependsOnCurre
         private GearMaintenanceRepository $gearMaintenanceRepository,
         private MaintenanceTaskProgressCalculator $maintenanceTaskProgressCalculator,
         private GearIdRepository $gearIdRepository,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
     ) {
     }
 
@@ -110,7 +110,7 @@ final readonly class UpcomingMaintenanceWidget implements Widget, DependsOnCurre
             static fn (UpcomingMaintenanceTask $a, UpcomingMaintenanceTask $b): int => $b->getProgress()->getCompletionRatio() <=> $a->getProgress()->getCompletionRatio(),
         );
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'upcomingMaintenanceTasks' => array_slice($upcomingMaintenanceTasks, 0, (int) $configuration->get('numberOfTasksToDisplay')),
         ]);
     }

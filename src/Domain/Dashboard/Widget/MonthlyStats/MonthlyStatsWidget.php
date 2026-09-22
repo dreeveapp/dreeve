@@ -11,6 +11,7 @@ use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\StatsContext;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
+use App\Domain\Dashboard\Widget\WidgetRenderer;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -18,7 +19,6 @@ use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class MonthlyStatsWidget implements Widget
 {
@@ -26,7 +26,7 @@ final readonly class MonthlyStatsWidget implements Widget
         private ActivityTypeRepository $activityTypeRepository,
         private QueryBus $queryBus,
         private SettingsRepository $settingsRepository,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
         private TranslatorInterface $translator,
     ) {
     }
@@ -108,7 +108,7 @@ final readonly class MonthlyStatsWidget implements Widget
         /** @var string[] $metricsDisplayOrder */
         $metricsDisplayOrder = $configuration->get('metricsDisplayOrder');
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'monthlyStatsChartsPerContext' => $monthlyStatChartsPerContext,
             'metricsDisplayOrder' => array_map(

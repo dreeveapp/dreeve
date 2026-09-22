@@ -214,6 +214,7 @@ Latitude: Szélesség
 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.': 'Hagyj mindent bejelöletlenül az összes sporttípus importálásához. ⚠️ Ennek korlátozása a tevékenységek importálása után törli a kizárt sporttípusú tevékenységeket.'
 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Hagyj mindent bejelöletlenül az összes láthatóság importálásához. ⚠️ Ennek korlátozása a tevékenységek importálása után törli a kizárt láthatóságú tevékenységeket.'
 'Leave empty to include all sport types.': 'Hagyd üresen az összes sporttípus belefoglalásához.'
+'Leave empty to use the default title.': 'Leave empty to use the default title.'
 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Lehetővé teszi egy külső kliens számára, hogy HTTP-n keresztül tevékenységfájlokat töltsön fel. A kulcs az egyetlen, ami védi ezt a végpontot, ezért kezeld jelszóként.'
 Locale: Nyelv
 Log: Napló
@@ -458,6 +459,7 @@ Thursday: Csütörtök
 'Tile layers': Csempe-rétegek
 'Time format': Időformátum
 'Time of day': Napszak
+Title: Title
 To: Eddig
 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.': 'A bejövő Strava webhook-kérések ellenőrzéséhez használt token. Kötelező, ha a webhookok engedélyezve vannak.'
 "Tokens are replaced with the activity's values when the rule runs.": 'A tokenek a szabály futásakor a tevékenység értékeire cserélődnek.'

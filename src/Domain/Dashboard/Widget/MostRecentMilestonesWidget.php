@@ -12,7 +12,6 @@ use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class MostRecentMilestonesWidget implements Widget
 {
@@ -20,7 +19,7 @@ final readonly class MostRecentMilestonesWidget implements Widget
         private TranslatorInterface $translator,
         private MilestoneCollector $milestonesCollector,
         private ActivityRepository $activityRepository,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
     ) {
     }
 
@@ -70,7 +69,7 @@ final readonly class MostRecentMilestonesWidget implements Widget
         $numberOfMilestonesToDisplay = (int) $configuration->get('numberOfMilestonesToDisplay');
         $milestones = $milestones->slice(0, $numberOfMilestonesToDisplay);
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'milestones' => $milestones,
             'activitiesPerActivityId' => $this->activityRepository->findByIds($milestones->getActivityIds())->keyByActivityId(),
         ]);

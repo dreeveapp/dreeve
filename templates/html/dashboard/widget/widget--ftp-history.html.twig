@@ -1,6 +1,6 @@
 {% autoescape false %}
     <h3 class="mb-4 text-lg font-semibold">
-        {{ "FTP history"|trans }}
+        {{ widgetTitle|e }}
     </h3>
     {% if ftpHistoryCharts|length > 1 %}
         <div class="tabs tabs--default">

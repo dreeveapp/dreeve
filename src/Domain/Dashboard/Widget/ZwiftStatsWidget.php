@@ -11,14 +11,13 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class ZwiftStatsWidget implements Widget
 {
     public function __construct(
         private TranslatorInterface $translator,
         private QueryBus $queryBus,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
     ) {
     }
 
@@ -53,7 +52,7 @@ final readonly class ZwiftStatsWidget implements Widget
             return null;
         }
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'statsPerWorld' => $statsPerWorld,
         ]);
     }

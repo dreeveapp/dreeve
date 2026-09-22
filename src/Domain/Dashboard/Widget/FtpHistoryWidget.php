@@ -15,14 +15,13 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class FtpHistoryWidget implements Widget
 {
     public function __construct(
         private TranslatorInterface $translator,
         private ActivityTypeRepository $activityTypeRepository,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
         private SettingsRepository $settingsRepository,
     ) {
     }
@@ -90,7 +89,7 @@ final readonly class FtpHistoryWidget implements Widget
             return null;
         }
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'ftpHistoryCharts' => $ftpHistoryCharts,
         ]);

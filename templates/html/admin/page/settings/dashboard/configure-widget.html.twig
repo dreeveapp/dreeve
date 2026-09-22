@@ -19,7 +19,18 @@
                 <input type="hidden" name="dashboardWidgetId" value="{{ configuredWidget.getId() }}">
                 <div data-form-error class="form-error hidden" role="alert"></div>
 
-                {% include configuredWidget.getConfigurationTemplate() with { configuration: configuredWidget.getConfiguration() } only %}
+                {% if configuredWidget.hasConfigurableTitle() %}
+                    <div>
+                        <label for="config-title">{{ "Title"|trans({}, 'admin') }}</label>
+                        <input type="text" id="config-title" name="config[title]" maxlength="{{ constant('App\\Domain\\Dashboard\\Widget\\WidgetConfiguration::MAX_TITLE_LENGTH') }}" value="{{ configuredWidget.getConfiguration().getTitle()|e }}" placeholder="{{ configuredWidget.getWidget().getLabel()|e }}">
+                        <p class="mt-1 text-xxs text-gray-500">{{ "Leave empty to use the default title."|trans({}, 'admin') }}</p>
+                    </div>
+                {% endif %}
+
+                {% set configurationTemplate = configuredWidget.getConfigurationTemplate() %}
+                {% if configurationTemplate %}
+                    {% include configurationTemplate with { configuration: configuredWidget.getConfiguration() } only %}
+                {% endif %}
 
                 <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
                     <a href="{{ dashboardUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>

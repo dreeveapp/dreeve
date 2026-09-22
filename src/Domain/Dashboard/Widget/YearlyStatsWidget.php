@@ -22,7 +22,6 @@ use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Years;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class YearlyStatsWidget implements Widget, DependsOnCurrentDay
 {
@@ -31,7 +30,7 @@ final readonly class YearlyStatsWidget implements Widget, DependsOnCurrentDay
         private ActivityTypeRepository $activityTypeRepository,
         private QueryBus $queryBus,
         private SettingsRepository $settingsRepository,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
         private TranslatorInterface $translator,
     ) {
     }
@@ -134,7 +133,7 @@ final readonly class YearlyStatsWidget implements Widget, DependsOnCurrentDay
         /** @var string[] $metricsDisplayOrder */
         $metricsDisplayOrder = $configuration->get('metricsDisplayOrder');
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'yearlyStatsChartsPerContext' => $yearlyStatChartsPerContext,
             'yearlyStatistics' => $yearlyStatistics,

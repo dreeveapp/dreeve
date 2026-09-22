@@ -13,14 +13,13 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class HeartRateZonesWidget implements Widget
 {
     public function __construct(
         private ActivityHeartRateRepository $activityHeartRateRepository,
         private ActivityTypeRepository $activityTypeRepository,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
         private TranslatorInterface $translator,
     ) {
     }
@@ -67,7 +66,7 @@ final readonly class HeartRateZonesWidget implements Widget
             }
         }
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'timeInHeartRateZoneChart' => Json::encode(
                 TimeInHeartRateZoneChart::create(

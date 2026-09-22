@@ -11,6 +11,7 @@ use App\Domain\Dashboard\Widget\ActivityGrid\FindCaloriesBurnedPerDay\FindCalori
 use App\Domain\Dashboard\Widget\DependsOnCurrentDay;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
+use App\Domain\Dashboard\Widget\WidgetRenderer;
 use App\Domain\Rewind\FindMovingTimePerDay\FindMovingTimePerDay;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -20,14 +21,13 @@ use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Years;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class ActivityGridWidget implements Widget, DependsOnCurrentDay
 {
     public function __construct(
         private DailyTrainingLoad $trainingLoad,
         private QueryBus $queryBus,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
         private TranslatorInterface $translator,
     ) {
     }
@@ -132,7 +132,7 @@ final readonly class ActivityGridWidget implements Widget, DependsOnCurrentDay
             )->build());
         }
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'gridCharts' => $activityGridsCharts,
             'metricsDisplayOrder' => array_map(

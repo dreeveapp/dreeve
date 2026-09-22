@@ -1,6 +1,6 @@
 <div class="flex items-center justify-between mb-4">
     <h3 class="text-lg font-semibold">
-        {{ "Monthly stats"|trans }}
+        {{ widgetTitle|e }}
     </h3>
     <ul class="tabs tabs--pills" id="monthlyStatsTab{{ uniqueId }}" data-tabs="#monthlyStatsTabContent{{ uniqueId }}" role="tablist">
         {% for context in metricsDisplayOrder %}

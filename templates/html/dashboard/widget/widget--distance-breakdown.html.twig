@@ -1,6 +1,6 @@
 {% autoescape false %}
     <h3 class="mb-4 text-lg font-semibold">
-        {{ "Distance breakdown"|trans }}
+        {{ widgetTitle|e }}
     </h3>
     {% if distanceBreakdowns|length > 1 %}
         <div class="tabs tabs--default">

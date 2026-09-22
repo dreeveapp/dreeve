@@ -27,7 +27,7 @@
                     <div class="space-y-1 text-sm text-gray-600">
                         <p>
                             {{ "Are you sure you want to remove the {widget} widget?"|trans({
-                                '{widget}': '<span class="font-semibold text-gray-900">' ~ widget.getLabel() ~ '</span>',
+                                '{widget}': '<span class="font-semibold text-gray-900">' ~ widget.getLabel()|e ~ '</span>',
                             }, 'admin') }}
                         </p>
                         <p>

@@ -27,7 +27,7 @@
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"/>
                                 </svg>
                             </span>
-                            <span class="min-w-0 truncate text-sm font-medium text-gray-800">{{ widget.getLabel() }}</span>
+                            <span class="min-w-0 truncate text-sm font-medium text-gray-800">{{ widget.getLabel()|e }}</span>
                             {% if widget.stillNeedsConfiguration() %}
                                 <span class="shrink-0 text-amber-500" title="{{ "This widget still needs to be configured."|trans({}, 'admin') }}">
                                     <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

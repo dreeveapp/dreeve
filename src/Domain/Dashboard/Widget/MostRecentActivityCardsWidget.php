@@ -15,7 +15,6 @@ use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class MostRecentActivityCardsWidget implements Widget
 {
@@ -24,7 +23,7 @@ final readonly class MostRecentActivityCardsWidget implements Widget
     public function __construct(
         private TranslatorInterface $translator,
         private ActivityRepository $activityRepository,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
     ) {
     }
 
@@ -119,7 +118,7 @@ final readonly class MostRecentActivityCardsWidget implements Widget
             ];
         }
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'items' => $items,
         ]);
     }

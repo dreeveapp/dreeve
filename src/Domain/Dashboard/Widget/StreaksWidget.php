@@ -17,7 +17,6 @@ use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Years;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class StreaksWidget implements Widget, DependsOnCurrentDay
 {
@@ -26,7 +25,7 @@ final readonly class StreaksWidget implements Widget, DependsOnCurrentDay
         private ActivityRepository $activityRepository,
         private QueryBus $queryBus,
         private Clock $clock,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
     ) {
     }
 
@@ -83,7 +82,7 @@ final readonly class StreaksWidget implements Widget, DependsOnCurrentDay
         $mostRecentActivity = $this->activityRepository->findMostRecent(1, $sportTypesToInclude)->getFirst()
             ?? $this->activityRepository->findMostRecent(1)->getFirst();
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'subtitle' => $configuration->get('subtitle'),
             'mostRecentActivity' => $mostRecentActivity,
             'dayStreak' => $findStreaksResponse->getCurrentDayStreak(),

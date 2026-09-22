@@ -13,20 +13,20 @@ use App\Domain\Dashboard\Widget\RequiresConfiguration;
 use App\Domain\Dashboard\Widget\TrainingGoals\FindTrainingGoalMetrics\FindTrainingGoalMetrics;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
+use App\Domain\Dashboard\Widget\WidgetRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Year;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class TrainingGoalsWidget implements Widget, DependsOnCurrentDay, HasWideConfigurationForm, RequiresConfiguration
 {
     public function __construct(
         private TranslatorInterface $translator,
         private QueryBus $queryBus,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
     ) {
     }
 
@@ -140,7 +140,7 @@ final readonly class TrainingGoalsWidget implements Widget, DependsOnCurrentDay,
             return null;
         }
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'fromToLabels' => $fromToLabels,
             'calculatedTrainingGoalsPerPeriod' => $calculatedGoalsPerPeriod,

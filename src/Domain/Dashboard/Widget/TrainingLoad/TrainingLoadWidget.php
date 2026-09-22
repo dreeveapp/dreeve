@@ -11,13 +11,13 @@ use App\Domain\Dashboard\Widget\DependsOnCurrentDay;
 use App\Domain\Dashboard\Widget\TrainingLoad\FindNumberOfRestDays\FindNumberOfRestDays;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
+use App\Domain\Dashboard\Widget\WidgetRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class TrainingLoadWidget implements Widget, DependsOnCurrentDay
 {
@@ -25,7 +25,7 @@ final readonly class TrainingLoadWidget implements Widget, DependsOnCurrentDay
         private ActivityHeartRateRepository $activityHeartRateRepository,
         private DailyTrainingLoad $dailyTrainingLoad,
         private QueryBus $queryBus,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
         private TranslatorInterface $translator,
     ) {
     }
@@ -72,7 +72,7 @@ final readonly class TrainingLoadWidget implements Widget, DependsOnCurrentDay
             till: $now,
         )))->getNumberOfRestDays();
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'polarisedTraining' => $polarisedTraining,
             'trainingMetrics' => $trainingMetrics,
             'restDaysInLast7Days' => $numberOfRestDays,

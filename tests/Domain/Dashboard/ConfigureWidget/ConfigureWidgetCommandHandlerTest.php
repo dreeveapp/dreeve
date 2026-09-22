@@ -34,7 +34,7 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
         ]));
 
         $this->assertEqualsCanonicalizing(
-            ['subtitle' => 'Keep it up', 'sportTypesToInclude' => ['Run', 'Ride']],
+            ['title' => null, 'subtitle' => 'Keep it up', 'sportTypesToInclude' => ['Run', 'Ride']],
             $this->storedConfigFor('dashboardWidget-streaks'),
         );
     }
@@ -54,7 +54,7 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
         ]));
 
         $this->assertSame(
-            ['numberOfActivitiesToDisplay' => 8],
+            ['numberOfActivitiesToDisplay' => 8, 'title' => null],
             $this->storedConfigFor('dashboardWidget-mostRecentActivities'),
         );
     }
@@ -74,7 +74,7 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
         ]));
 
         $this->assertEqualsCanonicalizing(
-            ['subtitle' => null, 'sportTypesToInclude' => []],
+            ['title' => null, 'subtitle' => null, 'sportTypesToInclude' => []],
             $this->storedConfigFor('dashboardWidget-streaks'),
         );
     }
@@ -102,7 +102,7 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
             'config' => ['goals' => $goals],
         ]));
 
-        $this->assertSame(['goals' => $goals], $this->storedConfigFor('dashboardWidget-trainingGoals'));
+        $this->assertSame(['goals' => $goals, 'title' => null], $this->storedConfigFor('dashboardWidget-trainingGoals'));
     }
 
     public function testItRejectsInvalidTrainingGoalsWithACleanMessage(): void
@@ -143,6 +143,82 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
             'dashboardWidgetId' => 'dashboardWidget-mostRecentActivities',
             'config' => ['numberOfActivitiesToDisplay' => '0'],
         ]));
+    }
+
+    public function testItStoresAndTrimsTheWidgetTitle(): void
+    {
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode([
+                ['id' => 'dashboardWidget-eddington', 'widget' => 'eddington', 'width' => 33],
+            ])),
+        ));
+
+        $this->commandBus->dispatch(ConfigureWidget::fromPayload([
+            'dashboardWidgetId' => 'dashboardWidget-eddington',
+            'config' => ['title' => '  My big rides  '],
+        ]));
+
+        $this->assertSame(
+            ['title' => 'My big rides'],
+            $this->storedConfigFor('dashboardWidget-eddington'),
+        );
+    }
+
+    public function testItClearsTheWidgetTitleWhenNothingIsSubmitted(): void
+    {
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode([
+                ['id' => 'dashboardWidget-eddington', 'widget' => 'eddington', 'width' => 33, 'config' => ['title' => 'My big rides']],
+            ])),
+        ));
+
+        $this->commandBus->dispatch(ConfigureWidget::fromPayload([
+            'dashboardWidgetId' => 'dashboardWidget-eddington',
+            'config' => ['title' => '   '],
+        ]));
+
+        $this->assertSame(
+            ['title' => null],
+            $this->storedConfigFor('dashboardWidget-eddington'),
+        );
+    }
+
+    public function testItRejectsAWidgetTitleThatIsTooLong(): void
+    {
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode([
+                ['id' => 'dashboardWidget-eddington', 'widget' => 'eddington', 'width' => 33],
+            ])),
+        ));
+
+        $this->expectExceptionObject(CouldNotProcessCommand::withReason(
+            'The widget title may not be longer than 255 characters.'
+        ));
+
+        $this->commandBus->dispatch(ConfigureWidget::fromPayload([
+            'dashboardWidgetId' => 'dashboardWidget-eddington',
+            'config' => ['title' => str_repeat('a', 256)],
+        ]));
+    }
+
+    public function testItDoesNotStoreATitleForAWidgetThatRendersWithoutOne(): void
+    {
+        $this->keyValueStore->save(KeyValue::fromState(
+            Key::DASHBOARD,
+            Value::fromString(Json::encode([
+                ['id' => 'dashboardWidget-introText', 'widget' => 'introText', 'width' => 33],
+            ])),
+        ));
+
+        $this->commandBus->dispatch(ConfigureWidget::fromPayload([
+            'dashboardWidgetId' => 'dashboardWidget-introText',
+            'config' => ['title' => 'Nope'],
+        ]));
+
+        $this->assertSame([], $this->storedConfigFor('dashboardWidget-introText'));
     }
 
     public function testItThrowsWhenWidgetDoesNotExist(): void

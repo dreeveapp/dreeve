@@ -12,7 +12,6 @@ use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class EddingtonWidget implements Widget
 {
@@ -20,7 +19,7 @@ final readonly class EddingtonWidget implements Widget
         private TranslatorInterface $translator,
         private EddingtonCalculator $eddingtonCalculator,
         private SettingsRepository $settingsRepository,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
     ) {
     }
 
@@ -59,7 +58,7 @@ final readonly class EddingtonWidget implements Widget
             return null;
         }
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'eddingtons' => $eddingtons,
         ]);
     }

@@ -214,6 +214,7 @@ Latitude: Latitude
 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.': 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.'
 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.'
 'Leave empty to include all sport types.': 'Leave empty to include all sport types.'
+'Leave empty to use the default title.': 'Leave empty to use the default title.'
 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.'
 Locale: Locale
 Log: Log
@@ -458,6 +459,7 @@ Thursday: Thursday
 'Tile layers': 'Tile layers'
 'Time format': 'Time format'
 'Time of day': 'Time of day'
+Title: Title
 To: To
 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.': 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.'
 "Tokens are replaced with the activity's values when the rule runs.": "Tokens are replaced with the activity's values when the rule runs."

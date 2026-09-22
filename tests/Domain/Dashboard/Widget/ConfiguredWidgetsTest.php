@@ -35,7 +35,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         $this->assertSame([], $configuredWidget->getConfiguration()->get('restrictToSportTypes'));
     }
 
-    public function testAWidgetWithoutConfigurationIsNotConfigurable(): void
+    public function testAWidgetWithoutATitleOrConfigurationIsNotConfigurable(): void
     {
         $this->saveLayout([
             ['id' => 'dashboardWidget-1', 'widget' => 'introText', 'width' => 66],
@@ -45,7 +45,38 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         $configuredWidgets = iterator_to_array($this->getContainer()->get(ConfiguredWidgets::class));
 
         $this->assertCount(1, $configuredWidgets);
+        $this->assertFalse($configuredWidgets[0]->hasConfigurableTitle());
+        $this->assertNull($configuredWidgets[0]->getConfigurationTemplate());
         $this->assertFalse($configuredWidgets[0]->isConfigurable());
+    }
+
+    public function testAWidgetWithoutItsOwnConfigurationIsStillConfigurableThroughItsTitle(): void
+    {
+        $this->saveLayout([
+            ['id' => 'dashboardWidget-1', 'widget' => 'eddington', 'width' => 33],
+        ]);
+
+        /** @var ConfiguredWidget[] $configuredWidgets */
+        $configuredWidgets = iterator_to_array($this->getContainer()->get(ConfiguredWidgets::class));
+
+        $this->assertCount(1, $configuredWidgets);
+        $this->assertTrue($configuredWidgets[0]->hasConfigurableTitle());
+        $this->assertNull($configuredWidgets[0]->getConfigurationTemplate());
+        $this->assertTrue($configuredWidgets[0]->isConfigurable());
+    }
+
+    public function testLabelIsTheConfiguredTitleAndFallsBackToTheWidgetLabel(): void
+    {
+        $this->saveLayout([
+            ['id' => 'dashboardWidget-1', 'widget' => 'eddington', 'width' => 33],
+            ['id' => 'dashboardWidget-2', 'widget' => 'eddington', 'width' => 33, 'config' => ['title' => 'My big rides']],
+        ]);
+
+        /** @var ConfiguredWidget[] $configuredWidgets */
+        $configuredWidgets = iterator_to_array($this->getContainer()->get(ConfiguredWidgets::class));
+
+        $this->assertSame('Eddington', $configuredWidgets[0]->getLabel());
+        $this->assertSame('My big rides', $configuredWidgets[1]->getLabel());
     }
 
     public function testTrainingGoalsWidgetWithoutConfiguredGoalsStillNeedsConfiguration(): void

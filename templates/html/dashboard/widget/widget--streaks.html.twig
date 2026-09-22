@@ -1,6 +1,6 @@
 {% autoescape false %}
     <div class="mb-4">
-        <h3 class="text-lg font-semibold"> {{ "Current streaks"|trans }}</h3>
+        <h3 class="text-lg font-semibold"> {{ widgetTitle|e }}</h3>
         {% if subtitle %}
             <div class="text-sm text-gray-500">
                 {{ subtitle }}

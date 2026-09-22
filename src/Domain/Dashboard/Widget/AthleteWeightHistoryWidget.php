@@ -11,12 +11,11 @@ use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class AthleteWeightHistoryWidget implements Widget
 {
     public function __construct(
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
         private TranslatorInterface $translator,
         private SettingsRepository $settingsRepository,
     ) {
@@ -54,7 +53,7 @@ final readonly class AthleteWeightHistoryWidget implements Widget
             return null;
         }
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'athleteWeightHistoryChart' => Json::encode(
                 AthleteWeightHistoryChart::create(
                     athleteWeights: $allWeights,

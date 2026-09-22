@@ -8,6 +8,7 @@ use App\Domain\Dashboard\DashboardLayoutRepository;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\Widget\ConfiguredWidget;
 use App\Domain\Dashboard\Widget\ConfiguredWidgets;
+use App\Domain\Dashboard\Widget\RendersWithoutTitle;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -35,6 +36,13 @@ final readonly class ConfigureWidgetCommandHandler implements CommandHandler
             submitted: $command->getConfiguration(),
         );
 
+        if (!$configuredWidget->getWidget() instanceof RendersWithoutTitle) {
+            $configuration->add(
+                WidgetConfiguration::TITLE,
+                $this->coerceTitle($command->getConfiguration()),
+            );
+        }
+
         try {
             $configuredWidget->getWidget()->guardValidConfiguration($configuration);
         } catch (InvalidDashboardLayout $e) {
@@ -45,6 +53,25 @@ final readonly class ConfigureWidgetCommandHandler implements CommandHandler
             dashboardWidgetId: $command->getDashboardWidgetId(),
             configuration: $configuration->toArray(),
         );
+    }
+
+    /**
+     * @param array<string, mixed> $submitted
+     */
+    private function coerceTitle(array $submitted): ?string
+    {
+        $submittedTitle = $submitted[WidgetConfiguration::TITLE] ?? null;
+        $title = is_scalar($submittedTitle) ? trim((string) $submittedTitle) : '';
+
+        if ('' === $title) {
+            return null;
+        }
+
+        if (mb_strlen($title) > WidgetConfiguration::MAX_TITLE_LENGTH) {
+            throw CouldNotProcessCommand::withReason(sprintf('The widget title may not be longer than %d characters.', WidgetConfiguration::MAX_TITLE_LENGTH));
+        }
+
+        return $title;
     }
 
     /**

@@ -13,13 +13,13 @@ use App\Domain\Dashboard\StatsContext;
 use App\Domain\Dashboard\Widget\DependsOnCurrentDay;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
+use App\Domain\Dashboard\Widget\WidgetRenderer;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class RollingStatsWidget implements Widget, DependsOnCurrentDay
 {
@@ -30,7 +30,7 @@ final readonly class RollingStatsWidget implements Widget, DependsOnCurrentDay
         private ActivityRepository $activityRepository,
         private ActivityTypeRepository $activityTypeRepository,
         private SettingsRepository $settingsRepository,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
         private TranslatorInterface $translator,
     ) {
     }
@@ -130,7 +130,7 @@ final readonly class RollingStatsWidget implements Widget, DependsOnCurrentDay
             $rollingStatsCharts[$activityType->value] = Json::encode($chartData);
         }
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'subtitle' => $this->translator->trans('{numberOfDays}-day rolling window', ['{numberOfDays}' => $rollingWindowInDays]),
             'rollingStatsCharts' => $rollingStatsCharts,

@@ -34,16 +34,25 @@ final readonly class ConfiguredWidget
 
     public function getLabel(): string
     {
-        return $this->widget->getLabel();
+        return $this->configuration->getTitle() ?? $this->widget->getLabel();
+    }
+
+    public function hasConfigurableTitle(): bool
+    {
+        return !$this->widget instanceof RendersWithoutTitle;
     }
 
     public function isConfigurable(): bool
     {
-        return !$this->widget->getDefaultConfiguration()->isEmpty();
+        return $this->hasConfigurableTitle() || !$this->widget->getDefaultConfiguration()->isEmpty();
     }
 
-    public function getConfigurationTemplate(): string
+    public function getConfigurationTemplate(): ?string
     {
+        if ($this->widget->getDefaultConfiguration()->isEmpty()) {
+            return null;
+        }
+
         return sprintf(
             'html/admin/page/settings/dashboard/widget-config/%s.html.twig',
             $this->widget->getTemplateName(),

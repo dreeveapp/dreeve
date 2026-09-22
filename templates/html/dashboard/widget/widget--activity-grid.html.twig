@@ -1,6 +1,6 @@
 {% autoescape false %}
     <div class="flex items-center mb-4">
-        <h3 class="font-semibold text-lg">{{ "Activity heatmap"|trans }}</h3>
+        <h3 class="font-semibold text-lg">{{ widgetTitle|e }}</h3>
         <ul class="tabs tabs--pills ml-auto" id="activityGridWidgetTab{{ uniqueId }}" data-tabs="#activityGridWidgetTabContent{{ uniqueId }}" role="tablist">
             {% for activityGridType in metricsDisplayOrder %}
                 <li role="presentation">

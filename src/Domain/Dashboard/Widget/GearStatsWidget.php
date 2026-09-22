@@ -22,7 +22,6 @@ use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Years;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final readonly class GearStatsWidget implements Widget
 {
@@ -32,7 +31,7 @@ final readonly class GearStatsWidget implements Widget
         private ActivityTypeRepository $activityTypeRepository,
         private QueryBus $queryBus,
         private Clock $clock,
-        private Environment $twig,
+        private WidgetRenderer $widgetRenderer,
         private Theme $theme,
     ) {
     }
@@ -109,7 +108,7 @@ final readonly class GearStatsWidget implements Widget
             }
         }
 
-        return $this->twig->load(sprintf('html/dashboard/widget/%s.html.twig', $this->getTemplateName()))->render([
+        return $this->widgetRenderer->render($this, $configuration, [
             'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'chartAllGears' => Json::encode(MovingTimePerGearChart::create(
                 movingTimePerGear: $this->queryBus->ask(new FindMovingTimePerGear($allYears, null))->getMovingTimePerGear(),

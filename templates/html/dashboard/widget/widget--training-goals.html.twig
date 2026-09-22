@@ -1,6 +1,6 @@
 {% autoescape false %}
 <div class="flex items-center justify-between">
-    <h3 class="text-lg font-semibold">{{ "Training goals"|trans }}</h3>
+    <h3 class="text-lg font-semibold">{{ widgetTitle|e }}</h3>
     {% if calculatedTrainingGoalsPerPeriod|length > 1 %}
         <ul class="tabs tabs--pills" id="trainingGoalsTab{{ uniqueId }}" data-tabs="#trainingGoalsTabContent{{ uniqueId }}" role="tablist">
             {% for period,goals in calculatedTrainingGoalsPerPeriod %}

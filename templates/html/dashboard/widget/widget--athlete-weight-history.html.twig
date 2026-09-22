@@ -1,6 +1,6 @@
 {% autoescape false %}
     <h3 class="mb-4 text-lg font-semibold">
-        {{ "Weight history"|trans }}
+        {{ widgetTitle|e }}
     </h3>
     <div class="h-full min-h-64" data-echarts-options='{{ athleteWeightHistoryChart }}'></div>
 {% endautoescape %}
