@@ -1,40 +1,38 @@
 {
-    "activity": {
-        "id": "activity-9756441741",
-        "name": "Watopia Flat Forward in London",
-        "sportType": "VirtualRide",
-        "startDateLocal": "2023-08-31T16:35:35",
-        "distanceInMeter": 33548,
-        "elevationInMeter": 278,
-        "movingTimeInSeconds": 3786,
-        "elapsedTimeInSeconds": 3786,
-        "averageSpeedInKmPerHour": 31.9,
-        "maxSpeedInKmPerHour": 76.82,
-        "calories": 695,
-        "averageHeartRate": 154,
-        "maxHeartRate": 174,
-        "averagePower": 192,
-        "averageCadence": 84,
-        "isCommute": false,
-        "deviceName": "Zwift",
-        "location": {
-            "countryCode": null,
-            "state": "Watopia",
-            "city": null
-        },
-        "startLatLng": [
-            51.51,
-            -0.08
-        ],
-        "hasGpx": true,
-        "description": "",
-        "kilojoules": 728,
-        "maxPower": 479,
-        "gearId": "gear-b12659861",
-        "workoutType": null,
-        "worldType": "zwift",
-        "importSource": "stravaApi",
-        "encodedPolyline": null,
-        "passedThroughCountries": []
-    }
+    "id": "activity-9756441741",
+    "name": "Watopia Flat Forward in London",
+    "description": "",
+    "sportType": "VirtualRide",
+    "workoutType": null,
+    "worldType": "zwift",
+    "importSource": "stravaApi",
+    "startDateLocal": "2023-08-31T16:35:35",
+    "distanceInMeter": 33548,
+    "elevationInMeter": 278,
+    "movingTimeInSeconds": 3786,
+    "elapsedTimeInSeconds": 3786,
+    "averageSpeedInKmPerHour": 31.9,
+    "maxSpeedInKmPerHour": 76.82,
+    "calories": 695,
+    "kilojoules": 728,
+    "averageHeartRate": 154,
+    "maxHeartRate": 174,
+    "averagePower": 192,
+    "maxPower": 479,
+    "averageCadence": 84,
+    "isCommute": false,
+    "deviceName": "Zwift",
+    "gearId": "gear-b12659861",
+    "location": {
+        "countryCode": null,
+        "state": "Watopia",
+        "city": null
+    },
+    "passedThroughCountries": [],
+    "startLatLng": [
+        51.51,
+        -0.08
+    ],
+    "encodedPolyline": null,
+    "hasGpx": true
 }

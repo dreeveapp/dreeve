@@ -171,8 +171,7 @@ paths:
       tags: [Activities]
       summary: Search activities
       description: |
-        Returns activities newest first. All filters are optional; without any, you get the most
-        recent page.
+        Returns activities newest first. All filters are optional
 
         ```
         GET /api/v1/activities?filters[from]=2023-09-04&filters[to]=2023-09-04&pagination[size]=50
@@ -252,11 +251,7 @@ paths:
           description: The activity.
           content:
             application/json:
-              schema:
-                type: object
-                required: [activity]
-                properties:
-                  activity: { $ref: '#/components/schemas/ActivityDetail' }
+              schema: { $ref: '#/components/schemas/Activity' }
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -393,7 +388,7 @@ components:
       properties:
         activities:
           type: array
-          items: { $ref: '#/components/schemas/ActivitySummary' }
+          items: { $ref: '#/components/schemas/Activity' }
         pagination: { $ref: '#/components/schemas/PaginationMeta' }
     PaginationMeta:
       type: object
@@ -407,12 +402,15 @@ components:
           type: integer
         totalPages:
           type: integer
-    ActivitySummary:
+    Activity:
       type: object
       required:
         - id
         - name
+        - description
         - sportType
+        - worldType
+        - importSource
         - startDateLocal
         - distanceInMeter
         - elevationInMeter
@@ -422,6 +420,7 @@ components:
         - maxSpeedInKmPerHour
         - isCommute
         - location
+        - passedThroughCountries
         - hasGpx
       properties:
         id:
@@ -430,10 +429,20 @@ components:
         name:
           type: string
           examples: ['Evening Ride']
+        description:
+          type: string
         sportType:
           type: string
           description: Strava's sport type vocabulary.
           examples: ['Ride', 'TrailRun', 'Hike']
+        workoutType:
+          type: [string, 'null']
+        worldType:
+          type: string
+          examples: ['realWorld', 'zwift']
+        importSource:
+          type: string
+          examples: ['stravaApi', 'file', 'manual']
         startDateLocal:
           type: string
           examples: ['2023-09-04T21:05:38']
@@ -451,11 +460,15 @@ components:
           type: number
         calories:
           type: [integer, 'null']
+        kilojoules:
+          type: [integer, 'null']
         averageHeartRate:
           type: [integer, 'null']
         maxHeartRate:
           type: [integer, 'null']
         averagePower:
+          type: [integer, 'null']
+        maxPower:
           type: [integer, 'null']
         averageCadence:
           type: [integer, 'null']
@@ -463,7 +476,16 @@ components:
           type: boolean
         deviceName:
           type: [string, 'null']
+        gearId:
+          type: [string, 'null']
+          examples: ['gear-b12659861']
         location: { $ref: '#/components/schemas/ActivityLocation' }
+        passedThroughCountries:
+          type: array
+          description: Lowercased ISO 3166-1 alpha-2 codes, empty when not reverse geocoded.
+          items:
+            type: string
+          examples: [['be', 'nl']]
         startLatLng:
           type: [array, 'null']
           description: The starting point as `[latitude, longitude]`, null without GPS data.
@@ -472,58 +494,12 @@ components:
           items:
             type: number
           examples: [[51.2, 3.18]]
+        encodedPolyline:
+          type: [string, 'null']
         hasGpx:
           type: boolean
           description: >-
             Whether `GET /api/v1/activities/{activityId}/gpx` will return a file for this activity.
-    ActivityDetail:
-      type: object
-      description: Everything in `ActivitySummary`, plus the fields below.
-      required:
-        - id
-        - name
-        - sportType
-        - startDateLocal
-        - distanceInMeter
-        - elevationInMeter
-        - movingTimeInSeconds
-        - elapsedTimeInSeconds
-        - averageSpeedInKmPerHour
-        - maxSpeedInKmPerHour
-        - isCommute
-        - location
-        - hasGpx
-        - description
-        - passedThroughCountries
-      allOf:
-        - $ref: '#/components/schemas/ActivitySummary'
-        - type: object
-          properties:
-            description:
-              type: string
-            kilojoules:
-              type: [integer, 'null']
-            maxPower:
-              type: [integer, 'null']
-            gearId:
-              type: [string, 'null']
-              examples: ['gear-b12659861']
-            workoutType:
-              type: [string, 'null']
-            worldType:
-              type: string
-              examples: ['realWorld', 'zwift']
-            importSource:
-              type: string
-              examples: ['stravaApi', 'file', 'manual']
-            encodedPolyline:
-              type: [string, 'null']
-            passedThroughCountries:
-              type: array
-              description: Lowercased ISO 3166-1 alpha-2 codes, empty when not reverse geocoded.
-              items:
-                type: string
-              examples: [['be', 'nl']]
     ActivityLocation:
       type: object
       required: [countryCode, state, city]

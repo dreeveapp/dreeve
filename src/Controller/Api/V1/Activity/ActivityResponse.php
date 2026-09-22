@@ -20,41 +20,10 @@ final class ActivityResponse extends JsonResponse
     {
         return new self([
             'activities' => array_map(
-                static function (ActivitySearchResult $result): array {
-                    $activity = $result->getActivity();
-                    $startingCoordinate = $activity->getStartingCoordinate();
-                    $routeGeography = $activity->getRouteGeography();
-
-                    return [
-                        'id' => (string) $activity->getId(),
-                        'name' => $activity->getName(),
-                        'sportType' => $activity->getSportType()->value,
-                        'startDateLocal' => $activity->getStartDate()->format('Y-m-d\TH:i:s'),
-                        'distanceInMeter' => $activity->getDistance()->toMeter()->toInt(),
-                        'elevationInMeter' => $activity->getElevation()->toInt(),
-                        'movingTimeInSeconds' => $activity->getMovingTimeInSeconds(),
-                        'elapsedTimeInSeconds' => $activity->getElapsedTimeInSeconds(),
-                        'averageSpeedInKmPerHour' => round($activity->getAverageSpeed()->toFloat(), 2),
-                        'maxSpeedInKmPerHour' => round($activity->getMaxSpeed()->toFloat(), 2),
-                        'calories' => $activity->getCalories(),
-                        'averageHeartRate' => $activity->getAverageHeartRate(),
-                        'maxHeartRate' => $activity->getMaxHeartRate(),
-                        'averagePower' => $activity->getAveragePower(),
-                        'averageCadence' => $activity->getAverageCadence(),
-                        'isCommute' => $activity->isCommute(),
-                        'deviceName' => $activity->getDeviceName(),
-                        'location' => [
-                            'countryCode' => $routeGeography->getStartingPointCountryCode(),
-                            'state' => $routeGeography->getStartingPointState(),
-                            'city' => $routeGeography->getStartingPointCity(),
-                        ],
-                        'startLatLng' => $startingCoordinate instanceof Coordinate ? [
-                            $startingCoordinate->getLatitude()->toFloat(),
-                            $startingCoordinate->getLongitude()->toFloat(),
-                        ] : null,
-                        'hasGpx' => $result->hasGpx(),
-                    ];
-                },
+                static fn (ActivitySearchResult $result): array => self::activity(
+                    $result->getActivity(),
+                    $result->hasGpx()
+                ),
                 $overview->getItems()
             ),
             'pagination' => [
@@ -68,48 +37,54 @@ final class ActivityResponse extends JsonResponse
 
     public static function detail(Activity $activity, bool $hasGpx): self
     {
+        return new self(self::activity($activity, $hasGpx));
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private static function activity(Activity $activity, bool $hasGpx): array
+    {
         $startingCoordinate = $activity->getStartingCoordinate();
         $routeGeography = $activity->getRouteGeography();
 
-        return new self([
-            'activity' => [
-                'id' => (string) $activity->getId(),
-                'name' => $activity->getName(),
-                'sportType' => $activity->getSportType()->value,
-                'startDateLocal' => $activity->getStartDate()->format('Y-m-d\TH:i:s'),
-                'distanceInMeter' => $activity->getDistance()->toMeter()->toInt(),
-                'elevationInMeter' => $activity->getElevation()->toInt(),
-                'movingTimeInSeconds' => $activity->getMovingTimeInSeconds(),
-                'elapsedTimeInSeconds' => $activity->getElapsedTimeInSeconds(),
-                'averageSpeedInKmPerHour' => round($activity->getAverageSpeed()->toFloat(), 2),
-                'maxSpeedInKmPerHour' => round($activity->getMaxSpeed()->toFloat(), 2),
-                'calories' => $activity->getCalories(),
-                'averageHeartRate' => $activity->getAverageHeartRate(),
-                'maxHeartRate' => $activity->getMaxHeartRate(),
-                'averagePower' => $activity->getAveragePower(),
-                'averageCadence' => $activity->getAverageCadence(),
-                'isCommute' => $activity->isCommute(),
-                'deviceName' => $activity->getDeviceName(),
-                'location' => [
-                    'countryCode' => $routeGeography->getStartingPointCountryCode(),
-                    'state' => $routeGeography->getStartingPointState(),
-                    'city' => $routeGeography->getStartingPointCity(),
-                ],
-                'startLatLng' => $startingCoordinate instanceof Coordinate ? [
-                    $startingCoordinate->getLatitude()->toFloat(),
-                    $startingCoordinate->getLongitude()->toFloat(),
-                ] : null,
-                'hasGpx' => $hasGpx,
-                'description' => $activity->getDescription(),
-                'kilojoules' => $activity->getKilojoules(),
-                'maxPower' => $activity->getMaxPower(),
-                'gearId' => (string) $activity->getGearId() ?: null,
-                'workoutType' => $activity->getWorkoutType()?->value,
-                'worldType' => $activity->getWorldType()->value,
-                'importSource' => $activity->getImportSource()->value,
-                'encodedPolyline' => (string) $activity->getEncodedPolyline() ?: null,
-                'passedThroughCountries' => $routeGeography->getPassedThroughCountries(),
+        return [
+            'id' => (string) $activity->getId(),
+            'name' => $activity->getName(),
+            'description' => $activity->getDescription(),
+            'sportType' => $activity->getSportType()->value,
+            'workoutType' => $activity->getWorkoutType()?->value,
+            'worldType' => $activity->getWorldType()->value,
+            'importSource' => $activity->getImportSource()->value,
+            'startDateLocal' => $activity->getStartDate()->format('Y-m-d\TH:i:s'),
+            'distanceInMeter' => $activity->getDistance()->toMeter()->toInt(),
+            'elevationInMeter' => $activity->getElevation()->toInt(),
+            'movingTimeInSeconds' => $activity->getMovingTimeInSeconds(),
+            'elapsedTimeInSeconds' => $activity->getElapsedTimeInSeconds(),
+            'averageSpeedInKmPerHour' => round($activity->getAverageSpeed()->toFloat(), 2),
+            'maxSpeedInKmPerHour' => round($activity->getMaxSpeed()->toFloat(), 2),
+            'calories' => $activity->getCalories(),
+            'kilojoules' => $activity->getKilojoules(),
+            'averageHeartRate' => $activity->getAverageHeartRate(),
+            'maxHeartRate' => $activity->getMaxHeartRate(),
+            'averagePower' => $activity->getAveragePower(),
+            'maxPower' => $activity->getMaxPower(),
+            'averageCadence' => $activity->getAverageCadence(),
+            'isCommute' => $activity->isCommute(),
+            'deviceName' => $activity->getDeviceName(),
+            'gearId' => (string) $activity->getGearId() ?: null,
+            'location' => [
+                'countryCode' => $routeGeography->getStartingPointCountryCode(),
+                'state' => $routeGeography->getStartingPointState(),
+                'city' => $routeGeography->getStartingPointCity(),
             ],
-        ]);
+            'passedThroughCountries' => $routeGeography->getPassedThroughCountries(),
+            'startLatLng' => $startingCoordinate instanceof Coordinate ? [
+                $startingCoordinate->getLatitude()->toFloat(),
+                $startingCoordinate->getLongitude()->toFloat(),
+            ] : null,
+            'encodedPolyline' => (string) $activity->getEncodedPolyline() ?: null,
+            'hasGpx' => $hasGpx,
+        ];
     }
 }
