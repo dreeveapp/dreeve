@@ -17,6 +17,7 @@
     "Rowing": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
     "StandUpPaddling": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
     "Surfing": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
+    "Wakeboarding": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
     "Swim": "App\\Infrastructure\\Measurement\\Velocity\\SecPer100Meter",
     "OpenWaterSwim": "App\\Infrastructure\\Measurement\\Velocity\\SecPer100Meter",
     "Windsurf": "App\\Infrastructure\\Measurement\\Velocity\\Knot",

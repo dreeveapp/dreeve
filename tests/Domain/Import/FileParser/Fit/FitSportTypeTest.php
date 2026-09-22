@@ -108,6 +108,7 @@ class FitSportTypeTest extends TestCase
             'snowshoeing' => [35, null, SportType::SNOWSHOE],
             'stand up paddleboarding' => [37, null, SportType::STAND_UP_PADDLING],
             'surfing' => [38, null, SportType::SURFING],
+            'wakeboarding' => [39, null, SportType::WAKEBOARDING],
             'kayaking' => [41, 0, SportType::KAYAKING],
             'kayaking / whitewater' => [41, 41, SportType::KAYAKING],
             'windsurfing' => [43, null, SportType::WIND_SURF],

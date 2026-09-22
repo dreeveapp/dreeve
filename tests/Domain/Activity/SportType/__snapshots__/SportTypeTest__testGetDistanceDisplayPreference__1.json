@@ -17,6 +17,7 @@
     "Rowing": "App\\Infrastructure\\Measurement\\Length\\Kilometer",
     "StandUpPaddling": "App\\Infrastructure\\Measurement\\Length\\Kilometer",
     "Surfing": "App\\Infrastructure\\Measurement\\Length\\Kilometer",
+    "Wakeboarding": "App\\Infrastructure\\Measurement\\Length\\Kilometer",
     "Swim": "App\\Infrastructure\\Measurement\\Length\\Kilometer",
     "OpenWaterSwim": "App\\Infrastructure\\Measurement\\Length\\Kilometer",
     "Windsurf": "App\\Infrastructure\\Measurement\\Length\\NauticalMile",

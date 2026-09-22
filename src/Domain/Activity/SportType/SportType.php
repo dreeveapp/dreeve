@@ -41,6 +41,7 @@ enum SportType: string implements TranslatableInterface
     case ROWING = 'Rowing';
     case STAND_UP_PADDLING = 'StandUpPaddling';
     case SURFING = 'Surfing';
+    case WAKEBOARDING = 'Wakeboarding';
     case POOL_SWIM = 'Swim';
     case OPEN_WATER_SWIM = 'OpenWaterSwim';
     case WIND_SURF = 'Windsurf';
@@ -193,6 +194,7 @@ enum SportType: string implements TranslatableInterface
             self::ROWING => $translator->trans('Rowing', locale: $locale),
             self::STAND_UP_PADDLING => $translator->trans('Stand Up Paddling', locale: $locale),
             self::SURFING => $translator->trans('Surfing', locale: $locale),
+            self::WAKEBOARDING => $translator->trans('Wakeboarding', locale: $locale),
             self::POOL_SWIM => $translator->trans('Pool Swim', locale: $locale),
             self::OPEN_WATER_SWIM => $translator->trans('Open Water Swim', locale: $locale),
             self::WIND_SURF => $translator->trans('Wind Surf', locale: $locale),
@@ -256,6 +258,7 @@ enum SportType: string implements TranslatableInterface
             self::ROWING => $translator->trans('Rowing', locale: $locale),
             self::STAND_UP_PADDLING => $translator->trans('Stand Up Paddling', locale: $locale),
             self::SURFING => $translator->trans('Surfing', locale: $locale),
+            self::WAKEBOARDING => $translator->trans('Wakeboarding', locale: $locale),
             self::POOL_SWIM => $translator->trans('Pool Swim', locale: $locale),
             self::OPEN_WATER_SWIM => $translator->trans('Open Water Swim', locale: $locale),
             self::WIND_SURF => $translator->trans('Wind Surf', locale: $locale),
@@ -314,7 +317,7 @@ enum SportType: string implements TranslatableInterface
             SportType::CANOEING, SportType::KAYAKING, SportType::KITE_SURF,
             SportType::ROWING, SportType::STAND_UP_PADDLING,
             SportType::SURFING, SportType::POOL_SWIM, SportType::OPEN_WATER_SWIM,
-            SportType::WIND_SURF => ActivityType::WATER_SPORTS,
+            SportType::WIND_SURF, SportType::WAKEBOARDING => ActivityType::WATER_SPORTS,
             // WINTER.
             SportType::BACK_COUNTRY_SKI, SportType::ALPINE_SKI, SportType::NORDIC_SKI,
             SportType::ICE_SKATE, SportType::SNOWBOARD, SportType::SNOWSHOE => ActivityType::WINTER_SPORTS,
