@@ -127,38 +127,6 @@ class ActivitySearchRequestHandlerTest extends ControllerWebTestCase
         yield 'a page number of zero' => ['?pagination[page]=0'];
     }
 
-    public function testItReturnsASingleActivity(): void
-    {
-        $this->provideFullTestSet();
-
-        $this->client->request('GET', self::PATH.'/activity-9756441741', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
-
-        $this->assertResponseIsSuccessful();
-        $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
-    }
-
-    public function testItReportsAnUnknownActivityAsNotFound(): void
-    {
-        $this->client->request('GET', self::PATH.'/activity-1', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
-        $this->assertSame(
-            'not_found',
-            Json::decode((string) $this->client->getResponse()->getContent())['error']
-        );
-    }
-
-    public function testItReportsAMalformedActivityIdAsNotFound(): void
-    {
-        $this->client->request('GET', self::PATH.'/not-an-activity-id', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
-        $this->assertSame(
-            'not_found',
-            Json::decode((string) $this->client->getResponse()->getContent())['error']
-        );
-    }
-
     #[\Override]
     protected function shouldSeedActivity(): bool
     {

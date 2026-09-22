@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\V1;
+namespace App\Controller\Api\V1\Activity;
 
 use App\Domain\Import\InvalidActivityFileName;
 use App\Domain\Import\UploadActivityFile\CannotUploadActivityFile;
