@@ -29,7 +29,7 @@ final readonly class MostRecentActivityCardsWidget implements Widget
 
     public function getLabel(): string
     {
-        return $this->translator->trans('Most recent activity cards');
+        return $this->translator->trans('Most recent activities');
     }
 
     public function getTemplateName(): string

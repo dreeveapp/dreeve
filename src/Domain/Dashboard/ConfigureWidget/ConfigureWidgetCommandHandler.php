@@ -37,9 +37,16 @@ final readonly class ConfigureWidgetCommandHandler implements CommandHandler
         );
 
         if (!$configuredWidget->getWidget() instanceof RendersWithoutTitle) {
+            $submittedTitle = $command->getConfiguration()[WidgetConfiguration::TITLE] ?? null;
+            $title = is_scalar($submittedTitle) ? trim((string) $submittedTitle) : '';
+
+            if (mb_strlen($title) > WidgetConfiguration::MAX_TITLE_LENGTH) {
+                throw CouldNotProcessCommand::withReason(sprintf('The widget title may not be longer than %d characters.', WidgetConfiguration::MAX_TITLE_LENGTH));
+            }
+
             $configuration->add(
-                WidgetConfiguration::TITLE,
-                $this->coerceTitle($command->getConfiguration()),
+                key: WidgetConfiguration::TITLE,
+                value: '' !== $title ? $title : null
             );
         }
 
@@ -53,25 +60,6 @@ final readonly class ConfigureWidgetCommandHandler implements CommandHandler
             dashboardWidgetId: $command->getDashboardWidgetId(),
             configuration: $configuration->toArray(),
         );
-    }
-
-    /**
-     * @param array<string, mixed> $submitted
-     */
-    private function coerceTitle(array $submitted): ?string
-    {
-        $submittedTitle = $submitted[WidgetConfiguration::TITLE] ?? null;
-        $title = is_scalar($submittedTitle) ? trim((string) $submittedTitle) : '';
-
-        if ('' === $title) {
-            return null;
-        }
-
-        if (mb_strlen($title) > WidgetConfiguration::MAX_TITLE_LENGTH) {
-            throw CouldNotProcessCommand::withReason(sprintf('The widget title may not be longer than %d characters.', WidgetConfiguration::MAX_TITLE_LENGTH));
-        }
-
-        return $title;
     }
 
     /**
