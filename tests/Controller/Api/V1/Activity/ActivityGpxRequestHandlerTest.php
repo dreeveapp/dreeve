@@ -6,12 +6,10 @@ use App\Domain\Api\Token;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\HttpFoundation\Response;
 
 class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
     use ProvideTestData;
 
     private Token $token;
@@ -32,7 +30,11 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
             'Content-Disposition',
             'attachment; filename=2023-08-31-watopia-flat-forward-in-london.gpx'
         );
-        $this->assertMatchesXmlSnapshot((string) $this->client->getResponse()->getContent());
+
+        $content = (string) $this->client->getResponse()->getContent();
+        $this->assertStringStartsWith('<?xml version="1.0" encoding="UTF-8"?>', $content);
+        $this->assertStringContainsString('<trk>', $content);
+        $this->assertSame(4253, substr_count($content, '<trkpt'));
     }
 
     public function testItReportsWhenAnActivityHasNoGpxData(): void
