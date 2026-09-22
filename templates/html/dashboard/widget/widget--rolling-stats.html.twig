@@ -1,0 +1,35 @@
+{% autoescape false %}
+    <div class="mb-4">
+        <h3 class="text-lg font-semibold">
+            {{ "Rolling stats"|trans }}
+        </h3>
+        {% if subtitle %}
+            <div class="text-sm text-gray-500">
+                {{ subtitle }}
+            </div>
+        {% endif %}
+    </div>
+    {% if rollingStatsCharts|length > 1 %}
+        <div class="tabs tabs--default">
+            <ul id="rollingStatsActivityTypeTab{{ uniqueId }}" data-tabs="#rollingStatsActivityTypeTabContent{{ uniqueId }}"
+                role="tablist">
+                {% for activityType,chart in rollingStatsCharts %}
+                    <li role="presentation">
+                        <a href="#" data-tabs-target="#rollingStats{{ activityType }}{{ uniqueId }}" role="tab"
+                           aria-controls="rollingStats{{ activityType }}{{ uniqueId }}">
+                            {{ activityTypeFrom(activityType)|trans }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <div id="rollingStatsActivityTypeTabContent{{ uniqueId }}">
+        {% for activityType,chart in rollingStatsCharts %}
+            <div id="rollingStats{{ activityType }}{{ uniqueId }}" role="tabpanel"
+                 aria-labelledby="rollingStats{{ activityType }}{{ uniqueId }}-tab">
+                <div class="h-80" data-echarts-options='{{ chart }}'></div>
+            </div>
+        {% endfor %}
+    </div>
+{% endautoescape %}

@@ -354,6 +354,7 @@ Rides: Ritten
 'Risk of detraining': 'Risk of detraining'
 'Rock Climbing': Bergbeklimmen
 'Roller Ski': 'Roller Ski'
+'Rolling stats': 'Rolling stats'
 Rowing: Roeien
 Run: Run
 Running: Running
@@ -636,6 +637,7 @@ workouts: workouts
 '{numberOfActivities} activities': '{numberOfActivities} activities'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} activities in {year}'
 '{numberOfActivities} activities on this route': '{numberOfActivities} activities on this route'
+'{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} months'
 '{numberOfResults} photos': '{numberOfResults} photos'
 '{numberOfResults} results': '{numberOfResults} results'

@@ -132,6 +132,7 @@ Done: Concluído
 'Drag to set the order in which sport types are displayed throughout the app.': 'Arraste para definir a ordem em que os tipos de esporte são exibidos em todo o aplicativo.'
 Duplicate: Duplicar
 Duration: Duração
+'Each data point sums everything logged in the preceding number of days.': 'Each data point sums everything logged in the preceding number of days.'
 Edit: Editar
 'Edit activity': 'Editar atividade'
 'Edit automation rule': 'Editar regra de automação'
@@ -326,6 +327,7 @@ Retired: Aposentado
 'Retry weather and reverse geocoding': 'Retry weather and reverse geocoding'
 'Return to app': 'Retornar ao aplicativo'
 Ride: Pedal
+'Rolling window (days)': 'Rolling window (days)'
 Rules: Regras
 'Rules to apply': 'Regras a aplicar'
 Saturday: Sábado

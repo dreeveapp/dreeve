@@ -354,6 +354,7 @@ Rides: Pedais
 'Risk of detraining': 'Risco de perda de condicionamento'
 'Rock Climbing': Escalada
 'Roller Ski': 'Esqui de Rodas'
+'Rolling stats': 'Rolling stats'
 Rowing: Remo
 Run: Corrida
 Running: Corrida
@@ -636,6 +637,7 @@ workouts: treinos
 '{numberOfActivities} activities': '{numberOfActivities} atividades'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} atividades em {year}'
 '{numberOfActivities} activities on this route': '{numberOfActivities} atividades nesta rota'
+'{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} meses'
 '{numberOfResults} photos': '{numberOfResults} fotos'
 '{numberOfResults} results': '{numberOfResults} resultados'

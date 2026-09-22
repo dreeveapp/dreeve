@@ -354,6 +354,7 @@ Rides: 骑行
 'Risk of detraining': 'Risk of detraining'
 'Rock Climbing': 攀岩
 'Roller Ski': 轮滑
+'Rolling stats': 'Rolling stats'
 Rowing: 划船
 Run: Run
 Running: 跑步
@@ -636,6 +637,7 @@ workouts: 锻炼
 '{numberOfActivities} activities': '{numberOfActivities}活动'
 '{numberOfActivities} activities in {year}': '{year}年内，{numberOfActivities}项活动'
 '{numberOfActivities} activities on this route': '{numberOfActivities} activities on this route'
+'{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} months'
 '{numberOfResults} photos': '{numberOfResults} photos'
 '{numberOfResults} results': '{numberOfResults} results'

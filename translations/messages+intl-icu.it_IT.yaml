@@ -354,6 +354,7 @@ Rides: Gare
 'Risk of detraining': 'Rischio di detraining'
 'Rock Climbing': 'Arrampicata su roccia'
 'Roller Ski': Skiroll
+'Rolling stats': 'Rolling stats'
 Rowing: Canottaggio
 Run: Run
 Running: Running
@@ -636,6 +637,7 @@ workouts: allenamenti
 '{numberOfActivities} activities': '{numberOfActivities} attività'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} attività nel {year}'
 '{numberOfActivities} activities on this route': '{numberOfActivities} activities on this route'
+'{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} mesi'
 '{numberOfResults} photos': '{numberOfResults} photos'
 '{numberOfResults} results': '{numberOfResults} results'

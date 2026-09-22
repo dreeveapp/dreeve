@@ -354,6 +354,7 @@ Rides: 'Sorties vélo'
 'Risk of detraining': 'Risque de désentraînement'
 'Rock Climbing': Escalade
 'Roller Ski': 'Ski à roulettes'
+'Rolling stats': 'Rolling stats'
 Rowing: Aviron
 Run: Run
 Running: 'Course à pied'
@@ -636,6 +637,7 @@ workouts: entraînements
 '{numberOfActivities} activities': '{numberOfActivities} activités'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} activités en {year}'
 '{numberOfActivities} activities on this route': '{numberOfActivities} activities sur ce parcours'
+'{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} mois'
 '{numberOfResults} photos': '{numberOfResults} photos'
 '{numberOfResults} results': '{numberOfResults} results'

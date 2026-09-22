@@ -354,6 +354,7 @@ Rides: 'Passeios de bicicleta'
 'Risk of detraining': 'Risk of detraining'
 'Rock Climbing': Escalada
 'Roller Ski': 'Esqui de Rodas'
+'Rolling stats': 'Rolling stats'
 Rowing: Remo
 Run: Run
 Running: Running
@@ -636,6 +637,7 @@ workouts: treinos
 '{numberOfActivities} activities': '{numberOfActivities} activities'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} actividades em {year}'
 '{numberOfActivities} activities on this route': '{numberOfActivities} activities on this route'
+'{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} months'
 '{numberOfResults} photos': '{numberOfResults} photos'
 '{numberOfResults} results': '{numberOfResults} results'
