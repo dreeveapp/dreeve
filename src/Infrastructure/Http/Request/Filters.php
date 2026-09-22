@@ -21,8 +21,6 @@ abstract readonly class Filters
         return new static($request->query->all('filters'));
     }
 
-    abstract public function isEmpty(): bool;
-
     protected function getString(string $name): ?string
     {
         $value = $this->filters[$name] ?? null;

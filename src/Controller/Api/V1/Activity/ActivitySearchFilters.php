@@ -16,14 +16,6 @@ final readonly class ActivitySearchFilters extends Filters
 {
     public const string DATE_FORMAT = '!Y-m-d';
 
-    public function isEmpty(): bool
-    {
-        return null === $this->getString('from')
-            && null === $this->getString('to')
-            && null === $this->getString('sportType')
-            && null === $this->getString('hasGpx');
-    }
-
     public function getFrom(): ?SerializableDateTime
     {
         return $this->getDate('from');
