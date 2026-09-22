@@ -11,6 +11,7 @@ use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\ArrayParameterType;
 
 final readonly class DbalActivitySearchRepository extends DbalRepository implements ActivitySearchRepository
@@ -35,12 +36,12 @@ final readonly class DbalActivitySearchRepository extends DbalRepository impleme
             ->from('Activity', 'a');
 
         foreach ([$queryBuilder, $countQueryBuilder] as $builder) {
-            if ($from = $filters->getFrom()) {
+            if (($from = $filters->getFrom()) instanceof SerializableDateTime) {
                 $builder
                     ->andWhere('a.startDateTime >= :from')
                     ->setParameter('from', $from->format('Y-m-d 00:00:00'));
             }
-            if ($to = $filters->getTo()) {
+            if (($to = $filters->getTo()) instanceof SerializableDateTime) {
                 $builder
                     ->andWhere('a.startDateTime <= :to')
                     ->setParameter('to', $to->format('Y-m-d 23:59:59'));

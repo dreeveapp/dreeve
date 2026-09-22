@@ -31,7 +31,7 @@ final readonly class ActivitySearchFilters extends Filters
 
     public function getTo(): ?SerializableDateTime
     {
-        if (null === $to = $this->getDate('to')) {
+        if (!($to = $this->getDate('to')) instanceof SerializableDateTime) {
             return null;
         }
 

@@ -23,7 +23,7 @@ class ActivitySearchRequestHandlerTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->request(self::PATH);
+        $this->client->request('GET', self::PATH, server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
@@ -33,20 +33,20 @@ class ActivitySearchRequestHandlerTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->request(self::PATH.'?filters[from]=2023-09-05&filters[to]=2023-09-05');
+        $this->client->request('GET', self::PATH.'?filters[from]=2023-09-05&filters[to]=2023-09-05', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
-        $this->assertEquals(['activity-9830227112'], $this->listedActivityIds());
+        $this->assertEquals(['activity-9830227112'], array_column(Json::decode((string) $this->client->getResponse()->getContent())['activities'], 'id'));
     }
 
     public function testItIncludesBothEndsOfTheDateRange(): void
     {
         $this->provideFullTestSet();
 
-        $this->request(self::PATH.'?filters[from]=2023-09-04&filters[to]=2023-09-11');
+        $this->client->request('GET', self::PATH.'?filters[from]=2023-09-04&filters[to]=2023-09-11', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertEquals(
             ['activity-9830227182', 'activity-9830227112', 'activity-9830227167'],
-            $this->listedActivityIds()
+            array_column(Json::decode((string) $this->client->getResponse()->getContent())['activities'], 'id')
         );
     }
 
@@ -54,36 +54,36 @@ class ActivitySearchRequestHandlerTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->request(self::PATH.'?filters[sportType]=Run');
+        $this->client->request('GET', self::PATH.'?filters[sportType]=Run', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
-        $this->assertEquals(['activity-9756441741123', 'activity-45326441741'], $this->listedActivityIds());
+        $this->assertEquals(['activity-9756441741123', 'activity-45326441741'], array_column(Json::decode((string) $this->client->getResponse()->getContent())['activities'], 'id'));
     }
 
     public function testItFiltersOnMultipleCommaSeparatedSportTypes(): void
     {
         $this->provideFullTestSet();
 
-        $this->request(self::PATH.'?filters[sportType]=Run,VirtualRide&filters[from]=2023-08-01');
+        $this->client->request('GET', self::PATH.'?filters[sportType]=Run,VirtualRide&filters[from]=2023-08-01', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
-        $this->assertEquals(['activity-9756441741123', 'activity-9756441741'], $this->listedActivityIds());
+        $this->assertEquals(['activity-9756441741123', 'activity-9756441741'], array_column(Json::decode((string) $this->client->getResponse()->getContent())['activities'], 'id'));
     }
 
     public function testItFiltersOnActivitiesThatHaveGpx(): void
     {
         $this->provideFullTestSet();
 
-        $this->request(self::PATH.'?filters[hasGpx]=true');
+        $this->client->request('GET', self::PATH.'?filters[hasGpx]=true', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
-        $this->assertEquals(['activity-9756441741'], $this->listedActivityIds());
+        $this->assertEquals(['activity-9756441741'], array_column(Json::decode((string) $this->client->getResponse()->getContent())['activities'], 'id'));
     }
 
     public function testItPaginates(): void
     {
         $this->provideFullTestSet();
 
-        $this->request(self::PATH.'?pagination[page]=2&pagination[size]=2');
+        $this->client->request('GET', self::PATH.'?pagination[page]=2&pagination[size]=2', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
-        $this->assertEquals(['activity-9830227112', 'activity-9830227167'], $this->listedActivityIds());
+        $this->assertEquals(['activity-9830227112', 'activity-9830227167'], array_column(Json::decode((string) $this->client->getResponse()->getContent())['activities'], 'id'));
         $this->assertSame(
             ['page' => 2, 'size' => 2, 'total' => 15, 'totalPages' => 8],
             Json::decode((string) $this->client->getResponse()->getContent())['pagination']
@@ -94,7 +94,7 @@ class ActivitySearchRequestHandlerTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->request(self::PATH.'?filters[sportType]=Run&pagination[size]=1');
+        $this->client->request('GET', self::PATH.'?filters[sportType]=Run&pagination[size]=1', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertSame(
             ['page' => 1, 'size' => 1, 'total' => 2, 'totalPages' => 2],
@@ -107,7 +107,7 @@ class ActivitySearchRequestHandlerTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->request(self::PATH.$queryString);
+        $this->client->request('GET', self::PATH.$queryString, server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
         $this->assertSame(
@@ -131,7 +131,7 @@ class ActivitySearchRequestHandlerTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->request(self::PATH.'/activity-9756441741');
+        $this->client->request('GET', self::PATH.'/activity-9756441741', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
@@ -139,7 +139,7 @@ class ActivitySearchRequestHandlerTest extends ControllerWebTestCase
 
     public function testItReportsAnUnknownActivityAsNotFound(): void
     {
-        $this->request(self::PATH.'/activity-1');
+        $this->client->request('GET', self::PATH.'/activity-1', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
         $this->assertSame(
@@ -150,31 +150,13 @@ class ActivitySearchRequestHandlerTest extends ControllerWebTestCase
 
     public function testItReportsAMalformedActivityIdAsNotFound(): void
     {
-        $this->request(self::PATH.'/not-an-activity-id');
+        $this->client->request('GET', self::PATH.'/not-an-activity-id', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
         $this->assertSame(
             'not_found',
             Json::decode((string) $this->client->getResponse()->getContent())['error']
         );
-    }
-
-    /**
-     * @return list<string>
-     */
-    private function listedActivityIds(): array
-    {
-        $this->assertResponseIsSuccessful();
-
-        return array_column(
-            Json::decode((string) $this->client->getResponse()->getContent())['activities'],
-            'id'
-        );
-    }
-
-    private function request(string $path): void
-    {
-        $this->client->request('GET', $path, server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
     }
 
     #[\Override]
