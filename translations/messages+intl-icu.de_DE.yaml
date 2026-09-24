@@ -353,7 +353,7 @@ Rides: Radfahren
 'Risk of detraining': 'Risiko für Leistungsabfall'
 'Rock Climbing': Klettern
 'Roller Ski': Rollski
-'Rolling stats': 'Rolling stats'
+'Rolling stats': 'Gleitende Statistiken'
 Rowing: Rudern
 Run: Lauf
 Running: Laufen
@@ -637,7 +637,7 @@ workouts: Trainingseinheiten
 '{numberOfActivities} activities': '{numberOfActivities} Aktivitäten'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} Aktivitäten in {year}'
 '{numberOfActivities} activities on this route': '{numberOfActivities} Aktivitäten auf dieser Route'
-'{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
+'{numberOfDays}-day rolling window': '{numberOfDays}-Tage-Zeitraum'
 '{numberOfMonths} months': '{numberOfMonths} Monate'
 '{numberOfResults} photos': '{numberOfResults} Bilder'
 '{numberOfResults} results': '{numberOfResults} Ergebnisse'
