@@ -1,3 +1,26 @@
+# [v5.4.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.4.1) - 2026-09-24
+
+## New features
+* Added API endpoints to list activities and download GPX files
+* Added a new "Rolling window stats" dashboard widget
+* Added support for wakeboarding activities
+
+## Improvements
+* Added the option to limit the "Most recent activities" widget to specific sport types
+* Added the possibility to configure a custom title for dashboard widgets
+
+## Technical details
+* German Translation by @effectpears in https://github.com/dreeveapp/dreeve/pull/2687
+* ISSUE #2688: Allow to limit 'Most recent activities' widget on sport types by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2692
+* ISSUE #2690: Add API endpoint for list activities and get activity summary/gpx by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2694
+* ISSUE #2693: Multi-Day Rolling Volume Chart View by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2695
+* ISSUE #2696: Add support for wakeboarding by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2697
+* ISSUE #2698: Allow to configure a dashboard widget title for all widgets by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2699
+* ISSUE #2700: New Shoutrrr release available: v0.21.1 by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2701
+
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.4.0...v5.4.1
+
 # [v5.4.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.4.0) - 2026-09-17
 
 > [!WARNING]
