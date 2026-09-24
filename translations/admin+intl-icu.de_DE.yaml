@@ -2,7 +2,7 @@
 'A backfill is already queued. It runs on the next import cycle, within five minutes.': 'Ein Erstellungsvorgang ist bereits in der Warteschlange. Er wird beim nächsten Importzyklus innerhalb von fünf Minuten ausgeführt.'
 'A rule applies': 'Eine Regel trifft zu'
 AI: KI
-AM/PM: AM/PM
+AM/PM: morgens/abends
 'API access': API-Zugriff
 'API key': API-Schlüssel
 Actions: Aktionen
@@ -132,7 +132,7 @@ Done: Done
 'Drag to set the order in which sport types are displayed throughout the app.': 'Ziehen, um die Reihenfolge festzulegen, in der Sportarten in der gesamten App angezeigt werden.'
 Duplicate: Kopieren
 Duration: Dauer
-'Each data point sums everything logged in the preceding number of days.': 'Each data point sums everything logged in the preceding number of days.'
+'Each data point sums everything logged in the preceding number of days.': 'Jeder Datenpunkt enthält die Summe aller in den vorhergehenden Tagen erfassten Werte.'
 Edit: Bearbeiten
 'Edit activity': 'Aktivität bearbeiten'
 'Edit automation rule': 'Automatisierungsregel bearbeiten'
@@ -214,7 +214,7 @@ Latitude: Breitengrad
 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.': 'Lasse alle abgewählt, um jede Sportart zu importieren. ⚠️ Wenn du dies einschränkst, nachdem Aktivitäten importiert wurden, werden Aktivitäten von ausgeschlossenen Sportarten gelöscht.'
 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Lasse alle abgewählt, um jede Sichtbarkeit zu importieren. ⚠️ Wenn du dies einschränkst, nachdem Aktivitäten importiert wurden, werden Aktivitäten von ausgeschlossenen Sichtbarkeiten gelöscht.'
 'Leave empty to include all sport types.': 'Leer lassen, um alle Sportarten einzubeziehen.'
-'Leave empty to use the default title.': 'Leave empty to use the default title.'
+'Leave empty to use the default title.': 'Leer lassen, um den Standardtitel zu verwenden.'
 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Ermöglicht einem externen Client, Aktivitätsdateien über HTTP hochzuladen. Der Schlüssel ist der einzige Schutz dieses Endpunktes – behandle ihn wie ein Passwort.'
 Locale: Sprache
 Log: Protokoll
@@ -328,7 +328,7 @@ Retired: Ausgemustert
 'Retry weather and reverse geocoding': 'Wetterdaten und Reverse-Geocoding abfragen'
 'Return to app': 'Zurück zur App'
 Ride: Radfahrt
-'Rolling window (days)': 'Rolling window (days)'
+'Rolling window (days)': 'Rollierender Zeitraum (Tage)'
 Rules: Regeln
 'Rules to apply': 'Anzuwendende Regeln'
 Saturday: Samstag
@@ -459,7 +459,7 @@ Thursday: Donnerstag
 'Tile layers': Kachel-Layer
 'Time format': Zeitformat
 'Time of day': Tageszeit
-Title: Title
+Title: Titel
 To: bis
 'Token used to validate incoming Strava webhook requests. Required when webhooks are enabled.': 'Token zur Validierung eingehender Strava-Webhook-Anfragen. Erforderlich, wenn Webhooks aktiviert sind.'
 "Tokens are replaced with the activity's values when the rule runs.": 'Die Platzhalter werden beim Ausführen der Regel durch die Werte der Aktivität ersetzt.'
