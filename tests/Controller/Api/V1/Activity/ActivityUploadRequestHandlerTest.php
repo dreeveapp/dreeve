@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Api\V1\Activity;
 
-use App\Domain\Api\Token;
 use App\Domain\Import\ImportMode;
+use App\Infrastructure\Security\Api\Token;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use League\Flysystem\FilesystemOperator;

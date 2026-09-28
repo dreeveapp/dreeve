@@ -105,7 +105,7 @@ services:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:STRAVA_REFRESH_TOKEN)%']
 
-    App\Domain\Api\Token:
+    App\Infrastructure\Security\Api\Token:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:DREEVE_API_KEY)%']
 

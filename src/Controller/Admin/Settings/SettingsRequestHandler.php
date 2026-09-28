@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Settings;
 
 use App\Application\AppUrl;
-use App\Domain\Api\Token;
 use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
 use App\Domain\Import\ImportMode;
 use App\Domain\Integration\AI\AIApiKey;
@@ -21,6 +20,7 @@ use App\Infrastructure\Config\AdminAllowedIpAddresses;
 use App\Infrastructure\Http\ClientIpResolver;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Security\AdminUserName;
+use App\Infrastructure\Security\Api\Token;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

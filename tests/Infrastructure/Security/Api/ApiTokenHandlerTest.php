@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Infrastructure\Security\Api;
 
-use App\Domain\Api\Token;
 use App\Infrastructure\Security\Api\ApiTokenHandler;
 use App\Infrastructure\Security\Api\ApiUser;
+use App\Infrastructure\Security\Api\Token;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;

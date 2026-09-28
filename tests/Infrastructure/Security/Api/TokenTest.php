@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Domain\Api;
+namespace App\Tests\Infrastructure\Security\Api;
 
-use App\Domain\Api\Token;
+use App\Infrastructure\Security\Api\Token;
 use App\Infrastructure\Serialization\Json;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

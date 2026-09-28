@@ -2,7 +2,7 @@
 
 namespace App\Tests\Controller\Admin\Settings;
 
-use App\Domain\Api\Token;
+use App\Infrastructure\Security\Api\Token;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class SecuritySettingsRequestHandlerTest extends AdminWebTestCase

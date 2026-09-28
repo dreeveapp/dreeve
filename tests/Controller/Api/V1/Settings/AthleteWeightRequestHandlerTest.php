@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Api\V1\Settings;
 
-use App\Domain\Api\Token;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Security\Api\Token;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;

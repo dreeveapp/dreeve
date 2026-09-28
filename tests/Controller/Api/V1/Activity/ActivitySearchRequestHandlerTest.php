@@ -2,7 +2,7 @@
 
 namespace App\Tests\Controller\Api\V1\Activity;
 
-use App\Domain\Api\Token;
+use App\Infrastructure\Security\Api\Token;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;

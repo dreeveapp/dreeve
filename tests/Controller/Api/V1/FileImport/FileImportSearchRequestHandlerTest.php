@@ -4,10 +4,10 @@ namespace App\Tests\Controller\Api\V1\FileImport;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ImportSource;
-use App\Domain\Api\Token;
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportRepository;
 use App\Domain\Import\FileImportStatus;
+use App\Infrastructure\Security\Api\Token;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;
