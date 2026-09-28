@@ -18,7 +18,9 @@ class Router {
 
         this._registerNavigation();
         this._registerBrowserBackAndForth();
-        this._renderContent(route);
+        this._activate(route);
+
+        eventBus.emit(Events.PAGE_LOADED, {page: this._pageName(route)});
 
         window.history.replaceState({route}, '', route);
     }
@@ -93,6 +95,17 @@ class Router {
         return `${baseUrl}/${fragmentPath}`;
     }
 
+    _pageName(page) {
+        return this._toPath(page).replaceAll('/', '-');
+    }
+
+    _activate(page) {
+        this._app().setAttribute('data-router-current', page);
+
+        this._menuItems().forEach(node => node.setAttribute('aria-selected', 'false'));
+        this._determineActiveMenuLink(page)?.setAttribute('aria-selected', 'true');
+    }
+
     _closeMobileNav() {
         if (this._menu().hasAttribute('aria-hidden')) return;
 
@@ -109,11 +122,7 @@ class Router {
         rememberScrollPosition(previousRoute);
         this._closeMobileNav();
 
-        this._app().setAttribute('data-router-current', page);
-
-        // Update active states
-        this._menuItems().forEach(node => node.setAttribute('aria-selected', 'false'));
-        this._determineActiveMenuLink(page)?.setAttribute('aria-selected', 'true');
+        this._activate(page);
 
         this._showLoader();
 
@@ -153,9 +162,7 @@ class Router {
         this._hideLoader();
         const scrollY = beginScrollRestore(page, restoreScroll);
 
-        const fullPageName = this._toPath(page).replaceAll('/', '-');
-
-        eventBus.emit(Events.PAGE_LOADED, {page: fullPageName});
+        eventBus.emit(Events.PAGE_LOADED, {page: this._pageName(page)});
         window.scrollTo(0, scrollY);
     }
 

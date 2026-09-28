@@ -19,9 +19,6 @@ import DarkModeManager from "./components/dark-mode";
 import initDropdowns from "./components/dropdown";
 import {initAccordions, initPopovers, initDrawers} from "flowbite";
 
-// Boot router.
-router.boot();
-
 registerEchartsCallbacks();
 initDrawers();
 
@@ -88,6 +85,9 @@ eventBus.on(Events.PAGE_LOADED, async ({page}) => {
 eventBus.on(Events.ASYNC_CONTENT_LOADED, ({node}) => {
     initElements(node);
 });
+
+router.boot();
+
 (async () => {
     await updateGithubLatestRelease();
 })();

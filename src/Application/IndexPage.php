@@ -24,6 +24,8 @@ use Twig\Environment;
 
 final readonly class IndexPage implements Cacheable
 {
+    public const string MAIN_CONTENT_MARKER = '<!--dreeve:main-->';
+
     public function __construct(
         private ActivityIdRepository $activityIdRepository,
         private GearRepository $gearRepository,
@@ -61,6 +63,7 @@ final readonly class IndexPage implements Cacheable
         $general = $this->settingsRepository->general();
 
         return $this->twig->load('html/index.html.twig')->render([
+            'mainContentMarker' => self::MAIN_CONTENT_MARKER,
             'totalActivityCount' => $this->activityIdRepository->count(),
             'completedChallenges' => $this->challengeRepository->count(),
             'totalPhotoCount' => $this->imageRepository->count(),

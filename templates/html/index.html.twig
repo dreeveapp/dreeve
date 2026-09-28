@@ -174,7 +174,7 @@
                 {% include 'html/loader.html.twig' with {modifier: 'loader--md'} %}
             </div>
             <!-- JS LOADED CONTENT -->
-            <div id="js-loaded-content"></div>
+            <div id="js-loaded-content">{{ mainContentMarker|raw }}</div>
         {% endblock %}
     </main>
 </div>

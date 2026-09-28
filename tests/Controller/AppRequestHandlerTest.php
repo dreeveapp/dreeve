@@ -3,6 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Application\IndexPage;
+use App\Application\NotFoundFragment;
 use App\Controller\AppRequestHandler;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Infrastructure\Http\Fragment\FragmentRegistry;
@@ -24,6 +25,23 @@ class AppRequestHandlerTest extends ContainerTestCase
         $this->provideFullTestSet();
 
         $this->assertMatchesHtmlSnapshot($this->appRequestHandler->handle()->getContent());
+    }
+
+    public function testHandleRendersTheNotFoundPageForAnUnknownPath(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->assertMatchesHtmlSnapshot($this->appRequestHandler->handle('dmzdmzd')->getContent());
+    }
+
+    public function testHandleKeepsThePageCacheControl(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->assertEquals(
+            'no-store, private',
+            $this->appRequestHandler->handle('dashboard')->headers->get('Cache-Control'),
+        );
     }
 
     public function testHandleThrowsWhenNoActivitiesHaveBeenImported(): void
@@ -70,6 +88,7 @@ class AppRequestHandlerTest extends ContainerTestCase
             $this->getContainer()->get(IndexPage::class),
             $this->getContainer()->get(FragmentRegistry::class),
             $this->getContainer()->get(FragmentRenderer::class),
+            $this->getContainer()->get(NotFoundFragment::class),
         );
     }
 }
