@@ -12,6 +12,7 @@ enum FileImportStatus: string implements TranslatableInterface
     case SUCCESS = 'success';
     case SKIPPED = 'skipped';
     case FAILED = 'failed';
+    case QUEUED = 'queued';
 
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
@@ -19,6 +20,7 @@ enum FileImportStatus: string implements TranslatableInterface
             self::SUCCESS => $translator->trans('Success', domain: 'admin', locale: $locale),
             self::SKIPPED => $translator->trans('Skipped', domain: 'admin', locale: $locale),
             self::FAILED => $translator->trans('Failed', domain: 'admin', locale: $locale),
+            self::QUEUED => $translator->trans('Queued', domain: 'admin', locale: $locale),
         };
     }
 }

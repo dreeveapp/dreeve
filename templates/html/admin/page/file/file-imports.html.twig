@@ -69,6 +69,13 @@
                                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                     <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
                                             </span>
+                                        {% elseif fileImport.isQueued() %}
+                                            <span class="grid place-items-center size-7 shrink-0 rounded-lg bg-gray-100 text-gray-500"
+                                                  aria-label="{{ "Queued"|trans({}, 'admin') }}">
+                                                <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                            </span>
                                         {% elseif fileImport.wasSkipped() %}
                                             <span class="grid place-items-center size-7 shrink-0 rounded-lg bg-amber-100 text-amber-500"
                                                   title="{{ fileImport.getErrorMessage()|e }}" aria-label="{{ "Skipped"|trans({}, 'admin') }}">
@@ -84,10 +91,14 @@
                                                     <path d="M20 6L9 17l-5-5"/></svg>
                                             </span>
                                         {% endif %}
-                                        <span>
-                                            {{ fileImport.getImportedOn()|formatDate() }}
-                                            <span class="text-xs">{{ fileImport.getImportedOn()|formatTime(true) }}</span>
-                                        </span>
+                                        {% if fileImport.isQueued() %}
+                                            <span>{{ "Queued"|trans({}, 'admin') }}</span>
+                                        {% else %}
+                                            <span>
+                                                {{ fileImport.getImportedOn()|formatDate() }}
+                                                <span class="text-xs">{{ fileImport.getImportedOn()|formatTime(true) }}</span>
+                                            </span>
+                                        {% endif %}
                                     </div>
                                 </td>
                                 <td class="whitespace-nowrap text-left">
@@ -119,14 +130,16 @@
                                                 </svg>
                                             </a>
                                         {% endif %}
-                                        <a href="{{ relativeUrl(path('admin_delete_file_import', {fileImportId: fileImport.getFileImportId()})) }}"
-                                           class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600"
-                                           title="{{ "Delete"|trans({}, 'admin') }}">
-                                            <span class="sr-only">{{ "Delete"|trans({}, 'admin') }}</span>
-                                            <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
-                                            </svg>
-                                        </a>
+                                        {% if fileImport.getFileImportId() %}
+                                            <a href="{{ relativeUrl(path('admin_delete_file_import', {fileImportId: fileImport.getFileImportId()})) }}"
+                                               class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600"
+                                               title="{{ "Delete"|trans({}, 'admin') }}">
+                                                <span class="sr-only">{{ "Delete"|trans({}, 'admin') }}</span>
+                                                <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                                </svg>
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </td>
                             </tr>

@@ -17,11 +17,14 @@ use App\Domain\Import\FileImportOverviewItem;
 use App\Domain\Import\FileImportOverviewRepository;
 use App\Domain\Import\FileImportRepository;
 use App\Domain\Import\FileImportStatus;
+use App\Domain\Import\QueuedFileImports;
+use App\Domain\Import\WatchDirectory;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Infrastructure\Eventing\SpyEventBus;
+use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,6 +33,7 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
     private FileImportOverviewRepository $fileImportOverviewRepository;
     private FileImportRepository $fileImportRepository;
     private ActivityRepository $activityRepository;
+    private FilesystemOperator $filesystem;
 
     public function testFindMapsRowToOverviewItemWithoutFileContents(): void
     {
@@ -237,6 +241,100 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         ];
     }
 
+    #[DataProvider('provideQueuedPaginationScenarios')]
+    public function testFindListsQueuedFilesBeforeImportedOnes(
+        Pagination $pagination,
+        array $expectedFilenames,
+    ): void {
+        $this->seedThreeFileImports();
+        $this->filesystem->write('watch/queued-b.fit', 'raw-fit-bytes');
+        $this->filesystem->write('watch/queued-a.gpx', 'raw-gpx-bytes');
+
+        $overview = $this->fileImportOverviewRepository->find($pagination, FileImportOverviewFilters::fromRequest(new Request()));
+
+        $this->assertSame(
+            $expectedFilenames,
+            array_map(
+                static fn (FileImportOverviewItem $item): string => $item->getOriginalFilename(),
+                $overview->getItems()
+            )
+        );
+        $this->assertEquals(5, $overview->getTotal());
+    }
+
+    public static function provideQueuedPaginationScenarios(): iterable
+    {
+        yield 'a page holding only queued files' => [
+            Pagination::fromOffsetAndLimit(0, 2),
+            ['queued-a.gpx', 'queued-b.fit'],
+        ];
+
+        yield 'a page straddling queued and imported files' => [
+            Pagination::fromOffsetAndLimit(1, 2),
+            ['queued-b.fit', 'newest.fit'],
+        ];
+
+        yield 'a page holding only imported files' => [
+            Pagination::fromOffsetAndLimit(3, 2),
+            ['middle.fit', 'oldest.fit'],
+        ];
+    }
+
+    public function testFindMapsAQueuedFile(): void
+    {
+        $this->filesystem->write('watch/queued.tcx', 'raw-tcx-bytes');
+
+        $this->assertEquals(
+            [FileImportOverviewItem::queued('queued.tcx', ImportSource::TCX_FILE)],
+            $this->fileImportOverviewRepository->find(
+                Pagination::fromOffsetAndLimit(0, 10),
+                FileImportOverviewFilters::fromRequest(new Request())
+            )->getItems()
+        );
+    }
+
+    #[DataProvider('provideQueuedFilterScenarios')]
+    public function testFindAppliesFiltersToQueuedFiles(
+        array $filters,
+        array $expectedFilenames,
+    ): void {
+        $this->seedThreeFileImports();
+        $this->filesystem->write('watch/queued.fit', 'raw-fit-bytes');
+        $this->filesystem->write('watch/queued.gpx', 'raw-gpx-bytes');
+
+        $overview = $this->fileImportOverviewRepository->find(
+            Pagination::fromOffsetAndLimit(0, 10),
+            FileImportOverviewFilters::fromRequest(new Request(query: ['filters' => $filters]))
+        );
+
+        $this->assertSame(
+            $expectedFilenames,
+            array_map(
+                static fn (FileImportOverviewItem $item): string => $item->getOriginalFilename(),
+                $overview->getItems()
+            )
+        );
+        $this->assertEquals(count($expectedFilenames), $overview->getTotal());
+    }
+
+    public static function provideQueuedFilterScenarios(): iterable
+    {
+        yield 'the queued status only returns queued files' => [
+            ['status' => 'queued'],
+            ['queued.fit', 'queued.gpx'],
+        ];
+
+        yield 'another status leaves queued files out' => [
+            ['status' => 'success'],
+            ['newest.fit', 'middle.fit'],
+        ];
+
+        yield 'a source filter applies to queued files too' => [
+            ['source' => 'gpxFile'],
+            ['queued.gpx', 'oldest.fit'],
+        ];
+    }
+
     private function seedThreeFileImports(): void
     {
         $this->fileImportRepository->add(
@@ -277,8 +375,10 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
             $this->getConnection()
         );
         $this->fileImportOverviewRepository = new DbalFileImportOverviewRepository(
-            $this->getConnection()
+            $this->getConnection(),
+            new QueuedFileImports($this->getContainer()->get(WatchDirectory::class)),
         );
+        $this->filesystem = $this->getContainer()->get(FilesystemOperator::class);
         $this->activityRepository = new DbalActivityRepository(
             $this->getConnection(),
             new SpyEventBus(),

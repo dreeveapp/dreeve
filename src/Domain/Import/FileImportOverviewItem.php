@@ -12,11 +12,11 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 final readonly class FileImportOverviewItem implements Item
 {
     private function __construct(
-        private FileImportId $fileImportId,
+        private ?FileImportId $fileImportId,
         private string $originalFilename,
         private ImportSource $source,
         private FileImportStatus $status,
-        private SerializableDateTime $importedOn,
+        private ?SerializableDateTime $importedOn,
         private ?string $errorMessage,
         private ?ActivityId $activityId,
         private ?string $activityName,
@@ -48,7 +48,24 @@ final readonly class FileImportOverviewItem implements Item
         );
     }
 
-    public function getFileImportId(): FileImportId
+    public static function queued(
+        string $originalFilename,
+        ImportSource $source,
+    ): self {
+        return new self(
+            fileImportId: null,
+            originalFilename: $originalFilename,
+            source: $source,
+            status: FileImportStatus::QUEUED,
+            importedOn: null,
+            errorMessage: null,
+            activityId: null,
+            activityName: null,
+            hasFileContents: false,
+        );
+    }
+
+    public function getFileImportId(): ?FileImportId
     {
         return $this->fileImportId;
     }
@@ -66,6 +83,11 @@ final readonly class FileImportOverviewItem implements Item
     public function isFailed(): bool
     {
         return FileImportStatus::FAILED === $this->status;
+    }
+
+    public function isQueued(): bool
+    {
+        return FileImportStatus::QUEUED === $this->status;
     }
 
     public function wasSkipped(): bool
@@ -93,7 +115,7 @@ final readonly class FileImportOverviewItem implements Item
         return $this->activityName;
     }
 
-    public function getImportedOn(): SerializableDateTime
+    public function getImportedOn(): ?SerializableDateTime
     {
         return $this->importedOn;
     }

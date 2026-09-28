@@ -12,48 +12,59 @@ use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Doctrine\DBAL\Connection;
 
 final readonly class DbalFileImportOverviewRepository extends DbalRepository implements FileImportOverviewRepository
 {
+    public function __construct(
+        Connection $connection,
+        private QueuedFileImports $queuedFileImports,
+    ) {
+        parent::__construct($connection);
+    }
+
     public function find(Pagination $pagination, FileImportOverviewFilters $filters): Overview
     {
+        $status = $filters->getStatus();
+        $source = $filters->getSource();
+
         $queryBuilder = $this->connection->createQueryBuilder()
             ->select('fi.fileImportId', 'fi.originalFilename', 'fi.source', 'fi.status', 'fi.errorMessage', 'fi.activityId', 'fi.importedOn', 'fi.fileContents IS NOT NULL AS hasFileContents', 'a.name AS activityName')
             ->from('FileImport', 'fi')
             ->leftJoin('fi', 'Activity', 'a', 'a.activityId = fi.activityId')
-            ->orderBy('fi.importedOn', 'DESC')
-            ->setFirstResult($pagination->getOffset())
-            ->setMaxResults($pagination->getLimit());
+            ->orderBy('fi.importedOn', 'DESC');
 
         $countQueryBuilder = $this->connection->createQueryBuilder()
             ->select('COUNT(*)')
             ->from('FileImport', 'fi');
 
         foreach ([$queryBuilder, $countQueryBuilder] as $builder) {
-            if (($status = $filters->getStatus()) instanceof FileImportStatus) {
+            if ($status instanceof FileImportStatus) {
                 $builder
                     ->andWhere('fi.status = :status')
                     ->setParameter('status', $status->value);
             }
-            if (($source = $filters->getSource()) instanceof ImportSource) {
+            if ($source instanceof ImportSource) {
                 $builder
                     ->andWhere('fi.source = :source')
                     ->setParameter('source', $source->value);
             }
         }
 
-        $results = $queryBuilder
-            ->executeQuery()
-            ->fetchAllAssociative();
-
-        $total = (int) $countQueryBuilder
-            ->executeQuery()
-            ->fetchOne();
-
-        return Overview::create(
+        return QueuedFirstOverview::create(
+            queued: in_array($status, [null, FileImportStatus::QUEUED], true)
+                ? $this->queuedFileImports->find(source: $source)
+                : [],
+            totalImported: (int) $countQueryBuilder->executeQuery()->fetchOne(),
             pagination: $pagination,
-            total: $total,
-            items: array_map($this->hydrate(...), $results),
+            fetchImported: fn (int $offset, int $limit): array => array_map(
+                $this->hydrate(...),
+                $queryBuilder
+                    ->setFirstResult($offset)
+                    ->setMaxResults($limit)
+                    ->executeQuery()
+                    ->fetchAllAssociative()
+            ),
         );
     }
 

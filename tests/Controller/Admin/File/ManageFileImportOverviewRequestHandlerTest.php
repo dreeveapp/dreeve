@@ -13,6 +13,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Import\FileImportBuilder;
+use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
@@ -192,6 +193,25 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
             'filters%5Bstatus%5D=failed',
             (string) $crawler->filter('[aria-label="Go to next page"]')->attr('href')
         );
+    }
+
+    public function testListsQueuedFilesFirstWithoutActions(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+        $this->seedFileImports(3);
+        static::getContainer()->get(FilesystemOperator::class)->write('watch/queued.fit', 'raw fit bytes');
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/file-imports');
+
+        $this->assertResponseIsSuccessful();
+        $rows = $crawler->filter('table.data-table tbody tr');
+        $this->assertCount(4, $rows);
+        $this->assertCount(1, $rows->first()->filter('[aria-label="Queued"]'));
+        $this->assertStringContainsString('queued.fit', $rows->first()->text());
+        $this->assertCount(0, $rows->first()->filter('a'));
+        $this->assertCount(3, $crawler->filter('table.data-table tbody a[href$="/delete"]'));
+        $this->assertCount(1, $crawler->filter('select[name="filters[status]"] option[value="queued"]'));
     }
 
     public function testLinksEveryImportedActivityToItsDetailPage(): void

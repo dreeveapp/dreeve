@@ -10,6 +10,7 @@ use App\Domain\Activity\Lap\ActivityLaps;
 use App\Domain\Activity\Shifting\ActivityDrivetrainUsages;
 use App\Domain\Activity\Stream\ActivityStreams;
 use App\Domain\Import\FileParser\RawActivityFile;
+use App\Domain\Import\SupportedFileExtension;
 use App\Infrastructure\ValueObject\String\Path;
 
 final readonly class ActivityImportContext
@@ -39,12 +40,8 @@ final readonly class ActivityImportContext
 
     public function getImportSource(): ImportSource
     {
-        return match ($this->filePath->getExtension()) {
-            'fit' => ImportSource::FIT_FILE,
-            'tcx' => ImportSource::TCX_FILE,
-            'gpx' => ImportSource::GPX_FILE,
-            default => throw new \RuntimeException(sprintf('Unknown file extension "%s"', $this->filePath->getExtension())),
-        };
+        return SupportedFileExtension::tryFrom($this->filePath->getExtension())?->getImportSource()
+            ?? throw new \RuntimeException(sprintf('Unknown file extension "%s"', $this->filePath->getExtension()));
     }
 
     public function withActivity(Activity $activity): self
