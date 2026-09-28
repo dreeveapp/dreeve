@@ -1,5 +1,4 @@
 export const Events = Object.freeze({
-    PAGE_LOADED:                'page:loaded',
     ASYNC_CONTENT_LOADED:       'asyncContent:loaded',
     DARK_MODE_TOGGLED:          'darkMode:toggled',
     REPEATER_CHANGED:           'repeater:changed',

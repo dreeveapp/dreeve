@@ -3,27 +3,10 @@ import {ColumnManager} from "./column-manager";
 import {FilterManager} from "./filter-manager";
 import {Sorter} from "./sorter";
 import {parse, serialize} from "./filter-url";
-import {debounce} from "../../utils";
-import {restoreScrollArea} from "../../core/scroll-memory";
-import {router} from "../../core/router";
-
-const renderers = new Map();
-
-const destroyDetachedTables = () => {
-    for (const [wrapper, renderer] of renderers) {
-        if (wrapper.isConnected) continue;
-
-        renderer.destroy();
-        renderers.delete(wrapper);
-    }
-};
+import {debounce, replaceQueryString} from "../../utils";
 
 export default function initDataTables(rootNode) {
-    destroyDetachedTables();
-
     rootNode.querySelectorAll('div[data-dataTable-settings]').forEach((wrapper) => {
-        if (renderers.has(wrapper)) return;
-
         const table = wrapper.querySelector('table');
         const tbody = table?.querySelector('tbody');
         const scrollElem = wrapper.querySelector('.scroll-area');
@@ -36,8 +19,6 @@ export default function initDataTables(rootNode) {
         const filterManager = new FilterManager(wrapper);
         const clusterRenderer = new ClusterRenderer(wrapper, tbody, scrollElem);
         const sorter = new Sorter(wrapper.querySelectorAll('thead th[data-dataTable-sort]'));
-
-        renderers.set(wrapper, clusterRenderer);
 
         if (settings.toggleableColumns) {
             new ColumnManager(wrapper, settings.name).init();
@@ -61,7 +42,7 @@ export default function initDataTables(rootNode) {
 
                 filterManager.updateDropdownState(activeFilters);
                 if (syncUrl) {
-                    router.replaceQuery(serialize({
+                    replaceQueryString(serialize({
                         filters: filterManager.toUrlFilters(),
                         search: search,
                         sortOn: sorter.sortOn,
@@ -74,7 +55,6 @@ export default function initDataTables(rootNode) {
             };
 
             updateState(false, false);
-            restoreScrollArea(scrollElem);
 
             // Attach events.
             searchInput.addEventListener('input', debounce(updateState));

@@ -47,6 +47,10 @@ export const basePath = () => {
     return configured ? '/' + configured.replace(/^\/+|\/+$/g, '') : '';
 }
 
+export const replaceQueryString = (queryString) => {
+    window.history.replaceState(window.history.state, '', queryString ? `${location.pathname}?${queryString}` : location.pathname);
+}
+
 export const fetchJson = async (url) => {
     const response = await fetch(url);
 

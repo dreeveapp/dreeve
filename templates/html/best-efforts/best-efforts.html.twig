@@ -63,7 +63,7 @@
                                             <tr class="group/row">
                                                 <th scope="row" class="sticky left-0 bg-white font-medium whitespace-nowrap">
                                                     <div>
-                                                        <a href="{{ relativeUrl('best-efforts/' ~ activityType.value ~ '/' ~ distance.toMeter().toInt()) }}" data-router-link
+                                                        <a href="{{ relativeUrl('best-efforts/' ~ activityType.value ~ '/' ~ distance.toMeter().toInt()) }}"
                                                            class="font-medium text-blue-600 hover:underline">
                                                             {{ distance.isLowerThanOne() ? distance.toFloat()|round(1) : distance.toInt() }} {{ distance.getSymbol() }}
                                                         </a>

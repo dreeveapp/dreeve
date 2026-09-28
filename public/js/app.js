@@ -1,6 +1,5 @@
 import "./core/public-path";
 import {eventBus, Events} from "./core/event-bus";
-import {router} from "./core/router";
 import {updateGithubLatestRelease} from "./services/github";
 import initSidebar from "./components/sidebar";
 import ChartManager from "./features/charts/chart-manager";
@@ -12,7 +11,7 @@ import LazyLoad from "../libraries/lazyload.min";
 import initDataTables from "./features/data-table/data-table-manager";
 import initFullscreen from "./components/fullscreen";
 import initLightGalleries from "./components/light-gallery";
-import initAsyncContent, {abortPendingAsyncContent} from "./components/async-content";
+import initAsyncContent from "./components/async-content";
 import ScrollTo from "./components/scroll-to";
 import MilestoneFilter from "./features/milestones/milestone-filter";
 import DarkModeManager from "./components/dark-mode";
@@ -56,37 +55,29 @@ eventBus.on(Events.DARK_MODE_TOGGLED, ({darkModeEnabled}) => {
     chartManager.toggleDarkTheme(darkModeEnabled);
 });
 
-eventBus.on(Events.PAGE_LOADED, async ({page}) => {
-    abortPendingAsyncContent();
-    chartManager.reset();
-    initElements(document);
-
-    if (page === 'milestones') {
-        new MilestoneFilter(document).init();
-    }
-    if (page === 'heatmap') {
-        const $heatmapWrapper = document.querySelector('.heatmap-wrapper');
-        const {default: Heatmap} = await import(
-            /* webpackChunkName: "leaflet" */ './features/heatmap/heatmap'
-        );
-        await new Heatmap($heatmapWrapper).render();
-    }
-    if (page === 'photos') {
-        const $photoWallWrapper = document.querySelector('.photo-wall-wrapper');
-        new PhotoWall($photoWallWrapper).render();
-    }
-    if (page === 'chat') {
-        const {default: Chat} = await import(
-            /* webpackChunkName: "chat" */ './features/chat/chat'
-        );
-        new Chat(document).render();
-    }
-});
 eventBus.on(Events.ASYNC_CONTENT_LOADED, ({node}) => {
     initElements(node);
 });
 
-router.boot();
+initElements(document);
+
+new MilestoneFilter(document).init();
+
+const $heatmapWrapper = document.querySelector('.heatmap-wrapper');
+if ($heatmapWrapper) {
+    import(/* webpackChunkName: "leaflet" */ './features/heatmap/heatmap')
+        .then(({default: Heatmap}) => new Heatmap($heatmapWrapper).render());
+}
+
+const $photoWallWrapper = document.querySelector('.photo-wall-wrapper');
+if ($photoWallWrapper) {
+    new PhotoWall($photoWallWrapper).render();
+}
+
+if (document.querySelector('.chat--wrapper')) {
+    import(/* webpackChunkName: "chat" */ './features/chat/chat')
+        .then(({default: Chat}) => new Chat(document).render());
+}
 
 (async () => {
     await updateGithubLatestRelease();

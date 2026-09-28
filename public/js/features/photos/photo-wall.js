@@ -1,6 +1,6 @@
 import {FilterManager} from "../data-table/filter-manager";
 import {parse, serialize} from "../data-table/filter-url";
-import {router} from "../../core/router";
+import {replaceQueryString} from "../../utils";
 
 export default class PhotoWall {
     constructor(wrapper) {
@@ -19,7 +19,7 @@ export default class PhotoWall {
             const activeFilters = this.filterManager.getActiveFilters();
             this.filterManager.updateDropdownState(activeFilters);
             if (syncUrl) {
-                router.replaceQuery(serialize({filters: this.filterManager.toUrlFilters()}));
+                replaceQueryString(serialize({filters: this.filterManager.toUrlFilters()}));
             }
 
             const images = this.filterManager.applyFiltersToRows(this.allImages);

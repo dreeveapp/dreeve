@@ -2,7 +2,6 @@ import {pointToLineDistance, point, lineString} from "../../../libraries/turf";
 import L from 'leaflet';
 import {createFlyToPlacesControl, createMapToolsControl} from "../maps/leaflet-controls";
 import HeatmapCountriesLayer from "./heatmap-countries-layer";
-import {router} from "../../core/router";
 import '../maps/ctrl-scroll-zoom';
 
 export default class HeatmapDrawer {
@@ -44,7 +43,6 @@ export default class HeatmapDrawer {
 
         this.map.on("click", (e) => this._handleMapClick(e));
         this.map.on("popupclose", () => this._resetRouteStyles());
-        this.map.on("popupopen", (e) => this._handlePopupOpen(e));
     }
 
     _resetRouteStyles() {
@@ -52,23 +50,6 @@ export default class HeatmapDrawer {
             entry.polyline.setStyle(this.defaultPolylineStyle);
         });
     }
-
-    destroy() {
-        this.map.remove();
-    }
-
-    _handlePopupOpen(e) {
-        const container = e.popup.getElement();
-        if (!container) return;
-
-        container.querySelectorAll('a[data-router-link]').forEach(node => {
-            node.addEventListener("click", (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                router.navigateTo(node.getAttribute('href'));
-            });
-        });
-    };
 
     _handleMapClick(e) {
         const clickPoint = point([e.latlng.lng, e.latlng.lat]);
@@ -103,8 +84,7 @@ export default class HeatmapDrawer {
                  <ul class="divide-default divide-y divide-gray-200">
                     ${nearby.map(entry => `
                      <li class="py-2">
-                      <a href="${entry.route.activityUrl}" title="${entry.route.name}" class="block truncate font-medium text-blue-600 hover:underline" 
-                        data-router-link>
+                      <a href="${entry.route.activityUrl}" title="${entry.route.name}" class="block truncate font-medium text-blue-600 hover:underline">
                         ${entry.route.name}
                       </a>
                       <div class="flex items-center justify-between text-xs text-gray-500">
