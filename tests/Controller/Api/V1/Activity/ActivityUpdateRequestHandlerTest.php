@@ -30,7 +30,12 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
 
     public function testItUpdatesAnActivity(): void
     {
-        $this->patch(self::PATH, (string) file_get_contents(__DIR__.'/fixtures/patch-activity.json'));
+        $this->client->request(
+            'PATCH',
+            self::PATH,
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
+            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity.json'),
+        );
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
@@ -43,7 +48,12 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
 
     public function testItOnlyUpdatesTheProvidedFields(): void
     {
-        $this->patch(self::PATH, (string) file_get_contents(__DIR__.'/fixtures/patch-activity-name-only.json'));
+        $this->client->request(
+            'PATCH',
+            self::PATH,
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
+            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity-name-only.json'),
+        );
 
         $this->assertResponseIsSuccessful();
 
@@ -61,7 +71,12 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
 
     public function testItClearsTheDescription(): void
     {
-        $this->patch(self::PATH, (string) file_get_contents(__DIR__.'/fixtures/patch-activity-clear-description.json'));
+        $this->client->request(
+            'PATCH',
+            self::PATH,
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
+            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity-clear-description.json'),
+        );
 
         $this->assertResponseIsSuccessful();
 
@@ -73,10 +88,15 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
     #[DataProvider('provideInvalidRequestBodies')]
     public function testItRejectsInvalidRequestBodies(string $content): void
     {
-        $this->patch(self::PATH, $content);
+        $this->client->request(
+            'PATCH',
+            self::PATH,
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
+            content: $content,
+        );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
-        $this->assertSame('bad_request', $this->errorCode());
+        $this->assertSame('bad_request', Json::decode((string) $this->client->getResponse()->getContent())['error']);
         $this->assertSame('Original activity', $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getOriginalName());
     }
 
@@ -94,44 +114,44 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
 
     public function testItReportsAnUnknownActivityAsNotFound(): void
     {
-        $this->patch('/api/v1/activities/activity-2', (string) file_get_contents(__DIR__.'/fixtures/patch-activity.json'));
+        $this->client->request(
+            'PATCH',
+            '/api/v1/activities/activity-2',
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
+            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity.json'),
+        );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
-        $this->assertSame('not_found', $this->errorCode());
+        $this->assertSame('not_found', Json::decode((string) $this->client->getResponse()->getContent())['error']);
     }
 
     public function testItReportsAMalformedActivityIdAsNotFound(): void
     {
-        $this->patch('/api/v1/activities/not-an-activity-id', (string) file_get_contents(__DIR__.'/fixtures/patch-activity.json'));
+        $this->client->request(
+            'PATCH',
+            '/api/v1/activities/not-an-activity-id',
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
+            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity.json'),
+        );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
-        $this->assertSame('not_found', $this->errorCode());
+        $this->assertSame('not_found', Json::decode((string) $this->client->getResponse()->getContent())['error']);
     }
 
     public function testItRejectsUpdatesInStravaApiMode(): void
     {
         $this->withImportMode(ImportMode::STRAVA_API);
 
-        $this->patch(self::PATH, (string) file_get_contents(__DIR__.'/fixtures/patch-activity.json'));
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_CONFLICT);
-        $this->assertSame('import_mode_not_files', $this->errorCode());
-        $this->assertSame('Original activity', $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getOriginalName());
-    }
-
-    private function patch(string $path, string $content): void
-    {
         $this->client->request(
             'PATCH',
-            $path,
+            self::PATH,
             server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
-            content: $content,
+            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity.json'),
         );
-    }
 
-    private function errorCode(): string
-    {
-        return Json::decode((string) $this->client->getResponse()->getContent())['error'];
+        $this->assertResponseStatusCodeSame(Response::HTTP_CONFLICT);
+        $this->assertSame('import_mode_not_files', Json::decode((string) $this->client->getResponse()->getContent())['error']);
+        $this->assertSame('Original activity', $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getOriginalName());
     }
 
     #[\Override]

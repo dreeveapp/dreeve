@@ -28,7 +28,7 @@ class ActivityDeleteRequestHandlerTest extends ControllerWebTestCase
 
     public function testItDeletesAnActivity(): void
     {
-        $this->delete(self::PATH);
+        $this->client->request('DELETE', self::PATH, server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
         $this->assertFalse($this->activityStreamRepository->hasOneForActivityAndStreamType(ActivityId::fromUnprefixed('1'), StreamType::TIME));
@@ -39,39 +39,29 @@ class ActivityDeleteRequestHandlerTest extends ControllerWebTestCase
 
     public function testItReportsAnUnknownActivityAsNotFound(): void
     {
-        $this->delete('/api/v1/activities/activity-2');
+        $this->client->request('DELETE', '/api/v1/activities/activity-2', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
-        $this->assertSame('not_found', $this->errorCode());
+        $this->assertSame('not_found', Json::decode((string) $this->client->getResponse()->getContent())['error']);
     }
 
     public function testItReportsAMalformedActivityIdAsNotFound(): void
     {
-        $this->delete('/api/v1/activities/not-an-activity-id');
+        $this->client->request('DELETE', '/api/v1/activities/not-an-activity-id', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
-        $this->assertSame('not_found', $this->errorCode());
+        $this->assertSame('not_found', Json::decode((string) $this->client->getResponse()->getContent())['error']);
     }
 
     public function testItRejectsDeletesInStravaApiMode(): void
     {
         $this->withImportMode(ImportMode::STRAVA_API);
 
-        $this->delete(self::PATH);
+        $this->client->request('DELETE', self::PATH, server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_CONFLICT);
-        $this->assertSame('import_mode_not_files', $this->errorCode());
+        $this->assertSame('import_mode_not_files', Json::decode((string) $this->client->getResponse()->getContent())['error']);
         $this->assertSame('Test activity', $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getOriginalName());
-    }
-
-    private function delete(string $path): void
-    {
-        $this->client->request('DELETE', $path, server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
-    }
-
-    private function errorCode(): string
-    {
-        return Json::decode((string) $this->client->getResponse()->getContent())['error'];
     }
 
     #[\Override]
