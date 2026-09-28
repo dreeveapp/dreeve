@@ -34,6 +34,33 @@ class AppRequestHandlerTest extends ContainerTestCase
         $this->assertMatchesHtmlSnapshot($this->appRequestHandler->handle('dmzdmzd')->getContent());
     }
 
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideActiveSections')]
+    public function testHandleMarksTheSectionOfThePageAsActive(string $wildcard, ?string $expectedActiveHref): void
+    {
+        $this->provideFullTestSet();
+
+        $content = (string) $this->appRequestHandler->handle($wildcard)->getContent();
+
+        $this->assertSame(null === $expectedActiveHref ? 0 : 1, substr_count($content, 'aria-selected="true"'));
+        if (null !== $expectedActiveHref) {
+            $this->assertStringContainsString(sprintf('href="%s" aria-selected="true"', $expectedActiveHref), $content);
+        }
+    }
+
+    public static function provideActiveSections(): iterable
+    {
+        yield 'the dashboard' => ['dashboard', '/dashboard'];
+        yield 'a page below the dashboard' => ['dashboard/power-output', '/dashboard'];
+        yield 'an activity' => ['activities/activity-9756441741', '/activities'];
+        yield 'a segment' => ['segments/segment-1', '/segments'];
+        yield 'a page below gear' => ['gear/maintenance', '/gear'];
+        yield 'a month' => ['monthly-stats/2023-06', '/monthly-stats'];
+        yield 'a rewind comparison' => ['rewind/2023/compare/2022', '/rewind'];
+        yield 'a best effort history' => ['best-efforts/Ride/10000', '/best-efforts'];
+        yield 'a page without a menu item' => ['badges', null];
+        yield 'an unknown page' => ['dmzdmzd', null];
+    }
+
     public function testHandleKeepsThePageCacheControl(): void
     {
         $this->provideFullTestSet();

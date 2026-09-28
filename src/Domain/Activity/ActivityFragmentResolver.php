@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\Lap\ActivityLapRepository;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\Stream\ActivityHeartRateRepository;
@@ -60,6 +61,7 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
             ),
             render: fn (): string => $this->renderFor($activityId),
+            navigationSection: NavigationSection::ACTIVITIES,
         );
     }
 

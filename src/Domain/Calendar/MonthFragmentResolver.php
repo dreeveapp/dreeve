@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Calendar;
 
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\FindFirstActivityStartDate\FindFirstActivityStartDate;
 use App\Domain\Calendar\FindMonthlyStats\FindMonthlyStats;
@@ -50,6 +51,7 @@ final readonly class MonthFragmentResolver implements FragmentResolver
             path: self::BASE_PATH.'/'.$month->getId(),
             cacheability: $this->cacheabilityFor($month),
             render: fn (): string => $this->renderFor($month),
+            navigationSection: NavigationSection::MONTHLY_STATS,
         );
     }
 

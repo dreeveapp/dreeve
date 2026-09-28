@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard;
 
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Dashboard\Widget\ConfiguredWidgets;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
@@ -14,7 +16,7 @@ use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentType;
 use Twig\Environment;
 
-final readonly class DashboardFragment implements Fragment
+final readonly class DashboardFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private ConfiguredWidgets $configuredWidgets,
@@ -32,6 +34,11 @@ final readonly class DashboardFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::DASHBOARD;
     }
 
     public function getCacheability(): Cacheability

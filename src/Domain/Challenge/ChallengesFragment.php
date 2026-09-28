@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Challenge;
 
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -11,7 +13,7 @@ use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentType;
 use Twig\Environment;
 
-final readonly class ChallengesFragment implements Fragment
+final readonly class ChallengesFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private ChallengeRepository $challengeRepository,
@@ -27,6 +29,11 @@ final readonly class ChallengesFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::CHALLENGES;
     }
 
     public function getCacheability(): Cacheability

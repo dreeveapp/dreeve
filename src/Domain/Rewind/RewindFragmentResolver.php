@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Rewind;
 
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Rewind\FindAvailableRewindOptions\FindAvailableRewindOptions;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
@@ -45,6 +46,7 @@ final readonly class RewindFragmentResolver implements FragmentResolver
             path: self::BASE_PATH.'/'.$rewindOption,
             cacheability: $this->cacheabilityFor($rewindOption),
             render: fn (): string => $this->renderFor($rewindOption),
+            navigationSection: NavigationSection::REWIND,
         );
     }
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Milestone;
 
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\ActivityRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -12,7 +14,7 @@ use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentType;
 use Twig\Environment;
 
-final readonly class MilestonesFragment implements Fragment
+final readonly class MilestonesFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private MilestoneCollector $milestoneCollector,
@@ -29,6 +31,11 @@ final readonly class MilestonesFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::MILESTONES;
     }
 
     public function getCacheability(): Cacheability

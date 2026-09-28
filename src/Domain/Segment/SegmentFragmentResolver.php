@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Segment;
 
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\ActivityCacheTag;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
@@ -73,6 +74,7 @@ final readonly class SegmentFragmentResolver implements FragmentResolver
                 ),
             ),
             render: fn (): string => $this->renderFor($segment, $topTenSegmentEfforts),
+            navigationSection: NavigationSection::SEGMENTS,
         );
     }
 

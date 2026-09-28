@@ -3,6 +3,7 @@
 namespace App\Tests\Application;
 
 use App\Application\IndexPage;
+use App\Application\Navigation\NavigationSection;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -21,7 +22,7 @@ class IndexPageTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
 
-        $this->assertMatchesHtmlSnapshot($this->indexPage->render());
+        $this->assertMatchesHtmlSnapshot($this->indexPage->forSection(null)->render());
     }
 
     public function testRenderIsTheSameForEveryVisitor(): void
@@ -32,14 +33,14 @@ class IndexPageTest extends ContainerTestCase
         $tokenStorage = $this->getContainer()->get('security.token_storage');
 
         $tokenStorage->setToken(null);
-        $renderedForAnonymousVisitor = $this->indexPage->render();
+        $renderedForAnonymousVisitor = $this->indexPage->forSection(null)->render();
 
         $tokenStorage->setToken(new UsernamePasswordToken(
             new InMemoryUser('admin', null, ['ROLE_ADMIN']),
             'main',
             ['ROLE_ADMIN'],
         ));
-        $renderedForAuthenticatedVisitor = $this->indexPage->render();
+        $renderedForAuthenticatedVisitor = $this->indexPage->forSection(null)->render();
         $tokenStorage->setToken(null);
 
         $this->assertEquals($renderedForAnonymousVisitor, $renderedForAuthenticatedVisitor);
@@ -47,7 +48,18 @@ class IndexPageTest extends ContainerTestCase
 
     public function testGetCacheKey(): void
     {
-        $this->assertEquals('index', $this->indexPage->getCacheability()->getCacheKey());
+        $this->assertEquals('index', $this->indexPage->forSection(null)->getCacheability()->getCacheKey());
+        $this->assertEquals('index.activities', $this->indexPage->forSection(NavigationSection::ACTIVITIES)->getCacheability()->getCacheKey());
+    }
+
+    public function testRenderMarksTheActiveSection(): void
+    {
+        $this->provideFullTestSet();
+
+        $render = $this->indexPage->forSection(NavigationSection::ACTIVITIES)->render();
+
+        $this->assertStringContainsString('href="/activities" aria-selected="true"', $render);
+        $this->assertStringContainsString('href="/dashboard" aria-selected="false"', $render);
     }
 
     #[\Override]

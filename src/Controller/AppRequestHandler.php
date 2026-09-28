@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Application\IndexPage;
+use App\Application\Navigation\HasNavigationSection;
 use App\Application\NotFoundFragment;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Infrastructure\Http\Fragment\Fragment;
@@ -44,7 +45,9 @@ final readonly class AppRequestHandler
         $response->setContent(str_replace(
             IndexPage::MAIN_CONTENT_MARKER,
             (string) $response->getContent(),
-            (string) $this->fragmentRenderer->render($this->indexPage)->getContent(),
+            (string) $this->fragmentRenderer->render($this->indexPage->forSection(
+                $page instanceof HasNavigationSection ? $page->getNavigationSection() : null,
+            ))->getContent(),
         ));
         $response->setStatusCode($page instanceof Fragment ? Response::HTTP_OK : Response::HTTP_NOT_FOUND);
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Route\Heatmap;
 
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\Route\RouteRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
@@ -15,7 +17,7 @@ use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentType;
 use Twig\Environment;
 
-final readonly class HeatmapFragment implements Fragment
+final readonly class HeatmapFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private RouteRepository $routeRepository,
@@ -32,6 +34,11 @@ final readonly class HeatmapFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::HEATMAP;
     }
 
     public function getCacheability(): Cacheability

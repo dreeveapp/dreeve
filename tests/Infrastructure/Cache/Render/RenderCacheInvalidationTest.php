@@ -39,6 +39,10 @@ class RenderCacheInvalidationTest extends ContainerTestCase
         /** @var Cacheable $cacheable */
         $cacheable = $this->getContainer()->get($cacheableClassName);
 
+        if ($cacheable instanceof IndexPage) {
+            $cacheable = $cacheable->forSection(null);
+        }
+
         if ($cacheable instanceof FragmentResolver) {
             $this->provideFullTestSet();
             $cacheable = $cacheable->resolve((string) $pathToResolve);

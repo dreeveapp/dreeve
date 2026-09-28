@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget\TrainingLoad;
 
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\DailyTrainingLoad;
 use App\Domain\Activity\Stream\ActivityHeartRateRepository;
 use App\Domain\Dashboard\DashboardFragment;
@@ -20,7 +22,7 @@ use App\Infrastructure\ValueObject\Time\DateRange;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class TrainingLoadFragment implements Fragment
+final readonly class TrainingLoadFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private ActivityHeartRateRepository $activityHeartRateRepository,
@@ -40,6 +42,11 @@ final readonly class TrainingLoadFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::DASHBOARD;
     }
 
     public function getCacheability(): Cacheability

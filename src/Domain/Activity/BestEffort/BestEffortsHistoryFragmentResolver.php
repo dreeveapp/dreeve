@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\BestEffort;
 
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
 use App\Infrastructure\Cache\Cacheability;
@@ -53,6 +54,7 @@ final readonly class BestEffortsHistoryFragmentResolver implements FragmentResol
             ),
             render: fn (): string => $this->renderFor($activityType, $distance),
             type: FragmentType::PAGE,
+            navigationSection: NavigationSection::BEST_EFFORTS,
         );
     }
 

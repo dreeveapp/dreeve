@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear;
 
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\Activities;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityRepository;
@@ -27,7 +29,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class GearStatsFragment implements Fragment
+final readonly class GearStatsFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private GearRepository $gearRepository,
@@ -49,6 +51,11 @@ final readonly class GearStatsFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::GEAR;
     }
 
     public function getCacheability(): Cacheability
