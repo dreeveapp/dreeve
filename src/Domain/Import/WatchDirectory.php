@@ -28,17 +28,20 @@ final readonly class WatchDirectory
 
     public function hasFilesThatCanBeProcessed(): bool
     {
-        $processableFiles = $this->listFiles()
-            ->filter(fn (StorageAttributes $file): bool => in_array(
-                Path::fromString($file->path())->getExtension(),
-                array_map(fn (SupportedFileExtension $ext) => $ext->value, SupportedFileExtension::cases()),
-            ));
-
-        foreach ($processableFiles as $processableFile) {
+        foreach ($this->listFilesThatCanBeProcessed() as $processableFile) {
             return true;
         }
 
         return false;
+    }
+
+    public function listFilesThatCanBeProcessed(): DirectoryListing
+    {
+        return $this->listFiles()
+            ->filter(fn (StorageAttributes $file): bool => SupportedFileExtension::tryFrom(
+                Path::fromString($file->path())->getExtension()
+            ) instanceof SupportedFileExtension)
+            ->sortByPath();
     }
 
     public function listFiles(): DirectoryListing

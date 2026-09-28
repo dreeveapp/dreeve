@@ -195,7 +195,7 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
         );
     }
 
-    public function testListsQueuedFilesFirstWithoutActions(): void
+    public function testListsQueuedFilesFirstWithoutActionsOrStatusOption(): void
     {
         $this->withImportMode(ImportMode::FILES);
         $this->seedFileImports(3);
@@ -211,7 +211,7 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('queued.fit', $rows->first()->text());
         $this->assertCount(0, $rows->first()->filter('a'));
         $this->assertCount(3, $crawler->filter('table.data-table tbody a[href$="/delete"]'));
-        $this->assertCount(1, $crawler->filter('select[name="filters[status]"] option[value="queued"]'));
+        $this->assertCount(0, $crawler->filter('select[name="filters[status]"] option[value="queued"]'));
     }
 
     public function testLinksEveryImportedActivityToItsDetailPage(): void

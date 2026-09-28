@@ -68,6 +68,23 @@ class WatchDirectoryTest extends TestCase
         $this->assertSame(['watch/ride.fit', 'watch/run.tcx'], $paths);
     }
 
+    public function testListFilesThatCanBeProcessedOnlyListsSupportedFilesSortedByPath(): void
+    {
+        $this->filesystem->write('watch/run.tcx', 'raw-tcx-bytes');
+        $this->filesystem->write('watch/ride.FIT', 'raw-fit-bytes');
+        $this->filesystem->write('watch/hike.gpx', 'raw-gpx-bytes');
+        $this->filesystem->write('watch/readme.txt', 'some text');
+        $this->filesystem->write('watch/.uploads/staged.fit', 'raw-fit-bytes');
+        $this->filesystem->createDirectory('watch/nested.fit');
+
+        $this->assertSame(
+            ['watch/hike.gpx', 'watch/ride.FIT', 'watch/run.tcx'],
+            $this->watchDirectory->listFilesThatCanBeProcessed()
+                ->map(fn (StorageAttributes $file): string => $file->path())
+                ->toArray()
+        );
+    }
+
     public function testReadFile(): void
     {
         $this->filesystem->write('watch/ride.fit', 'raw-fit-bytes');

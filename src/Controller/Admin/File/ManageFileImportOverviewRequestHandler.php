@@ -36,7 +36,10 @@ final readonly class ManageFileImportOverviewRequestHandler
                 $filters,
             ),
             'filters' => $filters,
-            'statusOptions' => FileImportStatus::cases(),
+            'statusOptions' => array_filter(
+                FileImportStatus::cases(),
+                static fn (FileImportStatus $status): bool => FileImportStatus::QUEUED !== $status,
+            ),
             'sourceOptions' => ImportSource::fileBasedSources(),
         ]));
     }

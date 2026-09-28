@@ -11,23 +11,22 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
+use App\Infrastructure\ValueObject\String\Path;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\Connection;
+use League\Flysystem\StorageAttributes;
 
 final readonly class DbalFileImportOverviewRepository extends DbalRepository implements FileImportOverviewRepository
 {
     public function __construct(
         Connection $connection,
-        private QueuedFileImports $queuedFileImports,
+        private WatchDirectory $watchDirectory,
     ) {
         parent::__construct($connection);
     }
 
     public function find(Pagination $pagination, FileImportOverviewFilters $filters): Overview
     {
-        $status = $filters->getStatus();
-        $source = $filters->getSource();
-
         $queryBuilder = $this->connection->createQueryBuilder()
             ->select('fi.fileImportId', 'fi.originalFilename', 'fi.source', 'fi.status', 'fi.errorMessage', 'fi.activityId', 'fi.importedOn', 'fi.fileContents IS NOT NULL AS hasFileContents', 'a.name AS activityName')
             ->from('FileImport', 'fi')
@@ -39,32 +38,44 @@ final readonly class DbalFileImportOverviewRepository extends DbalRepository imp
             ->from('FileImport', 'fi');
 
         foreach ([$queryBuilder, $countQueryBuilder] as $builder) {
-            if ($status instanceof FileImportStatus) {
+            if (($status = $filters->getStatus()) instanceof FileImportStatus) {
                 $builder
                     ->andWhere('fi.status = :status')
                     ->setParameter('status', $status->value);
             }
-            if ($source instanceof ImportSource) {
+            if (($source = $filters->getSource()) instanceof ImportSource) {
                 $builder
                     ->andWhere('fi.source = :source')
                     ->setParameter('source', $source->value);
             }
         }
 
-        return QueuedFirstOverview::create(
-            queued: in_array($status, [null, FileImportStatus::QUEUED], true)
-                ? $this->queuedFileImports->find(source: $source)
-                : [],
-            totalImported: (int) $countQueryBuilder->executeQuery()->fetchOne(),
+        $queued = $this->watchDirectory->listFilesThatCanBeProcessed()
+            ->map(static function (StorageAttributes $file): FileImportOverviewItem {
+                $path = Path::fromString($file->path());
+
+                return FileImportOverviewItem::queued(
+                    originalFilename: $path->getFilename(),
+                    source: SupportedFileExtension::from($path->getExtension())->getImportSource(),
+                );
+            })
+            ->toArray();
+
+        $items = array_values(array_slice($queued, $pagination->getOffset(), $pagination->getLimit()));
+        if (($limit = $pagination->getLimit() - count($items)) > 0) {
+            $results = $queryBuilder
+                ->setFirstResult(max(0, $pagination->getOffset() - count($queued)))
+                ->setMaxResults($limit)
+                ->executeQuery()
+                ->fetchAllAssociative();
+
+            $items = [...$items, ...array_map($this->hydrate(...), $results)];
+        }
+
+        return Overview::create(
             pagination: $pagination,
-            fetchImported: fn (int $offset, int $limit): array => array_map(
-                $this->hydrate(...),
-                $queryBuilder
-                    ->setFirstResult($offset)
-                    ->setMaxResults($limit)
-                    ->executeQuery()
-                    ->fetchAllAssociative()
-            ),
+            total: count($queued) + (int) $countQueryBuilder->executeQuery()->fetchOne(),
+            items: $items,
         );
     }
 
