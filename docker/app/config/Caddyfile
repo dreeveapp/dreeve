@@ -37,7 +37,7 @@ import /etc/frankenphp/snippets/paths.caddyfile
 	}
 
 	@notAppServedFile not path /files/*
-	header @notAppServedFile Cache-Control "no-cache, no-store, must-revalidate"
+	header @notAppServedFile ?Cache-Control "no-cache, no-store, must-revalidate"
 
 	# Path-routing rules (/files/*, /assets/*).
 	import paths
