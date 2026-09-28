@@ -9,6 +9,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\UpdateActivity\UpdateActivity;
+use App\Domain\Gear\GearId;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
@@ -58,7 +59,7 @@ final readonly class ActivityUpdateRequestHandler
                 'sportType' => $activity->getSportType()->value,
                 'description' => $activity->getDescription(),
                 'deviceName' => $activity->getDeviceName(),
-                'gearId' => null !== $gearId ? (string) $gearId : null,
+                'gearId' => $gearId instanceof GearId ? (string) $gearId : null,
                 'calories' => $activity->getCalories(),
                 'isCommute' => $activity->isCommute(),
                 'isGroupActivity' => $activity->isGroupActivity(),
