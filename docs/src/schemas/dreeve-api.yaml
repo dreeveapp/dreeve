@@ -256,6 +256,89 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/ActivityNotFound'
+    patch:
+      operationId: updateActivity
+      tags: [Activities]
+      summary: Update an activity
+      description: >-
+        Changes the name, sport type or description of an activity
+      parameters:
+        - $ref: '#/components/parameters/ActivityId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              minProperties: 1
+              additionalProperties: false
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  examples: ['Evening ride']
+                sportType:
+                  type: string
+                  examples: ['GravelRide']
+                description:
+                  type: [string, 'null']
+                  description: Send `null` or an empty string to clear the description.
+                  examples: ['Rerouted around the closed bridge']
+      responses:
+        '200':
+          description: The updated activity.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Activity' }
+        '400':
+          description: The JSON body is invalid, empty, or contains an unknown field or value.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                invalidSportType:
+                  value: { error: bad_request, message: 'A valid "sportType" is required.' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/ActivityNotFound'
+        '409':
+          description: >-
+            This instance runs with `IMPORT_MODE=stravaApi`
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                wrongImportMode:
+                  value:
+                    error: import_mode_not_files
+                    message: Activities can only be updated when running in file import mode.
+    delete:
+      operationId: deleteActivity
+      tags: [Activities]
+      summary: Delete an activity
+      description: >-
+        Deletes the activity together with its streams, laps, splits, best efforts and import log.
+      parameters:
+        - $ref: '#/components/parameters/ActivityId'
+      responses:
+        '204':
+          description: The activity was deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/ActivityNotFound'
+        '409':
+          description: >-
+            This instance runs with `IMPORT_MODE=stravaApi`
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                wrongImportMode:
+                  value:
+                    error: import_mode_not_files
+                    message: Activities can only be deleted when running in file import mode.
   /api/v1/activities/{activityId}/gpx:
     get:
       operationId: getActivityGpx
