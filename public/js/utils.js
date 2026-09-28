@@ -51,6 +51,14 @@ export const replaceQueryString = (queryString) => {
     window.history.replaceState(window.history.state, '', queryString ? `${location.pathname}?${queryString}` : location.pathname);
 }
 
+export const loadScript = (src) => new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error(`Failed to load ${src}`));
+    document.head.appendChild(script);
+});
+
 export const fetchJson = async (url) => {
     const response = await fetch(url);
 

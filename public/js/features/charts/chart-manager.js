@@ -1,6 +1,6 @@
 import {basePath, fetchJson} from "../../utils";
 import {resolveEchartsCallbacks} from "./echarts-callbacks";
-import {v5Theme, v5DarkTheme} from "./echarts-themes";
+import {loadEcharts} from "./echarts-loader";
 import {serialize} from "../data-table/filter-url";
 
 export default class ChartManager {
@@ -20,15 +20,15 @@ export default class ChartManager {
                 chart.resize();
             }
         });
-
-        echarts.registerTheme('v5', v5Theme());
-        echarts.registerTheme('v5-dark', v5DarkTheme());
     }
 
     init(rootNode, isDarkMode) {
         this.theme = isDarkMode ? 'v5-dark' : 'v5';
         const handlers = this.getClickHandlers();
-        rootNode.querySelectorAll('[data-echarts-options], [data-echarts-options-url]').forEach(chartNode => {
+        const chartNodes = rootNode.querySelectorAll('[data-echarts-options], [data-echarts-options-url]');
+        if (0 === chartNodes.length) return;
+
+        loadEcharts().then(() => chartNodes.forEach(chartNode => {
             const chart = echarts.init(chartNode, this.theme);
             const chartOptionsUrl = chartNode.getAttribute('data-echarts-options-url');
 
@@ -56,7 +56,7 @@ export default class ChartManager {
 
             this.allCharts.push(chart);
             this.resizeObserver.observe(chartNode);
-        });
+        }));
     }
 
     getClickHandlers() {
