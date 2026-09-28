@@ -11,6 +11,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
+#[ORM\Index(name: 'FileImport_originalFilename', columns: ['originalFilename'])]
 final readonly class FileImport
 {
     private function __construct(

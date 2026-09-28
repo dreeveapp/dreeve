@@ -29,6 +29,7 @@ security:
 tags:
   - name: Status
   - name: Activities
+  - name: File imports
   - name: Athlete
 paths:
   /api/v1/status:
@@ -377,6 +378,83 @@ paths:
                   value:
                     error: gpx_not_available
                     message: 'Activity "activity-9542782314" has no GPS or time data to export as GPX.'
+  /api/v1/file-imports:
+    get:
+      operationId: listFileImports
+      tags: [File imports]
+      summary: Search file imports
+      description: |
+        Lists the files that are waiting to be imported, followed by the outcome of every file
+        import, newest first.
+
+        | Status    | Meaning                                                                     |
+        |-----------|-----------------------------------------------------------------------------|
+        | `queued`  | The file is waiting for the next import run.                                |
+        | `success` | The file was imported; `activityId` is the new activity.                    |
+        | `skipped` | The file duplicates an activity that was already imported.                  |
+        | `failed`  | The file could not be imported; `errorMessage` says why.                    |
+
+        ```
+        GET /api/v1/file-imports?filters[filename]=morning-ride.fit
+        ```
+      parameters:
+        - name: filters
+          in: query
+          required: false
+          style: deepObject
+          explode: true
+          schema:
+            type: object
+            properties:
+              filename:
+                type: string
+                description: >-
+                  Only imports of the file with exactly this name
+                examples: ['morning-ride.fit']
+              status:
+                type: string
+                description: >-
+                  One status, or several separated by commas. Queued files are always listed.
+                examples: ['failed', 'skipped,failed']
+              source:
+                type: string
+                description: >-
+                  One source, or several separated by commas
+                examples: ['fitFile', 'tcxFile,gpxFile']
+        - name: pagination
+          in: query
+          required: false
+          style: deepObject
+          explode: true
+          schema:
+            type: object
+            properties:
+              page:
+                type: integer
+                minimum: 1
+                default: 1
+              size:
+                type: integer
+                minimum: 1
+                maximum: 100
+                default: 25
+      responses:
+        '200':
+          description: A page of file imports, queued files first, then newest first.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FileImportList' }
+        '400':
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                unknownStatus:
+                  value:
+                    error: bad_request
+                    message: '"filters[status]" contains an unknown status.'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
   /api/v1/athlete/weights:
     get:
       operationId: listAthleteWeights
@@ -473,6 +551,43 @@ components:
           type: array
           items: { $ref: '#/components/schemas/Activity' }
         pagination: { $ref: '#/components/schemas/PaginationMeta' }
+    FileImportList:
+      type: object
+      required: [fileImports, pagination]
+      properties:
+        fileImports:
+          type: array
+          items: { $ref: '#/components/schemas/FileImport' }
+        pagination: { $ref: '#/components/schemas/PaginationMeta' }
+    FileImport:
+      type: object
+      required: [id, filename, source, status, errorMessage, activityId, importedOn]
+      properties:
+        id:
+          type: [string, 'null']
+          description: Null while the file is queued.
+          examples: ['fileImport-0198a2b1-8f3e-7c2d-9a4b-1f2e3d4c5b6a']
+        filename:
+          type: string
+          examples: ['morning-ride.fit']
+        source:
+          type: string
+          enum: [fitFile, tcxFile, gpxFile]
+        status:
+          type: string
+          enum: [queued, success, skipped, failed]
+        errorMessage:
+          type: [string, 'null']
+          examples: ['Skipped, activity was already imported']
+        activityId:
+          type: [string, 'null']
+          description: The imported activity. Only set when the status is `success`.
+          examples: ['activity-9542782314']
+        importedOn:
+          type: [string, 'null']
+          format: date-time
+          description: Null while the file is queued.
+          examples: ['2026-09-28T10:00:00']
     PaginationMeta:
       type: object
       required: [page, size, total, totalPages]

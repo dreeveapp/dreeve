@@ -80,6 +80,11 @@ final readonly class FileImportOverviewItem implements Item
         return $this->source;
     }
 
+    public function getStatus(): FileImportStatus
+    {
+        return $this->status;
+    }
+
     public function isFailed(): bool
     {
         return FileImportStatus::FAILED === $this->status;

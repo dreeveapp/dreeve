@@ -1,0 +1,46 @@
+{
+    "fileImports": [
+        {
+            "id": null,
+            "filename": "queued.gpx",
+            "source": "gpxFile",
+            "status": "queued",
+            "errorMessage": null,
+            "activityId": null,
+            "importedOn": null
+        },
+        {
+            "id": "fileImport-3",
+            "filename": "ride.fit",
+            "source": "fitFile",
+            "status": "success",
+            "errorMessage": null,
+            "activityId": "activity-42",
+            "importedOn": "2026-06-03T08:00:00"
+        },
+        {
+            "id": "fileImport-2",
+            "filename": "broken.tcx",
+            "source": "tcxFile",
+            "status": "failed",
+            "errorMessage": "Could not parse file",
+            "activityId": null,
+            "importedOn": "2026-06-02T08:00:00"
+        },
+        {
+            "id": "fileImport-1",
+            "filename": "ride.fit",
+            "source": "fitFile",
+            "status": "skipped",
+            "errorMessage": "Skipped, activity was already imported",
+            "activityId": null,
+            "importedOn": "2026-06-01T08:00:00"
+        }
+    ],
+    "pagination": {
+        "page": 1,
+        "size": 25,
+        "total": 4,
+        "totalPages": 1
+    }
+}
