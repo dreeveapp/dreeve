@@ -58,6 +58,8 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
             return null;
         }
 
+        $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
+
         return new ResolvedFragment(
             path: ActivityFragmentPath::for($activityId),
             cacheability: Cacheability::for(
@@ -70,26 +72,19 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
             ),
             render: fn (): string => $this->renderFor($activityId),
             navigationSection: NavigationSection::ACTIVITIES,
-            openGraph: $this->openGraphFor($activity),
-        );
-    }
-
-    private function openGraphFor(Activity $activity): OpenGraph
-    {
-        $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
-
-        return new OpenGraph(
-            path: ActivityFragmentPath::for($activity->getId()),
-            title: $activity->getName(),
-            description: implode(' · ', [
-                $activity->getSportType()->transSingular($this->translator),
-                $this->formatUnitWithSymbol(
-                    $activity->getDistance()->toUnitSystem($unitSystem),
-                    $activity->getSportType()->getActivityType()->getDistancePrecision(),
-                ),
-                $activity->getMovingTimeFormatted(),
-                $this->formatUnitWithSymbol($activity->getElevation()->toUnitSystem($unitSystem), 0),
-            ]),
+            openGraph: new OpenGraph(
+                path: ActivityFragmentPath::for($activity->getId()),
+                title: $activity->getName(),
+                description: implode(' · ', [
+                    $activity->getSportType()->transSingular($this->translator),
+                    $this->formatUnitWithSymbol(
+                        $activity->getDistance()->toUnitSystem($unitSystem),
+                        $activity->getSportType()->getActivityType()->getDistancePrecision(),
+                    ),
+                    $activity->getMovingTimeFormatted(),
+                    $this->formatUnitWithSymbol($activity->getElevation()->toUnitSystem($unitSystem), 0),
+                ]),
+            ),
         );
     }
 
