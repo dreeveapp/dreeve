@@ -47,6 +47,14 @@ export const basePath = () => {
     return configured ? '/' + configured.replace(/^\/+|\/+$/g, '') : '';
 }
 
+export const loadScript = (src) => new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error(`Failed to load ${src}`));
+    document.head.appendChild(script);
+});
+
 export const fetchJson = async (url) => {
     const response = await fetch(url);
 

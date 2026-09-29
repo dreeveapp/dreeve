@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance;
 
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Gears;
@@ -18,7 +20,7 @@ use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Time\Clock\Clock;
 use Twig\Environment;
 
-final readonly class GearMaintenanceFragment implements Fragment
+final readonly class GearMaintenanceFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private GearMaintenanceRepository $gearMaintenanceRepository,
@@ -37,6 +39,11 @@ final readonly class GearMaintenanceFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::GEAR;
     }
 
     public function getCacheability(): Cacheability

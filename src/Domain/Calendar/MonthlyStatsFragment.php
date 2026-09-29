@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Calendar;
 
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Calendar\FindMonthlyStats\FindMonthlyStats;
 use App\Infrastructure\Cache\Cacheability;
@@ -15,7 +17,7 @@ use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Time\Clock\Clock;
 use Twig\Environment;
 
-final readonly class MonthlyStatsFragment implements Fragment
+final readonly class MonthlyStatsFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private SportTypeRepository $sportTypeRepository,
@@ -35,6 +37,11 @@ final readonly class MonthlyStatsFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::MONTHLY_STATS;
     }
 
     public function getCacheability(): Cacheability

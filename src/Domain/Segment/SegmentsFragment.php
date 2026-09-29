@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Segment;
 
 use App\Application\Countries;
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -13,7 +15,7 @@ use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentType;
 use Twig\Environment;
 
-final readonly class SegmentsFragment implements Fragment
+final readonly class SegmentsFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private SegmentRepository $segmentRepository,
@@ -31,6 +33,11 @@ final readonly class SegmentsFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::SEGMENTS;
     }
 
     public function getCacheability(): Cacheability

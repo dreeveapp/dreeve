@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Image;
 
 use App\Application\Countries;
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Infrastructure\Cache\Cacheability;
@@ -16,7 +18,7 @@ use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentType;
 use Twig\Environment;
 
-final readonly class PhotosFragment implements Fragment
+final readonly class PhotosFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private ImageRepository $imageRepository,
@@ -35,6 +37,11 @@ final readonly class PhotosFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::PHOTOS;
     }
 
     public function getCacheability(): Cacheability

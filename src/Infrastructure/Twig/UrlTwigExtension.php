@@ -123,7 +123,7 @@ final readonly class UrlTwigExtension
         $activityTitle = $activity->getName();
 
         return sprintf(
-            '<a href="%s" data-router-link class="flex items-center gap-x-1 font-medium text-blue-600 hover:underline">%s<span class="%s">%s</span></a>',
+            '<a href="%s" class="flex items-center gap-x-1 font-medium text-blue-600 hover:underline">%s<span class="%s">%s</span></a>',
             $this->toRelativeUrl(ActivityFragmentPath::for($activity->getId())),
             $activityIcon,
             $truncate ? 'truncate' : '',
@@ -145,7 +145,7 @@ final readonly class UrlTwigExtension
         $segmentTitle = $segment->getName();
 
         return sprintf(
-            '<a href="%s" data-router-link class="flex items-center gap-x-1 font-medium text-blue-600 hover:underline">%s<span class="truncate">%s</span></a>',
+            '<a href="%s" class="flex items-center gap-x-1 font-medium text-blue-600 hover:underline">%s<span class="truncate">%s</span></a>',
             $this->toRelativeUrl(SegmentFragmentPath::for($segment->getId())),
             $segmentIcon,
             $this->stringTwigExtension->doEllipses((string) $segmentTitle, 50)

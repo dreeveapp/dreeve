@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Rewind;
 
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Rewind\FindAvailableRewindOptions\FindAvailableRewindOptions;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
@@ -48,6 +49,7 @@ final readonly class RewindCompareFragmentResolver implements FragmentResolver
             path: sprintf('rewind/%s/compare/%s', $left, $right),
             cacheability: $this->cacheabilityFor($left, $right),
             render: fn (): string => $this->renderFor($left, $right),
+            navigationSection: NavigationSection::REWIND,
         );
     }
 

@@ -1,14 +1,6 @@
 import autoComplete from "../../../libraries/autocomplete";
 import ChatMessageRenderer from "./message-renderer";
-import {eventBus, Events} from "../../core/event-bus";
 import {basePath} from "../../utils";
-
-let activeSource = null;
-
-eventBus.on(Events.PAGE_LOADED, () => {
-    activeSource?.close();
-    activeSource = null;
-});
 
 export default class Chat {
     constructor(rootNode) {
@@ -77,12 +69,10 @@ export default class Chat {
 
     handleSSE(message) {
         const source = new EventSource(`${this.basePath}/chat/sse?message=${encodeURIComponent(message)}`);
-        activeSource = source;
         let renderer = null;
 
         source.addEventListener('error', () => {
             source.close();
-            if (activeSource === source) activeSource = null;
             this.toggleElements(false);
         });
 
@@ -108,7 +98,6 @@ export default class Chat {
 
         source.addEventListener('done', () => {
             source.close();
-            if (activeSource === source) activeSource = null;
             renderer?.renderFinal();
             this.toggleElements(false);
             this.textInput.focus();

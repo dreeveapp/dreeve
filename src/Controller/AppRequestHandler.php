@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Application\IndexPage;
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\NotFoundFragment;
 use App\Domain\Activity\ActivityIdRepository;
+use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentRegistry;
 use App\Infrastructure\Http\Fragment\FragmentRenderer;
 use App\Infrastructure\Http\Fragment\FragmentType;
@@ -17,11 +20,14 @@ use Symfony\Component\Routing\Attribute\Route;
 #[AsController]
 final readonly class AppRequestHandler
 {
+    private const string DEFAULT_PAGE_PATH = 'dashboard';
+
     public function __construct(
         private ActivityIdRepository $activityIdRepository,
         private IndexPage $indexPage,
         private FragmentRegistry $fragmentRegistry,
         private FragmentRenderer $fragmentRenderer,
+        private NotFoundFragment $notFoundFragment,
     ) {
     }
 
@@ -32,11 +38,15 @@ final readonly class AppRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        $path = trim($wildcard ?? '', '/');
-        $pageExists = '' === $path || $this->fragmentRegistry->findOfType($path, FragmentType::PAGE) instanceof \App\Infrastructure\Http\Fragment\Fragment;
+        $path = trim($wildcard ?? '', '/') ?: self::DEFAULT_PAGE_PATH;
+        $page = $this->fragmentRegistry->findOfType($path, FragmentType::PAGE);
 
-        $response = $this->fragmentRenderer->render($this->indexPage);
-        $response->setStatusCode($pageExists ? Response::HTTP_OK : Response::HTTP_NOT_FOUND);
+        $response = $this->fragmentRenderer->render($page ?? $this->notFoundFragment);
+        $response->setContent($this->indexPage->render(
+            content: (string) $response->getContent(),
+            activeSection: $page instanceof HasNavigationSection ? $page->getNavigationSection() : null,
+        ));
+        $response->setStatusCode($page instanceof Fragment ? Response::HTTP_OK : Response::HTTP_NOT_FOUND);
 
         return $response;
     }

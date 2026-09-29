@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\Fragment;
 
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Infrastructure\Cache\Cacheability;
 use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
 #[Exclude]
-final readonly class ResolvedFragment implements Fragment
+final readonly class ResolvedFragment implements Fragment, HasNavigationSection
 {
     /**
      * @param \Closure(): ?string $render
@@ -18,6 +20,7 @@ final readonly class ResolvedFragment implements Fragment
         private Cacheability $cacheability,
         private \Closure $render,
         private FragmentType $type = FragmentType::PAGE,
+        private ?NavigationSection $navigationSection = null,
     ) {
     }
 
@@ -29,6 +32,11 @@ final readonly class ResolvedFragment implements Fragment
     public function getType(): FragmentType
     {
         return $this->type;
+    }
+
+    public function getNavigationSection(): ?NavigationSection
+    {
+        return $this->navigationSection;
     }
 
     public function getCacheability(): Cacheability

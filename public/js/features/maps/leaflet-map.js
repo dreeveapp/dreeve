@@ -1,4 +1,5 @@
 import {fetchJson} from "../../utils";
+import {loadEcharts} from "../charts/echarts-loader";
 import L from 'leaflet';
 import {createMapToolsControl} from "./leaflet-controls";
 import './ctrl-scroll-zoom';
@@ -75,6 +76,7 @@ export default class LeafletMap {
 
         try {
             const coordinateMap = await fetchJson(coordinatesUrl);
+            await loadEcharts();
             const marker = this.addCircleMarker([0, 0], '#F26722', {radius: 6, opacity: 0}).addTo(this.map);
             const chart = echarts.getInstanceByDom(eChartNode);
             const initialZoom = this.map.getZoom();
@@ -97,10 +99,6 @@ export default class LeafletMap {
         } catch (error) {
             console.error('Failed to load coordinate map:', error);
         }
-    }
-
-    destroy() {
-        this.map.remove();
     }
 
     addCircleMarker(latLng, fillColor, {radius = 8, opacity = 1} = {}) {

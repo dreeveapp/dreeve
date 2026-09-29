@@ -8,7 +8,7 @@
             {% if breadcrumbs is empty %}
                 <span aria-current="page" class="inline-flex items-center whitespace-nowrap text-gray-700">{{ dashboardCrumb }}</span>
             {% else %}
-                <a href="{{ relativeUrl('dashboard') }}" data-router-link class="inline-flex items-center whitespace-nowrap text-gray-700 hover:text-primary hover:underline">{{ dashboardCrumb }}</a>
+                <a href="{{ relativeUrl('dashboard') }}" class="inline-flex items-center whitespace-nowrap text-gray-700 hover:text-primary hover:underline">{{ dashboardCrumb }}</a>
             {% endif %}
         </li>
         {% for breadcrumb in breadcrumbs %}
@@ -18,7 +18,7 @@
                     {% if loop.last %}
                         <span aria-current="page" title="{{ breadcrumb.label }}" class="ml-1 min-w-0 truncate text-gray-700">{{ breadcrumb.label }}</span>
                     {% else %}
-                        <a href="{{ relativeUrl(breadcrumb.url) }}" data-router-link class="ml-1 whitespace-nowrap text-gray-700 hover:text-primary hover:underline">{{ breadcrumb.label }}</a>
+                        <a href="{{ relativeUrl(breadcrumb.url) }}" class="ml-1 whitespace-nowrap text-gray-700 hover:text-primary hover:underline">{{ breadcrumb.label }}</a>
                     {% endif %}
                 </div>
             </li>

@@ -3,12 +3,10 @@
 namespace App\Tests\Application;
 
 use App\Application\IndexPage;
+use App\Application\Navigation\NavigationSection;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\User\InMemoryUser;
 
 class IndexPageTest extends ContainerTestCase
 {
@@ -21,33 +19,17 @@ class IndexPageTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
 
-        $this->assertMatchesHtmlSnapshot($this->indexPage->render());
+        $this->assertMatchesHtmlSnapshot($this->indexPage->render('<p>The page content</p>', null));
     }
 
-    public function testRenderIsTheSameForEveryVisitor(): void
+    public function testRenderMarksTheActiveSection(): void
     {
         $this->provideFullTestSet();
 
-        /** @var TokenStorageInterface $tokenStorage */
-        $tokenStorage = $this->getContainer()->get('security.token_storage');
+        $render = $this->indexPage->render('', NavigationSection::ACTIVITIES);
 
-        $tokenStorage->setToken(null);
-        $renderedForAnonymousVisitor = $this->indexPage->render();
-
-        $tokenStorage->setToken(new UsernamePasswordToken(
-            new InMemoryUser('admin', null, ['ROLE_ADMIN']),
-            'main',
-            ['ROLE_ADMIN'],
-        ));
-        $renderedForAuthenticatedVisitor = $this->indexPage->render();
-        $tokenStorage->setToken(null);
-
-        $this->assertEquals($renderedForAnonymousVisitor, $renderedForAuthenticatedVisitor);
-    }
-
-    public function testGetCacheKey(): void
-    {
-        $this->assertEquals('index', $this->indexPage->getCacheability()->getCacheKey());
+        $this->assertStringContainsString('href="/activities" aria-selected="true"', $render);
+        $this->assertStringContainsString('href="/dashboard" aria-selected="false"', $render);
     }
 
     #[\Override]

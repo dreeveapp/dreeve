@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\RecordingDevice;
 
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
@@ -14,7 +16,7 @@ use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentType;
 use Twig\Environment;
 
-final readonly class RecordingDevicesFragment implements Fragment
+final readonly class RecordingDevicesFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private RecordingDeviceRepository $recordingDeviceRepository,
@@ -31,6 +33,11 @@ final readonly class RecordingDevicesFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::GEAR;
     }
 
     public function getCacheability(): Cacheability

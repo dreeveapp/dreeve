@@ -1,8 +1,7 @@
 import {basePath, fetchJson} from "../../utils";
 import {resolveEchartsCallbacks} from "./echarts-callbacks";
-import {v5Theme, v5DarkTheme} from "./echarts-themes";
+import {loadEcharts} from "./echarts-loader";
 import {serialize} from "../data-table/filter-url";
-import {router} from "../../core/router";
 
 export default class ChartManager {
     constructor() {
@@ -21,15 +20,15 @@ export default class ChartManager {
                 chart.resize();
             }
         });
-
-        echarts.registerTheme('v5', v5Theme());
-        echarts.registerTheme('v5-dark', v5DarkTheme());
     }
 
     init(rootNode, isDarkMode) {
         this.theme = isDarkMode ? 'v5-dark' : 'v5';
         const handlers = this.getClickHandlers();
-        rootNode.querySelectorAll('[data-echarts-options], [data-echarts-options-url]').forEach(chartNode => {
+        const chartNodes = rootNode.querySelectorAll('[data-echarts-options], [data-echarts-options-url]');
+        if (0 === chartNodes.length) return;
+
+        loadEcharts().then(() => chartNodes.forEach(chartNode => {
             const chart = echarts.init(chartNode, this.theme);
             const chartOptionsUrl = chartNode.getAttribute('data-echarts-options-url');
 
@@ -57,7 +56,7 @@ export default class ChartManager {
 
             this.allCharts.push(chart);
             this.resizeObserver.observe(chartNode);
-        });
+        }));
     }
 
     getClickHandlers() {
@@ -68,7 +67,7 @@ export default class ChartManager {
                 }
                 const month = (params.dataIndex + 1).toString().padStart(2, "0");
 
-                router.navigateTo(`${basePath()}/monthly-stats/${params.seriesName}-${month}`);
+                window.location.assign(`${basePath()}/monthly-stats/${params.seriesName}-${month}`);
             },
             handleWeeklyStatsClick: (params, clickData) => {
                 if (!params || !params.dataIndex) {
@@ -84,7 +83,7 @@ export default class ChartManager {
                     "start-date": {"from": weeks[params.dataIndex]['from'], "to": weeks[params.dataIndex]['to']},
                 }});
 
-                router.navigateTo(`${basePath()}/activities?${filters}`);
+                window.location.assign(`${basePath()}/activities?${filters}`);
             },
             handleActivityGridChartClick: (params, clickData) => {
                 if (!params || !params.value || params.value < 1) {
@@ -95,21 +94,9 @@ export default class ChartManager {
                     "start-date": {"from": params.value[0], "to": params.value[0]},
                 }});
 
-                router.navigateTo(`${basePath()}/activities?${filters}`);
+                window.location.assign(`${basePath()}/activities?${filters}`);
             },
         };
-    }
-
-    reset() {
-        this.resizeObserver.disconnect();
-        // Dropping the references is not enough: echarts keeps its own registry.
-        this.allCharts.forEach(chart => {
-            if (!chart.isDisposed()) {
-                chart.dispose();
-            }
-        });
-        this.allCharts = [];
-        this.pendingTheme.clear();
     }
 
     toggleDarkTheme(isDarkMode) {

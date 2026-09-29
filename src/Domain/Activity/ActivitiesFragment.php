@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Activity;
 
 use App\Application\Countries;
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\FindActivityTotals\FindActivityTotals;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Gear\GearRepository;
@@ -19,7 +21,7 @@ use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentType;
 use Twig\Environment;
 
-final readonly class ActivitiesFragment implements Fragment
+final readonly class ActivitiesFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private QueryBus $queryBus,
@@ -39,6 +41,11 @@ final readonly class ActivitiesFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::ACTIVITIES;
     }
 
     public function getCacheability(): Cacheability

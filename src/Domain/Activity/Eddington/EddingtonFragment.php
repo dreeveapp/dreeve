@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Eddington;
 
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
@@ -17,7 +19,7 @@ use App\Infrastructure\Serialization\Json;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class EddingtonFragment implements Fragment
+final readonly class EddingtonFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private EddingtonCalculator $eddingtonCalculator,
@@ -35,6 +37,11 @@ final readonly class EddingtonFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::EDDINGTON;
     }
 
     public function getCacheability(): Cacheability

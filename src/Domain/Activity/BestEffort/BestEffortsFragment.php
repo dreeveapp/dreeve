@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\BestEffort;
 
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Theme\Theme;
 use App\Infrastructure\Cache\Cacheability;
@@ -16,7 +18,7 @@ use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class BestEffortsFragment implements Fragment
+final readonly class BestEffortsFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private BestEffortsCalculator $bestEffortsCalculator,
@@ -38,6 +40,11 @@ final readonly class BestEffortsFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::BEST_EFFORTS;
     }
 
     public function getCacheability(): Cacheability

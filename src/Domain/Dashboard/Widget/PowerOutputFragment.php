@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget;
 
+use App\Application\Navigation\HasNavigationSection;
+use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypeRepository;
 use App\Domain\Activity\FindFirstActivityStartDate\FindFirstActivityStartDate;
@@ -27,7 +29,7 @@ use App\Infrastructure\ValueObject\Time\Years;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final readonly class PowerOutputFragment implements Fragment
+final readonly class PowerOutputFragment implements Fragment, HasNavigationSection
 {
     public function __construct(
         private ActivityPowerRepository $activityPowerRepository,
@@ -47,6 +49,11 @@ final readonly class PowerOutputFragment implements Fragment
     public function getType(): FragmentType
     {
         return FragmentType::PAGE;
+    }
+
+    public function getNavigationSection(): NavigationSection
+    {
+        return NavigationSection::DASHBOARD;
     }
 
     public function getCacheability(): Cacheability

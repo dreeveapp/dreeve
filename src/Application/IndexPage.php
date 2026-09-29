@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application;
 
+use App\Application\Navigation\NavigationSection;
 use App\Controller\Api\Internal\ApiFragmentRequestHandler;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
@@ -11,10 +12,6 @@ use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\Cacheable;
-use App\Infrastructure\Cache\Tag\CacheTags;
-use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\RelativeUrl;
@@ -22,7 +19,7 @@ use Symfony\Component\Intl\Countries;
 use Symfony\Component\Translation\LocaleSwitcher;
 use Twig\Environment;
 
-final readonly class IndexPage implements Cacheable
+final readonly class IndexPage
 {
     public function __construct(
         private ActivityIdRepository $activityIdRepository,
@@ -37,23 +34,7 @@ final readonly class IndexPage implements Cacheable
     ) {
     }
 
-    public function getCacheability(): Cacheability
-    {
-        return Cacheability::for(
-            cacheKey: 'index',
-            cacheTags: CacheTags::of(
-                RootCacheTag::ACTIVITIES,
-                RootCacheTag::ACTIVITY_IMAGES,
-                RootCacheTag::CHALLENGES,
-                // The top nav bar renders the workout assistant when the AI UI is enabled.
-                RootCacheTag::SETTINGS_INTEGRATIONS,
-                // The leaflet config every map on the page reads is embedded in window.dreeve.
-                RootCacheTag::SETTINGS_MAPS,
-            ),
-        );
-    }
-
-    public function render(): string
+    public function render(string $content, ?NavigationSection $activeSection): string
     {
         $appearance = $this->settingsRepository->appearance();
         $unitSystem = $appearance->getUnitSystem();
@@ -61,6 +42,8 @@ final readonly class IndexPage implements Cacheable
         $general = $this->settingsRepository->general();
 
         return $this->twig->load('html/index.html.twig')->render([
+            'content' => $content,
+            'activeSection' => $activeSection?->value,
             'totalActivityCount' => $this->activityIdRepository->count(),
             'completedChallenges' => $this->challengeRepository->count(),
             'totalPhotoCount' => $this->imageRepository->count(),

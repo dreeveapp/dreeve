@@ -28,7 +28,7 @@
                             {{ _self.routeMatchRow(routeMatch) }}
                         </div>
                     {% else %}
-                        <a href="{{ relativeUrl('activities/' ~ routeMatch.getActivityId()) }}" data-router-link
+                        <a href="{{ relativeUrl('activities/' ~ routeMatch.getActivityId()) }}"
                            style="{{ sortOrder }}"
                            class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) group/route-match flex items-center gap-3 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs hover:ring-primary/30 rounded-xl p-3 transition">
                             {{ _self.routeMatchRow(routeMatch) }}

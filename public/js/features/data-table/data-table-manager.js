@@ -4,26 +4,10 @@ import {FilterManager} from "./filter-manager";
 import {Sorter} from "./sorter";
 import {parse, serialize} from "./filter-url";
 import {debounce} from "../../utils";
-import {restoreScrollArea} from "../../core/scroll-memory";
-import {router} from "../../core/router";
-
-const renderers = new Map();
-
-const destroyDetachedTables = () => {
-    for (const [wrapper, renderer] of renderers) {
-        if (wrapper.isConnected) continue;
-
-        renderer.destroy();
-        renderers.delete(wrapper);
-    }
-};
+import {HistoryMode, updateQueryString} from "../../core/history";
 
 export default function initDataTables(rootNode) {
-    destroyDetachedTables();
-
     rootNode.querySelectorAll('div[data-dataTable-settings]').forEach((wrapper) => {
-        if (renderers.has(wrapper)) return;
-
         const table = wrapper.querySelector('table');
         const tbody = table?.querySelector('tbody');
         const scrollElem = wrapper.querySelector('.scroll-area');
@@ -37,56 +21,68 @@ export default function initDataTables(rootNode) {
         const clusterRenderer = new ClusterRenderer(wrapper, tbody, scrollElem);
         const sorter = new Sorter(wrapper.querySelectorAll('thead th[data-dataTable-sort]'));
 
-        renderers.set(wrapper, clusterRenderer);
-
         if (settings.toggleableColumns) {
             new ColumnManager(wrapper, settings.name).init();
         }
 
-        const state = parse(new URLSearchParams(location.search));
-        filterManager.prefillFromUrl(state.filters);
-        searchInput.value = state.search;
-        sorter.sortOn = state.sortOn;
-        sorter.sortAsc = state.sortAsc;
+        const applyUrlState = () => {
+            const state = parse(new URLSearchParams(location.search));
+            filterManager.resetAll();
+            filterManager.prefillFromUrl(state.filters);
+            searchInput.value = state.search;
+            sorter.sortOn = state.sortOn;
+            sorter.sortAsc = state.sortAsc;
+        };
+
+        applyUrlState();
 
         fetch(settings.url, {cache: 'no-store'}).then(async (response) => {
-            const dataRows = sorter.apply(await response.json());
+            const unsortedRows = await response.json();
+            const dataRows = sorter.apply([...unsortedRows]);
 
             // Init cluster.
             clusterRenderer.init(dataRows);
 
-            const updateState = (syncUrl = true, resetScroll = true) => {
+            const updateState = (historyMode, resetScroll = true) => {
                 const search = searchInput.value.trim();
                 const activeFilters = filterManager.getActiveFilters();
 
                 filterManager.updateDropdownState(activeFilters);
-                if (syncUrl) {
-                    router.replaceQuery(serialize({
+                if (historyMode) {
+                    const queryString = serialize({
                         filters: filterManager.toUrlFilters(),
                         search: search,
                         sortOn: sorter.sortOn,
                         sortAsc: sorter.sortAsc,
-                    }));
+                    });
+                    updateQueryString(queryString, historyMode);
                 }
                 const rows = filterManager.applyFiltersToRows(dataRows, search);
                 clusterRenderer.update(rows, resetScroll);
                 resetBtn.classList.toggle('hidden', !(Object.keys(activeFilters).length > 0 || search.length > 0));
             };
 
-            updateState(false, false);
-            restoreScrollArea(scrollElem);
+            updateState(null, false);
 
             // Attach events.
-            searchInput.addEventListener('input', debounce(updateState));
-            wrapper.querySelectorAll('[data-dataTable-filter]').forEach(el => el.addEventListener('input', updateState));
-            sorter.attachListeners(dataRows, updateState);
+            searchInput.addEventListener('input', debounce(() => updateState(HistoryMode.REPLACE)));
+            wrapper.querySelectorAll('[data-dataTable-filter]').forEach(el => {
+                if (!el.matches('[data-dataTable-filter*="[]"]')) {
+                    el.addEventListener('input', () => updateState(HistoryMode.PUSH));
+                    return;
+                }
+
+                el.addEventListener('input', () => updateState(null));
+                el.addEventListener('change', () => updateState(HistoryMode.PUSH));
+            });
+            sorter.attachListeners(dataRows, () => updateState(HistoryMode.PUSH));
 
             if (resetBtn) {
                 resetBtn.addEventListener('click', e => {
                     e.preventDefault();
                     searchInput.value = '';
                     filterManager.resetAll();
-                    updateState();
+                    updateState(HistoryMode.PUSH);
                 });
             }
 
@@ -95,7 +91,7 @@ export default function initDataTables(rootNode) {
                     e.preventDefault();
                     const name = btn.getAttribute('data-datatable-filter-clear');
                     filterManager.resetOne(name);
-                    updateState();
+                    updateState(HistoryMode.PUSH);
                 });
             });
 
@@ -105,7 +101,13 @@ export default function initDataTables(rootNode) {
                 e.preventDefault();
                 const filterName = preset.closest('[data-date-preset-filter]').getAttribute('data-date-preset-filter');
                 filterManager.applyDatePreset(preset.getAttribute('data-date-preset'), filterName);
-                updateState();
+                updateState(HistoryMode.PUSH);
+            });
+
+            window.addEventListener('popstate', () => {
+                applyUrlState();
+                sorter.apply(Object.assign(dataRows, unsortedRows));
+                updateState(null);
             });
         });
     });

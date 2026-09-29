@@ -1,8 +1,5 @@
 const CONTAINER_SELECTOR = '[data-light-gallery]';
 const ELEMENT_SELECTOR = '[data-light-gallery-element]';
-const NAVIGATION_SELECTOR = 'a[data-router-link]';
-
-const instances = new Map();
 
 let libPromise = null;
 let lib = null;
@@ -38,14 +35,6 @@ class LightGallery {
             this.open(element);
         };
 
-        this.onNavigate = e => {
-            if (!this.gallery.lgOpened) return;
-            if (!e.target.closest('.lg-outer')) return;
-            if (!e.target.closest(NAVIGATION_SELECTOR)) return;
-
-            this.gallery.closeGallery();
-        };
-
         this.onKeydown = e => {
             if ('Escape' !== e.key || !this.gallery.lgOpened) return;
 
@@ -57,7 +46,6 @@ class LightGallery {
 
         this.container.addEventListener('click', this.onClick);
         this.container.addEventListener('lgAfterClose', this.onAfterClose);
-        document.addEventListener('click', this.onNavigate, true);
         document.addEventListener('keydown', this.onKeydown, true);
     }
 
@@ -71,29 +59,13 @@ class LightGallery {
         ));
         this.gallery.openGallery(elements.indexOf(element));
     }
-
-    destroy() {
-        this.container.removeEventListener('click', this.onClick);
-        this.container.removeEventListener('lgAfterClose', this.onAfterClose);
-        document.removeEventListener('click', this.onNavigate, true);
-        document.removeEventListener('keydown', this.onKeydown, true);
-        this.gallery.destroy();
-    }
 }
 
 export default async function initLightGalleries(rootNode) {
-    for (const [container, instance] of instances) {
-        if (container.isConnected) continue;
-
-        instance.destroy();
-        instances.delete(container);
-    }
-
-    const containers = Array.from(rootNode.querySelectorAll(CONTAINER_SELECTOR))
-        .filter(container => !instances.has(container));
+    const containers = rootNode.querySelectorAll(CONTAINER_SELECTOR);
     if (0 === containers.length) return;
 
     lib = await loadLib();
 
-    containers.forEach(container => instances.set(container, new LightGallery(container)));
+    containers.forEach(container => new LightGallery(container));
 }
