@@ -50,7 +50,7 @@ final readonly class ActivityOpenGraphImage
         $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
 
         $athleteX = self::PADDING;
-        if ($avatar = $this->avatar((string) $general->getProfilePictureUrl())) {
+        if (($avatar = $this->avatar((string) $general->getProfilePictureUrl())) instanceof \GdImage) {
             imagecopy($image, $avatar, self::PADDING, self::PADDING, 0, 0, self::AVATAR_SIZE, self::AVATAR_SIZE);
             $athleteX += self::AVATAR_SIZE + 28;
         }
@@ -162,7 +162,7 @@ final readonly class ActivityOpenGraphImage
         $lines = array_slice($lines, 0, $maxLines);
 
         return array_map(function (string $line, int $i) use ($isCut, $maxLines, $maxWidth, $size, $font): string {
-            if ($this->textWidth($line, $size, $font) <= $maxWidth && !($isCut && $i === $maxLines - 1)) {
+            if ($this->textWidth($line, $size, $font) <= $maxWidth && (!$isCut || $i !== $maxLines - 1)) {
                 return $line;
             }
             while ('' !== $line && $this->textWidth($line.'…', $size, $font) > $maxWidth) {
