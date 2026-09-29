@@ -82,7 +82,9 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
 
     public function hasGear(): bool
     {
-        return !$this->findAllUsed()->isEmpty();
+        return (bool) $this->connection->executeQuery(
+            'SELECT EXISTS(SELECT 1 FROM Gear INNER JOIN Activity ON Activity.gearId = Gear.gearId)'
+        )->fetchOne();
     }
 
     public function find(GearId $gearId): Gear

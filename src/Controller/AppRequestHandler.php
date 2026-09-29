@@ -42,12 +42,9 @@ final readonly class AppRequestHandler
         $page = $this->fragmentRegistry->findOfType($path, FragmentType::PAGE);
 
         $response = $this->fragmentRenderer->render($page ?? $this->notFoundFragment);
-        $response->setContent(str_replace(
-            IndexPage::MAIN_CONTENT_MARKER,
-            (string) $response->getContent(),
-            (string) $this->fragmentRenderer->render($this->indexPage->forSection(
-                $page instanceof HasNavigationSection ? $page->getNavigationSection() : null,
-            ))->getContent(),
+        $response->setContent($this->indexPage->render(
+            content: (string) $response->getContent(),
+            activeSection: $page instanceof HasNavigationSection ? $page->getNavigationSection() : null,
         ));
         $response->setStatusCode($page instanceof Fragment ? Response::HTTP_OK : Response::HTTP_NOT_FOUND);
 

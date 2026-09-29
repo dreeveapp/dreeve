@@ -2,7 +2,6 @@
 
 namespace App\Tests\Infrastructure\Cache\Render;
 
-use App\Application\IndexPage;
 use App\Domain\Activity\BestEffort\ActivityBestEffortsFragmentResolver;
 use App\Domain\Activity\Eddington\EddingtonFragment;
 use App\Domain\Activity\Image\PhotosFragment;
@@ -39,10 +38,6 @@ class RenderCacheInvalidationTest extends ContainerTestCase
         /** @var Cacheable $cacheable */
         $cacheable = $this->getContainer()->get($cacheableClassName);
 
-        if ($cacheable instanceof IndexPage) {
-            $cacheable = $cacheable->forSection(null);
-        }
-
         if ($cacheable instanceof FragmentResolver) {
             $this->provideFullTestSet();
             $cacheable = $cacheable->resolve((string) $pathToResolve);
@@ -75,16 +70,6 @@ class RenderCacheInvalidationTest extends ContainerTestCase
 
     public static function provideCacheables(): \Generator
     {
-        yield 'index' => [IndexPage::class, [
-            RootCacheTag::SETTINGS_APPEARANCE,
-            RootCacheTag::SETTINGS_GENERAL,
-            RootCacheTag::ACTIVITIES,
-            RootCacheTag::ACTIVITY_IMAGES,
-            RootCacheTag::CHALLENGES,
-            RootCacheTag::SETTINGS_INTEGRATIONS,
-            RootCacheTag::SETTINGS_MAPS,
-        ]];
-
         yield 'challenges' => [ChallengesFragment::class, [
             RootCacheTag::SETTINGS_APPEARANCE,
             RootCacheTag::SETTINGS_GENERAL,

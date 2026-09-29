@@ -12,11 +12,7 @@ use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\Tag\CacheTags;
-use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\Fragment\FragmentType;
-use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\RelativeUrl;
 use Symfony\Component\Intl\Countries;
@@ -25,8 +21,6 @@ use Twig\Environment;
 
 final readonly class IndexPage
 {
-    public const string MAIN_CONTENT_MARKER = '<!--dreeve:main-->';
-
     public function __construct(
         private ActivityIdRepository $activityIdRepository,
         private GearRepository $gearRepository,
@@ -40,27 +34,7 @@ final readonly class IndexPage
     ) {
     }
 
-    public function forSection(?NavigationSection $section): ResolvedFragment
-    {
-        return new ResolvedFragment(
-            path: 'index',
-            cacheability: Cacheability::for(
-                cacheKey: null === $section ? 'index' : 'index.'.$section->value,
-                cacheTags: CacheTags::of(
-                    RootCacheTag::ACTIVITIES,
-                    RootCacheTag::ACTIVITY_IMAGES,
-                    RootCacheTag::CHALLENGES,
-                    // The top nav bar renders the workout assistant when the AI UI is enabled.
-                    RootCacheTag::SETTINGS_INTEGRATIONS,
-                    // The leaflet config every map on the page reads is embedded in window.dreeve.
-                    RootCacheTag::SETTINGS_MAPS,
-                ),
-            ),
-            render: fn (): string => $this->render($section),
-        );
-    }
-
-    private function render(?NavigationSection $activeSection): string
+    public function render(string $content, ?NavigationSection $activeSection): string
     {
         $appearance = $this->settingsRepository->appearance();
         $unitSystem = $appearance->getUnitSystem();
@@ -68,7 +42,7 @@ final readonly class IndexPage
         $general = $this->settingsRepository->general();
 
         return $this->twig->load('html/index.html.twig')->render([
-            'mainContentMarker' => self::MAIN_CONTENT_MARKER,
+            'content' => $content,
             'activeSection' => $activeSection?->value,
             'totalActivityCount' => $this->activityIdRepository->count(),
             'completedChallenges' => $this->challengeRepository->count(),
