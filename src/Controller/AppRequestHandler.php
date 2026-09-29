@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Application\IndexPage;
 use App\Application\Navigation\HasNavigationSection;
 use App\Application\NotFoundFragment;
+use App\Application\OpenGraph\HasOpenGraph;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentRegistry;
@@ -45,6 +46,7 @@ final readonly class AppRequestHandler
         $response->setContent($this->indexPage->render(
             content: (string) $response->getContent(),
             activeSection: $page instanceof HasNavigationSection ? $page->getNavigationSection() : null,
+            openGraph: $page instanceof HasOpenGraph ? $page->getOpenGraph() : null,
         ));
         $response->setStatusCode($page instanceof Fragment ? Response::HTTP_OK : Response::HTTP_NOT_FOUND);
 

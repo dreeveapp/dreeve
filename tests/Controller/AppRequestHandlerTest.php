@@ -61,6 +61,16 @@ class AppRequestHandlerTest extends ContainerTestCase
         yield 'an unknown page' => ['dmzdmzd', null];
     }
 
+    public function testHandleRendersTheOpenGraphOfTheActivity(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->assertStringContainsString(
+            '<meta property="og:url" content="http://localhost:8080/activities/activity-9756441741">',
+            (string) $this->appRequestHandler->handle('activities/activity-9756441741')->getContent(),
+        );
+    }
+
     public function testHandleKeepsThePageCacheControl(): void
     {
         $this->provideFullTestSet();

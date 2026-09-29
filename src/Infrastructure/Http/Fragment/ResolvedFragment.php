@@ -6,11 +6,13 @@ namespace App\Infrastructure\Http\Fragment;
 
 use App\Application\Navigation\HasNavigationSection;
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\HasOpenGraph;
+use App\Application\OpenGraph\OpenGraph;
 use App\Infrastructure\Cache\Cacheability;
 use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
 #[Exclude]
-final readonly class ResolvedFragment implements Fragment, HasNavigationSection
+final readonly class ResolvedFragment implements Fragment, HasNavigationSection, HasOpenGraph
 {
     /**
      * @param \Closure(): ?string $render
@@ -21,6 +23,7 @@ final readonly class ResolvedFragment implements Fragment, HasNavigationSection
         private \Closure $render,
         private FragmentType $type = FragmentType::PAGE,
         private ?NavigationSection $navigationSection = null,
+        private ?OpenGraph $openGraph = null,
     ) {
     }
 
@@ -37,6 +40,11 @@ final readonly class ResolvedFragment implements Fragment, HasNavigationSection
     public function getNavigationSection(): ?NavigationSection
     {
         return $this->navigationSection;
+    }
+
+    public function getOpenGraph(): ?OpenGraph
+    {
+        return $this->openGraph;
     }
 
     public function getCacheability(): Cacheability

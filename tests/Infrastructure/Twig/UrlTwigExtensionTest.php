@@ -27,7 +27,7 @@ class UrlTwigExtensionTest extends ContainerTestCase
     private UrlGeneratorInterface $urlGenerator;
     private RequestStack $requestStack;
 
-    public function testToAbsoluteUrl(): void
+    public function testToRelativeUrl(): void
     {
         $this->assertEquals(
             '/test/path',
@@ -125,6 +125,25 @@ class UrlTwigExtensionTest extends ContainerTestCase
         $this->svgsTwigExtension = new SvgsTwigExtension($this->getContainer()->get(KernelProjectDir::class));
         $this->urlGenerator = $this->getContainer()->get(UrlGeneratorInterface::class);
         $this->requestStack = new RequestStack();
+    }
+
+    #[DataProvider('provideAbsoluteUrls')]
+    public function testToAbsoluteUrl(string $appUrl, string $path, string $expected): void
+    {
+        $this->assertEquals(
+            $expected,
+            $this->extension(AppUrl::fromString($appUrl))->toAbsoluteUrl($path)
+        );
+    }
+
+    /**
+     * @return \Generator<string, array{string, string, string}>
+     */
+    public static function provideAbsoluteUrls(): \Generator
+    {
+        yield 'no base path' => ['http://localhost:8081', 'activities/activity-1', 'http://localhost:8081/activities/activity-1'];
+        yield 'a leading slash' => ['http://localhost:8081/', '/activities/activity-1', 'http://localhost:8081/activities/activity-1'];
+        yield 'a base path' => ['https://dreeve.app/base/', 'activities/activity-1', 'https://dreeve.app/base/activities/activity-1'];
     }
 
     #[DataProvider('provideRelativeUrlsWithRedirectTo')]

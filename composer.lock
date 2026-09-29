@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb0edf83dfa0719d1eb0071ab5a68c39",
+    "content-hash": "d1632839994aec40689c8589cb1b66e4",
     "packages": [
         {
             "name": "adrenalinkin/doctrine-naming-strategy",
@@ -12459,6 +12459,7 @@
         "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-dom": "*",
+        "ext-gd": "*",
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-libxml": "*",
