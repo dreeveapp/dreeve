@@ -47,19 +47,6 @@ export const basePath = () => {
     return configured ? '/' + configured.replace(/^\/+|\/+$/g, '') : '';
 }
 
-const urlWithQueryString = (queryString) => queryString ? `${location.pathname}?${queryString}` : location.pathname;
-
-export const replaceQueryString = (queryString) => {
-    window.history.replaceState(window.history.state, '', urlWithQueryString(queryString));
-}
-
-export const pushQueryString = (queryString) => {
-    const url = urlWithQueryString(queryString);
-    if (url === location.pathname + location.search) return;
-
-    window.history.pushState(null, '', url);
-}
-
 export const loadScript = (src) => new Promise((resolve, reject) => {
     const script = document.createElement('script');
     script.src = src;

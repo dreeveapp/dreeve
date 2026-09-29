@@ -6,6 +6,8 @@ export class Sorter {
     }
 
     apply(dataRows) {
+        this.columns.forEach(c => c.querySelector('.sorting-icon')?.setAttribute('aria-sort', 'none'));
+
         const column = [...this.columns].find(th => th.getAttribute('data-dataTable-sort') === this.sortOn);
         if (!column) {
             this.sortOn = null;
@@ -13,7 +15,6 @@ export class Sorter {
             return dataRows;
         }
 
-        this.columns.forEach(c => c.querySelector('.sorting-icon')?.setAttribute('aria-sort', 'none'));
         column.querySelector('.sorting-icon')?.setAttribute('aria-sort', this.sortAsc ? 'ascending' : 'descending');
 
         dataRows.sort((a, b) => {

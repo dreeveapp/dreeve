@@ -1,7 +1,8 @@
 import {FilterManager} from "../data-table/filter-manager";
 import {parse, serialize} from "../data-table/filter-url";
 import HeatmapDrawer from "./heatmap-drawer";
-import {fetchJson, replaceQueryString} from "../../utils";
+import {fetchJson} from "../../utils";
+import {HistoryMode, updateQueryString} from "../../core/history";
 
 export default class Heatmap {
     constructor(wrapper) {
@@ -22,7 +23,7 @@ export default class Heatmap {
             const activeFilters = this.filterManager.getActiveFilters();
             this.filterManager.updateDropdownState(activeFilters);
             if (syncUrl) {
-                replaceQueryString(serialize({filters: this.filterManager.toUrlFilters()}));
+                updateQueryString(serialize({filters: this.filterManager.toUrlFilters()}), HistoryMode.REPLACE);
             }
 
             const routes = this.filterManager.applyFiltersToRows(allRoutes);
