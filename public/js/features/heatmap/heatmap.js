@@ -19,11 +19,11 @@ export default class Heatmap {
         const apiUrl = this.heatmap.getAttribute('data-leaflet-routes');
         const allRoutes = await fetchJson(apiUrl);
 
-        const redraw = (syncUrl = true) => {
+        const redraw = (historyMode) => {
             const activeFilters = this.filterManager.getActiveFilters();
             this.filterManager.updateDropdownState(activeFilters);
-            if (syncUrl) {
-                updateQueryString(serialize({filters: this.filterManager.toUrlFilters()}), HistoryMode.REPLACE);
+            if (historyMode) {
+                updateQueryString(serialize({filters: this.filterManager.toUrlFilters()}), historyMode);
             }
 
             const routes = this.filterManager.applyFiltersToRows(allRoutes);
@@ -34,16 +34,34 @@ export default class Heatmap {
             if (resultCount) resultCount.innerText = routes.filter((route) => route.active).length;
         };
 
-        this.filterManager.prefillFromUrl(parse(new URLSearchParams(location.search)).filters);
-        redraw(false);
+        const applyUrlState = () => {
+            this.filterManager.resetAll();
+            this.filterManager.prefillFromUrl(parse(new URLSearchParams(location.search)).filters);
+        };
 
-        this.wrapper.querySelectorAll('[data-dataTable-filter]').forEach(el => el.addEventListener('input', redraw));
+        applyUrlState();
+        redraw(null);
+
+        this.wrapper.querySelectorAll('[data-dataTable-filter]').forEach(el => {
+            if (!el.matches('[data-dataTable-filter*="[]"]')) {
+                el.addEventListener('input', () => redraw(HistoryMode.PUSH));
+                return;
+            }
+
+            el.addEventListener('input', () => redraw(null));
+            el.addEventListener('change', () => redraw(HistoryMode.PUSH));
+        });
+
+        window.addEventListener('popstate', () => {
+            applyUrlState();
+            redraw(null);
+        });
 
         if (this.resetBtn) {
             this.resetBtn.addEventListener('click', e => {
                 e.preventDefault();
                 this.filterManager.resetAll();
-                redraw();
+                redraw(HistoryMode.PUSH);
             });
         }
 
@@ -52,7 +70,7 @@ export default class Heatmap {
                 e.preventDefault();
                 const name = btn.getAttribute('data-datatable-filter-clear');
                 this.filterManager.resetOne(name);
-                redraw();
+                redraw(HistoryMode.PUSH);
             });
         });
 
@@ -62,7 +80,7 @@ export default class Heatmap {
             e.preventDefault();
             const filterName = preset.closest('[data-date-preset-filter]').getAttribute('data-date-preset-filter');
             this.filterManager.applyDatePreset(preset.getAttribute('data-date-preset'), filterName);
-            redraw();
+            redraw(HistoryMode.PUSH);
         });
     };
 
