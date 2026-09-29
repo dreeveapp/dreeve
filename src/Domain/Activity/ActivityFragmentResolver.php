@@ -84,6 +84,7 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
                     $activity->getMovingTimeFormatted(),
                     $this->formatUnitWithSymbol($activity->getElevation()->toUnitSystem($unitSystem), 0),
                 ]),
+                imagePath: ActivityFragmentPath::for($activity->getId(), 'og-image.png'),
             ),
         );
     }

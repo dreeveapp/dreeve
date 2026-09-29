@@ -7,10 +7,17 @@
     <meta property="og:site_name" content="{{ appName }}">
     <meta property="og:type" content="website">
     {% if openGraph %}
-    <meta property="og:title" content="{{ openGraph.getTitle() }}">
-    <meta property="og:description" content="{{ openGraph.getDescription() }}">
-    <meta property="og:url" content="{{ absoluteUrl(openGraph.getPath()) }}">
-    <meta name="description" content="{{ openGraph.getDescription() }}">
+        <meta property="og:title" content="{{ openGraph.getTitle() }}">
+        <meta property="og:description" content="{{ openGraph.getDescription() }}">
+        <meta property="og:url" content="{{ absoluteUrl(openGraph.getPath()) }}">
+        <meta name="description" content="{{ openGraph.getDescription() }}">
+        {% if openGraph.getImagePath() %}
+        <meta property="og:image" content="{{ absoluteUrl(openGraph.getImagePath()) }}">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta name="twitter:card" content="summary_large_image">
+        {% endif %}
     {% else %}
     <meta property="og:title" content="{{ athlete.getName() }}">
     {% endif %}

@@ -10,6 +10,7 @@ final readonly class OpenGraph
         private string $path,
         private string $title,
         private string $description,
+        private ?string $imagePath = null,
     ) {
     }
 
@@ -26,5 +27,10 @@ final readonly class OpenGraph
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    public function getImagePath(): ?string
+    {
+        return $this->imagePath;
     }
 }

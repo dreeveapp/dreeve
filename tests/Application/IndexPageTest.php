@@ -41,12 +41,15 @@ class IndexPageTest extends ContainerTestCase
             path: 'activities/activity-1',
             title: 'Morning Run',
             description: 'Run · 10.00 km · 50:00 · 120 m',
+            imagePath: 'activities/activity-1/og-image.png',
         ));
 
         $this->assertStringContainsString('<title>Morning Run | Dreeve</title>', $render);
         $this->assertStringContainsString('<meta property="og:title" content="Morning Run">', $render);
         $this->assertStringContainsString('<meta property="og:description" content="Run · 10.00 km · 50:00 · 120 m">', $render);
         $this->assertStringContainsString('<meta property="og:url" content="http://localhost:8080/activities/activity-1">', $render);
+        $this->assertStringContainsString('<meta property="og:image" content="http://localhost:8080/activities/activity-1/og-image.png">', $render);
+        $this->assertStringContainsString('<meta name="twitter:card" content="summary_large_image">', $render);
     }
 
     #[\Override]
