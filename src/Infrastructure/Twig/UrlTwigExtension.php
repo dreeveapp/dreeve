@@ -38,6 +38,12 @@ final readonly class UrlTwigExtension
         return RelativeUrl::from($path, $this->appUrl)->toRelativeUrl();
     }
 
+    #[AsTwigFunction('absoluteUrl')]
+    public function toAbsoluteUrl(string $path): string
+    {
+        return rtrim((string) $this->appUrl, '/').'/'.ltrim($path, '/');
+    }
+
     #[AsTwigFunction('relativeUrlWithRedirectTo')]
     public function toRelativeUrlWithRedirectTo(string $path, string $redirectTo): string
     {

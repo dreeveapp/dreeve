@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Controller\Api\Internal\ApiFragmentRequestHandler;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
@@ -34,7 +35,7 @@ final readonly class IndexPage
     ) {
     }
 
-    public function render(string $content, ?NavigationSection $activeSection): string
+    public function render(string $content, ?NavigationSection $activeSection, ?OpenGraph $openGraph = null): string
     {
         $appearance = $this->settingsRepository->appearance();
         $unitSystem = $appearance->getUnitSystem();
@@ -44,6 +45,7 @@ final readonly class IndexPage
         return $this->twig->load('html/index.html.twig')->render([
             'content' => $content,
             'activeSection' => $activeSection?->value,
+            'openGraph' => $openGraph,
             'totalActivityCount' => $this->activityIdRepository->count(),
             'completedChallenges' => $this->challengeRepository->count(),
             'totalPhotoCount' => $this->imageRepository->count(),

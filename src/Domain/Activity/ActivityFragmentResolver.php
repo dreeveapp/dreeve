@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Activity;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Domain\Activity\Lap\ActivityLapRepository;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\Stream\ActivityHeartRateRepository;
@@ -22,10 +23,14 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\Fragment\FragmentResolver;
 use App\Infrastructure\Http\Fragment\ResolvedFragment;
+use App\Infrastructure\Measurement\ProvideMeasurementFormats;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final readonly class ActivityFragmentResolver implements FragmentResolver
 {
+    use ProvideMeasurementFormats;
+
     public function __construct(
         private ActivityRepository $activityRepository,
         private EnrichedActivityRepository $enrichedActivityRepository,
@@ -36,6 +41,7 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
         private ActivitySplitRepository $activitySplitRepository,
         private ActivityLapRepository $activityLapRepository,
         private SettingsRepository $settingsRepository,
+        private TranslatorInterface $translator,
         private Environment $twig,
     ) {
     }
@@ -46,7 +52,9 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
             return null;
         }
 
-        if (!$this->activityRepository->exists($activityId)) {
+        try {
+            $activity = $this->activityRepository->find($activityId);
+        } catch (EntityNotFound) {
             return null;
         }
 
@@ -62,6 +70,26 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
             ),
             render: fn (): string => $this->renderFor($activityId),
             navigationSection: NavigationSection::ACTIVITIES,
+            openGraph: $this->openGraphFor($activity),
+        );
+    }
+
+    private function openGraphFor(Activity $activity): OpenGraph
+    {
+        $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
+
+        return new OpenGraph(
+            path: ActivityFragmentPath::for($activity->getId()),
+            title: $activity->getName(),
+            description: implode(' · ', [
+                $activity->getSportType()->transSingular($this->translator),
+                $this->formatUnitWithSymbol(
+                    $activity->getDistance()->toUnitSystem($unitSystem),
+                    $activity->getSportType()->getActivityType()->getDistancePrecision(),
+                ),
+                $activity->getMovingTimeFormatted(),
+                $this->formatUnitWithSymbol($activity->getElevation()->toUnitSystem($unitSystem), 0),
+            ]),
         );
     }
 

@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{{ appName }} | {{ athlete.getName() }}</title>
+    <title>{{ openGraph ? openGraph.getTitle() : athlete.getName() }} | {{ appName }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <meta property="og:site_name" content="{{ appName }}">
+    <meta property="og:type" content="website">
+    {% if openGraph %}
+    <meta property="og:title" content="{{ openGraph.getTitle() }}">
+    <meta property="og:description" content="{{ openGraph.getDescription() }}">
+    <meta property="og:url" content="{{ absoluteUrl(openGraph.getPath()) }}">
+    <meta name="description" content="{{ openGraph.getDescription() }}">
+    {% else %}
+    <meta property="og:title" content="{{ athlete.getName() }}">
+    {% endif %}
     <meta name="theme-color" content="#F26822">
-    <meta name="mobile-web-app-title" content="{{ appName }} | {{ athlete.getName() }}">
+    <meta name="mobile-web-app-title" content="{{ athlete.getName() }} | {{ appName }}">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="{{ appName }}">
     <meta name="apple-mobile-web-app-capable" content="yes">
