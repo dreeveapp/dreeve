@@ -10,7 +10,6 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Shifting\ActivityDrivetrainUsage;
 use App\Domain\Activity\Shifting\ActivityDrivetrainUsageRepository;
-use App\Domain\Activity\Shifting\ActivityDrivetrainUsages;
 use App\Domain\Activity\Shifting\DrivetrainPosition;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
@@ -68,47 +67,35 @@ final readonly class ActivityShiftingRequestHandler
         }
 
         $distance = $this->activityRepository->find($activityId)->getDistanceInDisplayUnit();
-        $frontShiftCount = $this->countShifts($drivetrainUsages, DrivetrainPosition::FRONT);
-        $rearShiftCount = $this->countShifts($drivetrainUsages, DrivetrainPosition::REAR);
+
+        $rows = [];
+        $shiftCounts = [];
+        foreach (DrivetrainPosition::cases() as $position) {
+            $drivetrainUsagesForPosition = $drivetrainUsages->filterOnPosition($position);
+            $totalTimeInSeconds = (int) $drivetrainUsagesForPosition->sum(fn (ActivityDrivetrainUsage $drivetrainUsage): int => $drivetrainUsage->getTimeInSeconds());
+            $shiftCounts[$position->value] = (int) $drivetrainUsagesForPosition->sum(fn (ActivityDrivetrainUsage $drivetrainUsage): int => $drivetrainUsage->getShiftCount());
+
+            $rows[$position->value] = [];
+            foreach ($drivetrainUsagesForPosition as $drivetrainUsage) {
+                $rows[$position->value][] = [
+                    'teeth' => $drivetrainUsage->getTeeth(),
+                    'formattedTime' => $drivetrainUsage->getFormattedTime(),
+                    'percentage' => $totalTimeInSeconds > 0 ? $drivetrainUsage->getTimeInSeconds() / $totalTimeInSeconds * 100 : 0.0,
+                ];
+            }
+        }
+
+        $frontShiftCount = $shiftCounts[DrivetrainPosition::FRONT->value];
+        $rearShiftCount = $shiftCounts[DrivetrainPosition::REAR->value];
 
         return $this->twig->load('html/activity/_shifting.html.twig')->render([
-            'frontRings' => $this->buildRows($drivetrainUsages->filterOnPosition(DrivetrainPosition::FRONT)),
-            'rearCogs' => $this->buildRows($drivetrainUsages->filterOnPosition(DrivetrainPosition::REAR)),
+            'frontRings' => $rows[DrivetrainPosition::FRONT->value],
+            'rearCogs' => $rows[DrivetrainPosition::REAR->value],
             'frontShiftCount' => $frontShiftCount,
             'rearShiftCount' => $rearShiftCount,
             'frontShiftsPerDistanceUnit' => $distance->toFloat() > 0 ? $frontShiftCount / $distance->toFloat() : null,
             'rearShiftsPerDistanceUnit' => $distance->toFloat() > 0 ? $rearShiftCount / $distance->toFloat() : null,
             'distanceSymbol' => $distance->getSymbol(),
         ]);
-    }
-
-    /**
-     * @return list<array{teeth: int, formattedTime: string, percentage: float}>
-     */
-    private function buildRows(ActivityDrivetrainUsages $drivetrainUsages): array
-    {
-        if ($drivetrainUsages->isEmpty()) {
-            return [];
-        }
-
-        $totalTimeInSeconds = (int) $drivetrainUsages->sum(fn (ActivityDrivetrainUsage $drivetrainUsage): int => $drivetrainUsage->getTimeInSeconds());
-
-        $rows = [];
-        foreach ($drivetrainUsages as $drivetrainUsage) {
-            $rows[] = [
-                'teeth' => $drivetrainUsage->getTeeth(),
-                'formattedTime' => $drivetrainUsage->getFormattedTime(),
-                'percentage' => $totalTimeInSeconds > 0 ? $drivetrainUsage->getTimeInSeconds() / $totalTimeInSeconds * 100 : 0.0,
-            ];
-        }
-
-        return $rows;
-    }
-
-    private function countShifts(ActivityDrivetrainUsages $drivetrainUsages, DrivetrainPosition $position): int
-    {
-        return (int) $drivetrainUsages
-            ->filterOnPosition($position)
-            ->sum(fn (ActivityDrivetrainUsage $drivetrainUsage): int => $drivetrainUsage->getShiftCount());
     }
 }

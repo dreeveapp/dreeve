@@ -52,13 +52,20 @@ final readonly class MonthRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        if ($month->isBefore($firstMonth) || $month->isAfter($this->currentMonth())) {
+        if ($month->isBefore($firstMonth) || $month->isAfter(Month::fromDate($this->clock->getCurrentDateTimeImmutable()))) {
             throw new NotFoundHttpException('Not found');
         }
 
         $render = $this->cacheableRenderer->render(new ResolvedFragment(
             path: self::BASE_PATH.'/'.$month->getId(),
-            cacheability: $this->cacheabilityFor($month),
+            cacheability: Cacheability::for(
+                cacheKey: sprintf('%s.%s', self::BASE_PATH, $month->getId()),
+                cacheTags: CacheTags::of(
+                    RootCacheTag::ACTIVITIES->forMonth($month->getPreviousMonth()),
+                    RootCacheTag::ACTIVITIES->forMonth($month),
+                    RootCacheTag::ACTIVITIES->forMonth($month->getNextMonth()),
+                ),
+            ),
             render: fn (): string => $this->renderFor($month),
         ));
 
@@ -72,25 +79,13 @@ final readonly class MonthRequestHandler
         );
     }
 
-    private function cacheabilityFor(Month $month): Cacheability
-    {
-        return Cacheability::for(
-            cacheKey: sprintf('%s.%s', self::BASE_PATH, $month->getId()),
-            cacheTags: CacheTags::of(
-                RootCacheTag::ACTIVITIES->forMonth($month->getPreviousMonth()),
-                RootCacheTag::ACTIVITIES->forMonth($month),
-                RootCacheTag::ACTIVITIES->forMonth($month->getNextMonth()),
-            ),
-        );
-    }
-
     private function renderFor(Month $month): string
     {
         $monthlyStats = $this->queryBus->ask(new FindMonthlyStats());
 
         return $this->twig->load('html/calendar/month.html.twig')->render([
             'hasPreviousMonth' => $month->getId() !== $monthlyStats->getFirstMonth()?->getId(),
-            'hasNextMonth' => $month->getId() !== $this->currentMonth()->getId(),
+            'hasNextMonth' => $month->getId() !== Month::fromDate($this->clock->getCurrentDateTimeImmutable())->getId(),
             'statistics' => $monthlyStats->getForMonth($month),
             'calendar' => Calendar::create(
                 month: $month,
@@ -100,10 +95,5 @@ final readonly class MonthRequestHandler
                 ),
             ),
         ]);
-    }
-
-    private function currentMonth(): Month
-    {
-        return Month::fromDate($this->clock->getCurrentDateTimeImmutable());
     }
 }

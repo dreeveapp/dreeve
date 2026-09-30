@@ -9,7 +9,6 @@ use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\ActivityCacheTag;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
-use App\Domain\Activity\EnrichedActivity;
 use App\Domain\Activity\EnrichedActivityRepository;
 use App\Domain\Activity\LeafletMap;
 use App\Domain\Segment\Segment;
@@ -110,10 +109,25 @@ final readonly class SegmentRequestHandler
 
         $leafletMap = $segment->getLeafletMap();
 
+        $activityIds = ActivityIds::fromArray(array_map(
+            fn (SegmentEffort $segmentEffort): ActivityId => $segmentEffort->getActivityId(),
+            $topTenSegmentEfforts->toArray()
+        ));
+
+        $enrichedActivitiesPerActivityId = [];
+        foreach ($this->enrichedActivityRepository->findByIds($activityIds) as $enrichedActivity) {
+            $enrichedActivitiesPerActivityId[(string) $enrichedActivity->getActivity()->getId()] = $enrichedActivity;
+        }
+
+        $enrichedActivitiesPerSegmentEffortId = [];
+        foreach ($topTenSegmentEfforts as $segmentEffort) {
+            $enrichedActivitiesPerSegmentEffortId[(string) $segmentEffort->getId()] = $enrichedActivitiesPerActivityId[(string) $segmentEffort->getActivityId()];
+        }
+
         return $this->twig->load('html/segment/segment.html.twig')->render([
             'segment' => $segment,
             'segmentEffortsTopTen' => $topTenSegmentEfforts,
-            'enrichedActivitiesPerSegmentEffortId' => $this->enrichedActivitiesPerSegmentEffortId($topTenSegmentEfforts),
+            'enrichedActivitiesPerSegmentEffortId' => $enrichedActivitiesPerSegmentEffortId,
             'segmentEffortsVsHeartRateChart' => Json::encode(
                 SegmentEffortVsHeartRateChart::create(
                     segmentEfforts: $segmentEfforts,
@@ -130,28 +144,5 @@ final readonly class SegmentRequestHandler
                 'map' => $leafletMap,
             ] : null,
         ]);
-    }
-
-    /**
-     * @return array<string, EnrichedActivity>
-     */
-    private function enrichedActivitiesPerSegmentEffortId(SegmentEfforts $segmentEfforts): array
-    {
-        $activityIds = ActivityIds::fromArray(array_map(
-            fn (SegmentEffort $segmentEffort): ActivityId => $segmentEffort->getActivityId(),
-            $segmentEfforts->toArray()
-        ));
-
-        $enrichedActivitiesPerActivityId = [];
-        foreach ($this->enrichedActivityRepository->findByIds($activityIds) as $enrichedActivity) {
-            $enrichedActivitiesPerActivityId[(string) $enrichedActivity->getActivity()->getId()] = $enrichedActivity;
-        }
-
-        $enrichedActivities = [];
-        foreach ($segmentEfforts as $segmentEffort) {
-            $enrichedActivities[(string) $segmentEffort->getId()] = $enrichedActivitiesPerActivityId[(string) $segmentEffort->getActivityId()];
-        }
-
-        return $enrichedActivities;
     }
 }

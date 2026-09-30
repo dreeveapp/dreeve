@@ -7,7 +7,6 @@ namespace App\Controller;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityTotals;
 use App\Domain\Activity\BestEffort\BestEffortPeriod;
-use App\Domain\Activity\BestEffort\BestEfforts;
 use App\Domain\Activity\BestEffort\BestEffortsCalculator;
 use App\Domain\Activity\FindActivityTotals\FindActivityTotals;
 use App\Domain\Activity\SportType\SportType;
@@ -105,7 +104,9 @@ final readonly class BadgeRequestHandler
     {
         $bestEfforts = $this->bestEffortsCalculator->calculate();
 
-        $sportTypeWithBestEfforts = $this->findSportTypeWithBestEfforts($bestEfforts, $sportType);
+        $sportTypeWithBestEfforts = $bestEfforts->getAllSportTypesFor(BestEffortPeriod::ALL_TIME)->find(
+            fn (SportType $sportTypeWithBestEfforts): bool => strtolower($sportTypeWithBestEfforts->value) === $sportType,
+        );
         if (!$sportTypeWithBestEfforts instanceof SportType) {
             return new Response('', Response::HTTP_NOT_FOUND);
         }
@@ -127,16 +128,5 @@ final readonly class BadgeRequestHandler
             $render->getContent() ?? '',
             headers: [...$render->getCacheHeaders(), 'Cache-Control' => 'no-cache, no-store, must-revalidate'],
         );
-    }
-
-    private function findSportTypeWithBestEfforts(BestEfforts $bestEfforts, string $sportTypeFromPath): ?SportType
-    {
-        foreach ($bestEfforts->getAllSportTypesFor(BestEffortPeriod::ALL_TIME) as $sportType) {
-            if (strtolower($sportType->value) === $sportTypeFromPath) {
-                return $sportType;
-            }
-        }
-
-        return null;
     }
 }

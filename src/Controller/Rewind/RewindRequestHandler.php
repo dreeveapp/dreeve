@@ -49,7 +49,10 @@ final readonly class RewindRequestHandler
 
         $render = $this->cacheableRenderer->render(new ResolvedFragment(
             path: self::BASE_PATH.'/'.$rewindOption,
-            cacheability: $this->cacheabilityFor($rewindOption),
+            cacheability: Cacheability::for(
+                cacheKey: sprintf('%s.%s', self::BASE_PATH, $rewindOption),
+                cacheTags: RewindCacheTags::forOption($rewindOption),
+            ),
             render: fn (): string => $this->renderFor($rewindOption),
         ));
 
@@ -60,14 +63,6 @@ final readonly class RewindRequestHandler
                 openGraph: null,
             ),
             headers: $render->getCacheHeaders(),
-        );
-    }
-
-    private function cacheabilityFor(string $rewindOption): Cacheability
-    {
-        return Cacheability::for(
-            cacheKey: sprintf('%s.%s', self::BASE_PATH, $rewindOption),
-            cacheTags: RewindCacheTags::forOption($rewindOption),
         );
     }
 

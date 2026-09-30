@@ -45,14 +45,18 @@ final readonly class RewindCompareRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        $right ??= $this->defaultRewindOptionToCompareWith($left, $availableRewindOptions);
+        $right ??= $availableRewindOptions[0] !== $left ? $availableRewindOptions[0] : $availableRewindOptions[1];
         if ($left === $right || !in_array($right, $availableRewindOptions, true)) {
             throw new NotFoundHttpException('Not found');
         }
 
         $render = $this->cacheableRenderer->render(new ResolvedFragment(
             path: sprintf('rewind/%s/compare/%s', $left, $right),
-            cacheability: $this->cacheabilityFor($left, $right),
+            cacheability: Cacheability::for(
+                cacheKey: sprintf('rewind.%s.compare.%s', $left, $right),
+                // Both sides are rendered, so a change to either one of them invalidates this page.
+                cacheTags: RewindCacheTags::forOption($left)->merge(RewindCacheTags::forOption($right)),
+            ),
             render: fn (): string => $this->renderFor($left, $right),
         ));
 
@@ -63,15 +67,6 @@ final readonly class RewindCompareRequestHandler
                 openGraph: null,
             ),
             headers: $render->getCacheHeaders(),
-        );
-    }
-
-    private function cacheabilityFor(string $left, string $right): Cacheability
-    {
-        return Cacheability::for(
-            cacheKey: sprintf('rewind.%s.compare.%s', $left, $right),
-            // Both sides are rendered, so a change to either one of them invalidates this page.
-            cacheTags: RewindCacheTags::forOption($left)->merge(RewindCacheTags::forOption($right)),
         );
     }
 
@@ -99,13 +94,5 @@ final readonly class RewindCompareRequestHandler
             'rewindItemsLeftIsAllTimeRewind' => FindAvailableRewindOptions::ALL_TIME === $left,
             'rewindItemsRightIsAllTimeRewind' => FindAvailableRewindOptions::ALL_TIME === $right,
         ]);
-    }
-
-    /**
-     * @param string[] $availableRewindOptions
-     */
-    private function defaultRewindOptionToCompareWith(string $left, array $availableRewindOptions): string
-    {
-        return $availableRewindOptions[0] !== $left ? $availableRewindOptions[0] : $availableRewindOptions[1];
     }
 }
