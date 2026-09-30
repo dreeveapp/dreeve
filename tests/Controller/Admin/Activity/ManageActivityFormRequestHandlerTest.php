@@ -453,24 +453,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 
         // The image upload is available.
         $this->assertCount(1, $crawler->filter('[data-image-dropzone]'));
-    }
 
-    public function testFilesModeLinksToTheDeleteConfirmationFromTheEditForm(): void
-    {
-        $this->withImportMode(ImportMode::FILES);
-
-        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('1'))
-                ->build(),
-            [],
-        ));
-
-        $this->client->loginUser($this->adminUser());
-
-        $crawler = $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('1').'/edit');
-
-        $this->assertResponseIsSuccessful();
         $this->assertSame(
             '/admin/activities/activity-1/delete',
             $crawler->filter('a.btn--danger')->attr('href'),
