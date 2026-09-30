@@ -24,6 +24,7 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\Fragment\FragmentResolver;
 use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Serialization\Json;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -37,6 +38,7 @@ final readonly class SegmentFragmentResolver implements FragmentResolver
         private EnrichedActivityRepository $enrichedActivityRepository,
         private SettingsRepository $settingsRepository,
         private TranslatorInterface $translator,
+        private UrlGeneratorInterface $urlGenerator,
         private Environment $twig,
     ) {
     }
@@ -104,7 +106,7 @@ final readonly class SegmentFragmentResolver implements FragmentResolver
                 SegmentEffortHistoryChart::create($segmentEfforts)->build()
             ),
             'leaflet' => $leafletMap instanceof \App\Domain\Activity\LeafletMap ? [
-                'polylineUrl' => SegmentFragmentPath::for($segment->getId(), 'polylines'),
+                'polylineUrl' => $this->urlGenerator->generate('segment_polylines', ['segmentId' => (string) $segment->getId()]),
                 'map' => $leafletMap,
             ] : null,
         ]);

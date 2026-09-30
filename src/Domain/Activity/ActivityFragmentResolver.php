@@ -24,6 +24,7 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\Fragment\FragmentResolver;
 use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Measurement\ProvideMeasurementFormats;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -42,6 +43,7 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
         private ActivityLapRepository $activityLapRepository,
         private SettingsRepository $settingsRepository,
         private TranslatorInterface $translator,
+        private UrlGeneratorInterface $urlGenerator,
         private Environment $twig,
     ) {
     }
@@ -118,7 +120,7 @@ final readonly class ActivityFragmentResolver implements FragmentResolver
             'activity' => $activity,
             'enrichedActivity' => $enrichedActivity,
             'leaflet' => $leafletMap instanceof LeafletMap ? [
-                'polylineUrl' => ActivityFragmentPath::for($activityId, 'polylines'),
+                'polylineUrl' => $this->urlGenerator->generate('activity_polylines', ['activityId' => (string) $activityId]),
                 'map' => $leafletMap,
             ] : null,
             'hasGpxLink' => $this->activityStreamRepository->hasOneForActivityAndStreamType($activityId, StreamType::TIME),

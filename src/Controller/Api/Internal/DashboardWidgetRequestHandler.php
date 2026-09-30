@@ -2,50 +2,47 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Dashboard;
+namespace App\Controller\Api\Internal;
 
+use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\Widget\ConfiguredWidget;
 use App\Domain\Dashboard\Widget\ConfiguredWidgets;
 use App\Domain\Dashboard\Widget\DependsOnCurrentDay;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Http\Fragment\FragmentResolver;
-use App\Infrastructure\Http\Fragment\FragmentType;
+use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Http\Fragment\ResolvedFragment;
+use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Routing\Attribute\Route;
 
-final readonly class DashboardWidgetFragmentResolver implements FragmentResolver
+#[AsController]
+final readonly class DashboardWidgetRequestHandler
 {
-    private const string BASE_PATH = 'dashboard/widget';
-
     public function __construct(
         private ConfiguredWidgets $configuredWidgets,
         private Clock $clock,
+        private CacheableRenderer $cacheableRenderer,
     ) {
     }
 
-    public function resolve(string $path): ?ResolvedFragment
+    #[Route(path: '/api/internal/dashboard/widget/{dashboardWidgetId}', name: 'dashboard_widget', requirements: ['dashboardWidgetId' => 'dashboardWidget-[^/]+'], methods: ['GET'], priority: 3)]
+    public function handle(string $dashboardWidgetId): Response
     {
-        if (!preg_match('#^'.self::BASE_PATH.'/([^/]+)$#', $path, $matches)) {
-            return null;
-        }
-
-        try {
-            $dashboardWidgetId = DashboardWidgetId::fromString($matches[1]);
-        } catch (\InvalidArgumentException) {
-            return null;
-        }
+        $dashboardWidgetId = DashboardWidgetId::fromString($dashboardWidgetId);
 
         $configuredWidget = $this->configuredWidgets->find($dashboardWidgetId);
         if (!$configuredWidget instanceof ConfiguredWidget) {
-            return null;
+            return new Response('', Response::HTTP_NOT_FOUND);
         }
 
         $now = $this->clock->getCurrentDateTimeImmutable();
         $widget = $configuredWidget->getWidget();
 
-        return new ResolvedFragment(
-            path: sprintf('%s/%s', self::BASE_PATH, $dashboardWidgetId),
+        $render = $this->cacheableRenderer->render(new ResolvedFragment(
+            path: 'dashboard/widget/'.$dashboardWidgetId,
             cacheability: Cacheability::for(
                 cacheKey: sprintf(
                     'dashboard.widget.%s.%s',
@@ -60,7 +57,8 @@ final readonly class DashboardWidgetFragmentResolver implements FragmentResolver
                 now: $now,
                 configuration: $configuredWidget->getConfiguration(),
             ),
-            type: FragmentType::PARTIAL,
-        );
+        ));
+
+        return new HtmlResponse($render->getContent() ?? '', headers: $render->getCacheHeaders());
     }
 }

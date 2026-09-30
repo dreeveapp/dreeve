@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Domain\Activity\Shifting;
+namespace App\Tests\Controller\Api\Internal\Activity;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\Shifting\ActivityDrivetrainUsageRepository;
 use App\Domain\Activity\Shifting\DrivetrainPosition;
 use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\Domain\Activity\Shifting\ActivityDrivetrainUsageBuilder;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class ActivityShiftingFragmentResolverTest extends ControllerWebTestCase
+class ActivityShiftingRequestHandlerTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
     use ProvideTestData;
@@ -24,7 +25,7 @@ class ActivityShiftingFragmentResolverTest extends ControllerWebTestCase
         $this->seedActivity();
         $this->addDrivetrainUsages();
 
-        $this->client->request('GET', '/api/internal/fragment/partial/activities/'.self::ACTIVITY_ID.'/shifting');
+        $this->client->request('GET', '/api/internal/activities/'.self::ACTIVITY_ID.'/shifting');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -36,7 +37,7 @@ class ActivityShiftingFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/partial/activities/'.self::ACTIVITY_ID.'/shifting');
+        $this->client->request('GET', '/api/internal/activities/'.self::ACTIVITY_ID.'/shifting');
 
         $this->assertResponseIsSuccessful();
         $this->assertEmpty($this->client->getResponse()->getContent());
@@ -48,20 +49,10 @@ class ActivityShiftingFragmentResolverTest extends ControllerWebTestCase
         $this->seedActivity();
         $this->addDrivetrainUsages();
 
-        $this->client->request('GET', '/api/internal/fragment/partial/activities/'.self::ACTIVITY_ID.'/shifting');
+        $this->client->request('GET', '/api/internal/activities/'.self::ACTIVITY_ID.'/shifting');
 
         $this->assertResponseHeaderSame('X-Dreeve-Cache', 'MISS');
         $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activities.9542782314, activities');
-    }
-
-    public function testItIsNotServedAsAPageFragment(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/api/internal/fragment/page/activities/'.self::ACTIVITY_ID.'/shifting');
-
-        $this->assertResponseStatusCodeSame(404);
     }
 
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void
@@ -69,7 +60,7 @@ class ActivityShiftingFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/partial/activities/activity-1/shifting');
+        $this->client->request('GET', '/api/internal/activities/activity-1/shifting');
 
         $this->assertResponseStatusCodeSame(404);
     }

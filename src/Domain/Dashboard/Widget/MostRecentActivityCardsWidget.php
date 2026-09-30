@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget;
 
-use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\LeafletMap;
 use App\Domain\Activity\SportType\SportType;
@@ -14,6 +13,7 @@ use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class MostRecentActivityCardsWidget implements Widget
@@ -24,6 +24,7 @@ final readonly class MostRecentActivityCardsWidget implements Widget
         private TranslatorInterface $translator,
         private ActivityRepository $activityRepository,
         private WidgetRenderer $widgetRenderer,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -112,7 +113,7 @@ final readonly class MostRecentActivityCardsWidget implements Widget
             $items[] = [
                 'activity' => $activity,
                 'leaflet' => $leafletMap instanceof LeafletMap ? [
-                    'polylineUrl' => ActivityFragmentPath::for($activity->getId(), 'polylines'),
+                    'polylineUrl' => $this->urlGenerator->generate('activity_polylines', ['activityId' => (string) $activity->getId()]),
                     'map' => $leafletMap,
                 ] : null,
             ];

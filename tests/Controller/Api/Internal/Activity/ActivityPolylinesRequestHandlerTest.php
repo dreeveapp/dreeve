@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\Activity;
+namespace App\Tests\Controller\Api\Internal\Activity;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
@@ -11,7 +11,7 @@ use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
+class ActivityPolylinesRequestHandlerTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
     use ProvideTestData;
@@ -21,7 +21,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9830227112/polylines');
+        $this->client->request('GET', '/api/internal/activities/activity-9830227112/polylines');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
@@ -33,7 +33,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9830227112/polylines');
+        $this->client->request('GET', '/api/internal/activities/activity-9830227112/polylines');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
@@ -46,16 +46,6 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
         );
     }
 
-    public function testItIsNotServedAsAPageFragment(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/api/internal/fragment/page/activities/activity-9830227112/polylines');
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
     public function testItPrefersTheLatLngStreamOverTheEncodedPolyline(): void
     {
         $this->provideFullTestSet();
@@ -65,7 +55,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
             [[51.2, 3.18], [51.21, 3.19], [51.22, 3.2]],
         );
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9830227112/polylines');
+        $this->client->request('GET', '/api/internal/activities/activity-9830227112/polylines');
 
         $this->assertResponseIsSuccessful();
         $this->assertEquals(
@@ -79,12 +69,12 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9830227112/polylines');
+        $this->client->request('GET', '/api/internal/activities/activity-9830227112/polylines');
         $fromPolyline = (string) $this->client->getResponse()->getContent();
 
         $this->addLatLngStreamFor(ActivityId::fromUnprefixed('9830227112'), []);
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9830227112/polylines');
+        $this->client->request('GET', '/api/internal/activities/activity-9830227112/polylines');
 
         $this->assertResponseIsSuccessful();
         $this->assertEquals($fromPolyline, $this->client->getResponse()->getContent());
@@ -95,7 +85,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9756441741/polylines');
+        $this->client->request('GET', '/api/internal/activities/activity-9756441741/polylines');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -105,7 +95,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-1/polylines');
+        $this->client->request('GET', '/api/internal/activities/activity-1/polylines');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -115,7 +105,7 @@ class ActivityPolylinesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/9830227112/polylines');
+        $this->client->request('GET', '/api/internal/activities/9830227112/polylines');
 
         $this->assertResponseStatusCodeSame(404);
     }

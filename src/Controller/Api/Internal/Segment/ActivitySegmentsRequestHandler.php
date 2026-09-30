@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Segment;
+namespace App\Controller\Api\Internal\Segment;
 
 use App\Domain\Activity\ActivityCacheTag;
 use App\Domain\Activity\ActivityFragmentPath;
@@ -10,33 +10,37 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Http\Fragment\FragmentResolver;
-use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Http\Fragment\ResolvedFragment;
+use App\Infrastructure\Http\HtmlResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
-final readonly class ActivitySegmentsFragmentResolver implements FragmentResolver
+#[AsController]
+final readonly class ActivitySegmentsRequestHandler
 {
     public function __construct(
         private ActivityRepository $activityRepository,
         private SegmentEffortRepository $segmentEffortRepository,
+        private CacheableRenderer $cacheableRenderer,
         private Environment $twig,
     ) {
     }
 
-    public function resolve(string $path): ?ResolvedFragment
+    #[Route(path: '/api/internal/activities/{activityId}/segments', name: 'activity_segments', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'], priority: 3)]
+    public function handle(string $activityId): Response
     {
-        if (!($activityId = ActivityFragmentPath::match($path, 'segments')) instanceof ActivityId) {
-            return null;
-        }
+        $activityId = ActivityId::fromString($activityId);
 
         if (!$this->activityRepository->exists($activityId)) {
-            return null;
+            return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        return new ResolvedFragment(
+        $render = $this->cacheableRenderer->render(new ResolvedFragment(
             path: ActivityFragmentPath::for($activityId, 'segments'),
             cacheability: Cacheability::for(
                 cacheKey: ActivityFragmentPath::cacheKey($activityId, 'segments'),
@@ -46,8 +50,9 @@ final readonly class ActivitySegmentsFragmentResolver implements FragmentResolve
                 ),
             ),
             render: fn (): string => $this->renderFor($activityId),
-            type: FragmentType::PARTIAL,
-        );
+        ));
+
+        return new HtmlResponse($render->getContent() ?? '', headers: $render->getCacheHeaders());
     }
 
     private function renderFor(ActivityId $activityId): string

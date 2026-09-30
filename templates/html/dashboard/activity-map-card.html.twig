@@ -75,7 +75,7 @@
         </div>
         {% if leaflet %}
             {% set leafletOptions = {
-                'polylineUrl': fragmentDataUrl(leaflet.polylineUrl),
+                'polylineUrl': relativeUrl(leaflet.polylineUrl),
                 'tileLayer': leaflet.map.getTileLayer(),
                 'minZoom': leaflet.map.getMinZoom(),
                 'maxZoom': leaflet.map.getMaxZoom(),

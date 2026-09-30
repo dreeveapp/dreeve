@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\Activity\Route\Match;
+namespace App\Tests\Controller\Api\Internal\Activity;
 
 use App\Application\Import\CalculateActivityMetrics\Pipeline\CalculateActivityRouteSignatures;
 use App\Tests\Controller\ControllerWebTestCase;
@@ -8,7 +8,7 @@ use App\Tests\ProvideTestData;
 use App\Tests\SpyOutput;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class ActivityRouteMatchesFragmentResolverTest extends ControllerWebTestCase
+class ActivityRouteMatchesRequestHandlerTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
     use ProvideTestData;
@@ -19,7 +19,7 @@ class ActivityRouteMatchesFragmentResolverTest extends ControllerWebTestCase
         $this->seedActivity();
         $this->calculateRouteSignatures();
 
-        $this->client->request('GET', '/api/internal/fragment/partial/activities/activity-9830227167/route-matches');
+        $this->client->request('GET', '/api/internal/activities/activity-9830227167/route-matches');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -31,20 +31,10 @@ class ActivityRouteMatchesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/partial/activities/activity-9830227167/route-matches');
+        $this->client->request('GET', '/api/internal/activities/activity-9830227167/route-matches');
 
         $this->assertResponseHeaderSame('X-Dreeve-Cache', 'MISS');
         $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activities.9830227167, activities');
-    }
-
-    public function testItIsNotServedAsAPageFragment(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/api/internal/fragment/page/activities/activity-9830227167/route-matches');
-
-        $this->assertResponseStatusCodeSame(404);
     }
 
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void
@@ -52,7 +42,7 @@ class ActivityRouteMatchesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/partial/activities/activity-1/route-matches');
+        $this->client->request('GET', '/api/internal/activities/activity-1/route-matches');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -62,7 +52,7 @@ class ActivityRouteMatchesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/partial/activities/9830227167/route-matches');
+        $this->client->request('GET', '/api/internal/activities/9830227167/route-matches');
 
         $this->assertResponseStatusCodeSame(404);
     }

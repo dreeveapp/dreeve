@@ -2,23 +2,14 @@
 
 namespace App\Tests\Infrastructure\Http\Fragment;
 
-use App\Domain\Activity\ActivityCoordinatesFragmentResolver;
 use App\Domain\Activity\ActivityFragmentResolver;
-use App\Domain\Activity\ActivityMetricsFragmentResolver;
-use App\Domain\Activity\ActivityPolylinesFragmentResolver;
-use App\Domain\Activity\BestEffort\ActivityBestEffortsFragmentResolver;
 use App\Domain\Activity\BestEffort\BestEffortsHistoryFragmentResolver;
-use App\Domain\Activity\Route\Match\ActivityRouteMatchesFragmentResolver;
-use App\Domain\Activity\Shifting\ActivityShiftingFragmentResolver;
 use App\Domain\Badge\BadgeFragmentResolver;
 use App\Domain\Calendar\MonthFragmentResolver;
-use App\Domain\Dashboard\DashboardWidgetFragmentResolver;
 use App\Domain\Integration\AI\Chat\ChatFragmentResolver;
 use App\Domain\Rewind\RewindCompareFragmentResolver;
 use App\Domain\Rewind\RewindFragmentResolver;
-use App\Domain\Segment\ActivitySegmentsFragmentResolver;
 use App\Domain\Segment\SegmentFragmentResolver;
-use App\Domain\Segment\SegmentPolylinesFragmentResolver;
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
@@ -41,18 +32,9 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
         MonthFragmentResolver::class => 'monthly-stats/2023-06',
         RewindFragmentResolver::class => 'rewind/2023',
         RewindCompareFragmentResolver::class => 'rewind/2023/compare/2022',
-        ActivityMetricsFragmentResolver::class => 'activities/activity-9756441741/metrics',
-        ActivityCoordinatesFragmentResolver::class => 'activities/activity-9756441741/coordinates',
-        ActivityPolylinesFragmentResolver::class => 'activities/activity-9830227112/polylines',
-        ActivityBestEffortsFragmentResolver::class => 'activities/activity-9542782314/best-efforts',
-        ActivitySegmentsFragmentResolver::class => 'activities/activity-9542782314/segments',
-        ActivityRouteMatchesFragmentResolver::class => 'activities/activity-9542782314/route-matches',
-        ActivityShiftingFragmentResolver::class => 'activities/activity-9542782314/shifting',
-        SegmentPolylinesFragmentResolver::class => 'segments/segment-10/polylines',
         SegmentFragmentResolver::class => 'segments/segment-10',
         BestEffortsHistoryFragmentResolver::class => 'best-efforts/Ride/10000',
         BadgeFragmentResolver::class => 'badge/dreeve',
-        DashboardWidgetFragmentResolver::class => 'dashboard/widget/dashboardWidget-introText',
         ChatFragmentResolver::class => 'chat',
     ];
 

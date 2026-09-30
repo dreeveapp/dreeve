@@ -2,42 +2,50 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Activity\Shifting;
+namespace App\Controller\Api\Internal\Activity;
 
 use App\Domain\Activity\ActivityCacheTag;
 use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\Shifting\ActivityDrivetrainUsage;
+use App\Domain\Activity\Shifting\ActivityDrivetrainUsageRepository;
+use App\Domain\Activity\Shifting\ActivityDrivetrainUsages;
+use App\Domain\Activity\Shifting\DrivetrainPosition;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Http\Fragment\FragmentResolver;
-use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Http\Fragment\ResolvedFragment;
+use App\Infrastructure\Http\HtmlResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
-final readonly class ActivityShiftingFragmentResolver implements FragmentResolver
+#[AsController]
+final readonly class ActivityShiftingRequestHandler
 {
     private const string SUB_RESOURCE = 'shifting';
 
     public function __construct(
         private ActivityRepository $activityRepository,
         private ActivityDrivetrainUsageRepository $activityDrivetrainUsageRepository,
+        private CacheableRenderer $cacheableRenderer,
         private Environment $twig,
     ) {
     }
 
-    public function resolve(string $path): ?ResolvedFragment
+    #[Route(path: '/api/internal/activities/{activityId}/shifting', name: 'activity_shifting', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'], priority: 3)]
+    public function handle(string $activityId): Response
     {
-        if (!($activityId = ActivityFragmentPath::match($path, self::SUB_RESOURCE)) instanceof ActivityId) {
-            return null;
-        }
+        $activityId = ActivityId::fromString($activityId);
 
         if (!$this->activityRepository->exists($activityId)) {
-            return null;
+            return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        return new ResolvedFragment(
+        $render = $this->cacheableRenderer->render(new ResolvedFragment(
             path: ActivityFragmentPath::for($activityId, self::SUB_RESOURCE),
             cacheability: Cacheability::for(
                 cacheKey: ActivityFragmentPath::cacheKey($activityId, self::SUB_RESOURCE),
@@ -47,8 +55,9 @@ final readonly class ActivityShiftingFragmentResolver implements FragmentResolve
                 ),
             ),
             render: fn (): string => $this->renderFor($activityId),
-            type: FragmentType::PARTIAL,
-        );
+        ));
+
+        return new HtmlResponse($render->getContent() ?? '', headers: $render->getCacheHeaders());
     }
 
     private function renderFor(ActivityId $activityId): string

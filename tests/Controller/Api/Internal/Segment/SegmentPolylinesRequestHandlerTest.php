@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests\Domain\Activity;
+namespace App\Tests\Controller\Api\Internal\Segment;
 
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class ActivityMetricsFragmentResolverTest extends ControllerWebTestCase
+class SegmentPolylinesRequestHandlerTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
     use ProvideTestData;
@@ -15,8 +15,9 @@ class ActivityMetricsFragmentResolverTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
         $this->seedActivity();
+        $this->addSegmentWithAPolylineFixtures();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9756441741/metrics');
+        $this->client->request('GET', '/api/internal/segments/segment-10/polylines');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
@@ -27,56 +28,59 @@ class ActivityMetricsFragmentResolverTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
         $this->seedActivity();
+        $this->addSegmentWithAPolylineFixtures();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9756441741/metrics');
+        $this->client->request('GET', '/api/internal/segments/segment-10/polylines');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
-            'activities.9756441741.metrics',
+            'segments.10.polylines',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
+    }
+
+    public function testItIsTaggedWithTheSegmentsItRenders(): void
+    {
+        $this->provideFullTestSet();
+        $this->seedActivity();
+        $this->addSegmentWithAPolylineFixtures();
+
+        $this->client->request('GET', '/api/internal/segments/segment-10/polylines');
+
+        // Without this tag a re-imported segment would keep serving its old route forever.
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities.9756441741',
+            'settings.appearance, settings.general, segments',
         );
     }
 
-    public function testItIsNotServedAsAPageFragment(): void
+    public function testItDoesNotResolveASegmentWithoutAMap(): void
     {
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/page/activities/activity-9756441741/metrics');
+        $this->client->request('GET', '/api/internal/segments/segment-1/polylines');
 
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testItDoesNotResolveAnActivityWithoutACombinedStream(): void
+    public function testItDoesNotResolveASegmentThatDoesNotExist(): void
     {
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9830227112/metrics');
+        $this->client->request('GET', '/api/internal/segments/segment-999/polylines');
 
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testItDoesNotResolveAnActivityThatDoesNotExist(): void
+    public function testItRejectsAnUnprefixedSegmentId(): void
     {
         $this->provideFullTestSet();
         $this->seedActivity();
+        $this->addSegmentWithAPolylineFixtures();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-1/metrics');
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
-    public function testItRejectsAnUnprefixedActivityId(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/api/internal/fragment/data/activities/9756441741/metrics');
+        $this->client->request('GET', '/api/internal/segments/10/polylines');
 
         $this->assertResponseStatusCodeSame(404);
     }

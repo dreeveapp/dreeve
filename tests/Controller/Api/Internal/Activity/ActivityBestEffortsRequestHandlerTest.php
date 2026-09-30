@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests\Domain\Activity\BestEffort;
+namespace App\Tests\Controller\Api\Internal\Activity;
 
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
+class ActivityBestEffortsRequestHandlerTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
     use ProvideTestData;
@@ -16,7 +16,7 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/partial/activities/activity-9542782314/best-efforts');
+        $this->client->request('GET', '/api/internal/activities/activity-9542782314/best-efforts');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
@@ -28,20 +28,10 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/partial/activities/activity-9542782314/best-efforts');
+        $this->client->request('GET', '/api/internal/activities/activity-9542782314/best-efforts');
 
         $this->assertResponseHeaderSame('X-Dreeve-Cache', 'MISS');
         $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activities.9542782314, activities');
-    }
-
-    public function testItIsNotServedAsAPageFragment(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/api/internal/fragment/page/activities/activity-9542782314/best-efforts');
-
-        $this->assertResponseStatusCodeSame(404);
     }
 
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void
@@ -49,7 +39,7 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/partial/activities/activity-1/best-efforts');
+        $this->client->request('GET', '/api/internal/activities/activity-1/best-efforts');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -59,7 +49,7 @@ class ActivityBestEffortsFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/partial/activities/9542782314/best-efforts');
+        $this->client->request('GET', '/api/internal/activities/9542782314/best-efforts');
 
         $this->assertResponseStatusCodeSame(404);
     }

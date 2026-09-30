@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\Dashboard;
+namespace App\Tests\Controller\Api\Internal;
 
 use App\Domain\Dashboard\DashboardLayout;
 use App\Domain\Dashboard\Widget\ConfiguredWidgets;
@@ -13,7 +13,7 @@ use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class DashboardWidgetFragmentTest extends ControllerWebTestCase
+class DashboardWidgetRequestHandlerTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
     use ProvideTestData;
@@ -28,7 +28,7 @@ class DashboardWidgetFragmentTest extends ControllerWebTestCase
         foreach ($this->getContainer()->get(ConfiguredWidgets::class) as $configuredWidget) {
             $this->snapshotName = (string) $configuredWidget->getName();
 
-            $this->client->request('GET', '/api/internal/fragment/partial/dashboard/widget/'.$configuredWidget->getId());
+            $this->client->request('GET', '/api/internal/dashboard/widget/'.$configuredWidget->getId());
 
             $this->assertResponseIsSuccessful();
             $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -39,7 +39,7 @@ class DashboardWidgetFragmentTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/internal/fragment/partial/dashboard/widget/dashboardWidget-doesNotExist');
+        $this->client->request('GET', '/api/internal/dashboard/widget/dashboardWidget-doesNotExist');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -48,16 +48,7 @@ class DashboardWidgetFragmentTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/internal/fragment/partial/dashboard/widget/doesNotExist');
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
-    public function testItIsNotServedAsAPageFragment(): void
-    {
-        $this->provideFullTestSet();
-
-        $this->client->request('GET', '/api/internal/fragment/page/dashboard/widget/dashboardWidget-introText');
+        $this->client->request('GET', '/api/internal/dashboard/widget/doesNotExist');
 
         $this->assertResponseStatusCodeSame(404);
     }

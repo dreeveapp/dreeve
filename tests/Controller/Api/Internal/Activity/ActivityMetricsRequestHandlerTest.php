@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests\Domain\Activity;
+namespace App\Tests\Controller\Api\Internal\Activity;
 
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class ActivityCoordinatesFragmentResolverTest extends ControllerWebTestCase
+class ActivityMetricsRequestHandlerTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
     use ProvideTestData;
@@ -16,7 +16,7 @@ class ActivityCoordinatesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9756441741/coordinates');
+        $this->client->request('GET', '/api/internal/activities/activity-9756441741/metrics');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
@@ -28,11 +28,11 @@ class ActivityCoordinatesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9756441741/coordinates');
+        $this->client->request('GET', '/api/internal/activities/activity-9756441741/metrics');
 
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
-            'activities.9756441741.coordinates',
+            'activities.9756441741.metrics',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
         $this->assertResponseHeaderSame(
@@ -41,22 +41,12 @@ class ActivityCoordinatesFragmentResolverTest extends ControllerWebTestCase
         );
     }
 
-    public function testItIsNotServedAsAPageFragment(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/api/internal/fragment/page/activities/activity-9756441741/coordinates');
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
     public function testItDoesNotResolveAnActivityWithoutACombinedStream(): void
     {
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-9830227112/coordinates');
+        $this->client->request('GET', '/api/internal/activities/activity-9830227112/metrics');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -66,7 +56,7 @@ class ActivityCoordinatesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/activity-1/coordinates');
+        $this->client->request('GET', '/api/internal/activities/activity-1/metrics');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -76,7 +66,7 @@ class ActivityCoordinatesFragmentResolverTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/api/internal/fragment/data/activities/9756441741/coordinates');
+        $this->client->request('GET', '/api/internal/activities/9756441741/metrics');
 
         $this->assertResponseStatusCodeSame(404);
     }

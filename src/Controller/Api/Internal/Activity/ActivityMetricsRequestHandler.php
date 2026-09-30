@@ -2,55 +2,64 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Activity;
+namespace App\Controller\Api\Internal\Activity;
 
+use App\Domain\Activity\ActivityCacheTag;
+use App\Domain\Activity\ActivityFragmentPath;
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamProfileCharts;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
-use App\Infrastructure\Http\Fragment\FragmentResolver;
-use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Serialization\Json;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final readonly class ActivityMetricsFragmentResolver implements FragmentResolver
+#[AsController]
+final readonly class ActivityMetricsRequestHandler
 {
     public function __construct(
         private ActivityRepository $activityRepository,
         private CombinedActivityStreamRepository $combinedActivityStreamRepository,
         private SettingsRepository $settingsRepository,
         private TranslatorInterface $translator,
+        private CacheableRenderer $cacheableRenderer,
     ) {
     }
 
-    public function resolve(string $path): ?ResolvedFragment
+    #[Route(path: '/api/internal/activities/{activityId}/metrics', name: 'activity_metrics', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'], priority: 3)]
+    public function handle(string $activityId): Response
     {
-        if (!($activityId = ActivityFragmentPath::match($path, 'metrics')) instanceof ActivityId) {
-            return null;
-        }
+        $activityId = ActivityId::fromString($activityId);
 
         if (!$this->activityRepository->exists($activityId)) {
-            return null;
+            return new Response('', Response::HTTP_NOT_FOUND);
         }
 
         if (0 === $this->combinedActivityStreamRepository->countChartableStreamTypesFor(
             $activityId,
             $this->settingsRepository->appearance()->getUnitSystem(),
         )) {
-            return null;
+            return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        return new ResolvedFragment(
+        $render = $this->cacheableRenderer->render(new ResolvedFragment(
             path: ActivityFragmentPath::for($activityId, 'metrics'),
             cacheability: Cacheability::for(
                 cacheKey: ActivityFragmentPath::cacheKey($activityId, 'metrics'),
                 cacheTags: CacheTags::of(ActivityCacheTag::for($activityId)),
             ),
             render: fn (): string => Json::encode($this->profileChartsFor($activityId)->build()),
-            type: FragmentType::DATA,
-        );
+        ));
+
+        return new JsonResponse($render->getContent() ?? '[]', headers: $render->getCacheHeaders(), json: true);
     }
 
     private function profileChartsFor(ActivityId $activityId): CombinedStreamProfileCharts

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Rewind;
 
-use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Image\Image;
 use App\Domain\Activity\Image\ImageRepository;
@@ -33,6 +32,7 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\Year;
 use App\Infrastructure\ValueObject\Time\Years;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -47,6 +47,7 @@ final readonly class RewindItemsBuilder
         private Environment $twig,
         private TranslatorInterface $translator,
         private Theme $theme,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -129,7 +130,7 @@ final readonly class RewindItemsBuilder
                 content: $this->twig->render('html/rewind/rewind-biggest-activity.html.twig', [
                     'activity' => $longestActivity,
                     'leaflet' => $leafletMap ? [
-                        'polylineUrl' => ActivityFragmentPath::for($longestActivity->getId(), 'polylines'),
+                        'polylineUrl' => $this->urlGenerator->generate('activity_polylines', ['activityId' => (string) $longestActivity->getId()]),
                         'map' => $leafletMap,
                     ] : null,
                 ])
