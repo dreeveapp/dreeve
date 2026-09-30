@@ -142,7 +142,6 @@
     --container-2xl: 42rem;
     --container-3xl: 48rem;
     --container-4xl: 56rem;
-    --container-6xl: 72rem;
     --container-7xl: 80rem;
     --text-xs: 0.75rem;
     --text-xs--line-height: calc(1 / 0.75);
@@ -1117,6 +1116,9 @@
   .me-3 {
     margin-inline-end: calc(var(--spacing) * 3);
   }
+  .me-auto {
+    margin-inline-end: auto;
+  }
   .-mt-0\.5 {
     margin-top: calc(var(--spacing) * -0.5);
   }
@@ -2009,9 +2011,6 @@
   }
   .max-w-3xl {
     max-width: var(--container-3xl);
-  }
-  .max-w-6xl {
-    max-width: var(--container-6xl);
   }
   .max-w-100 {
     max-width: calc(var(--spacing) * 100);

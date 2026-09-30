@@ -107,6 +107,9 @@
                     </div>
                 {% endif %}
                 <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
+                    {% if importMode.isFiles() %}
+                        <a href="{{ relativeUrl(path('admin_delete_activity', {activityId: activity.getId()})) }}" type="button" class="btn--danger me-auto">{{ "Delete"|trans({}, 'admin') }}</a>
+                    {% endif %}
                     <a href="{{ returnUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>
                     <button type="submit" data-has-loading-state class="group btn--primary">
                         <span class="label">{{ "Save"|trans({}, 'admin') }}</span>

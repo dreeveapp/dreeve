@@ -108,6 +108,8 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 
         // Images can be attached right away.
         $this->assertCount(1, $crawler->filter('[data-image-dropzone]'));
+
+        $this->assertCount(0, $crawler->filter('a.btn--danger'));
     }
 
     public function testRendersTheManuallyAddedActivityFormPrefilledOnEdit(): void
@@ -451,6 +453,68 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 
         // The image upload is available.
         $this->assertCount(1, $crawler->filter('[data-image-dropzone]'));
+    }
+
+    public function testFilesModeLinksToTheDeleteConfirmationFromTheEditForm(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->build(),
+            [],
+        ));
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('1').'/edit');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame(
+            '/admin/activities/activity-1/delete',
+            $crawler->filter('a.btn--danger')->attr('href'),
+        );
+    }
+
+    public function testFilesModeLinksToTheDeleteConfirmationFromTheManuallyAddedActivityForm(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withImportSource(ImportSource::MANUAL)
+                ->build(),
+            [],
+        ));
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('1').'/edit');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame(
+            '/admin/activities/activity-1/delete',
+            $crawler->filter('a.btn--danger')->attr('href'),
+        );
+    }
+
+    public function testStravaApiModeDoesNotLinkToTheDeleteConfirmationFromTheEditForm(): void
+    {
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->build(),
+            [],
+        ));
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('1').'/edit');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(0, $crawler->filter('a.btn--danger'));
     }
 
     public function testRendersTheDeleteConfirmationForTheActivity(): void
