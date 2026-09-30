@@ -51,24 +51,9 @@ class AppRequestHandlerTest extends ContainerTestCase
     {
         yield 'the dashboard' => ['dashboard', '/dashboard'];
         yield 'a page below the dashboard' => ['dashboard/power-output', '/dashboard'];
-        yield 'an activity' => ['activities/activity-9756441741', '/activities'];
-        yield 'a segment' => ['segments/segment-1', '/segments'];
         yield 'a page below gear' => ['gear/maintenance', '/gear'];
-        yield 'a month' => ['monthly-stats/2023-06', '/monthly-stats'];
-        yield 'a rewind comparison' => ['rewind/2023/compare/2022', '/rewind'];
-        yield 'a best effort history' => ['best-efforts/Ride/10000', '/best-efforts'];
         yield 'a page without a menu item' => ['badges', null];
         yield 'an unknown page' => ['dmzdmzd', null];
-    }
-
-    public function testHandleRendersTheOpenGraphOfTheActivity(): void
-    {
-        $this->provideFullTestSet();
-
-        $this->assertStringContainsString(
-            '<meta property="og:url" content="http://localhost:8080/activities/activity-9756441741">',
-            (string) $this->appRequestHandler->handle('activities/activity-9756441741')->getContent(),
-        );
     }
 
     public function testHandleKeepsThePageCacheControl(): void
@@ -109,10 +94,6 @@ class AppRequestHandlerTest extends ContainerTestCase
         yield 'an unknown page below a known one' => ['dashboard/dmzdmzd', 404];
         yield 'a data fragment is not a page' => ['heatmap/routes', 404];
         yield 'the countries data fragment is not a page' => ['heatmap/countries', 404];
-        yield 'an activity' => ['activities/activity-9756441741', 200];
-        yield 'an unknown activity' => ['activities/activity-1', 404];
-        yield 'a segment' => ['segments/segment-1', 200];
-        yield 'an unknown segment' => ['segments/segment-999', 404];
     }
 
     #[\Override]

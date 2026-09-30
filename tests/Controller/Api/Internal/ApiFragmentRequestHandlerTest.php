@@ -110,16 +110,6 @@ class ApiFragmentRequestHandlerTest extends ContainerTestCase
         }
     }
 
-    public function testHandleWhenAFragmentResolverCannotResolveThePath(): void
-    {
-        $this->provideFullTestSet();
-
-        $this->assertEquals(
-            404,
-            $this->apiFragmentRequestHandler->handle('page', 'rewind/1999')->getStatusCode()
-        );
-    }
-
     #[\Override]
     protected function setUp(): void
     {

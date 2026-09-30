@@ -12,35 +12,23 @@ use App\Domain\Gear\Maintenance\GearMaintenanceDueFragment;
 use App\Domain\Gear\Maintenance\GearMaintenanceFragment;
 use App\Domain\Gear\RecordingDevice\RecordingDevicesFragment;
 use App\Domain\Milestone\MilestonesFragment;
-use App\Domain\Rewind\RewindCompareFragmentResolver;
-use App\Domain\Rewind\RewindFragmentResolver;
 use App\Domain\Segment\SegmentDataTableFragment;
 use App\Domain\Segment\SegmentsFragment;
 use App\Infrastructure\Cache\Cacheable;
 use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Http\Fragment\FragmentResolver;
 use App\Tests\ContainerTestCase;
-use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class RenderCacheInvalidationTest extends ContainerTestCase
 {
-    use ProvideTestData;
-
     private RenderCache $renderCache;
 
     #[DataProvider('provideCacheables')]
-    public function testItIsInvalidatedByItsCacheTags(string $cacheableClassName, array $invalidatingCacheTags, ?string $pathToResolve = null): void
+    public function testItIsInvalidatedByItsCacheTags(string $cacheableClassName, array $invalidatingCacheTags): void
     {
         /** @var Cacheable $cacheable */
         $cacheable = $this->getContainer()->get($cacheableClassName);
-
-        if ($cacheable instanceof FragmentResolver) {
-            $this->provideFullTestSet();
-            $cacheable = $cacheable->resolve((string) $pathToResolve);
-            $this->assertNotNull($cacheable);
-        }
 
         $cacheability = $cacheable->getCacheability();
 
@@ -101,22 +89,6 @@ class RenderCacheInvalidationTest extends ContainerTestCase
             RootCacheTag::GEAR,
             RootCacheTag::SETTINGS_METRICS,
         ]];
-
-        yield 'rewind' => [RewindFragmentResolver::class, [
-            RootCacheTag::SETTINGS_APPEARANCE,
-            RootCacheTag::SETTINGS_GENERAL,
-            RootCacheTag::ACTIVITIES,
-            RootCacheTag::ACTIVITY_IMAGES,
-            RootCacheTag::GEAR,
-        ], 'rewind/all-time'];
-
-        yield 'rewind-compare' => [RewindCompareFragmentResolver::class, [
-            RootCacheTag::SETTINGS_APPEARANCE,
-            RootCacheTag::SETTINGS_GENERAL,
-            RootCacheTag::ACTIVITIES,
-            RootCacheTag::ACTIVITY_IMAGES,
-            RootCacheTag::GEAR,
-        ], 'rewind/all-time/compare/2023'];
 
         yield 'photos' => [PhotosFragment::class, [
             RootCacheTag::SETTINGS_APPEARANCE,

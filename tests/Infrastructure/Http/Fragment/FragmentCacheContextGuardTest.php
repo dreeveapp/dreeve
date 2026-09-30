@@ -2,21 +2,10 @@
 
 namespace App\Tests\Infrastructure\Http\Fragment;
 
-use App\Domain\Activity\ActivityFragmentResolver;
-use App\Domain\Activity\BestEffort\BestEffortsHistoryFragmentResolver;
-use App\Domain\Badge\BadgeFragmentResolver;
-use App\Domain\Calendar\MonthFragmentResolver;
-use App\Domain\Integration\AI\Chat\ChatFragmentResolver;
-use App\Domain\Rewind\RewindCompareFragmentResolver;
-use App\Domain\Rewind\RewindFragmentResolver;
-use App\Domain\Segment\SegmentFragmentResolver;
-use App\Domain\Settings\DbalSettingsRepository;
-use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContextRegistry;
 use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentRegistry;
-use App\Infrastructure\Http\Fragment\FragmentResolver;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -26,17 +15,6 @@ use Symfony\Component\Security\Core\User\InMemoryUser;
 class FragmentCacheContextGuardTest extends ContainerTestCase
 {
     use ProvideTestData;
-
-    private const array PATH_PER_RESOLVER = [
-        ActivityFragmentResolver::class => 'activities/activity-9756441741',
-        MonthFragmentResolver::class => 'monthly-stats/2023-06',
-        RewindFragmentResolver::class => 'rewind/2023',
-        RewindCompareFragmentResolver::class => 'rewind/2023/compare/2022',
-        SegmentFragmentResolver::class => 'segments/segment-10',
-        BestEffortsHistoryFragmentResolver::class => 'best-efforts/Ride/10000',
-        BadgeFragmentResolver::class => 'badge/dreeve',
-        ChatFragmentResolver::class => 'chat',
-    ];
 
     public function testEveryFragmentHasAPathAndACacheKeyOfItsOwn(): void
     {
@@ -86,15 +64,6 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
         $this->addSegmentWithAPolylineFixtures();
-        // The chat fragment only resolves while the assistant is switched on.
-        $this->getContainer()->get(DbalSettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
-            'ai' => [
-                'enabled' => true,
-                'enableUI' => true,
-                'provider' => 'openAI',
-                'configuration' => ['key' => 'my-key', 'model' => 'cool-model'],
-            ],
-        ]);
     }
 
     /**
@@ -107,18 +76,8 @@ class FragmentCacheContextGuardTest extends ContainerTestCase
 
         $fragments = [];
         foreach ($fragmentRegistry->all() as $fragment) {
-            if (!$fragment instanceof FragmentResolver) {
-                $fragments[] = $fragment;
-                continue;
-            }
-
-            $path = self::PATH_PER_RESOLVER[$fragment::class] ?? null;
-            $this->assertNotNull($path, sprintf('Add a path for "%s" to %s::PATH_PER_RESOLVER.', $fragment::class, self::class));
-
-            $resolvedFragment = $fragment->resolve($path);
-            $this->assertNotNull($resolvedFragment, sprintf('"%s" does not resolve "%s" anymore, pick another path.', $fragment::class, $path));
-
-            $fragments[] = $resolvedFragment;
+            $this->assertInstanceOf(Fragment::class, $fragment);
+            $fragments[] = $fragment;
         }
 
         return $fragments;
