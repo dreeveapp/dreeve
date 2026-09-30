@@ -15,7 +15,7 @@ use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\RelativeUrl;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -58,13 +58,13 @@ final readonly class ChatRequestHandler
             render: fn (): string => $this->renderFor(),
         ));
 
-        return new HtmlResponse(
+        return new PrivateNoStoreHtmlResponse(
             $this->appShell->render(
                 content: $render->getContent() ?? '',
                 navigationSection: null,
                 openGraph: null,
             ),
-            headers: [...$render->getCacheHeaders(), 'Cache-Control' => 'private, no-store'],
+            headers: $render->getCacheHeaders(),
         );
     }
 

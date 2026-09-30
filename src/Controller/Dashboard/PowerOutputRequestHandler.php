@@ -21,7 +21,7 @@ use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\DateRange;
@@ -60,13 +60,13 @@ final readonly class PowerOutputRequestHandler
             render: fn (): ?string => $this->renderFor(),
         ));
 
-        return new HtmlResponse(
+        return new PrivateNoStoreHtmlResponse(
             $this->appShell->render(
                 content: $render->getContent() ?? '',
                 navigationSection: NavigationSection::DASHBOARD,
                 openGraph: null,
             ),
-            headers: [...$render->getCacheHeaders(), 'Cache-Control' => 'private, no-store'],
+            headers: $render->getCacheHeaders(),
         );
     }
 

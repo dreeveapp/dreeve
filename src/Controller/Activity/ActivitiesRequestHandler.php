@@ -19,7 +19,7 @@ use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -55,13 +55,13 @@ final readonly class ActivitiesRequestHandler
             render: fn (): string => $this->renderFor(),
         ));
 
-        return new HtmlResponse(
+        return new PrivateNoStoreHtmlResponse(
             $this->appShell->render(
                 content: $render->getContent() ?? '',
                 navigationSection: NavigationSection::ACTIVITIES,
                 openGraph: null,
             ),
-            headers: [...$render->getCacheHeaders(), 'Cache-Control' => 'private, no-store'],
+            headers: $render->getCacheHeaders(),
         );
     }
 

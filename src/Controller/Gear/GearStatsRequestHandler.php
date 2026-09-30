@@ -26,7 +26,7 @@ use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Serialization\Json;
@@ -71,13 +71,13 @@ final readonly class GearStatsRequestHandler
             render: fn (): string => $this->renderFor(),
         ));
 
-        return new HtmlResponse(
+        return new PrivateNoStoreHtmlResponse(
             $this->appShell->render(
                 content: $render->getContent() ?? '',
                 navigationSection: NavigationSection::GEAR,
                 openGraph: null,
             ),
-            headers: [...$render->getCacheHeaders(), 'Cache-Control' => 'private, no-store'],
+            headers: $render->getCacheHeaders(),
         );
     }
 
