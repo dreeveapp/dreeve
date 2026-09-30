@@ -3,6 +3,7 @@
 namespace App\Domain\Gear;
 
 use App\Domain\Activity\ActivityTypes;
+use App\Domain\Import\ImportMode;
 use App\Domain\Integration\AI\SupportsAITooling;
 use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\Measurement\Length\Kilometer;
@@ -115,6 +116,11 @@ final class Gear implements SupportsAITooling
     public function getType(): GearType
     {
         return $this->type;
+    }
+
+    public function isDeletableIn(ImportMode $importMode): bool
+    {
+        return $this->type->isCustom() || $importMode->isFiles();
     }
 
     public function delete(): void

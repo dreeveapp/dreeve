@@ -118,6 +118,7 @@ Delete: Eliminar
 'Delete automation rule': 'Eliminar regla de automatización'
 'Delete component': 'Eliminar componente'
 'Delete file import': 'Eliminar importación de archivo'
+'Delete gear': 'Eliminar equipamiento'
 'Delete maintenance log': 'Eliminar registro de mantenimiento'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Eliminar una regla no revierte los cambios que ya haya aplicado a las actividades. Esta acción no se puede deshacer.'
 Deleting...: Eliminando...
@@ -359,6 +360,7 @@ Security: Seguridad
 Sensors: Sensores
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Los sensores solo se registran en actividades importadas desde archivos FIT. Las actividades de Strava, GPX o TCX nunca cumplen esta condición.'
 'Set description': 'Establecer descripción'
+'Set its status to Retired instead to hide it from your active gear.': 'Cambia su estado a Retirado para ocultarlo de tu equipamiento activo.'
 'Set name': 'Establecer nombre'
 'Set recording device': 'Establecer dispositivo de grabación'
 'Set sport type': 'Establecer tipo de deporte'
@@ -554,6 +556,7 @@ then: entonces
 '{count} rules apply': '{count} reglas se aplican'
 '{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it.': '{envVar} está configurado, pero no es una clave que esta aplicación haya generado, por lo que la API permanece cerrada. Genera una nueva y reemplázala.'
 '{label} (copy)': '{label} (copia)'
+"{name} can't be deleted because it is still linked to activities, maintenance or automation rules.": '{name} no se puede eliminar porque todavía está vinculado a actividades, mantenimiento o reglas de automatización.'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': 'URLs de servicios de notificación {shoutrrr} (ej. discord://token@id, telegram://token@telegram/?channels=channel). Déjalo en blanco para desactivar las notificaciones por completo.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Arrastra y suelta{strongClose} o {strongOpen}explora{strongClose} para elegir archivos'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Arrastra y suelta{strongClose} o {strongOpen}explora{strongClose} para elegir imágenes'

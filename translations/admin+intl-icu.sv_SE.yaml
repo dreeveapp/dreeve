@@ -118,6 +118,7 @@ Delete: Delete
 'Delete automation rule': 'Delete automation rule'
 'Delete component': 'Delete component'
 'Delete file import': 'Delete file import'
+'Delete gear': 'Delete gear'
 'Delete maintenance log': 'Delete maintenance log'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.'
 Deleting...: Deleting...
@@ -359,6 +360,7 @@ Security: Security
 Sensors: Sensors
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.'
 'Set description': 'Set description'
+'Set its status to Retired instead to hide it from your active gear.': 'Set its status to Retired instead to hide it from your active gear.'
 'Set name': 'Set name'
 'Set recording device': 'Set recording device'
 'Set sport type': 'Set sport type'
@@ -554,6 +556,7 @@ then: then
 '{count} rules apply': '{count} rules apply'
 '{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it.'
 '{label} (copy)': '{label} (copy)'
+"{name} can't be deleted because it is still linked to activities, maintenance or automation rules.": "{name} can't be deleted because it is still linked to activities, maintenance or automation rules."
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images'

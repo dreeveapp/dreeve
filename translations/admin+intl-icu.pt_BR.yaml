@@ -118,6 +118,7 @@ Delete: Excluir
 'Delete automation rule': 'Excluir regra de automação'
 'Delete component': 'Excluir componente'
 'Delete file import': 'Excluir importação de arquivo'
+'Delete gear': 'Excluir equipamento'
 'Delete maintenance log': 'Excluir registro de manutenção'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Excluir uma regra não reverte as alterações já feitas nas atividades. Esta ação não pode ser desfeita.'
 Deleting...: Excluindo...
@@ -359,6 +360,7 @@ Security: Segurança
 Sensors: Sensores
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Os sensores só são registrados para atividades importadas de arquivos FIT. Atividades do Strava, GPX ou TCX nunca correspondem a esta condição.'
 'Set description': 'Definir descrição'
+'Set its status to Retired instead to hide it from your active gear.': 'Altere o status para Aposentado para ocultá-lo dos seus equipamentos ativos.'
 'Set name': 'Definir nome'
 'Set recording device': 'Definir dispositivo de gravação'
 'Set sport type': 'Definir tipo de esporte'
@@ -554,6 +556,7 @@ then: então
 '{count} rules apply': '{count} regras se aplicam'
 '{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it.': '{envVar} está definido, mas não é uma chave gerada por este aplicativo, portanto a API permanece fechada. Gere uma nova chave e substitua-a.'
 '{label} (copy)': '{label} (cópia)'
+"{name} can't be deleted because it is still linked to activities, maintenance or automation rules.": '{name} não pode ser excluído porque ainda está vinculado a atividades, manutenção ou regras de automação.'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': 'URLs de serviços de notificação {shoutrrr} (ex. discord://token@id, telegram://token@telegram/?channels=canal). Deixe vazio para desativar as notificações totalmente.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Arraste e solte{strongClose} ou {strongOpen}navegue{strongClose} para escolher os arquivos'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Arraste e solte{strongClose} ou {strongOpen}navegue{strongClose} para escolher imagens'

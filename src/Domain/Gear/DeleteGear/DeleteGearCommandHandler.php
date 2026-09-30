@@ -29,7 +29,7 @@ final readonly class DeleteGearCommandHandler implements CommandHandler
 
         $gear = $this->gearRepository->find($command->getGearId());
 
-        if ($gear->getType()->isImported() && !$this->importMode->isFiles()) {
+        if (!$gear->isDeletableIn($this->importMode)) {
             throw CouldNotProcessCommand::withReason('Imported gear can only be deleted when running in file import mode.');
         }
         if ($this->gearUsage->isInUse($gear)) {

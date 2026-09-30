@@ -118,6 +118,7 @@ Delete: Supprimer
 'Delete automation rule': 'Delete automation rule'
 'Delete component': 'Supprimer le component'
 'Delete file import': 'Delete file import'
+'Delete gear': 'Supprimer le matériel'
 'Delete maintenance log': 'Delete maintenance log'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.'
 Deleting...: 'Suppression en cours...'
@@ -359,6 +360,7 @@ Security: Securité
 Sensors: Capteurs
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.'
 'Set description': 'Définir description'
+'Set its status to Retired instead to hide it from your active gear.': 'Passez plutôt son statut à Décommissionné pour le masquer de votre matériel actif.'
 'Set name': 'Définir le nom'
 'Set recording device': "Définir l'équipement d'enregistrement"
 'Set sport type': 'Définir le type de sport'
@@ -554,6 +556,7 @@ then: then
 '{count} rules apply': '{count} rules apply'
 '{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it.'
 '{label} (copy)': '{label} (copy)'
+"{name} can't be deleted because it is still linked to activities, maintenance or automation rules.": "{name} ne peut pas être supprimé car il est encore lié à des activités, à de la maintenance ou à des règles d'automatisation."
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images'

@@ -4,6 +4,8 @@ namespace App\Tests\Domain\Gear;
 
 use App\Domain\Activity\ActivityTypes;
 use App\Domain\Gear\Gear;
+use App\Domain\Gear\GearType;
+use App\Domain\Import\ImportMode;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
@@ -26,6 +28,23 @@ class GearTest extends TestCase
         }
 
         $this->assertEquals($expectedResult, $builder->build()->getMovingTimeFormatted());
+    }
+
+    #[DataProvider('provideIsDeletableIn')]
+    public function testIsDeletableIn(GearType $gearType, ImportMode $importMode, bool $expectedResult): void
+    {
+        $this->assertSame(
+            $expectedResult,
+            GearBuilder::fromDefaults()->withGearType($gearType)->build()->isDeletableIn($importMode),
+        );
+    }
+
+    public static function provideIsDeletableIn(): iterable
+    {
+        yield 'custom gear in Strava API mode' => [GearType::CUSTOM, ImportMode::STRAVA_API, true];
+        yield 'custom gear in files mode' => [GearType::CUSTOM, ImportMode::FILES, true];
+        yield 'imported gear in Strava API mode' => [GearType::IMPORTED, ImportMode::STRAVA_API, false];
+        yield 'imported gear in files mode' => [GearType::IMPORTED, ImportMode::FILES, true];
     }
 
     public function testGetMovingTimeInHours(): void
