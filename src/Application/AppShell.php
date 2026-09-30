@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Application;
 
-use App\Application\Navigation\NavigationSection;
+use App\Application\Navigation\HasNavigationSection;
 use App\Application\Navigation\SideBarFragment;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\OpenGraph\HasOpenGraph;
 use App\Controller\Api\Internal\ApiFragmentRequestHandler;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Http\Fragment\Fragment;
 use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\RelativeUrl;
@@ -27,7 +28,7 @@ final readonly class AppShell
     ) {
     }
 
-    public function render(string $content, ?NavigationSection $activeSection, ?OpenGraph $openGraph = null): string
+    public function render(Fragment $page, string $content): string
     {
         $appearance = $this->settingsRepository->appearance();
         $unitSystem = $appearance->getUnitSystem();
@@ -36,8 +37,8 @@ final readonly class AppShell
 
         return $this->twig->load('html/app-shell.html.twig')->render([
             'content' => $content,
-            'openGraph' => $openGraph,
-            'sidebar' => $this->sideBarFragment->render($activeSection),
+            'openGraph' => $page instanceof HasOpenGraph ? $page->getOpenGraph() : null,
+            'sidebar' => $this->sideBarFragment->render($page instanceof HasNavigationSection ? $page->getNavigationSection() : null),
             'athlete' => $general->getAthlete(),
             'profilePictureUrl' => $general->getProfilePictureUrl(),
             'subTitle' => $general->getAppSubTitle(),
