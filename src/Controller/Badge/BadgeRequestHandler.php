@@ -14,7 +14,6 @@ use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Zwift\ZwiftLevel;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -48,7 +47,7 @@ final readonly class BadgeRequestHandler
     #[Route(path: '/badge/dreeve.svg', name: 'badge_dreeve', methods: ['GET'], priority: 3)]
     public function dreeve(): Response
     {
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'badge.dreeve',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::CHALLENGES),
@@ -63,7 +62,7 @@ final readonly class BadgeRequestHandler
                 ),
                 'challengesCompleted' => $this->challengeRepository->count(),
             ]),
-        ));
+        );
 
         return new SvgResponse(
             $render->getContent() ?? '',
@@ -79,7 +78,7 @@ final readonly class BadgeRequestHandler
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'badge.zwift',
                 cacheTags: CacheTags::of(RootCacheTag::SETTINGS_ZWIFT),
@@ -89,7 +88,7 @@ final readonly class BadgeRequestHandler
                 'zwiftLevel' => $zwiftLevel,
                 'zwiftRacingScore' => $this->settingsRepository->zwift()->getZwiftRacingScore(),
             ]),
-        ));
+        );
 
         return new SvgResponse(
             $render->getContent() ?? '',
@@ -109,7 +108,7 @@ final readonly class BadgeRequestHandler
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('badge.pb.%s', $sportType),
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
@@ -119,7 +118,7 @@ final readonly class BadgeRequestHandler
                 'period' => BestEffortPeriod::ALL_TIME,
                 'bestEfforts' => $bestEfforts,
             ]),
-        ));
+        );
 
         return new SvgResponse(
             $render->getContent() ?? '',

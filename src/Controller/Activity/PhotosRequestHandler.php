@@ -11,7 +11,6 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Context\TrustedVisitorCacheContext;
@@ -40,14 +39,14 @@ final readonly class PhotosRequestHandler
     #[Route(path: '/photos', name: 'photos', methods: ['GET'], priority: 3)]
     public function handle(): Response
     {
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'photos',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITY_IMAGES),
                 cacheContexts: CacheContexts::of(TrustedVisitorCacheContext::class),
             ),
             render: fn (): string => $this->renderFor(),
-        ));
+        );
 
         return new PrivateNoStoreHtmlResponse(
             $this->appShell->render(

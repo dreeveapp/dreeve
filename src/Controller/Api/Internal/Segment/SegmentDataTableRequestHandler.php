@@ -9,7 +9,6 @@ use App\Domain\Segment\Segment;
 use App\Domain\Segment\SegmentRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -38,13 +37,13 @@ final readonly class SegmentDataTableRequestHandler
     #[Route(path: '/api/internal/segments/data-table', name: 'segment_data_table', methods: ['GET'], priority: 3)]
     public function handle(): Response
     {
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'segments.data-table',
                 cacheTags: CacheTags::of(RootCacheTag::SEGMENTS),
             ),
             render: fn (): string => $this->renderFor(),
-        ));
+        );
 
         return new JsonResponse($render->getContent() ?? '[]', headers: $render->getCacheHeaders(), json: true);
     }

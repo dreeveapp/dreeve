@@ -12,7 +12,6 @@ use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
@@ -43,7 +42,7 @@ final readonly class ActivitiesRequestHandler
     #[Route(path: '/activities', name: 'activities', methods: ['GET'], priority: 3)]
     public function handle(): Response
     {
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'activities',
                 cacheTags: CacheTags::of(
@@ -53,7 +52,7 @@ final readonly class ActivitiesRequestHandler
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
             ),
             render: fn (): string => $this->renderFor(),
-        ));
+        );
 
         return new PrivateNoStoreHtmlResponse(
             $this->appShell->render(

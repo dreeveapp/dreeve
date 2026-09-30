@@ -9,7 +9,6 @@ use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Milestone\MilestoneCollector;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -34,7 +33,7 @@ final readonly class MilestonesRequestHandler
     #[Route(path: '/milestones', name: 'milestones', methods: ['GET'], priority: 3)]
     public function handle(): Response
     {
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'milestones',
                 cacheTags: CacheTags::of(
@@ -45,7 +44,7 @@ final readonly class MilestonesRequestHandler
                 ),
             ),
             render: fn (): string => $this->renderFor(),
-        ));
+        );
 
         return new HtmlResponse(
             $this->appShell->render(

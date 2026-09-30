@@ -24,7 +24,6 @@ use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
@@ -77,7 +76,7 @@ final readonly class ActivityRequestHandler
 
         $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
 
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('activities.%s', $activityId->toUnprefixedString()),
                 cacheTags: CacheTags::of(
@@ -87,7 +86,7 @@ final readonly class ActivityRequestHandler
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
             ),
             render: fn (): string => $this->renderFor($activityId),
-        ));
+        );
 
         return new PrivateNoStoreHtmlResponse(
             $this->appShell->render(

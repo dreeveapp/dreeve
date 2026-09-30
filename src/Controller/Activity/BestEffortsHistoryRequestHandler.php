@@ -11,7 +11,6 @@ use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\BestEffort\BestEffortPeriod;
 use App\Domain\Activity\BestEffort\BestEffortsCalculator;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -53,13 +52,13 @@ final readonly class BestEffortsHistoryRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('%s.%s.%d', self::BASE_PATH, $activityType->value, $distanceInMeter),
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
             ),
             render: fn (): string => $this->renderFor($activityType, $distance),
-        ));
+        );
 
         return new HtmlResponse(
             $this->appShell->render(

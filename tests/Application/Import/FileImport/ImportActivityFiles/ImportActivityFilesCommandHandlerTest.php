@@ -22,7 +22,7 @@ use App\Infrastructure\ValueObject\String\CompressedString;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\Console\ConsoleOutputSnapshotDriver;
 use App\Tests\ContainerTestCase;
-use App\Tests\Infrastructure\Cache\CacheableStub;
+use App\Tests\Infrastructure\Cache\RenderStub;
 use App\Tests\SpyOutput;
 use League\Flysystem\FilesystemOperator;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -178,14 +178,15 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
 
     public function testHandleKeepsRenderedPagesBecauseImportedFilesCarryNoImages(): void
     {
-        $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::of(RootCacheTag::ACTIVITY_IMAGES)));
-        $this->cacheableRenderer->render($cacheable);
+        $cacheability = Cacheability::for('stub', CacheTags::of(RootCacheTag::ACTIVITY_IMAGES));
+        $render = new RenderStub();
+        $this->cacheableRenderer->render($cacheability, $render(...));
 
         $this->watchStorage->write('watch/ride.tcx', $this->fixture('activity.tcx'));
         $this->handler->handle(new ImportActivityFiles(new SpyOutput()));
 
-        $this->cacheableRenderer->render($cacheable);
-        $this->assertEquals(1, $cacheable->renderCount);
+        $this->cacheableRenderer->render($cacheability, $render(...));
+        $this->assertEquals(1, $render->renderCount);
     }
 
     private function fixture(string $name): string

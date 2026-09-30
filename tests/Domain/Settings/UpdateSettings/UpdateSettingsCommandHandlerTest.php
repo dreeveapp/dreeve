@@ -14,7 +14,7 @@ use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Tests\ContainerTestCase;
-use App\Tests\Infrastructure\Cache\CacheableStub;
+use App\Tests\Infrastructure\Cache\RenderStub;
 
 class UpdateSettingsCommandHandlerTest extends ContainerTestCase
 {
@@ -142,24 +142,25 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
 
     public function testItOnlyInvalidatesRendersOfTheGroupThatWasSaved(): void
     {
-        $cacheable = CacheableStub::for(Cacheability::for('stub', CacheTags::empty()));
-        $this->cacheableRenderer->render($cacheable);
+        $cacheability = Cacheability::for('stub', CacheTags::empty());
+        $render = new RenderStub();
+        $this->cacheableRenderer->render($cacheability, $render(...));
 
         $this->commandBus->dispatch(UpdateSettings::fromPayload([
             'group' => SettingsGroup::ZWIFT->value,
             'data' => ['level' => 100, 'racingScore' => 511],
         ]));
 
-        $this->cacheableRenderer->render($cacheable);
-        $this->assertEquals(1, $cacheable->renderCount);
+        $this->cacheableRenderer->render($cacheability, $render(...));
+        $this->assertEquals(1, $render->renderCount);
 
         $this->commandBus->dispatch(UpdateSettings::fromPayload([
             'group' => SettingsGroup::APPEARANCE->value,
             'data' => ['unitSystem' => 'imperial', 'locale' => 'nl_BE'],
         ]));
 
-        $this->cacheableRenderer->render($cacheable);
-        $this->assertEquals(2, $cacheable->renderCount);
+        $this->cacheableRenderer->render($cacheability, $render(...));
+        $this->assertEquals(2, $render->renderCount);
     }
 
     public function testItRejectsInvalidIntegrationsSettings(): void

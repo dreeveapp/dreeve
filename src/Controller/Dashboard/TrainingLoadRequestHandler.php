@@ -14,7 +14,6 @@ use App\Domain\Dashboard\Widget\TrainingLoad\TrainingLoadChart;
 use App\Domain\Dashboard\Widget\TrainingLoad\TrainingLoadForecastProjection;
 use App\Domain\Dashboard\Widget\TrainingLoad\TrainingMetrics;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -47,14 +46,14 @@ final readonly class TrainingLoadRequestHandler
     #[Route(path: '/dashboard/training-load', name: 'dashboard_training_load', methods: ['GET'], priority: 3)]
     public function handle(): Response
     {
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'dashboard/training-load',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
                 ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
             ),
             render: fn (): string => $this->renderFor(),
-        ));
+        );
 
         return new HtmlResponse(
             $this->appShell->render(

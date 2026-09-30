@@ -9,7 +9,6 @@ use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\Route\RouteRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
@@ -36,14 +35,14 @@ final readonly class HeatmapRequestHandler
     #[Route(path: '/heatmap', name: 'heatmap', methods: ['GET'], priority: 3)]
     public function handle(): Response
     {
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'heatmap',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITY_ROUTE, RootCacheTag::SETTINGS_MAPS),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
             ),
             render: fn (): string => $this->renderFor(),
-        ));
+        );
 
         return new PrivateNoStoreHtmlResponse(
             $this->appShell->render(

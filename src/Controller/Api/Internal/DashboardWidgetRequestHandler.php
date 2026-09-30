@@ -9,7 +9,6 @@ use App\Domain\Dashboard\Widget\ConfiguredWidget;
 use App\Domain\Dashboard\Widget\ConfiguredWidgets;
 use App\Domain\Dashboard\Widget\DependsOnCurrentDay;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Serialization\Json;
@@ -41,7 +40,7 @@ final readonly class DashboardWidgetRequestHandler
         $now = $this->clock->getCurrentDateTimeImmutable();
         $widget = $configuredWidget->getWidget();
 
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf(
                     'dashboard.widget.%s.%s',
@@ -56,7 +55,7 @@ final readonly class DashboardWidgetRequestHandler
                 now: $now,
                 configuration: $configuredWidget->getConfiguration(),
             ),
-        ));
+        );
 
         return new HtmlResponse($render->getContent() ?? '', headers: $render->getCacheHeaders());
     }

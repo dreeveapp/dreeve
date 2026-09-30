@@ -8,7 +8,6 @@ use App\Application\AppShell;
 use App\Application\Navigation\NavigationSection;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -32,13 +31,13 @@ final readonly class ChallengesRequestHandler
     #[Route(path: '/challenges', name: 'challenges', methods: ['GET'], priority: 3)]
     public function handle(): Response
     {
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'challenges',
                 cacheTags: CacheTags::of(RootCacheTag::CHALLENGES),
             ),
             render: fn (): string => $this->renderFor(),
-        ));
+        );
 
         return new HtmlResponse(
             $this->appShell->render(

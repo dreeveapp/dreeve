@@ -8,7 +8,6 @@ use App\Domain\Activity\LeafletMap;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -41,13 +40,13 @@ final readonly class SegmentPolylinesRequestHandler
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('segments.%s.polylines', $segment->getId()->toUnprefixedString()),
                 cacheTags: CacheTags::of(RootCacheTag::SEGMENTS),
             ),
             render: fn (): string => Json::encode([$segment->getPolyline()?->decodeAndPairLatLng()]),
-        ));
+        );
 
         return new JsonResponse($render->getContent() ?? '[]', headers: $render->getCacheHeaders(), json: true);
     }

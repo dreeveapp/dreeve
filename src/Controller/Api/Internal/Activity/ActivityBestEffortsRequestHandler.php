@@ -9,7 +9,6 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -39,7 +38,7 @@ final readonly class ActivityBestEffortsRequestHandler
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('activities.%s.best-efforts', $activityId->toUnprefixedString()),
                 cacheTags: CacheTags::of(
@@ -50,7 +49,7 @@ final readonly class ActivityBestEffortsRequestHandler
             render: fn (): string => $this->twig->load('html/activity/_best-efforts.html.twig')->render([
                 'bestEfforts' => $this->activityBestEffortRepository->findByActivity($activityId),
             ]),
-        ));
+        );
 
         return new HtmlResponse($render->getContent() ?? '', headers: $render->getCacheHeaders());
     }

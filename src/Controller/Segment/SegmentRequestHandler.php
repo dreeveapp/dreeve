@@ -22,7 +22,6 @@ use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTag;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -70,7 +69,7 @@ final readonly class SegmentRequestHandler
             self::NUMBER_OF_TOP_EFFORTS
         );
 
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('segments.%s', $segment->getId()->toUnprefixedString()),
                 cacheTags: CacheTags::of(
@@ -85,7 +84,7 @@ final readonly class SegmentRequestHandler
                 ),
             ),
             render: fn (): string => $this->renderFor($segment, $topTenSegmentEfforts),
-        ));
+        );
 
         return new HtmlResponse(
             $this->appShell->render(

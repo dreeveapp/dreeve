@@ -10,7 +10,6 @@ use App\Application\Navigation\NavigationSection;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Segment\SegmentRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -36,7 +35,7 @@ final readonly class SegmentsRequestHandler
     #[Route(path: '/segments', name: 'segments', methods: ['GET'], priority: 3)]
     public function handle(): Response
     {
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'segments',
                 cacheTags: CacheTags::of(
@@ -46,7 +45,7 @@ final readonly class SegmentsRequestHandler
                 ),
             ),
             render: fn (): string => $this->renderFor(),
-        ));
+        );
 
         return new HtmlResponse(
             $this->appShell->render(

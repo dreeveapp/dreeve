@@ -9,7 +9,6 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Route\Match\FindRouteMatches\FindRouteMatches;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -40,7 +39,7 @@ final readonly class ActivityRouteMatchesRequestHandler
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('activities.%s.route-matches', $activityId->toUnprefixedString()),
                 cacheTags: CacheTags::of(
@@ -51,7 +50,7 @@ final readonly class ActivityRouteMatchesRequestHandler
             render: fn (): string => $this->twig->load('html/activity/_route-matches.html.twig')->render([
                 'routeMatches' => $this->queryBus->ask(new FindRouteMatches($activityId))->getRouteMatches(),
             ]),
-        ));
+        );
 
         return new HtmlResponse($render->getContent() ?? '', headers: $render->getCacheHeaders());
     }

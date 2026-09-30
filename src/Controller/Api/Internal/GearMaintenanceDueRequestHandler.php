@@ -6,7 +6,6 @@ namespace App\Controller\Api\Internal;
 
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -31,7 +30,7 @@ final readonly class GearMaintenanceDueRequestHandler
     #[Route(path: '/api/internal/gear/maintenance-due', name: 'gear_maintenance_due', methods: ['GET'], priority: 3)]
     public function handle(): Response
     {
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'gear.maintenance-due',
                 cacheTags: CacheTags::of(
@@ -42,7 +41,7 @@ final readonly class GearMaintenanceDueRequestHandler
                 ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
             ),
             render: fn (): string => $this->renderFor(),
-        ));
+        );
 
         return new HtmlResponse($render->getContent() ?? '', headers: $render->getCacheHeaders());
     }

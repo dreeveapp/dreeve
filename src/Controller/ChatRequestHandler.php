@@ -9,7 +9,6 @@ use App\Application\AppUrl;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
@@ -48,7 +47,7 @@ final readonly class ChatRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'chat',
                 cacheTags: CacheTags::of(RootCacheTag::SETTINGS_INTEGRATIONS),
@@ -56,7 +55,7 @@ final readonly class ChatRequestHandler
                 ttlInSeconds: 0,
             ),
             render: fn (): string => $this->renderFor(),
-        ));
+        );
 
         return new PrivateNoStoreHtmlResponse(
             $this->appShell->render(

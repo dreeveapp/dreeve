@@ -10,7 +10,6 @@ use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Gear\GearRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -31,7 +30,7 @@ final readonly class SideBar
 
     public function render(?NavigationSection $activeSection): ?string
     {
-        return $this->cacheableRenderer->render(new CacheableContent(
+        return $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'app-shell.sidebar.'.($activeSection->value ?? 'none'),
                 cacheTags: CacheTags::of(
@@ -49,6 +48,6 @@ final readonly class SideBar
                 'hasGear' => $this->gearRepository->hasGear(),
                 'hasBestEfforts' => $this->activityBestEffortRepository->hasData(),
             ]),
-        ))->getContent();
+        )->getContent();
     }
 }

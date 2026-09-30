@@ -11,7 +11,6 @@ use App\Domain\Activity\Shifting\ActivityDrivetrainUsage;
 use App\Domain\Activity\Shifting\ActivityDrivetrainUsageRepository;
 use App\Domain\Activity\Shifting\DrivetrainPosition;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -41,7 +40,7 @@ final readonly class ActivityShiftingRequestHandler
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('activities.%s.shifting', $activityId->toUnprefixedString()),
                 cacheTags: CacheTags::of(
@@ -50,7 +49,7 @@ final readonly class ActivityShiftingRequestHandler
                 ),
             ),
             render: fn (): string => $this->renderFor($activityId),
-        ));
+        );
 
         return new HtmlResponse($render->getContent() ?? '', headers: $render->getCacheHeaders());
     }

@@ -19,7 +19,6 @@ use App\Domain\Gear\GearType;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Theme\Theme;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
@@ -58,7 +57,7 @@ final readonly class GearStatsRequestHandler
     #[Route(path: '/gear', name: 'gear', methods: ['GET'], priority: 3)]
     public function handle(): Response
     {
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'gear',
                 cacheTags: CacheTags::of(
@@ -69,7 +68,7 @@ final readonly class GearStatsRequestHandler
                 ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
             ),
             render: fn (): string => $this->renderFor(),
-        ));
+        );
 
         return new PrivateNoStoreHtmlResponse(
             $this->appShell->render(

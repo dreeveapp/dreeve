@@ -10,7 +10,6 @@ use App\Domain\Rewind\FindAvailableRewindOptions\FindAvailableRewindOptions;
 use App\Domain\Rewind\RewindCacheTags;
 use App\Domain\Rewind\RewindItemsBuilder;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\HtmlResponse;
@@ -47,13 +46,13 @@ final readonly class RewindRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('%s.%s', self::BASE_PATH, $rewindOption),
                 cacheTags: RewindCacheTags::forOption($rewindOption),
             ),
             render: fn (): string => $this->renderFor($rewindOption),
-        ));
+        );
 
         return new HtmlResponse(
             $this->appShell->render(

@@ -7,7 +7,6 @@ namespace App\Controller\Api\Internal\Activity;
 use App\Domain\Activity\Route\RouteRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -34,13 +33,13 @@ final readonly class HeatmapRoutesRequestHandler
     #[Route(path: '/api/internal/heatmap/routes', name: 'heatmap_routes', methods: ['GET'], priority: 3)]
     public function handle(): Response
     {
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'heatmap.routes',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITY_ROUTE),
             ),
             render: fn (): string => $this->renderFor(),
-        ));
+        );
 
         return new JsonResponse($render->getContent() ?? '[]', headers: $render->getCacheHeaders(), json: true);
     }

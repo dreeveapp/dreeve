@@ -16,14 +16,15 @@ final readonly class CacheableRenderer
     ) {
     }
 
-    public function render(Cacheable $cacheable): Render
+    /**
+     * @param \Closure(): ?string $render
+     */
+    public function render(Cacheability $cacheability, \Closure $render): Render
     {
-        $cacheability = $cacheable->getCacheability();
-
         return $this->renderCache->get(
             cacheKey: $cacheability->getCacheKey().$this->cacheContextRegistry->buildCacheKeySegments($cacheability->getCacheContexts()),
             cacheability: $cacheability,
-            callback: fn (): ?string => $cacheable->render(),
+            callback: $render,
         );
     }
 }

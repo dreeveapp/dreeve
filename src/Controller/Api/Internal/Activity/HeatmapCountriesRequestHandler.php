@@ -7,7 +7,6 @@ namespace App\Controller\Api\Internal\Activity;
 use App\Domain\Activity\Route\Heatmap\CountryBoundaries;
 use App\Domain\Activity\Route\RouteRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -30,13 +29,13 @@ final readonly class HeatmapCountriesRequestHandler
     #[Route(path: '/api/internal/heatmap/countries', name: 'heatmap_countries', methods: ['GET'], priority: 3)]
     public function handle(): Response
     {
-        $render = $this->cacheableRenderer->render(new CacheableContent(
+        $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'heatmap.countries',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITY_ROUTE),
             ),
             render: fn (): string => $this->renderFor(),
-        ));
+        );
 
         return new JsonResponse($render->getContent() ?? '[]', headers: $render->getCacheHeaders(), json: true);
     }
