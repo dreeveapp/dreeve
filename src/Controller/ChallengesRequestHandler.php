@@ -12,7 +12,6 @@ use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -29,7 +28,7 @@ final readonly class ChallengesRequestHandler
     }
 
     #[Route(path: '/challenges', name: 'challenges', methods: ['GET'])]
-    public function handle(): Response
+    public function handle(): HtmlResponse
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(

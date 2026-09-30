@@ -19,7 +19,6 @@ use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -41,7 +40,7 @@ final readonly class MonthRequestHandler
     }
 
     #[Route(path: '/monthly-stats/{month}', name: 'monthly_stats_month', requirements: ['month' => '\d{4}-(?:0[1-9]|1[0-2])'], methods: ['GET'])]
-    public function handle(string $month): Response
+    public function handle(string $month): HtmlResponse
     {
         $month = Month::fromDate(SerializableDateTime::fromString($month.'-01 00:00:00'));
         try {

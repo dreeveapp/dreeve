@@ -31,7 +31,6 @@ use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -55,7 +54,7 @@ final readonly class GearStatsRequestHandler
     }
 
     #[Route(path: '/gear', name: 'gear', methods: ['GET'])]
-    public function handle(): Response
+    public function handle(): PrivateNoStoreHtmlResponse
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(

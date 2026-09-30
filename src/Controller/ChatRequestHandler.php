@@ -14,7 +14,6 @@ use App\Infrastructure\ValueObject\String\RelativeUrl;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -34,7 +33,7 @@ final readonly class ChatRequestHandler
     }
 
     #[Route(path: '/chat', name: 'chat', methods: ['GET'])]
-    public function handle(): Response
+    public function handle(): PrivateNoStoreHtmlResponse
     {
         if (!$this->settingsRepository->integrations()->isAIIntegrationWithUIEnabled()) {
             throw new NotFoundHttpException('Not found');

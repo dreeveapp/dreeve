@@ -19,7 +19,6 @@ use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -40,7 +39,7 @@ final readonly class ActivitiesRequestHandler
     }
 
     #[Route(path: '/activities', name: 'activities', methods: ['GET'])]
-    public function handle(): Response
+    public function handle(): PrivateNoStoreHtmlResponse
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(

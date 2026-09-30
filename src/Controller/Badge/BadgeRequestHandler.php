@@ -20,7 +20,6 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\SvgResponse;
 use App\Infrastructure\Time\Clock\Clock;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -46,7 +45,7 @@ final readonly class BadgeRequestHandler
     }
 
     #[Route(path: '/badge/dreeve.svg', name: 'badge_dreeve', methods: ['GET'])]
-    public function dreeve(): Response
+    public function dreeve(): SvgResponse
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
@@ -72,7 +71,7 @@ final readonly class BadgeRequestHandler
     }
 
     #[Route(path: '/badge/zwift.svg', name: 'badge_zwift', methods: ['GET'])]
-    public function zwift(): Response
+    public function zwift(): SvgResponse
     {
         $zwiftLevel = $this->settingsRepository->zwift()->getZwiftLevel();
         if (!$zwiftLevel instanceof ZwiftLevel) {
@@ -98,7 +97,7 @@ final readonly class BadgeRequestHandler
     }
 
     #[Route(path: '/badge/pb/{sportType}.svg', name: 'badge_personal_best', requirements: ['sportType' => '[a-z0-9\-]+'], methods: ['GET'])]
-    public function personalBest(string $sportType): Response
+    public function personalBest(string $sportType): SvgResponse
     {
         $bestEfforts = $this->bestEffortsCalculator->calculate();
 

@@ -17,7 +17,6 @@ use App\Infrastructure\Cache\Context\TrustedVisitorCacheContext;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -37,7 +36,7 @@ final readonly class PhotosRequestHandler
     }
 
     #[Route(path: '/photos', name: 'photos', methods: ['GET'])]
-    public function handle(): Response
+    public function handle(): PrivateNoStoreHtmlResponse
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(

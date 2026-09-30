@@ -29,7 +29,6 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Serialization\Json;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -56,7 +55,7 @@ final readonly class SegmentRequestHandler
     }
 
     #[Route(path: '/segments/{segmentId}', name: 'segment', requirements: ['segmentId' => 'segment-[^/]+'], methods: ['GET'])]
-    public function handle(string $segmentId): Response
+    public function handle(string $segmentId): HtmlResponse
     {
         try {
             $segment = $this->segmentRepository->find(SegmentId::fromString($segmentId));

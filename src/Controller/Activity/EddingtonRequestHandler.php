@@ -19,7 +19,6 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Serialization\Json;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -39,7 +38,7 @@ final readonly class EddingtonRequestHandler
     }
 
     #[Route(path: '/eddington', name: 'eddington', methods: ['GET'])]
-    public function handle(): Response
+    public function handle(): PrivateNoStoreHtmlResponse
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(

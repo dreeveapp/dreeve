@@ -13,7 +13,6 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\HtmlResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -34,7 +33,7 @@ final readonly class RewindRequestHandler
     }
 
     #[Route(path: '/rewind/{rewindOption}', name: 'rewind', requirements: ['rewindOption' => '[^/]+'], defaults: ['rewindOption' => null], methods: ['GET'])]
-    public function handle(?string $rewindOption): Response
+    public function handle(?string $rewindOption): HtmlResponse
     {
         $availableRewindOptions = $this->queryBus->ask(new FindAvailableRewindOptions())->getAvailableOptions();
         if ([] === $availableRewindOptions) {

@@ -17,7 +17,6 @@ use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\DataTableRow;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -35,7 +34,7 @@ final readonly class SegmentDataTableRequestHandler
     }
 
     #[Route(path: '/api/internal/segments/data-table', name: 'segment_data_table', methods: ['GET'])]
-    public function handle(): Response
+    public function handle(): JsonResponse
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(

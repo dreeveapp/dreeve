@@ -13,7 +13,6 @@ use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -29,7 +28,7 @@ final readonly class DashboardWidgetRequestHandler
     }
 
     #[Route(path: '/api/internal/dashboard/widget/{dashboardWidgetId}', name: 'dashboard_widget', requirements: ['dashboardWidgetId' => 'dashboardWidget-[^/]+'], methods: ['GET'])]
-    public function handle(string $dashboardWidgetId): Response
+    public function handle(string $dashboardWidgetId): HtmlResponse
     {
         $dashboardWidgetId = DashboardWidgetId::fromString($dashboardWidgetId);
 

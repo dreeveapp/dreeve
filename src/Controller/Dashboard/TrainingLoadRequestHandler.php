@@ -22,7 +22,6 @@ use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\DateRange;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -44,7 +43,7 @@ final readonly class TrainingLoadRequestHandler
     }
 
     #[Route(path: '/dashboard/training-load', name: 'dashboard_training_load', methods: ['GET'])]
-    public function handle(): Response
+    public function handle(): HtmlResponse
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(

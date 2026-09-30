@@ -25,7 +25,6 @@ use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\Years;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -47,7 +46,7 @@ final readonly class PowerOutputRequestHandler
     }
 
     #[Route(path: '/dashboard/power-output', name: 'dashboard_power_output', methods: ['GET'])]
-    public function handle(): Response
+    public function handle(): PrivateNoStoreHtmlResponse
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(

@@ -32,7 +32,6 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
 use App\Infrastructure\Measurement\ProvideMeasurementFormats;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -64,7 +63,7 @@ final readonly class ActivityRequestHandler
     }
 
     #[Route(path: '/activities/{activityId}', name: 'activity', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'])]
-    public function handle(string $activityId): Response
+    public function handle(string $activityId): PrivateNoStoreHtmlResponse
     {
         $activityId = ActivityId::fromString($activityId);
 

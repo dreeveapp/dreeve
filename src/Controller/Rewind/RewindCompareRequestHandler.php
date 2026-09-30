@@ -13,7 +13,6 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\HtmlResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -32,7 +31,7 @@ final readonly class RewindCompareRequestHandler
     }
 
     #[Route(path: '/rewind/{left}/compare/{right}', name: 'rewind_compare', requirements: ['left' => '[^/]+', 'right' => '[^/]+'], defaults: ['right' => null], methods: ['GET'])]
-    public function handle(string $left, ?string $right): Response
+    public function handle(string $left, ?string $right): HtmlResponse
     {
         $availableRewindOptions = $this->queryBus->ask(new FindAvailableRewindOptions())->getAvailableOptions();
         if (count($availableRewindOptions) <= 2) {

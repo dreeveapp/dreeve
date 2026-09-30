@@ -17,7 +17,6 @@ use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -33,7 +32,7 @@ final readonly class ActivityPolylinesRequestHandler
     }
 
     #[Route(path: '/api/internal/activities/{activityId}/polylines', name: 'activity_polylines', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'])]
-    public function handle(string $activityId): Response
+    public function handle(string $activityId): JsonResponse
     {
         $activityId = ActivityId::fromString($activityId);
 

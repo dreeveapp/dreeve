@@ -14,7 +14,6 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\DataTableRow;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -31,7 +30,7 @@ final readonly class ActivityDataTableRequestHandler
     }
 
     #[Route(path: '/api/internal/activities/data-table', name: 'activity_data_table', methods: ['GET'])]
-    public function handle(): Response
+    public function handle(): JsonResponse
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(

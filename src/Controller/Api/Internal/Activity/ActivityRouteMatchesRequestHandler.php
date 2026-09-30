@@ -14,7 +14,6 @@ use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\HtmlResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -32,7 +31,7 @@ final readonly class ActivityRouteMatchesRequestHandler
     }
 
     #[Route(path: '/api/internal/activities/{activityId}/route-matches', name: 'activity_route_matches', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'])]
-    public function handle(string $activityId): Response
+    public function handle(string $activityId): HtmlResponse
     {
         $activityId = ActivityId::fromString($activityId);
 
