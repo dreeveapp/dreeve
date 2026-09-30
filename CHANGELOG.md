@@ -1,3 +1,22 @@
+# [v5.4.2](https://github.com/dreeveapp/dreeve/releases/tag/v5.4.2) - 2026-09-30
+
+## New features
+* Added public API endpoints to edit and delete activities
+* Added API endpoint for file imports
+
+## Improvements
+* Improved activity metadata and meta tags
+
+## Technical details
+* German Translation in 5.4.1 by @effectpears in https://github.com/dreeveapp/dreeve/pull/2703
+* ISSUE #2706: Public API - edit and delete an activity by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2707
+* ISSUE #2709: Use Symfony routing instead of javascript router by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2710
+* ISSUE #270: Push  filter changes to browser history by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2711
+* ISSUE #2709: Improve activity's metatags by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2712
+* ISSUE #2705:  Track file imports via the API by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2708
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.4.1...v5.4.2
+
 # [v5.4.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.4.1) - 2026-09-24
 
 ## New features
