@@ -2,32 +2,32 @@
 
 namespace App\Tests\Application;
 
-use App\Application\IndexPage;
+use App\Application\AppShell;
 use App\Application\Navigation\NavigationSection;
 use App\Application\OpenGraph\OpenGraph;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class IndexPageTest extends ContainerTestCase
+class AppShellTest extends ContainerTestCase
 {
     use MatchesSnapshots;
     use ProvideTestData;
 
-    private IndexPage $indexPage;
+    private AppShell $appShell;
 
     public function testRender(): void
     {
         $this->provideFullTestSet();
 
-        $this->assertMatchesHtmlSnapshot($this->indexPage->render('<p>The page content</p>', null));
+        $this->assertMatchesHtmlSnapshot($this->appShell->render('<p>The page content</p>', null));
     }
 
     public function testRenderMarksTheActiveSection(): void
     {
         $this->provideFullTestSet();
 
-        $render = $this->indexPage->render('', NavigationSection::ACTIVITIES);
+        $render = $this->appShell->render('', NavigationSection::ACTIVITIES);
 
         $this->assertStringContainsString('href="/activities" aria-selected="true"', $render);
         $this->assertStringContainsString('href="/dashboard" aria-selected="false"', $render);
@@ -37,7 +37,7 @@ class IndexPageTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
 
-        $render = $this->indexPage->render('', null, new OpenGraph(
+        $render = $this->appShell->render('', null, new OpenGraph(
             path: 'activities/activity-1',
             title: 'Morning Run',
             description: 'Run · 10.00 km · 50:00 · 120 m',
@@ -57,6 +57,6 @@ class IndexPageTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->indexPage = $this->getContainer()->get(IndexPage::class);
+        $this->appShell = $this->getContainer()->get(AppShell::class);
     }
 }

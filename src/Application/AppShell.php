@@ -20,7 +20,7 @@ use Symfony\Component\Intl\Countries;
 use Symfony\Component\Translation\LocaleSwitcher;
 use Twig\Environment;
 
-final readonly class IndexPage
+final readonly class AppShell
 {
     public function __construct(
         private ActivityIdRepository $activityIdRepository,
@@ -42,7 +42,7 @@ final readonly class IndexPage
 
         $general = $this->settingsRepository->general();
 
-        return $this->twig->load('html/index.html.twig')->render([
+        return $this->twig->load('html/app-shell.html.twig')->render([
             'content' => $content,
             'activeSection' => $activeSection?->value,
             'openGraph' => $openGraph,

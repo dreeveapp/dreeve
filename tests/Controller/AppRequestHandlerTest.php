@@ -2,7 +2,7 @@
 
 namespace App\Tests\Controller;
 
-use App\Application\IndexPage;
+use App\Application\AppShell;
 use App\Application\NotFoundFragment;
 use App\Controller\AppRequestHandler;
 use App\Domain\Activity\ActivityIdRepository;
@@ -122,7 +122,7 @@ class AppRequestHandlerTest extends ContainerTestCase
 
         $this->appRequestHandler = new AppRequestHandler(
             $this->getContainer()->get(ActivityIdRepository::class),
-            $this->getContainer()->get(IndexPage::class),
+            $this->getContainer()->get(AppShell::class),
             $this->getContainer()->get(FragmentRegistry::class),
             $this->getContainer()->get(FragmentRenderer::class),
             $this->getContainer()->get(NotFoundFragment::class),

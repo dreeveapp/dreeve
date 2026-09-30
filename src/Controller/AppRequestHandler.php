@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Application\IndexPage;
+use App\Application\AppShell;
 use App\Application\Navigation\HasNavigationSection;
 use App\Application\NotFoundFragment;
 use App\Application\OpenGraph\HasOpenGraph;
@@ -25,7 +25,7 @@ final readonly class AppRequestHandler
 
     public function __construct(
         private ActivityIdRepository $activityIdRepository,
-        private IndexPage $indexPage,
+        private AppShell $appShell,
         private FragmentRegistry $fragmentRegistry,
         private FragmentRenderer $fragmentRenderer,
         private NotFoundFragment $notFoundFragment,
@@ -43,7 +43,7 @@ final readonly class AppRequestHandler
         $page = $this->fragmentRegistry->findOfType($path, FragmentType::PAGE);
 
         $response = $this->fragmentRenderer->render($page ?? $this->notFoundFragment);
-        $response->setContent($this->indexPage->render(
+        $response->setContent($this->appShell->render(
             content: (string) $response->getContent(),
             activeSection: $page instanceof HasNavigationSection ? $page->getNavigationSection() : null,
             openGraph: $page instanceof HasOpenGraph ? $page->getOpenGraph() : null,
