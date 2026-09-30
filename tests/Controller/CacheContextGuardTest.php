@@ -2,8 +2,6 @@
 
 namespace App\Tests\Controller;
 
-use App\Domain\Settings\DbalSettingsRepository;
-use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContextRegistry;
 use App\Infrastructure\Cache\Render\RenderCache;
@@ -41,6 +39,7 @@ class CacheContextGuardTest extends AdminWebTestCase
         'activity_og_image',
         'activity_gpx',
         'ai_chat_sse',
+        'chat',
         'finish_setup',
         'local_image',
         'manifest',
@@ -159,14 +158,6 @@ class CacheContextGuardTest extends AdminWebTestCase
     {
         $this->provideFullTestSet();
         $this->addSegmentWithAPolylineFixtures();
-        $this->getContainer()->get(DbalSettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
-            'ai' => [
-                'enabled' => true,
-                'enableUI' => true,
-                'provider' => 'openAI',
-                'configuration' => ['key' => 'my-key', 'model' => 'cool-model'],
-            ],
-        ]);
     }
 
     /**

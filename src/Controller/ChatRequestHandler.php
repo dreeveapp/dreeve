@@ -8,12 +8,6 @@ use App\Application\AppShell;
 use App\Application\AppUrl;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableRenderer;
-use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
-use App\Infrastructure\Cache\Context\CacheContexts;
-use App\Infrastructure\Cache\Tag\CacheTags;
-use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\RelativeUrl;
@@ -34,7 +28,6 @@ final readonly class ChatRequestHandler
         private SettingsRepository $settingsRepository,
         private FormFactoryInterface $formFactory,
         private AppUrl $appUrl,
-        private CacheableRenderer $cacheableRenderer,
         private AppShell $appShell,
         private Environment $twig,
     ) {
@@ -47,24 +40,11 @@ final readonly class ChatRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        $render = $this->cacheableRenderer->render(
-            cacheability: Cacheability::for(
-                cacheKey: 'chat',
-                cacheTags: CacheTags::of(RootCacheTag::SETTINGS_INTEGRATIONS),
-                cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
-                ttlInSeconds: 0,
-            ),
-            render: fn (): string => $this->renderFor(),
-        );
-
-        return new PrivateNoStoreHtmlResponse(
-            $this->appShell->render(
-                content: $render->getContent() ?? '',
-                navigationSection: null,
-                openGraph: null,
-            ),
-            headers: $render->getCacheHeaders(),
-        );
+        return new PrivateNoStoreHtmlResponse($this->appShell->render(
+            content: $this->renderFor(),
+            navigationSection: null,
+            openGraph: null,
+        ));
     }
 
     private function renderFor(): string
