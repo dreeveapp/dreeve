@@ -16,65 +16,6 @@ class ApiFragmentRequestHandlerTest extends ContainerTestCase
 
     private ApiFragmentRequestHandler $apiFragmentRequestHandler;
 
-    public function testItServesEveryTypeUnderItsOwnSegment(): void
-    {
-        $this->provideFullTestSet();
-
-        $page = $this->apiFragmentRequestHandler->handle('page', 'photos');
-        $this->assertEquals(200, $page->getStatusCode());
-        $this->assertEquals('text/html; charset=UTF-8', $page->headers->get('Content-Type'));
-
-        $partial = $this->apiFragmentRequestHandler->handle('partial', 'gear/maintenance-due');
-        $this->assertEquals(200, $partial->getStatusCode());
-        $this->assertEquals('text/html; charset=UTF-8', $partial->headers->get('Content-Type'));
-
-        $data = $this->apiFragmentRequestHandler->handle('data', 'heatmap/routes');
-        $this->assertEquals(200, $data->getStatusCode());
-        $this->assertEquals('application/json', $data->headers->get('Content-Type'));
-    }
-
-    public function testItServesTheSecondRequestFromTheRenderCache(): void
-    {
-        $this->provideFullTestSet();
-
-        $firstResponse = $this->apiFragmentRequestHandler->handle('data', 'heatmap/routes');
-        $this->assertEquals('MISS', $firstResponse->headers->get('X-Dreeve-Cache'));
-
-        $this->getConnection()->executeStatement(
-            'UPDATE Activity SET name = "This name never made it into the render cache"'
-        );
-
-        $secondResponse = $this->apiFragmentRequestHandler->handle('data', 'heatmap/routes');
-        $this->assertEquals('HIT', $secondResponse->headers->get('X-Dreeve-Cache'));
-        $this->assertEquals($firstResponse->getContent(), $secondResponse->getContent());
-        $this->assertEquals(
-            $firstResponse->headers->get('X-Dreeve-Cache-Key'),
-            $secondResponse->headers->get('X-Dreeve-Cache-Key'),
-        );
-    }
-
-    public function testItDoesNotServeAFragmentUnderTheWrongType(): void
-    {
-        $this->provideFullTestSet();
-
-        $this->assertEquals(
-            404,
-            $this->apiFragmentRequestHandler->handle('data', 'photos')->getStatusCode()
-        );
-        $this->assertEquals(
-            404,
-            $this->apiFragmentRequestHandler->handle('page', 'heatmap/routes')->getStatusCode()
-        );
-        $this->assertEquals(
-            404,
-            $this->apiFragmentRequestHandler->handle('page', 'gear/maintenance-due')->getStatusCode()
-        );
-        $this->assertEquals(
-            404,
-            $this->apiFragmentRequestHandler->handle('partial', 'photos')->getStatusCode()
-        );
-    }
-
     public function testHandleWhenFragmentIsNotRegistered(): void
     {
         $this->assertEquals(

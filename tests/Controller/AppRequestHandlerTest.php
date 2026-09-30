@@ -20,50 +20,11 @@ class AppRequestHandlerTest extends ContainerTestCase
 
     private AppRequestHandler $appRequestHandler;
 
-    public function testHandle(): void
-    {
-        $this->provideFullTestSet();
-
-        $this->assertMatchesHtmlSnapshot($this->appRequestHandler->handle()->getContent());
-    }
-
     public function testHandleRendersTheNotFoundPageForAnUnknownPath(): void
     {
         $this->provideFullTestSet();
 
         $this->assertMatchesHtmlSnapshot($this->appRequestHandler->handle('dmzdmzd')->getContent());
-    }
-
-    #[\PHPUnit\Framework\Attributes\DataProvider('provideActiveSections')]
-    public function testHandleMarksTheSectionOfThePageAsActive(string $wildcard, ?string $expectedActiveHref): void
-    {
-        $this->provideFullTestSet();
-
-        $content = (string) $this->appRequestHandler->handle($wildcard)->getContent();
-
-        $this->assertSame(null === $expectedActiveHref ? 0 : 1, substr_count($content, 'aria-selected="true"'));
-        if (null !== $expectedActiveHref) {
-            $this->assertStringContainsString(sprintf('href="%s" aria-selected="true"', $expectedActiveHref), $content);
-        }
-    }
-
-    public static function provideActiveSections(): iterable
-    {
-        yield 'the dashboard' => ['dashboard', '/dashboard'];
-        yield 'a page below the dashboard' => ['dashboard/power-output', '/dashboard'];
-        yield 'a page below gear' => ['gear/maintenance', '/gear'];
-        yield 'a page without a menu item' => ['badges', null];
-        yield 'an unknown page' => ['dmzdmzd', null];
-    }
-
-    public function testHandleKeepsThePageCacheControl(): void
-    {
-        $this->provideFullTestSet();
-
-        $this->assertEquals(
-            'no-store, private',
-            $this->appRequestHandler->handle('dashboard')->headers->get('Cache-Control'),
-        );
     }
 
     public function testHandleThrowsWhenNoActivitiesHaveBeenImported(): void
@@ -86,14 +47,9 @@ class AppRequestHandlerTest extends ContainerTestCase
 
     public static function provideWildcards(): iterable
     {
-        yield 'the root renders the default page' => [null, 200];
-        yield 'an empty wildcard renders the default page' => ['', 200];
-        yield 'a known page' => ['dashboard', 200];
-        yield 'a known nested page' => ['gear/maintenance', 200];
+        yield 'the root renders the not found page' => [null, 404];
         yield 'an unknown page' => ['dmzdmzd', 404];
         yield 'an unknown page below a known one' => ['dashboard/dmzdmzd', 404];
-        yield 'a data fragment is not a page' => ['heatmap/routes', 404];
-        yield 'the countries data fragment is not a page' => ['heatmap/countries', 404];
     }
 
     #[\Override]

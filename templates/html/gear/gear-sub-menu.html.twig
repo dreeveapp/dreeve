@@ -9,7 +9,7 @@
         <li>
             <a href="{{ relativeUrl('gear/maintenance') }}"
                class="flex items-center {{ activeMenuItem == 'gearMaintenance' ? 'active' : '' }}">
-                <div class="contents" data-async-content-url="{{ fragmentPartialUrl('gear/maintenance-due') }}"></div>
+                <div class="contents" data-async-content-url="{{ relativeUrl(path('gear_maintenance_due')) }}"></div>
                 {{ "Maintenance"|trans }}
             </a>
         </li>

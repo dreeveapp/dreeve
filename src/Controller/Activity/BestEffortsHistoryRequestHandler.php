@@ -10,7 +10,6 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\BestEffort\BestEffortPeriod;
 use App\Domain\Activity\BestEffort\BestEffortsCalculator;
-use App\Domain\Activity\BestEffort\BestEffortsFragment;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -27,7 +26,7 @@ use Twig\Environment;
 #[AsController]
 final readonly class BestEffortsHistoryRequestHandler
 {
-    private const string BASE_PATH = BestEffortsFragment::PATH;
+    private const string BASE_PATH = 'best-efforts';
 
     public function __construct(
         private BestEffortsCalculator $bestEffortsCalculator,
