@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Chat;
 
 use App\Application\AppShell;
 use App\Application\AppUrl;
