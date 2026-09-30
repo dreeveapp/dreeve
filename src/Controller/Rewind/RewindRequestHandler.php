@@ -10,9 +10,9 @@ use App\Domain\Rewind\FindAvailableRewindOptions\FindAvailableRewindOptions;
 use App\Domain\Rewind\RewindCacheTags;
 use App\Domain\Rewind\RewindItemsBuilder;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -47,8 +47,7 @@ final readonly class RewindRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        $render = $this->cacheableRenderer->render(new ResolvedFragment(
-            path: self::BASE_PATH.'/'.$rewindOption,
+        $render = $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('%s.%s', self::BASE_PATH, $rewindOption),
                 cacheTags: RewindCacheTags::forOption($rewindOption),

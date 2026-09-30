@@ -8,7 +8,6 @@ use App\Application\AppShell;
 use App\Application\Navigation\NavigationSection;
 use App\Application\OpenGraph\OpenGraph;
 use App\Domain\Activity\ActivityCacheTag;
-use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\DistributionChartsBuilder;
@@ -25,13 +24,13 @@ use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Measurement\ProvideMeasurementFormats;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,10 +77,9 @@ final readonly class ActivityRequestHandler
 
         $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
 
-        $render = $this->cacheableRenderer->render(new ResolvedFragment(
-            path: ActivityFragmentPath::for($activityId),
+        $render = $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
-                cacheKey: ActivityFragmentPath::cacheKey($activityId),
+                cacheKey: sprintf('activities.%s', $activityId->toUnprefixedString()),
                 cacheTags: CacheTags::of(
                     ActivityCacheTag::for($activityId),
                     RootCacheTag::GEAR,
@@ -96,7 +94,7 @@ final readonly class ActivityRequestHandler
                 content: $render->getContent() ?? '',
                 navigationSection: NavigationSection::ACTIVITIES,
                 openGraph: new OpenGraph(
-                    path: ActivityFragmentPath::for($activity->getId()),
+                    path: $this->urlGenerator->generate('activity', ['activityId' => (string) $activity->getId()]),
                     title: $activity->getName(),
                     description: implode(' · ', [
                         $activity->getSportType()->transSingular($this->translator),
@@ -107,7 +105,7 @@ final readonly class ActivityRequestHandler
                         $activity->getMovingTimeFormatted(),
                         $this->formatUnitWithSymbol($activity->getElevation()->toUnitSystem($unitSystem), 0),
                     ]),
-                    imagePath: ActivityFragmentPath::for($activity->getId(), 'og-image.png'),
+                    imagePath: $this->urlGenerator->generate('activity_og_image', ['activityId' => (string) $activity->getId()]),
                 ),
             ),
             headers: [...$render->getCacheHeaders(), 'Cache-Control' => 'private, no-store'],

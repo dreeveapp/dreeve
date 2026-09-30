@@ -14,13 +14,13 @@ use App\Domain\Activity\Stream\ActivityPowerRepository;
 use App\Domain\Activity\Stream\BestPowerOutputs;
 use App\Domain\Activity\Stream\PowerOutputChart;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
@@ -50,8 +50,7 @@ final readonly class PowerOutputRequestHandler
     #[Route(path: '/dashboard/power-output', name: 'dashboard_power_output', methods: ['GET'], priority: 3)]
     public function handle(): Response
     {
-        $render = $this->cacheableRenderer->render(new ResolvedFragment(
-            path: 'dashboard/power-output',
+        $render = $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
                 cacheKey: 'dashboard/power-output',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_METRICS),

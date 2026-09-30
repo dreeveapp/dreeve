@@ -12,11 +12,11 @@ use App\Domain\Calendar\Calendar;
 use App\Domain\Calendar\FindMonthlyStats\FindMonthlyStats;
 use App\Domain\Calendar\Month;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -55,8 +55,7 @@ final readonly class MonthRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        $render = $this->cacheableRenderer->render(new ResolvedFragment(
-            path: self::BASE_PATH.'/'.$month->getId(),
+        $render = $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('%s.%s', self::BASE_PATH, $month->getId()),
                 cacheTags: CacheTags::of(

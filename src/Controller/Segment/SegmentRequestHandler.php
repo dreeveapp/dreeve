@@ -18,17 +18,16 @@ use App\Domain\Segment\SegmentEffort\SegmentEffortHistoryChart;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEfforts;
 use App\Domain\Segment\SegmentEffort\SegmentEffortVsHeartRateChart;
-use App\Domain\Segment\SegmentFragmentPath;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTag;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,10 +70,9 @@ final readonly class SegmentRequestHandler
             self::NUMBER_OF_TOP_EFFORTS
         );
 
-        $render = $this->cacheableRenderer->render(new ResolvedFragment(
-            path: SegmentFragmentPath::for($segment->getId()),
+        $render = $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
-                cacheKey: SegmentFragmentPath::cacheKey($segment->getId()),
+                cacheKey: sprintf('segments.%s', $segment->getId()->toUnprefixedString()),
                 cacheTags: CacheTags::of(
                     SegmentCacheTag::for($segment->getId()),
                     RootCacheTag::GEAR,

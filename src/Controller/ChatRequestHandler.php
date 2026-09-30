@@ -9,12 +9,12 @@ use App\Application\AppUrl;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\RelativeUrl;
@@ -48,8 +48,7 @@ final readonly class ChatRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        $render = $this->cacheableRenderer->render(new ResolvedFragment(
-            path: 'chat',
+        $render = $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
                 cacheKey: 'chat',
                 cacheTags: CacheTags::of(RootCacheTag::SETTINGS_INTEGRATIONS),

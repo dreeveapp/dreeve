@@ -10,11 +10,10 @@ use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Gear\GearRepository;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Http\Fragment\FragmentType;
-use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use Twig\Environment;
 
 final readonly class SideBar
@@ -32,8 +31,7 @@ final readonly class SideBar
 
     public function render(?NavigationSection $activeSection): ?string
     {
-        return $this->cacheableRenderer->render(new ResolvedFragment(
-            path: 'app-shell/sidebar',
+        return $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
                 cacheKey: 'app-shell.sidebar.'.($activeSection->value ?? 'none'),
                 cacheTags: CacheTags::of(
@@ -51,7 +49,6 @@ final readonly class SideBar
                 'hasGear' => $this->gearRepository->hasGear(),
                 'hasBestEfforts' => $this->activityBestEffortRepository->hasData(),
             ]),
-            type: FragmentType::PARTIAL,
         ))->getContent();
     }
 }

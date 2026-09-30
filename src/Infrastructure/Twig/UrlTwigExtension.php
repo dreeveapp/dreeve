@@ -6,13 +6,9 @@ namespace App\Infrastructure\Twig;
 
 use App\Application\AppUrl;
 use App\Domain\Activity\Activity;
-use App\Domain\Activity\ActivityFragmentPath;
-use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Image\ImageOrientation;
 use App\Domain\Segment\Segment;
-use App\Domain\Segment\SegmentFragmentPath;
-use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Http\Request\RedirectTo;
 use App\Infrastructure\ValueObject\String\FilteredUrl;
 use App\Infrastructure\ValueObject\String\RelativeUrl;
@@ -75,30 +71,6 @@ final readonly class UrlTwigExtension
         return FilteredUrl::from($path, $filters, $this->appUrl)->toRelativeUrl();
     }
 
-    #[AsTwigFunction('fragmentDataUrl')]
-    public function toFragmentDataUrl(string $path): string
-    {
-        return $this->toRelativeUrl($this->urlGenerator->generate('api_fragment', [
-            'type' => FragmentType::DATA->value,
-            'path' => $path,
-        ]));
-    }
-
-    #[AsTwigFunction('fragmentPartialUrl')]
-    public function toFragmentPartialUrl(string $path): string
-    {
-        return $this->toRelativeUrl($this->urlGenerator->generate('api_fragment', [
-            'type' => FragmentType::PARTIAL->value,
-            'path' => $path,
-        ]));
-    }
-
-    #[AsTwigFunction('activityFragmentPath')]
-    public function activityFragmentPath(ActivityId $activityId, ?string $subResource = null): string
-    {
-        return ActivityFragmentPath::for($activityId, $subResource);
-    }
-
     #[AsTwigFunction('placeholderImage')]
     public function placeholderImage(?ImageOrientation $imageOrientation = null): string
     {
@@ -130,7 +102,7 @@ final readonly class UrlTwigExtension
 
         return sprintf(
             '<a href="%s" class="flex items-center gap-x-1 font-medium text-blue-600 hover:underline">%s<span class="%s">%s</span></a>',
-            $this->toRelativeUrl(ActivityFragmentPath::for($activity->getId())),
+            $this->toRelativeUrl($this->urlGenerator->generate('activity', ['activityId' => (string) $activity->getId()])),
             $activityIcon,
             $truncate ? 'truncate' : '',
             $ellipses ? $this->stringTwigExtension->doEllipses($activityTitle, $ellipses) : $activityTitle
@@ -152,7 +124,7 @@ final readonly class UrlTwigExtension
 
         return sprintf(
             '<a href="%s" class="flex items-center gap-x-1 font-medium text-blue-600 hover:underline">%s<span class="truncate">%s</span></a>',
-            $this->toRelativeUrl(SegmentFragmentPath::for($segment->getId())),
+            $this->toRelativeUrl($this->urlGenerator->generate('segment', ['segmentId' => (string) $segment->getId()])),
             $segmentIcon,
             $this->stringTwigExtension->doEllipses((string) $segmentTitle, 50)
         );

@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace App\Controller\Api\Internal\Activity;
 
 use App\Domain\Activity\ActivityCacheTag;
-use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Shifting\ActivityDrivetrainUsage;
 use App\Domain\Activity\Shifting\ActivityDrivetrainUsageRepository;
 use App\Domain\Activity\Shifting\DrivetrainPosition;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -25,8 +24,6 @@ use Twig\Environment;
 #[AsController]
 final readonly class ActivityShiftingRequestHandler
 {
-    private const string SUB_RESOURCE = 'shifting';
-
     public function __construct(
         private ActivityRepository $activityRepository,
         private ActivityDrivetrainUsageRepository $activityDrivetrainUsageRepository,
@@ -44,10 +41,9 @@ final readonly class ActivityShiftingRequestHandler
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $render = $this->cacheableRenderer->render(new ResolvedFragment(
-            path: ActivityFragmentPath::for($activityId, self::SUB_RESOURCE),
+        $render = $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
-                cacheKey: ActivityFragmentPath::cacheKey($activityId, self::SUB_RESOURCE),
+                cacheKey: sprintf('activities.%s.shifting', $activityId->toUnprefixedString()),
                 cacheTags: CacheTags::of(
                     ActivityCacheTag::for($activityId),
                     RootCacheTag::ACTIVITIES,

@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace App\Controller\Api\Internal\Segment;
 
 use App\Domain\Activity\ActivityCacheTag;
-use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -40,10 +39,9 @@ final readonly class ActivitySegmentsRequestHandler
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $render = $this->cacheableRenderer->render(new ResolvedFragment(
-            path: ActivityFragmentPath::for($activityId, 'segments'),
+        $render = $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
-                cacheKey: ActivityFragmentPath::cacheKey($activityId, 'segments'),
+                cacheKey: sprintf('activities.%s.segments', $activityId->toUnprefixedString()),
                 cacheTags: CacheTags::of(
                     ActivityCacheTag::for($activityId),
                     RootCacheTag::SEGMENTS,

@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace App\Controller\Api\Internal\Segment;
 
 use App\Domain\Activity\LeafletMap;
-use App\Domain\Segment\SegmentFragmentPath;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,10 +41,9 @@ final readonly class SegmentPolylinesRequestHandler
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $render = $this->cacheableRenderer->render(new ResolvedFragment(
-            path: SegmentFragmentPath::for($segment->getId(), 'polylines'),
+        $render = $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
-                cacheKey: SegmentFragmentPath::cacheKey($segment->getId(), 'polylines'),
+                cacheKey: sprintf('segments.%s.polylines', $segment->getId()->toUnprefixedString()),
                 cacheTags: CacheTags::of(RootCacheTag::SEGMENTS),
             ),
             render: fn (): string => Json::encode([$segment->getPolyline()?->decodeAndPairLatLng()]),

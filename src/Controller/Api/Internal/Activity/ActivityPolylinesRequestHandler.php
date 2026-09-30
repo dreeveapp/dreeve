@@ -6,17 +6,16 @@ namespace App\Controller\Api\Internal\Activity;
 
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityCacheTag;
-use App\Domain\Activity\ActivityFragmentPath;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\LeafletMap;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,10 +47,9 @@ final readonly class ActivityPolylinesRequestHandler
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $render = $this->cacheableRenderer->render(new ResolvedFragment(
-            path: ActivityFragmentPath::for($activityId, 'polylines'),
+        $render = $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
-                cacheKey: ActivityFragmentPath::cacheKey($activityId, 'polylines'),
+                cacheKey: sprintf('activities.%s.polylines', $activityId->toUnprefixedString()),
                 cacheTags: CacheTags::of(ActivityCacheTag::for($activityId)),
             ),
             render: fn (): string => Json::encode([$this->routeCoordinates($activity)]),

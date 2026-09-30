@@ -8,10 +8,10 @@ use App\Domain\Activity\EnrichedActivityRepository;
 use App\Domain\Activity\Stream\ActivityPowerRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\DataTableRow;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,8 +34,7 @@ final readonly class ActivityDataTableRequestHandler
     #[Route(path: '/api/internal/activities/data-table', name: 'activity_data_table', methods: ['GET'], priority: 3)]
     public function handle(): Response
     {
-        $render = $this->cacheableRenderer->render(new ResolvedFragment(
-            path: 'activities/data-table',
+        $render = $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
                 cacheKey: 'activities.data-table',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),

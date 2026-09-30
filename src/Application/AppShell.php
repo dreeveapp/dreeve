@@ -7,11 +7,8 @@ namespace App\Application;
 use App\Application\Navigation\NavigationSection;
 use App\Application\Navigation\SideBar;
 use App\Application\OpenGraph\OpenGraph;
-use App\Controller\Api\Internal\ApiFragmentRequestHandler;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\String\RelativeUrl;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Translation\LocaleSwitcher;
 use Twig\Environment;
@@ -53,10 +50,6 @@ final readonly class AppShell
                     'elevationSymbol' => $unitSystem->elevationSymbol(),
                 ],
                 'leafletConfig' => $this->settingsRepository->maps()->getLeafletConfig(),
-                'pageFragment' => [
-                    'baseUrl' => RelativeUrl::from(ApiFragmentRequestHandler::PATH_PREFIX.'/'.FragmentType::PAGE->value, $this->appUrl)->toRelativeUrl(),
-                    'pathPattern' => ApiFragmentRequestHandler::PATH_REQUIREMENT,
-                ],
             ]),
         ]);
     }

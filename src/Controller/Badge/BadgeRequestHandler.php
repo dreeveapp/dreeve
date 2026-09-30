@@ -14,11 +14,11 @@ use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Zwift\ZwiftLevel;
 use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableContent;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use App\Infrastructure\Http\SvgResponse;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,8 +48,7 @@ final readonly class BadgeRequestHandler
     #[Route(path: '/badge/dreeve.svg', name: 'badge_dreeve', methods: ['GET'], priority: 3)]
     public function dreeve(): Response
     {
-        $render = $this->cacheableRenderer->render(new ResolvedFragment(
-            path: 'badge/dreeve',
+        $render = $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
                 cacheKey: 'badge.dreeve',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::CHALLENGES),
@@ -80,8 +79,7 @@ final readonly class BadgeRequestHandler
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $render = $this->cacheableRenderer->render(new ResolvedFragment(
-            path: 'badge/zwift',
+        $render = $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
                 cacheKey: 'badge.zwift',
                 cacheTags: CacheTags::of(RootCacheTag::SETTINGS_ZWIFT),
@@ -111,8 +109,7 @@ final readonly class BadgeRequestHandler
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $render = $this->cacheableRenderer->render(new ResolvedFragment(
-            path: sprintf('badge/pb/%s', $sportType),
+        $render = $this->cacheableRenderer->render(new CacheableContent(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('badge.pb.%s', $sportType),
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),

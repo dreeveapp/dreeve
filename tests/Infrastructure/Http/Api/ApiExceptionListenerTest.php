@@ -45,7 +45,7 @@ class ApiExceptionListenerTest extends TestCase
     {
         yield 'an app page' => ['/dashboard'];
         yield 'the app root' => ['/'];
-        yield 'the internal api' => ['/api/internal/fragment/page/dashboard'];
+        yield 'the internal api' => ['/api/internal/dashboard/widget/dashboardWidget-introText'];
         yield 'the api root' => ['/api'];
         yield 'a prefix lookalike' => ['/api/v10/status'];
     }
