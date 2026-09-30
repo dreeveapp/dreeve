@@ -9,6 +9,7 @@ use App\Domain\Activity\ActivityWasAdded;
 use App\Domain\Activity\ActivityWasDeleted;
 use App\Domain\Activity\ActivityWasUpdated;
 use App\Domain\Gear\GearWasAdded;
+use App\Domain\Gear\GearWasDeleted;
 use App\Domain\Gear\GearWasUpdated;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsWereUpdated;
@@ -52,6 +53,12 @@ final class RecalculateChartColorsListener
 
     #[AsEventListener]
     public function reactToGearWasUpdated(GearWasUpdated $event): void
+    {
+        $this->chartColorsAreStale = true;
+    }
+
+    #[AsEventListener]
+    public function reactToGearWasDeleted(GearWasDeleted $event): void
     {
         $this->chartColorsAreStale = true;
     }

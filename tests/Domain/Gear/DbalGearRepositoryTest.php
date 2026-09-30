@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypes;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Gear\DbalGearRepository;
+use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Gears;
@@ -94,6 +95,19 @@ class DbalGearRepositoryTest extends ContainerTestCase
     {
         $this->expectExceptionObject(new EntityNotFound('Gear "gear-1" not found'));
         $this->gearRepository->find(GearId::fromUnprefixed('1'));
+    }
+
+    public function testDelete(): void
+    {
+        $this->gearRepository->add(GearBuilder::fromDefaults()->withGearId(GearId::fromUnprefixed('1'))->build());
+        $this->gearRepository->add(GearBuilder::fromDefaults()->withGearId(GearId::fromUnprefixed('2'))->build());
+
+        $this->gearRepository->delete($this->gearRepository->find(GearId::fromUnprefixed('1')));
+
+        $this->assertEquals(
+            [GearId::fromUnprefixed('2')],
+            $this->gearRepository->findAll()->map(static fn (Gear $gear): GearId => $gear->getId()),
+        );
     }
 
     public function testAddPersistsType(): void

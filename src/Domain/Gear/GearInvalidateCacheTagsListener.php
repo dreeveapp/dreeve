@@ -26,4 +26,10 @@ final readonly class GearInvalidateCacheTagsListener
     {
         $this->renderCache->invalidateTags(RootCacheTag::GEAR);
     }
+
+    #[AsEventListener]
+    public function reactToGearWasDeleted(GearWasDeleted $event): void
+    {
+        $this->renderCache->invalidateTags(RootCacheTag::GEAR);
+    }
 }

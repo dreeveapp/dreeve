@@ -70,6 +70,16 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
         $this->eventBus->publishEvents($gear->getRecordedEvents());
     }
 
+    public function delete(Gear $gear): void
+    {
+        $this->connection->executeStatement(
+            'DELETE FROM Gear WHERE gearId = :gearId',
+            ['gearId' => $gear->getId()]
+        );
+
+        $this->eventBus->publishEvents($gear->getRecordedEvents());
+    }
+
     public function findAll(): Gears
     {
         return $this->fetchFindAllResults(onlyUsedGear: false);

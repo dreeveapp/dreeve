@@ -77,6 +77,14 @@ final readonly class DbalGearMaintenanceLogRepository extends DbalRepository imp
         $this->eventBus->publishEvents([new GearMaintenanceLogWasUpdated()]);
     }
 
+    public function existsForGear(GearId $gearId): bool
+    {
+        return (bool) $this->connection->executeQuery(
+            'SELECT EXISTS(SELECT 1 FROM GearMaintenanceLog WHERE gearId = :gearId)',
+            ['gearId' => $gearId]
+        )->fetchOne();
+    }
+
     public function findAll(): GearMaintenanceLogs
     {
         $results = $this->connection->executeQuery(

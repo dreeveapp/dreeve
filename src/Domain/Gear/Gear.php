@@ -117,6 +117,11 @@ final class Gear implements SupportsAITooling
         return $this->type;
     }
 
+    public function delete(): void
+    {
+        $this->recordThat(new GearWasDeleted());
+    }
+
     public function withName(string $name): self
     {
         $clone = clone ($this, [

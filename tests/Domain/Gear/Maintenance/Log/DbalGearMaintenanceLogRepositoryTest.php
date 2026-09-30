@@ -64,6 +64,18 @@ class DbalGearMaintenanceLogRepositoryTest extends ContainerTestCase
         );
     }
 
+    public function testExistsForGear(): void
+    {
+        $this->gearMaintenanceLogRepository->add(GearMaintenanceLog::create(
+            gearId: GearId::fromUnprefixed('b1'),
+            maintenanceTaskId: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+            performedOn: SerializableDateTime::fromString('2025-01-01 00:00:00'),
+        ));
+
+        $this->assertTrue($this->gearMaintenanceLogRepository->existsForGear(GearId::fromUnprefixed('b1')));
+        $this->assertFalse($this->gearMaintenanceLogRepository->existsForGear(GearId::fromUnprefixed('b2')));
+    }
+
     public function testFindItShouldThrowWhenNotFound(): void
     {
         $gearMaintenanceLogId = GearMaintenanceLogId::random();

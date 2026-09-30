@@ -53,6 +53,18 @@ class GearInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->assertFalse($this->isServedFromCache());
     }
 
+    public function testItInvalidatesWhenGearIsDeleted(): void
+    {
+        $this->gearRepository->add(GearBuilder::fromDefaults()->build());
+        $this->warmUpRenderCache();
+
+        $gear = GearBuilder::fromDefaults()->build();
+        $gear->delete();
+        $this->gearRepository->delete($gear);
+
+        $this->assertFalse($this->isServedFromCache());
+    }
+
     public function testItDoesNotInvalidateWhenGearIsStoredWithoutChanges(): void
     {
         $this->gearRepository->add(GearBuilder::fromDefaults()->build());

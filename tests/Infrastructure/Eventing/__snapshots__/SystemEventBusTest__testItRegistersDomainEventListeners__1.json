@@ -12,6 +12,7 @@
         "reactToActivityWasDeleted",
         "reactToGearWasAdded",
         "reactToGearWasUpdated",
+        "reactToGearWasDeleted",
         "reactToSettingsWereUpdated",
         "recalculateChartColors",
         "recalculateChartColors"
@@ -24,7 +25,8 @@
     ],
     "App\\Domain\\Gear\\GearInvalidateCacheTagsListener": [
         "reactToGearWasAdded",
-        "reactToGearWasUpdated"
+        "reactToGearWasUpdated",
+        "reactToGearWasDeleted"
     ],
     "App\\Domain\\Gear\\Maintenance\\GearMaintenanceInvalidateCacheTagsListener": [
         "reactToGearMaintenanceConfigWasUpdated",

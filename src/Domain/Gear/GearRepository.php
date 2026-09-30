@@ -10,6 +10,8 @@ interface GearRepository
 
     public function update(Gear $gear): void;
 
+    public function delete(Gear $gear): void;
+
     public function findAll(): Gears;
 
     public function findAllUsed(): Gears;
