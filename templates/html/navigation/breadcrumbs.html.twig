@@ -8,7 +8,7 @@
             {% if breadcrumbs is empty %}
                 <span aria-current="page" class="inline-flex items-center whitespace-nowrap text-gray-700">{{ dashboardCrumb }}</span>
             {% else %}
-                <a href="{{ relativeUrl('dashboard') }}" class="inline-flex items-center whitespace-nowrap text-gray-700 hover:text-primary hover:underline">{{ dashboardCrumb }}</a>
+                <a href="{{ relativeUrl(path('dashboard')) }}" class="inline-flex items-center whitespace-nowrap text-gray-700 hover:text-primary hover:underline">{{ dashboardCrumb }}</a>
             {% endif %}
         </li>
         {% for breadcrumb in breadcrumbs %}

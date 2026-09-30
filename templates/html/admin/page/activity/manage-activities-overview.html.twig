@@ -114,7 +114,7 @@
                             <div class="flex items-center gap-1.5">
                                 <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
                                    title="{{ activity.getName() }}"
-                                   href="{{ relativeUrl('/activities/' ~ activity.getActivityId()) }}">
+                                   href="{{ relativeUrl(path('activity', {'activityId': activity.getActivityId()})) }}">
                                     {{ activity.getName() }}
                                 </a>
                                 {% if activity.canBeEnriched() %}

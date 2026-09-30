@@ -76,13 +76,13 @@
                         <span class="text-sm font-bold text-gray-900">{{ activity.getKilojoules() }} <span class="text-xxs font-medium text-gray-400">kJ</span></span>
                     </div>
                 {% endif %}
-                <a href="{{ filteredUrl('activities', {gear: activity.getGearIdIncludingNone()}) }}" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group">
+                <a href="{{ filteredUrl(path('activities'), {gear: activity.getGearIdIncludingNone()}) }}" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group">
                     <span class="text-xs text-gray-500 shrink-0">{{ "Gear"|trans }}</span>
                     <span class="text-xs font-bold text-gray-900 group-hover:text-primary truncate" title="{{ enrichedActivity.getGearName() }}">
                             {{ enrichedActivity.getGearName() ?: 'Unspecified'|trans }}
                     </span>
                 </a>
-                <a href="{{ filteredUrl('activities', {device: activity.getDeviceId()}) }}" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group">
+                <a href="{{ filteredUrl(path('activities'), {device: activity.getDeviceId()}) }}" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group">
                     <span class="text-xs text-gray-500 shrink-0">{{ "Device"|trans }}</span>
                     <span class="text-xs font-bold text-gray-900 group-hover:text-primary truncate" title="{{ activity.getDeviceName() }}">
                             {{ activity.getDeviceName() ?: 'None'|trans }}
