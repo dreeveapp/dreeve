@@ -44,7 +44,7 @@ final readonly class BadgeRequestHandler
     ) {
     }
 
-    #[Route(path: '/badge/dreeve.svg', name: 'badge_dreeve', methods: ['GET'], priority: 3)]
+    #[Route(path: '/badge/dreeve.svg', name: 'badge_dreeve', methods: ['GET'])]
     public function dreeve(): Response
     {
         $render = $this->cacheableRenderer->render(
@@ -70,7 +70,7 @@ final readonly class BadgeRequestHandler
         );
     }
 
-    #[Route(path: '/badge/zwift.svg', name: 'badge_zwift', methods: ['GET'], priority: 3)]
+    #[Route(path: '/badge/zwift.svg', name: 'badge_zwift', methods: ['GET'])]
     public function zwift(): Response
     {
         $zwiftLevel = $this->settingsRepository->zwift()->getZwiftLevel();
@@ -96,7 +96,7 @@ final readonly class BadgeRequestHandler
         );
     }
 
-    #[Route(path: '/badge/pb/{sportType}.svg', name: 'badge_personal_best', requirements: ['sportType' => '[a-z0-9\-]+'], methods: ['GET'], priority: 3)]
+    #[Route(path: '/badge/pb/{sportType}.svg', name: 'badge_personal_best', requirements: ['sportType' => '[a-z0-9\-]+'], methods: ['GET'])]
     public function personalBest(string $sportType): Response
     {
         $bestEfforts = $this->bestEffortsCalculator->calculate();

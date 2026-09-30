@@ -32,7 +32,7 @@ final readonly class RecordingDevicesRequestHandler
     ) {
     }
 
-    #[Route(path: '/gear/recording-devices', name: 'gear_recording_devices', methods: ['GET'], priority: 3)]
+    #[Route(path: '/gear/recording-devices', name: 'gear_recording_devices', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

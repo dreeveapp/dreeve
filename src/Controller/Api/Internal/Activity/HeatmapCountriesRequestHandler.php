@@ -26,7 +26,7 @@ final readonly class HeatmapCountriesRequestHandler
     ) {
     }
 
-    #[Route(path: '/api/internal/heatmap/countries', name: 'heatmap_countries', methods: ['GET'], priority: 3)]
+    #[Route(path: '/api/internal/heatmap/countries', name: 'heatmap_countries', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

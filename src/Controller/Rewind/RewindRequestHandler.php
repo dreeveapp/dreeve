@@ -33,7 +33,7 @@ final readonly class RewindRequestHandler
     ) {
     }
 
-    #[Route(path: '/rewind/{rewindOption}', name: 'rewind', requirements: ['rewindOption' => '[^/]+'], defaults: ['rewindOption' => null], methods: ['GET'], priority: 3)]
+    #[Route(path: '/rewind/{rewindOption}', name: 'rewind', requirements: ['rewindOption' => '[^/]+'], defaults: ['rewindOption' => null], methods: ['GET'])]
     public function handle(?string $rewindOption): Response
     {
         $availableRewindOptions = $this->queryBus->ask(new FindAvailableRewindOptions())->getAvailableOptions();

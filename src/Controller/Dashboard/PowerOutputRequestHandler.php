@@ -46,7 +46,7 @@ final readonly class PowerOutputRequestHandler
     ) {
     }
 
-    #[Route(path: '/dashboard/power-output', name: 'dashboard_power_output', methods: ['GET'], priority: 3)]
+    #[Route(path: '/dashboard/power-output', name: 'dashboard_power_output', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

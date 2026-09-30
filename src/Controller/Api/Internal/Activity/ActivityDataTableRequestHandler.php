@@ -30,7 +30,7 @@ final readonly class ActivityDataTableRequestHandler
     ) {
     }
 
-    #[Route(path: '/api/internal/activities/data-table', name: 'activity_data_table', methods: ['GET'], priority: 3)]
+    #[Route(path: '/api/internal/activities/data-table', name: 'activity_data_table', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

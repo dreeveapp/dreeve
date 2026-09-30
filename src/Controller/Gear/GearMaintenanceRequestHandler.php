@@ -39,7 +39,7 @@ final readonly class GearMaintenanceRequestHandler
     ) {
     }
 
-    #[Route(path: '/gear/maintenance', name: 'gear_maintenance', methods: ['GET'], priority: 3)]
+    #[Route(path: '/gear/maintenance', name: 'gear_maintenance', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

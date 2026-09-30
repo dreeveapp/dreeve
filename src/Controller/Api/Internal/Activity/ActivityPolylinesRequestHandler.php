@@ -31,7 +31,7 @@ final readonly class ActivityPolylinesRequestHandler
     ) {
     }
 
-    #[Route(path: '/api/internal/activities/{activityId}/polylines', name: 'activity_polylines', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'], priority: 3)]
+    #[Route(path: '/api/internal/activities/{activityId}/polylines', name: 'activity_polylines', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'])]
     public function handle(string $activityId): Response
     {
         $activityId = ActivityId::fromString($activityId);

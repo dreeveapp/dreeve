@@ -27,7 +27,7 @@ final readonly class SegmentPolylinesRequestHandler
     ) {
     }
 
-    #[Route(path: '/api/internal/segments/{segmentId}/polylines', name: 'segment_polylines', requirements: ['segmentId' => 'segment-[^/]+'], methods: ['GET'], priority: 3)]
+    #[Route(path: '/api/internal/segments/{segmentId}/polylines', name: 'segment_polylines', requirements: ['segmentId' => 'segment-[^/]+'], methods: ['GET'])]
     public function handle(string $segmentId): Response
     {
         try {

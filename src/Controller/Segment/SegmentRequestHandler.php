@@ -55,7 +55,7 @@ final readonly class SegmentRequestHandler
     ) {
     }
 
-    #[Route(path: '/segments/{segmentId}', name: 'segment', requirements: ['segmentId' => 'segment-[^/]+'], methods: ['GET'], priority: 3)]
+    #[Route(path: '/segments/{segmentId}', name: 'segment', requirements: ['segmentId' => 'segment-[^/]+'], methods: ['GET'])]
     public function handle(string $segmentId): Response
     {
         try {

@@ -22,7 +22,7 @@ final readonly class ActivityGpxRequestHandler
     ) {
     }
 
-    #[Route(path: '/api/internal/activity/{activityId}/route.gpx', name: 'api_activity_gpx', methods: ['GET'], priority: 3)]
+    #[Route(path: '/api/internal/activity/{activityId}/route.gpx', name: 'api_activity_gpx', methods: ['GET'])]
     public function handle(string $activityId): Response
     {
         try {

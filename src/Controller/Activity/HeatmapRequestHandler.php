@@ -32,7 +32,7 @@ final readonly class HeatmapRequestHandler
     ) {
     }
 
-    #[Route(path: '/heatmap', name: 'heatmap', methods: ['GET'], priority: 3)]
+    #[Route(path: '/heatmap', name: 'heatmap', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

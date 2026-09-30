@@ -29,7 +29,7 @@ final readonly class ActivityBestEffortsRequestHandler
     ) {
     }
 
-    #[Route(path: '/api/internal/activities/{activityId}/best-efforts', name: 'activity_best_efforts', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'], priority: 3)]
+    #[Route(path: '/api/internal/activities/{activityId}/best-efforts', name: 'activity_best_efforts', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'])]
     public function handle(string $activityId): Response
     {
         $activityId = ActivityId::fromString($activityId);

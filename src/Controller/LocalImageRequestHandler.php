@@ -26,7 +26,7 @@ final readonly class LocalImageRequestHandler
     ) {
     }
 
-    #[Route(path: '/files/{path}', name: 'local_image', requirements: ['path' => '.+'], methods: ['GET'], priority: 3)]
+    #[Route(path: '/files/{path}', name: 'local_image', requirements: ['path' => '.+'], methods: ['GET'])]
     public function handle(string $path): Response
     {
         if (str_contains($path, '..')

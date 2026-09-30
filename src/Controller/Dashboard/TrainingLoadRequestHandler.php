@@ -43,7 +43,7 @@ final readonly class TrainingLoadRequestHandler
     ) {
     }
 
-    #[Route(path: '/dashboard/training-load', name: 'dashboard_training_load', methods: ['GET'], priority: 3)]
+    #[Route(path: '/dashboard/training-load', name: 'dashboard_training_load', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

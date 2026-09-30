@@ -39,7 +39,7 @@ final readonly class ActivitiesRequestHandler
     ) {
     }
 
-    #[Route(path: '/activities', name: 'activities', methods: ['GET'], priority: 3)]
+    #[Route(path: '/activities', name: 'activities', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

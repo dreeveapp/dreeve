@@ -22,7 +22,7 @@ final readonly class ManifestRequestHandler
     ) {
     }
 
-    #[Route(path: '/manifest.json', name: 'manifest', methods: ['GET'], priority: 3)]
+    #[Route(path: '/manifest.json', name: 'manifest', methods: ['GET'])]
     public function handle(): Response
     {
         $athlete = $this->settingsRepository->general()->getAthlete();

@@ -63,7 +63,7 @@ final readonly class ActivityRequestHandler
     ) {
     }
 
-    #[Route(path: '/activities/{activityId}', name: 'activity', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'], priority: 3)]
+    #[Route(path: '/activities/{activityId}', name: 'activity', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'])]
     public function handle(string $activityId): Response
     {
         $activityId = ActivityId::fromString($activityId);

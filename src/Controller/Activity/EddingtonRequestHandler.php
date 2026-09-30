@@ -38,7 +38,7 @@ final readonly class EddingtonRequestHandler
     ) {
     }
 
-    #[Route(path: '/eddington', name: 'eddington', methods: ['GET'], priority: 3)]
+    #[Route(path: '/eddington', name: 'eddington', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

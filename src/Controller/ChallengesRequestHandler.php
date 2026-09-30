@@ -28,7 +28,7 @@ final readonly class ChallengesRequestHandler
     ) {
     }
 
-    #[Route(path: '/challenges', name: 'challenges', methods: ['GET'], priority: 3)]
+    #[Route(path: '/challenges', name: 'challenges', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

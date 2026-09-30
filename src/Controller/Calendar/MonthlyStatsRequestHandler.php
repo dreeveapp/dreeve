@@ -35,7 +35,7 @@ final readonly class MonthlyStatsRequestHandler
     ) {
     }
 
-    #[Route(path: '/monthly-stats', name: 'monthly_stats', methods: ['GET'], priority: 3)]
+    #[Route(path: '/monthly-stats', name: 'monthly_stats', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

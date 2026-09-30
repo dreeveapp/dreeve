@@ -40,7 +40,7 @@ final readonly class MonthRequestHandler
     ) {
     }
 
-    #[Route(path: '/monthly-stats/{month}', name: 'monthly_stats_month', requirements: ['month' => '\d{4}-(?:0[1-9]|1[0-2])'], methods: ['GET'], priority: 3)]
+    #[Route(path: '/monthly-stats/{month}', name: 'monthly_stats_month', requirements: ['month' => '\d{4}-(?:0[1-9]|1[0-2])'], methods: ['GET'])]
     public function handle(string $month): Response
     {
         $month = Month::fromDate(SerializableDateTime::fromString($month.'-01 00:00:00'));

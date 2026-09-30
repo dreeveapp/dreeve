@@ -31,7 +31,7 @@ final readonly class RewindCompareRequestHandler
     ) {
     }
 
-    #[Route(path: '/rewind/{left}/compare/{right}', name: 'rewind_compare', requirements: ['left' => '[^/]+', 'right' => '[^/]+'], defaults: ['right' => null], methods: ['GET'], priority: 3)]
+    #[Route(path: '/rewind/{left}/compare/{right}', name: 'rewind_compare', requirements: ['left' => '[^/]+', 'right' => '[^/]+'], defaults: ['right' => null], methods: ['GET'])]
     public function handle(string $left, ?string $right): Response
     {
         $availableRewindOptions = $this->queryBus->ask(new FindAvailableRewindOptions())->getAvailableOptions();

@@ -54,7 +54,7 @@ final readonly class GearStatsRequestHandler
     ) {
     }
 
-    #[Route(path: '/gear', name: 'gear', methods: ['GET'], priority: 3)]
+    #[Route(path: '/gear', name: 'gear', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

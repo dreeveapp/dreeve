@@ -40,7 +40,7 @@ final readonly class ChatRequestHandler
     ) {
     }
 
-    #[Route(path: '/chat', name: 'chat', methods: ['GET'], priority: 3)]
+    #[Route(path: '/chat', name: 'chat', methods: ['GET'])]
     public function handle(): Response
     {
         if (!$this->settingsRepository->integrations()->isAIIntegrationWithUIEnabled()) {

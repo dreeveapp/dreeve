@@ -27,7 +27,7 @@ final readonly class DashboardWidgetRequestHandler
     ) {
     }
 
-    #[Route(path: '/api/internal/dashboard/widget/{dashboardWidgetId}', name: 'dashboard_widget', requirements: ['dashboardWidgetId' => 'dashboardWidget-[^/]+'], methods: ['GET'], priority: 3)]
+    #[Route(path: '/api/internal/dashboard/widget/{dashboardWidgetId}', name: 'dashboard_widget', requirements: ['dashboardWidgetId' => 'dashboardWidget-[^/]+'], methods: ['GET'])]
     public function handle(string $dashboardWidgetId): Response
     {
         $dashboardWidgetId = DashboardWidgetId::fromString($dashboardWidgetId);

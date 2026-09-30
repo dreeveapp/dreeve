@@ -21,7 +21,7 @@ final readonly class ActivityOgImageRequestHandler
     ) {
     }
 
-    #[Route(path: '/activities/{activityId}/og-image.png', name: 'activity_og_image', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'], priority: 3)]
+    #[Route(path: '/activities/{activityId}/og-image.png', name: 'activity_og_image', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'])]
     public function handle(string $activityId): Response
     {
         try {

@@ -30,7 +30,7 @@ final readonly class MilestonesRequestHandler
     ) {
     }
 
-    #[Route(path: '/milestones', name: 'milestones', methods: ['GET'], priority: 3)]
+    #[Route(path: '/milestones', name: 'milestones', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

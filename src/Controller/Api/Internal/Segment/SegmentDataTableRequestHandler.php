@@ -34,7 +34,7 @@ final readonly class SegmentDataTableRequestHandler
     ) {
     }
 
-    #[Route(path: '/api/internal/segments/data-table', name: 'segment_data_table', methods: ['GET'], priority: 3)]
+    #[Route(path: '/api/internal/segments/data-table', name: 'segment_data_table', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

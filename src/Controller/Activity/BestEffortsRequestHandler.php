@@ -39,7 +39,7 @@ final readonly class BestEffortsRequestHandler
     ) {
     }
 
-    #[Route(path: '/best-efforts', name: 'best_efforts', methods: ['GET'], priority: 3)]
+    #[Route(path: '/best-efforts', name: 'best_efforts', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

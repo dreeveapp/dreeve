@@ -36,7 +36,7 @@ final readonly class PhotosRequestHandler
     ) {
     }
 
-    #[Route(path: '/photos', name: 'photos', methods: ['GET'], priority: 3)]
+    #[Route(path: '/photos', name: 'photos', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

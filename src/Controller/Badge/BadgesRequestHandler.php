@@ -32,7 +32,7 @@ final readonly class BadgesRequestHandler
     ) {
     }
 
-    #[Route(path: '/badges', name: 'badges', methods: ['GET'], priority: 3)]
+    #[Route(path: '/badges', name: 'badges', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

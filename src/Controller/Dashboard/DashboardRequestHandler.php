@@ -30,8 +30,8 @@ final readonly class DashboardRequestHandler
     ) {
     }
 
-    #[Route(path: '/', name: 'home', methods: ['GET'], priority: 3)]
-    #[Route(path: '/dashboard', name: 'dashboard', methods: ['GET'], priority: 3)]
+    #[Route(path: '/', name: 'home', methods: ['GET'])]
+    #[Route(path: '/dashboard', name: 'dashboard', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

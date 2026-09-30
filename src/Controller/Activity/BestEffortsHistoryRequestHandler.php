@@ -36,7 +36,7 @@ final readonly class BestEffortsHistoryRequestHandler
     ) {
     }
 
-    #[Route(path: '/best-efforts/{activityType}/{distanceInMeter}', name: 'best_efforts_history', requirements: ['activityType' => '[^/]+', 'distanceInMeter' => '\d+'], methods: ['GET'], priority: 3)]
+    #[Route(path: '/best-efforts/{activityType}/{distanceInMeter}', name: 'best_efforts_history', requirements: ['activityType' => '[^/]+', 'distanceInMeter' => '\d+'], methods: ['GET'])]
     public function handle(string $activityType, string $distanceInMeter): Response
     {
         if (!$activityType = ActivityType::tryFrom($activityType)) {

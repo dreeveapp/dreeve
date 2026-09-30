@@ -32,7 +32,7 @@ final readonly class SegmentsRequestHandler
     ) {
     }
 
-    #[Route(path: '/segments', name: 'segments', methods: ['GET'], priority: 3)]
+    #[Route(path: '/segments', name: 'segments', methods: ['GET'])]
     public function handle(): Response
     {
         $render = $this->cacheableRenderer->render(

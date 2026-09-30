@@ -31,7 +31,7 @@ final readonly class ActivityShiftingRequestHandler
     ) {
     }
 
-    #[Route(path: '/api/internal/activities/{activityId}/shifting', name: 'activity_shifting', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'], priority: 3)]
+    #[Route(path: '/api/internal/activities/{activityId}/shifting', name: 'activity_shifting', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'])]
     public function handle(string $activityId): Response
     {
         $activityId = ActivityId::fromString($activityId);
