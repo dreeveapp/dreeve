@@ -3,7 +3,7 @@
 namespace App\Tests\Application\Navigation;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\Navigation\SideBarFragment;
+use App\Application\Navigation\SideBar;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -12,18 +12,18 @@ use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class SideBarFragmentTest extends ContainerTestCase
+class SideBarTest extends ContainerTestCase
 {
     use ProvideTestData;
 
-    private SideBarFragment $sideBarFragment;
+    private SideBar $sideBar;
 
     public function testRenderMarksTheActiveSectionOfEachCachedSideBar(): void
     {
         $this->provideFullTestSet();
 
-        $this->sideBarFragment->render(NavigationSection::ACTIVITIES);
-        $render = (string) $this->sideBarFragment->render(NavigationSection::SEGMENTS);
+        $this->sideBar->render(NavigationSection::ACTIVITIES);
+        $render = (string) $this->sideBar->render(NavigationSection::SEGMENTS);
 
         $this->assertStringContainsString('href="/segments" aria-selected="true"', $render);
         $this->assertStringContainsString('href="/activities" aria-selected="false"', $render);
@@ -36,7 +36,7 @@ class SideBarFragmentTest extends ContainerTestCase
         $renderCache = $this->getContainer()->get(RenderCache::class);
         $renderCache->clear();
 
-        $this->sideBarFragment->render(NavigationSection::ACTIVITIES);
+        $this->sideBar->render(NavigationSection::ACTIVITIES);
         $renderCache->invalidateTags($cacheTag);
 
         $this->assertSame(
@@ -68,6 +68,6 @@ class SideBarFragmentTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->sideBarFragment = $this->getContainer()->get(SideBarFragment::class);
+        $this->sideBar = $this->getContainer()->get(SideBar::class);
     }
 }

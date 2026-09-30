@@ -17,7 +17,7 @@ use App\Infrastructure\Http\Fragment\FragmentType;
 use App\Infrastructure\Http\Fragment\ResolvedFragment;
 use Twig\Environment;
 
-final readonly class SideBarFragment
+final readonly class SideBar
 {
     public function __construct(
         private ActivityIdRepository $activityIdRepository,

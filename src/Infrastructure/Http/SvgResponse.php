@@ -8,8 +8,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SvgResponse extends Response
 {
-    public function __construct(string $svg)
+    /**
+     * @param array<string, string> $headers
+     */
+    public function __construct(string $svg, array $headers = [])
     {
-        parent::__construct($svg, Response::HTTP_OK, ['Content-Type' => 'image/svg+xml; charset=UTF-8']);
+        parent::__construct($svg, Response::HTTP_OK, ['Content-Type' => 'image/svg+xml; charset=UTF-8', ...$headers]);
     }
 }

@@ -7,5 +7,9 @@
         <p class="mb-4 text-lg font-light text-gray-500">
             {{ "The page you're looking for doesn't exist or may have been moved."|trans }}
         </p>
+        <a href="{{ relativeUrl('/') }}"
+           class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-white bg-primary rounded-lg hover:opacity-90 transition">
+            {{ "Back to app"|trans }}
+        </a>
     </div>
 </div>
