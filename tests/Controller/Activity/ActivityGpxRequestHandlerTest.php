@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller\Api\Internal;
+namespace App\Tests\Controller\Activity;
 
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;

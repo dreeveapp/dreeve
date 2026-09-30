@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Controller\Activity;
 
 use App\Domain\Activity\OpenGraph\ActivityOpenGraphImage;
+use App\Tests\Controller\ControllerWebTestCase;
 
 class ActivityOgImageRequestHandlerTest extends ControllerWebTestCase
 {
