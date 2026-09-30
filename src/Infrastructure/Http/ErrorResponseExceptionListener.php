@@ -7,6 +7,7 @@ namespace App\Infrastructure\Http;
 use App\Infrastructure\Config\PlatformEnvironment;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
@@ -45,10 +46,13 @@ final readonly class ErrorResponseExceptionListener implements EventSubscriberIn
             request: $event->getRequest()
         );
 
-        $response = new HtmlResponse($this->twig->render('html/error.html.twig', [
-            'statusCode' => $statusCode->value,
-            'errorReference' => $errorReference,
-        ]));
+        $path = $event->getRequest()->getPathInfo();
+        $response = str_starts_with($path, '/api/internal/') || str_starts_with($path, '/badge/')
+            ? new Response('')
+            : new HtmlResponse($this->twig->render('html/error.html.twig', [
+                'statusCode' => $statusCode->value,
+                'errorReference' => $errorReference,
+            ]));
         $response->setStatusCode($statusCode->value);
 
         $event->allowCustomResponseCode();

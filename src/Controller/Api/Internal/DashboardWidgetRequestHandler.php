@@ -15,6 +15,7 @@ use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
@@ -34,7 +35,7 @@ final readonly class DashboardWidgetRequestHandler
 
         $configuredWidget = $this->configuredWidgets->find($dashboardWidgetId);
         if (!$configuredWidget instanceof ConfiguredWidget) {
-            return new Response('', Response::HTTP_NOT_FOUND);
+            throw new NotFoundHttpException('Not found');
         }
 
         $now = $this->clock->getCurrentDateTimeImmutable();

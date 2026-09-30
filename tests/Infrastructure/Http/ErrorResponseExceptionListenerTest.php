@@ -9,11 +9,16 @@ use App\Infrastructure\Http\ServerErrorLogger;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\ValueObject\Identifier\FakeUuidFactory;
 use App\Tests\NullLogger;
+use InvalidArgumentException;
+use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Throwable;
 use Twig\Environment;
 
 class ErrorResponseExceptionListenerTest extends ContainerTestCase
@@ -21,8 +26,8 @@ class ErrorResponseExceptionListenerTest extends ContainerTestCase
     private ErrorResponseExceptionListener $errorResponseExceptionListener;
     private ServerErrorLogger $serverErrorLogger;
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('provideExceptions')]
-    public function testItRendersAnHtmlPageForTheMatchingStatusCode(\Throwable $exception, HttpStatusCode $expectedStatusCode): void
+    #[DataProvider('provideExceptions')]
+    public function testItRendersAnHtmlPageForTheMatchingStatusCode(Throwable $exception, HttpStatusCode $expectedStatusCode): void
     {
         $event = $this->exceptionEvent($exception);
 
@@ -38,8 +43,8 @@ class ErrorResponseExceptionListenerTest extends ContainerTestCase
     public static function provideExceptions(): iterable
     {
         yield 'not found' => [new NotFoundHttpException('Unknown settings group "bogus"'), HttpStatusCode::NOT_FOUND];
-        yield 'invalid argument' => [new \InvalidArgumentException(), HttpStatusCode::BAD_REQUEST];
-        yield 'anything else' => [new \RuntimeException('A message'), HttpStatusCode::INTERNAL_SERVER_ERROR];
+        yield 'invalid argument' => [new InvalidArgumentException(), HttpStatusCode::BAD_REQUEST];
+        yield 'anything else' => [new RuntimeException('A message'), HttpStatusCode::INTERNAL_SERVER_ERROR];
     }
 
     public function testItRendersTheNotFoundCopyForA404(): void
@@ -62,7 +67,7 @@ class ErrorResponseExceptionListenerTest extends ContainerTestCase
 
     public function testItRendersAndLogsAReferenceForAServerError(): void
     {
-        $exception = new \RuntimeException('Something exploded');
+        $exception = new RuntimeException('Something exploded');
         $logger = $this->createMock(LoggerInterface::class);
         $logger
             ->expects($this->once())
@@ -97,14 +102,36 @@ class ErrorResponseExceptionListenerTest extends ContainerTestCase
             $this->getContainer()->get(Environment::class),
             $this->serverErrorLogger,
         );
-        $event = $this->exceptionEvent(new \RuntimeException('A message'));
+        $event = $this->exceptionEvent(new RuntimeException('A message'));
 
         $listener->onKernelException($event);
 
         self::assertNull($event->getResponse());
     }
 
-    private function exceptionEvent(\Throwable $exception): ExceptionEvent
+    #[DataProvider('providePathsAnsweredWithAnEmptyBody')]
+    public function testItAnswersAsyncAndBadgeRequestsWithAnEmptyBody(string $path): void
+    {
+        $event = new ExceptionEvent(
+            $this->createStub(HttpKernelInterface::class),
+            Request::create($path),
+            HttpKernelInterface::MAIN_REQUEST,
+            new NotFoundHttpException('Not found'),
+        );
+
+        $this->errorResponseExceptionListener->onKernelException($event);
+
+        self::assertEquals(404, $event->getResponse()->getStatusCode());
+        self::assertEquals('', $event->getResponse()->getContent());
+    }
+
+    public static function providePathsAnsweredWithAnEmptyBody(): iterable
+    {
+        yield 'the internal api' => ['/api/internal/activities/activity-1/polylines'];
+        yield 'a badge' => ['/badge/zwift.svg'];
+    }
+
+    private function exceptionEvent(Throwable $exception): ExceptionEvent
     {
         return new ExceptionEvent(
             $this->createStub(HttpKernelInterface::class),
@@ -114,7 +141,7 @@ class ErrorResponseExceptionListenerTest extends ContainerTestCase
         );
     }
 
-    #[\Override]
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

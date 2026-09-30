@@ -16,6 +16,7 @@ use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
@@ -33,11 +34,11 @@ final readonly class SegmentPolylinesRequestHandler
         try {
             $segment = $this->segmentRepository->find(SegmentId::fromString($segmentId));
         } catch (EntityNotFound) {
-            return new Response('', Response::HTTP_NOT_FOUND);
+            throw new NotFoundHttpException('Not found');
         }
 
         if (!$segment->getLeafletMap() instanceof LeafletMap) {
-            return new Response('', Response::HTTP_NOT_FOUND);
+            throw new NotFoundHttpException('Not found');
         }
 
         $render = $this->cacheableRenderer->render(

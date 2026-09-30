@@ -22,6 +22,7 @@ use App\Infrastructure\Http\SvgResponse;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -75,7 +76,7 @@ final readonly class BadgeRequestHandler
     {
         $zwiftLevel = $this->settingsRepository->zwift()->getZwiftLevel();
         if (!$zwiftLevel instanceof ZwiftLevel) {
-            return new Response('', Response::HTTP_NOT_FOUND);
+            throw new NotFoundHttpException('Not found');
         }
 
         $render = $this->cacheableRenderer->render(
@@ -105,7 +106,7 @@ final readonly class BadgeRequestHandler
             fn (SportType $sportTypeWithBestEfforts): bool => strtolower($sportTypeWithBestEfforts->value) === $sportType,
         );
         if (!$sportTypeWithBestEfforts instanceof SportType) {
-            return new Response('', Response::HTTP_NOT_FOUND);
+            throw new NotFoundHttpException('Not found');
         }
 
         $render = $this->cacheableRenderer->render(

@@ -19,6 +19,7 @@ use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
@@ -39,11 +40,11 @@ final readonly class ActivityPolylinesRequestHandler
         try {
             $activity = $this->activityRepository->find($activityId);
         } catch (EntityNotFound) {
-            return new Response('', Response::HTTP_NOT_FOUND);
+            throw new NotFoundHttpException('Not found');
         }
 
         if (!$activity->getLeafletMap() instanceof LeafletMap) {
-            return new Response('', Response::HTTP_NOT_FOUND);
+            throw new NotFoundHttpException('Not found');
         }
 
         $render = $this->cacheableRenderer->render(

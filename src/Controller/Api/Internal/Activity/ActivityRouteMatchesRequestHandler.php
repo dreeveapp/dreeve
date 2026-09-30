@@ -16,6 +16,7 @@ use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
@@ -36,7 +37,7 @@ final readonly class ActivityRouteMatchesRequestHandler
         $activityId = ActivityId::fromString($activityId);
 
         if (!$this->activityRepository->exists($activityId)) {
-            return new Response('', Response::HTTP_NOT_FOUND);
+            throw new NotFoundHttpException('Not found');
         }
 
         $render = $this->cacheableRenderer->render(
