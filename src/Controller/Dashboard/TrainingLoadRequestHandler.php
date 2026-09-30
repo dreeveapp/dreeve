@@ -48,7 +48,7 @@ final readonly class TrainingLoadRequestHandler
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
-                cacheKey: 'dashboard/training-load',
+                cacheKey: 'dashboard.training-load',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
                 ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
             ),

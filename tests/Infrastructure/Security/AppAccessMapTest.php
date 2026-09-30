@@ -56,7 +56,7 @@ class AppAccessMapTest extends TestCase
         yield 'dashboard' => ['/'];
         yield 'page' => ['/activities'];
         yield 'internal api' => ['/api/internal/dashboard/widget/dashboardWidget-introText'];
-        yield 'gpx api' => ['/api/internal/activity/activity-1/route.gpx'];
+        yield 'gpx download' => ['/activities/activity-1/route.gpx'];
         yield 'images' => ['/files/gear/bike.png'];
         yield 'badge' => ['/badge/strava.svg'];
         yield 'ai chat' => ['/ai/chat'];

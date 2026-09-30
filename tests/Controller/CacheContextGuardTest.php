@@ -39,7 +39,7 @@ class CacheContextGuardTest extends AdminWebTestCase
 
     private const array UNCACHED_ROUTES = [
         'activity_og_image',
-        'api_activity_gpx',
+        'activity_gpx',
         'ai_chat_sse',
         'finish_setup',
         'local_image',
