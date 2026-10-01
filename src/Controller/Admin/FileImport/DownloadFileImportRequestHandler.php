@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\File;
+namespace App\Controller\Admin\FileImport;
 
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportRepository;

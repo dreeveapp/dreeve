@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller\Admin\File;
+namespace App\Tests\Controller\Admin\FileImport;
 
 use App\Domain\Import\ImportMode;
 use App\Tests\Controller\Admin\AdminWebTestCase;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\File;
+namespace App\Controller\Admin\FileImport;
 
 use App\Domain\Activity\ImportSource;
 use App\Domain\Import\FileImportStatus;
