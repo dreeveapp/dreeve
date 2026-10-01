@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Badge;
+namespace App\Controller\File;
 
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityTotals;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller\Activity;
+namespace App\Tests\Controller\File;
 
 use App\Domain\Activity\OpenGraph\ActivityOpenGraphImage;
 use App\Tests\Controller\ControllerWebTestCase;

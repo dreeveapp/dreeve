@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller\Badge;
+namespace App\Tests\Controller\File;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;

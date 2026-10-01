@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Controller\File;
 
-use App\Controller\LocalImageRequestHandler;
+use App\Controller\File\LocalImageRequestHandler;
 use App\Infrastructure\Config\DemoMode;
 use App\Infrastructure\Security\TrustedVisitor;
 use App\Tests\ContainerTestCase;

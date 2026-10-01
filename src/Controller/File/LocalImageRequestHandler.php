@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\File;
 
 use App\Domain\Image\ImageDirectory;
 use App\Infrastructure\Security\TrustedVisitor;

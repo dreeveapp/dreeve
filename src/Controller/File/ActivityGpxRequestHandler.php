@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Activity;
+namespace App\Controller\File;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;

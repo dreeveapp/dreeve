@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Controller\File;
 
+use App\Tests\Controller\ControllerWebTestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class ManifestRequestHandlerTest extends ControllerWebTestCase

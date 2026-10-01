@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\File;
 
 use App\Application\AppName;
 use App\Application\AppUrl;
