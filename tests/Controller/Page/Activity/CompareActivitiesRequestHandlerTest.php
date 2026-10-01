@@ -84,26 +84,15 @@ class CompareActivitiesRequestHandlerTest extends AdminWebTestCase
         $this->assertSame($expected, $this->client->getResponse()->getContent());
     }
 
-    public function testItIsCachedPerSelection(): void
+    public function testItIsNotCached(): void
     {
         $this->provideFullTestSet();
         $this->seedActivity();
 
-        $this->client->request('GET', '/activities/compare');
-        $this->assertStringEndsWith(
-            '.activities.compare',
-            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
-        );
+        $this->client->request('GET', '/activities/compare?activities=activity-9756441741,activity-9542782314');
 
-        $this->client->request('GET', '/activities/compare?activities=activity-9756441741,activity-9542782314,activity-9542782314');
-        $this->assertStringEndsWith(
-            '.activities.compare.9542782314.9756441741',
-            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
-        );
-        $this->assertResponseHeaderSame(
-            'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities, activities.9542782314, activities.9756441741',
-        );
+        $this->assertResponseHeaderSame('Cache-Control', 'no-store, private');
+        $this->assertFalse($this->client->getResponse()->headers->has('X-Dreeve-Cache-Key'));
     }
 
     #[\Override]
