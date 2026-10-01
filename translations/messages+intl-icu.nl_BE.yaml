@@ -35,7 +35,9 @@ Aug: Aug
 Average: Gemiddeld
 'Average gradient': 'Gemiddelde helling'
 'Avg gradient': 'Gem. helling'
+'Avg heart rate': 'Gem. hartslag'
 'Avg pace': 'Gem. tempo'
+'Avg power': 'Gem. vermogen'
 'Avg speed': 'Gem. snelheid'
 'Back Country Ski': Toerskiën
 'Back to app': 'Terug naar de app'
@@ -118,6 +120,7 @@ Eddington: Eddington
 'Eddington over time': 'Eddington doorheen de tijd'
 'Edit dashboard': 'Dashboard bewerken'
 'Edit this activity': 'Deze activiteit bewerken'
+'Efficiency factor': Efficiëntiefactor
 'Effort vs heart rate': 'Inspanning vs. hartslag'
 'Elapsed time': 'Verstreken tijd'
 'Electronic shifting': 'Elektronisch schakelen'
@@ -384,6 +387,7 @@ Soccer: Voetbal
 Sort: Sorteren
 Speed: Snelheid
 'Speed & cadence sensor': 'Snelheids- & cadanssensor'
+'Speed / power': 'Snelheid / vermogen'
 'Speed sensor': Snelheidssensor
 Splits: Tussentijden
 'Sport variety': Sportvariatie
@@ -567,6 +571,7 @@ Wheelchair: Rolstoel
 'Wind Surf': Windsurfen
 'Winter Sports': Wintersport
 'With others': 'Met anderen'
+Work: Arbeid
 Workout: Training
 'Workout assistant': Trainingsassistent
 'Workout type': 'Type training'

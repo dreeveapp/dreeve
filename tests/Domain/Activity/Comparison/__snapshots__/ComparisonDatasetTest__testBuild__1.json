@@ -1,0 +1,141 @@
+{
+    "metrics": [
+        {
+            "key": "movingTime",
+            "label": "Duration",
+            "unit": "",
+            "direction": "lowerIsBetter",
+            "formatter": "callback:formatSecondsTrimZero",
+            "available": true
+        },
+        {
+            "key": "averageSpeed",
+            "label": "Avg speed",
+            "unit": "km/h",
+            "direction": "higherIsBetter",
+            "formatter": null,
+            "available": true
+        },
+        {
+            "key": "normalizedPower",
+            "label": "Normalized power",
+            "unit": "W",
+            "direction": "higherIsBetter",
+            "formatter": "callback:toInteger",
+            "available": true
+        },
+        {
+            "key": "averagePower",
+            "label": "Avg power",
+            "unit": "W",
+            "direction": "higherIsBetter",
+            "formatter": "callback:toInteger",
+            "available": true
+        },
+        {
+            "key": "averageHeartRate",
+            "label": "Avg heart rate",
+            "unit": "bpm",
+            "direction": "neutral",
+            "formatter": "callback:toInteger",
+            "available": true
+        },
+        {
+            "key": "calories",
+            "label": "Calories",
+            "unit": "kcal",
+            "direction": "neutral",
+            "formatter": "callback:toInteger",
+            "available": true
+        },
+        {
+            "key": "kilojoules",
+            "label": "Work",
+            "unit": "kJ",
+            "direction": "neutral",
+            "formatter": "callback:toInteger",
+            "available": true
+        },
+        {
+            "key": "elevation",
+            "label": "Elevation",
+            "unit": "m",
+            "direction": "neutral",
+            "formatter": "callback:formatElevation",
+            "available": true
+        },
+        {
+            "key": "speedToPowerRatio",
+            "label": "Speed / power",
+            "unit": "(km/h)/W",
+            "direction": "higherIsBetter",
+            "formatter": null,
+            "available": true
+        },
+        {
+            "key": "efficiencyFactor",
+            "label": "Efficiency factor",
+            "unit": "",
+            "direction": "higherIsBetter",
+            "formatter": null,
+            "available": true
+        }
+    ],
+    "defaults": {
+        "primary": "movingTime",
+        "secondary": "normalizedPower"
+    },
+    "rows": [
+        {
+            "id": "activity-first",
+            "label": "first",
+            "date": "2023-06-01 07:30:00",
+            "values": {
+                "movingTime": 3600,
+                "averageSpeed": 30,
+                "normalizedPower": 215,
+                "averagePower": 200,
+                "averageHeartRate": 150,
+                "calories": 800,
+                "kilojoules": 720,
+                "elevation": 120,
+                "speedToPowerRatio": 0.15,
+                "efficiencyFactor": 1.433
+            }
+        },
+        {
+            "id": "activity-faster",
+            "label": "faster",
+            "date": "2023-09-12 07:30:00",
+            "values": {
+                "movingTime": 3300,
+                "averageSpeed": 30,
+                "normalizedPower": 240,
+                "averagePower": 225,
+                "averageHeartRate": 148,
+                "calories": 800,
+                "kilojoules": 720,
+                "elevation": 120,
+                "speedToPowerRatio": 0.1333,
+                "efficiencyFactor": 1.622
+            }
+        },
+        {
+            "id": "activity-without-power",
+            "label": "without-power",
+            "date": "2024-01-20 07:30:00",
+            "values": {
+                "movingTime": 3900,
+                "averageSpeed": 30,
+                "normalizedPower": null,
+                "averagePower": null,
+                "averageHeartRate": null,
+                "calories": 800,
+                "kilojoules": null,
+                "elevation": 120,
+                "speedToPowerRatio": null,
+                "efficiencyFactor": null
+            }
+        }
+    ]
+}

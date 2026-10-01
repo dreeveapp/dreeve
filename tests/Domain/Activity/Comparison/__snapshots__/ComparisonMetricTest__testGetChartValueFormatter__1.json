@@ -1,0 +1,12 @@
+{
+    "movingTime": "callback:formatSecondsTrimZero",
+    "averageSpeed": null,
+    "normalizedPower": "callback:toInteger",
+    "averagePower": "callback:toInteger",
+    "averageHeartRate": "callback:toInteger",
+    "calories": "callback:toInteger",
+    "kilojoules": "callback:toInteger",
+    "elevation": "callback:formatElevation",
+    "speedToPowerRatio": null,
+    "efficiencyFactor": null
+}

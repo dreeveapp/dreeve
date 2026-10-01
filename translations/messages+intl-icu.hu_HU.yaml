@@ -35,7 +35,9 @@ Aug: Aug
 Average: Átlag
 'Average gradient': 'Átlagos lejtés'
 'Avg gradient': 'Átl. emelkedő'
+'Avg heart rate': 'Átl. pulzus'
 'Avg pace': 'Átl. tempó'
+'Avg power': 'Átl. teljesítmény'
 'Avg speed': 'Átl. sebesség'
 'Back Country Ski': Túrasí
 'Back to app': 'Vissza az alkalmazáshoz'
@@ -118,6 +120,7 @@ Eddington: Eddington
 'Eddington over time': 'Eddington az idő során'
 'Edit dashboard': 'Dashboard szerkesztése'
 'Edit this activity': 'Tevékenység szerkesztése'
+'Efficiency factor': 'Hatékonysági tényező'
 'Effort vs heart rate': 'Erőfeszítés vs pulzus'
 'Elapsed time': 'Eltelt idő'
 'Electronic shifting': 'Elektronikus váltó'
@@ -384,6 +387,7 @@ Soccer: Labdarúgás
 Sort: Rendezés
 Speed: Sebesség
 'Speed & cadence sensor': 'Sebesség- és kadenciaszenzor'
+'Speed / power': 'Sebesség / teljesítmény'
 'Speed sensor': Sebességszenzor
 Splits: Részidők
 'Sport variety': Sporttípus-változatosság
@@ -567,6 +571,7 @@ Wheelchair: Kerekesszék
 'Wind Surf': Windsurfing
 'Winter Sports': 'Téli sportok'
 'With others': Másokkal
+Work: Munka
 Workout: Edzés
 'Workout assistant': 'Edzési asszisztens'
 'Workout type': 'Edzés típusa'

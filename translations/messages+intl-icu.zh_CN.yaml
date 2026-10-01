@@ -35,7 +35,9 @@ Aug: 八月
 Average: Average
 'Average gradient': 'Average gradient'
 'Avg gradient': 'Avg gradient'
+'Avg heart rate': 平均心率
 'Avg pace': 'Avg pace'
+'Avg power': 平均功率
 'Avg speed': 'Avg speed'
 'Back Country Ski': 越野滑雪
 'Back to app': 'Back to app'
@@ -118,6 +120,7 @@ Eddington: 愛丁頓數
 'Eddington over time': 'Eddington over time'
 'Edit dashboard': 'Edit dashboard'
 'Edit this activity': 'Edit this activity'
+'Efficiency factor': 效率因子
 'Effort vs heart rate': 'Effort vs heart rate'
 'Elapsed time': 'Elapsed time'
 'Electronic shifting': 'Electronic shifting'
@@ -384,6 +387,7 @@ Soccer: 足球
 Sort: Sort
 Speed: 速度
 'Speed & cadence sensor': 'Speed & cadence sensor'
+'Speed / power': '速度 / 功率'
 'Speed sensor': 'Speed sensor'
 Splits: 分段
 'Sport variety': 'Sport variety'
@@ -567,6 +571,7 @@ Wheelchair: 轮椅
 'Wind Surf': 风帆冲浪
 'Winter Sports': 冬季运动
 'With others': 'With others'
+Work: 做功
 Workout: 锻炼
 'Workout assistant': 'Workout assistant'
 'Workout type': 锻炼类型

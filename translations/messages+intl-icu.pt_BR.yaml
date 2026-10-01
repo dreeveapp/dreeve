@@ -35,7 +35,9 @@ Aug: Ago
 Average: Média
 'Average gradient': 'Inclinação média'
 'Avg gradient': 'Inclinação média'
+'Avg heart rate': 'Frequência cardíaca média'
 'Avg pace': 'Ritmo médio'
+'Avg power': 'Potência média'
 'Avg speed': 'Velocidade média'
 'Back Country Ski': 'Esqui Fora de Pista'
 'Back to app': 'Voltar para o aplicativo'
@@ -118,6 +120,7 @@ Eddington: Eddington
 'Eddington over time': 'Eddington ao longo do tempo'
 'Edit dashboard': 'Editar painel'
 'Edit this activity': 'Editar esta atividade'
+'Efficiency factor': 'Fator de eficiência'
 'Effort vs heart rate': 'Esforço vs. frequência cardíaca'
 'Elapsed time': 'Tempo decorrido'
 'Electronic shifting': 'Câmbio eletrônico'
@@ -384,6 +387,7 @@ Soccer: Futebol
 Sort: Ordenar
 Speed: Velocidade
 'Speed & cadence sensor': 'Sensor de velocidade e cadência'
+'Speed / power': 'Velocidade / potência'
 'Speed sensor': 'Sensor de velocidade'
 Splits: Parciais
 'Sport variety': 'Variedade de esportes'
@@ -567,6 +571,7 @@ Wheelchair: 'Cadeira de Rodas'
 'Wind Surf': Windsurf
 'Winter Sports': 'Esportes de Inverno'
 'With others': 'Com outras pessoas'
+Work: Trabalho
 Workout: Treino
 'Workout assistant': 'Assistente de treino'
 'Workout type': 'Tipo de treino'

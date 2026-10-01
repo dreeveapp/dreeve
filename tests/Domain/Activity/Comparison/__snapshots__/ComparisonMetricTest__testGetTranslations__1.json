@@ -1,0 +1,12 @@
+{
+    "movingTime": "Duration",
+    "averageSpeed": "Avg speed",
+    "normalizedPower": "Normalized power",
+    "averagePower": "Avg power",
+    "averageHeartRate": "Avg heart rate",
+    "calories": "Calories",
+    "kilojoules": "Work",
+    "elevation": "Elevation",
+    "speedToPowerRatio": "Speed / power",
+    "efficiencyFactor": "Efficiency factor"
+}

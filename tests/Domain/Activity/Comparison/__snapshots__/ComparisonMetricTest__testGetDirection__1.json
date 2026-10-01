@@ -1,0 +1,12 @@
+{
+    "movingTime": "lowerIsBetter",
+    "averageSpeed": "higherIsBetter",
+    "normalizedPower": "higherIsBetter",
+    "averagePower": "higherIsBetter",
+    "averageHeartRate": "neutral",
+    "calories": "neutral",
+    "kilojoules": "neutral",
+    "elevation": "neutral",
+    "speedToPowerRatio": "higherIsBetter",
+    "efficiencyFactor": "higherIsBetter"
+}

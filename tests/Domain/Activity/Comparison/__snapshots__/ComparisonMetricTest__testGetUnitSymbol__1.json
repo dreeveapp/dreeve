@@ -1,0 +1,26 @@
+{
+    "metric": {
+        "movingTime": "",
+        "averageSpeed": "km/h",
+        "normalizedPower": "W",
+        "averagePower": "W",
+        "averageHeartRate": "bpm",
+        "calories": "kcal",
+        "kilojoules": "kJ",
+        "elevation": "m",
+        "speedToPowerRatio": "(km/h)/W",
+        "efficiencyFactor": ""
+    },
+    "imperial": {
+        "movingTime": "",
+        "averageSpeed": "mph",
+        "normalizedPower": "W",
+        "averagePower": "W",
+        "averageHeartRate": "bpm",
+        "calories": "kcal",
+        "kilojoules": "kJ",
+        "elevation": "ft",
+        "speedToPowerRatio": "(mph)/W",
+        "efficiencyFactor": ""
+    }
+}

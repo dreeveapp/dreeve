@@ -35,7 +35,9 @@ Aug: Aug
 Average: Average
 'Average gradient': 'Average gradient'
 'Avg gradient': 'Avg gradient'
+'Avg heart rate': Snittpuls
 'Avg pace': 'Avg pace'
+'Avg power': Snitteffekt
 'Avg speed': 'Avg speed'
 'Back Country Ski': Utförsåkning
 'Back to app': 'Back to app'
@@ -118,6 +120,7 @@ Eddington: Eddington
 'Eddington over time': 'Eddington over time'
 'Edit dashboard': 'Edit dashboard'
 'Edit this activity': 'Edit this activity'
+'Efficiency factor': Effektivitetsfaktor
 'Effort vs heart rate': 'Effort vs heart rate'
 'Elapsed time': 'Elapsed time'
 'Electronic shifting': 'Electronic shifting'
@@ -384,6 +387,7 @@ Soccer: Fotboll
 Sort: Sort
 Speed: Fart
 'Speed & cadence sensor': 'Speed & cadence sensor'
+'Speed / power': 'Fart / effekt'
 'Speed sensor': 'Speed sensor'
 Splits: Delar
 'Sport variety': 'Sport variety'
@@ -567,6 +571,7 @@ Wheelchair: Rullstol
 'Wind Surf': Vindsurfing
 'Winter Sports': Vintersporter
 'With others': 'With others'
+Work: Arbete
 Workout: Träning
 'Workout assistant': 'Workout assistant'
 'Workout type': Träningsform
