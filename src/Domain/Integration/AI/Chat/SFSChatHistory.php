@@ -22,18 +22,6 @@ final class SFSChatHistory extends BaseInMemoryChatHistory
     }
 
     #[\Override]
-    public function setMessages(array $messages): void
-    {
-        // TODO: Implement setMessages() method.
-    }
-
-    #[\Override]
-    protected function clear(): void
-    {
-        // TODO: Implement clear() method.
-    }
-
-    #[\Override]
     public function onNewMessage(Message $message): void
     {
         parent::onNewMessage($message);

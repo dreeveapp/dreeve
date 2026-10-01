@@ -39,7 +39,6 @@
         "guzzlehttp/guzzle": "^7.9",
         "halaxa/json-machine": "^1.2",
         "league/flysystem-bundle": "^3.3",
-        "league/flysystem-memory": "^3.29",
         "moneyphp/money": "^4.8",
         "nesbot/carbon": "^3.11",
         "neuron-core/neuron-ai": "^3.0",
@@ -68,12 +67,13 @@
         "wyrihaximus/react-cron": "^5.3"
     },
     "require-dev": {
-        "brianium/paratest": "*",
+        "brianium/paratest": "^7.25",
         "dama/doctrine-test-bundle": "^8.3",
         "friendsofphp/php-cs-fixer": "^3.64",
+        "league/flysystem-memory": "^3.29",
         "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^13",
-        "rector/rector": "*",
+        "rector/rector": "^2.6",
         "spatie/phpunit-snapshot-assertions": "^5.1",
         "symfony/browser-kit": "8.1.*",
         "symfony/css-selector": "8.1.*",
