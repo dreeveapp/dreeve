@@ -117,6 +117,35 @@ class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Sport type', $matchedConditionPills->text());
     }
 
+    public function testItRendersTheTraceForAPrefixedActivityId(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withSportType(SportType::RIDE)
+                ->build(),
+            [],
+        ));
+        static::getContainer()->get(AutomationRuleRepository::class)->add(
+            AutomationRuleBuilder::fromDefaults()
+                ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('1'))
+                ->withLabel('Name my rides')
+                ->withConditions(ConfiguredConditions::fromArray([
+                    new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sportTypes' => ['Ride']])),
+                ]))
+                ->build()
+        );
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/automation-rules/test?activityId=activity-1');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringContainsString('Name my rides', $crawler->filter('body')->text());
+        $this->assertStringContainsString('A rule applies', $crawler->filter('body')->text());
+    }
+
     public function testItRendersANotFoundErrorForAnUnknownActivityId(): void
     {
         $this->withImportMode(ImportMode::FILES);

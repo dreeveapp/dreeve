@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Activity;
+namespace App\Controller\Api\Internal\Activity;
 
 use App\Domain\Activity\Overview\ActivityOverviewItem;
 use App\Domain\Activity\Overview\ActivityOverviewRepository;
@@ -21,7 +21,7 @@ final readonly class SearchActivitiesRequestHandler
     ) {
     }
 
-    #[Route(path: '/admin/activities/search', name: 'admin_activity_search', methods: ['GET'], priority: 10)]
+    #[Route(path: '/api/internal/activities/search', name: 'activity_search', methods: ['GET'])]
     public function handle(Request $request): JsonResponse
     {
         $query = trim((string) $request->query->get('q', ''));
