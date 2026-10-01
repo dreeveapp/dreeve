@@ -30,6 +30,7 @@ tags:
   - name: Status
   - name: Activities
   - name: File imports
+  - name: Gear
   - name: Athlete
 paths:
   /api/v1/status:
@@ -461,6 +462,27 @@ paths:
                     message: '"filters[status]" contains an unknown status.'
         '401':
           $ref: '#/components/responses/Unauthorized'
+  /api/v1/gear:
+    get:
+      operationId: listGear
+      tags: [Gear]
+      summary: List gear
+      description: >-
+        Lists all gear, active gear first
+      responses:
+        '200':
+          description: All gear.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [gear]
+                properties:
+                  gear:
+                    type: array
+                    items: { $ref: '#/components/schemas/Gear' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
   /api/v1/athlete/weights:
     get:
       operationId: listAthleteWeights
@@ -594,6 +616,27 @@ components:
           format: date-time
           description: Null while the file is queued.
           examples: ['2026-09-28T10:00:00']
+    Gear:
+      type: object
+      required: [id, name, type, isRetired, distanceInMeter, numberOfActivities]
+      properties:
+        id:
+          type: string
+          examples: ['gear-b12659861']
+        name:
+          type: string
+          examples: ['Canyon Grail']
+        type:
+          type: string
+          enum: [imported, custom]
+        isRetired:
+          type: boolean
+        distanceInMeter:
+          type: integer
+          examples: [10500]
+        numberOfActivities:
+          type: integer
+          examples: [1]
     PaginationMeta:
       type: object
       required: [page, size, total, totalPages]

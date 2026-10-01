@@ -1,0 +1,28 @@
+{
+    "gear": [
+        {
+            "id": "gear-2",
+            "name": "Nike Pegasus",
+            "type": "custom",
+            "isRetired": false,
+            "distanceInMeter": 10500,
+            "numberOfActivities": 1
+        },
+        {
+            "id": "gear-b12659861",
+            "name": "Canyon Grail",
+            "type": "imported",
+            "isRetired": false,
+            "distanceInMeter": 0,
+            "numberOfActivities": 0
+        },
+        {
+            "id": "gear-3",
+            "name": "Old trainers",
+            "type": "custom",
+            "isRetired": true,
+            "distanceInMeter": 0,
+            "numberOfActivities": 0
+        }
+    ]
+}
