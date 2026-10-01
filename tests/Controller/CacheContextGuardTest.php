@@ -7,7 +7,6 @@ use App\Infrastructure\Cache\Context\CacheContextRegistry;
 use App\Infrastructure\Cache\Render\RenderCache;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\ProvideTestData;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\InMemoryUser;
