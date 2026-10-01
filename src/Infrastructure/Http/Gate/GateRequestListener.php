@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\Gate;
 
+use App\Controller\Strava\StravaWebhookRequestHandler;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -49,7 +50,7 @@ final readonly class GateRequestListener implements EventSubscriberInterface
     {
         return 1 === preg_match('#^/(_(profiler|wdt)|css|images|js|files)/#', $path)
             || '/api/v1' === $path || str_starts_with($path, '/api/v1/')
-            || '/strava/webhook' === $path;
+            || StravaWebhookRequestHandler::STRAVA_WEBHOOKS_ENDPOINT === $path;
     }
 
     /**
