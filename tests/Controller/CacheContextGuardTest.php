@@ -35,16 +35,15 @@ class CacheContextGuardTest extends AdminWebTestCase
         'rewind_compare' => ['left' => '2023', 'right' => '2022'],
     ];
 
+    private const array CACHED_CONTROLLER_PREFIXES = [
+        'App\\Controller\\Page\\',
+        'App\\Controller\\Api\\Internal\\',
+        'App\\Controller\\File\\BadgeRequestHandler::',
+    ];
+
     private const array UNCACHED_ROUTES = [
-        'activity_og_image',
-        'activity_gpx',
         'ai_chat_sse',
         'chat',
-        'finish_setup',
-        'local_image',
-        'manifest',
-        'strava_oauth',
-        'strava_webhook_challenge',
     ];
 
     public function testEveryPublicRouteServesARenderWithACacheKeyOfItsOwn(): void
@@ -171,9 +170,7 @@ class CacheContextGuardTest extends AdminWebTestCase
         $routes = [];
         foreach ($router->getRouteCollection() as $routeName => $route) {
             $controller = (string) $route->getDefault('_controller');
-            if (!str_starts_with($controller, 'App\\Controller\\')
-                || str_starts_with($route->getPath(), '/admin')
-                || str_starts_with($route->getPath(), '/api/v1')
+            if ([] === array_filter(self::CACHED_CONTROLLER_PREFIXES, fn (string $prefix): bool => str_starts_with($controller, $prefix))
                 || ([] !== $route->getMethods() && !in_array('GET', $route->getMethods(), true))
                 || in_array($routeName, self::UNCACHED_ROUTES, true)) {
                 continue;
