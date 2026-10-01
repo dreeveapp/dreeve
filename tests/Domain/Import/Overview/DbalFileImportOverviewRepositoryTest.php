@@ -2,26 +2,27 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Domain\Import;
+namespace App\Tests\Domain\Import\Overview;
 
-use App\Controller\Admin\File\FileImportOverviewFilters;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\DbalActivityRepository;
 use App\Domain\Activity\ImportSource;
-use App\Domain\Import\DbalFileImportOverviewRepository;
 use App\Domain\Import\DbalFileImportRepository;
 use App\Domain\Import\FileImportId;
-use App\Domain\Import\FileImportOverviewItem;
-use App\Domain\Import\FileImportOverviewRepository;
 use App\Domain\Import\FileImportRepository;
 use App\Domain\Import\FileImportStatus;
+use App\Domain\Import\Overview\DbalFileImportOverviewRepository;
+use App\Domain\Import\Overview\FileImportOverviewFilters;
+use App\Domain\Import\Overview\FileImportOverviewItem;
+use App\Domain\Import\Overview\FileImportOverviewRepository;
 use App\Domain\Import\WatchDirectory;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\Domain\Import\FileImportBuilder;
 use App\Tests\Infrastructure\Eventing\SpyEventBus;
 use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\Attributes\DataProvider;

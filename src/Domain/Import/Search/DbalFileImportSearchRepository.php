@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domain\Import\Search;
 
-use App\Controller\Api\V1\FileImport\FileImportSearchFilters;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Import\FileImportId;
-use App\Domain\Import\FileImportOverviewItem;
 use App\Domain\Import\FileImportStatus;
+use App\Domain\Import\Overview\FileImportOverviewItem;
 use App\Domain\Import\SupportedFileExtension;
 use App\Domain\Import\WatchDirectory;
 use App\Infrastructure\Repository\DbalRepository;

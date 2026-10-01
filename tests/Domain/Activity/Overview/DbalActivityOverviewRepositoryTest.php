@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Domain\Activity;
+namespace App\Tests\Domain\Activity\Overview;
 
-use App\Controller\Admin\Activity\ActivityOverviewFilters;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityName;
-use App\Domain\Activity\ActivityOverviewItem;
-use App\Domain\Activity\ActivityOverviewRepository;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Activity\DbalActivityOverviewRepository;
 use App\Domain\Activity\DbalActivityRepository;
 use App\Domain\Activity\ImportSource;
+use App\Domain\Activity\Overview\ActivityOverviewFilters;
+use App\Domain\Activity\Overview\ActivityOverviewItem;
+use App\Domain\Activity\Overview\ActivityOverviewRepository;
+use App\Domain\Activity\Overview\DbalActivityOverviewRepository;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\DbalGearRepository;
@@ -26,6 +26,7 @@ use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
+use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\Infrastructure\Eventing\SpyEventBus;
 use PHPUnit\Framework\Attributes\DataProvider;

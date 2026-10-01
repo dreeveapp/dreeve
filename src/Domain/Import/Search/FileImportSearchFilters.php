@@ -2,15 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\V1\FileImport;
+namespace App\Domain\Import\Search;
 
 use App\Domain\Activity\ImportSource;
 use App\Domain\Import\FileImportStatus;
 use App\Infrastructure\Http\Request\Filters;
-use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-#[Exclude]
 final readonly class FileImportSearchFilters extends Filters
 {
     public function getFilename(): ?string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\V1\Activity;
 
+use App\Domain\Activity\Search\ActivitySearchFilters;
 use App\Domain\Activity\Search\ActivitySearchRepository;
 use App\Infrastructure\Http\Request\PaginationFromRequest;
 use Symfony\Component\HttpFoundation\Request;

@@ -6,7 +6,7 @@ namespace App\Controller\Admin\File;
 
 use App\Domain\Import\DeleteFileImport\DeleteFileImport;
 use App\Domain\Import\FileImportId;
-use App\Domain\Import\FileImportOverviewRepository;
+use App\Domain\Import\Overview\FileImportOverviewRepository;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;

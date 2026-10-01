@@ -2,15 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\Activity;
+namespace App\Domain\Activity\Overview;
 
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
 use App\Infrastructure\Http\Request\Filters;
-use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
-#[Exclude]
 final readonly class ActivityOverviewFilters extends Filters
 {
     public function isEmpty(): bool

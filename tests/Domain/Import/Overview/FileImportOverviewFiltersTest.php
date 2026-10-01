@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Controller\Admin\File;
+namespace App\Tests\Domain\Import\Overview;
 
-use App\Controller\Admin\File\FileImportOverviewFilters;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Import\FileImportStatus;
+use App\Domain\Import\Overview\FileImportOverviewFilters;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;

@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Activity;
+namespace App\Domain\Activity\Overview;
 
-use App\Controller\Admin\Activity\ActivityOverviewFilters;
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityName;
+use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
 use App\Infrastructure\Repository\DbalRepository;

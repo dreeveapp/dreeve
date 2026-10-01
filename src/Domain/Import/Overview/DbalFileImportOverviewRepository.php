@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Import;
+namespace App\Domain\Import\Overview;
 
-use App\Controller\Admin\File\FileImportOverviewFilters;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ImportSource;
+use App\Domain\Import\FileImportId;
+use App\Domain\Import\FileImportStatus;
+use App\Domain\Import\SupportedFileExtension;
+use App\Domain\Import\WatchDirectory;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Repository\Overview;

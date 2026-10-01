@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin\File;
+namespace App\Domain\Import\Overview;
 
 use App\Domain\Activity\ImportSource;
 use App\Domain\Import\FileImportStatus;
 use App\Infrastructure\Http\Request\Filters;
-use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
-#[Exclude]
 final readonly class FileImportOverviewFilters extends Filters
 {
     public function isEmpty(): bool

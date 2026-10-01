@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Activity;
+namespace App\Domain\Activity\Overview;
 
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityName;
+use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\Repository\Item;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;

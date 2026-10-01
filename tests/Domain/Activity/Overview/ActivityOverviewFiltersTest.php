@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Controller\Admin\Activity;
+namespace App\Tests\Domain\Activity\Overview;
 
-use App\Controller\Admin\Activity\ActivityOverviewFilters;
 use App\Domain\Activity\ImportSource;
+use App\Domain\Activity\Overview\ActivityOverviewFilters;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
 use PHPUnit\Framework\Attributes\DataProvider;

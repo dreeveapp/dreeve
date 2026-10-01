@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\V1\FileImport;
 
-use App\Domain\Import\FileImportOverviewItem;
+use App\Domain\Import\Overview\FileImportOverviewItem;
+use App\Domain\Import\Search\FileImportSearchFilters;
 use App\Domain\Import\Search\FileImportSearchRepository;
 use App\Infrastructure\Http\Request\PaginationFromRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Activity\Search;
 
-use App\Controller\Api\V1\Activity\ActivitySearchFilters;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\DbalActivityRepository;
+use App\Domain\Activity\Search\ActivitySearchFilters;
 use App\Domain\Activity\Search\ActivitySearchRepository;
 use App\Domain\Activity\Search\ActivitySearchResult;
 use App\Domain\Activity\Search\DbalActivitySearchRepository;

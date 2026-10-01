@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Search;
 
-use App\Controller\Api\V1\Activity\ActivitySearchFilters;
 use App\Domain\Activity\ActivityHydrator;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\StreamType;

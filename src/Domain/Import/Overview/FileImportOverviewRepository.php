@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Import;
+namespace App\Domain\Import\Overview;
 
-use App\Controller\Admin\File\FileImportOverviewFilters;
+use App\Domain\Import\FileImportId;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
 

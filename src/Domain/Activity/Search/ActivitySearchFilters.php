@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\V1\Activity;
+namespace App\Domain\Activity\Search;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Infrastructure\Http\Request\Filters;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
-use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-#[Exclude]
 final readonly class ActivitySearchFilters extends Filters
 {
     public const string DATE_FORMAT = '!Y-m-d';

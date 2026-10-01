@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Activity;
+namespace App\Domain\Activity\Overview;
 
-use App\Controller\Admin\Activity\ActivityOverviewFilters;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
 

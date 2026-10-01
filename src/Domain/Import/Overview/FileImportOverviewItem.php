@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Import;
+namespace App\Domain\Import\Overview;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ImportSource;
+use App\Domain\Import\FileImportId;
+use App\Domain\Import\FileImportStatus;
 use App\Infrastructure\Repository\Item;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
