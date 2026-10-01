@@ -437,9 +437,9 @@ final class Activity
 
     public function withWeather(?Weather $weather): self
     {
-        return clone ($this, [
+        return $this->recordUpdate(clone ($this, [
             'weather' => Json::encode($weather),
-        ]);
+        ]));
     }
 
     /**
