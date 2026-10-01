@@ -1,0 +1,144 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller\Page\Segment;
+
+use App\Application\AppShell;
+use App\Application\Navigation\NavigationSection;
+use App\Domain\Activity\ActivityCacheTag;
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\EnrichedActivityRepository;
+use App\Domain\Activity\LeafletMap;
+use App\Domain\Segment\Segment;
+use App\Domain\Segment\SegmentCacheTag;
+use App\Domain\Segment\SegmentEffort\SegmentEffort;
+use App\Domain\Segment\SegmentEffort\SegmentEffortHistoryChart;
+use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
+use App\Domain\Segment\SegmentEffort\SegmentEfforts;
+use App\Domain\Segment\SegmentEffort\SegmentEffortVsHeartRateChart;
+use App\Domain\Segment\SegmentId;
+use App\Domain\Segment\SegmentRepository;
+use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableRenderer;
+use App\Infrastructure\Cache\Tag\CacheTag;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Serialization\Json;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
+
+#[AsController]
+final readonly class SegmentRequestHandler
+{
+    private const int NUMBER_OF_TOP_EFFORTS = 10;
+
+    public function __construct(
+        private SegmentRepository $segmentRepository,
+        private SegmentEffortRepository $segmentEffortRepository,
+        private EnrichedActivityRepository $enrichedActivityRepository,
+        private SettingsRepository $settingsRepository,
+        private TranslatorInterface $translator,
+        private UrlGeneratorInterface $urlGenerator,
+        private CacheableRenderer $cacheableRenderer,
+        private AppShell $appShell,
+        private Environment $twig,
+    ) {
+    }
+
+    #[Route(path: '/segments/{segmentId}', name: 'segment', requirements: ['segmentId' => 'segment-[^/]+'], methods: ['GET'])]
+    public function handle(string $segmentId): HtmlResponse
+    {
+        try {
+            $segment = $this->segmentRepository->find(SegmentId::fromString($segmentId));
+        } catch (EntityNotFound) {
+            throw new NotFoundHttpException('Not found');
+        }
+
+        $topTenSegmentEfforts = $this->segmentEffortRepository->findTopXBySegmentId(
+            $segment->getId(),
+            self::NUMBER_OF_TOP_EFFORTS
+        );
+
+        $render = $this->cacheableRenderer->render(
+            cacheability: Cacheability::for(
+                cacheKey: sprintf('segments.%s', $segment->getId()->toUnprefixedString()),
+                cacheTags: CacheTags::of(
+                    SegmentCacheTag::for($segment->getId()),
+                    RootCacheTag::GEAR,
+                    // The top ten renders the title and gear of every activity it lists, so a
+                    // rename of one of those has to invalidate this segment too.
+                    ...array_map(
+                        static fn (SegmentEffort $segmentEffort): CacheTag => ActivityCacheTag::for($segmentEffort->getActivityId()),
+                        $topTenSegmentEfforts->toArray(),
+                    ),
+                ),
+            ),
+            render: fn (): string => $this->renderFor($segment, $topTenSegmentEfforts),
+        );
+
+        return new HtmlResponse(
+            $this->appShell->render(
+                content: $render->getContent() ?? '',
+                navigationSection: NavigationSection::SEGMENTS,
+                openGraph: null,
+            ),
+            headers: $render->getCacheHeaders(),
+        );
+    }
+
+    private function renderFor(Segment $segment, SegmentEfforts $topTenSegmentEfforts): string
+    {
+        $segmentEfforts = $this->segmentEffortRepository->findBySegmentId($segment->getId());
+        $segment = $segment
+            ->withNumberOfTimesRidden(count($segmentEfforts))
+            ->withBestEffort($topTenSegmentEfforts->getBestEffort())
+            ->withLastEffortDate($segmentEfforts->getFirst()?->getStartDateTime());
+
+        $leafletMap = $segment->getLeafletMap();
+
+        $activityIds = ActivityIds::fromArray(array_map(
+            fn (SegmentEffort $segmentEffort): ActivityId => $segmentEffort->getActivityId(),
+            $topTenSegmentEfforts->toArray()
+        ));
+
+        $enrichedActivitiesPerActivityId = [];
+        foreach ($this->enrichedActivityRepository->findByIds($activityIds) as $enrichedActivity) {
+            $enrichedActivitiesPerActivityId[(string) $enrichedActivity->getActivity()->getId()] = $enrichedActivity;
+        }
+
+        $enrichedActivitiesPerSegmentEffortId = [];
+        foreach ($topTenSegmentEfforts as $segmentEffort) {
+            $enrichedActivitiesPerSegmentEffortId[(string) $segmentEffort->getId()] = $enrichedActivitiesPerActivityId[(string) $segmentEffort->getActivityId()];
+        }
+
+        return $this->twig->load('html/segment/segment.html.twig')->render([
+            'segment' => $segment,
+            'segmentEffortsTopTen' => $topTenSegmentEfforts,
+            'enrichedActivitiesPerSegmentEffortId' => $enrichedActivitiesPerSegmentEffortId,
+            'segmentEffortsVsHeartRateChart' => Json::encode(
+                SegmentEffortVsHeartRateChart::create(
+                    segmentEfforts: $segmentEfforts,
+                    sportType: $segment->getSportType(),
+                    unitSystem: $this->settingsRepository->appearance()->getUnitSystem(),
+                    translator: $this->translator
+                )->build()
+            ),
+            'segmentEffortsHistoryChart' => Json::encode(
+                SegmentEffortHistoryChart::create($segmentEfforts)->build()
+            ),
+            'leaflet' => $leafletMap instanceof LeafletMap ? [
+                'polylineUrl' => $this->urlGenerator->generate('segment_polylines', ['segmentId' => (string) $segment->getId()]),
+                'map' => $leafletMap,
+            ] : null,
+        ]);
+    }
+}
