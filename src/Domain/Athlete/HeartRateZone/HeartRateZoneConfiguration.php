@@ -21,7 +21,7 @@ final class HeartRateZoneConfiguration
     ) {
     }
 
-    public function getDefaultHearRateZones(?SportType $sportType): HeartRateZones
+    public function getDefaultHeartRateZones(?SportType $sportType): HeartRateZones
     {
         if ($sportType instanceof SportType && array_key_exists($sportType->value, $this->hearRateZones)) {
             return $this->hearRateZones[$sportType->value][self::DEFAULT_KEY];

@@ -55,7 +55,7 @@ final class GetDefaultHeartRateZone extends Tool
         $now = $this->clock->getCurrentDateTimeImmutable();
         $sportType = SportType::tryFrom($sportType ?? '');
         $general = $this->settingsRepository->general();
-        $heartRateZones = $general->getHeartRateZoneConfiguration()->getDefaultHearRateZones($sportType);
+        $heartRateZones = $general->getHeartRateZoneConfiguration()->getDefaultHeartRateZones($sportType);
 
         $maxHeartRate = $general->getAthlete()->getMaxHeartRate($now);
 

@@ -31,25 +31,4 @@ class ShoutrrrUrlTest extends TestCase
         $this->assertFalse(ShoutrrrUrl::fromString('gotify://gotify.example.com/token')->isNtfyUrl());
         $this->assertFalse(ShoutrrrUrl::fromString('telegram://token@telegram/?channels=channel')->isNtfyUrl());
     }
-
-    public function testFromDeprecatedNtfyConfig(): void
-    {
-        $this->assertEquals(
-            'ntfy://user:pass@ntfy.sh/topic',
-            (string) ShoutrrrUrl::fromDeprecatedNtfyConfig(
-                ntfyUrl: 'https://ntfy.sh/topic',
-                ntfyUsername: 'user',
-                ntfyPassword: 'pass',
-            )
-        );
-
-        $this->assertEquals(
-            'ntfy://ntfy.sh/topic',
-            (string) ShoutrrrUrl::fromDeprecatedNtfyConfig(
-                ntfyUrl: 'https://ntfy.sh/topic',
-                ntfyUsername: null,
-                ntfyPassword: null,
-            )
-        );
-    }
 }

@@ -30,15 +30,6 @@ class SportTypeTest extends ContainerTestCase
         $this->assertMatchesJsonSnapshot($snapshot);
     }
 
-    public function testGetDistanceDisplayPreference(): void
-    {
-        $snapshot = [];
-        foreach (SportType::cases() as $sportType) {
-            $snapshot[$sportType->value] = $sportType->getDistanceDisplayPreference()::class;
-        }
-        $this->assertMatchesJsonSnapshot($snapshot);
-    }
-
     public function testSupportsShiftingStats(): void
     {
         $snapshot = [];

@@ -7,7 +7,6 @@ use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Length\Mile;
 use App\Infrastructure\Measurement\Length\NauticalMile;
-use App\Infrastructure\Measurement\Mass\Gram;
 use App\Infrastructure\Measurement\Mass\Kilogram;
 use App\Infrastructure\Measurement\Mass\Pound;
 use App\Infrastructure\Measurement\Temperature\Celsius;
@@ -61,7 +60,6 @@ class UnitTest extends TestCase
             [Mile::from(1.242742), Kilometer::from(2)->toMiles()],
             [Foot::from(6.561), Meter::from(2)->toFoot()],
             [Kilometer::from(3.21868), Mile::from(2)->toKilometer()],
-            [Kilogram::from(0.1), Gram::from(100)->toKilogram()],
             [Pound::from(22.0462), Kilogram::from(10)->toPound()],
             [Kilogram::from(4.535923700000001), Pound::from(10)->toKilogram()],
             [MilesPerHour::from(6.21371), KmPerHour::from(10)->toMph()],
@@ -125,7 +123,6 @@ class UnitTest extends TestCase
             [Kilometer::from(100)],
             [Meter::from(1000)],
             [Mile::from(10000)],
-            [Gram::from(20)],
             [Kilogram::from(200)],
             [Pound::from(2000)],
             [KmPerHour::from(30)],

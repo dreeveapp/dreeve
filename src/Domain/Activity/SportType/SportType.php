@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Activity\SportType;
 
 use App\Domain\Activity\ActivityType;
-use App\Infrastructure\Measurement\Length\ConvertableToMeter;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\NauticalMile;
 use App\Infrastructure\Measurement\UnitSystem;
@@ -113,15 +112,6 @@ enum SportType: string implements TranslatableInterface
             self::POOL_SWIM, self::OPEN_WATER_SWIM => SecPer100Meter::zero(),
             default => KmPerHour::zero(),
         };
-    }
-
-    public function getDistanceDisplayPreference(): ConvertableToMeter
-    {
-        if ($this->usesNauticalUnits()) {
-            return NauticalMile::zero();
-        }
-
-        return Kilometer::zero();
     }
 
     public function toDisplayDistance(Kilometer $distance): NauticalMile|Kilometer
