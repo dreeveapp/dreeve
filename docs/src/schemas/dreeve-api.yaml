@@ -262,7 +262,7 @@ paths:
       tags: [Activities]
       summary: Update an activity
       description: >-
-        Changes the name, sport type or description of an activity
+        Changes the name, sport type, description or gear of an activity.
       parameters:
         - $ref: '#/components/parameters/ActivityId'
       requestBody:
@@ -285,6 +285,10 @@ paths:
                   type: [string, 'null']
                   description: Send `null` or an empty string to clear the description.
                   examples: ['Rerouted around the closed bridge']
+                gearId:
+                  type: [string, 'null']
+                  description: The prefixed id of existing gear. Send `null` or an empty string to remove the gear.
+                  examples: ['gear-b12659861']
       responses:
         '200':
           description: The updated activity.
@@ -299,6 +303,8 @@ paths:
               examples:
                 invalidSportType:
                   value: { error: bad_request, message: 'A valid "sportType" is required.' }
+                unknownGear:
+                  value: { error: bad_request, message: 'Gear "gear-b12659861" not found.' }
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':

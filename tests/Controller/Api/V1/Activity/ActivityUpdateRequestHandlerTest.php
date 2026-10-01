@@ -10,11 +10,13 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
+use App\Domain\Gear\GearRepository;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\Security\Api\Token;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\Domain\Gear\GearBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\HttpFoundation\Response;
@@ -85,6 +87,43 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
         $this->assertSame('Original activity', $activity->getOriginalName());
     }
 
+    public function testItUpdatesTheGear(): void
+    {
+        $this->getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('2'))
+                ->build()
+        );
+
+        $this->client->request(
+            'PATCH',
+            self::PATH,
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
+            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity-gear.json'),
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame('gear-2', Json::decode((string) $this->client->getResponse()->getContent())['gearId']);
+
+        $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
+        $this->assertEquals(GearId::fromUnprefixed('2'), $activity->getGearId());
+        $this->assertSame('Original activity', $activity->getOriginalName());
+    }
+
+    public function testItClearsTheGear(): void
+    {
+        $this->client->request(
+            'PATCH',
+            self::PATH,
+            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
+            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity-clear-gear.json'),
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertNull(Json::decode((string) $this->client->getResponse()->getContent())['gearId']);
+        $this->assertNull($this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getGearId());
+    }
+
     #[DataProvider('provideInvalidRequestBodies')]
     public function testItRejectsInvalidRequestBodies(string $content): void
     {
@@ -106,7 +145,10 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
         yield 'JSON scalar' => ['"name"'];
         yield 'JSON list' => ['["name"]'];
         yield 'empty object' => ['{}'];
-        yield 'unknown field' => ['{"name": "Ride", "gearId": "gear-2"}'];
+        yield 'unknown field' => ['{"name": "Ride", "calories": 200}'];
+        yield 'unknown gear' => ['{"name": "Ride", "gearId": "gear-999"}'];
+        yield 'unprefixed gear' => ['{"name": "Ride", "gearId": "1"}'];
+        yield 'non-string gear' => ['{"name": "Ride", "gearId": 1}'];
         yield 'empty name' => ['{"name": "  "}'];
         yield 'non-string name' => ['{"name": 12}'];
         yield 'unknown sport type' => ['{"sportType": "Unicycling"}'];

@@ -10,6 +10,7 @@ use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\UpdateActivity\UpdateActivity;
 use App\Domain\Gear\GearId;
+use App\Domain\Gear\GearRepository;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
@@ -28,6 +29,7 @@ final readonly class ActivityUpdateRequestHandler
     public function __construct(
         private ActivityRepository $activityRepository,
         private ActivityStreamRepository $activityStreamRepository,
+        private GearRepository $gearRepository,
         private CommandBus $commandBus,
         private ImportMode $importMode,
     ) {
@@ -51,6 +53,19 @@ final readonly class ActivityUpdateRequestHandler
         }
 
         $gearId = $activity->getGearId();
+        $fields = ActivityUpdateRequest::fromRequest($request)->getFields();
+
+        $requestedGearId = $fields['gearId'] ?? null;
+        if (null !== $requestedGearId && !is_string($requestedGearId)) {
+            throw new BadRequestHttpException('"gearId" must be a string or null.');
+        }
+        if (is_string($requestedGearId) && '' !== trim($requestedGearId)) {
+            try {
+                $this->gearRepository->find(GearId::fromString(trim($requestedGearId)));
+            } catch (EntityNotFound|\InvalidArgumentException) {
+                throw new BadRequestHttpException(sprintf('Gear "%s" not found.', $requestedGearId));
+            }
+        }
 
         try {
             $command = UpdateActivity::fromPayload([
@@ -63,7 +78,7 @@ final readonly class ActivityUpdateRequestHandler
                 'calories' => $activity->getCalories(),
                 'isCommute' => $activity->isCommute(),
                 'isGroupActivity' => $activity->isGroupActivity(),
-                ...ActivityUpdateRequest::fromRequest($request)->getFields(),
+                ...$fields,
             ]);
         } catch (CouldNotDeserializeCommand $e) {
             throw new BadRequestHttpException($e->getMessage());

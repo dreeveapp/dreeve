@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 #[Exclude]
 final readonly class ActivityUpdateRequest
 {
-    private const array ALLOWED_FIELDS = ['name', 'description', 'sportType'];
+    private const array ALLOWED_FIELDS = ['name', 'description', 'sportType', 'gearId'];
 
     /**
      * @param array<string, mixed> $fields
