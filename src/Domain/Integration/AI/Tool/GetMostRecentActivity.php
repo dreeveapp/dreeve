@@ -10,17 +10,19 @@ use NeuronAI\Tools\Tool;
 
 final class GetMostRecentActivity extends Tool
 {
+    #[\Override]
+    protected string $name = 'get_most_recent_activity';
+
+    #[\Override]
+    protected ?string $description = <<<DESC
+        Retrieves the user’s most recent activity, including its ID and summary details.
+        Use this tool whenever the user refers to “my last activity” or asks for information about their most recent workout or ride. For example, “Show stats from my last activity”.
+        This tool helps you quickly identify the latest activity to use in further analysis or comparisons.
+        DESC;
+
     public function __construct(
         private readonly EnrichedActivityRepository $enrichedActivityRepository,
     ) {
-        parent::__construct(
-            'get_most_recent_activity',
-            <<<DESC
-            Retrieves the user’s most recent activity, including its ID and summary details.
-            Use this tool whenever the user refers to “my last activity” or asks for information about their most recent workout or ride. For example, “Show stats from my last activity”.
-            This tool helps you quickly identify the latest activity to use in further analysis or comparisons.
-            DESC
-        );
     }
 
     /**

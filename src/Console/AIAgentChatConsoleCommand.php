@@ -68,9 +68,8 @@ final class AIAgentChatConsoleCommand extends Command
             }
 
             try {
-                $handler = $this->agent->stream(new UserMessage($userInput));
                 $first = true;
-                foreach ($handler->events() as $chunk) {
+                foreach ($this->agent->stream(new UserMessage($userInput)) as $chunk) {
                     if (!$chunk instanceof TextChunk) {
                         continue;
                     }

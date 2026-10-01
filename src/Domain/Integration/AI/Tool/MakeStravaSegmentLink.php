@@ -10,17 +10,15 @@ use NeuronAI\Tools\ToolProperty;
 
 final class MakeStravaSegmentLink extends Tool
 {
-    public function __construct(
-    ) {
-        parent::__construct(
-            'make_strava_segment_link',
-            <<<DESC
-            Generates a direct Strava URL for a specific segment using its unique segment ID.
-            Use this tool when the user wants a link to view a segment on Strava. 
-            It requires the segment ID and returns a full URL to the corresponding Strava segment page.
-            DESC
-        );
-    }
+    #[\Override]
+    protected string $name = 'make_strava_segment_link';
+
+    #[\Override]
+    protected ?string $description = <<<DESC
+        Generates a direct Strava URL for a specific segment using its unique segment ID.
+        Use this tool when the user wants a link to view a segment on Strava. 
+        It requires the segment ID and returns a full URL to the corresponding Strava segment page.
+        DESC;
 
     /**
      * @return \NeuronAI\Tools\ToolPropertyInterface[]

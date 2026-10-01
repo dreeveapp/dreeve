@@ -484,7 +484,6 @@ Uploading...: 'Wird hochgeladen...'
 'Used to calculate the training load of this activity': 'Wird verwendet, um die Trainingsbelastung dieser Aktivität zu berechnen.'
 Username: Benutzername
 'Verify token': 'Token verifizieren'
-Version: Version
 Warning: Warnung
 'Weather and reverse geocoding have been retrieved.': 'Wetterdaten und Reverse-Geocoding wurden abgerufen.'
 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.': 'Wetterdaten und/oder Reverse-Geocoding konnten beim Import dieser Aktivität nicht abgerufen werden.'

@@ -12,18 +12,20 @@ final class GetChallenges extends Tool
 {
     private const int MAX_RESULTS = 50;
 
+    #[\Override]
+    protected string $name = 'get_challenges';
+
+    #[\Override]
+    protected ?string $description = <<<DESC
+        Retrieves the user’s most recently obtained challenges, including challenge name, start date, and completion date.
+        Use this tool when the user asks about current, upcoming, or past challenges. 
+        Example requests include “List the challenges I completed last month.”
+        Returns at most 50 challenges, most recent first. Compare "totalChallengeCount" with the number of returned challenges: if it is higher, tell the user you are only showing the most recent ones and do not present the list as complete.
+        DESC;
+
     public function __construct(
         private readonly ChallengeRepository $challengeRepository,
     ) {
-        parent::__construct(
-            'get_challenges',
-            <<<DESC
-            Retrieves the user’s most recently obtained challenges, including challenge name, start date, and completion date.
-            Use this tool when the user asks about current, upcoming, or past challenges. 
-            Example requests include “List the challenges I completed last month.”
-            Returns at most 50 challenges, most recent first. Compare "totalChallengeCount" with the number of returned challenges: if it is higher, tell the user you are only showing the most recent ones and do not present the list as complete.
-            DESC
-        );
     }
 
     /**

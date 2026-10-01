@@ -10,18 +10,20 @@ use NeuronAI\Tools\Tool;
 
 final class GetAllActivitiesSummary extends Tool
 {
+    #[\Override]
+    protected string $name = 'get_activities_summary';
+
+    #[\Override]
+    protected ?string $description = <<<DESC
+        Retrieves a list of the user’s most recent 250 activities, sorted from newest to oldest, along with summary data for each activity.
+        Use this tool whenever you need to identify which activities to include in a query or summary. 
+        For example, when the user asks for insights like “Summarize my last week’s activities” or “Compare my last three rides.”
+        This tool helps you determine which specific activities match the user’s time range or criteria, so you can use their IDs in subsequent tool calls.
+        DESC;
+
     public function __construct(
         private readonly ActivityRepository $activityRepository,
     ) {
-        parent::__construct(
-            'get_activities_summary',
-            <<<DESC
-            Retrieves a list of the user’s most recent 250 activities, sorted from newest to oldest, along with summary data for each activity.
-            Use this tool whenever you need to identify which activities to include in a query or summary. 
-            For example, when the user asks for insights like “Summarize my last week’s activities” or “Compare my last three rides.”
-            This tool helps you determine which specific activities match the user’s time range or criteria, so you can use their IDs in subsequent tool calls.
-            DESC
-        );
     }
 
     /**

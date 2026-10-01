@@ -7,24 +7,27 @@ namespace App\Domain\Integration\AI\Chat;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use NeuronAI\Chat\Enums\MessageRole;
-use NeuronAI\Chat\History\InMemoryChatHistory as BaseInMemoryChatHistory;
+use NeuronAI\Chat\History\InMemoryMessageStore;
 use NeuronAI\Chat\Messages\Message;
 
 /**
  * @codeCoverageIgnore
  */
-final class SFSChatHistory extends BaseInMemoryChatHistory
+final class SFSMessageStore extends InMemoryMessageStore
 {
     public function __construct(
         private readonly CommandBus $commandBus,
     ) {
-        parent::__construct();
     }
 
     #[\Override]
-    public function onNewMessage(Message $message): void
+    public function append(string $threadId, Message $message): void
     {
-        parent::onNewMessage($message);
+        if (isset($this->threads[$threadId][$message->getId()])) {
+            return;
+        }
+
+        parent::append($threadId, $message);
 
         if (!in_array($message->getContent(), [null, '', '0'], true)) {
             $this->commandBus->dispatch(new AddChatMessage(

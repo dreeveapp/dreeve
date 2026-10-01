@@ -7,7 +7,7 @@ namespace App\Domain\Integration\AI;
 use App\Domain\Settings\SettingsRepository;
 use NeuronAI\Agent\Agent;
 use NeuronAI\Agent\SystemPrompt;
-use NeuronAI\Chat\History\ChatHistoryInterface;
+use NeuronAI\Chat\History\MessageStoreInterface;
 use NeuronAI\Providers\AIProviderInterface;
 use NeuronAI\Tools\Toolkits\ToolkitInterface;
 
@@ -19,9 +19,15 @@ final class NeuronAIAgent extends Agent
     public function __construct(
         private readonly SettingsRepository $settingsRepository,
         private readonly ToolkitInterface $toolkit,
-        private readonly ChatHistoryInterface $history,
+        private readonly MessageStoreInterface $historyStore,
     ) {
         parent::__construct();
+    }
+
+    #[\Override]
+    public function workflowId(): string
+    {
+        return 'chat';
     }
 
     #[\Override]
@@ -64,8 +70,8 @@ final class NeuronAIAgent extends Agent
     }
 
     #[\Override]
-    protected function chatHistory(): ChatHistoryInterface
+    protected function messageStore(): MessageStoreInterface
     {
-        return $this->history;
+        return $this->historyStore;
     }
 }

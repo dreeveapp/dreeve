@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "083d496cd569933863a650bf025e6e44",
+    "content-hash": "a8321415329cd1a244ea0937be1dc4cb",
     "packages": [
         {
             "name": "adrenalinkin/doctrine-naming-strategy",
@@ -1877,68 +1877,6 @@
             "time": "2025-12-05T14:53:09+00:00"
         },
         {
-            "name": "inspector-apm/inspector-php",
-            "version": "3.18.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/inspector-apm/inspector-php.git",
-                "reference": "95d46a1ee6c7dc9afb8020d201d6cbd471738965"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/inspector-apm/inspector-php/zipball/95d46a1ee6c7dc9afb8020d201d6cbd471738965",
-                "reference": "95d46a1ee6c7dc9afb8020d201d6cbd471738965",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.1"
-            },
-            "require-dev": {
-                "ext-curl": "*",
-                "friendsofphp/php-cs-fixer": "^3.75",
-                "neuron-core/neuron-ai": "4.x-dev",
-                "phpstan/phpstan": "^2.1",
-                "phpunit/phpunit": "^9.0",
-                "rector/rector": "^2.2",
-                "tomasvotruba/type-coverage": "^2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "3.17.x-dev",
-                    "dev-develop": "3.17.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Inspector\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Valerio Barbera",
-                    "email": "valerio@inspector.dev"
-                }
-            ],
-            "description": "Inspector monitoring for PHP applications.",
-            "keywords": [
-                "inspector",
-                "monitoring",
-                "observability",
-                "php",
-                "telemetry"
-            ],
-            "support": {
-                "issues": "https://github.com/inspector-apm/inspector-php/issues",
-                "source": "https://github.com/inspector-apm/inspector-php/tree/3.18.3"
-            },
-            "time": "2026-09-09T15:14:33+00:00"
-        },
-        {
             "name": "lcobucci/clock",
             "version": "3.6.0",
             "source": {
@@ -2562,43 +2500,61 @@
         },
         {
             "name": "neuron-core/neuron-ai",
-            "version": "3.17.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/neuron-core/neuron-ai.git",
-                "reference": "f6d4e4507309dbba6c0ecfdd602ddccebbb0bcee"
+                "reference": "c818e3e80fb04bc5ac0d5743a3937327532a7b1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/neuron-core/neuron-ai/zipball/f6d4e4507309dbba6c0ecfdd602ddccebbb0bcee",
-                "reference": "f6d4e4507309dbba6c0ecfdd602ddccebbb0bcee",
+                "url": "https://api.github.com/repos/neuron-core/neuron-ai/zipball/c818e3e80fb04bc5ac0d5743a3937327532a7b1d",
+                "reference": "c818e3e80fb04bc5ac0d5743a3937327532a7b1d",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/guzzle": "^7.0 || ^8.0",
-                "inspector-apm/inspector-php": "^3.18",
+                "ext-curl": "*",
                 "php": "^8.1",
-                "psr/http-message": "^1.0|^2.0"
+                "psr/event-dispatcher": "^1.0"
             },
             "require-dev": {
                 "amphp/amp": "^3.1.1",
                 "amphp/http-client": "^5.3",
                 "aws/aws-sdk-php": "^3.209",
-                "elasticsearch/elasticsearch": "^8.0|^9.0",
+                "elasticsearch/elasticsearch": "^8.19|^9.0",
+                "ext-bcmath": "*",
+                "ext-mongodb": "*",
                 "ext-pdo": "*",
+                "ext-pdo_pgsql": "*",
+                "ext-redis": "*",
+                "ext-sodium": "*",
                 "friendsofphp/php-cs-fixer": "^3.75",
                 "google/auth": "^1.49",
+                "guzzlehttp/guzzle": "^7.0|^8.0",
                 "html2text/html2text": "^4.3",
-                "illuminate/database": "^10.0|^11.0|^12.0",
+                "illuminate/database": "^10.21|^11.0|^12.0",
                 "laudis/neo4j-php-client": "^3.4",
+                "mongodb/mongodb": "^2.3",
                 "opensearch-project/opensearch-php": "^2.5",
                 "phpstan/phpstan": "^2.1",
                 "phpunit/phpunit": "^10.0",
+                "psr/http-message": "^1.0|^2.0",
+                "psr/log": "^1.0|^2.0|^3.0",
+                "pusher/pusher-php-server": "^7.2.4",
                 "rector/rector": "^2.0",
                 "spatie/fork": "^1.2",
                 "tomasvotruba/type-coverage": "^2.0",
-                "typesense/typesense-php": "^5.0",
+                "typesense/typesense-php": "^5.0.2",
                 "vlucas/phpdotenv": "^5.6"
+            },
+            "suggest": {
+                "ext-bcmath": "Exact integer tools in the Calculator toolkit (factorial, combinations, gcd, mod_pow, primes).",
+                "ext-igbinary": "Smaller/faster durable-step serialization via IgbinarySerializer.",
+                "ext-redis": "Redis workflow persistence via RedisPersistence and Pub/Sub streaming via RedisChannel and RedisChannelReader.",
+                "ext-sodium": "End-to-end encryption for Pusher streaming channels.",
+                "psr/log": "Logging observability events through LogListener.",
+                "pusher/pusher-php-server": "Pusher-compatible streaming channels, including encrypted channels (requires >=7.2.4 for HTTP timeout propagation).",
+                "spatie/fork": "Parallel evaluation runs via the --concurrency option (requires ext-pcntl)."
             },
             "bin": [
                 "bin/neuron"
@@ -2619,10 +2575,10 @@
                     "email": "valerio@inspector.dev"
                 }
             ],
-            "description": "The PHP Agentic Framework.",
+            "description": "A unified layer for building AI-native applications in PHP.",
             "support": {
                 "issues": "https://github.com/neuron-core/neuron-ai/issues",
-                "source": "https://github.com/neuron-core/neuron-ai/tree/3.17.0"
+                "source": "https://github.com/neuron-core/neuron-ai/tree/4.0.1"
             },
             "funding": [
                 {
@@ -2630,7 +2586,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-19T12:52:41+00:00"
+            "time": "2026-09-30T16:39:30+00:00"
         },
         {
             "name": "psr/cache",

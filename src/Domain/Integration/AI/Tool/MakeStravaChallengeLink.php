@@ -10,17 +10,15 @@ use NeuronAI\Tools\ToolProperty;
 
 class MakeStravaChallengeLink extends Tool
 {
-    public function __construct(
-    ) {
-        parent::__construct(
-            'make_strava_challenge_link',
-            <<<DESC
-            Generates a direct Strava URL for a specific challenge using its unique slug.
-            Use this tool when the user wants a link to view a challenge on Strava. 
-            It requires the challenge slug and returns a full URL to the corresponding Strava challenge page.
-            DESC
-        );
-    }
+    #[\Override]
+    protected string $name = 'make_strava_challenge_link';
+
+    #[\Override]
+    protected ?string $description = <<<DESC
+        Generates a direct Strava URL for a specific challenge using its unique slug.
+        Use this tool when the user wants a link to view a challenge on Strava. 
+        It requires the challenge slug and returns a full URL to the corresponding Strava challenge page.
+        DESC;
 
     /**
      * @return \NeuronAI\Tools\ToolPropertyInterface[]

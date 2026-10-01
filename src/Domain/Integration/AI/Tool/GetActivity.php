@@ -12,18 +12,20 @@ use NeuronAI\Tools\ToolProperty;
 
 final class GetActivity extends Tool
 {
+    #[\Override]
+    protected string $name = 'get_activity_by_id';
+
+    #[\Override]
+    protected ?string $description = <<<DESC
+        Retrieves detailed information for a single activity, identified by its unique ID.
+        Use this tool when the user refers to a specific activity or asks for details about a particular workout.
+        It requires the activity ID as input and provides the full activity data needed for summaries, comparisons, or insights. 
+        Example requests include “Show details for activity 12345” or “Compare my Sunday ride with activity 67890.”
+        DESC;
+
     public function __construct(
         private readonly EnrichedActivityRepository $enrichedActivityRepository,
     ) {
-        parent::__construct(
-            'get_activity_by_id',
-            <<<DESC
-            Retrieves detailed information for a single activity, identified by its unique ID.
-            Use this tool when the user refers to a specific activity or asks for details about a particular workout.
-            It requires the activity ID as input and provides the full activity data needed for summaries, comparisons, or insights. 
-            Example requests include “Show details for activity 12345” or “Compare my Sunday ride with activity 67890.”
-            DESC
-        );
     }
 
     /**

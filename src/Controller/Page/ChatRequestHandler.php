@@ -102,8 +102,7 @@ final readonly class ChatRequestHandler
             ));
 
             try {
-                $handler = $this->neuronAIAgent->stream(new UserMessage($message));
-                foreach ($handler->events() as $chunk) {
+                foreach ($this->neuronAIAgent->stream(new UserMessage($message)) as $chunk) {
                     if (!$chunk instanceof TextChunk) {
                         continue;  // @codeCoverageIgnore
                     }

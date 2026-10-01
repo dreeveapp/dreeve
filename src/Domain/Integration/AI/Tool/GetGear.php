@@ -10,18 +10,20 @@ use NeuronAI\Tools\Tool;
 
 final class GetGear extends Tool
 {
+    #[\Override]
+    protected string $name = 'get_gear';
+
+    #[\Override]
+    protected ?string $description = <<<DESC
+        Retrieves the athlete’s gear information from the database, including name, type, and distance.
+        Use this tool when the user asks about equipment such as shoes, bikes, or other gear. 
+        It provides the details needed to track usage or summarize performance by equipment. 
+        Example requests include “Show my bike details” or “How many kilometers have I ran with my shoes?”
+        DESC;
+
     public function __construct(
         private readonly GearRepository $gearRepository,
     ) {
-        parent::__construct(
-            'get_gear',
-            <<<DESC
-            Retrieves the athlete’s gear information from the database, including name, type, and distance.
-            Use this tool when the user asks about equipment such as shoes, bikes, or other gear. 
-            It provides the details needed to track usage or summarize performance by equipment. 
-            Example requests include “Show my bike details” or “How many kilometers have I ran with my shoes?”
-            DESC
-        );
     }
 
     /**

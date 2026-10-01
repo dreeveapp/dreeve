@@ -15,19 +15,21 @@ final class GetActivitySegmentEfforts extends Tool
 {
     private const int MAX_RESULTS = 30;
 
+    #[\Override]
+    protected string $name = 'get_activity_segments_efforts';
+
+    #[\Override]
+    protected ?string $description = <<<DESC
+        Retrieves detailed segment and segment effort information for a specific activity using its unique activity ID.
+        Use this tool when the user asks about segments or segment efforts within an activity, or requests all details for a specific activity. 
+        It requires the activity ID as input and provides the full segment-level data needed for analysis, comparisons, or summaries. 
+        Example requests include “Show all segment efforts for activity 12345” or “Give me detailed segment stats for my last ride.”
+        Returns at most 30 segment efforts. Compare "totalSegmentEffortCount" with the number of returned efforts: if it is higher, tell the user you are only showing some of them.
+        DESC;
+
     public function __construct(
         private readonly SegmentEffortRepository $segmentEffortRepository,
     ) {
-        parent::__construct(
-            'get_activity_segments_efforts',
-            <<<DESC
-            Retrieves detailed segment and segment effort information for a specific activity using its unique activity ID.
-            Use this tool when the user asks about segments or segment efforts within an activity, or requests all details for a specific activity. 
-            It requires the activity ID as input and provides the full segment-level data needed for analysis, comparisons, or summaries. 
-            Example requests include “Show all segment efforts for activity 12345” or “Give me detailed segment stats for my last ride.”
-            Returns at most 30 segment efforts. Compare "totalSegmentEffortCount" with the number of returned efforts: if it is higher, tell the user you are only showing some of them.
-            DESC
-        );
     }
 
     /**

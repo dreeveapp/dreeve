@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Settings;
 
 use App\Domain\Integration\AI\AIApiKey;
-use App\Domain\Integration\AI\AzureOpenAI;
 use App\Domain\Integration\AI\Chat\ChatCommands;
-use App\Domain\Integration\AI\HuggingFace;
 use App\Domain\Integration\AI\InvalidAIConfiguration;
 use App\Domain\Integration\Notification\Shoutrrr\ConfiguredNotificationUrls;
 use App\Infrastructure\ValueObject\String\Url;
@@ -15,8 +13,10 @@ use NeuronAI\Providers\AIProviderInterface;
 use NeuronAI\Providers\Anthropic\Anthropic;
 use NeuronAI\Providers\Deepseek\Deepseek;
 use NeuronAI\Providers\Gemini\Gemini;
+use NeuronAI\Providers\HuggingFace\HuggingFace;
 use NeuronAI\Providers\Mistral\Mistral;
 use NeuronAI\Providers\Ollama\Ollama;
+use NeuronAI\Providers\OpenAI\AzureOpenAI;
 use NeuronAI\Providers\OpenAI\OpenAI;
 use NeuronAI\Providers\OpenAI\Responses\OpenAIResponses;
 use NeuronAI\Providers\OpenAILike;
@@ -52,7 +52,7 @@ final readonly class IntegrationsSettings
 
             $requiredConfigKeys = match ($providerName) {
                 'ollama' => ['model', 'url'],
-                'azureOpenAI' => ['endpoint', 'model', 'version'],
+                'azureOpenAI' => ['endpoint', 'model'],
                 'openAILike' => ['baseUri', 'model'],
                 default => ['model'],
             };
@@ -129,7 +129,6 @@ final readonly class IntegrationsSettings
                 key: (string) $apiKey,
                 endpoint: $this->aiConfig['configuration']['endpoint'],
                 model: $this->aiConfig['configuration']['model'],
-                version: $this->aiConfig['configuration']['version'],
             ),
             'deepseek' => new Deepseek(
                 key: (string) $apiKey,

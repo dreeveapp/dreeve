@@ -76,10 +76,6 @@
                             <label for="aiEndpoint">{{ "Endpoint"|trans({}, 'admin') }}</label>
                             <input type="text" id="aiEndpoint" name="data[ai][configuration][endpoint]" value="{{ aiConfiguration.endpoint ?? '' }}">
                         </div>
-                        <div data-dependent-on="aiProvider" data-visible-when="azureOpenAI">
-                            <label for="aiVersion">{{ "Version"|trans({}, 'admin') }}</label>
-                            <input type="text" id="aiVersion" name="data[ai][configuration][version]" value="{{ aiConfiguration.version ?? '' }}">
-                        </div>
                     </div>
                 </div>
             </div>

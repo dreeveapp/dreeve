@@ -155,7 +155,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );
 
-        $agent = Agent::make()->setAiProvider(
+        $agent = Agent::make(workflowId: 'chat')->setAiProvider(
             new FakeAIProvider(new AssistantMessage('Hello World'))
         );
 
@@ -190,7 +190,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );
 
-        $agent = Agent::make()->setAiProvider(
+        $agent = Agent::make(workflowId: 'chat')->setAiProvider(
             new FakeAIProvider()
         );
 
