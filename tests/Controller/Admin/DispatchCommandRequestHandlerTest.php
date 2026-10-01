@@ -18,7 +18,7 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
 {
     public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
     {
-        $this->client->request('POST', '/admin/dispatchCommand');
+        $this->client->request('POST', '/admin/dispatch-command');
 
         $this->assertResponseRedirects('/admin/login');
     }
@@ -33,7 +33,7 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
 
         $this->client->request(
             method: 'POST',
-            uri: '/admin/dispatchCommand',
+            uri: '/admin/dispatch-command',
             server: ['HTTP_X_CSRF_TOKEN' => $this->validCsrfToken()],
             content: Json::encode([
                 'commandName' => 'upload-activity-file',
@@ -66,7 +66,7 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
 
         $this->client->request(
             method: 'POST',
-            uri: '/admin/dispatchCommand',
+            uri: '/admin/dispatch-command',
             server: ['HTTP_X_CSRF_TOKEN' => $this->validCsrfToken()],
             content: Json::encode([
                 'commandName' => 'add-widget',
@@ -98,7 +98,7 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
 
         $this->client->request(
             method: 'POST',
-            uri: '/admin/dispatchCommand',
+            uri: '/admin/dispatch-command',
             server: ['HTTP_X_CSRF_TOKEN' => $this->validCsrfToken()],
             content: Json::encode([
                 'commandName' => 'enrich-activity',
@@ -126,7 +126,7 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
 
         $this->client->request(
             method: 'POST',
-            uri: '/admin/dispatchCommand',
+            uri: '/admin/dispatch-command',
             server: ['HTTP_X_CSRF_TOKEN' => 'a-tampered-token'],
             content: Json::encode([
                 'commandName' => 'upload-activity-file',
@@ -147,7 +147,7 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
 
         $this->client->request(
             method: 'POST',
-            uri: '/admin/dispatchCommand',
+            uri: '/admin/dispatch-command',
             server: ['HTTP_X_CSRF_TOKEN' => $this->validCsrfToken()],
             content: Json::encode([
                 'commandName' => 'not-a-known-command',
@@ -168,7 +168,7 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
 
         $this->client->request(
             method: 'POST',
-            uri: '/admin/dispatchCommand',
+            uri: '/admin/dispatch-command',
             server: ['HTTP_X_CSRF_TOKEN' => $this->validCsrfToken()],
             content: Json::encode([
                 'commandName' => 'upload-activity-file',
@@ -190,7 +190,7 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
 
         $this->client->request(
             method: 'POST',
-            uri: '/admin/dispatchCommand',
+            uri: '/admin/dispatch-command',
             server: ['HTTP_X_CSRF_TOKEN' => $this->validCsrfToken()],
             content: Json::encode(['not' => 'a command']),
         );
@@ -214,7 +214,7 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
 
         $this->client->request(
             method: 'POST',
-            uri: '/admin/dispatchCommand',
+            uri: '/admin/dispatch-command',
             server: ['HTTP_X_CSRF_TOKEN' => $this->validCsrfToken()],
             content: Json::encode([
                 'commandName' => 'configure-widget',

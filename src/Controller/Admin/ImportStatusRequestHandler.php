@@ -17,7 +17,7 @@ final readonly class ImportStatusRequestHandler
     ) {
     }
 
-    #[Route(path: '/admin/importStatus', name: 'admin_import_status', methods: ['GET'], priority: 10)]
+    #[Route(path: '/admin/import-status', name: 'admin_import_status', methods: ['GET'], priority: 10)]
     public function handle(): JsonResponse
     {
         return new JsonResponse(['pending' => $this->importStatus->isPending()]);

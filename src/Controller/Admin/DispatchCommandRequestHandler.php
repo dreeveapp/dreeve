@@ -34,7 +34,7 @@ final readonly class DispatchCommandRequestHandler
     ) {
     }
 
-    #[Route(path: '/admin/dispatchCommand', name: 'admin_dispatch_command', methods: ['POST'], priority: 10)]
+    #[Route(path: '/admin/dispatch-command', name: 'admin_dispatch_command', methods: ['POST'], priority: 10)]
     public function handle(Request $request): JsonResponse
     {
         $token = new CsrfToken(self::CSRF_TOKEN_ID, $request->headers->get(self::CSRF_TOKEN_HEADER, ''));

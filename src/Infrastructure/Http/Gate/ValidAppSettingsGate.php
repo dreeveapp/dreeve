@@ -32,7 +32,7 @@ final class ValidAppSettingsGate extends ConditionalRedirectGate
 
     protected function allowedPaths(): array
     {
-        return ['/admin/login', '/admin/logout', '/admin/dispatchCommand'];
+        return ['/admin/login', '/admin/logout', '/admin/dispatch-command'];
     }
 
     protected function redirectToRouteName(): string

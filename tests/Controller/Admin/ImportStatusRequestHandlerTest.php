@@ -11,7 +11,7 @@ class ImportStatusRequestHandlerTest extends AdminWebTestCase
 
     public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
     {
-        $this->client->request('GET', '/admin/importStatus');
+        $this->client->request('GET', '/admin/import-status');
 
         $this->assertResponseRedirects('/admin/login');
     }
@@ -21,7 +21,7 @@ class ImportStatusRequestHandlerTest extends AdminWebTestCase
         $this->client->loginUser($this->adminUser());
         $this->watchStorage->write('watch/ride.fit', 'raw-fit-bytes');
 
-        $this->client->request('GET', '/admin/importStatus');
+        $this->client->request('GET', '/admin/import-status');
 
         $this->assertResponseIsSuccessful();
         $this->assertSame(['pending' => true], Json::decode($this->client->getResponse()->getContent()));
@@ -31,7 +31,7 @@ class ImportStatusRequestHandlerTest extends AdminWebTestCase
     {
         $this->client->loginUser($this->adminUser());
 
-        $this->client->request('GET', '/admin/importStatus');
+        $this->client->request('GET', '/admin/import-status');
 
         $this->assertResponseIsSuccessful();
         $this->assertSame(['pending' => false], Json::decode($this->client->getResponse()->getContent()));
