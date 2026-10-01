@@ -13,8 +13,10 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[AsController]
 #[WithMonologChannel('webhooks')]
 final readonly class StravaWebhookRequestHandler
 {
@@ -48,7 +50,6 @@ final readonly class StravaWebhookRequestHandler
 
         if ($verifyToken !== $webhookConfig->getVerifyToken()) {
             $this->logger->error('Invalid verify token received', [
-                'expected' => $webhookConfig->getVerifyToken(),
                 'received' => $verifyToken,
             ]);
 
