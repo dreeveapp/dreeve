@@ -57,12 +57,6 @@ class CacheContextGuardTest extends AdminWebTestCase
         'badge_zwift' => '/badge/zwift.svg',
     ];
 
-    private const array ROUTES_NOT_IN_URLS = [
-        'ai_chat_sse',
-        'chat',
-        'home',
-    ];
-
     public function testEveryListedRouteServesARenderWithACacheKeyOfItsOwn(): void
     {
         $this->provideFullTestSet();
