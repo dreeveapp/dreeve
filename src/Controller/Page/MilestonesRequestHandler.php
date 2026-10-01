@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Page;
 
-use App\Application\AppShell;
 use App\Application\Navigation\NavigationSection;
+use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Milestone\MilestoneCollector;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
@@ -24,15 +23,14 @@ final readonly class MilestonesRequestHandler
         private MilestoneCollector $milestoneCollector,
         private ActivityRepository $activityRepository,
         private Environment $twig,
-        private CacheableRenderer $cacheableRenderer,
-        private AppShell $appShell,
+        private PageRenderer $pageRenderer,
     ) {
     }
 
     #[Route(path: '/milestones', name: 'milestones', methods: ['GET'])]
     public function handle(): HtmlResponse
     {
-        $render = $this->cacheableRenderer->render(
+        return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'milestones',
                 cacheTags: CacheTags::of(
@@ -43,15 +41,7 @@ final readonly class MilestonesRequestHandler
                 ),
             ),
             render: fn (): string => $this->renderFor(),
-        );
-
-        return new HtmlResponse(
-            $this->appShell->render(
-                content: $render->getContent() ?? '',
-                navigationSection: NavigationSection::MILESTONES,
-                openGraph: null,
-            ),
-            headers: $render->getCacheHeaders(),
+            navigationSection: NavigationSection::MILESTONES,
         );
     }
 

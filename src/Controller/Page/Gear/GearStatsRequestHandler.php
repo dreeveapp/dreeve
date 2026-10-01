@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Page\Gear;
 
-use App\Application\AppShell;
 use App\Application\Navigation\NavigationSection;
+use App\Application\PageRenderer;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Calendar\Months;
@@ -19,13 +19,12 @@ use App\Domain\Gear\GearType;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Theme\Theme;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
+use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Serialization\Json;
@@ -48,15 +47,14 @@ final readonly class GearStatsRequestHandler
         private Theme $theme,
         private Clock $clock,
         private Environment $twig,
-        private CacheableRenderer $cacheableRenderer,
-        private AppShell $appShell,
+        private PageRenderer $pageRenderer,
     ) {
     }
 
     #[Route(path: '/gear', name: 'gear', methods: ['GET'])]
-    public function handle(): PrivateNoStoreHtmlResponse
+    public function handle(): HtmlResponse
     {
-        $render = $this->cacheableRenderer->render(
+        return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'gear',
                 cacheTags: CacheTags::of(
@@ -67,15 +65,7 @@ final readonly class GearStatsRequestHandler
                 ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
             ),
             render: fn (): string => $this->renderFor(),
-        );
-
-        return new PrivateNoStoreHtmlResponse(
-            $this->appShell->render(
-                content: $render->getContent() ?? '',
-                navigationSection: NavigationSection::GEAR,
-                openGraph: null,
-            ),
-            headers: $render->getCacheHeaders(),
+            navigationSection: NavigationSection::GEAR,
         );
     }
 

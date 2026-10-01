@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Page\Activity;
 
-use App\Application\AppShell;
 use App\Application\Navigation\NavigationSection;
 use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityCacheTag;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
@@ -24,13 +24,12 @@ use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
+use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Measurement\ProvideMeasurementFormats;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -55,15 +54,14 @@ final readonly class ActivityRequestHandler
         private ActivityLapRepository $activityLapRepository,
         private SettingsRepository $settingsRepository,
         private TranslatorInterface $translator,
-        private CacheableRenderer $cacheableRenderer,
-        private AppShell $appShell,
+        private PageRenderer $pageRenderer,
         private UrlGeneratorInterface $urlGenerator,
         private Environment $twig,
     ) {
     }
 
     #[Route(path: '/activities/{activityId}', name: 'activity', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'])]
-    public function handle(string $activityId): PrivateNoStoreHtmlResponse
+    public function handle(string $activityId): HtmlResponse
     {
         $activityId = ActivityId::fromString($activityId);
 
@@ -75,7 +73,7 @@ final readonly class ActivityRequestHandler
 
         $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
 
-        $render = $this->cacheableRenderer->render(
+        return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('activities.%s', $activityId->toUnprefixedString()),
                 cacheTags: CacheTags::of(
@@ -85,28 +83,21 @@ final readonly class ActivityRequestHandler
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
             ),
             render: fn (): string => $this->renderFor($activityId),
-        );
-
-        return new PrivateNoStoreHtmlResponse(
-            $this->appShell->render(
-                content: $render->getContent() ?? '',
-                navigationSection: NavigationSection::ACTIVITIES,
-                openGraph: new OpenGraph(
-                    path: $this->urlGenerator->generate('activity', ['activityId' => (string) $activity->getId()]),
-                    title: $activity->getName(),
-                    description: implode(' · ', [
-                        $activity->getSportType()->transSingular($this->translator),
-                        $this->formatUnitWithSymbol(
-                            $activity->getDistance()->toUnitSystem($unitSystem),
-                            $activity->getSportType()->getActivityType()->getDistancePrecision(),
-                        ),
-                        $activity->getMovingTimeFormatted(),
-                        $this->formatUnitWithSymbol($activity->getElevation()->toUnitSystem($unitSystem), 0),
-                    ]),
-                    imagePath: $this->urlGenerator->generate('activity_og_image', ['activityId' => (string) $activity->getId()]),
-                ),
+            navigationSection: NavigationSection::ACTIVITIES,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('activity', ['activityId' => (string) $activity->getId()]),
+                title: $activity->getName(),
+                description: implode(' · ', [
+                    $activity->getSportType()->transSingular($this->translator),
+                    $this->formatUnitWithSymbol(
+                        $activity->getDistance()->toUnitSystem($unitSystem),
+                        $activity->getSportType()->getActivityType()->getDistancePrecision(),
+                    ),
+                    $activity->getMovingTimeFormatted(),
+                    $this->formatUnitWithSymbol($activity->getElevation()->toUnitSystem($unitSystem), 0),
+                ]),
+                imagePath: $this->urlGenerator->generate('activity_og_image', ['activityId' => (string) $activity->getId()]),
             ),
-            headers: $render->getCacheHeaders(),
         );
     }
 

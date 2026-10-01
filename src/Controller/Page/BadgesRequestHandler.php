@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Page;
 
-use App\Application\AppShell;
 use App\Application\AppUrl;
+use App\Application\PageRenderer;
 use App\Domain\Activity\BestEffort\BestEffortPeriod;
 use App\Domain\Activity\BestEffort\BestEffortsCalculator;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
@@ -26,29 +25,20 @@ final readonly class BadgesRequestHandler
         private BestEffortsCalculator $bestEffortsCalculator,
         private AppUrl $appUrl,
         private Environment $twig,
-        private CacheableRenderer $cacheableRenderer,
-        private AppShell $appShell,
+        private PageRenderer $pageRenderer,
     ) {
     }
 
     #[Route(path: '/badges', name: 'badges', methods: ['GET'])]
     public function handle(): HtmlResponse
     {
-        $render = $this->cacheableRenderer->render(
+        return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'badges',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_ZWIFT),
             ),
             render: fn (): string => $this->renderFor(),
-        );
-
-        return new HtmlResponse(
-            $this->appShell->render(
-                content: $render->getContent() ?? '',
-                navigationSection: null,
-                openGraph: null,
-            ),
-            headers: $render->getCacheHeaders(),
+            navigationSection: null,
         );
     }
 

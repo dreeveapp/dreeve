@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Page\Dashboard;
 
-use App\Application\AppShell;
 use App\Application\Navigation\NavigationSection;
+use App\Application\PageRenderer;
 use App\Domain\Activity\DailyTrainingLoad;
 use App\Domain\Activity\Stream\ActivityHeartRateRepository;
 use App\Domain\Dashboard\Widget\TrainingLoad\FindNumberOfRestDays\FindNumberOfRestDays;
@@ -14,7 +14,6 @@ use App\Domain\Dashboard\Widget\TrainingLoad\TrainingLoadChart;
 use App\Domain\Dashboard\Widget\TrainingLoad\TrainingLoadForecastProjection;
 use App\Domain\Dashboard\Widget\TrainingLoad\TrainingMetrics;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
@@ -37,30 +36,21 @@ final readonly class TrainingLoadRequestHandler
         private TranslatorInterface $translator,
         private Clock $clock,
         private Environment $twig,
-        private CacheableRenderer $cacheableRenderer,
-        private AppShell $appShell,
+        private PageRenderer $pageRenderer,
     ) {
     }
 
     #[Route(path: '/dashboard/training-load', name: 'dashboard_training_load', methods: ['GET'])]
     public function handle(): HtmlResponse
     {
-        $render = $this->cacheableRenderer->render(
+        return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'dashboard.training-load',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
                 ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
             ),
             render: fn (): string => $this->renderFor(),
-        );
-
-        return new HtmlResponse(
-            $this->appShell->render(
-                content: $render->getContent() ?? '',
-                navigationSection: NavigationSection::DASHBOARD,
-                openGraph: null,
-            ),
-            headers: $render->getCacheHeaders(),
+            navigationSection: NavigationSection::DASHBOARD,
         );
     }
 

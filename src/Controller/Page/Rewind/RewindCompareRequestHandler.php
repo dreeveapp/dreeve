@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Page\Rewind;
 
-use App\Application\AppShell;
 use App\Application\Navigation\NavigationSection;
+use App\Application\PageRenderer;
 use App\Domain\Rewind\FindAvailableRewindOptions\FindAvailableRewindOptions;
 use App\Domain\Rewind\RewindCacheTags;
 use App\Domain\Rewind\RewindItemsBuilder;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -24,8 +23,7 @@ final readonly class RewindCompareRequestHandler
     public function __construct(
         private QueryBus $queryBus,
         private RewindItemsBuilder $rewindItemsBuilder,
-        private CacheableRenderer $cacheableRenderer,
-        private AppShell $appShell,
+        private PageRenderer $pageRenderer,
         private Environment $twig,
     ) {
     }
@@ -48,22 +46,14 @@ final readonly class RewindCompareRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        $render = $this->cacheableRenderer->render(
+        return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('rewind.%s.compare.%s', $left, $right),
                 // Both sides are rendered, so a change to either one of them invalidates this page.
                 cacheTags: RewindCacheTags::forOption($left)->merge(RewindCacheTags::forOption($right)),
             ),
             render: fn (): string => $this->renderFor($left, $right),
-        );
-
-        return new HtmlResponse(
-            $this->appShell->render(
-                content: $render->getContent() ?? '',
-                navigationSection: NavigationSection::REWIND,
-                openGraph: null,
-            ),
-            headers: $render->getCacheHeaders(),
+            navigationSection: NavigationSection::REWIND,
         );
     }
 

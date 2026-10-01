@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Page\Calendar;
 
-use App\Application\AppShell;
 use App\Application\Navigation\NavigationSection;
+use App\Application\PageRenderer;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Calendar\FindMonthlyStats\FindMonthlyStats;
 use App\Domain\Calendar\Month;
 use App\Domain\Calendar\Months;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
@@ -29,29 +28,20 @@ final readonly class MonthlyStatsRequestHandler
         private QueryBus $queryBus,
         private Clock $clock,
         private Environment $twig,
-        private CacheableRenderer $cacheableRenderer,
-        private AppShell $appShell,
+        private PageRenderer $pageRenderer,
     ) {
     }
 
     #[Route(path: '/monthly-stats', name: 'monthly_stats', methods: ['GET'])]
     public function handle(): HtmlResponse
     {
-        $render = $this->cacheableRenderer->render(
+        return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'monthly-stats',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
             ),
             render: fn (): string => $this->renderFor(),
-        );
-
-        return new HtmlResponse(
-            $this->appShell->render(
-                content: $render->getContent() ?? '',
-                navigationSection: NavigationSection::MONTHLY_STATS,
-                openGraph: null,
-            ),
-            headers: $render->getCacheHeaders(),
+            navigationSection: NavigationSection::MONTHLY_STATS,
         );
     }
 

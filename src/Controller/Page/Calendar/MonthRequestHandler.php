@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Page\Calendar;
 
-use App\Application\AppShell;
 use App\Application\Navigation\NavigationSection;
+use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\FindFirstActivityStartDate\FindFirstActivityStartDate;
 use App\Domain\Calendar\Calendar;
 use App\Domain\Calendar\FindMonthlyStats\FindMonthlyStats;
 use App\Domain\Calendar\Month;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
@@ -33,8 +32,7 @@ final readonly class MonthRequestHandler
         private ActivityRepository $activityRepository,
         private QueryBus $queryBus,
         private Clock $clock,
-        private CacheableRenderer $cacheableRenderer,
-        private AppShell $appShell,
+        private PageRenderer $pageRenderer,
         private Environment $twig,
     ) {
     }
@@ -53,7 +51,7 @@ final readonly class MonthRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        $render = $this->cacheableRenderer->render(
+        return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('%s.%s', self::BASE_PATH, $month->getId()),
                 cacheTags: CacheTags::of(
@@ -63,15 +61,7 @@ final readonly class MonthRequestHandler
                 ),
             ),
             render: fn (): string => $this->renderFor($month),
-        );
-
-        return new HtmlResponse(
-            $this->appShell->render(
-                content: $render->getContent() ?? '',
-                navigationSection: NavigationSection::MONTHLY_STATS,
-                openGraph: null,
-            ),
-            headers: $render->getCacheHeaders(),
+            navigationSection: NavigationSection::MONTHLY_STATS,
         );
     }
 

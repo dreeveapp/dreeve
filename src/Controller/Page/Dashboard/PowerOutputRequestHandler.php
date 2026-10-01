@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Page\Dashboard;
 
-use App\Application\AppShell;
 use App\Application\Navigation\NavigationSection;
+use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypeRepository;
 use App\Domain\Activity\FindFirstActivityStartDate\FindFirstActivityStartDate;
@@ -14,13 +14,12 @@ use App\Domain\Activity\Stream\ActivityPowerRepository;
 use App\Domain\Activity\Stream\BestPowerOutputs;
 use App\Domain\Activity\Stream\PowerOutputChart;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
+use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\DateRange;
@@ -40,15 +39,14 @@ final readonly class PowerOutputRequestHandler
         private TranslatorInterface $translator,
         private Clock $clock,
         private Environment $twig,
-        private CacheableRenderer $cacheableRenderer,
-        private AppShell $appShell,
+        private PageRenderer $pageRenderer,
     ) {
     }
 
     #[Route(path: '/dashboard/power-output', name: 'dashboard_power_output', methods: ['GET'])]
-    public function handle(): PrivateNoStoreHtmlResponse
+    public function handle(): HtmlResponse
     {
-        $render = $this->cacheableRenderer->render(
+        return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'dashboard.power-output',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_METRICS),
@@ -56,15 +54,7 @@ final readonly class PowerOutputRequestHandler
                 ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
             ),
             render: fn (): ?string => $this->renderFor(),
-        );
-
-        return new PrivateNoStoreHtmlResponse(
-            $this->appShell->render(
-                content: $render->getContent() ?? '',
-                navigationSection: NavigationSection::DASHBOARD,
-                openGraph: null,
-            ),
-            headers: $render->getCacheHeaders(),
+            navigationSection: NavigationSection::DASHBOARD,
         );
     }
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Page\Segment;
 
-use App\Application\AppShell;
 use App\Application\Navigation\NavigationSection;
+use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityCacheTag;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
@@ -22,7 +22,6 @@ use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTag;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -48,8 +47,7 @@ final readonly class SegmentRequestHandler
         private SettingsRepository $settingsRepository,
         private TranslatorInterface $translator,
         private UrlGeneratorInterface $urlGenerator,
-        private CacheableRenderer $cacheableRenderer,
-        private AppShell $appShell,
+        private PageRenderer $pageRenderer,
         private Environment $twig,
     ) {
     }
@@ -68,7 +66,7 @@ final readonly class SegmentRequestHandler
             self::NUMBER_OF_TOP_EFFORTS
         );
 
-        $render = $this->cacheableRenderer->render(
+        return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('segments.%s', $segment->getId()->toUnprefixedString()),
                 cacheTags: CacheTags::of(
@@ -83,15 +81,7 @@ final readonly class SegmentRequestHandler
                 ),
             ),
             render: fn (): string => $this->renderFor($segment, $topTenSegmentEfforts),
-        );
-
-        return new HtmlResponse(
-            $this->appShell->render(
-                content: $render->getContent() ?? '',
-                navigationSection: NavigationSection::SEGMENTS,
-                openGraph: null,
-            ),
-            headers: $render->getCacheHeaders(),
+            navigationSection: NavigationSection::SEGMENTS,
         );
     }
 

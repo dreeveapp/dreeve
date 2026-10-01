@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Page\Gear;
 
-use App\Application\AppShell;
 use App\Application\Navigation\NavigationSection;
+use App\Application\PageRenderer;
 use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Gears;
@@ -13,12 +13,11 @@ use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
+use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -33,15 +32,14 @@ final readonly class GearMaintenanceRequestHandler
         private MaintenanceTaskProgressCalculator $maintenanceTaskProgressCalculator,
         private Clock $clock,
         private Environment $twig,
-        private CacheableRenderer $cacheableRenderer,
-        private AppShell $appShell,
+        private PageRenderer $pageRenderer,
     ) {
     }
 
     #[Route(path: '/gear/maintenance', name: 'gear_maintenance', methods: ['GET'])]
-    public function handle(): PrivateNoStoreHtmlResponse
+    public function handle(): HtmlResponse
     {
-        $render = $this->cacheableRenderer->render(
+        return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'gear.maintenance',
                 cacheTags: CacheTags::of(
@@ -53,15 +51,7 @@ final readonly class GearMaintenanceRequestHandler
                 ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
             ),
             render: fn (): string => $this->renderFor(),
-        );
-
-        return new PrivateNoStoreHtmlResponse(
-            $this->appShell->render(
-                content: $render->getContent() ?? '',
-                navigationSection: NavigationSection::GEAR,
-                openGraph: null,
-            ),
-            headers: $render->getCacheHeaders(),
+            navigationSection: NavigationSection::GEAR,
         );
     }
 

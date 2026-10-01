@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Page\Segment;
 
-use App\Application\AppShell;
 use App\Application\Countries;
 use App\Application\Navigation\NavigationSection;
+use App\Application\PageRenderer;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Segment\SegmentRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
@@ -26,15 +25,14 @@ final readonly class SegmentsRequestHandler
         private SportTypeRepository $sportTypeRepository,
         private Countries $countries,
         private Environment $twig,
-        private CacheableRenderer $cacheableRenderer,
-        private AppShell $appShell,
+        private PageRenderer $pageRenderer,
     ) {
     }
 
     #[Route(path: '/segments', name: 'segments', methods: ['GET'])]
     public function handle(): HtmlResponse
     {
-        $render = $this->cacheableRenderer->render(
+        return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'segments',
                 cacheTags: CacheTags::of(
@@ -44,15 +42,7 @@ final readonly class SegmentsRequestHandler
                 ),
             ),
             render: fn (): string => $this->renderFor(),
-        );
-
-        return new HtmlResponse(
-            $this->appShell->render(
-                content: $render->getContent() ?? '',
-                navigationSection: NavigationSection::SEGMENTS,
-                openGraph: null,
-            ),
-            headers: $render->getCacheHeaders(),
+            navigationSection: NavigationSection::SEGMENTS,
         );
     }
 

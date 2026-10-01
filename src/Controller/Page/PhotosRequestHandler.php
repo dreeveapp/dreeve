@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller\Page;
 
-use App\Application\AppShell;
 use App\Application\Countries;
 use App\Application\Navigation\NavigationSection;
+use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Infrastructure\Cache\Cacheability;
-use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Context\TrustedVisitorCacheContext;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
+use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -30,30 +29,21 @@ final readonly class PhotosRequestHandler
         private SportTypeRepository $sportTypeRepository,
         private Countries $countries,
         private Environment $twig,
-        private CacheableRenderer $cacheableRenderer,
-        private AppShell $appShell,
+        private PageRenderer $pageRenderer,
     ) {
     }
 
     #[Route(path: '/photos', name: 'photos', methods: ['GET'])]
-    public function handle(): PrivateNoStoreHtmlResponse
+    public function handle(): HtmlResponse
     {
-        $render = $this->cacheableRenderer->render(
+        return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'photos',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITY_IMAGES),
                 cacheContexts: CacheContexts::of(TrustedVisitorCacheContext::class),
             ),
             render: fn (): string => $this->renderFor(),
-        );
-
-        return new PrivateNoStoreHtmlResponse(
-            $this->appShell->render(
-                content: $render->getContent() ?? '',
-                navigationSection: NavigationSection::PHOTOS,
-                openGraph: null,
-            ),
-            headers: $render->getCacheHeaders(),
+            navigationSection: NavigationSection::PHOTOS,
         );
     }
 
