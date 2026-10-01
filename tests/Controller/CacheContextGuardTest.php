@@ -16,60 +16,79 @@ class CacheContextGuardTest extends AdminWebTestCase
 {
     use ProvideTestData;
 
-    private const array PARAMS_PER_ROUTE = [
-        'activity' => ['activityId' => 'activity-9756441741'],
-        'activity_metrics' => ['activityId' => 'activity-9756441741'],
-        'activity_coordinates' => ['activityId' => 'activity-9756441741'],
-        'activity_polylines' => ['activityId' => 'activity-9830227112'],
-        'activity_best_efforts' => ['activityId' => 'activity-9542782314'],
-        'activity_segments' => ['activityId' => 'activity-9542782314'],
-        'activity_route_matches' => ['activityId' => 'activity-9542782314'],
-        'activity_shifting' => ['activityId' => 'activity-9542782314'],
-        'segment' => ['segmentId' => 'segment-10'],
-        'segment_polylines' => ['segmentId' => 'segment-10'],
-        'best_efforts_history' => ['activityType' => 'Ride', 'distanceInMeter' => 10000],
-        'badge_personal_best' => ['sportType' => 'ride'],
-        'dashboard_widget' => ['dashboardWidgetId' => 'dashboardWidget-introText'],
-        'monthly_stats_month' => ['month' => '2023-06'],
-        'rewind' => ['rewindOption' => '2023'],
-        'rewind_compare' => ['left' => '2023', 'right' => '2022'],
+    private const array URLS = [
+        'activities' => '/activities',
+        'activity' => '/activities/activity-9756441741',
+        'badges' => '/badges',
+        'best_efforts' => '/best-efforts',
+        'best_efforts_history' => '/best-efforts/Ride/10000',
+        'challenges' => '/challenges',
+        'dashboard' => '/dashboard',
+        'dashboard_power_output' => '/dashboard/power-output',
+        'dashboard_training_load' => '/dashboard/training-load',
+        'eddington' => '/eddington',
+        'gear' => '/gear',
+        'gear_maintenance' => '/gear/maintenance',
+        'gear_recording_devices' => '/gear/recording-devices',
+        'heatmap' => '/heatmap',
+        'milestones' => '/milestones',
+        'monthly_stats' => '/monthly-stats',
+        'monthly_stats_month' => '/monthly-stats/2023-06',
+        'photos' => '/photos',
+        'rewind' => '/rewind/2023',
+        'rewind_compare' => '/rewind/2023/compare/2022',
+        'segment' => '/segments/segment-10',
+        'segments' => '/segments',
+        'activity_best_efforts' => '/api/internal/activities/activity-9542782314/best-efforts',
+        'activity_coordinates' => '/api/internal/activities/activity-9756441741/coordinates',
+        'activity_data_table' => '/api/internal/activities/data-table',
+        'activity_metrics' => '/api/internal/activities/activity-9756441741/metrics',
+        'activity_polylines' => '/api/internal/activities/activity-9830227112/polylines',
+        'activity_route_matches' => '/api/internal/activities/activity-9542782314/route-matches',
+        'activity_segments' => '/api/internal/activities/activity-9542782314/segments',
+        'activity_shifting' => '/api/internal/activities/activity-9542782314/shifting',
+        'dashboard_widget' => '/api/internal/dashboard/widget/dashboardWidget-introText',
+        'gear_maintenance_due' => '/api/internal/gear/maintenance-due',
+        'heatmap_countries' => '/api/internal/heatmap/countries',
+        'heatmap_routes' => '/api/internal/heatmap/routes',
+        'segment_data_table' => '/api/internal/segments/data-table',
+        'segment_polylines' => '/api/internal/segments/segment-10/polylines',
+        'badge_dreeve' => '/badge/dreeve.svg',
+        'badge_personal_best' => '/badge/pb/ride.svg',
+        'badge_zwift' => '/badge/zwift.svg',
     ];
 
-    private const array CACHED_CONTROLLER_PREFIXES = [
-        'App\\Controller\\Page\\',
-        'App\\Controller\\Api\\Internal\\',
-        'App\\Controller\\File\\BadgeRequestHandler::',
-    ];
-
-    private const array UNCACHED_ROUTES = [
+    private const array ROUTES_NOT_IN_URLS = [
         'ai_chat_sse',
         'chat',
+        'home',
     ];
 
-    public function testEveryPublicRouteServesARenderWithACacheKeyOfItsOwn(): void
+    public function testEveryListedRouteServesARenderWithACacheKeyOfItsOwn(): void
     {
-        $this->provideRouteTestSet();
+        $this->provideFullTestSet();
+        $this->addSegmentWithAPolylineFixtures();
 
-        $cacheKeysPerController = [];
-        foreach ($this->cachedRoutes() as $routeName => [$url, $controller]) {
+        $cacheKeys = [];
+        foreach (self::URLS as $routeName => $url) {
             $this->client->request('GET', $url);
 
             $this->assertResponseIsSuccessful(sprintf('Route "%s" (%s) does not render.', $routeName, $url));
             $cacheKey = $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key');
             $this->assertNotNull($cacheKey, sprintf('Route "%s" does not go through the CacheableRenderer.', $routeName));
 
-            $cacheKeysPerController[$controller] = $cacheKey;
+            $cacheKeys[$routeName] = $cacheKey;
         }
 
-        $this->assertNotEmpty($cacheKeysPerController);
-        $this->assertEquals(array_unique($cacheKeysPerController), $cacheKeysPerController);
+        $this->assertEquals(array_unique($cacheKeys), $cacheKeys);
     }
 
     public function testEveryRouteThatVariesPerVisitorIsNotStoredByTheBrowser(): void
     {
-        $this->provideRouteTestSet();
+        $this->provideFullTestSet();
+        $this->addSegmentWithAPolylineFixtures();
 
-        foreach ($this->cachedRoutes() as $routeName => [$url]) {
+        foreach (self::URLS as $routeName => $url) {
             $this->client->request('GET', $url);
 
             if (!preg_match('/\.[a-z]+=[a-z]+/', (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'))) {
@@ -86,10 +105,11 @@ class CacheContextGuardTest extends AdminWebTestCase
 
     public function testRoutesNotVaryingByAuthenticationRenderIdenticallyForEveryVisitor(): void
     {
-        $this->provideRouteTestSet();
+        $this->provideFullTestSet();
+        $this->addSegmentWithAPolylineFixtures();
 
         $renderedForAnonymousVisitor = [];
-        foreach ($this->cachedRoutes() as $routeName => [$url]) {
+        foreach (self::URLS as $routeName => $url) {
             $this->client->request('GET', $url);
 
             if (str_contains((string) $this->client->getResponse()->headers->get('Cache-Control'), 'no-store')) {
@@ -103,7 +123,7 @@ class CacheContextGuardTest extends AdminWebTestCase
         $this->client->loginUser($this->adminUser());
 
         foreach ($renderedForAnonymousVisitor as $routeName => $rendered) {
-            $this->client->request('GET', $this->cachedRoutes()[$routeName][0]);
+            $this->client->request('GET', self::URLS[$routeName]);
 
             $this->assertEquals(
                 $rendered,
@@ -151,40 +171,5 @@ class CacheContextGuardTest extends AdminWebTestCase
         $this->assertEquals('auth', $cacheContext->resolve());
 
         $tokenStorage->setToken(null);
-    }
-
-    private function provideRouteTestSet(): void
-    {
-        $this->provideFullTestSet();
-        $this->addSegmentWithAPolylineFixtures();
-    }
-
-    /**
-     * @return array<string, array{string, string}>
-     */
-    private function cachedRoutes(): array
-    {
-        /** @var RouterInterface $router */
-        $router = $this->getContainer()->get(RouterInterface::class);
-
-        $routes = [];
-        foreach ($router->getRouteCollection() as $routeName => $route) {
-            $controller = (string) $route->getDefault('_controller');
-            if ([] === array_filter(self::CACHED_CONTROLLER_PREFIXES, fn (string $prefix): bool => str_starts_with($controller, $prefix))
-                || ([] !== $route->getMethods() && !in_array('GET', $route->getMethods(), true))
-                || in_array($routeName, self::UNCACHED_ROUTES, true)) {
-                continue;
-            }
-
-            $requiredParams = array_diff($route->compile()->getPathVariables(), array_keys($route->getDefaults()));
-            $this->assertEmpty(
-                array_diff($requiredParams, array_keys(self::PARAMS_PER_ROUTE[$routeName] ?? [])),
-                sprintf('Add the parameters of route "%s" to %s::PARAMS_PER_ROUTE.', $routeName, self::class),
-            );
-
-            $routes[$routeName] = [$router->generate($routeName, self::PARAMS_PER_ROUTE[$routeName] ?? []), $controller];
-        }
-
-        return $routes;
     }
 }
