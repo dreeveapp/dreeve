@@ -94,6 +94,7 @@ final readonly class ImportActivitiesCommandHandler implements CommandHandler
         }
 
         $delta = 1;
+        $numberOfNewActivitiesProcessed = 0;
         foreach ($stravaActivities as $rawStravaData) {
             if (!SportType::tryFrom($rawStravaData['sport_type'])) {
                 $command->getOutput()->writeln(sprintf(
@@ -165,7 +166,7 @@ final readonly class ImportActivitiesCommandHandler implements CommandHandler
                     rawData: $context->getRawStravaData()
                 ));
 
-                $numberOfNewActivitiesToProcessPerImport->increaseNumberOfProcessedActivities();
+                ++$numberOfNewActivitiesProcessed;
             } else {
                 $this->activityRepository->update(ActivityWithRawData::fromState(
                     activity: $activity,
@@ -194,7 +195,7 @@ final readonly class ImportActivitiesCommandHandler implements CommandHandler
                 $activity->getStartDate()->format('d-m-Y'))
             );
 
-            if ($numberOfNewActivitiesToProcessPerImport->maxNumberProcessed()) {
+            if ($numberOfNewActivitiesToProcessPerImport->hasBeenReachedBy($numberOfNewActivitiesProcessed)) {
                 // Stop importing activities, we reached the max number to process for this batch.
                 break;
             }
@@ -203,7 +204,7 @@ final readonly class ImportActivitiesCommandHandler implements CommandHandler
             ++$delta;
         }
 
-        if ($numberOfNewActivitiesToProcessPerImport->maxNumberProcessed()) {
+        if ($numberOfNewActivitiesToProcessPerImport->hasBeenReachedBy($numberOfNewActivitiesProcessed)) {
             // Shortcut the process here to make sure no activities are deleted yet.
             return;
         }

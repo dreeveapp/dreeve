@@ -406,6 +406,26 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
         );
     }
 
+    public function testHandleAppliesTheMaxNumberOfActivitiesToProcessToEachImport(): void
+    {
+        $this->seedImportSettings(['numberOfNewActivitiesToProcessPerImport' => 1]);
+        $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
+
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed(2))
+                ->build(), []
+        ));
+
+        $this->commandBus->dispatch(new ImportActivities(new SpyOutput(), null));
+        $this->commandBus->dispatch(new ImportActivities(new SpyOutput(), null));
+
+        $this->assertEquals(
+            3,
+            $this->getConnection()->executeQuery('SELECT COUNT(*) FROM Activity')->fetchOne()
+        );
+    }
+
     public function testHandleWithSkipActivitiesRecordedBefore(): void
     {
         $this->seedImportSettings(['skipActivitiesRecordedBefore' => '2023-09-01']);

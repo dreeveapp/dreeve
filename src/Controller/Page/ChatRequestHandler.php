@@ -69,7 +69,7 @@ final readonly class ChatRequestHandler
     }
 
     #[Route('/chat/sse', name: 'ai_chat_sse', methods: ['GET'], priority: 2)]
-    public function chatSse(Request $request): Response
+    public function chatSse(Request $request): EventStreamResponse
     {
         if (!$this->settingsRepository->integrations()->isAIIntegrationWithUIEnabled()) {
             throw new NotFoundHttpException('Not found');

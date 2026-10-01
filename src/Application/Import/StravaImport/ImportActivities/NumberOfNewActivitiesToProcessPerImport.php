@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\Import\StravaImport\ImportActivities;
 
-final class NumberOfNewActivitiesToProcessPerImport
+final readonly class NumberOfNewActivitiesToProcessPerImport
 {
-    private int $numberOfActivitiesProcessed = 0;
-
     private function __construct(
-        private readonly int $value,
+        private int $value,
     ) {
         if ($this->value <= 0) {
             throw new \InvalidArgumentException('NumberOfNewActivitiesToProcessPerImport must be greater than 0');
@@ -21,13 +19,8 @@ final class NumberOfNewActivitiesToProcessPerImport
         return new self($value);
     }
 
-    public function increaseNumberOfProcessedActivities(): void
+    public function hasBeenReachedBy(int $numberOfActivitiesProcessed): bool
     {
-        ++$this->numberOfActivitiesProcessed;
-    }
-
-    public function maxNumberProcessed(): bool
-    {
-        return $this->numberOfActivitiesProcessed >= $this->value;
+        return $numberOfActivitiesProcessed >= $this->value;
     }
 }
