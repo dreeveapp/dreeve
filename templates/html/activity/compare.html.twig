@@ -1,0 +1,71 @@
+<div class="flex items-center justify-between gap-4 mb-4">
+    {% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [
+        {'url': 'activities', 'label': 'Activities'|trans},
+        {'url': 'activities/compare', 'label': 'Compare'|trans}
+    ], 'disableMargin': true} %}
+</div>
+{% autoescape false %}
+    <!-- ACTIVITIES SUB MENU -->
+    {% include 'html/activity/activities-sub-menu.html.twig' with {activeMenuItem: 'compare'} %}
+    <div class="grid grid-cols-1 gap-4">
+        <!-- SELECTED ACTIVITIES -->
+        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
+                <h3 class="text-lg font-semibold">{{ "Compare activities"|trans }}</h3>
+                <div class="w-full sm:w-96">
+                    <label for="comparisonAddActivity" class="sr-only">{{ "Search by name, date or activity ID"|trans }}</label>
+                    <div class="relative w-full">
+                        <div class="absolute inset-y-0 inset-s-0 z-10 flex items-center ps-3 pointer-events-none">
+                            <svg class="size-4 text-gray-500" aria-hidden="true"
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                      stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg>
+                        </div>
+                        <input type="text" id="comparisonAddActivity"
+                               placeholder="{{ "Search by name, date or activity ID"|trans }}"
+                               autocomplete="off" spellcheck="false"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition block w-full ps-10 p-2.5"
+                               data-autocomplete-url="{{ relativeUrl(path('activity_search')) }}"
+                               data-autocomplete-navigate-to="{{ relativeUrl(addUrlTemplate) }}">
+                    </div>
+                </div>
+            </div>
+            {% if rows|length > 0 %}
+                <div class="relative overflow-x-auto mb-4">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xxs uppercase text-gray-400 tracking-wider">
+                            <tr>
+                                <th scope="col" class="px-2 py-2">{{ "Activity"|trans }}</th>
+                                <th scope="col" class="px-2 py-2">{{ "Date"|trans }}</th>
+                                <th scope="col" class="px-2 py-2 text-right">{{ "Time"|trans }}</th>
+                                <th scope="col" class="px-2 py-2"><span class="sr-only">{{ "Remove"|trans }}</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in rows %}
+                                <tr class="border-t border-gray-200">
+                                    <td class="px-2 py-2 font-medium text-gray-900">
+                                        <a href="{{ relativeUrl(path('activity', {'activityId': row.activity.getActivityId()})) }}"
+                                           class="text-blue-600 hover:underline">{{ row.activity.getName() }}</a>
+                                    </td>
+                                    <td class="px-2 py-2">{{ row.activity.getStartDateTime()|formatDate }}</td>
+                                    <td class="px-2 py-2 text-right font-bold text-gray-900">{{ row.activity.getMovingTimeFormatted() }}</td>
+                                    <td class="px-2 py-2 text-right">
+                                        <a href="{{ relativeUrl(row.removeUrl) }}" class="text-primary hover:underline">{{ "Remove"|trans }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+            {% if rows|length < 2 %}
+                <div class="alert alert--info" role="alert">
+                    <span class="sr-only">Info</span>
+                    <div>{{ "Add at least two activities to compare"|trans }}.</div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endautoescape %}

@@ -21,6 +21,7 @@ Activity: Activity
 'Acute Training Load (Fatigue) - 7-day exponentially weighted average of your daily training load. Represents short-term fatigue.': 'Carga de treino aguda (Fadiga) - Média de 7-dias ponderada exponencial da carga de treino. Representa fadiga de curto prazo.'
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Rácio Agudo:Crónico - Rácio entre ATL e CTL. Indica risco de lesão.'
 'Adaptive & Inclusive Sports': 'Desportos Adaptativos e Inclusivos'
+'Add at least two activities to compare': 'Adicione pelo menos duas atividades para comparar'
 'Admin panel': 'Admin panel'
 'Aero sensor': 'Aero sensor'
 Afternoon: Tarde
@@ -71,6 +72,7 @@ Commute: Commute
 Commutes: 'Viagens Escritório'
 'Commutes only': 'Apenas viagens Escritório'
 Compare: Comparar
+'Compare activities': 'Comparar atividades'
 'Compare to': 'Comparar com'
 'Completed {threshold} activities': 'Completed {threshold} activities'
 Components: Components
@@ -345,6 +347,7 @@ Recent: Recent
 'Reduced carbon emission by commuting': 'Reduced carbon emission by commuting'
 'Register maintenance': 'Register maintenance'
 'Relative cost': 'Relative cost'
+Remove: Remover
 'Rest Days': 'Dias de Descanso'
 'Rest days': 'Dias de descanso'
 'Rest days in last 7 days': 'Descanso nos últimos 7 dias'
@@ -367,6 +370,7 @@ Sat: Sáb
 Sat.: Sat.
 Search: Pesquisar
 'Search activity...': 'Pesquisar atividade...'
+'Search by name, date or activity ID': 'Pesquisar por nome, data ou ID da atividade'
 'Search segment...': 'Pesquisar segmento...'
 Segments: Segmentos
 Sep: Set

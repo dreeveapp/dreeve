@@ -4204,6 +4204,9 @@
     .sm\:w-44 {
       width: calc(var(--spacing) * 44);
     }
+    .sm\:w-96 {
+      width: calc(var(--spacing) * 96);
+    }
     .sm\:flex-1 {
       flex: 1;
     }

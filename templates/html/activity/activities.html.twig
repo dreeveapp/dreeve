@@ -11,6 +11,8 @@
     } %}
 </div>
 {% autoescape false %}
+    <!-- ACTIVITIES SUB MENU -->
+    {% include 'html/activity/activities-sub-menu.html.twig' with {activeMenuItem: 'activities'} %}
     <!-- ALL ACTIVITIES -->
     <div class="grid grid-cols-1">
         <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">

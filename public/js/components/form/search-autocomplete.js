@@ -43,8 +43,15 @@ const initSearchAutocomplete = (input) => {
         },
     });
 
+    const navigateTo = input.getAttribute('data-autocomplete-navigate-to');
+
     autoCompleteJS.input.addEventListener('selection', (event) => {
-        input.value = event.detail.selection.value.value;
+        const value = event.detail.selection.value.value;
+        input.value = value;
+
+        if (navigateTo) {
+            window.location.assign(navigateTo.replace('{value}', encodeURIComponent(value)));
+        }
     });
 };
 

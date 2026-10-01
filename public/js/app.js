@@ -16,6 +16,7 @@ import ScrollTo from "./components/scroll-to";
 import MilestoneFilter from "./features/milestones/milestone-filter";
 import DarkModeManager from "./components/dark-mode";
 import initDropdowns from "./components/dropdown";
+import initSearchAutocompletes from "./components/form/search-autocomplete";
 import {initAccordions, initPopovers, initDrawers} from "flowbite";
 
 registerEchartsCallbacks();
@@ -36,6 +37,7 @@ const initElements = (rootNode) => {
 
     initTabs(rootNode);
     initDropdowns(rootNode);
+    initSearchAutocompletes(rootNode);
     initPopovers();
     initAccordions();
 

@@ -21,6 +21,7 @@ Activity: Activiteit
 'Acute Training Load (Fatigue) - 7-day exponentially weighted average of your daily training load. Represents short-term fatigue.': 'Acute Training Load (Vermoeidheid) - exponentieel gewogen gemiddelde over 7 dagen van je dagelijkse trainingsbelasting. Geeft de vermoeidheid op korte termijn weer.'
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Acute:Chronic-ratio - Verhouding tussen ATL en CTL. Geeft het blessurerisico aan.'
 'Adaptive & Inclusive Sports': 'Aangepaste & inclusieve sporten'
+'Add at least two activities to compare': 'Voeg minstens twee activiteiten toe om te vergelijken'
 'Admin panel': Beheerpaneel
 'Aero sensor': Aerosensor
 Afternoon: Namiddag
@@ -71,6 +72,7 @@ Commute: Woon-werk
 Commutes: Woon-werkritten
 'Commutes only': 'Enkel woon-werk'
 Compare: Vergelijken
+'Compare activities': 'Activiteiten vergelijken'
 'Compare to': 'Vergelijken met'
 'Completed {threshold} activities': '{threshold} activiteiten voltooid'
 Components: Onderdelen
@@ -345,6 +347,7 @@ Recent: Recent
 'Reduced carbon emission by commuting': 'Verminderde CO₂-uitstoot door woon-werkverkeer'
 'Register maintenance': 'Onderhoud registreren'
 'Relative cost': 'Relatieve kost'
+Remove: Verwijderen
 'Rest Days': Rustdagen
 'Rest days': Rustdagen
 'Rest days in last 7 days': 'Rustdagen in de laatste 7 dagen'
@@ -367,6 +370,7 @@ Sat: Zat
 Sat.: Za.
 Search: Zoeken
 'Search activity...': 'Zoek activiteit...'
+'Search by name, date or activity ID': 'Zoek op naam, datum of activiteit-ID'
 'Search segment...': 'Zoek segment...'
 Segments: Segmenten
 Sep: Sep

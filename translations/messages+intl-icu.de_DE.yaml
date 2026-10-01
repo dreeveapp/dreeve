@@ -21,6 +21,7 @@ Activity: Aktivität
 'Acute Training Load (Fatigue) - 7-day exponentially weighted average of your daily training load. Represents short-term fatigue.': 'Akute Trainingsbelastung (Ermüdung) - 7-tägiger exponentiell gewichteter Durchschnitt deiner täglichen Trainingsbelastung. Stellt die kurzfristige Ermüdung dar.'
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Aktuelle vs. dauerhafte Trainingsbelastung - Verhältnis von ATL zu CTL. Gibt das Verletzungsrisiko an.'
 'Adaptive & Inclusive Sports': 'Adaptive & inklusive Sportarten'
+'Add at least two activities to compare': 'Füge mindestens zwei Aktivitäten zum Vergleichen hinzu'
 'Admin panel': Adminbereich
 'Aero sensor': Aerodynamiksensor
 Afternoon: Nachmittag
@@ -71,6 +72,7 @@ Commute: Pendelfahrt
 Commutes: Pendelfahrten
 'Commutes only': 'Nur Pendelfahrten'
 Compare: Vergleich
+'Compare activities': 'Aktivitäten vergleichen'
 'Compare to': 'Vergleich zu'
 'Completed {threshold} activities': '{threshold} Aktivitäten abgeschlossen'
 Components: Komponenten
@@ -345,6 +347,7 @@ Recent: Neueste
 'Reduced carbon emission by commuting': 'Reduzierter CO₂-Ausstoß durch Pendeln'
 'Register maintenance': 'Wartung erfassen'
 'Relative cost': 'Relative Kosten'
+Remove: Entfernen
 'Rest Days': Ruhetage
 'Rest days': Ruhetage
 'Rest days in last 7 days': 'Ruhetage in den letzten 7 Tagen'
@@ -367,6 +370,7 @@ Sat: Sa
 Sat.: Sa.
 Search: Suche
 'Search activity...': 'Aktivität suchen...'
+'Search by name, date or activity ID': 'Nach Name, Datum oder Aktivitäts-ID suchen'
 'Search segment...': 'Segment suchen...'
 Segments: Segmente
 Sep: Sep

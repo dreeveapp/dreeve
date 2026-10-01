@@ -21,6 +21,7 @@ Activity: Aktivitet
 'Acute Training Load (Fatigue) - 7-day exponentially weighted average of your daily training load. Represents short-term fatigue.': 'Akut träningsbelastning (trötthet) – 7 dagars exponentiellt viktat medelvärde av din dagliga träningsbelastning. Representerar kortvarig utmattning.'
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Akut:Kronisk Ratio - Ratio av ATL till CTL. Indikerar skaderisk.'
 'Adaptive & Inclusive Sports': 'Adaptiva & Inkluderande Sporter'
+'Add at least two activities to compare': 'Lägg till minst två aktiviteter att jämföra'
 'Admin panel': 'Admin panel'
 'Aero sensor': 'Aero sensor'
 Afternoon: Eftermiddag
@@ -71,6 +72,7 @@ Commute: Commute
 Commutes: Pendling
 'Commutes only': 'Endast pendling'
 Compare: Jämför
+'Compare activities': 'Jämför aktiviteter'
 'Compare to': 'Jämför med'
 'Completed {threshold} activities': 'Completed {threshold} activities'
 Components: Components
@@ -345,6 +347,7 @@ Recent: Recent
 'Reduced carbon emission by commuting': 'Minskade koldioxidutsläpp tack vare pendling'
 'Register maintenance': 'Register maintenance'
 'Relative cost': 'Relativ kostnad'
+Remove: 'Ta bort'
 'Rest Days': Vilodagar
 'Rest days': Vilodagar
 'Rest days in last 7 days': 'Vilodagar de senaste 7 dagarna'
@@ -367,6 +370,7 @@ Sat: Lör
 Sat.: Sat.
 Search: Sök
 'Search activity...': 'Sök aktivitet...'
+'Search by name, date or activity ID': 'Sök på namn, datum eller aktivitets-ID'
 'Search segment...': 'Sök segment...'
 Segments: Segment
 Sep: Sep

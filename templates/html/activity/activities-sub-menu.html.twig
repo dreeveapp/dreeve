@@ -1,0 +1,16 @@
+{% autoescape false %}
+    <ul class="tabs tabs--menu-item">
+        <li>
+            <a href="{{ relativeUrl(path('activities')) }}"
+               class="{{ activeMenuItem == 'activities' ? 'active' : '' }}">
+                {{ "Activities"|trans }}
+            </a>
+        </li>
+        <li>
+            <a href="{{ relativeUrl(path('activities_compare')) }}"
+               class="{{ activeMenuItem == 'compare' ? 'active' : '' }}">
+                {{ "Compare"|trans }}
+            </a>
+        </li>
+    </ul>
+{% endautoescape %}

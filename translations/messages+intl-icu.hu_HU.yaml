@@ -21,6 +21,7 @@ Activity: Tevékenység
 'Acute Training Load (Fatigue) - 7-day exponentially weighted average of your daily training load. Represents short-term fatigue.': 'Akut edzésterhelés (Fáradtság) – a napi edzésterhelés 7 napos exponenciálisan súlyozott átlaga. A rövid távú fáradtságot mutatja.'
 'Acute:Chronic Ratio - Ratio of ATL to CTL. Indicates injury risk.': 'Akut:Krónikus arány – az ATL és CTL aránya. Sérülésveszélyt jelöl.'
 'Adaptive & Inclusive Sports': 'Adaptív és inkluzív sportok'
+'Add at least two activities to compare': 'Adj hozzá legalább két tevékenységet az összehasonlításhoz'
 'Admin panel': Adminfelület
 'Aero sensor': 'Aero szenzor'
 Afternoon: Délután
@@ -71,6 +72,7 @@ Commute: Ingázás
 Commutes: Ingázások
 'Commutes only': 'Csak ingázások'
 Compare: Összehasonlítás
+'Compare activities': 'Tevékenységek összehasonlítása'
 'Compare to': 'Összehasonlítás:'
 'Completed {threshold} activities': '{threshold} tevékenység teljesítve'
 Components: Komponensek
@@ -345,6 +347,7 @@ Recent: Legutóbbi
 'Reduced carbon emission by commuting': 'Csökkentett szén-dioxid kibocsátás ingázással'
 'Register maintenance': 'Karbantartás rögzítése'
 'Relative cost': 'Relatív költség'
+Remove: Eltávolítás
 'Rest Days': Pihenőnapok
 'Rest days': Pihenőnapok
 'Rest days in last 7 days': 'Pihenőnapok az utolsó 7 napban'
@@ -367,6 +370,7 @@ Sat: Szo
 Sat.: Szo.
 Search: Keresés
 'Search activity...': 'Tevékenység keresése...'
+'Search by name, date or activity ID': 'Keresés név, dátum vagy tevékenységazonosító alapján'
 'Search segment...': 'Szegmens keresése...'
 Segments: Szegmensek
 Sep: Szept
