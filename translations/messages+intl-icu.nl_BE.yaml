@@ -326,6 +326,7 @@ Power: Kracht
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Aangedreven door naar schatting {caloriesBurned} calorieën, of ongeveer {numberOfPizzaSlices} pizzapunten 🍕.'
 'Prev year': 'Vorig jaar'
 Previous: Vorige
+'Primary metric': 'Primaire metriek'
 'Purchase price': Aankoopprijs
 Race: Wedstrijd
 'Racing Score': 'Racing Score'
@@ -372,6 +373,7 @@ Search: Zoeken
 'Search activity...': 'Zoek activiteit...'
 'Search by name, date or activity ID': 'Zoek op naam, datum of activiteit-ID'
 'Search segment...': 'Zoek segment...'
+'Secondary metric': 'Secundaire metriek'
 Segments: Segmenten
 Sep: Sep
 Shifting: Schakelen

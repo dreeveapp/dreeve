@@ -14,6 +14,7 @@ import initLightGalleries from "./components/light-gallery";
 import initAsyncContent from "./components/async-content";
 import ScrollTo from "./components/scroll-to";
 import MilestoneFilter from "./features/milestones/milestone-filter";
+import MetricExplorer from "./features/charts/metric-explorer";
 import DarkModeManager from "./components/dark-mode";
 import initDropdowns from "./components/dropdown";
 import initSearchAutocompletes from "./components/form/search-autocomplete";
@@ -64,6 +65,7 @@ eventBus.on(Events.ASYNC_CONTENT_LOADED, ({node}) => {
 initElements(document);
 
 new MilestoneFilter(document).init();
+new MetricExplorer(document).init();
 
 const $heatmapWrapper = document.querySelector('.heatmap-wrapper');
 if ($heatmapWrapper) {

@@ -326,6 +326,7 @@ Power: Teljesítmény
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Ezt becsült {caloriesBurned} kalória hajtotta, ami nagyjából {numberOfPizzaSlices} szelet pizza.'
 'Prev year': 'Előző év'
 Previous: Előző
+'Primary metric': 'Elsődleges mérőszám'
 'Purchase price': Vételár
 Race: Verseny
 'Racing Score': Versenypontszám
@@ -372,6 +373,7 @@ Search: Keresés
 'Search activity...': 'Tevékenység keresése...'
 'Search by name, date or activity ID': 'Keresés név, dátum vagy tevékenységazonosító alapján'
 'Search segment...': 'Szegmens keresése...'
+'Secondary metric': 'Másodlagos mérőszám'
 Segments: Szegmensek
 Sep: Szept
 Shifting: Váltás

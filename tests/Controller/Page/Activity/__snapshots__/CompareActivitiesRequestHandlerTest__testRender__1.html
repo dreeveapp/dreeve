@@ -344,7 +344,21 @@
                     </table>
                 </div>
                                 </div>
-    </div>
+                    <!-- METRIC EXPLORER -->
+            <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs" data-metric-explorer data-metric-explorer-dataset='{"metrics":[{"key":"movingTime","label":"Duration","unit":"","direction":"lowerIsBetter","formatter":"callback:formatSecondsTrimZero","available":true},{"key":"averageSpeed","label":"Avg speed","unit":"km\/h","direction":"higherIsBetter","formatter":null,"available":true},{"key":"normalizedPower","label":"Normalized power","unit":"W","direction":"higherIsBetter","formatter":"callback:toInteger","available":false},{"key":"averagePower","label":"Avg power","unit":"W","direction":"higherIsBetter","formatter":"callback:toInteger","available":true},{"key":"averageHeartRate","label":"Avg heart rate","unit":"bpm","direction":"neutral","formatter":"callback:toInteger","available":true},{"key":"calories","label":"Calories","unit":"kcal","direction":"neutral","formatter":"callback:toInteger","available":true},{"key":"kilojoules","label":"Work","unit":"kJ","direction":"neutral","formatter":"callback:toInteger","available":true},{"key":"elevation","label":"Elevation","unit":"m","direction":"neutral","formatter":"callback:formatElevation","available":true},{"key":"speedToPowerRatio","label":"Speed \/ power","unit":"(km\/h)\/W","direction":"higherIsBetter","formatter":null,"available":true},{"key":"efficiencyFactor","label":"Efficiency factor","unit":"","direction":"higherIsBetter","formatter":null,"available":false}],"defaults":{"primary":"movingTime","secondary":"averagePower"},"rows":[{"id":"activity-9542782314","label":"Morning Ride","date":"2023-07-28 09:34:03","values":{"movingTime":1916,"averageSpeed":23.33,"normalizedPower":null,"averagePower":92,"averageHeartRate":129,"calories":293,"kilojoules":176,"elevation":15,"speedToPowerRatio":0.2536,"efficiencyFactor":null}},{"id":"activity-9756441741","label":"Watopia Flat Forward in London","date":"2023-08-31 16:35:35","values":{"movingTime":3786,"averageSpeed":31.9,"normalizedPower":null,"averagePower":192,"averageHeartRate":154,"calories":695,"kilojoules":728,"elevation":278,"speedToPowerRatio":0.1661,"efficiencyFactor":null}}]}'>
+                <div class="mb-4 flex flex-wrap items-end gap-4">
+                    <div>
+                        <label for="primaryMetric" class="block text-xxs uppercase text-gray-400 tracking-wider">Primary metric</label>
+                        <select id="primaryMetric" data-metric-explorer-select="primary" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition block w-full p-2.5"></select>
+                    </div>
+                    <div>
+                        <label for="secondaryMetric" class="block text-xxs uppercase text-gray-400 tracking-wider">Secondary metric</label>
+                        <select id="secondaryMetric" data-metric-explorer-select="secondary" class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition block w-full p-2.5"></select>
+                    </div>
+                </div>
+                <div class="w-full h-80" data-metric-explorer-chart data-echarts-options="{}"></div>
+            </div>
+            </div>
 
             </main>
 </div>

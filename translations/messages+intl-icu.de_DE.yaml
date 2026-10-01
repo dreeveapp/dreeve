@@ -326,6 +326,7 @@ Power: Leistung
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Dabei wurden geschätzte {caloriesBurned} Kalorien verbraucht, was ungefähr {numberOfPizzaSlices} Pizzastücken entspricht 🍕.'
 'Prev year': Vorjahr
 Previous: Vorherige
+'Primary metric': 'Primäre Metrik'
 'Purchase price': Kaufpreis
 Race: Wettkampf
 'Racing Score': Wettkampfpunktzahl
@@ -372,6 +373,7 @@ Search: Suche
 'Search activity...': 'Aktivität suchen...'
 'Search by name, date or activity ID': 'Nach Name, Datum oder Aktivitäts-ID suchen'
 'Search segment...': 'Segment suchen...'
+'Secondary metric': 'Sekundäre Metrik'
 Segments: Segmente
 Sep: Sep
 Shifting: Schaltvorgänge

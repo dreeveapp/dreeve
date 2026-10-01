@@ -67,5 +67,24 @@
                 </div>
             {% endif %}
         </div>
+        {% if dataset %}
+            <!-- METRIC EXPLORER -->
+            <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs" data-metric-explorer
+                 data-metric-explorer-dataset="{{ dataset|e('html_attr') }}">
+                <div class="mb-4 flex flex-wrap items-end gap-4">
+                    <div>
+                        <label for="primaryMetric" class="block text-xxs uppercase text-gray-400 tracking-wider">{{ "Primary metric"|trans }}</label>
+                        <select id="primaryMetric" data-metric-explorer-select="primary"
+                                class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition block w-full p-2.5"></select>
+                    </div>
+                    <div>
+                        <label for="secondaryMetric" class="block text-xxs uppercase text-gray-400 tracking-wider">{{ "Secondary metric"|trans }}</label>
+                        <select id="secondaryMetric" data-metric-explorer-select="secondary"
+                                class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition block w-full p-2.5"></select>
+                    </div>
+                </div>
+                <div class="w-full h-80" data-metric-explorer-chart data-echarts-options='{}'></div>
+            </div>
+        {% endif %}
     </div>
 {% endautoescape %}

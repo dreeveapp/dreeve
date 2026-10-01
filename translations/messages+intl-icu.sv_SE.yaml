@@ -326,6 +326,7 @@ Power: Effekt
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.'
 'Prev year': 'Tidigare år'
 Previous: Previous
+'Primary metric': 'Primärt mått'
 'Purchase price': 'Purchase price'
 Race: Tävling
 'Racing Score': Tävlingspoäng
@@ -372,6 +373,7 @@ Search: Sök
 'Search activity...': 'Sök aktivitet...'
 'Search by name, date or activity ID': 'Sök på namn, datum eller aktivitets-ID'
 'Search segment...': 'Sök segment...'
+'Secondary metric': 'Sekundärt mått'
 Segments: Segment
 Sep: Sep
 Shifting: Shifting

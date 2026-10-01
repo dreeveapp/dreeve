@@ -326,6 +326,7 @@ Power: 功率
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': '消耗了约{caloriesBurned}卡路里，或大约{numberOfPizzaSlices}片披萨🍕。'
 'Prev year': 去年
 Previous: Previous
+'Primary metric': 主要指标
 'Purchase price': 'Purchase price'
 Race: 比赛
 'Racing Score': 赛车成绩
@@ -372,6 +373,7 @@ Search: 搜索
 'Search activity...': 搜索活动...
 'Search by name, date or activity ID': '按名称、日期或活动 ID 搜索'
 'Search segment...': 搜索路段...
+'Secondary metric': 次要指标
 Segments: 路段
 Sep: 九月
 Shifting: Shifting

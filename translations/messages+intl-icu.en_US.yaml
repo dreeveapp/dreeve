@@ -326,6 +326,7 @@ Power: Power
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.'
 'Prev year': 'Prev year'
 Previous: Previous
+'Primary metric': 'Primary metric'
 'Purchase price': 'Purchase price'
 Race: Race
 'Racing Score': 'Racing Score'
@@ -372,6 +373,7 @@ Search: Search
 'Search activity...': 'Search activity...'
 'Search by name, date or activity ID': 'Search by name, date or activity ID'
 'Search segment...': 'Search segment...'
+'Secondary metric': 'Secondary metric'
 Segments: Segments
 Sep: Sep
 Shifting: Shifting
