@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Page;
 
 use App\Application\AppShell;
-use App\Application\AppUrl;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Settings\SettingsRepository;
@@ -13,7 +12,6 @@ use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
 use App\Infrastructure\Http\ServerSentEvent;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\ValueObject\String\RelativeUrl;
 use GuzzleHttp\Exception\ClientException;
 use NeuronAI\Agent\AgentInterface;
 use NeuronAI\Chat\Enums\MessageRole;
@@ -39,7 +37,6 @@ final readonly class ChatRequestHandler
         private CommandBus $commandBus,
         private SettingsRepository $settingsRepository,
         private FormFactoryInterface $formFactory,
-        private AppUrl $appUrl,
         private AppShell $appShell,
         private Environment $twig,
     ) {
@@ -63,7 +60,7 @@ final readonly class ChatRequestHandler
     public function clearChat(): Response
     {
         if (!$this->settingsRepository->integrations()->isAIIntegrationWithUIEnabled()) {
-            return new Response('UI for AI not enabled', Response::HTTP_OK);
+            throw new NotFoundHttpException('Not found');
         }
 
         $this->chatRepository->clear();
@@ -75,7 +72,7 @@ final readonly class ChatRequestHandler
     public function chatSse(Request $request): Response
     {
         if (!$this->settingsRepository->integrations()->isAIIntegrationWithUIEnabled()) {
-            return new Response('UI for AI not enabled', Response::HTTP_OK);
+            throw new NotFoundHttpException('Not found');
         }
 
         return new EventStreamResponse(function (EventStreamResponse $response) use ($request): void {
@@ -126,7 +123,7 @@ final readonly class ChatRequestHandler
                     type: 'removeThinking'
                 ));
 
-                $message = $e->getMessage().': '.$e->getTraceAsString();
+                $message = $e->getMessage();
                 if ($e instanceof ClientException) {
                     $message = $e->getResponse()->getBody()->getContents(); // @codeCoverageIgnore
                 }
@@ -154,7 +151,6 @@ final readonly class ChatRequestHandler
     private function renderFor(): string
     {
         $form = $this->formFactory->createBuilder()
-            ->setAction(RelativeUrl::from('/ai/chat/user-message', $this->appUrl)->toRelativeUrl())
             ->add('message', TextType::class, [
                 'label' => 'Message',
                 'required' => true,

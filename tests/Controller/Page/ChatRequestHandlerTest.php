@@ -3,7 +3,6 @@
 namespace App\Tests\Controller\Page;
 
 use App\Application\AppShell;
-use App\Application\AppUrl;
 use App\Controller\Page\ChatRequestHandler;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Domain\Integration\AI\Chat\ChatRepository;
@@ -29,6 +28,7 @@ use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\EventStreamResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
 
 #[AllowMockObjectsWithoutExpectations]
@@ -142,7 +142,8 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             false
         );
 
-        $this->assertMatchesHtmlSnapshot($requestHandler->clearChat()->getContent());
+        $this->expectException(NotFoundHttpException::class);
+        $requestHandler->clearChat();
     }
 
     #[AllowMockObjectsWithoutExpectations]
@@ -211,6 +212,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('event: fullMessage', $content);
         $this->assertStringContainsString('event: removeThinking', $content);
         $this->assertStringContainsString('Oh no, I made a booboo', $content);
+        $this->assertStringNotContainsString('#0 ', $content);
         $this->assertStringContainsString('event: done', $content);
 
         $dispatchedCommands = $spyCommandBus->getDispatchedCommands();
@@ -225,8 +227,8 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             false
         );
 
-        $request = new Request(query: ['message' => 'What is my FTP?']);
-        $this->assertMatchesHtmlSnapshot($requestHandler->chatSse($request)->getContent());
+        $this->expectException(NotFoundHttpException::class);
+        $requestHandler->chatSse(new Request(query: ['message' => 'What is my FTP?']));
     }
 
     private function buildRequestHandler(bool $aiUIEnabled): ChatRequestHandler
@@ -238,7 +240,6 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             twig: $this->getContainer()->get(Environment::class),
             settingsRepository: $this->buildSettingsRepository($aiUIEnabled),
             formFactory: $this->getContainer()->get(FormFactoryInterface::class),
-            appUrl: $this->getContainer()->get(AppUrl::class),
             appShell: $this->getContainer()->get(AppShell::class),
         );
     }
@@ -255,7 +256,6 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             twig: $this->getContainer()->get(Environment::class),
             settingsRepository: $this->buildSettingsRepository(true),
             formFactory: $this->getContainer()->get(FormFactoryInterface::class),
-            appUrl: $this->getContainer()->get(AppUrl::class),
             appShell: $this->getContainer()->get(AppShell::class),
         );
     }
