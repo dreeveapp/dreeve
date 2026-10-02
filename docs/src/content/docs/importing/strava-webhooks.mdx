@@ -26,7 +26,7 @@ Cloudflare can incorrectly flag Strava’s requests as bot traffic,
 causing the webhook integration to fail. This includes hosting through a Cloudflare Tunnel.
 :::
 
-## Enable Strava webbooks
+## Enable Strava webhooks
 
 Webhooks are configured in the admin panel, under **Settings → Import**, in the
 *Webhooks* section.
@@ -59,7 +59,7 @@ If everything is configured correctly, you should see an output similar to:
 
 ![Strava webhook subscription](/assets/images/strava-webhook-create-subscription.png "Output of the webhooks-create command")
 
-At this point, Strava will begin sending notifications to your Dreeve instance
+At this point, Strava will begin sending notifications to your Dreeve instance.
 All incoming webhooks will be logged to a separate log file located at `storage/files/logs`
 
 ## View webhook subscriptions
@@ -145,7 +145,7 @@ If you get the following error when trying to create a webhook subscription
 be sure to:
 
 * If hosted on Cloudflare, disable Cloudflare's Bot Fight Mode (as referenced in the docs, above)
-* If running authentication middlware (Authelia, etc.), ensure the URL and request parameters are configured to bypass authentication.
+* If running authentication middleware (Authelia, etc.), ensure the URL and request parameters are configured to bypass authentication.
 
 </TabItem>
 

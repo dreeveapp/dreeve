@@ -5,7 +5,7 @@ description: "Fix common Strava authorization and API errors, such as missing pe
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-During the authorization process with Strava, as well as when using the API, you may encounter various errors 
+During the authorization process with Strava, as well as when using the API, you may encounter various errors. 
 Below is a list of common issues and their solutions.
 
 <Tabs>
@@ -17,8 +17,8 @@ you may receive an error message indicating that the required permissions are mi
 This typically occurs when the access token does not have the required scopes for the requested data 
 and usually means that you didn't finish the authorization process correctly. 
 
-Be sure to [complete the authorization flow](/importing/strava-import/#obtaining-a-strava-refresh-token) and copy/paste the access token to your `.env` file correctly. 
-When you have done so, restart your Docker container to apply the changes.
+Be sure to [complete the authorization flow](/importing/strava-import/#obtaining-a-strava-refresh-token) and copy/paste the refresh token to your `.env` file correctly. 
+When you have done so, recreate your Docker containers (`docker compose up -d`) to apply the changes, restarting is not enough.
 
 ```json
 {
@@ -107,7 +107,7 @@ or switch to file import by setting `IMPORT_MODE=files` in your `.env` file and 
 If you receive an error like the following:
 
 ```
-Strava API threw error: Server Error: 'GET https://www.strava.com/api/v3/activities/[activityid]' restulted in a `500 Internal Server Error` response: 
+Strava API threw error: Server Error: 'GET https://www.strava.com/api/v3/activities/[activityid]' resulted in a `500 Internal Server Error` response: 
 {"message":"error"}
 ```
 
