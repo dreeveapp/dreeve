@@ -66,9 +66,13 @@ export default class HeatmapDrawer {
         );
         this._resetRouteStyles();
 
+        const searchBounds = e.latlng.toBounds((radius + HeatmapDrawer.BAND_IN_METERS) * 2);
         const distances = this.routePolylines.map((entry) => {
-            const line = lineString(entry.coordinates.map(ll => [ll[1], ll[0]]));
-            return pointToLineDistance(clickPoint, line, {units: "meters"});
+            if (!entry.line || !searchBounds.intersects(entry.bounds)) {
+                return Infinity;
+            }
+
+            return pointToLineDistance(clickPoint, entry.line, {units: "meters"});
         });
 
         const closestDistance = Math.min(...distances);
@@ -141,7 +145,8 @@ export default class HeatmapDrawer {
             this.routePolylines.push({
                 route: route,
                 polyline: polyline,
-                coordinates: route.coordinates
+                bounds: polyline.getBounds(),
+                line: route.coordinates.length >= 2 ? lineString(route.coordinates.map(ll => [ll[1], ll[0]])) : null
             });
 
             // A route can pass through multiple countries, it needs to be included in each of them.
