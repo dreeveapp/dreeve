@@ -1,3 +1,31 @@
+# [v5.4.3](https://github.com/dreeveapp/dreeve/releases/tag/v5.4.3) - 2026-10-02
+
+## New features
+* Added the ability to delete gear
+* Added API support for updating gear assigned to an activity
+
+## Improvements
+* Cache the sidebar in the app shell for faster navigation
+* Added a delete button to the activity edit form
+* Use total_moving_time from FIT files when calculating moving time
+* Improved the "Closest route" algorithm on the heatmap page
+
+## Technical details
+* Complete dutch (nl_BE) translation + fix spelling by @imrein in https://github.com/dreeveapp/dreeve/pull/2715
+* ISSUE #2716: Cache sidebar in app shell by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2719
+* ISSUE #2717: add delete button to activity edit form by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2720
+* ISSUE #2718: Allow deleting gear by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2722
+* ISSUE #2723: Refactor Fragment resolver to native Symfony controllers by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2726
+* ISSUE #2728: Clean up code and refactor small parts by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2729
+* ISSUE #2724: Update the gear field via the API   by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2730
+* ISSUE #2732: Use total_moving_time from FIT files for moving time by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2733
+* ISSUE #2734: Improve the "closest route" algorithm on the heatmap page by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2735
+
+## New Contributors
+* @imrein made their first contribution in https://github.com/dreeveapp/dreeve/pull/2715
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.4.2...v5.4.3
+
 # [v5.4.2](https://github.com/dreeveapp/dreeve/releases/tag/v5.4.2) - 2026-09-30
 
 ## New features
