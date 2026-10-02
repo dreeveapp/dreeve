@@ -5,6 +5,11 @@ import HeatmapCountriesLayer from "./heatmap-countries-layer";
 import '../maps/ctrl-scroll-zoom';
 
 export default class HeatmapDrawer {
+    static CLICK_TOLERANCE_IN_PIXELS = 10;
+    static MIN_RADIUS_IN_METERS = 15;
+    static MAX_RADIUS_IN_METERS = 100;
+    static BAND_IN_METERS = 15;
+
     constructor(wrapper, config) {
         this.wrapper = wrapper;
         this.config = config;
@@ -53,30 +58,30 @@ export default class HeatmapDrawer {
 
     _handleMapClick(e) {
         const clickPoint = point([e.latlng.lng, e.latlng.lat]);
-        const NEARBY_DISTANCE_IN_METERS = 100;
+        const containerPoint = this.map.latLngToContainerPoint(e.latlng);
+        const metersPerPixel = this.map.distance(e.latlng, this.map.containerPointToLatLng(containerPoint.add([1, 0])));
+        const radius = Math.min(
+            HeatmapDrawer.MAX_RADIUS_IN_METERS,
+            Math.max(HeatmapDrawer.MIN_RADIUS_IN_METERS, HeatmapDrawer.CLICK_TOLERANCE_IN_PIXELS * metersPerPixel)
+        );
         this._resetRouteStyles();
 
-        const nearby = [];
-        const notNearby = [];
-
-        this.routePolylines.forEach((entry) => {
+        const distances = this.routePolylines.map((entry) => {
             const line = lineString(entry.coordinates.map(ll => [ll[1], ll[0]]));
-            const dist = pointToLineDistance(clickPoint, line, {units: "meters"});
-
-            if (dist <= NEARBY_DISTANCE_IN_METERS) {
-                nearby.push(entry);
-            } else {
-                notNearby.push(entry);
-            }
+            return pointToLineDistance(clickPoint, line, {units: "meters"});
         });
 
-        if (nearby.length === 0) {
+        const closestDistance = Math.min(...distances);
+        if (closestDistance > radius) {
             return;
         }
 
-        notNearby.forEach(entry => {
-            entry.polyline.setStyle(this.inactivePolylineStyle);
-        });
+        const maxDistance = closestDistance + HeatmapDrawer.BAND_IN_METERS;
+        const nearby = this.routePolylines.filter((entry, index) => distances[index] <= maxDistance);
+
+        this.routePolylines
+            .filter((entry, index) => distances[index] > maxDistance)
+            .forEach(entry => entry.polyline.setStyle(this.inactivePolylineStyle));
 
         const html = `
             <div class="m-4 text-sm max-h-50 overflow-y-auto no-dark">
