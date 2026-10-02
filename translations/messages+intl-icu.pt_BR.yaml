@@ -27,7 +27,7 @@ Afternoon: Tarde
 All: Todos
 'All time': 'Desde o início'
 'Alpine Ski': 'Esqui Alpino'
-'Analyze with WindAhead': 'Analyze with WindAhead'
+'Analyze with WindAhead': 'Analisar com WindAhead'
 Apr: Abr
 'Ask Mark something...': 'Pergunte algo ao Mark...'
 'Athlete profile': 'Perfil do atleta'
@@ -354,7 +354,7 @@ Rides: Pedais
 'Risk of detraining': 'Risco de perda de condicionamento'
 'Rock Climbing': Escalada
 'Roller Ski': 'Esqui de Rodas'
-'Rolling stats': 'Rolling stats'
+'Rolling stats': 'Estatísticas recentes'
 Rowing: Remo
 Run: Corrida
 Running: Corrida
@@ -638,12 +638,12 @@ workouts: treinos
 '{numberOfActivities} activities': '{numberOfActivities} atividades'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} atividades em {year}'
 '{numberOfActivities} activities on this route': '{numberOfActivities} atividades nesta rota'
-'{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
+'{numberOfDays}-day rolling window': 'Últimos {numberOfDays} dias'
 '{numberOfMonths} months': '{numberOfMonths} meses'
 '{numberOfResults} photos': '{numberOfResults} fotos'
 '{numberOfResults} results': '{numberOfResults} resultados'
 '{numberOfResults} routes': '{numberOfResults} rotas'
-'{numberOfRoutes} nearby route(s)': '{numberOfRoutes} nearby route(s)'
+'{numberOfRoutes} nearby route(s)': '{numberOfRoutes} rota(s) próxima(s)'
 '{numberOfWeeks} weeks': '{numberOfWeeks} semanas'
 '{threshold} hours using {gearName}': '{threshold} horas usando {gearName}'
 '{threshold} total distance using {gearName}': 'distância total de {threshold} usando {gearName}'
