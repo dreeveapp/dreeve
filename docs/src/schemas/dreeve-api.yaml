@@ -7,6 +7,9 @@ info:
     Every endpoint is authenticated with a bearer token and returns JSON. Errors always use the
     same shape, with a stable `error` code to branch on and a human readable `message`.
 
+    The raw OpenAPI document is available at [/api/openapi.yaml](/api/openapi.yaml), for use with
+    code generators, API clients and AI assistants.
+
     ## Enabling the API
 
     The API is closed until `DREEVE_API_KEY` is set. Generate a key in the admin panel under

@@ -59,6 +59,11 @@ export default defineConfig({
 					],
 					optionalLinks: [
 						{
+							label: 'HTTP API (OpenAPI 3.1)',
+							url: 'https://docs.dreeve.app/api/openapi.yaml',
+							description: 'the full OpenAPI specification of the Dreeve HTTP API',
+						},
+						{
 							label: 'Releases',
 							url: 'https://github.com/dreeveapp/dreeve/releases',
 							description: 'changelog for every Dreeve version',
