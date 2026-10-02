@@ -1,5 +1,6 @@
 ---
 title: "AI assistant"
+description: "Configure a cloud provider, a local Ollama model or OpenRouter for the Dreeve AI workout assistant."
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
@@ -12,8 +13,8 @@ Use caution when enabling this feature if your app is publicly accessible.
 :::
 
 :::note[Important]
-Dreeve uses the <a href="https://docs.neuron-ai.dev">Neuron AI</a> library to interface with AI models.
-Only providers supported by Neuron AI are compatible. See the full list of <a href="https://docs.neuron-ai.dev/providers/ai-provider">supported providers</a>
+Dreeve uses the [Neuron AI](https://docs.neuron-ai.dev) library to interface with AI models.
+Only providers supported by Neuron AI are compatible. See the full list of [supported providers](https://docs.neuron-ai.dev/providers/ai-provider)
 :::
 
 ## Configuring an AI provider
@@ -52,7 +53,7 @@ services:
 
 :::tip
 Looking for more advanced setups?
-Check out this <a href="https://github.com/mythrantic/ollama-docker">Ollama Docker GitHub repository</a>.
+Check out this [Ollama Docker GitHub repository](https://github.com/mythrantic/ollama-docker).
 :::
 
 Next, download the model you want to use. For example, to run `llama3.2`:
@@ -68,7 +69,7 @@ Finally, enable the integration, choose the `ollama` provider, and set:
   runs in the same Docker network as Dreeve. The URL must include the scheme and end with `/api`.
 
 :::note[Important]
-Make sure you're running the latest version of Ollama. Streaming responses with tooling has been <a href="https://ollama.com/blog/streaming-tool">added on May 28, 2025.</a>
+Make sure you're running the latest version of Ollama. Streaming responses with tooling has been [added on May 28, 2025](https://ollama.com/blog/streaming-tool).
 :::
 
 </TabItem>
