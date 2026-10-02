@@ -219,7 +219,7 @@ final readonly class FitFileParser implements ActivityFileParser
             averageHeartRate: is_numeric($session['avg_heart_rate'] ?? null) ? (int) round((float) $session['avg_heart_rate']) : Math::average($streamMap[StreamType::HEART_RATE->value]),
             maxHeartRate: is_numeric($session['max_heart_rate'] ?? null) ? (int) round((float) $session['max_heart_rate']) : Math::max($streamMap[StreamType::HEART_RATE->value]),
             averageCadence: is_numeric($session['avg_cadence'] ?? null) ? (int) round((float) $session['avg_cadence']) : Math::average($streamMap[StreamType::CADENCE->value]),
-            movingTimeInSeconds: is_numeric($session['total_timer_time'] ?? null) ? (int) round((float) $session['total_timer_time']) : 0,
+            movingTimeInSeconds: (int) round($this->resolveMovingTime($session) ?? 0.0),
             elapsedTimeInSeconds: is_numeric($session['total_elapsed_time'] ?? null) ? (int) round((float) $session['total_elapsed_time']) : 0,
             deviceName: $deviceName,
             connectedSensors: $this->resolveConnectedSensors($deviceInfoMessages),
@@ -262,7 +262,7 @@ final readonly class FitFileParser implements ActivityFileParser
                     lapNumber: $index + 1,
                     name: sprintf('Lap %d', $index + 1),
                     elapsedTimeInSeconds: is_numeric($lap['total_elapsed_time'] ?? null) ? (int) round((float) $lap['total_elapsed_time']) : 0,
-                    movingTimeInSeconds: is_numeric($lap['total_timer_time'] ?? null) ? (int) round((float) $lap['total_timer_time']) : 0,
+                    movingTimeInSeconds: (int) round($this->resolveMovingTime($lap) ?? 0.0),
                     distance: Meter::from(is_numeric($lap['total_distance'] ?? null) ? (float) $lap['total_distance'] : 0.0),
                     averageSpeed: MetersPerSecond::from($this->resolveLapAverageSpeed($lap)),
                     maxSpeed: MetersPerSecond::from(is_numeric($lap['enhanced_max_speed'] ?? $lap['max_speed'] ?? null) ? (float) ($lap['enhanced_max_speed'] ?? $lap['max_speed'] ?? null) : 0.0),
@@ -280,6 +280,10 @@ final readonly class FitFileParser implements ActivityFileParser
      */
     private function resolveLapAverageSpeed(array $lap): float
     {
+        if (null !== $speed = $this->averageSpeedFromMovingTime($lap)) {
+            return $speed;
+        }
+
         if (is_numeric($lap['enhanced_avg_speed'] ?? $lap['avg_speed'] ?? null)) {
             return (float) ($lap['enhanced_avg_speed'] ?? $lap['avg_speed']);
         }
@@ -447,6 +451,10 @@ final readonly class FitFileParser implements ActivityFileParser
      */
     private function resolveAverageSpeed(array $session, array $velocityStream): MetersPerSecond
     {
+        if (null !== $speed = $this->averageSpeedFromMovingTime($session)) {
+            return MetersPerSecond::from($speed);
+        }
+
         if (is_numeric($session['enhanced_avg_speed'] ?? $session['avg_speed'] ?? null)) {
             return MetersPerSecond::from((float) ($session['enhanced_avg_speed'] ?? $session['avg_speed']));
         }
@@ -480,6 +488,32 @@ final readonly class FitFileParser implements ActivityFileParser
         }
 
         return $sessionAverage;
+    }
+
+    /**
+     * @param array<string, mixed> $message
+     */
+    private function resolveMovingTime(array $message): ?float
+    {
+        if (is_numeric($message['total_moving_time'] ?? null)) {
+            return (float) $message['total_moving_time'];
+        }
+
+        return is_numeric($message['total_timer_time'] ?? null) ? (float) $message['total_timer_time'] : null;
+    }
+
+    /**
+     * @param array<string, mixed> $message
+     */
+    private function averageSpeedFromMovingTime(array $message): ?float
+    {
+        $totalDistance = is_numeric($message['total_distance'] ?? null) ? (float) $message['total_distance'] : null;
+        $totalMovingTime = is_numeric($message['total_moving_time'] ?? null) ? (float) $message['total_moving_time'] : null;
+        if (null === $totalDistance || null === $totalMovingTime || $totalMovingTime <= 0.0) {
+            return null;
+        }
+
+        return $totalDistance / $totalMovingTime;
     }
 
     /**

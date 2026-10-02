@@ -62,6 +62,15 @@ class FitFileParserTest extends ActivityFileParserTestCase
         );
     }
 
+    public function testParsePrefersTotalMovingTimeOverTimerTime(): void
+    {
+        $this->givenFitToolReturns((string) file_get_contents(__DIR__.'/fixtures/fit-document-with-total-moving-time.json'));
+
+        $this->assertParsedFileMatchesSnapshot(
+            $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))
+        );
+    }
+
     public function testParseUsesWorkoutNameAndDescription(): void
     {
         $this->givenFitToolReturns((string) file_get_contents(__DIR__.'/fixtures/fit-document-with-workout.json'));
