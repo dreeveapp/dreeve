@@ -139,7 +139,7 @@ final readonly class FitFileParser implements ActivityFileParser
             default => $productName ?? FitManufacturer::name($manufacturerId),
         };
 
-        if ([] === $records) {
+        if ([] === $records && [] === $sessionMessages) {
             throw new CouldNotParseActivityFile(message: sprintf('No FIT "record" messages found in "%s"', $file->getPath()->getFilename()), activityFile: $file);
         }
 

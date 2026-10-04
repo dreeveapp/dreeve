@@ -62,6 +62,35 @@ class FitFileParserTest extends ActivityFileParserTestCase
         );
     }
 
+    public function testParseSessionWithoutRecords(): void
+    {
+        $this->givenFitToolReturns((string) file_get_contents(__DIR__.'/fixtures/fit-document-session-only.json'));
+
+        $this->assertParsedFileMatchesSnapshot(
+            $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))
+        );
+    }
+
+    public function testParseWithoutRecordsAndWithoutSessionThrows(): void
+    {
+        $this->givenFitToolReturns(Json::encode([
+            'files' => [[
+                'profileVersion' => 2132,
+                'messages' => [
+                    ['name' => 'file_id', 'fields' => []],
+                    ['name' => 'monitoring', 'fields' => [
+                        ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS],
+                    ]],
+                ],
+            ]],
+        ]));
+
+        $rawActivityFile = RawActivityFile::from(Path::fromString('/tmp/activity.fit'), '');
+
+        $this->expectExceptionObject(new CouldNotParseActivityFile('No FIT "record" messages found in "activity.fit"', $rawActivityFile));
+        $this->parser->parse($rawActivityFile);
+    }
+
     public function testParsePrefersTotalMovingTimeOverTimerTime(): void
     {
         $this->givenFitToolReturns((string) file_get_contents(__DIR__.'/fixtures/fit-document-with-total-moving-time.json'));

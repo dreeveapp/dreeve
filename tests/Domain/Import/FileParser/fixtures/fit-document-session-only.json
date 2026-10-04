@@ -1,0 +1,65 @@
+{
+    "files": [
+        {
+            "profileVersion": 2132,
+            "messages": [
+                {
+                    "name": "file_id",
+                    "fields": [
+                        {"name": "type", "value": 4},
+                        {"name": "time_created", "value": 1159746155}
+                    ]
+                },
+                {
+                    "name": "event",
+                    "fields": [
+                        {"name": "timestamp", "value": 1159744450},
+                        {"name": "event", "value": 0},
+                        {"name": "event_type", "value": 0}
+                    ]
+                },
+                {
+                    "name": "event",
+                    "fields": [
+                        {"name": "timestamp", "value": 1159746155},
+                        {"name": "event", "value": 0},
+                        {"name": "event_type", "value": 4}
+                    ]
+                },
+                {
+                    "name": "lap",
+                    "fields": [
+                        {"name": "timestamp", "value": 1159746155},
+                        {"name": "start_time", "value": 1159744450},
+                        {"name": "total_elapsed_time", "value": 1705},
+                        {"name": "total_timer_time", "value": 1705},
+                        {"name": "total_distance", "value": 4189},
+                        {"name": "total_calories", "value": 228},
+                        {"name": "avg_heart_rate", "value": 162}
+                    ]
+                },
+                {
+                    "name": "session",
+                    "fields": [
+                        {"name": "timestamp", "value": 1159746155},
+                        {"name": "start_time", "value": 1159744450},
+                        {"name": "sport", "value": 1},
+                        {"name": "sub_sport", "value": 2},
+                        {"name": "total_elapsed_time", "value": 1705},
+                        {"name": "total_timer_time", "value": 1705},
+                        {"name": "total_distance", "value": 4189},
+                        {"name": "total_calories", "value": 228},
+                        {"name": "avg_heart_rate", "value": 162}
+                    ]
+                },
+                {
+                    "name": "activity",
+                    "fields": [
+                        {"name": "timestamp", "value": 1159746155},
+                        {"name": "num_sessions", "value": 1}
+                    ]
+                }
+            ]
+        }
+    ]
+}
