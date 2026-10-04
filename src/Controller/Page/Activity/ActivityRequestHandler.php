@@ -133,7 +133,7 @@ final readonly class ActivityRequestHandler
                 'polylineUrl' => $this->urlGenerator->generate('activity_polylines', ['activityId' => (string) $activityId]),
                 'map' => $leafletMap,
             ] : null,
-            'hasGpxLink' => $this->activityStreamRepository->hasOneForActivityAndStreamType($activityId, StreamType::TIME),
+            'hasGpxLink' => $this->activityStreamRepository->hasOneForActivityAndStreamType($activityId, StreamType::LAT_LNG),
             'gpxFileName' => GpxFileName::for($activity),
             'distributionCharts' => $this->distributionChartsBuilder->buildFor($activity),
             'splits' => $this->activitySplitRepository->findBy(

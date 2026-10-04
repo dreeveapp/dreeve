@@ -88,7 +88,7 @@ final readonly class ActivityUpdateRequestHandler
 
         return ActivityResponse::detail(
             activity: $this->activityRepository->find($activity->getId()),
-            hasGpx: $this->activityStreamRepository->hasOneForActivityAndStreamType($activity->getId(), StreamType::TIME),
+            hasGpx: $this->activityStreamRepository->hasOneForActivityAndStreamType($activity->getId(), StreamType::LAT_LNG),
         );
     }
 }

@@ -24,10 +24,10 @@ final readonly class GpxSerializer
         $activity = $this->activityRepository->find($activityId);
         $activitySteams = $this->activityStreamRepository->findByActivityId($activity->getId());
 
-        if (!($timeStream = $activitySteams->filterOnType(StreamType::TIME)) instanceof Stream\ActivityStream) {
+        if (!($latLngStream = $activitySteams->filterOnType(StreamType::LAT_LNG)) instanceof Stream\ActivityStream) {
             return null;
         }
-        $latLngStream = $activitySteams->filterOnType(StreamType::LAT_LNG)?->getData() ?? [];
+        $timeStream = $activitySteams->filterOnType(StreamType::TIME)?->getData() ?? [];
         $altitudeStream = $activitySteams->filterOnType(StreamType::ALTITUDE)?->getData() ?? [];
         $powerStream = $activitySteams->filterOnType(StreamType::WATTS)?->getData() ?? [];
         $heartRateStream = $activitySteams->filterOnType(StreamType::HEART_RATE)?->getData() ?? [];
@@ -35,7 +35,7 @@ final readonly class GpxSerializer
         $temperatureStream = $activitySteams->filterOnType(StreamType::TEMP)?->getData() ?? [];
 
         $rootNode = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><gpx/>');
-        $rootNode->addAttribute('creator', 'Strava Statitics');
+        $rootNode->addAttribute('creator', 'Dreeve');
         $rootNode->addAttribute('version', '1.1');
         $rootNode->addAttribute('xmlns', 'http://www.topografix.com/GPX/1/1');
         $rootNode->addAttribute('xmlns:xmlns:gpx3', 'http://www.garmin.com/xmlschemas/GpxExtensions/v3');
@@ -63,18 +63,21 @@ final readonly class GpxSerializer
         }
         $trksegNode = $trkNode->addChild('trkseg');
 
-        foreach ($timeStream->getData() as $i => $time) {
-            $trkptNode = $trksegNode->addChild('trkpt');
-            if (isset($latLngStream[$i])) {
-                $trkptNode->addAttribute('lat', (string) $latLngStream[$i][0]);
-                $trkptNode->addAttribute('lon', (string) $latLngStream[$i][1]);
+        foreach ($latLngStream->getData() as $i => $latLng) {
+            if (!is_array($latLng)) {
+                continue;
             }
+            $trkptNode = $trksegNode->addChild('trkpt');
+            $trkptNode->addAttribute('lat', (string) $latLng[0]);
+            $trkptNode->addAttribute('lon', (string) $latLng[1]);
 
-            $intervalInSeconds = \DateInterval::createFromDateString($time.' seconds');
-            $trkptNode->addChild(
-                'time',
-                $activity->getStartDate()->add($intervalInSeconds)->toUtc()->format(self::DATE_TIME_FORMAT)
-            );
+            if (isset($timeStream[$i])) {
+                $intervalInSeconds = \DateInterval::createFromDateString($timeStream[$i].' seconds');
+                $trkptNode->addChild(
+                    'time',
+                    $activity->getStartDate()->add($intervalInSeconds)->toUtc()->format(self::DATE_TIME_FORMAT)
+                );
+            }
 
             if (isset($altitudeStream[$i])) {
                 $trkptNode->addChild('ele', (string) $altitudeStream[$i]);

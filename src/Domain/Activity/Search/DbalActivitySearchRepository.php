@@ -25,7 +25,7 @@ final readonly class DbalActivitySearchRepository extends DbalRepository impleme
                 self::HAS_GPX_EXPRESSION.' AS hasGpx',
             )
             ->from('Activity', 'a')
-            ->setParameter('gpxStreamType', StreamType::TIME->value)
+            ->setParameter('gpxStreamType', StreamType::LAT_LNG->value)
             ->orderBy('a.startDateTime', 'DESC')
             ->setFirstResult($pagination->getOffset())
             ->setMaxResults($pagination->getLimit());
@@ -60,7 +60,7 @@ final readonly class DbalActivitySearchRepository extends DbalRepository impleme
             if (null !== $hasGpx = $filters->hasGpx()) {
                 $builder
                     ->andWhere($hasGpx ? self::HAS_GPX_EXPRESSION : 'NOT '.self::HAS_GPX_EXPRESSION)
-                    ->setParameter('gpxStreamType', StreamType::TIME->value);
+                    ->setParameter('gpxStreamType', StreamType::LAT_LNG->value);
             }
         }
 

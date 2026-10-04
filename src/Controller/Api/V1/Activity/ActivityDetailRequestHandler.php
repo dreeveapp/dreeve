@@ -33,7 +33,7 @@ final readonly class ActivityDetailRequestHandler
 
         return ActivityResponse::detail(
             activity: $activity,
-            hasGpx: $this->activityStreamRepository->hasOneForActivityAndStreamType($activity->getId(), StreamType::TIME),
+            hasGpx: $this->activityStreamRepository->hasOneForActivityAndStreamType($activity->getId(), StreamType::LAT_LNG),
         );
     }
 }

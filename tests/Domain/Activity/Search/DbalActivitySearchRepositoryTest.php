@@ -238,6 +238,13 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
         $this->activityStreamRepository->add(
             ActivityStreamBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('200'))
+                ->withStreamType(StreamType::LAT_LNG)
+                ->withData([[51.2, 3.2], [51.3, 3.3]])
+                ->build()
+        );
+        $this->activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('300'))
                 ->withStreamType(StreamType::TIME)
                 ->withData([0, 1, 2])
                 ->build()

@@ -40,7 +40,7 @@ final readonly class ActivityGpxRequestHandler
             return new ApiErrorResponse(
                 statusCode: Response::HTTP_NOT_FOUND,
                 error: 'gpx_not_available',
-                message: sprintf('Activity "%s" has no GPS or time data to export as GPX.', $activityId),
+                message: sprintf('Activity "%s" has no GPS data to export as GPX.', $activityId),
             );
         }
 

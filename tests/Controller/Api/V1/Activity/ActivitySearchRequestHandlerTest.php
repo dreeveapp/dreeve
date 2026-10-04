@@ -2,9 +2,13 @@
 
 namespace App\Tests\Controller\Api\V1\Activity;
 
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\Stream\ActivityStreamRepository;
+use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Security\Api\Token;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -71,6 +75,13 @@ class ActivitySearchRequestHandlerTest extends ControllerWebTestCase
     public function testItFiltersOnActivitiesThatHaveGpx(): void
     {
         $this->provideFullTestSet();
+        $activityStreamRepository = $this->getContainer()->get(ActivityStreamRepository::class);
+        assert($activityStreamRepository instanceof ActivityStreamRepository);
+        $activityStreamRepository->add(ActivityStreamBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed('9756441741'))
+            ->withStreamType(StreamType::LAT_LNG)
+            ->withData([[51.2, 3.2], [51.21, 3.21]])
+            ->build());
 
         $this->client->request('GET', self::PATH.'?filters[hasGpx]=true', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
