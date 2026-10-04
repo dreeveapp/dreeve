@@ -67,6 +67,8 @@ final readonly class DbalFileImportSearchRepository extends DbalRepository imple
             }
         }
 
+        $filename = $filters->getFilename();
+        $sources = $filters->getSources();
         $queued = $this->watchDirectory->listFilesThatCanBeProcessed()
             ->map(static function (StorageAttributes $file): FileImportOverviewItem {
                 $path = Path::fromString($file->path());
@@ -76,6 +78,8 @@ final readonly class DbalFileImportSearchRepository extends DbalRepository imple
                     source: SupportedFileExtension::from($path->getExtension())->getImportSource(),
                 );
             })
+            ->filter(static fn (FileImportOverviewItem $item): bool => (null === $filename || $filename === $item->getOriginalFilename())
+                && ([] === $sources || in_array($item->getSource(), $sources, true)))
             ->toArray();
 
         $items = array_values(array_slice($queued, $pagination->getOffset(), $pagination->getLimit()));

@@ -36,25 +36,27 @@ class FileImportSearchRequestHandlerTest extends ControllerWebTestCase
     }
 
     #[DataProvider('provideFilterScenarios')]
-    public function testItAppliesFiltersToImportsButNotToQueuedFiles(string $queryString, array $expectedFilenames): void
+    public function testItAppliesFilters(string $queryString, array $expectedFilenames): void
     {
         $this->seedFileImports();
 
         $this->client->request('GET', self::PATH.$queryString, server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
-        $this->assertSame(
-            $expectedFilenames,
-            array_column(Json::decode((string) $this->client->getResponse()->getContent())['fileImports'], 'filename')
-        );
+        $response = Json::decode((string) $this->client->getResponse()->getContent());
+        $this->assertSame($expectedFilenames, array_column($response['fileImports'], 'filename'));
+        $this->assertSame(count($expectedFilenames), $response['pagination']['total']);
     }
 
     public static function provideFilterScenarios(): iterable
     {
-        yield 'a filename' => ['?filters[filename]=ride.fit', ['queued.gpx', 'ride.fit', 'ride.fit']];
+        yield 'a filename' => ['?filters[filename]=ride.fit', ['ride.fit', 'ride.fit']];
+        yield 'the filename of a queued file' => ['?filters[filename]=queued.gpx', ['queued.gpx']];
+        yield 'an unknown filename' => ['?filters[filename]=does-not-exist.fit', []];
         yield 'a single status' => ['?filters[status]=failed', ['queued.gpx', 'broken.tcx']];
         yield 'several comma separated statuses' => ['?filters[status]=failed,skipped', ['queued.gpx', 'broken.tcx', 'ride.fit']];
-        yield 'a single source' => ['?filters[source]=tcxFile', ['queued.gpx', 'broken.tcx']];
-        yield 'filters combine' => ['?filters[filename]=ride.fit&filters[status]=success', ['queued.gpx', 'ride.fit']];
+        yield 'a single source' => ['?filters[source]=tcxFile', ['broken.tcx']];
+        yield 'the source of a queued file' => ['?filters[source]=gpxFile', ['queued.gpx']];
+        yield 'filters combine' => ['?filters[filename]=ride.fit&filters[status]=success', ['ride.fit']];
     }
 
     #[DataProvider('providePaginationScenarios')]
