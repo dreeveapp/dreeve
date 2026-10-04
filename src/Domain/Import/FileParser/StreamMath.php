@@ -15,22 +15,38 @@ final readonly class StreamMath
 {
     // Interval longer than this is treated as a recording gap rather than active time.
     public const int MAX_RECORDING_GAP_IN_SECONDS = 60;
+    public const int ELEVATION_SMOOTHING_WINDOW = 15;
+    public const float ELEVATION_GAIN_THRESHOLD_IN_METERS = 3.0;
 
     /**
      * @param list<?float> $altitudes
      */
     public static function elevationGain(array $altitudes): float
     {
+        $altitudes = array_values(array_filter($altitudes, static fn (?float $altitude): bool => null !== $altitude));
+        $count = count($altitudes);
+        if (0 === $count) {
+            return 0.0;
+        }
+
+        $prefixSums = [0.0];
+        foreach ($altitudes as $index => $altitude) {
+            $prefixSums[$index + 1] = $prefixSums[$index] + $altitude;
+        }
+
+        $maxRadius = intdiv(self::ELEVATION_SMOOTHING_WINDOW, 2);
         $gain = 0.0;
-        $previous = null;
-        foreach ($altitudes as $altitude) {
-            if (null === $altitude) {
-                continue;
+        $reference = $altitudes[0];
+        for ($index = 0; $index < $count; ++$index) {
+            $radius = min($maxRadius, $index, $count - 1 - $index);
+            $smoothed = ($prefixSums[$index + $radius + 1] - $prefixSums[$index - $radius]) / (2 * $radius + 1);
+
+            if ($smoothed - $reference >= self::ELEVATION_GAIN_THRESHOLD_IN_METERS) {
+                $gain += $smoothed - $reference;
+                $reference = $smoothed;
+            } elseif ($reference - $smoothed >= self::ELEVATION_GAIN_THRESHOLD_IN_METERS) {
+                $reference = $smoothed;
             }
-            if (null !== $previous && $altitude > $previous) {
-                $gain += $altitude - $previous;
-            }
-            $previous = $altitude;
         }
 
         return $gain;

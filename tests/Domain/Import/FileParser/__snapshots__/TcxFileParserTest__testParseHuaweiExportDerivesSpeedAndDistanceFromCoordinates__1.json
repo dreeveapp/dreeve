@@ -13,7 +13,7 @@
         "name": "Night Run",
         "description": "",
         "distance": 35,
-        "elevation": 3,
+        "elevation": 0,
         "calories": 12,
         "kilojoules": null,
         "averagePower": null,
