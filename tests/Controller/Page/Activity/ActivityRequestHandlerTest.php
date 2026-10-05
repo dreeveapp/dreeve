@@ -14,6 +14,7 @@ use App\Domain\Activity\Stream\Metric\ActivityStreamMetric;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Activity\Stream\StreamType;
+use App\Infrastructure\Config\DemoMode;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -37,7 +38,7 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
         $this->assertStringEndsWith(
-            'activities.9756441741.auth=anon',
+            'activities.9756441741.auth=anon.trust=trusted',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
         $this->assertResponseHeaderSame(
@@ -155,6 +156,34 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
             sprintf('<div class="text-sm font-semibold mb-2 text-center">%s</div>', $title),
             (string) $this->client->getResponse()->getContent(),
         );
+    }
+
+    #[DataProvider('provideStartTimeVisibility')]
+    public function testItOnlyShowsTheStartTimeToTrustedVisitors(bool $demoModeIsEnabled, bool $loggedIn, bool $expectStartTime, string $expectedCacheKeySuffix): void
+    {
+        $this->provideFullTestSet();
+        $this->getContainer()->set(DemoMode::class, DemoMode::fromString($demoModeIsEnabled ? '1' : '0'));
+        if ($loggedIn) {
+            $this->client->loginUser($this->adminUser());
+        }
+
+        $this->client->request('GET', '/activities/activity-9756441741');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringEndsWith(
+            $expectedCacheKeySuffix,
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
+        );
+        $content = (string) $this->client->getResponse()->getContent();
+        $this->assertStringContainsString('August 31, 2023', $content);
+        $this->assertSame($expectStartTime, str_contains($content, '16:35'));
+    }
+
+    public static function provideStartTimeVisibility(): \Generator
+    {
+        yield 'demo mode disabled' => [false, false, true, 'auth=anon.trust=trusted'];
+        yield 'demo mode, anonymous visitor' => [true, false, false, 'auth=anon.trust=anonymized'];
+        yield 'demo mode, logged in visitor' => [true, true, true, 'auth=auth.trust=trusted'];
     }
 
     #[DataProvider('provideUrlsThatAreNotFound')]

@@ -26,11 +26,13 @@ use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
+use App\Infrastructure\Cache\Context\TrustedVisitorCacheContext;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Measurement\ProvideMeasurementFormats;
+use App\Infrastructure\Security\TrustedVisitor;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -56,6 +58,7 @@ final readonly class ActivityRequestHandler
         private TranslatorInterface $translator,
         private PageRenderer $pageRenderer,
         private UrlGeneratorInterface $urlGenerator,
+        private TrustedVisitor $trustedVisitor,
         private Environment $twig,
     ) {
     }
@@ -80,7 +83,7 @@ final readonly class ActivityRequestHandler
                     ActivityCacheTag::for($activityId),
                     RootCacheTag::GEAR,
                 ),
-                cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
+                cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class, TrustedVisitorCacheContext::class),
             ),
             render: fn (): string => $this->renderFor($activityId),
             navigationSection: NavigationSection::ACTIVITIES,
@@ -147,6 +150,7 @@ final readonly class ActivityRequestHandler
             ),
             'hasProfileChart' => $numberOfProfileChartLanes > 0,
             'heartRateZones' => $timeInHeartRateZones,
+            'showStartTime' => $this->trustedVisitor->isTrusted(),
         ]);
     }
 }
