@@ -9,6 +9,7 @@ use App\Domain\Activity\Route\ActivityRouteCoordinates;
 use App\Domain\Automation\InvalidAutomationRule;
 use App\Domain\Automation\RuleConfiguration;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\GeoMath;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -60,7 +61,7 @@ final readonly class EndsNearStartCondition implements Condition
     {
         $start = $this->routeCoordinates->first($activity);
         $end = $this->routeCoordinates->last($activity);
-        if (null === $start || null === $end) {
+        if (!$start instanceof Coordinate || !$end instanceof Coordinate) {
             return false;
         }
 
