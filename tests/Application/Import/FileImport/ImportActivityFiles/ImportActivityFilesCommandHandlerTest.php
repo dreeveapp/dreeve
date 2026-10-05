@@ -20,17 +20,13 @@ use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\ValueObject\String\CompressedString;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
-use App\Tests\Console\ConsoleOutputSnapshotDriver;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\Cache\RenderStub;
 use App\Tests\SpyOutput;
 use League\Flysystem\FilesystemOperator;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private ImportActivityFilesCommandHandler $handler;
     private FilesystemOperator $watchStorage;
     private CacheableRenderer $cacheableRenderer;
@@ -67,7 +63,14 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->assertNotNull($streams->filterOnType(StreamType::HEART_RATE));
         $this->assertNotNull($streams->filterOnType(StreamType::LAT_LNG));
 
-        $this->assertMatchesSnapshot($output, new ConsoleOutputSnapshotDriver());
+        $this->assertSame(
+            implode("\n", [
+                'Importing activity files...',
+                '  => [1/1] Imported "ride.tcx" as activity "Night Ride - 08-09-2021"',
+                '  => Imported 1, skipped 0, failed 0 activity file(s)',
+            ]),
+            (string) $output,
+        );
     }
 
     public function testHandleImportsFileWithUppercaseExtension(): void
@@ -111,7 +114,16 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
                     ->fetchAllAssociative())
             )
         );
-        $this->assertMatchesSnapshot($output, new ConsoleOutputSnapshotDriver());
+        $this->assertSame(
+            implode("\n", [
+                'Importing activity files...',
+                '  => [1/3] Imported "ride1.tcx" as activity "Night Ride - 08-09-2021"',
+                '  => [2/3] Skipping "ride2.tcx", activity was already imported',
+                '  => [3/3] Skipping "ride3.tcx", activity was already imported',
+                '  => Imported 1, skipped 2, failed 0 activity file(s)',
+            ]),
+            (string) $output,
+        );
     }
 
     public function testHandleImportsGpxFileAndSkipsDuplicate(): void
@@ -144,7 +156,14 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->assertCount(0, $this->getConnection()
             ->executeQuery('SELECT * FROM FileImport ORDER BY importedOn ASC')
             ->fetchAllAssociative());
-        $this->assertMatchesSnapshot($output, new ConsoleOutputSnapshotDriver());
+        $this->assertSame(
+            implode("\n", [
+                'Importing activity files...',
+                '  => [1/1] Skipping "notes.txt", unsupported file type',
+                '  => Imported 0, skipped 1, failed 0 activity file(s)',
+            ]),
+            (string) $output,
+        );
     }
 
     public function testHandleRecordsFailureForCorruptFile(): void
@@ -162,7 +181,14 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->assertNull($fileImports[0]['activityId']);
         $this->assertSame('this is not valid xml', CompressedString::fromCompressed($fileImports[0]['fileContents'])->uncompress());
 
-        $this->assertMatchesSnapshot($output, new ConsoleOutputSnapshotDriver());
+        $this->assertSame(
+            implode("\n", [
+                'Importing activity files...',
+                '  => <error>[1/1] Could not import "broken.tcx": "broken.tcx" is not valid TCX XML</error>',
+                '  => Imported 0, skipped 0, failed 1 activity file(s)',
+            ]),
+            (string) $output,
+        );
     }
 
     public function testHandleWithoutImportDirectoryIsNoOp(): void
@@ -173,7 +199,13 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->assertCount(0, $this->getConnection()
             ->executeQuery('SELECT * FROM FileImport ORDER BY importedOn ASC')
             ->fetchAllAssociative());
-        $this->assertMatchesSnapshot($output, new ConsoleOutputSnapshotDriver());
+        $this->assertSame(
+            implode("\n", [
+                'Importing activity files...',
+                '  => No "watch" directory found, nothing to import',
+            ]),
+            (string) $output,
+        );
     }
 
     public function testHandleKeepsRenderedPagesBecauseImportedFilesCarryNoImages(): void

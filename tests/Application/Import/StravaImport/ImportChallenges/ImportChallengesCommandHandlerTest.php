@@ -35,7 +35,11 @@ class ImportChallengesCommandHandlerTest extends ContainerTestCase
 
         $this->commandBus->dispatch(new ImportChallenges($output));
 
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame(
+            "Importing challenges...\n"
+            .'  => Imported challenge "Challenge 1"',
+            (string) $output,
+        );
         $this->assertFileSystemWrites($this->getContainer()->get('file.storage'));
     }
 
@@ -53,7 +57,12 @@ class ImportChallengesCommandHandlerTest extends ContainerTestCase
 
         $this->commandBus->dispatch(new ImportChallenges($output));
 
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame(
+            "Importing challenges...\n"
+            ."Could not import challenges from trophy case page: The error\n"
+            .'No challenges to import...',
+            (string) $output,
+        );
         $this->assertFileSystemWrites($this->getContainer()->get('file.storage'));
     }
 

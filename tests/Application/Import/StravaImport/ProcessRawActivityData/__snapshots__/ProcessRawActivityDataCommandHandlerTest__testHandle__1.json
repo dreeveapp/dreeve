@@ -1,0 +1,34 @@
+[
+    {
+        "segmentId": "segment-2",
+        "name": "Segment",
+        "sportType": "Ride",
+        "distance": 1000,
+        "maxGradient": 5.3,
+        "isFavourite": 1,
+        "climbCategory": null,
+        "deviceName": "Polar",
+        "countryCode": "BE",
+        "detailsHaveBeenImported": 0,
+        "polyline": null,
+        "averageGradient": 2.7,
+        "startingCoordinateLatitude": null,
+        "startingCoordinateLongitude": null
+    },
+    {
+        "segmentId": "segment-1",
+        "name": "Segment One",
+        "sportType": "Ride",
+        "distance": 1000,
+        "maxGradient": 5.3,
+        "isFavourite": 0,
+        "climbCategory": null,
+        "deviceName": "Zwift",
+        "countryCode": null,
+        "detailsHaveBeenImported": 0,
+        "polyline": null,
+        "averageGradient": null,
+        "startingCoordinateLatitude": null,
+        "startingCoordinateLongitude": null
+    }
+]

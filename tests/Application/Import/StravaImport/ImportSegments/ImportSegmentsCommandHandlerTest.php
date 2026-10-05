@@ -18,12 +18,9 @@ use App\Tests\Domain\Segment\SegmentBuilder;
 use App\Tests\Domain\Strava\SpyStrava;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use App\Tests\SpyOutput;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class ImportSegmentsCommandHandlerTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private CommandBus $commandBus;
     private SpyStrava $strava;
 
@@ -59,7 +56,12 @@ class ImportSegmentsCommandHandlerTest extends ContainerTestCase
         );
 
         $commandHandler->handle(new ImportSegments($output));
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame(
+            "Importing segments...\n"
+            ."  => [1/2] Imported segment details: \"⭐️ Segment\"\n"
+            .'<error>You reached the daily Strava API rate limit. You will need to import the rest of your data tomorrow</error>',
+            (string) $output,
+        );
     }
 
     public function testHandleWhenExceptionIsThrown(): void
@@ -88,7 +90,11 @@ class ImportSegmentsCommandHandlerTest extends ContainerTestCase
         );
 
         $commandHandler->handle(new ImportSegments($output));
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame(
+            "Importing segments...\n"
+            .'<error>Strava API threw error: The error</error>',
+            (string) $output,
+        );
     }
 
     public function testHandleWhenSegmentDetailsAreDisabled(): void

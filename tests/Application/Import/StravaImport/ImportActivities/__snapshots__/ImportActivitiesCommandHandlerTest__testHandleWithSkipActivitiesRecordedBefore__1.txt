@@ -1,7 +1,0 @@
-Importing activities...
-Status: 1 out of 7 activities imported
-  => Sport type "Wrong" not supported yet. <a href="https://github.com/dreeveapp/dreeve/issues/new?assignees=robiningelbrecht&labels=new+feature&projects=&template=feature_request.md&title=Add+support+for+sport+type+Wrong>Open a new GitHub issue</a> to if you want support for this sport type
-  => [1/7] Imported activity: "Night Ride1 - 11-09-2023"
-  => [2/7] Updated activity: "Night Ride3 - 10-10-2023"
-  => [3/7] Imported activity: "Night Ride4 - 11-09-2023"
-  => [4/7] Imported activity: "Night Ride5 - 11-09-2023"

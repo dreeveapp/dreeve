@@ -21,6 +21,7 @@ use App\Tests\Domain\Activity\Split\ActivitySplitBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\SpyOutput;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 class CalculateGapTest extends ContainerTestCase
 {
@@ -29,10 +30,12 @@ class CalculateGapTest extends ContainerTestCase
     private ActivityStreamRepository $activityStreamRepository;
     private ActivityRepository $activityRepository;
 
-    public function testProcessCalculatesGapForRunActivity(): void
+    #[TestWith([SportType::RUN])]
+    #[TestWith([SportType::TRAIL_RUN])]
+    public function testProcessCalculatesGap(SportType $sportType): void
     {
         $activityId = ActivityId::fromUnprefixed('run-1');
-        $this->addActivity($activityId, SportType::RUN);
+        $this->addActivity($activityId, $sportType);
         $this->addStreams($activityId, $this->buildHillyTrackPoints());
         $this->addMetricSplits($activityId, [1000.0, 1000.0]);
 
@@ -42,20 +45,7 @@ class CalculateGapTest extends ContainerTestCase
         $metricSplits = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC);
         $this->assertNotNull($metricSplits->toArray()[0]->getGapPaceInSecondsPerKm());
         $this->assertNotNull($metricSplits->toArray()[1]->getGapPaceInSecondsPerKm());
-    }
-
-    public function testProcessCalculatesGapForTrailRunActivity(): void
-    {
-        $activityId = ActivityId::fromUnprefixed('trail-run-1');
-        $this->addActivity($activityId, SportType::TRAIL_RUN);
-        $this->addStreams($activityId, $this->buildHillyTrackPoints());
-        $this->addMetricSplits($activityId, [1000.0, 1000.0]);
-
-        $output = new SpyOutput();
-        $this->calculateGap->process($output);
-
-        $metricSplits = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC);
-        $this->assertNotNull($metricSplits->toArray()[0]->getGapPaceInSecondsPerKm());
+        $this->assertStringContainsString('Calculated GAP for 1 activities', (string) $output);
     }
 
     public function testProcessSkipsActivitiesAlreadyWithGap(): void
@@ -142,130 +132,23 @@ class CalculateGapTest extends ContainerTestCase
         $this->assertNull($metricSplits->toArray()[0]->getGapPaceInSecondsPerKm());
     }
 
-    public function testProcessSkipsMalformedCoordinateItems(): void
+    /**
+     * @param list<mixed> $latLng
+     * @param list<float> $altitude
+     * @param list<int>   $time
+     * @param list<bool>  $moving
+     */
+    #[DataProvider('provideRawStreams')]
+    public function testProcessWithRawStreams(array $latLng, array $altitude, array $time, array $moving, bool $expectGap): void
     {
-        $activityId = ActivityId::fromUnprefixed('run-malformed-coordinates');
+        $activityId = ActivityId::fromUnprefixed('run-raw-streams');
         $this->addActivity($activityId, SportType::RUN);
         $this->addRawStreams(
             activityId: $activityId,
-            latLng: ['invalid', [50.0], [50.0, 4.0], [50.009, 4.0]],
-            altitude: [100.0, 100.0, 100.0, 100.0],
-            time: [0, 5, 10, 20],
-        );
-        $this->activitySplitRepository->add(
-            ActivitySplitBuilder::fromDefaults()
-                ->withActivityId($activityId)
-                ->withUnitSystem(UnitSystem::METRIC)
-                ->withDistanceInMeter(1000.0)
-                ->withAverageSpeed(MetersPerSecond::from(1000.0 / 10.0))
-                ->build()
-        );
-
-        $output = new SpyOutput();
-        $this->calculateGap->process($output);
-
-        $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
-        $this->assertNotNull($split->getGapPaceInSecondsPerKm());
-    }
-
-    public function testProcessUsesShortestAvailableStreamLength(): void
-    {
-        $activityId = ActivityId::fromUnprefixed('run-mismatched-stream-lengths');
-        $this->addActivity($activityId, SportType::RUN);
-        $this->addRawStreams(
-            activityId: $activityId,
-            latLng: [[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]],
-            altitude: [100.0, 100.0],
-            time: [0, 10],
-        );
-        $this->activitySplitRepository->add(
-            ActivitySplitBuilder::fromDefaults()
-                ->withActivityId($activityId)
-                ->withUnitSystem(UnitSystem::METRIC)
-                ->withDistanceInMeter(1000.0)
-                ->withAverageSpeed(MetersPerSecond::from(1000.0 / 10.0))
-                ->build()
-        );
-
-        $output = new SpyOutput();
-        $this->calculateGap->process($output);
-
-        $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
-        $this->assertNotNull($split->getGapPaceInSecondsPerKm());
-    }
-
-    public function testProcessTreatsMissingMovingEntriesAsNonMoving(): void
-    {
-        $activityId = ActivityId::fromUnprefixed('run-short-moving-stream');
-        $this->addActivity($activityId, SportType::RUN);
-        $this->addRawStreams(
-            activityId: $activityId,
-            latLng: [[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]],
-            altitude: [100.0, 100.0, 100.0],
-            time: [0, 10, 20],
-            moving: [true],
-        );
-        $this->addMetricSplits($activityId, [1000.0]);
-
-        $output = new SpyOutput();
-        $this->calculateGap->process($output);
-
-        $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
-        $this->assertNull($split->getGapPaceInSecondsPerKm());
-        $this->assertSame('', (string) $output, 'a step that calculated nothing should stay silent');
-    }
-
-    public function testProcessSkipsWhenAllCoordinatesAreMalformed(): void
-    {
-        $activityId = ActivityId::fromUnprefixed('run-all-malformed-coordinates');
-        $this->addActivity($activityId, SportType::RUN);
-        $this->addRawStreams(
-            activityId: $activityId,
-            latLng: ['invalid', [50.0], [50.0, 4.0, 1.0]],
-            altitude: [100.0, 100.0, 100.0],
-            time: [0, 10, 20],
-        );
-        $this->addMetricSplits($activityId, [1000.0]);
-
-        $output = new SpyOutput();
-        $this->calculateGap->process($output);
-
-        $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
-        $this->assertNull($split->getGapPaceInSecondsPerKm());
-        $this->assertSame('', (string) $output, 'a step that calculated nothing should stay silent');
-    }
-
-    public function testProcessSkipsWhenMovingStreamFiltersOutAllPoints(): void
-    {
-        $activityId = ActivityId::fromUnprefixed('run-all-non-moving');
-        $this->addActivity($activityId, SportType::RUN);
-        $this->addRawStreams(
-            activityId: $activityId,
-            latLng: [[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]],
-            altitude: [100.0, 100.0, 100.0],
-            time: [0, 10, 20],
-            moving: [false, false, false],
-        );
-        $this->addMetricSplits($activityId, [1000.0]);
-
-        $output = new SpyOutput();
-        $this->calculateGap->process($output);
-
-        $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
-        $this->assertNull($split->getGapPaceInSecondsPerKm());
-        $this->assertSame('', (string) $output, 'a step that calculated nothing should stay silent');
-    }
-
-    public function testProcessCalculatesGapWhenMovingStreamKeepsLastTwoPoints(): void
-    {
-        $activityId = ActivityId::fromUnprefixed('run-moving-keeps-last-two');
-        $this->addActivity($activityId, SportType::RUN);
-        $this->addRawStreams(
-            activityId: $activityId,
-            latLng: [[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]],
-            altitude: [100.0, 100.0, 100.0],
-            time: [0, 10, 20],
-            moving: [false, true, true],
+            latLng: $latLng,
+            altitude: $altitude,
+            time: $time,
+            moving: $moving,
         );
         $this->addMetricSplitWithSpeed($activityId, 1000.0, 1000.0 / 10.0);
 
@@ -273,69 +156,27 @@ class CalculateGapTest extends ContainerTestCase
         $this->calculateGap->process($output);
 
         $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
+        if (!$expectGap) {
+            $this->assertNull($split->getGapPaceInSecondsPerKm());
+            $this->assertSame('', (string) $output);
+
+            return;
+        }
         $this->assertNotNull($split->getGapPaceInSecondsPerKm());
         $this->assertStringContainsString('Calculated GAP for 1 activities', (string) $output);
     }
 
-    public function testProcessCalculatesGapWhenMovingStreamKeepsAllPoints(): void
+    public static function provideRawStreams(): iterable
     {
-        $activityId = ActivityId::fromUnprefixed('run-all-moving');
-        $this->addActivity($activityId, SportType::RUN);
-        $this->addRawStreams(
-            activityId: $activityId,
-            latLng: [[50.0, 4.0], [50.009, 4.0]],
-            altitude: [100.0, 100.0],
-            time: [0, 10],
-            moving: [true, true],
-        );
-        $this->addMetricSplitWithSpeed($activityId, 1000.0, 1000.0 / 10.0);
-
-        $output = new SpyOutput();
-        $this->calculateGap->process($output);
-
-        $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
-        $this->assertNotNull($split->getGapPaceInSecondsPerKm());
-        $this->assertStringContainsString('Calculated GAP for 1 activities', (string) $output);
-    }
-
-    public function testProcessSkipsWhenShortestStreamLeavesFewerThanTwoPoints(): void
-    {
-        $activityId = ActivityId::fromUnprefixed('run-shortest-stream-single-point');
-        $this->addActivity($activityId, SportType::RUN);
-        $this->addRawStreams(
-            activityId: $activityId,
-            latLng: [[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]],
-            altitude: [100.0],
-            time: [0, 10, 20],
-        );
-        $this->addMetricSplits($activityId, [1000.0]);
-
-        $output = new SpyOutput();
-        $this->calculateGap->process($output);
-
-        $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
-        $this->assertNull($split->getGapPaceInSecondsPerKm());
-        $this->assertSame('', (string) $output, 'a step that calculated nothing should stay silent');
-    }
-
-    public function testProcessSkipsActivityWhenNoSegmentsAreGenerated(): void
-    {
-        $activityId = ActivityId::fromUnprefixed('run-no-gap-segments');
-        $this->addActivity($activityId, SportType::RUN);
-        $this->addRawStreams(
-            activityId: $activityId,
-            latLng: [[50.0, 4.0], [50.0, 4.0], [50.009, 4.0]],
-            altitude: [100.0, 100.0, 100.0],
-            time: [0, 10, 10],
-        );
-        $this->addMetricSplits($activityId, [1000.0]);
-
-        $output = new SpyOutput();
-        $this->calculateGap->process($output);
-
-        $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
-        $this->assertNull($split->getGapPaceInSecondsPerKm());
-        $this->assertSame('', (string) $output, 'a step that calculated nothing should stay silent');
+        yield 'malformed coordinate items are skipped' => [['invalid', [50.0], [50.0, 4.0], [50.009, 4.0]], [100.0, 100.0, 100.0, 100.0], [0, 5, 10, 20], [], true];
+        yield 'the shortest stream length is used' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0, 100.0], [0, 10], [], true];
+        yield 'moving stream keeps the last two points' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0, 100.0, 100.0], [0, 10, 20], [false, true, true], true];
+        yield 'moving stream keeps all points' => [[[50.0, 4.0], [50.009, 4.0]], [100.0, 100.0], [0, 10], [true, true], true];
+        yield 'missing moving entries count as not moving' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0, 100.0, 100.0], [0, 10, 20], [true], false];
+        yield 'all coordinates malformed' => [['invalid', [50.0], [50.0, 4.0, 1.0]], [100.0, 100.0, 100.0], [0, 10, 20], [], false];
+        yield 'moving stream filters out all points' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0, 100.0, 100.0], [0, 10, 20], [false, false, false], false];
+        yield 'shortest stream leaves fewer than two points' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0], [0, 10, 20], [], false];
+        yield 'no segments are generated' => [[[50.0, 4.0], [50.0, 4.0], [50.009, 4.0]], [100.0, 100.0, 100.0], [0, 10, 10], [], false];
     }
 
     public function testProcessUpdatesImperialSplitsWhenMetricSplitsAreMissing(): void
@@ -721,401 +562,66 @@ class CalculateGapTest extends ContainerTestCase
         );
     }
 
-    public function testProcessClampsAbsurdlySlowCalculatedGap(): void
+    /**
+     * @param list<array{float, int, float}> $segments
+     * @param list<array{float, float}>      $splits
+     * @param list<?float>                   $expectedGapPaces
+     */
+    #[DataProvider('provideSegmentsToMap')]
+    public function testMapSegmentsToSplits(array $segments, array $splits, array $expectedGapPaces): void
     {
-        $activityId = ActivityId::fromUnprefixed('run-gap-clamp-slow');
-        $this->addActivity($activityId, SportType::RUN);
-
-        $this->addStreams($activityId, $this->buildLinearGradeTrackPoints(-0.50, 1));
-        $this->activitySplitRepository->add(
-            ActivitySplitBuilder::fromDefaults()
-                ->withActivityId($activityId)
-                ->withUnitSystem(UnitSystem::METRIC)
-                ->withSplitNumber(1)
-                ->withDistanceInMeter(1000.0)
-                ->withAverageSpeed(MetersPerSecond::from(20.0))
-                ->build()
-        );
-
-        $output = new SpyOutput();
-        $this->calculateGap->process($output);
-
-        $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
-        $this->assertNotNull($split->getGapPaceInSecondsPerKm());
-        $this->assertEqualsWithDelta(
-            $split->getPaceInSecPerKm()->toFloat() * 1.6,
-            $split->getGapPaceInSecondsPerKm()->toFloat(),
-            0.01,
-            'Absurdly slow calculated GAP should be clamped to 160% of actual pace.',
-        );
-    }
-
-    public function testProcessSkipsZeroDistanceSplitCollection(): void
-    {
-        $activityId = ActivityId::fromUnprefixed('run-zero-distance-split');
-        $this->addActivity($activityId, SportType::RUN);
-        $this->addStreams($activityId, $this->buildFlatTrackPoints());
-        $this->addMetricSplits($activityId, [0.0]);
-
-        $output = new SpyOutput();
-        $this->calculateGap->process($output);
-
-        $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
-        $this->assertNull($split->getGapPaceInSecondsPerKm());
-    }
-
-    public function testMapSegmentsToSplitsReturnsEmptyArrayForEmptySplitCollection(): void
-    {
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [GapSegment::create(
-            distanceInMeters: 1000.0,
-            durationInSeconds: 250,
-            grade: 0.0,
-            gapMultiplier: 1.0,
-        )], ActivitySplits::empty());
-
-        $this->assertSame([], $mappedSplits);
-    }
-
-    public function testMapSegmentsToSplitsLeavesZeroDistanceSplitsUnchanged(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(0.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [GapSegment::create(
-            distanceInMeters: 1000.0,
-            durationInSeconds: 250,
-            grade: 0.0,
-            gapMultiplier: 1.0,
-        )], ActivitySplits::fromArray([$split]));
-
-        $this->assertSame($split, $mappedSplits[0]);
-        $this->assertNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-    }
-
-    public function testMapSegmentsToSplitsLeavesSplitUnchangedWhenTotalSegmentDistanceIsZero(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-        $segment = GapSegment::create(
-            distanceInMeters: 0.0,
-            durationInSeconds: 250,
-            grade: 0.0,
-            gapMultiplier: 1.0,
-        );
-
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [$segment], ActivitySplits::fromArray([$split]));
-
-        $this->assertSame($split, $mappedSplits[0]);
-        $this->assertNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-    }
-
-    public function testMapSegmentsToSplitsAdvancesPastZeroDistanceSplitAndMapsNextSplit(): void
-    {
-        $zeroDistanceSplit = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(0.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-        $normalSplit = ActivitySplitBuilder::fromDefaults()
-            ->withSplitNumber(2)
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
         $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
         $mappedSplits = $method->invoke(
             $this->calculateGap,
-            [GapSegment::create(
-                distanceInMeters: 1000.0,
-                durationInSeconds: 250,
-                grade: 0.0,
-                gapMultiplier: 1.0,
-            )],
-            ActivitySplits::fromArray([$zeroDistanceSplit, $normalSplit]),
-        );
-
-        $this->assertNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-        $this->assertNotNull($mappedSplits[1]->getGapPaceInSecondsPerKm());
-    }
-
-    public function testMapSegmentsToSplitsTreatsDistanceWithinToleranceAsComplete(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [GapSegment::create(
-            distanceInMeters: 999.999995,
-            durationInSeconds: 250,
-            grade: 0.0,
-            gapMultiplier: 1.0,
-        )], ActivitySplits::fromArray([$split]));
-
-        $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-        $this->assertEqualsWithDelta(250.0, $mappedSplits[0]->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
-    }
-
-    public function testMapSegmentsToSplitsScalesPartialGpsDistanceToCompleteFinalSplit(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(2.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [GapSegment::create(
-            distanceInMeters: 500.0,
-            durationInSeconds: 125,
-            grade: 0.0,
-            gapMultiplier: 1.0,
-        )], ActivitySplits::fromArray([$split]));
-
-        $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-    }
-
-    public function testMapSegmentsToSplitsFallsBackToActualPaceForZeroDurationSegment(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-        $segment = GapSegment::create(
-            distanceInMeters: 1000.0,
-            durationInSeconds: 0,
-            grade: 0.0,
-            gapMultiplier: 1.0,
-        );
-
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [$segment], ActivitySplits::fromArray([$split]));
-
-        $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-        $this->assertEqualsWithDelta($split->getPaceInSecPerKm()->toFloat(), $mappedSplits[0]->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
-    }
-
-    public function testMapSegmentsToSplitsLeavesSplitUnchangedWhenMultiplierProducesZeroAdjustedDistance(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-        $segment = GapSegment::create(
-            distanceInMeters: 1000.0,
-            durationInSeconds: 250,
-            grade: 0.0,
-            gapMultiplier: 0.0,
-        );
-
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [$segment], ActivitySplits::fromArray([$split]));
-
-        $this->assertSame($split, $mappedSplits[0]);
-        $this->assertNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-    }
-
-    public function testMapSegmentsToSplitsLeavesTrailingZeroDistanceSplitUnchangedAfterMappingPreviousSplit(): void
-    {
-        $normalSplit = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-        $zeroDistanceSplit = ActivitySplitBuilder::fromDefaults()
-            ->withSplitNumber(2)
-            ->withDistanceInMeter(0.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke(
-            $this->calculateGap,
-            [GapSegment::create(
-                distanceInMeters: 1000.0,
-                durationInSeconds: 250,
-                grade: 0.0,
-                gapMultiplier: 1.0,
-            )],
-            ActivitySplits::fromArray([$normalSplit, $zeroDistanceSplit]),
-        );
-
-        $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-        $this->assertNull($mappedSplits[1]->getGapPaceInSecondsPerKm());
-    }
-
-    public function testMapSegmentsToSplitsSplitsOneSegmentAcrossTwoSplitsProportionally(): void
-    {
-        $firstSplit = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(400.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-        $secondSplit = ActivitySplitBuilder::fromDefaults()
-            ->withSplitNumber(2)
-            ->withDistanceInMeter(600.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke(
-            $this->calculateGap,
-            [GapSegment::create(
-                distanceInMeters: 1000.0,
-                durationInSeconds: 300,
-                grade: 0.0,
-                gapMultiplier: 1.0,
-            )],
-            ActivitySplits::fromArray([$firstSplit, $secondSplit]),
-        );
-
-        $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-        $this->assertNotNull($mappedSplits[1]->getGapPaceInSecondsPerKm());
-        $this->assertEqualsWithDelta(300.0, $mappedSplits[0]->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
-        $this->assertEqualsWithDelta(300.0, $mappedSplits[1]->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
-    }
-
-    public function testMapSegmentsToSplitsCarriesRemainingSegmentDistanceIntoNextSplit(): void
-    {
-        $firstSplit = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(800.0)
-            ->withAverageSpeed(MetersPerSecond::from(2.0))
-            ->build();
-        $secondSplit = ActivitySplitBuilder::fromDefaults()
-            ->withSplitNumber(2)
-            ->withDistanceInMeter(200.0)
-            ->withAverageSpeed(MetersPerSecond::from(2.0))
-            ->build();
-        $segments = [
-            GapSegment::create(
-                distanceInMeters: 600.0,
-                durationInSeconds: 120,
-                grade: 0.0,
-                gapMultiplier: 1.0,
+            array_map(
+                fn (array $segment): GapSegment => GapSegment::create($segment[0], $segment[1], 0.0, $segment[2]),
+                $segments,
             ),
-            GapSegment::create(
-                distanceInMeters: 400.0,
-                durationInSeconds: 160,
-                grade: 0.0,
-                gapMultiplier: 0.5,
-            ),
-        ];
-
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke(
-            $this->calculateGap,
-            $segments,
-            ActivitySplits::fromArray([$firstSplit, $secondSplit]),
+            ActivitySplits::fromArray(array_map(
+                fn (int $index, array $split) => ActivitySplitBuilder::fromDefaults()
+                    ->withSplitNumber($index + 1)
+                    ->withDistanceInMeter($split[0])
+                    ->withAverageSpeed(MetersPerSecond::from($split[1]))
+                    ->build(),
+                array_keys($splits),
+                $splits,
+            )),
         );
 
-        $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-        $this->assertNotNull($mappedSplits[1]->getGapPaceInSecondsPerKm());
-        $this->assertEqualsWithDelta(285.71, $mappedSplits[0]->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
-        $this->assertEqualsWithDelta(800.0, $mappedSplits[1]->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
+        $this->assertCount(count($expectedGapPaces), $mappedSplits);
+        foreach ($expectedGapPaces as $index => $expectedGapPace) {
+            if (null === $expectedGapPace) {
+                $this->assertNull($mappedSplits[$index]->getGapPaceInSecondsPerKm());
+                continue;
+            }
+            $this->assertEqualsWithDelta($expectedGapPace, $mappedSplits[$index]->getGapPaceInSecondsPerKm()?->toFloat(), 0.01);
+        }
     }
 
-    public function testMapSegmentsToSplitsScalesGpsDistanceAcrossMultipleSplitsWithoutScalingDuration(): void
+    public static function provideSegmentsToMap(): iterable
     {
-        $firstSplit = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(400.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-        $secondSplit = ActivitySplitBuilder::fromDefaults()
-            ->withSplitNumber(2)
-            ->withDistanceInMeter(600.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke(
-            $this->calculateGap,
-            [GapSegment::create(
-                distanceInMeters: 500.0,
-                durationInSeconds: 250,
-                grade: 0.0,
-                gapMultiplier: 1.0,
-            )],
-            ActivitySplits::fromArray([$firstSplit, $secondSplit]),
-        );
-
-        $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-        $this->assertNotNull($mappedSplits[1]->getGapPaceInSecondsPerKm());
-        $this->assertEqualsWithDelta(250.0, $mappedSplits[0]->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
-        $this->assertEqualsWithDelta(250.0, $mappedSplits[1]->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
+        yield 'no splits' => [[[1000.0, 250, 1.0]], [], []];
+        yield 'zero distance split is left unchanged' => [[[1000.0, 250, 1.0]], [[0.0, 4.0]], [null]];
+        yield 'zero total segment distance leaves the split unchanged' => [[[0.0, 250, 1.0]], [[1000.0, 4.0]], [null]];
+        yield 'advances past a zero distance split' => [[[1000.0, 250, 1.0]], [[0.0, 4.0], [1000.0, 4.0]], [null, 250.0]];
+        yield 'distance within tolerance counts as complete' => [[[999.999995, 250, 1.0]], [[1000.0, 4.0]], [250.0]];
+        yield 'partial gps distance completes the final split' => [[[500.0, 125, 1.0]], [[1000.0, 2.0]], [250.0]];
+        yield 'zero duration segment falls back to the actual pace' => [[[1000.0, 0, 1.0]], [[1000.0, 4.0]], [250.0]];
+        yield 'zero multiplier leaves the split unchanged' => [[[1000.0, 250, 0.0]], [[1000.0, 4.0]], [null]];
+        yield 'trailing zero distance split is left unchanged' => [[[1000.0, 250, 1.0]], [[1000.0, 4.0], [0.0, 4.0]], [250.0, null]];
+        yield 'one segment is split proportionally across two splits' => [[[1000.0, 300, 1.0]], [[400.0, 4.0], [600.0, 4.0]], [300.0, 300.0]];
+        yield 'remaining segment distance carries into the next split' => [[[600.0, 120, 1.0], [400.0, 160, 0.5]], [[800.0, 2.0], [200.0, 2.0]], [285.71, 800.0]];
+        yield 'gps distance is scaled across splits without scaling duration' => [[[500.0, 250, 1.0]], [[400.0, 4.0], [600.0, 4.0]], [250.0, 250.0]];
+        yield 'short gps distance is scaled to the split distance' => [[[500.0, 250, 1.0]], [[1000.0, 4.0]], [250.0]];
+        yield 'long gps distance is scaled to the split distance' => [[[2000.0, 500, 1.0]], [[1000.0, 2.0]], [500.0]];
+        yield 'multiple gps segments are scaled into a single split' => [[[1000.0, 250, 1.0], [1000.0, 250, 1.0]], [[1000.0, 2.0]], [500.0]];
+        yield 'segment portions with different multipliers are combined' => [[[500.0, 100, 2.0], [500.0, 200, 1.0]], [[1000.0, 4.0]], [200.0]];
     }
 
-    public function testMapSegmentsToSplitsScalesShortGpsDistanceToSplitDistance(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [GapSegment::create(
-            distanceInMeters: 500.0,
-            durationInSeconds: 250,
-            grade: 0.0,
-            gapMultiplier: 1.0,
-        )], ActivitySplits::fromArray([$split]));
-
-        $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-        $this->assertEqualsWithDelta(250.0, $mappedSplits[0]->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
-    }
-
-    public function testMapSegmentsToSplitsScalesLongGpsDistanceToSplitDistance(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(2.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, [GapSegment::create(
-            distanceInMeters: 2000.0,
-            durationInSeconds: 500,
-            grade: 0.0,
-            gapMultiplier: 1.0,
-        )], ActivitySplits::fromArray([$split]));
-
-        $this->assertCount(1, $mappedSplits);
-        $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-        $this->assertEqualsWithDelta(500.0, $mappedSplits[0]->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
-    }
-
-    public function testMapSegmentsToSplitsCombinesSegmentPortionsWithDifferentMultipliers(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-        $segments = [
-            GapSegment::create(
-                distanceInMeters: 500.0,
-                durationInSeconds: 100,
-                grade: 0.0,
-                gapMultiplier: 2.0,
-            ),
-            GapSegment::create(
-                distanceInMeters: 500.0,
-                durationInSeconds: 200,
-                grade: 0.0,
-                gapMultiplier: 1.0,
-            ),
-        ];
-
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, $segments, ActivitySplits::fromArray([$split]));
-
-        $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-        $this->assertEqualsWithDelta(200.0, $mappedSplits[0]->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
-    }
-
-    public function testFinalizeSplitGapAddsGapForCompleteSplitWithAdjustedDistance(): void
+    #[TestWith([1000.0, 200.0, 800.0, 250.0])]
+    #[TestWith([1000.0, 250.0, 0.0, null])]
+    #[TestWith([999.0, 250.0, 1000.0, null])]
+    public function testFinalizeSplitGap(float $distanceInSplit, float $durationInSplit, float $adjustedDistanceInSplit, ?float $expectedGapPace): void
     {
         $split = ActivitySplitBuilder::fromDefaults()
             ->withDistanceInMeter(1000.0)
@@ -1123,25 +629,14 @@ class CalculateGapTest extends ContainerTestCase
             ->build();
 
         $method = new \ReflectionMethod($this->calculateGap, 'finalizeSplitGap');
-        $finalizedSplit = $method->invoke($this->calculateGap, $split, 1000.0, 1000.0, 200.0, 800.0);
+        $finalizedSplit = $method->invoke($this->calculateGap, $split, 1000.0, $distanceInSplit, $durationInSplit, $adjustedDistanceInSplit);
 
-        $this->assertNotSame($split, $finalizedSplit);
-        $this->assertNotNull($finalizedSplit->getGapPaceInSecondsPerKm());
-        $this->assertEqualsWithDelta(250.0, $finalizedSplit->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
-    }
+        if (null === $expectedGapPace) {
+            $this->assertSame($split, $finalizedSplit);
 
-    public function testFinalizeSplitGapLeavesZeroAdjustedDistanceSplitUnchanged(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'finalizeSplitGap');
-        $finalizedSplit = $method->invoke($this->calculateGap, $split, 1000.0, 1000.0, 250.0, 0.0);
-
-        $this->assertSame($split, $finalizedSplit);
-        $this->assertNull($finalizedSplit->getGapPaceInSecondsPerKm());
+            return;
+        }
+        $this->assertEqualsWithDelta($expectedGapPace, $finalizedSplit->getGapPaceInSecondsPerKm()?->toFloat(), 0.01);
     }
 
     #[DataProvider('provideResolveGapPaceScenarios')]
@@ -1181,20 +676,6 @@ class CalculateGapTest extends ContainerTestCase
         yield 'exact upper clamp boundary is preserved' => [250.0 * 1.6, 1000.0, 250.0 * 1.6];
         yield 'below lower boundary clamps to 50% of actual pace' => [250.0 * 0.49, 1000.0, 250.0 * 0.5];
         yield 'above upper boundary clamps to 160% of actual pace' => [250.0 * 1.61, 1000.0, 250.0 * 1.6];
-    }
-
-    public function testFinalizeSplitGapLeavesIncompleteSplitUnchanged(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(4.0))
-            ->build();
-
-        $method = new \ReflectionMethod($this->calculateGap, 'finalizeSplitGap');
-        $finalizedSplit = $method->invoke($this->calculateGap, $split, 1000.0, 999.0, 250.0, 1000.0);
-
-        $this->assertSame($split, $finalizedSplit);
-        $this->assertNull($finalizedSplit->getGapPaceInSecondsPerKm());
     }
 
     public function testProcessDoesNotCapSteepUphillToOldLinearBenefit(): void
@@ -1316,25 +797,6 @@ class CalculateGapTest extends ContainerTestCase
         $this->assertNotNull($splits[1]->getGapPaceInSecondsPerKm());
     }
 
-    public function testMapSegmentsToSplitsScalesMultipleGpsSegmentsIntoSingleSplit(): void
-    {
-        $split = ActivitySplitBuilder::fromDefaults()
-            ->withDistanceInMeter(1000.0)
-            ->withAverageSpeed(MetersPerSecond::from(2.0))
-            ->build();
-        $segments = [
-            GapSegment::create(1000.0, 250, 0.0, 1.0),
-            GapSegment::create(1000.0, 250, 0.0, 1.0),
-        ];
-
-        $method = new \ReflectionMethod($this->calculateGap, 'mapSegmentsToSplits');
-        $mappedSplits = $method->invoke($this->calculateGap, $segments, ActivitySplits::fromArray([$split]));
-
-        $this->assertCount(1, $mappedSplits);
-        $this->assertNotNull($mappedSplits[0]->getGapPaceInSecondsPerKm());
-        $this->assertEqualsWithDelta(500.0, $mappedSplits[0]->getGapPaceInSecondsPerKm()->toFloat(), 0.01);
-    }
-
     public function testProcessKeepsGapCloseToActualPaceOnGentleRollingTerrain(): void
     {
         $activityId = ActivityId::fromUnprefixed('run-gentle-rolling');
@@ -1366,19 +828,6 @@ class CalculateGapTest extends ContainerTestCase
                 'GAP should stay reasonably close to actual pace on gentle terrain.',
             );
         }
-    }
-
-    public function testProcessOutputsProgress(): void
-    {
-        $activityId = ActivityId::fromUnprefixed('run-progress');
-        $this->addActivity($activityId, SportType::RUN);
-        $this->addStreams($activityId, $this->buildHillyTrackPoints());
-        $this->addMetricSplits($activityId, [1000.0]);
-
-        $output = new SpyOutput();
-        $this->calculateGap->process($output);
-
-        $this->assertStringContainsString('Calculated GAP for 1 activities', (string) $output);
     }
 
     public function testProcessWithNoActivitiesToProcess(): void

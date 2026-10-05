@@ -1,3 +1,0 @@
-  => Calculated normalized power for 0 streams (3 s)
-  => Calculated normalized power for 1 streams (3 s)
-  => Calculated normalized power for 1 streams (3 s)

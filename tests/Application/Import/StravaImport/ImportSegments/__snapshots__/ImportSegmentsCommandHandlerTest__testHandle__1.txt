@@ -1,3 +1,0 @@
-Importing segments...
-  => [1/2] Imported segment details: "⭐️ Segment"
-<error>You reached the daily Strava API rate limit. You will need to import the rest of your data tomorrow</error>

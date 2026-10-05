@@ -22,6 +22,7 @@ use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use App\Tests\ProvideSnapshotAssertion;
 use App\Tests\SpyOutput;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class CalculateCombinedStreamsTest extends ContainerTestCase
@@ -31,109 +32,31 @@ class CalculateCombinedStreamsTest extends ContainerTestCase
 
     private CalculateCombinedStreams $calculateCombinedStreams;
 
-    public function testProcess(): void
+    #[DataProvider('provideActivities')]
+    public function testProcess(SportType $sportType, bool $omitDistanceStream, UnitSystem $unitSystem): void
     {
         $output = new SpyOutput();
 
         $this->provideGeneralTestData(
-            sportType: SportType::RIDE,
-            omitDistanceStream: false,
+            sportType: $sportType,
+            omitDistanceStream: $omitDistanceStream,
         );
-        $this->calculateCombinedStreams->process($output);
-        $this->assertCompressedDatabaseQueryMatchesSnapshot('SELECT * FROM CombinedActivityStream');
+        $this->getContainer()->get(SettingsRepository::class)->save(SettingsName::UNIT_SYSTEM, $unitSystem->value);
 
         $this->calculateCombinedStreams->process($output);
-        $this->assertMatchesTextSnapshot($output);
-    }
 
-    public function testProcessImperial(): void
-    {
-        $output = new SpyOutput();
-
-        $this->provideGeneralTestData(
-            sportType: SportType::RIDE,
-            omitDistanceStream: false,
-        );
-
-        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $settingsRepository->save(SettingsName::UNIT_SYSTEM, UnitSystem::IMPERIAL->value);
-
-        new CalculateCombinedStreams(
-            activityRepository: $this->getContainer()->get(ActivityRepository::class),
-            combinedActivityStreamRepository: $this->getContainer()->get(CombinedActivityStreamRepository::class),
-            activityStreamRepository: $this->getContainer()->get(ActivityStreamRepository::class),
-            settingsRepository: $settingsRepository,
-            mutex: new Mutex(
-                connection: $this->getConnection(),
-                clock: PausedClock::fromString('2025-12-04'),
-                lockName: LockName::IMPORT_DATA,
-            )
-        )->process($output);
-
+        $this->assertStringEndsWith("  => Calculated combined activity streams for 1 activities (3 s)\n", (string) $output);
         $this->assertCompressedDatabaseQueryMatchesSnapshot('SELECT * FROM CombinedActivityStream');
     }
 
-    public function testProcessWithEmptyDistanceStream(): void
+    public static function provideActivities(): iterable
     {
-        $output = new SpyOutput();
-
-        $this->provideGeneralTestData(
-            sportType: SportType::RIDE,
-            omitDistanceStream: true,
-        );
-        $this->calculateCombinedStreams->process($output);
-        $this->assertCompressedDatabaseQueryMatchesSnapshot('SELECT * FROM CombinedActivityStream');
-    }
-
-    public function testProcessForRun(): void
-    {
-        $output = new SpyOutput();
-
-        $this->provideGeneralTestData(
-            sportType: SportType::RUN,
-            omitDistanceStream: false,
-        );
-        $this->calculateCombinedStreams->process($output);
-        $this->assertCompressedDatabaseQueryMatchesSnapshot('SELECT * FROM CombinedActivityStream');
-    }
-
-    public function testProcessForSail(): void
-    {
-        $output = new SpyOutput();
-
-        $this->provideGeneralTestData(
-            sportType: SportType::SAIL,
-            omitDistanceStream: false,
-        );
-        $this->calculateCombinedStreams->process($output);
-        $this->assertCompressedDatabaseQueryMatchesSnapshot('SELECT * FROM CombinedActivityStream');
-    }
-
-    public function testProcessForSailItShouldUseNauticalUnitsEvenWhenImperialIsConfigured(): void
-    {
-        $output = new SpyOutput();
-
-        $this->provideGeneralTestData(
-            sportType: SportType::SAIL,
-            omitDistanceStream: false,
-        );
-
-        $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        $settingsRepository->save(SettingsName::UNIT_SYSTEM, UnitSystem::IMPERIAL->value);
-
-        new CalculateCombinedStreams(
-            activityRepository: $this->getContainer()->get(ActivityRepository::class),
-            combinedActivityStreamRepository: $this->getContainer()->get(CombinedActivityStreamRepository::class),
-            activityStreamRepository: $this->getContainer()->get(ActivityStreamRepository::class),
-            settingsRepository: $settingsRepository,
-            mutex: new Mutex(
-                connection: $this->getConnection(),
-                clock: PausedClock::fromString('2025-12-04'),
-                lockName: LockName::IMPORT_DATA,
-            )
-        )->process($output);
-
-        $this->assertCompressedDatabaseQueryMatchesSnapshot('SELECT * FROM CombinedActivityStream');
+        yield 'ride' => [SportType::RIDE, false, UnitSystem::METRIC];
+        yield 'ride in imperial' => [SportType::RIDE, false, UnitSystem::IMPERIAL];
+        yield 'ride without a distance stream' => [SportType::RIDE, true, UnitSystem::METRIC];
+        yield 'run' => [SportType::RUN, false, UnitSystem::METRIC];
+        yield 'sail' => [SportType::SAIL, false, UnitSystem::METRIC];
+        yield 'sail keeps nautical units in imperial' => [SportType::SAIL, false, UnitSystem::IMPERIAL];
     }
 
     /**

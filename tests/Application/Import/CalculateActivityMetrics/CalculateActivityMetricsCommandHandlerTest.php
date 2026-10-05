@@ -6,12 +6,9 @@ use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Tests\ContainerTestCase;
 use App\Tests\SpyOutput;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class CalculateActivityMetricsCommandHandlerTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private CommandBus $commandBus;
 
     public function testHandle(): void
@@ -19,7 +16,7 @@ class CalculateActivityMetricsCommandHandlerTest extends ContainerTestCase
         $output = new SpyOutput();
 
         $this->commandBus->dispatch(new CalculateActivityMetrics($output));
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame('', (string) $output);
     }
 
     #[\Override]

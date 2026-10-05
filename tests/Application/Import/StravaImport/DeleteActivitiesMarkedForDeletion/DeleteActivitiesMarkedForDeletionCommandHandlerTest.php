@@ -28,12 +28,9 @@ use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\Domain\Segment\SegmentBuilder;
 use App\Tests\Domain\Segment\SegmentEffort\SegmentEffortBuilder;
 use App\Tests\SpyOutput;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class DeleteActivitiesMarkedForDeletionCommandHandlerTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private CommandBus $commandBus;
 
     public function testHandle(): void
@@ -109,7 +106,12 @@ class DeleteActivitiesMarkedForDeletionCommandHandlerTest extends ContainerTestC
         ]));
 
         $this->commandBus->dispatch(new DeleteActivitiesMarkedForDeletion($output));
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame(
+            "Deleting activities...\n"
+            ."  => Activity \"Delete this one - 10-10-2023\" deleted\n"
+            .'  => Activity "Delete this one as well - 10-10-2023" deleted',
+            (string) $output,
+        );
 
         $this->assertEquals(
             1,
@@ -151,7 +153,10 @@ class DeleteActivitiesMarkedForDeletionCommandHandlerTest extends ContainerTestC
         $output = new SpyOutput();
 
         $this->commandBus->dispatch(new DeleteActivitiesMarkedForDeletion($output));
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame(
+            'No activities marked for deletion...',
+            (string) $output,
+        );
     }
 
     #[\Override]

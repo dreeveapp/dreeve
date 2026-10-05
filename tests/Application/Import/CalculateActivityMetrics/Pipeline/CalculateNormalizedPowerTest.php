@@ -64,7 +64,12 @@ class CalculateNormalizedPowerTest extends ContainerTestCase
 
         $this->calculateNormalizedPower->process($output);
 
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame(
+            "  => Calculated normalized power for 0 streams (3 s)\n"
+            ."  => Calculated normalized power for 1 streams (3 s)\n"
+            ."  => Calculated normalized power for 1 streams (3 s)\n",
+            (string) $output,
+        );
         $this->assertCompressedDatabaseQueryMatchesSnapshot(
             'SELECT activityId, streamType, metricType, data FROM ActivityStreamMetric WHERE metricType = :metricType',
             ['metricType' => ActivityStreamMetricType::NORMALIZED_POWER->value],

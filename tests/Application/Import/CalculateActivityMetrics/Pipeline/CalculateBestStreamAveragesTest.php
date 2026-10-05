@@ -54,7 +54,13 @@ class CalculateBestStreamAveragesTest extends ContainerTestCase
 
         $this->calculateBestStreamAverages->process($output);
 
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame(
+            "  => Calculated best averages for 0 streams (3 s)\n"
+            ."  => Calculated best averages for 1 streams (3 s)\n"
+            ."  => Calculated best averages for 2 streams (3 s)\n"
+            ."  => Calculated best averages for 2 streams (3 s)\n",
+            (string) $output,
+        );
         $this->assertCompressedDatabaseQueryMatchesSnapshot(
             'SELECT activityId, streamType, metricType, data FROM ActivityStreamMetric WHERE metricType = :metricType',
             ['metricType' => ActivityStreamMetricType::BEST_AVERAGES->value],

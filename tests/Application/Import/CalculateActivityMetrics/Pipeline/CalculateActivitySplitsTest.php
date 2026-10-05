@@ -18,12 +18,10 @@ use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Split\ActivitySplitBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\SpyOutput;
-use Spatie\Snapshots\MatchesSnapshots;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class CalculateActivitySplitsTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private CalculateActivitySplits $calculateActivitySplits;
     private ActivitySplitRepository $activitySplitRepository;
     private ActivityStreamRepository $activityStreamRepository;
@@ -41,40 +39,22 @@ class CalculateActivitySplitsTest extends ContainerTestCase
 
         $this->assertCount(3, $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC));
         $this->assertCount(2, $this->activitySplitRepository->findBy($activityId, UnitSystem::IMPERIAL));
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame(
+            "  => Calculated splits for 0 activities (3 s)\n"
+            ."  => Calculated splits for 1 activities (3 s)\n"
+            ."  => Calculated splits for 1 activities (3 s)\n",
+            (string) $output,
+        );
     }
 
-    public function testProcessSkipsActivityImportedFromStrava(): void
+    #[DataProvider('provideActivitiesWithoutSplits')]
+    public function testProcessSkipsActivity(SportType $sportType, ImportSource $importSource, ?int $distanceInMeter): void
     {
-        $activityId = ActivityId::fromUnprefixed('run-from-strava');
-        $this->addActivity($activityId, SportType::RUN, ImportSource::STRAVA_API);
-        $this->addStreams($activityId, 2500);
-
-        $output = new SpyOutput();
-        $this->calculateActivitySplits->process($output);
-
-        $this->assertCount(0, $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC));
-        $this->assertSame('', (string) $output);
-    }
-
-    public function testProcessSkipsSportTypeWithoutSplits(): void
-    {
-        $activityId = ActivityId::fromUnprefixed('ride-from-file');
-        $this->addActivity($activityId, SportType::RIDE, ImportSource::FIT_FILE);
-        $this->addStreams($activityId, 2500);
-
-        $output = new SpyOutput();
-        $this->calculateActivitySplits->process($output);
-
-        $this->assertCount(0, $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC));
-        $this->assertSame('', (string) $output);
-    }
-
-    public function testProcessSkipsActivityThatIsShorterThanOneSplit(): void
-    {
-        $activityId = ActivityId::fromUnprefixed('short-run-from-file');
-        $this->addActivity($activityId, SportType::RUN, ImportSource::FIT_FILE);
-        $this->addStreams($activityId, 800);
+        $activityId = ActivityId::fromUnprefixed('activity');
+        $this->addActivity($activityId, $sportType, $importSource);
+        if (null !== $distanceInMeter) {
+            $this->addStreams($activityId, $distanceInMeter);
+        }
 
         $output = new SpyOutput();
         $this->calculateActivitySplits->process($output);
@@ -84,16 +64,12 @@ class CalculateActivitySplitsTest extends ContainerTestCase
         $this->assertSame('', (string) $output);
     }
 
-    public function testProcessSkipsActivityWithoutStreams(): void
+    public static function provideActivitiesWithoutSplits(): iterable
     {
-        $activityId = ActivityId::fromUnprefixed('run-without-streams');
-        $this->addActivity($activityId, SportType::RUN, ImportSource::FIT_FILE);
-
-        $output = new SpyOutput();
-        $this->calculateActivitySplits->process($output);
-
-        $this->assertCount(0, $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC));
-        $this->assertSame('', (string) $output);
+        yield 'imported from strava' => [SportType::RUN, ImportSource::STRAVA_API, 2500];
+        yield 'sport type without splits' => [SportType::RIDE, ImportSource::FIT_FILE, 2500];
+        yield 'shorter than one split' => [SportType::RUN, ImportSource::FIT_FILE, 800];
+        yield 'without streams' => [SportType::RUN, ImportSource::FIT_FILE, null];
     }
 
     public function testProcessDoesNotRecalculateExistingSplits(): void

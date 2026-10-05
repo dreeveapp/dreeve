@@ -1,3 +1,0 @@
-  => Calculated splits for 0 activities (3 s)
-  => Calculated splits for 1 activities (3 s)
-  => Calculated splits for 1 activities (3 s)

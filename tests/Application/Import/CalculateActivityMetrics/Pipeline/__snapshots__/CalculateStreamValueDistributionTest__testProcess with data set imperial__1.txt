@@ -1,8 +1,0 @@
-  => Calculated value distribution for 0 streams (3 s)
-  => Calculated value distribution for 0 streams (3 s)
-  => Calculated value distribution for 1 streams (3 s)
-  => Calculated value distribution for 2 streams (3 s)
-  => Calculated value distribution for 2 streams (3 s)
-  => Calculated value distribution for 3 streams (3 s)
-  => Calculated value distribution for 4 streams (3 s)
-  => Calculated value distribution for 4 streams (3 s)

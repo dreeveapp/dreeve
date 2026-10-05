@@ -1,3 +1,0 @@
-Importingactivityfiles...
-=><error>[1/1]Couldnotimport"broken.tcx":"broken.tcx"isnotvalidTCXXML</error>
-=>Imported0,skipped0,failed1activityfile(s)

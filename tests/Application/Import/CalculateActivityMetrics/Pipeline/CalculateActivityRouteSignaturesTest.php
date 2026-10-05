@@ -33,7 +33,13 @@ class CalculateActivityRouteSignaturesTest extends ContainerTestCase
         );
 
         $this->calculateActivityRouteSignatures->process($output);
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame(
+            "  => Calculated route signatures for 0 activities (3 s)\n"
+            ."  => Calculated route signatures for 1 activities (3 s)\n"
+            ."  => Calculated route signatures for 2 activities (3 s)\n"
+            ."  => Calculated route signatures for 2 activities (3 s)\n",
+            (string) $output,
+        );
     }
 
     #[\Override]

@@ -16,19 +16,25 @@ use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\Domain\Strava\SpyStrava;
 use App\Tests\SpyOutput;
-use Spatie\Snapshots\MatchesSnapshots;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ImportGearCommandHandlerTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private CommandBus $commandBus;
     private SpyStrava $strava;
 
-    public function testHandleWithTooManyRequests(): void
+    /**
+     * @param list<string>|null $restrictToActivityIds
+     * @param list<string>      $expectedOutput
+     */
+    #[DataProvider('provideImports')]
+    public function testHandle(int $maxNumberOfCallsBeforeTriggering429, bool $throwException, ?array $restrictToActivityIds, array $expectedOutput): void
     {
         $output = new SpyOutput();
-        $this->strava->setMaxNumberOfCallsBeforeTriggering429(3);
+        $this->strava->setMaxNumberOfCallsBeforeTriggering429($maxNumberOfCallsBeforeTriggering429);
+        if ($throwException) {
+            $this->strava->triggerExceptionOnNextCall();
+        }
 
         $this->getContainer()->get(GearRepository::class)->add(
             GearBuilder::fromDefaults()
@@ -57,107 +63,36 @@ class ImportGearCommandHandlerTest extends ContainerTestCase
             ['gear_id' => 'b12659792']
         ));
 
-        $this->commandBus->dispatch(new ImportGear($output, null));
+        $this->commandBus->dispatch(new ImportGear(
+            $output,
+            null === $restrictToActivityIds ? null : ActivityIds::fromArray(array_map(ActivityId::fromUnprefixed(...), $restrictToActivityIds)),
+        ));
 
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame(implode("\n", $expectedOutput), (string) $output);
     }
 
-    public function testHandleWithUnexpectedError(): void
+    public static function provideImports(): iterable
     {
-        $output = new SpyOutput();
-        $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
-        $this->strava->triggerExceptionOnNextCall();
-
-        $this->getContainer()->get(GearRepository::class)->add(
-            GearBuilder::fromDefaults()
-                ->withGearId(GearId::fromUnprefixed('b12659861'))
-                ->build()
-        );
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('1'))
-                ->withGearId(GearId::fromUnprefixed('b12659861'))
-                ->build(),
-            ['gear_id' => 'b12659861']
-        ));
-
-        $this->commandBus->dispatch(new ImportGear($output, null));
-
-        $this->assertMatchesTextSnapshot($output);
-    }
-
-    public function testHandle(): void
-    {
-        $output = new SpyOutput();
-        $this->strava->setMaxNumberOfCallsBeforeTriggering429(10000);
-
-        $this->getContainer()->get(GearRepository::class)->add(
-            GearBuilder::fromDefaults()
-                ->withGearId(GearId::fromUnprefixed('b12659861'))
-                ->build()
-        );
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('1'))
-                ->withGearId(GearId::fromUnprefixed('b12659861'))
-                ->build(),
-            ['gear_id' => 'b12659861']
-        ));
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('2'))
-                ->withGearId(GearId::fromUnprefixed('b12659743'))
-                ->build(),
-            ['gear_id' => 'b12659743']
-        ));
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('3'))
-                ->withGearId(GearId::fromUnprefixed('b12659792'))
-                ->build(),
-            ['gear_id' => 'b12659792']
-        ));
-
-        $this->commandBus->dispatch(new ImportGear($output, null));
-
-        $this->assertMatchesTextSnapshot($output);
-    }
-
-    public function testHandlePartialImport(): void
-    {
-        $output = new SpyOutput();
-        $this->strava->setMaxNumberOfCallsBeforeTriggering429(10000);
-
-        $this->getContainer()->get(GearRepository::class)->add(
-            GearBuilder::fromDefaults()
-                ->withGearId(GearId::fromUnprefixed('b12659861'))
-                ->build()
-        );
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('1'))
-                ->withGearId(GearId::fromUnprefixed('b12659861'))
-                ->build(),
-            ['gear_id' => 'b12659861']
-        ));
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('2'))
-                ->withGearId(GearId::fromUnprefixed('b12659743'))
-                ->build(),
-            ['gear_id' => 'b12659743']
-        ));
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('3'))
-                ->withGearId(GearId::fromUnprefixed('b12659792'))
-                ->build(),
-            ['gear_id' => 'b12659792']
-        ));
-
-        $this->commandBus->dispatch(new ImportGear($output, ActivityIds::fromArray([ActivityId::fromUnprefixed('1')])));
-
-        $this->assertMatchesTextSnapshot($output);
+        yield 'all gear' => [10000, false, null, [
+            'Importing gear...',
+            '  => Imported gear "Retro Race Bike"',
+            '  => Imported gear "Zwift Hub"',
+            '  => Imported gear "Elite Direto XR-T ☠️"',
+        ]];
+        yield 'restricted to activity ids' => [10000, false, ['1'], [
+            'Importing gear...',
+            '  => Imported gear "Retro Race Bike"',
+        ]];
+        yield 'too many requests' => [3, false, null, [
+            'Importing gear...',
+            '  => Imported gear "Retro Race Bike"',
+            '  => Imported gear "Zwift Hub"',
+            '<error>You reached the daily Strava API rate limit. You will need to import the rest of your data tomorrow</error>',
+        ]];
+        yield 'unexpected error' => [1000, true, null, [
+            'Importing gear...',
+            '<error>Strava API threw error: The error</error>',
+        ]];
     }
 
     #[\Override]

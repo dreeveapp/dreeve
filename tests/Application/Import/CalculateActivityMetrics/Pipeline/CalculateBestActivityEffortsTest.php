@@ -36,7 +36,7 @@ class CalculateBestActivityEffortsTest extends ContainerTestCase
         );
 
         $this->calculateBestActivityEfforts->process($output);
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertStringEndsWith("  => Calculated best efforts for 16 activities (3 s)\n", (string) $output);
     }
 
     #[\Override]

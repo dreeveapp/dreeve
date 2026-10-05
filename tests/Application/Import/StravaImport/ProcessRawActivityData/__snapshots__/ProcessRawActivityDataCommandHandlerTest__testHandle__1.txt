@@ -1,4 +1,0 @@
-Processing raw activity data...
-  => Added 2 new activity laps for 1 activities
-  => Added 1 new segments and 1 new segment efforts
-  => Added 27 new activity splits for 1 activities

@@ -26,7 +26,6 @@ use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Strava;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Measurement\UnitSystem;
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
@@ -41,15 +40,14 @@ use App\Tests\Domain\Segment\SegmentBuilder;
 use App\Tests\Domain\Segment\SegmentEffort\SegmentEffortBuilder;
 use App\Tests\Domain\Strava\SpyStrava;
 use App\Tests\Infrastructure\FileSystem\provideAssertFileSystem;
-use App\Tests\ProvideSnapshotAssertion;
 use App\Tests\SpyOutput;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class ImportActivitiesCommandHandlerTest extends ContainerTestCase
 {
     use MatchesSnapshots;
     use provideAssertFileSystem;
-    use ProvideSnapshotAssertion;
 
     private CommandBus $commandBus;
     private SpyStrava $strava;
@@ -61,7 +59,11 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
 
         $this->commandBus->dispatch(new ImportActivities($output, null));
 
-        $this->assertMatchesTextSnapshot((string) $output);
+        $this->assertSame(
+            "Importing activities...\n"
+            .'<error>You reached the daily Strava API rate limit. You will need to import the rest of your data tomorrow</error>',
+            (string) $output,
+        );
     }
 
     public function testHandleWithTooManyRequestsWhileFetchingActivities(): void
@@ -95,10 +97,19 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
         $this->assertMatchesTextSnapshot((string) $output);
         $this->assertFileSystemWrites($this->getContainer()->get('file.storage'));
 
-        $this->assertMatchesJsonSnapshot(Json::encode(
-            $this->getConnection()->executeQuery('SELECT * FROM KeyValue')->fetchAllAssociative()
-        ));
-        $this->assertCompressedDatabaseQueryMatchesSnapshot('SELECT * FROM ActivityStream');
+        $this->assertSame(
+            [['key' => 'lock.importData', 'value' => '{"heartbeat":1697559304,"lockAcquiredBy":"test"}']],
+            $this->getConnection()->executeQuery('SELECT `key`, `value` FROM KeyValue')->fetchAllAssociative()
+        );
+        $this->assertSame(
+            [
+                ['activityId' => 'activity-2', 'streamType' => 'watts'],
+                ['activityId' => 'activity-2', 'streamType' => 'distance'],
+                ['activityId' => 'activity-3', 'streamType' => 'watts'],
+                ['activityId' => 'activity-3', 'streamType' => 'distance'],
+            ],
+            $this->getConnection()->executeQuery('SELECT activityId, streamType FROM ActivityStream')->fetchAllAssociative()
+        );
     }
 
     public function testHandleWithUnexpectedErrorWhileInitializing(): void
@@ -108,7 +119,11 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
         $this->strava->triggerExceptionOnNextCall();
 
         $this->commandBus->dispatch(new ImportActivities($output, null));
-        $this->assertMatchesTextSnapshot((string) $output);
+        $this->assertSame(
+            "Importing activities...\n"
+            .'<error>Strava API threw error: The error</error>',
+            (string) $output,
+        );
     }
 
     public function testHandleWithUnexpectedErrorWhileFetchingActivities(): void
@@ -249,102 +264,43 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
         $this->assertMatchesTextSnapshot($output);
     }
 
-    public function testHandleKeepsManuallyAssignedCustomGearWhenStravaHasNoGear(): void
+    #[DataProvider('provideGearAssignments')]
+    public function testHandleAssignsGear(?GearType $existingGearType, string $assignedGearId, bool $stravaHasGear, ?string $expectedGearId): void
     {
-        $output = new SpyOutput();
         $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
-        $this->strava->emptyGearIdOnActivities();
+        if (!$stravaHasGear) {
+            $this->strava->emptyGearIdOnActivities();
+        }
 
-        $this->getContainer()->get(GearRepository::class)->add(GearBuilder::fromDefaults()
-            ->withGearId(GearId::fromUnprefixed('custom-one'))
-            ->withGearType(GearType::CUSTOM)
-            ->build()
-        );
+        if ($existingGearType instanceof GearType) {
+            $this->getContainer()->get(GearRepository::class)->add(GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed($assignedGearId))
+                ->withGearType($existingGearType)
+                ->build()
+            );
+        }
 
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed(4))
-                ->withGearId(GearId::fromUnprefixed('custom-one'))
+                ->withGearId(GearId::fromUnprefixed($assignedGearId))
                 ->build(), []
         ));
 
-        $this->commandBus->dispatch(new ImportActivities($output, null));
+        $this->commandBus->dispatch(new ImportActivities(new SpyOutput(), null));
 
         $this->assertEquals(
-            GearId::fromUnprefixed('custom-one'),
+            null === $expectedGearId ? null : GearId::fromUnprefixed($expectedGearId),
             $this->getContainer()->get(ActivityRepository::class)->find(ActivityId::fromUnprefixed(4))->getGearId()
         );
     }
 
-    public function testHandleOverwritesCustomGearWhenStravaHasGear(): void
+    public static function provideGearAssignments(): iterable
     {
-        $output = new SpyOutput();
-        $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
-
-        $this->getContainer()->get(GearRepository::class)->add(GearBuilder::fromDefaults()
-            ->withGearId(GearId::fromUnprefixed('custom-one'))
-            ->withGearType(GearType::CUSTOM)
-            ->build()
-        );
-
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(4))
-                ->withGearId(GearId::fromUnprefixed('custom-one'))
-                ->build(), []
-        ));
-
-        $this->commandBus->dispatch(new ImportActivities($output, null));
-
-        // A gear assigned in Strava always wins over a manually assigned custom gear.
-        $this->assertEquals(
-            GearId::fromUnprefixed('b12659861'),
-            $this->getContainer()->get(ActivityRepository::class)->find(ActivityId::fromUnprefixed(4))->getGearId()
-        );
-    }
-
-    public function testHandleOverwritesImportedGearFromStravaPayload(): void
-    {
-        $output = new SpyOutput();
-        $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
-
-        $this->getContainer()->get(GearRepository::class)->add(GearBuilder::fromDefaults()
-            ->withGearId(GearId::fromUnprefixed('b12659743'))
-            ->build()
-        );
-
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(4))
-                ->withGearId(GearId::fromUnprefixed('b12659743'))
-                ->build(), []
-        ));
-
-        $this->commandBus->dispatch(new ImportActivities($output, null));
-
-        $this->assertEquals(
-            GearId::fromUnprefixed('b12659861'),
-            $this->getContainer()->get(ActivityRepository::class)->find(ActivityId::fromUnprefixed(4))->getGearId()
-        );
-    }
-
-    public function testHandleEmptiesGearWhenAssignedGearDoesNotExist(): void
-    {
-        $output = new SpyOutput();
-        $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
-        $this->strava->emptyGearIdOnActivities();
-
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(4))
-                ->withGearId(GearId::fromUnprefixed('does-not-exist'))
-                ->build(), []
-        ));
-
-        $this->commandBus->dispatch(new ImportActivities($output, null));
-        $this->assertNull(
-            $this->getContainer()->get(ActivityRepository::class)->find(ActivityId::fromUnprefixed(4))->getGearId()
-        );
+        yield 'custom gear is kept when strava has no gear' => [GearType::CUSTOM, 'custom-one', false, 'custom-one'];
+        yield 'strava gear wins over custom gear' => [GearType::CUSTOM, 'custom-one', true, 'b12659861'];
+        yield 'strava gear overwrites imported gear' => [GearType::IMPORTED, 'b12659743', true, 'b12659861'];
+        yield 'gear that does not exist is emptied' => [null, 'does-not-exist', false, null];
     }
 
     public function testHandleWhenNoSegmentEffortsDefined(): void
@@ -374,8 +330,9 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
 
         $this->assertMatchesTextSnapshot($output);
 
-        $this->assertMatchesJsonSnapshot(
-            $this->getConnection()->executeQuery('SELECT * FROM KeyValue')->fetchAllAssociative()
+        $this->assertSame(
+            [['key' => 'lock.importData', 'value' => '{"heartbeat":1697559304,"lockAcquiredBy":"test"}']],
+            $this->getConnection()->executeQuery('SELECT `key`, `value` FROM KeyValue')->fetchAllAssociative()
         );
     }
 
@@ -396,8 +353,9 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
 
         $this->assertMatchesTextSnapshot($output);
 
-        $this->assertMatchesJsonSnapshot(
-            $this->getConnection()->executeQuery('SELECT * FROM KeyValue')->fetchAllAssociative()
+        $this->assertSame(
+            [['key' => 'lock.importData', 'value' => '{"heartbeat":1697559304,"lockAcquiredBy":"test"}']],
+            $this->getConnection()->executeQuery('SELECT `key`, `value` FROM KeyValue')->fetchAllAssociative()
         );
 
         $this->assertEquals(
@@ -426,9 +384,13 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
         );
     }
 
-    public function testHandleWithSkipActivitiesRecordedBefore(): void
+    /**
+     * @param array<string, mixed> $importSettings
+     */
+    #[DataProvider('provideImportSettingsThatSkipTheVirtualRide')]
+    public function testHandleSkipsActivitiesExcludedByTheImportSettings(array $importSettings, SportType $sportTypeOfExistingActivity): void
     {
-        $this->seedImportSettings(['skipActivitiesRecordedBefore' => '2023-09-01']);
+        $this->seedImportSettings($importSettings);
 
         $output = new SpyOutput();
         $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
@@ -436,31 +398,20 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed(4))
+                ->withSportType($sportTypeOfExistingActivity)
                 ->build(), []
         ));
 
         $this->commandBus->dispatch(new ImportActivities($output, null));
 
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertStringNotContainsString('Watopia Flat Forward in London', (string) $output);
+        $this->assertStringEndsWith('  => [4/7] Imported activity: "Night Ride5 - 11-09-2023"', (string) $output);
     }
 
-    public function testHandleWithSportTypeIsNotIncluded(): void
+    public static function provideImportSettingsThatSkipTheVirtualRide(): iterable
     {
-        $this->seedImportSettings(['sportTypesToImport' => ['Ride']]);
-
-        $output = new SpyOutput();
-        $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
-
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(4))
-                ->withSportType(SportType::VIRTUAL_RIDE)
-                ->build(), []
-        ));
-
-        $this->commandBus->dispatch(new ImportActivities($output, null));
-
-        $this->assertMatchesTextSnapshot($output);
+        yield 'recorded before the cutoff date' => [['skipActivitiesRecordedBefore' => '2023-09-01'], SportType::RIDE];
+        yield 'sport type is not included' => [['sportTypesToImport' => ['Ride']], SportType::VIRTUAL_RIDE];
     }
 
     public function testHandlePartialImport(): void
@@ -510,7 +461,11 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
 
         $this->commandBus->dispatch(new ImportActivities($output, ActivityIds::fromArray([ActivityId::fromUnprefixed(4)])));
 
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame(
+            "Importing activities...\n"
+            .'  => [1/1] Updated activity: "Night Ride3 - 10-10-2023"',
+            (string) $output,
+        );
     }
 
     #[\Override]

@@ -1,4 +1,0 @@
-Importing gear...
-  => Imported gear "Retro Race Bike"
-  => Imported gear "Zwift Hub"
-  => Imported gear "Elite Direto XR-T ☠️"

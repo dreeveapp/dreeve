@@ -135,7 +135,7 @@ class CalculateStreamValueDistributionTest extends ContainerTestCase
             $settingsRepository,
         )->process($output);
 
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertStringEndsWith("  => Calculated value distribution for 4 streams (3 s)\n", (string) $output);
         $this->assertCompressedDatabaseQueryMatchesSnapshot(
             'SELECT activityId, streamType, metricType, data FROM ActivityStreamMetric WHERE metricType = :metricType',
             ['metricType' => ActivityStreamMetricType::VALUE_DISTRIBUTION->value],

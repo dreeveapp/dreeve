@@ -1,3 +1,0 @@
-Importingactivityfiles...
-=>[1/1]Skipping"notes.txt",unsupportedfiletype
-=>Imported0,skipped1,failed0activityfile(s)

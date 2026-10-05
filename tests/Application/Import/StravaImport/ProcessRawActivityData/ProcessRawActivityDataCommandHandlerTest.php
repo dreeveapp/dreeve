@@ -201,7 +201,13 @@ class ProcessRawActivityDataCommandHandlerTest extends ContainerTestCase
         );
 
         $this->commandBus->dispatch(new ProcessRawActivityData($output));
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame(
+            "Processing raw activity data...\n"
+            ."  => Added 2 new activity laps for 1 activities\n"
+            ."  => Added 1 new segments and 1 new segment efforts\n"
+            .'  => Added 27 new activity splits for 1 activities',
+            (string) $output,
+        );
 
         $this->assertMatchesJsonSnapshot(
             $this->getConnection()->executeQuery('SELECT * FROM Segment')->fetchAllAssociative()

@@ -1,3 +1,0 @@
-Importingactivityfiles...
-=>[1/1]Imported"ride.tcx"asactivity"NightRide08092021"
-=>Imported1,skipped0,failed0activityfile(s)
