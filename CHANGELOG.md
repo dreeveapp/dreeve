@@ -1,3 +1,39 @@
+# [v5.4.4](https://github.com/dreeveapp/dreeve/releases/tag/v5.4.4) - 2026-10-05
+
+## New features
+* Added API support for adding and removing activity images
+* New automation condition rule to match activities that end near their starting point
+
+## Improvements
+* Improved the documentation for use with LLMs
+* Added security headers to the Caddy configuration
+* Fixed elevation gain being overestimated on noisy data
+* Improved FIT file imports for activities with a session but no record messages
+* Added options to select all or clear all activities in the backfill preview
+
+## Bug fixes
+* Fixed filename filtering on the file imports API
+* Fixed GPX exports for activities without GPS data
+
+## Technical details
+* ISSUE #2737: Make docs LLM friendly by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2738
+* ISSUE #2740: Add security headers to Caddyfile by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2742
+* Update Brazilan Portuguese translation by @gustavobim in https://github.com/dreeveapp/dreeve/pull/2744
+* ISSUE #2741: Elevation gain is about 3x too high on noisy data by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2749
+* ISSUE #2746: filters[filename] on GET /api/v1/file-imports does not a… by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2750
+* ISSUE #2748: the GPX export of an activity without GPS has track points with no position by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2751
+* ISSUE #2745: Import a FIT activity that has a session but no record messages by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2752
+* Complete missing French translations by @Aohzan in https://github.com/dreeveapp/dreeve/pull/2754
+* ISSUE #2747: API: add and remove an activity's images by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2758
+* ISSUE #2755: Elevation imported as 0 from FIT files that declare total_ascent = 0 despite a valid altitude stream by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2760
+* ISSUE #2756: Select all or clear the activities in the backfill preview by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2761
+* ISSUE #2757: Match activities that end near their start point by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2762
+
+## New Contributors
+* @Aohzan made their first contribution in https://github.com/dreeveapp/dreeve/pull/2754
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.4.3...v5.4.4
+
 # [v5.4.3](https://github.com/dreeveapp/dreeve/releases/tag/v5.4.3) - 2026-10-02
 
 ## New features
