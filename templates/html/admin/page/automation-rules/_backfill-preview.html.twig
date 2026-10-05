@@ -21,8 +21,14 @@
     </div>
 
     {% if matchedActivities is not empty %}
-        <div class="mt-4">
-            <h4 class="text-sm font-semibold text-gray-800">{{ "Activities to update"|trans({}, 'admin') }}</h4>
+        <div class="mt-4" data-checkbox-toggle-scope>
+            <div class="flex items-center justify-between gap-2">
+                <h4 class="text-sm font-semibold text-gray-800">{{ "Activities to update"|trans({}, 'admin') }}</h4>
+                <div class="flex items-center gap-3 text-xs font-medium">
+                    <button type="button" class="unstyled cursor-pointer text-primary hover:underline" data-checkbox-toggle="all">{{ "Select all"|trans({}, 'admin') }}</button>
+                    <button type="button" class="unstyled cursor-pointer text-primary hover:underline" data-checkbox-toggle="none">{{ "Clear"|trans({}, 'admin') }}</button>
+                </div>
+            </div>
             <div class="mt-2 max-h-128 overflow-y-auto rounded-lg border border-gray-200 divide-y divide-gray-200"
                  data-required-checkbox-group="{{ "Select at least one activity."|trans({}, 'admin') }}">
                 {% for matchedActivity in matchedActivities %}
