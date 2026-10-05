@@ -29,6 +29,10 @@ class TrainingLoadRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertResponseHeaderSame(
+            'X-Dreeve-Cache-Tags',
+            'settings.appearance, settings.general, activities',
+        );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
@@ -79,17 +83,5 @@ class TrainingLoadRequestHandlerTest extends ControllerWebTestCase
             metricType: ActivityStreamMetricType::VALUE_DISTRIBUTION,
             data: $heartRateDistribution,
         ));
-    }
-
-    public function testItIsTaggedWithTheActivitiesItRenders(): void
-    {
-        $this->provideFullTestSet();
-
-        $this->client->request('GET', '/dashboard/training-load');
-
-        $this->assertResponseHeaderSame(
-            'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities',
-        );
     }
 }

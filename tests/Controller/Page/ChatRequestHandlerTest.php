@@ -52,6 +52,8 @@ class ChatRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/chat');
 
         $this->assertResponseIsSuccessful();
+        $this->assertResponseNotHasHeader('X-Dreeve-Cache');
+        $this->assertResponseHeaderSame('Cache-Control', 'max-age=0, must-revalidate, no-store, private');
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
@@ -62,16 +64,6 @@ class ChatRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/chat');
 
         $this->assertResponseStatusCodeSame(404);
-    }
-
-    public function testItIsNotRenderCached(): void
-    {
-        $this->enableAssistant(true);
-
-        $this->client->request('GET', '/chat');
-
-        $this->assertResponseIsSuccessful();
-        $this->assertResponseNotHasHeader('X-Dreeve-Cache');
     }
 
     private function enableAssistant(bool $enabled): void
@@ -105,15 +97,6 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             'admin/settings/integrations?redirectTo=%2Fchat',
             (string) $this->client->getResponse()->getContent(),
         );
-    }
-
-    public function testItIsNeverStoredByTheBrowser(): void
-    {
-        $this->enableAssistant(true);
-
-        $this->client->request('GET', '/chat');
-
-        $this->assertResponseHeaderSame('Cache-Control', 'max-age=0, must-revalidate, no-store, private');
     }
 
     public function testClearChat(): void

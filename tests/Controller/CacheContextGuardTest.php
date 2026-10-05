@@ -96,6 +96,40 @@ class CacheContextGuardTest extends AdminWebTestCase
         }
     }
 
+    public function testEveryRouteThatVariesByAuthenticationHasAnotherCacheKeyOnceLoggedIn(): void
+    {
+        $this->provideFullTestSet();
+        $this->addSegmentWithAPolylineFixtures();
+
+        $anonymousCacheKeys = [];
+        foreach (self::URLS as $routeName => $url) {
+            $this->client->request('GET', $url);
+
+            $cacheKey = (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key');
+            if (!str_contains($cacheKey, AuthenticatedCacheContext::getKey().'=')) {
+                continue;
+            }
+
+            $this->assertResponseHeaderSame('Cache-Control', 'max-age=0, must-revalidate, no-store, private', sprintf('Route "%s"', $routeName));
+            $anonymousCacheKeys[$routeName] = $cacheKey;
+        }
+
+        $this->client->loginUser($this->adminUser());
+
+        foreach ($anonymousCacheKeys as $routeName => $anonymousCacheKey) {
+            $this->client->request('GET', self::URLS[$routeName]);
+
+            $this->assertNotEquals(
+                $anonymousCacheKey,
+                $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
+                sprintf('Route "%s" serves the same cache key to every visitor.', $routeName),
+            );
+        }
+
+        $this->assertArrayHasKey('activity', $anonymousCacheKeys);
+        $this->assertArrayHasKey('gear_maintenance', $anonymousCacheKeys);
+    }
+
     public function testRoutesNotVaryingByAuthenticationRenderIdenticallyForEveryVisitor(): void
     {
         $this->provideFullTestSet();

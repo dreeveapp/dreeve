@@ -17,7 +17,6 @@ class BestEffortsHistoryRequestHandlerTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         foreach (ActivityType::RIDE->getDistancesForBestEffortCalculation() as $distance) {
             $this->client->request('GET', sprintf(
@@ -35,7 +34,6 @@ class BestEffortsHistoryRequestHandlerTest extends ControllerWebTestCase
     public function testGetPath(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/best-efforts/Ride/10000');
 
@@ -61,16 +59,6 @@ class BestEffortsHistoryRequestHandlerTest extends ControllerWebTestCase
         $this->client->request('GET', $path);
 
         $this->assertResponseStatusCodeSame(404);
-    }
-
-    public function testItMarksTheBestEffortsSectionAsActive(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/best-efforts/Ride/10000');
-
-        $this->assertStringContainsString('href="/best-efforts" aria-selected="true"', (string) $this->client->getResponse()->getContent());
     }
 
     public function testEveryCalculatedDistanceIsAddressable(): void

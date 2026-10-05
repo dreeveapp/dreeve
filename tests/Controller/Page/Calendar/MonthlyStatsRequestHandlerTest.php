@@ -16,12 +16,19 @@ class MonthlyStatsRequestHandlerTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/monthly-stats');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertStringEndsWith(
+            'monthly-stats',
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
+        );
+        $this->assertResponseHeaderSame(
+            'X-Dreeve-Cache-Tags',
+            'settings.appearance, settings.general, '.RootCacheTag::ACTIVITIES->toTagString(),
+        );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
@@ -29,33 +36,6 @@ class MonthlyStatsRequestHandlerTest extends ControllerWebTestCase
     {
         $this->assertMatchesHtmlSnapshot(
             (string) $this->getContainer()->get(MonthlyStatsRequestHandler::class)->handle()->getContent()
-        );
-    }
-
-    public function testGetPath(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/monthly-stats');
-
-        $this->assertResponseIsSuccessful();
-        $this->assertStringEndsWith(
-            'monthly-stats',
-            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
-        );
-    }
-
-    public function testGetCacheTags(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/monthly-stats');
-
-        $this->assertResponseHeaderSame(
-            'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, '.RootCacheTag::ACTIVITIES->toTagString(),
         );
     }
 

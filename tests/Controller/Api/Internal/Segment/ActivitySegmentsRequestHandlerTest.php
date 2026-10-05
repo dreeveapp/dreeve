@@ -14,7 +14,6 @@ class ActivitySegmentsRequestHandlerTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-9542782314/segments');
 
@@ -26,7 +25,6 @@ class ActivitySegmentsRequestHandlerTest extends ControllerWebTestCase
     public function testRenderForActivityWithoutAnySegments(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-9756441709/segments');
 
@@ -37,7 +35,6 @@ class ActivitySegmentsRequestHandlerTest extends ControllerWebTestCase
     public function testItEntersTheRenderCache(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-9542782314/segments');
 
@@ -48,7 +45,6 @@ class ActivitySegmentsRequestHandlerTest extends ControllerWebTestCase
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-1/segments');
 

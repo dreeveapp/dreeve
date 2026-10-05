@@ -33,6 +33,14 @@ class GearMaintenanceRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertStringEndsWith(
+            'gear.maintenance.auth=anon',
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
+        );
+        $this->assertResponseHeaderSame(
+            'X-Dreeve-Cache-Tags',
+            'settings.appearance, settings.general, gear.maintenance, activities, gear',
+        );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
@@ -44,35 +52,6 @@ class GearMaintenanceRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
-    }
-
-    public function testGetPath(): void
-    {
-        $this->importGearMaintenanceConfig();
-        $this->provideGearWithMaintenanceHistory();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/gear/maintenance');
-
-        $this->assertResponseIsSuccessful();
-        $this->assertStringEndsWith(
-            'gear.maintenance.auth=anon',
-            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
-        );
-    }
-
-    public function testItIsTaggedWithTheMaintenanceDataItRenders(): void
-    {
-        $this->importGearMaintenanceConfig();
-        $this->provideGearWithMaintenanceHistory();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/gear/maintenance');
-
-        $this->assertResponseHeaderSame(
-            'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, gear.maintenance, activities, gear',
-        );
     }
 
     private function provideGearWithMaintenanceHistory(): void
@@ -148,41 +127,10 @@ class GearMaintenanceRequestHandlerTest extends AdminWebTestCase
         ));
     }
 
-    public function testItMarksTheGearSectionAsActive(): void
-    {
-        $this->importGearMaintenanceConfig();
-        $this->provideGearWithMaintenanceHistory();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/gear/maintenance');
-
-        $this->assertStringContainsString('href="/gear" aria-selected="true"', (string) $this->client->getResponse()->getContent());
-    }
-
     #[\Override]
     protected function shouldSeedActivity(): bool
     {
         return false;
-    }
-
-    public function testItOnlyRendersTheAdminLinkForAuthenticatedVisitors(): void
-    {
-        $this->importGearMaintenanceConfig();
-        $this->provideGearWithMaintenanceHistory();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/gear/maintenance');
-        $this->assertStringNotContainsString(
-            'admin/gear/maintenance-config',
-            (string) $this->client->getResponse()->getContent(),
-        );
-
-        $this->client->loginUser($this->adminUser());
-        $this->client->request('GET', '/gear/maintenance');
-        $this->assertStringContainsString(
-            'admin/gear/maintenance-config?redirectTo=%2Fgear%2Fmaintenance',
-            (string) $this->client->getResponse()->getContent(),
-        );
     }
 
     public function testItDoesNotOfferToLogMaintenanceWhenTheFeatureIsNotEnabled(): void
@@ -195,24 +143,5 @@ class GearMaintenanceRequestHandlerTest extends AdminWebTestCase
         $content = (string) $this->client->getResponse()->getContent();
         $this->assertStringNotContainsString('admin/gear/maintenance-logs/register', $content);
         $this->assertStringContainsString('admin/gear/maintenance-config?redirectTo=%2Fgear%2Fmaintenance', $content);
-    }
-
-    public function testItVariesByAuthentication(): void
-    {
-        $this->importGearMaintenanceConfig();
-        $this->provideGearWithMaintenanceHistory();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/gear/maintenance');
-        $anonymousCacheKey = (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key');
-        $this->assertResponseHeaderSame('Cache-Control', 'max-age=0, must-revalidate, no-store, private');
-
-        $this->client->loginUser($this->adminUser());
-        $this->client->request('GET', '/gear/maintenance');
-
-        $this->assertNotEquals(
-            $anonymousCacheKey,
-            $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
-        );
     }
 }

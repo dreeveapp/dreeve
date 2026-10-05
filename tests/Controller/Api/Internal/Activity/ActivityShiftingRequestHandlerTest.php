@@ -22,7 +22,6 @@ class ActivityShiftingRequestHandlerTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
         $this->addDrivetrainUsages();
 
         $this->client->request('GET', '/api/internal/activities/'.self::ACTIVITY_ID.'/shifting');
@@ -35,7 +34,6 @@ class ActivityShiftingRequestHandlerTest extends ControllerWebTestCase
     public function testRenderWithoutDrivetrainUsages(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/'.self::ACTIVITY_ID.'/shifting');
 
@@ -46,7 +44,6 @@ class ActivityShiftingRequestHandlerTest extends ControllerWebTestCase
     public function testItEntersTheRenderCache(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
         $this->addDrivetrainUsages();
 
         $this->client->request('GET', '/api/internal/activities/'.self::ACTIVITY_ID.'/shifting');
@@ -58,7 +55,6 @@ class ActivityShiftingRequestHandlerTest extends ControllerWebTestCase
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-1/shifting');
 

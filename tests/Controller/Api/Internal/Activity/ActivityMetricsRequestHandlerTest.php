@@ -14,23 +14,11 @@ class ActivityMetricsRequestHandlerTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-9756441741/metrics');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
-        $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
-    }
-
-    public function testGetPath(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/api/internal/activities/activity-9756441741/metrics');
-
-        $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'activities.9756441741.metrics',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
@@ -39,12 +27,12 @@ class ActivityMetricsRequestHandlerTest extends ControllerWebTestCase
             'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, activities.9756441741',
         );
+        $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
     }
 
     public function testItDoesNotResolveAnActivityWithoutACombinedStream(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-9830227112/metrics');
 
@@ -54,7 +42,6 @@ class ActivityMetricsRequestHandlerTest extends ControllerWebTestCase
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-1/metrics');
 

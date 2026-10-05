@@ -14,40 +14,20 @@ class SegmentsRequestHandlerTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/segments');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
-        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
-    }
-
-    public function testGetPath(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/segments');
-
-        $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'segments',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
-    }
-
-    public function testItIsTaggedWithTheSegmentsAndActivitiesItRenders(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/segments');
-
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, segments, activities',
         );
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
     #[\Override]

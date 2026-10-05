@@ -45,31 +45,20 @@ class ActivityCoordinatesRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
-        $this->assertSame('[[51.2,3.2],[51.3,3.3]]', $this->client->getResponse()->getContent());
-    }
-
-    public function testGetPath(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/api/internal/activities/activity-9756441741/coordinates');
-
-        $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
-            'activities.9756441741.coordinates',
+            'activities.1.coordinates',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities.9756441741',
+            'settings.appearance, settings.general, activities.1',
         );
+        $this->assertSame('[[51.2,3.2],[51.3,3.3]]', $this->client->getResponse()->getContent());
     }
 
     public function testItDoesNotResolveAnActivityWithoutACombinedStream(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-9830227112/coordinates');
 
@@ -79,7 +68,6 @@ class ActivityCoordinatesRequestHandlerTest extends ControllerWebTestCase
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-1/coordinates');
 

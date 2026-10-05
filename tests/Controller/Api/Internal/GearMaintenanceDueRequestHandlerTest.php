@@ -33,6 +33,10 @@ class GearMaintenanceDueRequestHandlerTest extends ControllerWebTestCase
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
         // This fragment is shared by the sidebar and the gear sub menu, so it must not carry sidebar-only classes.
         $this->assertStringNotContainsString('sidebar-collapsed', (string) $this->client->getResponse()->getContent());
+        $this->assertResponseHeaderSame(
+            'X-Dreeve-Cache-Tags',
+            'settings.appearance, settings.general, gear.maintenance, activities, gear',
+        );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
@@ -55,19 +59,6 @@ class GearMaintenanceDueRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertEmpty(trim((string) $this->client->getResponse()->getContent()));
-    }
-
-    public function testItIsTaggedWithTheMaintenanceDataItRenders(): void
-    {
-        $this->importGearMaintenanceConfig();
-        $this->rideSinceTheChainWasLubed(Kilometer::from(750));
-
-        $this->client->request('GET', '/api/internal/gear/maintenance-due');
-
-        $this->assertResponseHeaderSame(
-            'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, gear.maintenance, activities, gear',
-        );
     }
 
     private function rideSinceTheChainWasLubed(Kilometer $distance): void

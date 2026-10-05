@@ -14,7 +14,6 @@ class ActivityBestEffortsRequestHandlerTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-9542782314/best-efforts');
 
@@ -26,7 +25,6 @@ class ActivityBestEffortsRequestHandlerTest extends ControllerWebTestCase
     public function testItEntersTheRenderCache(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-9542782314/best-efforts');
 
@@ -37,7 +35,6 @@ class ActivityBestEffortsRequestHandlerTest extends ControllerWebTestCase
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-1/best-efforts');
 

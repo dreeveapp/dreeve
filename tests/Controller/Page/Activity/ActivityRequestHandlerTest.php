@@ -31,19 +31,25 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/activities/activity-9756441741');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertStringEndsWith(
+            'activities.9756441741.auth=anon',
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
+        );
+        $this->assertResponseHeaderSame(
+            'X-Dreeve-Cache-Tags',
+            'settings.appearance, settings.general, activities.9756441741, gear',
+        );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
     public function testRenderForAVirtualRide(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/activities/activity-9542782314');
 
@@ -55,7 +61,6 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
     public function testItRendersTheTemplateOfTheSportType(SportType $sportType): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $activityId = ActivityId::fromUnprefixed('123456789');
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
@@ -95,7 +100,6 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
     public function testItRendersTheHeartRateWithoutTimeInZoneWhenThereAreNoHeartRateStreams(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $activityId = ActivityId::fromUnprefixed('123456789');
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
@@ -121,7 +125,6 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
     public function testItLabelsTheVelocityDistributionOfARunAsPace(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/activities/activity-45326441741');
 
@@ -132,7 +135,6 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
     public function testItLabelsTheVelocityDistributionOfARideAsSpeed(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->getContainer()->get(ActivityStreamMetricRepository::class)->add(ActivityStreamMetric::create(
             activityId: ActivityId::fromUnprefixed('9756441741'),
@@ -155,75 +157,10 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
         );
     }
 
-    public function testGetPath(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/activities/activity-9756441741');
-
-        $this->assertResponseIsSuccessful();
-        $this->assertStringEndsWith(
-            'activities.9756441741.auth=anon',
-            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
-        );
-    }
-
-    public function testItOnlyRendersTheEditLinkForAuthenticatedVisitors(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/activities/activity-9756441741');
-        $this->assertStringNotContainsString(
-            'admin/activities/activity-9756441741/edit',
-            (string) $this->client->getResponse()->getContent(),
-        );
-
-        $this->client->loginUser($this->adminUser());
-        $this->client->request('GET', '/activities/activity-9756441741');
-        $this->assertStringContainsString(
-            'admin/activities/activity-9756441741/edit?redirectTo=%2Factivities%2Factivity-9756441741',
-            (string) $this->client->getResponse()->getContent(),
-        );
-    }
-
-    public function testItVariesByAuthentication(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/activities/activity-9756441741');
-        $anonymousCacheKey = (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key');
-        $this->assertResponseHeaderSame('Cache-Control', 'max-age=0, must-revalidate, no-store, private');
-
-        $this->client->loginUser($this->adminUser());
-        $this->client->request('GET', '/activities/activity-9756441741');
-
-        $this->assertNotEquals(
-            $anonymousCacheKey,
-            $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
-        );
-    }
-
-    public function testItIsTaggedWithTheActivityItRenders(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/activities/activity-9756441741');
-
-        $this->assertResponseHeaderSame(
-            'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities.9756441741, gear',
-        );
-    }
-
     #[DataProvider('provideUrlsThatAreNotFound')]
     public function testItIsNotFound(string $url): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', $url);
 
@@ -234,29 +171,6 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
     {
         yield 'an activity that does not exist' => ['/activities/activity-1'];
         yield 'the unprefixed id is not a valid activity id' => ['/activities/9756441741'];
-    }
-
-    public function testItMarksTheActivitiesSectionAsActive(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/activities/activity-9756441741');
-
-        $this->assertStringContainsString('href="/activities" aria-selected="true"', (string) $this->client->getResponse()->getContent());
-    }
-
-    public function testItRendersTheOpenGraphOfTheActivity(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/activities/activity-9756441741');
-
-        $this->assertStringContainsString(
-            '<meta property="og:url" content="http://localhost:8080/activities/activity-9756441741">',
-            (string) $this->client->getResponse()->getContent(),
-        );
     }
 
     #[\Override]

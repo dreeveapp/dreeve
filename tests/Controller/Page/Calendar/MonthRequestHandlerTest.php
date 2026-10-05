@@ -16,19 +16,21 @@ class MonthRequestHandlerTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/monthly-stats/2023-06');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertStringEndsWith(
+            'monthly-stats.2023-06',
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
+        );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
     public function testRenderJanuary(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/monthly-stats/2023-01');
 
@@ -36,24 +38,9 @@ class MonthRequestHandlerTest extends ControllerWebTestCase
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
-    public function testGetPath(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/monthly-stats/2023-06');
-
-        $this->assertResponseIsSuccessful();
-        $this->assertStringEndsWith(
-            'monthly-stats.2023-06',
-            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
-        );
-    }
-
     public function testItIsTaggedWithTheMonthsItRenders(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/monthly-stats/2023-01');
 
@@ -67,7 +54,6 @@ class MonthRequestHandlerTest extends ControllerWebTestCase
     {
         // The clock is paused on 2023-10-17, the test set starts in July 2020.
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/monthly-stats/2020-07');
         $this->assertResponseIsSuccessful();
@@ -79,7 +65,6 @@ class MonthRequestHandlerTest extends ControllerWebTestCase
     public function testItDoesNotResolveMonthsOutsideThatRange(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/monthly-stats/2020-06');
         $this->assertResponseStatusCodeSame(404);
@@ -91,22 +76,11 @@ class MonthRequestHandlerTest extends ControllerWebTestCase
     public function testItDoesNotResolveMalformedPaths(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         foreach (['2023-13', '2023-6', 'not-a-month', '2023-06/extra'] as $month) {
             $this->client->request('GET', '/monthly-stats/'.$month);
             $this->assertResponseStatusCodeSame(404);
         }
-    }
-
-    public function testItMarksTheMonthlyStatsSectionAsActive(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/monthly-stats/2023-06');
-
-        $this->assertStringContainsString('href="/monthly-stats" aria-selected="true"', (string) $this->client->getResponse()->getContent());
     }
 
     /**

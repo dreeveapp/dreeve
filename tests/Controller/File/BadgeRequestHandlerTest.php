@@ -22,7 +22,6 @@ class BadgeRequestHandlerTest extends ControllerWebTestCase
     public function testRenderDreeveBadge(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         // An activity name that has to survive both the ellipsing and the escaping.
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
@@ -37,13 +36,22 @@ class BadgeRequestHandlerTest extends ControllerWebTestCase
         $this->client->request('GET', '/badge/dreeve.svg');
 
         $this->assertResponseIsSuccessful();
+        $this->assertResponseHeaderSame('Content-Type', 'image/svg+xml; charset=UTF-8');
+        $this->assertResponseHeaderSame('Cache-Control', 'must-revalidate, no-cache, no-store, private');
+        $this->assertStringEndsWith(
+            'badge.dreeve',
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
+        );
+        $this->assertResponseHeaderSame(
+            'X-Dreeve-Cache-Tags',
+            'settings.appearance, settings.general, activities, challenges',
+        );
         $this->assertMatchesXmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
     public function testRenderZwiftBadge(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/badge/zwift.svg');
 
@@ -54,7 +62,6 @@ class BadgeRequestHandlerTest extends ControllerWebTestCase
     public function testRenderPersonalBestBadge(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/badge/pb/ride.svg');
 
@@ -65,7 +72,6 @@ class BadgeRequestHandlerTest extends ControllerWebTestCase
     public function testRenderPersonalBestBadgeForVirtualRide(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/badge/pb/virtualride.svg');
 
@@ -73,37 +79,9 @@ class BadgeRequestHandlerTest extends ControllerWebTestCase
         $this->assertMatchesXmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
-    public function testGetPath(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/badge/dreeve.svg');
-
-        $this->assertResponseIsSuccessful();
-        $this->assertStringEndsWith(
-            'badge.dreeve',
-            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
-        );
-    }
-
-    public function testItIsTaggedWithWhatItRenders(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/badge/dreeve.svg');
-
-        $this->assertResponseHeaderSame(
-            'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities, challenges',
-        );
-    }
-
     public function testItDoesNotResolveTheZwiftBadgeWithoutAConfiguredLevel(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->getContainer()->get(DbalSettingsRepository::class)->saveGroup(SettingsGroup::ZWIFT, [
             'level' => null,
@@ -125,18 +103,6 @@ class BadgeRequestHandlerTest extends ControllerWebTestCase
         $this->client->request('GET', $path);
 
         $this->assertResponseStatusCodeSame(404);
-    }
-
-    public function testItIsServedUncachedByTheBrowser(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/badge/dreeve.svg');
-
-        $this->assertResponseIsSuccessful();
-        $this->assertResponseHeaderSame('Content-Type', 'image/svg+xml; charset=UTF-8');
-        $this->assertResponseHeaderSame('Cache-Control', 'must-revalidate, no-cache, no-store, private');
     }
 
     #[\Override]

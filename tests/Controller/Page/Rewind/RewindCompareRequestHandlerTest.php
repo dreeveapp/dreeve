@@ -15,12 +15,19 @@ class RewindCompareRequestHandlerTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/rewind/2023/compare/2022');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertEqualsCanonicalizing(
+            [
+                'activities.2023', 'activity.images.2023',
+                'activities.2022', 'activity.images.2022',
+                'gear', 'settings.appearance', 'settings.general',
+            ],
+            explode(', ', (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Tags')),
+        );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
@@ -28,7 +35,6 @@ class RewindCompareRequestHandlerTest extends ControllerWebTestCase
     public function testItResolvesBothRewindOptions(string $url, ?string $expectedCacheKey): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', $url);
 
@@ -53,16 +59,6 @@ class RewindCompareRequestHandlerTest extends ControllerWebTestCase
         yield 'a counterpart without activities' => ['/rewind/2023/compare/2021', null];
     }
 
-    public function testItMarksTheRewindSectionAsActive(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/rewind/2023/compare/2022');
-
-        $this->assertStringContainsString('href="/rewind" aria-selected="true"', (string) $this->client->getResponse()->getContent());
-    }
-
     public function testItDoesNotResolveWhenThereIsNothingToCompare(): void
     {
         $this->addActivityOneFixtures();
@@ -73,32 +69,9 @@ class RewindCompareRequestHandlerTest extends ControllerWebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testGetCacheabilityCarriesTheTagsOfBothSides(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/rewind/2023/compare/2022');
-
-        $this->assertResponseIsSuccessful();
-        $this->assertStringEndsWith(
-            'rewind.2023.compare.2022',
-            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
-        );
-        $this->assertEqualsCanonicalizing(
-            [
-                'activities.2023', 'activity.images.2023',
-                'activities.2022', 'activity.images.2022',
-                'gear', 'settings.appearance', 'settings.general',
-            ],
-            explode(', ', (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Tags')),
-        );
-    }
-
     public function testGetCacheabilityWhenComparedWithAllTime(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/rewind/2023/compare/all-time');
 

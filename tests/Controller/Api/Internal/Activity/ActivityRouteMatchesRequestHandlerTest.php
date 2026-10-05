@@ -16,7 +16,6 @@ class ActivityRouteMatchesRequestHandlerTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
         $this->calculateRouteSignatures();
 
         $this->client->request('GET', '/api/internal/activities/activity-9830227167/route-matches');
@@ -29,7 +28,6 @@ class ActivityRouteMatchesRequestHandlerTest extends ControllerWebTestCase
     public function testItEntersTheRenderCache(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-9830227167/route-matches');
 
@@ -40,7 +38,6 @@ class ActivityRouteMatchesRequestHandlerTest extends ControllerWebTestCase
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-1/route-matches');
 

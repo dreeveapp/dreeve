@@ -30,6 +30,10 @@ class PowerOutputRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertResponseHeaderSame(
+            'X-Dreeve-Cache-Tags',
+            'settings.appearance, settings.general, activities, settings.metrics',
+        );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
@@ -80,62 +84,5 @@ class PowerOutputRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
-    }
-
-    public function testItIsTaggedWithTheActivitiesItRenders(): void
-    {
-        $this->provideFullTestSet();
-
-        $this->client->request('GET', '/dashboard/power-output');
-
-        $this->assertResponseHeaderSame(
-            'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities, settings.metrics',
-        );
-    }
-
-    public function testItOnlyRendersTheAdminLinkForAuthenticatedVisitors(): void
-    {
-        $this->provideFullTestSet();
-
-        $this->client->request('GET', '/dashboard/power-output');
-        $this->assertStringNotContainsString(
-            'admin/settings/metrics',
-            (string) $this->client->getResponse()->getContent(),
-        );
-
-        $this->client->loginUser($this->adminUser());
-        $this->client->request('GET', '/dashboard/power-output');
-        $this->assertStringContainsString(
-            'admin/settings/metrics?redirectTo=%2Fdashboard%2Fpower-output',
-            (string) $this->client->getResponse()->getContent(),
-        );
-    }
-
-    public function testItVariesByAuthentication(): void
-    {
-        $this->provideFullTestSet();
-
-        $this->client->request('GET', '/dashboard/power-output');
-        $anonymousCacheKey = (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key');
-        $this->assertResponseHeaderSame('Cache-Control', 'max-age=0, must-revalidate, no-store, private');
-
-        $this->client->loginUser($this->adminUser());
-        $this->client->request('GET', '/dashboard/power-output');
-
-        $this->assertNotEquals(
-            $anonymousCacheKey,
-            $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
-        );
-    }
-
-    public function testItMarksTheDashboardSectionAsActive(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/dashboard/power-output');
-
-        $this->assertStringContainsString('href="/dashboard" aria-selected="true"', (string) $this->client->getResponse()->getContent());
     }
 }

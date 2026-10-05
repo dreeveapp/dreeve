@@ -19,23 +19,11 @@ class ActivityPolylinesRequestHandlerTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-9830227112/polylines');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
-        $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
-    }
-
-    public function testGetPath(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/api/internal/activities/activity-9830227112/polylines');
-
-        $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith(
             'activities.9830227112.polylines',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
@@ -44,12 +32,12 @@ class ActivityPolylinesRequestHandlerTest extends ControllerWebTestCase
             'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, activities.9830227112',
         );
+        $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
     }
 
     public function testItPrefersTheLatLngStreamOverTheEncodedPolyline(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
         $this->addLatLngStreamFor(
             ActivityId::fromUnprefixed('9830227112'),
             [[51.2, 3.18], [51.21, 3.19], [51.22, 3.2]],
@@ -67,7 +55,6 @@ class ActivityPolylinesRequestHandlerTest extends ControllerWebTestCase
     public function testItFallsBackToTheEncodedPolylineForAnEmptyLatLngStream(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-9830227112/polylines');
         $fromPolyline = (string) $this->client->getResponse()->getContent();
@@ -83,7 +70,6 @@ class ActivityPolylinesRequestHandlerTest extends ControllerWebTestCase
     public function testItDoesNotResolveAnActivityWithoutAMap(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-9756441741/polylines');
 
@@ -93,7 +79,6 @@ class ActivityPolylinesRequestHandlerTest extends ControllerWebTestCase
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/api/internal/activities/activity-1/polylines');
 

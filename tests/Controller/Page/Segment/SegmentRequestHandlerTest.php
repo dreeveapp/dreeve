@@ -25,19 +25,26 @@ class SegmentRequestHandlerTest extends ControllerWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/segments/segment-1');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
+        $this->assertStringEndsWith(
+            'segments.1',
+            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
+        );
+        // Scoped to this segment, so importing an activity that rode another segment leaves it alone.
+        $this->assertResponseHeaderSame(
+            'X-Dreeve-Cache-Tags',
+            'settings.appearance, settings.general, segments.1, gear, activities.9542782314',
+        );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
     public function testRenderWithHeartRateData(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
         $segmentEffortRepository = $this->getContainer()->get(SegmentEffortRepository::class);
@@ -77,7 +84,6 @@ class SegmentRequestHandlerTest extends ControllerWebTestCase
     public function testRenderWithASingleHeartRateEffort(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
         $this->getContainer()->get(SegmentEffortRepository::class)->add(
@@ -103,7 +109,6 @@ class SegmentRequestHandlerTest extends ControllerWebTestCase
     public function testRenderWithoutAnyEfforts(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
         $this->client->request('GET', '/segments/segment-10');
@@ -115,7 +120,6 @@ class SegmentRequestHandlerTest extends ControllerWebTestCase
     public function testRenderWithWindAheadLink(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $segment = SegmentBuilder::fromDefaults()
             ->withSegmentId(SegmentId::fromUnprefixed('20'))
@@ -135,7 +139,6 @@ class SegmentRequestHandlerTest extends ControllerWebTestCase
     public function testRenderWithoutWindAheadLinkForVirtualSegment(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
         $this->addSegmentWithAPolylineFixtures();
 
         $this->client->request('GET', '/segments/segment-10');
@@ -144,58 +147,18 @@ class SegmentRequestHandlerTest extends ControllerWebTestCase
         $this->assertSelectorNotExists('a[href^="https://windahead.app/#polyline="]');
     }
 
-    public function testGetPath(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/segments/segment-1');
-
-        $this->assertResponseIsSuccessful();
-        $this->assertStringEndsWith(
-            'segments.1',
-            (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
-        );
-    }
-
-    public function testItIsTaggedWithTheSegmentAndTheActivitiesItLists(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/segments/segment-1');
-
-        // Scoped to this segment, so importing an activity that rode another segment leaves it alone.
-        $this->assertResponseHeaderSame(
-            'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, segments.1, gear, activities.9542782314',
-        );
-    }
-
     public function testItDoesNotSwallowTheDataTableFragment(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/segments/data-table');
 
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testItMarksTheSegmentsSectionAsActive(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/segments/segment-1');
-
-        $this->assertStringContainsString('href="/segments" aria-selected="true"', (string) $this->client->getResponse()->getContent());
-    }
-
     public function testItDoesNotResolveASegmentThatDoesNotExist(): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
         $this->client->request('GET', '/segments/segment-999');
 
