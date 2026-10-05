@@ -147,6 +147,7 @@ Elevation: Hoogte
 Enabled: Ingeschakeld
 Endpoint: Endpoint
 'Ends near': 'Eindigt nabij'
+'Ends near start': 'Eindigt nabij de start'
 'Energy in kJ will be calculated from average power × moving time, for activities that do not already provide it.': 'Energie in kJ wordt berekend als gemiddeld vermogen × beweegtijd, voor activiteiten die dit nog niet bevatten.'
 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.': 'Geef een bestaande activiteit op om te zien welke regels van toepassing zouden zijn en wat ze zouden wijzigen. Er wordt niets opgeslagen.'
 'Enter your password': 'Geef je wachtwoord in'
@@ -233,6 +234,7 @@ Match: Overeenkomst
 "Matches on the activity's finishing point.": 'Komt overeen met het eindpunt van de activiteit.'
 "Matches on the activity's starting point.": 'Komt overeen met het startpunt van de activiteit.'
 'Matches when any point of the route comes near the location.': 'Komt overeen wanneer een punt van de route in de buurt van de locatie komt.'
+'Matches when the activity finishes close to where it started.': 'Komt overeen wanneer de activiteit eindigt dicht bij waar ze begon.'
 'Matching activities': 'Overeenkomende activiteiten'
 'Max heart rate (bpm)': 'Maximale hartslag (bpm)'
 'Max heart rate formula': 'Formule maximale hartslag'

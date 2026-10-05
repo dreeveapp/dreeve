@@ -1,0 +1,16 @@
+<p class="mb-1 text-xxs text-gray-500">{{ "Matches when the activity finishes close to where it started."|trans({}, 'admin') }}</p>
+<div class="grid gap-2 sm:grid-cols-2">
+    <div>
+        <label class="mt-0! text-xs">{{ "Match"|trans({}, 'admin') }}</label>
+        <select name="{{ namePrefix }}[operator]" data-repeater-field="config.operator" class="mt-0">
+            {% for operator in enum('App\\Domain\\Automation\\Condition\\MatchOperator').cases()|filter(o => o.isForProximity()) %}
+                <option value="{{ operator.value }}">{{ operator|trans }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label class="mt-0! text-xs">{{ "Radius"|trans({}, 'admin') }} ({{ renderUnitSymbol('proximity') }})</label>
+        <input type="number" step="1" min="1" name="{{ namePrefix }}[radius]" data-repeater-field="config.radius"
+               required placeholder="500" class="mt-0">
+    </div>
+</div>

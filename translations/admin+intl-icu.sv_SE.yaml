@@ -147,6 +147,7 @@ Elevation: Elevation
 Enabled: Enabled
 Endpoint: Endpoint
 'Ends near': 'Ends near'
+'Ends near start': 'Ends near start'
 'Energy in kJ will be calculated from average power × moving time, for activities that do not already provide it.': 'Energy in kJ will be calculated from average power × moving time, for activities that do not already provide it.'
 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.': 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.'
 'Enter your password': 'Enter your password'
@@ -233,6 +234,7 @@ Match: Match
 "Matches on the activity's finishing point.": "Matches on the activity's finishing point."
 "Matches on the activity's starting point.": "Matches on the activity's starting point."
 'Matches when any point of the route comes near the location.': 'Matches when any point of the route comes near the location.'
+'Matches when the activity finishes close to where it started.': 'Matches when the activity finishes close to where it started.'
 'Matching activities': 'Matching activities'
 'Max heart rate (bpm)': 'Max heart rate (bpm)'
 'Max heart rate formula': 'Max heart rate formula'

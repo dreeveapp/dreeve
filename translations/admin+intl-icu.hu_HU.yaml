@@ -147,6 +147,7 @@ Elevation: Szintemelkedés
 Enabled: Engedélyezve
 Endpoint: Végpont
 'Ends near': 'A közelében ér véget'
+'Ends near start': 'A kezdőpont közelében ér véget'
 'Energy in kJ will be calculated from average power × moving time, for activities that do not already provide it.': 'Az energia kJ-ban az átlagos teljesítmény × mozgásidő alapján kerül kiszámításra azoknál a tevékenységeknél, amelyek ezt még nem tartalmazzák.'
 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.': 'Adj meg egy meglévő tevékenységet, hogy megnézd, mely szabályok érvényesülnének és mit módosítanának. Semmi nem kerül mentésre.'
 'Enter your password': 'Add meg a jelszavad'
@@ -233,6 +234,7 @@ Match: Illeszkedés
 "Matches on the activity's finishing point.": 'A tevékenység végpontjára illeszkedik.'
 "Matches on the activity's starting point.": 'A tevékenység kezdőpontjára illeszkedik.'
 'Matches when any point of the route comes near the location.': 'Akkor illeszkedik, ha az útvonal bármely pontja a hely közelébe kerül.'
+'Matches when the activity finishes close to where it started.': 'Akkor illeszkedik, ha a tevékenység a kiindulópont közelében ér véget.'
 'Matching activities': 'Illeszkedő tevékenységek'
 'Max heart rate (bpm)': 'Maximális pulzus (bpm)'
 'Max heart rate formula': 'Maximális pulzus képlete'

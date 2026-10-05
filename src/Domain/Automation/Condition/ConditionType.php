@@ -20,5 +20,6 @@ enum ConditionType: string
     case TIME_OF_DAY = 'timeOfDay';
     case STARTS_NEAR = 'startsNear';
     case ENDS_NEAR = 'endsNear';
+    case ENDS_NEAR_START = 'endsNearStart';
     case PASSES_NEAR = 'passesNear';
 }

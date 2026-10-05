@@ -147,6 +147,7 @@ Elevation: Dénivelé
 Enabled: Activé
 Endpoint: 'Point de passage'
 'Ends near': 'Se termine près de'
+'Ends near start': 'Se termine près du départ'
 'Energy in kJ will be calculated from average power × moving time, for activities that do not already provide it.': "L'énergie en kJ sera calculée à partir de la puissance moyenne × le temps en mouvement, pour les activités qui ne la fournissent pas déjà."
 'Enter an existing activity to preview which rules would apply and what they would change. Nothing is saved.': "Saisissez une activité existante pour prévisualiser les règles qui s'appliqueraient et ce qu'elles modifieraient. Rien n'est enregistré."
 'Enter your password': 'Saisissez votre mot de passe'
@@ -233,6 +234,7 @@ Match: Correspondance
 "Matches on the activity's finishing point.": "Correspond au point d'arrivée de l'activité."
 "Matches on the activity's starting point.": "Correspond au point de départ de l'activité."
 'Matches when any point of the route comes near the location.': "Correspond lorsqu'un point quelconque du parcours passe près de l'emplacement."
+'Matches when the activity finishes close to where it started.': "Correspond lorsque l'activité se termine près de son point de départ."
 'Matching activities': 'Activités correspondantes'
 'Max heart rate (bpm)': 'Fréquence cardiaque maximale (bpm)'
 'Max heart rate formula': 'Formule de la fréquence cardiaque maximale'
