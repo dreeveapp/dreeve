@@ -16,6 +16,7 @@ use App\Tests\Domain\Segment\SegmentBuilder;
 use App\Tests\Domain\Segment\SegmentEffort\SegmentEffortBuilder;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
+use Symfony\Component\DomCrawler\Crawler;
 
 class SegmentRequestHandlerTest extends ControllerWebTestCase
 {
@@ -100,10 +101,16 @@ class SegmentRequestHandlerTest extends ControllerWebTestCase
                 ->build()
         );
 
-        $this->client->request('GET', '/segments/segment-10');
+        $crawler = $this->client->request('GET', '/segments/segment-10');
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+        $this->assertSame(
+            [['1', '01-10-23', '10s', '145']],
+            $crawler->filter('#segmentTabsTopTen tbody tr')->each(
+                fn (Crawler $row): array => [$row->filter('td')->eq(0)->text(), $row->filter('td')->eq(1)->text(), $row->filter('td')->eq(3)->text(), $row->filter('td')->eq(5)->text()],
+            ),
+        );
+        $this->assertNotSame('[]', $crawler->filter('#segmentTabsEffortHeartRateChart [data-echarts-options]')->attr('data-echarts-options'));
     }
 
     public function testRenderWithoutAnyEfforts(): void
@@ -111,10 +118,11 @@ class SegmentRequestHandlerTest extends ControllerWebTestCase
         $this->provideFullTestSet();
         $this->addSegmentWithAPolylineFixtures();
 
-        $this->client->request('GET', '/segments/segment-10');
+        $crawler = $this->client->request('GET', '/segments/segment-10');
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+        $this->assertCount(0, $crawler->filter('#segmentTabsTopTen tbody tr'));
+        $this->assertSame('[]', $crawler->filter('#segmentTabsEffortHeartRateChart [data-echarts-options]')->attr('data-echarts-options'));
     }
 
     public function testRenderWithWindAheadLink(): void

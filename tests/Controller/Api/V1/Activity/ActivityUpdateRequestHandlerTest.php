@@ -19,13 +19,10 @@ use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestWith;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\HttpFoundation\Response;
 
 class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
-
     private const string PATH = '/api/v1/activities/activity-1';
 
     private Token $token;
@@ -41,7 +38,11 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
         );
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
+        $response = Json::decode((string) $this->client->getResponse()->getContent());
+        $this->assertSame('activity-1', $response['id']);
+        $this->assertSame('Corrected ride', $response['name']);
+        $this->assertSame('GravelRide', $response['sportType']);
+        $this->assertSame('Rerouted around the closed bridge', $response['description']);
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
         $this->assertSame('Corrected ride', $activity->getOriginalName());

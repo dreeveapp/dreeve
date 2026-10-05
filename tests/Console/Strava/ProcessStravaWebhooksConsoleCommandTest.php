@@ -4,6 +4,7 @@ namespace App\Tests\Console\Strava;
 
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
+use App\Application\Import\StravaImport\ImportActivities\ImportActivities;
 use App\Console\Import\RunStravaImportConsoleCommand;
 use App\Console\Strava\ProcessStravaWebhooksConsoleCommand;
 use App\Domain\Activity\ActivityRepository;
@@ -16,7 +17,6 @@ use App\Domain\Strava\Webhook\WebhookEvent;
 use App\Domain\Strava\Webhook\WebhookEventRepository;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
-use App\Infrastructure\Serialization\Json;
 use App\Tests\Console\ConsoleCommandTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
@@ -24,15 +24,12 @@ use App\Tests\Infrastructure\FileSystem\SuccessfulPermissionChecker;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use App\Tests\Infrastructure\Time\ResourceUsage\FixedResourceUsage;
 use Psr\Log\NullLogger;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
 {
-    use MatchesSnapshots;
-
     private const string TODAY = '2025-12-04';
 
     private ProcessStravaWebhooksConsoleCommand $command;
@@ -58,7 +55,12 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesJsonSnapshot(Json::encode($spyCommandBus->getDispatchedCommands()));
+        $importActivities = $spyCommandBus->getDispatchedCommands()[0];
+        $this->assertInstanceOf(ImportActivities::class, $importActivities);
+        $this->assertSame(
+            ['activity-1', 'activity-2'],
+            array_map(strval(...), $importActivities->getRestrictToActivityIds()->toArray()),
+        );
     }
 
     public function testReturnsEarlyInFileMode(): void

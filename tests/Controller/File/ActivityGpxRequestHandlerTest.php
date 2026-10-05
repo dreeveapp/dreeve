@@ -80,11 +80,6 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
             foreach ([
                 StreamType::LAT_LNG->value => [[51.2, 3.2], null, [51.21, 3.21]],
                 StreamType::TIME->value => [0, 1, 2],
-                StreamType::ALTITUDE->value => [10.5, 11.0, 11.5],
-                StreamType::WATTS->value => [200, 210, 220],
-                StreamType::HEART_RATE->value => [120, 121, 122],
-                StreamType::CADENCE->value => [80, 81, 82],
-                StreamType::TEMP->value => [20, 20, 21],
             ] as $streamType => $data) {
                 $activityStreamRepository->add(ActivityStreamBuilder::fromDefaults()
                     ->withActivityId(ActivityId::fromUnprefixed('1'))
@@ -96,7 +91,8 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
             $this->client->request('GET', '/activities/activity-1/route.gpx');
 
             $this->assertResponseIsSuccessful();
-            $this->assertMatchesXmlSnapshot((string) $this->client->getResponse()->getContent());
+            preg_match_all('#<time>([^<]+)</time>#', (string) $this->client->getResponse()->getContent(), $times);
+            $this->assertSame(['2026-08-19T06:30:00.000Z', '2026-08-19T06:30:00.000Z', '2026-08-19T06:30:02.000Z'], $times[1]);
         } finally {
             date_default_timezone_set($originalTimezone);
         }

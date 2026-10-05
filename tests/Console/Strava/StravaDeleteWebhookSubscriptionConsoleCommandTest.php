@@ -7,14 +7,11 @@ use App\Domain\Strava\Strava;
 use App\Tests\Console\ConsoleCommandTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class StravaDeleteWebhookSubscriptionConsoleCommandTest extends ConsoleCommandTestCase
 {
-    use MatchesSnapshots;
-
     private StravaDeleteWebhookSubscriptionConsoleCommand $stravaDeleteWebhookSubscriptionConsoleCommand;
     private MockObject $logger;
 
@@ -34,7 +31,9 @@ class StravaDeleteWebhookSubscriptionConsoleCommandTest extends ConsoleCommandTe
             'subscriptionId' => '123',
         ]);
 
-        $this->assertMatchesTextSnapshot(str_replace(' ', '', $commandTester->getDisplay()));
+        $display = (string) preg_replace('/\s+/', ' ', $commandTester->getDisplay());
+        $this->assertStringContainsString('Are you sure you want to delete subscription with ID 123?', $display);
+        $this->assertStringContainsString('[OK] Webhook subscription deleted successfully!', $display);
     }
 
     public function testExecuteWithAbortion(): void
@@ -53,7 +52,9 @@ class StravaDeleteWebhookSubscriptionConsoleCommandTest extends ConsoleCommandTe
             'subscriptionId' => '123',
         ]);
 
-        $this->assertMatchesTextSnapshot(str_replace(' ', '', $commandTester->getDisplay()));
+        $display = (string) preg_replace('/\s+/', ' ', $commandTester->getDisplay());
+        $this->assertStringContainsString('Are you sure you want to delete subscription with ID 123?', $display);
+        $this->assertStringNotContainsString('[OK]', $display);
     }
 
     #[\Override]

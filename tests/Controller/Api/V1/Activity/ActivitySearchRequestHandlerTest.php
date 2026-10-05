@@ -11,12 +11,10 @@ use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\HttpFoundation\Response;
 
 class ActivitySearchRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
     use ProvideTestData;
 
     private const string PATH = '/api/v1/activities';
@@ -30,7 +28,28 @@ class ActivitySearchRequestHandlerTest extends ControllerWebTestCase
         $this->client->request('GET', self::PATH, server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
+        $response = Json::decode((string) $this->client->getResponse()->getContent());
+        $this->assertSame(
+            [
+                'activity-9830232182',
+                'activity-9830227182',
+                'activity-9830227112',
+                'activity-9830227167',
+                'activity-9756441741123',
+                'activity-9756441741',
+                'activity-8756441741',
+                'activity-877521741',
+                'activity-87756441741',
+                'activity-9542782814',
+                'activity-95427823814',
+                'activity-9542782314',
+                'activity-45326441741',
+                'activity-87726441741',
+                'activity-9756441709',
+            ],
+            array_column($response['activities'], 'id'),
+        );
+        $this->assertSame(['page' => 1, 'size' => 25, 'total' => 15, 'totalPages' => 1], $response['pagination']);
     }
 
     public function testItFiltersOnASingleLocalDay(): void

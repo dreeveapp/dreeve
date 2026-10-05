@@ -8,15 +8,12 @@ use App\Tests\Console\ConsoleCommandTestCase;
 use App\Tests\SpyOutput;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class StravaViewWebhookSubscriptionConsoleCommandTest extends ConsoleCommandTestCase
 {
-    use MatchesSnapshots;
-
     private StravaViewWebhookSubscriptionConsoleCommand $stravaViewWebhookSubscriptionConsoleCommand;
     private MockObject $logger;
 
@@ -32,7 +29,10 @@ class StravaViewWebhookSubscriptionConsoleCommandTest extends ConsoleCommandTest
             'command' => $command->getName(),
         ]);
 
-        $this->assertMatchesTextSnapshot(str_replace(' ', '', $commandTester->getDisplay()));
+        $display = (string) preg_replace('/\s+/', ' ', $commandTester->getDisplay());
+        $this->assertStringContainsString('ID Application ID Callback URL Created At Updated At', $display);
+        $this->assertStringContainsString('le-id le-application-id le-url 2025-01-01 2025-01-01', $display);
+        $this->assertStringContainsString('le-id-2 le-application-id-2 le-url-2 2025-01-01 2025-01-01', $display);
     }
 
     public function testExecuteWhenNoSubscriptions(): void

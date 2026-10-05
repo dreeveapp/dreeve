@@ -10,6 +10,7 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
+use Symfony\Component\DomCrawler\Crawler;
 
 class GearStatsRequestHandlerTest extends AdminWebTestCase
 {
@@ -66,10 +67,15 @@ class GearStatsRequestHandlerTest extends AdminWebTestCase
 
         $this->seedActivity();
 
-        $this->client->request('GET', '/gear');
+        $crawler = $this->client->request('GET', '/gear');
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+        $this->assertSame(
+            [['Retro Race Bike', '1', '0kcal'], ['Zwift hub', '1', '0kcal']],
+            $crawler->filter('#table-gear tbody tr')->each(
+                fn (Crawler $row): array => [$row->filter('th')->text(), $row->filter('td')->eq(0)->text(), $row->filter('td')->eq(5)->text()],
+            ),
+        );
     }
 
     public function testRenderWithAnUnspecifiedGearWithoutCalories(): void
@@ -88,10 +94,15 @@ class GearStatsRequestHandlerTest extends AdminWebTestCase
 
         $this->seedActivity();
 
-        $this->client->request('GET', '/gear');
+        $crawler = $this->client->request('GET', '/gear');
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+        $this->assertSame(
+            [['Unspecified', '1', '0kcal']],
+            $crawler->filter('#table-gear tbody tr')->each(
+                fn (Crawler $row): array => [$row->filter('th')->text(), $row->filter('td')->eq(0)->text(), $row->filter('td')->eq(5)->text()],
+            ),
+        );
     }
 
     #[\Override]

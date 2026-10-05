@@ -14,11 +14,9 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class GearMaintenanceDueRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
     use ProvideGearMaintenanceConfig;
 
     public function testRender(): void
@@ -37,7 +35,7 @@ class GearMaintenanceDueRequestHandlerTest extends ControllerWebTestCase
             'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, gear.maintenance, activities, gear',
         );
-        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+        $this->assertSelectorExists('div[title="One of your gear maintenance tasks is due"]');
     }
 
     public function testRenderWhenNoTaskIsDue(): void

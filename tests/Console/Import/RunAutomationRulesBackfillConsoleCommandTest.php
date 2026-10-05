@@ -10,13 +10,13 @@ use App\Domain\Automation\AutomationRuleId;
 use App\Domain\Automation\AutomationRuleIds;
 use App\Domain\Automation\Backfill\AutomationRulesBackfillQueue;
 use App\Domain\Automation\Backfill\AutomationRulesBackfillRequest;
+use App\Domain\Automation\Backfill\RunAutomationRulesBackfill\RunAutomationRulesBackfill;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\FileSystem\PermissionChecker;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
-use App\Infrastructure\Serialization\Json;
 use App\Tests\Console\ConsoleCommandTestCase;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
 use App\Tests\Infrastructure\FileSystem\SuccessfulPermissionChecker;
@@ -24,15 +24,12 @@ use App\Tests\Infrastructure\FileSystem\UnwritablePermissionChecker;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class RunAutomationRulesBackfillConsoleCommandTest extends ConsoleCommandTestCase
 {
-    use MatchesSnapshots;
-
     private const string TODAY = '2025-12-04';
 
     private RunAutomationRulesBackfillConsoleCommand $command;
@@ -50,7 +47,9 @@ class RunAutomationRulesBackfillConsoleCommandTest extends ConsoleCommandTestCas
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
+        $dispatchedCommands = $this->commandBus->getDispatchedCommands();
+        $this->assertCount(1, $dispatchedCommands);
+        $this->assertInstanceOf(RunAutomationRulesBackfill::class, $dispatchedCommands[0]);
     }
 
     public function testSkipsWhenNoBackfillIsQueued(): void

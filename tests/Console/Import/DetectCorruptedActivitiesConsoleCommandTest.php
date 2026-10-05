@@ -15,16 +15,12 @@ use App\Domain\Activity\WorldType;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\String\CompressedString;
 use App\Tests\Console\ConsoleCommandTestCase;
-use App\Tests\Console\ConsoleOutputSnapshotDriver;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
 {
-    use MatchesSnapshots;
-
     private DetectCorruptedActivitiesConsoleCommand $detectCorruptedActivitiesConsoleCommand;
 
     public function testExecuteWithoutCorruptedData(): void
@@ -36,7 +32,13 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
             'command' => $command->getName(),
         ]);
 
-        $this->assertMatchesSnapshot($commandTester->getDisplay(), new ConsoleOutputSnapshotDriver());
+        $this->assertSame(
+            [
+                'Scanning activities...',
+                'No activities with corrupted data found',
+            ],
+            $this->scanResultOf($commandTester),
+        );
     }
 
     public function testExecuteWithoutDataButNegativeConfirmation(): void
@@ -73,7 +75,16 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
             'command' => $command->getName(),
         ]);
 
-        $this->assertMatchesSnapshot($commandTester->getDisplay(), new ConsoleOutputSnapshotDriver());
+        $this->assertSame(
+            [
+                'Scanning activities...',
+                'Found 1 activities with corrupted data',
+                '* Activity "Ride - 06-01-2026"',
+                'Do you want to delete these activities so they can be re-imported in the next run? (yes/no) [yes]:',
+                '>',
+            ],
+            $this->scanResultOf($commandTester),
+        );
     }
 
     public function testExecuteWithoutDataButPositiveConfirmation(): void
@@ -146,10 +157,28 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
             'command' => $command->getName(),
         ]);
 
-        $this->assertMatchesSnapshot($commandTester->getDisplay(), new ConsoleOutputSnapshotDriver());
+        $this->assertSame(
+            [
+                'Scanning activities...',
+                'Found 3 activities with corrupted data',
+                '* Activity "Ride - 06-01-2026"',
+                '* Activity "Test activity - 10-10-2023"',
+                '* Activity "Test activity - 10-10-2023"',
+                'Do you want to delete these activities so they can be re-imported in the next run? (yes/no) [yes]:',
+                '>',
+                'Deleting activities...',
+                '=> Activity "Ride - 06-01-2026" deleted',
+                '=> Activity "Test activity - 10-10-2023" deleted',
+            ],
+            $this->scanResultOf($commandTester),
+        );
 
-        $this->assertMatchesJsonSnapshot(
-            $this->getConnection()->executeQuery('SELECT * FROM WebhookEvent')->fetchAllAssociative()
+        $this->assertSame(
+            [
+                ['objectId' => 'test', 'objectType' => 'activity', 'aspectType' => 'create', 'payload' => '[]'],
+                ['objectId' => 'test-2', 'objectType' => 'activity', 'aspectType' => 'create', 'payload' => '[]'],
+            ],
+            $this->getConnection()->executeQuery('SELECT objectId, objectType, aspectType, payload FROM WebhookEvent')->fetchAllAssociative()
         );
     }
 
@@ -180,7 +209,18 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
             'command' => $command->getName(),
         ]);
 
-        $this->assertMatchesSnapshot($commandTester->getDisplay(), new ConsoleOutputSnapshotDriver());
+        $this->assertSame(
+            [
+                'Scanning activities...',
+                'Found 1 activities with corrupted data',
+                '* Activity "Test activity - 10-10-2023"',
+                'Do you want to delete these activities so they can be re-imported in the next run? (yes/no) [yes]:',
+                '>',
+                'Deleting activities...',
+                '=> Activity "Test activity - 10-10-2023" deleted',
+            ],
+            $this->scanResultOf($commandTester),
+        );
     }
 
     public function testExecuteSkipsActivitiesNotImportedFromStravaApi(): void
@@ -211,7 +251,13 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
             'command' => $command->getName(),
         ]);
 
-        $this->assertMatchesSnapshot($commandTester->getDisplay(), new ConsoleOutputSnapshotDriver());
+        $this->assertSame(
+            [
+                'Scanning activities...',
+                'No activities with corrupted data found',
+            ],
+            $this->scanResultOf($commandTester),
+        );
 
         $this->assertCount(
             1,
@@ -245,7 +291,16 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
             'command' => $command->getName(),
         ]);
 
-        $this->assertMatchesSnapshot($commandTester->getDisplay(), new ConsoleOutputSnapshotDriver());
+        $this->assertSame(
+            [
+                'Scanning activities...',
+                'Found 1 activities with corrupted data',
+                '* Activity "Test activity - 10-10-2023"',
+                'Do you want to delete these activities so they can be re-imported in the next run? (yes/no) [yes]:',
+                '>',
+            ],
+            $this->scanResultOf($commandTester),
+        );
 
         $this->assertEmpty(
             $this->getConnection()->executeQuery('SELECT * FROM ActivityStreamMetric')->fetchAllAssociative()
@@ -262,6 +317,19 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
         parent::setUp();
 
         $this->detectCorruptedActivitiesConsoleCommand = $this->getContainer()->get(DetectCorruptedActivitiesConsoleCommand::class);
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function scanResultOf(CommandTester $commandTester): array
+    {
+        $display = $commandTester->getDisplay();
+
+        return array_values(array_filter(array_map(
+            trim(...),
+            explode("\n", substr($display, (int) strpos($display, 'Scanning activities...'))),
+        )));
     }
 
     protected function getConsoleCommand(): Command

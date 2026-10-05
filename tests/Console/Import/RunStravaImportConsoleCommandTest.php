@@ -4,6 +4,13 @@ namespace App\Tests\Console\Import;
 
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
+use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
+use App\Application\Import\StravaImport\DeleteActivitiesMarkedForDeletion\DeleteActivitiesMarkedForDeletion;
+use App\Application\Import\StravaImport\ImportActivities\ImportActivities;
+use App\Application\Import\StravaImport\ImportChallenges\ImportChallenges;
+use App\Application\Import\StravaImport\ImportGear\ImportGear;
+use App\Application\Import\StravaImport\ImportSegments\ImportSegments;
+use App\Application\Import\StravaImport\ProcessRawActivityData\ProcessRawActivityData;
 use App\Console\Import\RunStravaImportConsoleCommand;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
@@ -24,42 +31,67 @@ use App\Tests\Infrastructure\FileSystem\SuccessfulPermissionChecker;
 use App\Tests\Infrastructure\FileSystem\UnwritablePermissionChecker;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use App\Tests\Infrastructure\Time\ResourceUsage\FixedResourceUsage;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class RunStravaImportConsoleCommandTest extends ConsoleCommandTestCase
 {
-    use MatchesSnapshots;
-
     private const string TODAY = '2025-12-04';
 
     private RunStravaImportConsoleCommand $command;
     private SpyCommandBus $commandBus;
     private DbalSettingsRepository $settingsRepository;
 
-    public function testRun(): void
+    /**
+     * @param array<string, string> $arguments
+     * @param list<string>          $expectedRestrictToActivityIds
+     */
+    #[DataProvider('provideRuns')]
+    public function testRun(array $arguments, array $expectedRestrictToActivityIds): void
     {
         $command = $this->getCommandInApplication(RunStravaImportConsoleCommand::NAME);
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName()]);
+        $commandTester->execute(['command' => $command->getName(), ...$arguments]);
 
-        $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
+        $dispatchedCommands = $this->commandBus->getDispatchedCommands();
+        $this->assertSame(
+            [
+                ImportActivities::class,
+                ImportGear::class,
+                ProcessRawActivityData::class,
+                ImportSegments::class,
+                ImportChallenges::class,
+                CalculateActivityMetrics::class,
+                DeleteActivitiesMarkedForDeletion::class,
+                SendNotification::class,
+            ],
+            array_map(get_class(...), $dispatchedCommands),
+        );
+        foreach ([$dispatchedCommands[0], $dispatchedCommands[1]] as $dispatchedCommand) {
+            $this->assertSame(
+                $expectedRestrictToActivityIds,
+                array_map(strval(...), $dispatchedCommand->getRestrictToActivityIds()->toArray()),
+            );
+        }
+        $this->assertEquals(
+            new SendNotification(
+                title: 'Import successful',
+                message: 'New import of your stats was successful in 10s',
+                tags: ['+1'],
+                actionUrl: AppUrl::fromString('http://localhost'),
+            ),
+            $dispatchedCommands[7],
+        );
     }
 
-    public function testRunWithRestrictToActivityIds(): void
+    public static function provideRuns(): iterable
     {
-        $command = $this->getCommandInApplication(RunStravaImportConsoleCommand::NAME);
-        $commandTester = new CommandTester($command);
-        $commandTester->execute([
-            'command' => $command->getName(),
-            RunStravaImportConsoleCommand::RESTRICT_TO_ACTIVITY_IDS_ARGUMENT => 'activity-1,activity-2',
-        ]);
-
-        $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
+        yield 'every activity' => [[], []];
+        yield 'restricted to activity ids' => [[RunStravaImportConsoleCommand::RESTRICT_TO_ACTIVITY_IDS_ARGUMENT => 'activity-1,activity-2'], ['activity-1', 'activity-2']];
     }
 
     public function testIgnoresTheLegacyImportAndBuildOptions(): void

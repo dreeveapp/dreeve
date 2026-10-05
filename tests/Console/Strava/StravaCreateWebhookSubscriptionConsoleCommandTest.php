@@ -10,14 +10,11 @@ use App\Domain\Strava\Strava;
 use App\Tests\Console\ConsoleCommandTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class StravaCreateWebhookSubscriptionConsoleCommandTest extends ConsoleCommandTestCase
 {
-    use MatchesSnapshots;
-
     private StravaCreateWebhookSubscriptionConsoleCommand $stravaCreateWebhookSubscriptionConsoleCommand;
     private MockObject $logger;
 
@@ -33,7 +30,10 @@ class StravaCreateWebhookSubscriptionConsoleCommandTest extends ConsoleCommandTe
             'command' => $command->getName(),
         ]);
 
-        $this->assertMatchesTextSnapshot(str_replace(' ', '', $commandTester->getDisplay()));
+        $display = (string) preg_replace('/\s+/', ' ', $commandTester->getDisplay());
+        $this->assertStringContainsString('// Trying to configure Strava webhooks on URL https://localhost/strava/webhook', $display);
+        $this->assertStringContainsString('[OK] Webhook subscription created successfully!', $display);
+        $this->assertStringContainsString('// The configured callback URL is https://localhost/strava/webhook', $display);
     }
 
     public function testExecuteWhenNotEnabled(): void

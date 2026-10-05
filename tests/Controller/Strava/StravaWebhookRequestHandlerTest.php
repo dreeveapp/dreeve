@@ -5,20 +5,18 @@ namespace App\Tests\Controller\Strava;
 use App\Controller\Strava\StravaWebhookRequestHandler;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
+use App\Domain\Strava\Webhook\ProcessWebhookEvent\ProcessWebhookEvent;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class StravaWebhookRequestHandlerTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private StravaWebhookRequestHandler $stravaWebhookRequestHandler;
     private SpyCommandBus $commandBus;
     private MockObject $logger;
@@ -109,7 +107,14 @@ class StravaWebhookRequestHandlerTest extends ContainerTestCase
         ));
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
+        $this->assertEquals(
+            [new ProcessWebhookEvent([
+                'hub_mode' => 'subscribe',
+                'hub_challenge' => 'test-challenge-123',
+                'hub_verify_token' => 'el-token',
+            ])],
+            $this->commandBus->getDispatchedCommands(),
+        );
     }
 
     public function testHandleEventOnException(): void

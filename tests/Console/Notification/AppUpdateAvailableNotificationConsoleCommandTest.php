@@ -5,20 +5,19 @@ namespace App\Tests\Console\Notification;
 use App\Application\AppVersion;
 use App\Console\Notification\AppUpdateAvailableNotificationConsoleCommand;
 use App\Domain\Integration\GitHub\GitHub;
+use App\Domain\Integration\Notification\SendNotification\SendNotification;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\String\Url;
 use App\Tests\Console\ConsoleCommandTestCase;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class AppUpdateAvailableNotificationConsoleCommandTest extends ConsoleCommandTestCase
 {
-    use MatchesSnapshots;
-
     private AppUpdateAvailableNotificationConsoleCommand $command;
     private SpyCommandBus $commandBus;
     /**
@@ -38,7 +37,15 @@ class AppUpdateAvailableNotificationConsoleCommandTest extends ConsoleCommandTes
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
+        $this->assertEquals(
+            [new SendNotification(
+                title: 'New app version available',
+                message: "We have been busy, v3.8.0 is finally out! Go see what's new.",
+                tags: ['partying_face'],
+                actionUrl: Url::fromString('https://github.com/dreeveapp/dreeve/releases'),
+            )],
+            $this->commandBus->getDispatchedCommands(),
+        );
     }
 
     public function testExecuteWhenSameVersions(): void

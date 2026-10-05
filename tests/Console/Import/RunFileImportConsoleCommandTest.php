@@ -5,6 +5,7 @@ namespace App\Tests\Console\Import;
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
 use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
+use App\Application\Import\FileImport\ImportActivityFiles\ImportActivityFiles;
 use App\Console\Import\RunFileImportConsoleCommand;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
@@ -29,15 +30,12 @@ use App\Tests\Infrastructure\Time\ResourceUsage\FixedResourceUsage;
 use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
 {
-    use MatchesSnapshots;
-
     private const string TODAY = '2025-12-04';
 
     private RunFileImportConsoleCommand $command;
@@ -53,7 +51,19 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
+        $dispatchedCommands = $this->commandBus->getDispatchedCommands();
+        $this->assertCount(3, $dispatchedCommands);
+        $this->assertInstanceOf(ImportActivityFiles::class, $dispatchedCommands[0]);
+        $this->assertInstanceOf(CalculateActivityMetrics::class, $dispatchedCommands[1]);
+        $this->assertEquals(
+            new SendNotification(
+                title: 'Import successful',
+                message: 'New import of your stats was successful in 10s',
+                tags: ['+1'],
+                actionUrl: AppUrl::fromString('http://localhost'),
+            ),
+            $dispatchedCommands[2],
+        );
     }
 
     public function testIgnoresTheLegacyImportAndBuildOptions(): void

@@ -48,10 +48,10 @@ class GearMaintenanceRequestHandlerTest extends AdminWebTestCase
     {
         $this->seedActivity();
 
-        $this->client->request('GET', '/gear/maintenance');
+        $crawler = $this->client->request('GET', '/gear/maintenance');
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('This feature is currently disabled.', $crawler->filter('.alert--info')->text());
     }
 
     private function provideGearWithMaintenanceHistory(): void

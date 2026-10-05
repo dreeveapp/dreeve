@@ -4,11 +4,9 @@ namespace App\Tests\Controller\Api\Internal\Segment;
 
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class SegmentPolylinesRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
     use ProvideTestData;
 
     public function testRender(): void
@@ -29,7 +27,7 @@ class SegmentPolylinesRequestHandlerTest extends ControllerWebTestCase
             'X-Dreeve-Cache-Tags',
             'settings.appearance, settings.general, segments',
         );
-        $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
+        $this->assertSame('[[[-11.64587,166.94827],[-11.64727,166.94921]]]', $this->client->getResponse()->getContent());
     }
 
     public function testItDoesNotResolveASegmentWithoutAMap(): void

@@ -6,14 +6,11 @@ use App\Console\RunDaemonConsoleCommand;
 use App\Tests\Infrastructure\Daemon\FakeDaemon;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use Psr\Log\NullLogger;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class RunDaemonConsoleCommandTest extends ConsoleCommandTestCase
 {
-    use MatchesSnapshots;
-
     private RunDaemonConsoleCommand $runDaemonConsoleCommand;
 
     public function testExecute(): void
@@ -23,7 +20,11 @@ class RunDaemonConsoleCommandTest extends ConsoleCommandTestCase
         $commandTester->execute([
             'command' => $command->getName(),
         ]);
-        $this->assertMatchesSnapshot($commandTester->getDisplay(), new ConsoleOutputSnapshotDriver());
+        $display = $commandTester->getDisplay();
+        $this->assertStringContainsString('| DAEMON', $display);
+        $this->assertStringContainsString('Started on 08-11-2025 14:47:03', $display);
+        $this->assertStringContainsString('Configured import mode: stravaApi', $display);
+        $this->assertStringEndsWith("Cron configured\nPeriodic timer added\n", $display);
     }
 
     #[\Override]

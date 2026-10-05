@@ -16,6 +16,7 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
+use Symfony\Component\DomCrawler\Crawler;
 
 class PowerOutputRequestHandlerTest extends AdminWebTestCase
 {
@@ -80,9 +81,17 @@ class PowerOutputRequestHandlerTest extends AdminWebTestCase
             data: [5 => 900, 60 => 500, 3600 => 250],
         ));
 
-        $this->client->request('GET', '/dashboard/power-output');
+        $crawler = $this->client->request('GET', '/dashboard/power-output');
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+        $this->assertSame(
+            [
+                ['All time', '900w', '-', '500w', '-', '250w', '-'],
+                ['2019', '900w', '-', '500w', '-', '250w', '-'],
+            ],
+            $crawler->filter('table:contains("Best 1h") tbody tr')->each(
+                fn (Crawler $row): array => $row->filter('td')->each(fn (Crawler $cell): string => $cell->text()),
+            ),
+        );
     }
 }

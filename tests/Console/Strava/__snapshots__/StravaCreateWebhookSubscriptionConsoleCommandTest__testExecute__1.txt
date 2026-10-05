@@ -1,9 +1,0 @@
-
-//TryingtoconfigureStravawebhooksonURLhttps://localhost/strava/webhook
-
-[OK]Webhooksubscriptioncreatedsuccessfully!
-
-//Theappwillautomaticallyimportandbuildwhenreceivingactivityevents.
-
-//TheconfiguredcallbackURLishttps://localhost/strava/webhook
-

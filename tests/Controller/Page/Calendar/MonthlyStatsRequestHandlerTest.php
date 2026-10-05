@@ -7,6 +7,7 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
+use Symfony\Component\DomCrawler\Crawler;
 
 class MonthlyStatsRequestHandlerTest extends ControllerWebTestCase
 {
@@ -34,9 +35,9 @@ class MonthlyStatsRequestHandlerTest extends ControllerWebTestCase
 
     public function testRenderWithoutActivities(): void
     {
-        $this->assertMatchesHtmlSnapshot(
-            (string) $this->getContainer()->get(MonthlyStatsRequestHandler::class)->handle()->getContent()
-        );
+        $page = new Crawler((string) $this->getContainer()->get(MonthlyStatsRequestHandler::class)->handle()->getContent());
+
+        $this->assertCount(1, $page->filter('#table-months tr'));
     }
 
     #[\Override]

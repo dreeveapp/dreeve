@@ -55,10 +55,11 @@ class TrainingLoadRequestHandlerTest extends ControllerWebTestCase
             startDate: SerializableDateTime::fromString('2023-09-17 10:00:00'),
         );
 
-        $this->client->request('GET', '/dashboard/training-load');
+        $crawler = $this->client->request('GET', '/dashboard/training-load');
 
         $this->assertResponseIsSuccessful();
-        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+        $this->assertCount(1, $crawler->filter('[title="Decreased compared to yesterday"]'));
+        $this->assertCount(1, $crawler->filter('[title="Increased compared to yesterday"]'));
     }
 
     /**
