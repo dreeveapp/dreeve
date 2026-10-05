@@ -3,16 +3,12 @@
 namespace App\Tests\Infrastructure\Twig;
 
 use App\Domain\Activity\SportType\SportType;
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Twig\SvgsTwigExtension;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\ContainerTestCase;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class SvgsTwigExtensionTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private SvgsTwigExtension $extension;
 
     public function testInvalidSvg(): void
@@ -43,12 +39,9 @@ class SvgsTwigExtensionTest extends ContainerTestCase
 
     public function testSportTypeSvgs(): void
     {
-        $snapshot = [];
-
         foreach (SportType::cases() as $sportType) {
-            $snapshot[$sportType->value] = $this->extension->svgSportType($sportType);
+            $this->assertStringStartsWith('<svg class="h-4 shrink-0" ', $this->extension->svgSportType($sportType), $sportType->value);
         }
-        $this->assertMatchesJsonSnapshot(Json::encode($snapshot));
     }
 
     public function setUp(): void

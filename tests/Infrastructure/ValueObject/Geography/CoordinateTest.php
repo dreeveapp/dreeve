@@ -6,13 +6,11 @@ use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class CoordinateTest extends TestCase
 {
-    use MatchesSnapshots;
-
     public function testCreateFromOptionalLatAndLng(): void
     {
         $coordinate = Coordinate::createFromOptionalLatAndLng(
@@ -45,6 +43,15 @@ class CoordinateTest extends TestCase
             longitude: Longitude::fromString('2'),
         );
 
-        $this->assertMatchesJsonSnapshot(Json::encode($coordinate));
+        $this->assertSame('[3,2]', Json::encode($coordinate));
+    }
+
+    #[TestWith([Latitude::class, '91', 'Invalid latitude value: 91'])]
+    #[TestWith([Longitude::class, '181', 'Invalid longitude value: 181'])]
+    public function testItShouldThrowWhenOutOfRange(string $class, string $value, string $expectedMessage): void
+    {
+        $this->expectExceptionObject(new \InvalidArgumentException($expectedMessage));
+
+        $class::fromString($value);
     }
 }

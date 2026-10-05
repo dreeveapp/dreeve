@@ -9,34 +9,25 @@ use App\Application\AppStatusChecker;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\FileSystem\SuccessfulPermissionChecker;
 use App\Tests\Infrastructure\FileSystem\UnwritablePermissionChecker;
+use PHPUnit\Framework\Attributes\TestWith;
 
 class AppStatusCheckerTest extends ContainerTestCase
 {
-    public function testEnsureIsReadyForStravaImportPasses(): void
+    #[TestWith(['ensureIsReadyForStravaImport'])]
+    #[TestWith(['ensureIsReadyForFileImport'])]
+    public function testItIsReadyWhenTheFileSystemIsWritable(string $method): void
     {
         $this->expectNotToPerformAssertions();
 
-        new AppStatusChecker(new SuccessfulPermissionChecker())->ensureIsReadyForStravaImport();
+        new AppStatusChecker(new SuccessfulPermissionChecker())->$method();
     }
 
-    public function testEnsureIsReadyForStravaImportThrowsWhenFileSystemIsNotWritable(): void
+    #[TestWith(['ensureIsReadyForStravaImport'])]
+    #[TestWith(['ensureIsReadyForFileImport'])]
+    public function testItThrowsWhenTheFileSystemIsNotWritable(string $method): void
     {
         $this->expectExceptionObject(AppIsNotReady::becauseFileSystemIsNotWritable());
 
-        new AppStatusChecker(new UnwritablePermissionChecker())->ensureIsReadyForStravaImport();
-    }
-
-    public function testEnsureIsReadyForFileImportPasses(): void
-    {
-        $this->expectNotToPerformAssertions();
-
-        new AppStatusChecker(new SuccessfulPermissionChecker())->ensureIsReadyForFileImport();
-    }
-
-    public function testEnsureIsReadyForFileImportThrowsWhenFileSystemIsNotWritable(): void
-    {
-        $this->expectExceptionObject(AppIsNotReady::becauseFileSystemIsNotWritable());
-
-        new AppStatusChecker(new UnwritablePermissionChecker())->ensureIsReadyForFileImport();
+        new AppStatusChecker(new UnwritablePermissionChecker())->$method();
     }
 }

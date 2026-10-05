@@ -6,17 +6,13 @@ use App\Application\Import\CalculateActivityMetrics\Pipeline\CalculateActivityRo
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\SpyOutput;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class CalculateActivityRouteSignaturesTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private CalculateActivityRouteSignatures $calculateActivityRouteSignatures;
 
     public function testProcess(): void
@@ -26,10 +22,14 @@ class CalculateActivityRouteSignaturesTest extends ContainerTestCase
 
         $this->calculateActivityRouteSignatures->process($output);
 
-        $this->assertMatchesJsonSnapshot(
-            Json::encode($this->getConnection()
+        $this->assertEquals(
+            [
+                ['activityId' => 'activity--1', 'polylineChecksum' => '30214f23', 'cellCount' => 21],
+                ['activityId' => 'activity--2', 'polylineChecksum' => '5e5c0957', 'cellCount' => 31],
+            ],
+            $this->getConnection()
                 ->executeQuery('SELECT activityId, polylineChecksum, cellCount FROM ActivityRouteSignature ORDER BY activityId')
-                ->fetchAllAssociative())
+                ->fetchAllAssociative(),
         );
 
         $this->calculateActivityRouteSignatures->process($output);

@@ -3,6 +3,7 @@
 namespace App\Tests\Infrastructure\Time\Format;
 
 use App\Infrastructure\Time\Format\DateFormat;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class DateFormatTest extends TestCase
@@ -15,15 +16,11 @@ class DateFormatTest extends TestCase
         );
     }
 
-    public function testFromItShouldThrowWhenEmpty(): void
+    #[TestWith(['', 'Invalid date format provided. Format cannot be empty'])]
+    #[TestWith(['EE RR b', 'Invalid date format provided "EE RR b", invalid format characters found: E, R, b'])]
+    public function testFromItShouldThrowOnAnInvalidFormat(string $format, string $expectedMessage): void
     {
-        $this->expectExceptionObject(new \InvalidArgumentException('Invalid date format provided. Format cannot be empty'));
-        DateFormat::from('');
-    }
-
-    public function testFromItShouldThrowInvalidFormat(): void
-    {
-        $this->expectExceptionObject(new \InvalidArgumentException('Invalid date format provided "EE RR b", invalid format characters found: E, R, b'));
-        DateFormat::from('EE RR b');
+        $this->expectExceptionObject(new \InvalidArgumentException($expectedMessage));
+        DateFormat::from($format);
     }
 }

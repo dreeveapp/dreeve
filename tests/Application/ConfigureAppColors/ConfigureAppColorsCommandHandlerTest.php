@@ -9,13 +9,10 @@ use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class ConfigureAppColorsCommandHandlerTest extends ContainerTestCase
 {
     use ProvideTestData;
-    use MatchesSnapshots;
-
     private CommandBus $commandBus;
 
     public function testHandle(): void
@@ -23,9 +20,15 @@ class ConfigureAppColorsCommandHandlerTest extends ContainerTestCase
         $this->provideFullTestSet();
 
         $this->commandBus->dispatch(new ConfigureAppColors());
-        $this->assertMatchesJsonSnapshot(Json::decode(
-            (string) $this->getContainer()->get(KeyValueStore::class)->find(Key::THEME)
-        ));
+        $this->assertEquals(
+            [
+                'sportType' => ['Ride' => '#5470c6', 'VirtualRide' => '#91cc75', 'Run' => '#fac858'],
+                'gear' => ['gear-b12659861' => '#5470c6', 'gear-b12659862' => '#91cc75', 'gear-b12659562' => '#fac858'],
+            ],
+            Json::decode(
+                (string) $this->getContainer()->get(KeyValueStore::class)->find(Key::THEME)
+            ),
+        );
     }
 
     #[\Override]

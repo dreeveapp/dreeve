@@ -5,16 +5,14 @@ namespace App\Tests\Infrastructure\ValueObject\String;
 use App\Infrastructure\Serialization\Json;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class NonEmptyStringLiteralTest extends TestCase
 {
-    use MatchesSnapshots;
-
     public function testJsonSerialize(): void
     {
-        $this->assertMatchesJsonSnapshot(
-            Json::encode(TestNonEmptyStringLiteral::fromString('a'))
+        $this->assertSame(
+            '"a"',
+            Json::encode(TestNonEmptyStringLiteral::fromString('a')),
         );
     }
 

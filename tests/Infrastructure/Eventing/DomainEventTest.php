@@ -2,31 +2,23 @@
 
 namespace App\Tests\Infrastructure\Eventing;
 
+use App\Infrastructure\Eventing\DomainEvent;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class DomainEventTest extends TestCase
 {
-    public function testEqualsWhenTheClassAndThePayloadMatch(): void
+    #[DataProvider('provideEvents')]
+    public function testEquals(DomainEvent $event, DomainEvent $other, bool $expected): void
     {
-        $this->assertTrue(
-            new ADomainEventWithAPayload('one')->equals(new ADomainEventWithAPayload('one'))
-        );
+        $this->assertSame($expected, $event->equals($other));
     }
 
-    public function testEqualsWhenThereIsNoPayloadAtAll(): void
+    public static function provideEvents(): iterable
     {
-        $this->assertTrue(new ADomainEvent()->equals(new ADomainEvent()));
-    }
-
-    public function testDoesNotEqualWhenThePayloadDiffers(): void
-    {
-        $this->assertFalse(
-            new ADomainEventWithAPayload('one')->equals(new ADomainEventWithAPayload('other'))
-        );
-    }
-
-    public function testDoesNotEqualWhenTheClassDiffers(): void
-    {
-        $this->assertFalse(new ADomainEvent()->equals(new ADomainEventWithAPayload('one')));
+        yield 'same class and payload' => [new ADomainEventWithAPayload('one'), new ADomainEventWithAPayload('one'), true];
+        yield 'no payload at all' => [new ADomainEvent(), new ADomainEvent(), true];
+        yield 'payload differs' => [new ADomainEventWithAPayload('one'), new ADomainEventWithAPayload('other'), false];
+        yield 'class differs' => [new ADomainEvent(), new ADomainEventWithAPayload('one'), false];
     }
 }

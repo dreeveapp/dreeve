@@ -1,7 +1,0 @@
-{
-    "commandName": "App\\Tests\\Infrastructure\\CQRS\\Command\\Bus\\RunAnOperation\\RunAnOperation",
-    "payload": {
-        "value": "string",
-        "valueTwo": "defaultValue"
-    }
-}

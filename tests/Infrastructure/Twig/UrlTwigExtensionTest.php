@@ -5,7 +5,6 @@ namespace App\Tests\Infrastructure\Twig;
 use App\Application\AppUrl;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Image\ImageOrientation;
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Twig\StringTwigExtension;
 use App\Infrastructure\Twig\SvgsTwigExtension;
 use App\Infrastructure\Twig\UrlTwigExtension;
@@ -13,15 +12,12 @@ use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Segment\SegmentBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UrlTwigExtensionTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private StringTwigExtension $stringTwigExtension;
     private SvgsTwigExtension $svgsTwigExtension;
     private UrlGeneratorInterface $urlGenerator;
@@ -106,16 +102,23 @@ class UrlTwigExtensionTest extends ContainerTestCase
             svgsTwigExtension: $this->svgsTwigExtension,
         );
 
-        $snapshot = [];
-        foreach (['zwift', 'rouvy', 'mywhoosh', 'random'] as $deviceName) {
+        foreach ([
+            'zwift' => $this->svgsTwigExtension->svg('zwift-logo'),
+            'rouvy' => $this->svgsTwigExtension->svg('rouvy-logo'),
+            'mywhoosh' => $this->svgsTwigExtension->svg('my-whoosh-logo'),
+            'random' => $this->svgsTwigExtension->svgSportType(SportType::RIDE),
+        ] as $deviceName => $expectedIcon) {
             $segment = SegmentBuilder::fromDefaults()
                 ->withSportType(SportType::VIRTUAL_RIDE)
                 ->withDeviceName($deviceName)
                 ->build();
-            $snapshot[$deviceName] = $extension->renderSegmentTitleLink($segment);
-        }
 
-        $this->assertMatchesJsonSnapshot(Json::encode($snapshot));
+            $this->assertSame(
+                '<a href="/segments/segment-1" class="flex items-center gap-x-1 font-medium text-blue-600 hover:underline">'.$expectedIcon.'<span class="truncate">Segment</span></a>',
+                $extension->renderSegmentTitleLink($segment),
+                $deviceName,
+            );
+        }
     }
 
     #[\Override]
