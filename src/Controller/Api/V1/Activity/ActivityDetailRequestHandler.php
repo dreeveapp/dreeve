@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\V1\Activity;
 
+use App\Application\AppUrl;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
@@ -19,6 +20,7 @@ final readonly class ActivityDetailRequestHandler
     public function __construct(
         private ActivityRepository $activityRepository,
         private ActivityStreamRepository $activityStreamRepository,
+        private AppUrl $appUrl,
     ) {
     }
 
@@ -34,6 +36,7 @@ final readonly class ActivityDetailRequestHandler
         return ActivityResponse::detail(
             activity: $activity,
             hasGpx: $this->activityStreamRepository->hasOneForActivityAndStreamType($activity->getId(), StreamType::LAT_LNG),
+            appUrl: $this->appUrl,
         );
     }
 }

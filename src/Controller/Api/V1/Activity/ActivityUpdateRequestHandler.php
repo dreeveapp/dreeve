@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\V1\Activity;
 
+use App\Application\AppUrl;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
@@ -32,6 +33,7 @@ final readonly class ActivityUpdateRequestHandler
         private GearRepository $gearRepository,
         private CommandBus $commandBus,
         private ImportMode $importMode,
+        private AppUrl $appUrl,
     ) {
     }
 
@@ -89,6 +91,7 @@ final readonly class ActivityUpdateRequestHandler
         return ActivityResponse::detail(
             activity: $this->activityRepository->find($activity->getId()),
             hasGpx: $this->activityStreamRepository->hasOneForActivityAndStreamType($activity->getId(), StreamType::LAT_LNG),
+            appUrl: $this->appUrl,
         );
     }
 }

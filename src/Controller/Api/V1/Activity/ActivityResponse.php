@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\V1\Activity;
 
+use App\Application\AppUrl;
 use App\Domain\Activity\Activity;
+use App\Domain\Activity\Image\ActivityImageId;
 use App\Domain\Activity\Search\ActivitySearchResult;
+use App\Domain\Image\ImagePath;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
@@ -16,13 +19,14 @@ final class ActivityResponse extends JsonResponse
     /**
      * @param Overview<ActivitySearchResult> $overview
      */
-    public static function list(Overview $overview, Pagination $pagination): self
+    public static function list(Overview $overview, Pagination $pagination, AppUrl $appUrl): self
     {
         return new self([
             'activities' => array_map(
                 static fn (ActivitySearchResult $result): array => self::activity(
                     $result->getActivity(),
-                    $result->hasGpx()
+                    $result->hasGpx(),
+                    $appUrl,
                 ),
                 $overview->getItems()
             ),
@@ -35,15 +39,15 @@ final class ActivityResponse extends JsonResponse
         ]);
     }
 
-    public static function detail(Activity $activity, bool $hasGpx): self
+    public static function detail(Activity $activity, bool $hasGpx, AppUrl $appUrl): self
     {
-        return new self(self::activity($activity, $hasGpx));
+        return new self(self::activity($activity, $hasGpx, $appUrl));
     }
 
     /**
      * @return array<string, mixed>
      */
-    private static function activity(Activity $activity, bool $hasGpx): array
+    private static function activity(Activity $activity, bool $hasGpx, AppUrl $appUrl): array
     {
         $startingCoordinate = $activity->getStartingCoordinate();
         $routeGeography = $activity->getRouteGeography();
@@ -85,6 +89,13 @@ final class ActivityResponse extends JsonResponse
             ] : null,
             'encodedPolyline' => (string) $activity->getEncodedPolyline() ?: null,
             'hasGpx' => $hasGpx,
+            'images' => array_map(
+                static fn (string $path): array => [
+                    'id' => (string) ActivityImageId::fromImagePath(ImagePath::fromLocalImagePath($path)),
+                    'url' => rtrim((string) $appUrl, '/').'/'.ltrim($path, '/'),
+                ],
+                $activity->getLocalImagePaths()
+            ),
         ];
     }
 }

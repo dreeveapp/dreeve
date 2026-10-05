@@ -31,5 +31,11 @@
     "passedThroughCountries": [],
     "startLatLng": null,
     "encodedPolyline": null,
-    "hasGpx": false
+    "hasGpx": false,
+    "images": [
+        {
+            "id": "activityImage-9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11",
+            "url": "http://localhost:8080/files/activities/9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11.jpg"
+        }
+    ]
 }

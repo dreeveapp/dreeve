@@ -68,7 +68,7 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
         $this->assertSame('Garmin Edge 540', $activity->getDeviceName());
         $this->assertTrue($activity->isCommute());
         $this->assertTrue($activity->isGroupActivity());
-        $this->assertSame(['/files/activities/photo.jpg'], $activity->getLocalImagePaths());
+        $this->assertSame(['/files/activities/9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11.jpg'], $activity->getLocalImagePaths());
     }
 
     public function testItClearsTheDescription(): void
@@ -231,7 +231,7 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
                 ->withDeviceName('Garmin Edge 540')
                 ->withIsCommute(true)
                 ->withIsGroupActivity(true)
-                ->withLocalImagePaths('files/activities/photo.jpg')
+                ->withLocalImagePaths('files/activities/9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11.jpg')
                 ->build(),
             rawData: [],
         ));

@@ -672,6 +672,7 @@ components:
         - location
         - passedThroughCountries
         - hasGpx
+        - images
       properties:
         id:
           type: string
@@ -750,6 +751,23 @@ components:
           type: boolean
           description: >-
             Whether `GET /api/v1/activities/{activityId}/gpx` will return a file for this activity.
+        images:
+          type: array
+          items: { $ref: '#/components/schemas/ActivityImage' }
+    ActivityImage:
+      type: object
+      required: [id, url]
+      properties:
+        id:
+          type: string
+          examples: ['activityImage-0a8cdfbb-63b4-4f0f-a09d-faedd5a00753']
+        url:
+          type: string
+          format: uri
+          description: >-
+            Where the image is served. With demo mode enabled, visitors who are not logged in get a
+            placeholder photo instead.
+          examples: ['https://dreeve.example.com/files/activities/0a8cdfbb-63b4-4f0f-a09d-faedd5a00753.jpg']
     ActivityLocation:
       type: object
       required: [countryCode, state, city]

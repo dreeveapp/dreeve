@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\V1\Activity;
 
+use App\Application\AppUrl;
 use App\Domain\Activity\Search\ActivitySearchFilters;
 use App\Domain\Activity\Search\ActivitySearchRepository;
 use App\Infrastructure\Http\Request\PaginationFromRequest;
@@ -18,6 +19,7 @@ final readonly class ActivitySearchRequestHandler
 
     public function __construct(
         private ActivitySearchRepository $activitySearchRepository,
+        private AppUrl $appUrl,
     ) {
     }
 
@@ -29,6 +31,7 @@ final readonly class ActivitySearchRequestHandler
         return ActivityResponse::list(
             $this->activitySearchRepository->find($pagination, ActivitySearchFilters::fromRequest($request)),
             $pagination,
+            $this->appUrl,
         );
     }
 }
