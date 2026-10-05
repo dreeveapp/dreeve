@@ -6,19 +6,22 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Milestone\Context\ActivityCountContext;
 use App\Domain\Milestone\Discoverer\ActivityCountMilestoneDiscoverer;
+use App\Domain\Milestone\FunComparison\ActivityCountFunComparison;
+use App\Domain\Milestone\Milestone;
+use App\Domain\Milestone\MilestoneCategory;
+use App\Domain\Milestone\MilestoneId;
 use App\Domain\Milestone\MilestoneIdFactory;
+use App\Domain\Milestone\PreviousMilestone;
 use App\Infrastructure\Measurement\Length\Kilometer;
-use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\Measurement\SimpleUnit;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class ActivityCountMilestoneDiscovererTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private ActivityCountMilestoneDiscoverer $discoverer;
     private MilestoneIdFactory $milestoneIdFactory;
 
@@ -32,7 +35,23 @@ class ActivityCountMilestoneDiscovererTest extends ContainerTestCase
     {
         $this->insertActivities(10);
 
-        $this->assertMatchesJsonSnapshot(Json::encode($this->discoverer->discover($this->milestoneIdFactory)));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-10 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_COUNT,
+                    context: new ActivityCountContext(threshold: 10),
+                )->withFunComparison(ActivityCountFunComparison::ONE_PER_WEEK_TWO_MONTHS),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-10 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_COUNT,
+                    context: new ActivityCountContext(threshold: 10),
+                )->withSportType(SportType::RIDE)->withFunComparison(ActivityCountFunComparison::ONE_PER_WEEK_TWO_MONTHS),
+            ],
+            $this->discoverer->discover($this->milestoneIdFactory)->toArray(),
+        );
     }
 
     public function testDiscoverMultipleThresholds(): void
@@ -77,13 +96,39 @@ class ActivityCountMilestoneDiscovererTest extends ContainerTestCase
             ));
         }
 
-        $this->assertMatchesJsonSnapshot(Json::encode($this->discoverer->discover($this->milestoneIdFactory)));
-    }
-
-    public function testFunComparisonIsSet(): void
-    {
-        $this->insertActivities(50);
-        $this->assertMatchesJsonSnapshot(Json::encode($this->discoverer->discover($this->milestoneIdFactory)));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-10 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_COUNT,
+                    context: new ActivityCountContext(threshold: 10),
+                )->withFunComparison(ActivityCountFunComparison::ONE_PER_WEEK_TWO_MONTHS),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-10 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_COUNT,
+                    context: new ActivityCountContext(threshold: 10),
+                )->withSportType(SportType::RIDE)->withFunComparison(ActivityCountFunComparison::ONE_PER_WEEK_TWO_MONTHS),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-3'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-25 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_COUNT,
+                    context: new ActivityCountContext(threshold: 25),
+                )->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-1'),
+                    threshold: SimpleUnit::from(10.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-10 00:00:00'),
+                ))->withFunComparison(ActivityCountFunComparison::ONE_PER_WEEK_HALF_YEAR),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-4'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-25 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_COUNT,
+                    context: new ActivityCountContext(threshold: 10),
+                )->withSportType(SportType::RUN)->withFunComparison(ActivityCountFunComparison::ONE_PER_WEEK_TWO_MONTHS),
+            ],
+            $this->discoverer->discover($this->milestoneIdFactory)->toArray(),
+        );
     }
 
     public function setUp(): void

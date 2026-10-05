@@ -7,17 +7,19 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Milestone\Context\StreakContext;
 use App\Domain\Milestone\Discoverer\StreakMilestoneDiscoverer;
+use App\Domain\Milestone\FunComparison\StreakFunComparison;
+use App\Domain\Milestone\Milestone;
+use App\Domain\Milestone\MilestoneCategory;
+use App\Domain\Milestone\MilestoneId;
 use App\Domain\Milestone\MilestoneIdFactory;
-use App\Infrastructure\Serialization\Json;
+use App\Domain\Milestone\PreviousMilestone;
+use App\Infrastructure\Measurement\SimpleUnit;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class StreakMilestoneDiscovererTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private StreakMilestoneDiscoverer $discoverer;
     private MilestoneIdFactory $milestoneIdFactory;
 
@@ -39,11 +41,17 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
-        $context = $milestones->getFirst()->getContext();
-        $this->assertInstanceOf(StreakContext::class, $context);
-        $this->assertEquals(7, $context->getDays());
-
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-07 00:00:00'),
+                    category: MilestoneCategory::STREAK,
+                    context: new StreakContext(days: 7),
+                )->withFunComparison(StreakFunComparison::FULL_WEEK),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverMultipleThresholds(): void
@@ -58,7 +66,27 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
         }
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-07 00:00:00'),
+                    category: MilestoneCategory::STREAK,
+                    context: new StreakContext(days: 7),
+                )->withFunComparison(StreakFunComparison::FULL_WEEK),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-14 00:00:00'),
+                    category: MilestoneCategory::STREAK,
+                    context: new StreakContext(days: 14),
+                )->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-1'),
+                    threshold: SimpleUnit::from(7.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-07 00:00:00'),
+                ))->withFunComparison(StreakFunComparison::FORTNIGHT),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverNoMilestoneForShortStreak(): void
@@ -97,7 +125,17 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
         }
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-13 00:00:00'),
+                    category: MilestoneCategory::STREAK,
+                    context: new StreakContext(days: 7),
+                )->withFunComparison(StreakFunComparison::FULL_WEEK),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverHandlesDuplicateDaysInStreak(): void
@@ -118,7 +156,17 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
         ));
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-07 00:00:00'),
+                    category: MilestoneCategory::STREAK,
+                    context: new StreakContext(days: 7),
+                )->withFunComparison(StreakFunComparison::FULL_WEEK),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testFunComparisonIsSet(): void

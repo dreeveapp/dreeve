@@ -8,17 +8,19 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Milestone\Context\CumulativeMovingTimeContext;
 use App\Domain\Milestone\Discoverer\CumulativeMovingTimeMilestoneDiscoverer;
+use App\Domain\Milestone\FunComparison\MovingTimeFunComparison;
+use App\Domain\Milestone\Milestone;
+use App\Domain\Milestone\MilestoneCategory;
+use App\Domain\Milestone\MilestoneId;
 use App\Domain\Milestone\MilestoneIdFactory;
-use App\Infrastructure\Serialization\Json;
+use App\Domain\Milestone\PreviousMilestone;
+use App\Infrastructure\Measurement\Time\Hour;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class CumulativeMovingTimeMilestoneDiscovererTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private CumulativeMovingTimeMilestoneDiscoverer $discoverer;
     private MilestoneIdFactory $milestoneIdFactory;
 
@@ -33,11 +35,23 @@ class CumulativeMovingTimeMilestoneDiscovererTest extends ContainerTestCase
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
-        $context = $milestones->getFirst()->getContext();
-        $this->assertInstanceOf(CumulativeMovingTimeContext::class, $context);
-        $this->assertEquals(24.0, $context->getThreshold()->toFloat());
-
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_MOVING_TIME,
+                    context: new CumulativeMovingTimeContext(threshold: Hour::from(24.0)),
+                )->withFunComparison(MovingTimeFunComparison::FULL_DAY),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_MOVING_TIME,
+                    context: new CumulativeMovingTimeContext(threshold: Hour::from(24.0)),
+                )->withSportType(SportType::RIDE)->withFunComparison(MovingTimeFunComparison::FULL_DAY),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverMultipleThresholds(): void
@@ -46,7 +60,43 @@ class CumulativeMovingTimeMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(2, '2024-01-02', 80000);
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_MOVING_TIME,
+                    context: new CumulativeMovingTimeContext(threshold: Hour::from(24.0)),
+                )->withFunComparison(MovingTimeFunComparison::FULL_DAY),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_MOVING_TIME,
+                    context: new CumulativeMovingTimeContext(threshold: Hour::from(24.0)),
+                )->withSportType(SportType::RIDE)->withFunComparison(MovingTimeFunComparison::FULL_DAY),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-3'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_MOVING_TIME,
+                    context: new CumulativeMovingTimeContext(threshold: Hour::from(48.0)),
+                )->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-1'),
+                    threshold: Hour::from(24.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                ))->withFunComparison(MovingTimeFunComparison::TWO_FULL_DAYS),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-4'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_MOVING_TIME,
+                    context: new CumulativeMovingTimeContext(threshold: Hour::from(48.0)),
+                )->withSportType(SportType::RIDE)->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-2'),
+                    threshold: Hour::from(24.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                ))->withFunComparison(MovingTimeFunComparison::TWO_FULL_DAYS),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverSkipsZeroMovingTime(): void
@@ -61,7 +111,39 @@ class CumulativeMovingTimeMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(2, '2024-01-02', 86400, SportType::RUN);
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_MOVING_TIME,
+                    context: new CumulativeMovingTimeContext(threshold: Hour::from(24.0)),
+                )->withFunComparison(MovingTimeFunComparison::FULL_DAY),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_MOVING_TIME,
+                    context: new CumulativeMovingTimeContext(threshold: Hour::from(24.0)),
+                )->withSportType(SportType::RIDE)->withFunComparison(MovingTimeFunComparison::FULL_DAY),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-3'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_MOVING_TIME,
+                    context: new CumulativeMovingTimeContext(threshold: Hour::from(48.0)),
+                )->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-1'),
+                    threshold: Hour::from(24.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                ))->withFunComparison(MovingTimeFunComparison::TWO_FULL_DAYS),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-4'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_MOVING_TIME,
+                    context: new CumulativeMovingTimeContext(threshold: Hour::from(24.0)),
+                )->withSportType(SportType::RUN)->withFunComparison(MovingTimeFunComparison::FULL_DAY),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testFunComparisonIsNullForSmallThreshold(): void

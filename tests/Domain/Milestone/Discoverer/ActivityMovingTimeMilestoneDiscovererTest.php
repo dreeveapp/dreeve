@@ -8,18 +8,18 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Milestone\Context\ActivityRecordContext;
 use App\Domain\Milestone\Discoverer\ActivityMovingTimeMilestoneDiscoverer;
+use App\Domain\Milestone\Milestone;
+use App\Domain\Milestone\MilestoneCategory;
+use App\Domain\Milestone\MilestoneId;
 use App\Domain\Milestone\MilestoneIdFactory;
+use App\Domain\Milestone\PreviousMilestone;
 use App\Infrastructure\Measurement\Time\Seconds;
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class ActivityMovingTimeMilestoneDiscovererTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private ActivityMovingTimeMilestoneDiscoverer $discoverer;
     private MilestoneIdFactory $milestoneIdFactory;
 
@@ -34,12 +34,17 @@ class ActivityMovingTimeMilestoneDiscovererTest extends ContainerTestCase
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
-        $context = $milestones->getFirst()->getContext();
-        $this->assertInstanceOf(ActivityRecordContext::class, $context);
-        $this->assertInstanceOf(Seconds::class, $context->getValue());
-        $this->assertEquals(7200, $context->getValue()->toInt());
-
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_MOVING_TIME,
+                    context: new ActivityRecordContext(value: Seconds::from(7200.0)),
+                )->withSportType(SportType::RIDE)->withActivityId(ActivityId::fromString('activity-1')),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverTracksImprovements(): void
@@ -48,7 +53,27 @@ class ActivityMovingTimeMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(2, '2024-01-02', SportType::RIDE, 10800);
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_MOVING_TIME,
+                    context: new ActivityRecordContext(value: Seconds::from(7200.0)),
+                )->withSportType(SportType::RIDE)->withActivityId(ActivityId::fromString('activity-1')),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_MOVING_TIME,
+                    context: new ActivityRecordContext(value: Seconds::from(10800.0)),
+                )->withSportType(SportType::RIDE)->withActivityId(ActivityId::fromString('activity-2'))->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-1'),
+                    threshold: Seconds::from(7200.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                )),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverDoesNotCreateMilestoneForNonImprovement(): void
@@ -57,7 +82,17 @@ class ActivityMovingTimeMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(2, '2024-01-02', SportType::RIDE, 3600);
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_MOVING_TIME,
+                    context: new ActivityRecordContext(value: Seconds::from(7200.0)),
+                )->withSportType(SportType::RIDE)->withActivityId(ActivityId::fromString('activity-1')),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverTracksSportTypesSeparately(): void
@@ -66,7 +101,23 @@ class ActivityMovingTimeMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(2, '2024-01-02', SportType::RUN, 3600);
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_MOVING_TIME,
+                    context: new ActivityRecordContext(value: Seconds::from(7200.0)),
+                )->withSportType(SportType::RIDE)->withActivityId(ActivityId::fromString('activity-1')),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_MOVING_TIME,
+                    context: new ActivityRecordContext(value: Seconds::from(3600.0)),
+                )->withSportType(SportType::RUN)->withActivityId(ActivityId::fromString('activity-2')),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverSkipsZeroMovingTime(): void

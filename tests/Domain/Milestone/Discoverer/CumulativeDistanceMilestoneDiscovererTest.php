@@ -8,20 +8,21 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Milestone\Context\CumulativeDistanceContext;
 use App\Domain\Milestone\Discoverer\CumulativeDistanceMilestoneDiscoverer;
+use App\Domain\Milestone\FunComparison\DistanceFunComparison;
+use App\Domain\Milestone\Milestone;
+use App\Domain\Milestone\MilestoneCategory;
+use App\Domain\Milestone\MilestoneId;
 use App\Domain\Milestone\MilestoneIdFactory;
+use App\Domain\Milestone\PreviousMilestone;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class CumulativeDistanceMilestoneDiscovererTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private CumulativeDistanceMilestoneDiscoverer $discoverer;
     private MilestoneIdFactory $milestoneIdFactory;
 
@@ -36,12 +37,23 @@ class CumulativeDistanceMilestoneDiscovererTest extends ContainerTestCase
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
-        $context = $milestones->getFirst()->getContext();
-        $this->assertInstanceOf(CumulativeDistanceContext::class, $context);
-        $this->assertInstanceOf(Kilometer::class, $context->getThreshold());
-        $this->assertEquals(100.0, $context->getThreshold()->toFloat());
-
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_DISTANCE,
+                    context: new CumulativeDistanceContext(threshold: Kilometer::from(100.0)),
+                )->withFunComparison(DistanceFunComparison::EDGE_OF_SPACE),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_DISTANCE,
+                    context: new CumulativeDistanceContext(threshold: Kilometer::from(100.0)),
+                )->withSportType(SportType::RIDE)->withFunComparison(DistanceFunComparison::EDGE_OF_SPACE),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverMultipleThresholds(): void
@@ -50,7 +62,63 @@ class CumulativeDistanceMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(2, '2024-01-02', 260.0);
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_DISTANCE,
+                    context: new CumulativeDistanceContext(threshold: Kilometer::from(100.0)),
+                )->withFunComparison(DistanceFunComparison::EDGE_OF_SPACE),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_DISTANCE,
+                    context: new CumulativeDistanceContext(threshold: Kilometer::from(250.0)),
+                )->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-1'),
+                    threshold: Kilometer::from(100.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                ))->withFunComparison(DistanceFunComparison::LENGTH_OF_JAMAICA),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-3'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_DISTANCE,
+                    context: new CumulativeDistanceContext(threshold: Kilometer::from(100.0)),
+                )->withSportType(SportType::RIDE)->withFunComparison(DistanceFunComparison::EDGE_OF_SPACE),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-4'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_DISTANCE,
+                    context: new CumulativeDistanceContext(threshold: Kilometer::from(250.0)),
+                )->withSportType(SportType::RIDE)->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-3'),
+                    threshold: Kilometer::from(100.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                ))->withFunComparison(DistanceFunComparison::LENGTH_OF_JAMAICA),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-5'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_DISTANCE,
+                    context: new CumulativeDistanceContext(threshold: Kilometer::from(500.0)),
+                )->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-2'),
+                    threshold: Kilometer::from(250.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                ))->withFunComparison(DistanceFunComparison::MADRID_TO_BARCELONA),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-6'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_DISTANCE,
+                    context: new CumulativeDistanceContext(threshold: Kilometer::from(500.0)),
+                )->withSportType(SportType::RIDE)->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-4'),
+                    threshold: Kilometer::from(250.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                ))->withFunComparison(DistanceFunComparison::MADRID_TO_BARCELONA),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverSkipsZeroDistance(): void
@@ -79,15 +147,39 @@ class CumulativeDistanceMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(2, '2024-01-02', 110.0, SportType::RUN);
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
-    }
-
-    public function testFunComparisonIsSet(): void
-    {
-        $this->insertActivity(1, '2024-01-01', 500.0);
-
-        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_DISTANCE,
+                    context: new CumulativeDistanceContext(threshold: Kilometer::from(100.0)),
+                )->withFunComparison(DistanceFunComparison::EDGE_OF_SPACE),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_DISTANCE,
+                    context: new CumulativeDistanceContext(threshold: Kilometer::from(100.0)),
+                )->withSportType(SportType::RIDE)->withFunComparison(DistanceFunComparison::EDGE_OF_SPACE),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-3'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_DISTANCE,
+                    context: new CumulativeDistanceContext(threshold: Kilometer::from(250.0)),
+                )->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-1'),
+                    threshold: Kilometer::from(100.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                ))->withFunComparison(DistanceFunComparison::LENGTH_OF_JAMAICA),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-4'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_DISTANCE,
+                    context: new CumulativeDistanceContext(threshold: Kilometer::from(100.0)),
+                )->withSportType(SportType::RUN)->withFunComparison(DistanceFunComparison::EDGE_OF_SPACE),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function setUp(): void

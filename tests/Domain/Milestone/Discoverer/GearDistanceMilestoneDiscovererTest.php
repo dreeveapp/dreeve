@@ -9,21 +9,23 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Milestone\Context\GearDistanceContext;
 use App\Domain\Milestone\Discoverer\GearDistanceMilestoneDiscoverer;
+use App\Domain\Milestone\FunComparison\DistanceFunComparison;
+use App\Domain\Milestone\Milestone;
+use App\Domain\Milestone\MilestoneCategory;
+use App\Domain\Milestone\MilestoneId;
 use App\Domain\Milestone\MilestoneIdFactory;
+use App\Domain\Milestone\PreviousMilestone;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
-use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\Measurement\Length\Mile;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class GearDistanceMilestoneDiscovererTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private GearDistanceMilestoneDiscoverer $discoverer;
     private MilestoneIdFactory $milestoneIdFactory;
 
@@ -58,12 +60,17 @@ class GearDistanceMilestoneDiscovererTest extends ContainerTestCase
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
-        $context = $milestones->getFirst()->getContext();
-        $this->assertInstanceOf(GearDistanceContext::class, $context);
-        $this->assertEquals('Canyon Endurace', $context->getGearName());
-        $this->assertEquals(100.0, $context->getThreshold()->toFloat());
-
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::GEAR_DISTANCE,
+                    context: new GearDistanceContext(gearName: 'Canyon Endurace', threshold: Kilometer::from(100.0)),
+                )->withFunComparison(DistanceFunComparison::EDGE_OF_SPACE),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverMultipleThresholdsWithPreviousChain(): void
@@ -79,7 +86,37 @@ class GearDistanceMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity('2', '2024-01-02', $gearId, 250.0);
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::GEAR_DISTANCE,
+                    context: new GearDistanceContext(gearName: 'Canyon Endurace', threshold: Kilometer::from(100.0)),
+                )->withFunComparison(DistanceFunComparison::EDGE_OF_SPACE),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::GEAR_DISTANCE,
+                    context: new GearDistanceContext(gearName: 'Canyon Endurace', threshold: Kilometer::from(250.0)),
+                )->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-1'),
+                    threshold: Kilometer::from(100.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                ))->withFunComparison(DistanceFunComparison::LENGTH_OF_JAMAICA),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-3'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::GEAR_DISTANCE,
+                    context: new GearDistanceContext(gearName: 'Canyon Endurace', threshold: Kilometer::from(500.0)),
+                )->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-2'),
+                    threshold: Kilometer::from(250.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                ))->withFunComparison(DistanceFunComparison::MADRID_TO_BARCELONA),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverTracksGearsSeparately(): void
@@ -103,7 +140,23 @@ class GearDistanceMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity('2', '2024-01-02', $shoesId, 100.0);
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::GEAR_DISTANCE,
+                    context: new GearDistanceContext(gearName: 'Canyon Endurace', threshold: Kilometer::from(100.0)),
+                )->withFunComparison(DistanceFunComparison::EDGE_OF_SPACE),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::GEAR_DISTANCE,
+                    context: new GearDistanceContext(gearName: 'Nike Pegasus', threshold: Kilometer::from(100.0)),
+                )->withFunComparison(DistanceFunComparison::EDGE_OF_SPACE),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverSkipsZeroDistance(): void
@@ -139,10 +192,17 @@ class GearDistanceMilestoneDiscovererTest extends ContainerTestCase
         );
         $milestones = $discoverer->discover($this->milestoneIdFactory);
 
-        $context = $milestones->toArray()[0]->getContext();
-        $this->assertInstanceOf(GearDistanceContext::class, $context);
-
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::GEAR_DISTANCE,
+                    context: new GearDistanceContext(gearName: 'Canyon Endurace', threshold: Mile::from(100.0)),
+                )->withFunComparison(DistanceFunComparison::EDGE_OF_SPACE),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function setUp(): void

@@ -23,21 +23,19 @@ use App\Domain\Milestone\Discoverer\GearElevationMilestoneDiscoverer;
 use App\Domain\Milestone\Discoverer\GearMovingTimeMilestoneDiscoverer;
 use App\Domain\Milestone\Discoverer\PersonalBestMilestoneDiscoverer;
 use App\Domain\Milestone\Discoverer\StreakMilestoneDiscoverer;
+use App\Domain\Milestone\Milestone;
+use App\Domain\Milestone\MilestoneCategory;
 use App\Domain\Milestone\MilestoneCollector;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class MilestoneCollectorTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     public function testDiscoverAllWithNoActivities(): void
     {
         $collector = $this->createCollector();
@@ -55,14 +53,24 @@ class MilestoneCollectorTest extends ContainerTestCase
         $collector = $this->createCollector();
         $milestones = $collector->discoverAll();
 
-        $this->assertFalse($milestones->isEmpty());
-
-        $categories = array_values(array_unique(array_map(
-            fn ($m) => $m->getCategory()->value,
-            $milestones->toArray()
-        )));
-
-        $this->assertMatchesJsonSnapshot(Json::encode($categories));
+        $this->assertEqualsCanonicalizing(
+            [
+                MilestoneCategory::ACTIVITY_COUNT->value,
+                MilestoneCategory::ACTIVITY_DISTANCE->value,
+                MilestoneCategory::ACTIVITY_ELEVATION->value,
+                MilestoneCategory::ACTIVITY_MOVING_TIME->value,
+                MilestoneCategory::CUMULATIVE_DISTANCE->value,
+                MilestoneCategory::CUMULATIVE_ELEVATION->value,
+                MilestoneCategory::EDDINGTON->value,
+                MilestoneCategory::FIRST_ACTIVITY_OF_SPORT_TYPE->value,
+                MilestoneCategory::PERSONAL_BEST->value,
+                MilestoneCategory::STREAK->value,
+            ],
+            array_values(array_unique(array_map(
+                fn (Milestone $milestone): string => $milestone->getCategory()->value,
+                $milestones->toArray()
+            ))),
+        );
     }
 
     public function testDiscoverAllSortsNewestFirst(): void

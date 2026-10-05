@@ -9,18 +9,20 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Milestone\Context\GearMovingTimeContext;
 use App\Domain\Milestone\Discoverer\GearMovingTimeMilestoneDiscoverer;
+use App\Domain\Milestone\FunComparison\MovingTimeFunComparison;
+use App\Domain\Milestone\Milestone;
+use App\Domain\Milestone\MilestoneCategory;
+use App\Domain\Milestone\MilestoneId;
 use App\Domain\Milestone\MilestoneIdFactory;
-use App\Infrastructure\Serialization\Json;
+use App\Domain\Milestone\PreviousMilestone;
+use App\Infrastructure\Measurement\Time\Hour;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private GearMovingTimeMilestoneDiscoverer $discoverer;
     private MilestoneIdFactory $milestoneIdFactory;
 
@@ -55,12 +57,17 @@ class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
-        $context = $milestones->getFirst()->getContext();
-        $this->assertInstanceOf(GearMovingTimeContext::class, $context);
-        $this->assertEquals('Canyon Endurace', $context->getGearName());
-        $this->assertEquals(24.0, $context->getThreshold()->toFloat());
-
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::GEAR_MOVING_TIME,
+                    context: new GearMovingTimeContext(gearName: 'Canyon Endurace', threshold: Hour::from(24.0)),
+                )->withFunComparison(MovingTimeFunComparison::FULL_DAY),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverMultipleThresholdsWithPreviousChain(): void
@@ -76,7 +83,27 @@ class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity('2', '2024-01-02', $gearId, 80000);
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::GEAR_MOVING_TIME,
+                    context: new GearMovingTimeContext(gearName: 'Canyon Endurace', threshold: Hour::from(24.0)),
+                )->withFunComparison(MovingTimeFunComparison::FULL_DAY),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::GEAR_MOVING_TIME,
+                    context: new GearMovingTimeContext(gearName: 'Canyon Endurace', threshold: Hour::from(48.0)),
+                )->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-1'),
+                    threshold: Hour::from(24.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                ))->withFunComparison(MovingTimeFunComparison::TWO_FULL_DAYS),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverTracksGearsSeparately(): void
@@ -100,7 +127,23 @@ class GearMovingTimeMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity('2', '2024-01-02', $shoesId, 86400);
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::GEAR_MOVING_TIME,
+                    context: new GearMovingTimeContext(gearName: 'Canyon Endurace', threshold: Hour::from(24.0)),
+                )->withFunComparison(MovingTimeFunComparison::FULL_DAY),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::GEAR_MOVING_TIME,
+                    context: new GearMovingTimeContext(gearName: 'Nike Pegasus', threshold: Hour::from(24.0)),
+                )->withFunComparison(MovingTimeFunComparison::FULL_DAY),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverSkipsZeroMovingTime(): void

@@ -8,18 +8,18 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Milestone\Context\ActivityRecordContext;
 use App\Domain\Milestone\Discoverer\ActivityDistanceMilestoneDiscoverer;
+use App\Domain\Milestone\Milestone;
+use App\Domain\Milestone\MilestoneCategory;
+use App\Domain\Milestone\MilestoneId;
 use App\Domain\Milestone\MilestoneIdFactory;
+use App\Domain\Milestone\PreviousMilestone;
 use App\Infrastructure\Measurement\Length\Kilometer;
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class ActivityDistanceMilestoneDiscovererTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private ActivityDistanceMilestoneDiscoverer $discoverer;
     private MilestoneIdFactory $milestoneIdFactory;
 
@@ -34,13 +34,17 @@ class ActivityDistanceMilestoneDiscovererTest extends ContainerTestCase
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
-        $milestone = $milestones->getFirst();
-        $context = $milestone->getContext();
-        $this->assertInstanceOf(ActivityRecordContext::class, $context);
-        $this->assertInstanceOf(Kilometer::class, $context->getValue());
-        $this->assertEquals(50.0, $context->getValue()->toFloat());
-
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_DISTANCE,
+                    context: new ActivityRecordContext(value: Kilometer::from(50.0)),
+                )->withSportType(SportType::RIDE)->withActivityId(ActivityId::fromString('activity-1')),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverTracksImprovements(): void
@@ -50,12 +54,27 @@ class ActivityDistanceMilestoneDiscovererTest extends ContainerTestCase
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
-        $second = $milestones->toArray()[1];
-        $context = $second->getContext();
-        $this->assertInstanceOf(ActivityRecordContext::class, $context);
-        $this->assertEquals(80.0, $context->getValue()->toFloat());
-
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_DISTANCE,
+                    context: new ActivityRecordContext(value: Kilometer::from(50.0)),
+                )->withSportType(SportType::RIDE)->withActivityId(ActivityId::fromString('activity-1')),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_DISTANCE,
+                    context: new ActivityRecordContext(value: Kilometer::from(80.0)),
+                )->withSportType(SportType::RIDE)->withActivityId(ActivityId::fromString('activity-2'))->withPrevious(PreviousMilestone::create(
+                    previousMilestoneId: MilestoneId::fromString('milestone-1'),
+                    threshold: Kilometer::from(50.0),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                )),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverDoesNotCreateMilestoneForNonImprovement(): void
@@ -63,7 +82,17 @@ class ActivityDistanceMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(1, '2024-01-01', SportType::RIDE, 50.0);
         $this->insertActivity(2, '2024-01-02', SportType::RIDE, 30.0);
 
-        $this->assertMatchesJsonSnapshot(Json::encode($this->discoverer->discover($this->milestoneIdFactory)));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::ACTIVITY_DISTANCE,
+                    context: new ActivityRecordContext(value: Kilometer::from(50.0)),
+                )->withSportType(SportType::RIDE)->withActivityId(ActivityId::fromString('activity-1')),
+            ],
+            $this->discoverer->discover($this->milestoneIdFactory)->toArray(),
+        );
     }
 
     public function testDiscoverSkipsZeroDistance(): void

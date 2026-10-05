@@ -8,17 +8,16 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Milestone\Context\FirstContext;
 use App\Domain\Milestone\Discoverer\FirstActivityOfSportTypeMilestoneDiscoverer;
+use App\Domain\Milestone\Milestone;
+use App\Domain\Milestone\MilestoneCategory;
+use App\Domain\Milestone\MilestoneId;
 use App\Domain\Milestone\MilestoneIdFactory;
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class FirstActivityOfSportTypeMilestoneDiscovererTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private FirstActivityOfSportTypeMilestoneDiscoverer $discoverer;
     private MilestoneIdFactory $milestoneIdFactory;
 
@@ -35,12 +34,23 @@ class FirstActivityOfSportTypeMilestoneDiscovererTest extends ContainerTestCase
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
 
-        $context = $milestones->getFirst()->getContext();
-        $this->assertInstanceOf(FirstContext::class, $context);
-        $this->assertEquals(SportType::RIDE, $context->getSportType());
-        $this->assertEquals('Morning ride', $context->getActivityName());
-
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::FIRST_ACTIVITY_OF_SPORT_TYPE,
+                    context: new FirstContext(sportType: SportType::RIDE, activityName: 'Morning ride'),
+                )->withSportType(SportType::RIDE)->withActivityId(ActivityId::fromString('activity-1')),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
+                    category: MilestoneCategory::FIRST_ACTIVITY_OF_SPORT_TYPE,
+                    context: new FirstContext(sportType: SportType::RUN, activityName: 'Evening run'),
+                )->withSportType(SportType::RUN)->withActivityId(ActivityId::fromString('activity-2')),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverRespectsChronologicalOrder(): void
@@ -49,7 +59,17 @@ class FirstActivityOfSportTypeMilestoneDiscovererTest extends ContainerTestCase
         $this->insertActivity(2, '2024-01-01', SportType::RIDE, 'First ride');
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-        $this->assertMatchesJsonSnapshot(Json::encode($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::FIRST_ACTIVITY_OF_SPORT_TYPE,
+                    context: new FirstContext(sportType: SportType::RIDE, activityName: 'First ride'),
+                )->withSportType(SportType::RIDE)->withActivityId(ActivityId::fromString('activity-2')),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function setUp(): void
