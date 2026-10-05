@@ -23,9 +23,15 @@ final readonly class ImageStorage
             $this->uuidFactory->random(),
             $newImage->getFilename()->getExtension(),
         );
-        $this->fileStorage->write($fileSystemPath, $newImage->getContent());
+        $path = ImagePath::fromFileSystemPath($fileSystemPath);
+        $this->storeAt($path, $newImage->getContent());
 
-        return ImagePath::fromFileSystemPath($fileSystemPath);
+        return $path;
+    }
+
+    public function storeAt(ImagePath $path, string $content): void
+    {
+        $this->fileStorage->write($path->toFileSystemPath(), $content);
     }
 
     public function remove(ImagePath $path): void

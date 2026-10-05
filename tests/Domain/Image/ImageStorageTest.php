@@ -29,6 +29,13 @@ class ImageStorageTest extends ContainerTestCase
         $this->assertSame('image-content', $this->fileStorage->read('gear-maintenance/0025176c-5652-11ee-923d-02424dd627d5.png'));
     }
 
+    public function testItStoresImageAtGivenPath(): void
+    {
+        $this->imageStorage->storeAt(ImagePath::fromLocalImagePath('files/activities/header.webp'), 'image-content');
+
+        $this->assertSame('image-content', $this->fileStorage->read('activities/header.webp'));
+    }
+
     public function testItRemovesExistingImage(): void
     {
         $this->fileStorage->write('gear/some-image.png', 'image-content');

@@ -388,6 +388,95 @@ paths:
                   value:
                     error: gpx_not_available
                     message: 'Activity "activity-9542782314" has no GPS or time data to export as GPX.'
+  /api/v1/activities/{activityId}/images:
+    post:
+      operationId: addActivityImage
+      tags: [Activities]
+      summary: Add an image to an activity
+      description: >-
+        Stores the image and appends it to the activity's `images`.
+      parameters:
+        - $ref: '#/components/parameters/ActivityId'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: >-
+                    A jpg, png or webp image.
+      responses:
+        '201':
+          description: The image was added to the activity.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ActivityImage' }
+        '400':
+          description: No usable `file` part was sent.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                missingFile:
+                  value: { error: missing_file, message: 'A "file" part is required.' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/ActivityNotFound'
+        '409':
+          description: >-
+            This instance runs with `IMPORT_MODE=stravaApi`
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                wrongImportMode:
+                  value:
+                    error: import_mode_not_files
+                    message: Images can only be added to activities when running in file import mode.
+        '413':
+          description: >-
+            The file is larger than `upload_max_filesize`, or the whole request is larger than
+            `post_max_size`.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                tooLarge:
+                  value: { error: file_too_large, message: The uploaded file is too large. }
+        '415':
+          description: The body was not `multipart/form-data`.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                notMultipart:
+                  value:
+                    error: unsupported_media_type
+                    message: Send the file as multipart/form-data.
+        '422':
+          description: The file is not a jpg, png or webp image.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                notAnImage:
+                  value:
+                    error: unsupported_file_type
+                    message: The file is not a jpg, png or webp image.
+        '500':
+          description: The upload could not be stored.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                cannotStore:
+                  value: { error: internal_error, message: The upload could not be stored. }
   /api/v1/file-imports:
     get:
       operationId: listFileImports
