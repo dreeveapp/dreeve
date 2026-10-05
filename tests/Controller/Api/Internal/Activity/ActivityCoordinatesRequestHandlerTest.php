@@ -2,25 +2,50 @@
 
 namespace App\Tests\Controller\Api\Internal\Activity;
 
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
+use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
+use App\Domain\Activity\Stream\CombinedStream\CombinedStreamTypes;
 use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamBuilder;
 use App\Tests\ProvideTestData;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class ActivityCoordinatesRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
     use ProvideTestData;
 
     public function testRender(): void
     {
-        $this->provideFullTestSet();
-        $this->seedActivity();
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->build(),
+            []
+        ));
+        $this->getContainer()->get(CombinedActivityStreamRepository::class)->add(
+            CombinedActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withStreamTypes(CombinedStreamTypes::fromArray([
+                    CombinedStreamType::DISTANCE,
+                    CombinedStreamType::ALTITUDE,
+                    CombinedStreamType::LAT_LNG,
+                ]))
+                ->withData([
+                    [0, 10, [51.2, 3.2]],
+                    [10, 11, null],
+                    [20, 12, [51.3, 3.3]],
+                ])
+                ->build()
+        );
 
-        $this->client->request('GET', '/api/internal/activities/activity-9756441741/coordinates');
+        $this->client->request('GET', '/api/internal/activities/activity-1/coordinates');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
-        $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
+        $this->assertSame('[[51.2,3.2],[51.3,3.3]]', $this->client->getResponse()->getContent());
     }
 
     public function testGetPath(): void

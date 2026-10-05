@@ -81,10 +81,10 @@ class SerializableDateTimeTest extends TestCase
 
     public function testToUtc(): void
     {
-        $this->assertEquals(
-            SerializableDateTime::fromString('2023-10-05 10:22:22'),
-            SerializableDateTime::fromString('2023-10-05 10:22:22')->toUtc(),
-        );
+        $utc = SerializableDateTime::fromString('2023-10-05 10:22:22', new \DateTimeZone('Europe/Brussels'))->toUtc();
+
+        $this->assertSame('UTC', $utc->getTimezone()->getName());
+        $this->assertSame('2023-10-05 08:22:22', $utc->iso());
     }
 
     public function testComparisons(): void

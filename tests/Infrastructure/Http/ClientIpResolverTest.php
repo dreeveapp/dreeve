@@ -3,6 +3,7 @@
 namespace App\Tests\Infrastructure\Http;
 
 use App\Infrastructure\Http\ClientIpResolver;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -11,57 +12,30 @@ class ClientIpResolverTest extends TestCase
     /** @var string[] */
     private array $originalTrustedProxies;
     private int $originalTrustedHeaderSet;
-    private ClientIpResolver $clientIpResolver;
 
-    public function testItReturnsTheRemoteAddressWhenTheRequestDoesNotComeFromATrustedProxy(): void
+    /**
+     * @param string[]              $trustedProxies
+     * @param array<string, string> $headers
+     */
+    #[DataProvider('provideRequests')]
+    public function testResolve(array $trustedProxies, string $remoteAddress, array $headers, string $expectedIp): void
     {
-        $request = Request::create('/');
-        $request->server->set('REMOTE_ADDR', '172.30.0.1');
-        $request->headers->set('X-Forwarded-For', '192.168.1.40');
+        Request::setTrustedProxies($trustedProxies, Request::HEADER_X_FORWARDED_FOR);
 
-        $this->assertEquals('172.30.0.1', $this->clientIpResolver->resolve($request));
+        $request = Request::create('/');
+        $request->server->set('REMOTE_ADDR', $remoteAddress);
+        $request->headers->add($headers);
+
+        $this->assertEquals($expectedIp, new ClientIpResolver()->resolve($request));
     }
 
-    public function testItReturnsTheForwardedForAddressWhenTheRequestComesFromATrustedProxy(): void
+    public static function provideRequests(): iterable
     {
-        Request::setTrustedProxies(['private_ranges'], Request::HEADER_X_FORWARDED_FOR);
-
-        $request = Request::create('/');
-        $request->server->set('REMOTE_ADDR', '172.30.0.1');
-        $request->headers->set('X-Forwarded-For', '203.0.113.5');
-
-        $this->assertEquals('203.0.113.5', $this->clientIpResolver->resolve($request));
-    }
-
-    public function testItFallsBackToTheRemoteAddressWhenATrustedProxySendsNoForwardedHeaders(): void
-    {
-        Request::setTrustedProxies(['private_ranges'], Request::HEADER_X_FORWARDED_FOR);
-
-        $request = Request::create('/');
-        $request->server->set('REMOTE_ADDR', '192.168.65.1');
-
-        $this->assertEquals('192.168.65.1', $this->clientIpResolver->resolve($request));
-    }
-
-    public function testItPrefersTheCloudflareConnectingIpHeaderOverTheForwardedForAddress(): void
-    {
-        Request::setTrustedProxies(['private_ranges'], Request::HEADER_X_FORWARDED_FOR);
-
-        $request = Request::create('/');
-        $request->server->set('REMOTE_ADDR', '172.30.0.1');
-        $request->headers->set('X-Forwarded-For', '203.0.113.5');
-        $request->headers->set('CF-Connecting-IP', '198.51.100.7');
-
-        $this->assertEquals('198.51.100.7', $this->clientIpResolver->resolve($request));
-    }
-
-    public function testItIgnoresASpoofedCloudflareConnectingIpHeader(): void
-    {
-        $request = Request::create('/');
-        $request->server->set('REMOTE_ADDR', '203.0.113.5');
-        $request->headers->set('CF-Connecting-IP', '198.51.100.7');
-
-        $this->assertEquals('203.0.113.5', $this->clientIpResolver->resolve($request));
+        yield 'untrusted proxy ignores forwarded for' => [[], '172.30.0.1', ['X-Forwarded-For' => '192.168.1.40'], '172.30.0.1'];
+        yield 'trusted proxy uses forwarded for' => [['private_ranges'], '172.30.0.1', ['X-Forwarded-For' => '203.0.113.5'], '203.0.113.5'];
+        yield 'trusted proxy without forwarded headers' => [['private_ranges'], '192.168.65.1', [], '192.168.65.1'];
+        yield 'trusted proxy prefers cloudflare connecting ip' => [['private_ranges'], '172.30.0.1', ['X-Forwarded-For' => '203.0.113.5', 'CF-Connecting-IP' => '198.51.100.7'], '198.51.100.7'];
+        yield 'spoofed cloudflare connecting ip' => [[], '203.0.113.5', ['CF-Connecting-IP' => '198.51.100.7'], '203.0.113.5'];
     }
 
     #[\Override]
@@ -71,7 +45,6 @@ class ClientIpResolverTest extends TestCase
 
         $this->originalTrustedProxies = Request::getTrustedProxies();
         $this->originalTrustedHeaderSet = Request::getTrustedHeaderSet();
-        $this->clientIpResolver = new ClientIpResolver();
     }
 
     #[\Override]

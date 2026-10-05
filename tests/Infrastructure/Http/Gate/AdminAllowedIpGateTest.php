@@ -12,90 +12,40 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AdminAllowedIpGateTest extends TestCase
 {
-    /** @var string[] */
-    private array $originalTrustedProxies;
-    private int $originalTrustedHeaderSet;
-
-    public function testItDeniesAdminAccessFromADisallowedIp(): void
+    #[DataProvider('provideAllowedClients')]
+    public function testItAllowsAdminAccess(string $allowList, string $ipAddress): void
     {
-        $this->expectExceptionObject(new NotFoundHttpException('Not found'));
+        $request = Request::create('/admin/login');
+        $request->server->set('REMOTE_ADDR', $ipAddress);
 
-        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'), new ClientIpResolver());
-        $gate->handle($this->adminRequestFromIp('10.0.0.1'));
-    }
-
-    public function testItAllowsAdminAccessFromAnAllowedIp(): void
-    {
-        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'), new ClientIpResolver());
-
-        $this->assertFalse($gate->handle($this->adminRequestFromIp('192.168.1.1'))->hasBeenApplied());
-    }
-
-    public function testItPrefersTheCloudflareConnectingIpHeaderWhenTheRequestComesFromATrustedProxy(): void
-    {
-        Request::setTrustedProxies(['192.168.1.1'], Request::HEADER_X_FORWARDED_FOR);
-
-        $request = $this->adminRequestFromIp('192.168.1.1');
-        $request->headers->set('CF-Connecting-IP', '10.0.0.1');
-
-        $this->expectExceptionObject(new NotFoundHttpException('Not found'));
-
-        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'), new ClientIpResolver());
-        $gate->handle($request);
-    }
-
-    public function testItIgnoresASpoofedCloudflareConnectingIpHeader(): void
-    {
-        $request = $this->adminRequestFromIp('10.0.0.1');
-        $request->headers->set('CF-Connecting-IP', '192.168.1.1');
-
-        $this->expectExceptionObject(new NotFoundHttpException('Not found'));
-
-        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.1'), new ClientIpResolver());
-        $gate->handle($request);
-    }
-
-    public function testItResolvesTheClientBehindAReverseProxyThroughTheForwardedForHeader(): void
-    {
-        Request::setTrustedProxies(['private_ranges'], Request::HEADER_X_FORWARDED_FOR);
-
-        $request = $this->adminRequestFromIp('172.30.0.1');
-        $request->headers->set('X-Forwarded-For', '192.168.1.40');
-
-        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.0/24'), new ClientIpResolver());
+        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString($allowList), new ClientIpResolver());
 
         $this->assertFalse($gate->handle($request)->hasBeenApplied());
     }
 
-    public function testItDeniesAClientOutsideTheAllowedRangeBehindAReverseProxy(): void
+    public static function provideAllowedClients(): iterable
     {
-        Request::setTrustedProxies(['private_ranges'], Request::HEADER_X_FORWARDED_FOR);
+        yield 'an allowed ip' => ['192.168.1.1', '192.168.1.1'];
+        yield 'an ip inside an allowed range' => ['192.168.1.0/24', '192.168.1.40'];
+        yield 'no allow list configured' => ['', '10.0.0.1'];
+    }
 
-        $request = $this->adminRequestFromIp('172.30.0.1');
-        $request->headers->set('X-Forwarded-For', '203.0.113.5');
+    #[DataProvider('provideDeniedClients')]
+    public function testItDeniesAdminAccess(string $allowList, string $ipAddress): void
+    {
+        $request = Request::create('/admin/login');
+        $request->server->set('REMOTE_ADDR', $ipAddress);
 
         $this->expectExceptionObject(new NotFoundHttpException('Not found'));
 
-        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.0/24'), new ClientIpResolver());
+        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString($allowList), new ClientIpResolver());
         $gate->handle($request);
     }
 
-    public function testItIgnoresTheForwardedForHeaderWhenNoProxiesAreTrusted(): void
+    public static function provideDeniedClients(): iterable
     {
-        $request = $this->adminRequestFromIp('172.30.0.1');
-        $request->headers->set('X-Forwarded-For', '192.168.1.40');
-
-        $this->expectExceptionObject(new NotFoundHttpException('Not found'));
-
-        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString('192.168.1.0/24'), new ClientIpResolver());
-        $gate->handle($request);
-    }
-
-    public function testItAllowsEveryoneWhenNoAllowListIsConfigured(): void
-    {
-        $gate = new AdminAllowedIpGate(AdminAllowedIpAddresses::fromString(''), new ClientIpResolver());
-
-        $this->assertFalse($gate->handle($this->adminRequestFromIp('10.0.0.1'))->hasBeenApplied());
+        yield 'a disallowed ip' => ['192.168.1.1', '10.0.0.1'];
+        yield 'an ip outside the allowed range' => ['192.168.1.0/24', '203.0.113.5'];
     }
 
     #[DataProvider('provideNonAdminPaths')]
@@ -113,28 +63,5 @@ class AdminAllowedIpGateTest extends TestCase
     {
         yield 'home' => ['/'];
         yield 'a path that merely starts with admin' => ['/administration'];
-    }
-
-    private function adminRequestFromIp(string $ipAddress): Request
-    {
-        $request = Request::create('/admin/login');
-        $request->server->set('REMOTE_ADDR', $ipAddress);
-
-        return $request;
-    }
-
-    #[\Override]
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->originalTrustedProxies = Request::getTrustedProxies();
-        $this->originalTrustedHeaderSet = Request::getTrustedHeaderSet();
-    }
-
-    #[\Override]
-    protected function tearDown(): void
-    {
-        Request::setTrustedProxies($this->originalTrustedProxies, $this->originalTrustedHeaderSet);
     }
 }
