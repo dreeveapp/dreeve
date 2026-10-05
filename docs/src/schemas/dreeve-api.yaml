@@ -32,9 +32,10 @@ security:
 tags:
   - name: Status
   - name: Activities
+  - name: Activity images
   - name: File imports
   - name: Gear
-  - name: Athlete
+  - name: Weight
 paths:
   /api/v1/status:
     get:
@@ -74,7 +75,7 @@ paths:
   /api/v1/activity/upload:
     post:
       operationId: uploadActivityFile
-      tags: [Activities]
+      tags: [File imports]
       summary: Upload an activity file
       description: |
         Queues a `.fit`, `.tcx` or `.gpx` file for import.
@@ -354,7 +355,7 @@ paths:
     get:
       operationId: getActivityGpx
       tags: [Activities]
-      summary: Download an activity as GPX
+      summary: Download as GPX
       description: >-
         Only activities recorded with GPS data can be exported. Check `hasGpx` on the activity
         first
@@ -391,8 +392,8 @@ paths:
   /api/v1/activities/{activityId}/images:
     post:
       operationId: addActivityImage
-      tags: [Activities]
-      summary: Add an image to an activity
+      tags: [Activity images]
+      summary: Add an image
       description: >-
         Stores the image and appends it to the activity's `images`.
       parameters:
@@ -480,8 +481,8 @@ paths:
   /api/v1/activities/{activityId}/images/{imageId}:
     delete:
       operationId: removeActivityImage
-      tags: [Activities]
-      summary: Remove an image from an activity
+      tags: [Activity images]
+      summary: Remove an image
       description: Removes the image from the activity and deletes the file.
       parameters:
         - $ref: '#/components/parameters/ActivityId'
@@ -617,7 +618,7 @@ paths:
   /api/v1/athlete/weights:
     get:
       operationId: listAthleteWeights
-      tags: [Athlete]
+      tags: [Weight]
       summary: List weight measurements
       responses:
         '200':
@@ -629,7 +630,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: recordAthleteWeight
-      tags: [Athlete]
+      tags: [Weight]
       summary: Record a weight measurement
       description: >-
         Creates a weight measurement for a calendar date, or replaces the existing measurement for
@@ -675,7 +676,7 @@ paths:
   /api/v1/athlete/weights/{on}:
     delete:
       operationId: deleteAthleteWeight
-      tags: [Athlete]
+      tags: [Weight]
       summary: Delete a weight measurement
       parameters:
         - name: on
