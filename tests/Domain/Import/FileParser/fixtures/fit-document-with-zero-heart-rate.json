@@ -1,0 +1,230 @@
+{
+    "files": [
+        {
+            "profileVersion": 2132,
+            "messages": [
+                {
+                    "name": "file_id",
+                    "fields": [
+                        {
+                            "name": "manufacturer",
+                            "value": 337
+                        },
+                        {
+                            "name": "product_name",
+                            "value": "Runna"
+                        }
+                    ]
+                },
+                {
+                    "name": "session",
+                    "fields": [
+                        {
+                            "name": "sport",
+                            "value": 1
+                        },
+                        {
+                            "name": "sub_sport",
+                            "value": 0
+                        },
+                        {
+                            "name": "start_time",
+                            "value": 1000000000
+                        },
+                        {
+                            "name": "total_distance",
+                            "value": 15.0
+                        },
+                        {
+                            "name": "total_timer_time",
+                            "value": 5
+                        },
+                        {
+                            "name": "total_elapsed_time",
+                            "value": 5
+                        },
+                        {
+                            "name": "avg_heart_rate",
+                            "value": 0
+                        },
+                        {
+                            "name": "max_heart_rate",
+                            "value": 0
+                        }
+                    ]
+                },
+                {
+                    "name": "lap",
+                    "fields": [
+                        {
+                            "name": "start_time",
+                            "value": 1000000000
+                        },
+                        {
+                            "name": "total_distance",
+                            "value": 15.0
+                        },
+                        {
+                            "name": "total_timer_time",
+                            "value": 5
+                        },
+                        {
+                            "name": "total_elapsed_time",
+                            "value": 5
+                        }
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {
+                            "name": "timestamp",
+                            "value": 1000000000
+                        },
+                        {
+                            "name": "distance",
+                            "value": 0.0
+                        },
+                        {
+                            "name": "enhanced_speed",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "enhanced_altitude",
+                            "value": 10.0
+                        },
+                        {
+                            "name": "cadence",
+                            "value": 80
+                        }
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {
+                            "name": "timestamp",
+                            "value": 1000000001
+                        },
+                        {
+                            "name": "distance",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "enhanced_speed",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "enhanced_altitude",
+                            "value": 12.0
+                        },
+                        {
+                            "name": "cadence",
+                            "value": 80
+                        }
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {
+                            "name": "timestamp",
+                            "value": 1000000002
+                        },
+                        {
+                            "name": "distance",
+                            "value": 6.0
+                        },
+                        {
+                            "name": "enhanced_speed",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "enhanced_altitude",
+                            "value": 14.0
+                        },
+                        {
+                            "name": "cadence",
+                            "value": 80
+                        }
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {
+                            "name": "timestamp",
+                            "value": 1000000003
+                        },
+                        {
+                            "name": "distance",
+                            "value": 9.0
+                        },
+                        {
+                            "name": "enhanced_speed",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "enhanced_altitude",
+                            "value": 16.0
+                        },
+                        {
+                            "name": "cadence",
+                            "value": 80
+                        }
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {
+                            "name": "timestamp",
+                            "value": 1000000004
+                        },
+                        {
+                            "name": "distance",
+                            "value": 12.0
+                        },
+                        {
+                            "name": "enhanced_speed",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "enhanced_altitude",
+                            "value": 18.0
+                        },
+                        {
+                            "name": "cadence",
+                            "value": 80
+                        }
+                    ]
+                },
+                {
+                    "name": "record",
+                    "fields": [
+                        {
+                            "name": "timestamp",
+                            "value": 1000000005
+                        },
+                        {
+                            "name": "distance",
+                            "value": 15.0
+                        },
+                        {
+                            "name": "enhanced_speed",
+                            "value": 3.0
+                        },
+                        {
+                            "name": "enhanced_altitude",
+                            "value": 20.0
+                        },
+                        {
+                            "name": "cadence",
+                            "value": 80
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

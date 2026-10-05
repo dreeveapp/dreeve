@@ -216,8 +216,8 @@ final readonly class FitFileParser implements ActivityFileParser
                 velocityStream: $streamMap[StreamType::VELOCITY->value]
             )->toKmPerHour(),
             maxSpeed: MetersPerSecond::fromOptional(is_numeric($session['enhanced_max_speed'] ?? $session['max_speed'] ?? null) ? (float) ($session['enhanced_max_speed'] ?? $session['max_speed'] ?? null) : Math::maxFloat($streamMap[StreamType::VELOCITY->value]))->toKmPerHour(),
-            averageHeartRate: is_numeric($session['avg_heart_rate'] ?? null) ? (int) round((float) $session['avg_heart_rate']) : Math::average($streamMap[StreamType::HEART_RATE->value]),
-            maxHeartRate: is_numeric($session['max_heart_rate'] ?? null) ? (int) round((float) $session['max_heart_rate']) : Math::max($streamMap[StreamType::HEART_RATE->value]),
+            averageHeartRate: is_numeric($session['avg_heart_rate'] ?? null) && (float) $session['avg_heart_rate'] > 0 ? (int) round((float) $session['avg_heart_rate']) : Math::average($streamMap[StreamType::HEART_RATE->value]),
+            maxHeartRate: is_numeric($session['max_heart_rate'] ?? null) && (float) $session['max_heart_rate'] > 0 ? (int) round((float) $session['max_heart_rate']) : Math::max($streamMap[StreamType::HEART_RATE->value]),
             averageCadence: is_numeric($session['avg_cadence'] ?? null) ? (int) round((float) $session['avg_cadence']) : Math::average($streamMap[StreamType::CADENCE->value]),
             movingTimeInSeconds: (int) round($this->resolveMovingTime($session) ?? 0.0),
             elapsedTimeInSeconds: is_numeric($session['total_elapsed_time'] ?? null) ? (int) round((float) $session['total_elapsed_time']) : 0,

@@ -1,0 +1,37 @@
+[
+    {
+        "dataSize": 6,
+        "activityId": "activity-1",
+        "streamType": "altitude",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[10,12,14,16,18,20]"
+    },
+    {
+        "dataSize": 6,
+        "activityId": "activity-1",
+        "streamType": "cadence",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[80,80,80,80,80,80]"
+    },
+    {
+        "dataSize": 6,
+        "activityId": "activity-1",
+        "streamType": "distance",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[0,3,6,9,12,15]"
+    },
+    {
+        "dataSize": 6,
+        "activityId": "activity-1",
+        "streamType": "time",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[0,1,2,3,4,5]"
+    },
+    {
+        "dataSize": 6,
+        "activityId": "activity-1",
+        "streamType": "velocity_smooth",
+        "createdOn": "2023-10-17 16:15:04",
+        "data": "[3,3,3,3,3,3]"
+    }
+]
