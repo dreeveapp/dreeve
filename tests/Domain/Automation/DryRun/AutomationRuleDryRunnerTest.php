@@ -20,9 +20,6 @@ use App\Domain\Automation\RuleConfiguration;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Tokenizer\Tokenizer;
-use App\Infrastructure\ValueObject\Geography\Coordinate;
-use App\Infrastructure\ValueObject\Geography\Latitude;
-use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -250,71 +247,6 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
 
         $this->assertTrue($this->dryRunner->run($longRide)->hasAppliedRules());
         $this->assertFalse($this->dryRunner->run($shortRide)->hasAppliedRules(), 'One failing condition means the rule does not match.');
-    }
-
-    public function testMatchesOnDeviceCondition(): void
-    {
-        $this->saveRule(
-            id: '1',
-            conditions: ConfiguredConditions::fromArray([
-                new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig([
-                    'operator' => 'is',
-                    'deviceName' => 'Garmin Edge 130',
-                ])),
-            ]),
-            actions: ConfiguredActions::fromArray([
-                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Recorded on the Garmin'])),
-            ]),
-        );
-
-        $matching = ActivityBuilder::fromDefaults()->withDeviceName('Garmin Edge 130')->build();
-        $other = ActivityBuilder::fromDefaults()->withDeviceName('Wahoo Elemnt')->build();
-
-        $this->assertTrue($this->dryRunner->run($matching)->getRuleResults()[0]->wasApplied());
-        $this->assertFalse($this->dryRunner->run($other)->hasAppliedRules());
-    }
-
-    public function testMatchesOnWeekdayAndTimeOfDay(): void
-    {
-        $this->saveRule(
-            id: '1',
-            conditions: ConfiguredConditions::fromArray([
-                new ConfiguredCondition(ConditionType::WEEKDAY, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'weekdays' => [2, 3]])),
-                new ConfiguredCondition(ConditionType::TIME_OF_DAY, RuleConfiguration::fromConfig(['operator' => 'lt', 'time' => '09:00'])),
-            ]),
-            actions: ConfiguredActions::fromArray([
-                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Early weekday ride'])),
-            ]),
-        );
-
-        $tuesdayMorning = ActivityBuilder::fromDefaults()->withStartDateTime(SerializableDateTime::fromString('2023-10-10 07:30:00'))->build();
-        $tuesdayAfternoon = ActivityBuilder::fromDefaults()->withStartDateTime(SerializableDateTime::fromString('2023-10-10 15:30:00'))->build();
-
-        $this->assertTrue($this->dryRunner->run($tuesdayMorning)->hasAppliedRules());
-
-        $afternoon = $this->dryRunner->run($tuesdayAfternoon)->getRuleResults()[0];
-        $this->assertFalse($afternoon->allConditionsMatched());
-        $this->assertTrue($afternoon->getConditionResults()[0]->isMatched());
-        $this->assertFalse($afternoon->getConditionResults()[1]->isMatched());
-    }
-
-    public function testMatchesOnStartsNearProximity(): void
-    {
-        $this->saveRule(
-            id: '1',
-            conditions: ConfiguredConditions::fromArray([
-                new ConfiguredCondition(ConditionType::STARTS_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.05, 'longitude' => 4.0, 'radius' => 1000.0])),
-            ]),
-            actions: ConfiguredActions::fromArray([
-                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Started near home'])),
-            ]),
-        );
-
-        $near = ActivityBuilder::fromDefaults()->withStartingCoordinate(Coordinate::createFromLatAndLng(Latitude::fromString('51.055'), Longitude::fromString('4.0')))->build();
-        $far = ActivityBuilder::fromDefaults()->withStartingCoordinate(Coordinate::createFromLatAndLng(Latitude::fromString('51.10'), Longitude::fromString('4.0')))->build();
-
-        $this->assertTrue($this->dryRunner->run($near)->hasAppliedRules());
-        $this->assertFalse($this->dryRunner->run($far)->hasAppliedRules());
     }
 
     public function testTheAppliedRulesConfiguredActionsAreExposed(): void

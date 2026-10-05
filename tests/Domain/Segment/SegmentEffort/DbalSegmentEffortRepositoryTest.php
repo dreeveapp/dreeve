@@ -15,12 +15,9 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\Eventing\SpyEventBus;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class DbalSegmentEffortRepositoryTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private SegmentEffortRepository $segmentEffortRepository;
     private SpyEventBus $eventBus;
 

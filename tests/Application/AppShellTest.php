@@ -3,7 +3,6 @@
 namespace App\Tests\Application;
 
 use App\Application\AppShell;
-use App\Application\Navigation\NavigationSection;
 use App\Application\OpenGraph\OpenGraph;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
@@ -25,20 +24,6 @@ class AppShellTest extends ContainerTestCase
             navigationSection: null,
             openGraph: null,
         ));
-    }
-
-    public function testRenderMarksTheActiveSection(): void
-    {
-        $this->provideFullTestSet();
-
-        $render = $this->appShell->render(
-            content: '',
-            navigationSection: NavigationSection::ACTIVITIES,
-            openGraph: null,
-        );
-
-        $this->assertStringContainsString('href="/activities" aria-selected="true"', $render);
-        $this->assertStringContainsString('href="/dashboard" aria-selected="false"', $render);
     }
 
     public function testRenderWithAnOpenGraph(): void

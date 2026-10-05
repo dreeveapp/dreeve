@@ -27,12 +27,9 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Year;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class ActivityTest extends TestCase
 {
-    use MatchesSnapshots;
-
     public function testGetName(): void
     {
         $activity = ActivityBuilder::fromDefaults()

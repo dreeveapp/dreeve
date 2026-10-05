@@ -11,12 +11,9 @@ use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use NeuronAI\Chat\Enums\MessageRole;
 use PHPUnit\Framework\MockObject\MockObject;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class DbalChatRepositoryTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private ChatRepository $chatRepository;
     private MockObject $messageIdFactory;
 

@@ -7,12 +7,9 @@ use App\Domain\Strava\Webhook\WebhookAspectType;
 use App\Domain\Strava\Webhook\WebhookEvent;
 use App\Domain\Strava\Webhook\WebhookEventRepository;
 use App\Tests\ContainerTestCase;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class DbalWebhookEventRepositoryTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private WebhookEventRepository $webhookEventRepository;
 
     public function testAddAndGrab(): void

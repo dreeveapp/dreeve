@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\Rewind\FindActiveDays;
+namespace App\Tests\Domain\Rewind\FindActiveAndRestDays;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
@@ -15,7 +15,7 @@ use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 
-class FindActiveDaysQueryHandlerTest extends ContainerTestCase
+class FindActiveAndRestDaysQueryHandlerTest extends ContainerTestCase
 {
     private FindActiveAndRestDaysQueryHandler $queryHandler;
 

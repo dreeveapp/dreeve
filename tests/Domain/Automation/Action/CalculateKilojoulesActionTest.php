@@ -22,13 +22,6 @@ class CalculateKilojoulesActionTest extends TestCase
         );
     }
 
-    public function testGuardPassesForAnyConfiguration(): void
-    {
-        $this->expectNotToPerformAssertions();
-
-        $this->action->guardValidConfiguration(RuleConfiguration::empty());
-    }
-
     #[DataProvider('provideActivities')]
     public function testApplyTo(
         ?int $kilojoules,

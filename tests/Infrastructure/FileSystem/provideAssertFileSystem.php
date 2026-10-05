@@ -14,8 +14,6 @@ trait provideAssertFileSystem
 {
     use MatchesSnapshots;
 
-    private string $snapshotName;
-
     protected function assertFileSystemWritesAreEmpty(FilesystemOperator $fileSystem): void
     {
         foreach ($fileSystem->listContents('/', true) as $item) {
@@ -34,7 +32,6 @@ trait provideAssertFileSystem
                 continue;
             }
 
-            $this->snapshotName = preg_replace('/[^a-zA-Z0-9]/', '-', $path);
             $content = $fileSystem->read($path);
             if ($contentIsCompressed) {
                 $content = CompressedString::fromCompressed($content)->uncompress();

@@ -6,7 +6,7 @@ use App\Domain\Segment\SegmentEffort\SegmentEfforts;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use PHPUnit\Framework\TestCase;
 
-class SegmentEffortCollectionTest extends TestCase
+class SegmentEffortsTest extends TestCase
 {
     public function testGetBestEffort(): void
     {

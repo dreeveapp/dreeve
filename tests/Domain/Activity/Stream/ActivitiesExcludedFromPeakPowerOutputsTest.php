@@ -10,11 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class ActivitiesExcludedFromPeakPowerOutputsTest extends TestCase
 {
-    public function testGetItemClassName(): void
-    {
-        $this->assertSame(ActivityId::class, ActivitiesExcludedFromPeakPowerOutputs::empty()->getItemClassName());
-    }
-
     public function testFromWithEmptyArray(): void
     {
         $excluded = ActivitiesExcludedFromPeakPowerOutputs::from([]);

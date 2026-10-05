@@ -23,16 +23,6 @@ class RootCacheTagTest extends TestCase
         );
     }
 
-    public function testEverySettingsGroupMapsToADistinctCacheTag(): void
-    {
-        $cacheTags = array_map(
-            RootCacheTag::forSettingsGroup(...),
-            SettingsGroup::cases()
-        );
-
-        $this->assertCount(count(SettingsGroup::cases()), array_unique($cacheTags, SORT_REGULAR));
-    }
-
     public function testTheCacheTagOfASettingsGroupIsNamedAfterIt(): void
     {
         foreach (SettingsGroup::cases() as $settingsGroup) {

@@ -46,6 +46,8 @@ class CronActionIdTest extends TestCase
         yield 'strava import not supported in file mode' => [CronActionId::RUN_STRAVA_IMPORT, ImportMode::FILES, false];
         yield 'strava import supported in strava api mode' => [CronActionId::RUN_STRAVA_IMPORT, ImportMode::STRAVA_API, true];
         yield 'gear maintenance supported in file mode' => [CronActionId::GEAR_MAINTENANCE_NOTIFICATION, ImportMode::FILES, true];
+        yield 'gear maintenance supported in strava api mode' => [CronActionId::GEAR_MAINTENANCE_NOTIFICATION, ImportMode::STRAVA_API, true];
         yield 'app update supported in file mode' => [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, ImportMode::FILES, true];
+        yield 'app update supported in strava api mode' => [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, ImportMode::STRAVA_API, true];
     }
 }

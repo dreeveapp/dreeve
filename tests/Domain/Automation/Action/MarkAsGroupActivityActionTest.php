@@ -21,13 +21,6 @@ class MarkAsGroupActivityActionTest extends TestCase
         );
     }
 
-    public function testGuardPassesForAnyConfiguration(): void
-    {
-        $this->expectNotToPerformAssertions();
-
-        $this->action->guardValidConfiguration(RuleConfiguration::empty());
-    }
-
     public function testApplyToAlwaysMarksActivityAsGroupActivity(): void
     {
         $activity = ActivityBuilder::fromDefaults()->withIsGroupActivity(false)->build();

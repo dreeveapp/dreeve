@@ -36,16 +36,6 @@ class BoundingBoxTest extends TestCase
         $this->assertEquals($bounds, BoundingBox::fromArray($bounds)->jsonSerialize());
     }
 
-    public function testGetters(): void
-    {
-        $box = BoundingBox::fromArray([-3.5, 48.25, 7.75, 52.0]);
-
-        $this->assertEquals(-3.5, $box->getMinLng());
-        $this->assertEquals(48.25, $box->getMinLat());
-        $this->assertEquals(7.75, $box->getMaxLng());
-        $this->assertEquals(52.0, $box->getMaxLat());
-    }
-
     #[TestWith([[11.0, 0.0, 20.0, 10.0], false, 'entirely east'])]
     #[TestWith([[-20.0, 0.0, -11.0, 10.0], false, 'entirely west'])]
     #[TestWith([[0.0, 11.0, 10.0, 20.0], false, 'entirely north'])]

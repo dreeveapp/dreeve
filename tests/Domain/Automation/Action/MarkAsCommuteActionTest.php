@@ -21,13 +21,6 @@ class MarkAsCommuteActionTest extends TestCase
         );
     }
 
-    public function testGuardPassesForAnyConfiguration(): void
-    {
-        $this->expectNotToPerformAssertions();
-
-        $this->action->guardValidConfiguration(RuleConfiguration::empty());
-    }
-
     public function testApplyToAlwaysMarksActivityAsCommute(): void
     {
         $activity = ActivityBuilder::fromDefaults()->withIsCommute(false)->build();

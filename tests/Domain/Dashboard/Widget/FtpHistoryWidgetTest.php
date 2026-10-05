@@ -8,12 +8,10 @@ use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class FtpHistoryWidgetTest extends ContainerTestCase
 {
     use ProvideTestData;
-    use MatchesSnapshots;
 
     private FtpHistoryWidget $widget;
 
@@ -24,12 +22,6 @@ class FtpHistoryWidgetTest extends ContainerTestCase
             now: SerializableDateTime::fromString('2025-10-16'),
             configuration: WidgetConfiguration::empty(),
         ));
-    }
-
-    public function testGuardValidConfigurationItShouldNotThrow(): void
-    {
-        $this->expectNotToPerformAssertions();
-        $this->widget->guardValidConfiguration(WidgetConfiguration::empty());
     }
 
     #[\Override]

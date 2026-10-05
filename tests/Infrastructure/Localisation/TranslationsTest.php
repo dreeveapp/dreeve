@@ -5,7 +5,6 @@ namespace App\Tests\Infrastructure\Localisation;
 use App\Infrastructure\Localisation\Locale;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\ContainerTestCase;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Translation\Extractor\ExtractorInterface;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\MessageCatalogueInterface;
@@ -13,8 +12,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class TranslationsTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private KernelProjectDir $kernelProjectDir;
     private ExtractorInterface $extractor;
 

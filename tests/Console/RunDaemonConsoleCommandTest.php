@@ -5,7 +5,7 @@ namespace App\Tests\Console;
 use App\Console\RunDaemonConsoleCommand;
 use App\Tests\Infrastructure\Daemon\FakeDaemon;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
-use App\Tests\NullLogger;
+use Psr\Log\NullLogger;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;

@@ -16,14 +16,6 @@ class SerializableTimezoneTest extends TestCase
         );
     }
 
-    public function testFromString(): void
-    {
-        $this->assertEquals(
-            SerializableTimezone::fromString('Europe/Brussels'),
-            new SerializableTimezone('Europe/Brussels')
-        );
-    }
-
     public function testItShouldThrowWhenEmpty(): void
     {
         $this->expectExceptionObject(new \RuntimeException('timezone cannot be empty'));

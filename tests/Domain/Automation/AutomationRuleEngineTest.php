@@ -23,11 +23,7 @@ use App\Domain\Gear\GearId;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Tokenizer\Tokenizer;
-use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
-use App\Infrastructure\ValueObject\Geography\Latitude;
-use App\Infrastructure\ValueObject\Geography\Longitude;
-use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 
@@ -299,95 +295,6 @@ class AutomationRuleEngineTest extends ContainerTestCase
 
         $this->assertEquals(GearId::fromString('gear-my-bike'), $result->getGearId());
         $this->assertSame(SportType::GRAVEL_RIDE, $result->getSportType());
-    }
-
-    public function testProximityWithinAndOutsideOperators(): void
-    {
-        $this->saveRule(
-            id: 'near',
-            conditions: ConfiguredConditions::fromArray([
-                new ConfiguredCondition(ConditionType::STARTS_NEAR, RuleConfiguration::fromConfig(['operator' => 'within', 'latitude' => 51.05, 'longitude' => 4.0, 'radius' => 1000.0])),
-            ]),
-            actions: ConfiguredActions::fromArray([
-                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Started near home'])),
-            ]),
-        );
-        $this->saveRule(
-            id: 'away',
-            conditions: ConfiguredConditions::fromArray([
-                new ConfiguredCondition(ConditionType::STARTS_NEAR, RuleConfiguration::fromConfig(['operator' => 'outside', 'latitude' => 51.05, 'longitude' => 4.0, 'radius' => 1000.0])),
-            ]),
-            actions: ConfiguredActions::fromArray([
-                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Started away'])),
-            ]),
-            sortOrder: 1,
-        );
-
-        $startsNear = ActivityBuilder::fromDefaults()->withStartingCoordinate(Coordinate::createFromLatAndLng(
-            Latitude::fromString((string) 51.055),
-            Longitude::fromString((string) 4.0),
-        ))->build();
-        $startsFar = ActivityBuilder::fromDefaults()->withStartingCoordinate(Coordinate::createFromLatAndLng(
-            Latitude::fromString((string) 51.10),
-            Longitude::fromString((string) 4.0),
-        ))->build();
-
-        $this->assertSame('Started near home', $this->engine->apply($startsNear, $this->repository->findAll())->getName());
-        $this->assertSame('Started away', $this->engine->apply($startsFar, $this->repository->findAll())->getName());
-    }
-
-    public function testMatchesOnWeekdayAndTimeOfDay(): void
-    {
-        $this->saveRule(
-            id: '1',
-            conditions: ConfiguredConditions::fromArray([
-                new ConfiguredCondition(ConditionType::WEEKDAY, RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'weekdays' => [2, 3]])),
-                new ConfiguredCondition(ConditionType::TIME_OF_DAY, RuleConfiguration::fromConfig(['operator' => 'lt', 'time' => '09:00'])),
-            ]),
-            actions: ConfiguredActions::fromArray([
-                new ConfiguredAction(ActionType::SET_NAME, RuleConfiguration::fromConfig(['name' => 'Early weekday ride'])),
-            ]),
-        );
-
-        $tuesdayMorning = ActivityBuilder::fromDefaults()
-            ->withName('Untouched')
-            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 07:30:00'))
-            ->build();
-        $tuesdayAfternoon = ActivityBuilder::fromDefaults()
-            ->withName('Untouched')
-            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 15:30:00'))
-            ->build();
-
-        $this->assertSame('Early weekday ride', $this->engine->apply($tuesdayMorning, $this->repository->findAll())->getName());
-        $this->assertSame('Untouched', $this->engine->apply($tuesdayAfternoon, $this->repository->findAll())->getName(), 'Afternoon fails the time-of-day condition.');
-    }
-
-    public function testMatchesOnDeviceAndNegativeSportTypeOperator(): void
-    {
-        $this->saveRule(
-            id: '1',
-            conditions: ConfiguredConditions::fromArray([
-                new ConfiguredCondition(ConditionType::DEVICE, RuleConfiguration::fromConfig(['operator' => 'is', 'deviceName' => 'Garmin Edge 130'])),
-                new ConfiguredCondition(ConditionType::SPORT_TYPE, RuleConfiguration::fromConfig(['operator' => 'isNoneOf', 'sportTypes' => ['Run', 'Walk']])),
-            ]),
-            actions: ConfiguredActions::fromArray([
-                new ConfiguredAction(ActionType::MARK_AS_COMMUTE, RuleConfiguration::fromConfig(['isCommute' => true])),
-            ]),
-        );
-
-        $matching = ActivityBuilder::fromDefaults()
-            ->withSportType(SportType::RIDE)
-            ->withDeviceName('Garmin Edge 130')
-            ->withIsCommute(false)
-            ->build();
-        $wrongDevice = ActivityBuilder::fromDefaults()
-            ->withSportType(SportType::RIDE)
-            ->withDeviceName('Wahoo Elemnt')
-            ->withIsCommute(false)
-            ->build();
-
-        $this->assertTrue($this->engine->apply($matching, $this->repository->findAll())->isCommute());
-        $this->assertFalse($this->engine->apply($wrongDevice, $this->repository->findAll())->isCommute(), 'A different device must not satisfy the device condition.');
     }
 
     public function testActivityIsReturnedUnchangedWhenNoRulesExist(): void

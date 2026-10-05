@@ -8,12 +8,9 @@ use App\Domain\Strava\Webhook\WebhookEvent;
 use App\Domain\Strava\Webhook\WebhookEventRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Tests\ContainerTestCase;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class ProcessWebhookEventCommandHandlerTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private CommandBus $commandBus;
 
     public function testHandle(): void
