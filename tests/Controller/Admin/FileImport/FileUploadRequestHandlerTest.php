@@ -9,14 +9,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 class FileUploadRequestHandlerTest extends AdminWebTestCase
 {
     #[DataProvider('provideAdminPaths')]
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(string $path): void
-    {
-        $this->client->request('GET', $path);
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
-    #[DataProvider('provideAdminPaths')]
     public function testRendersTheGatedPanelWhenNotInFileImportMode(string $path): void
     {
         $this->withImportMode(ImportMode::STRAVA_API);

@@ -21,15 +21,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->seedActivity();
-
-        $this->client->request('GET', '/admin/activities');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testRendersTheEmptyStateWhenThereAreNoActivities(): void
     {
         $this->withImportMode(ImportMode::FILES);

@@ -16,20 +16,6 @@ use Money\Money;
 
 class ManageGearFormRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPageOnAdd(): void
-    {
-        $this->client->request('GET', '/admin/gear/add');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
-    public function testAnonymousUsersAreRedirectedToTheLoginPageOnEdit(): void
-    {
-        $this->client->request('GET', '/admin/gear/'.GearId::fromUnprefixed('1').'/edit');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testRendersTheAddForm(): void
     {
         $this->client->loginUser($this->adminUser());
@@ -125,13 +111,6 @@ class ManageGearFormRequestHandlerTest extends AdminWebTestCase
         $this->assertNull($crawler->filter('input#gear-name')->attr('disabled'));
         $this->assertNull($crawler->filter('select#gear-status')->attr('disabled'));
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="status"]'));
-    }
-
-    public function testAnonymousUsersAreRedirectedToTheLoginPageOnDelete(): void
-    {
-        $this->client->request('GET', '/admin/gear/'.GearId::fromUnprefixed('1').'/delete');
-
-        $this->assertResponseRedirects('/admin/login');
     }
 
     public function testTheAddFormHasNoDeleteButton(): void

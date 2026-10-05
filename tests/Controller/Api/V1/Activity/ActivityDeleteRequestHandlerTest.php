@@ -16,6 +16,7 @@ use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
+use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Component\HttpFoundation\Response;
 
 class ActivityDeleteRequestHandlerTest extends ControllerWebTestCase
@@ -37,17 +38,11 @@ class ActivityDeleteRequestHandlerTest extends ControllerWebTestCase
         $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
     }
 
-    public function testItReportsAnUnknownActivityAsNotFound(): void
+    #[TestWith(['activity-2'])]
+    #[TestWith(['not-an-activity-id'])]
+    public function testItReportsAnUnknownOrMalformedActivityAsNotFound(string $activityId): void
     {
-        $this->client->request('DELETE', '/api/v1/activities/activity-2', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
-        $this->assertSame('not_found', Json::decode((string) $this->client->getResponse()->getContent())['error']);
-    }
-
-    public function testItReportsAMalformedActivityIdAsNotFound(): void
-    {
-        $this->client->request('DELETE', '/api/v1/activities/not-an-activity-id', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
+        $this->client->request('DELETE', '/api/v1/activities/'.$activityId, server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
         $this->assertSame('not_found', Json::decode((string) $this->client->getResponse()->getContent())['error']);

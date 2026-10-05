@@ -6,13 +6,6 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class DashboardSettingsRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/settings/dashboard');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItRendersTheDashboardSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());

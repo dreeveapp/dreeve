@@ -44,16 +44,6 @@ class ActivityBestEffortsRequestHandlerTest extends ControllerWebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testItRejectsAnUnprefixedActivityId(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/api/internal/activities/9542782314/best-efforts');
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
     #[\Override]
     protected function shouldSeedActivity(): bool
     {

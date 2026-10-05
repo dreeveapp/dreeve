@@ -11,6 +11,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\ProvideTestData;
+use PHPUnit\Framework\Attributes\TestWith;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class BadgeRequestHandlerTest extends ControllerWebTestCase
@@ -114,22 +115,14 @@ class BadgeRequestHandlerTest extends ControllerWebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testItDoesNotResolveASportTypeWithoutBestEfforts(): void
+    #[TestWith(['/badge/pb/walk.svg'])]
+    #[TestWith(['/badge/pb/unicycling.svg'])]
+    #[TestWith(['/badge/unknown.svg'])]
+    public function testItDoesNotServeAnUnknownBadge(string $path): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
-        $this->client->request('GET', '/badge/pb/walk.svg');
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
-    public function testItDoesNotResolveAnUnknownSportType(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/badge/pb/unicycling.svg');
+        $this->client->request('GET', $path);
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -144,16 +137,6 @@ class BadgeRequestHandlerTest extends ControllerWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'image/svg+xml; charset=UTF-8');
         $this->assertResponseHeaderSame('Cache-Control', 'must-revalidate, no-cache, no-store, private');
-    }
-
-    public function testItDoesNotServeAnUnknownBadge(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/badge/unknown.svg');
-
-        $this->assertResponseStatusCodeSame(404);
     }
 
     #[\Override]

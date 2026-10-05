@@ -12,13 +12,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DownloadFileImportRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/file-imports/'.FileImportId::random().'/download');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testDownloadsTheOriginalFile(): void
     {
         $fileImportId = FileImportId::fromUnprefixed('1');

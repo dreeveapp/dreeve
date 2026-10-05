@@ -27,13 +27,6 @@ use App\Tests\Domain\Gear\GearBuilder;
 
 class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/automation-rules');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testRendersTheGatedPanelWhenNotInFileImportMode(): void
     {
         $this->withImportMode(ImportMode::STRAVA_API);

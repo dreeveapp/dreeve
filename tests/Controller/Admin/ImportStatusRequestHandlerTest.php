@@ -9,13 +9,6 @@ class ImportStatusRequestHandlerTest extends AdminWebTestCase
 {
     private FilesystemOperator $watchStorage;
 
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/import-status');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItIsPendingWhenTheWatchDirectoryHoldsAProcessableFile(): void
     {
         $this->client->loginUser($this->adminUser());

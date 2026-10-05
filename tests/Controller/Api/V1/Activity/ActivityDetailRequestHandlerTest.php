@@ -14,6 +14,7 @@ use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\ProvideTestData;
+use PHPUnit\Framework\Attributes\TestWith;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -63,20 +64,11 @@ class ActivityDetailRequestHandlerTest extends ControllerWebTestCase
         $this->assertFalse(Json::decode((string) $this->client->getResponse()->getContent())['hasGpx']);
     }
 
-    public function testItReportsAnUnknownActivityAsNotFound(): void
+    #[TestWith(['activity-1'])]
+    #[TestWith(['not-an-activity-id'])]
+    public function testItReportsAnUnknownOrMalformedActivityAsNotFound(string $activityId): void
     {
-        $this->client->request('GET', self::PATH.'/activity-1', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
-        $this->assertSame(
-            'not_found',
-            Json::decode((string) $this->client->getResponse()->getContent())['error']
-        );
-    }
-
-    public function testItReportsAMalformedActivityIdAsNotFound(): void
-    {
-        $this->client->request('GET', self::PATH.'/not-an-activity-id', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
+        $this->client->request('GET', self::PATH.'/'.$activityId, server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
         $this->assertSame(

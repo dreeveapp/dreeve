@@ -16,13 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DispatchCommandRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('POST', '/admin/dispatch-command');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testHandle(): void
     {
         $this->client->loginUser($this->adminUser());

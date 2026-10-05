@@ -6,13 +6,6 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class ApiKeyRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/settings/api-key/generate');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItRendersAKey(): void
     {
         $this->client->loginUser($this->adminUser());

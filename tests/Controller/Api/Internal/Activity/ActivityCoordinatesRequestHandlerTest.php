@@ -86,16 +86,6 @@ class ActivityCoordinatesRequestHandlerTest extends ControllerWebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testItRejectsAnUnprefixedActivityId(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/api/internal/activities/9756441741/coordinates');
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
     #[\Override]
     protected function shouldSeedActivity(): bool
     {

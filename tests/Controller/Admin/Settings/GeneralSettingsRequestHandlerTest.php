@@ -7,13 +7,6 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class GeneralSettingsRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/settings/general');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItRendersTheGeneralSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());

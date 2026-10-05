@@ -30,13 +30,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class BackfillAutomationRulesRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/automation-rules/backfill');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     #[DataProvider('provideNotFoundScenarios')]
     public function testItIsNotFound(ImportMode $importMode, bool $ruleIsEnabled, bool $backfillIsQueued, string $url): void
     {

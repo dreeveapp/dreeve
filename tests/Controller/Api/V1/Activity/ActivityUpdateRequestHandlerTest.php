@@ -18,6 +18,7 @@ use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -154,24 +155,13 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
         yield 'unknown sport type' => ['{"sportType": "Unicycling"}'];
     }
 
-    public function testItReportsAnUnknownActivityAsNotFound(): void
+    #[TestWith(['activity-2'])]
+    #[TestWith(['not-an-activity-id'])]
+    public function testItReportsAnUnknownOrMalformedActivityAsNotFound(string $activityId): void
     {
         $this->client->request(
             'PATCH',
-            '/api/v1/activities/activity-2',
-            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
-            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity.json'),
-        );
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
-        $this->assertSame('not_found', Json::decode((string) $this->client->getResponse()->getContent())['error']);
-    }
-
-    public function testItReportsAMalformedActivityIdAsNotFound(): void
-    {
-        $this->client->request(
-            'PATCH',
-            '/api/v1/activities/not-an-activity-id',
+            '/api/v1/activities/'.$activityId,
             server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
             content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity.json'),
         );

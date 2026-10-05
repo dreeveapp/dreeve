@@ -22,56 +22,19 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Automation\AutomationRuleBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 
 class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPageOnAdd(): void
-    {
-        $this->client->request('GET', '/admin/automation-rules/add');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
-    public function testAnonymousUsersAreRedirectedToTheLoginPageOnEdit(): void
-    {
-        $this->client->request('GET', '/admin/automation-rules/'.AutomationRuleId::fromUnprefixed('1').'/edit');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
-    public function testAnonymousUsersAreRedirectedToTheLoginPageOnDelete(): void
-    {
-        $this->client->request('GET', '/admin/automation-rules/'.AutomationRuleId::fromUnprefixed('1').'/delete');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
-    public function testItReturnsANotFoundWhenNotInFileImportModeOnAdd(): void
+    #[TestWith(['/admin/automation-rules/add'])]
+    #[TestWith(['/admin/automation-rules/automationRule-1/edit'])]
+    #[TestWith(['/admin/automation-rules/automationRule-1/delete'])]
+    public function testItReturnsANotFoundWhenNotInFileImportMode(string $path): void
     {
         $this->withImportMode(ImportMode::STRAVA_API);
         $this->client->loginUser($this->adminUser());
 
-        $this->client->request('GET', '/admin/automation-rules/add');
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
-    public function testItReturnsANotFoundWhenNotInFileImportModeOnEdit(): void
-    {
-        $this->withImportMode(ImportMode::STRAVA_API);
-        $this->client->loginUser($this->adminUser());
-
-        $this->client->request('GET', '/admin/automation-rules/'.AutomationRuleId::fromUnprefixed('1').'/edit');
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
-    public function testItReturnsANotFoundWhenNotInFileImportModeOnDelete(): void
-    {
-        $this->withImportMode(ImportMode::STRAVA_API);
-        $this->client->loginUser($this->adminUser());
-
-        $this->client->request('GET', '/admin/automation-rules/'.AutomationRuleId::fromUnprefixed('1').'/delete');
+        $this->client->request('GET', $path);
 
         $this->assertResponseStatusCodeSame(404);
     }

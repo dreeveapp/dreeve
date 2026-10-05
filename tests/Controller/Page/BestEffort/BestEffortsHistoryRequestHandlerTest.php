@@ -6,6 +6,7 @@ use App\Domain\Activity\ActivityType;
 use App\Infrastructure\Measurement\Length\ConvertableToMeter;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;
+use PHPUnit\Framework\Attributes\TestWith;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class BestEffortsHistoryRequestHandlerTest extends ControllerWebTestCase
@@ -50,32 +51,14 @@ class BestEffortsHistoryRequestHandlerTest extends ControllerWebTestCase
         );
     }
 
-    public function testItDoesNotResolveAnActivityTypeThatDoesNotExist(): void
+    #[TestWith(['/best-efforts/Snorkeling/10000'])]
+    #[TestWith(['/best-efforts/Walk/10000'])]
+    #[TestWith(['/best-efforts/Ride/12345'])]
+    public function testItDoesNotResolveAnUnknownBestEffort(string $path): void
     {
         $this->provideFullTestSet();
-        $this->seedActivity();
 
-        $this->client->request('GET', '/best-efforts/Snorkeling/10000');
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
-    public function testItDoesNotResolveAnActivityTypeWithoutBestEfforts(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/best-efforts/Walk/10000');
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
-    public function testItDoesNotResolveADistanceThatIsNotCalculated(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/best-efforts/Ride/12345');
+        $this->client->request('GET', $path);
 
         $this->assertResponseStatusCodeSame(404);
     }

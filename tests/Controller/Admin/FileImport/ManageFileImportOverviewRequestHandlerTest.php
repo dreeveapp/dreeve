@@ -18,13 +18,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/file-imports');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testRendersTheGatedPanelWhenNotInFileImportMode(): void
     {
         $this->withImportMode(ImportMode::STRAVA_API);

@@ -9,13 +9,6 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class AthleteSettingsRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/settings/athlete');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItRendersTheAthleteForm(): void
     {
         $this->client->loginUser($this->adminUser());

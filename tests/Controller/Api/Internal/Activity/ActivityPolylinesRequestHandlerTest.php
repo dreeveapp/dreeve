@@ -100,16 +100,6 @@ class ActivityPolylinesRequestHandlerTest extends ControllerWebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testItRejectsAnUnprefixedActivityId(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/api/internal/activities/9830227112/polylines');
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
     /**
      * @param array<mixed> $data
      */

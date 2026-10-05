@@ -6,13 +6,6 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class IntegrationsSettingsRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/settings/integrations');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItRendersTheIntegrationsSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());

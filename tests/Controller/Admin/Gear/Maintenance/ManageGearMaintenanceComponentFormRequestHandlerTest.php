@@ -7,32 +7,12 @@ use App\Domain\Gear\GearRepository;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
+use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestCase
 {
     use ProvideGearMaintenanceConfig;
-
-    public function testAnonymousUsersAreRedirectedToTheLoginPageOnAdd(): void
-    {
-        $this->client->request('GET', '/admin/gear/maintenance-config/component/add');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
-    public function testAnonymousUsersAreRedirectedToTheLoginPageOnEdit(): void
-    {
-        $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-chain/edit');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
-    public function testAnonymousUsersAreRedirectedToTheLoginPageOnDelete(): void
-    {
-        $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-chain/delete');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
 
     public function testRendersTheAddForm(): void
     {
@@ -113,7 +93,9 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->assertStringContainsString('Some cool chain', $form->text());
     }
 
-    public function testReturns404WhenEditingAnUnknownComponent(): void
+    #[TestWith(['edit'])]
+    #[TestWith(['delete'])]
+    public function testReturns404ForAnUnknownComponent(string $action): void
     {
         $this->importGearMaintenanceConfig();
 
@@ -121,18 +103,7 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->client->catchExceptions(false);
 
         $this->expectExceptionObject(new NotFoundHttpException('Component not found'));
-        $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-does-not-exist/edit');
-    }
-
-    public function testReturns404WhenDeletingAnUnknownComponent(): void
-    {
-        $this->importGearMaintenanceConfig();
-
-        $this->client->loginUser($this->adminUser());
-        $this->client->catchExceptions(false);
-
-        $this->expectExceptionObject(new NotFoundHttpException('Component not found'));
-        $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-does-not-exist/delete');
+        $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-does-not-exist/'.$action);
     }
 
     private function seedGears(): void

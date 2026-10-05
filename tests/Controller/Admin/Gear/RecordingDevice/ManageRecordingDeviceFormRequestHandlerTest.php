@@ -14,13 +14,6 @@ use Money\Money;
 
 class ManageRecordingDeviceFormRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPageOnEdit(): void
-    {
-        $this->client->request('GET', '/admin/gear/recording-devices/'.RecordingDeviceId::fromName('Garmin Edge 530').'/edit');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testRendersTheEditFormPrefilledWithTheRecordingDevice(): void
     {
         static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(

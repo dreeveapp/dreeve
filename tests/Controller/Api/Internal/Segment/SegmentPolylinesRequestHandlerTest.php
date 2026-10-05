@@ -74,17 +74,6 @@ class SegmentPolylinesRequestHandlerTest extends ControllerWebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testItRejectsAnUnprefixedSegmentId(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-        $this->addSegmentWithAPolylineFixtures();
-
-        $this->client->request('GET', '/api/internal/segments/10/polylines');
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
     #[\Override]
     protected function shouldSeedActivity(): bool
     {

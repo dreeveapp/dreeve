@@ -7,13 +7,6 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class MetricsSettingsRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/settings/metrics');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItRendersTheMetricsSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());

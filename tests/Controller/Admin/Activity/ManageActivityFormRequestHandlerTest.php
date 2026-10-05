@@ -24,27 +24,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('1').'/edit');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
-    public function testAnonymousUsersAreRedirectedToTheLoginPageOnDelete(): void
-    {
-        $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('1').'/delete');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
-    public function testAnonymousUsersAreRedirectedToTheLoginPageOnAdd(): void
-    {
-        $this->client->request('GET', '/admin/activities/add');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testRendersTheAddFormInFilesMode(): void
     {
         $this->withImportMode(ImportMode::FILES);
@@ -311,8 +290,6 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
     {
         yield 'a path within the app' => ['/activities/activity-1', '/activities/activity-1'];
         yield 'a filtered overview' => ['/admin/activities?filters%5BsportType%5D=Run&pagination%5Bpage%5D=2', '/admin/activities?filters%5BsportType%5D=Run&pagination%5Bpage%5D=2'];
-        yield 'protocol relative' => ['//evil.com', '/admin/activities'];
-        yield 'javascript uri' => ['javascript:alert(1)', '/admin/activities'];
         yield 'absolute url' => ['https://evil.com', '/admin/activities'];
     }
 

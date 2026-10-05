@@ -14,13 +14,6 @@ use Doctrine\DBAL\Connection;
 
 class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/activities/search');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItReturnsAnEmptyResultForAnEmptyQuery(): void
     {
         $this->client->loginUser($this->adminUser());

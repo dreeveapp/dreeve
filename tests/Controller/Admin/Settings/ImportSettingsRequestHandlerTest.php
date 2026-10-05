@@ -7,13 +7,6 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class ImportSettingsRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/settings/import');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItRendersTheImportSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());

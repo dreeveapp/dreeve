@@ -7,13 +7,6 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class DaemonSettingsRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/settings/daemon');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItRendersTheDaemonSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());

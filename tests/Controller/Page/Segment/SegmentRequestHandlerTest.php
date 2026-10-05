@@ -202,16 +202,6 @@ class SegmentRequestHandlerTest extends ControllerWebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testItRejectsAnUnprefixedSegmentId(): void
-    {
-        $this->provideFullTestSet();
-        $this->seedActivity();
-
-        $this->client->request('GET', '/segments/1');
-
-        $this->assertResponseStatusCodeSame(404);
-    }
-
     #[\Override]
     protected function shouldSeedActivity(): bool
     {

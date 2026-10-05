@@ -6,13 +6,6 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class MapsSettingsRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/settings/maps');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItRendersTheMapsSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());

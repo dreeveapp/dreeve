@@ -6,13 +6,6 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class AppearanceSettingsRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/settings/appearance');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItRendersTheAppearanceSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());

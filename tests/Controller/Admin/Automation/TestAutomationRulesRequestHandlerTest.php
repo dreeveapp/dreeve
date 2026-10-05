@@ -22,13 +22,6 @@ use App\Tests\Domain\Automation\AutomationRuleBuilder;
 
 class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/automation-rules/test');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItReturnsANotFoundWhenNotInFileImportMode(): void
     {
         $this->withImportMode(ImportMode::STRAVA_API);

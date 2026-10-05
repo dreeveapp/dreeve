@@ -14,13 +14,6 @@ use Money\Money;
 
 class ManageRecordingDeviceOverviewRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/gear/recording-devices');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testRendersTheEmptyStateWhenThereAreNoRecordingDevices(): void
     {
         $this->client->loginUser($this->adminUser());

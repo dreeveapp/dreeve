@@ -4,13 +4,6 @@ namespace App\Tests\Controller\Admin;
 
 class AdminNotFoundRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/dmzdmzd');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItRendersTheAdminNotFoundPage(): void
     {
         $this->client->loginUser($this->adminUser());

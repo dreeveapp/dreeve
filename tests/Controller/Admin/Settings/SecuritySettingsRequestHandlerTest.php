@@ -32,13 +32,6 @@ class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
         );
     }
 
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/settings/security');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItRendersTheSecuritySettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());

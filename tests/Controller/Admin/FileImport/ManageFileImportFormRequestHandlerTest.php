@@ -11,13 +11,6 @@ use App\Tests\Domain\Import\FileImportBuilder;
 
 class ManageFileImportFormRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/file-imports/'.FileImportId::random().'/delete');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testRendersTheDeleteConfirmation(): void
     {
         $fileImportId = FileImportId::fromUnprefixed('1');

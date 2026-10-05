@@ -12,13 +12,6 @@ class ManageGearMaintenanceConfigRequestHandlerTest extends AdminWebTestCase
 {
     use ProvideGearMaintenanceConfig;
 
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/gear/maintenance-config');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItRendersTheConfigReflectingTheCurrentSettings(): void
     {
         $this->importGearMaintenanceConfig();

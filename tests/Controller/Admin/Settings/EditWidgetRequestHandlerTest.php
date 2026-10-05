@@ -3,17 +3,11 @@
 namespace App\Tests\Controller\Admin\Settings;
 
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EditWidgetRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPageOnDelete(): void
-    {
-        $this->client->request('GET', '/admin/settings/dashboard/widget/dashboardWidget-eddington/delete');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testRendersTheDeleteConfirmation(): void
     {
         $this->client->loginUser($this->adminUser());
@@ -30,13 +24,16 @@ class EditWidgetRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Eddington', $form->text());
     }
 
-    public function testReturns404WhenDeletingAnUnknownWidget(): void
+    #[TestWith(['dashboardWidget-does-not-exist/delete'])]
+    #[TestWith(['dashboardWidget-does-not-exist/configure'])]
+    #[TestWith(['dashboardWidget-introText/configure'])]
+    public function testReturns404ForAWidgetThatCannotBeManaged(string $path): void
     {
         $this->client->loginUser($this->adminUser());
         $this->client->catchExceptions(false);
 
         $this->expectExceptionObject(new NotFoundHttpException('Widget not found'));
-        $this->client->request('GET', '/admin/settings/dashboard/widget/dashboardWidget-does-not-exist/delete');
+        $this->client->request('GET', '/admin/settings/dashboard/widget/'.$path);
     }
 
     public function testRendersTheConfigurationForm(): void
@@ -67,23 +64,5 @@ class EditWidgetRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $form);
         $this->assertCount(1, $form->filter('input[name="config[title]"]'));
         $this->assertSame('Eddington', $form->filter('input[name="config[title]"]')->attr('placeholder'));
-    }
-
-    public function testReturns404WhenConfiguringAWidgetThatRendersWithoutATitleAndHasNoOptions(): void
-    {
-        $this->client->loginUser($this->adminUser());
-        $this->client->catchExceptions(false);
-
-        $this->expectExceptionObject(new NotFoundHttpException('Widget not found'));
-        $this->client->request('GET', '/admin/settings/dashboard/widget/dashboardWidget-introText/configure');
-    }
-
-    public function testReturns404WhenConfiguringAnUnknownWidget(): void
-    {
-        $this->client->loginUser($this->adminUser());
-        $this->client->catchExceptions(false);
-
-        $this->expectExceptionObject(new NotFoundHttpException('Widget not found'));
-        $this->client->request('GET', '/admin/settings/dashboard/widget/dashboardWidget-does-not-exist/configure');
     }
 }

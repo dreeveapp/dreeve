@@ -14,6 +14,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
+use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Component\HttpFoundation\Response;
 
 class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
@@ -105,26 +106,13 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
         ], Json::decode((string) $this->client->getResponse()->getContent()));
     }
 
-    public function testItReportsAnUnknownActivityAsNotFound(): void
+    #[TestWith(['activity-1'])]
+    #[TestWith(['not-an-activity-id'])]
+    public function testItReportsAnUnknownOrMalformedActivityAsNotFound(string $activityId): void
     {
         $this->client->request(
             'GET',
-            '/api/v1/activities/activity-1/gpx',
-            server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]
-        );
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
-        $this->assertSame(
-            'not_found',
-            Json::decode((string) $this->client->getResponse()->getContent())['error']
-        );
-    }
-
-    public function testItReportsAMalformedActivityIdAsNotFound(): void
-    {
-        $this->client->request(
-            'GET',
-            '/api/v1/activities/not-an-activity-id/gpx',
+            '/api/v1/activities/'.$activityId.'/gpx',
             server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]
         );
 

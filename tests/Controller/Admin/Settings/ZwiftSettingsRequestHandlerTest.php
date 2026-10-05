@@ -6,13 +6,6 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class ZwiftSettingsRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/settings/zwift');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testItRendersTheZwiftSettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());

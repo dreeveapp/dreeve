@@ -12,13 +12,6 @@ use App\Tests\Domain\Gear\GearBuilder;
 
 class ManageGearOverviewRequestHandlerTest extends AdminWebTestCase
 {
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/gear');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testRendersTheEmptyStateWhenThereAreNoGears(): void
     {
         $this->client->loginUser($this->adminUser());

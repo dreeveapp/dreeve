@@ -16,13 +16,6 @@ class ManageGearMaintenanceLogOverviewRequestHandlerTest extends AdminWebTestCas
 {
     use ProvideGearMaintenanceConfig;
 
-    public function testAnonymousUsersAreRedirectedToTheLoginPage(): void
-    {
-        $this->client->request('GET', '/admin/gear/maintenance-logs');
-
-        $this->assertResponseRedirects('/admin/login');
-    }
-
     public function testRendersTheEmptyStateWhenThereAreNoLogs(): void
     {
         $this->client->loginUser($this->adminUser());

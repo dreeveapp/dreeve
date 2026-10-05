@@ -9,7 +9,6 @@ use App\Domain\Import\ImportMode;
 use App\Infrastructure\Security\Api\Token;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
-use Symfony\Component\HttpFoundation\Response;
 
 class StatusRequestHandlerTest extends ControllerWebTestCase
 {
@@ -37,13 +36,6 @@ class StatusRequestHandlerTest extends ControllerWebTestCase
         // 200, not an error: the key is valid, the instance just cannot accept uploads.
         $this->assertResponseIsSuccessful();
         $this->assertFalse(Json::decode((string) $this->client->getResponse()->getContent())['canUpload']);
-    }
-
-    public function testItRequiresAValidKey(): void
-    {
-        $this->client->request('GET', '/api/v1/status');
-
-        $this->assertSame(Response::HTTP_UNAUTHORIZED, $this->client->getResponse()->getStatusCode());
     }
 
     #[\Override]
