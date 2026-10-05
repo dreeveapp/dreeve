@@ -62,6 +62,15 @@ class FitFileParserTest extends ActivityFileParserTestCase
         );
     }
 
+    public function testParseDerivesElevationFromStreamWhenTotalAscentIsZero(): void
+    {
+        $this->givenFitToolReturns((string) file_get_contents(__DIR__.'/fixtures/fit-document-with-zero-total-ascent.json'));
+
+        $this->assertParsedFileMatchesSnapshot(
+            $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))
+        );
+    }
+
     public function testParseSessionWithoutRecords(): void
     {
         $this->givenFitToolReturns((string) file_get_contents(__DIR__.'/fixtures/fit-document-session-only.json'));
