@@ -477,6 +477,45 @@ paths:
               examples:
                 cannotStore:
                   value: { error: internal_error, message: The upload could not be stored. }
+  /api/v1/activities/{activityId}/images/{imageId}:
+    delete:
+      operationId: removeActivityImage
+      tags: [Activities]
+      summary: Remove an image from an activity
+      description: Removes the image from the activity and deletes the file.
+      parameters:
+        - $ref: '#/components/parameters/ActivityId'
+        - $ref: '#/components/parameters/ActivityImageId'
+      responses:
+        '204':
+          description: The image was removed.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: The activity does not exist, or the image is not one of its images.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                unknownActivity:
+                  summary: No such activity
+                  value: { error: not_found, message: 'Activity "activity-1" not found' }
+                unknownImage:
+                  summary: No such image on this activity
+                  value:
+                    error: not_found
+                    message: 'Image "activityImage-0a8cdfbb-63b4-4f0f-a09d-faedd5a00753" not found'
+        '409':
+          description: >-
+            This instance runs with `IMPORT_MODE=stravaApi`
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                wrongImportMode:
+                  value:
+                    error: import_mode_not_files
+                    message: Images can only be removed from activities when running in file import mode.
   /api/v1/file-imports:
     get:
       operationId: listFileImports
@@ -935,6 +974,14 @@ components:
       schema:
         type: string
         examples: ['activity-9756441741']
+    ActivityImageId:
+      name: imageId
+      in: path
+      required: true
+      description: The prefixed image identifier, `activityImage-` included, as listed in the activity's `images`.
+      schema:
+        type: string
+        examples: ['activityImage-0a8cdfbb-63b4-4f0f-a09d-faedd5a00753']
   responses:
     ActivityNotFound:
       description: No activity with this identifier exists.
