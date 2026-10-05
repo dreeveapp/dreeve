@@ -16,7 +16,7 @@ final readonly class StreamMath
     // Interval longer than this is treated as a recording gap rather than active time.
     public const int MAX_RECORDING_GAP_IN_SECONDS = 60;
     public const int ELEVATION_SMOOTHING_WINDOW = 15;
-    public const float ELEVATION_GAIN_THRESHOLD_IN_METERS = 3.0;
+    public const float ELEVATION_GAIN_THRESHOLD_IN_METERS = 2.0;
 
     /**
      * @param list<?float> $altitudes
