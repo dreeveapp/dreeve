@@ -6,6 +6,7 @@ namespace App\Tests\Domain\Dashboard\AddWidget;
 
 use App\Domain\Dashboard\AddWidget\AddWidget;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class AddWidgetTest extends TestCase
@@ -19,19 +20,12 @@ class AddWidgetTest extends TestCase
         $this->assertSame('eddington', (string) $command->getWidgetName());
     }
 
-    public function testFromPayloadThrowsOnMissingWidget(): void
+    #[TestWith([[]])]
+    #[TestWith([['widget' => '   ']])]
+    public function testFromPayloadThrowsOnInvalidPayload(array $payload): void
     {
         $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "widget" is required.'));
 
-        AddWidget::fromPayload([]);
-    }
-
-    public function testFromPayloadThrowsOnEmptyWidget(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "widget" is required.'));
-
-        AddWidget::fromPayload([
-            'widget' => '   ',
-        ]);
+        AddWidget::fromPayload($payload);
     }
 }

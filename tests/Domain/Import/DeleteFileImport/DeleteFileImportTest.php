@@ -7,6 +7,7 @@ namespace App\Tests\Domain\Import\DeleteFileImport;
 use App\Domain\Import\DeleteFileImport\DeleteFileImport;
 use App\Domain\Import\FileImportId;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class DeleteFileImportTest extends TestCase
@@ -23,19 +24,12 @@ class DeleteFileImportTest extends TestCase
         );
     }
 
-    public function testFromPayloadThrowsWhenMissing(): void
+    #[TestWith([[]])]
+    #[TestWith([['fileImportId' => ['nope']]])]
+    public function testFromPayloadThrowsOnInvalidPayload(array $payload): void
     {
         $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "fileImportId" is required.'));
 
-        DeleteFileImport::fromPayload([]);
-    }
-
-    public function testFromPayloadThrowsWhenNotAString(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "fileImportId" is required.'));
-
-        DeleteFileImport::fromPayload([
-            'fileImportId' => ['nope'],
-        ]);
+        DeleteFileImport::fromPayload($payload);
     }
 }

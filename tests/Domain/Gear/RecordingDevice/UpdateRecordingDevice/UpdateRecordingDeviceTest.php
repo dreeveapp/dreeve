@@ -7,6 +7,7 @@ namespace App\Tests\Domain\Gear\RecordingDevice\UpdateRecordingDevice;
 use App\Domain\Gear\RecordingDevice\UpdateRecordingDevice\UpdateRecordingDevice;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use Money\Money;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class UpdateRecordingDeviceTest extends TestCase
@@ -42,22 +43,13 @@ class UpdateRecordingDeviceTest extends TestCase
         $this->assertSame('Garmin Edge 530', $command->getName());
     }
 
-    public function testFromPayloadThrowsOnMissingName(): void
+    #[TestWith([['purchasePriceAmount' => '299.50'], 'A "name" is required.'])]
+    #[TestWith([['name' => '   '], 'The name cannot be empty.'])]
+    public function testFromPayloadThrowsOnInvalidName(array $payload, string $expectedMessage): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "name" is required.'));
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedMessage));
 
-        UpdateRecordingDevice::fromPayload([
-            'purchasePriceAmount' => '299.50',
-        ]);
-    }
-
-    public function testFromPayloadThrowsOnEmptyName(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('The name cannot be empty.'));
-
-        UpdateRecordingDevice::fromPayload([
-            'name' => '   ',
-        ]);
+        UpdateRecordingDevice::fromPayload($payload);
     }
 
     public function testFromPayloadThrowsOnInvalidPurchasePrice(): void

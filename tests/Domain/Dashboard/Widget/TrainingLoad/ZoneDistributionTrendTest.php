@@ -6,13 +6,10 @@ use App\Domain\Dashboard\Widget\TrainingLoad\ZoneDistributionTrend;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\ContainerTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ZoneDistributionTrendTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     #[DataProvider(methodName: 'fromPercentagesProvider')]
     public function testFromPercentages(float $current, float $previous, ZoneDistributionTrend $expected): void
     {
@@ -23,10 +20,10 @@ class ZoneDistributionTrendTest extends ContainerTestCase
     {
         $kernelProjectDir = $this->getContainer()->get(KernelProjectDir::class);
 
-        $snapshot = [];
+        $actual = [];
         foreach (ZoneDistributionTrend::cases() as $trend) {
             $svgIcon = $trend->getSvgIcon();
-            $snapshot[$trend->name] = [
+            $actual[$trend->name] = [
                 'svgIcon' => $svgIcon,
                 'svgIconClasses' => $trend->getSvgIconClasses(),
             ];
@@ -36,16 +33,30 @@ class ZoneDistributionTrendTest extends ContainerTestCase
             }
             self::assertFileExists($kernelProjectDir.'/templates/svg/icons/'.$svgIcon.'.svg');
         }
-        $this->assertMatchesJsonSnapshot($snapshot);
+        $this->assertEquals(
+            [
+                'UP' => ['svgIcon' => 'chevron', 'svgIconClasses' => 'size-3 rotate-180'],
+                'DOWN' => ['svgIcon' => 'chevron', 'svgIconClasses' => 'size-3'],
+                'STEADY' => ['svgIcon' => null, 'svgIconClasses' => 'size-3'],
+            ],
+            $actual,
+        );
     }
 
     public function testGetTranslations(): void
     {
-        $snapshot = [];
+        $actual = [];
         foreach (ZoneDistributionTrend::cases() as $trend) {
-            $snapshot[$trend->name] = $trend->trans($this->getContainer()->get(TranslatorInterface::class));
+            $actual[$trend->name] = $trend->trans($this->getContainer()->get(TranslatorInterface::class));
         }
-        $this->assertMatchesJsonSnapshot($snapshot);
+        $this->assertEquals(
+            [
+                'UP' => 'Increased compared to yesterday',
+                'DOWN' => 'Decreased compared to yesterday',
+                'STEADY' => 'Unchanged compared to yesterday',
+            ],
+            $actual,
+        );
     }
 
     public static function fromPercentagesProvider(): iterable

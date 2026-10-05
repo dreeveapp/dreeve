@@ -9,14 +9,10 @@ use App\Domain\Activity\Shifting\ActivityDrivetrainUsage;
 use App\Domain\Activity\Shifting\ActivityDrivetrainUsageRepository;
 use App\Domain\Activity\Shifting\DbalActivityDrivetrainUsageRepository;
 use App\Domain\Activity\Shifting\DrivetrainPosition;
-use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class DbalActivityDrivetrainUsageRepositoryTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private ActivityDrivetrainUsageRepository $activityDrivetrainUsageRepository;
 
     public function testAddAndFindByActivity(): void
@@ -24,7 +20,33 @@ class DbalActivityDrivetrainUsageRepositoryTest extends ContainerTestCase
         $this->addDrivetrainUsageForActivity('test');
         $this->addDrivetrainUsageForActivity('other');
 
-        $this->assertMatchesJsonSnapshot(Json::encode(
+        $this->assertEquals(
+            [
+                [
+                    'position' => 'front',
+                    'gearNumber' => 2,
+                    'teeth' => 53,
+                    'timeInSeconds' => 13615,
+                    'formattedTime' => '3:46:55',
+                    'shiftCount' => 0,
+                ],
+                [
+                    'position' => 'rear',
+                    'gearNumber' => 4,
+                    'teeth' => 19,
+                    'timeInSeconds' => 351,
+                    'formattedTime' => '05:51',
+                    'shiftCount' => 31,
+                ],
+                [
+                    'position' => 'rear',
+                    'gearNumber' => 6,
+                    'teeth' => 16,
+                    'timeInSeconds' => 7219,
+                    'formattedTime' => '2:00:19',
+                    'shiftCount' => 124,
+                ],
+            ],
             $this->activityDrivetrainUsageRepository->findByActivity(ActivityId::fromUnprefixed('test'))->map(
                 fn (ActivityDrivetrainUsage $drivetrainUsage): array => [
                     'position' => $drivetrainUsage->getPosition()->value,
@@ -34,8 +56,8 @@ class DbalActivityDrivetrainUsageRepositoryTest extends ContainerTestCase
                     'formattedTime' => $drivetrainUsage->getFormattedTime(),
                     'shiftCount' => $drivetrainUsage->getShiftCount(),
                 ]
-            )
-        ));
+            ),
+        );
     }
 
     public function testFindByActivityWhenThereIsNone(): void

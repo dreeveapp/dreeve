@@ -17,12 +17,9 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class LiveNominatimTest extends TestCase
 {
-    use MatchesSnapshots;
-
     private Nominatim $nominatim;
     /**
      * @var MockObject&Client
@@ -37,7 +34,13 @@ class LiveNominatimTest extends TestCase
             ->willReturnCallback(function (string $method, string $path, array $options): Response {
                 $this->assertEquals('GET', $method);
                 $this->assertEquals('https://nominatim.openstreetmap.org/reverse', $path);
-                $this->assertMatchesJsonSnapshot($options);
+                $this->assertEquals(
+                    [
+                        'headers' => ['User-Agent' => 'Dreeve App'],
+                        'query' => ['lat' => 80, 'lon' => 100, 'format' => 'json'],
+                    ],
+                    $options,
+                );
 
                 return new Response(200, [], Json::encode([
                     'address' => ['state' => 'BruHHE'],

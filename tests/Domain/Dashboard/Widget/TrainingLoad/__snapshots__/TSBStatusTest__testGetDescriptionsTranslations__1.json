@@ -1,8 +1,0 @@
-{
-    "POSSIBLE_DETRAINING": "Fitness may be declining due to low recent training load",
-    "PEAK_FRESH": "Highly recovered and ready to perform",
-    "SLIGHTLY_FRESH": "Light fatigue with good readiness. A great balance for quality training or longer efforts",
-    "NEUTRAL": "Moderate fatigue with stable fitness. Well suited for consistent day-to-day training",
-    "ACCUMULATED_FATIGUE": "Training load is accumulating, recovery days are important",
-    "OVER_FATIGUED": "High fatigue levels may increase injury or burnout risk. Consider reducing load and prioritizing recovery"
-}

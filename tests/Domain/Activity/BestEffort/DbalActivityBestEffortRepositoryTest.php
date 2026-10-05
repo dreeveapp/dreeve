@@ -13,16 +13,12 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Measurement\Length\Meter;
-use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class DbalActivityBestEffortRepositoryTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private ActivityBestEffortRepository $activityBestEffortRepository;
 
     public function testAdd(): void
@@ -54,9 +50,29 @@ class DbalActivityBestEffortRepositoryTest extends ContainerTestCase
                 ->build()
         );
 
-        $this->assertMatchesJsonSnapshot(Json::encode(
-            $this->getConnection()->executeQuery('SELECT * FROM ActivityBestEffort')->fetchAllAssociative()
-        ));
+        $this->assertEquals(
+            [
+                [
+                    'activityId' => 'activity-test',
+                    'distanceInMeter' => 10000,
+                    'sportType' => 'Ride',
+                    'timeInSeconds' => 3600,
+                ],
+                [
+                    'activityId' => 'activity-test-2',
+                    'distanceInMeter' => 10000,
+                    'sportType' => 'Ride',
+                    'timeInSeconds' => 3600,
+                ],
+                [
+                    'activityId' => 'activity-test-2',
+                    'distanceInMeter' => 1000,
+                    'sportType' => 'Ride',
+                    'timeInSeconds' => 3600,
+                ],
+            ],
+            $this->getConnection()->executeQuery('SELECT * FROM ActivityBestEffort')->fetchAllAssociative(),
+        );
     }
 
     public function testFindActivityIdsThatNeedBestEffortsCalculation(): void

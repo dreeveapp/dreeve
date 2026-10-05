@@ -6,6 +6,7 @@ namespace App\Tests\Domain\Gear\DeleteGear;
 
 use App\Domain\Gear\DeleteGear\DeleteGear;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class DeleteGearTest extends TestCase
@@ -19,19 +20,12 @@ class DeleteGearTest extends TestCase
         $this->assertSame('gear-1', (string) $command->getGearId());
     }
 
-    public function testFromPayloadThrowsOnMissingGearId(): void
+    #[TestWith([[]])]
+    #[TestWith([['gearId' => '   ']])]
+    public function testFromPayloadThrowsOnInvalidPayload(array $payload): void
     {
         $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "gearId" is required.'));
 
-        DeleteGear::fromPayload([]);
-    }
-
-    public function testFromPayloadThrowsOnEmptyGearId(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "gearId" is required.'));
-
-        DeleteGear::fromPayload([
-            'gearId' => '   ',
-        ]);
+        DeleteGear::fromPayload($payload);
     }
 }

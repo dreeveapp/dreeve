@@ -5,13 +5,10 @@ namespace App\Tests\Domain\Dashboard\Widget\TrainingLoad;
 use App\Domain\Athlete\HeartRateZone\TimeInHeartRateZones;
 use App\Domain\Dashboard\Widget\TrainingLoad\PolarisedTrainingZone;
 use App\Tests\ContainerTestCase;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PolarisedTrainingZoneTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     public function testGetPercentageIn(): void
     {
         $timeInHeartRateZones = TimeInHeartRateZones::create(
@@ -29,19 +26,25 @@ class PolarisedTrainingZoneTest extends ContainerTestCase
 
     public function testGetRecommendedRange(): void
     {
-        $snapshot = [];
+        $actual = [];
         foreach (PolarisedTrainingZone::cases() as $zone) {
-            $snapshot[$zone->name] = $zone->getRecommendedRange();
+            $actual[$zone->name] = $zone->getRecommendedRange();
         }
-        $this->assertMatchesJsonSnapshot($snapshot);
+        $this->assertEquals(
+            ['LOW' => '75 - 90%', 'MODERATE' => '0 - 10%', 'HIGH' => '10 - 20%'],
+            $actual,
+        );
     }
 
     public function testGetTranslations(): void
     {
-        $snapshot = [];
+        $actual = [];
         foreach (PolarisedTrainingZone::cases() as $zone) {
-            $snapshot[$zone->name] = $zone->trans($this->getContainer()->get(TranslatorInterface::class));
+            $actual[$zone->name] = $zone->trans($this->getContainer()->get(TranslatorInterface::class));
         }
-        $this->assertMatchesJsonSnapshot($snapshot);
+        $this->assertEquals(
+            ['LOW' => 'Z1-2 (Low)', 'MODERATE' => 'Z3 (Mod)', 'HIGH' => 'Z4-5 (High)'],
+            $actual,
+        );
     }
 }

@@ -7,6 +7,7 @@ namespace App\Tests\Domain\Activity\DeleteActivity;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\DeleteActivity\DeleteActivity;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class DeleteActivityTest extends TestCase
@@ -20,19 +21,12 @@ class DeleteActivityTest extends TestCase
         $this->assertEquals(ActivityId::fromUnprefixed('1'), $command->getActivityId());
     }
 
-    public function testFromPayloadThrowsOnMissingActivityId(): void
+    #[TestWith([[]])]
+    #[TestWith([['activityId' => 1]])]
+    public function testFromPayloadThrowsOnInvalidPayload(array $payload): void
     {
         $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('An "activityId" is required.'));
 
-        DeleteActivity::fromPayload([]);
-    }
-
-    public function testFromPayloadThrowsOnNonStringActivityId(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('An "activityId" is required.'));
-
-        DeleteActivity::fromPayload([
-            'activityId' => 1,
-        ]);
+        DeleteActivity::fromPayload($payload);
     }
 }

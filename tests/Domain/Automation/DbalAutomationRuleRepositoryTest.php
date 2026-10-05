@@ -16,12 +16,9 @@ use App\Domain\Automation\RuleConfiguration;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class DbalAutomationRuleRepositoryTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private DbalAutomationRuleRepository $repository;
 
     public function testAddAndFind(): void
@@ -55,8 +52,20 @@ class DbalAutomationRuleRepositoryTest extends ContainerTestCase
                 ->build()
         );
 
-        $this->assertMatchesJsonSnapshot(
-            $this->getConnection()->executeQuery('SELECT * FROM AutomationRule')->fetchAllAssociative()
+        $this->assertEquals(
+            [
+                [
+                    'automationRuleId' => 'automationRule-1',
+                    'label' => 'My rule',
+                    'isEnabled' => 1,
+                    'stopProcessing' => 1,
+                    'sortOrder' => 0,
+                    'conditions' => '[{"type":"distance","config":{"minKm":10}}]',
+                    'actions' => '[{"type":"markAsCommute","config":{"isCommute":true}}]',
+                    'createdOn' => '2023-10-17 16:15:04',
+                ],
+            ],
+            $this->getConnection()->executeQuery('SELECT * FROM AutomationRule')->fetchAllAssociative(),
         );
     }
 

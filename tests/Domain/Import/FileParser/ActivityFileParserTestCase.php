@@ -21,7 +21,7 @@ abstract class ActivityFileParserTestCase extends ContainerTestCase
     use MatchesSnapshots;
     use ProvideSnapshotAssertion;
 
-    protected function assertParsedFileMatchesSnapshot(ParsedActivityFile $parsed): void
+    protected function assertParsedFileMatchesSnapshot(ParsedActivityFile $parsed, bool $hasDrivetrainUsage = false): void
     {
         $activity = $parsed->getActivity();
 
@@ -46,9 +46,13 @@ abstract class ActivityFileParserTestCase extends ContainerTestCase
             $this->getConnection()->executeQuery('SELECT * FROM ActivityLap ORDER BY lapNumber ASC')->fetchAllAssociative()
         );
         $this->assertCompressedDatabaseQueryMatchesSnapshot('SELECT * FROM ActivityStream ORDER BY streamType ASC');
-        $this->assertMatchesJsonSnapshot(
-            $this->getConnection()->executeQuery('SELECT * FROM ActivityDrivetrainUsage ORDER BY position, gearNumber')->fetchAllAssociative()
-        );
+        $drivetrainUsage = $this->getConnection()->executeQuery('SELECT * FROM ActivityDrivetrainUsage ORDER BY position, gearNumber')->fetchAllAssociative();
+        if (!$hasDrivetrainUsage) {
+            $this->assertSame([], $drivetrainUsage);
+
+            return;
+        }
+        $this->assertMatchesJsonSnapshot($drivetrainUsage);
     }
 
     protected function rawFileFromFixture(string $name): RawActivityFile

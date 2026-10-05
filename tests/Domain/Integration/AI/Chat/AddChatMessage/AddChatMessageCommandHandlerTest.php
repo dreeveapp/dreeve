@@ -9,11 +9,9 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use NeuronAI\Chat\Enums\MessageRole;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class AddChatMessageCommandHandlerTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
     private AddChatMessageCommandHandler $addChatMessageCommandHandler;
 
     public function testHandle(): void
@@ -28,7 +26,10 @@ class AddChatMessageCommandHandlerTest extends ContainerTestCase
             unset($result['messageId']);
         }
 
-        $this->assertMatchesJsonSnapshot($results);
+        $this->assertEquals(
+            [['message' => 'Le message', 'messageRole' => 'user', 'on' => '2025-01-01 00:00:00']],
+            $results,
+        );
     }
 
     #[\Override]

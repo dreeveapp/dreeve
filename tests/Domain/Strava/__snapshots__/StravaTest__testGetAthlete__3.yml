@@ -1,8 +1,0 @@
-fifteenMinRateUsage: 1
-fifteenMinRateLimit: 200
-fifteenMinReadRateUsage: 0
-fifteenMinReadRateLimit: 100
-dailyRateUsage: 2
-dailyRateLimit: 2000
-dailyReadRateUsage: 0
-dailyReadRateLimit: 1000

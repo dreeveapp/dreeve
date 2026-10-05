@@ -15,12 +15,9 @@ use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class DbalActivityRouteSignatureRepositoryTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private ActivityRouteSignatureRepository $activityRouteSignatureRepository;
     private RouteGrid $routeGrid;
 
@@ -46,7 +43,13 @@ class DbalActivityRouteSignatureRepositoryTest extends ContainerTestCase
             ->executeQuery('SELECT activityId, polylineChecksum, cellCount FROM ActivityRouteSignature ORDER BY activityId')
             ->fetchAllAssociative();
 
-        $this->assertMatchesJsonSnapshot(Json::encode($results));
+        $this->assertEquals(
+            [
+                ['activityId' => 'activity-test', 'polylineChecksum' => 'aaaaaaaa', 'cellCount' => 3],
+                ['activityId' => 'activity-test-2', 'polylineChecksum' => 'bbbbbbbb', 'cellCount' => 1],
+            ],
+            $results,
+        );
         $this->assertEquals(
             [10, 20, 30],
             Json::uncompressAndDecode($this->getConnection()->executeQuery(

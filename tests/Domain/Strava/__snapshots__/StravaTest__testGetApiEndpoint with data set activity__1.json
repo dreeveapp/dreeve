@@ -1,9 +1,0 @@
-{
-    "base_uri": "https://www.strava.com/",
-    "form_params": {
-        "client_id": "clientId",
-        "client_secret": "clientSecret",
-        "grant_type": "refresh_token",
-        "refresh_token": "refreshToken"
-    }
-}

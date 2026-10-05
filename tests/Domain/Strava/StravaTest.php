@@ -35,6 +35,16 @@ class StravaTest extends TestCase
 {
     use MatchesSnapshots;
 
+    private const array TOKEN_REQUEST_OPTIONS = [
+        'base_uri' => 'https://www.strava.com/',
+        'form_params' => [
+            'client_id' => 'clientId',
+            'client_secret' => 'clientSecret',
+            'grant_type' => 'refresh_token',
+            'refresh_token' => 'refreshToken',
+        ],
+    ];
+
     private Strava $strava;
 
     /**
@@ -92,14 +102,18 @@ class StravaTest extends TestCase
                 if (1 === $matcher->numberOfInvocations()) {
                     $this->assertEquals('POST', $method);
                     $this->assertEquals('oauth/token', $path);
-                    $this->assertMatchesJsonSnapshot($options);
+                    $this->assertEquals(self::TOKEN_REQUEST_OPTIONS, $options);
 
                     return new Response(200, [], Json::encode(['access_token' => 'theAccessToken']));
                 }
 
                 $this->assertEquals('GET', $method);
                 $this->assertEquals('api/v3/athlete/activities', $path);
-                $this->assertMatchesJsonSnapshot($options);
+                $this->assertEquals([
+                    'base_uri' => 'https://www.strava.com/',
+                    'headers' => ['Authorization' => 'Bearer theAccessToken'],
+                    'query' => ['per_page' => 1],
+                ], $options);
 
                 return new Response(200, [], Json::encode([]));
             });
@@ -455,7 +469,10 @@ class StravaTest extends TestCase
         $this->strava->setConsoleOutput($spyOutput);
         $this->strava->getAthlete();
 
-        $this->assertMatchesTextSnapshot((string) $spyOutput);
+        $this->assertSame(
+            '<comment>Whoa there! We are about to hit Strava’s 15-minute API rate limit. Taking a short 3-minute breather before getting back on track. Please be patient</comment>',
+            (string) $spyOutput,
+        );
 
         $this->assertEquals(
             180,
@@ -477,14 +494,17 @@ class StravaTest extends TestCase
                 if (1 === $matcher->numberOfInvocations()) {
                     $this->assertEquals('POST', $method);
                     $this->assertEquals('oauth/token', $path);
-                    $this->assertMatchesJsonSnapshot($options);
+                    $this->assertEquals(self::TOKEN_REQUEST_OPTIONS, $options);
 
                     return new Response(200, [], Json::encode(['access_token' => 'theAccessToken']));
                 }
 
                 $this->assertEquals('GET', $method);
                 $this->assertEquals('api/v3/athlete', $path);
-                $this->assertMatchesJsonSnapshot($options);
+                $this->assertEquals([
+                    'base_uri' => 'https://www.strava.com/',
+                    'headers' => ['Authorization' => 'Bearer theAccessToken'],
+                ], $options);
 
                 return new Response(200, [
                     'x-ratelimit-limit' => '200,2000',
@@ -499,7 +519,20 @@ class StravaTest extends TestCase
             ->method('info');
 
         $this->strava->getAthlete();
-        $this->assertMatchesObjectSnapshot($this->strava->getRateLimit());
+        $rateLimit = $this->strava->getRateLimit();
+        $this->assertSame(
+            [1, 200, 0, 100, 2, 2000, 0, 1000],
+            [
+                $rateLimit?->getFifteenMinRateUsage(),
+                $rateLimit?->getFifteenMinRateLimit(),
+                $rateLimit?->getFifteenMinReadRateUsage(),
+                $rateLimit?->getFifteenMinReadRateLimit(),
+                $rateLimit?->getDailyRateUsage(),
+                $rateLimit?->getDailyRateLimit(),
+                $rateLimit?->getDailyReadRateUsage(),
+                $rateLimit?->getDailyReadRateLimit(),
+            ],
+        );
         $this->assertEquals(
             0,
             $this->sleep->getTotalSleptInSeconds(),
@@ -508,9 +541,10 @@ class StravaTest extends TestCase
 
     /**
      * @param \Closure(Strava): mixed $makeApiCall
+     * @param array<string, mixed>    $expectedOptions
      */
     #[DataProvider('provideApiEndpointCalls')]
-    public function testGetApiEndpoint(\Closure $makeApiCall, string $expectedPath): void
+    public function testGetApiEndpoint(\Closure $makeApiCall, string $expectedPath, array $expectedOptions): void
     {
         $this->filesystemOperator
             ->expects($this->never())
@@ -520,18 +554,18 @@ class StravaTest extends TestCase
         $this->client
             ->expects($matcher)
             ->method('request')
-            ->willReturnCallback(function (string $method, string $path, array $options) use ($matcher, $expectedPath): Response {
+            ->willReturnCallback(function (string $method, string $path, array $options) use ($matcher, $expectedPath, $expectedOptions): Response {
                 if (1 === $matcher->numberOfInvocations()) {
                     $this->assertEquals('POST', $method);
                     $this->assertEquals('oauth/token', $path);
-                    $this->assertMatchesJsonSnapshot($options);
+                    $this->assertEquals(self::TOKEN_REQUEST_OPTIONS, $options);
 
                     return new Response(200, [], Json::encode(['access_token' => 'theAccessToken']));
                 }
 
                 $this->assertEquals('GET', $method);
                 $this->assertEquals($expectedPath, $path);
-                $this->assertMatchesJsonSnapshot($options);
+                $this->assertEquals($expectedOptions, $options);
 
                 return new Response(200, [], Json::encode([]));
             });
@@ -544,7 +578,7 @@ class StravaTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{\Closure(Strava): mixed, string}>
+     * @return iterable<string, array{\Closure(Strava): mixed, string, array<string, mixed>}>
      */
     public static function provideApiEndpointCalls(): iterable
     {
@@ -555,36 +589,69 @@ class StravaTest extends TestCase
                 $strava->getActivities();
             },
             'api/v3/athlete/activities',
+            [
+                'base_uri' => 'https://www.strava.com/',
+                'headers' => ['Authorization' => 'Bearer theAccessToken'],
+                'query' => ['page' => 1, 'per_page' => 200],
+            ],
         ];
 
         yield 'activity' => [
             static fn (Strava $strava) => $strava->getActivity(ActivityId::fromUnprefixed(3)),
             'api/v3/activities/3',
+            [
+                'base_uri' => 'https://www.strava.com/',
+                'headers' => ['Authorization' => 'Bearer theAccessToken'],
+            ],
         ];
 
         yield 'activity zones' => [
             static fn (Strava $strava) => $strava->getActivityZones(ActivityId::fromUnprefixed(3)),
             'api/v3/activities/3/zones',
+            [
+                'base_uri' => 'https://www.strava.com/',
+                'headers' => ['Authorization' => 'Bearer theAccessToken'],
+            ],
         ];
 
         yield 'activity streams' => [
             static fn (Strava $strava) => $strava->getAllActivityStreams(ActivityId::fromUnprefixed(3)),
             'api/v3/activities/3/streams',
+            [
+                'base_uri' => 'https://www.strava.com/',
+                'query' => [
+                    'keys' => 'time,distance,latlng,altitude,velocity_smooth,heartrate,cadence,watts,temp,moving,grade_smooth',
+                ],
+                'headers' => ['Authorization' => 'Bearer theAccessToken'],
+            ],
         ];
 
         yield 'activity photos' => [
             static fn (Strava $strava) => $strava->getActivityPhotos(ActivityId::fromUnprefixed(3)),
             'api/v3/activities/3/photos',
+            [
+                'base_uri' => 'https://www.strava.com/',
+                'headers' => ['Authorization' => 'Bearer theAccessToken'],
+                'query' => ['size' => 5000],
+            ],
         ];
 
         yield 'gear' => [
             static fn (Strava $strava) => $strava->getGear(GearId::fromUnprefixed(3)),
             'api/v3/gear/3',
+            [
+                'base_uri' => 'https://www.strava.com/',
+                'headers' => ['Authorization' => 'Bearer theAccessToken'],
+            ],
         ];
 
         yield 'segment' => [
             static fn (Strava $strava) => $strava->getSegment(SegmentId::fromUnprefixed(3)),
             'api/v3/segments/3',
+            [
+                'base_uri' => 'https://www.strava.com/',
+                'headers' => ['Authorization' => 'Bearer theAccessToken'],
+            ],
         ];
     }
 

@@ -21,12 +21,9 @@ use App\Infrastructure\Measurement\Time\Seconds;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use Money\Money;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class DbalGearRepositoryTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private GearRepository $gearRepository;
 
     public function testFindAndAdd(): void
@@ -124,8 +121,30 @@ class DbalGearRepositoryTest extends ContainerTestCase
                 ->build()
         );
 
-        $this->assertMatchesJsonSnapshot(
-            $this->getConnection()->executeQuery('SELECT * FROM Gear ORDER BY gearId')->fetchAllAssociative()
+        $this->assertEquals(
+            [
+                [
+                    'gearId' => 'gear-1',
+                    'createdOn' => '2023-10-10 00:00:00',
+                    'name' => 'Existing gear',
+                    'isRetired' => 0,
+                    'type' => 'imported',
+                    'localImagePath' => null,
+                    'purchasePriceAmount' => null,
+                    'purchasePriceCurrency' => null,
+                ],
+                [
+                    'gearId' => 'gear-2',
+                    'createdOn' => '2023-10-10 00:00:00',
+                    'name' => 'Existing gear',
+                    'isRetired' => 0,
+                    'type' => 'custom',
+                    'localImagePath' => null,
+                    'purchasePriceAmount' => null,
+                    'purchasePriceCurrency' => null,
+                ],
+            ],
+            $this->getConnection()->executeQuery('SELECT * FROM Gear ORDER BY gearId')->fetchAllAssociative(),
         );
     }
 
@@ -142,8 +161,20 @@ class DbalGearRepositoryTest extends ContainerTestCase
                 ->withIsRetired(true)
         );
 
-        $this->assertMatchesJsonSnapshot(
-            $this->getConnection()->executeQuery('SELECT * FROM Gear')->fetchAllAssociative()
+        $this->assertEquals(
+            [
+                [
+                    'gearId' => 'gear-1',
+                    'createdOn' => '2023-10-10 00:00:00',
+                    'name' => 'Updated gear',
+                    'isRetired' => 1,
+                    'type' => 'imported',
+                    'localImagePath' => null,
+                    'purchasePriceAmount' => 150000,
+                    'purchasePriceCurrency' => 'EUR',
+                ],
+            ],
+            $this->getConnection()->executeQuery('SELECT * FROM Gear')->fetchAllAssociative(),
         );
     }
 

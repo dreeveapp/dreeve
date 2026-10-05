@@ -1,1 +1,0 @@
-<comment>Whoa there! We are about to hit Strava’s 15-minute API rate limit. Taking a short 3-minute breather before getting back on track. Please be patient</comment>

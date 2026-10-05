@@ -8,6 +8,7 @@ use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class TrainingGoalsWidgetTest extends ContainerTestCase
@@ -68,14 +69,26 @@ class TrainingGoalsWidgetTest extends ContainerTestCase
         $this->assertMatchesHtmlSnapshot($render);
     }
 
-    public function testRenderWhenNoGoals(): void
+    #[DataProvider('provideConfigurationsWithoutGoalsToRender')]
+    public function testRenderReturnsNullWithoutGoalsToRender(WidgetConfiguration $configuration): void
     {
         $render = $this->widget->render(
             dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
             now: SerializableDateTime::fromString('2025-10-16'),
-            configuration: WidgetConfiguration::empty()
+            configuration: $configuration
         );
         $this->assertNull($render);
+    }
+
+    public static function provideConfigurationsWithoutGoalsToRender(): iterable
+    {
+        yield 'no goals configured' => [WidgetConfiguration::empty()];
+        yield 'no weekly goals' => [WidgetConfiguration::empty()->add('goals', ['weekly' => []])];
+        yield 'all goals filtered out by their date range' => [WidgetConfiguration::empty()->add('goals', [
+            'weekly' => [
+                ['label' => 'Running', 'type' => 'distance', 'unit' => 'km', 'goal' => 25, 'sportTypesToInclude' => ['Run'], 'restrictToDateRange' => ['from' => '2025-01-01', 'to' => '2025-03-31']],
+            ],
+        ])];
     }
 
     public function testRenderWithRestrictToDateRange(): void
@@ -97,34 +110,6 @@ class TrainingGoalsWidgetTest extends ContainerTestCase
             configuration: $config
         );
         $this->assertMatchesHtmlSnapshot($render);
-    }
-
-    public function testRenderReturnsNullWhenAllGoalsFilteredByDateRange(): void
-    {
-        $config = WidgetConfiguration::empty()
-            ->add('goals', [
-                'weekly' => [
-                    ['label' => 'Running', 'type' => 'distance', 'unit' => 'km', 'goal' => 25, 'sportTypesToInclude' => ['Run'], 'restrictToDateRange' => ['from' => '2025-01-01', 'to' => '2025-03-31']],
-                ],
-            ]);
-
-        $render = $this->widget->render(
-            dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
-            now: SerializableDateTime::fromString('2025-10-16'),
-            configuration: $config
-        );
-        $this->assertNull($render);
-    }
-
-    public function testRenderWhenNoGoalsUseCaseTwo(): void
-    {
-        $render = $this->widget->render(
-            dashboardWidgetId: DashboardWidgetId::fromUnprefixed('test'),
-            now: SerializableDateTime::fromString('2025-10-16'),
-            configuration: WidgetConfiguration::empty()
-            ->add('goals', ['weekly' => []])
-        );
-        $this->assertNull($render);
     }
 
     #[\Override]

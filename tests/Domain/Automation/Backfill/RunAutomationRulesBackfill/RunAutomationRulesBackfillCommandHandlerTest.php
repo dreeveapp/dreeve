@@ -33,12 +33,9 @@ use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Automation\AutomationRuleBuilder;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
 use App\Tests\SpyOutput;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class RunAutomationRulesBackfillCommandHandlerTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
-
     private ActivityRepository $activityRepository;
     private DbalAutomationRuleRepository $automationRuleRepository;
     private AutomationRulesBackfillQueue $queue;
@@ -125,7 +122,14 @@ class RunAutomationRulesBackfillCommandHandlerTest extends ContainerTestCase
         $output = new SpyOutput();
         $this->handler->handle(new RunAutomationRulesBackfill($output));
 
-        $this->assertMatchesTextSnapshot($output);
+        $this->assertSame(
+            "Applying automation rules to existing activities...\n"
+            ."  => Updated \"Morning ride\"\n"
+            ."  => Updated \"Commute ride\"\n"
+            ."  => Updated \"Evening run\"\n"
+            .'Automation rules applied to 3 activities',
+            (string) $output,
+        );
 
         $changed = $this->activityRepository->findWithRawData(ActivityId::fromUnprefixed('changes'));
         $this->assertSame('Commute ride', $changed->getActivity()->getName());

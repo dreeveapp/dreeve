@@ -49,7 +49,8 @@ class FitFileParserTest extends ActivityFileParserTestCase
         $this->givenFitToolReturns((string) file_get_contents(__DIR__.'/fixtures/fit-document-with-gear-changes.json'));
 
         $this->assertParsedFileMatchesSnapshot(
-            $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))
+            $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), '')),
+            hasDrivetrainUsage: true,
         );
     }
 

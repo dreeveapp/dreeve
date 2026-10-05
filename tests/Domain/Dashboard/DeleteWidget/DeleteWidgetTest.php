@@ -6,6 +6,7 @@ namespace App\Tests\Domain\Dashboard\DeleteWidget;
 
 use App\Domain\Dashboard\DeleteWidget\DeleteWidget;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
 class DeleteWidgetTest extends TestCase
@@ -19,19 +20,12 @@ class DeleteWidgetTest extends TestCase
         $this->assertSame('dashboardWidget-eddington', (string) $command->getDashboardWidgetId());
     }
 
-    public function testFromPayloadThrowsOnMissingDashboardWidgetId(): void
+    #[TestWith([[]])]
+    #[TestWith([['dashboardWidgetId' => '   ']])]
+    public function testFromPayloadThrowsOnInvalidPayload(array $payload): void
     {
         $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "dashboardWidgetId" is required.'));
 
-        DeleteWidget::fromPayload([]);
-    }
-
-    public function testFromPayloadThrowsOnEmptyDashboardWidgetId(): void
-    {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "dashboardWidgetId" is required.'));
-
-        DeleteWidget::fromPayload([
-            'dashboardWidgetId' => '   ',
-        ]);
+        DeleteWidget::fromPayload($payload);
     }
 }
