@@ -3,26 +3,19 @@
 namespace App\Tests\Console\Import;
 
 use App\Application\AppStatusChecker;
-use App\Application\AppUrl;
 use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
 use App\Application\Import\FileImport\ImportActivityFiles\ImportActivityFiles;
-use App\Application\Import\ImportSuccessfulNotification;
+use App\Application\Import\ImportedActivities;
+use App\Application\Import\SendImportSuccessfulNotification\SendImportSuccessfulNotification;
 use App\Console\Import\RunFileImportConsoleCommand;
-use App\Domain\Activity\ActivityRepository;
-use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Import\ImportMode;
 use App\Domain\Import\WatchDirectory;
-use App\Domain\Integration\Notification\SendNotification\SendNotification;
-use App\Domain\Settings\DbalSettingsRepository;
-use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
-use App\Infrastructure\CQRS\Command\DomainCommand;
 use App\Infrastructure\FileSystem\PermissionChecker;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Console\ConsoleCommandTestCase;
-use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
 use App\Tests\Infrastructure\FileSystem\SuccessfulPermissionChecker;
 use App\Tests\Infrastructure\FileSystem\UnwritablePermissionChecker;
@@ -34,7 +27,6 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
 {
@@ -43,7 +35,6 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
     private RunFileImportConsoleCommand $command;
     private SpyCommandBus $commandBus;
     private FilesystemOperator $watchStorage;
-    private DbalSettingsRepository $settingsRepository;
 
     public function testRunsWhenFilesArePresent(): void
     {
@@ -58,12 +49,7 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
         $this->assertInstanceOf(ImportActivityFiles::class, $dispatchedCommands[0]);
         $this->assertInstanceOf(CalculateActivityMetrics::class, $dispatchedCommands[1]);
         $this->assertEquals(
-            new SendNotification(
-                title: 'Import successful',
-                message: 'New import of your stats was successful',
-                tags: ['+1'],
-                actionUrl: AppUrl::fromString('http://localhost'),
-            ),
+            new SendImportSuccessfulNotification(ImportedActivities::empty()),
             $dispatchedCommands[2],
         );
     }
@@ -80,10 +66,6 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
 
     public function testStillCalculatesMetricsWhenThereAreNoFiles(): void
     {
-        $this->settingsRepository->saveGroup(SettingsGroup::INTEGRATIONS, [
-            'notifications' => ['notifyOnSuccessfulBuild' => true],
-        ]);
-
         $command = $this->getCommandInApplication(RunFileImportConsoleCommand::NAME);
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
@@ -93,30 +75,6 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
         $dispatchedCommands = $this->commandBus->getDispatchedCommands();
         $this->assertCount(1, $dispatchedCommands);
         $this->assertInstanceOf(CalculateActivityMetrics::class, $dispatchedCommands[0]);
-    }
-
-    public function testDoesNotSendANotificationWhenTheSuccessfulImportNotificationIsDisabled(): void
-    {
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()->build(),
-            [],
-        ));
-        $this->watchStorage->write('watch/ride.fit', 'raw-fit-bytes');
-
-        $this->settingsRepository->saveGroup(SettingsGroup::INTEGRATIONS, [
-            'notifications' => ['notifyOnSuccessfulBuild' => false],
-        ]);
-
-        $command = $this->getCommandInApplication(RunFileImportConsoleCommand::NAME);
-        $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName()]);
-
-        $dispatchedCommands = $this->commandBus->getDispatchedCommands();
-        $this->assertNotEmpty($dispatchedCommands);
-        $this->assertEmpty(array_filter(
-            $dispatchedCommands,
-            static fn (DomainCommand $dispatchedCommand): bool => $dispatchedCommand instanceof SendNotification,
-        ));
     }
 
     public function testPostponesWhenLockIsAlreadyAcquired(): void
@@ -218,7 +176,6 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
 
         $this->watchStorage = $this->getContainer()->get('default.storage');
         $this->watchStorage->deleteDirectory('watch');
-        $this->settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
 
         $this->command = $this->buildCommand($this->commandBus = new SpyCommandBus());
     }
@@ -255,14 +212,8 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
                 clock: PausedClock::fromString(self::TODAY),
                 lockName: LockName::IMPORT_DATA,
             ),
-            importSuccessfulNotification: new ImportSuccessfulNotification(
-                appUrl: AppUrl::fromString('http://localhost'),
-
-                urlGenerator: $this->getContainer()->get(UrlGeneratorInterface::class),
-            ),
             logger: $logger,
             importMode: $importMode,
-            settingsRepository: $this->getContainer()->get(DbalSettingsRepository::class),
         );
     }
 

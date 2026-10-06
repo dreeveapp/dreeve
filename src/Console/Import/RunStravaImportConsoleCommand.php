@@ -8,7 +8,7 @@ use App\Application\AppIsNotReady;
 use App\Application\AppStatusChecker;
 use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
 use App\Application\Import\ImportedActivities;
-use App\Application\Import\ImportSuccessfulNotification;
+use App\Application\Import\SendImportSuccessfulNotification\SendImportSuccessfulNotification;
 use App\Application\Import\StravaImport\DeleteActivitiesMarkedForDeletion\DeleteActivitiesMarkedForDeletion;
 use App\Application\Import\StravaImport\ImportActivities\ImportActivities;
 use App\Application\Import\StravaImport\ImportChallenges\ImportChallenges;
@@ -18,7 +18,6 @@ use App\Application\Import\StravaImport\ProcessRawActivityData\ProcessRawActivit
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Import\ImportMode;
-use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\RateLimit\StravaRateLimits;
 use App\Domain\Strava\Strava;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
@@ -55,9 +54,7 @@ final class RunStravaImportConsoleCommand extends Command
         private readonly LoggerInterface $logger,
         private readonly Mutex $mutex,
         private readonly AppStatusChecker $appStatusChecker,
-        private readonly ImportSuccessfulNotification $importSuccessfulNotification,
         private readonly ImportMode $importMode,
-        private readonly SettingsRepository $settingsRepository,
     ) {
         parent::__construct();
     }
@@ -140,9 +137,7 @@ final class RunStravaImportConsoleCommand extends Command
         $this->mutex->releaseLock();
 
         $this->resourceUsage->stopTimer();
-        if ($this->settingsRepository->integrations()->shouldNotifyOnSuccessfulImport()) {
-            $this->commandBus->dispatch($this->importSuccessfulNotification->create($importedActivities));
-        }
+        $this->commandBus->dispatch(new SendImportSuccessfulNotification($importedActivities));
 
         $output->writeln(sprintf(
             '<info>%s</info>',

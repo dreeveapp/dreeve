@@ -9,10 +9,9 @@ use App\Application\AppStatusChecker;
 use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
 use App\Application\Import\FileImport\ImportActivityFiles\ImportActivityFiles;
 use App\Application\Import\ImportedActivities;
-use App\Application\Import\ImportSuccessfulNotification;
+use App\Application\Import\SendImportSuccessfulNotification\SendImportSuccessfulNotification;
 use App\Domain\Import\ImportMode;
 use App\Domain\Import\WatchDirectory;
-use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\DependencyInjection\Mutex\WithMutex;
 use App\Infrastructure\Doctrine\Migrations\RequiresUpToDateDatabaseSchema;
@@ -44,10 +43,8 @@ final class RunFileImportConsoleCommand extends Command
         private readonly WatchDirectory $watchDirectory,
         private readonly ResourceUsage $resourceUsage,
         private readonly Mutex $mutex,
-        private readonly ImportSuccessfulNotification $importSuccessfulNotification,
         private readonly LoggerInterface $logger,
         private readonly ImportMode $importMode,
-        private readonly SettingsRepository $settingsRepository,
     ) {
         parent::__construct();
     }
@@ -113,9 +110,7 @@ final class RunFileImportConsoleCommand extends Command
             return Command::SUCCESS;
         }
 
-        if ($this->settingsRepository->integrations()->shouldNotifyOnSuccessfulImport()) {
-            $this->commandBus->dispatch($this->importSuccessfulNotification->create($importedActivities));
-        }
+        $this->commandBus->dispatch(new SendImportSuccessfulNotification($importedActivities));
 
         $output->writeln(sprintf(
             '<info>%s</info>',
