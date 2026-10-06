@@ -9,6 +9,7 @@ use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
 use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
 use App\Application\Import\FileImport\ImportActivityFiles\ImportActivityFiles;
+use App\Application\Import\ImportedActivities;
 use App\Domain\Import\ImportMode;
 use App\Domain\Import\WatchDirectory;
 use App\Domain\Integration\Notification\SendNotification\SendNotification;
@@ -84,11 +85,15 @@ final class RunFileImportConsoleCommand extends Command
             return Command::SUCCESS;
         }
 
+        $importedActivities = ImportedActivities::empty();
         try {
             $this->appStatusChecker->ensureIsReadyForFileImport();
 
             if ($hasFilesToProcess) {
-                $this->commandBus->dispatch(new ImportActivityFiles($output));
+                $this->commandBus->dispatch(new ImportActivityFiles(
+                    output: $output,
+                    importedActivities: $importedActivities,
+                ));
             }
             $this->commandBus->dispatch(new CalculateActivityMetrics($output));
         } catch (AppIsNotReady $e) {

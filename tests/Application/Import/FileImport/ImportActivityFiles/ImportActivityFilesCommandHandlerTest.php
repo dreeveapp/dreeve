@@ -6,6 +6,8 @@ namespace App\Tests\Application\Import\FileImport\ImportActivityFiles;
 
 use App\Application\Import\FileImport\ImportActivityFiles\ImportActivityFiles;
 use App\Application\Import\FileImport\ImportActivityFiles\ImportActivityFilesCommandHandler;
+use App\Application\Import\ImportedActivities;
+use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ImportSource;
@@ -36,7 +38,8 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->watchStorage->write('watch/ride.tcx', $this->fixture('activity.tcx'));
 
         $output = new SpyOutput();
-        $this->handler->handle(new ImportActivityFiles($output));
+        $importedActivities = ImportedActivities::empty();
+        $this->handler->handle(new ImportActivityFiles($output, $importedActivities));
 
         $fileImports = $this->getConnection()
             ->executeQuery('SELECT * FROM FileImport ORDER BY importedOn ASC')
@@ -53,6 +56,7 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
 
         $this->assertSame(ImportSource::TCX_FILE, $activity->getImportSource());
         $this->assertSame('Night Ride', $activity->getName());
+        $this->assertEquals([$activityId], array_map(static fn (Activity $importedActivity): ActivityId => $importedActivity->getId(), $importedActivities->toArray()));
         $this->assertSame('Garmin Edge 530', $activity->getDeviceName());
         $this->assertNotNull($activity->getStartingCoordinate());
         $this->assertNotNull($activity->getEncodedPolyline());
@@ -78,7 +82,7 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->watchStorage->write('watch/Ride_2026-07-02.TCX', $this->fixture('activity.tcx'));
 
         $output = new SpyOutput();
-        $this->handler->handle(new ImportActivityFiles($output));
+        $this->handler->handle(new ImportActivityFiles($output, ImportedActivities::empty()));
 
         $fileImports = $this->getConnection()
             ->executeQuery('SELECT * FROM FileImport ORDER BY importedOn ASC')
@@ -100,7 +104,7 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->watchStorage->write('watch/ride3.tcx', $bytes);
 
         $output = new SpyOutput();
-        $this->handler->handle(new ImportActivityFiles($output));
+        $this->handler->handle(new ImportActivityFiles($output, ImportedActivities::empty()));
 
         $this->assertCount(3, $this->getConnection()
             ->executeQuery('SELECT * FROM FileImport ORDER BY importedOn ASC')
@@ -134,7 +138,7 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->watchStorage->write('watch/run2.gpx', $bytes);
 
         $output = new SpyOutput();
-        $this->handler->handle(new ImportActivityFiles($output));
+        $this->handler->handle(new ImportActivityFiles($output, ImportedActivities::empty()));
 
         $fileImports = array_values($this->getConnection()
             ->executeQuery('SELECT * FROM FileImport ORDER BY importedOn ASC')
@@ -151,7 +155,7 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->watchStorage->write('watch/notes.txt', 'just some text');
 
         $output = new SpyOutput();
-        $this->handler->handle(new ImportActivityFiles($output));
+        $this->handler->handle(new ImportActivityFiles($output, ImportedActivities::empty()));
 
         $this->assertCount(0, $this->getConnection()
             ->executeQuery('SELECT * FROM FileImport ORDER BY importedOn ASC')
@@ -171,7 +175,7 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->watchStorage->write('watch/broken.tcx', 'this is not valid xml');
 
         $output = new SpyOutput();
-        $this->handler->handle(new ImportActivityFiles($output));
+        $this->handler->handle(new ImportActivityFiles($output, ImportedActivities::empty()));
 
         $fileImports = $this->getConnection()
             ->executeQuery('SELECT * FROM FileImport ORDER BY importedOn ASC')
@@ -194,7 +198,7 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
     public function testHandleWithoutImportDirectoryIsNoOp(): void
     {
         $output = new SpyOutput();
-        $this->handler->handle(new ImportActivityFiles($output));
+        $this->handler->handle(new ImportActivityFiles($output, ImportedActivities::empty()));
 
         $this->assertCount(0, $this->getConnection()
             ->executeQuery('SELECT * FROM FileImport ORDER BY importedOn ASC')
@@ -215,7 +219,7 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $this->cacheableRenderer->render($cacheability, $render(...));
 
         $this->watchStorage->write('watch/ride.tcx', $this->fixture('activity.tcx'));
-        $this->handler->handle(new ImportActivityFiles(new SpyOutput()));
+        $this->handler->handle(new ImportActivityFiles(new SpyOutput(), ImportedActivities::empty()));
 
         $this->cacheableRenderer->render($cacheability, $render(...));
         $this->assertEquals(1, $render->renderCount);

@@ -2,7 +2,9 @@
 
 namespace App\Tests\Application\Import\StravaImport\ImportActivities;
 
+use App\Application\Import\ImportedActivities;
 use App\Application\Import\StravaImport\ImportActivities\ImportActivities;
+use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivityIds;
@@ -57,7 +59,7 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
         $output = new SpyOutput();
         $this->strava->setMaxNumberOfCallsBeforeTriggering429(0);
 
-        $this->commandBus->dispatch(new ImportActivities($output, null));
+        $this->commandBus->dispatch(new ImportActivities($output, null, ImportedActivities::empty()));
 
         $this->assertSame(
             "Importing activities...\n"
@@ -92,9 +94,14 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
         ));
         $this->getContainer()->get(ActivityRepository::class)->markActivityStreamsAsImported(ActivityId::fromUnprefixed(4));
 
-        $this->commandBus->dispatch(new ImportActivities($output, null));
+        $importedActivities = ImportedActivities::empty();
+        $this->commandBus->dispatch(new ImportActivities($output, null, $importedActivities));
 
         $this->assertMatchesTextSnapshot((string) $output);
+        $this->assertSame(
+            ['Night Ride1', 'Watopia Flat Forward in London', 'Night Ride4'],
+            array_map(static fn (Activity $activity): string => $activity->getName(), $importedActivities->toArray()),
+        );
         $this->assertFileSystemWrites($this->getContainer()->get('file.storage'));
 
         $this->assertSame(
@@ -118,7 +125,7 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
         $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
         $this->strava->triggerExceptionOnNextCall();
 
-        $this->commandBus->dispatch(new ImportActivities($output, null));
+        $this->commandBus->dispatch(new ImportActivities($output, null, ImportedActivities::empty()));
         $this->assertSame(
             "Importing activities...\n"
             .'<error>Strava API threw error: The error</error>',
@@ -137,7 +144,7 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
             ->build()
         );
 
-        $this->commandBus->dispatch(new ImportActivities($output, null));
+        $this->commandBus->dispatch(new ImportActivities($output, null, ImportedActivities::empty()));
         $this->assertMatchesTextSnapshot((string) $output);
     }
 
@@ -216,7 +223,7 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
             ->withActivityId(ActivityId::fromUnprefixed(1001))
             ->build());
 
-        $this->commandBus->dispatch(new ImportActivities($output, null));
+        $this->commandBus->dispatch(new ImportActivities($output, null, ImportedActivities::empty()));
 
         $this->assertMatchesTextSnapshot($output);
         $this->assertCount(
@@ -245,7 +252,7 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
         ));
 
         $this->expectExceptionObject(new \RuntimeException('All activities appear to be marked for deletion. This seems like a configuration issue. Aborting to prevent data loss'));
-        $this->commandBus->dispatch(new ImportActivities($output, null));
+        $this->commandBus->dispatch(new ImportActivities($output, null, ImportedActivities::empty()));
     }
 
     public function testHandleWithoutActivityDelete(): void
@@ -259,7 +266,7 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
                 ->build(), []
         ));
 
-        $this->commandBus->dispatch(new ImportActivities($output, null));
+        $this->commandBus->dispatch(new ImportActivities($output, null, ImportedActivities::empty()));
 
         $this->assertMatchesTextSnapshot($output);
     }
@@ -287,7 +294,7 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
                 ->build(), []
         ));
 
-        $this->commandBus->dispatch(new ImportActivities(new SpyOutput(), null));
+        $this->commandBus->dispatch(new ImportActivities(new SpyOutput(), null, ImportedActivities::empty()));
 
         $this->assertEquals(
             null === $expectedGearId ? null : GearId::fromUnprefixed($expectedGearId),
@@ -310,7 +317,7 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
         $this->strava->returnActivityWithoutSegmentEfforts();
 
         $this->expectExceptionObject(new \RuntimeException('Activity 2 is expected to include segment_efforts in the raw Strava data. This appears to be a regression introduced in a recent version. Please report this as a bug on GitHub.'));
-        $this->commandBus->dispatch(new ImportActivities($output, null));
+        $this->commandBus->dispatch(new ImportActivities($output, null, ImportedActivities::empty()));
     }
 
     public function testHandleWithActivityVisibilitiesToImport(): void
@@ -326,7 +333,7 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
                 ->build(), []
         ));
 
-        $this->commandBus->dispatch(new ImportActivities($output, null));
+        $this->commandBus->dispatch(new ImportActivities($output, null, ImportedActivities::empty()));
 
         $this->assertMatchesTextSnapshot($output);
 
@@ -349,7 +356,7 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
                 ->build(), []
         ));
 
-        $this->commandBus->dispatch(new ImportActivities($output, null));
+        $this->commandBus->dispatch(new ImportActivities($output, null, ImportedActivities::empty()));
 
         $this->assertMatchesTextSnapshot($output);
 
@@ -375,8 +382,8 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
                 ->build(), []
         ));
 
-        $this->commandBus->dispatch(new ImportActivities(new SpyOutput(), null));
-        $this->commandBus->dispatch(new ImportActivities(new SpyOutput(), null));
+        $this->commandBus->dispatch(new ImportActivities(new SpyOutput(), null, ImportedActivities::empty()));
+        $this->commandBus->dispatch(new ImportActivities(new SpyOutput(), null, ImportedActivities::empty()));
 
         $this->assertEquals(
             3,
@@ -402,7 +409,7 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
                 ->build(), []
         ));
 
-        $this->commandBus->dispatch(new ImportActivities($output, null));
+        $this->commandBus->dispatch(new ImportActivities($output, null, ImportedActivities::empty()));
 
         $this->assertStringNotContainsString('Watopia Flat Forward in London', (string) $output);
         $this->assertStringEndsWith('  => [4/7] Imported activity: "Night Ride5 - 11-09-2023"', (string) $output);
@@ -459,7 +466,7 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
             []
         ));
 
-        $this->commandBus->dispatch(new ImportActivities($output, ActivityIds::fromArray([ActivityId::fromUnprefixed(4)])));
+        $this->commandBus->dispatch(new ImportActivities($output, ActivityIds::fromArray([ActivityId::fromUnprefixed(4)]), ImportedActivities::empty()));
 
         $this->assertSame(
             "Importing activities...\n"

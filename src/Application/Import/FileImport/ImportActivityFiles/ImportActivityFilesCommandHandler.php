@@ -120,6 +120,7 @@ final readonly class ImportActivityFilesCommandHandler implements CommandHandler
                 activity: $activity,
                 rawData: [],
             ));
+            $command->getImportedActivities()->add($activity);
 
             foreach ($context->getStreams() as $stream) {
                 $this->activityStreamRepository->add($stream);

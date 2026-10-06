@@ -8,6 +8,7 @@ use App\Application\AppIsNotReady;
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
 use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
+use App\Application\Import\ImportedActivities;
 use App\Application\Import\StravaImport\DeleteActivitiesMarkedForDeletion\DeleteActivitiesMarkedForDeletion;
 use App\Application\Import\StravaImport\ImportActivities\ImportActivities;
 use App\Application\Import\StravaImport\ImportChallenges\ImportChallenges;
@@ -98,12 +99,14 @@ final class RunStravaImportConsoleCommand extends Command
             return Command::SUCCESS;
         }
 
+        $importedActivities = ImportedActivities::empty();
         try {
             $this->appStatusChecker->ensureIsReadyForStravaImport();
 
             $this->commandBus->dispatch(new ImportActivities(
                 output: $output,
-                restrictToActivityIds: $restrictToActivityIds
+                restrictToActivityIds: $restrictToActivityIds,
+                importedActivities: $importedActivities,
             ));
             $this->commandBus->dispatch(new ImportGear(
                 output: $output,

@@ -165,6 +165,7 @@ final readonly class ImportActivitiesCommandHandler implements CommandHandler
                     activity: $activity,
                     rawData: $context->getRawStravaData()
                 ));
+                $command->getImportedActivities()->add($activity);
 
                 ++$numberOfNewActivitiesProcessed;
             } else {
