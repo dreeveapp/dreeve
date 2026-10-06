@@ -31,6 +31,11 @@ final readonly class DayTimeStatsWidget implements Widget
         return $this->translator->trans('Daytime stats');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--day-time-stats';

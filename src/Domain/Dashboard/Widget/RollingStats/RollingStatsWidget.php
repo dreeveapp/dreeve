@@ -40,6 +40,11 @@ final readonly class RollingStatsWidget implements Widget, DependsOnCurrentDay
         return $this->translator->trans('Rolling stats');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--rolling-stats';

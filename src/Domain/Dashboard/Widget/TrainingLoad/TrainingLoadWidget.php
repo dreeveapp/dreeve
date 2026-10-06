@@ -39,6 +39,11 @@ final readonly class TrainingLoadWidget implements Widget, DependsOnCurrentDay
         return $this->translator->trans('Training Load Analysis');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--training-load';

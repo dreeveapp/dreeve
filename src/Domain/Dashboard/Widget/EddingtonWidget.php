@@ -28,6 +28,11 @@ final readonly class EddingtonWidget implements Widget
         return $this->translator->trans('Eddington');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--eddington';

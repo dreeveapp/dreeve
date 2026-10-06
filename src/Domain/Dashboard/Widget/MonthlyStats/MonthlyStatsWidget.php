@@ -36,6 +36,11 @@ final readonly class MonthlyStatsWidget implements Widget
         return $this->translator->trans('Monthly stats');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--monthly-stats';

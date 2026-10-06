@@ -29,6 +29,11 @@ final readonly class HeartRateZonesWidget implements Widget
         return $this->translator->trans('Heart rate zones');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--heart-rate-zones';

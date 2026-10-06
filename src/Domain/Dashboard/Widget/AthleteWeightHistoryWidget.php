@@ -26,6 +26,11 @@ final readonly class AthleteWeightHistoryWidget implements Widget
         return $this->translator->trans('Weight history');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--athlete-weight-history';

@@ -18,6 +18,9 @@ class DashboardSettingsRequestHandlerTest extends AdminWebTestCase
 
         $this->assertCount(1, $crawler->filter('button[data-dropdown="addWidgetDropdown"]'));
         $this->assertGreaterThan(0, $crawler->filter('#addWidgetDropdown form[data-dispatch-command="add-widget"]')->count());
+        $addWidgetLabels = $crawler->filter('#addWidgetDropdown button span.flex-1')->each(static fn ($label): string => $label->text());
+        $this->assertContains('Most recent activities (list)', $addWidgetLabels);
+        $this->assertContains('Most recent activities (cards)', $addWidgetLabels);
 
         $this->assertGreaterThan(0, $crawler->filter('a[href*="/admin/settings/dashboard/reset"]')->count());
 

@@ -27,6 +27,11 @@ final readonly class IntroTextWidget implements Widget, DependsOnCurrentDay, Ren
         return $this->translator->trans('Intro text', domain: 'admin');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--intro-text';

@@ -35,6 +35,11 @@ final readonly class TrainingGoalsWidget implements Widget, DependsOnCurrentDay,
         return $this->translator->trans('Training goals');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--training-goals';

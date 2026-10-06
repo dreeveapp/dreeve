@@ -14,6 +14,8 @@ interface Widget
 {
     public function getLabel(): string;
 
+    public function getAdminLabel(): string;
+
     public function getTemplateName(): string;
 
     public function getCacheTags(): CacheTags;

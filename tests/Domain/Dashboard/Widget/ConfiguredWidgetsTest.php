@@ -79,6 +79,26 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         $this->assertSame('My big rides', $configuredWidgets[1]->getLabel());
     }
 
+    public function testAdminLabelIsTheConfiguredTitleAndFallsBackToTheWidgetAdminLabel(): void
+    {
+        $this->saveLayout([
+            ['id' => 'dashboardWidget-1', 'widget' => 'mostRecentActivities', 'width' => 66],
+            ['id' => 'dashboardWidget-2', 'widget' => 'mostRecentActivityCards', 'width' => 66],
+            ['id' => 'dashboardWidget-3', 'widget' => 'mostRecentActivityCards', 'width' => 66, 'config' => ['title' => 'My latest rides']],
+            ['id' => 'dashboardWidget-4', 'widget' => 'eddington', 'width' => 33],
+        ]);
+
+        /** @var ConfiguredWidget[] $configuredWidgets */
+        $configuredWidgets = iterator_to_array($this->getContainer()->get(ConfiguredWidgets::class));
+
+        $this->assertSame('Most recent activities (list)', $configuredWidgets[0]->getAdminLabel());
+        $this->assertSame('Most recent activities', $configuredWidgets[0]->getLabel());
+        $this->assertSame('Most recent activities (cards)', $configuredWidgets[1]->getAdminLabel());
+        $this->assertSame('Most recent activities', $configuredWidgets[1]->getLabel());
+        $this->assertSame('My latest rides', $configuredWidgets[2]->getAdminLabel());
+        $this->assertSame('Eddington', $configuredWidgets[3]->getAdminLabel());
+    }
+
     public function testTrainingGoalsWidgetWithoutConfiguredGoalsStillNeedsConfiguration(): void
     {
         $this->saveLayout([
@@ -159,7 +179,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         $this->assertArrayHasKey('eddington', $availableWidgets);
         $this->assertArrayHasKey('gearStats', $availableWidgets);
 
-        $labels = array_map(static fn ($widget): string => $widget->getLabel(), $availableWidgets);
+        $labels = array_map(static fn ($widget): string => $widget->getAdminLabel(), $availableWidgets);
         $sorted = $labels;
         uasort($sorted, strcasecmp(...));
         $this->assertSame(array_values($sorted), array_values($labels));

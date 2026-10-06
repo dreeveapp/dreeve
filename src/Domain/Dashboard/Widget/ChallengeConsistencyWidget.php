@@ -30,6 +30,11 @@ final readonly class ChallengeConsistencyWidget implements Widget, HasWideConfig
         return $this->translator->trans('Challenge consistency');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--challenge-consistency';

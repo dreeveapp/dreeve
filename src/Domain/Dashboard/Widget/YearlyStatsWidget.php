@@ -40,6 +40,11 @@ final readonly class YearlyStatsWidget implements Widget, DependsOnCurrentDay
         return $this->translator->trans('Yearly stats');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--yearly-stats';

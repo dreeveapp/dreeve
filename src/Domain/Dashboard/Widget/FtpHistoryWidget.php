@@ -31,6 +31,11 @@ final readonly class FtpHistoryWidget implements Widget
         return $this->translator->trans('FTP history');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--ftp-history';

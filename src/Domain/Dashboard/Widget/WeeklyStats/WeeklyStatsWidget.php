@@ -38,6 +38,11 @@ final readonly class WeeklyStatsWidget implements Widget, DependsOnCurrentDay
         return $this->translator->trans('Weekly stats');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--weekly-stats';

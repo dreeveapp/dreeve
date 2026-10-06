@@ -36,6 +36,11 @@ final readonly class AthleteProfileWidget implements Widget, DependsOnCurrentDay
         return $this->translator->trans('Athlete profile');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--athlete-profile';

@@ -37,6 +37,11 @@ final readonly class ActivityGridWidget implements Widget, DependsOnCurrentDay
         return $this->translator->trans('Activity heatmap');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--activity-grid';

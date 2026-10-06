@@ -41,6 +41,11 @@ final readonly class GearStatsWidget implements Widget
         return $this->translator->trans('Total hours spent per gear');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--gear-stats';

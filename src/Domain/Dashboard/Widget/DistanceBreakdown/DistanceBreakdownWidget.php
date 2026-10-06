@@ -33,6 +33,11 @@ final readonly class DistanceBreakdownWidget implements Widget
         return $this->translator->trans('Distance breakdown');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--distance-breakdown';

@@ -36,6 +36,11 @@ final readonly class UpcomingMaintenanceWidget implements Widget, DependsOnCurre
         return $this->translator->trans('Upcoming maintenance');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--upcoming-maintenance';

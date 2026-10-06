@@ -31,6 +31,11 @@ final readonly class WeekdayStatsWidget implements Widget
         return $this->translator->trans('Stats per weekday');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--weekday-stats';

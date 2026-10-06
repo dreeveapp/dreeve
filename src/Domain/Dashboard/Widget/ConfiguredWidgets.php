@@ -64,7 +64,7 @@ final class ConfiguredWidgets implements \IteratorAggregate
     public function getAvailableWidgets(): array
     {
         $widgets = $this->widgets;
-        uasort($widgets, static fn (Widget $a, Widget $b): int => strcasecmp($a->getLabel(), $b->getLabel()));
+        uasort($widgets, static fn (Widget $a, Widget $b): int => strcasecmp($a->getAdminLabel(), $b->getAdminLabel()));
 
         return $widgets;
     }

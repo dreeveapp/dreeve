@@ -26,6 +26,11 @@ final readonly class MostRecentChallengesCompletedWidget implements Widget
         return $this->translator->trans('Most recent challenges');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--most-recent-challenges';

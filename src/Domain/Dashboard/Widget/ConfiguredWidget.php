@@ -37,6 +37,11 @@ final readonly class ConfiguredWidget
         return $this->configuration->getTitle() ?? $this->widget->getLabel();
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->configuration->getTitle() ?? $this->widget->getAdminLabel();
+    }
+
     public function hasConfigurableTitle(): bool
     {
         return !$this->widget instanceof RendersWithoutTitle;

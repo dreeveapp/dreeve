@@ -6,7 +6,7 @@
         <div class="w-full {{ configuredWidget.hasWideConfigurationForm() ? 'max-w-3xl' : 'max-w-lg' }} overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold">
-                    {{ "Configure {widget}"|trans({'{widget}': configuredWidget.getLabel()}, 'admin') }}
+                    {{ "Configure {widget}"|trans({'{widget}': configuredWidget.getAdminLabel()}, 'admin') }}
                 </h3>
                 <a href="{{ dashboardUrl }}" aria-label="{{ "Close"|trans({}, 'admin') }}"
                    class="grid place-items-center size-8 rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900">

@@ -34,6 +34,11 @@ final readonly class StreaksWidget implements Widget, DependsOnCurrentDay
         return $this->translator->trans('Current streaks');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--streaks';

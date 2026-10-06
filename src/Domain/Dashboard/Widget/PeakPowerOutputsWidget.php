@@ -33,6 +33,11 @@ final readonly class PeakPowerOutputsWidget implements Widget, DependsOnCurrentD
         return $this->translator->trans('Peak power outputs');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--peak-power-outputs';

@@ -33,6 +33,11 @@ final readonly class MostRecentActivityCardsWidget implements Widget
         return $this->translator->trans('Most recent activities');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->translator->trans('Most recent activities (cards)', domain: 'admin');
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--most-recent-activity-cards';

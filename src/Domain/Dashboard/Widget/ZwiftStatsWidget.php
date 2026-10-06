@@ -26,6 +26,11 @@ final readonly class ZwiftStatsWidget implements Widget
         return $this->translator->trans('Zwift stats');
     }
 
+    public function getAdminLabel(): string
+    {
+        return $this->getLabel();
+    }
+
     public function getTemplateName(): string
     {
         return 'widget--zwift-stats';
