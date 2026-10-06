@@ -4,6 +4,7 @@ namespace App\Tests\Console\Strava;
 
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
+use App\Application\Import\ImportSuccessfulNotification;
 use App\Application\Import\StravaImport\ImportActivities\ImportActivities;
 use App\Console\Import\RunStravaImportConsoleCommand;
 use App\Console\Strava\ProcessStravaWebhooksConsoleCommand;
@@ -27,6 +28,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
 {
@@ -156,7 +158,11 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
                 lockName: LockName::IMPORT_DATA,
             ),
             appStatusChecker: new AppStatusChecker(new SuccessfulPermissionChecker()),
-            appUrl: AppUrl::fromString('http://localhost'),
+            importSuccessfulNotification: new ImportSuccessfulNotification(
+                appUrl: AppUrl::fromString('http://localhost'),
+
+                urlGenerator: $this->getContainer()->get(UrlGeneratorInterface::class),
+            ),
             importMode: ImportMode::STRAVA_API,
             settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );

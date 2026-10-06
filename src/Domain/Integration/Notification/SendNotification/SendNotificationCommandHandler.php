@@ -33,7 +33,7 @@ final readonly class SendNotificationCommandHandler implements CommandHandler
                     'actions' => Json::encode([
                         [
                             'action' => 'view',
-                            'label' => 'Open app',
+                            'label' => $command->getActionLabel(),
                             'url' => $command->getActionUrl(),
                             'clear' => true,
                         ],

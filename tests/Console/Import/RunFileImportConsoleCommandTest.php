@@ -6,6 +6,7 @@ use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
 use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
 use App\Application\Import\FileImport\ImportActivityFiles\ImportActivityFiles;
+use App\Application\Import\ImportSuccessfulNotification;
 use App\Console\Import\RunFileImportConsoleCommand;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
@@ -33,6 +34,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
 {
@@ -253,7 +255,11 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
                 clock: PausedClock::fromString(self::TODAY),
                 lockName: LockName::IMPORT_DATA,
             ),
-            appUrl: AppUrl::fromString('http://localhost'),
+            importSuccessfulNotification: new ImportSuccessfulNotification(
+                appUrl: AppUrl::fromString('http://localhost'),
+
+                urlGenerator: $this->getContainer()->get(UrlGeneratorInterface::class),
+            ),
             logger: $logger,
             importMode: $importMode,
             settingsRepository: $this->getContainer()->get(DbalSettingsRepository::class),

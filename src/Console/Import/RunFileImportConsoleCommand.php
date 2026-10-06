@@ -6,13 +6,12 @@ namespace App\Console\Import;
 
 use App\Application\AppIsNotReady;
 use App\Application\AppStatusChecker;
-use App\Application\AppUrl;
 use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
 use App\Application\Import\FileImport\ImportActivityFiles\ImportActivityFiles;
 use App\Application\Import\ImportedActivities;
+use App\Application\Import\ImportSuccessfulNotification;
 use App\Domain\Import\ImportMode;
 use App\Domain\Import\WatchDirectory;
-use App\Domain\Integration\Notification\SendNotification\SendNotification;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\DependencyInjection\Mutex\WithMutex;
@@ -45,7 +44,7 @@ final class RunFileImportConsoleCommand extends Command
         private readonly WatchDirectory $watchDirectory,
         private readonly ResourceUsage $resourceUsage,
         private readonly Mutex $mutex,
-        private readonly AppUrl $appUrl,
+        private readonly ImportSuccessfulNotification $importSuccessfulNotification,
         private readonly LoggerInterface $logger,
         private readonly ImportMode $importMode,
         private readonly SettingsRepository $settingsRepository,
@@ -115,11 +114,9 @@ final class RunFileImportConsoleCommand extends Command
         }
 
         if ($this->settingsRepository->integrations()->shouldNotifyOnSuccessfulImport()) {
-            $this->commandBus->dispatch(new SendNotification(
-                title: 'Import successful',
-                message: sprintf('New import of your stats was successful in %ss', $this->resourceUsage->getRunTimeInSeconds()),
-                tags: ['+1'],
-                actionUrl: $this->appUrl
+            $this->commandBus->dispatch($this->importSuccessfulNotification->create(
+                importedActivities: $importedActivities,
+                runTimeInSeconds: $this->resourceUsage->getRunTimeInSeconds(),
             ));
         }
 

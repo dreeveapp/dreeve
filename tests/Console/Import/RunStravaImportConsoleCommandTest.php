@@ -5,6 +5,7 @@ namespace App\Tests\Console\Import;
 use App\Application\AppStatusChecker;
 use App\Application\AppUrl;
 use App\Application\Import\CalculateActivityMetrics\CalculateActivityMetrics;
+use App\Application\Import\ImportSuccessfulNotification;
 use App\Application\Import\StravaImport\DeleteActivitiesMarkedForDeletion\DeleteActivitiesMarkedForDeletion;
 use App\Application\Import\StravaImport\ImportActivities\ImportActivities;
 use App\Application\Import\StravaImport\ImportChallenges\ImportChallenges;
@@ -37,6 +38,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RunStravaImportConsoleCommandTest extends ConsoleCommandTestCase
 {
@@ -249,7 +251,11 @@ class RunStravaImportConsoleCommandTest extends ConsoleCommandTestCase
                 lockName: LockName::IMPORT_DATA,
             ),
             appStatusChecker: $appStatusChecker ?? new AppStatusChecker(new SuccessfulPermissionChecker()),
-            appUrl: AppUrl::fromString('http://localhost'),
+            importSuccessfulNotification: new ImportSuccessfulNotification(
+                appUrl: AppUrl::fromString('http://localhost'),
+
+                urlGenerator: $this->getContainer()->get(UrlGeneratorInterface::class),
+            ),
             importMode: $importMode,
             settingsRepository: $this->getContainer()->get(DbalSettingsRepository::class),
         );

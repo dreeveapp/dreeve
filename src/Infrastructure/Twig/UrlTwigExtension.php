@@ -37,7 +37,7 @@ final readonly class UrlTwigExtension
     #[AsTwigFunction('absoluteUrl')]
     public function toAbsoluteUrl(string $path): string
     {
-        return rtrim((string) $this->appUrl, '/').'/'.ltrim($path, '/');
+        return (string) $this->appUrl->withPath($path);
     }
 
     #[AsTwigFunction('relativeUrlWithRedirectTo')]

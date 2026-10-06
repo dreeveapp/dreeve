@@ -16,4 +16,9 @@ final readonly class AppUrl extends Url
 
         return ltrim($basePath, '/') ?: null;
     }
+
+    public function withPath(string $path): Url
+    {
+        return Url::fromString(rtrim((string) $this, '/').'/'.ltrim($path, '/'));
+    }
 }

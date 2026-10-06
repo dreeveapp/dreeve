@@ -15,6 +15,7 @@ final readonly class SendNotification extends DomainCommand
         /** @var array<string> */
         private array $tags,
         private ?Url $actionUrl,
+        private string $actionLabel = 'Open app',
     ) {
     }
 
@@ -39,5 +40,10 @@ final readonly class SendNotification extends DomainCommand
     public function getActionUrl(): ?Url
     {
         return $this->actionUrl;
+    }
+
+    public function getActionLabel(): string
+    {
+        return $this->actionLabel;
     }
 }
