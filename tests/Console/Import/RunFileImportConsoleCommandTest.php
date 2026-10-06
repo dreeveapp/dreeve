@@ -60,7 +60,7 @@ class RunFileImportConsoleCommandTest extends ConsoleCommandTestCase
         $this->assertEquals(
             new SendNotification(
                 title: 'Import successful',
-                message: 'New import of your stats was successful in 10s',
+                message: 'New import of your stats was successful',
                 tags: ['+1'],
                 actionUrl: AppUrl::fromString('http://localhost'),
             ),

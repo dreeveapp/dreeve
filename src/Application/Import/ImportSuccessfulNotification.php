@@ -17,14 +17,14 @@ final readonly class ImportSuccessfulNotification
     ) {
     }
 
-    public function create(ImportedActivities $importedActivities, float $runTimeInSeconds): SendNotification
+    public function create(ImportedActivities $importedActivities): SendNotification
     {
         $numberOfImportedActivities = count($importedActivities);
 
         if (0 === $numberOfImportedActivities) {
             return new SendNotification(
                 title: 'Import successful',
-                message: sprintf('New import of your stats was successful in %ss', $runTimeInSeconds),
+                message: 'New import of your stats was successful',
                 tags: ['+1'],
                 actionUrl: $this->appUrl,
             );

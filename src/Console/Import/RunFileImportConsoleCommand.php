@@ -114,10 +114,7 @@ final class RunFileImportConsoleCommand extends Command
         }
 
         if ($this->settingsRepository->integrations()->shouldNotifyOnSuccessfulImport()) {
-            $this->commandBus->dispatch($this->importSuccessfulNotification->create(
-                importedActivities: $importedActivities,
-                runTimeInSeconds: $this->resourceUsage->getRunTimeInSeconds(),
-            ));
+            $this->commandBus->dispatch($this->importSuccessfulNotification->create($importedActivities));
         }
 
         $output->writeln(sprintf(

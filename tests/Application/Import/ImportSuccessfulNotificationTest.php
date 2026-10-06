@@ -24,11 +24,11 @@ class ImportSuccessfulNotificationTest extends ContainerTestCase
         $this->assertEquals(
             new SendNotification(
                 title: 'Import successful',
-                message: 'New import of your stats was successful in 12.5s',
+                message: 'New import of your stats was successful',
                 tags: ['+1'],
                 actionUrl: AppUrl::fromString('https://dreeve.test/'),
             ),
-            $importSuccessfulNotification->create(ImportedActivities::empty(), 12.5),
+            $importSuccessfulNotification->create(ImportedActivities::empty()),
         );
     }
 
@@ -51,7 +51,7 @@ class ImportSuccessfulNotificationTest extends ContainerTestCase
                 ActivityBuilder::fromDefaults()
                     ->withActivityId(ActivityId::fromUnprefixed(1))
                     ->build(),
-            ]), 12.5),
+            ])),
         );
     }
 
@@ -75,7 +75,7 @@ class ImportSuccessfulNotificationTest extends ContainerTestCase
                     ->withActivityId(ActivityId::fromUnprefixed($number))
                     ->build(),
                 range(1, 3),
-            )), 12.5),
+            ))),
         );
     }
 }
