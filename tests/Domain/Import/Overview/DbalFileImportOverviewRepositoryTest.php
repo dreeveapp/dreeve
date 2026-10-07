@@ -233,6 +233,34 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
             0,
         ];
 
+        yield 'a filename filter matches part of the filename, ignoring case' => [
+            ['filename' => 'MIDD'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['middle.fit'],
+            1,
+        ];
+
+        yield 'a filename filter treats LIKE wildcards literally' => [
+            ['filename' => '%_'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            [],
+            0,
+        ];
+
+        yield 'an activity filter only keeps the imports linked to that activity' => [
+            ['activity' => '2'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['middle.fit'],
+            1,
+        ];
+
+        yield 'filename and status filters combine' => [
+            ['filename' => '.fit', 'status' => 'failed'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['oldest.fit'],
+            1,
+        ];
+
         yield 'an invalid filter value behaves as if no filter was applied' => [
             ['status' => 'bogus'],
             Pagination::fromOffsetAndLimit(0, 10),
@@ -293,24 +321,50 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         );
     }
 
-    public function testFindIgnoresFiltersForQueuedFiles(): void
-    {
+    #[DataProvider('provideQueuedFilterScenarios')]
+    public function testFindFiltersQueuedFiles(
+        array $filters,
+        array $expectedFilenames,
+        int $expectedTotal,
+    ): void {
         $this->seedThreeFileImports();
         $this->filesystem->write('watch/queued.tcx', 'raw-tcx-bytes');
+        $this->filesystem->write('watch/Morning-Ride.fit', 'raw-fit-bytes');
 
         $overview = $this->fileImportOverviewRepository->find(
             Pagination::fromOffsetAndLimit(0, 10),
-            FileImportOverviewFilters::fromRequest(new Request(query: ['filters' => ['status' => 'failed', 'source' => 'fitFile']]))
+            FileImportOverviewFilters::fromRequest(new Request(query: ['filters' => $filters]))
         );
 
         $this->assertSame(
-            ['queued.tcx'],
+            $expectedFilenames,
             array_map(
                 static fn (FileImportOverviewItem $item): string => $item->getOriginalFilename(),
                 $overview->getItems()
             )
         );
-        $this->assertEquals(1, $overview->getTotal());
+        $this->assertEquals($expectedTotal, $overview->getTotal());
+    }
+
+    public static function provideQueuedFilterScenarios(): iterable
+    {
+        yield 'status and source filters do not apply to queued files' => [
+            ['status' => 'failed', 'source' => 'fitFile'],
+            ['Morning-Ride.fit', 'queued.tcx'],
+            2,
+        ];
+
+        yield 'a filename filter applies to queued files, ignoring case' => [
+            ['filename' => 'morning'],
+            ['Morning-Ride.fit'],
+            1,
+        ];
+
+        yield 'an activity filter hides queued files' => [
+            ['activity' => '2'],
+            ['middle.fit'],
+            1,
+        ];
     }
 
     private function seedThreeFileImports(): void
@@ -328,6 +382,7 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
             FileImportBuilder::fromDefaults()
                 ->withFileImportId(FileImportId::fromUnprefixed('2'))
                 ->withOriginalFilename('middle.fit')
+                ->withActivityId(ActivityId::fromUnprefixed('2'))
                 ->withSource(ImportSource::TCX_FILE)
                 ->withStatus(FileImportStatus::SUCCESS)
                 ->withImportedOn(SerializableDateTime::fromString('2026-06-02 08:00:00'))
@@ -337,6 +392,7 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
             FileImportBuilder::fromDefaults()
                 ->withFileImportId(FileImportId::fromUnprefixed('3'))
                 ->withOriginalFilename('newest.fit')
+                ->withActivityId(ActivityId::fromUnprefixed('3'))
                 ->withSource(ImportSource::FIT_FILE)
                 ->withStatus(FileImportStatus::SUCCESS)
                 ->withImportedOn(SerializableDateTime::fromString('2026-06-03 08:00:00'))

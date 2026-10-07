@@ -40,6 +40,9 @@ final readonly class DbalFileImportOverviewRepository extends DbalRepository imp
             ->select('COUNT(*)')
             ->from('FileImport', 'fi');
 
+        $filename = $filters->getFilename();
+        $activityId = $filters->getActivityId();
+
         foreach ([$queryBuilder, $countQueryBuilder] as $builder) {
             if (($status = $filters->getStatus()) instanceof FileImportStatus) {
                 $builder
@@ -50,6 +53,16 @@ final readonly class DbalFileImportOverviewRepository extends DbalRepository imp
                 $builder
                     ->andWhere('fi.source = :source')
                     ->setParameter('source', $source->value);
+            }
+            if (null !== $filename) {
+                $builder
+                    ->andWhere("fi.originalFilename LIKE :filename ESCAPE '\\'")
+                    ->setParameter('filename', '%'.addcslashes($filename, '%_\\').'%');
+            }
+            if ($activityId instanceof ActivityId) {
+                $builder
+                    ->andWhere('fi.activityId = :activityId')
+                    ->setParameter('activityId', (string) $activityId);
             }
         }
 
@@ -62,6 +75,8 @@ final readonly class DbalFileImportOverviewRepository extends DbalRepository imp
                     source: SupportedFileExtension::from($path->getExtension())->getImportSource(),
                 );
             })
+            ->filter(static fn (FileImportOverviewItem $item): bool => !$activityId instanceof ActivityId
+                && (null === $filename || str_contains(mb_strtolower($item->getOriginalFilename()), mb_strtolower($filename))))
             ->toArray();
 
         $items = array_values(array_slice($queued, $pagination->getOffset(), $pagination->getLimit()));

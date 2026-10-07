@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Import\Overview;
 
+use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Import\FileImportStatus;
 use App\Domain\Import\Overview\FileImportOverviewFilters;
@@ -19,6 +20,8 @@ class FileImportOverviewFiltersTest extends TestCase
 
         $this->assertNull($filters->getStatus());
         $this->assertNull($filters->getSource());
+        $this->assertNull($filters->getFilename());
+        $this->assertNull($filters->getActivityId());
         $this->assertTrue($filters->isEmpty());
     }
 
@@ -41,6 +44,38 @@ class FileImportOverviewFiltersTest extends TestCase
         $this->assertFalse(FileImportOverviewFilters::fromRequest(new Request(query: [
             'filters' => ['source' => 'fitFile'],
         ]))->isEmpty());
+        $this->assertFalse(FileImportOverviewFilters::fromRequest(new Request(query: [
+            'filters' => ['filename' => 'ride'],
+        ]))->isEmpty());
+        $this->assertFalse(FileImportOverviewFilters::fromRequest(new Request(query: [
+            'filters' => ['activity' => '123'],
+        ]))->isEmpty());
+    }
+
+    public function testItReadsATrimmedFilename(): void
+    {
+        $filters = FileImportOverviewFilters::fromRequest(new Request(query: [
+            'filters' => ['filename' => '  Morning Ride.fit '],
+        ]));
+
+        $this->assertSame('Morning Ride.fit', $filters->getFilename());
+    }
+
+    #[DataProvider('provideActivityIds')]
+    public function testItResolvesTheActivityId(string $activityId): void
+    {
+        $filters = FileImportOverviewFilters::fromRequest(new Request(query: [
+            'filters' => ['activity' => $activityId],
+        ]));
+
+        $this->assertEquals(ActivityId::fromUnprefixed('123'), $filters->getActivityId());
+    }
+
+    public static function provideActivityIds(): iterable
+    {
+        yield 'an unprefixed id, as filled in by the autocomplete' => ['123'];
+        yield 'a prefixed id' => ['activity-123'];
+        yield 'an id surrounded by whitespace' => [' 123 '];
     }
 
     #[DataProvider('provideStatuses')]
@@ -84,6 +119,8 @@ class FileImportOverviewFiltersTest extends TestCase
 
         $this->assertNull($filters->getStatus());
         $this->assertNull($filters->getSource());
+        $this->assertNull($filters->getFilename());
+        $this->assertNull($filters->getActivityId());
         $this->assertTrue($filters->isEmpty());
     }
 
@@ -94,11 +131,15 @@ class FileImportOverviewFiltersTest extends TestCase
         ];
 
         yield 'empty strings, as submitted by the "All" options' => [
-            ['filters' => ['status' => '', 'source' => '']],
+            ['filters' => ['status' => '', 'source' => '', 'filename' => '', 'activity' => '']],
+        ];
+
+        yield 'whitespace-only text values' => [
+            ['filters' => ['filename' => '   ', 'activity' => '  ']],
         ];
 
         yield 'nested arrays instead of scalar values' => [
-            ['filters' => ['status' => ['failed'], 'source' => ['fitFile']]],
+            ['filters' => ['status' => ['failed'], 'source' => ['fitFile'], 'filename' => ['a.fit'], 'activity' => ['123']]],
         ];
 
         yield 'unrelated filter names' => [
