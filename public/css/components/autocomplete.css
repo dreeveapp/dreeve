@@ -3,7 +3,7 @@
         @apply inline-block relative w-full;
 
         & > ul {
-            @apply absolute max-h-62 overflow-y-scroll left-0 right-0 top-full mt-1 p-0 z-10 list-none rounded-lg bg-white border border-gray-200 shadow-lg outline-none transition-opacity duration-150 ease-in-out;
+            @apply absolute max-h-62 overflow-y-scroll left-0 right-0 top-full mt-1 p-0 z-20 list-none rounded-lg bg-white border border-gray-200 shadow-lg outline-none transition-opacity duration-150 ease-in-out;
 
             &:empty,
             &[hidden] {
