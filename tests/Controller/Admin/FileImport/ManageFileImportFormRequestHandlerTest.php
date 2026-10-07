@@ -8,10 +8,12 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Import\FileImportBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ManageFileImportFormRequestHandlerTest extends AdminWebTestCase
 {
-    public function testRendersTheDeleteConfirmation(): void
+    #[DataProvider('provideRedirectToQueryParams')]
+    public function testRendersTheDeleteConfirmation(string $query, string $expectedRedirect): void
     {
         $fileImportId = FileImportId::fromUnprefixed('1');
         static::getContainer()->get(FileImportRepository::class)->add(
@@ -24,7 +26,7 @@ class ManageFileImportFormRequestHandlerTest extends AdminWebTestCase
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/file-imports/'.$fileImportId.'/delete');
+        $crawler = $this->client->request('GET', '/admin/file-imports/'.$fileImportId.'/delete'.$query);
 
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('Delete file import', $crawler->filter('h3')->text());
@@ -34,6 +36,17 @@ class ManageFileImportFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame((string) $fileImportId, $form->filter('input[name="fileImportId"]')->attr('value'));
         $this->assertCount(1, $form->filter('button.btn--danger'));
         $this->assertStringContainsString('morning-run.fit', $form->text());
+
+        $this->assertSame($expectedRedirect, $form->attr('data-redirect'));
+        $this->assertSame($expectedRedirect, $crawler->filter('a[aria-label="Close"]')->attr('href'));
+        $this->assertSame($expectedRedirect, $crawler->filter('.btn--secondary')->attr('href'));
+    }
+
+    public static function provideRedirectToQueryParams(): \Generator
+    {
+        yield 'no redirectTo' => ['', '/admin/file-imports'];
+        yield 'a filtered overview' => ['?redirectTo='.urlencode('/admin/file-imports?filters%5Bstatus%5D=failed&pagination%5Bpage%5D=2'), '/admin/file-imports?filters%5Bstatus%5D=failed&pagination%5Bpage%5D=2'];
+        yield 'absolute url' => ['?redirectTo='.urlencode('https://evil.com'), '/admin/file-imports'];
     }
 
     public function testCannotDeleteAnUnknownFileImport(): void

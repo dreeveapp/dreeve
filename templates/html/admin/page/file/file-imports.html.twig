@@ -1,6 +1,7 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
     {% autoescape false %}
+    {% set overviewUrl = path('admin_file_imports', app.request.query.all) %}
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         {% embed 'html/admin/component/gated-panel.html.twig' with { 'locked': not importMode.isFiles() } %}
             {% block lockTitle %}{% autoescape false %}{{ "File imports are only available in file import mode"|trans({}, 'admin') }}{% endautoescape %}{% endblock %}
@@ -143,7 +144,7 @@
                                             </a>
                                         {% endif %}
                                         {% if fileImport.getFileImportId() %}
-                                            <a href="{{ relativeUrl(path('admin_delete_file_import', {fileImportId: fileImport.getFileImportId()})) }}"
+                                            <a href="{{ relativeUrlWithRedirectTo(path('admin_delete_file_import', {fileImportId: fileImport.getFileImportId()}), overviewUrl) }}"
                                                class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600"
                                                title="{{ "Delete"|trans({}, 'admin') }}">
                                                 <span class="sr-only">{{ "Delete"|trans({}, 'admin') }}</span>

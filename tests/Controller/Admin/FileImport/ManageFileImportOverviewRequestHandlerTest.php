@@ -70,7 +70,7 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertCount(3, $crawler->filter('table.data-table tbody tr'));
-        $this->assertCount(3, $crawler->filter('table.data-table tbody a[href$="/delete"]'));
+        $this->assertCount(3, $crawler->filter('table.data-table tbody a[title="Delete"]'));
         $downloadLinks = $crawler->filter('table.data-table tbody a[href$="/download"]');
         $this->assertCount(2, $downloadLinks);
         $this->assertStringContainsString(
@@ -199,7 +199,7 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
         ];
     }
 
-    public function testFiltersArePreservedInPaginationLinks(): void
+    public function testFiltersArePreservedInPaginationAndDeleteLinks(): void
     {
         $this->withImportMode(ImportMode::FILES);
         $this->seedFileImports(60);
@@ -213,6 +213,10 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString(
             'filters%5Bstatus%5D=failed',
             (string) $crawler->filter('[aria-label="Go to next page"]')->attr('href')
+        );
+        $this->assertStringContainsString(
+            'redirectTo='.rawurlencode('/admin/file-imports?filters%5Bstatus%5D=failed'),
+            (string) $crawler->filter('table.data-table tbody a[title="Delete"]')->first()->attr('href')
         );
     }
 
@@ -231,7 +235,7 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $rows->first()->filter('[aria-label="Queued"]'));
         $this->assertStringContainsString('queued.fit', $rows->first()->text());
         $this->assertCount(0, $rows->first()->filter('a'));
-        $this->assertCount(3, $crawler->filter('table.data-table tbody a[href$="/delete"]'));
+        $this->assertCount(3, $crawler->filter('table.data-table tbody a[title="Delete"]'));
         $this->assertCount(0, $crawler->filter('select[name="filters[status]"] option[value="queued"]'));
     }
 
