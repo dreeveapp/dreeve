@@ -19,6 +19,7 @@
                         </div>
                     {% endif %}
                     <h3 class="text-sm font-bold text-gray-900 truncate">{{ milestoneTitle(milestone) }}</h3>
+                    <time class="ms-auto shrink-0 text-xs text-gray-500">{{ milestone.getAchievedOn()|formatDate('normal') }}</time>
                 </div>
                 <div class="text-sm text-gray-600">
                     {% if milestone.getActivityId() %}
