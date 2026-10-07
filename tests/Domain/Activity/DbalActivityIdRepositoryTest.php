@@ -21,7 +21,7 @@ use App\Tests\Infrastructure\Eventing\SpyEventBus;
 class DbalActivityIdRepositoryTest extends ContainerTestCase
 {
     private ActivityIdRepository $activityIdRepository;
-    private GearRepository $gearRepository;
+    private readonly GearRepository $gearRepository;
     private ActivityRepository $activityRepository;
 
     public function testFindAllAndCount(): void

@@ -12,7 +12,7 @@ class DomainCommandTest extends TestCase
     {
         $this->assertEquals(
             [
-                'commandName' => 'App\\Tests\\Infrastructure\\CQRS\\Command\\Bus\\RunAnOperation\\RunAnOperation',
+                'commandName' => \App\Tests\Infrastructure\CQRS\Command\Bus\RunAnOperation\RunAnOperation::class,
                 'payload' => ['value' => 'string', 'valueTwo' => 'defaultValue'],
             ],
             Json::decode(Json::encode(new RunAnOperation('string'))),

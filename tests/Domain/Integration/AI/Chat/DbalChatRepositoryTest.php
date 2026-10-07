@@ -15,7 +15,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 class DbalChatRepositoryTest extends ContainerTestCase
 {
     private ChatRepository $chatRepository;
-    private MockObject $messageIdFactory;
+    private readonly MockObject $messageIdFactory;
 
     public function testAddAndGetHistory(): void
     {
