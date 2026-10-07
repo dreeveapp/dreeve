@@ -28,6 +28,18 @@
                             {% endfor %}
                         </select>
                     </div>
+                    <div>
+                        <label for="filter-filename" class="mt-0! text-xs text-gray-500">{{ "Filename"|trans({}, 'admin') }}</label>
+                        <input type="search" id="filter-filename" name="filters[filename]" value="{{ filters.getFilename()|e }}"
+                               autocomplete="off" spellcheck="false">
+                    </div>
+                    <div>
+                        <label for="filter-activity" class="mt-0! text-xs text-gray-500">{{ "Activity"|trans({}, 'admin') }}</label>
+                        <input type="text" id="filter-activity" name="filters[activity]" value="{{ filters.getActivityId() ? filters.getActivityId().toUnprefixedString()|e }}"
+                               placeholder="{{ "Search by name, date or activity ID"|trans({}, 'admin') }}"
+                               autocomplete="off" spellcheck="false"
+                               data-autocomplete-url="{{ relativeUrl(path('admin_activity_search')) }}">
+                    </div>
                     <button type="submit" class="btn--primary">{{ "Apply"|trans({}, 'admin') }}</button>
                     {% if not filters.isEmpty() %}
                         <a href="{{ relativeUrl(path('admin_file_imports')) }}" type="button" class="btn--secondary">

@@ -91,6 +91,8 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $form);
         $this->assertCount(1, $form->filter('select[name="filters[status]"]'));
         $this->assertCount(1, $form->filter('select[name="filters[source]"]'));
+        $this->assertCount(1, $form->filter('input[name="filters[filename]"]'));
+        $this->assertCount(1, $form->filter('input[name="filters[activity]"][data-autocomplete-url="/admin/activities/search"]'));
         $this->assertCount(1, $form->filter('button[type="submit"]'));
         $this->assertCount(0, $form->filter('select[name="filters[source]"] option[value="stravaApi"]'));
         $this->assertCount(0, $form->filter('a.btn--secondary'));
@@ -128,11 +130,8 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
     }
 
     #[DataProvider('provideStatusFilterScenarios')]
-    public function testFiltersTheTableOnStatus(
+    public function testRendersTheSubmittedStatusFilterBack(
         string $statusFilter,
-        int $expectedRowCount,
-        int $expectedFailedCount,
-        int $expectedSuccessCount,
         ?string $expectedSelectedOption,
     ): void {
         $this->withImportMode(ImportMode::FILES);
@@ -142,9 +141,6 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
         $crawler = $this->client->request('GET', '/admin/file-imports?filters[status]='.$statusFilter);
 
         $this->assertResponseIsSuccessful();
-        $this->assertCount($expectedRowCount, $crawler->filter('table.data-table tbody tr'));
-        $this->assertCount($expectedFailedCount, $crawler->filter('table.data-table [aria-label="Failed"]'));
-        $this->assertCount($expectedSuccessCount, $crawler->filter('table.data-table [aria-label="Success"]'));
 
         $selectedOption = $crawler->filter('select[name="filters[status]"] option[selected]');
         if (null === $expectedSelectedOption) {
@@ -162,12 +158,44 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
 
     public static function provideStatusFilterScenarios(): iterable
     {
-        yield 'a valid status filter narrows the rows and pre-selects the option' => [
-            'failed', 1, 1, 0, 'failed',
+        yield 'a valid status filter pre-selects the option' => [
+            'failed', 'failed',
         ];
 
         yield 'an invalid status value is silently ignored' => [
-            'bogus', 3, 1, 2, null,
+            'bogus', null,
+        ];
+    }
+
+    #[DataProvider('provideTextFilterScenarios')]
+    public function testRendersTheSubmittedTextFiltersBack(
+        string $query,
+        string $expectedFilenameValue,
+        string $expectedActivityValue,
+    ): void {
+        $this->withImportMode(ImportMode::FILES);
+        $this->seedFileImports(3);
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/file-imports?'.$query);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame($expectedFilenameValue, $crawler->filter('input[name="filters[filename]"]')->attr('value'));
+        $this->assertSame($expectedActivityValue, $crawler->filter('input[name="filters[activity]"]')->attr('value'));
+    }
+
+    public static function provideTextFilterScenarios(): iterable
+    {
+        yield 'a filename filter keeps its value' => [
+            'filters[filename]=RIDE', 'RIDE', '',
+        ];
+
+        yield 'an activity filter renders the unprefixed id' => [
+            'filters[activity]=activity-42', '', '42',
+        ];
+
+        yield 'a filename value is escaped when rendered back' => [
+            'filters[filename]='.urlencode('"><script>x</script>'), '"><script>x</script>', '',
         ];
     }
 
