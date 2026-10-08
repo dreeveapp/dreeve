@@ -1,7 +1,17 @@
-{% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [{
-    'url': 'segments',
-    'label': 'Segments'|trans
-}]} %}
+<div class="flex items-center justify-between gap-4 mb-4">
+    {% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [{
+        'url': 'segments',
+        'label': 'Segments'|trans
+    }], 'disableMargin': true} %}
+    {% if importMode.isFiles() %}
+        {% include 'html/navigation/admin-edit-link.html.twig' with {
+            path: 'admin/segments',
+            redirectTo: 'segments',
+            title: "Manage segments"|trans,
+            label: "Manage"|trans({}, 'admin')
+        } %}
+    {% endif %}
+</div>
 {% autoescape false %}
     <div class="grid grid-cols-1 gap-4">
         <!-- SEGMENTS -->

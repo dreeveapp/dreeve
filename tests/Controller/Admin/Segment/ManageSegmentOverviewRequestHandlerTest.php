@@ -53,6 +53,7 @@ class ManageSegmentOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertSame(['Kwaremont'], $crawler->filter('table.data-table tbody tr td:first-child')->each(
             static fn ($cell): string => trim($cell->text()),
         ));
+        $this->assertSame('/segments/segment-1', $crawler->filter('table.data-table tbody td:first-child a')->attr('href'));
         $this->assertCount(1, $crawler->filter('#filter-name'));
         $this->assertCount(0, $crawler->filter('#filter-type'));
         $this->assertSame(

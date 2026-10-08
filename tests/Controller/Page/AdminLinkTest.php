@@ -2,7 +2,12 @@
 
 namespace App\Tests\Controller\Page;
 
+use App\Domain\Import\ImportMode;
+use App\Domain\Segment\SegmentId;
+use App\Domain\Segment\SegmentRepository;
+use App\Domain\Segment\SegmentType;
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use App\Tests\Domain\Segment\SegmentBuilder;
 use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -21,6 +26,51 @@ class AdminLinkTest extends AdminWebTestCase
         $this->client->loginUser($this->adminUser());
         $this->client->request('GET', $url);
         $this->assertStringContainsString($adminLink, (string) $this->client->getResponse()->getContent());
+    }
+
+    public function testItOnlyRendersTheSegmentAdminLinkInFileImportMode(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+        $this->provideFullTestSet();
+
+        $this->client->request('GET', '/segments');
+        $this->assertStringNotContainsString('admin/segments', (string) $this->client->getResponse()->getContent());
+
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/segments');
+        $this->assertStringContainsString('admin/segments?redirectTo=%2Fsegments', (string) $this->client->getResponse()->getContent());
+
+        $this->withImportMode(ImportMode::STRAVA_API);
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/segments');
+        $this->assertStringNotContainsString('admin/segments', (string) $this->client->getResponse()->getContent());
+    }
+
+    public function testItOnlyRendersTheSegmentEditLinkForCustomSegmentsInFileImportMode(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+        $this->provideFullTestSet();
+        foreach ([['custom', SegmentType::CUSTOM], ['imported', SegmentType::IMPORTED]] as [$id, $type]) {
+            $this->getContainer()->get(SegmentRepository::class)->add(SegmentBuilder::fromDefaults()
+                ->withSegmentId(SegmentId::fromUnprefixed($id))
+                ->withType($type)
+                ->build());
+        }
+
+        $this->client->request('GET', '/segments/segment-custom');
+        $this->assertStringNotContainsString('admin/segments/segment-custom/edit', (string) $this->client->getResponse()->getContent());
+
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/segments/segment-custom');
+        $this->assertStringContainsString('admin/segments/segment-custom/edit?redirectTo=%2Fsegments%2Fsegment-custom', (string) $this->client->getResponse()->getContent());
+
+        $this->client->request('GET', '/segments/segment-imported');
+        $this->assertStringNotContainsString('admin/segments/segment-imported/edit', (string) $this->client->getResponse()->getContent());
+
+        $this->withImportMode(ImportMode::STRAVA_API);
+        $this->client->loginUser($this->adminUser());
+        $this->client->request('GET', '/segments/segment-custom');
+        $this->assertStringNotContainsString('admin/segments/segment-custom/edit', (string) $this->client->getResponse()->getContent());
     }
 
     /**

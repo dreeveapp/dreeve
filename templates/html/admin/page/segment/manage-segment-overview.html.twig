@@ -71,8 +71,12 @@
                 <tbody>
                 {% for segment in overview %}
                     <tr class="group/row">
-                        <td class="whitespace-nowrap text-left font-medium text-gray-800">
-                            {{ segment.getName() }}
+                        <td class="whitespace-nowrap text-left">
+                            <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
+                               title="{{ segment.getName() }}"
+                               href="{{ relativeUrl(path('segment', {'segmentId': segment.getSegmentId()})) }}">
+                                {{ segment.getName() }}
+                            </a>
                         </td>
                         <td class="whitespace-nowrap text-left">
                             {{ segment.getType()|trans }}
