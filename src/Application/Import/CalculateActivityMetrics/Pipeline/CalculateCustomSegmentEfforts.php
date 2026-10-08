@@ -7,10 +7,11 @@ namespace App\Application\Import\CalculateActivityMetrics\Pipeline;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Route\Signature\ActivityRouteSignatureRepository;
 use App\Domain\Activity\Route\Signature\RouteGrid;
+use App\Domain\Activity\Scan\ActivityScan;
+use App\Domain\Activity\Scan\ActivityScanRepository;
+use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
-use App\Domain\Segment\SegmentActivityScan\SegmentActivityScan;
-use App\Domain\Segment\SegmentActivityScan\SegmentActivityScanRepository;
 use App\Domain\Segment\SegmentEffort\Matching\SegmentEffortMatcher;
 use App\Domain\Segment\SegmentEffort\SegmentEffort;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
@@ -30,7 +31,7 @@ final readonly class CalculateCustomSegmentEfforts implements CalculateActivityM
 
     public function __construct(
         private SegmentRepository $segmentRepository,
-        private SegmentActivityScanRepository $segmentActivityScanRepository,
+        private ActivityScanRepository $activityScanRepository,
         private SegmentEffortRepository $segmentEffortRepository,
         private ActivityRepository $activityRepository,
         private ActivityStreamRepository $activityStreamRepository,
@@ -52,7 +53,12 @@ final readonly class CalculateCustomSegmentEfforts implements CalculateActivityM
             }
             $segmentCells = $this->routeGrid->cellsFor($polyline)->toArray();
 
-            foreach ($this->segmentActivityScanRepository->findActivityIdsThatNeedScanning($segment) as $activityId) {
+            foreach ($this->activityScanRepository->findActivityIdsThatNeedScanning(
+                type: ActivityScanType::CUSTOM_SEGMENT,
+                subjectId: (string) $segment->getId(),
+                sportTypes: $segment->getSportType()->getActivityType()->getSportTypes(),
+                requiredStreamTypes: [StreamType::LAT_LNG],
+            ) as $activityId) {
                 try {
                     $activityCells = array_flip($this->activityRouteSignatureRepository->find($activityId)->getCells()->toArray());
                     $overlappingCells = array_filter($segmentCells, static fn (int $cell): bool => isset($activityCells[$cell]));
@@ -62,7 +68,7 @@ final readonly class CalculateCustomSegmentEfforts implements CalculateActivityM
                 }
 
                 if (!$isNearSegment) {
-                    $this->segmentActivityScanRepository->add(SegmentActivityScan::create($segment->getId(), $activityId));
+                    $this->activityScanRepository->add(ActivityScan::create(activityId: $activityId, type: ActivityScanType::CUSTOM_SEGMENT, subjectId: (string) $segment->getId()));
                     continue;
                 }
 
@@ -94,7 +100,7 @@ final readonly class CalculateCustomSegmentEfforts implements CalculateActivityM
                     }
                 }
 
-                $this->segmentActivityScanRepository->add(SegmentActivityScan::create($segment->getId(), $activityId));
+                $this->activityScanRepository->add(ActivityScan::create(activityId: $activityId, type: ActivityScanType::CUSTOM_SEGMENT, subjectId: (string) $segment->getId()));
 
                 ++$scannedActivityCount;
                 $progressIndicator->updateMessage(sprintf(

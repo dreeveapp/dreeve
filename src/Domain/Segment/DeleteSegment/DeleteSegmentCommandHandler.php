@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Segment\DeleteSegment;
 
+use App\Domain\Activity\Scan\ActivityScanRepository;
+use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Import\ImportMode;
-use App\Domain\Segment\SegmentActivityScan\SegmentActivityScanRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentRepository;
 use App\Infrastructure\CQRS\Command\Command;
@@ -18,7 +19,7 @@ final readonly class DeleteSegmentCommandHandler implements CommandHandler
     public function __construct(
         private SegmentRepository $segmentRepository,
         private SegmentEffortRepository $segmentEffortRepository,
-        private SegmentActivityScanRepository $segmentActivityScanRepository,
+        private ActivityScanRepository $activityScanRepository,
         private ImportMode $importMode,
     ) {
     }
@@ -38,7 +39,7 @@ final readonly class DeleteSegmentCommandHandler implements CommandHandler
         }
 
         $this->segmentEffortRepository->deleteForSegment($segment->getId());
-        $this->segmentActivityScanRepository->deleteForSegment($segment->getId());
+        $this->activityScanRepository->deleteForSubject(ActivityScanType::CUSTOM_SEGMENT, (string) $segment->getId());
 
         $segment->delete();
         $this->segmentRepository->delete($segment);

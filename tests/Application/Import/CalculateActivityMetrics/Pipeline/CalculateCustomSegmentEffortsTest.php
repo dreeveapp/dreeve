@@ -105,12 +105,12 @@ class CalculateCustomSegmentEffortsTest extends ContainerTestCase
         $this->assertEquals(
             ['activity-exact-pass', 'activity-far-away', 'activity-reversed', 'activity-two-laps'],
             $this->getConnection()->executeQuery(
-                'SELECT activityId FROM SegmentActivityScan WHERE segmentId = "segment-custom" ORDER BY activityId'
+                'SELECT activityId FROM ActivityScan WHERE type = "customSegment" AND subjectId = "segment-custom" ORDER BY activityId'
             )->fetchFirstColumn(),
         );
         $this->assertEquals(
             0,
-            $this->getConnection()->executeQuery('SELECT COUNT(*) FROM SegmentActivityScan WHERE segmentId = "segment-imported"')->fetchOne(),
+            $this->getConnection()->executeQuery('SELECT COUNT(*) FROM ActivityScan WHERE subjectId = "segment-imported"')->fetchOne(),
         );
 
         $this->calculateCustomSegmentEfforts->process($output);

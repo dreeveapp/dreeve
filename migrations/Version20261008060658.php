@@ -18,8 +18,8 @@ final class Version20261008060658 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE Segment ADD COLUMN type VARCHAR(255) DEFAULT \'imported\' NOT NULL');
         $this->addSql('CREATE INDEX Segment_type ON Segment (type)');
-        $this->addSql('CREATE TABLE SegmentActivityScan (segmentId VARCHAR(255) NOT NULL, activityId VARCHAR(255) NOT NULL, PRIMARY KEY (segmentId, activityId))');
-        $this->addSql('CREATE INDEX SegmentActivityScan_activityId ON SegmentActivityScan (activityId)');
+        $this->addSql('CREATE TABLE ActivityScan (activityId VARCHAR(255) NOT NULL, type VARCHAR(255) NOT NULL, subjectId VARCHAR(255) DEFAULT \'\' NOT NULL, PRIMARY KEY (activityId, type, subjectId))');
+        $this->addSql('CREATE INDEX ActivityScan_typeSubject ON ActivityScan (type, subjectId)');
         $this->addSql('ALTER TABLE SegmentEffort DROP COLUMN name');
     }
 
@@ -27,6 +27,6 @@ final class Version20261008060658 extends AbstractMigration
     {
         $this->addSql('DROP INDEX Segment_type');
         $this->addSql('ALTER TABLE Segment DROP COLUMN type');
-        $this->addSql('DROP TABLE SegmentActivityScan');
+        $this->addSql('DROP TABLE ActivityScan');
     }
 }

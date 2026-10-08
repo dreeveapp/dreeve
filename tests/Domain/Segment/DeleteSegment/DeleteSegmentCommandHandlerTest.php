@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Segment\DeleteSegment;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\Scan\ActivityScan;
+use App\Domain\Activity\Scan\ActivityScanRepository;
+use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Import\ImportMode;
 use App\Domain\Segment\DeleteSegment\DeleteSegment;
 use App\Domain\Segment\DeleteSegment\DeleteSegmentCommandHandler;
-use App\Domain\Segment\SegmentActivityScan\SegmentActivityScan;
-use App\Domain\Segment\SegmentActivityScan\SegmentActivityScanRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
@@ -29,7 +30,7 @@ class DeleteSegmentCommandHandlerTest extends ContainerTestCase
     {
         $segmentRepository = $this->getContainer()->get(SegmentRepository::class);
         $segmentEffortRepository = $this->getContainer()->get(SegmentEffortRepository::class);
-        $segmentActivityScanRepository = $this->getContainer()->get(SegmentActivityScanRepository::class);
+        $activityScanRepository = $this->getContainer()->get(ActivityScanRepository::class);
         foreach (['1', '2'] as $id) {
             $segmentRepository->add(SegmentBuilder::fromDefaults()
                 ->withSegmentId(SegmentId::fromUnprefixed($id))
@@ -39,7 +40,7 @@ class DeleteSegmentCommandHandlerTest extends ContainerTestCase
                 ->withSegmentEffortId(SegmentEffortId::fromUnprefixed($id))
                 ->withSegmentId(SegmentId::fromUnprefixed($id))
                 ->build());
-            $segmentActivityScanRepository->add(SegmentActivityScan::create(SegmentId::fromUnprefixed($id), ActivityId::fromUnprefixed('1')));
+            $activityScanRepository->add(ActivityScan::create(ActivityId::fromUnprefixed('1'), ActivityScanType::CUSTOM_SEGMENT, 'segment-'.$id));
         }
 
         $this->commandBus->dispatch(DeleteSegment::fromPayload(['segmentId' => 'segment-1']));
@@ -54,7 +55,7 @@ class DeleteSegmentCommandHandlerTest extends ContainerTestCase
         );
         $this->assertEquals(
             ['segment-2'],
-            $this->getConnection()->executeQuery('SELECT segmentId FROM SegmentActivityScan')->fetchFirstColumn()
+            $this->getConnection()->executeQuery('SELECT subjectId FROM ActivityScan')->fetchFirstColumn()
         );
     }
 
@@ -80,7 +81,7 @@ class DeleteSegmentCommandHandlerTest extends ContainerTestCase
         new DeleteSegmentCommandHandler(
             segmentRepository: $this->getContainer()->get(SegmentRepository::class),
             segmentEffortRepository: $this->getContainer()->get(SegmentEffortRepository::class),
-            segmentActivityScanRepository: $this->getContainer()->get(SegmentActivityScanRepository::class),
+            activityScanRepository: $this->getContainer()->get(ActivityScanRepository::class),
             importMode: ImportMode::FILES,
         )->handle(DeleteSegment::fromPayload(['segmentId' => 'segment-1']));
 
