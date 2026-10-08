@@ -13,6 +13,9 @@ use App\Domain\Activity\ActivityVisibility;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\Lap\ActivityLapRepository;
+use App\Domain\Activity\Scan\ActivityScan;
+use App\Domain\Activity\Scan\ActivityScanRepository;
+use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
@@ -92,7 +95,9 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
                 'start_latlng' => [51.2, 3.18],
             ]
         ));
-        $this->getContainer()->get(ActivityRepository::class)->markActivityStreamsAsImported(ActivityId::fromUnprefixed(4));
+        $this->getContainer()->get(ActivityScanRepository::class)->add(
+            ActivityScan::create(activityId: ActivityId::fromUnprefixed(4), type: ActivityScanType::STREAMS)
+        );
 
         $importedActivities = ImportedActivities::empty();
         $this->commandBus->dispatch(new ImportActivities($output, null, $importedActivities));

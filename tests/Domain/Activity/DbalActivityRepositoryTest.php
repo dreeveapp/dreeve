@@ -295,29 +295,6 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         );
     }
 
-    public function testActivityNeedsStreamImport(): void
-    {
-        $activity = ActivityBuilder::fromDefaults()->build();
-        $activityWithRawData = ActivityWithRawData::fromState(
-            $activity,
-            ['raw' => 'data']
-        );
-
-        $this->activityRepository->add($activityWithRawData);
-
-        $this->assertTrue(
-            $this->activityRepository->activityNeedsStreamImport($activity->getId())
-        );
-        $this->assertFalse(
-            $this->activityRepository->activityNeedsStreamImport(ActivityId::fromUnprefixed('test'))
-        );
-
-        $this->activityRepository->markActivityStreamsAsImported($activity->getId());
-        $this->assertFalse(
-            $this->activityRepository->activityNeedsStreamImport($activity->getId())
-        );
-    }
-
     public function testFindByDateRange(): void
     {
         foreach ([

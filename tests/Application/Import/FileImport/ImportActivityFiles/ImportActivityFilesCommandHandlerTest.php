@@ -12,6 +12,8 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\Lap\ActivityLapRepository;
+use App\Domain\Activity\Scan\ActivityScanRepository;
+use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Import\FileImportStatus;
@@ -66,6 +68,10 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $streams = $this->getContainer()->get(ActivityStreamRepository::class)->findByActivityId($activityId);
         $this->assertNotNull($streams->filterOnType(StreamType::HEART_RATE));
         $this->assertNotNull($streams->filterOnType(StreamType::LAT_LNG));
+        $this->assertTrue($this->getContainer()->get(ActivityScanRepository::class)->isScanned(
+            activityId: $activityId,
+            type: ActivityScanType::STREAMS,
+        ));
 
         $this->assertSame(
             implode("\n", [

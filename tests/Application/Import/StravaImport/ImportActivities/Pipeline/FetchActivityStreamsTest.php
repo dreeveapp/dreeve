@@ -5,7 +5,9 @@ namespace App\Tests\Application\Import\StravaImport\ImportActivities\Pipeline;
 use App\Application\Import\StravaImport\ImportActivities\Pipeline\ActivityImportContext;
 use App\Application\Import\StravaImport\ImportActivities\Pipeline\FetchActivityStreams;
 use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\Scan\ActivityScan;
+use App\Domain\Activity\Scan\ActivityScanRepository;
+use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Strava\Strava;
@@ -48,6 +50,28 @@ class FetchActivityStreamsTest extends ContainerTestCase
             ]);
 
         $this->fetchActivityStreams->process($context);
+    }
+
+    public function testItSkipsWhenStreamsWereAlreadyImported(): void
+    {
+        $this->getContainer()->get(ActivityScanRepository::class)->add(
+            ActivityScan::create(activityId: ActivityId::fromUnprefixed('test'), type: ActivityScanType::STREAMS)
+        );
+
+        $context = ActivityImportContext::create(
+            activityId: ActivityId::fromUnprefixed('test'),
+            rawStravaData: [],
+            isNewActivity: false
+        );
+
+        $this->strava
+            ->expects($this->never())
+            ->method('getAllActivityStreams');
+
+        $this->assertEquals(
+            $context,
+            $this->fetchActivityStreams->process($context)
+        );
     }
 
     public function testProcessWhen404(): void
@@ -93,10 +117,10 @@ class FetchActivityStreamsTest extends ContainerTestCase
         parent::setUp();
 
         $this->fetchActivityStreams = new FetchActivityStreams(
-            $this->getContainer()->get(ActivityRepository::class),
-            $this->getContainer()->get(ActivityStreamRepository::class),
-            $this->strava = $this->createMock(Strava::class),
-            PausedClock::fromString('2025-12-18'),
+            activityScanRepository: $this->getContainer()->get(ActivityScanRepository::class),
+            activityStreamRepository: $this->getContainer()->get(ActivityStreamRepository::class),
+            strava: $this->strava = $this->createMock(Strava::class),
+            clock: PausedClock::fromString('2025-12-18'),
         );
     }
 }

@@ -10,6 +10,9 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\Route\RouteGeography;
+use App\Domain\Activity\Scan\ActivityScan;
+use App\Domain\Activity\Scan\ActivityScanRepository;
+use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Activity\WorldType;
 use App\Domain\Image\ImageDirectory;
 use App\Domain\Image\ImageStorage;
@@ -25,6 +28,7 @@ final readonly class ManuallyCreateActivityCommandHandler implements CommandHand
 {
     public function __construct(
         private ActivityRepository $activityRepository,
+        private ActivityScanRepository $activityScanRepository,
         private ActivityIdFactory $activityIdFactory,
         private SettingsRepository $settingsRepository,
         private ImageStorage $imageStorage,
@@ -87,7 +91,7 @@ final readonly class ManuallyCreateActivityCommandHandler implements CommandHand
             activity: $activity,
             rawData: [],
         ));
-        $this->activityRepository->markActivityStreamsAsImported($activityId);
+        $this->activityScanRepository->add(ActivityScan::create(activityId: $activityId, type: ActivityScanType::STREAMS));
 
         $localImagePaths = array_map(
             fn (NewImage $newImage): string => $this->imageStorage->store(

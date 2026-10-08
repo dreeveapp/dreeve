@@ -11,6 +11,9 @@ use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityVisibility;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\Scan\ActivityScan;
+use App\Domain\Activity\Scan\ActivityScanRepository;
+use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Settings\SettingsRepository;
@@ -38,6 +41,7 @@ final readonly class ImportActivitiesCommandHandler implements CommandHandler
         private ActivityRepository $activityRepository,
         private ActivityIdRepository $activityIdRepository,
         private ActivityStreamRepository $activityStreamRepository,
+        private ActivityScanRepository $activityScanRepository,
         private SettingsRepository $settingsRepository,
         private Mutex $mutex,
         #[AutowireIterator('app.activity_import.pipeline_step')]
@@ -182,7 +186,7 @@ final readonly class ImportActivitiesCommandHandler implements CommandHandler
                 $this->activityStreamRepository->add($stream);
             }
             if ($context->streamsWereImported()) {
-                $this->activityRepository->markActivityStreamsAsImported($activityId);
+                $this->activityScanRepository->add(ActivityScan::create(activityId: $activityId, type: ActivityScanType::STREAMS));
             }
 
             unset($activityIdsToDelete[(string) $context->getActivity()->getId()]);

@@ -10,6 +10,9 @@ use App\Application\Import\FileImport\ImportActivityFiles\Pipeline\SkipDuplicate
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Lap\ActivityLapRepository;
+use App\Domain\Activity\Scan\ActivityScan;
+use App\Domain\Activity\Scan\ActivityScanRepository;
+use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Activity\Shifting\ActivityDrivetrainUsageRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Import\FileImport;
@@ -40,6 +43,7 @@ final readonly class ImportActivityFilesCommandHandler implements CommandHandler
         private iterable $steps,
         private ActivityRepository $activityRepository,
         private ActivityStreamRepository $activityStreamRepository,
+        private ActivityScanRepository $activityScanRepository,
         private ActivityLapRepository $activityLapRepository,
         private ActivityDrivetrainUsageRepository $activityDrivetrainUsageRepository,
         private FileImportRepository $fileImportRepository,
@@ -125,7 +129,7 @@ final readonly class ImportActivityFilesCommandHandler implements CommandHandler
             foreach ($context->getStreams() as $stream) {
                 $this->activityStreamRepository->add($stream);
             }
-            $this->activityRepository->markActivityStreamsAsImported($activityId);
+            $this->activityScanRepository->add(ActivityScan::create(activityId: $activityId, type: ActivityScanType::STREAMS));
 
             foreach ($context->getLaps() as $lap) {
                 $this->activityLapRepository->add($lap);

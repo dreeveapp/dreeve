@@ -140,13 +140,13 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             elevation, startingCoordinateLatitude, startingCoordinateLongitude, calories, kilojoules,
             averagePower, maxPower, averageSpeed, maxSpeed, averageHeartRate, maxHeartRate,
             averageCadence,movingTimeInSeconds, elapsedTimeInSeconds, deviceName, connectedSensors, totalImageCount, localImagePaths,
-            polyline, routeGeography, weather, gearId, data, isCommute, isGroupActivity, streamsAreImported, workoutType
+            polyline, routeGeography, weather, gearId, data, isCommute, isGroupActivity, workoutType
         ) VALUES(
             :activityId, :startDateTime, :sportType, :activityType, :worldType, :importSource, :externalReferenceId, :name, :description, :distance,
             :elevation, :startingCoordinateLatitude, :startingCoordinateLongitude, :calories, :kilojoules,
             :averagePower, :maxPower, :averageSpeed, :maxSpeed, :averageHeartRate, :maxHeartRate,
             :averageCadence, :movingTimeInSeconds, :elapsedTimeInSeconds, :deviceName, :connectedSensors, :totalImageCount, :localImagePaths,
-            :polyline, :routeGeography, :weather, :gearId, :data, :isCommute, :isGroupActivity, :streamsAreImported, :workoutType
+            :polyline, :routeGeography, :weather, :gearId, :data, :isCommute, :isGroupActivity, :workoutType
         )';
 
         $activity = $activityWithRawData->getActivity();
@@ -186,7 +186,6 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'data' => Json::encode($this->cleanData($activityWithRawData->getRawData())),
             'isCommute' => (int) $activity->isCommute(),
             'isGroupActivity' => (int) $activity->isGroupActivity(),
-            'streamsAreImported' => 0,
             'workoutType' => $activity->getWorkoutType()?->value,
         ]);
 
@@ -288,27 +287,6 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
                 activityId: $activityId,
                 startDate: SerializableDateTime::fromString((string) $startDateTime)
             ),
-        ]);
-    }
-
-    public function activityNeedsStreamImport(ActivityId $activityId): bool
-    {
-        $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder->select('activityId')
-            ->from('Activity')
-            ->andWhere('streamsAreImported = 0 OR streamsAreImported IS NULL')
-            ->andWhere('activityId = :activityId')
-            ->setParameter('activityId', $activityId);
-
-        return !empty($queryBuilder->fetchOne());
-    }
-
-    public function markActivityStreamsAsImported(ActivityId $activityId): void
-    {
-        $sql = 'UPDATE Activity SET streamsAreImported = 1 WHERE activityId = :activityId';
-
-        $this->connection->executeStatement($sql, [
-            'activityId' => $activityId,
         ]);
     }
 

@@ -9,6 +9,8 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\ManuallyCreateActivity\ManuallyCreateActivity;
 use App\Domain\Activity\ManuallyCreateActivity\ManuallyCreateActivityCommandHandler;
+use App\Domain\Activity\Scan\ActivityScanRepository;
+use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Activity\WorldType;
@@ -76,6 +78,10 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
         $this->assertNull($activity->getStartingCoordinate());
         $this->assertSame([], $activity->getLocalImagePaths());
         $this->assertSame(0, $activity->getTotalImageCount());
+        $this->assertTrue($this->getContainer()->get(ActivityScanRepository::class)->isScanned(
+            activityId: $activity->getId(),
+            type: ActivityScanType::STREAMS,
+        ));
     }
 
     public function testHandleWithoutOptionalFields(): void
@@ -147,6 +153,7 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
     {
         $handler = new ManuallyCreateActivityCommandHandler(
             activityRepository: $this->activityRepository,
+            activityScanRepository: $this->getContainer()->get(ActivityScanRepository::class),
             activityIdFactory: $this->getContainer()->get(ActivityIdFactory::class),
             settingsRepository: $this->getContainer()->get(SettingsRepository::class),
             imageStorage: $this->getContainer()->get(ImageStorage::class),

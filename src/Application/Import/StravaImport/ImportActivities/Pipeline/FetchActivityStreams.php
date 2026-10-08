@@ -2,7 +2,8 @@
 
 namespace App\Application\Import\StravaImport\ImportActivities\Pipeline;
 
-use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\Scan\ActivityScanRepository;
+use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Activity\Stream\ActivityStream;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\ActivityStreams;
@@ -17,7 +18,7 @@ use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 final readonly class FetchActivityStreams implements ActivityImportStep
 {
     public function __construct(
-        private ActivityRepository $activityRepository,
+        private ActivityScanRepository $activityScanRepository,
         private ActivityStreamRepository $activityStreamRepository,
         private Strava $strava,
         private Clock $clock,
@@ -28,7 +29,7 @@ final readonly class FetchActivityStreams implements ActivityImportStep
     {
         $activityId = $context->getActivityId();
 
-        if (!$context->isNewActivity() && !$this->activityRepository->activityNeedsStreamImport($activityId)) {
+        if (!$context->isNewActivity() && $this->activityScanRepository->isScanned(activityId: $activityId, type: ActivityScanType::STREAMS)) {
             return $context;
         }
 

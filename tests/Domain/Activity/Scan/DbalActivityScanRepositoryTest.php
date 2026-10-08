@@ -45,6 +45,19 @@ class DbalActivityScanRepositoryTest extends ContainerTestCase
         $this->assertTrue($this->activityScanRepository->isScanned(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
         $this->assertFalse($this->activityScanRepository->isScanned(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-2'));
         $this->assertFalse($this->activityScanRepository->isScanned(activityId: ActivityId::fromUnprefixed('2'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
+        $this->assertFalse($this->activityScanRepository->isScanned(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::STREAMS));
+    }
+
+    public function testIsScannedWithoutSubject(): void
+    {
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::STREAMS));
+
+        $this->assertTrue($this->activityScanRepository->isScanned(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::STREAMS));
+        $this->assertFalse($this->activityScanRepository->isScanned(activityId: ActivityId::fromUnprefixed('2'), type: ActivityScanType::STREAMS));
+        $this->assertSame(
+            [['activityId' => 'activity-1', 'type' => 'streams', 'subjectId' => '']],
+            $this->fetchScans(),
+        );
     }
 
     public function testDeleteForActivity(): void

@@ -31,7 +31,6 @@ abstract class ActivityFileParserTestCase extends ContainerTestCase
         foreach ($parsed->getStreams() as $stream) {
             $this->getContainer()->get(ActivityStreamRepository::class)->add($stream);
         }
-        $this->getContainer()->get(ActivityRepository::class)->markActivityStreamsAsImported($activity->getId());
         foreach ($parsed->getLaps() as $lap) {
             $this->getContainer()->get(ActivityLapRepository::class)->add($lap);
         }
