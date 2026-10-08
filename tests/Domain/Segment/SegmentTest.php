@@ -7,6 +7,7 @@ use App\Domain\Segment\Segment;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentType;
 use App\Domain\Segment\SegmentWasAdded;
+use App\Domain\Segment\SegmentWasUpdated;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
@@ -41,6 +42,42 @@ class SegmentTest extends TestCase
             $segment->getStartingCoordinate()
         );
         $this->assertEquals([new SegmentWasAdded()], $segment->getRecordedEvents());
+    }
+
+    public function testWithersRecordThatTheSegmentWasUpdatedOnlyOnce(): void
+    {
+        $segment = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
+            ->withName(Name::fromString('Old name'))
+            ->withSportType(SportType::RIDE)
+            ->withIsFavourite(false)
+            ->build();
+
+        $updatedSegment = $segment
+            ->withName(Name::fromString('New name'))
+            ->withIsFavourite(true);
+
+        $this->assertEquals(Name::fromString('New name'), $updatedSegment->getOriginalName());
+        $this->assertTrue($updatedSegment->isFavourite());
+        $this->assertEquals([new SegmentWasUpdated(SegmentId::fromUnprefixed('1'))], $updatedSegment->getRecordedEvents());
+        $this->assertEquals(Name::fromString('Old name'), $segment->getOriginalName());
+        $this->assertEmpty($segment->getRecordedEvents());
+    }
+
+    public function testWithersWithoutChangesDoNotRecordAnything(): void
+    {
+        $segment = SegmentBuilder::fromDefaults()
+            ->withName(Name::fromString('Name'))
+            ->withSportType(SportType::RIDE)
+            ->withIsFavourite(true)
+            ->build();
+
+        $updatedSegment = $segment
+            ->withName(Name::fromString('Name'))
+            ->withIsFavourite(true);
+
+        $this->assertSame($segment, $updatedSegment);
+        $this->assertEmpty($updatedSegment->getRecordedEvents());
     }
 
     public function testGetStravaUrl(): void

@@ -6,6 +6,7 @@ namespace App\Domain\Segment\SegmentEffort;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Integration\AI\SupportsAITooling;
+use App\Domain\Segment\Segment;
 use App\Domain\Segment\SegmentId;
 use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\Measurement\Length\Kilometer;
@@ -36,7 +37,6 @@ final class SegmentEffort implements SupportsAITooling
         private readonly ActivityId $activityId,
         #[ORM\Column(type: 'datetime_immutable')]
         private readonly SerializableDateTime $startDateTime,
-        #[ORM\Column(type: 'string')]
         private readonly string $name,
         #[ORM\Column(type: 'float')]
         private readonly float $elapsedTimeInSeconds,
@@ -54,10 +54,9 @@ final class SegmentEffort implements SupportsAITooling
 
     public static function create(
         SegmentEffortId $segmentEffortId,
-        SegmentId $segmentId,
+        Segment $segment,
         ActivityId $activityId,
         SerializableDateTime $startDateTime,
-        string $name,
         float $elapsedTimeInSeconds,
         Kilometer $distance,
         ?float $averageWatts,
@@ -66,10 +65,10 @@ final class SegmentEffort implements SupportsAITooling
     ): self {
         $segmentEffort = new self(
             segmentEffortId: $segmentEffortId,
-            segmentId: $segmentId,
+            segmentId: $segment->getId(),
             activityId: $activityId,
             startDateTime: $startDateTime,
-            name: $name,
+            name: (string) $segment->getOriginalName(),
             elapsedTimeInSeconds: $elapsedTimeInSeconds,
             distance: $distance,
             averageWatts: $averageWatts,
@@ -77,7 +76,7 @@ final class SegmentEffort implements SupportsAITooling
             maxHeartRate: $maxHeartRate,
             rank: null,
         );
-        $segmentEffort->recordThat(new SegmentEffortWasAdded($segmentId));
+        $segmentEffort->recordThat(new SegmentEffortWasAdded($segment->getId()));
 
         return $segmentEffort;
     }

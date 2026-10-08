@@ -37,6 +37,7 @@
     ],
     "App\\Domain\\Segment\\SegmentInvalidateCacheTagsListener": [
         "reactToSegmentWasAdded",
+        "reactToSegmentWasUpdated",
         "reactToSegmentsWereDeleted",
         "reactToSegmentEffortWasAdded",
         "reactToSegmentEffortsWereDeleted"

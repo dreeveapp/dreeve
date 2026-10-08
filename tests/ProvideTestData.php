@@ -299,7 +299,6 @@ trait ProvideTestData
                 ->withElapsedTimeInSeconds(10.3)
                 ->withAverageWatts(200)
                 ->withDistance(Kilometer::from(0.1))
-                ->withName('An effort')
                 ->build()
         );
         $segmentEffortRepository->add(
@@ -310,7 +309,6 @@ trait ProvideTestData
                 ->withElapsedTimeInSeconds(10.3)
                 ->withAverageWatts(200)
                 ->withDistance(Kilometer::from(0.1))
-                ->withName('An effort')
                 ->build()
         );
         $segmentEffortRepository->add(
@@ -321,7 +319,6 @@ trait ProvideTestData
                 ->withElapsedTimeInSeconds(9.3)
                 ->withAverageWatts(200)
                 ->withDistance(Kilometer::from(0.1))
-                ->withName('An effort')
                 ->build()
         );
 
@@ -332,7 +329,6 @@ trait ProvideTestData
                 ->withActivityId(ActivityId::fromUnprefixed('9542782314'))
                 ->withElapsedTimeInSeconds(10.3)
                 ->withDistance(Kilometer::from(0.1))
-                ->withName('An effort')
                 ->build()
         );
 

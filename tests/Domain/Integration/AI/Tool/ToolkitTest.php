@@ -285,7 +285,6 @@ class ToolkitTest extends ContainerTestCase
                 ->withElapsedTimeInSeconds(10.3)
                 ->withAverageWatts(200)
                 ->withDistance(Kilometer::from(0.1))
-                ->withName('An effort')
                 ->build()
         );
 

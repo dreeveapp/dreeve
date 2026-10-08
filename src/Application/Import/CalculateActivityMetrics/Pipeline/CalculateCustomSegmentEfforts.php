@@ -82,10 +82,9 @@ final readonly class CalculateCustomSegmentEfforts implements CalculateActivityM
                     foreach ($matchedEfforts as $matchedEffort) {
                         $this->segmentEffortRepository->add(SegmentEffort::create(
                             segmentEffortId: SegmentEffortId::random(),
-                            segmentId: $segment->getId(),
+                            segment: $segment,
                             activityId: $activityId,
                             startDateTime: $activityStartDate->modify(sprintf('+%d seconds', (int) $time[$matchedEffort->getStartIndex()])),
-                            name: (string) $segment->getOriginalName(),
                             elapsedTimeInSeconds: $matchedEffort->getElapsedTimeInSeconds(),
                             distance: $segment->getDistance(),
                             averageWatts: $matchedEffort->getAverageWatts(),

@@ -9,7 +9,9 @@ use App\Domain\Segment\SegmentEffort\SegmentEffort;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentId;
 use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use App\Tests\Domain\Segment\SegmentBuilder;
 
 final class SegmentEffortBuilder
 {
@@ -62,10 +64,12 @@ final class SegmentEffortBuilder
     {
         return SegmentEffort::create(
             segmentEffortId: $this->segmentEffortId,
-            segmentId: $this->segmentId,
+            segment: SegmentBuilder::fromDefaults()
+                ->withSegmentId($this->segmentId)
+                ->withName(Name::fromString($this->name))
+                ->build(),
             activityId: $this->activityId,
             startDateTime: $this->startDateTime,
-            name: $this->name,
             elapsedTimeInSeconds: $this->elapsedTimeInSeconds,
             distance: $this->distance,
             averageWatts: $this->averageWatts,

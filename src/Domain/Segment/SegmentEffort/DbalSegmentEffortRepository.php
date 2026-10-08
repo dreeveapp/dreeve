@@ -17,14 +17,15 @@ use Doctrine\DBAL\ParameterType;
 
 final readonly class DbalSegmentEffortRepository extends DbalRepository implements SegmentEffortRepository
 {
-    private const string RANKED_EFFORTS_FOR_SEGMENT = 'SELECT * FROM (
+    private const string RANKED_EFFORTS_FOR_SEGMENT = 'SELECT ranked.*, Segment.name FROM (
                     SELECT SegmentEffort.*, ROW_NUMBER() OVER (
                         PARTITION BY segmentId
                         ORDER BY elapsedTimeInSeconds ASC, segmentEffortId ASC
                     ) rank
                     FROM SegmentEffort
                     WHERE segmentId = :segmentId
-                ) ranked';
+                ) ranked
+                INNER JOIN Segment ON Segment.segmentId = ranked.segmentId';
 
     public function __construct(
         Connection $connection,
@@ -36,16 +37,15 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
     public function add(SegmentEffort $segmentEffort): void
     {
         $sql = 'INSERT INTO SegmentEffort (segmentEffortId, segmentId, activityId, startDateTime,
-                           name, elapsedTimeInSeconds, distance, averageWatts, averageHeartRate, maxHeartRate)
+                           elapsedTimeInSeconds, distance, averageWatts, averageHeartRate, maxHeartRate)
                 VALUES (:segmentEffortId, :segmentId, :activityId, :startDateTime,
-                        :name, :elapsedTimeInSeconds, :distance, :averageWatts, :averageHeartRate, :maxHeartRate)';
+                        :elapsedTimeInSeconds, :distance, :averageWatts, :averageHeartRate, :maxHeartRate)';
 
         $this->connection->executeStatement($sql, [
             'segmentEffortId' => $segmentEffort->getId(),
             'segmentId' => $segmentEffort->getSegmentId(),
             'activityId' => $segmentEffort->getActivityId(),
             'startDateTime' => $segmentEffort->getStartDateTime(),
-            'name' => $segmentEffort->getName(),
             'elapsedTimeInSeconds' => $segmentEffort->getElapsedTimeInSeconds(),
             'distance' => $segmentEffort->getDistance()->toMeter()->toInt(),
             'averageWatts' => $segmentEffort->getAverageWatts(),
@@ -86,7 +86,7 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
 
     public function find(SegmentEffortId $segmentEffortId): SegmentEffort
     {
-        $sql = 'SELECT * FROM (
+        $sql = 'SELECT ranked.*, Segment.name FROM (
                     SELECT SegmentEffort.*, ROW_NUMBER() OVER (
                         PARTITION BY segmentId
                         ORDER BY elapsedTimeInSeconds ASC, segmentEffortId ASC
@@ -94,7 +94,8 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
                     FROM SegmentEffort
                     WHERE segmentId = (SELECT segmentId FROM SegmentEffort WHERE segmentEffortId = :segmentEffortId)
                 ) ranked
-                WHERE segmentEffortId = :segmentEffortId';
+                INNER JOIN Segment ON Segment.segmentId = ranked.segmentId
+                WHERE ranked.segmentEffortId = :segmentEffortId';
 
         if (!$result = $this->connection->executeQuery($sql, ['segmentEffortId' => $segmentEffortId])->fetchAssociative()) {
             throw new EntityNotFound(sprintf('segmentEffort "%s" not found', $segmentEffortId));
@@ -105,7 +106,7 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
 
     public function findTopXBySegmentId(SegmentId $segmentId, int $limit): SegmentEfforts
     {
-        $sql = self::RANKED_EFFORTS_FOR_SEGMENT.' ORDER BY rank ASC LIMIT :limit';
+        $sql = self::RANKED_EFFORTS_FOR_SEGMENT.' ORDER BY ranked.rank ASC LIMIT :limit';
 
         return SegmentEfforts::fromArray(array_map(
             fn (array $result): SegmentEffort => $this->hydrate($result, (int) $result['rank']),
@@ -122,7 +123,7 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
 
     public function findBySegmentId(SegmentId $segmentId): SegmentEfforts
     {
-        $sql = self::RANKED_EFFORTS_FOR_SEGMENT.' ORDER BY startDateTime DESC';
+        $sql = self::RANKED_EFFORTS_FOR_SEGMENT.' ORDER BY ranked.startDateTime DESC';
 
         return SegmentEfforts::fromArray(array_map(
             fn (array $result): SegmentEffort => $this->hydrate($result, (int) $result['rank']),
@@ -132,7 +133,7 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
 
     public function findByActivityId(ActivityId $activityId): SegmentEfforts
     {
-        $sql = 'SELECT * FROM (
+        $sql = 'SELECT ranked.*, Segment.name FROM (
                     SELECT SegmentEffort.*, ROW_NUMBER() OVER (
                         PARTITION BY segmentId
                         ORDER BY elapsedTimeInSeconds ASC, segmentEffortId ASC
@@ -140,8 +141,9 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
                     FROM SegmentEffort
                     WHERE segmentId IN (SELECT segmentId FROM SegmentEffort WHERE activityId = :activityId)
                 ) ranked
-                WHERE activityId = :activityId
-                ORDER BY startDateTime ASC, segmentEffortId ASC';
+                INNER JOIN Segment ON Segment.segmentId = ranked.segmentId
+                WHERE ranked.activityId = :activityId
+                ORDER BY ranked.startDateTime ASC, ranked.segmentEffortId ASC';
 
         return SegmentEfforts::fromArray(array_map(
             fn (array $result): SegmentEffort => $this->hydrate($result, (int) $result['rank']),

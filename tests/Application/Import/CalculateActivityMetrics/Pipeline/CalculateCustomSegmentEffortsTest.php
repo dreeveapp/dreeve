@@ -93,12 +93,12 @@ class CalculateCustomSegmentEffortsTest extends ContainerTestCase
 
         $this->assertEquals(
             [
-                ['segmentId' => 'segment-custom', 'activityId' => 'activity-exact-pass', 'startDateTime' => '2025-01-01 10:00:37', 'name' => 'Custom segment', 'elapsedTimeInSeconds' => 125.0, 'distance' => 1000, 'averageWatts' => 209.5, 'averageHeartRate' => 145, 'maxHeartRate' => 149],
-                ['segmentId' => 'segment-custom', 'activityId' => 'activity-two-laps', 'startDateTime' => '2025-01-01 10:00:37', 'name' => 'Custom segment', 'elapsedTimeInSeconds' => 125.0, 'distance' => 1000, 'averageWatts' => 209.5, 'averageHeartRate' => 145, 'maxHeartRate' => 149],
-                ['segmentId' => 'segment-custom', 'activityId' => 'activity-two-laps', 'startDateTime' => '2025-01-01 10:08:08', 'name' => 'Custom segment', 'elapsedTimeInSeconds' => 125.0, 'distance' => 1000, 'averageWatts' => 209.5, 'averageHeartRate' => 144, 'maxHeartRate' => 149],
+                ['segmentId' => 'segment-custom', 'activityId' => 'activity-exact-pass', 'startDateTime' => '2025-01-01 10:00:37', 'elapsedTimeInSeconds' => 125.0, 'distance' => 1000, 'averageWatts' => 209.5, 'averageHeartRate' => 145, 'maxHeartRate' => 149],
+                ['segmentId' => 'segment-custom', 'activityId' => 'activity-two-laps', 'startDateTime' => '2025-01-01 10:00:37', 'elapsedTimeInSeconds' => 125.0, 'distance' => 1000, 'averageWatts' => 209.5, 'averageHeartRate' => 145, 'maxHeartRate' => 149],
+                ['segmentId' => 'segment-custom', 'activityId' => 'activity-two-laps', 'startDateTime' => '2025-01-01 10:08:08', 'elapsedTimeInSeconds' => 125.0, 'distance' => 1000, 'averageWatts' => 209.5, 'averageHeartRate' => 144, 'maxHeartRate' => 149],
             ],
             $this->getConnection()->executeQuery(
-                'SELECT segmentId, activityId, startDateTime, name, elapsedTimeInSeconds, distance, averageWatts, averageHeartRate, maxHeartRate
+                'SELECT segmentId, activityId, startDateTime, elapsedTimeInSeconds, distance, averageWatts, averageHeartRate, maxHeartRate
                  FROM SegmentEffort ORDER BY activityId, startDateTime'
             )->fetchAllAssociative(),
         );

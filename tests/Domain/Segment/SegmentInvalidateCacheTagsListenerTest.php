@@ -7,11 +7,13 @@ use App\Domain\Segment\SegmentCacheTag;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
+use App\Domain\Segment\SegmentRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\Cache\Tag\CacheTag;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\ValueObject\String\Name;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Segment\SegmentEffort\SegmentEffortBuilder;
 
@@ -62,6 +64,22 @@ class SegmentInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->assertFalse($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(1))));
         $this->assertFalse($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(2))));
         $this->assertTrue($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(3))));
+    }
+
+    public function testItInvalidatesTheSegmentWhenItWasUpdated(): void
+    {
+        $segment = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->build();
+        $segmentRepository = $this->getContainer()->get(SegmentRepository::class);
+        $segmentRepository->add($segment);
+        $this->warmUpRenderCache();
+
+        $segmentRepository->update($segment->withName(Name::fromString('New name')));
+
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::SEGMENTS));
+        $this->assertFalse($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(1))));
+        $this->assertTrue($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(2))));
     }
 
     private function warmUpRenderCache(): void

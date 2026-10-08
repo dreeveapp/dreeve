@@ -60,7 +60,6 @@ class SegmentRequestHandlerTest extends ControllerWebTestCase
                 ->withAverageWatts(200)
                 ->withAverageHeartRate(145)
                 ->withDistance(Kilometer::from(0.1))
-                ->withName('An effort')
                 ->build()
         );
         $segmentEffortRepository->add(
@@ -73,7 +72,6 @@ class SegmentRequestHandlerTest extends ControllerWebTestCase
                 ->withAverageWatts(200)
                 ->withAverageHeartRate(162)
                 ->withDistance(Kilometer::from(0.1))
-                ->withName('An effort')
                 ->build()
         );
 
@@ -98,7 +96,6 @@ class SegmentRequestHandlerTest extends ControllerWebTestCase
                 ->withAverageWatts(200)
                 ->withAverageHeartRate(145)
                 ->withDistance(Kilometer::from(0.1))
-                ->withName('An effort')
                 ->build()
         );
 

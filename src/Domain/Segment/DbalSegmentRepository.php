@@ -59,6 +59,7 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
     public function update(Segment $segment): void
     {
         $sql = 'UPDATE Segment SET 
+                    name = :name,
                     isFavourite = :isFavourite,
                     detailsHaveBeenImported = :detailsHaveBeenImported,
                     polyline = :polyline,
@@ -70,12 +71,15 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
         $startingCoordinate = $polyline?->getStartingCoordinate();
         $this->connection->executeStatement($sql, [
             'segmentId' => $segment->getId(),
+            'name' => $segment->getOriginalName(),
             'isFavourite' => (int) $segment->isFavourite(),
             'detailsHaveBeenImported' => (int) $segment->detailsHaveBeenImported(),
             'polyline' => $polyline,
             'startingCoordinateLatitude' => $startingCoordinate?->getLatitude()->toFloat(),
             'startingCoordinateLongitude' => $startingCoordinate?->getLongitude()->toFloat(),
         ]);
+
+        $this->eventBus->publishEvents($segment->getRecordedEvents());
     }
 
     public function find(SegmentId $segmentId): Segment

@@ -43,7 +43,7 @@ final class Segment implements SupportsAITooling
         #[ORM\Column(type: 'float')]
         private readonly float $maxGradient,
         #[ORM\Column(type: 'boolean')]
-        private bool $isFavourite,
+        private readonly bool $isFavourite,
         #[ORM\Column(type: 'integer', nullable: true)]
         private readonly ?int $climbCategory,
         #[ORM\Column(type: 'string', nullable: true)]
@@ -273,11 +273,32 @@ final class Segment implements SupportsAITooling
         return $this->isFavourite;
     }
 
-    public function updateIsFavourite(bool $isFavourite): self
+    public function withIsFavourite(bool $isFavourite): self
     {
-        $this->isFavourite = $isFavourite;
+        if ($isFavourite === $this->isFavourite) {
+            return $this;
+        }
 
-        return $this;
+        $segment = clone ($this, [
+            'isFavourite' => $isFavourite,
+        ]);
+        $segment->recordOnlyOnce(new SegmentWasUpdated($this->segmentId));
+
+        return $segment;
+    }
+
+    public function withName(Name $name): self
+    {
+        if ((string) $name === (string) $this->name) {
+            return $this;
+        }
+
+        $segment = clone ($this, [
+            'name' => $name,
+        ]);
+        $segment->recordOnlyOnce(new SegmentWasUpdated($this->segmentId));
+
+        return $segment;
     }
 
     public function detailsHaveBeenImported(): bool

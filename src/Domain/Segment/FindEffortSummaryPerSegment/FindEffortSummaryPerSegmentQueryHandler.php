@@ -28,7 +28,7 @@ final readonly class FindEffortSummaryPerSegmentQueryHandler implements QueryHan
 
         $results = $this->connection->executeQuery(
             <<<SQL
-                SELECT * FROM (
+                SELECT ranked.*, Segment.name FROM (
                     SELECT SegmentEffort.*,
                         ROW_NUMBER() OVER (
                             PARTITION BY segmentId
@@ -38,7 +38,8 @@ final readonly class FindEffortSummaryPerSegmentQueryHandler implements QueryHan
                         MAX(startDateTime) OVER (PARTITION BY segmentId) lastEffortDate
                     FROM SegmentEffort
                 ) ranked
-                WHERE rank = 1
+                INNER JOIN Segment ON Segment.segmentId = ranked.segmentId
+                WHERE ranked.rank = 1
             SQL
         )->fetchAllAssociative();
 

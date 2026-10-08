@@ -60,8 +60,7 @@ final readonly class ProcessActivitySegmentEfforts implements ProcessRawDataStep
                     try {
                         $segment = $this->segmentRepository->find($segmentId);
                         if ($isFavourite !== $segment->isFavourite()) {
-                            $segment->updateIsFavourite($isFavourite);
-                            $this->segmentRepository->update($segment);
+                            $this->segmentRepository->update($segment->withIsFavourite($isFavourite));
                         }
                     } catch (EntityNotFound) {
                         $segment = Segment::create(
@@ -80,8 +79,9 @@ final readonly class ProcessActivitySegmentEfforts implements ProcessRawDataStep
                         $this->segmentRepository->add($segment);
                         ++$countSegmentsAdded;
                     }
-                    $segmentsProcessedInCurrentRun[(string) $segmentId] = $segmentId;
+                    $segmentsProcessedInCurrentRun[(string) $segmentId] = $segment;
                 }
+                $segment = $segmentsProcessedInCurrentRun[(string) $segmentId];
 
                 $segmentEffortId = SegmentEffortId::fromUnprefixed((string) $activitySegmentEffort['id']);
                 try {
@@ -89,13 +89,12 @@ final readonly class ProcessActivitySegmentEfforts implements ProcessRawDataStep
                 } catch (EntityNotFound) {
                     $this->segmentEffortRepository->add(SegmentEffort::create(
                         segmentEffortId: $segmentEffortId,
-                        segmentId: $segmentId,
+                        segment: $segment,
                         activityId: $activity->getId(),
                         startDateTime: SerializableDateTime::createFromFormat(
                             Activity::DATE_TIME_FORMAT,
                             $activitySegmentEffort['start_date_local']
                         ),
-                        name: $activitySegmentEffort['name'],
                         elapsedTimeInSeconds: (float) $activitySegmentEffort['elapsed_time'],
                         distance: Meter::from($activitySegment['distance'])->toKilometer(),
                         averageWatts: isset($activitySegmentEffort['average_watts']) ? (float) $activitySegmentEffort['average_watts'] : null,
