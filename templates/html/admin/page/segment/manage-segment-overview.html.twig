@@ -40,6 +40,9 @@
                         {{ "Name"|trans }}
                     </th>
                     <th scope="col" class="text-left">
+                        {{ "Type"|trans({}, 'admin') }}
+                    </th>
+                    <th scope="col" class="text-left">
                         {{ "Sport type"|trans({}, 'admin') }}
                     </th>
                     <th scope="col">
@@ -57,12 +60,10 @@
                 {% for segment in overview %}
                     <tr class="group/row">
                         <td class="whitespace-nowrap text-left font-medium text-gray-800">
-                            <span class="inline-flex items-center gap-1">
-                                {{ segment.getName() }}
-                                {% if segment.getType().isImported() %}
-                                    {% include 'html/admin/component/strava-imported-badge.html.twig' %}
-                                {% endif %}
-                            </span>
+                            {{ segment.getName() }}
+                        </td>
+                        <td class="whitespace-nowrap text-left">
+                            {{ segment.getType()|trans }}
                         </td>
                         <td class="whitespace-nowrap text-left">
                             {{ segment.getSportType()|trans }}
@@ -80,7 +81,7 @@
                 {% endfor %}
                 {% if overview.isEmpty() %}
                     <tr>
-                        <td colspan="5">
+                        <td colspan="6">
                             <div class="flex flex-col items-center justify-center gap-3 py-12 px-4 text-center">
                                 <span class="grid place-items-center size-12 rounded-full bg-gray-100 text-gray-400" aria-hidden="true">
                                     <svg class="size-6" fill="currentColor" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">

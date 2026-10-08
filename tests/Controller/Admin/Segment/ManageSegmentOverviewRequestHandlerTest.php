@@ -71,8 +71,8 @@ class ManageSegmentOverviewRequestHandlerTest extends AdminWebTestCase
         $crawler = $this->client->request('GET', '/admin/segments?filters[type]=imported&filters[name]=kwa');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSame(['Kwaremont Imported from Strava'], $crawler->filter('table.data-table tbody tr td:first-child')->each(
-            static fn ($cell): string => trim($cell->text()),
+        $this->assertSame([['Kwaremont', 'Imported from Strava']], $crawler->filter('table.data-table tbody tr')->each(
+            static fn ($row): array => [trim($row->filter('td')->eq(0)->text()), trim($row->filter('td')->eq(1)->text())],
         ));
         $this->assertSame('imported', $crawler->filter('#filter-type option[selected]')->attr('value'));
         $this->assertSame('kwa', $crawler->filter('#filter-name')->attr('value'));
