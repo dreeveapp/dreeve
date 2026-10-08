@@ -248,7 +248,7 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         ];
 
         yield 'an activity filter only keeps the imports linked to that activity' => [
-            ['activity' => '2'],
+            ['activity' => 'activity-2'],
             Pagination::fromOffsetAndLimit(0, 10),
             ['middle.fit'],
             1,
@@ -361,7 +361,7 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         ];
 
         yield 'an activity filter hides queued files' => [
-            ['activity' => '2'],
+            ['activity' => 'activity-2'],
             ['middle.fit'],
             1,
         ];

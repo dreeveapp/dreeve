@@ -1,0 +1,72 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block stylesheets %}
+    <link href="{{ relativeUrl(asset('libraries/leaflet/leaflet.min.css')) }}" rel="stylesheet"/>
+{% endblock %}
+{% block main %}
+    {% autoescape false %}
+    <div class="modal-like-form">
+        <div class="w-full max-w-3xl overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">
+                    {{ "Add segment"|trans({}, 'admin') }}
+                </h3>
+                <a href="{{ relativeUrl(path('admin_manage_segment_overview')) }}" aria-label="{{ "Close"|trans({}, 'admin') }}"
+                   class="grid place-items-center size-8 rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900">
+                    <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                    </svg>
+                </a>
+            </div>
+            <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ relativeUrl(path('admin_manage_segment_overview')) }}" class="flex flex-col gap-4">
+                <div data-form-error class="form-error hidden" role="alert"></div>
+                <div>
+                    <label for="segment-activity">{{ "Activity"|trans({}, 'admin') }}</label>
+                    <input type="text" id="segment-activity" name="activityId"
+                           placeholder="{{ "Search by name, date or activity ID"|trans({}, 'admin') }}"
+                           autocomplete="off" spellcheck="false"
+                           data-autocomplete-url="{{ relativeUrl(path('admin_activity_search')) }}"
+                           required>
+                </div>
+                <div class="group/route" data-state="empty"
+                     data-route-range-picker='{{ {
+                         url: relativeUrl(path('admin_activity_route', {activityId: 'activity-__ID__'})),
+                         placeholder: 'activity-__ID__',
+                         source: '#segment-activity',
+                     }|merge(unitFactors)|json_encode }}'>
+                    <p class="text-sm text-gray-500 group-data-[state=ready]/route:hidden">
+                        <span class="hidden group-data-[state=empty]/route:inline">{{ "Pick an activity to select the segment on its route."|trans({}, 'admin') }}</span>
+                        <span class="hidden group-data-[state=loading]/route:inline">{{ "Loading the route..."|trans({}, 'admin') }}</span>
+                        <span class="hidden group-data-[state=error]/route:inline text-red-600">{{ "This activity has no GPS data."|trans({}, 'admin') }}</span>
+                    </p>
+                    <div class="hidden group-data-[state=ready]/route:flex flex-col gap-3">
+                        <p class="text-sm text-gray-500">{{ "Drag the start and end markers along the route to select the segment."|trans({}, 'admin') }}</p>
+                        <div class="isolate h-80 rounded-lg border border-gray-200" data-route-range-picker-map></div>
+                        <input type="hidden" name="startIndex" value="0" data-route-range-picker-field="startIndex">
+                        <input type="hidden" name="endIndex" value="0" data-route-range-picker-field="endIndex">
+                        <p class="text-sm text-gray-700">
+                            {{ "Distance"|trans }}: <span class="font-semibold" data-route-range-picker-output="distance">0</span> {{ unitSystem.distanceSymbol() }}
+                            &middot;
+                            {{ "Elevation gain"|trans }}: <span class="font-semibold" data-route-range-picker-output="elevationGain">-</span> {{ unitSystem.elevationSymbol() }}
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <label for="segment-name">{{ "Name"|trans }}</label>
+                    <input type="text" id="segment-name" name="name" required>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="segment-is-favourite" name="isFavourite" value="true">
+                    <label for="segment-is-favourite" class="mt-0!">{{ "Favourite"|trans({}, 'admin') }}</label>
+                </div>
+                <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
+                    <a href="{{ relativeUrl(path('admin_manage_segment_overview')) }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>
+                    <button type="submit" data-has-loading-state class="group btn--primary">
+                        <span class="label">{{ "Save"|trans({}, 'admin') }}</span>
+                        <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endautoescape %}
+{% endblock main %}

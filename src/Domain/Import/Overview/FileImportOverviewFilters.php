@@ -47,7 +47,10 @@ final readonly class FileImportOverviewFilters extends Filters
     public function getActivityId(): ?ActivityId
     {
         $activityId = trim($this->getString('activity') ?? '');
+        if (!str_starts_with($activityId, ActivityId::getPrefix())) {
+            return null;
+        }
 
-        return '' === $activityId ? null : ActivityId::fromPrefixedOrUnprefixed($activityId);
+        return ActivityId::fromString($activityId);
     }
 }

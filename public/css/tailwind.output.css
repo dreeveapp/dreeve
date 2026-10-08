@@ -1035,6 +1035,9 @@
   .left-3 {
     left: calc(var(--spacing) * 3);
   }
+  .isolate {
+    isolation: isolate;
+  }
   .z-0 {
     z-index: 0;
   }
@@ -2537,6 +2540,10 @@
     border-style: var(--tw-border-style);
     border-width: 2px;
   }
+  .border-3 {
+    border-style: var(--tw-border-style);
+    border-width: 3px;
+  }
   .border-x-0 {
     border-inline-style: var(--tw-border-style);
     border-inline-width: 0px;
@@ -3764,6 +3771,21 @@
   }
   .group-aria-expanded\:rotate-180:is(:where(.group)[aria-expanded="true"] *) {
     rotate: 180deg;
+  }
+  .group-data-\[state\=empty\]\/route\:inline:is(:where(.group\/route)[data-state="empty"] *) {
+    display: inline;
+  }
+  .group-data-\[state\=error\]\/route\:inline:is(:where(.group\/route)[data-state="error"] *) {
+    display: inline;
+  }
+  .group-data-\[state\=loading\]\/route\:inline:is(:where(.group\/route)[data-state="loading"] *) {
+    display: inline;
+  }
+  .group-data-\[state\=ready\]\/route\:flex:is(:where(.group\/route)[data-state="ready"] *) {
+    display: flex;
+  }
+  .group-data-\[state\=ready\]\/route\:hidden:is(:where(.group\/route)[data-state="ready"] *) {
+    display: none;
   }
   .group-aria-asc\:text-gray-200:is(:where(.group)[aria-sort="ascending"] *) {
     color: var(--color-gray-200);

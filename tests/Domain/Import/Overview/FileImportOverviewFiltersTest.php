@@ -48,7 +48,7 @@ class FileImportOverviewFiltersTest extends TestCase
             'filters' => ['filename' => 'ride'],
         ]))->isEmpty());
         $this->assertFalse(FileImportOverviewFilters::fromRequest(new Request(query: [
-            'filters' => ['activity' => '123'],
+            'filters' => ['activity' => 'activity-123'],
         ]))->isEmpty());
     }
 
@@ -73,9 +73,18 @@ class FileImportOverviewFiltersTest extends TestCase
 
     public static function provideActivityIds(): iterable
     {
-        yield 'an unprefixed id, as filled in by the autocomplete' => ['123'];
-        yield 'a prefixed id' => ['activity-123'];
-        yield 'an id surrounded by whitespace' => [' 123 '];
+        yield 'a prefixed id, as filled in by the autocomplete' => ['activity-123'];
+        yield 'an id surrounded by whitespace' => [' activity-123 '];
+    }
+
+    public function testItIgnoresAnActivityIdWithoutPrefix(): void
+    {
+        $filters = FileImportOverviewFilters::fromRequest(new Request(query: [
+            'filters' => ['activity' => '123'],
+        ]));
+
+        $this->assertNull($filters->getActivityId());
+        $this->assertTrue($filters->isEmpty());
     }
 
     #[DataProvider('provideStatuses')]

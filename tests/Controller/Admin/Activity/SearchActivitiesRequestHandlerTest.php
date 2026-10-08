@@ -38,7 +38,7 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSame([
             [
-                'value' => '1',
+                'value' => 'activity-1',
                 'label' => 'Morning commute',
                 'sublabel' => '2025-06-01 08:00 · Ride',
             ],
@@ -55,7 +55,7 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $results = Json::decode($this->client->getResponse()->getContent());
         $this->assertCount(1, $results);
-        $this->assertSame('12345678', $results[0]['value']);
+        $this->assertSame('activity-12345678', $results[0]['value']);
     }
 
     public function testItFindsActivitiesByDateAndOrdersThemMostRecentFirst(): void
@@ -69,7 +69,7 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSame(
-            ['2', '1'],
+            ['activity-2', 'activity-1'],
             array_column(Json::decode($this->client->getResponse()->getContent()), 'value')
         );
     }
@@ -88,7 +88,7 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSame([
             [
-                'value' => '1',
+                'value' => 'activity-1',
                 'label' => 'Morning Run',
                 'sublabel' => '2025-06-01 08:00 · Run',
             ],
@@ -106,7 +106,7 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $results = Json::decode($this->client->getResponse()->getContent());
         $this->assertCount(1, $results);
-        $this->assertSame('1', $results[0]['value']);
+        $this->assertSame('activity-1', $results[0]['value']);
     }
 
     public function testItLimitsTheNumberOfResults(): void

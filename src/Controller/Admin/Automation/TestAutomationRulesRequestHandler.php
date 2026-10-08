@@ -52,7 +52,7 @@ final readonly class TestAutomationRulesRequestHandler
 
         if (null !== $activityId) {
             try {
-                $activity = $this->activityRepository->find(ActivityId::fromPrefixedOrUnprefixed($activityId));
+                $activity = $this->activityRepository->find(ActivityId::fromString($activityId));
                 $dryRun = $this->dryRunner->run($activity);
             } catch (EntityNotFound|\InvalidArgumentException) {
                 $notFound = true;

@@ -36,7 +36,7 @@
                     </div>
                     <div>
                         <label for="filter-activity" class="mt-0! text-xs text-gray-500">{{ "Activity"|trans({}, 'admin') }}</label>
-                        <input type="text" id="filter-activity" name="filters[activity]" value="{{ filters.getActivityId() ? filters.getActivityId().toUnprefixedString()|e }}"
+                        <input type="text" id="filter-activity" name="filters[activity]" value="{{ filters.getActivityId() ? filters.getActivityId()|e }}"
                                placeholder="{{ "Search by name, date or activity ID"|trans({}, 'admin') }}"
                                autocomplete="off" spellcheck="false"
                                data-autocomplete-url="{{ relativeUrl(path('admin_activity_search')) }}">

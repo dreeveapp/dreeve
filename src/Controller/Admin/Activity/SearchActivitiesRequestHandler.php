@@ -31,7 +31,7 @@ final readonly class SearchActivitiesRequestHandler
 
         return new JsonResponse(array_map(
             static fn (ActivityOverviewItem $item): array => [
-                'value' => $item->getActivityId()->toUnprefixedString(),
+                'value' => (string) $item->getActivityId(),
                 'label' => (string) $item->getName(),
                 'sublabel' => sprintf(
                     '%s · %s',

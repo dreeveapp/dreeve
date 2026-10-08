@@ -35,6 +35,7 @@ Activity: Activity
 'Add max heart rate': 'Add max heart rate'
 'Add resting heart rate': 'Add resting heart rate'
 'Add rule': 'Add rule'
+'Add segment': 'Add segment'
 'Add service': 'Add service'
 'Add task': 'Add task'
 'Add tile layer': 'Add tile layer'
@@ -130,6 +131,7 @@ Distance: Distance
 'Do not download activity photos': 'Do not download activity photos'
 Done: Done
 'Download original file': 'Download original file'
+'Drag the start and end markers along the route to select the segment.': 'Drag the start and end markers along the route to select the segment.'
 'Drag to reorder': 'Drag to reorder'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Drag to set the order in which sport types are displayed throughout the app.'
 Duplicate: Duplicate
@@ -159,6 +161,7 @@ FTP: FTP
 'FTP history (cycling)': 'FTP history (cycling)'
 'FTP history (running)': 'FTP history (running)'
 Failed: Failed
+Favourite: Favourite
 Female: Female
 'File exceeds {max} MB': 'File exceeds {max} MB'
 'File imports': 'File imports'
@@ -220,6 +223,7 @@ Latitude: Latitude
 'Leave empty to include all sport types.': 'Leave empty to include all sport types.'
 'Leave empty to use the default title.': 'Leave empty to use the default title.'
 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.'
+'Loading the route...': 'Loading the route...'
 Locale: Locale
 Log: Log
 'Log maintenance': 'Log maintenance'
@@ -298,6 +302,7 @@ Password: Password
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
 'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
+'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Pick the rules you want to apply to see which activities would change.'
 'Polyline color': 'Polyline color'
 'Preview selection': 'Preview selection'
@@ -463,6 +468,7 @@ Tasks: Tasks
 'Then do this': 'Then do this'
 'These rules will be applied to your existing activities on the next import cycle.': 'These rules will be applied to your existing activities on the next import cycle.'
 'This action cannot be undone.': 'This action cannot be undone.'
+'This activity has no GPS data.': 'This activity has no GPS data.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'This component is fitted to multiple gears, pick the one you serviced.'
 'This only removes the import record, the imported activity is kept.': 'This only removes the import record, the imported activity is kept.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'This page shows a different key every time it is opened, and only the one in your environment file is applied.'

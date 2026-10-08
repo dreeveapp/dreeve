@@ -190,8 +190,8 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
             'filters[filename]=RIDE', 'RIDE', '',
         ];
 
-        yield 'an activity filter renders the unprefixed id' => [
-            'filters[activity]=activity-42', '', '42',
+        yield 'an activity filter renders the prefixed id' => [
+            'filters[activity]=activity-42', '', 'activity-42',
         ];
 
         yield 'a filename value is escaped when rendered back' => [

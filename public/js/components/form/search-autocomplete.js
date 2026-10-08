@@ -45,6 +45,7 @@ const initSearchAutocomplete = (input) => {
 
     autoCompleteJS.input.addEventListener('selection', (event) => {
         input.value = event.detail.selection.value.value;
+        input.dispatchEvent(new Event('change', {bubbles: true}));
     });
 };
 

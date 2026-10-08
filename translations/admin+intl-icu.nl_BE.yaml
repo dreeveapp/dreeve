@@ -35,6 +35,7 @@ Activity: Activiteit
 'Add max heart rate': 'Maximale hartslag toevoegen'
 'Add resting heart rate': 'Rusthartslag toevoegen'
 'Add rule': 'Regel toevoegen'
+'Add segment': 'Add segment'
 'Add service': 'Dienst toevoegen'
 'Add task': 'Taak toevoegen'
 'Add tile layer': 'Tegellaag toevoegen'
@@ -130,6 +131,7 @@ Distance: Afstand
 'Do not download activity photos': "Geen activiteitsfoto's downloaden"
 Done: Klaar
 'Download original file': 'Origineel bestand downloaden'
+'Drag the start and end markers along the route to select the segment.': 'Drag the start and end markers along the route to select the segment.'
 'Drag to reorder': 'Sleep om te herschikken'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Sleep om de volgorde te bepalen waarin sporttypes in de hele app getoond worden.'
 Duplicate: Dupliceren
@@ -159,6 +161,7 @@ FTP: FTP
 'FTP history (cycling)': 'FTP-historiek (fietsen)'
 'FTP history (running)': 'FTP-historiek (lopen)'
 Failed: Mislukt
+Favourite: Favourite
 Female: Vrouw
 'File exceeds {max} MB': 'Bestand is groter dan {max} MB'
 'File imports': Bestandsimports
@@ -220,6 +223,7 @@ Latitude: Breedtegraad
 'Leave empty to include all sport types.': 'Laat leeg om alle sporttypes mee te nemen.'
 'Leave empty to use the default title.': 'Laat leeg om de standaardtitel te gebruiken.'
 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Laat een externe client activiteitsbestanden uploaden via HTTP. De sleutel is het enige wat dat endpoint beveiligt, dus behandel hem als een wachtwoord.'
+'Loading the route...': 'Loading the route...'
 Locale: Taalinstelling
 Log: Log
 'Log maintenance': 'Onderhoud loggen'
@@ -298,6 +302,7 @@ Password: Wachtwoord
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': "Foto's bij je Strava-activiteiten worden niet gedownload of op schijf opgeslagen. Eerder gedownloade foto's blijven bewaard."
 'Photos of the selected sport types are excluded from the photo gallery.': "Foto's van de geselecteerde sporttypes worden uitgesloten van de fotogalerij."
 'Pick a device you already recorded with, or type a new name.': 'Kies een toestel waarmee je al geregistreerd hebt, of typ een nieuwe naam.'
+'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Kies de regels die je wil toepassen om te zien welke activiteiten zouden wijzigen.'
 'Polyline color': Routekleur
 'Preview selection': 'Selectie bekijken'
@@ -463,6 +468,7 @@ Tasks: Taken
 'Then do this': 'Doe dan dit'
 'These rules will be applied to your existing activities on the next import cycle.': 'Deze regels worden bij de volgende importcyclus op je bestaande activiteiten toegepast.'
 'This action cannot be undone.': 'Deze actie kan niet ongedaan gemaakt worden.'
+'This activity has no GPS data.': 'This activity has no GPS data.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Dit onderdeel zit op meerdere uitrustingen, kies degene die je onderhouden hebt.'
 'This only removes the import record, the imported activity is kept.': 'Dit verwijdert enkel het importrecord, de geïmporteerde activiteit blijft behouden.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Deze pagina toont bij elke opening een andere sleutel, en enkel die in je omgevingsbestand wordt toegepast.'

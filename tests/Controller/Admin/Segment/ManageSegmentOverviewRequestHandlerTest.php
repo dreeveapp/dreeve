@@ -34,6 +34,7 @@ class ManageSegmentOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('No segments added yet.', $crawler->filter('body')->text());
         $this->assertCount(0, $crawler->filter('form[method="get"]'));
         $this->assertCount(1, $crawler->filter('#drawer-navigation a[href$="/admin/segments"][aria-selected="true"]'));
+        $this->assertCount(1, $crawler->filter('a.btn--add[href$="/admin/segments/add"]'));
     }
 
     public function testRendersTheTableWithoutTypeFilterWhenThereAreNoImportedSegments(): void

@@ -35,6 +35,7 @@ Activity: Tevékenység
 'Add max heart rate': 'Maximális pulzus hozzáadása'
 'Add resting heart rate': 'Nyugalmi pulzus hozzáadása'
 'Add rule': 'Szabály hozzáadása'
+'Add segment': 'Add segment'
 'Add service': 'Szerviz hozzáadása'
 'Add task': 'Feladat hozzáadása'
 'Add tile layer': 'Csempe-réteg hozzáadása'
@@ -130,6 +131,7 @@ Distance: Távolság
 'Do not download activity photos': 'Do not download activity photos'
 Done: Kész
 'Download original file': 'Download original file'
+'Drag the start and end markers along the route to select the segment.': 'Drag the start and end markers along the route to select the segment.'
 'Drag to reorder': 'Húzással átrendezhető'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Húzással állítsd be, milyen sorrendben jelenjenek meg a sporttípusok az alkalmazásban.'
 Duplicate: Másolat
@@ -159,6 +161,7 @@ FTP: FTP
 'FTP history (cycling)': 'FTP-előzmények (kerékpározás)'
 'FTP history (running)': 'FTP-előzmények (futás)'
 Failed: Sikertelen
+Favourite: Favourite
 Female: Nő
 'File exceeds {max} MB': 'A fájl meghaladja a(z) {max} MB-ot'
 'File imports': Fájlimportok
@@ -220,6 +223,7 @@ Latitude: Szélesség
 'Leave empty to include all sport types.': 'Hagyd üresen az összes sporttípus belefoglalásához.'
 'Leave empty to use the default title.': 'Leave empty to use the default title.'
 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Lehetővé teszi egy külső kliens számára, hogy HTTP-n keresztül tevékenységfájlokat töltsön fel. A kulcs az egyetlen, ami védi ezt a végpontot, ezért kezeld jelszóként.'
+'Loading the route...': 'Loading the route...'
 Locale: Nyelv
 Log: Napló
 'Log maintenance': 'Karbantartás naplózása'
@@ -298,6 +302,7 @@ Password: Jelszó
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'A kiválasztott sporttípusok fotói ki vannak zárva a fotógalériából.'
 'Pick a device you already recorded with, or type a new name.': 'Válassz egy eszközt, amellyel már rögzítettél, vagy írj be egy új nevet.'
+'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Válaszd ki az alkalmazandó szabályokat, hogy lásd, mely tevékenységek változnának.'
 'Polyline color': 'Vonallánc színe'
 'Preview selection': 'Kiválasztás előnézete'
@@ -463,6 +468,7 @@ Tasks: Feladatok
 'Then do this': 'Akkor tedd ezt'
 'These rules will be applied to your existing activities on the next import cycle.': 'Ezek a szabályok a következő importálási ciklusban lesznek alkalmazva a meglévő tevékenységeidre.'
 'This action cannot be undone.': 'Ez a művelet nem vonható vissza.'
+'This activity has no GPS data.': 'This activity has no GPS data.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Ez a komponens több felszerelésre is fel van szerelve, válaszd ki azt, amelyiket szervizelted.'
 'This only removes the import record, the imported activity is kept.': 'Ez csak az importálási rekordot távolítja el, az importált tevékenység megmarad.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Ez az oldal minden megnyitáskor más kulcsot mutat, és csak a környezeti fájlodban lévő érvényesül.'

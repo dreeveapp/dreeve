@@ -35,6 +35,7 @@ Activity: Activité
 'Add max heart rate': 'Ajouter fréquence cardiaque maximale'
 'Add resting heart rate': 'Ajouter une fréquence cardiaque au repos'
 'Add rule': 'Ajouter une règle'
+'Add segment': 'Add segment'
 'Add service': 'Ajouter un service'
 'Add task': 'Ajouter une tâche'
 'Add tile layer': 'Ajouter une couche de tuiles'
@@ -130,6 +131,7 @@ Distance: Distance
 'Do not download activity photos': 'Ne pas télécharger les photos des activités'
 Done: Fait
 'Download original file': 'Télécharger le fichier original'
+'Drag the start and end markers along the route to select the segment.': 'Drag the start and end markers along the route to select the segment.'
 'Drag to reorder': 'Glisser pour réorganiser'
 'Drag to set the order in which sport types are displayed throughout the app.': "Faites glisser pour définir l'ordre d'affichage des types de sport dans toute l'application."
 Duplicate: Dupliquer
@@ -159,6 +161,7 @@ FTP: FTP
 'FTP history (cycling)': 'Historique FTP (vélo)'
 'FTP history (running)': 'Historique FTP (course à pied)'
 Failed: Echoué
+Favourite: Favourite
 Female: Femme
 'File exceeds {max} MB': 'Le fichier dépasse {max} Mo'
 'File imports': 'Import de fichiers'
@@ -220,6 +223,7 @@ Latitude: Latitude
 'Leave empty to include all sport types.': 'Laissez vide pour inclure tous les types de sport.'
 'Leave empty to use the default title.': 'Laissez vide pour utiliser le titre par défaut.'
 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': "Permet à un client externe de téléverser des fichiers d'activité via HTTP. La clé est la seule protection de ce point d'accès, traitez-la donc comme un mot de passe."
+'Loading the route...': 'Loading the route...'
 Locale: Langue
 Log: Journal
 'Log maintenance': 'Enregistrer une maintenance'
@@ -298,6 +302,7 @@ Password: 'Mot de passe'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Les photos associées à vos activités Strava ne seront ni téléchargées ni stockées sur le disque. Les photos déjà téléchargées sont conservées.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Les photos des types de sport sélectionnés sont exclues de la galerie photo.'
 'Pick a device you already recorded with, or type a new name.': 'Choisissez un appareil déjà utilisé pour enregistrer, ou saisissez un nouveau nom.'
+'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Choisissez les règles à appliquer pour voir quelles activités seraient modifiées.'
 'Polyline color': 'Couleur du tracé'
 'Preview selection': 'Prévisualiser la sélection'
@@ -463,6 +468,7 @@ Tasks: Tâches
 'Then do this': 'Alors faire ceci'
 'These rules will be applied to your existing activities on the next import cycle.': "Ces règles seront appliquées à vos activités existantes lors du prochain cycle d'import."
 'This action cannot be undone.': 'Cette action ne peut pas être annulée.'
+'This activity has no GPS data.': 'This activity has no GPS data.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Ce composant est monté sur plusieurs matériels, choisissez celui que vous avez entretenu.'
 'This only removes the import record, the imported activity is kept.': "Seul l'enregistrement de l'import est supprimé, l'activité importée est conservée."
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': "Cette page affiche une clé différente à chaque ouverture, et seule celle de votre fichier d'environnement est appliquée."
