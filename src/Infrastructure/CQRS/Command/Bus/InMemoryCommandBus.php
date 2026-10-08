@@ -26,12 +26,14 @@ final class InMemoryCommandBus implements CommandBus
     public function __construct(
         #[AutowireIterator('app.command_handler')]
         private readonly iterable $commandHandlers,
+        private readonly TransactionalCommandMiddleware $transactionalCommandMiddleware,
     ) {
     }
 
     public function dispatch(Command $command): void
     {
         $this->bus ??= new MessageBus([
+            $this->transactionalCommandMiddleware,
             new HandleMessageMiddleware(
                 new HandlersLocator(
                     new HandlerBuilder(HandlerBuilderType::COMMAND_HANDLER)
