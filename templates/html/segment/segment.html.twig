@@ -1,12 +1,21 @@
-{% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [
-    {
-        'url': 'segments',
-        'label': 'Segments'|trans
-    },
-    {
-        'url': 'segments/' ~ segment.getId(),
-        'label': segment.getName()|ellipses(50)
-    }]} %}
+<div class="flex items-center justify-between gap-4 mb-4">
+    {% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [
+        {
+            'url': 'segments',
+            'label': 'Segments'|trans
+        },
+        {
+            'url': 'segments/' ~ segment.getId(),
+            'label': segment.getName()|ellipses(50)
+        }], 'disableMargin': true} %}
+    {% if importMode.isFiles() and segment.getType().isCustom() %}
+        {% include 'html/navigation/admin-edit-link.html.twig' with {
+            path: 'admin/segments/' ~ segment.getId() ~ '/edit',
+            redirectTo: 'segments/' ~ segment.getId(),
+            title: "Edit this segment"|trans
+        } %}
+    {% endif %}
+</div>
 {% autoescape false %}
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <div class="mb-4 flex items-center justify-between">
@@ -23,13 +32,6 @@
                 {% endif %}
             </h1>
             <div class="flex items-center gap-x-4">
-                {% if importMode.isFiles() and segment.getType().isCustom() %}
-                    {% include 'html/navigation/admin-edit-link.html.twig' with {
-                        path: 'admin/segments/' ~ segment.getId() ~ '/edit',
-                        redirectTo: 'segments/' ~ segment.getId(),
-                        title: "Edit this segment"|trans
-                    } %}
-                {% endif %}
                 {% if segment.getWindAheadUrl() %}
                     <a href="{{ segment.getWindAheadUrl() }}" target="_blank" rel="noopener" title="{{ "Analyze with WindAhead"|trans }}" class="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs rounded-lg px-3 py-1.5 transition">
                         {{ svg('windahead-logo', 'size-4') }}

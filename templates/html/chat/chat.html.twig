@@ -1,8 +1,17 @@
-{% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [
-    {
-        'url': 'chat',
-        'label': 'Virtual workout assistant'|trans
-    }]} %}
+<div class="flex items-center justify-between gap-4 mb-4">
+    {% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [
+        {
+            'url': 'chat',
+            'label': 'Virtual workout assistant'|trans
+        }], 'disableMargin': true} %}
+    {% include 'html/navigation/admin-edit-link.html.twig' with {
+        path: 'admin/settings/integrations',
+        redirectTo: 'chat',
+        title: "AI integration settings"|trans,
+        label: "Settings"|trans({}, 'admin'),
+        icon: 'cog'
+    } %}
+</div>
 {% autoescape false %}
 <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs space-y-4">
   <div class="mb-4 flex items-center justify-between">
@@ -16,14 +25,6 @@
         </svg>
         <span class="sr-only">{{ "Clear chat"|trans }}</span>
       </button>
-      {% include 'html/navigation/admin-edit-link.html.twig' with {
-          path: 'admin/settings/integrations',
-          redirectTo: 'chat',
-          title: "AI integration settings"|trans,
-          label: "Settings"|trans({}, 'admin'),
-          icon: 'cog',
-          iconOnly: true
-      } %}
     </div>
   </div>
   <div class="grid grid-cols-1">

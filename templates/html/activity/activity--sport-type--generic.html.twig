@@ -1,12 +1,19 @@
-{% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [
-    {
-        'url': 'activities',
-        'label': 'Activities'|trans
-    },
-    {
-        'url': 'activities/' ~ activity.getId(),
-        'label': activity.getName()|ellipses(50)
-    }]} %}
+<div class="flex items-center justify-between gap-4 mb-4">
+    {% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [
+        {
+            'url': 'activities',
+            'label': 'Activities'|trans
+        },
+        {
+            'url': 'activities/' ~ activity.getId(),
+            'label': activity.getName()|ellipses(50)
+        }], 'disableMargin': true} %}
+    {% include 'html/navigation/admin-edit-link.html.twig' with {
+        path: 'admin/activities/' ~ activity.getId() ~ '/edit',
+        redirectTo: 'activities/' ~ activity.getId(),
+        title: "Edit this activity"|trans
+    } %}
+</div>
 {% autoescape false %}
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs space-y-6">
         <div class="flex items-start justify-between gap-4">
@@ -63,11 +70,6 @@
                 </div>
             </div>
             <div class="flex items-center gap-2 shrink-0">
-                {% include 'html/navigation/admin-edit-link.html.twig' with {
-                    path: 'admin/activities/' ~ activity.getId() ~ '/edit',
-                    redirectTo: 'activities/' ~ activity.getId(),
-                    title: "Edit this activity"|trans
-                } %}
                 {% if hasGpxLink %}
                     <a href="{{ relativeUrl(path('activity_gpx', {'activityId': activity.getId()})) }}" download="{{ gpxFileName }}" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs rounded-lg px-3 py-1.5 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
