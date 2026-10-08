@@ -445,6 +445,7 @@ Tasks: Taken
 'The name of the gear assigned to the activity': 'De naam van de uitrusting die aan de activiteit gekoppeld is'
 'The number of activities recorded with the gear': 'Het aantal activiteiten geregistreerd met de uitrusting'
 "The page you're looking for doesn't exist or may have been moved.": 'De pagina die je zoekt bestaat niet of is mogelijk verplaatst.'
+'The segment has been created. Its efforts will show up after the next import run.': 'The segment has been created. Its efforts will show up after the next import run.'
 'The sport type, e.g. "Walk" or "Trail Run"': 'Het sporttype, bv. "Walk" of "Trail Run"'
 'The start date, optionally with a custom PHP date format': 'De startdatum, optioneel met een eigen PHP-datumformaat'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': "De URL's van de tegellagen om de kaarten weer te geven. Voeg er meer dan één toe om ze te stapelen, bijvoorbeeld om plaatsnamen over een satellietlaag te leggen."

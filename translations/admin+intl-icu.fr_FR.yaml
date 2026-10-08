@@ -445,6 +445,7 @@ Tasks: Tâches
 'The name of the gear assigned to the activity': "Le nom du matériel associé à l'activité"
 'The number of activities recorded with the gear': "Le nombre d'activités enregistrées avec le matériel"
 "The page you're looking for doesn't exist or may have been moved.": "La page que vous recherchez n'existe pas ou a peut-être été déplacée."
+'The segment has been created. Its efforts will show up after the next import run.': 'The segment has been created. Its efforts will show up after the next import run.'
 'The sport type, e.g. "Walk" or "Trail Run"': 'Le type de sport, par ex. "Marche" ou "Trail"'
 'The start date, optionally with a custom PHP date format': 'La date de début, éventuellement avec un format de date PHP personnalisé'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'Les URL des couches de tuiles utilisées pour afficher les cartes. Ajoutez-en plusieurs pour les superposer, par exemple pour afficher les noms de lieux par-dessus une couche satellite.'

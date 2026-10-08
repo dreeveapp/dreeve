@@ -445,6 +445,7 @@ Tasks: Tasks
 'The name of the gear assigned to the activity': 'The name of the gear assigned to the activity'
 'The number of activities recorded with the gear': 'The number of activities recorded with the gear'
 "The page you're looking for doesn't exist or may have been moved.": "The page you're looking for doesn't exist or may have been moved."
+'The segment has been created. Its efforts will show up after the next import run.': 'The segment has been created. Its efforts will show up after the next import run.'
 'The sport type, e.g. "Walk" or "Trail Run"': 'The sport type, e.g. "Walk" or "Trail Run"'
 'The start date, optionally with a custom PHP date format': 'The start date, optionally with a custom PHP date format'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.'

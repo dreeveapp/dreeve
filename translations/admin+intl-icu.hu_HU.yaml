@@ -445,6 +445,7 @@ Tasks: Feladatok
 'The name of the gear assigned to the activity': 'A tevékenységhez rendelt felszerelés neve'
 'The number of activities recorded with the gear': 'A felszereléssel rögzített tevékenységek száma'
 "The page you're looking for doesn't exist or may have been moved.": 'A keresett oldal nem létezik, vagy áthelyezték.'
+'The segment has been created. Its efforts will show up after the next import run.': 'The segment has been created. Its efforts will show up after the next import run.'
 'The sport type, e.g. "Walk" or "Trail Run"': 'A sporttípus, pl. „Walk" vagy „Trail Run"'
 'The start date, optionally with a custom PHP date format': 'A kezdő dátum, opcionálisan egyéni PHP dátumformátummal'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'A térképek megjelenítéséhez használt csempe-réteg URL-ek. Adj hozzá többet is az egymásra helyezéshez, például helynevek rárakásához egy műholdas rétegre.'
