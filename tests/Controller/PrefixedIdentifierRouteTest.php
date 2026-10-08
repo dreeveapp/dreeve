@@ -28,6 +28,7 @@ class PrefixedIdentifierRouteTest extends ContainerTestCase
     public static function provideRoutes(): iterable
     {
         yield 'activity' => ['activity', '/activities/activity-1', '/activities/1'];
+        yield 'admin activity route' => ['admin_activity_route', '/admin/activities/activity-1/route', '/admin/activities/1/route'];
         yield 'activity og image' => ['activity_og_image', '/activities/activity-1/og-image.png', '/activities/1/og-image.png'];
         yield 'activity best efforts' => ['activity_best_efforts', '/api/internal/activities/activity-1/best-efforts', '/api/internal/activities/1/best-efforts'];
         yield 'activity coordinates' => ['activity_coordinates', '/api/internal/activities/activity-1/coordinates', '/api/internal/activities/1/coordinates'];
