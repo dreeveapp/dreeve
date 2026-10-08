@@ -69,7 +69,6 @@ class SegmentEffortMatcherTest extends TestCase
         $this->assertEquals(
             [new MatchedEffort(
                 startIndex: 37,
-                endIndex: 162,
                 elapsedTimeInSeconds: 125.0,
                 averageWatts: 209.5,
                 averageHeartRate: 145,

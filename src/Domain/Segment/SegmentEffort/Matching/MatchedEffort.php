@@ -8,7 +8,6 @@ final readonly class MatchedEffort
 {
     public function __construct(
         private int $startIndex,
-        private int $endIndex,
         private float $elapsedTimeInSeconds,
         private ?float $averageWatts,
         private ?int $averageHeartRate,
@@ -19,11 +18,6 @@ final readonly class MatchedEffort
     public function getStartIndex(): int
     {
         return $this->startIndex;
-    }
-
-    public function getEndIndex(): int
-    {
-        return $this->endIndex;
     }
 
     public function getElapsedTimeInSeconds(): float

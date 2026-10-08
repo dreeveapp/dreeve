@@ -83,7 +83,6 @@ final readonly class SegmentEffortMatcher
 
             $matchedEfforts[] = new MatchedEffort(
                 startIndex: $startIndex,
-                endIndex: $endIndex,
                 elapsedTimeInSeconds: (float) ($time[$endIndex] - $time[$startIndex]),
                 averageWatts: ($averageWatts = $this->average($watts, $startIndex, $endIndex)) !== null ? round($averageWatts, 1) : null,
                 averageHeartRate: ($averageHeartRate = $this->average($heartRate, $startIndex, $endIndex)) !== null ? (int) round($averageHeartRate) : null,
