@@ -55,6 +55,8 @@ class ManageSegmentOverviewRequestHandlerTest extends AdminWebTestCase
         ));
         $this->assertCount(1, $crawler->filter('#filter-name'));
         $this->assertCount(0, $crawler->filter('#filter-type'));
+        $this->assertCount(1, $crawler->filter('table.data-table tbody a[title="Edit"][href$="/admin/segments/segment-1/edit"]'));
+        $this->assertCount(1, $crawler->filter('table.data-table tbody a[title="Delete"][href$="/admin/segments/segment-1/delete"]'));
     }
 
     public function testFiltersOnTypeAndKeepsTheSelectedValues(): void
@@ -76,6 +78,8 @@ class ManageSegmentOverviewRequestHandlerTest extends AdminWebTestCase
             static fn ($row): array => [trim($row->filter('td')->eq(0)->text()), trim($row->filter('td')->eq(1)->text())],
         ));
         $this->assertSame('imported', $crawler->filter('#filter-type option[selected]')->attr('value'));
+        $this->assertCount(0, $crawler->filter('table.data-table tbody a[title="Edit"]'));
+        $this->assertCount(1, $crawler->filter('table.data-table tbody a[title="Delete"][href$="/admin/segments/segment-1/delete"]'));
         $this->assertSame('kwa', $crawler->filter('#filter-name')->attr('value'));
         $this->assertCount(1, $crawler->filter('a.btn--secondary[href$="/admin/segments"]'));
     }

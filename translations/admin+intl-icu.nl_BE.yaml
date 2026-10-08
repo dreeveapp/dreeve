@@ -48,6 +48,7 @@ Admin: Beheer
 'Advanced (per-date & per-sport-type overrides)': 'Geavanceerd (overschrijvingen per datum & per sporttype)'
 'Age-based estimate': 'Schatting op basis van leeftijd'
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'Alle bijbehorende onderhoudstaken en logs worden verwijderd. Deze actie kan niet ongedaan gemaakt worden.'
+'All efforts on this segment are deleted as well. This action cannot be undone.': 'All efforts on this segment are deleted as well. This action cannot be undone.'
 'All sport types': 'Alle sporttypes'
 'All sport types must belong to the same activity type.': 'Alle sporttypes moeten tot hetzelfde activiteitstype behoren.'
 'Allowed IP addresses for the admin panel': 'Toegestane IP-adressen voor het beheerpaneel'
@@ -122,6 +123,7 @@ Delete: Verwijderen
 'Delete file import': 'Bestandsimport verwijderen'
 'Delete gear': 'Uitrusting verwijderen'
 'Delete maintenance log': 'Onderhoudslog verwijderen'
+'Delete segment': 'Delete segment'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Een regel verwijderen draait de wijzigingen die hij al aan activiteiten maakte niet terug. Deze actie kan niet ongedaan gemaakt worden.'
 Deleting...: 'Aan het verwijderen...'
 Description: Beschrijving
@@ -144,6 +146,7 @@ Edit: Bewerken
 'Edit gear': 'Uitrusting bewerken'
 'Edit maintenance log': 'Onderhoudslog bewerken'
 'Edit recording device': 'Registratietoestel bewerken'
+'Edit segment': 'Edit segment'
 Efforts: Efforts
 Elevation: Hoogte
 'Enable AI integration': 'AI-integratie inschakelen'

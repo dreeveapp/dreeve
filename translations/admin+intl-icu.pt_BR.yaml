@@ -48,6 +48,7 @@ Admin: Admin
 'Advanced (per-date & per-sport-type overrides)': 'Avançado (substituições por data e por tipo de esporte)'
 'Age-based estimate': 'Estimativa baseada na idade'
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'Todas as tarefas de manutenção e registros associados serão removidos. Esta ação não pode ser desfeita.'
+'All efforts on this segment are deleted as well. This action cannot be undone.': 'All efforts on this segment are deleted as well. This action cannot be undone.'
 'All sport types': 'Todos os tipos de esporte'
 'All sport types must belong to the same activity type.': 'Todos os tipos de esporte devem pertencer ao mesmo tipo de atividade.'
 'Allowed IP addresses for the admin panel': 'Endereços IP permitidos para o painel de administração'
@@ -122,6 +123,7 @@ Delete: Excluir
 'Delete file import': 'Excluir importação de arquivo'
 'Delete gear': 'Excluir equipamento'
 'Delete maintenance log': 'Excluir registro de manutenção'
+'Delete segment': 'Delete segment'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Excluir uma regra não reverte as alterações já feitas nas atividades. Esta ação não pode ser desfeita.'
 Deleting...: Excluindo...
 Description: Descrição
@@ -144,6 +146,7 @@ Edit: Editar
 'Edit gear': 'Editar equipamento'
 'Edit maintenance log': 'Editar registro de manutenção'
 'Edit recording device': 'Editar dispositivo de gravação'
+'Edit segment': 'Edit segment'
 Efforts: Efforts
 Elevation: Elevação
 'Enable AI integration': 'Ativar integração de IA'

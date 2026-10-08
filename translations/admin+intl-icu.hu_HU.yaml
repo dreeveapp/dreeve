@@ -48,6 +48,7 @@ Admin: Admin
 'Advanced (per-date & per-sport-type overrides)': 'Speciális (dátum és sporttípus szerinti felülírások)'
 'Age-based estimate': 'Életkor alapú becslés'
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'Minden kapcsolódó karbantartási feladat és napló törlődik. Ez a művelet nem vonható vissza.'
+'All efforts on this segment are deleted as well. This action cannot be undone.': 'All efforts on this segment are deleted as well. This action cannot be undone.'
 'All sport types': 'Minden sporttípus'
 'All sport types must belong to the same activity type.': 'Minden sporttípusnak ugyanahhoz a tevékenységtípushoz kell tartoznia.'
 'Allowed IP addresses for the admin panel': 'Az adminfelülethez engedélyezett IP-címek'
@@ -122,6 +123,7 @@ Delete: Törlés
 'Delete file import': 'Fájlimport törlése'
 'Delete gear': 'Felszerelés törlése'
 'Delete maintenance log': 'Karbantartási napló törlése'
+'Delete segment': 'Delete segment'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Egy szabály törlése nem vonja vissza a tevékenységeken már elvégzett módosításokat. Ez a művelet nem vonható vissza.'
 Deleting...: 'Törlés folyamatban...'
 Description: Leírás
@@ -144,6 +146,7 @@ Edit: Szerkesztés
 'Edit gear': 'Felszerelés szerkesztése'
 'Edit maintenance log': 'Karbantartási napló szerkesztése'
 'Edit recording device': 'Rögzítő eszköz szerkesztése'
+'Edit segment': 'Edit segment'
 Efforts: Efforts
 Elevation: Szintemelkedés
 'Enable AI integration': 'AI-integráció engedélyezése'

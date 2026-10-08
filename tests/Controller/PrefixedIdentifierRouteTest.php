@@ -39,6 +39,8 @@ class PrefixedIdentifierRouteTest extends ContainerTestCase
         yield 'activity shifting' => ['activity_shifting', '/api/internal/activities/activity-1/shifting', '/api/internal/activities/1/shifting'];
         yield 'dashboard widget' => ['dashboard_widget', '/api/internal/dashboard/widget/dashboardWidget-introText', '/api/internal/dashboard/widget/introText'];
         yield 'segment' => ['segment', '/segments/segment-1', '/segments/1'];
+        yield 'admin edit segment' => ['admin_edit_segment', '/admin/segments/segment-1/edit', '/admin/segments/1/edit'];
+        yield 'admin delete segment' => ['admin_delete_segment', '/admin/segments/segment-1/delete', '/admin/segments/1/delete'];
         yield 'segment polylines' => ['segment_polylines', '/api/internal/segments/segment-1/polylines', '/api/internal/segments/1/polylines'];
     }
 }

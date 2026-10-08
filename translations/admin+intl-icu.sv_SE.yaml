@@ -48,6 +48,7 @@ Admin: Admin
 'Advanced (per-date & per-sport-type overrides)': 'Advanced (per-date & per-sport-type overrides)'
 'Age-based estimate': 'Age-based estimate'
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'All associated maintenance tasks and logs will be removed. This action cannot be undone.'
+'All efforts on this segment are deleted as well. This action cannot be undone.': 'All efforts on this segment are deleted as well. This action cannot be undone.'
 'All sport types': 'All sport types'
 'All sport types must belong to the same activity type.': 'All sport types must belong to the same activity type.'
 'Allowed IP addresses for the admin panel': 'Allowed IP addresses for the admin panel'
@@ -122,6 +123,7 @@ Delete: Delete
 'Delete file import': 'Delete file import'
 'Delete gear': 'Delete gear'
 'Delete maintenance log': 'Delete maintenance log'
+'Delete segment': 'Delete segment'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.'
 Deleting...: Deleting...
 Description: Description
@@ -144,6 +146,7 @@ Edit: Edit
 'Edit gear': 'Edit gear'
 'Edit maintenance log': 'Edit maintenance log'
 'Edit recording device': 'Edit recording device'
+'Edit segment': 'Edit segment'
 Efforts: Efforts
 Elevation: Elevation
 'Enable AI integration': 'Enable AI integration'
