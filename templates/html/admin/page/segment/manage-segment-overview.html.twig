@@ -1,0 +1,116 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block main %}
+    {% autoescape false %}
+    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">
+                {{ "Segment management"|trans({}, 'admin') }}
+            </h3>
+        </div>
+        {% if not overview.isEmpty() or not filters.isEmpty() %}
+            <form method="get" class="mb-4 flex flex-wrap items-end gap-3">
+                <div>
+                    <label for="filter-name" class="mt-0! text-xs text-gray-500">{{ "Name"|trans }}</label>
+                    <input type="search" id="filter-name" name="filters[name]" value="{{ filters.getName() }}">
+                </div>
+                {% if typeOptions is not empty %}
+                    <div>
+                        <label for="filter-type" class="mt-0! text-xs text-gray-500">{{ "Type"|trans({}, 'admin') }}</label>
+                        <select id="filter-type" name="filters[type]">
+                            <option value="">{{ "All"|trans }}</option>
+                            {% for type in typeOptions %}
+                                <option value="{{ type.value }}" {{ type == filters.getType() ? 'selected' }}>{{ type|trans }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endif %}
+                <button type="submit" class="btn--primary">{{ "Apply"|trans({}, 'admin') }}</button>
+                {% if not filters.isEmpty() %}
+                    <a href="{{ relativeUrl(path('admin_manage_segment_overview')) }}" type="button" class="btn--secondary">
+                        {{ "Clear filters"|trans({}, 'admin') }}
+                    </a>
+                {% endif %}
+            </form>
+        {% endif %}
+        <div class="relative overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-left">
+                        {{ "Name"|trans }}
+                    </th>
+                    <th scope="col" class="text-left">
+                        {{ "Sport type"|trans({}, 'admin') }}
+                    </th>
+                    <th scope="col">
+                        {{ "Dist."|trans }}
+                    </th>
+                    <th scope="col">
+                        {{ "Avg gradient"|trans }}
+                    </th>
+                    <th scope="col">
+                        {{ "Efforts"|trans({}, 'admin') }}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for segment in overview %}
+                    <tr class="group/row">
+                        <td class="whitespace-nowrap text-left font-medium text-gray-800">
+                            <span class="inline-flex items-center gap-1">
+                                {{ segment.getName() }}
+                                {% if segment.getType().isImported() %}
+                                    {% include 'html/admin/component/strava-imported-badge.html.twig' %}
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td class="whitespace-nowrap text-left">
+                            {{ segment.getSportType()|trans }}
+                        </td>
+                        <td class="whitespace-nowrap">
+                            {{ segment.getDistance()|renderMeasurement(2) }}
+                        </td>
+                        <td class="whitespace-nowrap">
+                            {{ segment.getAverageGradient() is null ? '-' : segment.getAverageGradient() ~ '%' }}
+                        </td>
+                        <td class="whitespace-nowrap">
+                            {{ segment.getNumberOfEfforts() }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% if overview.isEmpty() %}
+                    <tr>
+                        <td colspan="5">
+                            <div class="flex flex-col items-center justify-center gap-3 py-12 px-4 text-center">
+                                <span class="grid place-items-center size-12 rounded-full bg-gray-100 text-gray-400" aria-hidden="true">
+                                    <svg class="size-6" fill="currentColor" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M217.45557,38.544a35.9967,35.9967,0,0,0-57.937,40.96679L79.5105,159.51855a36.05906,36.05906,0,0,0-40.96607,7.0254H38.544a36.00029,36.00029,0,1,0,57.93737,9.94531L176.4895,96.48145A35.99663,35.99663,0,0,0,217.45557,38.544ZM72.48584,200.48535a12.00027,12.00027,0,0,1-16.97119-16.9707h-.00049a12.00044,12.00044,0,0,1,16.97168,16.9707Zm128-128a12.01673,12.01673,0,0,1-16.969.00244l-.0022-.00244a12.0001,12.0001,0,1,1,16.97119,0Z"/>
+                                    </svg>
+                                </span>
+                                {% if filters.isEmpty() %}
+                                    <div class="flex flex-col gap-1">
+                                        <span class="text-sm font-medium text-gray-800">{{ "No segments added yet."|trans({}, 'admin') }}</span>
+                                        <span class="text-xs text-gray-500">{{ "Segments will appear here once you create them from one of your activities."|trans({}, 'admin') }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="flex flex-col gap-1">
+                                        <span class="text-sm font-medium text-gray-800">{{ "No segments match the current filters."|trans({}, 'admin') }}</span>
+                                    </div>
+                                    <a href="{{ relativeUrl(path('admin_manage_segment_overview')) }}" class="btn--primary mt-1">
+                                        {{ "Clear filters"|trans({}, 'admin') }}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+        {% include 'html/admin/component/pagination.html.twig' with {
+            'total': overview.getTotal(),
+            'pagination': overview.getPagination(),
+        } only %}
+    </div>
+    {% endautoescape %}
+{% endblock main %}

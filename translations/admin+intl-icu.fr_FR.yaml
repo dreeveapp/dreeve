@@ -109,6 +109,7 @@ Configured: Configuré
 'Copy this API key': 'Copiez cette clé API'
 'Cron expression': 'Expression Cron'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Expression Cron définissant comment l'action doit s'executer, par exemple '0 14 * * *' s'execute chaque jour a 14h00. Se reporter à crontab.guru pour de l'aide."
+Custom: Custom
 Daemon: Daemon
 'Dashboard layout': 'Disposition du tableau de bord'
 'Date range based': 'Par plage de dates'
@@ -141,6 +142,7 @@ Edit: Editer
 'Edit gear': 'Editer le matériel'
 'Edit maintenance log': "Editer l'entrée de maintenance"
 'Edit recording device': "Editer l'appareil d'enregistrement"
+Efforts: Efforts
 Elevation: Dénivelé
 'Enable AI integration': "Activer l'intégration IA"
 'Enable Strava webhooks': 'Activer les webhooks Strava'
@@ -261,6 +263,8 @@ Monday: Lundi
 'No recording devices yet.': "Aucun appareil d'enregistrement pour le moment."
 'No rule applies': "Aucune règle ne s'applique"
 'No rules selected yet.': 'Aucune règle sélectionnée pour le moment.'
+'No segments added yet.': 'No segments added yet.'
+'No segments match the current filters.': 'No segments match the current filters.'
 'No sport types selected': 'Aucun type de sport sélectionné'
 'No unit': "Pas d'unité"
 'Normal date format': 'Format de date normal'
@@ -346,6 +350,8 @@ Saving...: 'Enregistrement en cours'
 'Search by name, date or activity ID': "Rechercher par nom, date ou ID d'activité"
 Seconds: Secondes
 Security: Securité
+'Segment management': 'Segment management'
+'Segments will appear here once you create them from one of your activities.': 'Segments will appear here once you create them from one of your activities.'
 'Select a component first...': "Sélectionnez d'abord un composant..."
 'Select a component…': 'Sélectionnez un composant…'
 'Select all': 'Tout sélectionner'

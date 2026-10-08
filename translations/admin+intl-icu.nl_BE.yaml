@@ -109,6 +109,7 @@ Configured: Geconfigureerd
 'Copy this API key': 'Kopieer deze API-sleutel'
 'Cron expression': Cron-expressie
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron-expressie die bepaalt wanneer de actie uitgevoerd wordt, bv. '0 14 * * *' wordt elke dag om 14:00 uitgevoerd. Zie crontab.guru voor hulp."
+Custom: Custom
 Daemon: Daemon
 'Dashboard layout': Dashboardindeling
 'Date range based': 'Op basis van datumbereik'
@@ -141,6 +142,7 @@ Edit: Bewerken
 'Edit gear': 'Uitrusting bewerken'
 'Edit maintenance log': 'Onderhoudslog bewerken'
 'Edit recording device': 'Registratietoestel bewerken'
+Efforts: Efforts
 Elevation: Hoogte
 'Enable AI integration': 'AI-integratie inschakelen'
 'Enable Strava webhooks': 'Strava-webhooks inschakelen'
@@ -261,6 +263,8 @@ Monday: Maandag
 'No recording devices yet.': 'Nog geen registratietoestellen.'
 'No rule applies': 'Geen enkele regel van toepassing'
 'No rules selected yet.': 'Nog geen regels geselecteerd.'
+'No segments added yet.': 'No segments added yet.'
+'No segments match the current filters.': 'No segments match the current filters.'
 'No sport types selected': 'Geen sporttypes geselecteerd'
 'No unit': 'Geen eenheid'
 'Normal date format': 'Normaal datumformaat'
@@ -346,6 +350,8 @@ Saving...: 'Aan het opslaan...'
 'Search by name, date or activity ID': 'Zoeken op naam, datum of activiteits-ID'
 Seconds: Seconden
 Security: Beveiliging
+'Segment management': 'Segment management'
+'Segments will appear here once you create them from one of your activities.': 'Segments will appear here once you create them from one of your activities.'
 'Select a component first...': 'Selecteer eerst een onderdeel...'
 'Select a component…': 'Selecteer een onderdeel…'
 'Select all': 'Alles selecteren'

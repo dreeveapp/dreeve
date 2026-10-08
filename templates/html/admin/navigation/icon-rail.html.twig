@@ -36,6 +36,16 @@
                         <span>{{ "Gear"|trans }}</span>
                     </a>
                 </li>
+                {% if importMode.isFiles() %}
+                    <li>
+                        <a title="{{ "Segments"|trans }}" href="{{ relativeUrl(path('admin_manage_segment_overview')) }}" {{ isActiveNavItem({'/admin/segments': false}) ? 'aria-selected="true"' : '' }}>
+                            <svg aria-hidden="true" fill="currentColor" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M217.45557,38.544a35.9967,35.9967,0,0,0-57.937,40.96679L79.5105,159.51855a36.05906,36.05906,0,0,0-40.96607,7.0254H38.544a36.00029,36.00029,0,1,0,57.93737,9.94531L176.4895,96.48145A35.99663,35.99663,0,0,0,217.45557,38.544ZM72.48584,200.48535a12.00027,12.00027,0,0,1-16.97119-16.9707h-.00049a12.00044,12.00044,0,0,1,16.97168,16.9707Zm128-128a12.01673,12.01673,0,0,1-16.969.00244l-.0022-.00244a12.0001,12.0001,0,1,1,16.97119,0Z"/>
+                            </svg>
+                            <span>{{ "Segments"|trans }}</span>
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
             <ul class="space-y-1 py-2">
                 <li>

@@ -109,6 +109,7 @@ Configured: Beállítva
 'Copy this API key': 'Másold ki ezt az API-kulcsot'
 'Cron expression': 'Cron kifejezés'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": 'Cron kifejezés, amely megadja, mikor fusson a művelet, pl. a „0 14 * * *" minden nap 14:00-kor fut. Segítségért lásd: crontab.guru.'
+Custom: Custom
 Daemon: Daemon
 'Dashboard layout': 'Dashboard elrendezés'
 'Date range based': 'Dátumtartomány alapú'
@@ -141,6 +142,7 @@ Edit: Szerkesztés
 'Edit gear': 'Felszerelés szerkesztése'
 'Edit maintenance log': 'Karbantartási napló szerkesztése'
 'Edit recording device': 'Rögzítő eszköz szerkesztése'
+Efforts: Efforts
 Elevation: Szintemelkedés
 'Enable AI integration': 'AI-integráció engedélyezése'
 'Enable Strava webhooks': 'Strava webhookok engedélyezése'
@@ -261,6 +263,8 @@ Monday: Hétfő
 'No recording devices yet.': 'Még nincsenek rögzítő eszközök.'
 'No rule applies': 'Nincs érvényes szabály'
 'No rules selected yet.': 'Még nincs kiválasztott szabály.'
+'No segments added yet.': 'No segments added yet.'
+'No segments match the current filters.': 'No segments match the current filters.'
 'No sport types selected': 'Nincs kiválasztott sporttípus'
 'No unit': 'Nincs mértékegység'
 'Normal date format': 'Normál dátumformátum'
@@ -346,6 +350,8 @@ Saving...: Mentés...
 'Search by name, date or activity ID': 'Keresés név, dátum vagy tevékenység-azonosító alapján'
 Seconds: Másodperc
 Security: Biztonság
+'Segment management': 'Segment management'
+'Segments will appear here once you create them from one of your activities.': 'Segments will appear here once you create them from one of your activities.'
 'Select a component first...': 'Előbb válassz egy komponenst...'
 'Select a component…': 'Válassz egy komponenst…'
 'Select all': 'Összes kijelölése'

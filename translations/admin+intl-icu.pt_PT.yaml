@@ -109,6 +109,7 @@ Configured: Configured
 'Copy this API key': 'Copy this API key'
 'Cron expression': 'Cron expression'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."
+Custom: Custom
 Daemon: Daemon
 'Dashboard layout': 'Dashboard layout'
 'Date range based': 'Date range based'
@@ -141,6 +142,7 @@ Edit: Edit
 'Edit gear': 'Edit gear'
 'Edit maintenance log': 'Edit maintenance log'
 'Edit recording device': 'Edit recording device'
+Efforts: Efforts
 Elevation: Elevation
 'Enable AI integration': 'Enable AI integration'
 'Enable Strava webhooks': 'Enable Strava webhooks'
@@ -261,6 +263,8 @@ Monday: Monday
 'No recording devices yet.': 'No recording devices yet.'
 'No rule applies': 'No rule applies'
 'No rules selected yet.': 'No rules selected yet.'
+'No segments added yet.': 'No segments added yet.'
+'No segments match the current filters.': 'No segments match the current filters.'
 'No sport types selected': 'No sport types selected'
 'No unit': 'No unit'
 'Normal date format': 'Normal date format'
@@ -346,6 +350,8 @@ Saving...: Saving...
 'Search by name, date or activity ID': 'Search by name, date or activity ID'
 Seconds: Seconds
 Security: Security
+'Segment management': 'Segment management'
+'Segments will appear here once you create them from one of your activities.': 'Segments will appear here once you create them from one of your activities.'
 'Select a component first...': 'Select a component first...'
 'Select a component…': 'Select a component…'
 'Select all': 'Select all'
