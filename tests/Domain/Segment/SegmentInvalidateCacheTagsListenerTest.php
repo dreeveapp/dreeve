@@ -82,6 +82,23 @@ class SegmentInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->assertTrue($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(2))));
     }
 
+    public function testItInvalidatesTheSegmentWhenItWasDeleted(): void
+    {
+        $segment = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->build();
+        $segmentRepository = $this->getContainer()->get(SegmentRepository::class);
+        $segmentRepository->add($segment);
+        $this->warmUpRenderCache();
+
+        $segment->delete();
+        $segmentRepository->delete($segment);
+
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::SEGMENTS));
+        $this->assertFalse($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(1))));
+        $this->assertTrue($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(2))));
+    }
+
     private function warmUpRenderCache(): void
     {
         foreach ([

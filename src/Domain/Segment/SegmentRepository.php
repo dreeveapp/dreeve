@@ -12,6 +12,8 @@ interface SegmentRepository
 
     public function update(Segment $segment): void;
 
+    public function delete(Segment $segment): void;
+
     public function find(SegmentId $segmentId): Segment;
 
     public function findAll(Pagination $pagination): Segments;

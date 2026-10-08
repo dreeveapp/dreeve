@@ -227,6 +227,34 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
         $this->assertSame('Kwaremont', $this->segmentEffortRepository->findByActivityId(ActivityId::fromUnprefixed(1))->getFirst()?->getName());
     }
 
+    public function testDeleteForSegment(): void
+    {
+        foreach ([[1, 1], [2, 2], [3, 1]] as [$effortId, $segmentId]) {
+            $this->segmentEffortRepository->add(SegmentEffortBuilder::fromDefaults()
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed($effortId))
+                ->withSegmentId(SegmentId::fromUnprefixed($segmentId))
+                ->build());
+        }
+
+        $this->segmentEffortRepository->deleteForSegment(SegmentId::fromUnprefixed(1));
+
+        $this->assertEquals(
+            ['segmentEffort-2'],
+            $this->getConnection()->executeQuery('SELECT segmentEffortId FROM SegmentEffort')->fetchFirstColumn()
+        );
+        $this->assertEquals(
+            [new SegmentEffortsWereDeleted(SegmentIds::fromArray([SegmentId::fromUnprefixed(1)]))],
+            $this->eventBus->getPublishedEvents()
+        );
+    }
+
+    public function testItDoesNotPublishWhenTheSegmentHadNoEfforts(): void
+    {
+        $this->segmentEffortRepository->deleteForSegment(SegmentId::fromUnprefixed(1));
+
+        $this->assertEmpty($this->eventBus->getPublishedEvents());
+    }
+
     public function testItPublishesTheSegmentThatWasRiddenWhenAnEffortIsAdded(): void
     {
         $this->segmentEffortRepository->add(SegmentEffortBuilder::fromDefaults()

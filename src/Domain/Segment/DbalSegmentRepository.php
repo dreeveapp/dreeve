@@ -82,6 +82,16 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
         $this->eventBus->publishEvents($segment->getRecordedEvents());
     }
 
+    public function delete(Segment $segment): void
+    {
+        $this->connection->executeStatement(
+            'DELETE FROM Segment WHERE segmentId = :segmentId',
+            ['segmentId' => $segment->getId()]
+        );
+
+        $this->eventBus->publishEvents($segment->getRecordedEvents());
+    }
+
     public function find(SegmentId $segmentId): Segment
     {
         $queryBuilder = $this->connection->createQueryBuilder();

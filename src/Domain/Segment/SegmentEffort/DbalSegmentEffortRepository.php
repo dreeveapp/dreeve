@@ -84,6 +84,19 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
         $this->eventBus->publishEvents([new SegmentEffortsWereDeleted($segmentIds)]);
     }
 
+    public function deleteForSegment(SegmentId $segmentId): void
+    {
+        $deletedEfforts = $this->connection->executeStatement('DELETE FROM SegmentEffort WHERE segmentId = :segmentId', [
+            'segmentId' => $segmentId,
+        ]);
+
+        if (0 === $deletedEfforts) {
+            return;
+        }
+
+        $this->eventBus->publishEvents([new SegmentEffortsWereDeleted(SegmentIds::fromArray([$segmentId]))]);
+    }
+
     public function find(SegmentEffortId $segmentEffortId): SegmentEffort
     {
         $sql = 'SELECT ranked.*, Segment.name FROM (

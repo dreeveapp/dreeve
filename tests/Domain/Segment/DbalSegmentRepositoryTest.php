@@ -104,6 +104,25 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
         );
     }
 
+    public function testDelete(): void
+    {
+        $segmentToDelete = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
+            ->build();
+        $this->segmentRepository->add($segmentToDelete);
+        $segmentToKeep = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed('2'))
+            ->build();
+        $this->segmentRepository->add($segmentToKeep);
+
+        $this->segmentRepository->delete($segmentToDelete);
+
+        $this->assertEquals(
+            Segments::fromArray([$segmentToKeep]),
+            $this->segmentRepository->findAll(Pagination::fromOffsetAndLimit(0, 100))
+        );
+    }
+
     public function testItShouldThrowWhenNotFound(): void
     {
         $this->expectExceptionObject(new EntityNotFound('Segment "segment-1" not found'));

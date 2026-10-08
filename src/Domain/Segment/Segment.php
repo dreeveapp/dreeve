@@ -7,6 +7,7 @@ namespace App\Domain\Segment;
 use App\Domain\Activity\LeafletMap;
 use App\Domain\Activity\RealWorldMap;
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Import\ImportMode;
 use App\Domain\Integration\AI\SupportsAITooling;
 use App\Domain\Segment\SegmentEffort\SegmentEffort;
 use App\Domain\Zwift\CouldNotDetermineZwiftMap;
@@ -299,6 +300,16 @@ final class Segment implements SupportsAITooling
         $segment->recordOnlyOnce(new SegmentWasUpdated($this->segmentId));
 
         return $segment;
+    }
+
+    public function isDeletableIn(ImportMode $importMode): bool
+    {
+        return $this->type->isCustom() || $importMode->isFiles();
+    }
+
+    public function delete(): void
+    {
+        $this->recordThat(new SegmentWasDeleted($this->segmentId));
     }
 
     public function detailsHaveBeenImported(): bool

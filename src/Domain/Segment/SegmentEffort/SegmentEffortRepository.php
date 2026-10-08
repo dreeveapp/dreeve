@@ -13,6 +13,8 @@ interface SegmentEffortRepository
 
     public function deleteForActivity(ActivityId $activityId): void;
 
+    public function deleteForSegment(SegmentId $segmentId): void;
+
     public function find(SegmentEffortId $segmentEffortId): SegmentEffort;
 
     public function findTopXBySegmentId(SegmentId $segmentId, int $limit): SegmentEfforts;

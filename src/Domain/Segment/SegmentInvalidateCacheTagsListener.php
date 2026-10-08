@@ -33,6 +33,15 @@ final readonly class SegmentInvalidateCacheTagsListener
     }
 
     #[AsEventListener]
+    public function reactToSegmentWasDeleted(SegmentWasDeleted $event): void
+    {
+        $this->renderCache->invalidateTags(
+            RootCacheTag::SEGMENTS,
+            SegmentCacheTag::for($event->getSegmentId()),
+        );
+    }
+
+    #[AsEventListener]
     public function reactToSegmentsWereDeleted(SegmentsWereDeleted $event): void
     {
         $this->renderCache->invalidateTags(RootCacheTag::SEGMENTS);
