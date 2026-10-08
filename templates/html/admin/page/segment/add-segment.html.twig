@@ -19,6 +19,12 @@
             </div>
             <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ relativeUrl(path('admin_manage_segment_overview')) }}" class="flex flex-col gap-4">
                 <div data-form-error class="form-error hidden" role="alert"></div>
+                <div class="flex items-start gap-2 rounded-lg border border-gray-200 bg-gray-50 p-3 text-sm text-gray-600" role="note">
+                    <svg class="size-5 shrink-0 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                    </svg>
+                    <span>{{ "Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes."|trans({}, 'admin') }}</span>
+                </div>
                 <div>
                     <label for="segment-activity">{{ "Activity"|trans({}, 'admin') }}</label>
                     <input type="text" id="segment-activity" name="activityId"

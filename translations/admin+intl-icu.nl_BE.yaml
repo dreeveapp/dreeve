@@ -148,6 +148,7 @@ Edit: Bewerken
 'Edit recording device': 'Registratietoestel bewerken'
 'Edit segment': 'Edit segment'
 Efforts: Efforts
+'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.': 'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.'
 Elevation: Hoogte
 'Enable AI integration': 'AI-integratie inschakelen'
 'Enable Strava webhooks': 'Strava-webhooks inschakelen'

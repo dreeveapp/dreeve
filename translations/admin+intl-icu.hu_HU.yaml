@@ -148,6 +148,7 @@ Edit: Szerkesztés
 'Edit recording device': 'Rögzítő eszköz szerkesztése'
 'Edit segment': 'Edit segment'
 Efforts: Efforts
+'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.': 'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.'
 Elevation: Szintemelkedés
 'Enable AI integration': 'AI-integráció engedélyezése'
 'Enable Strava webhooks': 'Strava webhookok engedélyezése'

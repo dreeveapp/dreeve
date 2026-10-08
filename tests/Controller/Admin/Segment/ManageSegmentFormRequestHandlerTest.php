@@ -31,6 +31,7 @@ class ManageSegmentFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $form->filter('input[type="hidden"][name="endIndex"]'));
         $this->assertCount(1, $form->filter('input[name="name"][required]'));
         $this->assertCount(1, $form->filter('input[type="checkbox"][name="isFavourite"][value="true"]'));
+        $this->assertStringContainsString('Efforts are not calculated right away.', $form->filter('[role="note"]')->text());
 
         $picker = $form->filter('[data-route-range-picker]');
         $this->assertSame('empty', $picker->attr('data-state'));
