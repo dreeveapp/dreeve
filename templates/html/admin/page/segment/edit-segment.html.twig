@@ -1,7 +1,7 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
     {% autoescape false %}
-    {% set overviewUrl = relativeUrl(path('admin_manage_segment_overview')) %}
+    {% set overviewUrl = redirectUrl(relativeUrl(path('admin_manage_segment_overview'))) %}
     <div class="modal-like-form">
         <div class="w-full max-w-lg overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
             <div class="flex items-center justify-between mb-4">

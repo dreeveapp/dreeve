@@ -52,7 +52,8 @@ class ManageSegmentFormRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testRendersTheEditFormPrefilledWithTheSegment(): void
+    #[DataProvider('provideRedirectToQueryParams')]
+    public function testRendersTheEditFormPrefilledWithTheSegment(string $query, string $expectedRedirect): void
     {
         $this->withImportMode(ImportMode::FILES);
         $this->getContainer()->get(SegmentRepository::class)->add(SegmentBuilder::fromDefaults()
@@ -63,7 +64,7 @@ class ManageSegmentFormRequestHandlerTest extends AdminWebTestCase
             ->build());
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/segments/segment-1/edit');
+        $crawler = $this->client->request('GET', '/admin/segments/segment-1/edit'.$query);
 
         $this->assertResponseIsSuccessful();
         $form = $crawler->filter('form[data-dispatch-command="update-segment"]');
@@ -71,10 +72,14 @@ class ManageSegmentFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('segment-1', $form->filter('input[name="segmentId"]')->attr('value'));
         $this->assertSame('Kwaremont', $form->filter('input[name="name"]')->attr('value'));
         $this->assertCount(1, $form->filter('input[name="isFavourite"][checked]'));
-        $this->assertCount(1, $form->filter('a.btn--danger[href$="/admin/segments/segment-1/delete"]'));
+        $this->assertSame($expectedRedirect, $form->attr('data-redirect'));
+        $this->assertSame($expectedRedirect, $crawler->filter('a[aria-label="Close"]')->attr('href'));
+        $this->assertSame($expectedRedirect, $crawler->filter('.btn--secondary')->attr('href'));
+        $this->assertSame('/admin/segments/segment-1/delete', $form->filter('a.btn--danger')->attr('href'));
     }
 
-    public function testRendersTheDeleteConfirmation(): void
+    #[DataProvider('provideRedirectToQueryParams')]
+    public function testRendersTheDeleteConfirmation(string $query, string $expectedRedirect): void
     {
         $this->withImportMode(ImportMode::FILES);
         $this->getContainer()->get(SegmentRepository::class)->add(SegmentBuilder::fromDefaults()
@@ -84,13 +89,23 @@ class ManageSegmentFormRequestHandlerTest extends AdminWebTestCase
             ->build());
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/segments/segment-1/delete');
+        $crawler = $this->client->request('GET', '/admin/segments/segment-1/delete'.$query);
 
         $this->assertResponseIsSuccessful();
         $form = $crawler->filter('form[data-dispatch-command="delete-segment"]');
         $this->assertCount(1, $form);
         $this->assertSame('segment-1', $form->filter('input[name="segmentId"]')->attr('value'));
         $this->assertStringContainsString('Are you sure you want to delete Kwaremont?', $form->text());
+        $this->assertSame($expectedRedirect, $form->attr('data-redirect'));
+        $this->assertSame($expectedRedirect, $crawler->filter('a[aria-label="Close"]')->attr('href'));
+        $this->assertSame($expectedRedirect, $crawler->filter('.btn--secondary')->attr('href'));
+    }
+
+    public static function provideRedirectToQueryParams(): iterable
+    {
+        yield 'no redirectTo' => ['', '/admin/segments'];
+        yield 'a filtered overview' => ['?redirectTo='.urlencode('/admin/segments?filters%5Bname%5D=kwa&pagination%5Bpage%5D=2'), '/admin/segments?filters%5Bname%5D=kwa&pagination%5Bpage%5D=2'];
+        yield 'absolute url' => ['?redirectTo='.urlencode('https://evil.com'), '/admin/segments'];
     }
 
     #[DataProvider('provideUnavailablePages')]
