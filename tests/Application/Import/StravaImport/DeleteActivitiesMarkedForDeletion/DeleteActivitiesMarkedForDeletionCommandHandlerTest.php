@@ -12,6 +12,8 @@ use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\Lap\ActivityLapRepository;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
+use App\Domain\Segment\SegmentActivityScan\SegmentActivityScan;
+use App\Domain\Segment\SegmentActivityScan\SegmentActivityScanRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
@@ -100,6 +102,13 @@ class DeleteActivitiesMarkedForDeletionCommandHandlerTest extends ContainerTestC
             ->withActivityId(ActivityId::fromUnprefixed(1001))
             ->build());
 
+        $this->getContainer()->get(SegmentActivityScanRepository::class)->add(
+            SegmentActivityScan::create(SegmentId::fromUnprefixed('custom'), ActivityId::fromUnprefixed(1001))
+        );
+        $this->getContainer()->get(SegmentActivityScanRepository::class)->add(
+            SegmentActivityScan::create(SegmentId::fromUnprefixed('custom'), ActivityId::fromUnprefixed(4))
+        );
+
         $this->getContainer()->get(ActivityRepository::class)->markActivitiesForDeletion(ActivityIds::fromArray([
             ActivityId::fromUnprefixed(1000),
             ActivityId::fromUnprefixed(1001),
@@ -145,6 +154,10 @@ class DeleteActivitiesMarkedForDeletionCommandHandlerTest extends ContainerTestC
         $this->assertEquals(
             0,
             $this->getConnection()->executeQuery('SELECT COUNT(*) FROM ActivityBestEffort WHERE activityId = "activity-1001"')->fetchOne()
+        );
+        $this->assertEquals(
+            ['activity-4'],
+            $this->getConnection()->executeQuery('SELECT activityId FROM SegmentActivityScan')->fetchFirstColumn()
         );
     }
 

@@ -15,6 +15,7 @@ use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Import\FileImportRepository;
+use App\Domain\Segment\SegmentActivityScan\SegmentActivityScanRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentRepository;
 use App\Infrastructure\CQRS\Command\Command;
@@ -29,6 +30,7 @@ final readonly class DeleteActivityCommandHandler implements CommandHandler
         private CombinedActivityStreamRepository $combinedActivityStreamRepository,
         private SegmentEffortRepository $segmentEffortRepository,
         private SegmentRepository $segmentRepository,
+        private SegmentActivityScanRepository $segmentActivityScanRepository,
         private ActivitySplitRepository $activitySplitRepository,
         private ActivityLapRepository $activityLapRepository,
         private ActivityBestEffortRepository $activityBestEffortRepository,
@@ -50,6 +52,7 @@ final readonly class DeleteActivityCommandHandler implements CommandHandler
         $this->combinedActivityStreamRepository->deleteForActivity($activityId);
         $this->segmentEffortRepository->deleteForActivity($activityId);
         $this->segmentRepository->deleteOrphanedImported();
+        $this->segmentActivityScanRepository->deleteForActivity($activityId);
         $this->activitySplitRepository->deleteForActivity($activityId);
         $this->activityLapRepository->deleteForActivity($activityId);
         $this->activityBestEffortRepository->deleteForActivity($activityId);
