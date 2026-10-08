@@ -43,6 +43,35 @@ class SegmentTest extends TestCase
         $this->assertEquals([new SegmentWasAdded()], $segment->getRecordedEvents());
     }
 
+    public function testGetStravaUrl(): void
+    {
+        $this->assertEquals(
+            'https://www.strava.com/segments/1',
+            SegmentBuilder::fromDefaults()->withSegmentId(SegmentId::fromUnprefixed('1'))->build()->getStravaUrl()
+        );
+        $this->assertNull(SegmentBuilder::fromDefaults()->withType(SegmentType::CUSTOM)->build()->getStravaUrl());
+    }
+
+    #[DataProvider('provideIsKOM')]
+    public function testIsKOM(SegmentType $type, bool $expectedIsKOM): void
+    {
+        $segment = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed('12128917'))
+            ->withType($type)
+            ->build();
+
+        $this->assertSame($expectedIsKOM, $segment->isKOM());
+    }
+
+    /**
+     * @return iterable<string, array{SegmentType, bool}>
+     */
+    public static function provideIsKOM(): iterable
+    {
+        yield 'imported' => [SegmentType::IMPORTED, true];
+        yield 'custom' => [SegmentType::CUSTOM, false];
+    }
+
     public function testGetWindAheadUrl(): void
     {
         $segment = SegmentBuilder::fromDefaults()

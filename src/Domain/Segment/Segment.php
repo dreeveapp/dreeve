@@ -314,8 +314,12 @@ final class Segment implements SupportsAITooling
         return $this->countryCode;
     }
 
-    public function getUrl(): string
+    public function getStravaUrl(): ?string
     {
+        if ($this->type->isCustom()) {
+            return null;
+        }
+
         return 'https://www.strava.com/segments/'.$this->getId()->toUnprefixedString();
     }
 
@@ -481,7 +485,7 @@ final class Segment implements SupportsAITooling
             19631565,
         ];
 
-        if (in_array((int) $this->getId()->toUnprefixedString(), $komSegmentIds)) {
+        if ($this->type->isImported() && in_array((int) $this->getId()->toUnprefixedString(), $komSegmentIds)) {
             return true;
         }
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Integration\AI\Tool;
 
+use App\Domain\Segment\SegmentId;
+use App\Domain\Segment\SegmentRepository;
 use NeuronAI\Tools\PropertyType;
 use NeuronAI\Tools\Tool;
 use NeuronAI\Tools\ToolProperty;
@@ -18,7 +20,13 @@ final class MakeStravaSegmentLink extends Tool
         Generates a direct Strava URL for a specific segment using its unique segment ID.
         Use this tool when the user wants a link to view a segment on Strava. 
         It requires the segment ID and returns a full URL to the corresponding Strava segment page.
+        Custom segments do not exist on Strava, so no link can be generated for them.
         DESC;
+
+    public function __construct(
+        private readonly SegmentRepository $segmentRepository,
+    ) {
+    }
 
     /**
      * @return \NeuronAI\Tools\ToolPropertyInterface[]
@@ -40,6 +48,8 @@ final class MakeStravaSegmentLink extends Tool
 
     public function __invoke(string $segmentId): string
     {
-        return sprintf('https://www.strava.com/segments/%s', $segmentId);
+        $segment = $this->segmentRepository->find(SegmentId::fromUnprefixed($segmentId));
+
+        return $segment->getStravaUrl() ?? sprintf('Segment %s is a custom segment and does not exist on Strava.', $segmentId);
     }
 }

@@ -37,6 +37,7 @@ use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
+use App\Domain\Segment\SegmentType;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\UnitSystem;
@@ -156,6 +157,11 @@ class ToolkitTest extends ContainerTestCase
             MakeStravaSegmentLink::class,
             ['1'],
         ];
+
+        yield 'MakeStravaSegmentLink Tool for a custom segment' => [
+            MakeStravaSegmentLink::class,
+            ['custom'],
+        ];
     }
 
     #[\Override]
@@ -262,6 +268,12 @@ class ToolkitTest extends ContainerTestCase
                 ->withIsFavourite(true)
                 ->withDeviceName('Polar')
                 ->withSportType(SportType::RIDE)
+                ->build()
+        );
+        $this->getContainer()->get(SegmentRepository::class)->add(
+            SegmentBuilder::fromDefaults()
+                ->withSegmentId(SegmentId::fromUnprefixed('custom'))
+                ->withType(SegmentType::CUSTOM)
                 ->build()
         );
 

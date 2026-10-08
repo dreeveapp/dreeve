@@ -7,6 +7,7 @@ use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
+use App\Domain\Segment\SegmentType;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\String\Name;
@@ -153,6 +154,34 @@ class SegmentRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorNotExists('a[href^="https://windahead.app/#polyline="]');
+    }
+
+    public function testRenderWithStravaLink(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->client->request('GET', '/segments/segment-1');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorExists('h1 a[href="https://www.strava.com/segments/1"]');
+    }
+
+    public function testRenderWithoutStravaLinkForCustomSegment(): void
+    {
+        $this->provideFullTestSet();
+        $this->getContainer()->get(SegmentRepository::class)->add(
+            SegmentBuilder::fromDefaults()
+                ->withSegmentId(SegmentId::fromUnprefixed('custom'))
+                ->withName(Name::fromString('Custom segment'))
+                ->withType(SegmentType::CUSTOM)
+                ->build()
+        );
+
+        $this->client->request('GET', '/segments/segment-custom');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('h1', 'Custom segment');
+        $this->assertSelectorNotExists('h1 a');
     }
 
     public function testItDoesNotSwallowTheDataTableFragment(): void
