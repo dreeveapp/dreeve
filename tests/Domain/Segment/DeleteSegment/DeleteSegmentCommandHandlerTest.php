@@ -40,7 +40,7 @@ class DeleteSegmentCommandHandlerTest extends ContainerTestCase
                 ->withSegmentEffortId(SegmentEffortId::fromUnprefixed($id))
                 ->withSegmentId(SegmentId::fromUnprefixed($id))
                 ->build());
-            $activityScanRepository->add(ActivityScan::create(ActivityId::fromUnprefixed('1'), ActivityScanType::CUSTOM_SEGMENT, 'segment-'.$id));
+            $activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-'.$id));
         }
 
         $this->commandBus->dispatch(DeleteSegment::fromPayload(['segmentId' => 'segment-1']));

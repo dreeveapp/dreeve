@@ -104,10 +104,10 @@ class DeleteActivitiesMarkedForDeletionCommandHandlerTest extends ContainerTestC
             ->build());
 
         $this->getContainer()->get(ActivityScanRepository::class)->add(
-            ActivityScan::create(ActivityId::fromUnprefixed(1001), ActivityScanType::CUSTOM_SEGMENT, 'segment-custom')
+            ActivityScan::create(activityId: ActivityId::fromUnprefixed(1001), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-custom')
         );
         $this->getContainer()->get(ActivityScanRepository::class)->add(
-            ActivityScan::create(ActivityId::fromUnprefixed(4), ActivityScanType::CUSTOM_SEGMENT, 'segment-custom')
+            ActivityScan::create(activityId: ActivityId::fromUnprefixed(4), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-custom')
         );
 
         $this->getContainer()->get(ActivityRepository::class)->markActivitiesForDeletion(ActivityIds::fromArray([

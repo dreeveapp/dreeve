@@ -25,9 +25,9 @@ class DbalActivityScanRepositoryTest extends ContainerTestCase
 
     public function testAddIgnoresDuplicates(): void
     {
-        $this->activityScanRepository->add(ActivityScan::create(ActivityId::fromUnprefixed('1'), ActivityScanType::CUSTOM_SEGMENT, 'segment-1'));
-        $this->activityScanRepository->add(ActivityScan::create(ActivityId::fromUnprefixed('1'), ActivityScanType::CUSTOM_SEGMENT, 'segment-1'));
-        $this->activityScanRepository->add(ActivityScan::create(ActivityId::fromUnprefixed('2'), ActivityScanType::CUSTOM_SEGMENT, 'segment-1'));
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('2'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
 
         $this->assertSame(
             [
@@ -40,18 +40,18 @@ class DbalActivityScanRepositoryTest extends ContainerTestCase
 
     public function testIsScanned(): void
     {
-        $this->activityScanRepository->add(ActivityScan::create(ActivityId::fromUnprefixed('1'), ActivityScanType::CUSTOM_SEGMENT, 'segment-1'));
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
 
-        $this->assertTrue($this->activityScanRepository->isScanned(ActivityId::fromUnprefixed('1'), ActivityScanType::CUSTOM_SEGMENT, 'segment-1'));
-        $this->assertFalse($this->activityScanRepository->isScanned(ActivityId::fromUnprefixed('1'), ActivityScanType::CUSTOM_SEGMENT, 'segment-2'));
-        $this->assertFalse($this->activityScanRepository->isScanned(ActivityId::fromUnprefixed('2'), ActivityScanType::CUSTOM_SEGMENT, 'segment-1'));
+        $this->assertTrue($this->activityScanRepository->isScanned(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
+        $this->assertFalse($this->activityScanRepository->isScanned(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-2'));
+        $this->assertFalse($this->activityScanRepository->isScanned(activityId: ActivityId::fromUnprefixed('2'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
     }
 
     public function testDeleteForActivity(): void
     {
-        $this->activityScanRepository->add(ActivityScan::create(ActivityId::fromUnprefixed('1'), ActivityScanType::CUSTOM_SEGMENT, 'segment-1'));
-        $this->activityScanRepository->add(ActivityScan::create(ActivityId::fromUnprefixed('1'), ActivityScanType::CUSTOM_SEGMENT, 'segment-2'));
-        $this->activityScanRepository->add(ActivityScan::create(ActivityId::fromUnprefixed('2'), ActivityScanType::CUSTOM_SEGMENT, 'segment-1'));
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-2'));
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('2'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
 
         $this->activityScanRepository->deleteForActivity(ActivityId::fromUnprefixed('1'));
 
@@ -63,11 +63,11 @@ class DbalActivityScanRepositoryTest extends ContainerTestCase
 
     public function testDeleteForSubject(): void
     {
-        $this->activityScanRepository->add(ActivityScan::create(ActivityId::fromUnprefixed('1'), ActivityScanType::CUSTOM_SEGMENT, 'segment-1'));
-        $this->activityScanRepository->add(ActivityScan::create(ActivityId::fromUnprefixed('2'), ActivityScanType::CUSTOM_SEGMENT, 'segment-1'));
-        $this->activityScanRepository->add(ActivityScan::create(ActivityId::fromUnprefixed('1'), ActivityScanType::CUSTOM_SEGMENT, 'segment-2'));
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('2'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-2'));
 
-        $this->activityScanRepository->deleteForSubject(ActivityScanType::CUSTOM_SEGMENT, 'segment-1');
+        $this->activityScanRepository->deleteForSubject(type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1');
 
         $this->assertSame(
             [['activityId' => 'activity-1', 'type' => 'customSegment', 'subjectId' => 'segment-2']],
@@ -89,12 +89,12 @@ class DbalActivityScanRepositoryTest extends ContainerTestCase
             ['other-activity-type', SportType::RUN, '2025-01-06', [StreamType::LAT_LNG, StreamType::TIME]],
         ] as [$id, $sportType, $startDateTime, $streamTypes]) {
             $activityRepository->add(ActivityWithRawData::fromState(
-                ActivityBuilder::fromDefaults()
+                activity: ActivityBuilder::fromDefaults()
                     ->withActivityId(ActivityId::fromUnprefixed($id))
                     ->withSportType($sportType)
                     ->withStartDateTime(SerializableDateTime::fromString($startDateTime))
                     ->build(),
-                []
+                rawData: []
             ));
             foreach ($streamTypes as $streamType) {
                 $activityStreamRepository->add(
@@ -113,8 +113,8 @@ class DbalActivityScanRepositoryTest extends ContainerTestCase
                 ->withData([])
                 ->build()
         );
-        $this->activityScanRepository->add(ActivityScan::create(ActivityId::fromUnprefixed('scanned'), ActivityScanType::CUSTOM_SEGMENT, 'segment-1'));
-        $this->activityScanRepository->add(ActivityScan::create(ActivityId::fromUnprefixed('scanned-for-other-subject'), ActivityScanType::CUSTOM_SEGMENT, 'segment-2'));
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('scanned'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('scanned-for-other-subject'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-2'));
 
         $this->assertEquals(
             ActivityIds::fromArray([

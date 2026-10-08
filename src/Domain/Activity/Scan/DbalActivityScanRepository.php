@@ -17,7 +17,7 @@ final readonly class DbalActivityScanRepository extends DbalRepository implement
     {
         $sql = 'INSERT OR IGNORE INTO ActivityScan (activityId, type, subjectId) VALUES (:activityId, :type, :subjectId)';
 
-        $this->connection->executeStatement($sql, [
+        $this->connection->executeStatement(sql: $sql, params: [
             'activityId' => $activityScan->getActivityId(),
             'type' => $activityScan->getType()->value,
             'subjectId' => $activityScan->getSubjectId(),
@@ -27,8 +27,8 @@ final readonly class DbalActivityScanRepository extends DbalRepository implement
     public function isScanned(ActivityId $activityId, ActivityScanType $type, string $subjectId = ''): bool
     {
         return false !== $this->connection->executeQuery(
-            'SELECT 1 FROM ActivityScan WHERE activityId = :activityId AND type = :type AND subjectId = :subjectId',
-            [
+            sql: 'SELECT 1 FROM ActivityScan WHERE activityId = :activityId AND type = :type AND subjectId = :subjectId',
+            params: [
                 'activityId' => $activityId,
                 'type' => $type->value,
                 'subjectId' => $subjectId,
@@ -38,14 +38,14 @@ final readonly class DbalActivityScanRepository extends DbalRepository implement
 
     public function deleteForActivity(ActivityId $activityId): void
     {
-        $this->connection->executeStatement('DELETE FROM ActivityScan WHERE activityId = :activityId', [
+        $this->connection->executeStatement(sql: 'DELETE FROM ActivityScan WHERE activityId = :activityId', params: [
             'activityId' => $activityId,
         ]);
     }
 
     public function deleteForSubject(ActivityScanType $type, string $subjectId): void
     {
-        $this->connection->executeStatement('DELETE FROM ActivityScan WHERE type = :type AND subjectId = :subjectId', [
+        $this->connection->executeStatement(sql: 'DELETE FROM ActivityScan WHERE type = :type AND subjectId = :subjectId', params: [
             'type' => $type->value,
             'subjectId' => $subjectId,
         ]);
@@ -83,7 +83,7 @@ final readonly class DbalActivityScanRepository extends DbalRepository implement
 
         return ActivityIds::fromArray(array_map(
             ActivityId::fromString(...),
-            $this->connection->executeQuery($sql, $params, [
+            $this->connection->executeQuery(sql: $sql, params: $params, types: [
                 'sportTypes' => ArrayParameterType::STRING,
             ])->fetchFirstColumn()
         ));

@@ -39,7 +39,7 @@ final readonly class DeleteSegmentCommandHandler implements CommandHandler
         }
 
         $this->segmentEffortRepository->deleteForSegment($segment->getId());
-        $this->activityScanRepository->deleteForSubject(ActivityScanType::CUSTOM_SEGMENT, (string) $segment->getId());
+        $this->activityScanRepository->deleteForSubject(type: ActivityScanType::CUSTOM_SEGMENT, subjectId: (string) $segment->getId());
 
         $segment->delete();
         $this->segmentRepository->delete($segment);
