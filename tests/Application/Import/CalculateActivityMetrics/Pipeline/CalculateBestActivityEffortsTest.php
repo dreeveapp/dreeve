@@ -2,26 +2,37 @@
 
 namespace App\Tests\Application\Import\CalculateActivityMetrics\Pipeline;
 
+use App\Application\AppUrl;
 use App\Application\Import\CalculateActivityMetrics\Pipeline\CalculateBestActivityEfforts;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Integration\Notification\SendNotification\SendNotification;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\Domain\Activity\BestEffort\ActivityBestEffortBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
+use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
 use App\Tests\SpyOutput;
 use Spatie\Snapshots\MatchesSnapshots;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CalculateBestActivityEffortsTest extends ContainerTestCase
 {
     use MatchesSnapshots;
 
     private CalculateBestActivityEfforts $calculateBestActivityEfforts;
+    private SpyCommandBus $commandBus;
 
     public function testProcess(): void
     {
@@ -39,12 +50,150 @@ class CalculateBestActivityEffortsTest extends ContainerTestCase
         $this->assertStringEndsWith("  => Calculated best efforts for 16 activities (3 s)\n", (string) $output);
     }
 
+    public function testItNotifiesAboutNewPersonalRecords(): void
+    {
+        $this->provideExistingPersonalRecords();
+        $this->provideAShortRun(ActivityId::fromUnprefixed('new-run'));
+
+        $this->calculateBestActivityEfforts->process(new SpyOutput());
+
+        $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
+    }
+
+    public function testItLinksToTheBestEffortsPageWhenRecordsComeFromMultipleActivities(): void
+    {
+        $this->provideExistingPersonalRecords();
+        $this->provideAShortRun(ActivityId::fromUnprefixed('new-run'));
+        $this->provideAShortRun(ActivityId::fromUnprefixed('new-trail-run'), SportType::TRAIL_RUN);
+
+        $this->calculateBestActivityEfforts->process(new SpyOutput());
+
+        $this->assertMatchesJsonSnapshot(Json::encode($this->commandBus->getDispatchedCommands()));
+    }
+
+    public function testItDoesNotNotifyOnTheInitialImport(): void
+    {
+        $this->provideAShortRun(ActivityId::fromUnprefixed('new-run'));
+
+        $this->calculateBestActivityEfforts->process(new SpyOutput());
+
+        $this->assertEmpty($this->commandBus->getDispatchedCommands());
+    }
+
+    public function testItDoesNotNotifyForActivitiesOlderThanTheProcessedOnes(): void
+    {
+        $this->provideExistingPersonalRecords();
+        $this->provideAShortRun(
+            activityId: ActivityId::fromUnprefixed('old-run'),
+            startDateTime: SerializableDateTime::fromString('2022-01-01'),
+        );
+
+        $this->calculateBestActivityEfforts->process(new SpyOutput());
+
+        $this->assertEmpty($this->commandBus->getDispatchedCommands());
+    }
+
+    public function testItDoesNotNotifyWhenAnOlderActivityInTheSameImportIsFaster(): void
+    {
+        $this->provideExistingPersonalRecords();
+        $this->provideAShortRun(ActivityId::fromUnprefixed('new-run'));
+        $this->provideAShortRun(
+            activityId: ActivityId::fromUnprefixed('old-run'),
+            startDateTime: SerializableDateTime::fromString('2022-01-01'),
+            secondsPer500m: 50,
+        );
+
+        $this->calculateBestActivityEfforts->process(new SpyOutput());
+
+        $this->assertEmpty($this->commandBus->getDispatchedCommands());
+    }
+
+    public function testItDoesNotNotifyWhenThePersonalRecordNotificationIsDisabled(): void
+    {
+        $this->getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
+            'notifications' => ['notifyOnPersonalRecord' => false],
+        ]);
+        $this->provideExistingPersonalRecords();
+        $this->provideAShortRun(ActivityId::fromUnprefixed('new-run'));
+
+        $this->calculateBestActivityEfforts->process(new SpyOutput());
+
+        $this->assertEmpty(array_filter(
+            $this->commandBus->getDispatchedCommands(),
+            static fn (object $command): bool => $command instanceof SendNotification,
+        ));
+    }
+
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->calculateBestActivityEfforts = $this->getContainer()->get(CalculateBestActivityEfforts::class);
+        $this->calculateBestActivityEfforts = new CalculateBestActivityEfforts(
+            activityRepository: $this->getContainer()->get(ActivityRepository::class),
+            activityBestEffortRepository: $this->getContainer()->get(ActivityBestEffortRepository::class),
+            activityStreamRepository: $this->getContainer()->get(ActivityStreamRepository::class),
+            settingsRepository: $this->getContainer()->get(SettingsRepository::class),
+            commandBus: $this->commandBus = new SpyCommandBus(),
+            translator: $this->getContainer()->get(TranslatorInterface::class),
+            appUrl: AppUrl::fromString('http://localhost/'),
+        );
+    }
+
+    private function provideExistingPersonalRecords(): void
+    {
+        foreach ([SportType::RUN, SportType::TRAIL_RUN] as $sportType) {
+            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed('existing-'.$sportType->value))
+                    ->withSportType($sportType)
+                    ->withStartDateTime(SerializableDateTime::fromString('2023-01-01'))
+                    ->build(), []
+            ));
+        }
+
+        $activityBestEffortRepository = $this->getContainer()->get(ActivityBestEffortRepository::class);
+        foreach ([[SportType::RUN, 400, 120], [SportType::RUN, 1000, 180], [SportType::TRAIL_RUN, 1000, 300]] as [$sportType, $distanceInMeter, $timeInSeconds]) {
+            $activityBestEffortRepository->add(
+                ActivityBestEffortBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed('existing-'.$sportType->value))
+                    ->withSportType($sportType)
+                    ->withDistanceInMeter(Meter::from($distanceInMeter))
+                    ->withTimeInSeconds($timeInSeconds)
+                    ->build()
+            );
+        }
+    }
+
+    private function provideAShortRun(
+        ActivityId $activityId,
+        SportType $sportType = SportType::RUN,
+        SerializableDateTime $startDateTime = new SerializableDateTime('2023-10-10'),
+        int $secondsPer500m = 100,
+    ): void {
+        // With the default pace, this gives best efforts of 100s for 400m, 200s for 0.5mi and 200s for 1km.
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withSportType($sportType)
+                ->withStartDateTime($startDateTime)
+                ->withDistance(Kilometer::from(1.5))
+                ->build(), []
+        ));
+        $this->getContainer()->get(ActivityStreamRepository::class)->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withStreamType(StreamType::TIME)
+                ->withData([0, $secondsPer500m, 2 * $secondsPer500m, 3 * $secondsPer500m])
+                ->build()
+        );
+        $this->getContainer()->get(ActivityStreamRepository::class)->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withStreamType(StreamType::DISTANCE)
+                ->withData([0, 500, 1000, 1500])
+                ->build()
+        );
     }
 
     private function provideSomeData(): void

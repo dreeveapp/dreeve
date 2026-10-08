@@ -278,6 +278,7 @@ Monday: Maandag
 'Normal date format': 'Normaal datumformaat'
 'Not configured, the API is closed': 'Niet geconfigureerd, de API is gesloten'
 'Notification services': Meldingsdiensten
+'Notify when a new personal record was set': 'Melden bij een nieuw persoonlijk record'
 'Notify when an import was successful': 'Melden wanneer een import geslaagd is'
 'Number of activities to display': 'Aantal te tonen activiteiten'
 'Number of challenges to display': 'Aantal te tonen uitdagingen'
@@ -374,6 +375,7 @@ Security: Beveiliging
 'Select sport types': 'Sporttypes selecteren'
 'Select the serviced gear…': 'Selecteer de onderhouden uitrusting…'
 'Sends a notification after every successful import.': 'Stuurt een melding na elke geslaagde import.'
+'Sends a notification listing the new personal records after an import.': 'Stuurt na een import een melding met de nieuwe persoonlijke records.'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Stuurt een melding wanneer er een nieuwe versie van de app beschikbaar is. Vereist een geconfigureerde meldingsdienst.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Stuurt een melding wanneer onderhoud van uitrusting nodig is. Vereist een geconfigureerde meldingsdienst.'
 Sensors: Sensoren

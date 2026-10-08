@@ -278,6 +278,7 @@ Monday: Hétfő
 'Normal date format': 'Normál dátumformátum'
 'Not configured, the API is closed': 'Nincs beállítva, az API zárva van'
 'Notification services': 'Értesítési szolgáltatások'
+'Notify when a new personal record was set': 'Notify when a new personal record was set'
 'Notify when an import was successful': 'Értesítés sikeres importáláskor'
 'Number of activities to display': 'Megjelenítendő tevékenységek száma'
 'Number of challenges to display': 'Megjelenítendő kihívások száma'
@@ -374,6 +375,7 @@ Security: Biztonság
 'Select sport types': 'Sporttípusok kiválasztása'
 'Select the serviced gear…': 'Válaszd ki a szervizelt felszerelést…'
 'Sends a notification after every successful import.': 'Értesítést küld minden sikeres importálás után.'
+'Sends a notification listing the new personal records after an import.': 'Sends a notification listing the new personal records after an import.'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Értesítést küld, ha új alkalmazásverzió érhető el. Beállított értesítési szolgáltatást igényel.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Értesítést küld, ha esedékes a felszerelés karbantartása. Beállított értesítési szolgáltatást igényel.'
 Sensors: Érzékelők

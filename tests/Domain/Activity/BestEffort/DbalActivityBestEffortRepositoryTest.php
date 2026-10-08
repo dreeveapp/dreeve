@@ -13,6 +13,7 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
@@ -163,6 +164,71 @@ class DbalActivityBestEffortRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             ActivityBestEfforts::fromArray([$slowestOnlyBestEffort]),
             $this->activityBestEffortRepository->findByActivity(ActivityId::fromUnprefixed('slowest'))
+        );
+    }
+
+    public function testFindPersonalRecords(): void
+    {
+        $fastestRide = ActivityBestEffortBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed('fastest'))
+            ->withSportType(SportType::RIDE)
+            ->withDistanceInMeter(Meter::from(10000))
+            ->withTimeInSeconds(1800)
+            ->build();
+        $this->activityBestEffortRepository->add($fastestRide);
+        $this->activityBestEffortRepository->add(
+            ActivityBestEffortBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('slowest'))
+                ->withSportType(SportType::RIDE)
+                ->withDistanceInMeter(Meter::from(10000))
+                ->withTimeInSeconds(3600)
+                ->build()
+        );
+        $longestRide = ActivityBestEffortBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed('slowest'))
+            ->withSportType(SportType::RIDE)
+            ->withDistanceInMeter(Meter::from(20000))
+            ->withTimeInSeconds(7200)
+            ->build();
+        $this->activityBestEffortRepository->add($longestRide);
+        // Records are tracked per sport type.
+        $run = ActivityBestEffortBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed('run'))
+            ->withSportType(SportType::RUN)
+            ->withDistanceInMeter(Meter::from(10000))
+            ->withTimeInSeconds(2400)
+            ->build();
+        $this->activityBestEffortRepository->add($run);
+
+        $this->assertEquals(
+            ActivityBestEfforts::fromArray([$fastestRide, $longestRide, $run]),
+            $this->activityBestEffortRepository->findPersonalRecords()
+        );
+    }
+
+    public function testFindMostRecentStartDateTimeOfActivitiesWithBestEfforts(): void
+    {
+        $this->assertNull($this->activityBestEffortRepository->findMostRecentStartDateTimeOfActivitiesWithBestEfforts());
+
+        foreach (['2023-01-01', '2024-06-15', '2025-03-01'] as $startDateTime) {
+            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($startDateTime))
+                    ->withStartDateTime(SerializableDateTime::fromString($startDateTime))
+                    ->build(), []
+            ));
+        }
+        foreach (['2023-01-01', '2024-06-15'] as $activityWithBestEfforts) {
+            $this->activityBestEffortRepository->add(
+                ActivityBestEffortBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($activityWithBestEfforts))
+                    ->build()
+            );
+        }
+
+        $this->assertEquals(
+            SerializableDateTime::fromString('2024-06-15'),
+            $this->activityBestEffortRepository->findMostRecentStartDateTimeOfActivitiesWithBestEfforts()
         );
     }
 

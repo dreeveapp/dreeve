@@ -33,6 +33,7 @@ final readonly class IntegrationsSettings
         private ChatCommands $chatCommands,
         private ConfiguredNotificationUrls $configuredNotificationUrls,
         private bool $notifyOnSuccessfulImport,
+        private bool $notifyOnPersonalRecord,
     ) {
     }
 
@@ -87,6 +88,7 @@ final readonly class IntegrationsSettings
             configuredNotificationUrls: ConfiguredNotificationUrls::fromConfig($services),
             // The stored key predates the removal of the build phase, renaming it would reset the user's setting.
             notifyOnSuccessfulImport: filter_var($notifications['notifyOnSuccessfulBuild'] ?? true, FILTER_VALIDATE_BOOLEAN),
+            notifyOnPersonalRecord: filter_var($notifications['notifyOnPersonalRecord'] ?? true, FILTER_VALIDATE_BOOLEAN),
         );
     }
 
@@ -113,6 +115,11 @@ final readonly class IntegrationsSettings
     public function shouldNotifyOnSuccessfulImport(): bool
     {
         return $this->notifyOnSuccessfulImport;
+    }
+
+    public function shouldNotifyOnPersonalRecord(): bool
+    {
+        return $this->notifyOnPersonalRecord;
     }
 
     public function getAIProvider(): AIProviderInterface

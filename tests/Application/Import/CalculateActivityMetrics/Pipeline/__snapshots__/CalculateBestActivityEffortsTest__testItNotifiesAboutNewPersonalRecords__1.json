@@ -1,0 +1,13 @@
+[
+    {
+        "commandName": "App\\Domain\\Integration\\Notification\\SendNotification\\SendNotification",
+        "payload": {
+            "title": "New personal records",
+            "message": "Run 400m: 01:40 (previous: 02:00)\nRun 0.5mi: 03:20 (first record)",
+            "tags": [
+                "trophy"
+            ],
+            "actionUrl": "http://localhost/activities/activity-new-run"
+        }
+    }
+]

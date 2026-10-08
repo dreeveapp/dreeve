@@ -11,6 +11,7 @@ use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Repository\DbalRepository;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\ArrayParameterType;
 
 final readonly class DbalActivityBestEffortRepository extends DbalRepository implements ActivityBestEffortRepository
@@ -108,6 +109,56 @@ final readonly class DbalActivityBestEffortRepository extends DbalRepository imp
                 ]
             )->fetchAllAssociative()
         ));
+    }
+
+    public function findPersonalRecords(): ActivityBestEfforts
+    {
+        $sql = 'SELECT activityId, sportType, distanceInMeter, timeInSeconds
+                FROM (
+                    SELECT
+                        activityId,
+                        sportType,
+                        distanceInMeter,
+                        timeInSeconds,
+                        ROW_NUMBER() OVER (
+                            PARTITION BY sportType, distanceInMeter
+                            ORDER BY timeInSeconds ASC
+                        ) AS rn
+                    FROM ActivityBestEffort
+                    WHERE sportType IN (:sportTypes)
+                ) ranked
+                WHERE rn = 1
+                ORDER BY sportType ASC, distanceInMeter ASC';
+
+        return ActivityBestEfforts::fromArray(array_map(
+            fn (array $result): ActivityBestEffort => ActivityBestEffort::fromState(
+                activityId: ActivityId::fromString($result['activityId']),
+                distanceInMeter: Meter::from($result['distanceInMeter']),
+                sportType: SportType::from($result['sportType']),
+                timeInSeconds: $result['timeInSeconds'],
+            ),
+            $this->connection->executeQuery(
+                $sql,
+                [
+                    'sportTypes' => array_map(fn (SportType $sportType) => $sportType->value, SportTypes::thatSupportsBestEfforts()->toArray()),
+                ],
+                [
+                    'sportTypes' => ArrayParameterType::STRING,
+                ]
+            )->fetchAllAssociative()
+        ));
+    }
+
+    public function findMostRecentStartDateTimeOfActivitiesWithBestEfforts(): ?SerializableDateTime
+    {
+        $sql = 'SELECT MAX(Activity.startDateTime) FROM ActivityBestEffort
+                INNER JOIN Activity ON Activity.activityId = ActivityBestEffort.activityId';
+
+        if (!$startDateTime = $this->connection->executeQuery($sql)->fetchOne()) {
+            return null;
+        }
+
+        return SerializableDateTime::fromString($startDateTime);
     }
 
     public function deleteForActivity(ActivityId $activityId): void

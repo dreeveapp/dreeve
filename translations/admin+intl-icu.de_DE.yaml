@@ -278,6 +278,7 @@ Monday: Montag
 'Normal date format': 'Normales Datumsformat'
 'Not configured, the API is closed': 'Nicht konfiguriert, die API ist geschlossen'
 'Notification services': Benachrichtungsdienste
+'Notify when a new personal record was set': 'Benachrichtigung bei neuem persönlichen Rekord'
 'Notify when an import was successful': 'Benachrichtigung bei erfolgreichem Import'
 'Number of activities to display': 'Anzahl der anzuzeigenden Aktivitäten'
 'Number of challenges to display': 'Anzahl der anzuzeigenden Herausforderungen'
@@ -374,6 +375,7 @@ Security: Sicherheit
 'Select sport types': 'Sportarten auswählen'
 'Select the serviced gear…': 'Gewartete Ausrüstung auswählen…'
 'Sends a notification after every successful import.': 'Sendet eine Benachrichtung nach jedem erfolgreichen Import.'
+'Sends a notification listing the new personal records after an import.': 'Sendet nach einem Import eine Benachrichtigung mit den neuen persönlichen Rekorden.'
 'Sends a notification when a new app version is available. Requires a configured notification service.': 'Sendet eine Benachrichtigung, wenn eine neue App-Version verfügbar ist. Erfordert einen konfigurierten Benachrichtigungsdienst.'
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sendet eine Benachrichtigung, wenn eine Ausrüstungswartung fällig ist. Erfordert einen konfigurierten Benachrichtigungsdienst.'
 Sensors: Sensors
