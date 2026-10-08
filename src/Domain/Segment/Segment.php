@@ -22,6 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Index(name: 'Segment_detailsHaveBeenImported', columns: ['detailsHaveBeenImported'])]
+#[ORM\Index(name: 'Segment_type', columns: ['type'])]
 final class Segment implements SupportsAITooling
 {
     use RecordsEvents;
@@ -57,6 +58,8 @@ final class Segment implements SupportsAITooling
         private readonly ?Coordinate $startingCoordinate,
         #[ORM\Column(type: 'float', nullable: true)]
         private readonly ?float $averageGradient,
+        #[ORM\Column(type: 'string', enumType: SegmentType::class, options: ['default' => SegmentType::IMPORTED->value])]
+        private readonly SegmentType $type,
     ) {
     }
 
@@ -71,6 +74,7 @@ final class Segment implements SupportsAITooling
         ?string $deviceName,
         ?string $countryCode,
         ?float $averageGradient,
+        SegmentType $type,
     ): self {
         $segment = new self(
             segmentId: $segmentId,
@@ -86,6 +90,7 @@ final class Segment implements SupportsAITooling
             polyline: null,
             startingCoordinate: null,
             averageGradient: $averageGradient,
+            type: $type,
         );
         $segment->recordThat(new SegmentWasAdded());
 
@@ -106,6 +111,7 @@ final class Segment implements SupportsAITooling
         ?EncodedPolyline $polyline,
         ?Coordinate $startingCoordinate,
         ?float $averageGradient,
+        SegmentType $type,
     ): self {
         return new self(
             segmentId: $segmentId,
@@ -121,6 +127,7 @@ final class Segment implements SupportsAITooling
             polyline: $polyline,
             startingCoordinate: $startingCoordinate,
             averageGradient: $averageGradient,
+            type: $type,
         );
     }
 
@@ -146,6 +153,11 @@ final class Segment implements SupportsAITooling
         $parts[] = $this->name;
 
         return Name::fromString(implode(' ', $parts));
+    }
+
+    public function getType(): SegmentType
+    {
+        return $this->type;
     }
 
     public function getDeviceName(): ?string

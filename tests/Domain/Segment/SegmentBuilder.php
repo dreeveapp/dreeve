@@ -7,6 +7,7 @@ namespace App\Tests\Domain\Segment;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Segment\Segment;
 use App\Domain\Segment\SegmentId;
+use App\Domain\Segment\SegmentType;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
@@ -27,6 +28,7 @@ final class SegmentBuilder
     private ?EncodedPolyline $polyline;
     private readonly ?Coordinate $startingCoordinate;
     private ?float $averageGradient = 2.7;
+    private SegmentType $type = SegmentType::IMPORTED;
 
     private function __construct()
     {
@@ -60,6 +62,7 @@ final class SegmentBuilder
             polyline: $this->polyline,
             startingCoordinate: $this->startingCoordinate,
             averageGradient: $this->averageGradient,
+            type: $this->type,
         );
     }
 
@@ -129,6 +132,13 @@ final class SegmentBuilder
     public function withAverageGradient(?float $averageGradient): self
     {
         $this->averageGradient = $averageGradient;
+
+        return $this;
+    }
+
+    public function withType(SegmentType $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

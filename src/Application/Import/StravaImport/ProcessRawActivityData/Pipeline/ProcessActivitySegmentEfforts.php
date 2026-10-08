@@ -12,6 +12,7 @@ use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
+use App\Domain\Segment\SegmentType;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\String\Name;
@@ -74,6 +75,7 @@ final readonly class ProcessActivitySegmentEfforts implements ProcessRawDataStep
                             deviceName: $activity->getDeviceName(),
                             countryCode: $countryCode,
                             averageGradient: $activitySegment['average_grade'] ?? null,
+                            type: SegmentType::IMPORTED,
                         );
                         $this->segmentRepository->add($segment);
                         ++$countSegmentsAdded;

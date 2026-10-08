@@ -30,10 +30,10 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
     {
         $sql = 'INSERT INTO Segment (segmentId, name, sportType, distance, maxGradient, isFavourite, 
                      deviceName, climbCategory, countryCode, detailsHaveBeenImported, polyline,
-                     startingCoordinateLatitude, startingCoordinateLongitude, averageGradient) 
+                     startingCoordinateLatitude, startingCoordinateLongitude, averageGradient, type) 
                 VALUES (:segmentId, :name, :sportType, :distance, :maxGradient, :isFavourite, 
                         :deviceName, :climbCategory, :countryCode, :detailsHaveBeenImported, :polyline,
-                        :startingCoordinateLatitude, :startingCoordinateLongitude, :averageGradient)';
+                        :startingCoordinateLatitude, :startingCoordinateLongitude, :averageGradient, :type)';
 
         $this->connection->executeStatement($sql, [
             'segmentId' => $segment->getId(),
@@ -50,6 +50,7 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
             'startingCoordinateLatitude' => null,
             'startingCoordinateLongitude' => null,
             'averageGradient' => $segment->getAverageGradient(),
+            'type' => $segment->getType()->value,
         ]);
 
         $this->eventBus->publishEvents($segment->getRecordedEvents());
@@ -154,6 +155,7 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
                 Longitude::fromOptionalString((string) $result['startingCoordinateLongitude'])
             ),
             averageGradient: isset($result['averageGradient']) ? (float) $result['averageGradient'] : null,
+            type: SegmentType::from($result['type']),
         );
     }
 

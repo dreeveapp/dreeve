@@ -8,6 +8,7 @@ use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
 use App\Domain\Segment\Segments;
+use App\Domain\Segment\SegmentType;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
@@ -15,6 +16,7 @@ use App\Infrastructure\ValueObject\String\Name;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Segment\SegmentEffort\SegmentEffortBuilder;
 use App\Tests\Infrastructure\Eventing\SpyEventBus;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class DbalSegmentRepositoryTest extends ContainerTestCase
@@ -22,9 +24,11 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
     use MatchesSnapshots;
     private SegmentRepository $segmentRepository;
 
-    public function testFindAndSave(): void
+    #[DataProvider(methodName: 'provideSegmentTypes')]
+    public function testFindAndSave(SegmentType $type): void
     {
         $segment = SegmentBuilder::fromDefaults()
+            ->withType($type)
             ->build();
         $this->segmentRepository->add($segment);
 
@@ -32,6 +36,12 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
             $segment,
             $this->segmentRepository->find($segment->getId())
         );
+    }
+
+    public static function provideSegmentTypes(): iterable
+    {
+        yield 'imported' => [SegmentType::IMPORTED];
+        yield 'custom' => [SegmentType::CUSTOM];
     }
 
     public function testUpdate(): void

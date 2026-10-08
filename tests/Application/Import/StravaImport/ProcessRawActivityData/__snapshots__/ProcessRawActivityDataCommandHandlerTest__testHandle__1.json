@@ -12,6 +12,7 @@
         "detailsHaveBeenImported": 0,
         "polyline": null,
         "averageGradient": 2.7,
+        "type": "imported",
         "startingCoordinateLatitude": null,
         "startingCoordinateLongitude": null
     },
@@ -28,6 +29,7 @@
         "detailsHaveBeenImported": 0,
         "polyline": null,
         "averageGradient": null,
+        "type": "imported",
         "startingCoordinateLatitude": null,
         "startingCoordinateLongitude": null
     }
