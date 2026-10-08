@@ -46,9 +46,9 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
             'climbCategory' => $segment->getClimbCategory(),
             'countryCode' => $segment->getCountryCode(),
             'detailsHaveBeenImported' => (int) $segment->detailsHaveBeenImported(),
-            'polyline' => null,
-            'startingCoordinateLatitude' => null,
-            'startingCoordinateLongitude' => null,
+            'polyline' => $segment->getPolyline(),
+            'startingCoordinateLatitude' => $segment->getStartingCoordinate()?->getLatitude()->toFloat(),
+            'startingCoordinateLongitude' => $segment->getStartingCoordinate()?->getLongitude()->toFloat(),
             'averageGradient' => $segment->getAverageGradient(),
             'type' => $segment->getType()->value,
         ]);
@@ -120,7 +120,9 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
         $queryBuilder = $this->connection->createQueryBuilder();
         $queryBuilder->select('segmentId')
             ->from('Segment')
-            ->andWhere('detailsHaveBeenImported = 0');
+            ->andWhere('detailsHaveBeenImported = 0')
+            ->andWhere('type = :type')
+            ->setParameter('type', SegmentType::IMPORTED->value);
 
         return array_map(
             SegmentId::fromString(...),
@@ -159,11 +161,13 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
         );
     }
 
-    public function deleteOrphaned(): void
+    public function deleteOrphanedImported(): void
     {
-        $deletedSegments = $this->connection->executeStatement('DELETE FROM Segment WHERE NOT EXISTS(
+        $deletedSegments = $this->connection->executeStatement('DELETE FROM Segment WHERE type = :type AND NOT EXISTS(
             SELECT 1 FROM SegmentEffort WHERE SegmentEffort.segmentId = Segment.segmentId
-        )');
+        )', [
+            'type' => SegmentType::IMPORTED->value,
+        ]);
 
         if (0 === $deletedSegments) {
             return;

@@ -2,13 +2,47 @@
 
 namespace App\Tests\Domain\Segment;
 
+use App\Domain\Activity\SportType\SportType;
+use App\Domain\Segment\Segment;
+use App\Domain\Segment\SegmentId;
+use App\Domain\Segment\SegmentType;
+use App\Domain\Segment\SegmentWasAdded;
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
+use App\Infrastructure\ValueObject\Geography\Latitude;
+use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\String\Name;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class SegmentTest extends TestCase
 {
+    public function testCreateCustom(): void
+    {
+        $segment = Segment::createCustom(
+            segmentId: SegmentId::fromUnprefixed('custom'),
+            name: Name::fromString('Custom segment'),
+            sportType: SportType::RIDE,
+            distance: Kilometer::from(1.2),
+            maxGradient: 8.1,
+            averageGradient: 4.3,
+            isFavourite: false,
+            countryCode: 'BE',
+            polyline: EncodedPolyline::fromString('_p~iF~ps|U_ulLnnqC'),
+        );
+
+        $this->assertEquals(SegmentType::CUSTOM, $segment->getType());
+        $this->assertTrue($segment->detailsHaveBeenImported());
+        $this->assertNull($segment->getDeviceName());
+        $this->assertNull($segment->getClimbCategory());
+        $this->assertEquals(
+            Coordinate::createFromLatAndLng(Latitude::fromString('38.5'), Longitude::fromString('-120.2')),
+            $segment->getStartingCoordinate()
+        );
+        $this->assertEquals([new SegmentWasAdded()], $segment->getRecordedEvents());
+    }
+
     public function testGetWindAheadUrl(): void
     {
         $segment = SegmentBuilder::fromDefaults()

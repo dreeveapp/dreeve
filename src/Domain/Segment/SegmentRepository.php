@@ -23,5 +23,5 @@ interface SegmentRepository
 
     public function count(): int;
 
-    public function deleteOrphaned(): void;
+    public function deleteOrphanedImported(): void;
 }

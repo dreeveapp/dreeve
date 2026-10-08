@@ -49,7 +49,7 @@ final readonly class DeleteActivityCommandHandler implements CommandHandler
         $this->activityStreamMetricRepository->deleteForActivity($activityId);
         $this->combinedActivityStreamRepository->deleteForActivity($activityId);
         $this->segmentEffortRepository->deleteForActivity($activityId);
-        $this->segmentRepository->deleteOrphaned();
+        $this->segmentRepository->deleteOrphanedImported();
         $this->activitySplitRepository->deleteForActivity($activityId);
         $this->activityLapRepository->deleteForActivity($activityId);
         $this->activityBestEffortRepository->deleteForActivity($activityId);

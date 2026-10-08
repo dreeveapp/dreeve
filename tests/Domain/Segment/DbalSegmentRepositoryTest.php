@@ -2,7 +2,9 @@
 
 namespace App\Tests\Domain\Segment;
 
+use App\Domain\Activity\SportType\SportType;
 use App\Domain\Segment\DbalSegmentRepository;
+use App\Domain\Segment\Segment;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
@@ -10,6 +12,7 @@ use App\Domain\Segment\SegmentRepository;
 use App\Domain\Segment\Segments;
 use App\Domain\Segment\SegmentType;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\String\Name;
@@ -30,6 +33,27 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
         $segment = SegmentBuilder::fromDefaults()
             ->withType($type)
             ->build();
+        $this->segmentRepository->add($segment);
+
+        $this->assertEquals(
+            $segment,
+            $this->segmentRepository->find($segment->getId())
+        );
+    }
+
+    public function testFindAndSaveCustomSegment(): void
+    {
+        $segment = Segment::createCustom(
+            segmentId: SegmentId::fromUnprefixed('custom'),
+            name: Name::fromString('Custom segment'),
+            sportType: SportType::RIDE,
+            distance: Kilometer::from(1.2),
+            maxGradient: 8.1,
+            averageGradient: 4.3,
+            isFavourite: true,
+            countryCode: 'BE',
+            polyline: EncodedPolyline::fromString('_p~iF~ps|U_ulLnnqC'),
+        );
         $this->segmentRepository->add($segment);
 
         $this->assertEquals(
@@ -104,6 +128,11 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
             ->withName(Name::fromString('B name'))
             ->build();
         $this->segmentRepository->add($segmentThree);
+        $this->segmentRepository->add(SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed(4))
+            ->withDetailsHaveBeenImported(false)
+            ->withType(SegmentType::CUSTOM)
+            ->build());
 
         $this->assertEquals(
             [$segmentTwo->getId(), $segmentThree->getId()],
@@ -111,14 +140,19 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
         );
     }
 
-    public function testDeleteOrphaned(): void
+    public function testDeleteOrphanedImported(): void
     {
         [$segmentOne, , $segmentThree] = $this->seedSegmentsWithEfforts();
+        $customSegmentWithoutEfforts = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed(4))
+            ->withType(SegmentType::CUSTOM)
+            ->build();
+        $this->segmentRepository->add($customSegmentWithoutEfforts);
 
-        $this->segmentRepository->deleteOrphaned();
+        $this->segmentRepository->deleteOrphanedImported();
 
         $this->assertEquals(
-            Segments::fromArray([$segmentOne, $segmentThree]),
+            Segments::fromArray([$segmentOne, $segmentThree, $customSegmentWithoutEfforts]),
             $this->segmentRepository->findAll(Pagination::fromOffsetAndLimit(0, 100))
         );
     }

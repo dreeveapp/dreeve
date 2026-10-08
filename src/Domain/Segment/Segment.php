@@ -97,6 +97,38 @@ final class Segment implements SupportsAITooling
         return $segment;
     }
 
+    public static function createCustom(
+        SegmentId $segmentId,
+        Name $name,
+        SportType $sportType,
+        Kilometer $distance,
+        float $maxGradient,
+        ?float $averageGradient,
+        bool $isFavourite,
+        ?string $countryCode,
+        EncodedPolyline $polyline,
+    ): self {
+        $segment = new self(
+            segmentId: $segmentId,
+            name: $name,
+            sportType: $sportType,
+            distance: $distance,
+            maxGradient: $maxGradient,
+            isFavourite: $isFavourite,
+            climbCategory: null,
+            deviceName: null,
+            countryCode: $countryCode,
+            detailsHaveBeenImported: true,
+            polyline: $polyline,
+            startingCoordinate: $polyline->getStartingCoordinate(),
+            averageGradient: $averageGradient,
+            type: SegmentType::CUSTOM,
+        );
+        $segment->recordThat(new SegmentWasAdded());
+
+        return $segment;
+    }
+
     public static function fromState(
         SegmentId $segmentId,
         Name $name,
