@@ -11,6 +11,8 @@ interface ActivityRouteSignatureRepository
 {
     public function add(ActivityRouteSignature $activityRouteSignature): void;
 
+    public function find(ActivityId $activityId): ActivityRouteSignature;
+
     public function deleteForActivity(ActivityId $activityId): void;
 
     public function findActivityIdsThatNeedRouteSignatureCalculation(): ActivityIds;

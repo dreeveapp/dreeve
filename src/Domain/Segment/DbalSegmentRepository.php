@@ -115,6 +115,21 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
         ));
     }
 
+    public function findByType(SegmentType $type): Segments
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder->select('*')
+            ->from('Segment')
+            ->andWhere('type = :type')
+            ->setParameter('type', $type->value)
+            ->orderBy('segmentId', 'ASC');
+
+        return Segments::fromArray(array_map(
+            $this->hydrate(...),
+            $queryBuilder->executeQuery()->fetchAllAssociative()
+        ));
+    }
+
     public function findSegmentsIdsMissingDetails(): array
     {
         $queryBuilder = $this->connection->createQueryBuilder();

@@ -11,6 +11,7 @@ use App\Domain\Activity\Route\Signature\DbalActivityRouteSignatureRepository;
 use App\Domain\Activity\Route\Signature\RouteCells;
 use App\Domain\Activity\Route\Signature\RouteGrid;
 use App\Domain\Activity\Route\Signature\RouteWaypoints;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Tests\ContainerTestCase;
@@ -62,6 +63,29 @@ class DbalActivityRouteSignatureRepositoryTest extends ContainerTestCase
                 'SELECT waypoints FROM ActivityRouteSignature WHERE activityId = "activity-test"'
             )->fetchOne())
         );
+    }
+
+    public function testFind(): void
+    {
+        $activityRouteSignature = ActivityRouteSignatureBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed('test'))
+            ->withPolylineChecksum('aaaaaaaa')
+            ->withCells(RouteCells::fromArray([10, 20, 30]))
+            ->withWaypoints(RouteWaypoints::fromArray([5100000, 300000, 5100100, 300100]))
+            ->build();
+        $this->activityRouteSignatureRepository->add($activityRouteSignature);
+
+        $this->assertEquals(
+            $activityRouteSignature,
+            $this->activityRouteSignatureRepository->find(ActivityId::fromUnprefixed('test'))
+        );
+    }
+
+    public function testFindThrowsWhenNotFound(): void
+    {
+        $this->expectExceptionObject(new EntityNotFound('ActivityRouteSignature for "activity-test" not found'));
+
+        $this->activityRouteSignatureRepository->find(ActivityId::fromUnprefixed('test'));
     }
 
     public function testFindActivityIdsThatNeedRouteSignatureCalculation(): void

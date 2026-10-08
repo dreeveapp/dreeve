@@ -16,6 +16,8 @@ interface SegmentRepository
 
     public function findAll(Pagination $pagination): Segments;
 
+    public function findByType(SegmentType $type): Segments;
+
     /**
      * @return SegmentId[]
      */

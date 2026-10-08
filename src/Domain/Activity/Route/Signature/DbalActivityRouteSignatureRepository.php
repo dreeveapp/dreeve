@@ -6,6 +6,7 @@ namespace App\Domain\Activity\Route\Signature;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
@@ -32,6 +33,23 @@ final readonly class DbalActivityRouteSignatureRepository extends DbalRepository
             'cells' => Json::encodeAndCompress($activityRouteSignature->getCells()->toArray()),
             'waypoints' => Json::encodeAndCompress($activityRouteSignature->getWaypoints()->toArray()),
         ]);
+    }
+
+    public function find(ActivityId $activityId): ActivityRouteSignature
+    {
+        $sql = 'SELECT * FROM ActivityRouteSignature WHERE activityId = :activityId';
+
+        if (!$result = $this->connection->executeQuery($sql, ['activityId' => $activityId])->fetchAssociative()) {
+            throw new EntityNotFound(sprintf('ActivityRouteSignature for "%s" not found', $activityId));
+        }
+
+        return ActivityRouteSignature::fromState(
+            activityId: ActivityId::fromString($result['activityId']),
+            polylineChecksum: $result['polylineChecksum'],
+            cellCount: (int) $result['cellCount'],
+            cells: array_values(array_map(intval(...), (array) Json::uncompressAndDecode($result['cells']))),
+            waypoints: array_values(array_map(intval(...), (array) Json::uncompressAndDecode($result['waypoints']))),
+        );
     }
 
     public function deleteForActivity(ActivityId $activityId): void

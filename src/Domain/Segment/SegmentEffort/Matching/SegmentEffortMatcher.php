@@ -85,7 +85,7 @@ final readonly class SegmentEffortMatcher
                 startIndex: $startIndex,
                 endIndex: $endIndex,
                 elapsedTimeInSeconds: (float) ($time[$endIndex] - $time[$startIndex]),
-                averageWatts: $this->average($watts, $startIndex, $endIndex),
+                averageWatts: ($averageWatts = $this->average($watts, $startIndex, $endIndex)) !== null ? round($averageWatts, 1) : null,
                 averageHeartRate: ($averageHeartRate = $this->average($heartRate, $startIndex, $endIndex)) !== null ? (int) round($averageHeartRate) : null,
                 maxHeartRate: ($maxHeartRate = $this->max($heartRate, $startIndex, $endIndex)) !== null ? (int) round($maxHeartRate) : null,
             );

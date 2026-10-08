@@ -108,6 +108,33 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
         );
     }
 
+    public function testFindByType(): void
+    {
+        $importedSegment = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
+            ->build();
+        $this->segmentRepository->add($importedSegment);
+        $customSegmentOne = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed('custom-2'))
+            ->withType(SegmentType::CUSTOM)
+            ->build();
+        $this->segmentRepository->add($customSegmentOne);
+        $customSegmentTwo = SegmentBuilder::fromDefaults()
+            ->withSegmentId(SegmentId::fromUnprefixed('custom-1'))
+            ->withType(SegmentType::CUSTOM)
+            ->build();
+        $this->segmentRepository->add($customSegmentTwo);
+
+        $this->assertEquals(
+            Segments::fromArray([$customSegmentTwo, $customSegmentOne]),
+            $this->segmentRepository->findByType(SegmentType::CUSTOM)
+        );
+        $this->assertEquals(
+            Segments::fromArray([$importedSegment]),
+            $this->segmentRepository->findByType(SegmentType::IMPORTED)
+        );
+    }
+
     public function testFindSegmentsIdsMissingDetails(): void
     {
         $segmentOne = SegmentBuilder::fromDefaults()
