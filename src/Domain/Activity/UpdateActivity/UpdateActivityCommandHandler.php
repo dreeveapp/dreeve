@@ -30,6 +30,7 @@ final readonly class UpdateActivityCommandHandler implements CommandHandler
             ->getActivity()
             ->withName($command->getName())
             ->withSportType($command->getSportType())
+            ->withWorkoutType($command->getWorkoutType())
             ->withDescription($command->getDescription())
             ->withDeviceName($command->getDeviceName())
             ->withGear($command->getGearId())

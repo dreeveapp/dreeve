@@ -9,6 +9,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\UpdateActivity\UpdateActivity;
+use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Exception\EntityNotFound;
@@ -37,6 +38,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
             'activityId' => 'activity-1',
             'name' => 'Updated activity',
             'sportType' => 'Run',
+            'workoutType' => 'race',
             'description' => 'Updated description',
             'deviceName' => 'Garmin Edge',
             'gearId' => 'gear-1',
@@ -48,6 +50,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
         $this->assertSame('Updated activity', $activity->getOriginalName());
         $this->assertSame(SportType::RUN, $activity->getSportType());
+        $this->assertSame(WorkoutType::RACE, $activity->getWorkoutType());
         $this->assertSame('Updated description', $activity->getDescription());
         $this->assertSame('Garmin Edge', $activity->getDeviceName());
         $this->assertEquals(GearId::fromUnprefixed('1'), $activity->getGearId());

@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ProvideCaloriesFromPayload;
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
 use App\Domain\Image\NewImage;
 use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
@@ -31,6 +32,7 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
         private ActivityId $activityId,
         private ActivityName $name,
         private SportType $sportType,
+        private ?WorkoutType $workoutType,
         private ?string $description,
         private ?string $deviceName,
         private ?GearId $gearId,
@@ -59,6 +61,12 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
             throw CouldNotDeserializeCommand::invalidPayload('A valid "sportType" is required.');
         }
 
+        $workoutType = null;
+        if (isset($payload['workoutType']) && is_string($payload['workoutType']) && '' !== trim($payload['workoutType'])
+            && !$workoutType = WorkoutType::tryFrom(trim($payload['workoutType']))) {
+            throw CouldNotDeserializeCommand::invalidPayload('The "workoutType" is invalid.');
+        }
+
         $description = isset($payload['description']) && is_string($payload['description']) ? trim($payload['description']) : '';
         $deviceName = isset($payload['deviceName']) && is_string($payload['deviceName']) ? trim($payload['deviceName']) : '';
 
@@ -72,6 +80,7 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
             activityId: ActivityId::fromString($payload['activityId']),
             name: ActivityName::fromString($name),
             sportType: $sportType,
+            workoutType: $workoutType,
             description: '' !== $description ? $description : null,
             deviceName: '' !== $deviceName ? $deviceName : null,
             gearId: $gearId,
@@ -96,6 +105,11 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
     public function getSportType(): SportType
     {
         return $this->sportType;
+    }
+
+    public function getWorkoutType(): ?WorkoutType
+    {
+        return $this->workoutType;
     }
 
     public function getDescription(): ?string

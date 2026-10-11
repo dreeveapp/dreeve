@@ -190,6 +190,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
                 ->withName('Morning Run')
+                ->withWorkoutType(WorkoutType::RACE)
                 ->withGearId(GearId::fromUnprefixed('5'))
                 ->withDeviceName('Garmin Edge')
                 ->withCalories(500)
@@ -216,6 +217,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         // All Strava-sourced fields are disabled.
         $this->assertNotNull($crawler->filter('input#activity-name')->attr('disabled'));
         $this->assertNotNull($crawler->filter('select#activity-sport-type')->attr('disabled'));
+        $this->assertNotNull($crawler->filter('select#activity-workout-type')->attr('disabled'));
         $this->assertNotNull($crawler->filter('select#activity-gear')->attr('disabled'));
         $this->assertNotNull($crawler->filter('select#activity-device-name')->attr('disabled'));
         $this->assertNotNull($crawler->filter('input#activity-calories')->attr('disabled'));
@@ -225,6 +227,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         // Disabled fields are not submitted, so their values are mirrored into hidden inputs.
         $this->assertSame('Morning Run', $crawler->filter('input[type="hidden"][name="name"]')->attr('value'));
         $this->assertCount(1, $crawler->filter('input[type="hidden"][name="sportType"]'));
+        $this->assertSame('race', $crawler->filter('input[type="hidden"][name="workoutType"]')->attr('value'));
         $this->assertSame((string) GearId::fromUnprefixed('5'), $crawler->filter('input[type="hidden"][name="gearId"]')->attr('value'));
         $this->assertSame('Garmin Edge', $crawler->filter('input[type="hidden"][name="deviceName"]')->attr('value'));
         $this->assertSame('500', $crawler->filter('input[type="hidden"][name="calories"]')->attr('value'));
@@ -404,6 +407,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
                 ->withName('Morning Run')
+                ->withWorkoutType(WorkoutType::RACE)
                 ->withIsCommute(false)
                 ->build(),
             [],
@@ -417,6 +421,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 
         $this->assertNull($crawler->filter('input#activity-name')->attr('disabled'));
         $this->assertNull($crawler->filter('select#activity-sport-type')->attr('disabled'));
+        $this->assertNull($crawler->filter('select#activity-workout-type')->attr('disabled'));
         $this->assertNull($crawler->filter('select#activity-gear')->attr('disabled'));
         $this->assertNull($crawler->filter('select#activity-device-name')->attr('disabled'));
         $this->assertNull($crawler->filter('input#activity-calories')->attr('disabled'));
@@ -424,6 +429,12 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="name"]'));
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="sportType"]'));
+        $this->assertCount(0, $crawler->filter('input[type="hidden"][name="workoutType"]'));
+        $this->assertSame(
+            ['None', 'Race', 'Workout', 'Long run'],
+            $crawler->filter('select#activity-workout-type option')->each(fn ($option) => $option->text()),
+        );
+        $this->assertNotNull($crawler->filter('select#activity-workout-type option[value="race"]')->attr('selected'));
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="gearId"]'));
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="deviceName"]'));
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="calories"]'));

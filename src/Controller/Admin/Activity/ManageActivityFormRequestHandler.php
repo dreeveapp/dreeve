@@ -81,6 +81,7 @@ final readonly class ManageActivityFormRequestHandler
             'dispatchCommand' => UpdateActivity::getCommandName(),
             'activity' => $activity,
             'sportTypes' => $this->settingsRepository->appearance()->getSportTypesSortingOrder(),
+            'workoutTypes' => WorkoutType::cases(),
             'gears' => $gears,
             'gearIsReadOnly' => $gearIsReadOnly,
             'recordingDevices' => $this->recordingDeviceRepository->findAll(),

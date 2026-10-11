@@ -45,6 +45,19 @@
                         {% endblock %}
                     {% endembed %}
                     {% embed 'html/admin/component/strava-disabled-form-input.html.twig' with {
+                        label: 'Workout type'|trans,
+                        for: 'activity-workout-type', name: 'workoutType', value: activity.getWorkoutType() ? activity.getWorkoutType().value,
+                    } %}
+                        {% block control %}
+                            <select id="activity-workout-type" name="workoutType" {{ disabled ? 'disabled' }}>
+                                <option value="">{{ "None"|trans }}</option>
+                                {% for workoutType in workoutTypes %}
+                                    <option value="{{ workoutType.value }}" {{ workoutType == activity.getWorkoutType() ? 'selected' }}>{{ workoutType|trans }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endblock %}
+                    {% endembed %}
+                    {% embed 'html/admin/component/strava-disabled-form-input.html.twig' with {
                         isReadOnly: gearIsReadOnly,
                         label: 'Gear'|trans,
                         for: 'activity-gear', name: 'gearId', value: activity.getGearId(),
