@@ -42,4 +42,13 @@ final readonly class UsageWindow
     {
         return $this->until;
     }
+
+    public function isActiveOn(SerializableDateTime $on): bool
+    {
+        if ($this->from && $on->isBefore($this->from)) {
+            return false;
+        }
+
+        return !$this->until || $on->isBefore($this->until);
+    }
 }

@@ -78,7 +78,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for component in gearMaintenanceConfig.getGearComponents() %}
+                    {% for componentWithCurrentGears in componentsWithCurrentGears %}
+                        {% set component = componentWithCurrentGears.component %}
                         <tr class="group/row">
                             <td class="narrow whitespace-nowrap text-left">
                                 <div class="flex items-center gap-3">
@@ -96,11 +97,8 @@
                             </td>
                             <td class="text-left">
                                 <div class="flex flex-wrap gap-1">
-                                    {% for gearId in component.getAttachedTo() %}
-                                        {% set gear = gears.getByGearId(gearId) %}
-                                        {% if gear %}
-                                            <span class="pill pill--neutral">{{ gear.getName() }}</span>
-                                        {% endif %}
+                                    {% for gear in componentWithCurrentGears.currentGears %}
+                                        <span class="pill pill--neutral">{{ gear.getName() }}</span>
                                     {% endfor %}
                                 </div>
                             </td>

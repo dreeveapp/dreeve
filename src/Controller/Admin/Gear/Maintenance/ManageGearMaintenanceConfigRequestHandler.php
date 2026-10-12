@@ -11,6 +11,7 @@ use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Gear\Maintenance\UpdateGearMaintenanceConfig\UpdateGearMaintenanceConfig;
 use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -24,6 +25,7 @@ final readonly class ManageGearMaintenanceConfigRequestHandler
         private GearMaintenanceRepository $gearMaintenanceRepository,
         private GearRepository $gearRepository,
         private TranslatorInterface $translator,
+        private Clock $clock,
     ) {
     }
 
@@ -49,10 +51,28 @@ final readonly class ManageGearMaintenanceConfigRequestHandler
             );
         }
 
+        $now = $this->clock->getCurrentDateTimeImmutable();
+        $gearComponents = $gearMaintenanceConfig->getGearComponents();
+        $componentsWithCurrentGears = [];
+        foreach ($gearComponents as $gearComponent) {
+            $currentGears = [];
+            foreach ($gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now) as $gearId) {
+                if (!($gear = $gears->getByGearId($gearId)) instanceof Gear) {
+                    continue;
+                }
+                $currentGears[] = $gear;
+            }
+
+            $componentsWithCurrentGears[] = [
+                'component' => $gearComponent,
+                'currentGears' => $currentGears,
+            ];
+        }
+
         return new HtmlResponse($this->twig->render('html/admin/page/gear/maintenance/config.html.twig', [
             'dispatchCommand' => UpdateGearMaintenanceConfig::getCommandName(),
             'gearMaintenanceConfig' => $gearMaintenanceConfig,
-            'gears' => $gears,
+            'componentsWithCurrentGears' => $componentsWithCurrentGears,
             'warnings' => $warnings,
         ]));
     }

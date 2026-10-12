@@ -23,6 +23,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
+use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use App\Tests\ProvideGearMaintenanceConfig;
 
 class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
@@ -40,6 +41,7 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
                 $this->getContainer()->get(GearMaintenanceRepository::class),
                 $this->getContainer()->get(GearMaintenanceLogRepository::class),
                 $this->getContainer()->get(GearIdRepository::class),
+                PausedClock::on(SerializableDateTime::some()),
             )->calculateProgressFor(
                 ProgressCalculationContext::from(
                     usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null)]),
@@ -130,6 +132,7 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
             $this->getContainer()->get(GearMaintenanceRepository::class),
             $this->getContainer()->get(GearMaintenanceLogRepository::class),
             $this->getContainer()->get(GearIdRepository::class),
+            PausedClock::on(SerializableDateTime::some()),
         )->calculateProgressFor(
             ProgressCalculationContext::from(
                 usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null)]),

@@ -47,6 +47,7 @@ final readonly class ManageGearMaintenanceComponentFormRequestHandler
         return new HtmlResponse($this->twig->render('html/admin/page/gear/maintenance/edit-gear-maintenance-component.html.twig', [
             'dispatchCommand' => UpdateGearMaintenanceComponent::getCommandName(),
             'component' => $gearComponent,
+            'attachedGearIds' => $gearComponent->getInstallations()->getGearIds(),
             'gears' => $this->gearRepository->findAll(),
         ]));
     }

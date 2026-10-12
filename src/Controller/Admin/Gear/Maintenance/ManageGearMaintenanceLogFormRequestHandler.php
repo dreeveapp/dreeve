@@ -87,7 +87,7 @@ final readonly class ManageGearMaintenanceLogFormRequestHandler
             }
 
             $componentGears = [];
-            foreach ($gearComponent->getAttachedTo() as $gearId) {
+            foreach ($gearComponent->getInstallations()->getGearIds() as $gearId) {
                 if (!($gear = $gears->getByGearId($gearId)) instanceof Gear) {
                     continue;
                 }

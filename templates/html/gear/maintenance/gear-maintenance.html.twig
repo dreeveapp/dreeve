@@ -42,8 +42,9 @@
                 <div class="hidden lg:block">{{ "Components"|trans }}</div>
                 <div></div>
             </div>
-            {% for gear in gearsAttachedToComponents %}
-                {% set componentsAttachedToGear = gearComponents|filter(component => component.isAttachedTo(gear.getId())) %}
+            {% for gearWithComponents in gearsWithComponents %}
+                {% set gear = gearWithComponents.gear %}
+                            {% set componentsAttachedToGear = gearWithComponents.components %}
                 <details class="group/row border-t border-gray-100">
                     <summary class="grid items-center gap-x-4 grid-cols-[3rem_minmax(0,1fr)_5rem_0.75rem] lg:grid-cols-[3rem_minmax(0,1fr)_6rem_minmax(0,2fr)_0.75rem] list-none cursor-pointer px-4 py-2.5 hover:bg-gray-50 select-none">
                         <div>

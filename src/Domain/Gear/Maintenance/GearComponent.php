@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance;
 
-use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
@@ -61,16 +60,6 @@ final readonly class GearComponent implements \JsonSerializable
     public function getInstallations(): GearComponentInstallations
     {
         return $this->installations;
-    }
-
-    public function getAttachedTo(): GearIds
-    {
-        return $this->installations->getGearIds();
-    }
-
-    public function isAttachedTo(GearId $gearId): bool
-    {
-        return $this->getAttachedTo()->has($gearId);
     }
 
     public function getLocalImagePath(): ?string

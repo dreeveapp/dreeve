@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance\Installation;
 
+use App\Domain\Gear\GearIds;
 use App\Infrastructure\ValueObject\Collection;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 /**
  * @extends Collection<UsageWindow>
@@ -14,6 +16,14 @@ final class UsageWindows extends Collection
     public function getItemClassName(): string
     {
         return UsageWindow::class;
+    }
+
+    public function getGearIdsActiveOn(SerializableDateTime $on): GearIds
+    {
+        return GearIds::fromArray($this
+            ->filter(static fn (UsageWindow $usageWindow): bool => $usageWindow->isActiveOn($on))
+            ->map(static fn (UsageWindow $usageWindow) => $usageWindow->getGearId())
+        )->unique();
     }
 
     /**

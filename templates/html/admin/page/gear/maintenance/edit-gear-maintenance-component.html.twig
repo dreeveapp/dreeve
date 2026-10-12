@@ -66,7 +66,7 @@
                             <label class="flex items-center gap-2 text-sm cursor-pointer min-w-0">
                                 <input type="checkbox" name="attachedTo[]"
                                        value="{{ gear.getId().toUnprefixedString() }}"
-                                       {{ component and component.isAttachedTo(gear.getId()) ? 'checked' }}>
+                                       {{ attachedGearIds is defined and attachedGearIds.has(gear.getId()) ? 'checked' }}>
                                 <span class="truncate min-w-0">{{ gear.getName() }}</span>
                             </label>
                         {% endfor %}

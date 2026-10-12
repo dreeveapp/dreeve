@@ -12,7 +12,6 @@ use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Domain\Dashboard\Widget\WidgetRenderer;
 use App\Domain\Gear\GearIdRepository;
 use App\Domain\Gear\GearIds;
-use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -85,8 +84,9 @@ final readonly class UpcomingMaintenanceWidget implements Widget, DependsOnCurre
             : GearIds::empty();
 
         $upcomingMaintenanceTasks = [];
-        foreach ($gearMaintenanceConfig->getGearComponents() as $gearComponent) {
-            if ($this->isOnlyAttachedToRetiredGear($gearComponent, $retiredGearIds)) {
+        $gearComponents = $gearMaintenanceConfig->getGearComponents();
+        foreach ($gearComponents as $gearComponent) {
+            if ($this->isOnlyAttachedToRetiredGear($gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now), $retiredGearIds)) {
                 continue;
             }
 
@@ -120,9 +120,9 @@ final readonly class UpcomingMaintenanceWidget implements Widget, DependsOnCurre
         ]);
     }
 
-    private function isOnlyAttachedToRetiredGear(GearComponent $gearComponent, GearIds $retiredGearIds): bool
+    private function isOnlyAttachedToRetiredGear(GearIds $currentGearIds, GearIds $retiredGearIds): bool
     {
-        foreach ($gearComponent->getAttachedTo() as $gearId) {
+        foreach ($currentGearIds as $gearId) {
             if (!$retiredGearIds->has($gearId)) {
                 return false;
             }

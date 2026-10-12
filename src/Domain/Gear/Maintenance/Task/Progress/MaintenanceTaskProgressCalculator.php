@@ -9,6 +9,7 @@ use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\GearMaintenanceConfig;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
+use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
@@ -23,6 +24,7 @@ final readonly class MaintenanceTaskProgressCalculator
         private GearMaintenanceRepository $gearMaintenanceRepository,
         private GearMaintenanceLogRepository $gearMaintenanceLogRepository,
         private GearIdRepository $gearIdRepository,
+        private Clock $clock,
     ) {
     }
 
@@ -64,13 +66,15 @@ final readonly class MaintenanceTaskProgressCalculator
             ? $this->gearIdRepository->findRetired()
             : GearIds::empty();
 
-        foreach ($gearMaintenanceConfig->getGearComponents() as $gearComponent) {
+        $now = $this->clock->getCurrentDateTimeImmutable();
+        $gearComponents = $gearMaintenanceConfig->getGearComponents();
+        foreach ($gearComponents as $gearComponent) {
             foreach ($gearComponent->getMaintenanceTasks() as $maintenanceTask) {
                 if (!$maintenanceTaskStatuses->getForTask($maintenanceTask->getId())?->isDue()) {
                     continue;
                 }
 
-                foreach ($gearComponent->getAttachedTo() as $gearId) {
+                foreach ($gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now) as $gearId) {
                     if ($retiredGearIds->has($gearId)) {
                         continue;
                     }

@@ -9,6 +9,7 @@ use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\UsageWindow;
 use App\Domain\Gear\Maintenance\Installation\UsageWindows;
 use App\Infrastructure\ValueObject\Collection;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 /**
  * @extends Collection<\App\Domain\Gear\Maintenance\GearComponent>
@@ -24,12 +25,17 @@ final class GearComponents extends Collection
     {
         $gearIds = GearIds::empty();
         foreach ($this as $gearComponent) {
-            foreach ($gearComponent->getAttachedTo() as $gearId) {
+            foreach ($gearComponent->getInstallations()->getGearIds() as $gearId) {
                 $gearIds->add($gearId);
             }
         }
 
         return $gearIds->unique();
+    }
+
+    public function getGearIdsCurrentlyUsing(GearComponent $gearComponent, SerializableDateTime $now): GearIds
+    {
+        return $this->resolveUsageWindowsFor($gearComponent)->getGearIdsActiveOn($now);
     }
 
     public function resolveUsageWindowsFor(GearComponent $gearComponent): UsageWindows
