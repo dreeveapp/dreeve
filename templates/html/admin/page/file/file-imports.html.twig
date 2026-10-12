@@ -118,7 +118,9 @@
                                     {{ fileImport.getOriginalFilename() }}
                                 </td>
                                 <td class="whitespace-nowrap text-left">
-                                    {{ fileImport.getSource().label() }}
+                                    <span class="pill pill--neutral text-xs">
+                                        {{ fileImport.getSource().label() }}
+                                    </span>
                                 </td>
                                 <td class="whitespace-nowrap text-left">
                                     {% set activityId = fileImport.getActivityId() %}
