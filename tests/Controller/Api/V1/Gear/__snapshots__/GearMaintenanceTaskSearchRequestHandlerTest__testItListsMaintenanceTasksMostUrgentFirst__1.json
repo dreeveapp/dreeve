@@ -1,0 +1,129 @@
+{
+    "maintenanceTasks": [
+        {
+            "id": "maintenanceTask-chain-lube",
+            "label": "Lube",
+            "component": {
+                "id": "gearComponent-chain",
+                "label": "Chain"
+            },
+            "gearIds": [
+                "gear-bike-a"
+            ],
+            "interval": {
+                "value": 500,
+                "unit": "km"
+            },
+            "lastPerformedOn": "2023-01-01",
+            "elapsed": 620.4,
+            "remaining": -120.4,
+            "percentage": 100,
+            "isDue": true,
+            "isOverdue": true
+        },
+        {
+            "id": "maintenanceTask-pedals-service",
+            "label": "Service",
+            "component": {
+                "id": "gearComponent-pedals",
+                "label": "Pedals"
+            },
+            "gearIds": [
+                "gear-bike-a",
+                "gear-bike-b"
+            ],
+            "interval": {
+                "value": 1000,
+                "unit": "km"
+            },
+            "lastPerformedOn": "2023-01-01",
+            "elapsed": 990.4,
+            "remaining": 9.6,
+            "percentage": 99,
+            "isDue": true,
+            "isOverdue": false
+        },
+        {
+            "id": "maintenanceTask-lights-charge",
+            "label": "Charge",
+            "component": {
+                "id": "gearComponent-lights",
+                "label": "Lights"
+            },
+            "gearIds": [
+                "gear-bike-a"
+            ],
+            "interval": {
+                "value": 30,
+                "unit": "days"
+            },
+            "lastPerformedOn": "2023-10-07",
+            "elapsed": 10,
+            "remaining": 20,
+            "percentage": 33,
+            "isDue": false,
+            "isOverdue": false
+        },
+        {
+            "id": "maintenanceTask-chain-replace",
+            "label": "Replace",
+            "component": {
+                "id": "gearComponent-chain",
+                "label": "Chain"
+            },
+            "gearIds": [
+                "gear-bike-a"
+            ],
+            "interval": {
+                "value": 3000,
+                "unit": "km"
+            },
+            "lastPerformedOn": "2023-01-01",
+            "elapsed": 620.4,
+            "remaining": 2379.6,
+            "percentage": 21,
+            "isDue": false,
+            "isOverdue": false
+        },
+        {
+            "id": "maintenanceTask-chain-clean",
+            "label": "Clean",
+            "component": {
+                "id": "gearComponent-chain",
+                "label": "Chain"
+            },
+            "gearIds": [
+                "gear-bike-a"
+            ],
+            "interval": {
+                "value": 250,
+                "unit": "km"
+            },
+            "lastPerformedOn": null,
+            "elapsed": null,
+            "remaining": null,
+            "percentage": null,
+            "isDue": false,
+            "isOverdue": false
+        },
+        {
+            "id": "maintenanceTask-summer-wheelset-hub-service",
+            "label": "Hub service",
+            "component": {
+                "id": "gearComponent-summer-wheelset",
+                "label": "Summer wheelset"
+            },
+            "gearIds": [],
+            "interval": {
+                "value": 5000,
+                "unit": "km"
+            },
+            "lastPerformedOn": null,
+            "elapsed": null,
+            "remaining": null,
+            "percentage": null,
+            "isDue": false,
+            "isOverdue": false
+        }
+    ]
+}

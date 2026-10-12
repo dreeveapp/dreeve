@@ -41,6 +41,11 @@ final readonly class MaintenanceTaskProgress
         return $this->elapsed / $this->interval;
     }
 
+    public function getElapsed(): float
+    {
+        return $this->elapsed;
+    }
+
     public function getRemaining(): float
     {
         return $this->interval - $this->elapsed;

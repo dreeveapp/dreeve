@@ -1,0 +1,184 @@
+{
+  "enabled": true,
+  "ignoreRetiredGear": true,
+  "components": [
+    {
+      "id": "gearComponent-chain",
+      "label": "Chain",
+      "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
+      "installations": [
+        {
+          "parent": "gear:bike-a",
+          "from": null,
+          "until": null,
+          "sportTypes": []
+        }
+      ],
+      "maintenance": [
+        {
+          "id": "maintenanceTask-chain-lube",
+          "label": "Lube",
+          "interval": {
+            "value": 500,
+            "unit": "km"
+          }
+        },
+        {
+          "id": "maintenanceTask-chain-replace",
+          "label": "Replace",
+          "interval": {
+            "value": 3000,
+            "unit": "km"
+          }
+        },
+        {
+          "id": "maintenanceTask-chain-clean",
+          "label": "Clean",
+          "interval": {
+            "value": 250,
+            "unit": "km"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gearComponent-pedals",
+      "label": "Pedals",
+      "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
+      "installations": [
+        {
+          "parent": "gear:bike-a",
+          "from": null,
+          "until": null,
+          "sportTypes": []
+        },
+        {
+          "parent": "gear:bike-b",
+          "from": null,
+          "until": null,
+          "sportTypes": []
+        }
+      ],
+      "maintenance": [
+        {
+          "id": "maintenanceTask-pedals-service",
+          "label": "Service",
+          "interval": {
+            "value": 1000,
+            "unit": "km"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gearComponent-lights",
+      "label": "Lights",
+      "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
+      "installations": [
+        {
+          "parent": "gear:bike-a",
+          "from": null,
+          "until": null,
+          "sportTypes": []
+        },
+        {
+          "parent": "gear:retired-bike",
+          "from": null,
+          "until": null,
+          "sportTypes": []
+        }
+      ],
+      "maintenance": [
+        {
+          "id": "maintenanceTask-lights-charge",
+          "label": "Charge",
+          "interval": {
+            "value": 30,
+            "unit": "days"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gearComponent-summer-wheelset",
+      "label": "Summer wheelset",
+      "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
+      "installations": [
+        {
+          "parent": "gear:bike-a",
+          "from": null,
+          "until": "2023-01-01",
+          "sportTypes": []
+        }
+      ],
+      "maintenance": [
+        {
+          "id": "maintenanceTask-summer-wheelset-hub-service",
+          "label": "Hub service",
+          "interval": {
+            "value": 5000,
+            "unit": "km"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gearComponent-old-chain",
+      "label": "Old chain",
+      "localImagePath": null,
+      "isRetired": true,
+      "notes": null,
+      "installations": [
+        {
+          "parent": "gear:bike-a",
+          "from": null,
+          "until": null,
+          "sportTypes": []
+        }
+      ],
+      "maintenance": [
+        {
+          "id": "maintenanceTask-old-chain-lube",
+          "label": "Lube",
+          "interval": {
+            "value": 500,
+            "unit": "km"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gearComponent-saddle",
+      "label": "Saddle",
+      "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
+      "installations": [
+        {
+          "parent": "gear:retired-bike",
+          "from": null,
+          "until": null,
+          "sportTypes": []
+        }
+      ],
+      "maintenance": [
+        {
+          "id": "maintenanceTask-saddle-check",
+          "label": "Check",
+          "interval": {
+            "value": 365,
+            "unit": "days"
+          }
+        }
+      ]
+    }
+  ]
+}

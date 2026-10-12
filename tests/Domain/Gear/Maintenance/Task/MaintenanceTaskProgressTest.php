@@ -55,6 +55,7 @@ class MaintenanceTaskProgressTest extends TestCase
         $progress = MaintenanceTaskProgress::from(312, 500, '312 km', '188 km');
 
         $this->assertSame('312 km', $progress->getDescription());
+        $this->assertSame(312.0, $progress->getElapsed());
         $this->assertSame(188.0, $progress->getRemaining());
         $this->assertSame(62, $progress->getPercentage());
     }
