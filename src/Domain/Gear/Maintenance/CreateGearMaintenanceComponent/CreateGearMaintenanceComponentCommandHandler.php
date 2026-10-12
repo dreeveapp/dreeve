@@ -40,6 +40,7 @@ final readonly class CreateGearMaintenanceComponentCommandHandler implements Com
             installations: $command->getInstallations(),
             localImagePath: $localImagePath,
             purchasePrice: $command->getPurchasePrice(),
+            isRetired: $command->isRetired(),
         );
 
         foreach ($command->getMaintenanceTasks() as $maintenanceTask) {

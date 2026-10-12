@@ -78,7 +78,7 @@ final readonly class ManageGearMaintenanceLogFormRequestHandler
 
         $components = [];
         $gearComponents = $this->gearMaintenanceRepository->find()->getGearComponents();
-        foreach ($gearComponents as $gearComponent) {
+        foreach ($gearComponents->withoutRetired() as $gearComponent) {
             $tasks = [];
             foreach ($gearComponent->getMaintenanceTasks() as $maintenanceTask) {
                 $tasks[] = [

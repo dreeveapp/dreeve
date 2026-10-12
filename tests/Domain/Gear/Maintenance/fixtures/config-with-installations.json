@@ -6,6 +6,7 @@
       "id": "gearComponent-winter-wheelset",
       "label": "Winter wheelset",
       "localImagePath": null,
+      "isRetired": false,
       "installations": [
         {
           "parent": "gear:b1",
@@ -46,6 +47,7 @@
       "id": "gearComponent-winter-tyres",
       "label": "Winter tyres",
       "localImagePath": null,
+      "isRetired": true,
       "installations": [
         {
           "parent": "component:gearComponent-winter-wheelset",

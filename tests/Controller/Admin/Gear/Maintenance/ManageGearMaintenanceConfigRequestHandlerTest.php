@@ -79,6 +79,9 @@ class ManageGearMaintenanceConfigRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Winter wheelset', $rows->eq(1)->text());
         $this->assertCount(0, $rows->eq(1)->filter('.pill--warning'));
         $this->assertStringContainsString('Road bike', $rows->eq(1)->text());
+        $this->assertStringContainsString('Old chain', $rows->eq(2)->text());
+        $this->assertCount(1, $rows->eq(2)->filter('.pill--danger'));
+        $this->assertCount(0, $rows->eq(2)->filter('.pill--warning'));
     }
 
     public function testItRendersTheEmptyStateWhenThereAreNoComponents(): void

@@ -35,6 +35,20 @@ class CreateGearMaintenanceComponentTest extends TestCase
             $command->getInstallations()->getGearIds(),
         );
         $this->assertCount(2, $command->getMaintenanceTasks());
+        $this->assertFalse($command->isRetired());
+    }
+
+    public function testFromPayloadWhenRetired(): void
+    {
+        $command = CreateGearMaintenanceComponent::fromPayload([
+            'label' => 'Chain',
+            'isRetired' => 'true',
+            'maintenanceTasks' => [
+                ['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+            ],
+        ]);
+
+        $this->assertTrue($command->isRetired());
     }
 
     public function testFromPayloadWithNewImage(): void

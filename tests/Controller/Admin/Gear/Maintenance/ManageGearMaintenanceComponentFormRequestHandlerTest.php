@@ -69,6 +69,8 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
 
         $this->assertSame('gearComponent-chain', $form->filter('input[name="gearComponentId"]')->attr('value'));
         $this->assertSame('Some cool chain', $form->filter('input[name="label"]')->attr('value'));
+        $this->assertCount(1, $form->filter('input[name="isRetired"][value="true"]'));
+        $this->assertCount(0, $form->filter('input[name="isRetired"][checked]'));
 
         $this->assertSame(
             '[{"parent":"gear:g1233776","from":null,"until":null,"sportTypes":[]},{"parent":"gear:g10130856","from":null,"until":null,"sportTypes":[]},{"parent":"gear:retired","from":null,"until":null,"sportTypes":[]}]',

@@ -59,6 +59,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="flex items-start gap-2">
+                    <input type="checkbox" id="component-isRetired" name="isRetired" value="true" {{ component and component.isRetired() ? 'checked' }} class="mt-0.5">
+                    <div>
+                        <label for="component-isRetired" class="mt-0!">{{ "Retired"|trans({}, 'admin') }}</label>
+                        <p class="mt-0.5 text-xxs text-gray-500">
+                            {{ "Retired components keep their history, but are hidden and no longer tracked."|trans({}, 'admin') }}
+                        </p>
+                    </div>
+                </div>
                 <div data-repeater data-repeater-min="0">
                     <label>{{ "Attached to"|trans({}, 'admin') }}</label>
                     <p class="mt-0.5 text-xxs text-gray-500">{{ "Add a row for every period the component was fitted. Leave the end date empty while it is still fitted."|trans({}, 'admin') }}</p>

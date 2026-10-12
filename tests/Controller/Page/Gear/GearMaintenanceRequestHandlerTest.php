@@ -64,6 +64,7 @@ class GearMaintenanceRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/gear/maintenance');
 
         $this->assertResponseIsSuccessful();
+        $this->assertStringNotContainsString('Old chain', (string) $this->client->getResponse()->getContent());
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 

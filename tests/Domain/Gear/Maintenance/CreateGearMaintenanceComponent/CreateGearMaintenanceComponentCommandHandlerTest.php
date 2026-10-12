@@ -47,6 +47,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             ['parent' => 'gear:g2', 'from' => '2025-03-15', 'until' => null, 'sportTypes' => []],
         ], $created['installations']);
         $this->assertNull($created['localImagePath']);
+        $this->assertFalse($created['isRetired']);
         $this->assertSame(4999, $created['purchasePrice']['amountInCents']);
         $this->assertSame('EUR', $created['purchasePrice']['currency']);
         $this->assertCount(1, $created['maintenance']);

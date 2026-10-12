@@ -19,7 +19,12 @@ use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgress;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Domain\Gear\Maintenance\Task\Progress\ProgressCalculationContext;
+use App\Infrastructure\KeyValue\Key;
+use App\Infrastructure\KeyValue\KeyValue;
+use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -76,6 +81,21 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
             [GearId::fromUnprefixed('g1233776'), GearId::fromUnprefixed('g10130856')],
             $this->getContainer()->get(MaintenanceTaskProgressCalculator::class)->getGearIdsThatHaveDueTasks()->toArray()
         );
+    }
+
+    public function testRetiredComponentsAreNotTracked(): void
+    {
+        $this->importGearMaintenanceConfig();
+        $keyValueStore = $this->getContainer()->get(KeyValueStore::class);
+        $config = Json::decode((string) $keyValueStore->find(Key::GEAR_MAINTENANCE));
+        $config['components'][0]['isRetired'] = true;
+        $keyValueStore->save(KeyValue::fromState(Key::GEAR_MAINTENANCE, Value::fromString(Json::encode($config))));
+        $this->rideSinceTheChainWasLubed(Kilometer::from(600));
+
+        $calculator = $this->getContainer()->get(MaintenanceTaskProgressCalculator::class);
+        $this->assertNull($calculator->calculateStatuses()->getForTask(MaintenanceTaskId::fromUnprefixed('chain-lubed')));
+        $this->assertNotNull($calculator->calculateStatuses()->getForTask(MaintenanceTaskId::fromUnprefixed('di-2-charged')));
+        $this->assertEmpty($calculator->getGearIdsThatHaveDueTasks()->toArray());
     }
 
     public function testGetGearIdsThatHaveDueTasksWhenNothingIsDue(): void

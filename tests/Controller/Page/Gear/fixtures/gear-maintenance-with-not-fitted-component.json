@@ -68,6 +68,30 @@
           }
         }
       ]
+    },
+    {
+      "id": "gearComponent-old-chain",
+      "label": "Old chain",
+      "localImagePath": null,
+      "isRetired": true,
+      "installations": [
+        {
+          "gearId": "g10130856",
+          "from": null,
+          "until": null,
+          "sportTypes": []
+        }
+      ],
+      "maintenance": [
+        {
+          "id": "maintenanceTask-old-chain-lube",
+          "label": "Lube",
+          "interval": {
+            "value": 500,
+            "unit": "km"
+          }
+        }
+      ]
     }
   ]
 }

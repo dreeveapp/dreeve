@@ -72,7 +72,7 @@ final readonly class GearMaintenanceRequestHandler
         $componentsNotFitted = GearComponents::empty();
         $parentComponentLabels = [];
         /** @var GearComponent $gearComponent */
-        foreach ($gearComponents as $gearComponent) {
+        foreach ($gearComponents->withoutRetired() as $gearComponent) {
             $parentComponents = $gearComponents->getParentComponentsOf($gearComponent, $now);
             if (!$parentComponents->isEmpty()) {
                 $parentComponentLabels[(string) $gearComponent->getId()] = implode(', ', $parentComponents->map(

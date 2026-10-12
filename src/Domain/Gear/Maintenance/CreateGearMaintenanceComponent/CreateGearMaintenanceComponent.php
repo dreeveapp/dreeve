@@ -29,6 +29,7 @@ final readonly class CreateGearMaintenanceComponent extends DomainCommand implem
         private ?NewImage $newImage,
         private ?Money $purchasePrice,
         private MaintenanceTasks $maintenanceTasks,
+        private bool $isRetired,
     ) {
     }
 
@@ -42,6 +43,7 @@ final readonly class CreateGearMaintenanceComponent extends DomainCommand implem
             newImage: $newImages[0] ?? null,
             purchasePrice: self::parsePurchasePrice($payload),
             maintenanceTasks: self::parseMaintenanceTasks($payload, generateMissingIds: true),
+            isRetired: filter_var($payload['isRetired'] ?? false, FILTER_VALIDATE_BOOLEAN),
         );
     }
 
@@ -68,5 +70,10 @@ final readonly class CreateGearMaintenanceComponent extends DomainCommand implem
     public function getMaintenanceTasks(): MaintenanceTasks
     {
         return $this->maintenanceTasks;
+    }
+
+    public function isRetired(): bool
+    {
+        return $this->isRetired;
     }
 }

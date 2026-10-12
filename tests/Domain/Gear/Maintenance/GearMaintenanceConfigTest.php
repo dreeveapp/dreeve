@@ -80,6 +80,15 @@ class GearMaintenanceConfigTest extends ContainerTestCase
         );
     }
 
+    public function testFromArrayReadsIsRetired(): void
+    {
+        $gearComponents = GearMaintenanceConfig::fromArray($this->getConfigWithInstallations())->getGearComponents();
+
+        $this->assertFalse($gearComponents->getFirst()->isRetired());
+        $this->assertTrue($gearComponents->getLast()->isRetired());
+        $this->assertFalse(GearMaintenanceConfig::fromArray($this->getValidYml())->getGearComponents()->getFirst()->isRetired());
+    }
+
     public function testFromArrayReadsComponentParents(): void
     {
         $config = GearMaintenanceConfig::fromArray($this->getConfigWithInstallations());

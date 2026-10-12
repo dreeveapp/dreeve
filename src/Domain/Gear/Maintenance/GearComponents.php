@@ -34,6 +34,11 @@ final class GearComponents extends Collection
         return $gearIds->unique();
     }
 
+    public function withoutRetired(): GearComponents
+    {
+        return $this->filter(static fn (GearComponent $gearComponent): bool => !$gearComponent->isRetired());
+    }
+
     public function getGearIdsCurrentlyUsing(GearComponent $gearComponent, SerializableDateTime $now): GearIds
     {
         return $this->resolveUsageWindowsFor($gearComponent)->getGearIdsActiveOn($now);

@@ -100,7 +100,9 @@
                                     {% for gear in componentWithCurrentGears.currentGears %}
                                         <span class="pill pill--neutral">{{ gear.getName() }}</span>
                                     {% endfor %}
-                                    {% if not componentWithCurrentGears.isFitted %}
+                                    {% if component.isRetired() %}
+                                        <span class="pill pill--danger">{{ "Retired"|trans({}, 'admin') }}</span>
+                                    {% elseif not componentWithCurrentGears.isFitted %}
                                         <span class="pill pill--warning">{{ "Not fitted"|trans({}, 'admin') }}</span>
                                     {% endif %}
                                 </div>

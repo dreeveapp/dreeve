@@ -68,7 +68,7 @@ final readonly class MaintenanceTaskProgressCalculator
 
         $now = $this->clock->getCurrentDateTimeImmutable();
         $gearComponents = $gearMaintenanceConfig->getGearComponents();
-        foreach ($gearComponents as $gearComponent) {
+        foreach ($gearComponents->withoutRetired() as $gearComponent) {
             foreach ($gearComponent->getMaintenanceTasks() as $maintenanceTask) {
                 if (!$maintenanceTaskStatuses->getForTask($maintenanceTask->getId())?->isDue()) {
                     continue;
@@ -94,7 +94,7 @@ final readonly class MaintenanceTaskProgressCalculator
         $mostRecentPerMaintenanceTask = $this->gearMaintenanceLogRepository->findMostRecentPerMaintenanceTask();
 
         $maintenanceTaskStatuses = MaintenanceTaskStatuses::empty();
-        foreach ($gearMaintenanceConfig->getGearComponents() as $gearComponent) {
+        foreach ($gearMaintenanceConfig->getGearComponents()->withoutRetired() as $gearComponent) {
             foreach ($gearComponent->getMaintenanceTasks() as $maintenanceTask) {
                 $lastPerformedOn = $mostRecentPerMaintenanceTask[(string) $maintenanceTask->getId()] ?? null;
 

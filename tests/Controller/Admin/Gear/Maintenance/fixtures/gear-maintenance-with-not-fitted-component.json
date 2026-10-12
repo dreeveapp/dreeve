@@ -7,10 +7,21 @@
       "label": "Summer wheelset",
       "localImagePath": null,
       "installations": [
-        {"gearId": "g10130856", "from": null, "until": "2023-01-01"}
+        {
+          "gearId": "g10130856",
+          "from": null,
+          "until": "2023-01-01"
+        }
       ],
       "maintenance": [
-        {"id": "maintenanceTask-summer-wheelset-hub-service", "label": "Hub service", "interval": {"value": 5000, "unit": "km"}}
+        {
+          "id": "maintenanceTask-summer-wheelset-hub-service",
+          "label": "Hub service",
+          "interval": {
+            "value": 5000,
+            "unit": "km"
+          }
+        }
       ]
     },
     {
@@ -18,10 +29,45 @@
       "label": "Winter wheelset",
       "localImagePath": null,
       "installations": [
-        {"gearId": "g10130856", "from": "2023-01-01", "until": null}
+        {
+          "gearId": "g10130856",
+          "from": "2023-01-01",
+          "until": null
+        }
       ],
       "maintenance": [
-        {"id": "maintenanceTask-winter-wheelset-hub-service", "label": "Hub service", "interval": {"value": 5000, "unit": "km"}}
+        {
+          "id": "maintenanceTask-winter-wheelset-hub-service",
+          "label": "Hub service",
+          "interval": {
+            "value": 5000,
+            "unit": "km"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gearComponent-old-chain",
+      "label": "Old chain",
+      "localImagePath": null,
+      "isRetired": true,
+      "installations": [
+        {
+          "gearId": "g10130856",
+          "from": null,
+          "until": null,
+          "sportTypes": []
+        }
+      ],
+      "maintenance": [
+        {
+          "id": "maintenanceTask-old-chain-lube",
+          "label": "Lube",
+          "interval": {
+            "value": 500,
+            "unit": "km"
+          }
+        }
       ]
     }
   ]

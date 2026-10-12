@@ -45,6 +45,7 @@ class GearComponentsTest extends TestCase
             ]),
             localImagePath: null,
             purchasePrice: null,
+            isRetired: false,
         );
 
         $this->assertEquals(
@@ -99,6 +100,7 @@ class GearComponentsTest extends TestCase
             ]),
             localImagePath: null,
             purchasePrice: null,
+            isRetired: false,
         );
 
         $this->assertEquals(
@@ -164,5 +166,17 @@ class GearComponentsTest extends TestCase
         $gearComponents->resolveUsageWindowsFor($gearComponents->find(
             static fn (GearComponent $gearComponent): bool => 'gearComponent-loop-a' === (string) $gearComponent->getId()
         ));
+    }
+
+    public function testWithoutRetired(): void
+    {
+        $gearComponents = GearMaintenanceConfig::fromArray(
+            Json::decode((string) file_get_contents(__DIR__.'/fixtures/config-with-installations.json'))
+        )->getGearComponents();
+
+        $this->assertSame(
+            ['gearComponent-winter-wheelset'],
+            $gearComponents->withoutRetired()->map(static fn (GearComponent $gearComponent): string => (string) $gearComponent->getId()),
+        );
     }
 }

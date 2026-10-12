@@ -85,7 +85,7 @@ final readonly class UpcomingMaintenanceWidget implements Widget, DependsOnCurre
 
         $upcomingMaintenanceTasks = [];
         $gearComponents = $gearMaintenanceConfig->getGearComponents();
-        foreach ($gearComponents as $gearComponent) {
+        foreach ($gearComponents->withoutRetired() as $gearComponent) {
             if ($this->isOnlyAttachedToRetiredGear($gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now), $retiredGearIds)) {
                 continue;
             }
