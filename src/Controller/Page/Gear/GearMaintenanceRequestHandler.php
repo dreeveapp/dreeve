@@ -8,7 +8,6 @@ use App\Application\Navigation\NavigationSection;
 use App\Application\PageRenderer;
 use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearRepository;
-use App\Domain\Gear\Maintenance\FindGearComponentStats\FindGearComponentStats;
 use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponents;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
@@ -18,7 +17,6 @@ use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -32,7 +30,6 @@ final readonly class GearMaintenanceRequestHandler
         private GearMaintenanceRepository $gearMaintenanceRepository,
         private GearRepository $gearRepository,
         private MaintenanceTaskProgressCalculator $maintenanceTaskProgressCalculator,
-        private QueryBus $queryBus,
         private Clock $clock,
         private Environment $twig,
         private PageRenderer $pageRenderer,
@@ -74,13 +71,8 @@ final readonly class GearMaintenanceRequestHandler
         $gearsWithComponents = [];
         $componentsNotFitted = GearComponents::empty();
         $parentComponentLabels = [];
-        $componentStats = [];
         /** @var GearComponent $gearComponent */
         foreach ($gearComponents->withoutRetired() as $gearComponent) {
-            $componentStats[(string) $gearComponent->getId()] = $this->queryBus->ask(
-                new FindGearComponentStats($gearComponents->resolveUsageWindowsFor($gearComponent))
-            );
-
             $parentComponents = $gearComponents->getParentComponentsOf($gearComponent, $now);
             if (!$parentComponents->isEmpty()) {
                 $parentComponentLabels[(string) $gearComponent->getId()] = implode(', ', $parentComponents->map(
@@ -113,7 +105,6 @@ final readonly class GearMaintenanceRequestHandler
             'gearsWithComponents' => array_values($gearsWithComponents),
             'componentsNotFitted' => $componentsNotFitted,
             'parentComponentLabels' => $parentComponentLabels,
-            'componentStats' => $componentStats,
             'gearIdsThatHaveDueTasks' => $this->maintenanceTaskProgressCalculator->getGearIdsThatHaveDueTasks(),
             'maintenanceTaskStatuses' => $this->maintenanceTaskProgressCalculator->calculateStatuses(),
             'isFeatureEnabled' => true,

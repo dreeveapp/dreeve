@@ -100,7 +100,7 @@
                                 <td colspan="5" class="p-4 text-left">
                                     <div class="grid gap-2">
                                         {% for gearComponent in componentsAttachedToGear %}
-                                            {% include 'html/gear/maintenance/_gear-component.html.twig' with {gearComponent: gearComponent, maintenanceTaskStatuses: maintenanceTaskStatuses, installedOn: parentComponentLabels[gearComponent.getId() ~ ''] ?? null, stats: componentStats[gearComponent.getId() ~ '']} only %}
+                                            {% include 'html/gear/maintenance/_gear-component.html.twig' with {gearComponent: gearComponent, maintenanceTaskStatuses: maintenanceTaskStatuses, installedOn: parentComponentLabels[gearComponent.getId() ~ ''] ?? null} only %}
                                         {% endfor %}
                                     </div>
                                 </td>
@@ -120,7 +120,7 @@
                     </p>
                     <div class="grid gap-2">
                         {% for gearComponent in componentsNotFitted %}
-                            {% include 'html/gear/maintenance/_gear-component.html.twig' with {gearComponent: gearComponent, maintenanceTaskStatuses: maintenanceTaskStatuses, installedOn: parentComponentLabels[gearComponent.getId() ~ ''] ?? null, stats: componentStats[gearComponent.getId() ~ '']} only %}
+                            {% include 'html/gear/maintenance/_gear-component.html.twig' with {gearComponent: gearComponent, maintenanceTaskStatuses: maintenanceTaskStatuses, installedOn: parentComponentLabels[gearComponent.getId() ~ ''] ?? null} only %}
                         {% endfor %}
                     </div>
                 </div>
