@@ -69,9 +69,15 @@ final readonly class GearMaintenanceRequestHandler
         $now = $this->clock->getCurrentDateTimeImmutable();
         $gearComponents = $gearMaintenanceConfig->getGearComponents();
         $gearsWithComponents = [];
+        $componentsNotFitted = GearComponents::empty();
         /** @var GearComponent $gearComponent */
         foreach ($gearComponents as $gearComponent) {
-            foreach ($gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now) as $gearId) {
+            $currentGearIds = $gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now);
+            if ($currentGearIds->isEmpty()) {
+                $componentsNotFitted->add($gearComponent);
+            }
+
+            foreach ($currentGearIds as $gearId) {
                 if (!($gear = $gears->getByGearId($gearId)) instanceof Gear) {
                     continue;
                 }
@@ -89,6 +95,7 @@ final readonly class GearMaintenanceRequestHandler
 
         return $this->twig->load('html/gear/maintenance/gear-maintenance.html.twig')->render([
             'gearsWithComponents' => array_values($gearsWithComponents),
+            'componentsNotFitted' => $componentsNotFitted,
             'gearIdsThatHaveDueTasks' => $this->maintenanceTaskProgressCalculator->getGearIdsThatHaveDueTasks(),
             'maintenanceTaskStatuses' => $this->maintenanceTaskProgressCalculator->calculateStatuses(),
             'isFeatureEnabled' => true,

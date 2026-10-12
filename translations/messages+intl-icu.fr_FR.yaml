@@ -288,6 +288,7 @@ Night: Nuit
 None: Aucun
 'Nordic Ski': 'Ski nordique'
 'Normalized power': 'Puissance normalisée'
+'Not fitted': 'Not fitted'
 'Not supported': 'Non pris en charge'
 Nov: Nov
 Now: Maintenant
@@ -506,6 +507,7 @@ Tennis: Tennis
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': "Le nombre d'Eddington, dans le contexte du vélo ou de la course à pied, est défini comme le nombre maximal E tel que l'athlète a parcouru au moins E km sur au moins E jours."
 "The page you're looking for doesn't exist or may have been moved.": "La page n'existe pas ou a été déplacée."
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': "Ces badges sont créés dynamiquement. Vous pouvez les utiliser dans n'importe quelle balise &lt;img&gt;"
+'These components are not installed on any gear at the moment.': 'These components are not installed on any gear at the moment.'
 Thinking...: Réfléchit...
 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.': "Ce graphique résume votre façon de vous entraîner. Chaque axe reflète une habitude d'entraînement normalisée différente : plus la valeur est élevée, plus l'accent est marqué."
 'This feature is currently disabled': 'Cette fonctionnalité est actuellement désactivée'

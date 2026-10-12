@@ -288,6 +288,7 @@ Night: Éjjel
 None: 'Egyik sem'
 'Nordic Ski': Sífutás
 'Normalized power': 'Normalizált teljesítmény'
+'Not fitted': 'Not fitted'
 'Not supported': 'Nem támogatott'
 Nov: Nov
 Now: Most
@@ -506,6 +507,7 @@ Tennis: Tenisz
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'Az Eddington-szám kerékpározás vagy futás esetén az a legnagyobb E szám, amelyre igaz, hogy a sportoló legalább E napon legalább E km-t tett meg.'
 "The page you're looking for doesn't exist or may have been moved.": 'A keresett oldal nem létezik, vagy áthelyezték.'
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': 'Ezek a kitűzők dinamikusan jönnek létre. Bármely &lt;img&gt; tagben használhatod őket'
+'These components are not installed on any gear at the moment.': 'These components are not installed on any gear at the moment.'
 Thinking...: Gondolkodás...
 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.': 'Ez a diagram összefoglalja, hogyan edzel. Minden tengely különböző normalizált edzési szokást tükröz, így a magasabb értékek erősebb hangsúlyt jelentenek.'
 'This feature is currently disabled': 'Ez a funkció jelenleg le van tiltva'

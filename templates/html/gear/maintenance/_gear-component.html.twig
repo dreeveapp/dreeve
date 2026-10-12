@@ -1,0 +1,74 @@
+<div class="flex items-center bg-white border border-gray-200 rounded-lg shadow-sm">
+    <div class="relative w-48 h-full">
+        <img class="absolute inset-0 lazy object-cover size-full rounded-t-lg md:rounded-none md:rounded-s-lg"
+             src="{{ placeholderImage() }}"
+             data-src="{{ relativeUrl('/' ~ gearComponent.getLocalImagePath()) }}"
+             alt="{{ gearComponent.getLabel() }}">
+    </div>
+    <div class="w-full flex flex-col justify-between p-4 leading-normal">
+        <div class="flex items-center justify-between">
+            <h5 class="mb-1 text-2xl font-bold tracking-tight text-gray-900">{{ gearComponent.getLabel() }}</h5>
+            {% set componentPurchasePrice = gearComponent.getPurchasePrice() %}
+            {% if componentPurchasePrice %}
+                <div class="text-gray-700 text-xs px-2">
+                    {{ componentPurchasePrice|formatMoney }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-y-4 divide-x *:px-4 -mx-4 font-normal text-gray-700">
+            {% for maintenanceTask in gearComponent.getMaintenanceTasks() %}
+                {% set maintenanceTaskStatus = maintenanceTaskStatuses.getForTask(maintenanceTask.getId()) %}
+                <div class="flex flex-col">
+                    <div class="flex justify-between">
+                        <div>
+                            {{ "{maintenanceTaskLabel} every {interval}"|trans({
+                                '{maintenanceTaskLabel}': maintenanceTask.getLabel(),
+                                '{interval}': maintenanceTask.getIntervalValue() ~ ' ' ~ maintenanceTask.getIntervalUnit().value
+                            }) }}
+                        </div>
+                    </div>
+                    <span class="text-xs grow">
+                            {{ "Last maintenance"|trans }}:
+                            {% if maintenanceTaskStatus.getLastPerformedOn() is not null %}
+                                {{ maintenanceTaskStatus.getLastPerformedOn()|formatDate('normal') }}
+                            {% else %}
+                                {{ "never"|trans }}
+                            {% endif %}
+                        </span>
+                    {% set progress = maintenanceTaskStatus.getProgress() %}
+                    {% if progress is null %}
+                        {% set colors = {'bg':'bg-gray-200','text':'text-gray-700'} %}
+                    {% elseif progress.isOverdue() %}
+                        {% set colors = {'bg':'bg-red-600', 'text':'text-red-600'} %}
+                    {% elseif progress.isZero() %}
+                        {% set colors = {'bg':'bg-gray-200','text':'text-gray-700'} %}
+                    {% elseif progress.isLow() %}
+                        {% set colors = {'bg':'bg-green-600','text':'text-green-600'} %}
+                    {% elseif progress.isMedium() %}
+                        {% set colors = { 'bg':'bg-yellow-400','text':'text-yellow-600'} %}
+                    {% elseif progress.isHigh() %}
+                        {% set colors = {'bg':'bg-red-600', 'text':'text-red-600'} %}
+                    {% endif %}
+                    <div class="mt-2">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="{{ colors.text }} text-sm font-medium">{{ progress ? progress.getDescription() : '0' }}</span>
+                            {% if progress %}
+                                <span class="{{ colors.text }} text-xs font-medium">
+                                    {% if progress.isOverdue() %}
+                                        {{ "Overdue by {amount}"|trans({'{amount}': progress.getRemainingDescription()}) }}
+                                    {% else %}
+                                        {{ "{amount} left"|trans({'{amount}': progress.getRemainingDescription()}) }}
+                                    {% endif %}
+                                </span>
+                            {% endif %}
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="{{ colors.bg }} h-2.5 rounded-full"
+                                 style="width: {{ progress ? progress.getPercentage() : 0 }}%"></div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

@@ -288,6 +288,7 @@ Night: 夜晚
 None: 无
 'Nordic Ski': 北欧滑雪
 'Normalized power': 'Normalized power'
+'Not fitted': 'Not fitted'
 'Not supported': 不支持
 Nov: 十一月
 Now: Now
@@ -506,6 +507,7 @@ Tennis: 网球
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.'
 "The page you're looking for doesn't exist or may have been moved.": "The page you're looking for doesn't exist or may have been moved."
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': '徽章为动态生成，您可在任意 &lt;img&gt; 标签中使用'
+'These components are not installed on any gear at the moment.': 'These components are not installed on any gear at the moment.'
 Thinking...: 思考中...
 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.': 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.'
 'This feature is currently disabled': 功能当前被禁用

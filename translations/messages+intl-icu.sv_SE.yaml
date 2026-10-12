@@ -288,6 +288,7 @@ Night: Natt
 None: Inga
 'Nordic Ski': 'Telemark skidåkning'
 'Normalized power': 'Normalized power'
+'Not fitted': 'Not fitted'
 'Not supported': 'Inget stöd tillgängligt'
 Nov: Nov
 Now: Now
@@ -506,6 +507,7 @@ Tennis: Tennis
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.'
 "The page you're looking for doesn't exist or may have been moved.": "The page you're looking for doesn't exist or may have been moved."
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': 'Dessa märken skapas dynamiskt. Du kan använda dem i vilken &lt;img&gt; tagg som helst'
+'These components are not installed on any gear at the moment.': 'These components are not installed on any gear at the moment.'
 Thinking...: Tänker...
 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.': 'This chart summarizes how you train. Each axis reflects a different normalized training habit, so higher values mean stronger emphasis.'
 'This feature is currently disabled': 'Den här funktionen är avstängd'

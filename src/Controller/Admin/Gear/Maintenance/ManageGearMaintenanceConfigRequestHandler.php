@@ -55,8 +55,9 @@ final readonly class ManageGearMaintenanceConfigRequestHandler
         $gearComponents = $gearMaintenanceConfig->getGearComponents();
         $componentsWithCurrentGears = [];
         foreach ($gearComponents as $gearComponent) {
+            $currentGearIds = $gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now);
             $currentGears = [];
-            foreach ($gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now) as $gearId) {
+            foreach ($currentGearIds as $gearId) {
                 if (!($gear = $gears->getByGearId($gearId)) instanceof Gear) {
                     continue;
                 }
@@ -66,6 +67,7 @@ final readonly class ManageGearMaintenanceConfigRequestHandler
             $componentsWithCurrentGears[] = [
                 'component' => $gearComponent,
                 'currentGears' => $currentGears,
+                'isFitted' => !$currentGearIds->isEmpty(),
             ];
         }
 
