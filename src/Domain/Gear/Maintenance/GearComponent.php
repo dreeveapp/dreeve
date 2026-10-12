@@ -19,13 +19,12 @@ use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\ORM\Mapping as ORM;
-use JsonSerializable;
 use Money\Currency;
 use Money\Money;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'GearComponent')]
-final class GearComponent implements JsonSerializable
+final class GearComponent implements \JsonSerializable
 {
     use RecordsEvents;
 
