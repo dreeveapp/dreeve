@@ -38,7 +38,7 @@ final readonly class CreateGearMaintenanceComponent extends DomainCommand implem
 
         return new self(
             label: self::parseLabel($payload),
-            installations: self::parseAttachedTo($payload),
+            installations: self::parseInstallations($payload),
             newImage: $newImages[0] ?? null,
             purchasePrice: self::parsePurchasePrice($payload),
             maintenanceTasks: self::parseMaintenanceTasks($payload, generateMissingIds: true),

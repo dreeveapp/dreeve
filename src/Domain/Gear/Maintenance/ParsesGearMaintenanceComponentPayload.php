@@ -13,6 +13,7 @@ use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTasks;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\ValueObject\String\Name;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 trait ParsesGearMaintenanceComponentPayload
 {
@@ -31,26 +32,54 @@ trait ParsesGearMaintenanceComponentPayload
     /**
      * @param array<string, mixed> $payload
      */
-    private static function parseAttachedTo(array $payload): GearComponentInstallations
+    private static function parseInstallations(array $payload): GearComponentInstallations
     {
-        if (!isset($payload['attachedTo']) || !is_array($payload['attachedTo'])) {
-            throw CouldNotDeserializeCommand::invalidPayload('An "attachedTo" array is required.');
+        if (!isset($payload['installations'])) {
+            return GearComponentInstallations::empty();
+        }
+        if (!is_array($payload['installations'])) {
+            throw CouldNotDeserializeCommand::invalidPayload('"installations" must be an array.');
         }
 
-        return GearComponentInstallations::fromArray(array_map(
-            static function (mixed $gearId): GearComponentInstallation {
-                if (!is_string($gearId) || '' === trim($gearId)) {
-                    throw CouldNotDeserializeCommand::invalidPayload('Each "attachedTo" entry must be a non-empty string.');
-                }
+        $installations = GearComponentInstallations::empty();
+        foreach ($payload['installations'] as $installation) {
+            if (!is_array($installation)) {
+                throw CouldNotDeserializeCommand::invalidPayload('Each installation must be an object.');
+            }
+            if (!isset($installation['gearId']) || !is_string($installation['gearId']) || '' === trim($installation['gearId'])) {
+                throw CouldNotDeserializeCommand::invalidPayload('A non-empty "gearId" is required for each installation.');
+            }
 
-                return GearComponentInstallation::create(
-                    gearId: GearId::fromUnprefixed(trim($gearId)),
-                    from: null,
-                    until: null,
-                );
-            },
-            array_values($payload['attachedTo']),
-        ));
+            $from = self::parseInstallationDate($installation, 'from');
+            $until = self::parseInstallationDate($installation, 'until');
+            if ($from && $until && $until->isBeforeOrOn($from)) {
+                throw CouldNotDeserializeCommand::invalidPayload('The "until" date of an installation must be after its "from" date.');
+            }
+
+            $installations->add(GearComponentInstallation::create(
+                gearId: GearId::fromUnprefixed(trim($installation['gearId'])),
+                from: $from,
+                until: $until,
+            ));
+        }
+
+        return $installations;
+    }
+
+    /**
+     * @param array<string, mixed> $installation
+     */
+    private static function parseInstallationDate(array $installation, string $key): ?SerializableDateTime
+    {
+        $date = $installation[$key] ?? null;
+        if (null === $date || '' === $date) {
+            return null;
+        }
+        if (!is_string($date) || !($parsed = \DateTimeImmutable::createFromFormat('!Y-m-d', $date)) || $parsed->format('Y-m-d') !== $date) {
+            throw CouldNotDeserializeCommand::invalidPayload(sprintf('Each installation "%s" date must be formatted as YYYY-MM-DD.', $key));
+        }
+
+        return SerializableDateTime::fromDateTimeImmutable($parsed);
     }
 
     /**

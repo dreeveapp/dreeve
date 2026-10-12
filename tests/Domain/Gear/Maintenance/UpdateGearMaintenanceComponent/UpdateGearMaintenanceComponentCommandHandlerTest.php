@@ -30,7 +30,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
             'label' => 'Updated chain',
-            'attachedTo' => ['b9'],
+            'installations' => [['gearId' => 'b9']],
             'maintenanceTasks' => [
                 ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 600, 'unit' => 'km']],
             ],
@@ -66,7 +66,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
             'label' => 'Chain',
-            'attachedTo' => ['b1'],
+            'installations' => [['gearId' => 'b1']],
             'localImagePath' => json_encode([
                 ['status' => 'removed', 'path' => '/files/gear-maintenance/old.png'],
                 ['status' => 'new', 'filename' => 'new.png', 'content' => base64_encode('new-content')],
@@ -92,7 +92,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
             'label' => 'Chain',
-            'attachedTo' => ['b1'],
+            'installations' => [['gearId' => 'b1']],
             'localImagePath' => json_encode([
                 ['status' => 'removed', 'path' => '/files/gear-maintenance/old.png'],
             ]),

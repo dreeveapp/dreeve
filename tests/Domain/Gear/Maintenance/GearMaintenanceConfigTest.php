@@ -79,7 +79,7 @@ class GearMaintenanceConfigTest extends ContainerTestCase
 
         $this->assertSame(
             $config['components'][0],
-            GearMaintenanceConfig::fromArray($config)->getGearComponents()->getFirst()->jsonSerialize()
+            Json::decode(Json::encode(GearMaintenanceConfig::fromArray($config)->getGearComponents()->getFirst()))
         );
     }
 

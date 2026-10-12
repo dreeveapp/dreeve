@@ -21,6 +21,7 @@ Activity: Tevékenység
 'Add Eddington': 'Eddington hozzáadása'
 'Add FTP': 'FTP hozzáadása'
 'Add a component to start tracking maintenance.': 'Adj hozzá egy komponenst a karbantartás követésének megkezdéséhez.'
+'Add a row for every period the component was fitted. Leave the end date empty while it is still fitted.': 'Add a row for every period the component was fitted. Leave the end date empty while it is still fitted.'
 'Add a rule to start automating your activity details.': 'Adj hozzá egy szabályt a tevékenység-adatok automatizálásának megkezdéséhez.'
 'Add a widget': 'Widget hozzáadása'
 'Add action': 'Művelet hozzáadása'
@@ -32,6 +33,7 @@ Activity: Tevékenység
 'Add condition': 'Feltétel hozzáadása'
 'Add gear': 'Felszerelés hozzáadása'
 'Add goal': 'Cél hozzáadása'
+'Add installation': 'Add installation'
 'Add max heart rate': 'Maximális pulzus hozzáadása'
 'Add resting heart rate': 'Nyugalmi pulzus hozzáadása'
 'Add rule': 'Szabály hozzáadása'
@@ -332,6 +334,7 @@ Remove: Eltávolítás
 'Remove command': 'Parancs eltávolítása'
 'Remove condition': 'Feltétel eltávolítása'
 'Remove goal': 'Cél eltávolítása'
+'Remove installation': 'Remove installation'
 'Remove task': 'Feladat eltávolítása'
 'Remove tile layer': 'Csempe-réteg eltávolítása'
 'Remove widget': 'Widget eltávolítása'
@@ -372,6 +375,7 @@ Security: Biztonság
 'Select at least one sensor.': 'Válassz legalább egy érzékelőt.'
 'Select at least one sport type.': 'Válassz legalább egy sporttípust.'
 'Select at least one weekday.': 'Válassz legalább egy napot.'
+'Select gear': 'Select gear'
 'Select gear...': 'Válassz felszerelést...'
 'Select sensors': 'Érzékelők kiválasztása'
 'Select sport types': 'Sporttípusok kiválasztása'
@@ -500,6 +504,7 @@ URL: URL
 Unit: Mértékegység
 'Unit system': Mértékegységrendszer
 'Unsupported file type': 'Nem támogatott fájltípus'
+Until: Until
 'Upload activity files': 'Tevékenységfájlok feltöltése'
 'Upload failed': 'A feltöltés sikertelen'
 'Upload files': 'Fájlok feltöltése'

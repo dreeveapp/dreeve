@@ -27,7 +27,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
         $this->commandBus->dispatch(CreateGearMaintenanceComponent::fromPayload([
             'label' => 'Brake pads',
-            'attachedTo' => ['b1', 'g2'],
+            'installations' => [['gearId' => 'b1', 'from' => '2025-01-01', 'until' => '2025-03-15'], ['gearId' => 'g2', 'from' => '2025-03-15', 'until' => '']],
             'purchasePriceAmount' => '49.99',
             'purchasePriceCurrency' => 'EUR',
             'maintenanceTasks' => [
@@ -43,8 +43,8 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->assertNotNull($created);
         $this->assertNotEmpty($created['id']);
         $this->assertSame([
-            ['gearId' => 'b1', 'from' => null, 'until' => null],
-            ['gearId' => 'g2', 'from' => null, 'until' => null],
+            ['gearId' => 'b1', 'from' => '2025-01-01', 'until' => '2025-03-15'],
+            ['gearId' => 'g2', 'from' => '2025-03-15', 'until' => null],
         ], $created['installations']);
         $this->assertNull($created['localImagePath']);
         $this->assertSame(4999, $created['purchasePrice']['amountInCents']);
@@ -58,7 +58,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
     {
         $this->commandBus->dispatch(CreateGearMaintenanceComponent::fromPayload([
             'label' => 'Brake pads',
-            'attachedTo' => ['b1'],
+            'installations' => [['gearId' => 'b1']],
             'localImagePath' => json_encode([
                 ['status' => 'new', 'filename' => 'brakes.png', 'content' => base64_encode('image-content')],
             ]),
@@ -78,7 +78,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
     {
         $this->commandBus->dispatch(CreateGearMaintenanceComponent::fromPayload([
             'label' => 'Brake pads',
-            'attachedTo' => ['b1'],
+            'installations' => [['gearId' => 'b1']],
             'maintenanceTasks' => [
                 ['label' => 'Replace', 'interval' => ['value' => 2000, 'unit' => 'km']],
             ],

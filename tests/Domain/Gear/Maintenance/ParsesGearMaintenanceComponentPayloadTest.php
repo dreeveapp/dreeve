@@ -13,6 +13,7 @@ use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTasks;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\ValueObject\String\Name;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -60,51 +61,95 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
         ];
     }
 
-    public function testParseAttachedTo(): void
+    public function testParseInstallations(): void
     {
         $this->assertEquals(
             GearComponentInstallations::fromArray([
-                GearComponentInstallation::create(gearId: GearId::fromUnprefixed('b1'), from: null, until: null),
-                GearComponentInstallation::create(gearId: GearId::fromUnprefixed('g2'), from: null, until: null),
+                GearComponentInstallation::create(
+                    gearId: GearId::fromUnprefixed('b1'),
+                    from: null,
+                    until: SerializableDateTime::fromString('2025-03-15'),
+                ),
+                GearComponentInstallation::create(
+                    gearId: GearId::fromUnprefixed('g2'),
+                    from: SerializableDateTime::fromString('2025-03-15'),
+                    until: null,
+                ),
             ]),
-            $this->parser->doParseAttachedTo(['attachedTo' => [' b1 ', 'g2']]),
+            $this->parser->doParseInstallations(['installations' => [
+                ['gearId' => ' b1 ', 'from' => '', 'until' => '2025-03-15'],
+                ['gearId' => 'g2', 'from' => '2025-03-15'],
+            ]]),
+        );
+    }
+
+    public function testParseInstallationsWhenThereAreNone(): void
+    {
+        $this->assertEquals(
+            GearComponentInstallations::empty(),
+            $this->parser->doParseInstallations([]),
         );
     }
 
     /**
      * @param array<string, mixed> $payload
      */
-    #[DataProvider('provideInvalidAttachedToPayloads')]
-    public function testParseAttachedToThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
+    #[DataProvider('provideInvalidInstallationPayloads')]
+    public function testParseInstallationsThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
     {
         $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        $this->parser->doParseAttachedTo($payload);
+        $this->parser->doParseInstallations($payload);
     }
 
     /**
      * @return iterable<string, array{array<string, mixed>, string}>
      */
-    public static function provideInvalidAttachedToPayloads(): iterable
+    public static function provideInvalidInstallationPayloads(): iterable
     {
-        yield 'attachedTo is missing' => [
-            [],
-            'An "attachedTo" array is required.',
+        yield 'installations is not an array' => [
+            ['installations' => 'b1'],
+            '"installations" must be an array.',
         ];
 
-        yield 'attachedTo is not an array' => [
-            ['attachedTo' => 'b1'],
-            'An "attachedTo" array is required.',
+        yield 'installation is not an object' => [
+            ['installations' => ['b1']],
+            'Each installation must be an object.',
         ];
 
-        yield 'attachedTo entry is not a string' => [
-            ['attachedTo' => [123]],
-            'Each "attachedTo" entry must be a non-empty string.',
+        yield 'gearId is missing' => [
+            ['installations' => [['from' => '2025-01-01']]],
+            'A non-empty "gearId" is required for each installation.',
         ];
 
-        yield 'attachedTo entry is empty' => [
-            ['attachedTo' => ['  ']],
-            'Each "attachedTo" entry must be a non-empty string.',
+        yield 'gearId is empty' => [
+            ['installations' => [['gearId' => '  ']]],
+            'A non-empty "gearId" is required for each installation.',
+        ];
+
+        yield 'from has the wrong format' => [
+            ['installations' => [['gearId' => 'b1', 'from' => '01-01-2025']]],
+            'Each installation "from" date must be formatted as YYYY-MM-DD.',
+        ];
+
+        yield 'from does not exist' => [
+            ['installations' => [['gearId' => 'b1', 'from' => '2025-02-30']]],
+            'Each installation "from" date must be formatted as YYYY-MM-DD.',
+        ];
+
+        yield 'until has the wrong format' => [
+            ['installations' => [['gearId' => 'b1', 'until' => 'tomorrow']]],
+            'Each installation "until" date must be formatted as YYYY-MM-DD.',
+        ];
+
+        yield 'until is before from' => [
+            ['installations' => [['gearId' => 'b1', 'from' => '2025-03-15', 'until' => '2025-03-01']]],
+            'The "until" date of an installation must be after its "from" date.',
+        ];
+
+        yield 'until equals from' => [
+            ['installations' => [['gearId' => 'b1', 'from' => '2025-03-15', 'until' => '2025-03-15']]],
+            'The "until" date of an installation must be after its "from" date.',
         ];
     }
 
@@ -247,9 +292,9 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
                 return self::parseLabel($payload);
             }
 
-            public function doParseAttachedTo(array $payload): GearComponentInstallations
+            public function doParseInstallations(array $payload): GearComponentInstallations
             {
-                return self::parseAttachedTo($payload);
+                return self::parseInstallations($payload);
             }
 
             public function doParseMaintenanceTasks(array $payload, bool $generateMissingIds): MaintenanceTasks

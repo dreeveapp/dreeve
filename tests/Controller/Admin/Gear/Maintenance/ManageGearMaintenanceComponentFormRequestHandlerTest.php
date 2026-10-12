@@ -31,18 +31,19 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->assertCount(0, $form->filter('input[name="gearComponentId"]'));
         $this->assertSame('', $form->filter('input[name="label"]')->attr('value'));
 
-        $this->assertCount(2, $form->filter('input[name="attachedTo[]"]'));
-        $this->assertCount(0, $form->filter('input[name="attachedTo[]"][checked]'));
-        $this->assertStringContainsString('Race bike', $form->text());
+        $installationsRepeater = $form->filter('[data-repeater]')->eq(0);
+        $this->assertSame('0', $installationsRepeater->attr('data-repeater-min'));
+        $this->assertSame('[]', $installationsRepeater->filter('[data-repeater-list]')->attr('data-repeater-initial'));
+        $this->assertCount(3, $installationsRepeater->filter('template[data-repeater-template] select[name="installations[__index__][gearId]"] option'));
+        $this->assertStringContainsString('Race bike', $installationsRepeater->filter('template[data-repeater-template]')->html());
 
         $this->assertCount(1, $form->filter('input[name="purchasePriceAmount"]'));
         $this->assertCount(1, $form->filter('select[name="purchasePriceCurrency"]'));
 
-        $repeater = $form->filter('[data-repeater]');
-        $this->assertCount(1, $repeater);
-        $this->assertSame('1', $repeater->attr('data-repeater-min'));
-        $this->assertCount(1, $form->filter('template[data-repeater-template]'));
-        $this->assertSame('[]', $form->filter('[data-repeater-list]')->attr('data-repeater-initial'));
+        $tasksRepeater = $form->filter('[data-repeater]')->eq(1);
+        $this->assertCount(2, $form->filter('[data-repeater]'));
+        $this->assertSame('1', $tasksRepeater->attr('data-repeater-min'));
+        $this->assertSame('[]', $tasksRepeater->filter('[data-repeater-list]')->attr('data-repeater-initial'));
     }
 
     public function testRendersTheEditFormPrefilledWithTheComponent(): void
@@ -63,9 +64,12 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->assertSame('gearComponent-chain', $form->filter('input[name="gearComponentId"]')->attr('value'));
         $this->assertSame('Some cool chain', $form->filter('input[name="label"]')->attr('value'));
 
-        $this->assertGreaterThanOrEqual(1, $form->filter('input[name="attachedTo[]"][checked]')->count());
+        $this->assertSame(
+            '[{"gearId":"g1233776","from":null,"until":null},{"gearId":"g10130856","from":null,"until":null},{"gearId":"retired","from":null,"until":null}]',
+            $form->filter('[data-repeater-list]')->eq(0)->attr('data-repeater-initial')
+        );
 
-        $initialTasks = $form->filter('[data-repeater-list]')->attr('data-repeater-initial');
+        $initialTasks = $form->filter('[data-repeater-list]')->eq(1)->attr('data-repeater-initial');
         $this->assertStringContainsString('Lube', $initialTasks);
         $this->assertStringContainsString('chain-lubed', $initialTasks);
 

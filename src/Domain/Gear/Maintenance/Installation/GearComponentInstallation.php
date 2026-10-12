@@ -7,7 +7,7 @@ namespace App\Domain\Gear\Maintenance\Installation;
 use App\Domain\Gear\GearId;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
-final readonly class GearComponentInstallation
+final readonly class GearComponentInstallation implements \JsonSerializable
 {
     private function __construct(
         private GearId $gearId,
@@ -53,5 +53,17 @@ final readonly class GearComponentInstallation
         }
 
         return !$this->until || $on->isBefore($this->until);
+    }
+
+    /**
+     * @return array{gearId: string, from: ?string, until: ?string}
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'gearId' => $this->gearId->toUnprefixedString(),
+            'from' => $this->from?->format('Y-m-d'),
+            'until' => $this->until?->format('Y-m-d'),
+        ];
     }
 }

@@ -21,6 +21,7 @@ Activity: Aktivität
 'Add Eddington': 'Eddington hinzufügen'
 'Add FTP': 'FTP hinzufügen'
 'Add a component to start tracking maintenance.': 'Füge eine Komponente hinzu, um mit der Wartungsverfolgung zu beginnen.'
+'Add a row for every period the component was fitted. Leave the end date empty while it is still fitted.': 'Add a row for every period the component was fitted. Leave the end date empty while it is still fitted.'
 'Add a rule to start automating your activity details.': 'Füge eine Regel hinzu, um deine Aktivitätsdetails automatisch auszufüllen.'
 'Add a widget': 'Widget hinzufügen'
 'Add action': 'Aktion hinzufügen'
@@ -32,6 +33,7 @@ Activity: Aktivität
 'Add condition': 'Bedingung hinzufügen'
 'Add gear': 'Ausrüstung hinzufügen'
 'Add goal': 'Ziel hinzufügen'
+'Add installation': 'Add installation'
 'Add max heart rate': 'max. Herzfrequenz hinzufügen'
 'Add resting heart rate': 'Ruhepuls hinzufügen'
 'Add rule': 'Regel hinzufügen'
@@ -332,6 +334,7 @@ Remove: Entfernen
 'Remove command': 'Befehl entfernen'
 'Remove condition': 'Bedingung entfernen'
 'Remove goal': 'Ziel entfernen'
+'Remove installation': 'Remove installation'
 'Remove task': 'Aufgabe entfernen'
 'Remove tile layer': 'Kachelebene entfernen'
 'Remove widget': 'Widget entfernen'
@@ -372,6 +375,7 @@ Security: Sicherheit
 'Select at least one sensor.': 'Wähle mindestens einen Sensor aus.'
 'Select at least one sport type.': 'Wähle mindestens eine Sportart aus.'
 'Select at least one weekday.': 'Wähle mindestens einen Wochentag aus.'
+'Select gear': 'Select gear'
 'Select gear...': 'Ausrüstung auswählen...'
 'Select sensors': 'Sensoren auswählen'
 'Select sport types': 'Sportarten auswählen'
@@ -500,6 +504,7 @@ URL: URL
 Unit: Einheit
 'Unit system': Einheitensystem
 'Unsupported file type': 'Nicht unterstützter Dateityp'
+Until: Until
 'Upload activity files': 'Aktivitätsdateien hochladen'
 'Upload failed': 'Upload fehlgeschlagen'
 'Upload files': 'Dateien hochladen'

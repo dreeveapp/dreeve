@@ -21,6 +21,7 @@ Activity: Activiteit
 'Add Eddington': 'Eddington toevoegen'
 'Add FTP': 'FTP toevoegen'
 'Add a component to start tracking maintenance.': 'Voeg een onderdeel toe om onderhoud bij te houden.'
+'Add a row for every period the component was fitted. Leave the end date empty while it is still fitted.': 'Add a row for every period the component was fitted. Leave the end date empty while it is still fitted.'
 'Add a rule to start automating your activity details.': 'Voeg een regel toe om je activiteitsgegevens automatisch in te vullen.'
 'Add a widget': 'Een widget toevoegen'
 'Add action': 'Actie toevoegen'
@@ -32,6 +33,7 @@ Activity: Activiteit
 'Add condition': 'Voorwaarde toevoegen'
 'Add gear': 'Uitrusting toevoegen'
 'Add goal': 'Doel toevoegen'
+'Add installation': 'Add installation'
 'Add max heart rate': 'Maximale hartslag toevoegen'
 'Add resting heart rate': 'Rusthartslag toevoegen'
 'Add rule': 'Regel toevoegen'
@@ -332,6 +334,7 @@ Remove: Verwijderen
 'Remove command': 'Commando verwijderen'
 'Remove condition': 'Voorwaarde verwijderen'
 'Remove goal': 'Doel verwijderen'
+'Remove installation': 'Remove installation'
 'Remove task': 'Taak verwijderen'
 'Remove tile layer': 'Tegellaag verwijderen'
 'Remove widget': 'Widget verwijderen'
@@ -372,6 +375,7 @@ Security: Beveiliging
 'Select at least one sensor.': 'Selecteer minstens één sensor.'
 'Select at least one sport type.': 'Selecteer minstens één sporttype.'
 'Select at least one weekday.': 'Selecteer minstens één weekdag.'
+'Select gear': 'Select gear'
 'Select gear...': 'Selecteer uitrusting...'
 'Select sensors': 'Sensoren selecteren'
 'Select sport types': 'Sporttypes selecteren'
@@ -500,6 +504,7 @@ URL: URL
 Unit: Eenheid
 'Unit system': Eenhedenstelsel
 'Unsupported file type': 'Niet-ondersteund bestandstype'
+Until: Until
 'Upload activity files': 'Activiteitsbestanden uploaden'
 'Upload failed': 'Upload mislukt'
 'Upload files': 'Bestanden uploaden'

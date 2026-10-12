@@ -48,7 +48,7 @@ final readonly class UpdateGearMaintenanceComponent extends DomainCommand implem
         return new self(
             gearComponentId: GearComponentId::fromString(trim($payload['gearComponentId'])),
             label: self::parseLabel($payload),
-            installations: self::parseAttachedTo($payload),
+            installations: self::parseInstallations($payload),
             newImage: $newImages[0] ?? null,
             removedImage: $removedImages[0] ?? null,
             purchasePrice: self::parsePurchasePrice($payload),

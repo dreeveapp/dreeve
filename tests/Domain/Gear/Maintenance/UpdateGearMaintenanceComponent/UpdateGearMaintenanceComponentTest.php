@@ -16,7 +16,7 @@ class UpdateGearMaintenanceComponentTest extends TestCase
         $command = UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => '  gearComponent-chain  ',
             'label' => 'Updated chain',
-            'attachedTo' => ['b1'],
+            'installations' => [['gearId' => 'b1']],
             'maintenanceTasks' => [
                 ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
             ],
@@ -27,8 +27,8 @@ class UpdateGearMaintenanceComponentTest extends TestCase
         $this->assertCount(1, $command->getMaintenanceTasks());
     }
 
-    #[TestWith([['label' => 'Updated chain', 'attachedTo' => ['b1'], 'maintenanceTasks' => [['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']]]]])]
-    #[TestWith([['gearComponentId' => '   ', 'label' => 'Updated chain', 'attachedTo' => ['b1'], 'maintenanceTasks' => [['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']]]]])]
+    #[TestWith([['label' => 'Updated chain', 'installations' => [['gearId' => 'b1']], 'maintenanceTasks' => [['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']]]]])]
+    #[TestWith([['gearComponentId' => '   ', 'label' => 'Updated chain', 'installations' => [['gearId' => 'b1']], 'maintenanceTasks' => [['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']]]]])]
     public function testFromPayloadThrowsOnInvalidPayload(array $payload): void
     {
         $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('A "gearComponentId" is required.'));

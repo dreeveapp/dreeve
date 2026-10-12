@@ -108,13 +108,7 @@ final readonly class GearComponent implements \JsonSerializable
             'id' => (string) $this->id,
             'label' => (string) $this->label,
             'localImagePath' => $this->localImagePath,
-            'installations' => $this->installations->map(
-                static fn (GearComponentInstallation $installation): array => [
-                    'gearId' => $installation->getGearId()->toUnprefixedString(),
-                    'from' => $installation->getFrom()?->format('Y-m-d'),
-                    'until' => $installation->getUntil()?->format('Y-m-d'),
-                ],
-            ),
+            'installations' => $this->installations,
             'maintenance' => $this->maintenanceTasks->map(
                 static fn (MaintenanceTask $task): array => [
                     'id' => (string) $task->getId(),

@@ -21,6 +21,7 @@ Activity: Activité
 'Add Eddington': 'Ajouter Eddington'
 'Add FTP': 'Ajouter FTP'
 'Add a component to start tracking maintenance.': 'Ajoutez un composant pour commencer le suivi de la maintenance.'
+'Add a row for every period the component was fitted. Leave the end date empty while it is still fitted.': 'Add a row for every period the component was fitted. Leave the end date empty while it is still fitted.'
 'Add a rule to start automating your activity details.': 'Ajoutez une règle pour commencer à automatiser les détails de vos activités.'
 'Add a widget': 'Ajouter un widget'
 'Add action': 'Ajouter une action'
@@ -32,6 +33,7 @@ Activity: Activité
 'Add condition': 'Ajouter une condition'
 'Add gear': 'Ajouter un matériel'
 'Add goal': 'Ajouter un objectif'
+'Add installation': 'Add installation'
 'Add max heart rate': 'Ajouter fréquence cardiaque maximale'
 'Add resting heart rate': 'Ajouter une fréquence cardiaque au repos'
 'Add rule': 'Ajouter une règle'
@@ -332,6 +334,7 @@ Remove: Supprimer
 'Remove command': 'Retirer la commande'
 'Remove condition': 'Retirer la condition'
 'Remove goal': "Retirer l'objectif"
+'Remove installation': 'Remove installation'
 'Remove task': 'Retirer la tâche'
 'Remove tile layer': 'Retirer la couche de tuiles'
 'Remove widget': 'Retirer le widget'
@@ -372,6 +375,7 @@ Security: Securité
 'Select at least one sensor.': 'Sélectionnez au moins un capteur.'
 'Select at least one sport type.': 'Sélectionnez au moins un type de sport.'
 'Select at least one weekday.': 'Sélectionnez au moins un jour de la semaine.'
+'Select gear': 'Select gear'
 'Select gear...': 'Selectionner un matériel'
 'Select sensors': 'Selectionner des capteurs'
 'Select sport types': 'Sélectionner les types de sport'
@@ -500,6 +504,7 @@ URL: URL
 Unit: Unité
 'Unit system': "Système d'unité"
 'Unsupported file type': 'Type de fichier non supporté'
+Until: Until
 'Upload activity files': "Téléverser des fichiers d'activité"
 'Upload failed': 'Echec du téléversement'
 'Upload files': 'Téléverser des fichiers'
