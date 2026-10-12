@@ -283,6 +283,7 @@ Monday: Hétfő
 'Normal date format': 'Normál dátumformátum'
 'Not configured, the API is closed': 'Nincs beállítva, az API zárva van'
 'Not fitted': 'Not fitted'
+Notes: Notes
 'Notification services': 'Értesítési szolgáltatások'
 'Notify when an import was successful': 'Értesítés sikeres importáláskor'
 'Number of activities to display': 'Megjelenítendő tevékenységek száma'
@@ -387,6 +388,7 @@ Security: Biztonság
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Értesítést küld, ha esedékes a felszerelés karbantartása. Beállított értesítési szolgáltatást igényel.'
 Sensors: Érzékelők
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Az érzékelők csak a FIT-fájlokból importált tevékenységeknél kerülnek rögzítésre. A Stravából, GPX- vagy TCX-fájlokból származó tevékenységek soha nem illeszkednek erre a feltételre.'
+'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
 'Set description': 'Leírás beállítása'
 'Set its status to Retired instead to hide it from your active gear.': 'Állítsd inkább Nyugdíjazott státuszra, hogy elrejtsd az aktív felszerelések közül.'
 'Set name': 'Név beállítása'

@@ -35,6 +35,7 @@ final readonly class UpdateGearMaintenanceComponent extends DomainCommand implem
         private ?Money $purchasePrice,
         private MaintenanceTasks $maintenanceTasks,
         private bool $isRetired,
+        private ?string $notes,
     ) {
     }
 
@@ -55,6 +56,7 @@ final readonly class UpdateGearMaintenanceComponent extends DomainCommand implem
             purchasePrice: self::parsePurchasePrice($payload),
             maintenanceTasks: self::parseMaintenanceTasks($payload, generateMissingIds: true),
             isRetired: filter_var($payload['isRetired'] ?? false, FILTER_VALIDATE_BOOLEAN),
+            notes: self::parseNotes($payload),
         );
     }
 
@@ -96,5 +98,10 @@ final readonly class UpdateGearMaintenanceComponent extends DomainCommand implem
     public function isRetired(): bool
     {
         return $this->isRetired;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
     }
 }

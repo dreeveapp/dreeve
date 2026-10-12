@@ -283,6 +283,7 @@ Monday: Maandag
 'Normal date format': 'Normaal datumformaat'
 'Not configured, the API is closed': 'Niet geconfigureerd, de API is gesloten'
 'Not fitted': 'Not fitted'
+Notes: Notes
 'Notification services': Meldingsdiensten
 'Notify when an import was successful': 'Melden wanneer een import geslaagd is'
 'Number of activities to display': 'Aantal te tonen activiteiten'
@@ -387,6 +388,7 @@ Security: Beveiliging
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Stuurt een melding wanneer onderhoud van uitrusting nodig is. Vereist een geconfigureerde meldingsdienst.'
 Sensors: Sensoren
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Sensoren worden enkel geregistreerd voor activiteiten die geïmporteerd zijn uit FIT-bestanden. Activiteiten van Strava, GPX of TCX voldoen nooit aan deze voorwaarde.'
+'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
 'Set description': 'Beschrijving instellen'
 'Set its status to Retired instead to hide it from your active gear.': 'Zet de status op Buiten gebruik om het te verbergen tussen je actieve uitrusting.'
 'Set name': 'Naam instellen'

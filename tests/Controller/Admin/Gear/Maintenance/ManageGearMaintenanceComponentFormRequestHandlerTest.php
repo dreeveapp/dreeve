@@ -4,6 +4,11 @@ namespace App\Tests\Controller\Admin\Gear\Maintenance;
 
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Infrastructure\KeyValue\Key;
+use App\Infrastructure\KeyValue\KeyValue;
+use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Infrastructure\KeyValue\Value;
+use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
@@ -71,6 +76,7 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->assertSame('Some cool chain', $form->filter('input[name="label"]')->attr('value'));
         $this->assertCount(1, $form->filter('input[name="isRetired"][value="true"]'));
         $this->assertCount(0, $form->filter('input[name="isRetired"][checked]'));
+        $this->assertSame('', $form->filter('textarea[name="notes"]')->text());
 
         $this->assertSame(
             '[{"parent":"gear:g1233776","from":null,"until":null,"sportTypes":[]},{"parent":"gear:g10130856","from":null,"until":null,"sportTypes":[]},{"parent":"gear:retired","from":null,"until":null,"sportTypes":[]}]',
@@ -89,6 +95,23 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
             'chain.png',
             $form->filter('[data-image-dropzone]')->attr('data-existing-images')
         );
+    }
+
+    public function testItEscapesNotesInTheEditForm(): void
+    {
+        $this->importGearMaintenanceConfig();
+        $this->seedGears();
+        $keyValueStore = static::getContainer()->get(KeyValueStore::class);
+        $config = Json::decode((string) $keyValueStore->find(Key::GEAR_MAINTENANCE));
+        $config['components'][0]['notes'] = '</textarea><b>Serial</b>';
+        $keyValueStore->save(KeyValue::fromState(Key::GEAR_MAINTENANCE, Value::fromString(Json::encode($config))));
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-chain/edit');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame('</textarea><b>Serial</b>', $crawler->filter('textarea[name="notes"]')->text());
     }
 
     public function testRendersTheDeleteConfirmation(): void

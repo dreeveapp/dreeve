@@ -27,6 +27,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
         $this->commandBus->dispatch(CreateGearMaintenanceComponent::fromPayload([
             'label' => 'Brake pads',
+            'notes' => ' Shimano B05S ',
             'installations' => [['parent' => 'gear:b1', 'from' => '2025-01-01', 'until' => '2025-03-15', 'sportTypes' => ['Ride', 'VirtualRide']], ['parent' => 'gear:g2', 'from' => '2025-03-15', 'until' => '']],
             'purchasePriceAmount' => '49.99',
             'purchasePriceCurrency' => 'EUR',
@@ -48,6 +49,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         ], $created['installations']);
         $this->assertNull($created['localImagePath']);
         $this->assertFalse($created['isRetired']);
+        $this->assertSame('Shimano B05S', $created['notes']);
         $this->assertSame(4999, $created['purchasePrice']['amountInCents']);
         $this->assertSame('EUR', $created['purchasePrice']['currency']);
         $this->assertCount(1, $created['maintenance']);

@@ -50,6 +50,7 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
             localImagePath: $localImagePath,
             purchasePrice: $command->getPurchasePrice(),
             isRetired: $command->isRetired(),
+            notes: $command->getNotes(),
         );
 
         foreach ($command->getMaintenanceTasks() as $maintenanceTask) {

@@ -46,6 +46,7 @@ class GearComponentsTest extends TestCase
             localImagePath: null,
             purchasePrice: null,
             isRetired: false,
+            notes: null,
         );
 
         $this->assertEquals(
@@ -101,6 +102,7 @@ class GearComponentsTest extends TestCase
             localImagePath: null,
             purchasePrice: null,
             isRetired: false,
+            notes: null,
         );
 
         $this->assertEquals(

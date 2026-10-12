@@ -12,6 +12,9 @@
                 {% if installedOn %}
                     <p class="text-xs text-gray-500">{{ "Installed on {component}"|trans({'{component}': installedOn}) }}</p>
                 {% endif %}
+                {% if gearComponent.getNotes() %}
+                    <p class="mt-1 text-xs text-gray-700 whitespace-pre-line">{{ gearComponent.getNotes() }}</p>
+                {% endif %}
             </div>
             {% set componentPurchasePrice = gearComponent.getPurchasePrice() %}
             {% if componentPurchasePrice %}

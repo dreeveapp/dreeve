@@ -283,6 +283,7 @@ Monday: Lunes
 'Normal date format': 'Formato de fecha normal'
 'Not configured, the API is closed': 'No configurada, la API está cerrada'
 'Not fitted': 'Not fitted'
+Notes: Notes
 'Notification services': 'Servicios de notificación'
 'Notify when an import was successful': 'Notificar cuando una importación sea exitosa'
 'Number of activities to display': 'Número de actividades a mostrar'
@@ -387,6 +388,7 @@ Security: Seguridad
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Envía una notificación cuando se requiere el mantenimiento del equipamiento. Requiere un servicio de notificación configurado.'
 Sensors: Sensores
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Los sensores solo se registran en actividades importadas desde archivos FIT. Las actividades de Strava, GPX o TCX nunca cumplen esta condición.'
+'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
 'Set description': 'Establecer descripción'
 'Set its status to Retired instead to hide it from your active gear.': 'Cambia su estado a Retirado para ocultarlo de tu equipamiento activo.'
 'Set name': 'Establecer nombre'

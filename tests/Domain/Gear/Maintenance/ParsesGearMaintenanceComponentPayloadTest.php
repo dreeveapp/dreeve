@@ -64,6 +64,29 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
         ];
     }
 
+    #[DataProvider('provideNotes')]
+    public function testParseNotes(array $payload, ?string $expectedNotes): void
+    {
+        $this->assertSame($expectedNotes, $this->parser->doParseNotes($payload));
+    }
+
+    /**
+     * @return iterable<string, array{array<string, mixed>, ?string}>
+     */
+    public static function provideNotes(): iterable
+    {
+        yield 'missing' => [[], null];
+        yield 'empty' => [['notes' => "  \n "], null];
+        yield 'trimmed' => [['notes' => "  Serial WH-123\nTubeless  "], "Serial WH-123\nTubeless"];
+    }
+
+    public function testParseNotesThrowsWhenNotAString(): void
+    {
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('"notes" must be a string.'));
+
+        $this->parser->doParseNotes(['notes' => ['Serial']]);
+    }
+
     public function testParseInstallations(): void
     {
         $this->assertEquals(
@@ -320,6 +343,11 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
             public function doParseLabel(array $payload): Name
             {
                 return self::parseLabel($payload);
+            }
+
+            public function doParseNotes(array $payload): ?string
+            {
+                return self::parseNotes($payload);
             }
 
             public function doParseInstallations(array $payload): GearComponentInstallations

@@ -34,6 +34,22 @@ trait ParsesGearMaintenanceComponentPayload
     /**
      * @param array<string, mixed> $payload
      */
+    private static function parseNotes(array $payload): ?string
+    {
+        $notes = $payload['notes'] ?? null;
+        if (null === $notes) {
+            return null;
+        }
+        if (!is_string($notes)) {
+            throw CouldNotDeserializeCommand::invalidPayload('"notes" must be a string.');
+        }
+
+        return '' === trim($notes) ? null : trim($notes);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     */
     private static function parseInstallations(array $payload): GearComponentInstallations
     {
         if (!isset($payload['installations'])) {

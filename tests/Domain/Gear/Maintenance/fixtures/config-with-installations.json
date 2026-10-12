@@ -7,6 +7,7 @@
       "label": "Winter wheelset",
       "localImagePath": null,
       "isRetired": false,
+      "notes": "Serial WH-123\nTubeless ready",
       "installations": [
         {
           "parent": "gear:b1",
@@ -48,6 +49,7 @@
       "label": "Winter tyres",
       "localImagePath": null,
       "isRetired": true,
+      "notes": null,
       "installations": [
         {
           "parent": "component:gearComponent-winter-wheelset",

@@ -89,6 +89,15 @@ class GearMaintenanceConfigTest extends ContainerTestCase
         $this->assertFalse(GearMaintenanceConfig::fromArray($this->getValidYml())->getGearComponents()->getFirst()->isRetired());
     }
 
+    public function testFromArrayReadsNotes(): void
+    {
+        $gearComponents = GearMaintenanceConfig::fromArray($this->getConfigWithInstallations())->getGearComponents();
+
+        $this->assertSame("Serial WH-123\nTubeless ready", $gearComponents->getFirst()->getNotes());
+        $this->assertNull($gearComponents->getLast()->getNotes());
+        $this->assertNull(GearMaintenanceConfig::fromArray($this->getValidYml())->getGearComponents()->getFirst()->getNotes());
+    }
+
     public function testFromArrayReadsComponentParents(): void
     {
         $config = GearMaintenanceConfig::fromArray($this->getConfigWithInstallations());

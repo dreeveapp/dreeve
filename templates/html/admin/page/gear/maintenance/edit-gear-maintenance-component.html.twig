@@ -59,6 +59,11 @@
                         </div>
                     </div>
                 </div>
+                <div>
+                    <label for="component-notes">{{ "Notes"|trans({}, 'admin') }}</label>
+                    <textarea id="component-notes" name="notes" rows="3"
+                              placeholder="{{ "Serial number, size, where you bought it, ..."|trans({}, 'admin') }}">{{ component ? component.getNotes()|e }}</textarea>
+                </div>
                 <div class="flex items-start gap-2">
                     <input type="checkbox" id="component-isRetired" name="isRetired" value="true" {{ component and component.isRetired() ? 'checked' }} class="mt-0.5">
                     <div>

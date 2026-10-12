@@ -90,6 +90,7 @@ final readonly class GearMaintenanceConfig
                 localImagePath: $component['localImagePath'] ?? null,
                 purchasePrice: $purchasePrice,
                 isRetired: (bool) ($component['isRetired'] ?? false),
+                notes: $component['notes'] ?? null,
             );
 
             foreach ($component['maintenance'] ?? [] as $task) {
