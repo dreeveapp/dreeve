@@ -47,7 +47,7 @@ class FileImportTest extends TestCase
         $fileImport->delete();
 
         $this->assertEquals(
-            [new FileImportWasDeleted(FileImportId::fromUnprefixed('abc'), ActivityId::fromUnprefixed('123'))],
+            [new FileImportWasDeleted(ActivityId::fromUnprefixed('123'))],
             $fileImport->getRecordedEvents()
         );
     }

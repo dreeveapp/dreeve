@@ -104,7 +104,6 @@ final class FileImport
     public function delete(): void
     {
         $this->recordThat(new FileImportWasDeleted(
-            fileImportId: $this->fileImportId,
             activityId: $this->activityId
         ));
     }
