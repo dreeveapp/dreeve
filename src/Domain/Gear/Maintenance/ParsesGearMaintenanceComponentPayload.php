@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Gear\Maintenance;
 
 use App\Domain\Gear\GearId;
-use App\Domain\Gear\GearIds;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
@@ -30,19 +31,23 @@ trait ParsesGearMaintenanceComponentPayload
     /**
      * @param array<string, mixed> $payload
      */
-    private static function parseAttachedTo(array $payload): GearIds
+    private static function parseAttachedTo(array $payload): GearComponentInstallations
     {
         if (!isset($payload['attachedTo']) || !is_array($payload['attachedTo'])) {
             throw CouldNotDeserializeCommand::invalidPayload('An "attachedTo" array is required.');
         }
 
-        return GearIds::fromArray(array_map(
-            static function (mixed $gearId): GearId {
+        return GearComponentInstallations::fromArray(array_map(
+            static function (mixed $gearId): GearComponentInstallation {
                 if (!is_string($gearId) || '' === trim($gearId)) {
                     throw CouldNotDeserializeCommand::invalidPayload('Each "attachedTo" entry must be a non-empty string.');
                 }
 
-                return GearId::fromUnprefixed(trim($gearId));
+                return GearComponentInstallation::create(
+                    gearId: GearId::fromUnprefixed(trim($gearId)),
+                    from: null,
+                    until: null,
+                );
             },
             array_values($payload['attachedTo']),
         ));

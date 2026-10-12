@@ -42,7 +42,10 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $created = $this->findComponentByLabel($config['components'], 'Brake pads');
         $this->assertNotNull($created);
         $this->assertNotEmpty($created['id']);
-        $this->assertSame(['b1', 'g2'], $created['attachedTo']);
+        $this->assertSame([
+            ['gearId' => 'b1', 'from' => null, 'until' => null],
+            ['gearId' => 'g2', 'from' => null, 'until' => null],
+        ], $created['installations']);
         $this->assertNull($created['localImagePath']);
         $this->assertSame(4999, $created['purchasePrice']['amountInCents']);
         $this->assertSame('EUR', $created['purchasePrice']['currency']);

@@ -44,7 +44,9 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $chain = $this->findComponentById($config['components'], 'gearComponent-chain');
         $this->assertNotNull($chain);
         $this->assertSame('Updated chain', $chain['label']);
-        $this->assertSame(['b9'], $chain['attachedTo']);
+        $this->assertSame([
+            ['gearId' => 'b9', 'from' => null, 'until' => null],
+        ], $chain['installations']);
 
         $this->assertSame('files/gear-maintenance/chain.png', $chain['localImagePath']);
         $this->assertCount(1, $chain['maintenance']);

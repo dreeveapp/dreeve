@@ -37,7 +37,7 @@ final readonly class CreateGearMaintenanceComponentCommandHandler implements Com
         $gearComponent = GearComponent::create(
             id: GearComponentId::random(),
             label: $command->getLabel(),
-            attachedTo: $command->getAttachedTo(),
+            installations: $command->getInstallations(),
             localImagePath: $localImagePath,
             purchasePrice: $command->getPurchasePrice(),
         );

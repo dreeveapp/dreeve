@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Gear\Maintenance;
 
 use App\Domain\Gear\GearId;
-use App\Domain\Gear\GearIds;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\ParsesGearMaintenanceComponentPayload;
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
@@ -62,7 +63,10 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
     public function testParseAttachedTo(): void
     {
         $this->assertEquals(
-            GearIds::fromArray([GearId::fromUnprefixed('b1'), GearId::fromUnprefixed('g2')]),
+            GearComponentInstallations::fromArray([
+                GearComponentInstallation::create(gearId: GearId::fromUnprefixed('b1'), from: null, until: null),
+                GearComponentInstallation::create(gearId: GearId::fromUnprefixed('g2'), from: null, until: null),
+            ]),
             $this->parser->doParseAttachedTo(['attachedTo' => [' b1 ', 'g2']]),
         );
     }
@@ -243,7 +247,7 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
                 return self::parseLabel($payload);
             }
 
-            public function doParseAttachedTo(array $payload): GearIds
+            public function doParseAttachedTo(array $payload): GearComponentInstallations
             {
                 return self::parseAttachedTo($payload);
             }

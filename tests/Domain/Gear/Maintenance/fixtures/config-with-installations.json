@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "ignoreRetiredGear": false,
+  "components": [
+    {
+      "id": "gearComponent-winter-wheelset",
+      "label": "Winter wheelset",
+      "localImagePath": null,
+      "installations": [
+        {"gearId": "b1", "from": "2024-11-01", "until": "2025-03-15"},
+        {"gearId": "b1", "from": "2025-11-01", "until": null},
+        {"gearId": "b2", "from": null, "until": "2024-11-01"}
+      ],
+      "maintenance": [
+        {"id": "maintenanceTask-hub-service", "label": "Hub service", "interval": {"value": 5000, "unit": "km"}}
+      ]
+    }
+  ]
+}

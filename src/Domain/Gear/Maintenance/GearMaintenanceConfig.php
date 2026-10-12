@@ -6,10 +6,13 @@ namespace App\Domain\Gear\Maintenance;
 
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIds;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Infrastructure\ValueObject\String\Name;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Money\Currency;
 use Money\Money;
 
@@ -54,10 +57,23 @@ final readonly class GearMaintenanceConfig
             $gearComponent = GearComponent::create(
                 id: GearComponentId::fromString((string) $component['id']),
                 label: Name::fromString($component['label']),
-                attachedTo: GearIds::fromArray(array_map(
-                    GearId::fromUnprefixed(...),
-                    $component['attachedTo']
-                )),
+                installations: GearComponentInstallations::fromArray(isset($component['installations'])
+                    ? array_map(
+                        static fn (array $installation): GearComponentInstallation => GearComponentInstallation::create(
+                            gearId: GearId::fromUnprefixed($installation['gearId']),
+                            from: isset($installation['from']) ? SerializableDateTime::fromString($installation['from']) : null,
+                            until: isset($installation['until']) ? SerializableDateTime::fromString($installation['until']) : null,
+                        ),
+                        $component['installations']
+                    )
+                    : array_map(
+                        static fn (string $gearId): GearComponentInstallation => GearComponentInstallation::create(
+                            gearId: GearId::fromUnprefixed($gearId),
+                            from: null,
+                            until: null,
+                        ),
+                        $component['attachedTo'] ?? []
+                    )),
                 localImagePath: $component['localImagePath'] ?? null,
                 purchasePrice: $purchasePrice
             );

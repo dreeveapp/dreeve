@@ -6,6 +6,8 @@ namespace App\Domain\Gear\Maintenance;
 
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIds;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTasks;
 use App\Infrastructure\ValueObject\String\Name;
@@ -18,7 +20,7 @@ final readonly class GearComponent implements \JsonSerializable
     private function __construct(
         private GearComponentId $id,
         private Name $label,
-        private GearIds $attachedTo,
+        private GearComponentInstallations $installations,
         private ?string $localImagePath,
         private ?Money $purchasePrice,
     ) {
@@ -28,14 +30,14 @@ final readonly class GearComponent implements \JsonSerializable
     public static function create(
         GearComponentId $id,
         Name $label,
-        GearIds $attachedTo,
+        GearComponentInstallations $installations,
         ?string $localImagePath,
         ?Money $purchasePrice,
     ): self {
         return new self(
             id: $id,
             label: $label,
-            attachedTo: $attachedTo,
+            installations: $installations,
             localImagePath: $localImagePath,
             purchasePrice: $purchasePrice,
         );
@@ -56,9 +58,14 @@ final readonly class GearComponent implements \JsonSerializable
         return $this->label;
     }
 
+    public function getInstallations(): GearComponentInstallations
+    {
+        return $this->installations;
+    }
+
     public function getAttachedTo(): GearIds
     {
-        return $this->attachedTo;
+        return $this->installations->getGearIds();
     }
 
     public function isAttachedTo(GearId $gearId): bool
@@ -83,19 +90,22 @@ final readonly class GearComponent implements \JsonSerializable
 
     public function normalizeGearIds(GearIds $normalizedGearIds): void
     {
-        foreach ($this->getAttachedTo() as $gearId) {
+        foreach ($this->installations as $installation) {
+            $gearId = $installation->getGearId();
             if ($gearId->isPrefixedWithStravaPrefix()) {
                 continue;
             }
 
             foreach ($normalizedGearIds as $normalizedGearId) {
-                // Try to match the gear id with the prefix.
                 if (!$gearId->matches($normalizedGearId)) {
                     continue;
                 }
 
-                // If we found a match, we can replace it.
-                $this->attachedTo->replace($gearId, $normalizedGearId);
+                $this->installations->replace($installation, GearComponentInstallation::create(
+                    gearId: $normalizedGearId,
+                    from: $installation->getFrom(),
+                    until: $installation->getUntil(),
+                ));
             }
         }
     }
@@ -109,8 +119,12 @@ final readonly class GearComponent implements \JsonSerializable
             'id' => (string) $this->id,
             'label' => (string) $this->label,
             'localImagePath' => $this->localImagePath,
-            'attachedTo' => $this->attachedTo->map(
-                static fn (GearId $gearId): string => $gearId->toUnprefixedString(),
+            'installations' => $this->installations->map(
+                static fn (GearComponentInstallation $installation): array => [
+                    'gearId' => $installation->getGearId()->toUnprefixedString(),
+                    'from' => $installation->getFrom()?->format('Y-m-d'),
+                    'until' => $installation->getUntil()?->format('Y-m-d'),
+                ],
             ),
             'maintenance' => $this->maintenanceTasks->map(
                 static fn (MaintenanceTask $task): array => [
