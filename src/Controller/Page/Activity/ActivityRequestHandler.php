@@ -22,6 +22,7 @@ use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamProfileCharts;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Import\FileImportRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
@@ -32,6 +33,7 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Measurement\ProvideMeasurementFormats;
+use App\Infrastructure\Security\AuthenticatedVisitor;
 use App\Infrastructure\Security\TrustedVisitor;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -59,6 +61,8 @@ final readonly class ActivityRequestHandler
         private PageRenderer $pageRenderer,
         private UrlGeneratorInterface $urlGenerator,
         private TrustedVisitor $trustedVisitor,
+        private FileImportRepository $fileImportRepository,
+        private AuthenticatedVisitor $authenticatedVisitor,
         private Environment $twig,
     ) {
     }
@@ -82,6 +86,7 @@ final readonly class ActivityRequestHandler
                 cacheTags: CacheTags::of(
                     ActivityCacheTag::for($activityId),
                     RootCacheTag::GEAR,
+                    RootCacheTag::SETTINGS_SECURITY,
                 ),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class, TrustedVisitorCacheContext::class),
             ),
@@ -138,6 +143,8 @@ final readonly class ActivityRequestHandler
             ] : null,
             'hasGpxLink' => $this->activityStreamRepository->hasOneForActivityAndStreamType($activityId, StreamType::LAT_LNG),
             'gpxFileName' => GpxFileName::for($activity),
+            'hasOriginalFileLink' => ($this->authenticatedVisitor->isAuthenticated() || $this->settingsRepository->security()->visitorsCanDownloadOriginalFiles())
+                && $this->fileImportRepository->hasFileContentsForActivity($activityId),
             'distributionCharts' => $this->distributionChartsBuilder->buildFor($activity),
             'splits' => $this->activitySplitRepository->findBy(
                 activityId: $activityId,

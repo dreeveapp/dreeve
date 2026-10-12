@@ -10,16 +10,23 @@ use App\Domain\Activity\Lap\ActivityLapId;
 use App\Domain\Activity\Lap\ActivityLapRepository;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetric;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Import\FileImportId;
+use App\Domain\Import\FileImportRepository;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Config\DemoMode;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Lap\ActivityLapBuilder;
 use App\Tests\Domain\Activity\Split\ActivitySplitBuilder;
+use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
+use App\Tests\Domain\Import\FileImportBuilder;
 use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -43,7 +50,7 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities.9756441741, gear',
+            'settings.appearance, settings.general, activities.9756441741, gear, settings.security',
         );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
@@ -184,6 +191,64 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
         yield 'demo mode disabled' => [false, false, true, 'auth=anon.trust=trusted'];
         yield 'demo mode, anonymous visitor' => [true, false, false, 'auth=anon.trust=anonymized'];
         yield 'demo mode, logged in visitor' => [true, true, true, 'auth=auth.trust=trusted'];
+    }
+
+    #[DataProvider('provideDownloadButtonScenarios')]
+    public function testItOffersTheDownloadsTheVisitorMayUse(bool $hasGpsStream, bool $loggedIn, bool $visitorsCanDownloadOriginalFiles, bool $expectDropButton, ?string $expectedPlainButtonHref): void
+    {
+        $this->provideFullTestSet();
+        $this->getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::SECURITY, [
+            'visitorsCanDownloadOriginalFiles' => $visitorsCanDownloadOriginalFiles,
+        ]);
+
+        $activityId = ActivityId::fromUnprefixed('123456789');
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->build(),
+            [],
+        ));
+        if ($hasGpsStream) {
+            $this->getContainer()->get(ActivityStreamRepository::class)->add(
+                ActivityStreamBuilder::fromDefaults()
+                    ->withActivityId($activityId)
+                    ->withStreamType(StreamType::LAT_LNG)
+                    ->withData([[51.2, 3.2], [51.21, 3.21]])
+                    ->build()
+            );
+        }
+        $this->getContainer()->get(FileImportRepository::class)->add(
+            FileImportBuilder::fromDefaults()
+                ->withFileImportId(FileImportId::fromUnprefixed('1'))
+                ->withFileContents('raw fit bytes')
+                ->withActivityId($activityId)
+                ->build()
+        );
+        if ($loggedIn) {
+            $this->client->loginUser($this->adminUser());
+        }
+
+        $crawler = $this->client->request('GET', '/activities/'.$activityId);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertCount($expectDropButton ? 1 : 0, $crawler->filter('button[data-dropdown="activityDownloadDropdown"]'));
+        $this->assertSame(
+            $expectDropButton ? ['/activities/activity-123456789/route.gpx', '/activities/activity-123456789/original-file'] : [],
+            $crawler->filter('#activityDownloadDropdown a')->extract(['href'])
+        );
+        $this->assertSame(
+            null === $expectedPlainButtonHref ? [] : [$expectedPlainButtonHref],
+            $crawler->filter('a.shadow-xs[href$="/route.gpx"], a.shadow-xs[href$="/original-file"]')->extract(['href'])
+        );
+    }
+
+    public static function provideDownloadButtonScenarios(): \Generator
+    {
+        yield 'admin, both files' => [true, true, false, true, null];
+        yield 'visitor, original file not allowed' => [true, false, false, false, '/activities/activity-123456789/route.gpx'];
+        yield 'visitor, original file allowed' => [true, false, true, true, null];
+        yield 'admin, no GPS stream' => [false, true, false, false, '/activities/activity-123456789/original-file'];
+        yield 'visitor, no GPS stream, original file not allowed' => [false, false, false, false, null];
     }
 
     #[DataProvider('provideUrlsThatAreNotFound')]

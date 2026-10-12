@@ -70,12 +70,41 @@
                 </div>
             </div>
             <div class="flex items-center gap-2 shrink-0">
-                {% if hasGpxLink %}
-                    <a href="{{ relativeUrl(path('activity_gpx', {'activityId': activity.getId()})) }}" download="{{ gpxFileName }}" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs rounded-lg px-3 py-1.5 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                {% set gpxUrl = relativeUrl(path('activity_gpx', {'activityId': activity.getId()})) %}
+                {%- set originalFileUrl = relativeUrl(path('activity_original_file', {'activityId': activity.getId()})) %}
+                {%- set downloadButtonClasses = 'hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs rounded-lg px-3 py-1.5 transition' %}
+                {%- set downloadIcon %}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                {% endset %}
+                {%- if hasGpxLink and hasOriginalFileLink %}
+                    <button id="activityDownloadButton" data-dropdown="activityDownloadDropdown" data-dropdown-placement="bottom-end" data-dropdown-offset-distance="6" type="button" class="unstyled cursor-pointer {{ downloadButtonClasses }}">
+                        {{ downloadIcon }}
+                        {{ "Download"|trans }}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m6 9 6 6 6-6"/>
                         </svg>
+                    </button>
+                    <div id="activityDownloadDropdown" class="hidden z-20 w-48 rounded-lg border border-gray-200 bg-white p-1 shadow-xl">
+                        <ul aria-labelledby="activityDownloadButton">
+                            <li>
+                                <a href="{{ gpxUrl }}" download="{{ gpxFileName }}" data-close-dropdown class="flex w-full items-center rounded-md px-2 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50">GPX</a>
+                            </li>
+                            <li>
+                                <a href="{{ originalFileUrl }}" data-close-dropdown class="flex w-full items-center rounded-md px-2 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50">{{ "Original file"|trans }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                {% elseif hasGpxLink %}
+                    <a href="{{ gpxUrl }}" download="{{ gpxFileName }}" class="{{ downloadButtonClasses }}">
+                        {{ downloadIcon }}
                         GPX
+                    </a>
+                {% elseif hasOriginalFileLink %}
+                    <a href="{{ originalFileUrl }}" class="{{ downloadButtonClasses }}">
+                        {{ downloadIcon }}
+                        {{ "Original file"|trans }}
                     </a>
                 {% endif %}
             </div>
