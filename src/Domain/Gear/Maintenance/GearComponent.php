@@ -7,6 +7,7 @@ namespace App\Domain\Gear\Maintenance;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
+use App\Domain\Gear\Maintenance\Installation\InstallationParent;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTasks;
 use App\Infrastructure\ValueObject\String\Name;
@@ -80,8 +81,8 @@ final readonly class GearComponent implements \JsonSerializable
     public function normalizeGearIds(GearIds $normalizedGearIds): void
     {
         foreach ($this->installations as $installation) {
-            $gearId = $installation->getGearId();
-            if ($gearId->isPrefixedWithStravaPrefix()) {
+            $gearId = $installation->getParent()->getGearId();
+            if (!$gearId || $gearId->isPrefixedWithStravaPrefix()) {
                 continue;
             }
 
@@ -91,7 +92,7 @@ final readonly class GearComponent implements \JsonSerializable
                 }
 
                 $this->installations->replace($installation, GearComponentInstallation::create(
-                    gearId: $normalizedGearId,
+                    parent: InstallationParent::gear($normalizedGearId),
                     from: $installation->getFrom(),
                     until: $installation->getUntil(),
                     sportTypes: $installation->getSportTypes(),

@@ -45,7 +45,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->assertNotNull($chain);
         $this->assertSame('Updated chain', $chain['label']);
         $this->assertSame([
-            ['gearId' => 'b9', 'from' => null, 'until' => null, 'sportTypes' => []],
+            ['parent' => ['type' => 'gear', 'id' => 'b9'], 'from' => null, 'until' => null, 'sportTypes' => []],
         ], $chain['installations']);
 
         $this->assertSame('files/gear-maintenance/chain.png', $chain['localImagePath']);

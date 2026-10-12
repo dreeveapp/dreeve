@@ -9,6 +9,7 @@ use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
+use App\Domain\Gear\Maintenance\Installation\InstallationParent;
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
@@ -59,7 +60,7 @@ trait ParsesGearMaintenanceComponentPayload
             }
 
             $installations->add(GearComponentInstallation::create(
-                gearId: GearId::fromUnprefixed(trim($installation['gearId'])),
+                parent: InstallationParent::gear(GearId::fromUnprefixed(trim($installation['gearId']))),
                 from: $from,
                 until: $until,
                 sportTypes: self::parseInstallationSportTypes($installation),

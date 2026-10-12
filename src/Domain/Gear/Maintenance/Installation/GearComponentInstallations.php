@@ -19,8 +19,8 @@ final class GearComponentInstallations extends Collection
 
     public function getGearIds(): GearIds
     {
-        return GearIds::fromArray($this->map(
-            static fn (GearComponentInstallation $installation) => $installation->getGearId(),
-        ))->unique();
+        return GearIds::fromArray(array_values(array_filter($this->map(
+            static fn (GearComponentInstallation $installation) => $installation->getParent()->getGearId(),
+        ))))->unique();
     }
 }

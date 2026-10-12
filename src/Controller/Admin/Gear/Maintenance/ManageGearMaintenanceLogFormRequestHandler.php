@@ -77,7 +77,8 @@ final readonly class ManageGearMaintenanceLogFormRequestHandler
         $gears = $this->gearRepository->findAll();
 
         $components = [];
-        foreach ($this->gearMaintenanceRepository->find()->getGearComponents() as $gearComponent) {
+        $gearComponents = $this->gearMaintenanceRepository->find()->getGearComponents();
+        foreach ($gearComponents as $gearComponent) {
             $tasks = [];
             foreach ($gearComponent->getMaintenanceTasks() as $maintenanceTask) {
                 $tasks[] = [
@@ -87,7 +88,7 @@ final readonly class ManageGearMaintenanceLogFormRequestHandler
             }
 
             $componentGears = [];
-            foreach ($gearComponent->getInstallations()->getGearIds() as $gearId) {
+            foreach ($gearComponents->resolveUsageWindowsFor($gearComponent)->getGearIds() as $gearId) {
                 if (!($gear = $gears->getByGearId($gearId)) instanceof Gear) {
                     continue;
                 }

@@ -1,0 +1,30 @@
+{
+  "enabled": true,
+  "components": [
+    {
+      "id": "gearComponent-chain",
+      "label": "Chain",
+      "localImagePath": null,
+      "installations": [
+        {
+          "gearId": "b1",
+          "from": "2025-01-01",
+          "until": null,
+          "sportTypes": [
+            "Ride"
+          ]
+        }
+      ],
+      "maintenance": [
+        {
+          "id": "maintenanceTask-chain-lubed",
+          "label": "Lube",
+          "interval": {
+            "value": 500,
+            "unit": "km"
+          }
+        }
+      ]
+    }
+  ]
+}

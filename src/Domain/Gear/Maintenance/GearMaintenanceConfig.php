@@ -10,6 +10,8 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
+use App\Domain\Gear\Maintenance\Installation\InstallationParent;
+use App\Domain\Gear\Maintenance\Installation\InstallationParentType;
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
@@ -62,7 +64,10 @@ final readonly class GearMaintenanceConfig
                 installations: GearComponentInstallations::fromArray(isset($component['installations'])
                     ? array_map(
                         static fn (array $installation): GearComponentInstallation => GearComponentInstallation::create(
-                            gearId: GearId::fromUnprefixed($installation['gearId']),
+                            parent: match ($installation['parent']['type'] ?? InstallationParentType::GEAR->value) {
+                                InstallationParentType::COMPONENT->value => InstallationParent::component(GearComponentId::fromString($installation['parent']['id'])),
+                                default => InstallationParent::gear(GearId::fromUnprefixed($installation['parent']['id'] ?? $installation['gearId'])),
+                            },
                             from: isset($installation['from']) ? SerializableDateTime::fromString($installation['from']) : null,
                             until: isset($installation['until']) ? SerializableDateTime::fromString($installation['until']) : null,
                             sportTypes: SportTypes::fromArray(array_map(
@@ -74,7 +79,7 @@ final readonly class GearMaintenanceConfig
                     )
                     : array_map(
                         static fn (string $gearId): GearComponentInstallation => GearComponentInstallation::create(
-                            gearId: GearId::fromUnprefixed($gearId),
+                            parent: InstallationParent::gear(GearId::fromUnprefixed($gearId)),
                             from: null,
                             until: null,
                             sportTypes: SportTypes::empty(),

@@ -5,6 +5,7 @@ namespace App\Tests\Domain\Gear\Maintenance\Installation;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
+use App\Domain\Gear\Maintenance\Installation\InstallationParent;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +16,7 @@ class GearComponentInstallationTest extends TestCase
     public function testIsActiveOn(?string $from, ?string $until, string $on, bool $expectedIsActive): void
     {
         $installation = GearComponentInstallation::create(
-            gearId: GearId::fromUnprefixed('1'),
+            parent: InstallationParent::gear(GearId::fromUnprefixed('1')),
             from: $from ? SerializableDateTime::fromString($from) : null,
             until: $until ? SerializableDateTime::fromString($until) : null,
             sportTypes: SportTypes::empty(),
@@ -44,7 +45,7 @@ class GearComponentInstallationTest extends TestCase
         $this->expectExceptionObject(new \InvalidArgumentException('An installation must end after it starts'));
 
         GearComponentInstallation::create(
-            gearId: GearId::fromUnprefixed('1'),
+            parent: InstallationParent::gear(GearId::fromUnprefixed('1')),
             from: SerializableDateTime::fromString($from),
             until: SerializableDateTime::fromString($until),
             sportTypes: SportTypes::empty(),

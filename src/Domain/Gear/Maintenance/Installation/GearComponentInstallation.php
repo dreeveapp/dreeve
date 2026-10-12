@@ -6,13 +6,12 @@ namespace App\Domain\Gear\Maintenance\Installation;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
-use App\Domain\Gear\GearId;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class GearComponentInstallation implements \JsonSerializable
 {
     private function __construct(
-        private GearId $gearId,
+        private InstallationParent $parent,
         private ?SerializableDateTime $from,
         private ?SerializableDateTime $until,
         private SportTypes $sportTypes,
@@ -23,22 +22,22 @@ final readonly class GearComponentInstallation implements \JsonSerializable
     }
 
     public static function create(
-        GearId $gearId,
+        InstallationParent $parent,
         ?SerializableDateTime $from,
         ?SerializableDateTime $until,
         SportTypes $sportTypes,
     ): self {
         return new self(
-            gearId: $gearId,
+            parent: $parent,
             from: $from,
             until: $until,
             sportTypes: $sportTypes,
         );
     }
 
-    public function getGearId(): GearId
+    public function getParent(): InstallationParent
     {
-        return $this->gearId;
+        return $this->parent;
     }
 
     public function getFrom(): ?SerializableDateTime
@@ -66,12 +65,12 @@ final readonly class GearComponentInstallation implements \JsonSerializable
     }
 
     /**
-     * @return array{gearId: string, from: ?string, until: ?string, sportTypes: array<mixed>}
+     * @return array{parent: InstallationParent, from: ?string, until: ?string, sportTypes: array<mixed>}
      */
     public function jsonSerialize(): array
     {
         return [
-            'gearId' => $this->gearId->toUnprefixedString(),
+            'parent' => $this->parent,
             'from' => $this->from?->format('Y-m-d'),
             'until' => $this->until?->format('Y-m-d'),
             'sportTypes' => $this->sportTypes->map(static fn (SportType $sportType): string => $sportType->value),

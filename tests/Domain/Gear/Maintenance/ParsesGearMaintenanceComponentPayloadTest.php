@@ -9,6 +9,7 @@ use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
+use App\Domain\Gear\Maintenance\Installation\InstallationParent;
 use App\Domain\Gear\Maintenance\ParsesGearMaintenanceComponentPayload;
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
@@ -68,13 +69,13 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
         $this->assertEquals(
             GearComponentInstallations::fromArray([
                 GearComponentInstallation::create(
-                    gearId: GearId::fromUnprefixed('b1'),
+                    parent: InstallationParent::gear(GearId::fromUnprefixed('b1')),
                     from: null,
                     until: SerializableDateTime::fromString('2025-03-15'),
                     sportTypes: SportTypes::fromArray([SportType::RIDE, SportType::GRAVEL_RIDE]),
                 ),
                 GearComponentInstallation::create(
-                    gearId: GearId::fromUnprefixed('g2'),
+                    parent: InstallationParent::gear(GearId::fromUnprefixed('g2')),
                     from: SerializableDateTime::fromString('2025-03-15'),
                     until: null,
                     sportTypes: SportTypes::empty(),

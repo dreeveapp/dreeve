@@ -77,7 +77,7 @@
                             <div class="min-w-0">
                                 <label for="installations-__index__-gearId" class="mt-0! text-xxs">{{ "Gear"|trans }}</label>
                                 <select id="installations-__index__-gearId" name="installations[__index__][gearId]"
-                                        data-repeater-field="gearId" required class="mt-0">
+                                        data-repeater-field="parent.id" required class="mt-0">
                                     <option value="">{{ "Select gear"|trans({}, 'admin') }}</option>
                                     {% for gear in gears %}
                                         <option value="{{ gear.getId().toUnprefixedString() }}">{{ gear.getName() }}</option>

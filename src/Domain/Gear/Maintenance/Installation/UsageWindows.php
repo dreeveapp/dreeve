@@ -18,6 +18,13 @@ final class UsageWindows extends Collection
         return UsageWindow::class;
     }
 
+    public function getGearIds(): GearIds
+    {
+        return GearIds::fromArray($this->map(
+            static fn (UsageWindow $usageWindow) => $usageWindow->getGearId(),
+        ))->unique();
+    }
+
     public function getGearIdsActiveOn(SerializableDateTime $on): GearIds
     {
         return GearIds::fromArray($this
