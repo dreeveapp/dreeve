@@ -23,6 +23,12 @@ final readonly class GearMaintenanceInvalidateCacheTagsListener
     }
 
     #[AsEventListener]
+    public function reactToGearComponentWasUpdated(GearComponentWasUpdated $event): void
+    {
+        $this->renderCache->invalidateTags(RootCacheTag::GEAR_MAINTENANCE);
+    }
+
+    #[AsEventListener]
     public function reactToGearMaintenanceLogWasUpdated(GearMaintenanceLogWasUpdated $event): void
     {
         $this->renderCache->invalidateTags(RootCacheTag::GEAR_MAINTENANCE);

@@ -42,7 +42,11 @@
             "unit": "km"
           }
         }
-      ]
+      ],
+      "purchasePrice": {
+        "amountInCents": 45000,
+        "currency": "EUR"
+      }
     },
     {
       "id": "gearComponent-winter-tyres",

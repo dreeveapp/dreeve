@@ -4,27 +4,47 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance;
 
+use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\Installation\InstallationParent;
+use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
+use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTasks;
+use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\ValueObject\String\Name;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Doctrine\ORM\Mapping as ORM;
+use Money\Currency;
 use Money\Money;
 
-final readonly class GearComponent implements \JsonSerializable
+#[ORM\Entity]
+#[ORM\Table(name: 'GearComponent')]
+final class GearComponent implements \JsonSerializable
 {
-    private MaintenanceTasks $maintenanceTasks;
+    use RecordsEvents;
+
+    #[ORM\Column(type: 'json')]
+    private readonly MaintenanceTasks $maintenanceTasks;
 
     private function __construct(
-        private GearComponentId $id,
-        private Name $label,
-        private GearComponentInstallations $installations,
-        private ?string $localImagePath,
-        private ?Money $purchasePrice,
-        private bool $isRetired,
-        private ?string $notes,
+        #[ORM\Id, ORM\Column(name: 'gearComponentId', type: 'string', unique: true)]
+        private readonly GearComponentId $id,
+        #[ORM\Column(type: 'string')]
+        private readonly Name $label,
+        #[ORM\Column(type: 'json')]
+        private readonly GearComponentInstallations $installations,
+        #[ORM\Column(type: 'string', nullable: true)]
+        private readonly ?string $localImagePath,
+        #[ORM\Embedded(class: Money::class)]
+        private readonly ?Money $purchasePrice,
+        #[ORM\Column(type: 'boolean')]
+        private readonly bool $isRetired,
+        #[ORM\Column(type: 'text', nullable: true)]
+        private readonly ?string $notes,
     ) {
         $this->maintenanceTasks = MaintenanceTasks::empty();
     }
@@ -38,7 +58,7 @@ final readonly class GearComponent implements \JsonSerializable
         bool $isRetired,
         ?string $notes,
     ): self {
-        return new self(
+        $gearComponent = new self(
             id: $id,
             label: $label,
             installations: $installations,
@@ -47,6 +67,52 @@ final readonly class GearComponent implements \JsonSerializable
             isRetired: $isRetired,
             notes: $notes,
         );
+        $gearComponent->recordThat(new GearComponentWasUpdated());
+
+        return $gearComponent;
+    }
+
+    /**
+     * @param array<string, mixed> $component
+     */
+    public static function fromArray(array $component): self
+    {
+        $purchasePrice = null;
+        if (!empty($component['purchasePrice']['amountInCents'])) {
+            $purchasePrice = new Money(
+                amount: (int) $component['purchasePrice']['amountInCents'],
+                currency: new Currency($component['purchasePrice']['currency'])
+            );
+        }
+
+        $gearComponent = new self(
+            id: GearComponentId::fromString((string) $component['id']),
+            label: Name::fromString($component['label']),
+            installations: GearComponentInstallations::fromArray(array_map(
+                static fn (array $installation): GearComponentInstallation => GearComponentInstallation::create(
+                    parent: InstallationParent::fromString($installation['parent']),
+                    from: isset($installation['from']) ? SerializableDateTime::fromString($installation['from']) : null,
+                    until: isset($installation['until']) ? SerializableDateTime::fromString($installation['until']) : null,
+                    sportTypes: SportTypes::fromArray(array_map(SportType::from(...), $installation['sportTypes'])),
+                ),
+                $component['installations']
+            )),
+            localImagePath: $component['localImagePath'] ?? null,
+            purchasePrice: $purchasePrice,
+            isRetired: (bool) $component['isRetired'],
+            notes: $component['notes'],
+        );
+
+        foreach ($component['maintenance'] ?? [] as $task) {
+            $gearComponent->addMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromString($task['id']),
+                label: Name::fromString($task['label']),
+                intervalValue: $task['interval']['value'],
+                intervalUnit: IntervalUnit::from($task['interval']['unit'])
+            ));
+        }
+
+        return $gearComponent;
     }
 
     public function addMaintenanceTask(MaintenanceTask $task): void
@@ -129,16 +195,7 @@ final readonly class GearComponent implements \JsonSerializable
             'isRetired' => $this->isRetired,
             'notes' => $this->notes,
             'installations' => $this->installations,
-            'maintenance' => $this->maintenanceTasks->map(
-                static fn (MaintenanceTask $task): array => [
-                    'id' => (string) $task->getId(),
-                    'label' => (string) $task->getLabel(),
-                    'interval' => [
-                        'value' => $task->getIntervalValue(),
-                        'unit' => $task->getIntervalUnit()->value,
-                    ],
-                ],
-            ),
+            'maintenance' => $this->maintenanceTasks,
         ];
 
         if ($this->purchasePrice instanceof Money) {

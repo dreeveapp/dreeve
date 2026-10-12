@@ -6,7 +6,7 @@ namespace App\Domain\Gear\Maintenance\Task;
 
 use App\Infrastructure\ValueObject\String\Name;
 
-final readonly class MaintenanceTask
+final readonly class MaintenanceTask implements \JsonSerializable
 {
     private function __construct(
         private MaintenanceTaskId $id,
@@ -48,5 +48,20 @@ final readonly class MaintenanceTask
     public function getIntervalUnit(): IntervalUnit
     {
         return $this->intervalUnit;
+    }
+
+    /**
+     * @return array{id: string, label: string, interval: array{value: int, unit: string}}
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => (string) $this->id,
+            'label' => (string) $this->label,
+            'interval' => [
+                'value' => $this->intervalValue,
+                'unit' => $this->intervalUnit->value,
+            ],
+        ];
     }
 }

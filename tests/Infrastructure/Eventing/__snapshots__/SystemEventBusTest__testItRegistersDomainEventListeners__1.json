@@ -42,6 +42,7 @@
     ],
     "App\\Domain\\Gear\\Maintenance\\GearMaintenanceInvalidateCacheTagsListener": [
         "reactToGearMaintenanceConfigWasUpdated",
+        "reactToGearComponentWasUpdated",
         "reactToGearMaintenanceLogWasUpdated"
     ],
     "App\\Domain\\Gear\\RecordingDevice\\RecordingDeviceInvalidateCacheTagsListener": [

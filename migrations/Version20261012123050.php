@@ -16,6 +16,11 @@ final class Version20261012123050 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        $this->addSql('CREATE TABLE GearComponent (maintenanceTasks CLOB NOT NULL, gearComponentId VARCHAR(255) NOT NULL, label VARCHAR(255) NOT NULL, installations CLOB NOT NULL, localImagePath VARCHAR(255) DEFAULT NULL, isRetired BOOLEAN NOT NULL, notes CLOB DEFAULT NULL, purchasePriceAmount BIGINT DEFAULT NULL, purchasePriceCurrency VARCHAR(3) DEFAULT NULL, PRIMARY KEY (gearComponentId))');
+    }
+
+    public function postUp(Schema $schema): void
+    {
         $value = $this->connection->fetchOne('SELECT value FROM KeyValue WHERE "key" = :key', ['key' => 'gearMaintenance']);
         if (!is_string($value)) {
             return;
@@ -55,7 +60,7 @@ final class Version20261012123050 extends AbstractMigration
             $config['components'][$index] = $migratedComponent;
         }
 
-        $this->addSql(
+        $this->connection->executeStatement(
             'UPDATE KeyValue SET value = :value WHERE "key" = :key',
             ['value' => json_encode($config, JSON_THROW_ON_ERROR), 'key' => 'gearMaintenance'],
         );
