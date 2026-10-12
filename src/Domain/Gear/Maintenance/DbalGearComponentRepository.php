@@ -26,7 +26,17 @@ final readonly class DbalGearComponentRepository extends DbalRepository implemen
         $sql = 'INSERT INTO GearComponent (gearComponentId, label, localImagePath, purchasePriceAmount, purchasePriceCurrency, isRetired, notes, installations, maintenanceTasks)
                 VALUES (:gearComponentId, :label, :localImagePath, :purchasePriceAmount, :purchasePriceCurrency, :isRetired, :notes, :installations, :maintenanceTasks)';
 
-        $this->connection->executeStatement($sql, $this->toParameters($gearComponent));
+        $this->connection->executeStatement($sql, [
+            'gearComponentId' => (string) $gearComponent->getId(),
+            'label' => (string) $gearComponent->getLabel(),
+            'localImagePath' => $gearComponent->getLocalImagePath(),
+            'purchasePriceAmount' => $gearComponent->getPurchasePrice()?->getAmount(),
+            'purchasePriceCurrency' => $gearComponent->getPurchasePrice()?->getCurrency()->getCode(),
+            'isRetired' => (int) $gearComponent->isRetired(),
+            'notes' => $gearComponent->getNotes(),
+            'installations' => Json::encode($gearComponent->getInstallations()),
+            'maintenanceTasks' => Json::encode($gearComponent->getMaintenanceTasks()),
+        ]);
         $this->eventBus->publishEvents($gearComponent->getRecordedEvents());
     }
 
@@ -43,7 +53,17 @@ final readonly class DbalGearComponentRepository extends DbalRepository implemen
                     maintenanceTasks = :maintenanceTasks
                 WHERE gearComponentId = :gearComponentId';
 
-        $this->connection->executeStatement($sql, $this->toParameters($gearComponent));
+        $this->connection->executeStatement($sql, [
+            'gearComponentId' => (string) $gearComponent->getId(),
+            'label' => (string) $gearComponent->getLabel(),
+            'localImagePath' => $gearComponent->getLocalImagePath(),
+            'purchasePriceAmount' => $gearComponent->getPurchasePrice()?->getAmount(),
+            'purchasePriceCurrency' => $gearComponent->getPurchasePrice()?->getCurrency()->getCode(),
+            'isRetired' => (int) $gearComponent->isRetired(),
+            'notes' => $gearComponent->getNotes(),
+            'installations' => Json::encode($gearComponent->getInstallations()),
+            'maintenanceTasks' => Json::encode($gearComponent->getMaintenanceTasks()),
+        ]);
         $this->eventBus->publishEvents($gearComponent->getRecordedEvents());
     }
 
@@ -86,26 +106,6 @@ final readonly class DbalGearComponentRepository extends DbalRepository implemen
         }
 
         return $gearComponents;
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function toParameters(GearComponent $gearComponent): array
-    {
-        $purchasePrice = $gearComponent->getPurchasePrice();
-
-        return [
-            'gearComponentId' => (string) $gearComponent->getId(),
-            'label' => (string) $gearComponent->getLabel(),
-            'localImagePath' => $gearComponent->getLocalImagePath(),
-            'purchasePriceAmount' => $purchasePrice?->getAmount(),
-            'purchasePriceCurrency' => $purchasePrice?->getCurrency()->getCode(),
-            'isRetired' => (int) $gearComponent->isRetired(),
-            'notes' => $gearComponent->getNotes(),
-            'installations' => Json::encode($gearComponent->getInstallations()),
-            'maintenanceTasks' => Json::encode($gearComponent->getMaintenanceTasks()),
-        ];
     }
 
     /**
