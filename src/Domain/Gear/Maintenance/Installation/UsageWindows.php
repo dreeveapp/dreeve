@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance\Installation;
 
+use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIds;
 use App\Infrastructure\ValueObject\Collection;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -21,7 +22,7 @@ final class UsageWindows extends Collection
     public function getGearIds(): GearIds
     {
         return GearIds::fromArray($this->map(
-            static fn (UsageWindow $usageWindow) => $usageWindow->getGearId(),
+            static fn (UsageWindow $usageWindow): GearId => $usageWindow->getGearId(),
         ))->unique();
     }
 
@@ -29,7 +30,7 @@ final class UsageWindows extends Collection
     {
         return GearIds::fromArray($this
             ->filter(static fn (UsageWindow $usageWindow): bool => $usageWindow->isActiveOn($on))
-            ->map(static fn (UsageWindow $usageWindow) => $usageWindow->getGearId())
+            ->map(static fn (UsageWindow $usageWindow): GearId => $usageWindow->getGearId())
         )->unique();
     }
 
@@ -48,11 +49,11 @@ final class UsageWindows extends Collection
             $windowConditions = [sprintf('gearId = :usageWindow%dGearId', $index)];
             $parameters[sprintf('usageWindow%dGearId', $index)] = (string) $usageWindow->getGearId();
 
-            if ($from = $usageWindow->getFrom()) {
+            if (($from = $usageWindow->getFrom()) instanceof SerializableDateTime) {
                 $windowConditions[] = sprintf('startDateTime >= :usageWindow%dFrom', $index);
                 $parameters[sprintf('usageWindow%dFrom', $index)] = (string) $from;
             }
-            if ($until = $usageWindow->getUntil()) {
+            if (($until = $usageWindow->getUntil()) instanceof SerializableDateTime) {
                 $windowConditions[] = sprintf('startDateTime < :usageWindow%dUntil', $index);
                 $parameters[sprintf('usageWindow%dUntil', $index)] = (string) $until;
             }

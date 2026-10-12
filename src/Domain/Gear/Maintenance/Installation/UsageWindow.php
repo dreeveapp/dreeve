@@ -54,10 +54,10 @@ final readonly class UsageWindow
 
     public function isActiveOn(SerializableDateTime $on): bool
     {
-        if ($this->from && $on->isBefore($this->from)) {
+        if ($this->from instanceof SerializableDateTime && $on->isBefore($this->from)) {
             return false;
         }
 
-        return !$this->until || $on->isBefore($this->until);
+        return !$this->until instanceof SerializableDateTime || $on->isBefore($this->until);
     }
 }

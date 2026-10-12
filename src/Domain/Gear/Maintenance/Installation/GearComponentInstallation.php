@@ -16,7 +16,7 @@ final readonly class GearComponentInstallation implements \JsonSerializable
         private ?SerializableDateTime $until,
         private SportTypes $sportTypes,
     ) {
-        if ($this->from && $this->until && $this->until->isBeforeOrOn($this->from)) {
+        if ($this->from instanceof SerializableDateTime && $this->until instanceof SerializableDateTime && $this->until->isBeforeOrOn($this->from)) {
             throw new \InvalidArgumentException('An installation must end after it starts');
         }
     }
@@ -57,11 +57,11 @@ final readonly class GearComponentInstallation implements \JsonSerializable
 
     public function isActiveOn(SerializableDateTime $on): bool
     {
-        if ($this->from && $on->isBefore($this->from)) {
+        if ($this->from instanceof SerializableDateTime && $on->isBefore($this->from)) {
             return false;
         }
 
-        return !$this->until || $on->isBefore($this->until);
+        return !$this->until instanceof SerializableDateTime || $on->isBefore($this->until);
     }
 
     /**

@@ -6,6 +6,7 @@ namespace App\Domain\Gear\Maintenance;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
+use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
@@ -18,12 +19,13 @@ use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 use Money\Currency;
 use Money\Money;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'GearComponent')]
-final class GearComponent implements \JsonSerializable
+final class GearComponent implements JsonSerializable
 {
     use RecordsEvents;
 
@@ -164,7 +166,7 @@ final class GearComponent implements \JsonSerializable
     {
         foreach ($this->installations as $installation) {
             $gearId = $installation->getParent()->getGearId();
-            if (!$gearId || $gearId->isPrefixedWithStravaPrefix()) {
+            if (!$gearId instanceof GearId || $gearId->isPrefixedWithStravaPrefix()) {
                 continue;
             }
 

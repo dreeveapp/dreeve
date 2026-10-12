@@ -51,7 +51,7 @@ final class GearComponents extends Collection
             if (!$installation->isActiveOn($on)) {
                 continue;
             }
-            if (!$parentComponentId = $installation->getParent()->getGearComponentId()) {
+            if (!($parentComponentId = $installation->getParent()->getGearComponentId()) instanceof GearComponentId) {
                 continue;
             }
             $parentComponent = $this->find(
@@ -83,7 +83,7 @@ final class GearComponents extends Collection
         $usageWindows = UsageWindows::empty();
         foreach ($gearComponent->getInstallations() as $installation) {
             $parent = $installation->getParent();
-            if ($gearId = $parent->getGearId()) {
+            if (($gearId = $parent->getGearId()) instanceof \App\Domain\Gear\GearId) {
                 $usageWindows->add(UsageWindow::create(
                     gearId: $gearId,
                     from: $installation->getFrom(),
@@ -103,14 +103,14 @@ final class GearComponents extends Collection
 
             foreach ($this->resolveUsageWindowsAlongPath($parentComponent, $path) as $parentUsageWindow) {
                 $from = $installation->getFrom();
-                if (!$from || ($parentUsageWindow->getFrom() && $parentUsageWindow->getFrom()->isAfter($from))) {
+                if (!$from instanceof SerializableDateTime || ($parentUsageWindow->getFrom() instanceof SerializableDateTime && $parentUsageWindow->getFrom()->isAfter($from))) {
                     $from = $parentUsageWindow->getFrom();
                 }
                 $until = $installation->getUntil();
-                if (!$until || ($parentUsageWindow->getUntil() && $parentUsageWindow->getUntil()->isBefore($until))) {
+                if (!$until instanceof SerializableDateTime || ($parentUsageWindow->getUntil() instanceof SerializableDateTime && $parentUsageWindow->getUntil()->isBefore($until))) {
                     $until = $parentUsageWindow->getUntil();
                 }
-                if ($from && $until && $until->isBeforeOrOn($from)) {
+                if ($from instanceof SerializableDateTime && $until instanceof SerializableDateTime && $until->isBeforeOrOn($from)) {
                     continue;
                 }
 

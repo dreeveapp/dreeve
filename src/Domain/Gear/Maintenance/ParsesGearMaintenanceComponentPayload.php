@@ -75,7 +75,7 @@ trait ParsesGearMaintenanceComponentPayload
 
             $from = self::parseInstallationDate($installation, 'from');
             $until = self::parseInstallationDate($installation, 'until');
-            if ($from && $until && $until->isBeforeOrOn($from)) {
+            if ($from instanceof SerializableDateTime && $until instanceof SerializableDateTime && $until->isBeforeOrOn($from)) {
                 throw CouldNotDeserializeCommand::invalidPayload('The "until" date of an installation must be after its "from" date.');
             }
 

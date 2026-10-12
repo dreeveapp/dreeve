@@ -4,7 +4,7 @@ dc:
 	@${compose} -f docker-compose.yml $(cmd)
 
 dcr:
-	@make dc cmd="run --rm -e PHP_IDE_CONFIG=serverName=SFS php-cli $(cmd)"
+	@make dc cmd="run --rm php-cli $(cmd)"
 
 stop:
 	@make dc cmd="stop"
