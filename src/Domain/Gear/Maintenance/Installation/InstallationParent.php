@@ -45,11 +45,6 @@ final readonly class InstallationParent implements \JsonSerializable, \Stringabl
         };
     }
 
-    public function getType(): InstallationParentType
-    {
-        return $this->type;
-    }
-
     public function getGearId(): ?GearId
     {
         return $this->id instanceof GearId ? $this->id : null;
