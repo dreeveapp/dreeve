@@ -1070,16 +1070,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "3.7.4",
+            "version": "3.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "84e21e325e3da22e46d7facbccdc9258f2332b1e"
+                "reference": "00c2fd70da291cca1ec75f4dae5344fe3df588fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/84e21e325e3da22e46d7facbccdc9258f2332b1e",
-                "reference": "84e21e325e3da22e46d7facbccdc9258f2332b1e",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/00c2fd70da291cca1ec75f4dae5344fe3df588fa",
+                "reference": "00c2fd70da291cca1ec75f4dae5344fe3df588fa",
                 "shasum": ""
             },
             "require": {
@@ -1154,9 +1154,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/3.7.4"
+                "source": "https://github.com/doctrine/orm/tree/3.7.5"
             },
-            "time": "2026-10-05T18:31:26+00:00"
+            "time": "2026-10-09T05:58:13+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -2500,16 +2500,16 @@
         },
         {
             "name": "neuron-core/neuron-ai",
-            "version": "4.1.3",
+            "version": "4.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/neuron-core/neuron-ai.git",
-                "reference": "3d2a02808c84aa94a4bdf6a96e656366ea443ff3"
+                "reference": "e1d4790cadf829dea6fc5e35033d7fb24a05b352"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/neuron-core/neuron-ai/zipball/3d2a02808c84aa94a4bdf6a96e656366ea443ff3",
-                "reference": "3d2a02808c84aa94a4bdf6a96e656366ea443ff3",
+                "url": "https://api.github.com/repos/neuron-core/neuron-ai/zipball/e1d4790cadf829dea6fc5e35033d7fb24a05b352",
+                "reference": "e1d4790cadf829dea6fc5e35033d7fb24a05b352",
                 "shasum": ""
             },
             "require": {
@@ -2581,7 +2581,7 @@
             "description": "A unified layer for building AI-native applications in PHP.",
             "support": {
                 "issues": "https://github.com/neuron-core/neuron-ai/issues",
-                "source": "https://github.com/neuron-core/neuron-ai/tree/4.1.3"
+                "source": "https://github.com/neuron-core/neuron-ai/tree/4.1.11"
             },
             "funding": [
                 {
@@ -2589,7 +2589,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-06T17:42:37+00:00"
+            "time": "2026-10-10T13:34:19+00:00"
         },
         {
             "name": "psr/cache",
@@ -8813,16 +8813,16 @@
     "packages-dev": [
         {
             "name": "brianium/paratest",
-            "version": "v7.26.0",
+            "version": "v7.26.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paratestphp/paratest.git",
-                "reference": "ed3bf1b914466ab50439dfffd968bad37c22a0c0"
+                "reference": "4660303009de20706b71d2df487bb89fb4d8a4c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/ed3bf1b914466ab50439dfffd968bad37c22a0c0",
-                "reference": "ed3bf1b914466ab50439dfffd968bad37c22a0c0",
+                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/4660303009de20706b71d2df487bb89fb4d8a4c2",
+                "reference": "4660303009de20706b71d2df487bb89fb4d8a4c2",
                 "shasum": ""
             },
             "require": {
@@ -8836,7 +8836,7 @@
                 "phpunit/php-code-coverage": "^14.4.1",
                 "phpunit/php-file-iterator": "^7.0.2",
                 "phpunit/php-timer": "^9",
-                "phpunit/phpunit": "^13.4.0",
+                "phpunit/phpunit": "^13.4.1",
                 "sebastian/environment": "^9.3.3",
                 "symfony/console": "^7.4.20 || ^8.1.8",
                 "symfony/process": "^7.4.19 || ^8.1.7"
@@ -8846,10 +8846,10 @@
                 "ext-pcntl": "*",
                 "ext-pcov": "*",
                 "ext-posix": "*",
-                "phpstan/phpstan": "^2.2.16",
+                "phpstan/phpstan": "^2.3.1",
                 "phpstan/phpstan-deprecation-rules": "^2.0.5",
-                "phpstan/phpstan-phpunit": "^2.0.21",
-                "phpstan/phpstan-strict-rules": "^2.0.12",
+                "phpstan/phpstan-phpunit": "^2.1.1",
+                "phpstan/phpstan-strict-rules": "^2.1.0",
                 "symfony/filesystem": "^7.4.18 || ^8.1.6"
             },
             "bin": [
@@ -8890,7 +8890,7 @@
             ],
             "support": {
                 "issues": "https://github.com/paratestphp/paratest/issues",
-                "source": "https://github.com/paratestphp/paratest/tree/v7.26.0"
+                "source": "https://github.com/paratestphp/paratest/tree/v7.26.1"
             },
             "funding": [
                 {
@@ -8902,7 +8902,7 @@
                     "type": "paypal"
                 }
             ],
-            "time": "2026-10-04T06:32:34+00:00"
+            "time": "2026-10-10T20:10:31+00:00"
         },
         {
             "name": "clue/ndjson-react",
@@ -9189,16 +9189,16 @@
         },
         {
             "name": "dama/doctrine-test-bundle",
-            "version": "v8.6.0",
+            "version": "v8.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dmaicher/doctrine-test-bundle.git",
-                "reference": "f7e3487643e685432f7e27c50cac64e9f8c515a4"
+                "reference": "c5de1ce3f29009312b97d311e569cf87cb3386c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/f7e3487643e685432f7e27c50cac64e9f8c515a4",
-                "reference": "f7e3487643e685432f7e27c50cac64e9f8c515a4",
+                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/c5de1ce3f29009312b97d311e569cf87cb3386c8",
+                "reference": "c5de1ce3f29009312b97d311e569cf87cb3386c8",
                 "shasum": ""
             },
             "require": {
@@ -9213,10 +9213,10 @@
                 "phpunit/phpunit": "<11.0"
             },
             "require-dev": {
-                "behat/behat": "^3.0",
-                "friendsofphp/php-cs-fixer": "^3.27",
+                "behat/behat": "^3.17 || ^4.0",
+                "php-cs-fixer/shim": "^3.95",
                 "phpstan/phpstan": "^2.0",
-                "phpunit/phpunit": "^11.5.41|| ^12.3.14",
+                "phpunit/phpunit": "^11.5.41 || ^12.3.14 || ^13.0",
                 "symfony/dotenv": "^6.4 || ^7.3 || ^8.0",
                 "symfony/process": "^6.4 || ^7.3 || ^8.0"
             },
@@ -9252,22 +9252,22 @@
             ],
             "support": {
                 "issues": "https://github.com/dmaicher/doctrine-test-bundle/issues",
-                "source": "https://github.com/dmaicher/doctrine-test-bundle/tree/v8.6.0"
+                "source": "https://github.com/dmaicher/doctrine-test-bundle/tree/v8.7.0"
             },
-            "time": "2026-01-21T07:39:44+00:00"
+            "time": "2026-10-08T06:56:07+00:00"
         },
         {
             "name": "entropy/entropy",
-            "version": "0.4.28",
+            "version": "0.4.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TomasVotruba/entropy.git",
-                "reference": "d6f2c8a591133434692e9478a5bba4aebfe820f1"
+                "reference": "733042a17988ba7c2c58f5245e9257cb687b7904"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TomasVotruba/entropy/zipball/d6f2c8a591133434692e9478a5bba4aebfe820f1",
-                "reference": "d6f2c8a591133434692e9478a5bba4aebfe820f1",
+                "url": "https://api.github.com/repos/TomasVotruba/entropy/zipball/733042a17988ba7c2c58f5245e9257cb687b7904",
+                "reference": "733042a17988ba7c2c58f5245e9257cb687b7904",
                 "shasum": ""
             },
             "require": {
@@ -9303,9 +9303,9 @@
             "description": "Entropy framework",
             "support": {
                 "issues": "https://github.com/TomasVotruba/entropy/issues",
-                "source": "https://github.com/TomasVotruba/entropy/tree/0.4.28"
+                "source": "https://github.com/TomasVotruba/entropy/tree/0.4.30"
             },
-            "time": "2026-10-07T08:43:40+00:00"
+            "time": "2026-10-10T07:02:38+00:00"
         },
         {
             "name": "ergebnis/agent-detector",
@@ -9887,11 +9887,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.3.0",
+            "version": "2.3.1",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/b1f9890d9af53a25c58129e78f0aadd31f90d7f4",
-                "reference": "b1f9890d9af53a25c58129e78f0aadd31f90d7f4",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/6155239b488e95d26d1ebd95c6b4bb294d7f09db",
+                "reference": "6155239b488e95d26d1ebd95c6b4bb294d7f09db",
                 "shasum": ""
             },
             "require": {
@@ -9947,7 +9947,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-06T06:15:36+00:00"
+            "time": "2026-10-08T21:09:11+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -12322,16 +12322,16 @@
         },
         {
             "name": "tomasvotruba/type-coverage",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TomasVotruba/type-coverage.git",
-                "reference": "afcfc6f890cb680d10974cbdff210892210c822a"
+                "reference": "2d8e722c1776a17f506f6a66cd325e50fbaa12ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TomasVotruba/type-coverage/zipball/afcfc6f890cb680d10974cbdff210892210c822a",
-                "reference": "afcfc6f890cb680d10974cbdff210892210c822a",
+                "url": "https://api.github.com/repos/TomasVotruba/type-coverage/zipball/2d8e722c1776a17f506f6a66cd325e50fbaa12ee",
+                "reference": "2d8e722c1776a17f506f6a66cd325e50fbaa12ee",
                 "shasum": ""
             },
             "require": {
@@ -12346,10 +12346,10 @@
                 "rector/jack": "^1.1",
                 "rector/rector": "^2.5",
                 "shipmonk/composer-dependency-analyser": "^1.8",
+                "shipmonk/dead-code-detector": "^1.4",
                 "symfony/dom-crawler": "^8.1",
                 "symfony/form": "^8.1",
                 "symplify/easy-coding-standard": "^13.2",
-                "tomasvotruba/unused-public": "^2.2",
                 "tracy/tracy": "^2.12"
             },
             "type": "phpstan-extension",
@@ -12377,7 +12377,7 @@
             ],
             "support": {
                 "issues": "https://github.com/TomasVotruba/type-coverage/issues",
-                "source": "https://github.com/TomasVotruba/type-coverage/tree/2.5.0"
+                "source": "https://github.com/TomasVotruba/type-coverage/tree/2.5.1"
             },
             "funding": [
                 {
@@ -12389,7 +12389,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-05T20:07:08+00:00"
+            "time": "2026-10-09T19:09:05+00:00"
         }
     ],
     "aliases": [],

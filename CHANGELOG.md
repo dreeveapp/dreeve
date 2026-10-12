@@ -1,3 +1,33 @@
+# [v5.5.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.5.0) - 2026-10-12
+
+> [!NOTE]
+> Custom segments can now be managed in file import mode, not just when using the Strava API.
+
+## New features
+* Added support for managing custom segments in file import mode
+
+## Improvements
+* Added separate admin labels for the dashboard widget dropdown
+* Import notifications now show the number of activities imported
+* Added milestone dates to the milestone dashboard widget
+* Added filename and activity filters to the file import page
+* File import filters are now preserved after deleting an entry
+* Added a workout type dropdown to the activity edit form
+
+## What's Changed
+* ISSUE #2767: in DEMO mode, hide start time of activities by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2768
+* ISSUE #2773: Use separate admin labels for the widget dropdown button by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2774
+* ISSUE #2772: Mention the number of imported activities in the import notification by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2775
+* ISSUE #2776: New Shoutrrr release available: v0.21.2 by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2777
+* ISSUE #2778: Show the milestone date in the milestone dashboard widget by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2779
+* ISSUE #2781: Add filename and activity filters to the file import page by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2782
+* ISSUE #2780: Keep file import filters after deleting an entry by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2783
+* ISSUE #2607: Manage custom segments by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2784
+* ISSUE #2786: Move tracking of activity processing tasks to one generic table by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2787
+* ISSUE #2789: Add workout type dropdown to edit activity by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2793
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.4.4...v5.5.0
+
 # [v5.4.4](https://github.com/dreeveapp/dreeve/releases/tag/v5.4.4) - 2026-10-05
 
 ## New features
