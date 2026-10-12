@@ -5,6 +5,8 @@ namespace App\Tests\Domain\Gear\Maintenance\Task\Progress;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Installation\UsageWindow;
 use App\Domain\Gear\Maintenance\Installation\UsageWindows;
@@ -77,7 +79,7 @@ class EveryXDistanceUsedProgressCalculationTest extends ContainerTestCase
             $expectedProgress,
             $this->calculation->calculate(
                 ProgressCalculationContext::from(
-                    usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null)]),
+                    usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null, sportTypes: SportTypes::empty())]),
                     lastTaggedOn: SerializableDateTime::fromString('01-01-2025'),
                     intervalUnit: $intervalUnit,
                     intervalValue: 1000,
@@ -128,6 +130,7 @@ class EveryXDistanceUsedProgressCalculationTest extends ContainerTestCase
                         gearId: GearId::fromUnprefixed($window[0]),
                         from: $window[1] ? SerializableDateTime::fromString($window[1]) : null,
                         until: $window[2] ? SerializableDateTime::fromString($window[2]) : null,
+                        sportTypes: SportTypes::empty(),
                     ),
                     $windows,
                 )),
@@ -151,6 +154,62 @@ class EveryXDistanceUsedProgressCalculationTest extends ContainerTestCase
         yield 'seasonal windows on one bike' => [[['bike-a', null, '2025-02-01'], ['bike-a', '2025-05-01', null]], '50 km'];
         yield 'overlapping windows count an activity once' => [[['bike-a', null, null], ['bike-a', '2025-01-01', null], ['bike-b', null, null]], '310 km'];
         yield 'no windows' => [[], '0 km'];
+    }
+
+    /**
+     * @param array<int, array{string, list<SportType>}> $windows
+     */
+    #[DataProvider('provideSportTypeWindows')]
+    public function testCalculateOnlyCountsActivitiesOfTheUsageWindowSportTypes(array $windows, string $expectedDescription): void
+    {
+        $activities = [
+            ['outdoor-ride', SportType::RIDE, 10],
+            ['indoor-ride', SportType::VIRTUAL_RIDE, 20],
+            ['gravel-ride', SportType::GRAVEL_RIDE, 40],
+        ];
+        foreach ($activities as [$activityId, $sportType, $distanceInKm]) {
+            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withGearId(GearId::fromUnprefixed('bike-a'))
+                    ->withSportType($sportType)
+                    ->withStartDateTime(SerializableDateTime::fromString('2025-02-01 10:00:00'))
+                    ->withDistance(Kilometer::from($distanceInKm))
+                    ->build(),
+                []
+            ));
+        }
+
+        $progress = $this->calculation->calculate(
+            ProgressCalculationContext::from(
+                usageWindows: UsageWindows::fromArray(array_map(
+                    static fn (array $window): UsageWindow => UsageWindow::create(
+                        gearId: GearId::fromUnprefixed($window[0]),
+                        from: null,
+                        until: null,
+                        sportTypes: SportTypes::fromArray($window[1]),
+                    ),
+                    $windows,
+                )),
+                lastTaggedOn: SerializableDateTime::fromString('2025-01-01'),
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+                intervalValue: 1000,
+            )
+        );
+
+        $this->assertSame($expectedDescription, $progress->getDescription());
+    }
+
+    /**
+     * @return iterable<string, array{array<int, array{string, list<SportType>}>, string}>
+     */
+    public static function provideSportTypeWindows(): iterable
+    {
+        yield 'all sport types' => [[['bike-a', []]], '70 km'];
+        yield 'outdoor only' => [[['bike-a', [SportType::RIDE, SportType::GRAVEL_RIDE]]], '50 km'];
+        yield 'indoor only' => [[['bike-a', [SportType::VIRTUAL_RIDE]]], '20 km'];
+        yield 'separate windows per sport type' => [[['bike-a', [SportType::RIDE]], ['bike-a', [SportType::VIRTUAL_RIDE]]], '30 km'];
+        yield 'sport type the gear was not used for' => [[['bike-a', [SportType::RUN]]], '0 km'];
     }
 
     #[\Override]

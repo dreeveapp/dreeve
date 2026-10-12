@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Gear\Maintenance\Installation;
 
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -17,6 +18,7 @@ class GearComponentInstallationTest extends TestCase
             gearId: GearId::fromUnprefixed('1'),
             from: $from ? SerializableDateTime::fromString($from) : null,
             until: $until ? SerializableDateTime::fromString($until) : null,
+            sportTypes: SportTypes::empty(),
         );
 
         $this->assertSame($expectedIsActive, $installation->isActiveOn(SerializableDateTime::fromString($on)));
@@ -45,6 +47,7 @@ class GearComponentInstallationTest extends TestCase
             gearId: GearId::fromUnprefixed('1'),
             from: SerializableDateTime::fromString($from),
             until: SerializableDateTime::fromString($until),
+            sportTypes: SportTypes::empty(),
         );
     }
 

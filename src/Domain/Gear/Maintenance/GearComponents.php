@@ -45,6 +45,7 @@ final class GearComponents extends Collection
                 gearId: $installation->getGearId(),
                 from: $installation->getFrom(),
                 until: $installation->getUntil(),
+                sportTypes: $installation->getSportTypes(),
             ),
         ));
     }

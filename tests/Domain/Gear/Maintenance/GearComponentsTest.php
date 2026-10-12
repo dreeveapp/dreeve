@@ -2,6 +2,8 @@
 
 namespace App\Tests\Domain\Gear\Maintenance;
 
+use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\GearComponent;
@@ -27,11 +29,13 @@ class GearComponentsTest extends TestCase
                     gearId: GearId::fromUnprefixed('b1'),
                     from: null,
                     until: SerializableDateTime::fromString('2025-03-15'),
+                    sportTypes: SportTypes::fromArray([SportType::RIDE]),
                 ),
                 GearComponentInstallation::create(
                     gearId: GearId::fromUnprefixed('b2'),
                     from: SerializableDateTime::fromString('2025-03-15'),
                     until: null,
+                    sportTypes: SportTypes::empty(),
                 ),
             ]),
             localImagePath: null,
@@ -44,11 +48,13 @@ class GearComponentsTest extends TestCase
                     gearId: GearId::fromUnprefixed('b1'),
                     from: null,
                     until: SerializableDateTime::fromString('2025-03-15'),
+                    sportTypes: SportTypes::fromArray([SportType::RIDE]),
                 ),
                 UsageWindow::create(
                     gearId: GearId::fromUnprefixed('b2'),
                     from: SerializableDateTime::fromString('2025-03-15'),
                     until: null,
+                    sportTypes: SportTypes::empty(),
                 ),
             ]),
             GearComponents::fromArray([$gearComponent])->resolveUsageWindowsFor($gearComponent),
@@ -65,21 +71,25 @@ class GearComponentsTest extends TestCase
                     gearId: GearId::fromUnprefixed('b1'),
                     from: null,
                     until: SerializableDateTime::fromString('2025-03-15'),
+                    sportTypes: SportTypes::empty(),
                 ),
                 GearComponentInstallation::create(
                     gearId: GearId::fromUnprefixed('b2'),
                     from: SerializableDateTime::fromString('2025-03-15'),
                     until: null,
+                    sportTypes: SportTypes::empty(),
                 ),
                 GearComponentInstallation::create(
                     gearId: GearId::fromUnprefixed('b3'),
                     from: SerializableDateTime::fromString('2025-07-01'),
                     until: null,
+                    sportTypes: SportTypes::empty(),
                 ),
                 GearComponentInstallation::create(
                     gearId: GearId::fromUnprefixed('b2'),
                     from: null,
                     until: null,
+                    sportTypes: SportTypes::empty(),
                 ),
             ]),
             localImagePath: null,

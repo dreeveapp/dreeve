@@ -5,6 +5,7 @@ namespace App\Tests\Domain\Gear\Maintenance\Task\Progress;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIdRepository;
 use App\Domain\Gear\GearRepository;
@@ -44,7 +45,7 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
                 PausedClock::on(SerializableDateTime::some()),
             )->calculateProgressFor(
                 ProgressCalculationContext::from(
-                    usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null)]),
+                    usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null, sportTypes: SportTypes::empty())]),
                     lastTaggedOn: SerializableDateTime::fromString('2025-01-03'),
                     intervalUnit: IntervalUnit::EVERY_X_DAYS,
                     intervalValue: 4,
@@ -135,7 +136,7 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
             PausedClock::on(SerializableDateTime::some()),
         )->calculateProgressFor(
             ProgressCalculationContext::from(
-                usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null)]),
+                usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null, sportTypes: SportTypes::empty())]),
                 lastTaggedOn: SerializableDateTime::fromString('2025-01-03'),
                 intervalUnit: IntervalUnit::EVERY_X_DAYS,
                 intervalValue: 4,

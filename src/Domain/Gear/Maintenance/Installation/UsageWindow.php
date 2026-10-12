@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance\Installation;
 
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
@@ -13,6 +14,7 @@ final readonly class UsageWindow
         private GearId $gearId,
         private ?SerializableDateTime $from,
         private ?SerializableDateTime $until,
+        private SportTypes $sportTypes,
     ) {
     }
 
@@ -20,11 +22,13 @@ final readonly class UsageWindow
         GearId $gearId,
         ?SerializableDateTime $from,
         ?SerializableDateTime $until,
+        SportTypes $sportTypes,
     ): self {
         return new self(
             gearId: $gearId,
             from: $from,
             until: $until,
+            sportTypes: $sportTypes,
         );
     }
 
@@ -41,6 +45,11 @@ final readonly class UsageWindow
     public function getUntil(): ?SerializableDateTime
     {
         return $this->until;
+    }
+
+    public function getSportTypes(): SportTypes
+    {
+        return $this->sportTypes;
     }
 
     public function isActiveOn(SerializableDateTime $on): bool

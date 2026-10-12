@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance\Installation;
 
+use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
@@ -13,6 +15,7 @@ final readonly class GearComponentInstallation implements \JsonSerializable
         private GearId $gearId,
         private ?SerializableDateTime $from,
         private ?SerializableDateTime $until,
+        private SportTypes $sportTypes,
     ) {
         if ($this->from && $this->until && $this->until->isBeforeOrOn($this->from)) {
             throw new \InvalidArgumentException('An installation must end after it starts');
@@ -23,11 +26,13 @@ final readonly class GearComponentInstallation implements \JsonSerializable
         GearId $gearId,
         ?SerializableDateTime $from,
         ?SerializableDateTime $until,
+        SportTypes $sportTypes,
     ): self {
         return new self(
             gearId: $gearId,
             from: $from,
             until: $until,
+            sportTypes: $sportTypes,
         );
     }
 
@@ -46,6 +51,11 @@ final readonly class GearComponentInstallation implements \JsonSerializable
         return $this->until;
     }
 
+    public function getSportTypes(): SportTypes
+    {
+        return $this->sportTypes;
+    }
+
     public function isActiveOn(SerializableDateTime $on): bool
     {
         if ($this->from && $on->isBefore($this->from)) {
@@ -56,7 +66,7 @@ final readonly class GearComponentInstallation implements \JsonSerializable
     }
 
     /**
-     * @return array{gearId: string, from: ?string, until: ?string}
+     * @return array{gearId: string, from: ?string, until: ?string, sportTypes: array<mixed>}
      */
     public function jsonSerialize(): array
     {
@@ -64,6 +74,7 @@ final readonly class GearComponentInstallation implements \JsonSerializable
             'gearId' => $this->gearId->toUnprefixedString(),
             'from' => $this->from?->format('Y-m-d'),
             'until' => $this->until?->format('Y-m-d'),
+            'sportTypes' => $this->sportTypes->map(static fn (SportType $sportType): string => $sportType->value),
         ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Tests\Domain\Gear\Maintenance\Task\Progress;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Installation\UsageWindow;
 use App\Domain\Gear\Maintenance\Installation\UsageWindows;
@@ -80,7 +81,7 @@ class EveryXHoursUsedProgressCalculationTest extends ContainerTestCase
             ),
             $this->calculation->calculate(
                 ProgressCalculationContext::from(
-                    usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null)]),
+                    usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null, sportTypes: SportTypes::empty())]),
                     lastTaggedOn: SerializableDateTime::fromString('01-01-2025'),
                     intervalUnit: IntervalUnit::EVERY_X_HOURS_USED,
                     intervalValue: 10,

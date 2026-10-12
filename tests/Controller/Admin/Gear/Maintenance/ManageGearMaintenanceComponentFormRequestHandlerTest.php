@@ -65,7 +65,7 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->assertSame('Some cool chain', $form->filter('input[name="label"]')->attr('value'));
 
         $this->assertSame(
-            '[{"gearId":"g1233776","from":null,"until":null},{"gearId":"g10130856","from":null,"until":null},{"gearId":"retired","from":null,"until":null}]',
+            '[{"gearId":"g1233776","from":null,"until":null,"sportTypes":[]},{"gearId":"g10130856","from":null,"until":null,"sportTypes":[]},{"gearId":"retired","from":null,"until":null,"sportTypes":[]}]',
             $form->filter('[data-repeater-list]')->eq(0)->attr('data-repeater-initial')
         );
 

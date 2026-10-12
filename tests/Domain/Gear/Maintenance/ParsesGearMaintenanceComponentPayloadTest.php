@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Gear\Maintenance;
 
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
@@ -69,11 +70,13 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
                     gearId: GearId::fromUnprefixed('b1'),
                     from: null,
                     until: SerializableDateTime::fromString('2025-03-15'),
+                    sportTypes: SportTypes::empty(),
                 ),
                 GearComponentInstallation::create(
                     gearId: GearId::fromUnprefixed('g2'),
                     from: SerializableDateTime::fromString('2025-03-15'),
                     until: null,
+                    sportTypes: SportTypes::empty(),
                 ),
             ]),
             $this->parser->doParseInstallations(['installations' => [

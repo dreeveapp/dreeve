@@ -2,6 +2,8 @@
 
 namespace App\Tests\Domain\Gear\Maintenance;
 
+use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\GearMaintenanceConfig;
@@ -44,16 +46,19 @@ class GearMaintenanceConfigTest extends ContainerTestCase
                     gearId: GearId::fromUnprefixed('b1'),
                     from: SerializableDateTime::fromString('2024-11-01'),
                     until: SerializableDateTime::fromString('2025-03-15'),
+                    sportTypes: SportTypes::fromArray([SportType::RIDE, SportType::GRAVEL_RIDE]),
                 ),
                 GearComponentInstallation::create(
                     gearId: GearId::fromUnprefixed('b1'),
                     from: SerializableDateTime::fromString('2025-11-01'),
                     until: null,
+                    sportTypes: SportTypes::empty(),
                 ),
                 GearComponentInstallation::create(
                     gearId: GearId::fromUnprefixed('b2'),
                     from: null,
                     until: SerializableDateTime::fromString('2024-11-01'),
+                    sportTypes: SportTypes::fromArray([SportType::VIRTUAL_RIDE]),
                 ),
             ]),
             $config->getGearComponents()->getFirst()->getInstallations()
@@ -66,8 +71,8 @@ class GearMaintenanceConfigTest extends ContainerTestCase
 
         $this->assertEquals(
             GearComponentInstallations::fromArray([
-                GearComponentInstallation::create(gearId: GearId::fromUnprefixed('bike-one-gear-id'), from: null, until: null),
-                GearComponentInstallation::create(gearId: GearId::fromUnprefixed('bike-two-gear-id'), from: null, until: null),
+                GearComponentInstallation::create(gearId: GearId::fromUnprefixed('bike-one-gear-id'), from: null, until: null, sportTypes: SportTypes::empty()),
+                GearComponentInstallation::create(gearId: GearId::fromUnprefixed('bike-two-gear-id'), from: null, until: null, sportTypes: SportTypes::empty()),
             ]),
             $config->getGearComponents()->getFirst()->getInstallations()
         );

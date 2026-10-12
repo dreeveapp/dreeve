@@ -94,6 +94,7 @@ final readonly class GearComponent implements \JsonSerializable
                     gearId: $normalizedGearId,
                     from: $installation->getFrom(),
                     until: $installation->getUntil(),
+                    sportTypes: $installation->getSportTypes(),
                 ));
             }
         }

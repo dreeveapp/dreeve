@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance;
 
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
@@ -60,6 +61,7 @@ trait ParsesGearMaintenanceComponentPayload
                 gearId: GearId::fromUnprefixed(trim($installation['gearId'])),
                 from: $from,
                 until: $until,
+                sportTypes: SportTypes::empty(),
             ));
         }
 

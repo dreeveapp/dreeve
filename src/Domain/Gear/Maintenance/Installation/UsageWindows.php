@@ -49,6 +49,15 @@ final class UsageWindows extends Collection
                 $windowConditions[] = sprintf('startDateTime < :usageWindow%dUntil', $index);
                 $parameters[sprintf('usageWindow%dUntil', $index)] = (string) $until;
             }
+            if (!$usageWindow->getSportTypes()->isEmpty()) {
+                $sportTypePlaceholders = [];
+                foreach ($usageWindow->getSportTypes() as $sportTypeIndex => $sportType) {
+                    $placeholder = sprintf('usageWindow%dSportType%d', $index, $sportTypeIndex);
+                    $sportTypePlaceholders[] = ':'.$placeholder;
+                    $parameters[$placeholder] = $sportType->value;
+                }
+                $windowConditions[] = sprintf('sportType IN (%s)', implode(', ', $sportTypePlaceholders));
+            }
 
             $conditions[] = '('.implode(' AND ', $windowConditions).')';
         }
