@@ -18,7 +18,9 @@ use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
+use Symfony\Component\HttpFoundation\Response;
 
 class GearMaintenanceTaskSearchRequestHandlerTest extends ControllerWebTestCase
 {
@@ -69,6 +71,61 @@ class GearMaintenanceTaskSearchRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * @param list<string> $expectedMaintenanceTaskIds
+     */
+    #[DataProvider('provideGearFilters')]
+    public function testItFiltersMaintenanceTasksByGear(string $gearId, array $expectedMaintenanceTaskIds): void
+    {
+        $this->importGearMaintenanceConfigFromArray(Json::decode((string) file_get_contents(__DIR__.'/fixtures/gear-maintenance.json')));
+
+        $gearRepository = static::getContainer()->get(GearRepository::class);
+        $gearRepository->add(GearBuilder::fromDefaults()->withGearId(GearId::fromUnprefixed('bike-a'))->build());
+        $gearRepository->add(GearBuilder::fromDefaults()->withGearId(GearId::fromUnprefixed('bike-b'))->build());
+        $gearRepository->add(GearBuilder::fromDefaults()->withGearId(GearId::fromUnprefixed('retired-bike'))->withIsRetired(true)->build());
+
+        $this->client->request('GET', '/api/v1/gear/maintenance-tasks?filters[gearId]='.$gearId, server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame(
+            $expectedMaintenanceTaskIds,
+            array_column(Json::decode((string) $this->client->getResponse()->getContent())['maintenanceTasks'], 'id'),
+        );
+    }
+
+    public static function provideGearFilters(): iterable
+    {
+        yield 'a bike with its own and shared components' => ['gear-bike-a', [
+            'maintenanceTask-chain-lube',
+            'maintenanceTask-chain-replace',
+            'maintenanceTask-chain-clean',
+            'maintenanceTask-lights-charge',
+            'maintenanceTask-pedals-service',
+        ]];
+        yield 'a bike with only a shared component' => ['gear-bike-b', ['maintenanceTask-pedals-service']];
+        yield 'retired gear that is ignored' => ['gear-retired-bike', []];
+        yield 'unknown gear' => ['gear-unknown', []];
+        yield 'an empty filter' => ['', [
+            'maintenanceTask-chain-lube',
+            'maintenanceTask-chain-replace',
+            'maintenanceTask-chain-clean',
+            'maintenanceTask-lights-charge',
+            'maintenanceTask-pedals-service',
+            'maintenanceTask-summer-wheelset-hub-service',
+        ]];
+    }
+
+    public function testItRejectsAnUnprefixedGearId(): void
+    {
+        $this->client->request('GET', '/api/v1/gear/maintenance-tasks?filters[gearId]=bike-a', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertSame(
+            'bad_request',
+            Json::decode((string) $this->client->getResponse()->getContent())['error']
+        );
     }
 
     public function testItListsNothingWhenTheFeatureIsNotEnabled(): void

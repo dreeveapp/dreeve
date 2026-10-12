@@ -12,6 +12,7 @@ use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -28,8 +29,10 @@ final readonly class GearMaintenanceTaskSearchRequestHandler
     }
 
     #[Route(path: '/api/v1/gear/maintenance-tasks', name: 'api_v1_gear_maintenance_tasks', methods: ['GET'], priority: 3)]
-    public function handle(): JsonResponse
+    public function handle(Request $request): JsonResponse
     {
+        $filterOnGearId = GearMaintenanceTaskSearchFilters::fromRequest($request)->getGearId();
+
         $gearMaintenanceConfig = $this->gearMaintenanceRepository->find();
         if (!$gearMaintenanceConfig->isFeatureEnabled()) {
             return new JsonResponse(['maintenanceTasks' => []]);
@@ -47,6 +50,9 @@ final readonly class GearMaintenanceTaskSearchRequestHandler
             $currentGearIds = $gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now);
             $gearIds = $currentGearIds->filter(static fn (GearId $gearId): bool => !$retiredGearIds->has($gearId));
             if (!$currentGearIds->isEmpty() && $gearIds->isEmpty()) {
+                continue;
+            }
+            if ($filterOnGearId instanceof GearId && !$gearIds->has($filterOnGearId)) {
                 continue;
             }
 
