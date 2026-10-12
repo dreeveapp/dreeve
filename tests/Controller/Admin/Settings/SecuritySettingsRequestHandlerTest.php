@@ -2,6 +2,8 @@
 
 namespace App\Tests\Controller\Admin\Settings;
 
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Security\Api\Token;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 
@@ -32,6 +34,18 @@ class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
         );
     }
 
+    public function testItChecksTheOriginalFileDownloadOptionWhenVisitorsMayDownload(): void
+    {
+        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::SECURITY, [
+            'visitorsCanDownloadOriginalFiles' => '1',
+        ]);
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/settings/security');
+
+        $this->assertCount(1, $crawler->filter('input[name="data[visitorsCanDownloadOriginalFiles]"][checked]'));
+    }
+
     public function testItRendersTheSecuritySettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());
@@ -44,6 +58,7 @@ class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"]'));
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="security"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[requiresAuthentication]"]'));
+        $this->assertCount(1, $crawler->filter('input[name="data[visitorsCanDownloadOriginalFiles]"]:not([checked])'));
 
         // The environment driven credentials, shown for reference only.
         $this->assertEquals(self::ADMIN_USERNAME, $crawler->filter('input#adminUsername[disabled]')->attr('value'));

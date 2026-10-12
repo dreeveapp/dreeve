@@ -51,6 +51,7 @@ Admin: Beheer
 'All efforts on this segment are deleted as well. This action cannot be undone.': 'All efforts on this segment are deleted as well. This action cannot be undone.'
 'All sport types': 'Alle sporttypes'
 'All sport types must belong to the same activity type.': 'Alle sporttypes moeten tot hetzelfde activiteitstype behoren.'
+'Allow visitors to download original activity files': 'Allow visitors to download original activity files'
 'Allowed IP addresses for the admin panel': 'Toegestane IP-adressen voor het beheerpaneel'
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Maakt de trainingsassistent ook beschikbaar in de webinterface. Vereist dat de AI-integratie hierboven ingeschakeld is. Wees voorzichtig als je app publiek toegankelijk is.'
 'Any IP address': 'Eender welk IP-adres'
@@ -82,6 +83,7 @@ Apply: Toepassen
 'Base URI': Basis-URI
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Voor je de app kan gebruiken, moeten we een paar dingen over je weten. Die worden gebruikt om je hartslagzones en trainingsbelasting te berekenen. Alle andere instellingen kan je later nog verfijnen.'
 Birthday: Geboortedatum
+'By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows.': 'By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows.'
 'Calculate energy (kJ)': 'Energie berekenen (kJ)'
 Cancel: Annuleren
 'Challenge name': 'Naam uitdaging'

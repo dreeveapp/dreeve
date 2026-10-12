@@ -39,6 +39,16 @@
                         {{ "Require a login for the entire app, not just the admin panel. Recommended when your instance is reachable from the internet, which it has to be for the Strava webhook."|trans({}, 'admin') }}
                     </p>
                 </div>
+                <div>
+                    <label class="flex items-center gap-2 mt-0! font-medium cursor-pointer">
+                        <input type="checkbox" name="data[visitorsCanDownloadOriginalFiles]" value="1"
+                               {{ (settings.visitorsCanDownloadOriginalFiles ?? false) ? 'checked' : '' }}>
+                        <span>{{ "Allow visitors to download original activity files"|trans({}, 'admin') }}</span>
+                    </label>
+                    <p class="description">
+                        {{ "By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows."|trans({}, 'admin') }}
+                    </p>
+                </div>
             </div>
             <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
                 <button type="submit" data-has-loading-state class="group btn--primary">

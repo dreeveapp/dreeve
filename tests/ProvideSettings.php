@@ -94,6 +94,7 @@ trait ProvideSettings
 
         $settingsRepository->saveGroup(SettingsGroup::SECURITY, [
             'requiresAuthentication' => false,
+            'visitorsCanDownloadOriginalFiles' => false,
         ]);
     }
 }

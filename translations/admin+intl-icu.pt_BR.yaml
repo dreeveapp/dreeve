@@ -51,6 +51,7 @@ Admin: Admin
 'All efforts on this segment are deleted as well. This action cannot be undone.': 'All efforts on this segment are deleted as well. This action cannot be undone.'
 'All sport types': 'Todos os tipos de esporte'
 'All sport types must belong to the same activity type.': 'Todos os tipos de esporte devem pertencer ao mesmo tipo de atividade.'
+'Allow visitors to download original activity files': 'Allow visitors to download original activity files'
 'Allowed IP addresses for the admin panel': 'Endereços IP permitidos para o painel de administração'
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Também expõe o assistente de treino na interface web. Requer que a integração de IA acima esteja ativada. Tenha cuidado ao ativar isso se o seu aplicativo for acessível publicamente.'
 'Any IP address': 'Qualquer endereço IP'
@@ -82,6 +83,7 @@ Apply: Aplicar
 'Base URI': 'URI base'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Antes de poder usar o aplicativo, precisamos saber algumas coisas sobre você. Elas são usadas para calcular suas zonas de frequência cardíaca e carga de treinamento. Você pode ajustar todas as outras configurações mais tarde.'
 Birthday: 'Data de nascimento'
+'By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows.': 'By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows.'
 'Calculate energy (kJ)': 'Calcular energia (kJ)'
 Cancel: Cancelar
 'Challenge name': 'Nome do desafio'
