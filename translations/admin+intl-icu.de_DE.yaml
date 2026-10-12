@@ -35,7 +35,7 @@ Activity: Aktivität
 'Add max heart rate': 'max. Herzfrequenz hinzufügen'
 'Add resting heart rate': 'Ruhepuls hinzufügen'
 'Add rule': 'Regel hinzufügen'
-'Add segment': 'Add segment'
+'Add segment': 'Segment hinzufügen'
 'Add service': 'Service hinzufügen'
 'Add task': 'Aufgabe hinzufügen'
 'Add tile layer': 'Kachelebene hinzufügen'
@@ -48,7 +48,7 @@ Admin: Admin
 'Advanced (per-date & per-sport-type overrides)': 'Erweiterte (Datums- & sportartspezifische Anpassung)'
 'Age-based estimate': 'Altersbasierte Schätzung'
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'Alle zugehörigen Wartungsaufgaben und Protokolle werden entfernt. Diese Aktion kann nicht rückgängig gemacht werden'
-'All efforts on this segment are deleted as well. This action cannot be undone.': 'All efforts on this segment are deleted as well. This action cannot be undone.'
+'All efforts on this segment are deleted as well. This action cannot be undone.': 'Sämtliche Leistungen dieses Segments wurden ebenfalls gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.'
 'All sport types': 'Alle Sportarten'
 'All sport types must belong to the same activity type.': 'Alle Sportarten müssen demselben Aktivitätstyp angehören.'
 'Allowed IP addresses for the admin panel': 'Zulässige IP-Adressen für den Adminbereich'
@@ -123,7 +123,7 @@ Delete: Löschen
 'Delete file import': 'Dateiimport löschen'
 'Delete gear': 'Ausrüstung löschen'
 'Delete maintenance log': 'Wartungsprotokoll löschen'
-'Delete segment': 'Delete segment'
+'Delete segment': 'Segment löschen'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Das Löschen einer Regel macht bereits vorgenommene Änderungen an Aktivitäten nicht rückgängig. Diese Aktion kann nicht rückgängig gemacht werden.'
 Deleting...: 'wird gelöscht...'
 Description: Beschreibung
@@ -133,7 +133,7 @@ Distance: Distanz
 'Do not download activity photos': 'Keine Bilder von Aktivitäten herunterladen.'
 Done: Done
 'Download original file': 'Originaldatei herunterladen'
-'Drag the start and end markers along the route to select the segment.': 'Drag the start and end markers along the route to select the segment.'
+'Drag the start and end markers along the route to select the segment.': 'Ziehe die Start- und Endmarkierungen entlang der Route, um das Segment zu wählen.'
 'Drag to reorder': 'Ziehen zum Neuordnen'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Ziehen, um die Reihenfolge festzulegen, in der Sportarten in der gesamten App angezeigt werden.'
 Duplicate: Kopieren
@@ -146,9 +146,9 @@ Edit: Bearbeiten
 'Edit gear': 'Ausrüstung bearbeiten'
 'Edit maintenance log': 'Wartungsprotokoll bearbeiten'
 'Edit recording device': 'Aufzeichnungsgerät bearbeiten'
-'Edit segment': 'Edit segment'
+'Edit segment': 'Segment bearbeiten'
 Efforts: Efforts
-'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.': 'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.'
+'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.': 'Die Auswertung erfolgt nicht sofort. Deine Aktivitäten werden beim nächsten Import (alle 5 Minuten) auf dieses Segment geprüft.'
 Elevation: Höhenmeter
 'Enable AI integration': 'KI-Integration aktivieren'
 'Enable Strava webhooks': 'Strava webhooks aktivieren'
@@ -271,8 +271,8 @@ Monday: Montag
 'No recording devices yet.': 'Noch keine Aufzeichnungsgeräte vorhanden.'
 'No rule applies': 'Keine Regel trifft zu'
 'No rules selected yet.': 'Keine Regel bisher ausgewählt.'
-'No segments added yet.': 'No segments added yet.'
-'No segments match the current filters.': 'No segments match the current filters.'
+'No segments added yet.': 'Noch keine Segmente hinzugefügt.'
+'No segments match the current filters.': 'Keine Segmente entsprechen den aktuellen Filtern.'
 'No sport types selected': 'Keine Sportarten ausgewählt'
 'No unit': 'keine Einheit'
 'Normal date format': 'Normales Datumsformat'
@@ -306,14 +306,14 @@ Password: Passwort
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Fotos von Strava-Aktivitäten werden nicht heruntergeladen oder auf der Festplatte gespeichert. Bereits heruntergeladene Fotos bleiben erhalten.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos der ausgewählten Sportarten werden von der Fotogalerie ausgeschlossen.'
 'Pick a device you already recorded with, or type a new name.': 'Wähle ein Gerät, mit dem du bereits aufgezeichnet hast, oder gib einen neuen Namen ein.'
-'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
+'Pick an activity to select the segment on its route.': 'Wähle eine Aktivität aus und markiere das Segment auf ihrer Strecke.'
 'Pick the rules you want to apply to see which activities would change.': 'Wähle die Regeln aus, die du anwenden möchten, um zu sehen, welche Aktivitäten sich ändern würden.'
 'Polyline color': Routenfarbe
 'Preview selection': Vorschaubereich
 'Processed on': 'Verarbeitet am'
 'Profile picture URL': Profilbild-URL
 Provider: Anbieter
-Queued: Queued
+Queued: in der Warteschlange
 Queueing...: Warteschlange...
 Radius: Radius
 'Recording device': Aufzeichnungsgerät
@@ -359,8 +359,8 @@ Saving...: 'Wird gespeichert...'
 'Search by name, date or activity ID': 'Nach Name, Datum oder Aktivitäts-ID suchen'
 Seconds: Sekunden
 Security: Sicherheit
-'Segment management': 'Segment management'
-'Segments will appear here once you create them from one of your activities.': 'Segments will appear here once you create them from one of your activities.'
+'Segment management': 'Segmentverwaltung'
+'Segments will appear here once you create them from one of your activities.': 'Segmente werden hier angezeigt, sobald du sie aus einer deiner Aktivitäten erstellt hast.'
 'Select a component first...': 'Wähle zuerst eine Komponente aus...'
 'Select a component…': 'Komponente auswählen…'
 'Select all': 'Alle auswählen'
@@ -460,7 +460,7 @@ Tasks: Aufgaben
 'The name of the gear assigned to the activity': 'Der Name der Ausrüstung, die der Aktivität zugewiesen ist'
 'The number of activities recorded with the gear': 'Die Anzahl der mit der Ausrüstung aufgezeichneten Aktivitäten'
 "The page you're looking for doesn't exist or may have been moved.": 'Die gesuchte Seite existiert nicht oder wurde möglicherweise verschoben.'
-'The segment has been created. Its efforts will show up after the next import run.': 'The segment has been created. Its efforts will show up after the next import run.'
+'The segment has been created. Its efforts will show up after the next import run.': 'Das Segment wurde erstellt. Die Segmentzeiten werden nach dem nächsten Importlauf angezeigt.'
 'The sport type, e.g. "Walk" or "Trail Run"': 'Die Sportart, z.B. "Spaziergang" oder "Trail-Lauf"'
 'The start date, optionally with a custom PHP date format': 'Das Startdatum, optional mit einem benutzerdefinierten PHP-Datumsformat'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'Die Kachelebenen-URLs (Tile Layers), die zum Rendern der Karten verwendet werden. Füge mehrere hinzu, um sie zu stapeln, z.B. um Ortsnamen über eine Satellitenebene zu legen.'
