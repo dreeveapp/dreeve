@@ -15,6 +15,30 @@
                 {% if gearComponent.getNotes() %}
                     <p class="mt-1 text-xs text-gray-700 whitespace-pre-line">{{ gearComponent.getNotes() }}</p>
                 {% endif %}
+                <dl class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+                    <div>
+                        <dt class="inline">{{ "Distance"|trans }}:</dt>
+                        <dd class="inline font-medium text-gray-700">{{ stats.getDistance()|renderMeasurement(0)|raw }}</dd>
+                    </div>
+                    <div>
+                        <dt class="inline">{{ "Moving time"|trans }}:</dt>
+                        <dd class="inline font-medium text-gray-700">{{ stats.getMovingTime()|formatSeconds }}</dd>
+                    </div>
+                    <div>
+                        <dt class="inline">{{ "Activities"|trans }}:</dt>
+                        <dd class="inline font-medium text-gray-700">{{ stats.getNumberOfActivities() }}</dd>
+                    </div>
+                    {% if stats.getFirstUsedOn() %}
+                        <div>
+                            <dt class="inline">{{ "First used"|trans }}:</dt>
+                            <dd class="inline font-medium text-gray-700">{{ stats.getFirstUsedOn()|formatDate('normal') }}</dd>
+                        </div>
+                        <div>
+                            <dt class="inline">{{ "Last used"|trans }}:</dt>
+                            <dd class="inline font-medium text-gray-700">{{ stats.getLastUsedOn()|formatDate('normal') }}</dd>
+                        </div>
+                    {% endif %}
+                </dl>
             </div>
             {% set componentPurchasePrice = gearComponent.getPurchasePrice() %}
             {% if componentPurchasePrice %}
