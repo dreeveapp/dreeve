@@ -182,7 +182,9 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
                     'id' => 'gearComponent-chain',
                     'label' => 'Chain',
                     'localImagePath' => $localImagePath,
-                    'attachedTo' => ['b1'],
+                    'isRetired' => false,
+                    'notes' => null,
+                    'installations' => [['parent' => 'gear:b1', 'from' => null, 'until' => null, 'sportTypes' => []]],
                     'maintenance' => [
                         ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
                     ],

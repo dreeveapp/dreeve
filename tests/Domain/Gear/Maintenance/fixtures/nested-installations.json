@@ -5,6 +5,8 @@
       "id": "gearComponent-wheelset",
       "label": "wheelset",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
       "installations": [
         {
           "parent": "gear:b1",
@@ -22,6 +24,8 @@
       "id": "gearComponent-tyres",
       "label": "tyres",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
       "installations": [
         {
           "parent": "component:gearComponent-wheelset",
@@ -36,6 +40,8 @@
       "id": "gearComponent-race-tyres",
       "label": "race-tyres",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
       "installations": [
         {
           "parent": "component:gearComponent-wheelset",
@@ -50,6 +56,8 @@
       "id": "gearComponent-spare-tyres",
       "label": "spare-tyres",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
       "installations": [
         {
           "parent": "component:gearComponent-wheelset",
@@ -64,6 +72,8 @@
       "id": "gearComponent-gravel-tyres",
       "label": "gravel-tyres",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
       "installations": [
         {
           "parent": "component:gearComponent-wheelset",
@@ -81,6 +91,8 @@
       "id": "gearComponent-indoor-tyres",
       "label": "indoor-tyres",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
       "installations": [
         {
           "parent": "component:gearComponent-wheelset",
@@ -97,6 +109,8 @@
       "id": "gearComponent-tube",
       "label": "tube",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
       "installations": [
         {
           "parent": "component:gearComponent-tyres",
@@ -111,6 +125,8 @@
       "id": "gearComponent-trainer",
       "label": "trainer",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
       "installations": [
         {
           "parent": "gear:b1",
@@ -135,6 +151,8 @@
       "id": "gearComponent-cassette",
       "label": "cassette",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
       "installations": [
         {
           "parent": "component:gearComponent-trainer",
@@ -149,6 +167,8 @@
       "id": "gearComponent-orphan",
       "label": "orphan",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
       "installations": [
         {
           "parent": "component:gearComponent-does-not-exist",
@@ -163,6 +183,8 @@
       "id": "gearComponent-loop-a",
       "label": "loop-a",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
       "installations": [
         {
           "parent": "component:gearComponent-loop-b",
@@ -177,6 +199,8 @@
       "id": "gearComponent-loop-b",
       "label": "loop-b",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
       "installations": [
         {
           "parent": "component:gearComponent-loop-a",

@@ -6,12 +6,10 @@ namespace App\Domain\Gear\Maintenance;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
-use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\Installation\InstallationParent;
-use App\Domain\Gear\Maintenance\Installation\InstallationParentType;
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
@@ -61,36 +59,19 @@ final readonly class GearMaintenanceConfig
             $gearComponent = GearComponent::create(
                 id: GearComponentId::fromString((string) $component['id']),
                 label: Name::fromString($component['label']),
-                installations: GearComponentInstallations::fromArray(isset($component['installations'])
-                    ? array_map(
-                        static fn (array $installation): GearComponentInstallation => GearComponentInstallation::create(
-                            parent: match (true) {
-                                is_string($installation['parent'] ?? null) => InstallationParent::fromString($installation['parent']),
-                                InstallationParentType::COMPONENT->value === ($installation['parent']['type'] ?? null) => InstallationParent::component(GearComponentId::fromString($installation['parent']['id'])),
-                                default => InstallationParent::gear(GearId::fromUnprefixed($installation['parent']['id'] ?? $installation['gearId'])),
-                            },
-                            from: isset($installation['from']) ? SerializableDateTime::fromString($installation['from']) : null,
-                            until: isset($installation['until']) ? SerializableDateTime::fromString($installation['until']) : null,
-                            sportTypes: SportTypes::fromArray(array_map(
-                                SportType::from(...),
-                                $installation['sportTypes'] ?? []
-                            )),
-                        ),
-                        $component['installations']
-                    )
-                    : array_map(
-                        static fn (string $gearId): GearComponentInstallation => GearComponentInstallation::create(
-                            parent: InstallationParent::gear(GearId::fromUnprefixed($gearId)),
-                            from: null,
-                            until: null,
-                            sportTypes: SportTypes::empty(),
-                        ),
-                        $component['attachedTo'] ?? []
-                    )),
+                installations: GearComponentInstallations::fromArray(array_map(
+                    static fn (array $installation): GearComponentInstallation => GearComponentInstallation::create(
+                        parent: InstallationParent::fromString($installation['parent']),
+                        from: isset($installation['from']) ? SerializableDateTime::fromString($installation['from']) : null,
+                        until: isset($installation['until']) ? SerializableDateTime::fromString($installation['until']) : null,
+                        sportTypes: SportTypes::fromArray(array_map(SportType::from(...), $installation['sportTypes'])),
+                    ),
+                    $component['installations']
+                )),
                 localImagePath: $component['localImagePath'] ?? null,
                 purchasePrice: $purchasePrice,
-                isRetired: (bool) ($component['isRetired'] ?? false),
-                notes: $component['notes'] ?? null,
+                isRetired: (bool) $component['isRetired'],
+                notes: $component['notes'],
             );
 
             foreach ($component['maintenance'] ?? [] as $task) {

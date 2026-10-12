@@ -60,7 +60,9 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
                     'id' => 'gearComponent-chain',
                     'label' => 'Chain',
                     'localImagePath' => 'files/gear-maintenance/old.png',
-                    'attachedTo' => ['b1'],
+                    'isRetired' => false,
+                    'notes' => null,
+                    'installations' => [['parent' => 'gear:b1', 'from' => null, 'until' => null, 'sportTypes' => []]],
                     'maintenance' => [
                         ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
                     ],

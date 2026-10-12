@@ -6,11 +6,14 @@
       "id": "gearComponent-summer-wheelset",
       "label": "Summer wheelset",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
       "installations": [
         {
-          "gearId": "g10130856",
+          "parent": "gear:g10130856",
           "from": null,
-          "until": "2023-01-01"
+          "until": "2023-01-01",
+          "sportTypes": []
         }
       ],
       "maintenance": [
@@ -28,11 +31,14 @@
       "id": "gearComponent-winter-wheelset",
       "label": "Winter wheelset",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": "28mm tyres\nTubeless",
       "installations": [
         {
-          "gearId": "g10130856",
+          "parent": "gear:g10130856",
           "from": "2023-01-01",
-          "until": null
+          "until": null,
+          "sportTypes": []
         }
       ],
       "maintenance": [
@@ -44,13 +50,14 @@
             "unit": "km"
           }
         }
-      ],
-      "notes": "28mm tyres\nTubeless"
+      ]
     },
     {
       "id": "gearComponent-winter-tyres",
       "label": "Winter tyres",
       "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
       "installations": [
         {
           "parent": "component:gearComponent-winter-wheelset",
@@ -75,9 +82,10 @@
       "label": "Old chain",
       "localImagePath": null,
       "isRetired": true,
+      "notes": null,
       "installations": [
         {
-          "gearId": "g10130856",
+          "parent": "gear:g10130856",
           "from": null,
           "until": null,
           "sportTypes": []

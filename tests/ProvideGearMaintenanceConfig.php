@@ -29,10 +29,12 @@ components:
   - id: gearComponent-chain
     label: Some cool chain
     localImagePath: files/gear-maintenance/chain.png
-    attachedTo:
-      - g1233776
-      - '10130856'
-      - retired
+    isRetired: false
+    notes: null
+    installations:
+      - { parent: 'gear:g1233776', from: null, until: null, sportTypes: [] }
+      - { parent: 'gear:10130856', from: null, until: null, sportTypes: [] }
+      - { parent: 'gear:retired', from: null, until: null, sportTypes: [] }
     purchasePrice:
       amountInCents: 123456
       currency: 'EUR'
@@ -55,9 +57,11 @@ components:
   - id: gearComponent-di-2
     label: DI2 Battery
     localImagePath: files/gear-maintenance/battery.png
-    attachedTo:
-      - g1233776
-      - g10130856
+    isRetired: false
+    notes: null
+    installations:
+      - { parent: 'gear:g1233776', from: null, until: null, sportTypes: [] }
+      - { parent: 'gear:g10130856', from: null, until: null, sportTypes: [] }
     maintenance:
       - id: maintenanceTask-di-2-charged
         label: Charge

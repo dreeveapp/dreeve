@@ -67,26 +67,12 @@ class GearMaintenanceConfigTest extends ContainerTestCase
         );
     }
 
-    public function testFromArrayMapsLegacyAttachedToToOpenEndedInstallations(): void
-    {
-        $config = GearMaintenanceConfig::fromArray($this->getValidYml());
-
-        $this->assertEquals(
-            GearComponentInstallations::fromArray([
-                GearComponentInstallation::create(parent: InstallationParent::gear(GearId::fromUnprefixed('bike-one-gear-id')), from: null, until: null, sportTypes: SportTypes::empty()),
-                GearComponentInstallation::create(parent: InstallationParent::gear(GearId::fromUnprefixed('bike-two-gear-id')), from: null, until: null, sportTypes: SportTypes::empty()),
-            ]),
-            $config->getGearComponents()->getFirst()->getInstallations()
-        );
-    }
-
     public function testFromArrayReadsIsRetired(): void
     {
         $gearComponents = GearMaintenanceConfig::fromArray($this->getConfigWithInstallations())->getGearComponents();
 
         $this->assertFalse($gearComponents->getFirst()->isRetired());
         $this->assertTrue($gearComponents->getLast()->isRetired());
-        $this->assertFalse(GearMaintenanceConfig::fromArray($this->getValidYml())->getGearComponents()->getFirst()->isRetired());
     }
 
     public function testFromArrayReadsNotes(): void
@@ -95,7 +81,6 @@ class GearMaintenanceConfigTest extends ContainerTestCase
 
         $this->assertSame("Serial WH-123\nTubeless ready", $gearComponents->getFirst()->getNotes());
         $this->assertNull($gearComponents->getLast()->getNotes());
-        $this->assertNull(GearMaintenanceConfig::fromArray($this->getValidYml())->getGearComponents()->getFirst()->getNotes());
     }
 
     public function testFromArrayReadsComponentParents(): void
@@ -105,40 +90,6 @@ class GearMaintenanceConfigTest extends ContainerTestCase
         $this->assertEquals(
             InstallationParent::component(GearComponentId::fromString('gearComponent-winter-wheelset')),
             $config->getGearComponents()->getLast()->getInstallations()->getFirst()->getParent()
-        );
-    }
-
-    public function testFromArrayReadsEarlierInstallationFormats(): void
-    {
-        $config = GearMaintenanceConfig::fromArray(Json::decode((string) file_get_contents(__DIR__.'/fixtures/config-with-earlier-installation-formats.json')));
-
-        $this->assertEquals(
-            GearComponentInstallations::fromArray([
-                GearComponentInstallation::create(
-                    parent: InstallationParent::gear(GearId::fromUnprefixed('b1')),
-                    from: SerializableDateTime::fromString('2025-01-01'),
-                    until: null,
-                    sportTypes: SportTypes::fromArray([SportType::RIDE]),
-                ),
-            ]),
-            $config->getGearComponents()->getFirst()->getInstallations()
-        );
-        $this->assertEquals(
-            GearComponentInstallations::fromArray([
-                GearComponentInstallation::create(
-                    parent: InstallationParent::component(GearComponentId::fromString('gearComponent-chain')),
-                    from: null,
-                    until: null,
-                    sportTypes: SportTypes::empty(),
-                ),
-                GearComponentInstallation::create(
-                    parent: InstallationParent::gear(GearId::fromUnprefixed('b2')),
-                    from: null,
-                    until: null,
-                    sportTypes: SportTypes::empty(),
-                ),
-            ]),
-            $config->getGearComponents()->getLast()->getInstallations()
         );
     }
 
@@ -178,9 +129,11 @@ components:
   - id: 'gearComponent-chain'
     label: 'Some cool chain'
     localImagePath: 'chain.png'
-    attachedTo:
-      - 'bike-one-gear-id'
-      - 'bike-two-gear-id'
+    isRetired: false
+    notes: null
+    installations:
+      - { parent: 'gear:bike-one-gear-id', from: null, until: null, sportTypes: [] }
+      - { parent: 'gear:bike-two-gear-id', from: null, until: null, sportTypes: [] }
     maintenance:
       - id: maintenanceTask-chain-lubed
         label: Lube
@@ -200,9 +153,11 @@ components:
   - id: 'gearComponent-chain-two'
     label: 'Some cool chain'
     localImagePath: 'chain.png'
-    attachedTo:
-      - 'bike-one-gear-id'
-      - 'bike-two-gear-id'
+    isRetired: false
+    notes: null
+    installations:
+      - { parent: 'gear:bike-one-gear-id', from: null, until: null, sportTypes: [] }
+      - { parent: 'gear:bike-two-gear-id', from: null, until: null, sportTypes: [] }
     maintenance:
       - id: maintenanceTask-chain-two-lubed
         label: Lube
@@ -221,8 +176,10 @@ components:
   - id: 'gearComponent-chain'
     label: 'Some cool chain'
     localImagePath: 'chain.png'
-    attachedTo:
-      - '123456'
+    isRetired: false
+    notes: null
+    installations:
+      - { parent: 'gear:123456', from: null, until: null, sportTypes: [] }
     maintenance:
       - id: maintenanceTask-chain-lubed
         label: Lube
@@ -242,8 +199,10 @@ components:
   - id: 'gearComponent-chain-two'
     label: 'Some cool chain'
     localImagePath: 'chain.png'
-    attachedTo:
-      - '123456'
+    isRetired: false
+    notes: null
+    installations:
+      - { parent: 'gear:123456', from: null, until: null, sportTypes: [] }
     maintenance:
       - id: maintenanceTask-chain-two-lubed
         label: Lube
