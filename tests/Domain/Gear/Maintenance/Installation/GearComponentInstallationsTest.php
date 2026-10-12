@@ -9,6 +9,7 @@ use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\Installation\InstallationParent;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class GearComponentInstallationsTest extends TestCase
@@ -40,5 +41,38 @@ class GearComponentInstallationsTest extends TestCase
             GearIds::fromArray([GearId::fromUnprefixed('1'), GearId::fromUnprefixed('2')]),
             $installations->getGearIds(),
         );
+    }
+
+    /**
+     * @param list<?string> $froms
+     */
+    #[DataProvider('provideEarliestFrom')]
+    public function testGetEarliestFrom(array $froms, ?string $expectedEarliestFrom): void
+    {
+        $installations = GearComponentInstallations::fromArray(array_map(
+            static fn (?string $from): GearComponentInstallation => GearComponentInstallation::create(
+                parent: InstallationParent::gear(GearId::fromUnprefixed('b1')),
+                from: $from ? SerializableDateTime::fromString($from) : null,
+                until: null,
+                sportTypes: SportTypes::empty(),
+            ),
+            $froms,
+        ));
+
+        $this->assertEquals(
+            $expectedEarliestFrom ? SerializableDateTime::fromString($expectedEarliestFrom) : null,
+            $installations->getEarliestFrom(),
+        );
+    }
+
+    /**
+     * @return iterable<string, array{list<?string>, ?string}>
+     */
+    public static function provideEarliestFrom(): iterable
+    {
+        yield 'no installations' => [[], null];
+        yield 'one dated installation' => [['2025-03-01'], '2025-03-01'];
+        yield 'earliest of several' => [['2025-11-01', '2024-11-01', '2025-03-01'], '2024-11-01'];
+        yield 'an installation since forever' => [['2025-11-01', null], null];
     }
 }

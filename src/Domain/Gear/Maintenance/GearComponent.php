@@ -25,6 +25,7 @@ final readonly class GearComponent implements \JsonSerializable
         private ?Money $purchasePrice,
         private bool $isRetired,
         private ?string $notes,
+        private ?StartingValue $startingValue,
     ) {
         $this->maintenanceTasks = MaintenanceTasks::empty();
     }
@@ -37,6 +38,7 @@ final readonly class GearComponent implements \JsonSerializable
         ?Money $purchasePrice,
         bool $isRetired,
         ?string $notes,
+        ?StartingValue $startingValue,
     ): self {
         return new self(
             id: $id,
@@ -46,6 +48,7 @@ final readonly class GearComponent implements \JsonSerializable
             purchasePrice: $purchasePrice,
             isRetired: $isRetired,
             notes: $notes,
+            startingValue: $startingValue,
         );
     }
 
@@ -89,6 +92,11 @@ final readonly class GearComponent implements \JsonSerializable
         return $this->notes;
     }
 
+    public function getStartingValue(): ?StartingValue
+    {
+        return $this->startingValue;
+    }
+
     public function getMaintenanceTasks(): MaintenanceTasks
     {
         return $this->maintenanceTasks;
@@ -128,6 +136,7 @@ final readonly class GearComponent implements \JsonSerializable
             'localImagePath' => $this->localImagePath,
             'isRetired' => $this->isRetired,
             'notes' => $this->notes,
+            'startingValue' => $this->startingValue,
             'installations' => $this->installations,
             'maintenance' => $this->maintenanceTasks->map(
                 static fn (MaintenanceTask $task): array => [

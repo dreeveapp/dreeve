@@ -13,6 +13,8 @@ use App\Domain\Gear\Maintenance\Installation\InstallationParent;
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Money\Currency;
@@ -72,6 +74,10 @@ final readonly class GearMaintenanceConfig
                 purchasePrice: $purchasePrice,
                 isRetired: (bool) $component['isRetired'],
                 notes: $component['notes'],
+                startingValue: isset($component['startingValue']) ? StartingValue::create(
+                    distance: Meter::from($component['startingValue']['distanceInMeter']),
+                    movingTime: Seconds::from($component['startingValue']['movingTimeInSeconds']),
+                ) : null,
             );
 
             foreach ($component['maintenance'] ?? [] as $task) {

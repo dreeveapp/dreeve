@@ -97,16 +97,18 @@ final readonly class MaintenanceTaskProgressCalculator
         foreach ($gearMaintenanceConfig->getGearComponents()->withoutRetired() as $gearComponent) {
             foreach ($gearComponent->getMaintenanceTasks() as $maintenanceTask) {
                 $lastPerformedOn = $mostRecentPerMaintenanceTask[(string) $maintenanceTask->getId()] ?? null;
+                $countFrom = $lastPerformedOn ?? $gearComponent->getInstallations()->getEarliestFrom();
 
                 $maintenanceTaskStatuses->add(MaintenanceTaskStatus::from(
                     maintenanceTaskId: $maintenanceTask->getId(),
                     lastPerformedOn: $lastPerformedOn,
-                    progress: $lastPerformedOn instanceof SerializableDateTime ? $this->calculateProgressFor(
+                    progress: $countFrom instanceof SerializableDateTime ? $this->calculateProgressFor(
                         ProgressCalculationContext::from(
                             usageWindows: $gearMaintenanceConfig->getGearComponents()->resolveUsageWindowsFor($gearComponent),
-                            lastTaggedOn: $lastPerformedOn,
+                            lastTaggedOn: $countFrom,
                             intervalUnit: $maintenanceTask->getIntervalUnit(),
                             intervalValue: $maintenanceTask->getIntervalValue(),
+                            startingValue: $lastPerformedOn instanceof SerializableDateTime ? null : $gearComponent->getStartingValue(),
                         )
                     ) : null,
                 ));

@@ -32,10 +32,12 @@ final readonly class EveryXDistanceUsedProgressCalculation implements Maintenanc
                 WHERE %s
                 AND startDateTime > :lastTaggedOn', $usageWindowsSql);
 
-        $distanceSinceLastTagged = Meter::from($this->connection->fetchOne($query, [
-            ...$usageWindowsParameters,
-            'lastTaggedOn' => (string) $context->getLastTaggedOn(),
-        ]) ?? 0)->toKilometer();
+        $distanceSinceLastTagged = Meter::from(
+            ($this->connection->fetchOne($query, [
+                ...$usageWindowsParameters,
+                'lastTaggedOn' => (string) $context->getLastTaggedOn(),
+            ]) ?? 0) + ($context->getStartingValue()?->getDistance()->toFloat() ?? 0)
+        )->toKilometer();
 
         if (IntervalUnit::EVERY_X_MILES_USED === $context->getIntervalUnit()) {
             $distanceSinceLastTagged = $distanceSinceLastTagged->toMiles();

@@ -51,6 +51,7 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
             purchasePrice: $command->getPurchasePrice(),
             isRetired: $command->isRetired(),
             notes: $command->getNotes(),
+            startingValue: $existingComponent?->getStartingValue(),
         );
 
         foreach ($command->getMaintenanceTasks() as $maintenanceTask) {
