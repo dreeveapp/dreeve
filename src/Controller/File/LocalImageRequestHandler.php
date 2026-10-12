@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\File;
 
 use App\Domain\Image\ImageDirectory;
-use App\Infrastructure\Security\TrustedVisitor;
+use App\Infrastructure\Security\Visitor;
 use App\Infrastructure\ValueObject\String\Path;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,7 +22,7 @@ final readonly class LocalImageRequestHandler
 
     public function __construct(
         private FilesystemOperator $fileStorage,
-        private TrustedVisitor $trustedVisitor,
+        private Visitor $visitor,
     ) {
     }
 
@@ -45,7 +45,7 @@ final readonly class LocalImageRequestHandler
             'Vary' => 'Cookie',
         ];
 
-        if ($isActivityPhoto && !$this->trustedVisitor->isTrusted()) {
+        if ($isActivityPhoto && !$this->visitor->isTrusted()) {
             // Not a trusted visitor: serve an anonymized, stable random photo instead of the real one.
             $seed = Path::fromString($path)->getFilenameWithoutExtension();
             [$width, $height] = 0 === crc32($seed) % 2 ? [800, 1200] : [1200, 800];

@@ -3,6 +3,7 @@
 namespace App\Tests\Infrastructure\Cache;
 
 use App\Application\AppVersion;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Context\CacheContextRegistry;
@@ -13,8 +14,7 @@ use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Config\DemoMode;
-use App\Infrastructure\Security\AuthenticatedVisitor;
-use App\Infrastructure\Security\TrustedVisitor;
+use App\Infrastructure\Security\Visitor;
 use App\Tests\ContainerTestCase;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -206,9 +206,10 @@ class CacheableRendererTest extends ContainerTestCase
         return new CacheableRenderer(
             $this->renderCache,
             new CacheContextRegistry([
-                new TrustedVisitorCacheContext(new TrustedVisitor(
+                new TrustedVisitorCacheContext(new Visitor(
+                    $security,
                     DemoMode::fromString($demoModeIsEnabled ? '1' : '0'),
-                    new AuthenticatedVisitor($security),
+                    $this->createStub(SettingsRepository::class),
                 )),
             ]),
         );

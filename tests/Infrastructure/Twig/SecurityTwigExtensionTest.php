@@ -2,7 +2,9 @@
 
 namespace App\Tests\Infrastructure\Twig;
 
-use App\Infrastructure\Security\AuthenticatedVisitor;
+use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Config\DemoMode;
+use App\Infrastructure\Security\Visitor;
 use App\Infrastructure\Twig\SecurityTwigExtension;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -17,7 +19,7 @@ class SecurityTwigExtensionTest extends TestCase
             ->method('getUser')
             ->willReturn(new InMemoryUser('admin', null, ['ROLE_ADMIN']));
 
-        self::assertTrue(new SecurityTwigExtension(new AuthenticatedVisitor($security))->isAuthenticated());
+        self::assertTrue(new SecurityTwigExtension(new Visitor($security, DemoMode::fromString('0'), $this->createStub(SettingsRepository::class)))->isAuthenticated());
     }
 
     public function testItShouldReportAnAnonymousVisitor(): void
@@ -27,6 +29,6 @@ class SecurityTwigExtensionTest extends TestCase
             ->method('getUser')
             ->willReturn(null);
 
-        self::assertFalse(new SecurityTwigExtension(new AuthenticatedVisitor($security))->isAuthenticated());
+        self::assertFalse(new SecurityTwigExtension(new Visitor($security, DemoMode::fromString('0'), $this->createStub(SettingsRepository::class)))->isAuthenticated());
     }
 }

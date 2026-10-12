@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Cache\Context;
 
-use App\Infrastructure\Security\AuthenticatedVisitor;
+use App\Infrastructure\Security\Visitor;
 
 final readonly class AuthenticatedCacheContext implements CacheContext
 {
     public function __construct(
-        private AuthenticatedVisitor $authenticatedVisitor,
+        private Visitor $visitor,
     ) {
     }
 
@@ -20,6 +20,6 @@ final readonly class AuthenticatedCacheContext implements CacheContext
 
     public function resolve(): string
     {
-        return $this->authenticatedVisitor->isAuthenticated() ? 'auth' : 'anon';
+        return $this->visitor->isAuthenticated() ? 'auth' : 'anon';
     }
 }

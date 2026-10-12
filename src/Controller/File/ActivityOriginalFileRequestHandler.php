@@ -6,10 +6,9 @@ namespace App\Controller\File;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Import\FileImportRepository;
-use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\AttachmentResponse;
-use App\Infrastructure\Security\AuthenticatedVisitor;
+use App\Infrastructure\Security\Visitor;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -19,15 +18,14 @@ final readonly class ActivityOriginalFileRequestHandler
 {
     public function __construct(
         private FileImportRepository $fileImportRepository,
-        private SettingsRepository $settingsRepository,
-        private AuthenticatedVisitor $authenticatedVisitor,
+        private Visitor $visitor,
     ) {
     }
 
     #[Route(path: '/activities/{activityId}/original-file', name: 'activity_original_file', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'])]
     public function handle(string $activityId): AttachmentResponse
     {
-        if (!$this->authenticatedVisitor->isAuthenticated() && !$this->settingsRepository->security()->visitorsCanDownloadOriginalFiles()) {
+        if (!$this->visitor->canDownloadOriginalFiles()) {
             throw new NotFoundHttpException('Not found');
         }
 

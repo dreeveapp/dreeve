@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Cache\Context;
 
-use App\Infrastructure\Security\TrustedVisitor;
+use App\Infrastructure\Security\Visitor;
 
 final readonly class TrustedVisitorCacheContext implements CacheContext
 {
     public function __construct(
-        private TrustedVisitor $trustedVisitor,
+        private Visitor $visitor,
     ) {
     }
 
@@ -20,6 +20,6 @@ final readonly class TrustedVisitorCacheContext implements CacheContext
 
     public function resolve(): string
     {
-        return $this->trustedVisitor->isTrusted() ? 'trusted' : 'anonymized';
+        return $this->visitor->isTrusted() ? 'trusted' : 'anonymized';
     }
 }

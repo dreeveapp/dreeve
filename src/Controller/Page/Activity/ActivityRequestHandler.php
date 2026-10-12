@@ -33,8 +33,7 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Measurement\ProvideMeasurementFormats;
-use App\Infrastructure\Security\AuthenticatedVisitor;
-use App\Infrastructure\Security\TrustedVisitor;
+use App\Infrastructure\Security\Visitor;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -60,9 +59,8 @@ final readonly class ActivityRequestHandler
         private TranslatorInterface $translator,
         private PageRenderer $pageRenderer,
         private UrlGeneratorInterface $urlGenerator,
-        private TrustedVisitor $trustedVisitor,
+        private Visitor $visitor,
         private FileImportRepository $fileImportRepository,
-        private AuthenticatedVisitor $authenticatedVisitor,
         private Environment $twig,
     ) {
     }
@@ -143,7 +141,7 @@ final readonly class ActivityRequestHandler
             ] : null,
             'hasGpxLink' => $this->activityStreamRepository->hasOneForActivityAndStreamType($activityId, StreamType::LAT_LNG),
             'gpxFileName' => GpxFileName::for($activity),
-            'hasOriginalFileLink' => ($this->authenticatedVisitor->isAuthenticated() || $this->settingsRepository->security()->visitorsCanDownloadOriginalFiles())
+            'hasOriginalFileLink' => $this->visitor->canDownloadOriginalFiles()
                 && $this->fileImportRepository->hasFileContentsForActivity($activityId),
             'distributionCharts' => $this->distributionChartsBuilder->buildFor($activity),
             'splits' => $this->activitySplitRepository->findBy(
@@ -157,7 +155,7 @@ final readonly class ActivityRequestHandler
             ),
             'hasProfileChart' => $numberOfProfileChartLanes > 0,
             'heartRateZones' => $timeInHeartRateZones,
-            'showStartTime' => $this->trustedVisitor->isTrusted(),
+            'showStartTime' => $this->visitor->isTrusted(),
         ]);
     }
 }

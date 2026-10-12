@@ -7,7 +7,7 @@ namespace App\Tests\Controller\Api\V1;
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsName;
 use App\Infrastructure\Security\Api\Token;
-use App\Infrastructure\Security\AuthenticatedVisitor;
+use App\Infrastructure\Security\Visitor;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -78,12 +78,12 @@ class ApiFirewallTest extends ControllerWebTestCase
     public function testItDoesNotLeakTheApiUserIntoTheNextRequest(): void
     {
         $this->client->request('GET', '/api/v1/status', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
-        $this->assertTrue($this->getContainer()->get(AuthenticatedVisitor::class)->isAuthenticated());
+        $this->assertTrue($this->getContainer()->get(Visitor::class)->isAuthenticated());
 
         $this->client->request('GET', '/');
 
         $this->assertResponseIsSuccessful();
-        $this->assertFalse($this->getContainer()->get(AuthenticatedVisitor::class)->isAuthenticated());
+        $this->assertFalse($this->getContainer()->get(Visitor::class)->isAuthenticated());
     }
 
     public function testItAnswers401RatherThanRedirectingToTheLoginPage(): void
