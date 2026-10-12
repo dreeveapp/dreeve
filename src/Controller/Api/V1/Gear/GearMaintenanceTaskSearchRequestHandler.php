@@ -9,6 +9,7 @@ use App\Domain\Gear\GearIdRepository;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgress;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -75,8 +76,8 @@ final readonly class GearMaintenanceTaskSearchRequestHandler
                             'unit' => $maintenanceTask->getIntervalUnit()->value,
                         ],
                         'lastPerformedOn' => $maintenanceTaskStatus?->getLastPerformedOn()?->format('Y-m-d'),
-                        'elapsed' => $progress ? round($progress->getElapsed(), 1) : null,
-                        'remaining' => $progress ? round($progress->getRemaining(), 1) : null,
+                        'elapsed' => $progress instanceof MaintenanceTaskProgress ? round($progress->getElapsed(), 1) : null,
+                        'remaining' => $progress instanceof MaintenanceTaskProgress ? round($progress->getRemaining(), 1) : null,
                         'percentage' => $progress?->getPercentage(),
                         'isDue' => $progress?->isDue() ?? false,
                         'isOverdue' => $progress?->isOverdue() ?? false,
