@@ -9,6 +9,7 @@ use App\Domain\Activity\ImportSource;
 use App\Domain\Import\FileImport;
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportStatus;
+use App\Domain\Import\FileImportWasDeleted;
 use App\Domain\Import\FileParser\RawActivityFile;
 use App\Infrastructure\ValueObject\String\Path;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -34,6 +35,21 @@ class FileImportTest extends TestCase
         $this->assertEquals($fileImportId, $fileImport->getId());
         $this->assertSame('ride.fit', $fileImport->getOriginalFilename());
         $this->assertSame('raw-fit-bytes', $fileImport->getFileContents());
+    }
+
+    public function testDeleteRecordsThatTheFileImportWasDeleted(): void
+    {
+        $fileImport = FileImportBuilder::fromDefaults()
+            ->withFileImportId(FileImportId::fromUnprefixed('abc'))
+            ->withActivityId(ActivityId::fromUnprefixed('123'))
+            ->build();
+
+        $fileImport->delete();
+
+        $this->assertEquals(
+            [new FileImportWasDeleted(FileImportId::fromUnprefixed('abc'), ActivityId::fromUnprefixed('123'))],
+            $fileImport->getRecordedEvents()
+        );
     }
 
     public function testFromStateRoundTrips(): void

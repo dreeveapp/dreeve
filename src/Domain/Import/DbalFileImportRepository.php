@@ -6,13 +6,22 @@ namespace App\Domain\Import;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ImportSource;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\ValueObject\String\CompressedString;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Doctrine\DBAL\Connection;
 
 final readonly class DbalFileImportRepository extends DbalRepository implements FileImportRepository
 {
+    public function __construct(
+        Connection $connection,
+        private EventBus $eventBus,
+    ) {
+        parent::__construct($connection);
+    }
+
     public function add(FileImport $fileImport): void
     {
         $sql = 'INSERT INTO FileImport (fileImportId, originalFilename, fileContents, source, status, errorMessage, activityId, importedOn)
@@ -80,13 +89,15 @@ final readonly class DbalFileImportRepository extends DbalRepository implements 
             ->fetchOne();
     }
 
-    public function delete(FileImportId $fileImportId): void
+    public function delete(FileImport $fileImport): void
     {
         $sql = 'DELETE FROM FileImport WHERE fileImportId = :fileImportId';
 
         $this->connection->executeStatement($sql, [
-            'fileImportId' => $fileImportId,
+            'fileImportId' => $fileImport->getId(),
         ]);
+
+        $this->eventBus->publishEvents($fileImport->getRecordedEvents());
     }
 
     public function deleteForActivity(ActivityId $activityId): void

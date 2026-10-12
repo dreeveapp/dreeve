@@ -7,30 +7,33 @@ namespace App\Domain\Import;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Import\FileParser\RawActivityFile;
+use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Index(name: 'FileImport_originalFilename', columns: ['originalFilename'])]
-final readonly class FileImport
+final class FileImport
 {
+    use RecordsEvents;
+
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string', unique: true)]
-        private FileImportId $fileImportId,
+        private readonly FileImportId $fileImportId,
         #[ORM\Column(type: 'string')]
-        private string $originalFilename,
+        private readonly string $originalFilename,
         #[ORM\Column(type: 'blob', nullable: true)]
-        private ?string $fileContents,
+        private readonly ?string $fileContents,
         #[ORM\Column(type: 'string')]
-        private ImportSource $source,
+        private readonly ImportSource $source,
         #[ORM\Column(type: 'string')]
-        private FileImportStatus $status,
+        private readonly FileImportStatus $status,
         #[ORM\Column(type: 'text', nullable: true)]
-        private ?string $errorMessage,
+        private readonly ?string $errorMessage,
         #[ORM\Column(type: 'string', nullable: true)]
-        private ?ActivityId $activityId,
+        private readonly ?ActivityId $activityId,
         #[ORM\Column(type: 'datetime_immutable')]
-        private SerializableDateTime $importedOn,
+        private readonly SerializableDateTime $importedOn,
     ) {
     }
 
@@ -96,6 +99,14 @@ final readonly class FileImport
             activityId: $activityId,
             importedOn: $importedOn,
         );
+    }
+
+    public function delete(): void
+    {
+        $this->recordThat(new FileImportWasDeleted(
+            fileImportId: $this->fileImportId,
+            activityId: $this->activityId
+        ));
     }
 
     public function getId(): FileImportId

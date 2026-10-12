@@ -408,7 +408,8 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         parent::setUp();
 
         $this->fileImportRepository = new DbalFileImportRepository(
-            $this->getConnection()
+            $this->getConnection(),
+            new SpyEventBus(),
         );
         $this->fileImportOverviewRepository = new DbalFileImportOverviewRepository(
             $this->getConnection(),

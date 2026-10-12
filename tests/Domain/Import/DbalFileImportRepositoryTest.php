@@ -14,6 +14,7 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
+use App\Tests\Infrastructure\Eventing\SpyEventBus;
 
 class DbalFileImportRepositoryTest extends ContainerTestCase
 {
@@ -171,7 +172,8 @@ class DbalFileImportRepositoryTest extends ContainerTestCase
         parent::setUp();
 
         $this->fileImportRepository = new DbalFileImportRepository(
-            $this->getConnection()
+            $this->getConnection(),
+            new SpyEventBus(),
         );
     }
 }

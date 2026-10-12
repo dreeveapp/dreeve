@@ -16,7 +16,7 @@ interface FileImportRepository
 
     public function hasFileContentsForActivity(ActivityId $activityId): bool;
 
-    public function delete(FileImportId $fileImportId): void;
+    public function delete(FileImport $fileImport): void;
 
     public function deleteForActivity(ActivityId $activityId): void;
 }

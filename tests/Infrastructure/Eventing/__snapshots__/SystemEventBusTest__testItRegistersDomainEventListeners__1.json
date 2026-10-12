@@ -35,6 +35,9 @@
     "App\\Domain\\Gear\\RecordingDevice\\RecordingDeviceInvalidateCacheTagsListener": [
         "reactToRecordingDeviceWasUpdated"
     ],
+    "App\\Domain\\Import\\FileImportInvalidateCacheTagsListener": [
+        "reactToFileImportWasDeleted"
+    ],
     "App\\Domain\\Segment\\SegmentInvalidateCacheTagsListener": [
         "reactToSegmentWasAdded",
         "reactToSegmentWasUpdated",
