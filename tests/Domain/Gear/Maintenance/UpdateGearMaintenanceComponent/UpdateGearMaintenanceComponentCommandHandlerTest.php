@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent;
 
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent\UpdateGearMaintenanceComponent;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
-use App\Infrastructure\KeyValue\Key;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideGearMaintenanceConfig;
@@ -22,7 +19,6 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
     use ProvideGearMaintenanceConfig;
 
     private CommandBus $commandBus;
-    private KeyValueStore $keyValueStore;
     private FilesystemOperator $fileStorage;
 
     public function testItUpdatesExistingComponentAndLeavesOthersUntouched(): void
@@ -38,12 +34,11 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             ],
         ]));
 
-        $config = Json::decode((string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
+        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
 
-        $this->assertCount(2, $config['components']);
-        $this->assertSame('gearComponent-chain', $config['components'][0]['id']);
+        $this->assertCount(2, $components);
 
-        $chain = $this->findComponentById($config['components'], 'gearComponent-chain');
+        $chain = $this->findComponentById($components, 'gearComponent-chain');
         $this->assertNotNull($chain);
         $this->assertSame('Updated chain', $chain['label']);
         $this->assertSame([
@@ -55,9 +50,23 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->assertSame('maintenanceTask-chain-lubed', $chain['maintenance'][0]['id']);
         $this->assertSame(600, $chain['maintenance'][0]['interval']['value']);
 
-        $di2 = $this->findComponentById($config['components'], 'gearComponent-di-2');
+        $di2 = $this->findComponentById($components, 'gearComponent-di-2');
         $this->assertNotNull($di2);
         $this->assertSame('DI2 Battery', $di2['label']);
+    }
+
+    public function testItRejectsAnUnknownComponent(): void
+    {
+        $this->expectExceptionObject(CouldNotProcessCommand::withReason('The component does not exist.'));
+
+        $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
+            'gearComponentId' => 'gearComponent-does-not-exist',
+            'label' => 'Chain',
+            'installations' => [['parent' => 'gear:b1']],
+            'maintenanceTasks' => [
+                ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+            ],
+        ]));
     }
 
     public function testItInstallsAComponentOnAnotherComponent(): void
@@ -73,10 +82,10 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             ],
         ]));
 
-        $config = Json::decode((string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
+        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
         $this->assertSame(
             [['parent' => 'component:gearComponent-chain', 'from' => null, 'until' => null, 'sportTypes' => []]],
-            $this->findComponentById($config['components'], 'gearComponent-di-2')['installations'],
+            $this->findComponentById($components, 'gearComponent-di-2')['installations'],
         );
     }
 
@@ -95,7 +104,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
                 ['id' => 'maintenanceTask-di-2-charged', 'label' => 'Charge', 'interval' => ['value' => 11, 'unit' => 'hours']],
             ],
         ]));
-        $configBefore = (string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE);
+        $componentsBefore = Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll());
 
         try {
             $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
@@ -111,7 +120,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             $this->assertSame('A component cannot be installed on itself or on one of its own parts.', $exception->getMessage());
         }
 
-        $this->assertSame($configBefore, (string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
+        $this->assertSame($componentsBefore, Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
     }
 
     /**
@@ -141,9 +150,9 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             ],
         ]));
 
-        $config = Json::decode((string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
+        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
 
-        $this->assertSame('files/gear-maintenance/0025176c-5652-11ee-923d-02424dd627d5.png', $config['components'][0]['localImagePath']);
+        $this->assertSame('files/gear-maintenance/0025176c-5652-11ee-923d-02424dd627d5.png', $components[0]['localImagePath']);
         $this->assertFalse($this->fileStorage->fileExists('gear-maintenance/old.png'));
         $this->assertTrue($this->fileStorage->fileExists('gear-maintenance/0025176c-5652-11ee-923d-02424dd627d5.png'));
         $this->assertSame('new-content', $this->fileStorage->read('gear-maintenance/0025176c-5652-11ee-923d-02424dd627d5.png'));
@@ -166,31 +175,28 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             ],
         ]));
 
-        $config = Json::decode((string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
+        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
 
-        $this->assertNull($config['components'][0]['localImagePath']);
+        $this->assertNull($components[0]['localImagePath']);
         $this->assertFalse($this->fileStorage->fileExists('gear-maintenance/old.png'));
     }
 
     private function seedComponentWithImage(string $localImagePath): void
     {
-        $this->keyValueStore->save(KeyValue::fromState(
-            Key::GEAR_MAINTENANCE,
-            Value::fromString(Json::encode([
-                'enabled' => true,
-                'components' => [[
-                    'id' => 'gearComponent-chain',
-                    'label' => 'Chain',
-                    'localImagePath' => $localImagePath,
-                    'isRetired' => false,
-                    'notes' => null,
-                    'installations' => [['parent' => 'gear:b1', 'from' => null, 'until' => null, 'sportTypes' => []]],
-                    'maintenance' => [
-                        ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
-                    ],
-                ]],
-            ])),
-        ));
+        $this->importGearMaintenanceConfigFromArray([
+            'enabled' => true,
+            'components' => [[
+                'id' => 'gearComponent-chain',
+                'label' => 'Chain',
+                'localImagePath' => $localImagePath,
+                'isRetired' => false,
+                'notes' => null,
+                'installations' => [['parent' => 'gear:b1', 'from' => null, 'until' => null, 'sportTypes' => []]],
+                'maintenance' => [
+                    ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                ],
+            ]],
+        ]);
     }
 
     /**
@@ -215,7 +221,6 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         parent::setUp();
 
         $this->commandBus = $this->getContainer()->get(CommandBus::class);
-        $this->keyValueStore = $this->getContainer()->get(KeyValueStore::class);
         $this->fileStorage = $this->getContainer()->get('file.storage');
     }
 }

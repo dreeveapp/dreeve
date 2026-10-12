@@ -14,12 +14,7 @@ use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
-use App\Infrastructure\KeyValue\Key;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Measurement\Length\Kilometer;
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -171,9 +166,7 @@ class UpcomingMaintenanceWidgetTest extends ContainerTestCase
 
     private function importGearMaintenanceConfigAttachedToRetiredGearOnly(): void
     {
-        $this->getContainer()->get(KeyValueStore::class)->save(KeyValue::fromState(
-            key: Key::GEAR_MAINTENANCE,
-            value: Value::fromString(Json::encode(Yaml::parse(<<<YML
+        $this->importGearMaintenanceConfigFromArray(Yaml::parse(<<<YML
 enabled: true
 ignoreRetiredGear: true
 components:
@@ -189,8 +182,7 @@ components:
         interval:
           value: 500
           unit: km
-YML))),
-        ));
+YML));
     }
 
     #[\Override]

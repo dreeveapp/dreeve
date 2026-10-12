@@ -4,13 +4,11 @@ namespace App\Tests\Controller\Admin\Gear\Maintenance;
 
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
-use App\Infrastructure\KeyValue\Key;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
+use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
+use Symfony\Component\DomCrawler\Crawler;
 
 class ManageGearMaintenanceConfigRequestHandlerTest extends AdminWebTestCase
 {
@@ -56,10 +54,7 @@ class ManageGearMaintenanceConfigRequestHandlerTest extends AdminWebTestCase
 
     public function testItMarksComponentsThatAreNotFitted(): void
     {
-        $this->getContainer()->get(KeyValueStore::class)->save(KeyValue::fromState(
-            key: Key::GEAR_MAINTENANCE,
-            value: Value::fromString((string) file_get_contents(__DIR__.'/fixtures/gear-maintenance-with-not-fitted-component.json')),
-        ));
+        $this->importGearMaintenanceConfigFromArray(Json::decode((string) file_get_contents(__DIR__.'/fixtures/gear-maintenance-with-not-fitted-component.json')));
         $this->getContainer()->get(GearRepository::class)->add(
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('g10130856'))
@@ -73,15 +68,16 @@ class ManageGearMaintenanceConfigRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $rows = $crawler->filter('table.data-table tbody tr');
-        $this->assertStringContainsString('Summer wheelset', $rows->eq(0)->text());
-        $this->assertCount(1, $rows->eq(0)->filter('.pill--warning'));
-        $this->assertStringNotContainsString('Road bike', $rows->eq(0)->text());
-        $this->assertStringContainsString('Winter wheelset', $rows->eq(1)->text());
-        $this->assertCount(0, $rows->eq(1)->filter('.pill--warning'));
-        $this->assertStringContainsString('Road bike', $rows->eq(1)->text());
-        $this->assertStringContainsString('Old chain', $rows->eq(2)->text());
-        $this->assertCount(1, $rows->eq(2)->filter('.pill--danger'));
+        $this->assertSame(
+            ['Old chain', 'Summer wheelset', 'Winter wheelset'],
+            $rows->each(static fn (Crawler $row): string => $row->filter('td')->first()->text()),
+        );
+        $this->assertCount(1, $rows->eq(0)->filter('.pill--danger'));
+        $this->assertCount(0, $rows->eq(0)->filter('.pill--warning'));
+        $this->assertCount(1, $rows->eq(1)->filter('.pill--warning'));
+        $this->assertStringNotContainsString('Road bike', $rows->eq(1)->text());
         $this->assertCount(0, $rows->eq(2)->filter('.pill--warning'));
+        $this->assertStringContainsString('Road bike', $rows->eq(2)->text());
     }
 
     public function testItRendersTheEmptyStateWhenThereAreNoComponents(): void

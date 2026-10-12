@@ -12,6 +12,7 @@ use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Domain\Dashboard\Widget\WidgetRenderer;
 use App\Domain\Gear\GearIdRepository;
 use App\Domain\Gear\GearIds;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -24,6 +25,7 @@ final readonly class UpcomingMaintenanceWidget implements Widget, DependsOnCurre
     public function __construct(
         private TranslatorInterface $translator,
         private GearMaintenanceRepository $gearMaintenanceRepository,
+        private GearComponentRepository $gearComponentRepository,
         private MaintenanceTaskProgressCalculator $maintenanceTaskProgressCalculator,
         private GearIdRepository $gearIdRepository,
         private WidgetRenderer $widgetRenderer,
@@ -84,7 +86,7 @@ final readonly class UpcomingMaintenanceWidget implements Widget, DependsOnCurre
             : GearIds::empty();
 
         $upcomingMaintenanceTasks = [];
-        $gearComponents = $gearMaintenanceConfig->getGearComponents();
+        $gearComponents = $this->gearComponentRepository->findAll();
         foreach ($gearComponents->withoutRetired() as $gearComponent) {
             if ($this->isOnlyAttachedToRetiredGear($gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now), $retiredGearIds)) {
                 continue;

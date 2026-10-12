@@ -10,10 +10,7 @@ use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
-use App\Infrastructure\KeyValue\Key;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
+use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
@@ -50,10 +47,7 @@ class GearMaintenanceRequestHandlerTest extends AdminWebTestCase
 
     public function testRenderWithAComponentThatIsNotFitted(): void
     {
-        $this->getContainer()->get(KeyValueStore::class)->save(KeyValue::fromState(
-            key: Key::GEAR_MAINTENANCE,
-            value: Value::fromString((string) file_get_contents(__DIR__.'/fixtures/gear-maintenance-with-not-fitted-component.json')),
-        ));
+        $this->importGearMaintenanceConfigFromArray(Json::decode((string) file_get_contents(__DIR__.'/fixtures/gear-maintenance-with-not-fitted-component.json')));
         $this->getContainer()->get(GearRepository::class)->add(
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('g10130856'))

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Gear\Maintenance\UpdateGearMaintenanceConfig;
 
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\UpdateGearMaintenanceConfig\UpdateGearMaintenanceConfig;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\KeyValue\Key;
@@ -32,7 +33,7 @@ class UpdateGearMaintenanceConfigCommandHandlerTest extends ContainerTestCase
 
         $this->assertFalse($config['enabled']);
         $this->assertFalse($config['ignoreRetiredGear']);
-        $this->assertCount(2, $config['components']);
+        $this->assertCount(2, $this->getContainer()->get(GearComponentRepository::class)->findAll());
     }
 
     public function testItStoresSettingsWhenNoConfigExists(): void

@@ -4,10 +4,9 @@ namespace App\Tests\Controller\Admin\Gear\Maintenance;
 
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
-use App\Infrastructure\KeyValue\Key;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
+use App\Domain\Gear\Maintenance\GearComponent;
+use App\Domain\Gear\Maintenance\GearComponentId;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
@@ -101,10 +100,9 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
     {
         $this->importGearMaintenanceConfig();
         $this->seedGears();
-        $keyValueStore = static::getContainer()->get(KeyValueStore::class);
-        $config = Json::decode((string) $keyValueStore->find(Key::GEAR_MAINTENANCE));
-        $config['components'][0]['notes'] = '</textarea><b>Serial</b>';
-        $keyValueStore->save(KeyValue::fromState(Key::GEAR_MAINTENANCE, Value::fromString(Json::encode($config))));
+        $gearComponentRepository = static::getContainer()->get(GearComponentRepository::class);
+        $chain = Json::decode(Json::encode($gearComponentRepository->find(GearComponentId::fromString('gearComponent-chain'))));
+        $gearComponentRepository->update(GearComponent::fromArray([...$chain, 'notes' => '</textarea><b>Serial</b>']));
 
         $this->client->loginUser($this->adminUser());
 

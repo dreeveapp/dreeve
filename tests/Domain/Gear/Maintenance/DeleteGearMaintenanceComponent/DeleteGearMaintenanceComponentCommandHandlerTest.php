@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Gear\Maintenance\DeleteGearMaintenanceComponent;
 
 use App\Domain\Gear\Maintenance\DeleteGearMaintenanceComponent\DeleteGearMaintenanceComponent;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
-use App\Infrastructure\KeyValue\Key;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideGearMaintenanceConfig;
@@ -20,7 +17,6 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
     use ProvideGearMaintenanceConfig;
 
     private CommandBus $commandBus;
-    private KeyValueStore $keyValueStore;
     private FilesystemOperator $fileStorage;
 
     public function testItDeletesComponentAndLeavesOthersUntouched(): void
@@ -31,10 +27,10 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             'gearComponentId' => 'gearComponent-chain',
         ]));
 
-        $config = Json::decode((string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
+        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
 
-        $this->assertCount(1, $config['components']);
-        $this->assertSame('gearComponent-di-2', $config['components'][0]['id']);
+        $this->assertCount(1, $components);
+        $this->assertSame('gearComponent-di-2', $components[0]['id']);
     }
 
     public function testItIsANoopWhenComponentDoesNotExist(): void
@@ -45,38 +41,35 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             'gearComponentId' => 'gearComponent-does-not-exist',
         ]));
 
-        $config = Json::decode((string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
+        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
 
-        $this->assertCount(2, $config['components']);
+        $this->assertCount(2, $components);
     }
 
     public function testItDeletesTheComponentImageFile(): void
     {
-        $this->keyValueStore->save(KeyValue::fromState(
-            Key::GEAR_MAINTENANCE,
-            Value::fromString(Json::encode([
-                'enabled' => true,
-                'components' => [[
-                    'id' => 'gearComponent-chain',
-                    'label' => 'Chain',
-                    'localImagePath' => 'files/gear-maintenance/old.png',
-                    'isRetired' => false,
-                    'notes' => null,
-                    'installations' => [['parent' => 'gear:b1', 'from' => null, 'until' => null, 'sportTypes' => []]],
-                    'maintenance' => [
-                        ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
-                    ],
-                ]],
-            ])),
-        ));
+        $this->importGearMaintenanceConfigFromArray([
+            'enabled' => true,
+            'components' => [[
+                'id' => 'gearComponent-chain',
+                'label' => 'Chain',
+                'localImagePath' => 'files/gear-maintenance/old.png',
+                'isRetired' => false,
+                'notes' => null,
+                'installations' => [['parent' => 'gear:b1', 'from' => null, 'until' => null, 'sportTypes' => []]],
+                'maintenance' => [
+                    ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                ],
+            ]],
+        ]);
         $this->fileStorage->write('gear-maintenance/old.png', 'old-content');
 
         $this->commandBus->dispatch(DeleteGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
         ]));
 
-        $config = Json::decode((string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
-        $this->assertCount(0, $config['components']);
+        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
+        $this->assertCount(0, $components);
         $this->assertFalse($this->fileStorage->fileExists('gear-maintenance/old.png'));
     }
 
@@ -86,7 +79,6 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         parent::setUp();
 
         $this->commandBus = $this->getContainer()->get(CommandBus::class);
-        $this->keyValueStore = $this->getContainer()->get(KeyValueStore::class);
         $this->fileStorage = $this->getContainer()->get('file.storage');
     }
 }

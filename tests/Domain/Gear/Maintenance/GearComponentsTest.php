@@ -9,7 +9,6 @@ use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentId;
 use App\Domain\Gear\Maintenance\GearComponents;
-use App\Domain\Gear\Maintenance\GearMaintenanceConfig;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallationLoopDetected;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
@@ -120,9 +119,10 @@ class GearComponentsTest extends TestCase
     #[DataProvider('provideNestedInstallations')]
     public function testResolveUsageWindowsForNestedInstallations(string $gearComponentId, array $expectedWindows): void
     {
-        $gearComponents = GearMaintenanceConfig::fromArray(
-            Json::decode((string) file_get_contents(__DIR__.'/fixtures/nested-installations.json'))
-        )->getGearComponents();
+        $gearComponents = GearComponents::fromArray(array_map(
+            GearComponent::fromArray(...),
+            Json::decode((string) file_get_contents(__DIR__.'/fixtures/nested-installations.json'))['components'],
+        ));
         $gearComponent = $gearComponents->find(
             static fn (GearComponent $gearComponent): bool => (string) $gearComponent->getId() === $gearComponentId
         );
@@ -159,9 +159,10 @@ class GearComponentsTest extends TestCase
 
     public function testResolveUsageWindowsForThrowsOnALoop(): void
     {
-        $gearComponents = GearMaintenanceConfig::fromArray(
-            Json::decode((string) file_get_contents(__DIR__.'/fixtures/nested-installations.json'))
-        )->getGearComponents();
+        $gearComponents = GearComponents::fromArray(array_map(
+            GearComponent::fromArray(...),
+            Json::decode((string) file_get_contents(__DIR__.'/fixtures/nested-installations.json'))['components'],
+        ));
 
         $this->expectExceptionObject(new GearComponentInstallationLoopDetected('Component "loop-a" is installed on itself'));
 
@@ -172,13 +173,27 @@ class GearComponentsTest extends TestCase
 
     public function testWithoutRetired(): void
     {
-        $gearComponents = GearMaintenanceConfig::fromArray(
-            Json::decode((string) file_get_contents(__DIR__.'/fixtures/config-with-installations.json'))
-        )->getGearComponents();
+        $gearComponents = GearComponents::fromArray(array_map(
+            GearComponent::fromArray(...),
+            Json::decode((string) file_get_contents(__DIR__.'/fixtures/config-with-installations.json'))['components'],
+        ));
 
         $this->assertSame(
             ['gearComponent-winter-wheelset'],
             $gearComponents->withoutRetired()->map(static fn (GearComponent $gearComponent): string => (string) $gearComponent->getId()),
+        );
+    }
+
+    public function testGetAllReferencedGearIds(): void
+    {
+        $gearComponents = GearComponents::fromArray(array_map(
+            GearComponent::fromArray(...),
+            Json::decode((string) file_get_contents(__DIR__.'/fixtures/config-with-installations.json'))['components'],
+        ));
+
+        $this->assertEquals(
+            GearIds::fromArray([GearId::fromUnprefixed('b1'), GearId::fromUnprefixed('b2')]),
+            $gearComponents->getAllReferencedGearIds(),
         );
     }
 }

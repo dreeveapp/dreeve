@@ -6,7 +6,7 @@ namespace App\Tests\Domain\Gear\Maintenance\Log;
 
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
-use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\Log\DbalGearMaintenanceLogOverviewRepository;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogId;
@@ -276,7 +276,7 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
         $this->gearMaintenanceLogRepository = $this->getContainer()->get(GearMaintenanceLogRepository::class);
         $this->gearMaintenanceLogOverviewRepository = new DbalGearMaintenanceLogOverviewRepository(
             $this->getConnection(),
-            $this->getContainer()->get(GearMaintenanceRepository::class),
+            $this->getContainer()->get(GearComponentRepository::class),
         );
     }
 }

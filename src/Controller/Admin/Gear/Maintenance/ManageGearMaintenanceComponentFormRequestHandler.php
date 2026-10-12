@@ -9,8 +9,9 @@ use App\Domain\Gear\Maintenance\CreateGearMaintenanceComponent\CreateGearMainten
 use App\Domain\Gear\Maintenance\DeleteGearMaintenanceComponent\DeleteGearMaintenanceComponent;
 use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentId;
-use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent\UpdateGearMaintenanceComponent;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -22,7 +23,7 @@ final readonly class ManageGearMaintenanceComponentFormRequestHandler
 {
     public function __construct(
         private Environment $twig,
-        private GearMaintenanceRepository $gearMaintenanceRepository,
+        private GearComponentRepository $gearComponentRepository,
         private GearRepository $gearRepository,
     ) {
     }
@@ -33,15 +34,16 @@ final readonly class ManageGearMaintenanceComponentFormRequestHandler
         return new HtmlResponse($this->twig->render('html/admin/page/gear/maintenance/edit-gear-maintenance-component.html.twig', [
             'dispatchCommand' => CreateGearMaintenanceComponent::getCommandName(),
             'gears' => $this->gearRepository->findAll(),
-            'parentComponents' => $this->gearMaintenanceRepository->find()->getGearComponents(),
+            'parentComponents' => $this->gearComponentRepository->findAll(),
         ]));
     }
 
     #[Route(path: '/admin/gear/maintenance-config/component/{gearComponentId}/edit', name: 'admin_edit_gear_maintenance_component', methods: ['GET'], priority: 10)]
     public function handleEdit(string $gearComponentId): HtmlResponse
     {
-        $gearComponent = $this->gearMaintenanceRepository->findComponent(GearComponentId::fromString($gearComponentId));
-        if (!$gearComponent instanceof GearComponent) {
+        try {
+            $gearComponent = $this->gearComponentRepository->find(GearComponentId::fromString($gearComponentId));
+        } catch (EntityNotFound) {
             throw new NotFoundHttpException('Component not found');
         }
 
@@ -49,7 +51,7 @@ final readonly class ManageGearMaintenanceComponentFormRequestHandler
             'dispatchCommand' => UpdateGearMaintenanceComponent::getCommandName(),
             'component' => $gearComponent,
             'gears' => $this->gearRepository->findAll(),
-            'parentComponents' => $this->gearMaintenanceRepository->find()->getGearComponents()->filter(
+            'parentComponents' => $this->gearComponentRepository->findAll()->filter(
                 static fn (GearComponent $parentComponent): bool => (string) $parentComponent->getId() !== (string) $gearComponent->getId()
             ),
         ]));
@@ -58,8 +60,9 @@ final readonly class ManageGearMaintenanceComponentFormRequestHandler
     #[Route(path: '/admin/gear/maintenance-config/component/{gearComponentId}/delete', name: 'admin_delete_gear_maintenance_component', methods: ['GET'], priority: 10)]
     public function handleDelete(string $gearComponentId): HtmlResponse
     {
-        $gearComponent = $this->gearMaintenanceRepository->findComponent(GearComponentId::fromString($gearComponentId));
-        if (!$gearComponent instanceof GearComponent) {
+        try {
+            $gearComponent = $this->gearComponentRepository->find(GearComponentId::fromString($gearComponentId));
+        } catch (EntityNotFound) {
             throw new NotFoundHttpException('Component not found');
         }
 

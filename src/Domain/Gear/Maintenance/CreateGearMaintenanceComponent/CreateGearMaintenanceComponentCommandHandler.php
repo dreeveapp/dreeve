@@ -6,7 +6,7 @@ namespace App\Domain\Gear\Maintenance\CreateGearMaintenanceComponent;
 
 use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentId;
-use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Image\ImageDirectory;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Image\NewImage;
@@ -16,7 +16,7 @@ use App\Infrastructure\CQRS\Command\CommandHandler;
 final readonly class CreateGearMaintenanceComponentCommandHandler implements CommandHandler
 {
     public function __construct(
-        private GearMaintenanceRepository $gearMaintenanceRepository,
+        private GearComponentRepository $gearComponentRepository,
         private ImageStorage $imageStorage,
     ) {
     }
@@ -48,6 +48,6 @@ final readonly class CreateGearMaintenanceComponentCommandHandler implements Com
             $gearComponent->addMaintenanceTask($maintenanceTask);
         }
 
-        $this->gearMaintenanceRepository->saveComponent($gearComponent);
+        $this->gearComponentRepository->add($gearComponent);
     }
 }

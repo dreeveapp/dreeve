@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent;
 
 use App\Domain\Gear\Maintenance\GearComponent;
-use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallationLoopDetected;
 use App\Domain\Image\ImageDirectory;
 use App\Domain\Image\ImageStorage;
@@ -14,11 +14,12 @@ use App\Domain\Image\RemovedImage;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
+use App\Infrastructure\Exception\EntityNotFound;
 
 final readonly class UpdateGearMaintenanceComponentCommandHandler implements CommandHandler
 {
     public function __construct(
-        private GearMaintenanceRepository $gearMaintenanceRepository,
+        private GearComponentRepository $gearComponentRepository,
         private ImageStorage $imageStorage,
     ) {
     }
@@ -27,9 +28,13 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
     {
         assert($command instanceof UpdateGearMaintenanceComponent);
 
+        try {
+            $existingComponent = $this->gearComponentRepository->find($command->getGearComponentId());
+        } catch (EntityNotFound) {
+            throw CouldNotProcessCommand::withReason('The component does not exist.');
+        }
         // Keep the existing image unless the dropzone explicitly added or removed one.
-        $existingComponent = $this->gearMaintenanceRepository->findComponent($command->getGearComponentId());
-        $localImagePath = $existingComponent?->getLocalImagePath();
+        $localImagePath = $existingComponent->getLocalImagePath();
 
         $newImage = $command->getNewImage();
         $removedImage = $command->getRemovedImage();
@@ -57,7 +62,7 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
             $gearComponent->addMaintenanceTask($maintenanceTask);
         }
 
-        $gearComponents = $this->gearMaintenanceRepository->find()->getGearComponents()
+        $gearComponents = $this->gearComponentRepository->findAll()
             ->filter(static fn (GearComponent $existingComponent): bool => (string) $existingComponent->getId() !== (string) $gearComponent->getId())
             ->add($gearComponent);
         try {
@@ -66,7 +71,7 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
             throw CouldNotProcessCommand::withReason('A component cannot be installed on itself or on one of its own parts.');
         }
 
-        $this->gearMaintenanceRepository->saveComponent($gearComponent);
+        $this->gearComponentRepository->update($gearComponent);
 
         if ($removedImage instanceof RemovedImage) {
             $this->imageStorage->remove($removedImage->getPath());

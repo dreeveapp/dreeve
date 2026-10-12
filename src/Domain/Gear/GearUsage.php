@@ -8,13 +8,13 @@ use App\Domain\Automation\Action\ActionType;
 use App\Domain\Automation\Action\ConfiguredAction\ConfiguredAction;
 use App\Domain\Automation\AutomationRule;
 use App\Domain\Automation\AutomationRuleRepository;
-use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
 
 final readonly class GearUsage
 {
     public function __construct(
-        private GearMaintenanceRepository $gearMaintenanceRepository,
+        private GearComponentRepository $gearComponentRepository,
         private GearMaintenanceLogRepository $gearMaintenanceLogRepository,
         private AutomationRuleRepository $automationRuleRepository,
     ) {
@@ -28,7 +28,7 @@ final readonly class GearUsage
             return true;
         }
 
-        if ($this->gearMaintenanceRepository->find()->getAllReferencedGearIds()->has($gearId)) {
+        if ($this->gearComponentRepository->findAll()->getAllReferencedGearIds()->has($gearId)) {
             return true;
         }
 

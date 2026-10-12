@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use App\Domain\Gear\Maintenance\GearComponent;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
@@ -16,13 +18,31 @@ trait ProvideGearMaintenanceConfig
 {
     abstract protected static function getContainer(): Container;
 
-    protected function importGearMaintenanceConfig(): void
+    /**
+     * @param array<string, mixed> $config
+     */
+    protected function importGearMaintenanceConfigFromArray(array $config): void
     {
         /** @var KeyValueStore $keyValueStore */
         $keyValueStore = $this->getContainer()->get(KeyValueStore::class);
         $keyValueStore->save(KeyValue::fromState(
             key: Key::GEAR_MAINTENANCE,
-            value: Value::fromString(Json::encode(Yaml::parse(<<<YML
+            value: Value::fromString(Json::encode([
+                'enabled' => $config['enabled'] ?? false,
+                'ignoreRetiredGear' => $config['ignoreRetiredGear'] ?? false,
+            ])),
+        ));
+
+        /** @var GearComponentRepository $gearComponentRepository */
+        $gearComponentRepository = $this->getContainer()->get(GearComponentRepository::class);
+        foreach ($config['components'] ?? [] as $component) {
+            $gearComponentRepository->add(GearComponent::fromArray($component));
+        }
+    }
+
+    protected function importGearMaintenanceConfig(): void
+    {
+        $this->importGearMaintenanceConfigFromArray(Yaml::parse(<<<YML
 enabled: true
 ignoreRetiredGear: true
 components:
@@ -68,10 +88,6 @@ components:
         interval:
           value: 11
           unit: hours
-gears:
-  - gearId: g10130856
-    imgSrc: bike.webp
-YML))),
-        ));
+YML));
     }
 }

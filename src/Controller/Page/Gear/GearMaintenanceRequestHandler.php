@@ -9,6 +9,7 @@ use App\Application\PageRenderer;
 use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Maintenance\GearComponent;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\GearComponents;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
@@ -28,6 +29,7 @@ final readonly class GearMaintenanceRequestHandler
 {
     public function __construct(
         private GearMaintenanceRepository $gearMaintenanceRepository,
+        private GearComponentRepository $gearComponentRepository,
         private GearRepository $gearRepository,
         private MaintenanceTaskProgressCalculator $maintenanceTaskProgressCalculator,
         private Clock $clock,
@@ -67,7 +69,7 @@ final readonly class GearMaintenanceRequestHandler
         }
 
         $now = $this->clock->getCurrentDateTimeImmutable();
-        $gearComponents = $gearMaintenanceConfig->getGearComponents();
+        $gearComponents = $this->gearComponentRepository->findAll();
         $gearsWithComponents = [];
         $componentsNotFitted = GearComponents::empty();
         $parentComponentLabels = [];

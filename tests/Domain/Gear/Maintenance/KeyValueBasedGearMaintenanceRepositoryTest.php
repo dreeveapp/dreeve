@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Gear\Maintenance;
 
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
-use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
+use App\Infrastructure\KeyValue\Key;
+use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideGearMaintenanceConfig;
 
@@ -23,7 +25,6 @@ class KeyValueBasedGearMaintenanceRepositoryTest extends ContainerTestCase
 
         $this->assertTrue($config->isFeatureEnabled());
         $this->assertTrue($config->ignoreRetiredGear());
-        $this->assertCount(2, $config->getGearComponents());
     }
 
     public function testFindReturnsDisabledDefaultWhenNotConfigured(): void
@@ -31,23 +32,7 @@ class KeyValueBasedGearMaintenanceRepositoryTest extends ContainerTestCase
         $this->assertFalse($this->gearMaintenanceRepository->find()->isFeatureEnabled());
     }
 
-    public function testFindMaintenanceTaskAndItsComponent(): void
-    {
-        $this->importGearMaintenanceConfig();
-
-        $task = $this->gearMaintenanceRepository->findMaintenanceTask(MaintenanceTaskId::fromUnprefixed('chain-lubed'));
-        $this->assertNotNull($task);
-        $this->assertSame('Lube', (string) $task->getLabel());
-
-        $component = $this->gearMaintenanceRepository->findComponentForMaintenanceTask(MaintenanceTaskId::fromUnprefixed('chain-lubed'));
-        $this->assertNotNull($component);
-        $this->assertSame('Some cool chain', (string) $component->getLabel());
-
-        $this->assertNull($this->gearMaintenanceRepository->findMaintenanceTask(MaintenanceTaskId::fromUnprefixed('does-not-exist')));
-        $this->assertNull($this->gearMaintenanceRepository->findComponentForMaintenanceTask(MaintenanceTaskId::fromUnprefixed('does-not-exist')));
-    }
-
-    public function testUpdateConfigFlipsSettingsAndPreservesComponents(): void
+    public function testUpdateConfigOnlyStoresTheSettings(): void
     {
         $this->importGearMaintenanceConfig();
 
@@ -56,7 +41,10 @@ class KeyValueBasedGearMaintenanceRepositoryTest extends ContainerTestCase
         $config = $this->gearMaintenanceRepository->find();
         $this->assertFalse($config->isFeatureEnabled());
         $this->assertFalse($config->ignoreRetiredGear());
-        $this->assertCount(2, $config->getGearComponents());
+        $this->assertSame(
+            ['enabled' => false, 'ignoreRetiredGear' => false],
+            Json::decode((string) $this->getContainer()->get(KeyValueStore::class)->find(Key::GEAR_MAINTENANCE)),
+        );
     }
 
     #[\Override]

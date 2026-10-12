@@ -9,6 +9,9 @@ use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIdRepository;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Gear\Maintenance\GearComponent;
+use App\Domain\Gear\Maintenance\GearComponentId;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Gear\Maintenance\Installation\UsageWindow;
 use App\Domain\Gear\Maintenance\Installation\UsageWindows;
@@ -19,10 +22,6 @@ use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgress;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Domain\Gear\Maintenance\Task\Progress\ProgressCalculationContext;
-use App\Infrastructure\KeyValue\Key;
-use App\Infrastructure\KeyValue\KeyValue;
-use App\Infrastructure\KeyValue\KeyValueStore;
-use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -45,6 +44,7 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
                 new ProgressCalculationTwo(),
             ],
                 $this->getContainer()->get(GearMaintenanceRepository::class),
+                $this->getContainer()->get(GearComponentRepository::class),
                 $this->getContainer()->get(GearMaintenanceLogRepository::class),
                 $this->getContainer()->get(GearIdRepository::class),
                 PausedClock::on(SerializableDateTime::some()),
@@ -86,10 +86,9 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
     public function testRetiredComponentsAreNotTracked(): void
     {
         $this->importGearMaintenanceConfig();
-        $keyValueStore = $this->getContainer()->get(KeyValueStore::class);
-        $config = Json::decode((string) $keyValueStore->find(Key::GEAR_MAINTENANCE));
-        $config['components'][0]['isRetired'] = true;
-        $keyValueStore->save(KeyValue::fromState(Key::GEAR_MAINTENANCE, Value::fromString(Json::encode($config))));
+        $gearComponentRepository = $this->getContainer()->get(GearComponentRepository::class);
+        $chain = Json::decode(Json::encode($gearComponentRepository->find(GearComponentId::fromString('gearComponent-chain'))));
+        $gearComponentRepository->update(GearComponent::fromArray([...$chain, 'isRetired' => true]));
         $this->rideSinceTheChainWasLubed(Kilometer::from(600));
 
         $calculator = $this->getContainer()->get(MaintenanceTaskProgressCalculator::class);
@@ -151,6 +150,7 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
         new MaintenanceTaskProgressCalculator(
             [],
             $this->getContainer()->get(GearMaintenanceRepository::class),
+            $this->getContainer()->get(GearComponentRepository::class),
             $this->getContainer()->get(GearMaintenanceLogRepository::class),
             $this->getContainer()->get(GearIdRepository::class),
             PausedClock::on(SerializableDateTime::some()),

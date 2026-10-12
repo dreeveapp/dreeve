@@ -8,6 +8,7 @@ use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Gear\Maintenance\UpdateGearMaintenanceConfig\UpdateGearMaintenanceConfig;
 use App\Infrastructure\Http\HtmlResponse;
@@ -23,6 +24,7 @@ final readonly class ManageGearMaintenanceConfigRequestHandler
     public function __construct(
         private Environment $twig,
         private GearMaintenanceRepository $gearMaintenanceRepository,
+        private GearComponentRepository $gearComponentRepository,
         private GearRepository $gearRepository,
         private TranslatorInterface $translator,
         private Clock $clock,
@@ -33,13 +35,14 @@ final readonly class ManageGearMaintenanceConfigRequestHandler
     public function handle(): HtmlResponse
     {
         $gearMaintenanceConfig = $this->gearMaintenanceRepository->find();
+        $gearComponents = $this->gearComponentRepository->findAll();
         $gears = $this->gearRepository->findAll();
 
         $warnings = [];
 
         $gearIdsInDb = GearIds::fromArray($gears->map(fn (Gear $gear): GearId => $gear->getId()));
         /** @var GearId $referencedGearId */
-        foreach ($gearMaintenanceConfig->getAllReferencedGearIds() as $referencedGearId) {
+        foreach ($gearComponents->getAllReferencedGearIds() as $referencedGearId) {
             if ($gearIdsInDb->has($referencedGearId)) {
                 continue;
             }
@@ -52,7 +55,6 @@ final readonly class ManageGearMaintenanceConfigRequestHandler
         }
 
         $now = $this->clock->getCurrentDateTimeImmutable();
-        $gearComponents = $gearMaintenanceConfig->getGearComponents();
         $componentsWithCurrentGears = [];
         foreach ($gearComponents as $gearComponent) {
             $currentGearIds = $gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now);

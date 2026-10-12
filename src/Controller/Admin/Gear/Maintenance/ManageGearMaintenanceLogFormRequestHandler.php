@@ -6,7 +6,7 @@ namespace App\Controller\Admin\Gear\Maintenance;
 
 use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearRepository;
-use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\Log\AddGearMaintenanceLog\AddGearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\DeleteGearMaintenanceLog\DeleteGearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogId;
@@ -22,7 +22,7 @@ final readonly class ManageGearMaintenanceLogFormRequestHandler
 {
     public function __construct(
         private Environment $twig,
-        private GearMaintenanceRepository $gearMaintenanceRepository,
+        private GearComponentRepository $gearComponentRepository,
         private GearRepository $gearRepository,
         private GearMaintenanceLogOverviewRepository $gearMaintenanceLogOverviewRepository,
     ) {
@@ -77,7 +77,7 @@ final readonly class ManageGearMaintenanceLogFormRequestHandler
         $gears = $this->gearRepository->findAll();
 
         $components = [];
-        $gearComponents = $this->gearMaintenanceRepository->find()->getGearComponents();
+        $gearComponents = $this->gearComponentRepository->findAll();
         foreach ($gearComponents->withoutRetired() as $gearComponent) {
             $tasks = [];
             foreach ($gearComponent->getMaintenanceTasks() as $maintenanceTask) {

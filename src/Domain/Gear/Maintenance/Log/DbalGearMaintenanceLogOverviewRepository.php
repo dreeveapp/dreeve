@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance\Log;
 
-use App\Domain\Gear\Maintenance\GearMaintenanceConfig;
-use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
+use App\Domain\Gear\Maintenance\GearComponents;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
@@ -17,13 +17,13 @@ final readonly class DbalGearMaintenanceLogOverviewRepository implements GearMai
 {
     public function __construct(
         private Connection $connection,
-        private GearMaintenanceRepository $gearMaintenanceRepository,
+        private GearComponentRepository $gearComponentRepository,
     ) {
     }
 
     public function find(Pagination $pagination): Overview
     {
-        $labelsByTaskId = $this->resolveLabelsByTaskId($this->gearMaintenanceRepository->find());
+        $labelsByTaskId = $this->resolveLabelsByTaskId($this->gearComponentRepository->findAll());
         if ([] === $labelsByTaskId) {
             return Overview::create(pagination: $pagination, total: 0, items: []);
         }
@@ -63,7 +63,7 @@ final readonly class DbalGearMaintenanceLogOverviewRepository implements GearMai
 
     public function findOneByGearMaintenanceLogId(GearMaintenanceLogId $gearMaintenanceLogId): GearMaintenanceLogOverviewItem
     {
-        $labelsByTaskId = $this->resolveLabelsByTaskId($this->gearMaintenanceRepository->find());
+        $labelsByTaskId = $this->resolveLabelsByTaskId($this->gearComponentRepository->findAll());
 
         $result = false;
         if ([] !== $labelsByTaskId) {
@@ -89,10 +89,10 @@ final readonly class DbalGearMaintenanceLogOverviewRepository implements GearMai
     /**
      * @return array<string, array{component: string, task: string}>
      */
-    private function resolveLabelsByTaskId(GearMaintenanceConfig $gearMaintenanceConfig): array
+    private function resolveLabelsByTaskId(GearComponents $gearComponents): array
     {
         $labelsByTaskId = [];
-        foreach ($gearMaintenanceConfig->getGearComponents() as $gearComponent) {
+        foreach ($gearComponents as $gearComponent) {
             foreach ($gearComponent->getMaintenanceTasks() as $maintenanceTask) {
                 $labelsByTaskId[(string) $maintenanceTask->getId()] = [
                     'component' => (string) $gearComponent->getLabel(),
