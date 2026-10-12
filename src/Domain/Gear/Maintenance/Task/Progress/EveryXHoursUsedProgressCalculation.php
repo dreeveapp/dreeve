@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Gear\Maintenance\Task\Progress;
 
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
-use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -24,17 +23,16 @@ final readonly class EveryXHoursUsedProgressCalculation implements MaintenanceTa
 
     public function calculate(ProgressCalculationContext $context): MaintenanceTaskProgress
     {
-        $query = '
+        [$usageWindowsSql, $usageWindowsParameters] = $context->getUsageWindows()->toSql();
+        $query = sprintf('
                 SELECT SUM(movingTimeInSeconds) AS movingTimeInSeconds
                 FROM Activity
-                WHERE gearId IN(:gearIds)
-                AND startDateTime > :lastTaggedOn';
+                WHERE %s
+                AND startDateTime > :lastTaggedOn', $usageWindowsSql);
 
         $movingTimeInSecondsSinceLastTagged = $this->connection->fetchOne($query, [
-            'gearIds' => $context->getGearIds()->toArray(),
+            ...$usageWindowsParameters,
             'lastTaggedOn' => (string) $context->getLastTaggedOn(),
-        ], [
-            'gearIds' => ArrayParameterType::STRING,
         ]);
         $movingTimeInHoursSinceLastTagged = $movingTimeInSecondsSinceLastTagged / 3600;
         $intervalValue = $context->getIntervalValue();

@@ -7,9 +7,10 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIdRepository;
-use App\Domain\Gear\GearIds;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\Installation\UsageWindow;
+use App\Domain\Gear\Maintenance\Installation\UsageWindows;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
@@ -41,7 +42,7 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
                 $this->getContainer()->get(GearIdRepository::class),
             )->calculateProgressFor(
                 ProgressCalculationContext::from(
-                    gearIds: GearIds::fromArray([GearId::fromUnprefixed('test')]),
+                    usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null)]),
                     lastTaggedOn: SerializableDateTime::fromString('2025-01-03'),
                     intervalUnit: IntervalUnit::EVERY_X_DAYS,
                     intervalValue: 4,
@@ -131,7 +132,7 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
             $this->getContainer()->get(GearIdRepository::class),
         )->calculateProgressFor(
             ProgressCalculationContext::from(
-                gearIds: GearIds::fromArray([GearId::fromUnprefixed('test')]),
+                usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null)]),
                 lastTaggedOn: SerializableDateTime::fromString('2025-01-03'),
                 intervalUnit: IntervalUnit::EVERY_X_DAYS,
                 intervalValue: 4,

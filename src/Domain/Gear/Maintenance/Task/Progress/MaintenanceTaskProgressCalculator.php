@@ -99,7 +99,7 @@ final readonly class MaintenanceTaskProgressCalculator
                     lastPerformedOn: $lastPerformedOn,
                     progress: $lastPerformedOn instanceof SerializableDateTime ? $this->calculateProgressFor(
                         ProgressCalculationContext::from(
-                            gearIds: $gearComponent->getAttachedTo(),
+                            usageWindows: $gearMaintenanceConfig->getGearComponents()->resolveUsageWindowsFor($gearComponent),
                             lastTaggedOn: $lastPerformedOn,
                             intervalUnit: $maintenanceTask->getIntervalUnit(),
                             intervalValue: $maintenanceTask->getIntervalValue(),

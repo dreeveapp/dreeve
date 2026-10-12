@@ -3,7 +3,8 @@
 namespace App\Tests\Domain\Gear\Maintenance\Task\Progress;
 
 use App\Domain\Gear\GearId;
-use App\Domain\Gear\GearIds;
+use App\Domain\Gear\Maintenance\Installation\UsageWindow;
+use App\Domain\Gear\Maintenance\Installation\UsageWindows;
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Domain\Gear\Maintenance\Task\Progress\EveryXDaysProgressCalculation;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgress;
@@ -28,7 +29,7 @@ class EveryXDaysProgressCalculationTest extends ContainerTestCase
             ),
             $this->calculation->calculate(
                 ProgressCalculationContext::from(
-                    gearIds: GearIds::fromArray([GearId::fromUnprefixed('test')]),
+                    usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null)]),
                     lastTaggedOn: SerializableDateTime::fromString('2025-01-03'),
                     intervalUnit: IntervalUnit::EVERY_X_DAYS,
                     intervalValue: 4,
