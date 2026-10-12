@@ -35,7 +35,11 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->assertSame('0', $installationsRepeater->attr('data-repeater-min'));
         $this->assertSame('[]', $installationsRepeater->filter('[data-repeater-list]')->attr('data-repeater-initial'));
         $this->assertCount(3, $installationsRepeater->filter('template[data-repeater-template] select[name="installations[__index__][gearId]"] option'));
-        $this->assertStringContainsString('Race bike', $installationsRepeater->filter('template[data-repeater-template]')->html());
+        $installationTemplate = $installationsRepeater->filter('template[data-repeater-template]')->html();
+        $this->assertStringContainsString('Race bike', $installationTemplate);
+        $this->assertStringContainsString('name="installations[__index__][sportTypes][]"', $installationTemplate);
+        $this->assertStringContainsString('data-repeater-field="sportTypes"', $installationTemplate);
+        $this->assertStringContainsString('value="VirtualRide"', $installationTemplate);
 
         $this->assertCount(1, $form->filter('input[name="purchasePriceAmount"]'));
         $this->assertCount(1, $form->filter('select[name="purchasePriceCurrency"]'));

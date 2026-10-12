@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Gear\Maintenance;
 
+use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
@@ -70,7 +71,7 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
                     gearId: GearId::fromUnprefixed('b1'),
                     from: null,
                     until: SerializableDateTime::fromString('2025-03-15'),
-                    sportTypes: SportTypes::empty(),
+                    sportTypes: SportTypes::fromArray([SportType::RIDE, SportType::GRAVEL_RIDE]),
                 ),
                 GearComponentInstallation::create(
                     gearId: GearId::fromUnprefixed('g2'),
@@ -80,7 +81,7 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
                 ),
             ]),
             $this->parser->doParseInstallations(['installations' => [
-                ['gearId' => ' b1 ', 'from' => '', 'until' => '2025-03-15'],
+                ['gearId' => ' b1 ', 'from' => '', 'until' => '2025-03-15', 'sportTypes' => ['Ride', 'GravelRide']],
                 ['gearId' => 'g2', 'from' => '2025-03-15'],
             ]]),
         );
@@ -148,6 +149,16 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
         yield 'until is before from' => [
             ['installations' => [['gearId' => 'b1', 'from' => '2025-03-15', 'until' => '2025-03-01']]],
             'The "until" date of an installation must be after its "from" date.',
+        ];
+
+        yield 'sportTypes is not an array' => [
+            ['installations' => [['gearId' => 'b1', 'sportTypes' => 'Ride']]],
+            'The "sportTypes" of an installation must be an array.',
+        ];
+
+        yield 'sportTypes contains an unknown sport type' => [
+            ['installations' => [['gearId' => 'b1', 'sportTypes' => ['Ride', 'Unicycle']]]],
+            'Invalid sport type "Unicycle".',
         ];
 
         yield 'until equals from' => [

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance;
 
+use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
@@ -61,11 +62,33 @@ trait ParsesGearMaintenanceComponentPayload
                 gearId: GearId::fromUnprefixed(trim($installation['gearId'])),
                 from: $from,
                 until: $until,
-                sportTypes: SportTypes::empty(),
+                sportTypes: self::parseInstallationSportTypes($installation),
             ));
         }
 
         return $installations;
+    }
+
+    /**
+     * @param array<string, mixed> $installation
+     */
+    private static function parseInstallationSportTypes(array $installation): SportTypes
+    {
+        $sportTypes = $installation['sportTypes'] ?? [];
+        if (!is_array($sportTypes)) {
+            throw CouldNotDeserializeCommand::invalidPayload('The "sportTypes" of an installation must be an array.');
+        }
+
+        return SportTypes::fromArray(array_map(
+            static function (mixed $sportType): SportType {
+                if (!is_string($sportType) || !($parsed = SportType::tryFrom($sportType))) {
+                    throw CouldNotDeserializeCommand::invalidPayload(sprintf('Invalid sport type "%s".', is_scalar($sportType) ? $sportType : gettype($sportType)));
+                }
+
+                return $parsed;
+            },
+            array_values($sportTypes),
+        ));
     }
 
     /**

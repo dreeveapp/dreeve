@@ -27,7 +27,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
         $this->commandBus->dispatch(CreateGearMaintenanceComponent::fromPayload([
             'label' => 'Brake pads',
-            'installations' => [['gearId' => 'b1', 'from' => '2025-01-01', 'until' => '2025-03-15'], ['gearId' => 'g2', 'from' => '2025-03-15', 'until' => '']],
+            'installations' => [['gearId' => 'b1', 'from' => '2025-01-01', 'until' => '2025-03-15', 'sportTypes' => ['Ride', 'VirtualRide']], ['gearId' => 'g2', 'from' => '2025-03-15', 'until' => '']],
             'purchasePriceAmount' => '49.99',
             'purchasePriceCurrency' => 'EUR',
             'maintenanceTasks' => [
@@ -43,7 +43,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->assertNotNull($created);
         $this->assertNotEmpty($created['id']);
         $this->assertSame([
-            ['gearId' => 'b1', 'from' => '2025-01-01', 'until' => '2025-03-15', 'sportTypes' => []],
+            ['gearId' => 'b1', 'from' => '2025-01-01', 'until' => '2025-03-15', 'sportTypes' => ['Ride', 'VirtualRide']],
             ['gearId' => 'g2', 'from' => '2025-03-15', 'until' => null, 'sportTypes' => []],
         ], $created['installations']);
         $this->assertNull($created['localImagePath']);

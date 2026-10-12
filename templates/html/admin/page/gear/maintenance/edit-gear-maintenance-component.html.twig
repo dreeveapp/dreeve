@@ -73,8 +73,8 @@
                         <span>{{ "Add installation"|trans({}, 'admin') }}</span>
                     </button>
                     <template data-repeater-template>
-                        <div class="flex flex-col gap-2 sm:flex-row sm:items-end p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater-item>
-                            <div class="sm:flex-1 min-w-0">
+                        <div class="grid gap-2 sm:grid-cols-2 p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater-item>
+                            <div class="min-w-0">
                                 <label for="installations-__index__-gearId" class="mt-0! text-xxs">{{ "Gear"|trans }}</label>
                                 <select id="installations-__index__-gearId" name="installations[__index__][gearId]"
                                         data-repeater-field="gearId" required class="mt-0">
@@ -84,23 +84,34 @@
                                     {% endfor %}
                                 </select>
                             </div>
+                            <div class="min-w-0">
+                                <label class="mt-0! text-xxs">{{ "Sport types"|trans({}, 'admin') }}</label>
+                                {% include 'html/admin/component/checkbox-multiselect.html.twig' with {
+                                    name: 'installations[__index__][sportTypes][]',
+                                    options: sportTypeOptions(),
+                                    placeholder: "All sport types"|trans({}, 'admin'),
+                                    repeaterField: 'sportTypes',
+                                } only %}
+                            </div>
                             <div>
                                 <label for="installations-__index__-from" class="mt-0! text-xxs">{{ "From"|trans({}, 'admin') }}</label>
                                 <input type="date" id="installations-__index__-from" name="installations[__index__][from]"
-                                       data-repeater-field="from" class="mt-0 sm:w-44">
+                                       data-repeater-field="from" class="mt-0">
                             </div>
-                            <div>
-                                <label for="installations-__index__-until" class="mt-0! text-xxs">{{ "Until"|trans({}, 'admin') }}</label>
-                                <input type="date" id="installations-__index__-until" name="installations[__index__][until]"
-                                       data-repeater-field="until" class="mt-0 sm:w-44">
+                            <div class="flex items-end gap-2">
+                                <div class="flex-1 min-w-0">
+                                    <label for="installations-__index__-until" class="mt-0! text-xxs">{{ "Until"|trans({}, 'admin') }}</label>
+                                    <input type="date" id="installations-__index__-until" name="installations[__index__][until]"
+                                           data-repeater-field="until" class="mt-0">
+                                </div>
+                                <button type="button" data-repeater-remove
+                                        class="grid place-items-center size-9 shrink-0 rounded-lg border border-gray-200 bg-white text-gray-400 transition-colors hover:text-red-600 hover:border-red-200"
+                                        aria-label="{{ "Remove installation"|trans({}, 'admin') }}">
+                                    <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                                    </svg>
+                                </button>
                             </div>
-                            <button type="button" data-repeater-remove
-                                    class="grid place-items-center size-9 shrink-0 self-end rounded-lg border border-gray-200 bg-white text-gray-400 transition-colors hover:text-red-600 hover:border-red-200"
-                                    aria-label="{{ "Remove installation"|trans({}, 'admin') }}">
-                                <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
-                                </svg>
-                            </button>
                         </div>
                     </template>
                 </div>
