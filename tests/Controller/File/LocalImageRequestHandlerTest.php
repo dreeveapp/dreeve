@@ -4,6 +4,7 @@ namespace App\Tests\Controller\File;
 
 use App\Controller\File\LocalImageRequestHandler;
 use App\Infrastructure\Config\DemoMode;
+use App\Infrastructure\Security\AuthenticatedVisitor;
 use App\Infrastructure\Security\TrustedVisitor;
 use App\Tests\ContainerTestCase;
 use League\Flysystem\FilesystemOperator;
@@ -162,7 +163,7 @@ class LocalImageRequestHandlerTest extends ContainerTestCase
             $this->fileStorage,
             new TrustedVisitor(
                 DemoMode::fromString($demoModeIsEnabled ? '1' : '0'),
-                $security,
+                new AuthenticatedVisitor($security),
             ),
         );
     }

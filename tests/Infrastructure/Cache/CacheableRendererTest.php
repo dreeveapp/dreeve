@@ -13,6 +13,7 @@ use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Config\DemoMode;
+use App\Infrastructure\Security\AuthenticatedVisitor;
 use App\Infrastructure\Security\TrustedVisitor;
 use App\Tests\ContainerTestCase;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -207,7 +208,7 @@ class CacheableRendererTest extends ContainerTestCase
             new CacheContextRegistry([
                 new TrustedVisitorCacheContext(new TrustedVisitor(
                     DemoMode::fromString($demoModeIsEnabled ? '1' : '0'),
-                    $security,
+                    new AuthenticatedVisitor($security),
                 )),
             ]),
         );
