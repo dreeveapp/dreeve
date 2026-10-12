@@ -64,8 +64,9 @@ final readonly class GearMaintenanceConfig
                 installations: GearComponentInstallations::fromArray(isset($component['installations'])
                     ? array_map(
                         static fn (array $installation): GearComponentInstallation => GearComponentInstallation::create(
-                            parent: match ($installation['parent']['type'] ?? InstallationParentType::GEAR->value) {
-                                InstallationParentType::COMPONENT->value => InstallationParent::component(GearComponentId::fromString($installation['parent']['id'])),
+                            parent: match (true) {
+                                is_string($installation['parent'] ?? null) => InstallationParent::fromString($installation['parent']),
+                                InstallationParentType::COMPONENT->value === ($installation['parent']['type'] ?? null) => InstallationParent::component(GearComponentId::fromString($installation['parent']['id'])),
                                 default => InstallationParent::gear(GearId::fromUnprefixed($installation['parent']['id'] ?? $installation['gearId'])),
                             },
                             from: isset($installation['from']) ? SerializableDateTime::fromString($installation['from']) : null,

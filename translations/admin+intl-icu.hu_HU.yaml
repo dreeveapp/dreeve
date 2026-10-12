@@ -220,6 +220,7 @@ Import: Importálás
 'Imports new Strava activities.': 'Importálja az új Strava-tevékenységeket.'
 'Include retired gear': 'Nyugdíjazott felszerelés belefoglalása'
 Info: Infó
+'Installed on': 'Installed on'
 Integrations: Integrációk
 'Intro text': 'Bevezető szöveg'
 'Invalid CSRF token.': 'Érvénytelen CSRF-token.'
@@ -375,7 +376,7 @@ Security: Biztonság
 'Select at least one sensor.': 'Válassz legalább egy érzékelőt.'
 'Select at least one sport type.': 'Válassz legalább egy sporttípust.'
 'Select at least one weekday.': 'Válassz legalább egy napot.'
-'Select gear': 'Select gear'
+'Select gear or component': 'Select gear or component'
 'Select gear...': 'Válassz felszerelést...'
 'Select sensors': 'Érzékelők kiválasztása'
 'Select sport types': 'Sporttípusok kiválasztása'

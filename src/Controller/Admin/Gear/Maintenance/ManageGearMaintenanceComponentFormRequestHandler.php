@@ -33,6 +33,7 @@ final readonly class ManageGearMaintenanceComponentFormRequestHandler
         return new HtmlResponse($this->twig->render('html/admin/page/gear/maintenance/edit-gear-maintenance-component.html.twig', [
             'dispatchCommand' => CreateGearMaintenanceComponent::getCommandName(),
             'gears' => $this->gearRepository->findAll(),
+            'parentComponents' => $this->gearMaintenanceRepository->find()->getGearComponents(),
         ]));
     }
 
@@ -48,6 +49,9 @@ final readonly class ManageGearMaintenanceComponentFormRequestHandler
             'dispatchCommand' => UpdateGearMaintenanceComponent::getCommandName(),
             'component' => $gearComponent,
             'gears' => $this->gearRepository->findAll(),
+            'parentComponents' => $this->gearMaintenanceRepository->find()->getGearComponents()->filter(
+                static fn (GearComponent $parentComponent): bool => (string) $parentComponent->getId() !== (string) $gearComponent->getId()
+            ),
         ]));
     }
 

@@ -34,10 +34,11 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $installationsRepeater = $form->filter('[data-repeater]')->eq(0);
         $this->assertSame('0', $installationsRepeater->attr('data-repeater-min'));
         $this->assertSame('[]', $installationsRepeater->filter('[data-repeater-list]')->attr('data-repeater-initial'));
-        $this->assertCount(3, $installationsRepeater->filter('template[data-repeater-template] select[name="installations[__index__][gearId]"] option'));
+        $this->assertCount(3, $installationsRepeater->filter('template[data-repeater-template] select[name="installations[__index__][parent]"] option'));
         $installationTemplate = $installationsRepeater->filter('template[data-repeater-template]')->html();
         $this->assertStringContainsString('Race bike', $installationTemplate);
-        $this->assertStringContainsString('data-repeater-field="parent.id"', $installationTemplate);
+        $this->assertStringContainsString('data-repeater-field="parent"', $installationTemplate);
+        $this->assertStringContainsString('value="gear:g10130856"', $installationTemplate);
         $this->assertStringContainsString('name="installations[__index__][sportTypes][]"', $installationTemplate);
         $this->assertStringContainsString('data-repeater-field="sportTypes"', $installationTemplate);
         $this->assertStringContainsString('value="VirtualRide"', $installationTemplate);
@@ -70,9 +71,13 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->assertSame('Some cool chain', $form->filter('input[name="label"]')->attr('value'));
 
         $this->assertSame(
-            '[{"parent":{"type":"gear","id":"g1233776"},"from":null,"until":null,"sportTypes":[]},{"parent":{"type":"gear","id":"g10130856"},"from":null,"until":null,"sportTypes":[]},{"parent":{"type":"gear","id":"retired"},"from":null,"until":null,"sportTypes":[]}]',
+            '[{"parent":"gear:g1233776","from":null,"until":null,"sportTypes":[]},{"parent":"gear:g10130856","from":null,"until":null,"sportTypes":[]},{"parent":"gear:retired","from":null,"until":null,"sportTypes":[]}]',
             $form->filter('[data-repeater-list]')->eq(0)->attr('data-repeater-initial')
         );
+
+        $installationTemplate = $form->filter('template[data-repeater-template]')->eq(0)->html();
+        $this->assertStringContainsString('value="component:gearComponent-di-2"', $installationTemplate);
+        $this->assertStringNotContainsString('value="component:gearComponent-chain"', $installationTemplate);
 
         $initialTasks = $form->filter('[data-repeater-list]')->eq(1)->attr('data-repeater-initial');
         $this->assertStringContainsString('Lube', $initialTasks);

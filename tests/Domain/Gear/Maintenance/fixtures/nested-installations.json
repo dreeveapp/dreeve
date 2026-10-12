@@ -7,10 +7,7 @@
       "localImagePath": null,
       "installations": [
         {
-          "parent": {
-            "type": "gear",
-            "id": "b1"
-          },
+          "parent": "gear:b1",
           "from": null,
           "until": "2025-03-15",
           "sportTypes": [
@@ -27,10 +24,7 @@
       "localImagePath": null,
       "installations": [
         {
-          "parent": {
-            "type": "component",
-            "id": "gearComponent-wheelset"
-          },
+          "parent": "component:gearComponent-wheelset",
           "from": null,
           "until": null,
           "sportTypes": []
@@ -44,10 +38,7 @@
       "localImagePath": null,
       "installations": [
         {
-          "parent": {
-            "type": "component",
-            "id": "gearComponent-wheelset"
-          },
+          "parent": "component:gearComponent-wheelset",
           "from": "2025-02-01",
           "until": null,
           "sportTypes": []
@@ -61,10 +52,7 @@
       "localImagePath": null,
       "installations": [
         {
-          "parent": {
-            "type": "component",
-            "id": "gearComponent-wheelset"
-          },
+          "parent": "component:gearComponent-wheelset",
           "from": "2025-04-01",
           "until": null,
           "sportTypes": []
@@ -78,10 +66,7 @@
       "localImagePath": null,
       "installations": [
         {
-          "parent": {
-            "type": "component",
-            "id": "gearComponent-wheelset"
-          },
+          "parent": "component:gearComponent-wheelset",
           "from": null,
           "until": null,
           "sportTypes": [
@@ -98,10 +83,7 @@
       "localImagePath": null,
       "installations": [
         {
-          "parent": {
-            "type": "component",
-            "id": "gearComponent-wheelset"
-          },
+          "parent": "component:gearComponent-wheelset",
           "from": null,
           "until": null,
           "sportTypes": [
@@ -117,10 +99,7 @@
       "localImagePath": null,
       "installations": [
         {
-          "parent": {
-            "type": "component",
-            "id": "gearComponent-tyres"
-          },
+          "parent": "component:gearComponent-tyres",
           "from": null,
           "until": null,
           "sportTypes": []
@@ -134,10 +113,7 @@
       "localImagePath": null,
       "installations": [
         {
-          "parent": {
-            "type": "gear",
-            "id": "b1"
-          },
+          "parent": "gear:b1",
           "from": null,
           "until": null,
           "sportTypes": [
@@ -145,10 +121,7 @@
           ]
         },
         {
-          "parent": {
-            "type": "gear",
-            "id": "b2"
-          },
+          "parent": "gear:b2",
           "from": "2025-06-01",
           "until": null,
           "sportTypes": [
@@ -164,10 +137,7 @@
       "localImagePath": null,
       "installations": [
         {
-          "parent": {
-            "type": "component",
-            "id": "gearComponent-trainer"
-          },
+          "parent": "component:gearComponent-trainer",
           "from": null,
           "until": null,
           "sportTypes": []
@@ -181,10 +151,7 @@
       "localImagePath": null,
       "installations": [
         {
-          "parent": {
-            "type": "component",
-            "id": "gearComponent-does-not-exist"
-          },
+          "parent": "component:gearComponent-does-not-exist",
           "from": null,
           "until": null,
           "sportTypes": []
@@ -198,10 +165,7 @@
       "localImagePath": null,
       "installations": [
         {
-          "parent": {
-            "type": "component",
-            "id": "gearComponent-loop-b"
-          },
+          "parent": "component:gearComponent-loop-b",
           "from": null,
           "until": null,
           "sportTypes": []
@@ -215,10 +179,7 @@
       "localImagePath": null,
       "installations": [
         {
-          "parent": {
-            "type": "component",
-            "id": "gearComponent-loop-a"
-          },
+          "parent": "component:gearComponent-loop-a",
           "from": null,
           "until": null,
           "sportTypes": []

@@ -220,6 +220,7 @@ Import: Importar
 'Imports new Strava activities.': 'Importa nuevas actividades de Strava.'
 'Include retired gear': 'Incluir equipamiento retirado'
 Info: Info
+'Installed on': 'Installed on'
 Integrations: Integraciones
 'Intro text': 'Texto de introducción'
 'Invalid CSRF token.': 'Token CSRF no válido.'
@@ -375,7 +376,7 @@ Security: Seguridad
 'Select at least one sensor.': 'Selecciona al menos un sensor.'
 'Select at least one sport type.': 'Selecciona al menos un tipo de deporte.'
 'Select at least one weekday.': 'Selecciona al menos un día de la semana.'
-'Select gear': 'Select gear'
+'Select gear or component': 'Select gear or component'
 'Select gear...': 'Seleccionar equipamiento...'
 'Select sensors': 'Seleccionar sensores'
 'Select sport types': 'Seleccionar tipos de deporte'

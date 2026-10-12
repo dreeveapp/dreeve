@@ -6,7 +6,6 @@ namespace App\Domain\Gear\Maintenance;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
-use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\Installation\InstallationParent;
@@ -49,8 +48,13 @@ trait ParsesGearMaintenanceComponentPayload
             if (!is_array($installation)) {
                 throw CouldNotDeserializeCommand::invalidPayload('Each installation must be an object.');
             }
-            if (!isset($installation['gearId']) || !is_string($installation['gearId']) || '' === trim($installation['gearId'])) {
-                throw CouldNotDeserializeCommand::invalidPayload('A non-empty "gearId" is required for each installation.');
+            if (!isset($installation['parent']) || !is_string($installation['parent']) || '' === trim($installation['parent'])) {
+                throw CouldNotDeserializeCommand::invalidPayload('A non-empty "parent" is required for each installation.');
+            }
+            try {
+                $parent = InstallationParent::fromString(trim($installation['parent']));
+            } catch (\InvalidArgumentException) {
+                throw CouldNotDeserializeCommand::invalidPayload(sprintf('Invalid installation parent "%s".', $installation['parent']));
             }
 
             $from = self::parseInstallationDate($installation, 'from');
@@ -60,7 +64,7 @@ trait ParsesGearMaintenanceComponentPayload
             }
 
             $installations->add(GearComponentInstallation::create(
-                parent: InstallationParent::gear(GearId::fromUnprefixed(trim($installation['gearId']))),
+                parent: $parent,
                 from: $from,
                 until: $until,
                 sportTypes: self::parseInstallationSportTypes($installation),

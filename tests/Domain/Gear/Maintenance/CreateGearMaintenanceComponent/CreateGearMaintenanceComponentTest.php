@@ -18,7 +18,7 @@ class CreateGearMaintenanceComponentTest extends TestCase
     {
         $command = CreateGearMaintenanceComponent::fromPayload([
             'label' => '  Chain  ',
-            'installations' => [['gearId' => 'b1'], ['gearId' => 'g2']],
+            'installations' => [['parent' => 'gear:b1'], ['parent' => 'gear:g2']],
             'purchasePriceAmount' => '123.45',
             'purchasePriceCurrency' => 'EUR',
             'maintenanceTasks' => [
@@ -41,7 +41,7 @@ class CreateGearMaintenanceComponentTest extends TestCase
     {
         $command = CreateGearMaintenanceComponent::fromPayload([
             'label' => 'Chain',
-            'installations' => [['gearId' => 'b1']],
+            'installations' => [['parent' => 'gear:b1']],
             'localImagePath' => json_encode([
                 ['status' => 'new', 'filename' => 'chain.png', 'content' => base64_encode('image-content')],
             ]),
@@ -74,7 +74,7 @@ class CreateGearMaintenanceComponentTest extends TestCase
         yield 'image file type is unsupported' => [
             [
                 'label' => 'Chain',
-                'installations' => [['gearId' => 'b1']],
+                'installations' => [['parent' => 'gear:b1']],
                 'localImagePath' => json_encode([
                     ['status' => 'new', 'filename' => 'chain.gif', 'content' => base64_encode('image-content')],
                 ]),
@@ -87,7 +87,7 @@ class CreateGearMaintenanceComponentTest extends TestCase
 
         yield 'label is missing' => [
             [
-                'installations' => [['gearId' => 'b1']],
+                'installations' => [['parent' => 'gear:b1']],
                 'maintenanceTasks' => [
                     ['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
                 ],
@@ -98,7 +98,7 @@ class CreateGearMaintenanceComponentTest extends TestCase
         yield 'maintenanceTasks is empty' => [
             [
                 'label' => 'Chain',
-                'installations' => [['gearId' => 'b1']],
+                'installations' => [['parent' => 'gear:b1']],
                 'maintenanceTasks' => [],
             ],
             'At least one maintenance task is required.',
@@ -107,7 +107,7 @@ class CreateGearMaintenanceComponentTest extends TestCase
         yield 'maintenance task ids are duplicated' => [
             [
                 'label' => 'Chain',
-                'installations' => [['gearId' => 'b1']],
+                'installations' => [['parent' => 'gear:b1']],
                 'maintenanceTasks' => [
                     ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
                     ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Replace', 'interval' => ['value' => 1000, 'unit' => 'km']],

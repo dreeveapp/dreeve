@@ -90,9 +90,9 @@ class GearMaintenanceConfigTest extends ContainerTestCase
         );
     }
 
-    public function testFromArrayReadsInstallationsWithAGearId(): void
+    public function testFromArrayReadsEarlierInstallationFormats(): void
     {
-        $config = GearMaintenanceConfig::fromArray(Json::decode((string) file_get_contents(__DIR__.'/fixtures/config-with-gear-id-installations.json')));
+        $config = GearMaintenanceConfig::fromArray(Json::decode((string) file_get_contents(__DIR__.'/fixtures/config-with-earlier-installation-formats.json')));
 
         $this->assertEquals(
             GearComponentInstallations::fromArray([
@@ -104,6 +104,23 @@ class GearMaintenanceConfigTest extends ContainerTestCase
                 ),
             ]),
             $config->getGearComponents()->getFirst()->getInstallations()
+        );
+        $this->assertEquals(
+            GearComponentInstallations::fromArray([
+                GearComponentInstallation::create(
+                    parent: InstallationParent::component(GearComponentId::fromString('gearComponent-chain')),
+                    from: null,
+                    until: null,
+                    sportTypes: SportTypes::empty(),
+                ),
+                GearComponentInstallation::create(
+                    parent: InstallationParent::gear(GearId::fromUnprefixed('b2')),
+                    from: null,
+                    until: null,
+                    sportTypes: SportTypes::empty(),
+                ),
+            ]),
+            $config->getGearComponents()->getLast()->getInstallations()
         );
     }
 

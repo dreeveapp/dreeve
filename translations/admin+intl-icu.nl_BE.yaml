@@ -220,6 +220,7 @@ Import: Importeren
 'Imports new Strava activities.': 'Importeert nieuwe Strava-activiteiten.'
 'Include retired gear': 'Uitrusting buiten gebruik meenemen'
 Info: Info
+'Installed on': 'Installed on'
 Integrations: Integraties
 'Intro text': Introtekst
 'Invalid CSRF token.': 'Ongeldig CSRF-token.'
@@ -375,7 +376,7 @@ Security: Beveiliging
 'Select at least one sensor.': 'Selecteer minstens één sensor.'
 'Select at least one sport type.': 'Selecteer minstens één sporttype.'
 'Select at least one weekday.': 'Selecteer minstens één weekdag.'
-'Select gear': 'Select gear'
+'Select gear or component': 'Select gear or component'
 'Select gear...': 'Selecteer uitrusting...'
 'Select sensors': 'Sensoren selecteren'
 'Select sport types': 'Sporttypes selecteren'

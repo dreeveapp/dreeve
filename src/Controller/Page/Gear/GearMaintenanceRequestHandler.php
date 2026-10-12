@@ -70,8 +70,16 @@ final readonly class GearMaintenanceRequestHandler
         $gearComponents = $gearMaintenanceConfig->getGearComponents();
         $gearsWithComponents = [];
         $componentsNotFitted = GearComponents::empty();
+        $parentComponentLabels = [];
         /** @var GearComponent $gearComponent */
         foreach ($gearComponents as $gearComponent) {
+            $parentComponents = $gearComponents->getParentComponentsOf($gearComponent, $now);
+            if (!$parentComponents->isEmpty()) {
+                $parentComponentLabels[(string) $gearComponent->getId()] = implode(', ', $parentComponents->map(
+                    static fn (GearComponent $parentComponent): string => (string) $parentComponent->getLabel(),
+                ));
+            }
+
             $currentGearIds = $gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now);
             if ($currentGearIds->isEmpty()) {
                 $componentsNotFitted->add($gearComponent);
@@ -96,6 +104,7 @@ final readonly class GearMaintenanceRequestHandler
         return $this->twig->load('html/gear/maintenance/gear-maintenance.html.twig')->render([
             'gearsWithComponents' => array_values($gearsWithComponents),
             'componentsNotFitted' => $componentsNotFitted,
+            'parentComponentLabels' => $parentComponentLabels,
             'gearIdsThatHaveDueTasks' => $this->maintenanceTaskProgressCalculator->getGearIdsThatHaveDueTasks(),
             'maintenanceTaskStatuses' => $this->maintenanceTaskProgressCalculator->calculateStatuses(),
             'isFeatureEnabled' => true,

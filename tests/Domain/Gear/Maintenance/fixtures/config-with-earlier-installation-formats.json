@@ -25,6 +25,32 @@
           }
         }
       ]
+    },
+    {
+      "id": "gearComponent-tyres",
+      "label": "Tyres",
+      "localImagePath": null,
+      "installations": [
+        {
+          "parent": {
+            "type": "component",
+            "id": "gearComponent-chain"
+          },
+          "from": null,
+          "until": null,
+          "sportTypes": []
+        },
+        {
+          "parent": {
+            "type": "gear",
+            "id": "b2"
+          },
+          "from": null,
+          "until": null,
+          "sportTypes": []
+        }
+      ],
+      "maintenance": []
     }
   ]
 }

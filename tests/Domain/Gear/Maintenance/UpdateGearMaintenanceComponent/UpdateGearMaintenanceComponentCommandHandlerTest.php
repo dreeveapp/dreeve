@@ -6,6 +6,7 @@ namespace App\Tests\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent;
 
 use App\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent\UpdateGearMaintenanceComponent;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
@@ -14,6 +15,7 @@ use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideGearMaintenanceConfig;
 use League\Flysystem\FilesystemOperator;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 {
@@ -30,7 +32,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
             'label' => 'Updated chain',
-            'installations' => [['gearId' => 'b9']],
+            'installations' => [['parent' => 'gear:b9']],
             'maintenanceTasks' => [
                 ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 600, 'unit' => 'km']],
             ],
@@ -45,7 +47,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->assertNotNull($chain);
         $this->assertSame('Updated chain', $chain['label']);
         $this->assertSame([
-            ['parent' => ['type' => 'gear', 'id' => 'b9'], 'from' => null, 'until' => null, 'sportTypes' => []],
+            ['parent' => 'gear:b9', 'from' => null, 'until' => null, 'sportTypes' => []],
         ], $chain['installations']);
 
         $this->assertSame('files/gear-maintenance/chain.png', $chain['localImagePath']);
@@ -58,6 +60,69 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->assertSame('DI2 Battery', $di2['label']);
     }
 
+    public function testItInstallsAComponentOnAnotherComponent(): void
+    {
+        $this->importGearMaintenanceConfig();
+
+        $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
+            'gearComponentId' => 'gearComponent-di-2',
+            'label' => 'DI2 Battery',
+            'installations' => [['parent' => 'component:gearComponent-chain']],
+            'maintenanceTasks' => [
+                ['id' => 'maintenanceTask-di-2-charged', 'label' => 'Charge', 'interval' => ['value' => 11, 'unit' => 'hours']],
+            ],
+        ]));
+
+        $config = Json::decode((string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
+        $this->assertSame(
+            [['parent' => 'component:gearComponent-chain', 'from' => null, 'until' => null, 'sportTypes' => []]],
+            $this->findComponentById($config['components'], 'gearComponent-di-2')['installations'],
+        );
+    }
+
+    /**
+     * @param list<array<string, mixed>> $chainInstallations
+     */
+    #[DataProvider('provideInstallationLoops')]
+    public function testItRejectsInstallationLoops(array $chainInstallations): void
+    {
+        $this->importGearMaintenanceConfig();
+        $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
+            'gearComponentId' => 'gearComponent-di-2',
+            'label' => 'DI2 Battery',
+            'installations' => [['parent' => 'component:gearComponent-chain']],
+            'maintenanceTasks' => [
+                ['id' => 'maintenanceTask-di-2-charged', 'label' => 'Charge', 'interval' => ['value' => 11, 'unit' => 'hours']],
+            ],
+        ]));
+        $configBefore = (string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE);
+
+        try {
+            $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
+                'gearComponentId' => 'gearComponent-chain',
+                'label' => 'Some cool chain',
+                'installations' => $chainInstallations,
+                'maintenanceTasks' => [
+                    ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
+                ],
+            ]));
+            $this->fail('Expected the installation loop to be rejected');
+        } catch (CouldNotProcessCommand $exception) {
+            $this->assertSame('A component cannot be installed on itself or on one of its own parts.', $exception->getMessage());
+        }
+
+        $this->assertSame($configBefore, (string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
+    }
+
+    /**
+     * @return iterable<string, array{list<array<string, mixed>>}>
+     */
+    public static function provideInstallationLoops(): iterable
+    {
+        yield 'installed on itself' => [[['parent' => 'component:gearComponent-chain']]];
+        yield 'installed on one of its own parts' => [[['parent' => 'gear:b1'], ['parent' => 'component:gearComponent-di-2']]];
+    }
+
     public function testItReplacesImageAndDeletesPreviousFile(): void
     {
         $this->seedComponentWithImage('files/gear-maintenance/old.png');
@@ -66,7 +131,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
             'label' => 'Chain',
-            'installations' => [['gearId' => 'b1']],
+            'installations' => [['parent' => 'gear:b1']],
             'localImagePath' => json_encode([
                 ['status' => 'removed', 'path' => '/files/gear-maintenance/old.png'],
                 ['status' => 'new', 'filename' => 'new.png', 'content' => base64_encode('new-content')],
@@ -92,7 +157,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
             'label' => 'Chain',
-            'installations' => [['gearId' => 'b1']],
+            'installations' => [['parent' => 'gear:b1']],
             'localImagePath' => json_encode([
                 ['status' => 'removed', 'path' => '/files/gear-maintenance/old.png'],
             ]),

@@ -7,7 +7,7 @@ namespace App\Domain\Gear\Maintenance\Installation;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\GearComponentId;
 
-final readonly class InstallationParent implements \JsonSerializable
+final readonly class InstallationParent implements \JsonSerializable, \Stringable
 {
     private function __construct(
         private InstallationParentType $type,
@@ -31,6 +31,20 @@ final readonly class InstallationParent implements \JsonSerializable
         );
     }
 
+    public static function fromString(string $parent): self
+    {
+        [$type, $id] = array_pad(explode(':', $parent, 2), 2, '');
+        if ('' === trim($id)) {
+            throw new \InvalidArgumentException(sprintf('Invalid installation parent "%s"', $parent));
+        }
+
+        return match (InstallationParentType::tryFrom($type)) {
+            InstallationParentType::GEAR => self::gear(GearId::fromUnprefixed(trim($id))),
+            InstallationParentType::COMPONENT => self::component(GearComponentId::fromString(trim($id))),
+            default => throw new \InvalidArgumentException(sprintf('Invalid installation parent "%s"', $parent)),
+        };
+    }
+
     public function getType(): InstallationParentType
     {
         return $this->type;
@@ -46,14 +60,13 @@ final readonly class InstallationParent implements \JsonSerializable
         return $this->id instanceof GearComponentId ? $this->id : null;
     }
 
-    /**
-     * @return array{type: string, id: string}
-     */
-    public function jsonSerialize(): array
+    public function __toString(): string
     {
-        return [
-            'type' => $this->type->value,
-            'id' => $this->id instanceof GearId ? $this->id->toUnprefixedString() : (string) $this->id,
-        ];
+        return $this->type->value.':'.($this->id instanceof GearId ? $this->id->toUnprefixedString() : (string) $this->id);
+    }
+
+    public function jsonSerialize(): string
+    {
+        return (string) $this;
     }
 }

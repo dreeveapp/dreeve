@@ -7,7 +7,12 @@
     </div>
     <div class="w-full flex flex-col justify-between p-4 leading-normal">
         <div class="flex items-center justify-between">
-            <h5 class="mb-1 text-2xl font-bold tracking-tight text-gray-900">{{ gearComponent.getLabel() }}</h5>
+            <div class="mb-1">
+                <h5 class="text-2xl font-bold tracking-tight text-gray-900">{{ gearComponent.getLabel() }}</h5>
+                {% if installedOn %}
+                    <p class="text-xs text-gray-500">{{ "Installed on {component}"|trans({'{component}': installedOn}) }}</p>
+                {% endif %}
+            </div>
             {% set componentPurchasePrice = gearComponent.getPurchasePrice() %}
             {% if componentPurchasePrice %}
                 <div class="text-gray-700 text-xs px-2">

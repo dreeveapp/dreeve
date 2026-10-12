@@ -8,10 +8,7 @@
       "localImagePath": null,
       "installations": [
         {
-          "parent": {
-            "type": "gear",
-            "id": "b1"
-          },
+          "parent": "gear:b1",
           "from": "2024-11-01",
           "until": "2025-03-15",
           "sportTypes": [
@@ -20,19 +17,13 @@
           ]
         },
         {
-          "parent": {
-            "type": "gear",
-            "id": "b1"
-          },
+          "parent": "gear:b1",
           "from": "2025-11-01",
           "until": null,
           "sportTypes": []
         },
         {
-          "parent": {
-            "type": "gear",
-            "id": "b2"
-          },
+          "parent": "gear:b2",
           "from": null,
           "until": "2024-11-01",
           "sportTypes": [
@@ -57,10 +48,7 @@
       "localImagePath": null,
       "installations": [
         {
-          "parent": {
-            "type": "component",
-            "id": "gearComponent-winter-wheelset"
-          },
+          "parent": "component:gearComponent-winter-wheelset",
           "from": null,
           "until": null,
           "sportTypes": []

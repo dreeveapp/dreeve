@@ -75,13 +75,22 @@
                     <template data-repeater-template>
                         <div class="grid gap-2 sm:grid-cols-2 p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater-item>
                             <div class="min-w-0">
-                                <label for="installations-__index__-gearId" class="mt-0! text-xxs">{{ "Gear"|trans }}</label>
-                                <select id="installations-__index__-gearId" name="installations[__index__][gearId]"
-                                        data-repeater-field="parent.id" required class="mt-0">
-                                    <option value="">{{ "Select gear"|trans({}, 'admin') }}</option>
-                                    {% for gear in gears %}
-                                        <option value="{{ gear.getId().toUnprefixedString() }}">{{ gear.getName() }}</option>
-                                    {% endfor %}
+                                <label for="installations-__index__-parent" class="mt-0! text-xxs">{{ "Installed on"|trans({}, 'admin') }}</label>
+                                <select id="installations-__index__-parent" name="installations[__index__][parent]"
+                                        data-repeater-field="parent" required class="mt-0">
+                                    <option value="">{{ "Select gear or component"|trans({}, 'admin') }}</option>
+                                    <optgroup label="{{ "Gear"|trans }}">
+                                        {% for gear in gears %}
+                                            <option value="gear:{{ gear.getId().toUnprefixedString() }}">{{ gear.getName() }}</option>
+                                        {% endfor %}
+                                    </optgroup>
+                                    {% if parentComponents|length > 0 %}
+                                        <optgroup label="{{ "Components"|trans }}">
+                                            {% for parentComponent in parentComponents %}
+                                                <option value="component:{{ parentComponent.getId() }}">{{ parentComponent.getLabel() }}</option>
+                                            {% endfor %}
+                                        </optgroup>
+                                    {% endif %}
                                 </select>
                             </div>
                             <div class="min-w-0">

@@ -82,8 +82,8 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
                 ),
             ]),
             $this->parser->doParseInstallations(['installations' => [
-                ['gearId' => ' b1 ', 'from' => '', 'until' => '2025-03-15', 'sportTypes' => ['Ride', 'GravelRide']],
-                ['gearId' => 'g2', 'from' => '2025-03-15'],
+                ['parent' => 'gear:b1', 'from' => '', 'until' => '2025-03-15', 'sportTypes' => ['Ride', 'GravelRide']],
+                ['parent' => 'gear:g2', 'from' => '2025-03-15'],
             ]]),
         );
     }
@@ -122,48 +122,63 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
             'Each installation must be an object.',
         ];
 
-        yield 'gearId is missing' => [
+        yield 'parent is missing' => [
             ['installations' => [['from' => '2025-01-01']]],
-            'A non-empty "gearId" is required for each installation.',
+            'A non-empty "parent" is required for each installation.',
         ];
 
-        yield 'gearId is empty' => [
-            ['installations' => [['gearId' => '  ']]],
-            'A non-empty "gearId" is required for each installation.',
+        yield 'parent is empty' => [
+            ['installations' => [['parent' => '  ']]],
+            'A non-empty "parent" is required for each installation.',
+        ];
+
+        yield 'parent has an unknown type' => [
+            ['installations' => [['parent' => 'bike:b1']]],
+            'Invalid installation parent "bike:b1".',
+        ];
+
+        yield 'parent has no id' => [
+            ['installations' => [['parent' => 'gear:']]],
+            'Invalid installation parent "gear:".',
+        ];
+
+        yield 'parent component id is invalid' => [
+            ['installations' => [['parent' => 'component:wheelset']]],
+            'Invalid installation parent "component:wheelset".',
         ];
 
         yield 'from has the wrong format' => [
-            ['installations' => [['gearId' => 'b1', 'from' => '01-01-2025']]],
+            ['installations' => [['parent' => 'gear:b1', 'from' => '01-01-2025']]],
             'Each installation "from" date must be formatted as YYYY-MM-DD.',
         ];
 
         yield 'from does not exist' => [
-            ['installations' => [['gearId' => 'b1', 'from' => '2025-02-30']]],
+            ['installations' => [['parent' => 'gear:b1', 'from' => '2025-02-30']]],
             'Each installation "from" date must be formatted as YYYY-MM-DD.',
         ];
 
         yield 'until has the wrong format' => [
-            ['installations' => [['gearId' => 'b1', 'until' => 'tomorrow']]],
+            ['installations' => [['parent' => 'gear:b1', 'until' => 'tomorrow']]],
             'Each installation "until" date must be formatted as YYYY-MM-DD.',
         ];
 
         yield 'until is before from' => [
-            ['installations' => [['gearId' => 'b1', 'from' => '2025-03-15', 'until' => '2025-03-01']]],
+            ['installations' => [['parent' => 'gear:b1', 'from' => '2025-03-15', 'until' => '2025-03-01']]],
             'The "until" date of an installation must be after its "from" date.',
         ];
 
         yield 'sportTypes is not an array' => [
-            ['installations' => [['gearId' => 'b1', 'sportTypes' => 'Ride']]],
+            ['installations' => [['parent' => 'gear:b1', 'sportTypes' => 'Ride']]],
             'The "sportTypes" of an installation must be an array.',
         ];
 
         yield 'sportTypes contains an unknown sport type' => [
-            ['installations' => [['gearId' => 'b1', 'sportTypes' => ['Ride', 'Unicycle']]]],
+            ['installations' => [['parent' => 'gear:b1', 'sportTypes' => ['Ride', 'Unicycle']]]],
             'Invalid sport type "Unicycle".',
         ];
 
         yield 'until equals from' => [
-            ['installations' => [['gearId' => 'b1', 'from' => '2025-03-15', 'until' => '2025-03-15']]],
+            ['installations' => [['parent' => 'gear:b1', 'from' => '2025-03-15', 'until' => '2025-03-15']]],
             'The "until" date of an installation must be after its "from" date.',
         ];
     }

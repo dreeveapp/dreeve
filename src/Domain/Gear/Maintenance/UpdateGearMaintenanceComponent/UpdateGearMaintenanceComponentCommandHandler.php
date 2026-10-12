@@ -6,12 +6,14 @@ namespace App\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent;
 
 use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallationLoopDetected;
 use App\Domain\Image\ImageDirectory;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Image\NewImage;
 use App\Domain\Image\RemovedImage;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
+use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 
 final readonly class UpdateGearMaintenanceComponentCommandHandler implements CommandHandler
 {
@@ -51,6 +53,15 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
 
         foreach ($command->getMaintenanceTasks() as $maintenanceTask) {
             $gearComponent->addMaintenanceTask($maintenanceTask);
+        }
+
+        $gearComponents = $this->gearMaintenanceRepository->find()->getGearComponents()
+            ->filter(static fn (GearComponent $existingComponent): bool => (string) $existingComponent->getId() !== (string) $gearComponent->getId())
+            ->add($gearComponent);
+        try {
+            $gearComponents->resolveUsageWindowsFor($gearComponent);
+        } catch (GearComponentInstallationLoopDetected) {
+            throw CouldNotProcessCommand::withReason('A component cannot be installed on itself or on one of its own parts.');
         }
 
         $this->gearMaintenanceRepository->saveComponent($gearComponent);

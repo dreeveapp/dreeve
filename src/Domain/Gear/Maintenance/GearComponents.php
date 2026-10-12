@@ -39,6 +39,27 @@ final class GearComponents extends Collection
         return $this->resolveUsageWindowsFor($gearComponent)->getGearIdsActiveOn($now);
     }
 
+    public function getParentComponentsOf(GearComponent $gearComponent, SerializableDateTime $on): GearComponents
+    {
+        $parentComponents = GearComponents::empty();
+        foreach ($gearComponent->getInstallations() as $installation) {
+            if (!$installation->isActiveOn($on)) {
+                continue;
+            }
+            if (!$parentComponentId = $installation->getParent()->getGearComponentId()) {
+                continue;
+            }
+            $parentComponent = $this->find(
+                static fn (GearComponent $candidate): bool => (string) $candidate->getId() === (string) $parentComponentId
+            );
+            if ($parentComponent instanceof GearComponent) {
+                $parentComponents->add($parentComponent);
+            }
+        }
+
+        return $parentComponents;
+    }
+
     public function resolveUsageWindowsFor(GearComponent $gearComponent): UsageWindows
     {
         return $this->resolveUsageWindowsAlongPath($gearComponent, []);

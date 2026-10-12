@@ -7,10 +7,21 @@
       "label": "Summer wheelset",
       "localImagePath": null,
       "installations": [
-        {"gearId": "g10130856", "from": null, "until": "2023-01-01"}
+        {
+          "gearId": "g10130856",
+          "from": null,
+          "until": "2023-01-01"
+        }
       ],
       "maintenance": [
-        {"id": "maintenanceTask-summer-wheelset-hub-service", "label": "Hub service", "interval": {"value": 5000, "unit": "km"}}
+        {
+          "id": "maintenanceTask-summer-wheelset-hub-service",
+          "label": "Hub service",
+          "interval": {
+            "value": 5000,
+            "unit": "km"
+          }
+        }
       ]
     },
     {
@@ -18,10 +29,44 @@
       "label": "Winter wheelset",
       "localImagePath": null,
       "installations": [
-        {"gearId": "g10130856", "from": "2023-01-01", "until": null}
+        {
+          "gearId": "g10130856",
+          "from": "2023-01-01",
+          "until": null
+        }
       ],
       "maintenance": [
-        {"id": "maintenanceTask-winter-wheelset-hub-service", "label": "Hub service", "interval": {"value": 5000, "unit": "km"}}
+        {
+          "id": "maintenanceTask-winter-wheelset-hub-service",
+          "label": "Hub service",
+          "interval": {
+            "value": 5000,
+            "unit": "km"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gearComponent-winter-tyres",
+      "label": "Winter tyres",
+      "localImagePath": null,
+      "installations": [
+        {
+          "parent": "component:gearComponent-winter-wheelset",
+          "from": null,
+          "until": null,
+          "sportTypes": []
+        }
+      ],
+      "maintenance": [
+        {
+          "id": "maintenanceTask-winter-tyres-replace",
+          "label": "Replace",
+          "interval": {
+            "value": 3000,
+            "unit": "km"
+          }
+        }
       ]
     }
   ]
