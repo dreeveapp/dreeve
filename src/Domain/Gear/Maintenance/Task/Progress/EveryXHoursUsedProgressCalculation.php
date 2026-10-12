@@ -30,10 +30,10 @@ final readonly class EveryXHoursUsedProgressCalculation implements MaintenanceTa
                 WHERE %s
                 AND startDateTime > :lastTaggedOn', $usageWindowsSql);
 
-        $movingTimeInSecondsSinceLastTagged = ($this->connection->fetchOne($query, [
+        $movingTimeInSecondsSinceLastTagged = $this->connection->fetchOne($query, [
             ...$usageWindowsParameters,
             'lastTaggedOn' => (string) $context->getLastTaggedOn(),
-        ]) ?? 0) + ($context->getStartingValue()?->getMovingTime()->toFloat() ?? 0);
+        ]);
         $movingTimeInHoursSinceLastTagged = $movingTimeInSecondsSinceLastTagged / 3600;
         $intervalValue = $context->getIntervalValue();
 

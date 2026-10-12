@@ -11,9 +11,6 @@ use App\Domain\Gear\Maintenance\GearMaintenanceConfig;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\Installation\InstallationParent;
-use App\Domain\Gear\Maintenance\StartingValue;
-use App\Infrastructure\Measurement\Length\Meter;
-use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -84,17 +81,6 @@ class GearMaintenanceConfigTest extends ContainerTestCase
 
         $this->assertSame("Serial WH-123\nTubeless ready", $gearComponents->getFirst()->getNotes());
         $this->assertNull($gearComponents->getLast()->getNotes());
-    }
-
-    public function testFromArrayReadsStartingValues(): void
-    {
-        $gearComponents = GearMaintenanceConfig::fromArray($this->getConfigWithInstallations())->getGearComponents();
-
-        $this->assertEquals(
-            StartingValue::create(distance: Meter::from(1200000), movingTime: Seconds::from(180000)),
-            $gearComponents->getFirst()->getStartingValue()
-        );
-        $this->assertNull($gearComponents->getLast()->getStartingValue());
     }
 
     public function testFromArrayReadsComponentParents(): void

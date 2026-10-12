@@ -8,10 +8,6 @@
       "localImagePath": null,
       "isRetired": false,
       "notes": "Serial WH-123\nTubeless ready",
-      "startingValue": {
-        "distanceInMeter": 1200000,
-        "movingTimeInSeconds": 180000
-      },
       "installations": [
         {
           "parent": "gear:b1",
@@ -54,7 +50,6 @@
       "localImagePath": null,
       "isRetired": true,
       "notes": null,
-      "startingValue": null,
       "installations": [
         {
           "parent": "component:gearComponent-winter-wheelset",

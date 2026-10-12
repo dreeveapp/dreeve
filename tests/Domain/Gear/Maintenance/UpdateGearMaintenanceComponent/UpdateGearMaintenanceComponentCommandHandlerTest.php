@@ -60,29 +60,6 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->assertSame('DI2 Battery', $di2['label']);
     }
 
-    public function testItKeepsTheStartingValue(): void
-    {
-        $this->importGearMaintenanceConfig();
-        $config = Json::decode((string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
-        $config['components'][0]['startingValue'] = ['distanceInMeter' => 250000, 'movingTimeInSeconds' => 7200];
-        $this->keyValueStore->save(KeyValue::fromState(Key::GEAR_MAINTENANCE, Value::fromString(Json::encode($config))));
-
-        $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
-            'gearComponentId' => 'gearComponent-chain',
-            'label' => 'Updated chain',
-            'installations' => [['parent' => 'gear:b9']],
-            'maintenanceTasks' => [
-                ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 600, 'unit' => 'km']],
-            ],
-        ]));
-
-        $config = Json::decode((string) $this->keyValueStore->find(Key::GEAR_MAINTENANCE));
-        $this->assertSame(
-            ['distanceInMeter' => 250000, 'movingTimeInSeconds' => 7200],
-            $this->findComponentById($config['components'], 'gearComponent-chain')['startingValue'],
-        );
-    }
-
     public function testItInstallsAComponentOnAnotherComponent(): void
     {
         $this->importGearMaintenanceConfig();

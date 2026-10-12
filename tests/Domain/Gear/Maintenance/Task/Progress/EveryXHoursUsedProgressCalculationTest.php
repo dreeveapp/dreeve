@@ -9,14 +9,10 @@ use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Installation\UsageWindow;
 use App\Domain\Gear\Maintenance\Installation\UsageWindows;
-use App\Domain\Gear\Maintenance\StartingValue;
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Domain\Gear\Maintenance\Task\Progress\EveryXHoursUsedProgressCalculation;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgress;
 use App\Domain\Gear\Maintenance\Task\Progress\ProgressCalculationContext;
-use App\Infrastructure\Measurement\Length\Kilometer;
-use App\Infrastructure\Measurement\Length\Meter;
-use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -89,36 +85,9 @@ class EveryXHoursUsedProgressCalculationTest extends ContainerTestCase
                     lastTaggedOn: SerializableDateTime::fromString('01-01-2025'),
                     intervalUnit: IntervalUnit::EVERY_X_HOURS_USED,
                     intervalValue: 10,
-                    startingValue: null,
                 )
             )
         );
-    }
-
-    public function testCalculateAddsTheStartingValue(): void
-    {
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('ride'))
-                ->withGearId(GearId::fromUnprefixed('test'))
-                ->withStartDateTime(SerializableDateTime::fromString('2025-01-02 10:00:00'))
-                ->withDistance(Kilometer::from(100))
-                ->withMovingTimeInSeconds(3600)
-                ->build(),
-            []
-        ));
-
-        $progress = $this->calculation->calculate(
-            ProgressCalculationContext::from(
-                usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null, sportTypes: SportTypes::empty())]),
-                lastTaggedOn: SerializableDateTime::fromString('2025-01-01'),
-                intervalUnit: IntervalUnit::EVERY_X_HOURS_USED,
-                intervalValue: 1000,
-                startingValue: StartingValue::create(distance: Meter::from(250000), movingTime: Seconds::from(7200)),
-            )
-        );
-
-        $this->assertSame('3 hours', $progress->getDescription());
     }
 
     #[\Override]

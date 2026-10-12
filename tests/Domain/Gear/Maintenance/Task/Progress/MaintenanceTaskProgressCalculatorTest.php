@@ -31,7 +31,6 @@ use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use App\Tests\ProvideGearMaintenanceConfig;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
 {
@@ -55,7 +54,6 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
                     lastTaggedOn: SerializableDateTime::fromString('2025-01-03'),
                     intervalUnit: IntervalUnit::EVERY_X_DAYS,
                     intervalValue: 4,
-                    startingValue: null,
                 )
             )
         );
@@ -98,41 +96,6 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
         $this->assertNull($calculator->calculateStatuses()->getForTask(MaintenanceTaskId::fromUnprefixed('chain-lubed')));
         $this->assertNotNull($calculator->calculateStatuses()->getForTask(MaintenanceTaskId::fromUnprefixed('di-2-charged')));
         $this->assertEmpty($calculator->getGearIdsThatHaveDueTasks()->toArray());
-    }
-
-    /**
-     * @param array<string, mixed> $chainChanges
-     */
-    #[DataProvider('provideTasksWithoutALog')]
-    public function testTasksWithoutALogCountFromTheEarliestInstallation(array $chainChanges, ?string $expectedReplaceProgress): void
-    {
-        $this->importGearMaintenanceConfig();
-        $keyValueStore = $this->getContainer()->get(KeyValueStore::class);
-        $config = Json::decode((string) $keyValueStore->find(Key::GEAR_MAINTENANCE));
-        $config['components'][0] = [...$config['components'][0], ...$chainChanges];
-        $keyValueStore->save(KeyValue::fromState(Key::GEAR_MAINTENANCE, Value::fromString(Json::encode($config))));
-        $this->rideSinceTheChainWasLubed(Kilometer::from(600));
-
-        $statuses = $this->getContainer()->get(MaintenanceTaskProgressCalculator::class)->calculateStatuses();
-
-        $this->assertSame($expectedReplaceProgress, $statuses->getForTask(MaintenanceTaskId::fromUnprefixed('chain-replaced'))?->getProgress()?->getDescription());
-        $this->assertNull($statuses->getForTask(MaintenanceTaskId::fromUnprefixed('chain-replaced'))->getLastPerformedOn());
-        $this->assertSame('600 km', $statuses->getForTask(MaintenanceTaskId::fromUnprefixed('chain-lubed'))->getProgress()->getDescription());
-    }
-
-    /**
-     * @return iterable<string, array{array<string, mixed>, ?string}>
-     */
-    public static function provideTasksWithoutALog(): iterable
-    {
-        $installedOnJanuaryFirst = ['installations' => [['parent' => 'gear:g1233776', 'from' => '2025-01-01', 'until' => null, 'sportTypes' => []]]];
-
-        yield 'installed since forever' => [[], null];
-        yield 'installed on a date' => [$installedOnJanuaryFirst, '600 km'];
-        yield 'installed on a date with a starting value' => [
-            [...$installedOnJanuaryFirst, 'startingValue' => ['distanceInMeter' => 250000, 'movingTimeInSeconds' => 0]],
-            '850 km',
-        ];
     }
 
     public function testGetGearIdsThatHaveDueTasksWhenNothingIsDue(): void
@@ -197,7 +160,6 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
                 lastTaggedOn: SerializableDateTime::fromString('2025-01-03'),
                 intervalUnit: IntervalUnit::EVERY_X_DAYS,
                 intervalValue: 4,
-                startingValue: null,
             )
         );
     }

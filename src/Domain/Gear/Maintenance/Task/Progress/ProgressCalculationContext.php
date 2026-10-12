@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Gear\Maintenance\Task\Progress;
 
 use App\Domain\Gear\Maintenance\Installation\UsageWindows;
-use App\Domain\Gear\Maintenance\StartingValue;
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
@@ -16,7 +15,6 @@ final readonly class ProgressCalculationContext
         private SerializableDateTime $lastTaggedOn,
         private IntervalUnit $intervalUnit,
         private int $intervalValue,
-        private ?StartingValue $startingValue,
     ) {
     }
 
@@ -25,14 +23,12 @@ final readonly class ProgressCalculationContext
         SerializableDateTime $lastTaggedOn,
         IntervalUnit $intervalUnit,
         int $intervalValue,
-        ?StartingValue $startingValue,
     ): self {
         return new self(
             usageWindows: $usageWindows,
             lastTaggedOn: $lastTaggedOn,
             intervalUnit: $intervalUnit,
             intervalValue: $intervalValue,
-            startingValue: $startingValue,
         );
     }
 
@@ -54,10 +50,5 @@ final readonly class ProgressCalculationContext
     public function getIntervalValue(): int
     {
         return $this->intervalValue;
-    }
-
-    public function getStartingValue(): ?StartingValue
-    {
-        return $this->startingValue;
     }
 }

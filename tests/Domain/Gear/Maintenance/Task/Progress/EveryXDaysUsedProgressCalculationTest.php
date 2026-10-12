@@ -95,7 +95,6 @@ class EveryXDaysUsedProgressCalculationTest extends ContainerTestCase
                     lastTaggedOn: SerializableDateTime::fromString('01-01-2025'),
                     intervalUnit: IntervalUnit::EVERY_X_HOURS_USED,
                     intervalValue: 10,
-                    startingValue: null,
                 )
             )
         );
