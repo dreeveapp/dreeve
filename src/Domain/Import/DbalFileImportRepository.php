@@ -44,16 +44,40 @@ final readonly class DbalFileImportRepository extends DbalRepository implements 
             throw new EntityNotFound(sprintf('File import "%s" is no longer available', $fileImportId));
         }
 
-        return FileImport::fromState(
-            fileImportId: FileImportId::fromString($result['fileImportId']),
-            originalFilename: $result['originalFilename'],
-            fileContents: null !== $result['fileContents'] ? CompressedString::fromCompressed($result['fileContents'])->uncompress() : null,
-            source: ImportSource::from($result['source']),
-            status: FileImportStatus::from($result['status']),
-            errorMessage: $result['errorMessage'],
-            activityId: ActivityId::fromOptionalString($result['activityId']),
-            importedOn: SerializableDateTime::fromString($result['importedOn']),
-        );
+        return $this->hydrate($result);
+    }
+
+    public function findForActivity(ActivityId $activityId): FileImport
+    {
+        $result = $this->connection->createQueryBuilder()
+            ->select('*')
+            ->from('FileImport')
+            ->andWhere('activityId = :activityId')
+            ->andWhere('fileContents IS NOT NULL')
+            ->setParameter('activityId', (string) $activityId)
+            ->orderBy('importedOn', 'DESC')
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if (false === $result) {
+            throw new EntityNotFound(sprintf('Activity "%s" has no stored original file', $activityId));
+        }
+
+        return $this->hydrate($result);
+    }
+
+    public function hasFileContentsForActivity(ActivityId $activityId): bool
+    {
+        return false !== $this->connection->createQueryBuilder()
+            ->select('1')
+            ->from('FileImport')
+            ->andWhere('activityId = :activityId')
+            ->andWhere('fileContents IS NOT NULL')
+            ->setParameter('activityId', (string) $activityId)
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchOne();
     }
 
     public function delete(FileImportId $fileImportId): void
@@ -72,5 +96,22 @@ final readonly class DbalFileImportRepository extends DbalRepository implements 
         $this->connection->executeStatement($sql, [
             'activityId' => $activityId,
         ]);
+    }
+
+    /**
+     * @param array<string, mixed> $result
+     */
+    private function hydrate(array $result): FileImport
+    {
+        return FileImport::fromState(
+            fileImportId: FileImportId::fromString($result['fileImportId']),
+            originalFilename: $result['originalFilename'],
+            fileContents: null !== $result['fileContents'] ? CompressedString::fromCompressed($result['fileContents'])->uncompress() : null,
+            source: ImportSource::from($result['source']),
+            status: FileImportStatus::from($result['status']),
+            errorMessage: $result['errorMessage'],
+            activityId: ActivityId::fromOptionalString($result['activityId']),
+            importedOn: SerializableDateTime::fromString($result['importedOn']),
+        );
     }
 }

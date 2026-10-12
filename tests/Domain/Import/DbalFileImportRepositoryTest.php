@@ -71,6 +71,67 @@ class DbalFileImportRepositoryTest extends ContainerTestCase
         $this->fileImportRepository->find($fileImportId);
     }
 
+    public function testFindForActivityReturnsTheNewestImportWithAStoredFile(): void
+    {
+        $activityId = ActivityId::fromUnprefixed('42');
+        $this->fileImportRepository->add(
+            FileImportBuilder::fromDefaults()
+                ->withFileImportId(FileImportId::fromUnprefixed('1'))
+                ->withFileContents('older bytes')
+                ->withActivityId($activityId)
+                ->withImportedOn(SerializableDateTime::fromString('2026-06-04 10:00:00'))
+                ->build()
+        );
+        $this->fileImportRepository->add(
+            FileImportBuilder::fromDefaults()
+                ->withFileImportId(FileImportId::fromUnprefixed('2'))
+                ->withFileContents('newer bytes')
+                ->withActivityId($activityId)
+                ->withImportedOn(SerializableDateTime::fromString('2026-06-05 10:00:00'))
+                ->build()
+        );
+        $this->fileImportRepository->add(
+            FileImportBuilder::fromDefaults()
+                ->withFileImportId(FileImportId::fromUnprefixed('3'))
+                ->withFileContents(null)
+                ->withActivityId($activityId)
+                ->withImportedOn(SerializableDateTime::fromString('2026-06-06 10:00:00'))
+                ->build()
+        );
+        $this->fileImportRepository->add(
+            FileImportBuilder::fromDefaults()
+                ->withFileImportId(FileImportId::fromUnprefixed('4'))
+                ->withFileContents('other activity bytes')
+                ->withActivityId(ActivityId::fromUnprefixed('43'))
+                ->withImportedOn(SerializableDateTime::fromString('2026-06-07 10:00:00'))
+                ->build()
+        );
+
+        $fileImport = $this->fileImportRepository->findForActivity($activityId);
+
+        $this->assertEquals(FileImportId::fromUnprefixed('2'), $fileImport->getId());
+        $this->assertSame('newer bytes', $fileImport->getFileContents());
+        $this->assertTrue($this->fileImportRepository->hasFileContentsForActivity($activityId));
+    }
+
+    public function testFindForActivityThrowsWhenNoImportStoredItsFile(): void
+    {
+        $activityId = ActivityId::fromUnprefixed('42');
+        $this->fileImportRepository->add(
+            FileImportBuilder::fromDefaults()
+                ->withFileImportId(FileImportId::fromUnprefixed('1'))
+                ->withFileContents(null)
+                ->withActivityId($activityId)
+                ->build()
+        );
+
+        $this->assertFalse($this->fileImportRepository->hasFileContentsForActivity($activityId));
+
+        $this->expectExceptionObject(new EntityNotFound(sprintf('Activity "%s" has no stored original file', $activityId)));
+
+        $this->fileImportRepository->findForActivity($activityId);
+    }
+
     public function testDeleteForActivity(): void
     {
         $this->fileImportRepository->add(
