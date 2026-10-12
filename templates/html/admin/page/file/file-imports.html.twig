@@ -128,6 +128,9 @@
                                            href="{{ relativeUrl(path('activity', {'activityId': activityId})) }}">
                                             {{ fileImport.getActivityName() }}
                                         </a>
+                                        {% if fileImport.getActivityStartDate() %}
+                                            <span class="block text-xs text-gray-500">{{ fileImport.getActivityStartDate()|formatDate() }}</span>
+                                        {% endif %}
                                     {% endif %}
                                 </td>
                                 <td class="narrow whitespace-nowrap sticky-actions">

@@ -41,6 +41,7 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('42'))
                 ->withName('Morning Run')
+                ->withStartDateTime(SerializableDateTime::fromString('2026-06-03 07:30:00'))
                 ->build(),
             ['raw' => 'data'],
         ));
@@ -73,6 +74,7 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
                     errorMessage: 'Could not parse file',
                     activityId: ActivityId::fromUnprefixed('42'),
                     activityName: 'Morning Run',
+                    activityStartDate: SerializableDateTime::fromString('2026-06-03 07:30:00'),
                     hasFileContents: true,
                 ),
             ],

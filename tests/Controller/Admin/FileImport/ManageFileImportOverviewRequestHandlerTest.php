@@ -252,6 +252,7 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
                 ActivityBuilder::fromDefaults()
                     ->withActivityId($activityId)
                     ->withName(sprintf('Activity %d', $i))
+                    ->withStartDateTime(SerializableDateTime::fromString(sprintf('2026-05-0%d 08:00:00', $i)))
                     ->build(),
                 [],
             ));
@@ -277,6 +278,7 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
             $detailLinks->first()->attr('href')
         );
         $this->assertSame('Activity 1', trim($detailLinks->first()->text()));
+        $this->assertSame('01-05-26', trim($detailLinks->first()->siblings()->filter('span')->text()));
     }
 
     private function seedFileImports(int $count): void
