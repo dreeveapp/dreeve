@@ -94,8 +94,7 @@
             purchasePrice: gear.getPurchasePrice(),
             relativeCostPerDistanceUnit: gear.getRelativeCostPerDistanceUnit(unitSystem),
             relativeCostPerHour: gear.getRelativeCostPerHour(),
-            relativeCostPerWorkout: gear.getRelativeCostPerWorkout(),
-            activitiesUrl: filteredUrl(path('activities'), {gear: gear.getId()})
+            relativeCostPerWorkout: gear.getRelativeCostPerWorkout()
         } only %}
     {% endautoescape %}
 {% endmacro %}
