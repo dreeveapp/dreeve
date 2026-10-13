@@ -93,6 +93,25 @@ final readonly class Eddington
         return $this->timesCompletedData;
     }
 
+    public function getTimesCompletedFor(int $number): int
+    {
+        return $this->timesCompletedData[$number] ?? 0;
+    }
+
+    /**
+     * @return list<int>
+     */
+    public function getUpcomingNumbers(): array
+    {
+        $lastConsecutiveNumber = $this->eddingtonNumber + 5;
+        $firstMilestone = (intdiv($lastConsecutiveNumber, 10) + 1) * 10;
+
+        return [
+            ...range($this->eddingtonNumber + 1, $lastConsecutiveNumber),
+            ...range($firstMilestone, $firstMilestone + 40, 10),
+        ];
+    }
+
     /**
      * @return array<int, int>
      */
