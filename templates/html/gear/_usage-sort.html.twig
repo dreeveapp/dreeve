@@ -1,0 +1,8 @@
+<div class="flex justify-end mb-2">
+    <div role="group" aria-label="{{ "Sort"|trans }}" class="shrink-0 inline-flex items-center bg-gray-100 rounded-lg p-0.5 text-xxs font-medium">
+        <input type="radio" name="usageSort" id="usageSortDistance" data-sort-option="rank" class="sr-only peer/rank" checked>
+        <label for="usageSortDistance" class="cursor-pointer rounded-md px-2 py-1 text-gray-500 transition peer-checked/rank:bg-white peer-checked/rank:text-gray-900 peer-checked/rank:shadow-xs peer-focus-visible/rank:ring-2 peer-focus-visible/rank:ring-primary/40">{{ "Distance"|trans }}</label>
+        <input type="radio" name="usageSort" id="usageSortLastUsed" data-sort-option="date" class="sr-only peer/date">
+        <label for="usageSortLastUsed" class="cursor-pointer rounded-md px-2 py-1 text-gray-500 transition peer-checked/date:bg-white peer-checked/date:text-gray-900 peer-checked/date:shadow-xs peer-focus-visible/date:ring-2 peer-focus-visible/date:ring-primary/40">{{ "Last used"|trans }}</label>
+    </div>
+</div>

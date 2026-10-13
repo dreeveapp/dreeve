@@ -27,26 +27,29 @@
         totalNumberOfWorkouts: totalNumberOfWorkouts
     } %}
     <!-- GEAR GROUPS -->
-    {% for group in [
-        {title: "In use"|trans, gear: gearInUse, isOpen: true},
-        {title: "Idle"|trans, gear: idleGear, isOpen: false},
-        {title: "Retired"|trans, gear: retiredGear, isOpen: false},
-    ] %}
-        {% if group.gear|length > 0 %}
-            {% set rows %}
-                {% for gear in group.gear %}
-                    {{ _self.gearRow(gear, gearUsage.getFor(gear.getId()), totalDistance, maxDistance, lastTwelveMonths, unitSystem) }}
-                {% endfor %}
-            {% endset %}
-            {% include 'html/gear/_usage-group.html.twig' with {
-                title: group.title,
-                numberOfItems: group.gear|length,
-                nameLabel: "Gear"|trans,
-                isOpen: group.isOpen,
-                rows: rows
-            } %}
-        {% endif %}
-    {% endfor %}
+    <div data-sort-scope>
+        {% include 'html/gear/_usage-sort.html.twig' %}
+        {% for group in [
+            {title: "In use"|trans, gear: gearInUse, isOpen: true},
+            {title: "Idle"|trans, gear: idleGear, isOpen: false},
+            {title: "Retired"|trans, gear: retiredGear, isOpen: false},
+        ] %}
+            {% if group.gear|length > 0 %}
+                {% set rows %}
+                    {% for gear in group.gear %}
+                        {{ _self.gearRow(gear, gearUsage.getFor(gear.getId()), totalDistance, maxDistance, lastTwelveMonths, unitSystem) }}
+                    {% endfor %}
+                {% endset %}
+                {% include 'html/gear/_usage-group.html.twig' with {
+                    title: group.title,
+                    numberOfItems: group.gear|length,
+                    nameLabel: "Gear"|trans,
+                    isOpen: group.isOpen,
+                    rows: rows
+                } %}
+            {% endif %}
+        {% endfor %}
+    </div>
     <!-- GEAR CHARTS -->
     <div class="grid grid-cols-1 mb-4">
         <!-- DISTANCE PER MONTH PER GEAR -->
@@ -106,6 +109,8 @@
             relativeDistance: maxDistance.toFloat() > 0 ? gear.getDistance().toFloat() / maxDistance.toFloat() * 100 : 0,
             monthlyDistances: monthlyDistances,
             lastUsedOn: usage.getLastUsedOn(),
+            sortOrderRank: -gear.getDistance().toMeter().toInt(),
+            sortOrderDate: -usage.getLastUsedOn().format('Ymd'),
             usageStats: [
                 {label: "workouts"|trans, value: gear.getNumberOfActivities()|formatNumber(0)},
                 {label: "Avg distance"|trans, value: gear.getAverageDistance()|renderMeasurement(0)},

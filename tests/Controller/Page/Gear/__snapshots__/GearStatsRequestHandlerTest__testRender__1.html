@@ -346,7 +346,16 @@
         </div>
     </div>
     <!-- GEAR GROUPS -->
-                                        <details class="group/section mb-4 bg-white border border-gray-200 rounded-lg shadow-xs" open>
+    <div data-sort-scope>
+        <div class="flex justify-end mb-2">
+    <div role="group" aria-label="Sort" class="shrink-0 inline-flex items-center bg-gray-100 rounded-lg p-0.5 text-xxs font-medium">
+        <input type="radio" name="usageSort" id="usageSortDistance" data-sort-option="rank" class="sr-only peer/rank" checked>
+        <label for="usageSortDistance" class="cursor-pointer rounded-md px-2 py-1 text-gray-500 transition peer-checked/rank:bg-white peer-checked/rank:text-gray-900 peer-checked/rank:shadow-xs peer-focus-visible/rank:ring-2 peer-focus-visible/rank:ring-primary/40">Distance</label>
+        <input type="radio" name="usageSort" id="usageSortLastUsed" data-sort-option="date" class="sr-only peer/date">
+        <label for="usageSortLastUsed" class="cursor-pointer rounded-md px-2 py-1 text-gray-500 transition peer-checked/date:bg-white peer-checked/date:text-gray-900 peer-checked/date:shadow-xs peer-focus-visible/date:ring-2 peer-focus-visible/date:ring-primary/40">Last used</label>
+    </div>
+</div>
+                                                        <details class="group/section mb-4 bg-white border border-gray-200 rounded-lg shadow-xs" open>
         <summary class="list-none cursor-pointer flex items-center justify-between p-4 select-none">
             <div class="flex items-center gap-2">
                 <h3 class="text-lg font-semibold">In use</h3>
@@ -363,8 +372,8 @@
             <div class="hidden lg:block">Last used</div>
             <div></div>
         </div>
-        <div>
-                                                                                                                                                                                                                                                                                                                                <details class="group/row border-t border-gray-100">
+        <div class="flex flex-col">
+                                                                                                                                                                                                                                                                                                                                        <details style="--sort-order-rank: -275474; --sort-order-date: -20230831;" class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) group/row border-t border-gray-100">
         <summary class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_11rem_9rem_7rem_0.75rem] list-none cursor-pointer px-4 py-2.5 hover:bg-gray-50 select-none">
             <div class="min-w-0">
                 <div class="font-medium text-gray-900 truncate">Retro Race Bike</div>
@@ -466,7 +475,7 @@
         </div>
     </details>
     
-                                                                                                                                                                                                                                                                                                                    <details class="group/row border-t border-gray-100">
+                                                                                                                                                                                                                                                                                                                            <details style="--sort-order-rank: -12415; --sort-order-date: -20230728;" class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) group/row border-t border-gray-100">
         <summary class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_11rem_9rem_7rem_0.75rem] list-none cursor-pointer px-4 py-2.5 hover:bg-gray-50 select-none">
             <div class="min-w-0">
                 <div class="font-medium text-gray-900 truncate">Zwift hub</div>
@@ -568,7 +577,7 @@
         </div>
     </details>
     
-                                                                                                                                                                                                                                                                                                                    <details class="group/row border-t border-gray-100">
+                                                                                                                                                                                                                                                                                                                            <details style="--sort-order-rank: -24424; --sort-order-date: -20230912;" class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) group/row border-t border-gray-100">
         <summary class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_11rem_9rem_7rem_0.75rem] list-none cursor-pointer px-4 py-2.5 hover:bg-gray-50 select-none">
             <div class="min-w-0">
                 <div class="font-medium text-gray-900 truncate">Unspecified</div>
@@ -670,10 +679,10 @@
         </div>
     </details>
     
-                            
+                                    
         </div>
     </details>
-                                                            <details class="group/section mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+                                                                                        <details class="group/section mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <summary class="list-none cursor-pointer flex items-center justify-between p-4 select-none">
             <div class="flex items-center gap-2">
                 <h3 class="text-lg font-semibold">Retired</h3>
@@ -690,8 +699,8 @@
             <div class="hidden lg:block">Last used</div>
             <div></div>
         </div>
-        <div>
-                                                                                                                                                                                                                                                                                                                                <details class="group/row border-t border-gray-100">
+        <div class="flex flex-col">
+                                                                                                                                                                                                                                                                                                                                        <details style="--sort-order-rank: 0; --sort-order-date: -20230730;" class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) group/row border-t border-gray-100">
         <summary class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_11rem_9rem_7rem_0.75rem] list-none cursor-pointer px-4 py-2.5 hover:bg-gray-50 select-none">
             <div class="min-w-0">
                 <div class="font-medium text-gray-900 truncate">Zwift One</div>
@@ -756,10 +765,11 @@
         </div>
     </details>
     
-                            
+                                    
         </div>
     </details>
-                <!-- GEAR CHARTS -->
+                        </div>
+    <!-- GEAR CHARTS -->
     <div class="grid grid-cols-1 mb-4">
         <!-- DISTANCE PER MONTH PER GEAR -->
         <div class="mb-4  p-4 bg-white border border-gray-200 rounded-lg shadow-xs ">
