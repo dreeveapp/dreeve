@@ -11,6 +11,7 @@ use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetric;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
+use App\Domain\Activity\Stream\Metric\ActivityStreamValueDistributionCalculator;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
@@ -129,9 +130,8 @@ class CalculateStreamValueDistributionTest extends ContainerTestCase
         $settingsRepository->save(SettingsName::UNIT_SYSTEM, $unitSystem->value);
 
         new CalculateStreamValueDistribution(
-            $this->getContainer()->get(ActivityStreamRepository::class),
             $this->getContainer()->get(ActivityStreamMetricRepository::class),
-            $this->getContainer()->get(ActivityRepository::class),
+            $this->getContainer()->get(ActivityStreamValueDistributionCalculator::class),
             $settingsRepository,
         )->process($output);
 
