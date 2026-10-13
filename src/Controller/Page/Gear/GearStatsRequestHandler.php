@@ -12,9 +12,11 @@ use App\Domain\Calendar\Months;
 use App\Domain\Gear\DistanceOverTimePerGearChart;
 use App\Domain\Gear\DistancePerMonthPerGearChart;
 use App\Domain\Gear\FindGearStatsPerDay\FindGearStatsPerDay;
+use App\Domain\Gear\FindGearUsagePerMonth\FindGearUsagePerMonth;
 use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Gear\Gears;
 use App\Domain\Gear\GearType;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Theme\Theme;
@@ -25,6 +27,7 @@ use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Serialization\Json;
@@ -76,6 +79,8 @@ final readonly class GearStatsRequestHandler
         $activities = $this->activityRepository->findAll();
         $allUsedGear = $this->gearRepository->findAllUsed();
         $gearStats = $this->queryBus->ask(new FindGearStatsPerDay());
+        $gearUsage = $this->queryBus->ask(new FindGearUsagePerMonth());
+        $usedSince = SerializableDateTime::fromDateTimeImmutable($now->modify('-3 months'));
         $allMonths = Months::create(
             startDate: $activities->getFirstActivityStartDate(),
             endDate: $now
@@ -100,9 +105,17 @@ final readonly class GearStatsRequestHandler
             ));
         }
 
+        $retiredGear = $allUsedGear->filter(fn (Gear $gear): bool => $gear->isRetired());
+        $allGear = Gears::fromArray([...$activeGear, ...$retiredGear]);
+
         return $this->twig->load('html/gear/gear.html.twig')->render([
             'activeGear' => $activeGear,
-            'retiredGear' => $allUsedGear->filter(fn (Gear $gear): bool => $gear->isRetired()),
+            'retiredGear' => $retiredGear,
+            'gearInUse' => $activeGear->filter(fn (Gear $gear): bool => $gearUsage->getFor($gear->getId())->wasUsedSince($usedSince)),
+            'idleGear' => $activeGear->filter(fn (Gear $gear): bool => !$gearUsage->getFor($gear->getId())->wasUsedSince($usedSince)),
+            'totalDistance' => Kilometer::from($allGear->sum(fn (Gear $gear): float => $gear->getDistance()->toFloat())),
+            'totalMovingTime' => Seconds::from((int) $allGear->sum(fn (Gear $gear): int => $gear->getMovingTime()->toInt())),
+            'totalNumberOfWorkouts' => $allGear->sum(fn (Gear $gear): int => $gear->getNumberOfActivities()),
             'unitSystem' => $unitSystem,
             'distancePerMonthPerGearChart' => Json::encode(
                 DistancePerMonthPerGearChart::create(

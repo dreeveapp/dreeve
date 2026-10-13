@@ -13,6 +13,19 @@
 {% autoescape false %}
     <!-- GEAR SUB MENU -->
     {% include 'html/gear/gear-sub-menu.html.twig' with {activeMenuItem: 'gear'} %}
+    <!-- GEAR SUMMARY -->
+    {% include 'html/gear/_usage-summary.html.twig' with {
+        label: "Gear"|trans,
+        numberOfItems: gearInUse|length + idleGear|length + retiredGear|length,
+        breakdown: [
+            "{count} in use"|trans({'{count}': gearInUse|length}),
+            "{count} idle"|trans({'{count}': idleGear|length}),
+            "{count} retired"|trans({'{count}': retiredGear|length}),
+        ],
+        totalDistance: totalDistance,
+        totalMovingTime: totalMovingTime,
+        totalNumberOfWorkouts: totalNumberOfWorkouts
+    } %}
     <!-- GEAR STATS -->
     <div class="grid grid-cols-1 mb-4">
         <!-- STATS PER GEAR -->

@@ -636,6 +636,9 @@ watts: watts
 weeks: veckor
 workouts: träningspass
 '{amount} left': '{amount} left'
+'{count} idle': '{count} idle'
+'{count} in use': '{count} in use'
+'{count} retired': '{count} retired'
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} dagar'
 '{days} consecutive days of activity': '{days} consecutive days of activity'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} timmar'

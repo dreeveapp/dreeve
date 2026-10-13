@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\RecordingDevice\FindRecordingDeviceUsagePerMonth;
 
-use App\Domain\Gear\Overview\MonthlyUsage;
+use App\Domain\Gear\MonthlyUsage;
 use App\Infrastructure\CQRS\Query\Query;
 use App\Infrastructure\CQRS\Query\QueryHandler;
 use App\Infrastructure\CQRS\Query\Response;

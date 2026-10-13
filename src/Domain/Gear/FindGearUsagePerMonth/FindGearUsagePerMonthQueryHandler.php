@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Gear\FindGearUsagePerMonth;
 
 use App\Domain\Gear\GearId;
-use App\Domain\Gear\Overview\MonthlyUsage;
+use App\Domain\Gear\MonthlyUsage;
 use App\Infrastructure\CQRS\Query\Query;
 use App\Infrastructure\CQRS\Query\QueryHandler;
 use App\Infrastructure\CQRS\Query\Response;

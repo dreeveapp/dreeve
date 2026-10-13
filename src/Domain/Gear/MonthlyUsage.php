@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Gear\Overview;
+namespace App\Domain\Gear;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
@@ -56,6 +56,11 @@ final readonly class MonthlyUsage
     public function getLastUsedOn(): SerializableDateTime
     {
         return $this->lastUsedOn;
+    }
+
+    public function wasUsedSince(SerializableDateTime $date): bool
+    {
+        return $this->lastUsedOn->isAfterOrOn($date);
     }
 
     public function getSportTypes(): SportTypes
