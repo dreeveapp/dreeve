@@ -9,6 +9,7 @@ use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
+use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
@@ -54,7 +55,10 @@ final readonly class DbalActivityOverviewRepository extends DbalRepository imple
                     ->andWhere('a.gearId = :gearId')
                     ->setParameter('gearId', (string) $gearId);
             }
-            if (null !== $device = $filters->getDevice()) {
+            $device = $filters->getDevice();
+            if ((string) RecordingDeviceId::none() === $device) {
+                $builder->andWhere('a.deviceName IS NULL');
+            } elseif (null !== $device) {
                 $builder
                     ->andWhere('a.deviceName = :deviceName')
                     ->setParameter('deviceName', $device);

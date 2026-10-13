@@ -55,6 +55,7 @@
                         {% for device in deviceOptions %}
                             <option value="{{ device.getName() }}" {{ device.getName() == filters.getDevice() ? 'selected' }}>{{ device.getName() }}</option>
                         {% endfor %}
+                        <option value="recordingDevice-none" {{ 'recordingDevice-none' == filters.getDevice() ? 'selected' }}>{{ "Unspecified"|trans }}</option>
                     </select>
                 </div>
                 <div>

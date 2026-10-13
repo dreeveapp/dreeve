@@ -354,6 +354,13 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
             1,
         ];
 
+        yield 'the unspecified device filter narrows the items to activities without a device' => [
+            ['device' => 'recordingDevice-none'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['Newest'],
+            1,
+        ];
+
         yield 'an import source filter narrows the items' => [
             ['importSource' => 'stravaApi'],
             Pagination::fromOffsetAndLimit(0, 10),

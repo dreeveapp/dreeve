@@ -178,6 +178,22 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         ];
     }
 
+    public function testFiltersTheTableOnUnspecifiedDevice(): void
+    {
+        $this->seedActivities(3);
+        $this->seedActivity();
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/activities?filters[device]=recordingDevice-none');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(3, $crawler->filter('table.data-table tbody tr'));
+        $this->assertSame(
+            'recordingDevice-none',
+            $crawler->filter('select[name="filters[device]"] option[selected]')->attr('value')
+        );
+    }
+
     public function testRendersTheFilterFormWhenActiveFiltersMatchNothing(): void
     {
         $this->seedActivities(3);
