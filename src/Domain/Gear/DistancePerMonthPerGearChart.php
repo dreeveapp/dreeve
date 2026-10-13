@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear;
 
-use App\Domain\Activity\Activities;
 use App\Domain\Calendar\Month;
 use App\Domain\Calendar\Months;
+use App\Domain\Gear\FindGearUsagePerMonth\FindGearUsagePerMonthResponse;
 use App\Domain\Theme\Theme;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Serialization\Escape;
@@ -15,7 +15,7 @@ final readonly class DistancePerMonthPerGearChart
 {
     private function __construct(
         private Gears $gears,
-        private Activities $activities,
+        private FindGearUsagePerMonthResponse $gearUsage,
         private UnitSystem $unitSystem,
         private Months $months,
         private Theme $theme,
@@ -24,14 +24,14 @@ final readonly class DistancePerMonthPerGearChart
 
     public static function create(
         Gears $gearCollection,
-        Activities $activityCollection,
+        FindGearUsagePerMonthResponse $gearUsage,
         UnitSystem $unitSystem,
         Months $months,
         Theme $theme,
     ): self {
         return new self(
             gears: $gearCollection,
-            activities: $activityCollection,
+            gearUsage: $gearUsage,
             unitSystem: $unitSystem,
             months: $months,
             theme: $theme,
@@ -44,72 +44,28 @@ final readonly class DistancePerMonthPerGearChart
     public function build(): array
     {
         $gears = $this->gears->sortByIsRetired();
-
-        $xAxisValues = [];
-        $distancePerGearAndMonth = [];
-        foreach ($this->months as $month) {
-            $xAxisValues[] = $month->getLabel();
-            foreach ($gears as $gear) {
-                $distancePerGearAndMonth[(string) $gear->getId()][$month->getId()] = 0;
-            }
-        }
-
-        foreach ($this->activities as $activity) {
-            if (!$activity->getGearId() instanceof GearId) {
-                continue;
-            }
-            if (!array_key_exists((string) $activity->getGearId(), $distancePerGearAndMonth)) {
-                continue;
-            }
-            $month = $activity->getStartDate()->format(Month::MONTH_ID_FORMAT);
-            $distancePerGearAndMonth[(string) $activity->getGearId()][$month] += $activity->getDistance()->toUnitSystem($this->unitSystem)->toFloat();
-        }
-
-        foreach ($distancePerGearAndMonth as $gearId => $months) {
-            $distancePerGearAndMonth[$gearId] = array_map(round(...), $months);
-        }
+        $xAxisValues = $this->months->map(fn (Month $month): string => $month->getLabel());
 
         $series = [];
-        $selectedSeries = [];
-
-        $unitSymbol = $this->unitSystem->distanceSymbol();
-
         foreach ($gears as $gear) {
-            $gearName = Escape::forJsonEncode($gear->getName());
-            $distanceInLastThreeMonths = array_sum(array_slice($distancePerGearAndMonth[(string) $gear->getId()], -3, 3));
-            $selectedSeries[$gearName] = $distanceInLastThreeMonths > 0;
+            $usage = $this->gearUsage->getFor($gear->getId());
 
             $series[] = [
-                'name' => $gearName,
+                'name' => Escape::forJsonEncode($gear->getName()),
                 'type' => 'bar',
-                'barGap' => 0,
+                'stack' => 'distance',
+                'barMaxWidth' => 28,
                 'itemStyle' => [
                     'color' => $this->theme->getColorForGear($gear->getId()),
                 ],
                 'emphasis' => [
                     'focus' => 'series',
                 ],
-                'label' => [
-                    'show' => true,
-                    'position' => 'insideBottom',
-                    'verticalAlign' => 'middle',
-                    'align' => 'left',
-                    'color' => '#000',
-                    'rotate' => 90,
-                    'distance' => 15,
-                    'formatter' => sprintf('{distance|{c} %s} - {a}', $unitSymbol),
-                    'rich' => [
-                        'distance' => [
-                            'fontSize' => 14,
-                            'fontWeight' => 'bold',
-                        ],
-                    ],
-                ],
-                'data' => array_values($distancePerGearAndMonth[(string) $gear->getId()]),
+                'data' => $this->months->map(
+                    fn (Month $month): float => round($usage->getDistanceFor($month)->toUnitSystem($this->unitSystem)->toFloat())
+                ),
             ];
         }
-
-        arsort($selectedSeries, SORT_NUMERIC);
 
         return [
             'animation' => true,
@@ -122,17 +78,11 @@ final readonly class DistancePerMonthPerGearChart
             'tooltip' => [
                 'trigger' => 'axis',
                 'axisPointer' => [
-                    'type' => 'none',
+                    'type' => 'shadow',
                 ],
+                'formatter' => 'callback:formatStackedDistanceTooltip',
             ],
             'legend' => [
-                'selected' => $selectedSeries,
-                'data' => array_map(
-                    fn (string $gearName): array => [
-                        'name' => $gearName,
-                    ],
-                    array_keys($selectedSeries),
-                ),
                 'type' => 'scroll',
                 'pageButtonItemGap' => 2,
                 'pageIconSize' => 10,
@@ -154,12 +104,9 @@ final readonly class DistancePerMonthPerGearChart
             'dataZoom' => [
                 [
                     'type' => 'slider',
-                    'startValue' => count($xAxisValues) - 4,
-                    'endValue' => count($xAxisValues),
-                    'minValueSpan' => 4,
-                    'maxValueSpan' => 4,
+                    'startValue' => max(0, count($xAxisValues) - 24),
+                    'endValue' => count($xAxisValues) - 1,
                     'brushSelect' => false,
-                    'zoomLock' => true,
                 ],
             ],
             'series' => $series,

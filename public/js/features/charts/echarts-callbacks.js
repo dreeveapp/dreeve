@@ -122,6 +122,15 @@ export const registerEchartsCallbacks = () => {
             const elevationSymbol = window.dreeve.unitSystem.elevationSymbol;
             return `${value.toFixed(0)}${elevationSymbol}`;
         },
+        formatStackedDistanceTooltip: (params) => {
+            if (!Array.isArray(params)) params = [params];
+            const distanceSymbol = window.dreeve.unitSystem.distanceSymbol;
+            const used = params.filter(p => p.value > 0).sort((a, b) => b.value - a.value);
+            const total = used.reduce((sum, p) => sum + p.value, 0);
+            return '<b>' + params[0].axisValue + ': ' + total + distanceSymbol + '</b>' + used
+                .map(p => '<br/>' + p.marker + ' ' + p.seriesName + ': <b>' + p.value + distanceSymbol + '</b> (' + Math.round(p.value / total * 100) + '%)')
+                .join('');
+        },
         formatDateOnlyTooltip: (params) => {
             if (!Array.isArray(params)) params = [params];
             const dateFormat = window.dreeve.unitSystem.name === 'metric' ? '{dd}-{MM}-{yyyy}' : '{MM}-{dd}-{yyyy}';

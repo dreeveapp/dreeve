@@ -123,7 +123,7 @@ final readonly class GearStatsRequestHandler
             'distancePerMonthPerGearChart' => Json::encode(
                 DistancePerMonthPerGearChart::create(
                     gearCollection: $allUsedGear,
-                    activityCollection: $activities,
+                    gearUsage: $gearUsage,
                     unitSystem: $unitSystem,
                     months: $allMonths,
                     theme: $this->theme,
