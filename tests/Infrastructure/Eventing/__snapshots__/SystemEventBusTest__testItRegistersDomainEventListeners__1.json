@@ -17,6 +17,9 @@
         "recalculateChartColors",
         "recalculateChartColors"
     ],
+    "App\\Domain\\Activity\\BestEffort\\RecalculateBestEffortsListener": [
+        "reactToActivitySportTypeWasChanged"
+    ],
     "App\\Domain\\Challenge\\ChallengeInvalidateCacheTagsListener": [
         "reactToChallengeWasImported"
     ],

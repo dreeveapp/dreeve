@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
+use App\Infrastructure\Exception\EntityNotFound;
 
 final readonly class ActivityBestEffortCalculator
 {
@@ -20,12 +21,20 @@ final readonly class ActivityBestEffortCalculator
 
     public function calculateFor(ActivityId $activityId): bool
     {
-        $distanceStream = $this->activityStreamRepository->findOneByActivityAndStreamType($activityId, StreamType::DISTANCE);
-        $timeStream = $this->activityStreamRepository->findOneByActivityAndStreamType($activityId, StreamType::TIME);
-
         $activity = $this->activityRepository->find($activityId);
-        $distances = $distanceStream->getData();
-        $time = $timeStream->getData();
+        if (!$activity->getSportType()->supportsBestEffortsStats()) {
+            return false;
+        }
+
+        try {
+            $distances = $this->activityStreamRepository->findOneByActivityAndStreamType($activityId, StreamType::DISTANCE)->getData();
+            $time = $this->activityStreamRepository->findOneByActivityAndStreamType($activityId, StreamType::TIME)->getData();
+        } catch (EntityNotFound) {
+            return false;
+        }
+        if ([] === $distances || [] === $time) {
+            return false;
+        }
 
         $distancesForBestEfforts = $activity->getSportType()->getActivityType()->getDistancesForBestEffortCalculation();
         if ((end($distances) - $distances[0]) < $distancesForBestEfforts[0]->toMeter()->toInt()) {
