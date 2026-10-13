@@ -36,6 +36,7 @@ class IntegrationsSettingsTest extends TestCase
         $this->assertSame([], $settings->getChatCommands()->jsonSerialize());
         $this->assertCount(0, iterator_to_array($settings->getConfiguredNotificationUrls()));
         $this->assertTrue($settings->shouldNotifyOnSuccessfulImport());
+        $this->assertTrue($settings->shouldNotifyOnPersonalRecord());
     }
 
     public function testItDisablesTheSuccessfulBuildNotification(): void
@@ -45,6 +46,15 @@ class IntegrationsSettingsTest extends TestCase
         ]);
 
         $this->assertFalse($settings->shouldNotifyOnSuccessfulImport());
+    }
+
+    public function testItDisablesThePersonalRecordNotification(): void
+    {
+        $settings = IntegrationsSettings::fromArray([
+            'notifications' => ['notifyOnPersonalRecord' => '0'],
+        ]);
+
+        $this->assertFalse($settings->shouldNotifyOnPersonalRecord());
     }
 
     public function testItEnablesTheAIIntegration(): void

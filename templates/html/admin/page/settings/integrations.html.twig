@@ -156,6 +156,17 @@
                         {{ "Sends a notification after every successful import."|trans({}, 'admin') }}
                     </p>
                 </div>
+                <div class="mt-4">
+                    <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
+                        <input type="hidden" name="data[notifications][notifyOnPersonalRecord]" value="0">
+                        <input type="checkbox" name="data[notifications][notifyOnPersonalRecord]" value="1"
+                               {{ (notifications.notifyOnPersonalRecord ?? true) ? 'checked' : '' }}>
+                        <span>{{ "Notify when a new personal record was set"|trans({}, 'admin') }}</span>
+                    </label>
+                    <p class="description">
+                        {{ "Sends a notification listing the new personal records after an import."|trans({}, 'admin') }}
+                    </p>
+                </div>
             </div>
             <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
                 <button type="submit" data-has-loading-state class="group btn--primary">
