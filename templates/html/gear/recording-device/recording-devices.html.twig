@@ -24,8 +24,13 @@
         <h3 class="mb-4 text-lg font-semibold">
             {{ "Recording devices"|trans }}
         </h3>
-        <div class="border-t border-gray-200">
-            {% include 'html/gear/_usage-header.html.twig' with {nameLabel: "Recording device"|trans} only %}
+        <div class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_6rem_9rem_9rem_7rem_0.75rem] px-4 py-3 bg-gray-50 text-gray-500 text-xxs uppercase font-semibold">
+            <div>{{ "Recording device"|trans }}</div>
+            <div>{{ "Distance"|trans }}</div>
+            <div class="hidden lg:block">{{ "Moving time"|trans }}</div>
+            <div class="hidden lg:block">{{ "Last 12 months"|trans }}</div>
+            <div class="hidden lg:block">{{ "Last used"|trans }}</div>
+            <div></div>
         </div>
         {% for device in devices %}
             {{ _self.deviceRow(device, deviceUsage.getFor(device.getName()), totalMovingTime, lastTwelveMonths, unitSystem) }}

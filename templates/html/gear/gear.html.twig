@@ -13,26 +13,53 @@
 {% autoescape false %}
     <!-- GEAR SUB MENU -->
     {% include 'html/gear/gear-sub-menu.html.twig' with {activeMenuItem: 'gear'} %}
-    <!-- GEAR GROUPS -->
-    {% for group in [
-        {title: "In use"|trans, gear: gearInUse, isOpen: true},
-        {title: "Retired"|trans, gear: retiredGear, isOpen: false},
-    ] %}
-        {% if group.gear|length > 0 %}
-            {% set rows %}
-                {% for gear in group.gear %}
+    <!-- GEAR -->
+    {% if gearInUse|length > 0 %}
+        <div class="mb-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            <div class="mb-4 flex items-center gap-2">
+                <h3 class="text-lg font-semibold">{{ "Active gear"|trans }}</h3>
+                <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ gearInUse|length }}</span>
+            </div>
+            <div class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_6rem_9rem_9rem_7rem_0.75rem] px-4 py-3 bg-gray-50 text-gray-500 text-xxs uppercase font-semibold">
+                <div>{{ "Gear"|trans }}</div>
+                <div>{{ "Distance"|trans }}</div>
+                <div class="hidden lg:block">{{ "Moving time"|trans }}</div>
+                <div class="hidden lg:block">{{ "Last 12 months"|trans }}</div>
+                <div class="hidden lg:block">{{ "Last used"|trans }}</div>
+                <div></div>
+            </div>
+            {% for gear in gearInUse %}
+                {{ _self.gearRow(gear, gearUsage.getFor(gear.getId()), totalMovingTime, lastTwelveMonths, unitSystem) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <!-- RETIRED GEAR -->
+    {% if retiredGear|length > 0 %}
+        <details class="group/section p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            <summary class="list-none cursor-pointer flex items-center justify-between select-none">
+                <div class="flex items-center gap-2">
+                    <h3 class="text-lg font-semibold">{{ "Retired"|trans }}</h3>
+                    <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ retiredGear|length }}</span>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/section:rotate-180" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m1 1 4 4 4-4"/>
+                </svg>
+            </summary>
+            <div class="mt-4 grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_6rem_9rem_9rem_7rem_0.75rem] px-4 py-3 bg-gray-50 text-gray-500 text-xxs uppercase font-semibold">
+                <div>{{ "Gear"|trans }}</div>
+                <div>{{ "Distance"|trans }}</div>
+                <div class="hidden lg:block">{{ "Moving time"|trans }}</div>
+                <div class="hidden lg:block">{{ "Last 12 months"|trans }}</div>
+                <div class="hidden lg:block">{{ "Last used"|trans }}</div>
+                <div></div>
+            </div>
+            <div>
+                {% for gear in retiredGear %}
                     {{ _self.gearRow(gear, gearUsage.getFor(gear.getId()), totalMovingTime, lastTwelveMonths, unitSystem) }}
                 {% endfor %}
-            {% endset %}
-            {% include 'html/gear/_usage-group.html.twig' with {
-                title: group.title,
-                numberOfItems: group.gear|length,
-                nameLabel: "Gear"|trans,
-                isOpen: group.isOpen,
-                rows: rows
-            } %}
-        {% endif %}
-    {% endfor %}
+            </div>
+        </details>
+    {% endif %}
     <!-- GEAR CHARTS -->
     <div class="grid grid-cols-1 mb-4">
         <!-- DISTANCE PER MONTH PER GEAR -->

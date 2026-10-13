@@ -12,6 +12,7 @@
 'ATL (Fatigue)': 'ATL (Vermoeidheid)'
 'Accumulated fatigue': 'Opgebouwde vermoeidheid'
 'Active days': 'Actieve dagen'
+'Active gear': 'Active gear'
 Activities: Activiteiten
 Activity: Activiteit
 'Activity count': 'Aantal activiteiten'
@@ -206,7 +207,6 @@ History: Historiek
 'Ice Skate': Schaatsen
 Imperial: Imperiaal
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'In die tijd heb ik {totalDistance} afgelegd, dat is {numberOfTripsAroundTheWorld} keer rond de wereld 🌍 of {numberOfTripsToTheMoonPercent}% van de weg naar de maan 🌕, en heb ik in totaal {totalElevation} geklommen, dat is {timesMountEverest} keer de Mount Everest 🏔. Alles samen is dat {totalTimeRecorded} beweegtijd 🎉.'
-'In use': 'In use'
 'Increased compared to yesterday': 'Gestegen ten opzichte van gisteren'
 'Individual thresholds vary based on fitness level.': 'Individuele drempels verschillen naargelang het fitheidsniveau.'
 'Inline Skate': Inlineskaten

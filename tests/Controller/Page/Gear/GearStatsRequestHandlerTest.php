@@ -76,7 +76,7 @@ class GearStatsRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSame(
             [['Retro Race Bike', 'Rides · 1 workouts', '0kcal'], ['Zwift hub', 'Rides · 1 workouts', '0kcal']],
-            $crawler->filter('details details')->each(
+            $crawler->filter('details.group\\/row')->each(
                 fn (Crawler $row): array => [
                     $row->filter('summary .font-medium')->text(),
                     $row->filter('summary .text-xs')->first()->text(),
@@ -107,7 +107,7 @@ class GearStatsRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSame(
             [['Unspecified', 'Rides · 1 workouts', '0kcal']],
-            $crawler->filter('details details')->each(
+            $crawler->filter('details.group\\/row')->each(
                 fn (Crawler $row): array => [
                     $row->filter('summary .font-medium')->text(),
                     $row->filter('summary .text-xs')->first()->text(),
@@ -142,7 +142,7 @@ class GearStatsRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSame(
             ['€1,000.00', '€10.00', '€500.00', '€1,000.00'],
-            $crawler->filter('details details .grid-cols-2 .font-bold')->each(fn (Crawler $cost): string => $cost->text()),
+            $crawler->filter('details.group\\/row .grid-cols-2 .font-bold')->each(fn (Crawler $cost): string => $cost->text()),
         );
     }
 

@@ -12,6 +12,7 @@
 'ATL (Fatigue)': 'ATL (Fáradtság)'
 'Accumulated fatigue': 'Felhalmozott fáradtság'
 'Active days': 'Aktív napok'
+'Active gear': 'Active gear'
 Activities: Tevékenységek
 Activity: Tevékenység
 'Activity count': 'Tevékenységek száma'
@@ -206,7 +207,6 @@ History: Előzmények
 'Ice Skate': Jégkorcsolya
 Imperial: Angolszász
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'Ez idő alatt {totalDistance}-t tettem meg, ami {numberOfTripsAroundTheWorld} körülutazás a Föld körül, vagy {numberOfTripsToTheMoonPercent}% az úton a Hold felé, és {totalElevation} szintemelkedést győztem le, ami {timesMountEverest}-szer a Mount Everest magassága. Összesen {totalTimeRecorded} mozgásban töltött idő.'
-'In use': 'In use'
 'Increased compared to yesterday': 'Nőtt a tegnapihoz képest'
 'Individual thresholds vary based on fitness level.': 'Az egyéni küszöbértékek a fitnesz szinttől függően változnak.'
 'Inline Skate': Görkorcsolya

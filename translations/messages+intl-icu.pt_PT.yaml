@@ -12,6 +12,7 @@
 'ATL (Fatigue)': 'ATL (Fadiga)'
 'Accumulated fatigue': 'Accumulated fatigue'
 'Active days': 'Dias activo'
+'Active gear': 'Active gear'
 Activities: Atividades
 Activity: Activity
 'Activity count': 'Número de Actividades'
@@ -206,7 +207,6 @@ History: Histórico
 'Ice Skate': 'Patinagem no Gelo'
 Imperial: Imperial
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉."
-'In use': 'In use'
 'Increased compared to yesterday': 'Increased compared to yesterday'
 'Individual thresholds vary based on fitness level.': 'Thresholds individuais variam consoante o nível de forma.'
 'Inline Skate': 'Patinagem em Linha'
