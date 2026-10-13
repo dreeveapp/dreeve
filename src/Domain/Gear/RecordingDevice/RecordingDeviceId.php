@@ -14,6 +14,11 @@ final readonly class RecordingDeviceId extends Identifier
         return 'recordingDevice-';
     }
 
+    public static function none(): self
+    {
+        return self::fromUnprefixed('none');
+    }
+
     public static function fromName(string $name): self
     {
         return self::fromUnprefixed(Name::fromString($name)->kebabCase());

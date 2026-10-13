@@ -720,7 +720,11 @@ final class Activity
 
     public function getDeviceId(): RecordingDeviceId
     {
-        return RecordingDeviceId::fromName($this->getDeviceName() ?? 'none');
+        if (null === $deviceName = $this->getDeviceName()) {
+            return RecordingDeviceId::none();
+        }
+
+        return RecordingDeviceId::fromName($deviceName);
     }
 
     public function isCommute(): bool
