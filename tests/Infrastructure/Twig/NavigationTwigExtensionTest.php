@@ -2,6 +2,9 @@
 
 namespace App\Tests\Infrastructure\Twig;
 
+use App\Domain\Activity\ActivityIdRepository;
+use App\Domain\Import\ImportMode;
+use App\Domain\Segment\SegmentRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Twig\NavigationTwigExtension;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -22,7 +25,13 @@ class NavigationTwigExtensionTest extends TestCase
 
         self::assertSame(
             $expected,
-            new NavigationTwigExtension($requestStack, $this->createStub(SettingsRepository::class))->isActiveNavItem($rules)
+            new NavigationTwigExtension(
+                $requestStack,
+                $this->createStub(SettingsRepository::class),
+                ImportMode::FILES,
+                $this->createStub(ActivityIdRepository::class),
+                $this->createStub(SegmentRepository::class),
+            )->isActiveNavItem($rules)
         );
     }
 
@@ -49,8 +58,47 @@ class NavigationTwigExtensionTest extends TestCase
 
     public function testItIsNeverActiveWithoutACurrentRequest(): void
     {
-        $extension = new NavigationTwigExtension(new RequestStack(), $this->createStub(SettingsRepository::class));
+        $extension = new NavigationTwigExtension(
+            requestStack: new RequestStack(),
+            settingsRepository: $this->createStub(SettingsRepository::class),
+            importMode: ImportMode::FILES,
+            activityIdRepository: $this->createStub(ActivityIdRepository::class),
+            segmentRepository: $this->createStub(SegmentRepository::class),
+        );
 
         self::assertFalse($extension->isActiveNavItem(['/admin' => true]));
+    }
+
+    #[DataProvider('provideSegmentManagementAvailability')]
+    public function testItShouldDetermineWhetherSegmentManagementIsAvailable(
+        ImportMode $importMode,
+        int $numberOfActivities,
+        int $numberOfSegments,
+        bool $expected,
+    ): void {
+        $activityIdRepository = $this->createStub(ActivityIdRepository::class);
+        $activityIdRepository->method('count')->willReturn($numberOfActivities);
+        $segmentRepository = $this->createStub(SegmentRepository::class);
+        $segmentRepository->method('count')->willReturn($numberOfSegments);
+
+        self::assertSame(
+            $expected,
+            new NavigationTwigExtension(
+                requestStack: new RequestStack(),
+                settingsRepository: $this->createStub(SettingsRepository::class),
+                importMode: $importMode,
+                activityIdRepository: $activityIdRepository,
+                segmentRepository: $segmentRepository,
+            )->isSegmentManagementAvailable()
+        );
+    }
+
+    public static function provideSegmentManagementAvailability(): iterable
+    {
+        yield 'never in Strava API mode' => [ImportMode::STRAVA_API, 1, 1, false];
+        yield 'not without activities and segments' => [ImportMode::FILES, 0, 0, false];
+        yield 'with activities only' => [ImportMode::FILES, 1, 0, true];
+        yield 'with segments only' => [ImportMode::FILES, 0, 1, true];
+        yield 'with activities and segments' => [ImportMode::FILES, 1, 1, true];
     }
 }

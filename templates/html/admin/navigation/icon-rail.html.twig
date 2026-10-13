@@ -36,7 +36,7 @@
                         <span>{{ "Gear"|trans }}</span>
                     </a>
                 </li>
-                {% if importMode.isFiles() %}
+                {% if isSegmentManagementAvailable() %}
                     <li>
                         <a title="{{ "Segments"|trans }}" href="{{ relativeUrl(path('admin_manage_segment_overview')) }}" {{ isActiveNavItem({'/admin/segments': false}) ? 'aria-selected="true"' : '' }}>
                             <svg aria-hidden="true" fill="currentColor" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
