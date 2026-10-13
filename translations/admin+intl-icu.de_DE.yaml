@@ -320,7 +320,7 @@ Password: Passwort
 'Processed on': 'Verarbeitet am'
 'Profile picture URL': Profilbild-URL
 Provider: Anbieter
-Queued: in der Warteschlange
+Queued: 'in der Warteschlange'
 Queueing...: Warteschlange...
 Radius: Radius
 'Recording device': Aufzeichnungsgerät
@@ -368,7 +368,7 @@ Saving...: 'Wird gespeichert...'
 'Search by name, date or activity ID': 'Nach Name, Datum oder Aktivitäts-ID suchen'
 Seconds: Sekunden
 Security: Sicherheit
-'Segment management': 'Segmentverwaltung'
+'Segment management': Segmentverwaltung
 'Segments will appear here once you create them from one of your activities.': 'Segmente werden hier angezeigt, sobald du sie aus einer deiner Aktivitäten erstellt hast.'
 'Select a component first...': 'Wähle zuerst eine Komponente aus...'
 'Select a component…': 'Komponente auswählen…'

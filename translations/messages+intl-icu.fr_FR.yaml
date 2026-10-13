@@ -225,6 +225,7 @@ Lap: Tour
 'Last effort date': 'Date du dernier effort'
 'Last maintenance': 'Dernière maintenance'
 'Last month': 'Mois dernier'
+'Last used': 'Last used'
 'Last week': 'Semaine dernière'
 'Last {numberOfDays} days': 'Derniers {numberOfDays} jours'
 Lifetime: 'Depuis toujours'
