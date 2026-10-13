@@ -16,7 +16,6 @@
     <!-- GEAR GROUPS -->
     {% for group in [
         {title: "In use"|trans, gear: gearInUse, isOpen: true},
-        {title: "Idle"|trans, gear: idleGear, isOpen: false},
         {title: "Retired"|trans, gear: retiredGear, isOpen: false},
     ] %}
         {% if group.gear|length > 0 %}
@@ -80,7 +79,7 @@
             name: gear.getOriginalName(),
             subtitle: usage.getSportTypes()|map(sportType => sportType|trans)|join(', ') ~ ' · ' ~ gear.getNumberOfActivities() ~ ' ' ~ "workouts"|trans,
             distance: gear.getDistance(),
-            movingTime: gear.getMovingTimeFormatted(),
+            movingTime: gear.getMovingTimeInHours().toFloat()|formatNumber(0) ~ '<span class="text-xxs ml-px">h</span>',
             shareOfMovingTime: totalMovingTime.toInt() > 0 ? gear.getMovingTime().toInt() / totalMovingTime.toInt() * 100 : 0,
             monthlyDistances: monthlyDistances,
             lastUsedOn: usage.getLastUsedOn(),

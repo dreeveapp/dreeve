@@ -58,11 +58,6 @@ final readonly class MonthlyUsage
         return $this->lastUsedOn;
     }
 
-    public function wasUsedSince(SerializableDateTime $date): bool
-    {
-        return $this->lastUsedOn->isAfterOrOn($date);
-    }
-
     public function getSportTypes(): SportTypes
     {
         return $this->sportTypes;

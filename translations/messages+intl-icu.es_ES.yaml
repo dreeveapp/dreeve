@@ -202,7 +202,6 @@ History: Historial
 'How much training you do in total on days you train.': 'Cuánto entrenamiento haces en total los días que entrenas.'
 'How often do you train': 'Con qué frecuencia entrenas'
 'Ice Skate': 'Patinaje sobre hielo'
-Idle: Idle
 Imperial: Imperial
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'En ese tiempo, he cubierto {totalDistance}, que son {numberOfTripsAroundTheWorld} vueltas al mundo 🌍 o el {numberOfTripsToTheMoonPercent}% del camino a la luna 🌕, y he subido un desnivel de {totalElevation} que equivale a {timesMountEverest} veces el Monte Everest 🏔. En total son {totalTimeRecorded} de tiempo en movimiento 🎉.'
 'In use': 'In use'

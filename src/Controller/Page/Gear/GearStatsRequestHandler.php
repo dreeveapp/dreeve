@@ -79,7 +79,6 @@ final readonly class GearStatsRequestHandler
         $allUsedGear = $this->gearRepository->findAllUsed();
         $gearStats = $this->queryBus->ask(new FindGearStatsPerDay());
         $gearUsage = $this->queryBus->ask(new FindGearUsagePerMonth());
-        $usedSince = SerializableDateTime::fromDateTimeImmutable($now->modify('-3 months'));
         $allMonths = Months::create(
             startDate: $activities->getFirstActivityStartDate(),
             endDate: $now
@@ -111,12 +110,7 @@ final readonly class GearStatsRequestHandler
         return $this->twig->load('html/gear/gear.html.twig')->render([
             'gearUsage' => $gearUsage,
             'retiredGear' => $retiredGear->usort($mostRecentlyUsedFirst),
-            'gearInUse' => $activeGear
-                ->filter(fn (Gear $gear): bool => $gearUsage->getFor($gear->getId())->wasUsedSince($usedSince))
-                ->usort($mostRecentlyUsedFirst),
-            'idleGear' => $activeGear
-                ->filter(fn (Gear $gear): bool => !$gearUsage->getFor($gear->getId())->wasUsedSince($usedSince))
-                ->usort($mostRecentlyUsedFirst),
+            'gearInUse' => $activeGear->usort($mostRecentlyUsedFirst),
             'totalMovingTime' => Seconds::from((int) $allGear->sum(fn (Gear $gear): int => $gear->getMovingTime()->toInt())),
             'lastTwelveMonths' => Months::lastXMonths(12, $now),
             'unitSystem' => $unitSystem,
