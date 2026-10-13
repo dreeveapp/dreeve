@@ -76,7 +76,11 @@ final readonly class CustomSegmentScanner
             }
         }
 
-        $this->activityScanRepository->add(ActivityScan::create(activityId: $activityId, type: ActivityScanType::CUSTOM_SEGMENT, subjectId: (string) $segment->getId()));
+        $this->activityScanRepository->add(ActivityScan::create(
+            activityId: $activityId,
+            type: ActivityScanType::CUSTOM_SEGMENT,
+            subjectId: (string) $segment->getId())
+        );
 
         return true;
     }

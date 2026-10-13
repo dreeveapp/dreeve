@@ -26,6 +26,9 @@
     "App\\Domain\\Activity\\Stream\\Metric\\RecalculateStreamValueDistributionListener": [
         "reactToActivitySportTypeWasChanged"
     ],
+    "App\\Domain\\Segment\\SegmentEffort\\RescanCustomSegmentsListener": [
+        "reactToActivitySportTypeWasChanged"
+    ],
     "App\\Domain\\Challenge\\ChallengeInvalidateCacheTagsListener": [
         "reactToChallengeWasImported"
     ],
