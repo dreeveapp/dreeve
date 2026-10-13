@@ -65,6 +65,19 @@ final class GearComponents extends Collection
         return $parentComponents;
     }
 
+    public function hasComponentsInstalledOn(GearComponent $gearComponent): bool
+    {
+        foreach ($this as $candidate) {
+            foreach ($candidate->getInstallations() as $installation) {
+                if ((string) $installation->getParent()->getGearComponentId() === (string) $gearComponent->getId()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public function resolveUsageWindowsFor(GearComponent $gearComponent): UsageWindows
     {
         return $this->resolveUsageWindowsAlongPath($gearComponent, []);

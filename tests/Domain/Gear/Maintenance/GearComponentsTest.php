@@ -171,6 +171,30 @@ class GearComponentsTest extends TestCase
         ));
     }
 
+    #[DataProvider('provideComponentsWithAndWithoutParts')]
+    public function testHasComponentsInstalledOn(string $gearComponentId, bool $expected): void
+    {
+        $gearComponents = GearComponents::fromArray(array_map(
+            GearComponent::fromArray(...),
+            Json::decode((string) file_get_contents(__DIR__.'/fixtures/nested-installations.json'))['components'],
+        ));
+
+        $this->assertSame($expected, $gearComponents->hasComponentsInstalledOn($gearComponents->find(
+            static fn (GearComponent $gearComponent): bool => (string) $gearComponent->getId() === $gearComponentId
+        )));
+    }
+
+    /**
+     * @return iterable<string, array{string, bool}>
+     */
+    public static function provideComponentsWithAndWithoutParts(): iterable
+    {
+        yield 'has parts installed on it' => ['gearComponent-wheelset', true];
+        yield 'has a part with a part of its own' => ['gearComponent-tyres', true];
+        yield 'has no parts' => ['gearComponent-tube', false];
+        yield 'is only installed on gear' => ['gearComponent-cassette', false];
+    }
+
     public function testWithoutRetired(): void
     {
         $gearComponents = GearComponents::fromArray(array_map(

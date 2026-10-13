@@ -6,7 +6,9 @@ namespace App\Tests\Domain\Gear\Maintenance\DeleteGearMaintenanceComponent;
 
 use App\Domain\Gear\Maintenance\DeleteGearMaintenanceComponent\DeleteGearMaintenanceComponent;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
+use App\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent\UpdateGearMaintenanceComponent;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideGearMaintenanceConfig;
@@ -44,6 +46,27 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
 
         $this->assertCount(2, $components);
+    }
+
+    public function testItRejectsAComponentThatHasOtherComponentsInstalledOnIt(): void
+    {
+        $this->importGearMaintenanceConfig();
+        $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
+            'gearComponentId' => 'gearComponent-di-2',
+            'label' => 'DI2 Battery',
+            'installations' => [['parent' => 'component:gearComponent-chain', 'until' => '2020-01-01']],
+        ]));
+
+        try {
+            $this->commandBus->dispatch(DeleteGearMaintenanceComponent::fromPayload([
+                'gearComponentId' => 'gearComponent-chain',
+            ]));
+            $this->fail('Expected the deletion to be rejected');
+        } catch (CouldNotProcessCommand $exception) {
+            $this->assertSame('A component that has other components installed on it cannot be deleted. Retire it instead.', $exception->getMessage());
+        }
+
+        $this->assertCount(2, $this->getContainer()->get(GearComponentRepository::class)->findAll());
     }
 
     public function testItDeletesTheComponentImageFile(): void

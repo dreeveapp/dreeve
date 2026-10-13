@@ -8,6 +8,7 @@ use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Image\ImagePath;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
+use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\Exception\EntityNotFound;
 use League\Flysystem\FilesystemOperator;
 
@@ -27,6 +28,10 @@ final readonly class DeleteGearMaintenanceComponentCommandHandler implements Com
             $gearComponent = $this->gearComponentRepository->find($command->getGearComponentId());
         } catch (EntityNotFound) {
             return;
+        }
+
+        if ($this->gearComponentRepository->findAll()->hasComponentsInstalledOn($gearComponent)) {
+            throw CouldNotProcessCommand::withReason('A component that has other components installed on it cannot be deleted. Retire it instead.');
         }
 
         $gearComponent->delete();
