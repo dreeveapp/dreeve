@@ -70,12 +70,13 @@ final readonly class MaintenanceTaskProgressCalculator
 
         $now = $this->clock->getCurrentDateTimeImmutable();
         foreach ($gearComponents->withoutRetired() as $gearComponent) {
+            $currentGearIds = $gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now);
             foreach ($gearComponent->getMaintenanceTasks() as $maintenanceTask) {
                 if (!$maintenanceTaskStatuses->getForTask($maintenanceTask->getId())?->isDue()) {
                     continue;
                 }
 
-                foreach ($gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now) as $gearId) {
+                foreach ($currentGearIds as $gearId) {
                     if ($retiredGearIds->has($gearId)) {
                         continue;
                     }
@@ -96,6 +97,7 @@ final readonly class MaintenanceTaskProgressCalculator
 
         $maintenanceTaskStatuses = MaintenanceTaskStatuses::empty();
         foreach ($gearComponents->withoutRetired() as $gearComponent) {
+            $usageWindows = $gearComponents->resolveUsageWindowsFor($gearComponent);
             foreach ($gearComponent->getMaintenanceTasks() as $maintenanceTask) {
                 $lastPerformedOn = $mostRecentPerMaintenanceTask[(string) $maintenanceTask->getId()] ?? null;
 
@@ -104,7 +106,7 @@ final readonly class MaintenanceTaskProgressCalculator
                     lastPerformedOn: $lastPerformedOn,
                     progress: $this->calculateProgressFor(
                         ProgressCalculationContext::from(
-                            usageWindows: $gearComponents->resolveUsageWindowsFor($gearComponent),
+                            usageWindows: $usageWindows,
                             lastTaggedOn: $lastPerformedOn,
                             intervalUnit: $maintenanceTask->getIntervalUnit(),
                             intervalValue: $maintenanceTask->getIntervalValue(),

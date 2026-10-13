@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Gear\Maintenance\Task\Progress;
 
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
-use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\Connection;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -24,15 +23,11 @@ final readonly class EveryXHoursUsedProgressCalculation implements MaintenanceTa
 
     public function calculate(ProgressCalculationContext $context): MaintenanceTaskProgress
     {
-        [$usageWindowsSql, $parameters] = $context->getUsageWindows()->toSql();
+        [$usageWindowsSql, $parameters] = $context->getUsageWindows()->toSql(after: $context->getLastTaggedOn());
         $query = sprintf('
                 SELECT SUM(movingTimeInSeconds) AS movingTimeInSeconds
                 FROM Activity
                 WHERE %s', $usageWindowsSql);
-        if (($lastTaggedOn = $context->getLastTaggedOn()) instanceof SerializableDateTime) {
-            $query .= ' AND startDateTime > :lastTaggedOn';
-            $parameters['lastTaggedOn'] = (string) $lastTaggedOn;
-        }
 
         $movingTimeInSecondsSinceLastTagged = $this->connection->fetchOne($query, $parameters);
         $movingTimeInHoursSinceLastTagged = $movingTimeInSecondsSinceLastTagged / 3600;

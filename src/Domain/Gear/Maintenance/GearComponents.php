@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance;
 
-use App\Domain\Activity\SportType\SportType;
+use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallationLoopDetected;
 use App\Domain\Gear\Maintenance\Installation\UsageWindow;
@@ -54,10 +54,7 @@ final class GearComponents extends Collection
             if (!($parentComponentId = $installation->getParent()->getGearComponentId()) instanceof GearComponentId) {
                 continue;
             }
-            $parentComponent = $this->find(
-                static fn (GearComponent $candidate): bool => (string) $candidate->getId() === (string) $parentComponentId
-            );
-            if ($parentComponent instanceof GearComponent) {
+            if (($parentComponent = $this->findById($parentComponentId)) instanceof GearComponent) {
                 $parentComponents->add($parentComponent);
             }
         }
@@ -96,7 +93,7 @@ final class GearComponents extends Collection
         $usageWindows = UsageWindows::empty();
         foreach ($gearComponent->getInstallations() as $installation) {
             $parent = $installation->getParent();
-            if (($gearId = $parent->getGearId()) instanceof \App\Domain\Gear\GearId) {
+            if (($gearId = $parent->getGearId()) instanceof GearId) {
                 $usageWindows->add(UsageWindow::create(
                     gearId: $gearId,
                     from: $installation->getFrom(),
@@ -107,47 +104,27 @@ final class GearComponents extends Collection
                 continue;
             }
 
-            $parentComponent = $this->find(
-                static fn (GearComponent $candidate): bool => (string) $candidate->getId() === (string) $parent->getGearComponentId()
-            );
-            if (!$parentComponent instanceof GearComponent) {
+            if (!($parentComponentId = $parent->getGearComponentId()) instanceof GearComponentId) {
+                continue;
+            }
+            if (!($parentComponent = $this->findById($parentComponentId)) instanceof GearComponent) {
                 continue;
             }
 
             foreach ($this->resolveUsageWindowsAlongPath($parentComponent, $path) as $parentUsageWindow) {
-                $from = $installation->getFrom();
-                if (!$from instanceof SerializableDateTime || ($parentUsageWindow->getFrom() instanceof SerializableDateTime && $parentUsageWindow->getFrom()->isAfter($from))) {
-                    $from = $parentUsageWindow->getFrom();
+                if (($usageWindow = $parentUsageWindow->narrowedBy($installation)) instanceof UsageWindow) {
+                    $usageWindows->add($usageWindow);
                 }
-                $until = $installation->getUntil();
-                if (!$until instanceof SerializableDateTime || ($parentUsageWindow->getUntil() instanceof SerializableDateTime && $parentUsageWindow->getUntil()->isBefore($until))) {
-                    $until = $parentUsageWindow->getUntil();
-                }
-                if ($from instanceof SerializableDateTime && $until instanceof SerializableDateTime && $until->isBeforeOrOn($from)) {
-                    continue;
-                }
-
-                $sportTypes = $installation->getSportTypes();
-                if ($sportTypes->isEmpty()) {
-                    $sportTypes = $parentUsageWindow->getSportTypes();
-                } elseif (!$parentUsageWindow->getSportTypes()->isEmpty()) {
-                    $sportTypes = $sportTypes->filter(
-                        static fn (SportType $sportType): bool => $parentUsageWindow->getSportTypes()->has($sportType)
-                    );
-                    if ($sportTypes->isEmpty()) {
-                        continue;
-                    }
-                }
-
-                $usageWindows->add(UsageWindow::create(
-                    gearId: $parentUsageWindow->getGearId(),
-                    from: $from,
-                    until: $until,
-                    sportTypes: $sportTypes,
-                ));
             }
         }
 
         return $usageWindows;
+    }
+
+    private function findById(GearComponentId $gearComponentId): ?GearComponent
+    {
+        return $this->find(
+            static fn (GearComponent $gearComponent): bool => (string) $gearComponent->getId() === (string) $gearComponentId
+        );
     }
 }

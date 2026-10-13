@@ -52,7 +52,7 @@ final class UsageWindows extends Collection
     /**
      * @return array{string, array<string, string>}
      */
-    public function toSql(): array
+    public function toSql(?SerializableDateTime $after): array
     {
         if ($this->isEmpty()) {
             return ['0 = 1', []];
@@ -85,6 +85,12 @@ final class UsageWindows extends Collection
             $conditions[] = '('.implode(' AND ', $windowConditions).')';
         }
 
-        return ['('.implode(' OR ', $conditions).')', $parameters];
+        $sql = '('.implode(' OR ', $conditions).')';
+        if ($after instanceof SerializableDateTime) {
+            $sql .= ' AND startDateTime > :usageWindowsAfter';
+            $parameters['usageWindowsAfter'] = (string) $after;
+        }
+
+        return [$sql, $parameters];
     }
 }
