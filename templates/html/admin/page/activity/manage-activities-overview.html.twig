@@ -46,6 +46,7 @@
                         {% for gear in gearOptions %}
                             <option value="{{ gear.getId() }}" {{ gear.getId() == filters.getGearId() ? 'selected' }}>{{ gear.getName() }}</option>
                         {% endfor %}
+                        <option value="gear-none" {{ 'gear-none' == filters.getGearId() ? 'selected' }}>{{ "Unspecified"|trans }}</option>
                     </select>
                 </div>
                 <div>

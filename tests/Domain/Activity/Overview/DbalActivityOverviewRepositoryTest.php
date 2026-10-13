@@ -347,6 +347,13 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
             1,
         ];
 
+        yield 'the unspecified gear filter narrows the items to activities without gear' => [
+            ['gear' => 'gear-none'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['Newest'],
+            1,
+        ];
+
         yield 'a device filter narrows the items' => [
             ['device' => 'Wahoo Elemnt'],
             Pagination::fromOffsetAndLimit(0, 10),

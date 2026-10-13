@@ -50,7 +50,10 @@ final readonly class DbalActivityOverviewRepository extends DbalRepository imple
                     ->andWhere('a.sportType = :sportType')
                     ->setParameter('sportType', $sportType->value);
             }
-            if (($gearId = $filters->getGearId()) instanceof GearId) {
+            $gearId = $filters->getGearId();
+            if ((string) GearId::none() === (string) $gearId) {
+                $builder->andWhere('a.gearId IS NULL');
+            } elseif ($gearId instanceof GearId) {
                 $builder
                     ->andWhere('a.gearId = :gearId')
                     ->setParameter('gearId', (string) $gearId);
