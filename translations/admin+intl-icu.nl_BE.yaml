@@ -15,6 +15,7 @@ Active: Actief
 Activity: Activiteit
 'Activity ID': Activiteits-ID
 'Activity IDs to exclude when calculating peak power outputs.': "Activiteits-ID's die uitgesloten worden bij het berekenen van piekvermogens."
+'Activity description': 'Beschrijving activiteit'
 'Activity management': Activiteitenbeheer
 'Activity name': 'Naam activiteit'
 'Activity visibilities to import': 'Te importeren zichtbaarheden van activiteiten'

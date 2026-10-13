@@ -15,6 +15,7 @@ Active: Actif
 Activity: Activité
 'Activity ID': "ID de l'activité"
 'Activity IDs to exclude when calculating peak power outputs.': 'ID des activités à exclure du calcul des puissances maximales.'
+'Activity description': "Description de l'activité"
 'Activity management': 'Gestion des activités'
 'Activity name': "Nom de l'activité"
 'Activity visibilities to import': 'Visibilités des activités à importer'

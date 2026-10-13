@@ -15,6 +15,7 @@ Active: Active
 Activity: Activity
 'Activity ID': 'Activity ID'
 'Activity IDs to exclude when calculating peak power outputs.': 'Activity IDs to exclude when calculating peak power outputs.'
+'Activity description': 'Activity description'
 'Activity management': 'Activity management'
 'Activity name': 'Activity name'
 'Activity visibilities to import': 'Activity visibilities to import'

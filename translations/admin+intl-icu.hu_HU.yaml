@@ -15,6 +15,7 @@ Active: Aktív
 Activity: Tevékenység
 'Activity ID': Tevékenység-azonosító
 'Activity IDs to exclude when calculating peak power outputs.': 'A csúcsteljesítmény számításakor kizárandó tevékenység-azonosítók.'
+'Activity description': 'Tevékenység leírása'
 'Activity management': 'Tevékenységek kezelése'
 'Activity name': 'Tevékenység neve'
 'Activity visibilities to import': 'Importálandó tevékenység-láthatóságok'
