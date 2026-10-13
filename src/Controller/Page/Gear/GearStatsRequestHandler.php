@@ -117,6 +117,7 @@ final readonly class GearStatsRequestHandler
             'maxDistance' => Kilometer::from($allGear->isEmpty() ? 0 : (float) $allGear->max(fn (Gear $gear): float => $gear->getDistance()->toFloat())),
             'totalMovingTime' => Seconds::from((int) $allGear->sum(fn (Gear $gear): int => $gear->getMovingTime()->toInt())),
             'totalNumberOfWorkouts' => $allGear->sum(fn (Gear $gear): int => $gear->getNumberOfActivities()),
+            'lastTwelveMonths' => Months::lastXMonths(12, $now),
             'unitSystem' => $unitSystem,
             'distancePerMonthPerGearChart' => Json::encode(
                 DistancePerMonthPerGearChart::create(

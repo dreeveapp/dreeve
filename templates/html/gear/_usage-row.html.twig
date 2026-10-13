@@ -1,6 +1,6 @@
 {% autoescape false %}
     <details class="group/row border-t border-gray-100">
-        <summary class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_11rem_7rem_0.75rem] list-none cursor-pointer px-4 py-2.5 hover:bg-gray-50 select-none">
+        <summary class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_11rem_9rem_7rem_0.75rem] list-none cursor-pointer px-4 py-2.5 hover:bg-gray-50 select-none">
             <div class="min-w-0">
                 <div class="font-medium text-gray-900 truncate">{{ name }}</div>
                 <div class="text-xs text-gray-500 truncate">{{ subtitle }}</div>
@@ -14,6 +14,19 @@
                     <div class="h-full bg-primary rounded-full" style="width: {{ relativeDistance|round(1) }}%"></div>
                 </div>
             </div>
+            {% set maxMonthlyDistance = max(monthlyDistances|map(monthlyDistance => monthlyDistance.distance.toFloat())) %}
+            {% if maxMonthlyDistance > 0 %}
+                <div class="hidden lg:flex items-end gap-px h-8">
+                    {% for monthlyDistance in monthlyDistances %}
+                        {% set distance = monthlyDistance.distance %}
+                        <div class="flex-1 h-full flex items-end" title="{{ monthlyDistance.label }} · {{ distance|formatMeasurement(0) }} {{ distance|measurementSymbol }}">
+                            <div class="w-full rounded-t-xs {{ distance.toFloat() > 0 ? 'bg-primary' : 'bg-gray-200' }}" style="height: {{ distance.toFloat() > 0 ? max(8, distance.toFloat() / maxMonthlyDistance * 100)|round(1) : 5 }}%"></div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="hidden lg:block text-sm text-gray-400">-</div>
+            {% endif %}
             <div class="hidden lg:block text-sm text-gray-500">{{ lastUsedOn|formatDate('short') }}</div>
             <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/row:rotate-180" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m1 1 4 4 4-4"/>

@@ -34,4 +34,12 @@ final class Months extends Collection
 
         return $months;
     }
+
+    public static function lastXMonths(int $numberOfMonths, SerializableDateTime $now): self
+    {
+        return self::create(
+            startDate: SerializableDateTime::fromDateTimeImmutable($now->modify(sprintf('first day of -%d months', $numberOfMonths - 1))),
+            endDate: $now,
+        );
+    }
 }
