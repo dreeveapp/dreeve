@@ -6,8 +6,6 @@ namespace App\Domain\Gear\Maintenance;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
-use App\Domain\Gear\GearId;
-use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\Installation\InstallationParent;
@@ -251,29 +249,6 @@ final class GearComponent implements \JsonSerializable
         }
 
         return $clone;
-    }
-
-    public function normalizeGearIds(GearIds $normalizedGearIds): void
-    {
-        foreach ($this->installations as $installation) {
-            $gearId = $installation->getParent()->getGearId();
-            if (!$gearId instanceof GearId || $gearId->isPrefixedWithStravaPrefix()) {
-                continue;
-            }
-
-            foreach ($normalizedGearIds as $normalizedGearId) {
-                if (!$gearId->matches($normalizedGearId)) {
-                    continue;
-                }
-
-                $this->installations->replace($installation, GearComponentInstallation::create(
-                    parent: InstallationParent::gear($normalizedGearId),
-                    from: $installation->getFrom(),
-                    until: $installation->getUntil(),
-                    sportTypes: $installation->getSportTypes(),
-                ));
-            }
-        }
     }
 
     /**

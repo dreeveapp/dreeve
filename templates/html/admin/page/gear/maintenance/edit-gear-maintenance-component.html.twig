@@ -95,7 +95,7 @@
                                     <option value="">{{ "Select gear or component"|trans({}, 'admin') }}</option>
                                     <optgroup label="{{ "Gear"|trans }}">
                                         {% for gear in gears %}
-                                            <option value="gear:{{ gear.getId().toUnprefixedString() }}">{{ gear.getName() }}</option>
+                                            <option value="gear:{{ gear.getId() }}">{{ gear.getName() }}</option>
                                         {% endfor %}
                                     </optgroup>
                                     {% if parentComponents|length > 0 %}

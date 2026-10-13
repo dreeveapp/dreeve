@@ -26,7 +26,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(CreateGearMaintenanceComponent::fromPayload([
             'label' => 'Brake pads',
             'notes' => ' Shimano B05S ',
-            'installations' => [['parent' => 'gear:b1', 'from' => '2025-01-01', 'until' => '2025-03-15', 'sportTypes' => ['Ride', 'VirtualRide']], ['parent' => 'gear:g2', 'from' => '2025-03-15', 'until' => '']],
+            'installations' => [['parent' => 'gear:gear-b1', 'from' => '2025-01-01', 'until' => '2025-03-15', 'sportTypes' => ['Ride', 'VirtualRide']], ['parent' => 'gear:gear-g2', 'from' => '2025-03-15', 'until' => '']],
             'purchasePriceAmount' => '49.99',
             'purchasePriceCurrency' => 'EUR',
             'maintenanceTasks' => [
@@ -42,8 +42,8 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->assertNotNull($created);
         $this->assertNotEmpty($created['id']);
         $this->assertSame([
-            ['parent' => 'gear:b1', 'from' => '2025-01-01', 'until' => '2025-03-15', 'sportTypes' => ['Ride', 'VirtualRide']],
-            ['parent' => 'gear:g2', 'from' => '2025-03-15', 'until' => null, 'sportTypes' => []],
+            ['parent' => 'gear:gear-b1', 'from' => '2025-01-01', 'until' => '2025-03-15', 'sportTypes' => ['Ride', 'VirtualRide']],
+            ['parent' => 'gear:gear-g2', 'from' => '2025-03-15', 'until' => null, 'sportTypes' => []],
         ], $created['installations']);
         $this->assertNull($created['localImagePath']);
         $this->assertFalse($created['isRetired']);
@@ -59,7 +59,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
     {
         $this->commandBus->dispatch(CreateGearMaintenanceComponent::fromPayload([
             'label' => 'Wheelset',
-            'installations' => [['parent' => 'gear:b1']],
+            'installations' => [['parent' => 'gear:gear-b1']],
         ]));
 
         $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
@@ -73,7 +73,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
     {
         $this->commandBus->dispatch(CreateGearMaintenanceComponent::fromPayload([
             'label' => 'Brake pads',
-            'installations' => [['parent' => 'gear:b1']],
+            'installations' => [['parent' => 'gear:gear-b1']],
             'localImagePath' => json_encode([
                 ['status' => 'new', 'filename' => 'brakes.png', 'content' => base64_encode('image-content')],
             ]),
@@ -93,7 +93,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
     {
         $this->commandBus->dispatch(CreateGearMaintenanceComponent::fromPayload([
             'label' => 'Brake pads',
-            'installations' => [['parent' => 'gear:b1']],
+            'installations' => [['parent' => 'gear:gear-b1']],
             'maintenanceTasks' => [
                 ['label' => 'Replace', 'interval' => ['value' => 2000, 'unit' => 'km']],
             ],

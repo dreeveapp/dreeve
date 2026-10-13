@@ -10,7 +10,7 @@
       "notes": null,
       "installations": [
         {
-          "parent": "gear:bike-a",
+          "parent": "gear:gear-bike-a",
           "from": null,
           "until": null,
           "sportTypes": []
@@ -51,13 +51,13 @@
       "notes": null,
       "installations": [
         {
-          "parent": "gear:bike-a",
+          "parent": "gear:gear-bike-a",
           "from": null,
           "until": null,
           "sportTypes": []
         },
         {
-          "parent": "gear:bike-b",
+          "parent": "gear:gear-bike-b",
           "from": null,
           "until": null,
           "sportTypes": []
@@ -82,13 +82,13 @@
       "notes": null,
       "installations": [
         {
-          "parent": "gear:bike-a",
+          "parent": "gear:gear-bike-a",
           "from": null,
           "until": null,
           "sportTypes": []
         },
         {
-          "parent": "gear:retired-bike",
+          "parent": "gear:gear-retired-bike",
           "from": null,
           "until": null,
           "sportTypes": []
@@ -113,7 +113,7 @@
       "notes": null,
       "installations": [
         {
-          "parent": "gear:bike-a",
+          "parent": "gear:gear-bike-a",
           "from": null,
           "until": "2023-01-01",
           "sportTypes": []
@@ -138,7 +138,7 @@
       "notes": null,
       "installations": [
         {
-          "parent": "gear:bike-a",
+          "parent": "gear:gear-bike-a",
           "from": null,
           "until": null,
           "sportTypes": []
@@ -163,7 +163,7 @@
       "notes": null,
       "installations": [
         {
-          "parent": "gear:retired-bike",
+          "parent": "gear:gear-retired-bike",
           "from": null,
           "until": null,
           "sportTypes": []

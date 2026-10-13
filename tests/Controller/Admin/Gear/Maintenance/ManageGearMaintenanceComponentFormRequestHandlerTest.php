@@ -42,7 +42,7 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $installationTemplate = $installationsRepeater->filter('template[data-repeater-template]')->html();
         $this->assertStringContainsString('Race bike', $installationTemplate);
         $this->assertStringContainsString('data-repeater-field="parent"', $installationTemplate);
-        $this->assertStringContainsString('value="gear:g10130856"', $installationTemplate);
+        $this->assertStringContainsString('value="gear:gear-g10130856"', $installationTemplate);
         $this->assertStringContainsString('name="installations[__index__][sportTypes][]"', $installationTemplate);
         $this->assertStringContainsString('data-repeater-field="sportTypes"', $installationTemplate);
         $this->assertStringContainsString('value="VirtualRide"', $installationTemplate);
@@ -78,7 +78,7 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->assertSame('', $form->filter('textarea[name="notes"]')->text());
 
         $this->assertSame(
-            '[{"parent":"gear:g1233776","from":null,"until":null,"sportTypes":[]},{"parent":"gear:g10130856","from":null,"until":null,"sportTypes":[]},{"parent":"gear:retired","from":null,"until":null,"sportTypes":[]}]',
+            '[{"parent":"gear:gear-g1233776","from":null,"until":null,"sportTypes":[]},{"parent":"gear:gear-g10130856","from":null,"until":null,"sportTypes":[]},{"parent":"gear:gear-retired","from":null,"until":null,"sportTypes":[]}]',
             $form->filter('[data-repeater-list]')->eq(0)->attr('data-repeater-initial')
         );
 

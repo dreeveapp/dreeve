@@ -3,7 +3,6 @@
 namespace App\Tests\Domain\Gear\Maintenance;
 
 use App\Domain\Gear\GearId;
-use App\Domain\Gear\GearIdRepository;
 use App\Domain\Gear\Maintenance\DbalGearComponentRepository;
 use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentId;
@@ -144,7 +143,6 @@ class GearMaintenanceInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->gearMaintenanceLogRepository = $this->getContainer()->get(GearMaintenanceLogRepository::class);
         $this->gearComponentRepository = new DbalGearComponentRepository(
             $this->getConnection(),
-            $this->getContainer()->get(GearIdRepository::class),
             $this->getContainer()->get(EventBus::class),
         );
         $this->renderCache = $this->getContainer()->get(RenderCache::class);

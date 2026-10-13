@@ -52,9 +52,9 @@ components:
     isRetired: false
     notes: null
     installations:
-      - { parent: 'gear:g1233776', from: null, until: null, sportTypes: [] }
-      - { parent: 'gear:10130856', from: null, until: null, sportTypes: [] }
-      - { parent: 'gear:retired', from: null, until: null, sportTypes: [] }
+      - { parent: 'gear:gear-g1233776', from: null, until: null, sportTypes: [] }
+      - { parent: 'gear:gear-g10130856', from: null, until: null, sportTypes: [] }
+      - { parent: 'gear:gear-retired', from: null, until: null, sportTypes: [] }
     purchasePrice:
       amountInCents: 123456
       currency: 'EUR'
@@ -80,8 +80,8 @@ components:
     isRetired: false
     notes: null
     installations:
-      - { parent: 'gear:g1233776', from: null, until: null, sportTypes: [] }
-      - { parent: 'gear:g10130856', from: null, until: null, sportTypes: [] }
+      - { parent: 'gear:gear-g1233776', from: null, until: null, sportTypes: [] }
+      - { parent: 'gear:gear-g10130856', from: null, until: null, sportTypes: [] }
     maintenance:
       - id: maintenanceTask-di-2-charged
         label: Charge

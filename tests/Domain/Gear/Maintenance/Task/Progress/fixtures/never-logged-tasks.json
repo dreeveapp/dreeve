@@ -10,7 +10,7 @@
       "notes": null,
       "installations": [
         {
-          "parent": "gear:bike-a",
+          "parent": "gear:gear-bike-a",
           "from": "2025-01-01",
           "until": null,
           "sportTypes": []
@@ -43,7 +43,7 @@
       "notes": null,
       "installations": [
         {
-          "parent": "gear:bike-a",
+          "parent": "gear:gear-bike-a",
           "from": null,
           "until": null,
           "sportTypes": []

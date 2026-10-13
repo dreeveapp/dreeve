@@ -10,7 +10,7 @@
       "notes": null,
       "installations": [
         {
-          "parent": "gear:g10130856",
+          "parent": "gear:gear-g10130856",
           "from": null,
           "until": "2023-01-01",
           "sportTypes": []
@@ -35,7 +35,7 @@
       "notes": "28mm tyres\nTubeless",
       "installations": [
         {
-          "parent": "gear:g10130856",
+          "parent": "gear:gear-g10130856",
           "from": "2023-01-01",
           "until": null,
           "sportTypes": []
@@ -94,7 +94,7 @@
       "notes": null,
       "installations": [
         {
-          "parent": "gear:g10130856",
+          "parent": "gear:gear-g10130856",
           "from": null,
           "until": null,
           "sportTypes": []

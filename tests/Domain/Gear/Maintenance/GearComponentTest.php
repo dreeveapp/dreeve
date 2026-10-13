@@ -5,7 +5,6 @@ namespace App\Tests\Domain\Gear\Maintenance;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
-use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentId;
 use App\Domain\Gear\Maintenance\GearComponentWasUpdated;
@@ -115,20 +114,6 @@ class GearComponentTest extends TestCase
         $this->assertSame('Other notes', $updated->getNotes());
         $this->assertEquals($other->getMaintenanceTasks(), $updated->getMaintenanceTasks());
         $this->assertEquals(array_fill(0, 7, new GearComponentWasUpdated()), $updated->getRecordedEvents());
-    }
-
-    public function testNormalizeGearIds(): void
-    {
-        $gearComponent = GearComponent::fromArray([
-            ...$this->getComponents()[0],
-            'installations' => [['parent' => 'gear:123456', 'from' => null, 'until' => null, 'sportTypes' => []]],
-        ]);
-        $gearComponent->normalizeGearIds(GearIds::fromArray([GearId::fromUnprefixed('b123456')]));
-
-        $this->assertEquals(
-            InstallationParent::gear(GearId::fromUnprefixed('b123456')),
-            $gearComponent->getInstallations()->getFirst()->getParent()
-        );
     }
 
     /**

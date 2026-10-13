@@ -35,7 +35,7 @@ class GearMaintenanceNotificationConsoleCommandTest extends ConsoleCommandTestCa
     public function testNotifiesWhenGearMaintenanceIsDue(): void
     {
         $gear = GearBuilder::fromDefaults()
-            ->withGearId(GearId::fromUnprefixed('10130856'))
+            ->withGearId(GearId::fromUnprefixed('g10130856'))
             ->build();
         $this->getContainer()->get(GearRepository::class)->add($gear);
 

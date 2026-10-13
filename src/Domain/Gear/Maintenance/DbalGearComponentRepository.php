@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance;
 
-use App\Domain\Gear\GearIdRepository;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
@@ -15,7 +14,6 @@ final readonly class DbalGearComponentRepository extends DbalRepository implemen
 {
     public function __construct(
         Connection $connection,
-        private GearIdRepository $gearIdRepository,
         private EventBus $eventBus,
     ) {
         parent::__construct($connection);
@@ -87,25 +85,15 @@ final readonly class DbalGearComponentRepository extends DbalRepository implemen
             throw new EntityNotFound(sprintf('GearComponent "%s" not found', $gearComponentId));
         }
 
-        $gearComponent = $this->hydrate($result);
-        $gearComponent->normalizeGearIds($this->gearIdRepository->findAll());
-
-        return $gearComponent;
+        return $this->hydrate($result);
     }
 
     public function findAll(): GearComponents
     {
-        $gearComponents = GearComponents::fromArray(array_map(
+        return GearComponents::fromArray(array_map(
             $this->hydrate(...),
             $this->connection->executeQuery('SELECT * FROM GearComponent ORDER BY label ASC')->fetchAllAssociative(),
         ));
-
-        $gearIds = $this->gearIdRepository->findAll();
-        foreach ($gearComponents as $gearComponent) {
-            $gearComponent->normalizeGearIds($gearIds);
-        }
-
-        return $gearComponents;
     }
 
     /**

@@ -33,18 +33,21 @@ final class Version20261012123050 extends AbstractMigration
             return;
         }
 
+        $gearIds = $this->connection->fetchFirstColumn('SELECT gearId FROM Gear');
+
         foreach ($config['components'] as $component) {
-            $installations = array_key_exists('attachedTo', $component)
-                ? array_map(
-                    static fn (string $gearId): array => [
-                        'parent' => 'gear:'.$gearId,
-                        'from' => null,
-                        'until' => null,
-                        'sportTypes' => [],
-                    ],
-                    array_values($component['attachedTo']),
-                )
-                : $component['installations'];
+            $installations = array_map(
+                static fn (string $gearId): array => [
+                    'parent' => 'gear:'.(array_find(
+                        ['gear-'.$gearId, 'gear-b'.$gearId, 'gear-g'.$gearId],
+                        static fn (string $candidate): bool => in_array($candidate, $gearIds, true),
+                    ) ?? 'gear-'.$gearId),
+                    'from' => null,
+                    'until' => null,
+                    'sportTypes' => [],
+                ],
+                array_values($component['attachedTo'] ?? []),
+            );
 
             $this->connection->executeStatement(
                 'INSERT INTO GearComponent (gearComponentId, label, localImagePath, purchasePriceAmount, purchasePriceCurrency, isRetired, notes, installations, maintenanceTasks)

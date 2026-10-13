@@ -10,7 +10,7 @@
       "notes": "Serial WH-123\nTubeless ready",
       "installations": [
         {
-          "parent": "gear:b1",
+          "parent": "gear:gear-b1",
           "from": "2024-11-01",
           "until": "2025-03-15",
           "sportTypes": [
@@ -19,13 +19,13 @@
           ]
         },
         {
-          "parent": "gear:b1",
+          "parent": "gear:gear-b1",
           "from": "2025-11-01",
           "until": null,
           "sportTypes": []
         },
         {
-          "parent": "gear:b2",
+          "parent": "gear:gear-b2",
           "from": null,
           "until": "2024-11-01",
           "sportTypes": [

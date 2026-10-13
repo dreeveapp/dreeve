@@ -105,8 +105,8 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
                 ),
             ]),
             $this->parser->doParseInstallations(['installations' => [
-                ['parent' => 'gear:b1', 'from' => '', 'until' => '2025-03-15', 'sportTypes' => ['Ride', 'GravelRide']],
-                ['parent' => 'gear:g2', 'from' => '2025-03-15'],
+                ['parent' => 'gear:gear-b1', 'from' => '', 'until' => '2025-03-15', 'sportTypes' => ['Ride', 'GravelRide']],
+                ['parent' => 'gear:gear-g2', 'from' => '2025-03-15'],
             ]]),
         );
     }
@@ -171,37 +171,37 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
         ];
 
         yield 'from has the wrong format' => [
-            ['installations' => [['parent' => 'gear:b1', 'from' => '01-01-2025']]],
+            ['installations' => [['parent' => 'gear:gear-b1', 'from' => '01-01-2025']]],
             'Each installation "from" date must be formatted as YYYY-MM-DD.',
         ];
 
         yield 'from does not exist' => [
-            ['installations' => [['parent' => 'gear:b1', 'from' => '2025-02-30']]],
+            ['installations' => [['parent' => 'gear:gear-b1', 'from' => '2025-02-30']]],
             'Each installation "from" date must be formatted as YYYY-MM-DD.',
         ];
 
         yield 'until has the wrong format' => [
-            ['installations' => [['parent' => 'gear:b1', 'until' => 'tomorrow']]],
+            ['installations' => [['parent' => 'gear:gear-b1', 'until' => 'tomorrow']]],
             'Each installation "until" date must be formatted as YYYY-MM-DD.',
         ];
 
         yield 'until is before from' => [
-            ['installations' => [['parent' => 'gear:b1', 'from' => '2025-03-15', 'until' => '2025-03-01']]],
+            ['installations' => [['parent' => 'gear:gear-b1', 'from' => '2025-03-15', 'until' => '2025-03-01']]],
             'The "until" date of an installation must be after its "from" date.',
         ];
 
         yield 'sportTypes is not an array' => [
-            ['installations' => [['parent' => 'gear:b1', 'sportTypes' => 'Ride']]],
+            ['installations' => [['parent' => 'gear:gear-b1', 'sportTypes' => 'Ride']]],
             'The "sportTypes" of an installation must be an array.',
         ];
 
         yield 'sportTypes contains an unknown sport type' => [
-            ['installations' => [['parent' => 'gear:b1', 'sportTypes' => ['Ride', 'Unicycle']]]],
+            ['installations' => [['parent' => 'gear:gear-b1', 'sportTypes' => ['Ride', 'Unicycle']]]],
             'Invalid sport type "Unicycle".',
         ];
 
         yield 'until equals from' => [
-            ['installations' => [['parent' => 'gear:b1', 'from' => '2025-03-15', 'until' => '2025-03-15']]],
+            ['installations' => [['parent' => 'gear:gear-b1', 'from' => '2025-03-15', 'until' => '2025-03-15']]],
             'The "until" date of an installation must be after its "from" date.',
         ];
     }

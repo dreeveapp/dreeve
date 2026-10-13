@@ -28,7 +28,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
             'label' => 'Updated chain',
-            'installations' => [['parent' => 'gear:b9']],
+            'installations' => [['parent' => 'gear:gear-b9']],
             'maintenanceTasks' => [
                 ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 600, 'unit' => 'km']],
             ],
@@ -42,7 +42,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->assertNotNull($chain);
         $this->assertSame('Updated chain', $chain['label']);
         $this->assertSame([
-            ['parent' => 'gear:b9', 'from' => null, 'until' => null, 'sportTypes' => []],
+            ['parent' => 'gear:gear-b9', 'from' => null, 'until' => null, 'sportTypes' => []],
         ], $chain['installations']);
 
         $this->assertSame('files/gear-maintenance/chain.png', $chain['localImagePath']);
@@ -62,7 +62,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
             'label' => 'Chain',
-            'installations' => [['parent' => 'gear:b9']],
+            'installations' => [['parent' => 'gear:gear-b9']],
         ]));
 
         $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
@@ -79,7 +79,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-does-not-exist',
             'label' => 'Chain',
-            'installations' => [['parent' => 'gear:b1']],
+            'installations' => [['parent' => 'gear:gear-b1']],
             'maintenanceTasks' => [
                 ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
             ],
@@ -146,7 +146,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
     public static function provideInstallationLoops(): iterable
     {
         yield 'installed on itself' => [[['parent' => 'component:gearComponent-chain']]];
-        yield 'installed on one of its own parts' => [[['parent' => 'gear:b1'], ['parent' => 'component:gearComponent-di-2']]];
+        yield 'installed on one of its own parts' => [[['parent' => 'gear:gear-b1'], ['parent' => 'component:gearComponent-di-2']]];
     }
 
     public function testItReplacesImageAndDeletesPreviousFile(): void
@@ -157,7 +157,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
             'label' => 'Chain',
-            'installations' => [['parent' => 'gear:b1']],
+            'installations' => [['parent' => 'gear:gear-b1']],
             'localImagePath' => json_encode([
                 ['status' => 'removed', 'path' => '/files/gear-maintenance/old.png'],
                 ['status' => 'new', 'filename' => 'new.png', 'content' => base64_encode('new-content')],
@@ -183,7 +183,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
             'label' => 'Chain',
-            'installations' => [['parent' => 'gear:b1']],
+            'installations' => [['parent' => 'gear:gear-b1']],
             'localImagePath' => json_encode([
                 ['status' => 'removed', 'path' => '/files/gear-maintenance/old.png'],
             ]),
@@ -208,7 +208,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
                 'localImagePath' => $localImagePath,
                 'isRetired' => false,
                 'notes' => null,
-                'installations' => [['parent' => 'gear:b1', 'from' => null, 'until' => null, 'sportTypes' => []]],
+                'installations' => [['parent' => 'gear:gear-b1', 'from' => null, 'until' => null, 'sportTypes' => []]],
                 'maintenance' => [
                     ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
                 ],

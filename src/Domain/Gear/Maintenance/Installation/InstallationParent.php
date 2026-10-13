@@ -39,7 +39,7 @@ final readonly class InstallationParent implements \JsonSerializable, \Stringabl
         }
 
         return match (InstallationParentType::tryFrom($type)) {
-            InstallationParentType::GEAR => self::gear(GearId::fromUnprefixed(trim($id))),
+            InstallationParentType::GEAR => self::gear(GearId::fromString(trim($id))),
             InstallationParentType::COMPONENT => self::component(GearComponentId::fromString(trim($id))),
             default => throw new \InvalidArgumentException(sprintf('Invalid installation parent "%s"', $parent)),
         };
@@ -57,7 +57,7 @@ final readonly class InstallationParent implements \JsonSerializable, \Stringabl
 
     public function __toString(): string
     {
-        return $this->type->value.':'.($this->id instanceof GearId ? $this->id->toUnprefixedString() : (string) $this->id);
+        return $this->type->value.':'.$this->id;
     }
 
     public function jsonSerialize(): string

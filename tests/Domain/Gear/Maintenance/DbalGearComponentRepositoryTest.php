@@ -2,19 +2,14 @@
 
 namespace App\Tests\Domain\Gear\Maintenance;
 
-use App\Domain\Gear\GearId;
-use App\Domain\Gear\GearIdRepository;
-use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Maintenance\DbalGearComponentRepository;
 use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentId;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
-use App\Domain\Gear\Maintenance\Installation\InstallationParent;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
-use App\Tests\Domain\Gear\GearBuilder;
 
 class DbalGearComponentRepositoryTest extends ContainerTestCase
 {
@@ -82,20 +77,6 @@ class DbalGearComponentRepositoryTest extends ContainerTestCase
         $this->gearComponentRepository->find($wheelset->getId());
     }
 
-    public function testFindNormalizesGearIds(): void
-    {
-        $this->getContainer()->get(GearRepository::class)->add(GearBuilder::fromDefaults()->withGearId(GearId::fromUnprefixed('b1'))->build());
-        $this->gearComponentRepository->add(GearComponent::fromArray([
-            ...$this->getComponentsAsArray()[0],
-            'installations' => [['parent' => 'gear:1', 'from' => null, 'until' => null, 'sportTypes' => []]],
-        ]));
-
-        $this->assertEquals(
-            InstallationParent::gear(GearId::fromUnprefixed('b1')),
-            $this->gearComponentRepository->findAll()->getFirst()->getInstallations()->getFirst()->getParent(),
-        );
-    }
-
     /**
      * @return list<GearComponent>
      */
@@ -119,7 +100,6 @@ class DbalGearComponentRepositoryTest extends ContainerTestCase
 
         $this->gearComponentRepository = new DbalGearComponentRepository(
             $this->getConnection(),
-            $this->getContainer()->get(GearIdRepository::class),
             $this->getContainer()->get(EventBus::class),
         );
     }

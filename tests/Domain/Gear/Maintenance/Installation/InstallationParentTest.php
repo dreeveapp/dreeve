@@ -12,11 +12,11 @@ class InstallationParentTest extends TestCase
 {
     public function testFromStringForGear(): void
     {
-        $parent = InstallationParent::fromString('gear:b123');
+        $parent = InstallationParent::fromString('gear:gear-b123');
 
         $this->assertEquals(GearId::fromUnprefixed('b123'), $parent->getGearId());
         $this->assertNull($parent->getGearComponentId());
-        $this->assertSame('gear:b123', (string) $parent);
+        $this->assertSame('gear:gear-b123', (string) $parent);
     }
 
     public function testFromStringForComponent(): void

@@ -9,7 +9,7 @@
       "notes": null,
       "installations": [
         {
-          "parent": "gear:b1",
+          "parent": "gear:gear-b1",
           "from": null,
           "until": "2025-03-15",
           "sportTypes": [
@@ -129,7 +129,7 @@
       "notes": null,
       "installations": [
         {
-          "parent": "gear:b1",
+          "parent": "gear:gear-b1",
           "from": null,
           "until": null,
           "sportTypes": [
@@ -137,7 +137,7 @@
           ]
         },
         {
-          "parent": "gear:b2",
+          "parent": "gear:gear-b2",
           "from": "2025-06-01",
           "until": null,
           "sportTypes": [

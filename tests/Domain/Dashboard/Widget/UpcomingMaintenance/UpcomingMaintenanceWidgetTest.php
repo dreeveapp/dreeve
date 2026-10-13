@@ -175,7 +175,7 @@ components:
     isRetired: false
     notes: null
     installations:
-      - { parent: 'gear:retired', from: null, until: null, sportTypes: [] }
+      - { parent: 'gear:gear-retired', from: null, until: null, sportTypes: [] }
     maintenance:
       - id: maintenanceTask-chain-lubed
         label: Lube
