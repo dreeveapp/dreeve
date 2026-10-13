@@ -22,7 +22,6 @@ final class Version20261013075548 extends AbstractMigration
         $this->addSql('DELETE FROM ActivityBestEffort WHERE sportType <> (SELECT Activity.sportType FROM Activity WHERE Activity.activityId = ActivityBestEffort.activityId)');
     }
 
-
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

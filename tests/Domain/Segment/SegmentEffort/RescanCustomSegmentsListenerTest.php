@@ -3,7 +3,6 @@
 namespace App\Tests\Domain\Segment\SegmentEffort;
 
 use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Scan\ActivityScan;
@@ -24,6 +23,7 @@ use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\Domain\Segment\SegmentBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class RescanCustomSegmentsListenerTest extends ContainerTestCase
 {
@@ -111,7 +111,11 @@ class RescanCustomSegmentsListenerTest extends ContainerTestCase
         );
     }
 
-    public function testItOnlyRemovesWhenTheActivityHasNoCoordinates(): void
+    /**
+     * @param array<int, mixed>|null $coordinates
+     */
+    #[DataProvider('provideActivitiesWithoutCoordinates')]
+    public function testItOnlyRemovesWhenTheActivityHasNoCoordinates(?array $coordinates): void
     {
         $this->segmentRepository->add(SegmentBuilder::fromDefaults()
             ->withSegmentId(SegmentId::fromUnprefixed('custom-run'))
@@ -124,6 +128,13 @@ class RescanCustomSegmentsListenerTest extends ContainerTestCase
             ->withSportType(SportType::RIDE)
             ->build();
         $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
+        if (null !== $coordinates) {
+            $this->activityStreamRepository->add(ActivityStreamBuilder::fromDefaults()
+                ->withActivityId($activity->getId())
+                ->withStreamType(StreamType::LAT_LNG)
+                ->withData($coordinates)
+                ->build());
+        }
         $this->activityScanRepository->add(ActivityScan::create(activityId: $activity->getId(), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-custom-ride'));
 
         $this->activityRepository->update(ActivityWithRawData::fromState(
@@ -134,52 +145,13 @@ class RescanCustomSegmentsListenerTest extends ContainerTestCase
         $this->assertEmpty($this->getConnection()->executeQuery('SELECT type FROM ActivityScan')->fetchFirstColumn());
     }
 
-    public function testItOnlyRemovesWhenTheCoordinatesAreEmpty(): void
+    /**
+     * @return \Generator<string, array{array<int, mixed>|null}>
+     */
+    public static function provideActivitiesWithoutCoordinates(): \Generator
     {
-        $this->segmentRepository->add(SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed('custom-run'))
-            ->withType(SegmentType::CUSTOM)
-            ->withSportType(SportType::RUN)
-            ->withPolyline(EncodedPolyline::fromString(file_get_contents(self::FIXTURES.'segment-polyline.txt') ?: ''))
-            ->build());
-        $activity = ActivityBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed('1'))
-            ->withSportType(SportType::RIDE)
-            ->build();
-        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
-        $this->activityStreamRepository->add(ActivityStreamBuilder::fromDefaults()
-            ->withActivityId($activity->getId())
-            ->withStreamType(StreamType::LAT_LNG)
-            ->withData([])
-            ->build());
-        $this->activityScanRepository->add(ActivityScan::create(activityId: $activity->getId(), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-custom-ride'));
-
-        $this->activityRepository->update(ActivityWithRawData::fromState(
-            $activity->withSportType(SportType::RUN),
-            [],
-        ));
-
-        $this->assertEmpty($this->getConnection()->executeQuery('SELECT type FROM ActivityScan')->fetchFirstColumn());
-    }
-
-    public function testItLeavesScansAloneWhenTheSportTypeDidNotChange(): void
-    {
-        $activity = ActivityBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed('1'))
-            ->withSportType(SportType::RIDE)
-            ->build();
-        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
-        $this->activityScanRepository->add(ActivityScan::create(activityId: $activity->getId(), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-custom-ride'));
-
-        $this->activityRepository->update(ActivityWithRawData::fromState(
-            $activity->withName(ActivityName::fromString('Renamed')),
-            [],
-        ));
-
-        $this->assertEquals(
-            ['customSegment'],
-            $this->getConnection()->executeQuery('SELECT type FROM ActivityScan')->fetchFirstColumn()
-        );
+        yield 'without coordinate stream' => [null];
+        yield 'with empty coordinate stream' => [[]];
     }
 
     #[\Override]

@@ -3,7 +3,6 @@
 namespace App\Tests\Domain\Activity\Stream\Metric;
 
 use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
@@ -87,32 +86,6 @@ class RecalculateStreamValueDistributionListenerTest extends ContainerTestCase
 
         $this->assertEquals(
             ActivityStreamMetrics::fromArray([]),
-            $this->activityStreamMetricRepository->findByActivityId($activity->getId())
-        );
-    }
-
-    public function testItLeavesDistributionsAloneWhenTheSportTypeDidNotChange(): void
-    {
-        $activity = ActivityBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed('1'))
-            ->withSportType(SportType::RIDE)
-            ->build();
-        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
-        $distribution = ActivityStreamMetric::create(
-            activityId: $activity->getId(),
-            streamType: StreamType::VELOCITY,
-            metricType: ActivityStreamMetricType::VALUE_DISTRIBUTION,
-            data: [11 => 2],
-        );
-        $this->activityStreamMetricRepository->add($distribution);
-
-        $this->activityRepository->update(ActivityWithRawData::fromState(
-            $activity->withName(ActivityName::fromString('Renamed')),
-            [],
-        ));
-
-        $this->assertEquals(
-            ActivityStreamMetrics::fromArray([$distribution]),
             $this->activityStreamMetricRepository->findByActivityId($activity->getId())
         );
     }

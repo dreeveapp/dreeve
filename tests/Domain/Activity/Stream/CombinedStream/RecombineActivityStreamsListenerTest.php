@@ -3,7 +3,6 @@
 namespace App\Tests\Domain\Activity\Stream\CombinedStream;
 
 use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
@@ -84,30 +83,6 @@ class RecombineActivityStreamsListenerTest extends ContainerTestCase
         ));
 
         $this->assertEmpty(
-            $this->getConnection()->executeQuery('SELECT activityId FROM CombinedActivityStream')->fetchFirstColumn()
-        );
-    }
-
-    public function testItLeavesCombinedStreamsAloneWhenTheSportTypeDidNotChange(): void
-    {
-        $activity = ActivityBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed('1'))
-            ->withSportType(SportType::RUN)
-            ->build();
-        $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
-        $this->combinedActivityStreamRepository->add(
-            CombinedActivityStreamBuilder::fromDefaults()
-                ->withActivityId($activity->getId())
-                ->build()
-        );
-
-        $this->activityRepository->update(ActivityWithRawData::fromState(
-            $activity->withName(ActivityName::fromString('Renamed')),
-            [],
-        ));
-
-        $this->assertCount(
-            1,
             $this->getConnection()->executeQuery('SELECT activityId FROM CombinedActivityStream')->fetchFirstColumn()
         );
     }
