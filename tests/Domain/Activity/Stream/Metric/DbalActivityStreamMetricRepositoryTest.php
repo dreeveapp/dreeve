@@ -75,6 +75,43 @@ class DbalActivityStreamMetricRepositoryTest extends ContainerTestCase
         );
     }
 
+    public function testDeleteForActivityAndMetricType(): void
+    {
+        $activityId = ActivityId::fromUnprefixed('1');
+
+        $this->activityStreamMetricRepository->add(ActivityStreamMetric::create(
+            activityId: $activityId,
+            streamType: StreamType::WATTS,
+            metricType: ActivityStreamMetricType::VALUE_DISTRIBUTION,
+            data: [100 => 2],
+        ));
+        $bestAverages = ActivityStreamMetric::create(
+            activityId: $activityId,
+            streamType: StreamType::WATTS,
+            metricType: ActivityStreamMetricType::BEST_AVERAGES,
+            data: [100],
+        );
+        $this->activityStreamMetricRepository->add($bestAverages);
+        $otherMetric = ActivityStreamMetric::create(
+            activityId: ActivityId::fromUnprefixed('2'),
+            streamType: StreamType::WATTS,
+            metricType: ActivityStreamMetricType::VALUE_DISTRIBUTION,
+            data: [200 => 1],
+        );
+        $this->activityStreamMetricRepository->add($otherMetric);
+
+        $this->activityStreamMetricRepository->deleteForActivityAndMetricType($activityId, ActivityStreamMetricType::VALUE_DISTRIBUTION);
+
+        $this->assertEquals(
+            ActivityStreamMetrics::fromArray([$bestAverages]),
+            $this->activityStreamMetricRepository->findByActivityId($activityId),
+        );
+        $this->assertEquals(
+            ActivityStreamMetrics::fromArray([$otherMetric]),
+            $this->activityStreamMetricRepository->findByActivityId(ActivityId::fromUnprefixed('2')),
+        );
+    }
+
     public function testFindActivityIdsWithoutBestAverages(): void
     {
         $this->activityStreamRepository->add(

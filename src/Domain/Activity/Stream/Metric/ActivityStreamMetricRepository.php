@@ -13,6 +13,8 @@ interface ActivityStreamMetricRepository
 
     public function deleteForActivity(ActivityId $activityId): void;
 
+    public function deleteForActivityAndMetricType(ActivityId $activityId, ActivityStreamMetricType $metricType): void;
+
     public function findActivityIdsWithoutBestAverages(): ActivityIds;
 
     public function findActivityIdsWithoutNormalizedPower(): ActivityIds;

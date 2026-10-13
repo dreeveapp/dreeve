@@ -35,6 +35,16 @@ final readonly class DbalActivityStreamMetricRepository extends DbalRepository i
         ]);
     }
 
+    public function deleteForActivityAndMetricType(ActivityId $activityId, ActivityStreamMetricType $metricType): void
+    {
+        $sql = 'DELETE FROM ActivityStreamMetric WHERE activityId = :activityId AND metricType = :metricType';
+
+        $this->connection->executeStatement($sql, [
+            'activityId' => $activityId,
+            'metricType' => $metricType->value,
+        ]);
+    }
+
     public function findActivityIdsWithoutBestAverages(): ActivityIds
     {
         $sql = 'SELECT DISTINCT s.activityId FROM ActivityStream s

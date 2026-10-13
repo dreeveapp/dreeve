@@ -23,6 +23,9 @@
     "App\\Domain\\Activity\\Stream\\CombinedStream\\RecombineActivityStreamsListener": [
         "reactToActivitySportTypeWasChanged"
     ],
+    "App\\Domain\\Activity\\Stream\\Metric\\RecalculateStreamValueDistributionListener": [
+        "reactToActivitySportTypeWasChanged"
+    ],
     "App\\Domain\\Challenge\\ChallengeInvalidateCacheTagsListener": [
         "reactToChallengeWasImported"
     ],
