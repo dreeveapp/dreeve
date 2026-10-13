@@ -58,7 +58,7 @@
                             <td class="truncate">
                                 {{ statsForCurrentMonth.numberOfActivities }}
                             </td>
-                            <td class="ptruncate">
+                            <td class="truncate">
                                 {{ statsForCurrentMonth.distance|renderMeasurement(0) }}
                             </td>
                             <td class="truncate">
@@ -98,7 +98,7 @@
                                         {{ totalsForSportType.movingTime|formatSeconds }}
                                     </td>
                                     <td class="truncate">
-                                        {{ totalsForSportType.calories|formatNumber(0) }}<span class="text-xs">kcal</span>
+                                        {{ totalsForSportType.calories|formatNumber(0) }}<span class="text-xxs ml-px">kcal</span>
                                     </td>
                                 </tr>
                             {% endif %}
