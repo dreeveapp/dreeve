@@ -867,7 +867,7 @@ components:
         elapsed:
           type: [number, 'null']
           description: >-
-            The use since the task was last performed.
+            The use since the task was last performed, in the unit of the interval.
           examples: [380.4]
         remaining:
           type: [number, 'null']

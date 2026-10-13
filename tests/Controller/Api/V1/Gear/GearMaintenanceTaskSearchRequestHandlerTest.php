@@ -101,8 +101,8 @@ class GearMaintenanceTaskSearchRequestHandlerTest extends ControllerWebTestCase
             'maintenanceTask-chain-lube',
             'maintenanceTask-chain-replace',
             'maintenanceTask-chain-clean',
-            'maintenanceTask-lights-charge',
             'maintenanceTask-pedals-service',
+            'maintenanceTask-lights-charge',
         ]];
         yield 'a bike with only a shared component' => ['gear-bike-b', ['maintenanceTask-pedals-service']];
         yield 'retired gear that is ignored' => ['gear-retired-bike', []];
@@ -111,9 +111,9 @@ class GearMaintenanceTaskSearchRequestHandlerTest extends ControllerWebTestCase
             'maintenanceTask-chain-lube',
             'maintenanceTask-chain-replace',
             'maintenanceTask-chain-clean',
-            'maintenanceTask-lights-charge',
             'maintenanceTask-pedals-service',
             'maintenanceTask-summer-wheelset-hub-service',
+            'maintenanceTask-lights-charge',
         ]];
     }
 

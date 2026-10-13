@@ -1,6 +1,27 @@
 {
     "maintenanceTasks": [
         {
+            "id": "maintenanceTask-chain-clean",
+            "label": "Clean",
+            "component": {
+                "id": "gearComponent-chain",
+                "label": "Chain"
+            },
+            "gearIds": [
+                "gear-bike-a"
+            ],
+            "interval": {
+                "value": 250,
+                "unit": "km"
+            },
+            "lastPerformedOn": null,
+            "elapsed": 620.4,
+            "remaining": -370.4,
+            "percentage": 100,
+            "isDue": true,
+            "isOverdue": true
+        },
+        {
             "id": "maintenanceTask-chain-lube",
             "label": "Lube",
             "component": {
@@ -86,27 +107,6 @@
             "isOverdue": false
         },
         {
-            "id": "maintenanceTask-chain-clean",
-            "label": "Clean",
-            "component": {
-                "id": "gearComponent-chain",
-                "label": "Chain"
-            },
-            "gearIds": [
-                "gear-bike-a"
-            ],
-            "interval": {
-                "value": 250,
-                "unit": "km"
-            },
-            "lastPerformedOn": null,
-            "elapsed": null,
-            "remaining": null,
-            "percentage": null,
-            "isDue": false,
-            "isOverdue": false
-        },
-        {
             "id": "maintenanceTask-summer-wheelset-hub-service",
             "label": "Hub service",
             "component": {
@@ -119,9 +119,9 @@
                 "unit": "km"
             },
             "lastPerformedOn": null,
-            "elapsed": null,
-            "remaining": null,
-            "percentage": null,
+            "elapsed": 0,
+            "remaining": 5000,
+            "percentage": 0,
             "isDue": false,
             "isOverdue": false
         }
