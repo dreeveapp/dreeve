@@ -92,7 +92,9 @@ Dance: Tánc
 Dashboard: Irányítópult
 Date: Dátum
 Day: Nap
+'Days completed': 'Days completed'
 'Days needed': 'Szükséges napok'
+'Days to go': 'Days to go'
 'Daytime stats': 'Napszaki statisztikák'
 Dec: Dec
 'Decreased compared to yesterday': 'Csökkent a tegnapihoz képest'
@@ -333,6 +335,7 @@ Power: Teljesítmény
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Ezt becsült {caloriesBurned} kalória hajtotta, ami nagyjából {numberOfPizzaSlices} szelet pizza.'
 'Prev year': 'Előző év'
 Previous: Előző
+Progress: Progress
 'Purchase price': Vételár
 Race: Verseny
 'Racing Score': Versenypontszám
@@ -414,6 +417,7 @@ Surfing: Szörfözés
 'TSB positive in': 'TSB pozitív ezután:'
 'Table Tennis': Asztalitenisz
 'Taper sweet-spot (+15)': 'Taper édes pont (+15)'
+Target: Target
 'Team Sports': Csapatsportok
 Temperature: Hőmérséklet
 'Temperature sensor': Hőmérséklet-szenzor
@@ -544,6 +548,7 @@ Tue.: Kedd
 'Unchanged compared to yesterday': 'Változatlan a tegnapihoz képest'
 Unspecified: Meghatározatlan
 'Upcoming maintenance': 'Közelgő karbantartás'
+'Upcoming numbers': 'Upcoming numbers'
 Usage: Usage
 'User badge': 'Felhasználói kitűző'
 'Velo Mobile': Velomobil

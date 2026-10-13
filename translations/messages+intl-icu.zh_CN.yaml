@@ -92,7 +92,9 @@ Dance: Dance
 Dashboard: 仪表板
 Date: 日期
 Day: Day
+'Days completed': 'Days completed'
 'Days needed': 所需天数
+'Days to go': 'Days to go'
 'Daytime stats': 白天统计
 Dec: 十二月
 'Decreased compared to yesterday': 'Decreased compared to yesterday'
@@ -333,6 +335,7 @@ Power: 功率
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': '消耗了约{caloriesBurned}卡路里，或大约{numberOfPizzaSlices}片披萨🍕。'
 'Prev year': 去年
 Previous: Previous
+Progress: Progress
 'Purchase price': 'Purchase price'
 Race: 比赛
 'Racing Score': 赛车成绩
@@ -414,6 +417,7 @@ Surfing: 冲浪
 'TSB positive in': 'TSB positive in'
 'Table Tennis': 乒乓球
 'Taper sweet-spot (+15)': '最佳减量期 (+15)'
+Target: Target
 'Team Sports': 'Team Sports'
 Temperature: Temperature
 'Temperature sensor': 'Temperature sensor'
@@ -544,6 +548,7 @@ Tue.: Tue.
 'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
 Unspecified: 未指定
 'Upcoming maintenance': 'Upcoming maintenance'
+'Upcoming numbers': 'Upcoming numbers'
 Usage: Usage
 'User badge': 用户徽章
 'Velo Mobile': 'Velo Mobile'

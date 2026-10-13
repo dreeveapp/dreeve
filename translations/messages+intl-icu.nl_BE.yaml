@@ -92,7 +92,9 @@ Dance: Dansen
 Dashboard: Dashboard
 Date: Datum
 Day: Dag
+'Days completed': 'Days completed'
 'Days needed': 'Dagen nodig'
+'Days to go': 'Days to go'
 'Daytime stats': 'Daytime statistieken'
 Dec: Dec
 'Decreased compared to yesterday': 'Gedaald ten opzichte van gisteren'
@@ -333,6 +335,7 @@ Power: Kracht
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Aangedreven door naar schatting {caloriesBurned} calorieën, of ongeveer {numberOfPizzaSlices} pizzapunten 🍕.'
 'Prev year': 'Vorig jaar'
 Previous: Vorige
+Progress: Progress
 'Purchase price': Aankoopprijs
 Race: Wedstrijd
 'Racing Score': 'Racing Score'
@@ -414,6 +417,7 @@ Surfing: Surfen
 'TSB positive in': 'TSB positief binnen'
 'Table Tennis': Tafeltennis
 'Taper sweet-spot (+15)': 'Taper-sweetspot (+15)'
+Target: Target
 'Team Sports': Teamsporten
 Temperature: Temperatuur
 'Temperature sensor': Temperatuursensor
@@ -544,6 +548,7 @@ Tue.: Di.
 'Unchanged compared to yesterday': 'Onveranderd ten opzichte van gisteren'
 Unspecified: 'Niet gespecificeerd'
 'Upcoming maintenance': 'Komend onderhoud'
+'Upcoming numbers': 'Upcoming numbers'
 Usage: Usage
 'User badge': Gebruikersbadge
 'Velo Mobile': Velomobiel

@@ -92,7 +92,9 @@ Dance: Dance
 Dashboard: Översikt
 Date: Datum
 Day: Day
+'Days completed': 'Days completed'
 'Days needed': 'Dagar saknade'
+'Days to go': 'Days to go'
 'Daytime stats': 'Sammanställning starttider'
 Dec: Dec
 'Decreased compared to yesterday': 'Decreased compared to yesterday'
@@ -333,6 +335,7 @@ Power: Effekt
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.'
 'Prev year': 'Tidigare år'
 Previous: Previous
+Progress: Progress
 'Purchase price': 'Purchase price'
 Race: Tävling
 'Racing Score': Tävlingspoäng
@@ -414,6 +417,7 @@ Surfing: Surfning
 'TSB positive in': 'TSB positive in'
 'Table Tennis': Bordtennis
 'Taper sweet-spot (+15)': 'Ideal träningsform (+15)'
+Target: Target
 'Team Sports': 'Team Sports'
 Temperature: Temperature
 'Temperature sensor': 'Temperature sensor'
@@ -544,6 +548,7 @@ Tue.: Tue.
 'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
 Unspecified: Ospecificerad
 'Upcoming maintenance': 'Upcoming maintenance'
+'Upcoming numbers': 'Upcoming numbers'
 Usage: Usage
 'User badge': Användarmärke
 'Velo Mobile': 'Velo Mobile'

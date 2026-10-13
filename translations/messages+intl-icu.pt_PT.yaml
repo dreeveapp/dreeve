@@ -92,7 +92,9 @@ Dance: Dance
 Dashboard: Painel
 Date: Date
 Day: Day
+'Days completed': 'Days completed'
 'Days needed': 'Dias necessários'
+'Days to go': 'Days to go'
 'Daytime stats': 'Estatísticas por períodos do dia'
 Dec: Dez
 'Decreased compared to yesterday': 'Decreased compared to yesterday'
@@ -333,6 +335,7 @@ Power: Potência
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.'
 'Prev year': 'Ano anterior'
 Previous: Previous
+Progress: Progress
 'Purchase price': 'Purchase price'
 Race: Corrida
 'Racing Score': 'Pontuação de Corrida'
@@ -414,6 +417,7 @@ Surfing: Surf
 'TSB positive in': 'TSB positive in'
 'Table Tennis': 'Ténis de Mesa'
 'Taper sweet-spot (+15)': 'Ponto de foco (+15)'
+Target: Target
 'Team Sports': 'Team Sports'
 Temperature: Temperature
 'Temperature sensor': 'Temperature sensor'
@@ -544,6 +548,7 @@ Tue.: Tue.
 'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
 Unspecified: 'Não especificado'
 'Upcoming maintenance': 'Upcoming maintenance'
+'Upcoming numbers': 'Upcoming numbers'
 Usage: Usage
 'User badge': 'User badge'
 'Velo Mobile': 'Velo Mobile'

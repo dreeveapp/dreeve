@@ -91,6 +91,47 @@
                                          <div class="h-64" data-echarts-options='{{ eddingtonHistoryCharts[eddington.getId()] }}'></div>
                                      </div>
                                  </div>
+                                 <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+                                     <h3 class="font-bold mb-4">{{ "Upcoming numbers"|trans }}</h3>
+                                     <div class="relative overflow-x-auto">
+                                         <table class="data-table">
+                                             <thead>
+                                             <tr>
+                                                 <th scope="col">{{ "Target"|trans }}</th>
+                                                 <th scope="col">{{ "Days completed"|trans }}</th>
+                                                 <th scope="col">{{ "Days to go"|trans }}</th>
+                                                 <th scope="col" class="w-1/2">{{ "Progress"|trans }}</th>
+                                             </tr>
+                                             </thead>
+                                             <tbody>
+                                             {% for upcomingNumber in eddington.getUpcomingNumbers() %}
+                                                 {% set timesCompleted = eddington.getTimesCompletedFor(upcomingNumber) %}
+                                                 <tr>
+                                                     <td class="font-medium text-gray-900 whitespace-nowrap">
+                                                         {{ upcomingNumber }}<span class="text-xxs ml-px">{{ eddington.getUnitSystem().distanceSymbol() }}</span>
+                                                     </td>
+                                                     <td>{{ timesCompleted }}</td>
+                                                     <td>{{ upcomingNumber - timesCompleted }}</td>
+                                                     <td>
+                                                         {% set relativeProgress = (timesCompleted / upcomingNumber * 100)|round %}
+                                                         <div class="w-full rounded-full bg-gray-200">
+                                                             {% if relativeProgress > 0 %}
+                                                                 <div class="rounded-full bg-primary p-0.5 text-center text-xs leading-none font-medium text-white no-dark" style="width: {{ max(10, relativeProgress) }}%">
+                                                                     {{ relativeProgress }}%
+                                                                 </div>
+                                                             {% else %}
+                                                                 <div class="rounded-full p-0.5 text-center text-xs leading-none font-medium" style="width: 10%">
+                                                                     0%
+                                                                 </div>
+                                                             {% endif %}
+                                                         </div>
+                                                     </td>
+                                                 </tr>
+                                             {% endfor %}
+                                             </tbody>
+                                         </table>
+                                     </div>
+                                 </div>
                              </div>
                          {% endfor %}
                      </div>

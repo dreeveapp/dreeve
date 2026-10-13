@@ -92,7 +92,9 @@ Dance: Tanzen
 Dashboard: Dashboard
 Date: Datum
 Day: Tag
+'Days completed': 'Days completed'
 'Days needed': 'Benötigte Tage'
+'Days to go': 'Days to go'
 'Daytime stats': Tageszeitstatistiken
 Dec: Dez
 'Decreased compared to yesterday': 'Gegenüber gestern gesunken'
@@ -333,6 +335,7 @@ Power: Leistung
 'Powered by an estimated {caloriesBurned} calories, or roughly {numberOfPizzaSlices} slices of pizza 🍕.': 'Dabei wurden geschätzte {caloriesBurned} Kalorien verbraucht, was ungefähr {numberOfPizzaSlices} Pizzastücken entspricht 🍕.'
 'Prev year': Vorjahr
 Previous: Vorherige
+Progress: Progress
 'Purchase price': Kaufpreis
 Race: Wettkampf
 'Racing Score': Wettkampfpunktzahl
@@ -414,6 +417,7 @@ Surfing: Surfen
 'TSB positive in': 'TSB positiv in'
 'Table Tennis': Tischtennis
 'Taper sweet-spot (+15)': 'Taper sweet-spot (+15)'
+Target: Target
 'Team Sports': Teamsportarten
 Temperature: Temperatur
 'Temperature sensor': Temperatursensor
@@ -544,6 +548,7 @@ Tue.: Di.
 'Unchanged compared to yesterday': 'Unverändert gegenüber gestern'
 Unspecified: 'Nicht spezifiziert'
 'Upcoming maintenance': 'Anstehende Wartungen'
+'Upcoming numbers': 'Upcoming numbers'
 Usage: Usage
 'User badge': Benutzerabzeichen
 'Velo Mobile': Velomobil
