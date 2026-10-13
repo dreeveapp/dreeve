@@ -133,8 +133,11 @@ trait ParsesGearMaintenanceComponentPayload
      */
     private static function parseMaintenanceTasks(array $payload, bool $generateMissingIds): MaintenanceTasks
     {
-        if (!isset($payload['maintenanceTasks']) || !is_array($payload['maintenanceTasks']) || [] === $payload['maintenanceTasks']) {
-            throw CouldNotDeserializeCommand::invalidPayload('At least one maintenance task is required.');
+        if (!isset($payload['maintenanceTasks'])) {
+            return MaintenanceTasks::empty();
+        }
+        if (!is_array($payload['maintenanceTasks'])) {
+            throw CouldNotDeserializeCommand::invalidPayload('"maintenanceTasks" must be an array.');
         }
 
         $maintenanceTasks = MaintenanceTasks::empty();

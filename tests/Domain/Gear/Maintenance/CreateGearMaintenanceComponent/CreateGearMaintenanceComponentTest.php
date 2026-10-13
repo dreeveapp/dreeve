@@ -109,15 +109,6 @@ class CreateGearMaintenanceComponentTest extends TestCase
             'A non-empty "label" is required.',
         ];
 
-        yield 'maintenanceTasks is empty' => [
-            [
-                'label' => 'Chain',
-                'installations' => [['parent' => 'gear:b1']],
-                'maintenanceTasks' => [],
-            ],
-            'At least one maintenance task is required.',
-        ];
-
         yield 'maintenance task ids are duplicated' => [
             [
                 'label' => 'Chain',

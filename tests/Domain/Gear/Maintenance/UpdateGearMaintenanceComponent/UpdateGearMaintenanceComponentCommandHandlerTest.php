@@ -55,6 +55,23 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->assertSame('DI2 Battery', $di2['label']);
     }
 
+    public function testItRemovesAllMaintenanceTasks(): void
+    {
+        $this->importGearMaintenanceConfig();
+
+        $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
+            'gearComponentId' => 'gearComponent-chain',
+            'label' => 'Chain',
+            'installations' => [['parent' => 'gear:b9']],
+        ]));
+
+        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
+
+        $chain = $this->findComponentById($components, 'gearComponent-chain');
+        $this->assertNotNull($chain);
+        $this->assertSame([], $chain['maintenance']);
+    }
+
     public function testItRejectsAnUnknownComponent(): void
     {
         $this->expectExceptionObject(CouldNotProcessCommand::withReason('The component does not exist.'));

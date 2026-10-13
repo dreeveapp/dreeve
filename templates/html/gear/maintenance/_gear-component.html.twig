@@ -76,6 +76,8 @@
                         </div>
                     </div>
                 </div>
+            {% else %}
+                <p class="text-xs text-gray-500">{{ "No maintenance tasks"|trans }}</p>
             {% endfor %}
         </div>
     </div>

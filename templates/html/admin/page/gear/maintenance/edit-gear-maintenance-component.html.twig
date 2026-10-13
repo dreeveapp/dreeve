@@ -142,7 +142,7 @@
                     <label>{{ "Image"|trans({}, 'admin') }}</label>
                     {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'localImagePath', maxImages: 1, existingImages: existingImages } %}
                 </div>
-                <div data-repeater data-repeater-min="1">
+                <div data-repeater data-repeater-min="0">
                     <label>{{ "Maintenance tasks"|trans({}, 'admin') }}</label>
                     <p class="mt-0.5 text-xxs text-gray-500">{{ "Define what needs doing and how often."|trans({}, 'admin') }}</p>
                     <div class="mt-2 flex flex-col gap-2"

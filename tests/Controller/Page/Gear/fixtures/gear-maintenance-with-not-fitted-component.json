@@ -78,6 +78,15 @@
       ]
     },
     {
+      "id": "gearComponent-spare-wheelset",
+      "label": "Spare wheelset",
+      "localImagePath": null,
+      "isRetired": false,
+      "notes": null,
+      "installations": [],
+      "maintenance": []
+    },
+    {
       "id": "gearComponent-old-chain",
       "label": "Old chain",
       "localImagePath": null,

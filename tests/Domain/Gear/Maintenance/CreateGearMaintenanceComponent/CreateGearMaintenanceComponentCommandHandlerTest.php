@@ -55,6 +55,20 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->assertNotEmpty($created['maintenance'][0]['id']);
     }
 
+    public function testItCreatesComponentWithoutMaintenanceTasks(): void
+    {
+        $this->commandBus->dispatch(CreateGearMaintenanceComponent::fromPayload([
+            'label' => 'Wheelset',
+            'installations' => [['parent' => 'gear:b1']],
+        ]));
+
+        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
+
+        $this->assertCount(1, $components);
+        $this->assertSame('Wheelset', $components[0]['label']);
+        $this->assertSame([], $components[0]['maintenance']);
+    }
+
     public function testItCreatesComponentWithImage(): void
     {
         $this->commandBus->dispatch(CreateGearMaintenanceComponent::fromPayload([

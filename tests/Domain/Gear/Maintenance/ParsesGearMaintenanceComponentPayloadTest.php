@@ -239,6 +239,24 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
     /**
      * @param array<string, mixed> $payload
      */
+    #[DataProvider('providePayloadsWithoutMaintenanceTasks')]
+    public function testParseMaintenanceTasksWhenThereAreNone(array $payload): void
+    {
+        $this->assertTrue($this->parser->doParseMaintenanceTasks($payload, generateMissingIds: true)->isEmpty());
+    }
+
+    /**
+     * @return iterable<string, array{array<string, mixed>}>
+     */
+    public static function providePayloadsWithoutMaintenanceTasks(): iterable
+    {
+        yield 'maintenanceTasks is missing' => [[]];
+        yield 'maintenanceTasks is empty' => [['maintenanceTasks' => []]];
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[DataProvider('provideInvalidMaintenanceTaskPayloads')]
     public function testParseMaintenanceTasksThrowsOnInvalidPayload(array $payload, bool $generateMissingIds, string $expectedExceptionMessage): void
     {
@@ -252,16 +270,10 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
      */
     public static function provideInvalidMaintenanceTaskPayloads(): iterable
     {
-        yield 'maintenanceTasks is missing' => [
-            [],
+        yield 'maintenanceTasks is not an array' => [
+            ['maintenanceTasks' => 'nope'],
             true,
-            'At least one maintenance task is required.',
-        ];
-
-        yield 'maintenanceTasks is empty' => [
-            ['maintenanceTasks' => []],
-            true,
-            'At least one maintenance task is required.',
+            '"maintenanceTasks" must be an array.',
         ];
 
         yield 'task is not an object' => [

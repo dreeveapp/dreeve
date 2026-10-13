@@ -52,7 +52,7 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
 
         $tasksRepeater = $form->filter('[data-repeater]')->eq(1);
         $this->assertCount(2, $form->filter('[data-repeater]'));
-        $this->assertSame('1', $tasksRepeater->attr('data-repeater-min'));
+        $this->assertSame('0', $tasksRepeater->attr('data-repeater-min'));
         $this->assertSame('[]', $tasksRepeater->filter('[data-repeater-list]')->attr('data-repeater-initial'));
     }
 
