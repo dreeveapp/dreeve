@@ -212,6 +212,30 @@ class EveryXDistanceUsedProgressCalculationTest extends ContainerTestCase
         yield 'sport type the gear was not used for' => [[['bike-a', [SportType::RUN]]], '0 km'];
     }
 
+    public function testCalculateCountsEverythingInTheUsageWindowsWhenNeverTagged(): void
+    {
+        foreach ([['before-install', '2024-12-01 10:00:00'], ['after-install', '2025-01-10 10:00:00'], ['after-install-2', '2025-01-11 10:00:00']] as [$activityId, $startDateTime]) {
+            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withGearId(GearId::fromUnprefixed('test'))
+                    ->withStartDateTime(SerializableDateTime::fromString($startDateTime))
+                    ->withDistance(Kilometer::from(100))
+                    ->build(),
+                []
+            ));
+        }
+
+        $this->assertSame('200 km', $this->calculation->calculate(
+            ProgressCalculationContext::from(
+                usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: SerializableDateTime::fromString('2025-01-01'), until: null, sportTypes: SportTypes::empty())]),
+                lastTaggedOn: null,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+                intervalValue: 1000,
+            )
+        )->getDescription());
+    }
+
     #[\Override]
     protected function setUp(): void
     {

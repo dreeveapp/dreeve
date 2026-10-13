@@ -12,5 +12,5 @@ interface MaintenanceTaskProgressCalculation
 {
     public function supports(IntervalUnit $intervalUnit): bool;
 
-    public function calculate(ProgressCalculationContext $context): MaintenanceTaskProgress;
+    public function calculate(ProgressCalculationContext $context): ?MaintenanceTaskProgress;
 }

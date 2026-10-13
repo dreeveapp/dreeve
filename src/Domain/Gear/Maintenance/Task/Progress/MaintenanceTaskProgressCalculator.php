@@ -11,7 +11,6 @@ use App\Domain\Gear\Maintenance\GearComponents;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
 use App\Infrastructure\Time\Clock\Clock;
-use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 final readonly class MaintenanceTaskProgressCalculator
@@ -30,7 +29,7 @@ final readonly class MaintenanceTaskProgressCalculator
     ) {
     }
 
-    public function calculateProgressFor(ProgressCalculationContext $context): MaintenanceTaskProgress
+    public function calculateProgressFor(ProgressCalculationContext $context): ?MaintenanceTaskProgress
     {
         $intervalUnit = $context->getIntervalUnit();
 
@@ -103,14 +102,14 @@ final readonly class MaintenanceTaskProgressCalculator
                 $maintenanceTaskStatuses->add(MaintenanceTaskStatus::from(
                     maintenanceTaskId: $maintenanceTask->getId(),
                     lastPerformedOn: $lastPerformedOn,
-                    progress: $lastPerformedOn instanceof SerializableDateTime ? $this->calculateProgressFor(
+                    progress: $this->calculateProgressFor(
                         ProgressCalculationContext::from(
                             usageWindows: $gearComponents->resolveUsageWindowsFor($gearComponent),
                             lastTaggedOn: $lastPerformedOn,
                             intervalUnit: $maintenanceTask->getIntervalUnit(),
                             intervalValue: $maintenanceTask->getIntervalValue(),
                         )
-                    ) : null,
+                    ),
                 ));
             }
         }

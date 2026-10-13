@@ -39,6 +39,41 @@ class EveryXDaysProgressCalculationTest extends ContainerTestCase
         );
     }
 
+    public function testCalculateCountsFromTheEarliestInstallationWhenNeverTagged(): void
+    {
+        $this->assertEquals(
+            MaintenanceTaskProgress::from(
+                elapsed: 3,
+                interval: 4,
+                elapsedDescription: '3 days',
+                remainingDescription: '1 days',
+            ),
+            $this->calculation->calculate(
+                ProgressCalculationContext::from(
+                    usageWindows: UsageWindows::fromArray([
+                        UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: SerializableDateTime::fromString('2024-12-30'), until: null, sportTypes: SportTypes::empty()),
+                        UsageWindow::create(gearId: GearId::fromUnprefixed('other'), from: SerializableDateTime::fromString('2024-12-29'), until: SerializableDateTime::fromString('2024-12-30'), sportTypes: SportTypes::empty()),
+                    ]),
+                    lastTaggedOn: null,
+                    intervalUnit: IntervalUnit::EVERY_X_DAYS,
+                    intervalValue: 4,
+                )
+            )
+        );
+    }
+
+    public function testCalculateWhenNeverTaggedAndTheInstallationIsNotDated(): void
+    {
+        $this->assertNull($this->calculation->calculate(
+            ProgressCalculationContext::from(
+                usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: null, until: null, sportTypes: SportTypes::empty())]),
+                lastTaggedOn: null,
+                intervalUnit: IntervalUnit::EVERY_X_DAYS,
+                intervalValue: 4,
+            )
+        ));
+    }
+
     #[\Override]
     protected function setUp(): void
     {

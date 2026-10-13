@@ -12,7 +12,7 @@ final readonly class ProgressCalculationContext
 {
     private function __construct(
         private UsageWindows $usageWindows,
-        private SerializableDateTime $lastTaggedOn,
+        private ?SerializableDateTime $lastTaggedOn,
         private IntervalUnit $intervalUnit,
         private int $intervalValue,
     ) {
@@ -20,7 +20,7 @@ final readonly class ProgressCalculationContext
 
     public static function from(
         UsageWindows $usageWindows,
-        SerializableDateTime $lastTaggedOn,
+        ?SerializableDateTime $lastTaggedOn,
         IntervalUnit $intervalUnit,
         int $intervalValue,
     ): self {
@@ -37,7 +37,7 @@ final readonly class ProgressCalculationContext
         return $this->usageWindows;
     }
 
-    public function getLastTaggedOn(): SerializableDateTime
+    public function getLastTaggedOn(): ?SerializableDateTime
     {
         return $this->lastTaggedOn;
     }

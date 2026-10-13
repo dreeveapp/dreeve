@@ -90,6 +90,30 @@ class EveryXHoursUsedProgressCalculationTest extends ContainerTestCase
         );
     }
 
+    public function testCalculateCountsEverythingInTheUsageWindowsWhenNeverTagged(): void
+    {
+        foreach ([['before-install', '2024-12-01 10:00:00'], ['after-install', '2025-01-10 10:00:00'], ['after-install-2', '2025-01-11 10:00:00']] as [$activityId, $startDateTime]) {
+            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withGearId(GearId::fromUnprefixed('test'))
+                    ->withStartDateTime(SerializableDateTime::fromString($startDateTime))
+                    ->withMovingTimeInSeconds(3600)
+                    ->build(),
+                []
+            ));
+        }
+
+        $this->assertSame('2 hours', $this->calculation->calculate(
+            ProgressCalculationContext::from(
+                usageWindows: UsageWindows::fromArray([UsageWindow::create(gearId: GearId::fromUnprefixed('test'), from: SerializableDateTime::fromString('2025-01-01'), until: null, sportTypes: SportTypes::empty())]),
+                lastTaggedOn: null,
+                intervalUnit: IntervalUnit::EVERY_X_HOURS_USED,
+                intervalValue: 1000,
+            )
+        )->getDescription());
+    }
+
     #[\Override]
     protected function setUp(): void
     {

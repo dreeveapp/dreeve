@@ -14,6 +14,7 @@ use App\Domain\Gear\GearIdRepository;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgress;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
@@ -93,8 +94,8 @@ final readonly class UpcomingMaintenanceWidget implements Widget, DependsOnCurre
             }
 
             foreach ($gearComponent->getMaintenanceTasks() as $maintenanceTask) {
-                // A task that was never performed has no anchor date, so there is no countdown to show.
-                if (!($progress = $maintenanceTaskStatuses->getForTask($maintenanceTask->getId())?->getProgress()) instanceof \App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgress) {
+                // A calendar-day task that was never performed on an undated installation has no anchor date, so there is no countdown to show.
+                if (!($progress = $maintenanceTaskStatuses->getForTask($maintenanceTask->getId())?->getProgress()) instanceof MaintenanceTaskProgress) {
                     continue;
                 }
 

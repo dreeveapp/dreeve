@@ -6,6 +6,7 @@ namespace App\Domain\Gear\Maintenance\Task\Progress;
 
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Infrastructure\Time\Clock\Clock;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class EveryXDaysProgressCalculation implements MaintenanceTaskProgressCalculation
@@ -21,10 +22,15 @@ final readonly class EveryXDaysProgressCalculation implements MaintenanceTaskPro
         return IntervalUnit::EVERY_X_DAYS === $intervalUnit;
     }
 
-    public function calculate(ProgressCalculationContext $context): MaintenanceTaskProgress
+    public function calculate(ProgressCalculationContext $context): ?MaintenanceTaskProgress
     {
+        $countFrom = $context->getLastTaggedOn() ?? $context->getUsageWindows()->getEarliestFrom();
+        if (!$countFrom instanceof SerializableDateTime) {
+            return null;
+        }
+
         $today = $this->clock->getCurrentDateTimeImmutable();
-        $daysSinceLastTagged = (int) $today->diff($context->getLastTaggedOn())->days;
+        $daysSinceLastTagged = (int) $today->diff($countFrom)->days;
         $intervalValue = $context->getIntervalValue();
 
         return MaintenanceTaskProgress::from(

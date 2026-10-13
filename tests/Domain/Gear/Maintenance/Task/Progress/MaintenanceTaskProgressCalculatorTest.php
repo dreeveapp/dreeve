@@ -59,6 +59,32 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
         );
     }
 
+    public function testCalculateStatusesForTasksThatWereNeverPerformed(): void
+    {
+        $this->importGearMaintenanceConfigFromArray(Json::decode(file_get_contents(__DIR__.'/fixtures/never-logged-tasks.json')));
+        foreach ([['before-install', '2024-12-01 10:00:00', 100], ['after-install', '2025-02-01 10:00:00', 40]] as [$activityId, $startDateTime, $distance]) {
+            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withGearId(GearId::fromUnprefixed('bike-a'))
+                    ->withStartDateTime(SerializableDateTime::fromString($startDateTime))
+                    ->withDistance(Kilometer::from($distance))
+                    ->build(),
+                []
+            ));
+        }
+
+        $statuses = $this->getContainer()->get(MaintenanceTaskProgressCalculator::class)->calculateStatuses();
+
+        $newChainReplace = $statuses->getForTask(MaintenanceTaskId::fromUnprefixed('new-chain-replace'));
+        $this->assertNull($newChainReplace->getLastPerformedOn());
+        $this->assertSame('40 km', $newChainReplace->getProgress()->getDescription());
+        $this->assertNotNull($statuses->getForTask(MaintenanceTaskId::fromUnprefixed('new-chain-inspect'))->getProgress());
+
+        $this->assertSame('140 km', $statuses->getForTask(MaintenanceTaskId::fromUnprefixed('old-cassette-replace'))->getProgress()->getDescription());
+        $this->assertNull($statuses->getForTask(MaintenanceTaskId::fromUnprefixed('old-cassette-inspect'))->getProgress());
+    }
+
     public function testGetGearIdsThatHaveDueTasks(): void
     {
         $this->importGearMaintenanceConfig();

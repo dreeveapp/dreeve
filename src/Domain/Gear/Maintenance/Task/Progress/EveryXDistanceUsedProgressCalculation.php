@@ -6,6 +6,7 @@ namespace App\Domain\Gear\Maintenance\Task\Progress;
 
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\Connection;
 
 final readonly class EveryXDistanceUsedProgressCalculation implements MaintenanceTaskProgressCalculation
@@ -25,17 +26,17 @@ final readonly class EveryXDistanceUsedProgressCalculation implements Maintenanc
 
     public function calculate(ProgressCalculationContext $context): MaintenanceTaskProgress
     {
-        [$usageWindowsSql, $usageWindowsParameters] = $context->getUsageWindows()->toSql();
+        [$usageWindowsSql, $parameters] = $context->getUsageWindows()->toSql();
         $query = sprintf('
                 SELECT SUM(distance) AS distance
                 FROM Activity
-                WHERE %s
-                AND startDateTime > :lastTaggedOn', $usageWindowsSql);
+                WHERE %s', $usageWindowsSql);
+        if (($lastTaggedOn = $context->getLastTaggedOn()) instanceof SerializableDateTime) {
+            $query .= ' AND startDateTime > :lastTaggedOn';
+            $parameters['lastTaggedOn'] = (string) $lastTaggedOn;
+        }
 
-        $distanceSinceLastTagged = Meter::from($this->connection->fetchOne($query, [
-            ...$usageWindowsParameters,
-            'lastTaggedOn' => (string) $context->getLastTaggedOn(),
-        ]) ?? 0)->toKilometer();
+        $distanceSinceLastTagged = Meter::from($this->connection->fetchOne($query, $parameters) ?? 0)->toKilometer();
 
         if (IntervalUnit::EVERY_X_MILES_USED === $context->getIntervalUnit()) {
             $distanceSinceLastTagged = $distanceSinceLastTagged->toMiles();

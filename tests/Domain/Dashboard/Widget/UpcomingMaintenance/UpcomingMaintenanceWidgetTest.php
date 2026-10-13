@@ -62,7 +62,7 @@ class UpcomingMaintenanceWidgetTest extends ContainerTestCase
         $this->assertStringNotContainsString('Charge', $render);
     }
 
-    public function testRenderDoesNotIncludeTasksThatWereNeverPerformed(): void
+    public function testRenderIncludesTasksThatWereNeverPerformed(): void
     {
         $this->importGearMaintenanceConfig();
         $this->provideMaintenanceHistory();
@@ -73,8 +73,7 @@ class UpcomingMaintenanceWidgetTest extends ContainerTestCase
             configuration: WidgetConfiguration::empty()->add('numberOfTasksToDisplay', 5),
         );
 
-        // "Clean" has no maintenance log, so there is no anchor date to count down from.
-        $this->assertStringNotContainsString('Clean', $render);
+        $this->assertStringContainsString('Some cool chain &middot; Clean', $render);
     }
 
     public function testRenderWhenTheFeatureIsNotEnabled(): void
@@ -100,7 +99,8 @@ class UpcomingMaintenanceWidgetTest extends ContainerTestCase
             configuration: WidgetConfiguration::empty()->add('numberOfTasksToDisplay', 5),
         );
 
-        $this->assertNull($render);
+        $this->assertStringContainsString('Some cool chain &middot; Lube', (string) $render);
+        $this->assertStringContainsString('500 km left', (string) $render);
     }
 
     public function testRenderWhenTheOnlyComponentIsAttachedToRetiredGear(): void

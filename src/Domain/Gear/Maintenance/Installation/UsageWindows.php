@@ -34,6 +34,21 @@ final class UsageWindows extends Collection
         )->unique();
     }
 
+    public function getEarliestFrom(): ?SerializableDateTime
+    {
+        $earliestFrom = null;
+        foreach ($this as $usageWindow) {
+            if (!($from = $usageWindow->getFrom()) instanceof SerializableDateTime) {
+                return null;
+            }
+            if (!$earliestFrom instanceof SerializableDateTime || $from->isBefore($earliestFrom)) {
+                $earliestFrom = $from;
+            }
+        }
+
+        return $earliestFrom;
+    }
+
     /**
      * @return array{string, array<string, string>}
      */
