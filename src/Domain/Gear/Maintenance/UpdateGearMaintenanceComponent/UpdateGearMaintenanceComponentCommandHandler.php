@@ -29,41 +29,35 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
         assert($command instanceof UpdateGearMaintenanceComponent);
 
         try {
-            $existingComponent = $this->gearComponentRepository->find($command->getGearComponentId());
+            $gearComponent = $this->gearComponentRepository->find($command->getGearComponentId());
         } catch (EntityNotFound) {
             throw CouldNotProcessCommand::withReason('The component does not exist.');
         }
-        // Keep the existing image unless the dropzone explicitly added or removed one.
-        $localImagePath = $existingComponent->getLocalImagePath();
+
+        $gearComponent = $gearComponent
+            ->withLabel($command->getLabel())
+            ->withInstallations($command->getInstallations())
+            ->withPurchasePrice($command->getPurchasePrice())
+            ->withIsRetired($command->isRetired())
+            ->withNotes($command->getNotes())
+            ->withMaintenanceTasks($command->getMaintenanceTasks());
 
         $newImage = $command->getNewImage();
         $removedImage = $command->getRemovedImage();
 
         if ($newImage instanceof NewImage) {
-            $localImagePath = $this->imageStorage->store(
-                newImage: $newImage,
-                directory: ImageDirectory::GEAR_MAINTENANCE
-            )->toLocalImagePath();
+            $gearComponent = $gearComponent->withLocalImagePath(
+                $this->imageStorage->store(
+                    newImage: $newImage,
+                    directory: ImageDirectory::GEAR_MAINTENANCE
+                )->toLocalImagePath()
+            );
         } elseif ($removedImage instanceof RemovedImage) {
-            $localImagePath = null;
-        }
-
-        $gearComponent = GearComponent::create(
-            id: $command->getGearComponentId(),
-            label: $command->getLabel(),
-            installations: $command->getInstallations(),
-            localImagePath: $localImagePath,
-            purchasePrice: $command->getPurchasePrice(),
-            isRetired: $command->isRetired(),
-            notes: $command->getNotes(),
-        );
-
-        foreach ($command->getMaintenanceTasks() as $maintenanceTask) {
-            $gearComponent->addMaintenanceTask($maintenanceTask);
+            $gearComponent = $gearComponent->withLocalImagePath(null);
         }
 
         $gearComponents = $this->gearComponentRepository->findAll()
-            ->filter(static fn (GearComponent $existingComponent): bool => (string) $existingComponent->getId() !== (string) $gearComponent->getId())
+            ->filter(static fn (GearComponent $otherComponent): bool => (string) $otherComponent->getId() !== (string) $gearComponent->getId())
             ->add($gearComponent);
         try {
             $gearComponents->resolveUsageWindowsFor($gearComponent);

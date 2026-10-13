@@ -131,9 +131,33 @@ final class GearComponent implements \JsonSerializable
         return $this->label;
     }
 
+    public function withLabel(Name $label): self
+    {
+        $clone = clone ($this, [
+            'label' => $label,
+        ]);
+        if ((string) $this->label !== (string) $label) {
+            $clone->recordThat(new GearComponentWasUpdated());
+        }
+
+        return $clone;
+    }
+
     public function getInstallations(): GearComponentInstallations
     {
         return $this->installations;
+    }
+
+    public function withInstallations(GearComponentInstallations $installations): self
+    {
+        $clone = clone ($this, [
+            'installations' => $installations,
+        ]);
+        if ($this->installations != $installations) {
+            $clone->recordThat(new GearComponentWasUpdated());
+        }
+
+        return $clone;
     }
 
     public function getLocalImagePath(): ?string
@@ -141,9 +165,36 @@ final class GearComponent implements \JsonSerializable
         return $this->localImagePath;
     }
 
+    public function withLocalImagePath(?string $localImagePath): self
+    {
+        $clone = clone ($this, [
+            'localImagePath' => $localImagePath,
+        ]);
+        if ($this->localImagePath !== $localImagePath) {
+            $clone->recordThat(new GearComponentWasUpdated());
+        }
+
+        return $clone;
+    }
+
     public function getPurchasePrice(): ?Money
     {
         return $this->purchasePrice;
+    }
+
+    public function withPurchasePrice(?Money $purchasePrice): self
+    {
+        $clone = clone ($this, [
+            'purchasePrice' => $purchasePrice,
+        ]);
+        $isUnchanged = $this->purchasePrice instanceof Money && $purchasePrice instanceof Money
+            ? $this->purchasePrice->equals($purchasePrice)
+            : $this->purchasePrice === $purchasePrice;
+        if (!$isUnchanged) {
+            $clone->recordThat(new GearComponentWasUpdated());
+        }
+
+        return $clone;
     }
 
     public function isRetired(): bool
@@ -151,14 +202,50 @@ final class GearComponent implements \JsonSerializable
         return $this->isRetired;
     }
 
+    public function withIsRetired(bool $isRetired): self
+    {
+        $clone = clone ($this, [
+            'isRetired' => $isRetired,
+        ]);
+        if ($this->isRetired !== $isRetired) {
+            $clone->recordThat(new GearComponentWasUpdated());
+        }
+
+        return $clone;
+    }
+
     public function getNotes(): ?string
     {
         return $this->notes;
     }
 
+    public function withNotes(?string $notes): self
+    {
+        $clone = clone ($this, [
+            'notes' => $notes,
+        ]);
+        if ($this->notes !== $notes) {
+            $clone->recordThat(new GearComponentWasUpdated());
+        }
+
+        return $clone;
+    }
+
     public function getMaintenanceTasks(): MaintenanceTasks
     {
         return $this->maintenanceTasks;
+    }
+
+    public function withMaintenanceTasks(MaintenanceTasks $maintenanceTasks): self
+    {
+        $clone = clone ($this, [
+            'maintenanceTasks' => $maintenanceTasks,
+        ]);
+        if ($this->maintenanceTasks != $maintenanceTasks) {
+            $clone->recordThat(new GearComponentWasUpdated());
+        }
+
+        return $clone;
     }
 
     public function normalizeGearIds(GearIds $normalizedGearIds): void

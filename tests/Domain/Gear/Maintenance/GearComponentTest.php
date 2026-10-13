@@ -8,11 +8,13 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearIds;
 use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentId;
+use App\Domain\Gear\Maintenance\GearComponentWasUpdated;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\Installation\InstallationParent;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Money\Money;
 use PHPUnit\Framework\TestCase;
 
 class GearComponentTest extends TestCase
@@ -73,6 +75,46 @@ class GearComponentTest extends TestCase
     public function testFromArrayDoesNotRecordEvents(): void
     {
         $this->assertSame([], GearComponent::fromArray($this->getComponents()[0])->getRecordedEvents());
+    }
+
+    public function testWithersDoNotRecordEventsWhenNothingChanges(): void
+    {
+        $gearComponent = GearComponent::fromArray($this->getComponents()[0]);
+        $unchanged = GearComponent::fromArray($this->getComponents()[0]);
+
+        $this->assertSame([], $gearComponent
+            ->withLabel($unchanged->getLabel())
+            ->withInstallations($unchanged->getInstallations())
+            ->withLocalImagePath($unchanged->getLocalImagePath())
+            ->withPurchasePrice($unchanged->getPurchasePrice())
+            ->withIsRetired($unchanged->isRetired())
+            ->withNotes($unchanged->getNotes())
+            ->withMaintenanceTasks($unchanged->getMaintenanceTasks())
+            ->getRecordedEvents());
+    }
+
+    public function testWithersRecordAnEventForEveryChange(): void
+    {
+        $gearComponent = GearComponent::fromArray($this->getComponents()[0]);
+        $other = GearComponent::fromArray($this->getComponents()[1]);
+
+        $updated = $gearComponent
+            ->withLabel($other->getLabel())
+            ->withInstallations($other->getInstallations())
+            ->withLocalImagePath('files/gear-maintenance/other.png')
+            ->withPurchasePrice(Money::EUR(12345))
+            ->withIsRetired($other->isRetired())
+            ->withNotes('Other notes')
+            ->withMaintenanceTasks($other->getMaintenanceTasks());
+
+        $this->assertEquals($other->getLabel(), $updated->getLabel());
+        $this->assertEquals($other->getInstallations(), $updated->getInstallations());
+        $this->assertSame('files/gear-maintenance/other.png', $updated->getLocalImagePath());
+        $this->assertEquals(Money::EUR(12345), $updated->getPurchasePrice());
+        $this->assertTrue($updated->isRetired());
+        $this->assertSame('Other notes', $updated->getNotes());
+        $this->assertEquals($other->getMaintenanceTasks(), $updated->getMaintenanceTasks());
+        $this->assertEquals(array_fill(0, 7, new GearComponentWasUpdated()), $updated->getRecordedEvents());
     }
 
     public function testNormalizeGearIds(): void
