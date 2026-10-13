@@ -109,11 +109,12 @@ final readonly class GearStatsRequestHandler
         $allGear = Gears::fromArray([...$activeGear, ...$retiredGear]);
 
         return $this->twig->load('html/gear/gear.html.twig')->render([
-            'activeGear' => $activeGear,
+            'gearUsage' => $gearUsage,
             'retiredGear' => $retiredGear,
             'gearInUse' => $activeGear->filter(fn (Gear $gear): bool => $gearUsage->getFor($gear->getId())->wasUsedSince($usedSince)),
             'idleGear' => $activeGear->filter(fn (Gear $gear): bool => !$gearUsage->getFor($gear->getId())->wasUsedSince($usedSince)),
             'totalDistance' => Kilometer::from($allGear->sum(fn (Gear $gear): float => $gear->getDistance()->toFloat())),
+            'maxDistance' => Kilometer::from($allGear->isEmpty() ? 0 : (float) $allGear->max(fn (Gear $gear): float => $gear->getDistance()->toFloat())),
             'totalMovingTime' => Seconds::from((int) $allGear->sum(fn (Gear $gear): int => $gear->getMovingTime()->toInt())),
             'totalNumberOfWorkouts' => $allGear->sum(fn (Gear $gear): int => $gear->getNumberOfActivities()),
             'unitSystem' => $unitSystem,

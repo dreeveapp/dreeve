@@ -34,6 +34,7 @@ Apr: Apr
 Aug: Aug
 Average: Average
 'Average gradient': 'Average gradient'
+'Avg distance': 'Avg distance'
 'Avg gradient': 'Avg gradient'
 'Avg pace': 'Avg pace'
 'Avg speed': 'Avg speed'
@@ -76,6 +77,7 @@ Components: Components
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Congrats! You achieved {numberOfPRs} PRs in this activity.'
 'Consider reducing load': 'Consider reducing load'
 Consistency: Consistency
+Cost: Cost
 Country: Country
 Cricket: Cricket
 Crossfit: Crossfit
@@ -161,7 +163,6 @@ Fri.: Fri.
 GAP: GAP
 Gear: Gear
 'Gear maintenance': 'Gear maintenance'
-'Gear stats': 'Gear stats'
 "Gear that hasn't been used in the last three months, is disabled by default.": "Gear that hasn't been used in the last three months, is disabled by default."
 'Gear that is retired is disabled by default.': 'Gear that is retired is disabled by default.'
 'Go to activity': 'Go to activity'
@@ -202,8 +203,10 @@ History: History
 'How much training you do in total on days you train.': 'How much training you do in total on days you train.'
 'How often do you train': 'How often do you train'
 'Ice Skate': 'Ice Skate'
+Idle: Idle
 Imperial: Imperial
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉."
+'In use': 'In use'
 'Increased compared to yesterday': 'Increased compared to yesterday'
 'Individual thresholds vary based on fitness level.': 'Individual thresholds vary based on fitness level.'
 'Inline Skate': 'Inline Skate'
@@ -222,6 +225,7 @@ Lap: Lap
 'Last effort date': 'Last effort date'
 'Last maintenance': 'Last maintenance'
 'Last month': 'Last month'
+'Last used': 'Last used'
 'Last week': 'Last week'
 'Last {numberOfDays} days': 'Last {numberOfDays} days'
 Lifetime: Lifetime
@@ -281,6 +285,7 @@ Night: Night
 'No data available': 'No data available'
 'No milestones achieved yet': 'No milestones achieved yet'
 'No other options to compare with': 'No other options to compare with'
+'No purchase price set': 'No purchase price set'
 None: None
 'Nordic Ski': 'Nordic Ski'
 'Normalized power': 'Normalized power'
@@ -351,7 +356,7 @@ Recent: Recent
 'Rest days': 'Rest days'
 'Rest days in last 7 days': 'Rest days in last 7 days'
 'Rest days vs. active days': 'Rest days vs. active days'
-'Retired gear': 'Retired gear'
+Retired: Retired
 Rewind: Rewind
 'Rewind comparisons are only available on larger screens.': 'Rewind comparisons are only available on larger screens.'
 Ride: Ride
@@ -536,10 +541,12 @@ Tue.: Tue.
 'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
 Unspecified: Unspecified
 'Upcoming maintenance': 'Upcoming maintenance'
+Usage: Usage
 'User badge': 'User badge'
 'Velo Mobile': 'Velo Mobile'
 'Velo Mobiles': 'Velo Mobiles'
 'Very high': 'Very high'
+'View activities': 'View activities'
 'View all': 'View all'
 'View details': 'View details'
 'View this month': 'View this month'

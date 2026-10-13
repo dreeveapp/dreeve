@@ -1104,6 +1104,9 @@
   .mx-auto {
     margin-inline: auto;
   }
+  .my-4 {
+    margin-block: calc(var(--spacing) * 4);
+  }
   .ms-auto {
     margin-inline-start: auto;
   }
@@ -2243,6 +2246,9 @@
   .grid-cols-8 {
     grid-template-columns: repeat(8, minmax(0, 1fr));
   }
+  .grid-cols-\[minmax\(0\,1fr\)_6rem_0\.75rem\] {
+    grid-template-columns: minmax(0,1fr) 6rem 0.75rem;
+  }
   .grid-cols-\[repeat\(auto-fit\,minmax\(80px\,1fr\)\)\] {
     grid-template-columns: repeat(auto-fit,minmax(80px,1fr));
   }
@@ -3149,6 +3155,9 @@
   .py-3 {
     padding-block: calc(var(--spacing) * 3);
   }
+  .py-4 {
+    padding-block: calc(var(--spacing) * 4);
+  }
   .py-5 {
     padding-block: calc(var(--spacing) * 5);
   }
@@ -3706,6 +3715,9 @@
     display: block;
     -webkit-box-orient: horizontal;
     -webkit-line-clamp: unset;
+  }
+  .group-open\/row\:rotate-180:is(:where(.group\/row):is([open], :popover-open, :open) *) {
+    rotate: 180deg;
   }
   .group-open\/section\:rotate-180:is(:where(.group\/section):is([open], :popover-open, :open) *) {
     rotate: 180deg;
@@ -4381,6 +4393,9 @@
     .lg\:hidden {
       display: none;
     }
+    .lg\:inline {
+      display: inline;
+    }
     .lg\:w-md {
       width: var(--container-md);
     }
@@ -4392,6 +4407,9 @@
     }
     .lg\:grid-cols-4 {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .lg\:grid-cols-\[minmax\(0\,1fr\)_11rem_7rem_0\.75rem\] {
+      grid-template-columns: minmax(0,1fr) 11rem 7rem 0.75rem;
     }
     .lg\:bg-white {
       background-color: var(--color-white);

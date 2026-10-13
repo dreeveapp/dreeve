@@ -26,88 +26,29 @@
         totalMovingTime: totalMovingTime,
         totalNumberOfWorkouts: totalNumberOfWorkouts
     } %}
-    <!-- GEAR STATS -->
+    <!-- GEAR GROUPS -->
+    {% for group in [
+        {title: "In use"|trans, gear: gearInUse, isOpen: true},
+        {title: "Idle"|trans, gear: idleGear, isOpen: false},
+        {title: "Retired"|trans, gear: retiredGear, isOpen: false},
+    ] %}
+        {% if group.gear|length > 0 %}
+            {% set rows %}
+                {% for gear in group.gear %}
+                    {{ _self.gearRow(gear, gearUsage.getFor(gear.getId()), totalDistance, maxDistance, unitSystem) }}
+                {% endfor %}
+            {% endset %}
+            {% include 'html/gear/_usage-group.html.twig' with {
+                title: group.title,
+                numberOfItems: group.gear|length,
+                nameLabel: "Gear"|trans,
+                isOpen: group.isOpen,
+                rows: rows
+            } %}
+        {% endif %}
+    {% endfor %}
+    <!-- GEAR CHARTS -->
     <div class="grid grid-cols-1 mb-4">
-        <!-- STATS PER GEAR -->
-        <div class="mb-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-            <div class="mb-4 flex items-center justify-between">
-                <h3 class="text-lg font-semibold">
-                    {{ "Gear stats"|trans }}
-                </h3>
-            </div>
-            <div class="relative overflow-x-auto">
-                <table id="table-gear" class="data-table" data-accordion="table-gear"
-                       data-active-classes="text-gray-500" data-inactive-classes="text-gray-500">
-                    <thead>
-                    <tr>
-                        <th rowspan="2" scope="col" class="sticky left-0 bg-gray-50">
-
-                        </th>
-                        <th rowspan="2" scope="col">
-                            # {{ "workouts"|trans }}
-                        </th>
-                        <th rowspan="2" scope="col">
-                            {{ "Dist."|trans }}
-                        </th>
-                        <th rowspan="2" scope="col">
-                            {{ "Elev."|trans }}
-                        </th>
-                        <th rowspan="2" scope="col">
-                            {{ "Moving time"|trans }}
-                        </th>
-                        <th rowspan="2" scope="col">
-                            {{ "Speed"|trans }}
-                        </th>
-                        <th rowspan="2" scope="col">
-                            {{ "Cal."|trans }}
-                        </th>
-                        <th rowspan="2" scope="col">
-                            {{ "Purchase price"|trans }}
-                        </th>
-                        <th colspan="3" scope="col">
-                            {{ "Relative cost"|trans }}
-                            <div class="font-normal normal-case">
-                                {{ "per hour"|trans }} /
-                                {{ "per activity"|trans }} /
-                                {{ "per"|trans }} {{ renderUnitSymbol('distance') }}
-                            </div>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for gear in activeGear %}
-                        {{ _self.gearStatisticRow(gear, unitSystem) }}
-                    {% endfor %}
-                    {% if retiredGear is not empty %}
-                        <tr class="group/row cursor-pointer"
-                            id="table-retired-gear-header"
-                            data-accordion-target="#table-retired-gear-content"
-                            aria-expanded="false" aria-controls="table-retired-gear-content">
-                            <td class="sticky left-0 whitespace-nowrap">
-                                <div class="flex items-center justify-center gap-x-2 text-gray-700 hover:underline">
-                                    <svg data-accordion-icon class="size-2 rotate-180 shrink-0" aria-hidden="true"
-                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                              stroke-width="2"
-                                              d="M9 5 5 1 1 5"/>
-                                    </svg>
-                                    <div>{{ "Retired gear"|trans }}</div>
-                                </div>
-                            </td>
-                            <td colspan="9"></td>
-                        </tr>
-                        </tbody>
-                        <tbody class="hidden"
-                               id="table-retired-gear-content"
-                               aria-labelledby="table-retired-gear-header">
-                        {% for gear in retiredGear %}
-                            {{ _self.gearStatisticRow(gear, unitSystem) }}
-                        {% endfor %}
-                        </tbody>
-                    {% endif %}
-                </table>
-            </div>
-        </div>
         <!-- DISTANCE PER MONTH PER GEAR -->
         <div class="mb-4  p-4 bg-white border border-gray-200 rounded-lg shadow-xs ">
             <div class="mb-4 flex items-center">
@@ -151,69 +92,28 @@
     </div>
 {% endautoescape %}
 
-{% macro gearStatisticRow(gear, unitSystem) %}
+{% macro gearRow(gear, usage, totalDistance, maxDistance, unitSystem) %}
     {% autoescape false %}
-        <tr class="group/row">
-            <th scope="row" class="px-2 py-2 sticky left-0 font-medium bg-white whitespace-nowrap">
-                <a href="{{ filteredUrl(path('activities'), {gear: gear.getId()}) }}" class="font-medium text-blue-600 hover:underline">
-                    {{ gear.getName() }}
-                </a>
-            </th>
-            <td class="truncate">
-                {{ gear.getNumberOfActivities() }}
-            </td>
-            <td class="truncate">
-                {% if gear.getDistance().toFloat() > 0 %}
-                    {{ gear.getAverageDistance()|renderMeasurement(0, 'avg'|trans) }} /
-                    {{ gear.getDistance()|renderMeasurement(0, 'total'|trans) }}
-                {% else %}
-                    0<span class="text-xxs ml-px">{{ gear.getDistance().getSymbol() }}</span>
-                {% endif %}
-            </td>
-            <td class="truncate">
-                {{ gear.getElevation()|renderMeasurement(0) }}
-            </td>
-            <td class="truncate" title="{{ gear.getMovingTimeInHours().toFloat()|formatNumber(1) }}h">
-                {{ gear.getMovingTimeFormatted() }}
-            </td>
-            <td class="truncate">
-                {{ gear.getAverageSpeed()|renderMeasurement(1) }}
-            </td>
-            <td class="truncate">
-                {{ gear.getTotalCalories()|formatNumber(0) }}<span class="text-xxs ml-px">kcal</span>
-            </td>
-            <td class="truncate">
-                {% set purchasePrice = gear.getPurchasePrice() %}
-                {% if purchasePrice %}
-                    {{ purchasePrice|formatMoney }}
-                {% else %}
-                    -
-                {% endif %}
-            </td>
-            <td class="truncate">
-                {% set relativeCostPerHour = gear.getRelativeCostPerHour() %}
-                {% if relativeCostPerHour %}
-                    {{ relativeCostPerHour|formatMoney }}
-                {% else %}
-                    -
-                {% endif %}
-            </td>
-            <td class="truncate">
-                {% set relativeCostPerWorkout = gear.getRelativeCostPerWorkout() %}
-                {% if relativeCostPerWorkout %}
-                    {{ relativeCostPerWorkout|formatMoney }}
-                {% else %}
-                    -
-                {% endif %}
-            </td>
-            <td class="truncate">
-                {% set relativeCostPerDistanceUnit = gear.getRelativeCostPerDistanceUnit(unitSystem) %}
-                {% if relativeCostPerDistanceUnit %}
-                    {{ relativeCostPerDistanceUnit|formatMoney }}
-                {% else %}
-                    -
-                {% endif %}
-            </td>
-        </tr>
+        {% include 'html/gear/_usage-row.html.twig' with {
+            name: gear.getOriginalName(),
+            subtitle: usage.getSportTypes()|map(sportType => sportType|trans)|join(', ') ~ ' · ' ~ gear.getNumberOfActivities() ~ ' ' ~ "workouts"|trans,
+            distance: gear.getDistance(),
+            shareOfDistance: totalDistance.toFloat() > 0 ? gear.getDistance().toFloat() / totalDistance.toFloat() * 100 : 0,
+            relativeDistance: maxDistance.toFloat() > 0 ? gear.getDistance().toFloat() / maxDistance.toFloat() * 100 : 0,
+            lastUsedOn: usage.getLastUsedOn(),
+            usageStats: [
+                {label: "workouts"|trans, value: gear.getNumberOfActivities()|formatNumber(0)},
+                {label: "Avg distance"|trans, value: gear.getAverageDistance()|renderMeasurement(0)},
+                {label: "Elevation"|trans, value: gear.getElevation()|renderMeasurement(0)},
+                {label: "Moving time"|trans, value: gear.getMovingTimeFormatted()},
+                {label: "Avg speed"|trans, value: gear.getAverageSpeed()|renderMeasurement(1)},
+                {label: "Calories"|trans, value: gear.getTotalCalories()|formatNumber(0) ~ '<span class="text-xxs ml-px">kcal</span>'},
+            ],
+            purchasePrice: gear.getPurchasePrice(),
+            relativeCostPerDistanceUnit: gear.getRelativeCostPerDistanceUnit(unitSystem),
+            relativeCostPerHour: gear.getRelativeCostPerHour(),
+            relativeCostPerWorkout: gear.getRelativeCostPerWorkout(),
+            activitiesUrl: filteredUrl(path('activities'), {gear: gear.getId()})
+        } only %}
     {% endautoescape %}
 {% endmacro %}

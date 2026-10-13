@@ -1,0 +1,22 @@
+{% autoescape false %}
+    <details class="group/section mb-4 bg-white border border-gray-200 rounded-lg shadow-xs" {{ isOpen ? 'open' : '' }}>
+        <summary class="list-none cursor-pointer flex items-center justify-between p-4 select-none">
+            <div class="flex items-center gap-2">
+                <h3 class="text-lg font-semibold">{{ title }}</h3>
+                <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ numberOfItems }}</span>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/section:rotate-180" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m1 1 4 4 4-4"/>
+            </svg>
+        </summary>
+        <div class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_11rem_7rem_0.75rem] px-4 py-3 border-t border-gray-200 bg-gray-50 text-gray-500 text-xxs uppercase font-semibold">
+            <div>{{ nameLabel }}</div>
+            <div>{{ "Distance"|trans }}</div>
+            <div class="hidden lg:block">{{ "Last used"|trans }}</div>
+            <div></div>
+        </div>
+        <div>
+            {{ rows }}
+        </div>
+    </details>
+{% endautoescape %}

@@ -6,9 +6,13 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Gear\GearId;
+use App\Domain\Gear\GearRepository;
+use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\ProvideTestData;
+use Money\Money;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -71,9 +75,13 @@ class GearStatsRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSame(
-            [['Retro Race Bike', '1', '0kcal'], ['Zwift hub', '1', '0kcal']],
-            $crawler->filter('#table-gear tbody tr')->each(
-                fn (Crawler $row): array => [$row->filter('th')->text(), $row->filter('td')->eq(0)->text(), $row->filter('td')->eq(5)->text()],
+            [['Retro Race Bike', 'Rides · 1 workouts', '0kcal'], ['Zwift hub', 'Rides · 1 workouts', '0kcal']],
+            $crawler->filter('details details')->each(
+                fn (Crawler $row): array => [
+                    $row->filter('summary .font-medium')->text(),
+                    $row->filter('summary .text-xs')->first()->text(),
+                    $row->filter('.grid-cols-3 .font-bold')->last()->text(),
+                ],
             ),
         );
     }
@@ -98,10 +106,43 @@ class GearStatsRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSame(
-            [['Unspecified', '1', '0kcal']],
-            $crawler->filter('#table-gear tbody tr')->each(
-                fn (Crawler $row): array => [$row->filter('th')->text(), $row->filter('td')->eq(0)->text(), $row->filter('td')->eq(5)->text()],
+            [['Unspecified', 'Rides · 1 workouts', '0kcal']],
+            $crawler->filter('details details')->each(
+                fn (Crawler $row): array => [
+                    $row->filter('summary .font-medium')->text(),
+                    $row->filter('summary .text-xs')->first()->text(),
+                    $row->filter('.grid-cols-3 .font-bold')->last()->text(),
+                ],
             ),
+        );
+    }
+
+    public function testRenderWithAPurchasePrice(): void
+    {
+        $this->addGeneralFixtures();
+
+        $this->getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('1'))
+                ->withPurchasePrice(Money::EUR(100000))
+                ->build()
+        );
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            activity: ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withGearId(GearId::fromUnprefixed('1'))
+                ->withDistance(Kilometer::from(100))
+                ->withMovingTimeInSeconds(7200)
+                ->build(),
+            rawData: []
+        ));
+
+        $crawler = $this->client->request('GET', '/gear');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame(
+            ['€1,000.00', '€10.00', '€500.00', '€1,000.00'],
+            $crawler->filter('details details .grid-cols-2 .font-bold')->each(fn (Crawler $cost): string => $cost->text()),
         );
     }
 

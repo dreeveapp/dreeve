@@ -34,6 +34,7 @@ Apr: Apr
 Aug: Ago
 Average: Average
 'Average gradient': 'Pendenza media'
+'Avg distance': 'Avg distance'
 'Avg gradient': 'Avg gradient'
 'Avg pace': 'Avg pace'
 'Avg speed': 'Avg speed'
@@ -76,6 +77,7 @@ Components: Components
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Congrats! You achieved {numberOfPRs} PRs in this activity.'
 'Consider reducing load': 'Valuta di ridurre il carico'
 Consistency: Consistency
+Cost: Cost
 Country: Country
 Cricket: Cricket
 Crossfit: Crossfit
@@ -161,7 +163,6 @@ Fri.: Fri.
 GAP: GAP
 Gear: Attrezzatura
 'Gear maintenance': 'Manutenzione attrezzatura'
-'Gear stats': 'Statistiche attrezzatura'
 "Gear that hasn't been used in the last three months, is disabled by default.": 'Attrezzatura che non è stata usata negli ultimi tre mesi, è disabilitata di default.'
 'Gear that is retired is disabled by default.': "L'attrezzatura dismessa è disabilitata di default."
 'Go to activity': "Vai all'attività"
@@ -202,8 +203,10 @@ History: Cronologia
 'How much training you do in total on days you train.': 'Quanto ti alleni complessivamente nei giorni in cui ti alleni.'
 'How often do you train': 'Con quale frequenza ti alleni'
 'Ice Skate': 'Pattinaggio su ghiaccio'
+Idle: Idle
 Imperial: Imperial
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'In questo periodo ho percorso {totalDistance}, pari a {numberOfTripsAroundTheWorld} giri del mondo 🌍 oppure al {numberOfTripsToTheMoonPercent}% del tragitto verso la luna 🌕, e accumulato {totalElevation} di dislivello, cioè {timesMountEverest} volte il Monte Everest 🏔. In totale fanno {totalTimeRecorded} di tempo in movimento 🎉.'
+'In use': 'In use'
 'Increased compared to yesterday': 'Increased compared to yesterday'
 'Individual thresholds vary based on fitness level.': 'Le soglie individuali variano in base al livello di forma.'
 'Inline Skate': 'Pattinaggio in linea'
@@ -222,6 +225,7 @@ Lap: Giro
 'Last effort date': 'Data dell’ultimo sforzo'
 'Last maintenance': 'Ultima manutenzione'
 'Last month': 'Last month'
+'Last used': 'Last used'
 'Last week': 'Last week'
 'Last {numberOfDays} days': 'Ultimi {numberOfDays} giorni'
 Lifetime: Lifetime
@@ -281,6 +285,7 @@ Night: Notte
 'No data available': 'Nessun dato disponibile'
 'No milestones achieved yet': 'Nessun traguardo raggiunto finora'
 'No other options to compare with': "Nessun'altra opzione con cui confrontare"
+'No purchase price set': 'No purchase price set'
 None: Nessuno
 'Nordic Ski': 'Sci nordico'
 'Normalized power': 'Normalized power'
@@ -351,7 +356,7 @@ Recent: Recent
 'Rest days': 'Giorni di riposo'
 'Rest days in last 7 days': 'Giorni di riposo negli ultimi 7 giorni'
 'Rest days vs. active days': 'Giorni di riposo vs. giorni attivi'
-'Retired gear': 'Attrezzatura in disuso'
+Retired: Retired
 Rewind: Indietro
 'Rewind comparisons are only available on larger screens.': 'I confronti Rewind sono disponibili solo su schermi più grandi.'
 Ride: Ride
@@ -536,10 +541,12 @@ Tue.: Tue.
 'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
 Unspecified: 'Non specificato'
 'Upcoming maintenance': 'Upcoming maintenance'
+Usage: Usage
 'User badge': 'Badge utente'
 'Velo Mobile': 'Velo Mobile'
 'Velo Mobiles': Velomobili
 'Very high': 'Molto alto'
+'View activities': 'View activities'
 'View all': 'Vedi tutto'
 'View details': 'Vedi dettagli'
 'View this month': 'View this month'

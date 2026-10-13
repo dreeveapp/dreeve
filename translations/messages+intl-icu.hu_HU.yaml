@@ -34,6 +34,7 @@ Apr: Ápr
 Aug: Aug
 Average: Átlag
 'Average gradient': 'Átlagos lejtés'
+'Avg distance': 'Avg distance'
 'Avg gradient': 'Átl. emelkedő'
 'Avg pace': 'Átl. tempó'
 'Avg speed': 'Átl. sebesség'
@@ -76,6 +77,7 @@ Components: Komponensek
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Gratulálunk! {numberOfPRs} egyéni rekordot értél el ebben a tevékenységben.'
 'Consider reducing load': 'Fontold meg a terhelés csökkentését'
 Consistency: Következetesség
+Cost: Cost
 Country: Ország
 Cricket: Krikett
 Crossfit: Crossfit
@@ -161,7 +163,6 @@ Fri.: Pén.
 GAP: GAP
 Gear: Felszerelés
 'Gear maintenance': 'Felszerelés karbantartás'
-'Gear stats': 'Felszerelés statisztikák'
 "Gear that hasn't been used in the last three months, is disabled by default.": 'Az elmúlt három hónapban nem használt felszerelés alapértelmezés szerint le van tiltva.'
 'Gear that is retired is disabled by default.': 'A visszavont felszerelés alapértelmezés szerint le van tiltva.'
 'Go to activity': 'Ugrás a tevékenységhez'
@@ -202,8 +203,10 @@ History: Előzmények
 'How much training you do in total on days you train.': 'Mennyi összes edzést végzel az edzésnapjaidon.'
 'How often do you train': 'Milyen gyakran edzel'
 'Ice Skate': Jégkorcsolya
+Idle: Idle
 Imperial: Angolszász
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'Ez idő alatt {totalDistance}-t tettem meg, ami {numberOfTripsAroundTheWorld} körülutazás a Föld körül, vagy {numberOfTripsToTheMoonPercent}% az úton a Hold felé, és {totalElevation} szintemelkedést győztem le, ami {timesMountEverest}-szer a Mount Everest magassága. Összesen {totalTimeRecorded} mozgásban töltött idő.'
+'In use': 'In use'
 'Increased compared to yesterday': 'Nőtt a tegnapihoz képest'
 'Individual thresholds vary based on fitness level.': 'Az egyéni küszöbértékek a fitnesz szinttől függően változnak.'
 'Inline Skate': Görkorcsolya
@@ -222,6 +225,7 @@ Lap: Kör
 'Last effort date': 'Utolsó teljesítmény dátuma'
 'Last maintenance': 'Utolsó karbantartás'
 'Last month': 'Előző hónap'
+'Last used': 'Last used'
 'Last week': 'Előző hét'
 'Last {numberOfDays} days': 'Utolsó {numberOfDays} nap'
 Lifetime: 'Teljes időszak'
@@ -281,6 +285,7 @@ Night: Éjjel
 'No data available': 'Nincs elérhető adat'
 'No milestones achieved yet': 'Még nincsenek elért mérföldkövek'
 'No other options to compare with': 'Nincs más összehasonlítási lehetőség'
+'No purchase price set': 'No purchase price set'
 None: 'Egyik sem'
 'Nordic Ski': Sífutás
 'Normalized power': 'Normalizált teljesítmény'
@@ -351,7 +356,7 @@ Recent: Legutóbbi
 'Rest days': Pihenőnapok
 'Rest days in last 7 days': 'Pihenőnapok az utolsó 7 napban'
 'Rest days vs. active days': 'Pihenőnapok vs. aktív napok'
-'Retired gear': 'Visszavont felszerelés'
+Retired: Retired
 Rewind: Visszatekintő
 'Rewind comparisons are only available on larger screens.': 'A visszatekintő összehasonlítások csak nagyobb képernyőkön érhetők el.'
 Ride: Kerékpározás
@@ -536,10 +541,12 @@ Tue.: Kedd
 'Unchanged compared to yesterday': 'Változatlan a tegnapihoz képest'
 Unspecified: Meghatározatlan
 'Upcoming maintenance': 'Közelgő karbantartás'
+Usage: Usage
 'User badge': 'Felhasználói kitűző'
 'Velo Mobile': Velomobil
 'Velo Mobiles': Velomobil
 'Very high': 'Nagyon magas'
+'View activities': 'View activities'
 'View all': 'Összes megtekintése'
 'View details': 'Részletek megtekintése'
 'View this month': 'Ez a hónap megtekintése'

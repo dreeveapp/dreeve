@@ -34,6 +34,7 @@ Apr: Apr
 Aug: Aug
 Average: Gemiddeld
 'Average gradient': 'Gemiddelde helling'
+'Avg distance': 'Avg distance'
 'Avg gradient': 'Gem. helling'
 'Avg pace': 'Gem. tempo'
 'Avg speed': 'Gem. snelheid'
@@ -76,6 +77,7 @@ Components: Onderdelen
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': "Proficiat! Je behaalde {numberOfPRs} PR's in deze activiteit."
 'Consider reducing load': 'Overweeg de belasting te verminderen'
 Consistency: Consistentie
+Cost: Cost
 Country: Land
 Cricket: Cricket
 Crossfit: Crossfit
@@ -161,7 +163,6 @@ Fri.: Vr.
 GAP: GAP
 Gear: Uitrusting
 'Gear maintenance': 'Onderhoud van uitrusting'
-'Gear stats': Uitrustingsstatistieken
 "Gear that hasn't been used in the last three months, is disabled by default.": 'Uitrusting die de afgelopen drie maanden niet is gebruikt, wordt standaard uitgeschakeld.'
 'Gear that is retired is disabled by default.': 'Uitrusting die niet meer actief is, wordt standaard uitgeschakeld.'
 'Go to activity': 'Naar activiteit'
@@ -202,8 +203,10 @@ History: Historiek
 'How much training you do in total on days you train.': 'Hoeveel je in totaal traint op dagen dat je traint.'
 'How often do you train': 'Hoe vaak train je'
 'Ice Skate': Schaatsen
+Idle: Idle
 Imperial: Imperiaal
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": 'In die tijd heb ik {totalDistance} afgelegd, dat is {numberOfTripsAroundTheWorld} keer rond de wereld 🌍 of {numberOfTripsToTheMoonPercent}% van de weg naar de maan 🌕, en heb ik in totaal {totalElevation} geklommen, dat is {timesMountEverest} keer de Mount Everest 🏔. Alles samen is dat {totalTimeRecorded} beweegtijd 🎉.'
+'In use': 'In use'
 'Increased compared to yesterday': 'Gestegen ten opzichte van gisteren'
 'Individual thresholds vary based on fitness level.': 'Individuele drempels verschillen naargelang het fitheidsniveau.'
 'Inline Skate': Inlineskaten
@@ -222,6 +225,7 @@ Lap: Ronde
 'Last effort date': 'Datum laatste prestatie'
 'Last maintenance': 'Laatste onderhoud'
 'Last month': 'Vorige maand'
+'Last used': 'Last used'
 'Last week': 'Vorige week'
 'Last {numberOfDays} days': 'Laatste {numberOfDays} dagen'
 Lifetime: 'Sinds het begin'
@@ -281,6 +285,7 @@ Night: Nacht
 'No data available': 'Geen gegevens beschikbaar'
 'No milestones achieved yet': 'Nog geen mijlpalen behaald'
 'No other options to compare with': 'Geen andere opties om mee te vergelijken'
+'No purchase price set': 'No purchase price set'
 None: Geen
 'Nordic Ski': Langlaufen
 'Normalized power': 'Genormaliseerd vermogen'
@@ -351,7 +356,7 @@ Recent: Recent
 'Rest days': Rustdagen
 'Rest days in last 7 days': 'Rustdagen in de laatste 7 dagen'
 'Rest days vs. active days': 'Rustdagen vs. actieve dagen'
-'Retired gear': 'Uitrusting buiten gebruik'
+Retired: Retired
 Rewind: Terugblik
 'Rewind comparisons are only available on larger screens.': 'Terugblikvergelijkingen zijn enkel beschikbaar op grotere schermen.'
 Ride: Rit
@@ -536,10 +541,12 @@ Tue.: Di.
 'Unchanged compared to yesterday': 'Onveranderd ten opzichte van gisteren'
 Unspecified: 'Niet gespecificeerd'
 'Upcoming maintenance': 'Komend onderhoud'
+Usage: Usage
 'User badge': Gebruikersbadge
 'Velo Mobile': Velomobiel
 'Velo Mobiles': Velomobielen
 'Very high': 'Heel hoog'
+'View activities': 'View activities'
 'View all': 'Bekijk alles'
 'View details': 'Details bekijken'
 'View this month': 'Deze maand bekijken'

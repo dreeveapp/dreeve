@@ -34,6 +34,7 @@ Apr: 四月
 Aug: 八月
 Average: Average
 'Average gradient': 'Average gradient'
+'Avg distance': 'Avg distance'
 'Avg gradient': 'Avg gradient'
 'Avg pace': 'Avg pace'
 'Avg speed': 'Avg speed'
@@ -76,6 +77,7 @@ Components: Components
 'Congrats! You achieved {numberOfPRs} PRs in this activity.': 'Congrats! You achieved {numberOfPRs} PRs in this activity.'
 'Consider reducing load': 'Consider reducing load'
 Consistency: Consistency
+Cost: Cost
 Country: Country
 Cricket: Cricket
 Crossfit: 交叉健身
@@ -161,7 +163,6 @@ Fri.: Fri.
 GAP: GAP
 Gear: 装备
 'Gear maintenance': 装备维护
-'Gear stats': 装备统计
 "Gear that hasn't been used in the last three months, is disabled by default.": 过去三个月未使用的装备默认禁用。
 'Gear that is retired is disabled by default.': 退役的装备默认禁用。
 'Go to activity': 前往活动
@@ -202,8 +203,10 @@ History: 历史
 'How much training you do in total on days you train.': 'How much training you do in total on days you train.'
 'How often do you train': 'How often do you train'
 'Ice Skate': 冰刀
+Idle: Idle
 Imperial: Imperial
 "In that time, I’ve covered {totalDistance}, that's {numberOfTripsAroundTheWorld} trips around the world 🌍 or {numberOfTripsToTheMoonPercent}% of the way to the moon 🌕, and climbed an elevation of {totalElevation} which is {timesMountEverest} times Mount Everest 🏔. All up that's {totalTimeRecorded} of moving time 🎉.": '在那段时间里，我走了{totalDistance}，相当于环游世界{numberOfTripsAroundTheWorld}次🌍，或者说是到达月球的{numberOfTripsToTheMoonPercent}%🌕，并且攀登了{totalElevation}，相当于珠穆朗玛峰的{timesMountEverest}倍🏔。总而言之，我走了{totalTimeRecorded}的路🎉。'
+'In use': 'In use'
 'Increased compared to yesterday': 'Increased compared to yesterday'
 'Individual thresholds vary based on fitness level.': 个人阈值因体能水平而异。
 'Inline Skate': 直排轮滑
@@ -222,6 +225,7 @@ Lap: 圈
 'Last effort date': 'Last effort date'
 'Last maintenance': 最后维护
 'Last month': 'Last month'
+'Last used': 'Last used'
 'Last week': 'Last week'
 'Last {numberOfDays} days': '最近{numberOfDays}天'
 Lifetime: Lifetime
@@ -281,6 +285,7 @@ Night: 夜晚
 'No data available': 没有可用数据
 'No milestones achieved yet': 'No milestones achieved yet'
 'No other options to compare with': 无可供比较的其他选项
+'No purchase price set': 'No purchase price set'
 None: 无
 'Nordic Ski': 北欧滑雪
 'Normalized power': 'Normalized power'
@@ -351,7 +356,7 @@ Recent: Recent
 'Rest days': 休息日
 'Rest days in last 7 days': 最近7天的休息日
 'Rest days vs. active days': '休息日 训练如 对比'
-'Retired gear': 退役装备
+Retired: Retired
 Rewind: 回顾
 'Rewind comparisons are only available on larger screens.': 回顾对比仅适用于大屏幕。
 Ride: Ride
@@ -536,10 +541,12 @@ Tue.: Tue.
 'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
 Unspecified: 未指定
 'Upcoming maintenance': 'Upcoming maintenance'
+Usage: Usage
 'User badge': 用户徽章
 'Velo Mobile': 'Velo Mobile'
 'Velo Mobiles': 躺车
 'Very high': 非常高
+'View activities': 'View activities'
 'View all': 查看全部
 'View details': 查看详情
 'View this month': 'View this month'
