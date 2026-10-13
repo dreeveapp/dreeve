@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
+use App\Domain\Activity\Stream\CombinedStream\ActivityStreamCombiner;
 use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Activity\Stream\StreamType;
@@ -162,9 +163,8 @@ class CalculateCombinedStreamsTest extends ContainerTestCase
         $settingsRepository->save(SettingsName::UNIT_SYSTEM, UnitSystem::IMPERIAL->value);
 
         new CalculateCombinedStreams(
-            activityRepository: $activityRepository,
             combinedActivityStreamRepository: $this->getContainer()->get(CombinedActivityStreamRepository::class),
-            activityStreamRepository: $streamRepository,
+            activityStreamCombiner: $this->getContainer()->get(ActivityStreamCombiner::class),
             settingsRepository: $settingsRepository,
             mutex: new Mutex(
                 connection: $this->getConnection(),
