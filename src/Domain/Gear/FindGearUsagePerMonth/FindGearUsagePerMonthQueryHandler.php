@@ -27,7 +27,6 @@ final readonly class FindGearUsagePerMonthQueryHandler implements QueryHandler
                 SELECT gearId,
                        strftime('%Y-%m', startDateTime) AS month,
                        SUM(distance) AS distance,
-                       MIN(startDateTime) AS firstUsedOn,
                        MAX(startDateTime) AS lastUsedOn,
                        GROUP_CONCAT(DISTINCT sportType) AS sportTypes
                 FROM Activity

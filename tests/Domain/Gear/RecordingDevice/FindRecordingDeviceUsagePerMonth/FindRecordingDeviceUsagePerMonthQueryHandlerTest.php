@@ -80,7 +80,6 @@ class FindRecordingDeviceUsagePerMonthQueryHandlerTest extends ContainerTestCase
         $march = Month::fromDate(SerializableDateTime::fromString('2023-03-01'));
 
         $usage = $response->getFor('Garmin Edge 540');
-        $this->assertEquals(SerializableDateTime::fromString('2023-01-05 08:00:00'), $usage->getFirstUsedOn());
         $this->assertEquals(SerializableDateTime::fromString('2023-03-02 10:00:00'), $usage->getLastUsedOn());
         $this->assertEquals(SportTypes::fromArray([SportType::RIDE, SportType::GRAVEL_RIDE]), $usage->getSportTypes());
         $this->assertEquals(Kilometer::from(30), $usage->getDistanceFor($january));
@@ -88,7 +87,6 @@ class FindRecordingDeviceUsagePerMonthQueryHandlerTest extends ContainerTestCase
         $this->assertEquals(Kilometer::from(40), $usage->getDistanceFor($march));
 
         $usage = $response->getFor('Polar Vantage M');
-        $this->assertEquals(SerializableDateTime::fromString('2023-02-10 07:00:00'), $usage->getFirstUsedOn());
         $this->assertEquals(SerializableDateTime::fromString('2023-02-10 07:00:00'), $usage->getLastUsedOn());
         $this->assertEquals(SportTypes::fromArray([SportType::RUN]), $usage->getSportTypes());
         $this->assertEquals(Kilometer::from(5), $usage->getDistanceFor($february));

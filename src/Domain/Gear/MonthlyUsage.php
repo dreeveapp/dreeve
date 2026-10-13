@@ -14,7 +14,6 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 final readonly class MonthlyUsage
 {
     private function __construct(
-        private SerializableDateTime $firstUsedOn,
         private SerializableDateTime $lastUsedOn,
         private SportTypes $sportTypes,
         /** @var array<string, Kilometer> */
@@ -29,11 +28,9 @@ final readonly class MonthlyUsage
     {
         $sportTypes = [];
         $distancePerMonth = [];
-        $firstUsedOn = [];
         $lastUsedOn = [];
         foreach ($results as $result) {
             $distancePerMonth[(string) $result['month']] = Meter::from((float) $result['distance'])->toKilometer();
-            $firstUsedOn[] = (string) $result['firstUsedOn'];
             $lastUsedOn[] = (string) $result['lastUsedOn'];
             foreach (explode(',', (string) $result['sportTypes']) as $sportType) {
                 $sportTypes[$sportType] = SportType::from($sportType);
@@ -41,16 +38,10 @@ final readonly class MonthlyUsage
         }
 
         return new self(
-            firstUsedOn: SerializableDateTime::fromString(min($firstUsedOn)),
             lastUsedOn: SerializableDateTime::fromString(max($lastUsedOn)),
             sportTypes: SportTypes::fromArray(array_values($sportTypes)),
             distancePerMonth: $distancePerMonth,
         );
-    }
-
-    public function getFirstUsedOn(): SerializableDateTime
-    {
-        return $this->firstUsedOn;
     }
 
     public function getLastUsedOn(): SerializableDateTime

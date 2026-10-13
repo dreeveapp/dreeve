@@ -3539,9 +3539,6 @@
   .text-yellow-800 {
     color: var(--color-yellow-800);
   }
-  .normal-case {
-    text-transform: none;
-  }
   .uppercase {
     text-transform: uppercase;
   }
