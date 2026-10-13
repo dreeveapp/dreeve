@@ -7,6 +7,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityImagesHaveBeenUpdated;
 use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ActivityRouteWasUpdated;
+use App\Domain\Activity\ActivitySportTypeWasChanged;
 use App\Domain\Activity\ActivityWasAdded;
 use App\Domain\Activity\ActivityWasUpdated;
 use App\Domain\Activity\Route\RouteGeography;
@@ -300,6 +301,34 @@ class ActivityTest extends TestCase
         $this->assertNotContainsEquals(
             new ActivityRouteWasUpdated(),
             $activity->withName(ActivityName::fromString('Renamed'))->getRecordedEvents()
+        );
+    }
+
+    public function testItShouldRecordThatTheSportTypeWasChanged(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withSportType(SportType::RUN)
+            ->build();
+
+        $this->assertContainsEquals(
+            new ActivitySportTypeWasChanged(ActivityId::fromUnprefixed('903645')),
+            $activity->withSportType(SportType::RIDE)->getRecordedEvents()
+        );
+        $this->assertEmpty($activity->getRecordedEvents());
+    }
+
+    public function testItShouldNotRecordThatTheSportTypeWasChangedWhenItDidNotChange(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withSportType(SportType::RUN)
+            ->build();
+
+        $this->assertNotContainsEquals(
+            new ActivitySportTypeWasChanged(ActivityId::fromUnprefixed('903645')),
+            $activity
+                ->withSportType(SportType::RUN)
+                ->withName(ActivityName::fromString('Renamed'))
+                ->getRecordedEvents()
         );
     }
 

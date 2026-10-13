@@ -894,6 +894,9 @@ final class Activity
         if ($this->routeSignature() !== $clone->routeSignature()) {
             $clone->recordThat(new ActivityRouteWasUpdated());
         }
+        if ($this->sportType !== $clone->sportType) {
+            $clone->recordOnlyOnce(new ActivitySportTypeWasChanged($clone->getId()));
+        }
         if ($this->updateSignature() !== $clone->updateSignature()) {
             $clone->recordOnlyOnce(new ActivityWasUpdated(
                 activityId: $clone->getId(),
