@@ -107,12 +107,17 @@ final readonly class GearStatsRequestHandler
 
         $retiredGear = $allUsedGear->filter(fn (Gear $gear): bool => $gear->isRetired());
         $allGear = Gears::fromArray([...$activeGear, ...$retiredGear]);
+        $mostRecentlyUsedFirst = fn (Gear $a, Gear $b): int => $gearUsage->getFor($b->getId())->getLastUsedOn() <=> $gearUsage->getFor($a->getId())->getLastUsedOn();
 
         return $this->twig->load('html/gear/gear.html.twig')->render([
             'gearUsage' => $gearUsage,
-            'retiredGear' => $retiredGear,
-            'gearInUse' => $activeGear->filter(fn (Gear $gear): bool => $gearUsage->getFor($gear->getId())->wasUsedSince($usedSince)),
-            'idleGear' => $activeGear->filter(fn (Gear $gear): bool => !$gearUsage->getFor($gear->getId())->wasUsedSince($usedSince)),
+            'retiredGear' => $retiredGear->usort($mostRecentlyUsedFirst),
+            'gearInUse' => $activeGear
+                ->filter(fn (Gear $gear): bool => $gearUsage->getFor($gear->getId())->wasUsedSince($usedSince))
+                ->usort($mostRecentlyUsedFirst),
+            'idleGear' => $activeGear
+                ->filter(fn (Gear $gear): bool => !$gearUsage->getFor($gear->getId())->wasUsedSince($usedSince))
+                ->usort($mostRecentlyUsedFirst),
             'totalDistance' => Kilometer::from($allGear->sum(fn (Gear $gear): float => $gear->getDistance()->toFloat())),
             'maxDistance' => Kilometer::from($allGear->isEmpty() ? 0 : (float) $allGear->max(fn (Gear $gear): float => $gear->getDistance()->toFloat())),
             'totalMovingTime' => Seconds::from((int) $allGear->sum(fn (Gear $gear): int => $gear->getMovingTime()->toInt())),

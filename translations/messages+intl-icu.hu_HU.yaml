@@ -644,9 +644,6 @@ watts: watt
 weeks: hetek
 workouts: edzések
 '{amount} left': 'még {amount}'
-'{count} idle': '{count} idle'
-'{count} in use': '{count} in use'
-'{count} retired': '{count} retired'
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} nap'
 '{days} consecutive days of activity': '{days} egymást követő aktív nap'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} óra'

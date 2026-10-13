@@ -293,22 +293,7 @@
         </li>
     </ul>
     <!-- GEAR SUMMARY -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 my-4">
-        <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs">
-            <div class="flex items-center justify-between mb-1">
-                <span class="text-xxs uppercase tracking-wider font-semibold text-gray-500">Gear</span>
-                <div class="size-6 rounded-md bg-primary-soft text-primary flex items-center justify-center">
-                    <svg class="size-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
-    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13v-2a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L14 4.757V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L4.929 6.343a1 1 0 0 0 0 1.414l.536.536L4.757 10H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535 1.707.707V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H20a1 1 0 0 0 1-1Z"></path>
-    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"></path>
-</svg>
-                </div>
-            </div>
-            <div class="flex items-baseline gap-1">
-                <span class="text-2xl font-black tracking-tight text-gray-900">4</span>
-            </div>
-            <div class="text-xs text-gray-500 truncate">3 in use &middot; 0 idle &middot; 1 retired</div>
-        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 my-4">
         <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs">
             <div class="flex items-center justify-between mb-1">
                 <span class="text-xxs uppercase tracking-wider font-semibold text-gray-500">Distance</span>
@@ -346,16 +331,7 @@
         </div>
     </div>
     <!-- GEAR GROUPS -->
-    <div data-sort-scope>
-        <div class="flex justify-end mb-2">
-    <div role="group" aria-label="Sort" class="shrink-0 inline-flex items-center bg-gray-100 rounded-lg p-0.5 text-xxs font-medium">
-        <input type="radio" name="usageSort" id="usageSortDistance" data-sort-option="rank" class="sr-only peer/rank" checked>
-        <label for="usageSortDistance" class="cursor-pointer rounded-md px-2 py-1 text-gray-500 transition peer-checked/rank:bg-white peer-checked/rank:text-gray-900 peer-checked/rank:shadow-xs peer-focus-visible/rank:ring-2 peer-focus-visible/rank:ring-primary/40">Distance</label>
-        <input type="radio" name="usageSort" id="usageSortLastUsed" data-sort-option="date" class="sr-only peer/date">
-        <label for="usageSortLastUsed" class="cursor-pointer rounded-md px-2 py-1 text-gray-500 transition peer-checked/date:bg-white peer-checked/date:text-gray-900 peer-checked/date:shadow-xs peer-focus-visible/date:ring-2 peer-focus-visible/date:ring-primary/40">Last used</label>
-    </div>
-</div>
-                                                        <details class="group/section mb-4 bg-white border border-gray-200 rounded-lg shadow-xs" open>
+                                        <details class="group/section mb-4 bg-white border border-gray-200 rounded-lg shadow-xs" open>
         <summary class="list-none cursor-pointer flex items-center justify-between p-4 select-none">
             <div class="flex items-center gap-2">
                 <h3 class="text-lg font-semibold">In use</h3>
@@ -372,212 +348,8 @@
             <div class="hidden lg:block">Last used</div>
             <div></div>
         </div>
-        <div class="flex flex-col">
-                                                                                                                                                                                                                                                                                                                                        <details style="--sort-order-rank: -275474; --sort-order-date: -20230831;" class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) group/row border-t border-gray-100">
-        <summary class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_11rem_9rem_7rem_0.75rem] list-none cursor-pointer px-4 py-2.5 hover:bg-gray-50 select-none">
-            <div class="min-w-0">
-                <div class="font-medium text-gray-900 truncate">Retro Race Bike</div>
-                <div class="text-xs text-gray-500 truncate">Virtual Rides, Runs, Rides &middot; 8 workouts</div>
-            </div>
-            <div>
-                <div class="flex items-baseline justify-between gap-2">
-                    <span class="text-sm font-bold text-gray-900">275<span class="text-xxs ml-px whitespace-nowrap">km</span></span>
-                    <span class="hidden lg:inline text-xs text-gray-500 tabular-nums">88%</span>
-                </div>
-                <div class="mt-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-primary rounded-full" style="width: 100%"></div>
-                </div>
-            </div>
-                                        <div class="hidden lg:flex items-end gap-px h-8">
-                                                                    <div class="flex-1 h-full flex items-end" title="Nov 2022 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Dec 2022 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Jan 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Feb 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Mar 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Apr 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="May 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Jun 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Jul 2023 &middot; 158 km">
-                            <div class="w-full rounded-t-xs bg-primary" style="height: 100%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Aug 2023 &middot; 67 km">
-                            <div class="w-full rounded-t-xs bg-primary" style="height: 42.4%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Sep 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Oct 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                    </div>
-                        <div class="hidden lg:block text-sm text-gray-500">31-08-23</div>
-            <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/row:rotate-180" viewbox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m1 1 4 4 4-4"></path>
-            </svg>
-        </summary>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 px-4 py-4 border-t border-gray-100 bg-gray-50">
-            <div>
-                <div class="mb-2 text-xs font-semibold text-gray-700">Usage</div>
-                <div class="grid grid-cols-3 gap-x-2 gap-y-3">
-                                            <div>
-                            <div class="text-xxs uppercase text-gray-400 tracking-wider">workouts</div>
-                            <div class="text-sm font-bold text-gray-900">8</div>
-                        </div>
-                                            <div>
-                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Avg distance</div>
-                            <div class="text-sm font-bold text-gray-900">34<span class="text-xxs ml-px whitespace-nowrap">km</span>
-</div>
-                        </div>
-                                            <div>
-                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Elevation</div>
-                            <div class="text-sm font-bold text-gray-900">1&nbsp;698<span class="text-xxs ml-px whitespace-nowrap">m</span>
-</div>
-                        </div>
-                                            <div>
-                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Moving time</div>
-                            <div class="text-sm font-bold text-gray-900">7h 22m</div>
-                        </div>
-                                            <div>
-                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Avg speed</div>
-                            <div class="text-sm font-bold text-gray-900">37.4<span class="text-xxs ml-px whitespace-nowrap">km/h</span>
-</div>
-                        </div>
-                                            <div>
-                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Calories</div>
-                            <div class="text-sm font-bold text-gray-900">4&nbsp;756<span class="text-xxs ml-px">kcal</span>
-</div>
-                        </div>
-                                    </div>
-            </div>
-            <div>
-                <div class="mb-2 text-xs font-semibold text-gray-700">Cost</div>
-                                    <div class="text-xs text-gray-500">No purchase price set</div>
-                            </div>
-            <div class="lg:col-span-2">
-                <a href="/activities?filters%5Bgear%5D=gear-b12659861" class="text-xs font-medium text-blue-600 hover:underline">View activities</a>
-            </div>
-        </div>
-    </details>
-    
-                                                                                                                                                                                                                                                                                                                            <details style="--sort-order-rank: -12415; --sort-order-date: -20230728;" class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) group/row border-t border-gray-100">
-        <summary class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_11rem_9rem_7rem_0.75rem] list-none cursor-pointer px-4 py-2.5 hover:bg-gray-50 select-none">
-            <div class="min-w-0">
-                <div class="font-medium text-gray-900 truncate">Zwift hub</div>
-                <div class="text-xs text-gray-500 truncate">Rides &middot; 1 workouts</div>
-            </div>
-            <div>
-                <div class="flex items-baseline justify-between gap-2">
-                    <span class="text-sm font-bold text-gray-900">12<span class="text-xxs ml-px whitespace-nowrap">km</span></span>
-                    <span class="hidden lg:inline text-xs text-gray-500 tabular-nums">4%</span>
-                </div>
-                <div class="mt-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-primary rounded-full" style="width: 4.5%"></div>
-                </div>
-            </div>
-                                        <div class="hidden lg:flex items-end gap-px h-8">
-                                                                    <div class="flex-1 h-full flex items-end" title="Nov 2022 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Dec 2022 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Jan 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Feb 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Mar 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Apr 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="May 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Jun 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Jul 2023 &middot; 12 km">
-                            <div class="w-full rounded-t-xs bg-primary" style="height: 100%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Aug 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Sep 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                                                    <div class="flex-1 h-full flex items-end" title="Oct 2023 &middot; 0 km">
-                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
-                        </div>
-                                    </div>
-                        <div class="hidden lg:block text-sm text-gray-500">28-07-23</div>
-            <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/row:rotate-180" viewbox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m1 1 4 4 4-4"></path>
-            </svg>
-        </summary>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 px-4 py-4 border-t border-gray-100 bg-gray-50">
-            <div>
-                <div class="mb-2 text-xs font-semibold text-gray-700">Usage</div>
-                <div class="grid grid-cols-3 gap-x-2 gap-y-3">
-                                            <div>
-                            <div class="text-xxs uppercase text-gray-400 tracking-wider">workouts</div>
-                            <div class="text-sm font-bold text-gray-900">1</div>
-                        </div>
-                                            <div>
-                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Avg distance</div>
-                            <div class="text-sm font-bold text-gray-900">12<span class="text-xxs ml-px whitespace-nowrap">km</span>
-</div>
-                        </div>
-                                            <div>
-                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Elevation</div>
-                            <div class="text-sm font-bold text-gray-900">15<span class="text-xxs ml-px whitespace-nowrap">m</span>
-</div>
-                        </div>
-                                            <div>
-                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Moving time</div>
-                            <div class="text-sm font-bold text-gray-900">31m</div>
-                        </div>
-                                            <div>
-                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Avg speed</div>
-                            <div class="text-sm font-bold text-gray-900">23.3<span class="text-xxs ml-px whitespace-nowrap">km/h</span>
-</div>
-                        </div>
-                                            <div>
-                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Calories</div>
-                            <div class="text-sm font-bold text-gray-900">293<span class="text-xxs ml-px">kcal</span>
-</div>
-                        </div>
-                                    </div>
-            </div>
-            <div>
-                <div class="mb-2 text-xs font-semibold text-gray-700">Cost</div>
-                                    <div class="text-xs text-gray-500">No purchase price set</div>
-                            </div>
-            <div class="lg:col-span-2">
-                <a href="/activities?filters%5Bgear%5D=gear-b12659862" class="text-xs font-medium text-blue-600 hover:underline">View activities</a>
-            </div>
-        </div>
-    </details>
-    
-                                                                                                                                                                                                                                                                                                                            <details style="--sort-order-rank: -24424; --sort-order-date: -20230912;" class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) group/row border-t border-gray-100">
+        <div>
+                                                                                                                                                                                                                                                                                                                                <details class="group/row border-t border-gray-100">
         <summary class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_11rem_9rem_7rem_0.75rem] list-none cursor-pointer px-4 py-2.5 hover:bg-gray-50 select-none">
             <div class="min-w-0">
                 <div class="font-medium text-gray-900 truncate">Unspecified</div>
@@ -679,10 +451,214 @@
         </div>
     </details>
     
-                                    
+                                                                                                                                                                                                                                                                                                                    <details class="group/row border-t border-gray-100">
+        <summary class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_11rem_9rem_7rem_0.75rem] list-none cursor-pointer px-4 py-2.5 hover:bg-gray-50 select-none">
+            <div class="min-w-0">
+                <div class="font-medium text-gray-900 truncate">Retro Race Bike</div>
+                <div class="text-xs text-gray-500 truncate">Virtual Rides, Runs, Rides &middot; 8 workouts</div>
+            </div>
+            <div>
+                <div class="flex items-baseline justify-between gap-2">
+                    <span class="text-sm font-bold text-gray-900">275<span class="text-xxs ml-px whitespace-nowrap">km</span></span>
+                    <span class="hidden lg:inline text-xs text-gray-500 tabular-nums">88%</span>
+                </div>
+                <div class="mt-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-primary rounded-full" style="width: 100%"></div>
+                </div>
+            </div>
+                                        <div class="hidden lg:flex items-end gap-px h-8">
+                                                                    <div class="flex-1 h-full flex items-end" title="Nov 2022 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Dec 2022 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Jan 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Feb 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Mar 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Apr 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="May 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Jun 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Jul 2023 &middot; 158 km">
+                            <div class="w-full rounded-t-xs bg-primary" style="height: 100%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Aug 2023 &middot; 67 km">
+                            <div class="w-full rounded-t-xs bg-primary" style="height: 42.4%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Sep 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Oct 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                    </div>
+                        <div class="hidden lg:block text-sm text-gray-500">31-08-23</div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/row:rotate-180" viewbox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m1 1 4 4 4-4"></path>
+            </svg>
+        </summary>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 px-4 py-4 border-t border-gray-100 bg-gray-50">
+            <div>
+                <div class="mb-2 text-xs font-semibold text-gray-700">Usage</div>
+                <div class="grid grid-cols-3 gap-x-2 gap-y-3">
+                                            <div>
+                            <div class="text-xxs uppercase text-gray-400 tracking-wider">workouts</div>
+                            <div class="text-sm font-bold text-gray-900">8</div>
+                        </div>
+                                            <div>
+                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Avg distance</div>
+                            <div class="text-sm font-bold text-gray-900">34<span class="text-xxs ml-px whitespace-nowrap">km</span>
+</div>
+                        </div>
+                                            <div>
+                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Elevation</div>
+                            <div class="text-sm font-bold text-gray-900">1&nbsp;698<span class="text-xxs ml-px whitespace-nowrap">m</span>
+</div>
+                        </div>
+                                            <div>
+                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Moving time</div>
+                            <div class="text-sm font-bold text-gray-900">7h 22m</div>
+                        </div>
+                                            <div>
+                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Avg speed</div>
+                            <div class="text-sm font-bold text-gray-900">37.4<span class="text-xxs ml-px whitespace-nowrap">km/h</span>
+</div>
+                        </div>
+                                            <div>
+                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Calories</div>
+                            <div class="text-sm font-bold text-gray-900">4&nbsp;756<span class="text-xxs ml-px">kcal</span>
+</div>
+                        </div>
+                                    </div>
+            </div>
+            <div>
+                <div class="mb-2 text-xs font-semibold text-gray-700">Cost</div>
+                                    <div class="text-xs text-gray-500">No purchase price set</div>
+                            </div>
+            <div class="lg:col-span-2">
+                <a href="/activities?filters%5Bgear%5D=gear-b12659861" class="text-xs font-medium text-blue-600 hover:underline">View activities</a>
+            </div>
         </div>
     </details>
-                                                                                        <details class="group/section mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+    
+                                                                                                                                                                                                                                                                                                                    <details class="group/row border-t border-gray-100">
+        <summary class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_11rem_9rem_7rem_0.75rem] list-none cursor-pointer px-4 py-2.5 hover:bg-gray-50 select-none">
+            <div class="min-w-0">
+                <div class="font-medium text-gray-900 truncate">Zwift hub</div>
+                <div class="text-xs text-gray-500 truncate">Rides &middot; 1 workouts</div>
+            </div>
+            <div>
+                <div class="flex items-baseline justify-between gap-2">
+                    <span class="text-sm font-bold text-gray-900">12<span class="text-xxs ml-px whitespace-nowrap">km</span></span>
+                    <span class="hidden lg:inline text-xs text-gray-500 tabular-nums">4%</span>
+                </div>
+                <div class="mt-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-primary rounded-full" style="width: 4.5%"></div>
+                </div>
+            </div>
+                                        <div class="hidden lg:flex items-end gap-px h-8">
+                                                                    <div class="flex-1 h-full flex items-end" title="Nov 2022 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Dec 2022 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Jan 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Feb 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Mar 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Apr 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="May 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Jun 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Jul 2023 &middot; 12 km">
+                            <div class="w-full rounded-t-xs bg-primary" style="height: 100%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Aug 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Sep 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                                                    <div class="flex-1 h-full flex items-end" title="Oct 2023 &middot; 0 km">
+                            <div class="w-full rounded-t-xs bg-gray-200" style="height: 5%"></div>
+                        </div>
+                                    </div>
+                        <div class="hidden lg:block text-sm text-gray-500">28-07-23</div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/row:rotate-180" viewbox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m1 1 4 4 4-4"></path>
+            </svg>
+        </summary>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 px-4 py-4 border-t border-gray-100 bg-gray-50">
+            <div>
+                <div class="mb-2 text-xs font-semibold text-gray-700">Usage</div>
+                <div class="grid grid-cols-3 gap-x-2 gap-y-3">
+                                            <div>
+                            <div class="text-xxs uppercase text-gray-400 tracking-wider">workouts</div>
+                            <div class="text-sm font-bold text-gray-900">1</div>
+                        </div>
+                                            <div>
+                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Avg distance</div>
+                            <div class="text-sm font-bold text-gray-900">12<span class="text-xxs ml-px whitespace-nowrap">km</span>
+</div>
+                        </div>
+                                            <div>
+                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Elevation</div>
+                            <div class="text-sm font-bold text-gray-900">15<span class="text-xxs ml-px whitespace-nowrap">m</span>
+</div>
+                        </div>
+                                            <div>
+                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Moving time</div>
+                            <div class="text-sm font-bold text-gray-900">31m</div>
+                        </div>
+                                            <div>
+                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Avg speed</div>
+                            <div class="text-sm font-bold text-gray-900">23.3<span class="text-xxs ml-px whitespace-nowrap">km/h</span>
+</div>
+                        </div>
+                                            <div>
+                            <div class="text-xxs uppercase text-gray-400 tracking-wider">Calories</div>
+                            <div class="text-sm font-bold text-gray-900">293<span class="text-xxs ml-px">kcal</span>
+</div>
+                        </div>
+                                    </div>
+            </div>
+            <div>
+                <div class="mb-2 text-xs font-semibold text-gray-700">Cost</div>
+                                    <div class="text-xs text-gray-500">No purchase price set</div>
+                            </div>
+            <div class="lg:col-span-2">
+                <a href="/activities?filters%5Bgear%5D=gear-b12659862" class="text-xs font-medium text-blue-600 hover:underline">View activities</a>
+            </div>
+        </div>
+    </details>
+    
+                            
+        </div>
+    </details>
+                                                            <details class="group/section mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <summary class="list-none cursor-pointer flex items-center justify-between p-4 select-none">
             <div class="flex items-center gap-2">
                 <h3 class="text-lg font-semibold">Retired</h3>
@@ -699,8 +675,8 @@
             <div class="hidden lg:block">Last used</div>
             <div></div>
         </div>
-        <div class="flex flex-col">
-                                                                                                                                                                                                                                                                                                                                        <details style="--sort-order-rank: 0; --sort-order-date: -20230730;" class="order-(--sort-order-rank) sorted-by-date:order-(--sort-order-date) group/row border-t border-gray-100">
+        <div>
+                                                                                                                                                                                                                                                                                                                                <details class="group/row border-t border-gray-100">
         <summary class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_11rem_9rem_7rem_0.75rem] list-none cursor-pointer px-4 py-2.5 hover:bg-gray-50 select-none">
             <div class="min-w-0">
                 <div class="font-medium text-gray-900 truncate">Zwift One</div>
@@ -765,11 +741,10 @@
         </div>
     </details>
     
-                                    
+                            
         </div>
     </details>
-                        </div>
-    <!-- GEAR CHARTS -->
+                <!-- GEAR CHARTS -->
     <div class="grid grid-cols-1 mb-4">
         <!-- DISTANCE PER MONTH PER GEAR -->
         <div class="mb-4  p-4 bg-white border border-gray-200 rounded-lg shadow-xs ">

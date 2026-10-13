@@ -644,9 +644,6 @@ watts: watts
 weeks: semanas
 workouts: treinos
 '{amount} left': 'restam {amount}'
-'{count} idle': '{count} idle'
-'{count} in use': '{count} in use'
-'{count} retired': '{count} retired'
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} dias'
 '{days} consecutive days of activity': '{days} dias consecutivos de atividade'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} horas'
