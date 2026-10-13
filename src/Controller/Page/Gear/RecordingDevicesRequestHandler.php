@@ -6,6 +6,9 @@ namespace App\Controller\Page\Gear;
 
 use App\Application\Navigation\NavigationSection;
 use App\Application\PageRenderer;
+use App\Domain\Calendar\Months;
+use App\Domain\Gear\RecordingDevice\FindRecordingDeviceUsagePerMonth\FindRecordingDeviceUsagePerMonth;
+use App\Domain\Gear\RecordingDevice\RecordingDevice;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
@@ -13,7 +16,10 @@ use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Measurement\Time\Seconds;
+use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -24,6 +30,8 @@ final readonly class RecordingDevicesRequestHandler
     public function __construct(
         private RecordingDeviceRepository $recordingDeviceRepository,
         private SettingsRepository $settingsRepository,
+        private QueryBus $queryBus,
+        private Clock $clock,
         private Environment $twig,
         private PageRenderer $pageRenderer,
     ) {
@@ -40,6 +48,7 @@ final readonly class RecordingDevicesRequestHandler
                     RootCacheTag::ACTIVITIES,
                 ),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
+                ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
@@ -48,8 +57,16 @@ final readonly class RecordingDevicesRequestHandler
 
     private function renderFor(): string
     {
+        $devices = $this->recordingDeviceRepository->findAll();
+        $deviceUsage = $this->queryBus->ask(new FindRecordingDeviceUsagePerMonth());
+
         return $this->twig->load('html/gear/recording-device/recording-devices.html.twig')->render([
-            'devices' => $this->recordingDeviceRepository->findAll(),
+            'devices' => $devices->usort(
+                fn (RecordingDevice $a, RecordingDevice $b): int => $deviceUsage->getFor($b->getName())->getLastUsedOn() <=> $deviceUsage->getFor($a->getName())->getLastUsedOn()
+            ),
+            'deviceUsage' => $deviceUsage,
+            'totalMovingTime' => Seconds::from((int) $devices->sum(fn (RecordingDevice $device): int => $device->getTimeTracked()->toInt())),
+            'lastTwelveMonths' => Months::lastXMonths(12, $this->clock->getCurrentDateTimeImmutable()),
             'unitSystem' => $this->settingsRepository->appearance()->getUnitSystem(),
         ]);
     }

@@ -19,103 +19,44 @@
 {% autoescape false %}
     <!-- GEAR SUB MENU -->
     {% include 'html/gear/gear-sub-menu.html.twig' with {activeMenuItem: 'recordingDevices'} %}
-    <div class="grid grid-cols-1 mb-4">
-        <!-- RECORDING DEVICE STATS -->
-        <div class="mb-4 p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-            <div class="mb-4 flex items-center justify-between">
-                <h3 class="text-lg font-semibold">
-                    {{ "Recording devices"|trans }}
-                </h3>
-            </div>
-            <div class="relative overflow-x-auto">
-                <table class="data-table">
-                    <thead>
-                    <tr>
-                        <th rowspan="2" scope="col" class="sticky left-0 bg-gray-50">
-
-                        </th>
-                        <th rowspan="2" scope="col">
-                            # {{ "workouts"|trans }}
-                        </th>
-                        <th rowspan="2" scope="col">
-                            {{ "Dist."|trans }}
-                        </th>
-                        <th rowspan="2" scope="col">
-                            {{ "Elev."|trans }}
-                        </th>
-                        <th rowspan="2" scope="col">
-                            {{ "Moving time"|trans }}
-                        </th>
-                        <th rowspan="2" scope="col">
-                            {{ "Purchase price"|trans }}
-                        </th>
-                        <th colspan="3" scope="col">
-                            {{ "Relative cost"|trans }}
-                            <div class="font-normal normal-case">
-                                {{ "per hour"|trans }} /
-                                {{ "per activity"|trans }} /
-                                {{ "per"|trans }} {{ renderUnitSymbol('distance') }}
-                            </div>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for recordingDevice in devices %}
-                        <tr class="group/row">
-                            <th scope="row" class="bg-white sticky left-0 font-medium whitespace-nowrap">
-                                <a href="{{ filteredUrl(path('activities'), {device: recordingDevice.getId()}) }}" class="font-medium text-blue-600 hover:underline">
-                                    {{ recordingDevice.getName() }}
-                                </a>
-                            </th>
-                            <td class="truncate">
-                                {{ recordingDevice.getNumberOfWorkouts() }}
-                            </td>
-                            <td class="truncate">
-                                {{ recordingDevice.getDistanceTracked()|renderMeasurement(0) }}
-                            </td>
-                            <td class="truncate">
-                                {{ recordingDevice.getElevationTracked()|renderMeasurement(0) }}
-                            </td>
-                            <td class="truncate">
-                                {{ recordingDevice.getTimeTrackedFormatted() }}
-                            </td>
-                            <td class="truncate">
-                                {% set purchasePrice = recordingDevice.getPurchasePrice() %}
-                                {% if purchasePrice %}
-                                    {{ purchasePrice|formatMoney }}
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-                            <td class="truncate">
-                                {% set relativeCostPerHour = recordingDevice.getRelativeCostPerHour() %}
-                                {% if relativeCostPerHour %}
-                                    {{ relativeCostPerHour|formatMoney }}
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-                            <td class="truncate">
-                                {% set relativeCostPerWorkout = recordingDevice.getRelativeCostPerWorkout() %}
-                                {% if relativeCostPerWorkout %}
-                                    {{ relativeCostPerWorkout|formatMoney }}
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-                            <td class="truncate">
-                                {% set relativeCostPerDistanceUnit = recordingDevice.getRelativeCostPerDistanceUnit(unitSystem) %}
-                                {% if relativeCostPerDistanceUnit %}
-                                    {{ relativeCostPerDistanceUnit|formatMoney }}
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    <!-- RECORDING DEVICES -->
+    {% set rows %}
+        {% for device in devices %}
+            {{ _self.deviceRow(device, deviceUsage.getFor(device.getName()), totalMovingTime, lastTwelveMonths, unitSystem) }}
+        {% endfor %}
+    {% endset %}
+    {% include 'html/gear/_usage-group.html.twig' with {
+        title: "Recording devices"|trans,
+        numberOfItems: devices|length,
+        nameLabel: "Recording device"|trans,
+        isOpen: true,
+        rows: rows
+    } %}
 {% endautoescape %}
+
+{% macro deviceRow(device, usage, totalMovingTime, lastTwelveMonths, unitSystem) %}
+    {% autoescape false %}
+        {% set monthlyDistances = [] %}
+        {% for month in lastTwelveMonths %}
+            {% set monthlyDistances = monthlyDistances|merge([{label: month.getShortLabel(), distance: usage.getDistanceFor(month)}]) %}
+        {% endfor %}
+        {% include 'html/gear/_usage-row.html.twig' with {
+            name: device.getName(),
+            subtitle: usage.getSportTypes()|map(sportType => sportType|trans)|join(', ') ~ ' · ' ~ device.getNumberOfWorkouts() ~ ' ' ~ "workouts"|trans,
+            distance: device.getDistanceTracked(),
+            movingTime: device.getTimeTracked().toHour().toFloat()|formatNumber(0) ~ '<span class="text-xxs ml-px">h</span>',
+            shareOfMovingTime: totalMovingTime.toInt() > 0 ? device.getTimeTracked().toInt() / totalMovingTime.toInt() * 100 : 0,
+            monthlyDistances: monthlyDistances,
+            lastUsedOn: usage.getLastUsedOn(),
+            usageStats: [
+                {label: "workouts"|trans, value: device.getNumberOfWorkouts()|formatNumber(0)},
+                {label: "Elevation"|trans, value: device.getElevationTracked()|renderMeasurement(0)},
+                {label: "Moving time"|trans, value: device.getTimeTrackedFormatted()},
+            ],
+            purchasePrice: device.getPurchasePrice(),
+            relativeCostPerDistanceUnit: device.getRelativeCostPerDistanceUnit(unitSystem),
+            relativeCostPerHour: device.getRelativeCostPerHour(),
+            relativeCostPerWorkout: device.getRelativeCostPerWorkout()
+        } only %}
+    {% endautoescape %}
+{% endmacro %}
