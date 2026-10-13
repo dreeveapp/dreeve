@@ -20,6 +20,9 @@
     "App\\Domain\\Activity\\BestEffort\\RecalculateBestEffortsListener": [
         "reactToActivitySportTypeWasChanged"
     ],
+    "App\\Domain\\Activity\\Stream\\CombinedStream\\RecombineActivityStreamsListener": [
+        "reactToActivitySportTypeWasChanged"
+    ],
     "App\\Domain\\Challenge\\ChallengeInvalidateCacheTagsListener": [
         "reactToChallengeWasImported"
     ],
