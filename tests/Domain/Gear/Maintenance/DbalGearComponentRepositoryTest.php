@@ -76,7 +76,7 @@ class DbalGearComponentRepositoryTest extends ContainerTestCase
         [$wheelset] = $this->getComponents();
         $this->gearComponentRepository->add($wheelset);
 
-        $this->gearComponentRepository->delete($wheelset->getId());
+        $this->gearComponentRepository->delete($wheelset);
 
         $this->expectExceptionObject(new EntityNotFound('GearComponent "gearComponent-winter-wheelset" not found'));
         $this->gearComponentRepository->find($wheelset->getId());

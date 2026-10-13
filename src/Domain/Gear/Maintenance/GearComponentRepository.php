@@ -10,7 +10,7 @@ interface GearComponentRepository
 
     public function update(GearComponent $gearComponent): void;
 
-    public function delete(GearComponentId $gearComponentId): void;
+    public function delete(GearComponent $gearComponent): void;
 
     public function find(GearComponentId $gearComponentId): GearComponent;
 

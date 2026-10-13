@@ -80,9 +80,20 @@ class GearMaintenanceInvalidateCacheTagsListenerTest extends ContainerTestCase
 
     public function testItInvalidatesWhenAComponentIsDeleted(): void
     {
+        $gearComponent = GearComponent::create(
+            id: GearComponentId::fromUnprefixed('chain'),
+            label: Name::fromString('Chain'),
+            installations: GearComponentInstallations::empty(),
+            localImagePath: null,
+            purchasePrice: null,
+            isRetired: false,
+            notes: null,
+        );
+        $this->gearComponentRepository->add($gearComponent);
         $this->warmUpRenderCache();
 
-        $this->gearComponentRepository->delete(GearComponentId::fromUnprefixed('chain'));
+        $gearComponent->delete();
+        $this->gearComponentRepository->delete($gearComponent);
 
         $this->assertFalse($this->isServedFromCache());
     }

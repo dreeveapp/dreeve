@@ -67,13 +67,13 @@ final readonly class DbalGearComponentRepository extends DbalRepository implemen
         $this->eventBus->publishEvents($gearComponent->getRecordedEvents());
     }
 
-    public function delete(GearComponentId $gearComponentId): void
+    public function delete(GearComponent $gearComponent): void
     {
         $this->connection->executeStatement(
             'DELETE FROM GearComponent WHERE gearComponentId = :gearComponentId',
-            ['gearComponentId' => (string) $gearComponentId],
+            ['gearComponentId' => (string) $gearComponent->getId()],
         );
-        $this->eventBus->publishEvents([new GearComponentWasUpdated()]);
+        $this->eventBus->publishEvents($gearComponent->getRecordedEvents());
     }
 
     public function find(GearComponentId $gearComponentId): GearComponent

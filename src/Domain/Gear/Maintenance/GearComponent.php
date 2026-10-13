@@ -116,6 +116,11 @@ final class GearComponent implements \JsonSerializable
         return $gearComponent;
     }
 
+    public function delete(): void
+    {
+        $this->recordThat(new GearComponentWasUpdated());
+    }
+
     public function addMaintenanceTask(MaintenanceTask $task): void
     {
         $this->maintenanceTasks->add($task);

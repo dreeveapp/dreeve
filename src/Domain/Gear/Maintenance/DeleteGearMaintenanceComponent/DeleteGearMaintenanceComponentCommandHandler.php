@@ -29,7 +29,8 @@ final readonly class DeleteGearMaintenanceComponentCommandHandler implements Com
             return;
         }
 
-        $this->gearComponentRepository->delete($command->getGearComponentId());
+        $gearComponent->delete();
+        $this->gearComponentRepository->delete($gearComponent);
 
         if (null !== $localImagePath = $gearComponent->getLocalImagePath()) {
             $fileSystemPath = ImagePath::fromLocalImagePath($localImagePath)->toFileSystemPath();
