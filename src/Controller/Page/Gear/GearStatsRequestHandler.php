@@ -119,7 +119,6 @@ final readonly class GearStatsRequestHandler
                 ->filter(fn (Gear $gear): bool => !$gearUsage->getFor($gear->getId())->wasUsedSince($usedSince))
                 ->usort($mostRecentlyUsedFirst),
             'totalDistance' => Kilometer::from($allGear->sum(fn (Gear $gear): float => $gear->getDistance()->toFloat())),
-            'maxDistance' => Kilometer::from($allGear->isEmpty() ? 0 : (float) $allGear->max(fn (Gear $gear): float => $gear->getDistance()->toFloat())),
             'totalMovingTime' => Seconds::from((int) $allGear->sum(fn (Gear $gear): int => $gear->getMovingTime()->toInt())),
             'totalNumberOfWorkouts' => $allGear->sum(fn (Gear $gear): int => $gear->getNumberOfActivities()),
             'lastTwelveMonths' => Months::lastXMonths(12, $now),

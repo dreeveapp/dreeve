@@ -4397,9 +4397,6 @@
     .lg\:hidden {
       display: none;
     }
-    .lg\:inline {
-      display: inline;
-    }
     .lg\:w-md {
       width: var(--container-md);
     }
@@ -4412,8 +4409,8 @@
     .lg\:grid-cols-4 {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
-    .lg\:grid-cols-\[minmax\(0\,1fr\)_11rem_9rem_7rem_0\.75rem\] {
-      grid-template-columns: minmax(0,1fr) 11rem 9rem 7rem 0.75rem;
+    .lg\:grid-cols-\[minmax\(0\,1fr\)_6rem_9rem_9rem_7rem_0\.75rem\] {
+      grid-template-columns: minmax(0,1fr) 6rem 9rem 9rem 7rem 0.75rem;
     }
     .lg\:bg-white {
       background-color: var(--color-white);

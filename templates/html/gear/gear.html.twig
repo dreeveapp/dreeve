@@ -28,7 +28,7 @@
         {% if group.gear|length > 0 %}
             {% set rows %}
                 {% for gear in group.gear %}
-                    {{ _self.gearRow(gear, gearUsage.getFor(gear.getId()), totalDistance, maxDistance, lastTwelveMonths, unitSystem) }}
+                    {{ _self.gearRow(gear, gearUsage.getFor(gear.getId()), totalMovingTime, lastTwelveMonths, unitSystem) }}
                 {% endfor %}
             {% endset %}
             {% include 'html/gear/_usage-group.html.twig' with {
@@ -85,7 +85,7 @@
     </div>
 {% endautoescape %}
 
-{% macro gearRow(gear, usage, totalDistance, maxDistance, lastTwelveMonths, unitSystem) %}
+{% macro gearRow(gear, usage, totalMovingTime, lastTwelveMonths, unitSystem) %}
     {% autoescape false %}
         {% set monthlyDistances = [] %}
         {% for month in lastTwelveMonths %}
@@ -95,8 +95,8 @@
             name: gear.getOriginalName(),
             subtitle: usage.getSportTypes()|map(sportType => sportType|trans)|join(', ') ~ ' · ' ~ gear.getNumberOfActivities() ~ ' ' ~ "workouts"|trans,
             distance: gear.getDistance(),
-            shareOfDistance: totalDistance.toFloat() > 0 ? gear.getDistance().toFloat() / totalDistance.toFloat() * 100 : 0,
-            relativeDistance: maxDistance.toFloat() > 0 ? gear.getDistance().toFloat() / maxDistance.toFloat() * 100 : 0,
+            movingTime: gear.getMovingTimeFormatted(),
+            shareOfMovingTime: totalMovingTime.toInt() > 0 ? gear.getMovingTime().toInt() / totalMovingTime.toInt() * 100 : 0,
             monthlyDistances: monthlyDistances,
             lastUsedOn: usage.getLastUsedOn(),
             usageStats: [
