@@ -20,18 +20,17 @@
     <!-- GEAR SUB MENU -->
     {% include 'html/gear/gear-sub-menu.html.twig' with {activeMenuItem: 'recordingDevices'} %}
     <!-- RECORDING DEVICES -->
-    {% set rows %}
+    <div class="mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <h3 class="p-4 text-lg font-semibold">
+            {{ "Recording devices"|trans }}
+        </h3>
+        <div class="border-t border-gray-200">
+            {% include 'html/gear/_usage-header.html.twig' with {nameLabel: "Recording device"|trans} only %}
+        </div>
         {% for device in devices %}
             {{ _self.deviceRow(device, deviceUsage.getFor(device.getName()), totalMovingTime, lastTwelveMonths, unitSystem) }}
         {% endfor %}
-    {% endset %}
-    {% include 'html/gear/_usage-group.html.twig' with {
-        title: "Recording devices"|trans,
-        numberOfItems: devices|length,
-        nameLabel: "Recording device"|trans,
-        isOpen: true,
-        rows: rows
-    } %}
+    </div>
 {% endautoescape %}
 
 {% macro deviceRow(device, usage, totalMovingTime, lastTwelveMonths, unitSystem) %}
