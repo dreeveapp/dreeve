@@ -43,6 +43,14 @@ final readonly class DbalActivityScanRepository extends DbalRepository implement
         ]);
     }
 
+    public function deleteForActivityAndType(ActivityId $activityId, ActivityScanType $type): void
+    {
+        $this->connection->executeStatement(sql: 'DELETE FROM ActivityScan WHERE activityId = :activityId AND type = :type', params: [
+            'activityId' => $activityId,
+            'type' => $type->value,
+        ]);
+    }
+
     public function deleteForSubject(ActivityScanType $type, string $subjectId): void
     {
         $this->connection->executeStatement(sql: 'DELETE FROM ActivityScan WHERE type = :type AND subjectId = :subjectId', params: [

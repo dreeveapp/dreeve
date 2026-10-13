@@ -17,6 +17,8 @@ interface ActivityScanRepository
 
     public function deleteForActivity(ActivityId $activityId): void;
 
+    public function deleteForActivityAndType(ActivityId $activityId, ActivityScanType $type): void;
+
     public function deleteForSubject(ActivityScanType $type, string $subjectId): void;
 
     /**

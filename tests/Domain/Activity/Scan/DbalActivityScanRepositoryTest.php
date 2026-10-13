@@ -74,6 +74,23 @@ class DbalActivityScanRepositoryTest extends ContainerTestCase
         );
     }
 
+    public function testDeleteForActivityAndType(): void
+    {
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::STREAMS));
+        $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('2'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));
+
+        $this->activityScanRepository->deleteForActivityAndType(ActivityId::fromUnprefixed('1'), ActivityScanType::CUSTOM_SEGMENT);
+
+        $this->assertSame(
+            [
+                ['activityId' => 'activity-1', 'type' => 'streams', 'subjectId' => ''],
+                ['activityId' => 'activity-2', 'type' => 'customSegment', 'subjectId' => 'segment-1'],
+            ],
+            $this->fetchScans(),
+        );
+    }
+
     public function testDeleteForSubject(): void
     {
         $this->activityScanRepository->add(ActivityScan::create(activityId: ActivityId::fromUnprefixed('1'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-1'));

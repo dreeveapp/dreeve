@@ -7,6 +7,7 @@ namespace App\Domain\Segment\SegmentEffort;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentIds;
+use App\Domain\Segment\SegmentType;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\Length\Meter;
@@ -80,6 +81,36 @@ final readonly class DbalSegmentEffortRepository extends DbalRepository implemen
         if ($segmentIds->isEmpty()) {
             return;
         }
+
+        $this->eventBus->publishEvents([new SegmentEffortsWereDeleted($segmentIds)]);
+    }
+
+    public function deleteForActivityAndSegmentType(ActivityId $activityId, SegmentType $segmentType): void
+    {
+        $params = [
+            'activityId' => $activityId,
+            'segmentType' => $segmentType->value,
+        ];
+        $segmentIds = SegmentIds::fromArray(array_map(
+            SegmentId::fromString(...),
+            $this->connection->executeQuery(
+                'SELECT DISTINCT SegmentEffort.segmentId FROM SegmentEffort
+                INNER JOIN Segment ON Segment.segmentId = SegmentEffort.segmentId
+                WHERE SegmentEffort.activityId = :activityId AND Segment.type = :segmentType',
+                $params,
+            )->fetchFirstColumn()
+        ));
+
+        if ($segmentIds->isEmpty()) {
+            return;
+        }
+
+        $this->connection->executeStatement(
+            'DELETE FROM SegmentEffort
+            WHERE activityId = :activityId
+            AND segmentId IN (SELECT segmentId FROM Segment WHERE type = :segmentType)',
+            $params,
+        );
 
         $this->eventBus->publishEvents([new SegmentEffortsWereDeleted($segmentIds)]);
     }
