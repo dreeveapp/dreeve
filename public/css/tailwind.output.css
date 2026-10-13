@@ -2312,6 +2312,9 @@
   .gap-4 {
     gap: calc(var(--spacing) * 4);
   }
+  .gap-5 {
+    gap: calc(var(--spacing) * 5);
+  }
   .gap-6 {
     gap: calc(var(--spacing) * 6);
   }
@@ -4394,6 +4397,9 @@
     }
     .lg\:grid-cols-4 {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .lg\:grid-cols-6 {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
     }
     .lg\:grid-cols-\[3rem_minmax\(0\,1fr\)_6rem_minmax\(0\,2fr\)_0\.75rem\] {
       grid-template-columns: 3rem minmax(0,1fr) 6rem minmax(0,2fr) 0.75rem;
