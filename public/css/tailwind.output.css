@@ -2018,9 +2018,6 @@
   .max-w-100 {
     max-width: calc(var(--spacing) * 100);
   }
-  .max-w-120 {
-    max-width: calc(var(--spacing) * 120);
-  }
   .max-w-full {
     max-width: 100%;
   }
@@ -2242,6 +2239,9 @@
   }
   .grid-cols-8 {
     grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+  .grid-cols-\[3rem_minmax\(0\,1fr\)_5rem_0\.75rem\] {
+    grid-template-columns: 3rem minmax(0,1fr) 5rem 0.75rem;
   }
   .grid-cols-\[minmax\(0\,1fr\)_6rem_0\.75rem\] {
     grid-template-columns: minmax(0,1fr) 6rem 0.75rem;
@@ -4203,14 +4203,6 @@
   .has-checked\:text-primary:has(:checked) {
     color: var(--color-primary);
   }
-  .aria-expanded\:bg-gray-50[aria-expanded="true"] {
-    background-color: var(--color-gray-50);
-  }
-  @media (hover: hover) {
-    .hover\:aria-expanded\:bg-gray-100:hover[aria-expanded="true"] {
-      background-color: var(--color-gray-100);
-    }
-  }
   @media (width >= 40rem) {
     .sm\:col-span-2 {
       grid-column: span 2 / span 2;
@@ -4402,6 +4394,9 @@
     }
     .lg\:grid-cols-4 {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .lg\:grid-cols-\[3rem_minmax\(0\,1fr\)_6rem_minmax\(0\,2fr\)_0\.75rem\] {
+      grid-template-columns: 3rem minmax(0,1fr) 6rem minmax(0,2fr) 0.75rem;
     }
     .lg\:grid-cols-\[minmax\(0\,1fr\)_6rem_9rem_9rem_7rem_0\.75rem\] {
       grid-template-columns: minmax(0,1fr) 6rem 9rem 9rem 7rem 0.75rem;
