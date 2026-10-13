@@ -7,6 +7,7 @@ namespace App\Domain\Gear;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Calendar\Month;
+use App\Domain\Calendar\Months;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -57,5 +58,16 @@ final readonly class MonthlyUsage
     public function getDistanceFor(Month $month): Kilometer
     {
         return $this->distancePerMonth[$month->getId()] ?? Kilometer::zero();
+    }
+
+    /**
+     * @return list<array{label: string, distance: Kilometer}>
+     */
+    public function getDistancesFor(Months $months): array
+    {
+        return array_values($months->map(fn (Month $month): array => [
+            'label' => $month->getShortLabel(),
+            'distance' => $this->getDistanceFor($month),
+        ]));
     }
 }

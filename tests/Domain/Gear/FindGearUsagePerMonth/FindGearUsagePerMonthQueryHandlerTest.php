@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Calendar\Month;
+use App\Domain\Calendar\Months;
 use App\Domain\Gear\FindGearUsagePerMonth\FindGearUsagePerMonth;
 use App\Domain\Gear\FindGearUsagePerMonth\FindGearUsagePerMonthQueryHandler;
 use App\Domain\Gear\GearId;
@@ -86,6 +87,17 @@ class FindGearUsagePerMonthQueryHandlerTest extends ContainerTestCase
         $this->assertEquals(Kilometer::from(30), $usage->getDistanceFor($january));
         $this->assertEquals(Kilometer::zero(), $usage->getDistanceFor($february));
         $this->assertEquals(Kilometer::from(40), $usage->getDistanceFor($march));
+        $this->assertEquals(
+            [
+                ['label' => 'Jan 2023', 'distance' => Kilometer::from(30)],
+                ['label' => 'Feb 2023', 'distance' => Kilometer::zero()],
+                ['label' => 'Mar 2023', 'distance' => Kilometer::from(40)],
+            ],
+            $usage->getDistancesFor(Months::create(
+                startDate: SerializableDateTime::fromString('2023-01-01'),
+                endDate: SerializableDateTime::fromString('2023-03-31'),
+            )),
+        );
 
         $usage = $response->getFor(GearId::fromUnprefixed('2'));
         $this->assertEquals(SerializableDateTime::fromString('2023-02-10 07:00:00'), $usage->getLastUsedOn());

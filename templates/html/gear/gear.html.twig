@@ -98,17 +98,13 @@
 
 {% macro gearRow(gear, usage, totalMovingTime, lastTwelveMonths, unitSystem) %}
     {% autoescape false %}
-        {% set monthlyDistances = [] %}
-        {% for month in lastTwelveMonths %}
-            {% set monthlyDistances = monthlyDistances|merge([{label: month.getShortLabel(), distance: usage.getDistanceFor(month)}]) %}
-        {% endfor %}
         {% include 'html/gear/_usage-row.html.twig' with {
             name: gear.getOriginalName(),
             subtitle: usage.getSportTypes()|map(sportType => sportType|trans)|join(', ') ~ ' · ' ~ gear.getNumberOfActivities() ~ ' ' ~ "workouts"|trans,
             distance: gear.getDistance(),
             movingTime: gear.getMovingTimeInHours().toFloat()|formatNumber(0) ~ '<span class="text-xxs ml-px">h</span>',
             shareOfMovingTime: totalMovingTime.toInt() > 0 ? gear.getMovingTime().toInt() / totalMovingTime.toInt() * 100 : 0,
-            monthlyDistances: monthlyDistances,
+            monthlyDistances: usage.getDistancesFor(lastTwelveMonths),
             lastUsedOn: usage.getLastUsedOn(),
             usageStats: [
                 {label: "workouts"|trans, value: gear.getNumberOfActivities()|formatNumber(0)},
