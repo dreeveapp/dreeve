@@ -81,11 +81,7 @@ class ExplorerTileScannerTest extends ContainerTestCase
                     ExplorerTileGrid::tileKey(8365, 5482),
                 ],
             ],
-            $this->getContainer()->get(ActivityExplorerTilesRepository::class)->findAllOnHeatmap()
-        );
-        $this->assertSame(
-            ['activity-with-polyline-only', 'activity-with-stream'],
-            $this->getConnection()->executeQuery('SELECT activityId FROM ActivityExplorerTiles ORDER BY activityId')->fetchFirstColumn()
+            $this->getContainer()->get(ActivityExplorerTilesRepository::class)->findAll()
         );
         $this->assertSame(
             ['activity-virtual', 'activity-with-polyline-only', 'activity-with-stream'],

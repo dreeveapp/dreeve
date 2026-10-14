@@ -31,7 +31,7 @@ final readonly class HeatmapTilesRequestHandler
                 cacheKey: 'heatmap.tiles',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITY_ROUTE),
             ),
-            render: fn (): string => Json::encode((object) $this->activityExplorerTilesRepository->findAllOnHeatmap()),
+            render: fn (): string => Json::encode((object) $this->activityExplorerTilesRepository->findAll()),
         );
 
         return new JsonResponse($render->getContent() ?? '{}', headers: $render->getCacheHeaders(), json: true);

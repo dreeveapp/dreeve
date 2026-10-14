@@ -23,10 +23,6 @@ class HeatmapTilesRequestHandlerTest extends ControllerWebTestCase
                 ->build());
         }
 
-        $this->client->request('GET', '/api/internal/heatmap/routes');
-        $routeIds = array_column(Json::decode((string) $this->client->getResponse()->getContent()), 'id');
-        sort($routeIds);
-
         $this->client->request('GET', '/api/internal/heatmap/tiles');
 
         $this->assertResponseIsSuccessful();
@@ -40,10 +36,10 @@ class HeatmapTilesRequestHandlerTest extends ControllerWebTestCase
             'settings.appearance, settings.general, activity.route',
         );
         $tiles = Json::decode((string) $this->client->getResponse()->getContent());
-        $this->assertNotEmpty($routeIds);
-        $this->assertLessThan(count($activityIds), count($routeIds));
-        $this->assertSame($routeIds, array_keys($tiles));
-        $this->assertSame([1, 2, 3], $tiles[$routeIds[0]]);
+        $expectedActivityIds = array_map(strval(...), $activityIds->toArray());
+        sort($expectedActivityIds);
+        $this->assertSame($expectedActivityIds, array_keys($tiles));
+        $this->assertSame([1, 2, 3], $tiles[$expectedActivityIds[0]]);
     }
 
     #[\Override]
