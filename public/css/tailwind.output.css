@@ -4225,6 +4225,16 @@
     color: var(--color-primary);
   }
   @media (width >= 40rem) {
+    .sm\:not-sr-only {
+      position: static;
+      width: auto;
+      height: auto;
+      padding: 0;
+      margin: 0;
+      overflow: visible;
+      clip-path: none;
+      white-space: normal;
+    }
     .sm\:col-span-2 {
       grid-column: span 2 / span 2;
     }
@@ -4289,11 +4299,17 @@
     .sm\:p-6 {
       padding: calc(var(--spacing) * 6);
     }
+    .sm\:px-3 {
+      padding-inline: calc(var(--spacing) * 3);
+    }
     .sm\:px-6 {
       padding-inline: calc(var(--spacing) * 6);
     }
     .sm\:px-12 {
       padding-inline: calc(var(--spacing) * 12);
+    }
+    .sm\:py-1\.5 {
+      padding-block: calc(var(--spacing) * 1.5);
     }
     .sm\:pb-0 {
       padding-bottom: 0px;
