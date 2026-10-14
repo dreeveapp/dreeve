@@ -28,7 +28,6 @@ final class ActivityExplorerTilesBuilder
     {
         return ActivityExplorerTiles::fromState(
             activityId: $this->activityId,
-            tileCount: $this->tiles->count(),
             tiles: $this->tiles->toArray(),
         );
     }

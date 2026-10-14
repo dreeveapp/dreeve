@@ -19,7 +19,7 @@ final class Version20261014061102 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE ActivityExplorerTiles (activityId VARCHAR(255) NOT NULL, tileCount INTEGER NOT NULL, tiles BLOB NOT NULL, PRIMARY KEY (activityId))');
+        $this->addSql('CREATE TABLE ActivityExplorerTiles (activityId VARCHAR(255) NOT NULL, tiles BLOB NOT NULL, PRIMARY KEY (activityId))');
     }
 
     public function down(Schema $schema): void

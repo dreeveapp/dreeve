@@ -24,12 +24,11 @@ final readonly class DbalActivityExplorerTilesRepository extends DbalRepository 
 
     public function add(ActivityExplorerTiles $activityExplorerTiles): void
     {
-        $sql = 'INSERT INTO ActivityExplorerTiles (activityId, tileCount, tiles)
-                VALUES (:activityId, :tileCount, :tiles)';
+        $sql = 'INSERT INTO ActivityExplorerTiles (activityId, tiles)
+                VALUES (:activityId, :tiles)';
 
         $this->connection->executeStatement($sql, [
             'activityId' => $activityExplorerTiles->getActivityId(),
-            'tileCount' => $activityExplorerTiles->getTileCount(),
             'tiles' => Json::encodeAndCompress($activityExplorerTiles->getTiles()->toArray()),
         ]);
 

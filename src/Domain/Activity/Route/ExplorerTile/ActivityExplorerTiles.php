@@ -20,8 +20,6 @@ final class ActivityExplorerTiles
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string')]
         private readonly ActivityId $activityId,
-        #[ORM\Column(type: 'integer')]
-        private readonly int $tileCount,
         #[ORM\Column(type: 'blob')]
         private readonly array $tiles,
     ) {
@@ -33,7 +31,6 @@ final class ActivityExplorerTiles
     ): self {
         $activityExplorerTiles = new self(
             activityId: $activityId,
-            tileCount: $tiles->count(),
             tiles: $tiles->toArray(),
         );
         $activityExplorerTiles->recordThat(new ActivityExplorerTilesWereCalculated());
@@ -46,12 +43,10 @@ final class ActivityExplorerTiles
      */
     public static function fromState(
         ActivityId $activityId,
-        int $tileCount,
         array $tiles,
     ): self {
         return new self(
             activityId: $activityId,
-            tileCount: $tileCount,
             tiles: $tiles,
         );
     }
@@ -59,11 +54,6 @@ final class ActivityExplorerTiles
     public function getActivityId(): ActivityId
     {
         return $this->activityId;
-    }
-
-    public function getTileCount(): int
-    {
-        return $this->tileCount;
     }
 
     public function getTiles(): ExplorerTiles

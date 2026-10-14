@@ -45,18 +45,18 @@ class DbalActivityExplorerTilesRepositoryTest extends ContainerTestCase
             );
         }
 
-        $this->assertEquals(
+        $this->assertSame(
             [
-                ['activityId' => 'activity-on-heatmap', 'tileCount' => 3],
-                ['activityId' => 'activity-on-heatmap-2', 'tileCount' => 1],
-                ['activityId' => 'activity-virtual-sport-type', 'tileCount' => 1],
-                ['activityId' => 'activity-virtual-world', 'tileCount' => 1],
-                ['activityId' => 'activity-without-country', 'tileCount' => 1],
-                ['activityId' => 'activity-without-polyline', 'tileCount' => 1],
+                'activity-on-heatmap',
+                'activity-on-heatmap-2',
+                'activity-virtual-sport-type',
+                'activity-virtual-world',
+                'activity-without-country',
+                'activity-without-polyline',
             ],
             $this->getConnection()
-                ->executeQuery('SELECT activityId, tileCount FROM ActivityExplorerTiles ORDER BY activityId')
-                ->fetchAllAssociative()
+                ->executeQuery('SELECT activityId FROM ActivityExplorerTiles ORDER BY activityId')
+                ->fetchFirstColumn()
         );
         $this->assertSame(
             [
