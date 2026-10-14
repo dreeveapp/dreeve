@@ -10,17 +10,9 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
-use Doctrine\DBAL\Connection;
 
 final readonly class DbalActivityRouteSignatureRepository extends DbalRepository implements ActivityRouteSignatureRepository
 {
-    public function __construct(
-        Connection $connection,
-        private RouteGrid $routeGrid,
-    ) {
-        parent::__construct($connection);
-    }
-
     public function add(ActivityRouteSignature $activityRouteSignature): void
     {
         $sql = 'INSERT INTO ActivityRouteSignature (activityId, polylineChecksum, cellCount, cells, waypoints)
@@ -73,7 +65,7 @@ final readonly class DbalActivityRouteSignatureRepository extends DbalRepository
             fn (array $result): ActivityId => ActivityId::fromString($result['activityId']),
             array_filter(
                 $this->connection->executeQuery($sql)->fetchAllAssociative(),
-                fn (array $result): bool => $this->routeGrid->checksumFor(
+                fn (array $result): bool => RouteGrid::checksumFor(
                     EncodedPolyline::fromString($result['polyline'])
                 ) !== $result['polylineChecksum']
             )

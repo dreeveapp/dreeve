@@ -15,7 +15,7 @@ final readonly class ExplorerTileGrid
     /**
      * @param array<int, mixed> $latLngCoordinates
      */
-    public function tilesFor(array $latLngCoordinates): ExplorerTiles
+    public static function tilesFor(array $latLngCoordinates): ExplorerTiles
     {
         $tiles = [];
         $previous = null;
@@ -24,11 +24,11 @@ final readonly class ExplorerTileGrid
                 continue;
             }
 
-            $current = $this->project((float) $point[0], (float) $point[1]);
+            $current = self::project((float) $point[0], (float) $point[1]);
             $tiles[self::tileKey((int) $current[0], (int) $current[1])] = true;
 
             if (null !== $previous) {
-                $this->addCrossedTiles($previous, $current, $tiles);
+                self::addCrossedTiles($previous, $current, $tiles);
             }
             $previous = $current;
         }
@@ -46,7 +46,7 @@ final readonly class ExplorerTileGrid
      * @param array{float, float} $to
      * @param array<int, true>    $tiles
      */
-    private function addCrossedTiles(array $from, array $to, array &$tiles): void
+    private static function addCrossedTiles(array $from, array $to, array &$tiles): void
     {
         [$fromX, $fromY] = $from;
         [$toX, $toY] = $to;
@@ -83,7 +83,7 @@ final readonly class ExplorerTileGrid
     /**
      * @return array{float, float}
      */
-    private function project(float $latitude, float $longitude): array
+    private static function project(float $latitude, float $longitude): array
     {
         $latitude = max(-self::MAX_LATITUDE, min(self::MAX_LATITUDE, $latitude));
         $longitude = max(-180.0, min(180.0, $longitude));

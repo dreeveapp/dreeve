@@ -22,7 +22,7 @@ class ExplorerTileGridTest extends TestCase
                 ExplorerTileGrid::tileKey(15073, 9831),
                 ExplorerTileGrid::tileKey(ExplorerTileGrid::TILES_PER_AXIS - 1, 0),
             ],
-            new ExplorerTileGrid()->tilesFor(Json::decode((string) file_get_contents(__DIR__.'/fixtures/reference-points.json')))->toArray()
+            ExplorerTileGrid::tilesFor(Json::decode((string) file_get_contents(__DIR__.'/fixtures/reference-points.json')))->toArray()
         );
     }
 
@@ -37,17 +37,17 @@ class ExplorerTileGridTest extends TestCase
                 ExplorerTileGrid::tileKey(8364, 5482),
                 ExplorerTileGrid::tileKey(8365, 5482),
             ],
-            new ExplorerTileGrid()->tilesFor(Json::decode((string) file_get_contents(__DIR__.'/fixtures/stream-with-gaps.json')))->toArray()
+            ExplorerTileGrid::tilesFor(Json::decode((string) file_get_contents(__DIR__.'/fixtures/stream-with-gaps.json')))->toArray()
         );
 
-        $tiles = new ExplorerTileGrid()->tilesFor([]);
+        $tiles = ExplorerTileGrid::tilesFor([]);
         $this->assertTrue($tiles->isEmpty());
         $this->assertSame(0, $tiles->count());
     }
 
     public function testTilesForARoute(): void
     {
-        $tiles = new ExplorerTileGrid()->tilesFor(
+        $tiles = ExplorerTileGrid::tilesFor(
             EncodedPolyline::fromString((string) file_get_contents(__DIR__.'/../fixtures/route-be-nl.txt'))->decodeAndPairLatLng()
         );
 

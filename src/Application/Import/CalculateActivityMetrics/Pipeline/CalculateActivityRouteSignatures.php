@@ -19,7 +19,6 @@ final readonly class CalculateActivityRouteSignatures implements CalculateActivi
     public function __construct(
         private ActivityRepository $activityRepository,
         private ActivityRouteSignatureRepository $activityRouteSignatureRepository,
-        private RouteGrid $routeGrid,
     ) {
     }
 
@@ -40,9 +39,9 @@ final readonly class CalculateActivityRouteSignatures implements CalculateActivi
             $this->activityRouteSignatureRepository->deleteForActivity($activityId);
             $this->activityRouteSignatureRepository->add(ActivityRouteSignature::create(
                 activityId: $activityId,
-                polylineChecksum: $this->routeGrid->checksumFor($polyline),
-                cells: $this->routeGrid->cellsFor($polyline),
-                waypoints: $this->routeGrid->waypointsFor($polyline),
+                polylineChecksum: RouteGrid::checksumFor($polyline),
+                cells: RouteGrid::cellsFor($polyline),
+                waypoints: RouteGrid::waypointsFor($polyline),
             ));
 
             ++$activityWithRouteSignatureCalculatedCount;

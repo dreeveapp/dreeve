@@ -22,7 +22,6 @@ final readonly class CalculateCustomSegmentEfforts implements CalculateActivityM
     public function __construct(
         private SegmentRepository $segmentRepository,
         private ActivityScanRepository $activityScanRepository,
-        private RouteGrid $routeGrid,
         private CustomSegmentScanner $customSegmentScanner,
     ) {
     }
@@ -37,7 +36,7 @@ final readonly class CalculateCustomSegmentEfforts implements CalculateActivityM
             if (!($polyline = $segment->getPolyline()) instanceof EncodedPolyline) {
                 continue;
             }
-            $segmentCells = $this->routeGrid->cellsFor($polyline);
+            $segmentCells = RouteGrid::cellsFor($polyline);
 
             foreach ($this->activityScanRepository->findActivityIdsThatNeedScanning(
                 type: ActivityScanType::CUSTOM_SEGMENT,

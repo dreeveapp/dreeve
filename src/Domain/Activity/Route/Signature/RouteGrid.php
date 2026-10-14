@@ -22,9 +22,9 @@ final readonly class RouteGrid
     private const int LNG_OFFSET = 18_000_000;
     private const int LNG_CELL_COUNT = 36_000_000 / self::GRID_SIZE + 1;
 
-    public function cellsFor(EncodedPolyline $polyline): RouteCells
+    public static function cellsFor(EncodedPolyline $polyline): RouteCells
     {
-        $latLngCoordinates = $this->densifiedCoordinates($polyline);
+        $latLngCoordinates = self::densifiedCoordinates($polyline);
 
         $cells = [];
         foreach ($latLngCoordinates as [$latitude, $longitude]) {
@@ -38,9 +38,9 @@ final readonly class RouteGrid
         return RouteCells::fromFlippedCellKeys($cells);
     }
 
-    public function waypointsFor(EncodedPolyline $polyline): RouteWaypoints
+    public static function waypointsFor(EncodedPolyline $polyline): RouteWaypoints
     {
-        $latLngCoordinates = $this->densifiedCoordinates($polyline);
+        $latLngCoordinates = self::densifiedCoordinates($polyline);
 
         $coordinateCount = count($latLngCoordinates);
         if ($coordinateCount < 2) {
@@ -73,7 +73,7 @@ final readonly class RouteGrid
         return RouteWaypoints::fromArray($waypoints);
     }
 
-    public function checksumFor(EncodedPolyline $polyline): string
+    public static function checksumFor(EncodedPolyline $polyline): string
     {
         return hash('crc32b', self::GRID_SIZE.':'.self::DENSIFY_STEP_IN_DEGREES.':'.self::WAYPOINT_COUNT.':'.$polyline);
     }
@@ -81,7 +81,7 @@ final readonly class RouteGrid
     /**
      * @return list<array{float, float}>
      */
-    private function densifiedCoordinates(EncodedPolyline $polyline): array
+    private static function densifiedCoordinates(EncodedPolyline $polyline): array
     {
         return Polyline::fromEncodedPolyline($polyline)
             ->sanitize()

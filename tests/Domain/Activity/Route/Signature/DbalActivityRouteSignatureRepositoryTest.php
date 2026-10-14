@@ -20,7 +20,6 @@ use App\Tests\Domain\Activity\ActivityBuilder;
 class DbalActivityRouteSignatureRepositoryTest extends ContainerTestCase
 {
     private ActivityRouteSignatureRepository $activityRouteSignatureRepository;
-    private RouteGrid $routeGrid;
 
     public function testAdd(): void
     {
@@ -96,7 +95,7 @@ class DbalActivityRouteSignatureRepositoryTest extends ContainerTestCase
         $this->activityRouteSignatureRepository->add(
             ActivityRouteSignatureBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('up-to-date'))
-                ->withPolylineChecksum($this->routeGrid->checksumFor(EncodedPolyline::fromString($polyline)))
+                ->withPolylineChecksum(RouteGrid::checksumFor(EncodedPolyline::fromString($polyline)))
                 ->build()
         );
 
@@ -160,10 +159,6 @@ class DbalActivityRouteSignatureRepositoryTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->routeGrid = new RouteGrid();
-        $this->activityRouteSignatureRepository = new DbalActivityRouteSignatureRepository(
-            $this->getConnection(),
-            $this->routeGrid,
-        );
+        $this->activityRouteSignatureRepository = new DbalActivityRouteSignatureRepository($this->getConnection());
     }
 }

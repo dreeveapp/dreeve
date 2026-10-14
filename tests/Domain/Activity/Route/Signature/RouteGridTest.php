@@ -9,13 +9,11 @@ use PHPUnit\Framework\TestCase;
 
 class RouteGridTest extends TestCase
 {
-    private RouteGrid $routeGrid;
-
     public function testCellsFor(): void
     {
         $this->assertEquals(
             [50760324000, 50760684002],
-            $this->routeGrid->cellsFor(EncodedPolyline::fromCoordinates([
+            RouteGrid::cellsFor(EncodedPolyline::fromCoordinates([
                 [51.0, 3.0],
                 [51.0005, 3.0005],
                 [51.001, 3.001],
@@ -29,13 +27,13 @@ class RouteGridTest extends TestCase
 
         $this->assertEquals(
             [141032 * 360001 + 183000],
-            $this->routeGrid->cellsFor(EncodedPolyline::fromCoordinates([[51.032, 3.0]]))->toArray()
+            RouteGrid::cellsFor(EncodedPolyline::fromCoordinates([[51.032, 3.0]]))->toArray()
         );
     }
 
     public function testCellsForASparseSegment(): void
     {
-        $cells = $this->routeGrid->cellsFor(EncodedPolyline::fromCoordinates([
+        $cells = RouteGrid::cellsFor(EncodedPolyline::fromCoordinates([
             [51.0, 3.0],
             [51.01, 3.0],
         ]))->toArray();
@@ -54,14 +52,14 @@ class RouteGridTest extends TestCase
         $coordinates = [[51.0, 3.0], [51.01, 3.02], [51.03, 3.01]];
 
         $this->assertEquals(
-            $this->routeGrid->cellsFor(EncodedPolyline::fromCoordinates($coordinates))->toArray(),
-            $this->routeGrid->cellsFor(EncodedPolyline::fromCoordinates(array_reverse($coordinates)))->toArray()
+            RouteGrid::cellsFor(EncodedPolyline::fromCoordinates($coordinates))->toArray(),
+            RouteGrid::cellsFor(EncodedPolyline::fromCoordinates(array_reverse($coordinates)))->toArray()
         );
     }
 
     public function testCellsForARouteWithoutValidCoordinates(): void
     {
-        $cells = $this->routeGrid->cellsFor(EncodedPolyline::fromCoordinates([[200.0, 3.0]]));
+        $cells = RouteGrid::cellsFor(EncodedPolyline::fromCoordinates([[200.0, 3.0]]));
 
         $this->assertTrue($cells->isEmpty());
         $this->assertSame(0, $cells->count());
@@ -71,8 +69,8 @@ class RouteGridTest extends TestCase
     {
         $coordinates = [[51.0, 3.0], [51.01, 3.02], [51.03, 3.01], [51.05, 3.04]];
 
-        $forward = $this->routeGrid->waypointsFor(EncodedPolyline::fromCoordinates($coordinates))->toArray();
-        $backward = $this->routeGrid->waypointsFor(EncodedPolyline::fromCoordinates(array_reverse($coordinates)))->toArray();
+        $forward = RouteGrid::waypointsFor(EncodedPolyline::fromCoordinates($coordinates))->toArray();
+        $backward = RouteGrid::waypointsFor(EncodedPolyline::fromCoordinates(array_reverse($coordinates)))->toArray();
 
         $this->assertCount(2 * RouteGrid::WAYPOINT_COUNT, $forward);
 
@@ -87,30 +85,30 @@ class RouteGridTest extends TestCase
     public function testWaypointsForARouteWithoutValidCoordinates(): void
     {
         $this->assertTrue(
-            $this->routeGrid->waypointsFor(EncodedPolyline::fromCoordinates([[200.0, 3.0]]))->isEmpty()
+            RouteGrid::waypointsFor(EncodedPolyline::fromCoordinates([[200.0, 3.0]]))->isEmpty()
         );
     }
 
     public function testWaypointsForARouteThatNeverMoves(): void
     {
         $this->assertTrue(
-            $this->routeGrid->waypointsFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.0, 3.0]]))->isEmpty()
+            RouteGrid::waypointsFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.0, 3.0]]))->isEmpty()
         );
         $this->assertFalse(
-            $this->routeGrid->waypointsFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.05, 3.04]]))->isEmpty()
+            RouteGrid::waypointsFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.05, 3.04]]))->isEmpty()
         );
     }
 
     public function testMaxDistanceInMeterToIsZeroForAnIdenticalRoute(): void
     {
-        $waypoints = $this->routeGrid->waypointsFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.05, 3.04]]));
+        $waypoints = RouteGrid::waypointsFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.05, 3.04]]));
 
         $this->assertSame(0.0, $waypoints->maxDistanceInMeterTo($waypoints));
     }
 
     public function testMaxDistanceInMeterToIsInfiniteWhenTheWaypointCountsDiffer(): void
     {
-        $waypoints = $this->routeGrid->waypointsFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.05, 3.04]]));
+        $waypoints = RouteGrid::waypointsFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.05, 3.04]]));
 
         $this->assertSame(INF, $waypoints->maxDistanceInMeterTo(RouteWaypoints::empty()));
     }
@@ -119,17 +117,10 @@ class RouteGridTest extends TestCase
     {
         $polyline = EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.01, 3.0]]);
 
-        $this->assertSame('3f7fdad6', $this->routeGrid->checksumFor($polyline));
+        $this->assertSame('3f7fdad6', RouteGrid::checksumFor($polyline));
         $this->assertNotSame(
-            $this->routeGrid->checksumFor($polyline),
-            $this->routeGrid->checksumFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.02, 3.0]]))
+            RouteGrid::checksumFor($polyline),
+            RouteGrid::checksumFor(EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.02, 3.0]]))
         );
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->routeGrid = new RouteGrid();
     }
 }

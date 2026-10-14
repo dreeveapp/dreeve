@@ -8,4 +8,5 @@ enum ActivityScanType: string
 {
     case STREAMS = 'streams';
     case CUSTOM_SEGMENT = 'customSegment';
+    case EXPLORER_TILES = 'explorerTiles';
 }

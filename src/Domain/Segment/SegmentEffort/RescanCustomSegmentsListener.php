@@ -25,7 +25,6 @@ final readonly class RescanCustomSegmentsListener
         private ActivityRepository $activityRepository,
         private ActivityStreamRepository $activityStreamRepository,
         private SegmentRepository $segmentRepository,
-        private RouteGrid $routeGrid,
         private CustomSegmentScanner $customSegmentScanner,
     ) {
     }
@@ -57,7 +56,7 @@ final readonly class RescanCustomSegmentsListener
 
             $this->customSegmentScanner->scan(
                 segment: $segment,
-                segmentCells: $this->routeGrid->cellsFor($polyline),
+                segmentCells: RouteGrid::cellsFor($polyline),
                 activityId: $activityId
             );
         }
