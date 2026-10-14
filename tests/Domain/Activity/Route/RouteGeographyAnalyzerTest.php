@@ -5,6 +5,7 @@ namespace App\Tests\Domain\Activity\Route;
 use App\Domain\Activity\Route\CountryGeographyAssets;
 use App\Domain\Activity\Route\RouteGeographyAnalyzer;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
+use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
@@ -125,6 +126,6 @@ class RouteGeographyAnalyzerTest extends TestCase
     {
         parent::setUp();
 
-        $this->analyzer = new RouteGeographyAnalyzer(new CountryGeographyAssets());
+        $this->analyzer = new RouteGeographyAnalyzer(new CountryGeographyAssets(KernelProjectDir::fromString(dirname(__DIR__, 4))));
     }
 }

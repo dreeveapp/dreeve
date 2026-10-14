@@ -4,6 +4,7 @@ namespace App\Tests\Domain\Activity\Route;
 
 use App\Domain\Activity\Route\CountryBoundaries;
 use App\Domain\Activity\Route\CountryGeographyAssets;
+use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
@@ -52,7 +53,7 @@ class CountryBoundariesTest extends TestCase
 
     public function testItDropsIslets(): void
     {
-        $raw = new CountryGeographyAssets()->polygonsFor('FR');
+        $raw = new CountryGeographyAssets(KernelProjectDir::fromString(dirname(__DIR__, 4)))->polygonsFor('FR');
         $features = $this->countryBoundaries->geoJsonFor(['fr'])['features'];
 
         $this->assertLessThan(count($raw), count($features[0]['geometry']['coordinates']));
@@ -109,6 +110,6 @@ class CountryBoundariesTest extends TestCase
     {
         parent::setUp();
 
-        $this->countryBoundaries = new CountryBoundaries(new CountryGeographyAssets());
+        $this->countryBoundaries = new CountryBoundaries(new CountryGeographyAssets(KernelProjectDir::fromString(dirname(__DIR__, 4))));
     }
 }

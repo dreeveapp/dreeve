@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class CountriesGeographyAssetTest extends TestCase
 {
-    private const string ASSETS_DIRECTORY = __DIR__.'/../../../../src/Domain/Activity/Route/assets/countries';
+    private const string ASSETS_DIRECTORY = __DIR__.'/../../../../resources/countries';
 
     public function testEveryIndexEntryIsWellFormed(): void
     {

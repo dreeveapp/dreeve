@@ -14,7 +14,7 @@ flysystem:
         countries-geography.storage:
             adapter: 'local'
             options:
-                directory: '%kernel.project_dir%/src/Domain/Activity/Route/assets/countries'
+                directory: '%kernel.project_dir%/resources/countries'
                 lock: 0
             visibility: public
             directory_visibility: public

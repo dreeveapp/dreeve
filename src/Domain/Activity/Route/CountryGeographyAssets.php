@@ -6,6 +6,7 @@ namespace App\Domain\Activity\Route;
 
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\BoundingBox;
+use App\Infrastructure\ValueObject\String\KernelProjectDir;
 
 final class CountryGeographyAssets
 {
@@ -14,9 +15,10 @@ final class CountryGeographyAssets
 
     private readonly string $assetsDirectory;
 
-    public function __construct()
-    {
-        $this->assetsDirectory = __DIR__.'/assets/countries';
+    public function __construct(
+        KernelProjectDir $kernelProjectDir,
+    ) {
+        $this->assetsDirectory = $kernelProjectDir.'/resources/countries';
     }
 
     /**

@@ -33,7 +33,7 @@ jobs:
 
       - name: Verify countries geography asset
         run: |
-          ASSET_ROOT=src/Domain/Activity/Route/assets
+          ASSET_ROOT=resources
           ASSET_DIR="$ASSET_ROOT/countries"
 
           if [[ ! -f "$ASSET_DIR/index.json" ]]; then
