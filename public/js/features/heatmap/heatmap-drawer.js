@@ -49,7 +49,12 @@ export default class HeatmapDrawer {
         const tilesUrl = this.wrapper.getAttribute('data-leaflet-tiles');
         this.tilesLabel = this.wrapper.getAttribute('data-leaflet-tiles-label');
         this.tilesLayer = tilesUrl
-            ? new HeatmapTilesLayer(this.map, tilesUrl, this.config.polylineColor)
+            ? new HeatmapTilesLayer(
+                this.map,
+                tilesUrl,
+                this.config.polylineColor,
+                this.wrapper.closest('.heatmap-wrapper')?.querySelector('[data-heatmap-tiles-stats]'),
+            )
             : null;
 
         this.map.on("click", (e) => this._handleMapClick(e));

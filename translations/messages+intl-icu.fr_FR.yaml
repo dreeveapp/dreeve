@@ -254,7 +254,9 @@ Maintenance: Maintenance
 'Map settings': 'Paramètres de carte'
 Mar: Mars
 Max: Max
+'Max cluster': 'Plus grand cluster'
 'Max gradient': 'Pente maximum'
+'Max square': 'Plus grand carré'
 May: Mai
 Medium: Moyen
 Metric: Métrique
@@ -628,6 +630,7 @@ days: jours
 'days needed for next Eddington': 'jours nécessaires pour le prochain Eddington'
 'days to reach {n}': 'jours pour atteindre {n}'
 'every {interval}': 'chaque {interval}'
+'explorer tiles': 'tuiles explorées'
 hours: heures
 hrs: h
 humidity: humidité

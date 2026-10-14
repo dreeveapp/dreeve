@@ -254,7 +254,9 @@ Maintenance: 维护
 'Map settings': 'Map settings'
 Mar: 三月
 Max: 最大
+'Max cluster': 最大集群
 'Max gradient': 'Max gradient'
+'Max square': 最大方块
 May: 五月
 Medium: 中等
 Metric: Metric
@@ -628,6 +630,7 @@ days: 天
 'days needed for next Eddington': '天 - 下一个爱丁顿所需天数'
 'days to reach {n}': 'days to reach {n}'
 'every {interval}': 'every {interval}'
+'explorer tiles': 个探索方块
 hours: 小时
 hrs: hrs
 humidity: humidity

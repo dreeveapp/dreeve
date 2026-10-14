@@ -254,7 +254,9 @@ Maintenance: Underhåll
 'Map settings': 'Map settings'
 Mar: Mar
 Max: Max
+'Max cluster': 'Största kluster'
 'Max gradient': 'Max gradient'
+'Max square': 'Största kvadrat'
 May: May
 Medium: Mellan
 Metric: Metric
@@ -628,6 +630,7 @@ days: dagar
 'days needed for next Eddington': 'dagar till nästa Eddington nivå'
 'days to reach {n}': 'days to reach {n}'
 'every {interval}': 'every {interval}'
+'explorer tiles': 'utforskade rutor'
 hours: timmar
 hrs: tim
 humidity: humidity

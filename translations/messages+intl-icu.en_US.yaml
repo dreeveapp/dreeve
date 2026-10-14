@@ -254,7 +254,9 @@ Maintenance: Maintenance
 'Map settings': 'Map settings'
 Mar: Mar
 Max: Max
+'Max cluster': 'Max cluster'
 'Max gradient': 'Max gradient'
+'Max square': 'Max square'
 May: May
 Medium: Medium
 Metric: Metric
@@ -628,6 +630,7 @@ days: days
 'days needed for next Eddington': 'days needed for next Eddington'
 'days to reach {n}': 'days to reach {n}'
 'every {interval}': 'every {interval}'
+'explorer tiles': 'explorer tiles'
 hours: hours
 hrs: hrs
 humidity: humidity

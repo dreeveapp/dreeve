@@ -254,7 +254,9 @@ Maintenance: Onderhoud
 'Map settings': Kaartinstellingen
 Mar: Mrt
 Max: Max
+'Max cluster': 'Grootste cluster'
 'Max gradient': 'Max. helling'
+'Max square': 'Grootste vierkant'
 May: Mei
 Medium: Gemiddeld
 Metric: Metrisch
@@ -628,6 +630,7 @@ days: dagen
 'days needed for next Eddington': 'dagen nodig voor volgende Eddington'
 'days to reach {n}': 'dagen om {n} te bereiken'
 'every {interval}': 'elke {interval}'
+'explorer tiles': explorer-tegels
 hours: uur
 hrs: u
 humidity: luchtvochtigheid

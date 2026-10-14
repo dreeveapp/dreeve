@@ -7,8 +7,9 @@ const PANE_NAME = 'heatmapTiles';
 export default class HeatmapTilesLayer {
     static ICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg>';
 
-    constructor(map, url, color) {
+    constructor(map, url, color, statsNode) {
         this.map = map;
+        this.statsNode = statsNode;
         this.url = url;
         this.enabled = false;
         this.activeActivityIds = [];
@@ -72,6 +73,7 @@ export default class HeatmapTilesLayer {
     _sync() {
         if (!this.enabled || !this.tilesPerActivity) {
             this.map.removeLayer(this.featureGroup);
+            this.statsNode?.classList.add('hidden');
             return;
         }
 
@@ -94,6 +96,18 @@ export default class HeatmapTilesLayer {
             this.featureGroup.removeLayer(this.maxSquareLayer);
         }
         this.featureGroup.addTo(this.map);
+
+        if (this.statsNode) {
+            this._setStat('total', visitedTiles.size);
+            this._setStat('maxSquare', square ? `${square.size}×${square.size}` : 0);
+            this._setStat('maxCluster', maxCluster.size);
+            this.statsNode.classList.remove('hidden');
+        }
+    }
+
+    _setStat(name, value) {
+        const node = this.statsNode.querySelector(`[data-heatmap-tiles-stat="${name}"]`);
+        if (node) node.innerText = value;
     }
 
     _rings(tiles) {

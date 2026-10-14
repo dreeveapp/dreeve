@@ -254,7 +254,9 @@ Maintenance: Karbantartás
 'Map settings': 'Térkép beállításai'
 Mar: Már
 Max: Max
+'Max cluster': 'Legnagyobb klaszter'
 'Max gradient': 'Max. lejtés'
+'Max square': 'Legnagyobb négyzet'
 May: Máj
 Medium: Közepes
 Metric: Metrikus
@@ -628,6 +630,7 @@ days: napok
 'days needed for next Eddington': 'napok a következő Eddington-számhoz'
 'days to reach {n}': 'nap a(z) {n} eléréséig'
 'every {interval}': 'minden {interval}'
+'explorer tiles': 'felfedezett csempe'
 hours: órák
 hrs: h
 humidity: páratartalom
