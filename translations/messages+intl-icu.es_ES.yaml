@@ -4,6 +4,7 @@
 '< 1.5: Good variety in training': '< 1.5: Buena variedad en el entrenamiento'
 '> 2.0: High monotony, increased risk': '> 2.0: Alta monotonía, mayor riesgo'
 'A 6-hour week scores higher than a 5-hour week.': 'Una semana de 6 horas puntúa más alto que una semana de 5 horas.'
+'A cluster tile is a visited tile whose four neighbours are visited too': 'Una cuadrícula de clúster es una cuadrícula visitada cuyas cuatro vecinas también están visitadas'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'Una puntuación de alta intensidad significa que una mayor parte de tu entrenamiento es dura en lugar de suave.'
 'A high score means you concentrate more training into fewer, heavier days.': 'Una puntuación alta significa que concentras más entrenamiento en menos días, más intensos.'
 'A:C Ratio': 'Ratio A:C'
@@ -66,6 +67,7 @@ Challenges: Retos
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Carga de entrenamiento crónica (Forma física) - Media móvil ponderada exponencialmente a 42 días de tu carga de entrenamiento diaria. Representa la adaptación al entrenamiento a largo plazo.'
 'Clear all filters': 'Borrar todos los filtros'
 'Clear chat': 'Borrar chat'
+'Cluster tiles': 'Cuadrículas de clúster'
 Columns: Columnas
 Commute: Desplazamiento
 Commutes: Desplazamientos
@@ -141,6 +143,7 @@ Energy: Energía
 Evening: Noche
 'Excludes commutes': 'Excluye desplazamientos'
 'Excludes group activities': 'Excluye actividades en grupo'
+'Explorer tiles': 'Cuadrículas exploradas'
 'FTP history': 'Historial de FTP'
 Fastest: 'Más rápido'
 Favourite: Favorito
@@ -252,6 +255,7 @@ Maintenance: Mantenimiento
 'Manage recording devices': 'Gestionar dispositivos de grabación'
 'Manage segments': 'Manage segments'
 'Map settings': 'Ajustes del mapa'
+'Map tiles at zoom level 14 that your activities passed through': 'Cuadrículas del mapa con nivel de zoom 14 por las que pasaron tus actividades'
 Mar: Mar
 Max: Máx
 'Max cluster': 'Mayor clúster'
@@ -566,6 +570,7 @@ Usage: Usage
 'Virtual Run': 'Carrera virtual'
 'Virtual Runs': 'Carreras virtuales'
 'Virtual workout assistant': 'Asistente de entrenamiento virtual'
+'Visited tiles': 'Cuadrículas visitadas'
 Volleyball: Voleibol
 Volume: Volumen
 Wakeboarding: Wakeboarding
@@ -630,7 +635,6 @@ days: días
 'days needed for next Eddington': 'días necesarios para el próximo Eddington'
 'days to reach {n}': 'días para alcanzar {n}'
 'every {interval}': 'cada {interval}'
-'explorer tiles': 'cuadrículas exploradas'
 hours: horas
 hrs: h
 humidity: humedad

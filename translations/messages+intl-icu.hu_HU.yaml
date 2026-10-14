@@ -4,6 +4,7 @@
 '< 1.5: Good variety in training': '< 1,5: Jó változatosság az edzésben'
 '> 2.0: High monotony, increased risk': '> 2,0: Magas monotonitás, fokozott kockázat'
 'A 6-hour week scores higher than a 5-hour week.': 'Egy 6 órás hét magasabb pontszámot ér el, mint egy 5 órás.'
+'A cluster tile is a visited tile whose four neighbours are visited too': 'A klasztercsempe olyan meglátogatott csempe, amelynek mind a négy szomszédja is meglátogatott'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'A magas intenzitási pontszám azt jelenti, hogy az edzéseid nagyobb része nehéz, nem könnyű.'
 'A high score means you concentrate more training into fewer, heavier days.': 'A magas pontszám azt jelenti, hogy több edzést koncentrálsz kevesebb, de nehezebb napra.'
 'A:C Ratio': 'A:C arány'
@@ -66,6 +67,7 @@ Challenges: Kihívások
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Krónikus edzésterhelés (Fitnesz) – a napi edzésterhelés 42 napos exponenciálisan súlyozott átlaga. A hosszú távú edzésadaptációt mutatja.'
 'Clear all filters': 'Összes szűrő törlése'
 'Clear chat': 'Chat törlése'
+'Cluster tiles': 'Klasztercsempék'
 Columns: Oszlopok
 Commute: Ingázás
 Commutes: Ingázások
@@ -141,6 +143,7 @@ Energy: Energia
 Evening: Este
 'Excludes commutes': 'Ingázások nélkül'
 'Excludes group activities': 'A csoportos tevékenységek kivételével'
+'Explorer tiles': 'Felfedezett csempék'
 'FTP history': 'FTP előzmények'
 Fastest: Leggyorsabb
 Favourite: Kedvenc
@@ -252,6 +255,7 @@ Maintenance: Karbantartás
 'Manage recording devices': 'Rögzítő eszközök kezelése'
 'Manage segments': 'Manage segments'
 'Map settings': 'Térkép beállításai'
+'Map tiles at zoom level 14 that your activities passed through': 'A 14-es nagyítási szintű térképcsempék, amelyeken az aktivitásaid áthaladtak'
 Mar: Már
 Max: Max
 'Max cluster': 'Legnagyobb klaszter'
@@ -566,6 +570,7 @@ Usage: Usage
 'Virtual Run': 'Virtuális futás'
 'Virtual Runs': 'Virtuális futások'
 'Virtual workout assistant': 'Virtuális edzési asszisztens'
+'Visited tiles': 'Meglátogatott csempék'
 Volleyball: Röplabda
 Volume: Mennyiség
 Wakeboarding: Wakeboarding
@@ -630,7 +635,6 @@ days: napok
 'days needed for next Eddington': 'napok a következő Eddington-számhoz'
 'days to reach {n}': 'nap a(z) {n} eléréséig'
 'every {interval}': 'minden {interval}'
-'explorer tiles': 'felfedezett csempe'
 hours: órák
 hrs: h
 humidity: páratartalom

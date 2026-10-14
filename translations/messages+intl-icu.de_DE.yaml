@@ -4,6 +4,7 @@
 '< 1.5: Good variety in training': '< 1.5: Gute Abwechslung im Training'
 '> 2.0: High monotony, increased risk': '> 2.0: Hohe Monotonie, erhöhtes Risiko'
 'A 6-hour week scores higher than a 5-hour week.': 'Eine 6-Stunden-Woche erzielt einen höheren Wert als eine 5-Stunden-Woche.'
+'A cluster tile is a visited tile whose four neighbours are visited too': 'Eine Cluster-Kachel ist eine besuchte Kachel, deren vier Nachbarn ebenfalls besucht wurden'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'Ein hoher Intensitätswert bedeutet, dass ein größerer Teil deines Trainings intensiv statt locker war.'
 'A high score means you concentrate more training into fewer, heavier days.': 'Ein hoher Wert bedeutet, dass du dein Training auf weniger, dafür intensivere Tage konzentrierst.'
 'A:C Ratio': 'A:C-Verhältnis'
@@ -66,6 +67,7 @@ Challenges: Herausforderungen
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Langfristige Trainingsbelastung (Fitness) - 42 Tage exponentiell gewichteter Durchschnitt deiner täglichen Trainingsbelastung. Stellt die langfristige Trainingsentwicklung dar.'
 'Clear all filters': 'Alle Filter entfernen'
 'Clear chat': 'Chat löschen'
+'Cluster tiles': 'Cluster-Kacheln'
 Columns: Spalten
 Commute: Pendelfahrt
 Commutes: Pendelfahrten
@@ -141,6 +143,7 @@ Energy: Energie
 Evening: Abend
 'Excludes commutes': 'Pendelfahrten ausschließen'
 'Excludes group activities': 'Gruppenaktivitäten ausschließen'
+'Explorer tiles': 'Explorer-Kacheln'
 'FTP history': FTP-Verlauf
 Fastest: Schnellste
 Favourite: Favorit
@@ -252,6 +255,7 @@ Maintenance: Wartung
 'Manage recording devices': 'Aufzeichnungsgeräte verwalten'
 'Manage segments': 'Segmente verwalten'
 'Map settings': Karteneinstellungen
+'Map tiles at zoom level 14 that your activities passed through': 'Kartenkacheln auf Zoomstufe 14, durch die deine Aktivitäten führten'
 Mar: Mär
 Max: Max
 'Max cluster': 'Größter Cluster'
@@ -566,6 +570,7 @@ Usage: Verwendung
 'Virtual Run': 'Virtueller Lauf'
 'Virtual Runs': 'Virtuelle Läufe'
 'Virtual workout assistant': 'Virtueller Workout Assistent'
+'Visited tiles': 'Besuchte Kacheln'
 Volleyball: Volleyball
 Volume: Umfang
 Wakeboarding: Wakeboarding
@@ -630,7 +635,6 @@ days: Tage
 'days needed for next Eddington': 'Tage für die nächste Eddington-Zahl benötigt'
 'days to reach {n}': 'Tage bis zum Erreichen {n}'
 'every {interval}': 'alle {interval}'
-'explorer tiles': Explorer-Kacheln
 hours: Stunden
 hrs: h
 humidity: Luftfeuchtigkeit

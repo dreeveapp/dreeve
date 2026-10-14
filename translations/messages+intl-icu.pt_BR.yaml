@@ -4,6 +4,7 @@
 '< 1.5: Good variety in training': '< 1,5: Boa variedade no treino'
 '> 2.0: High monotony, increased risk': '> 2,0: Alta monotonia, risco aumentado'
 'A 6-hour week scores higher than a 5-hour week.': 'Uma semana de 6 horas pontua mais do que uma semana de 5 horas.'
+'A cluster tile is a visited tile whose four neighbours are visited too': 'Um quadrado de cluster é um quadrado visitado cujos quatro vizinhos também foram visitados'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'Uma alta pontuação de intensidade significa que uma parcela maior do seu treino é intensa em vez de leve.'
 'A high score means you concentrate more training into fewer, heavier days.': 'Uma pontuação alta significa que você concentra mais treino em menos dias, porém mais pesados.'
 'A:C Ratio': 'Razão A:C'
@@ -66,6 +67,7 @@ Challenges: Desafios
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Carga Crônica de Treinamento (Condicionamento) - Média móvel exponencial de 42 dias da sua carga de treino diária. Representa a adaptação ao treinamento de longo prazo.'
 'Clear all filters': 'Limpar todos os filtros'
 'Clear chat': 'Limpar conversa'
+'Cluster tiles': 'Quadrados de cluster'
 Columns: Colunas
 Commute: Deslocamento
 Commutes: Deslocamentos
@@ -141,6 +143,7 @@ Energy: Energia
 Evening: Noite
 'Excludes commutes': 'Ocultar deslocamentos'
 'Excludes group activities': 'Ocultar atividades em grupo'
+'Explorer tiles': 'Quadrados explorados'
 'FTP history': 'Histórico de FTP'
 Fastest: 'Mais rápido'
 Favourite: Favorito
@@ -252,6 +255,7 @@ Maintenance: Manutenção
 'Manage recording devices': 'Gerenciar dispositivos de gravação'
 'Manage segments': 'Manage segments'
 'Map settings': 'Configurações de mapa'
+'Map tiles at zoom level 14 that your activities passed through': 'Quadrados do mapa no nível de zoom 14 por onde suas atividades passaram'
 Mar: Mar
 Max: Máx
 'Max cluster': 'Maior cluster'
@@ -566,6 +570,7 @@ Usage: Usage
 'Virtual Run': 'Corrida Virtual'
 'Virtual Runs': 'Corridas Virtuais'
 'Virtual workout assistant': 'Assistente de treino virtual'
+'Visited tiles': 'Quadrados visitados'
 Volleyball: Vôlei
 Volume: Volume
 Wakeboarding: Wakeboarding
@@ -630,7 +635,6 @@ days: dias
 'days needed for next Eddington': 'dias necessários para o próximo Eddington'
 'days to reach {n}': 'dias para alcançar {n}'
 'every {interval}': 'a cada {interval}'
-'explorer tiles': 'quadrados explorados'
 hours: horas
 hrs: hrs
 humidity: umidade

@@ -4,6 +4,7 @@
 '< 1.5: Good variety in training': '< 1.5: 训练多样性良好'
 '> 2.0: High monotony, increased risk': '> 2.0: 单调性高，风险增加'
 'A 6-hour week scores higher than a 5-hour week.': 'A 6-hour week scores higher than a 5-hour week.'
+'A cluster tile is a visited tile whose four neighbours are visited too': 集群方块是指四个相邻方块也都已访问的已访问方块
 'A high intensity score means a larger share of your training is hard rather than easy.': 'A high intensity score means a larger share of your training is hard rather than easy.'
 'A high score means you concentrate more training into fewer, heavier days.': 'A high score means you concentrate more training into fewer, heavier days.'
 'A:C Ratio': 'A:C 比值'
@@ -66,6 +67,7 @@ Challenges: 挑战
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': '长期训练负荷（体能）— 42天训练的负荷指数加权平均值。代表长期训练适应情况。'
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Clear chat'
+'Cluster tiles': 集群方块
 Columns: Columns
 Commute: Commute
 Commutes: 通勤
@@ -141,6 +143,7 @@ Energy: Energy
 Evening: 晚上
 'Excludes commutes': 筛除通勤
 'Excludes group activities': 'Excludes group activities'
+'Explorer tiles': 探索方块
 'FTP history': FTP历史
 Fastest: Fastest
 Favourite: 收藏夹
@@ -252,6 +255,7 @@ Maintenance: 维护
 'Manage recording devices': 'Manage recording devices'
 'Manage segments': 'Manage segments'
 'Map settings': 'Map settings'
+'Map tiles at zoom level 14 that your activities passed through': 你的活动经过的 14 级缩放地图方块
 Mar: 三月
 Max: 最大
 'Max cluster': 最大集群
@@ -566,6 +570,7 @@ Usage: Usage
 'Virtual Run': 'Virtual Run'
 'Virtual Runs': 虚拟跑步
 'Virtual workout assistant': 虚拟锻炼助手
+'Visited tiles': 已访问方块
 Volleyball: Volleyball
 Volume: Volume
 Wakeboarding: Wakeboarding
@@ -630,7 +635,6 @@ days: 天
 'days needed for next Eddington': '天 - 下一个爱丁顿所需天数'
 'days to reach {n}': 'days to reach {n}'
 'every {interval}': 'every {interval}'
-'explorer tiles': 个探索方块
 hours: 小时
 hrs: hrs
 humidity: humidity

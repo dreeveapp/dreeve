@@ -4,6 +4,7 @@
 '< 1.5: Good variety in training': '< 1.5: Buona varietà di allenamento'
 '> 2.0: High monotony, increased risk': '> 2.0: Monotonia elevata, rischio aumentato'
 'A 6-hour week scores higher than a 5-hour week.': 'Una settimana da 6 ore ottiene un punteggio più alto di una da 5 ore.'
+'A cluster tile is a visited tile whose four neighbours are visited too': 'Una tessera del cluster è una tessera visitata le cui quattro vicine sono anch’esse visitate'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'Un punteggio di intensità alto significa che una quota maggiore del tuo allenamento è impegnativa invece che facile.'
 'A high score means you concentrate more training into fewer, heavier days.': 'Un punteggio alto significa che concentri più allenamento in meno giorni, ma più intensi.'
 'A:C Ratio': 'Rapporto A:C'
@@ -66,6 +67,7 @@ Challenges: Sfide
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': "Carico di Allenamento Cronico (Forma) - media esponenziale a 42 giorni del tuo carico giornaliero. Rappresenta l'adattamento a lungo termine."
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Cancella chat'
+'Cluster tiles': 'Tessere del cluster'
 Columns: Columns
 Commute: Commute
 Commutes: 'Spostamenti quotidiani'
@@ -141,6 +143,7 @@ Energy: Energy
 Evening: Sera
 'Excludes commutes': 'Esclude gli spostamenti casa-lavoro'
 'Excludes group activities': 'Excludes group activities'
+'Explorer tiles': 'Tessere esplorate'
 'FTP history': 'Storico FTP'
 Fastest: Fastest
 Favourite: Preferito
@@ -252,6 +255,7 @@ Maintenance: Manutenzione
 'Manage recording devices': 'Manage recording devices'
 'Manage segments': 'Manage segments'
 'Map settings': 'Map settings'
+'Map tiles at zoom level 14 that your activities passed through': 'Tessere della mappa a livello di zoom 14 attraversate dalle tue attività'
 Mar: Mar
 Max: Massimo
 'Max cluster': 'Cluster più grande'
@@ -566,6 +570,7 @@ Usage: Usage
 'Virtual Run': 'Virtual Run'
 'Virtual Runs': 'Corse virtuali'
 'Virtual workout assistant': 'Assistente virtuale agli allenamenti'
+'Visited tiles': 'Tessere visitate'
 Volleyball: Volleyball
 Volume: Volume
 Wakeboarding: Wakeboarding
@@ -630,7 +635,6 @@ days: giorni
 'days needed for next Eddington': 'Giorni necessari per il prossimo Eddington'
 'days to reach {n}': 'days to reach {n}'
 'every {interval}': 'every {interval}'
-'explorer tiles': 'tessere esplorate'
 hours: ore
 hrs: ore
 humidity: humidity

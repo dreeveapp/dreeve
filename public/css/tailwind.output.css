@@ -2015,6 +2015,9 @@
   .max-w-3xl {
     max-width: var(--container-3xl);
   }
+  .max-w-64 {
+    max-width: calc(var(--spacing) * 64);
+  }
   .max-w-100 {
     max-width: calc(var(--spacing) * 100);
   }
@@ -2242,6 +2245,9 @@
   }
   .grid-cols-\[3rem_minmax\(0\,1fr\)_5rem_0\.75rem\] {
     grid-template-columns: 3rem minmax(0,1fr) 5rem 0.75rem;
+  }
+  .grid-cols-\[auto_1fr_auto\] {
+    grid-template-columns: auto 1fr auto;
   }
   .grid-cols-\[minmax\(0\,1fr\)_6rem_0\.75rem\] {
     grid-template-columns: minmax(0,1fr) 6rem 0.75rem;

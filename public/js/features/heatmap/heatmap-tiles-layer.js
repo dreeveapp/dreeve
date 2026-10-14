@@ -99,6 +99,7 @@ export default class HeatmapTilesLayer {
 
         if (this.statsNode) {
             this._setStat('total', visitedTiles.size);
+            this._setStat('clusterTiles', clusterTiles.size);
             this._setStat('maxSquare', square ? `${square.size}×${square.size}` : 0);
             this._setStat('maxCluster', maxCluster.size);
             this.statsNode.classList.remove('hidden');

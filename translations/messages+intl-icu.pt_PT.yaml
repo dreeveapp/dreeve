@@ -4,6 +4,7 @@
 '< 1.5: Good variety in training': '< 1.5: Boa variedade de treino'
 '> 2.0: High monotony, increased risk': '> 2.0: Monotonia elevada, risco acrescido'
 'A 6-hour week scores higher than a 5-hour week.': 'A 6-hour week scores higher than a 5-hour week.'
+'A cluster tile is a visited tile whose four neighbours are visited too': 'Um quadrado de cluster é um quadrado visitado cujos quatro vizinhos também foram visitados'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'A high intensity score means a larger share of your training is hard rather than easy.'
 'A high score means you concentrate more training into fewer, heavier days.': 'A high score means you concentrate more training into fewer, heavier days.'
 'A:C Ratio': 'Rácio A:C'
@@ -66,6 +67,7 @@ Challenges: Desafios
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Carga de Treino Crónica (Forma) - média ponderada exponencial de 42-dias da carga diária de treino. Representa adaptação ao treino de longo prazo.'
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Clear chat'
+'Cluster tiles': 'Quadrados de cluster'
 Columns: Columns
 Commute: Commute
 Commutes: 'Viagens Escritório'
@@ -141,6 +143,7 @@ Energy: Energy
 Evening: 'Fim da tarde'
 'Excludes commutes': 'Exclui viagens escritório'
 'Excludes group activities': 'Excludes group activities'
+'Explorer tiles': 'Quadrados explorados'
 'FTP history': 'Histórico de FTP'
 Fastest: Fastest
 Favourite: Favorito
@@ -252,6 +255,7 @@ Maintenance: Manutenção
 'Manage recording devices': 'Manage recording devices'
 'Manage segments': 'Manage segments'
 'Map settings': 'Map settings'
+'Map tiles at zoom level 14 that your activities passed through': 'Quadrados do mapa no nível de zoom 14 por onde as tuas atividades passaram'
 Mar: Mar
 Max: Máx
 'Max cluster': 'Maior cluster'
@@ -566,6 +570,7 @@ Usage: Usage
 'Virtual Run': 'Virtual Run'
 'Virtual Runs': 'Corridas Virtuais'
 'Virtual workout assistant': 'Virtual workout assistant'
+'Visited tiles': 'Quadrados visitados'
 Volleyball: Volleyball
 Volume: Volume
 Wakeboarding: Wakeboarding
@@ -630,7 +635,6 @@ days: dias
 'days needed for next Eddington': 'days needed for next Eddington'
 'days to reach {n}': 'days to reach {n}'
 'every {interval}': 'every {interval}'
-'explorer tiles': 'quadrados explorados'
 hours: horas
 hrs: hrs
 humidity: humidity

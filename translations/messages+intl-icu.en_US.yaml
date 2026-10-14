@@ -4,6 +4,7 @@
 '< 1.5: Good variety in training': '< 1.5: Good variety in training'
 '> 2.0: High monotony, increased risk': '> 2.0: High monotony, increased risk'
 'A 6-hour week scores higher than a 5-hour week.': 'A 6-hour week scores higher than a 5-hour week.'
+'A cluster tile is a visited tile whose four neighbours are visited too': 'A cluster tile is a visited tile whose four neighbours are visited too'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'A high intensity score means a larger share of your training is hard rather than easy.'
 'A high score means you concentrate more training into fewer, heavier days.': 'A high score means you concentrate more training into fewer, heavier days.'
 'A:C Ratio': 'A:C Ratio'
@@ -66,6 +67,7 @@ Challenges: Challenges
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.'
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Clear chat'
+'Cluster tiles': 'Cluster tiles'
 Columns: Columns
 Commute: Commute
 Commutes: Commutes
@@ -141,6 +143,7 @@ Energy: Energy
 Evening: Evening
 'Excludes commutes': 'Excludes commutes'
 'Excludes group activities': 'Excludes group activities'
+'Explorer tiles': 'Explorer tiles'
 'FTP history': 'FTP history'
 Fastest: Fastest
 Favourite: Favourite
@@ -252,6 +255,7 @@ Maintenance: Maintenance
 'Manage recording devices': 'Manage recording devices'
 'Manage segments': 'Manage segments'
 'Map settings': 'Map settings'
+'Map tiles at zoom level 14 that your activities passed through': 'Map tiles at zoom level 14 that your activities passed through'
 Mar: Mar
 Max: Max
 'Max cluster': 'Max cluster'
@@ -566,6 +570,7 @@ Usage: Usage
 'Virtual Run': 'Virtual Run'
 'Virtual Runs': 'Virtual Runs'
 'Virtual workout assistant': 'Virtual workout assistant'
+'Visited tiles': 'Visited tiles'
 Volleyball: Volleyball
 Volume: Volume
 Wakeboarding: Wakeboarding
@@ -630,7 +635,6 @@ days: days
 'days needed for next Eddington': 'days needed for next Eddington'
 'days to reach {n}': 'days to reach {n}'
 'every {interval}': 'every {interval}'
-'explorer tiles': 'explorer tiles'
 hours: hours
 hrs: hrs
 humidity: humidity

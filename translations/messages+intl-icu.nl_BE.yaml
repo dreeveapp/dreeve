@@ -4,6 +4,7 @@
 '< 1.5: Good variety in training': '< 1.5: Goede variatie in training'
 '> 2.0: High monotony, increased risk': '> 2.0: Hoge monotonie, verhoogd risico'
 'A 6-hour week scores higher than a 5-hour week.': 'Een week van 6 uur scoort hoger dan een week van 5 uur.'
+'A cluster tile is a visited tile whose four neighbours are visited too': 'Een clustertegel is een bezochte tegel waarvan de vier buren ook bezocht zijn'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'Een hoge intensiteitsscore betekent dat een groter deel van je training zwaar is in plaats van licht.'
 'A high score means you concentrate more training into fewer, heavier days.': 'Een hoge score betekent dat je meer training concentreert in minder, zwaardere dagen.'
 'A:C Ratio': 'A:C-ratio'
@@ -66,6 +67,7 @@ Challenges: Uitdagingen
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Chronic Training Load (Fitheid) - exponentieel gewogen gemiddelde over 42 dagen van je dagelijkse trainingsbelasting. Geeft de trainingsaanpassing op lange termijn weer.'
 'Clear all filters': 'Alle filters wissen'
 'Clear chat': 'Chat wissen'
+'Cluster tiles': 'Clustertegels'
 Columns: Kolommen
 Commute: Woon-werk
 Commutes: Woon-werkritten
@@ -141,6 +143,7 @@ Energy: Energie
 Evening: Avond
 'Excludes commutes': 'Zonder woon-werkritten'
 'Excludes group activities': 'Zonder groepsactiviteiten'
+'Explorer tiles': 'Explorer-tegels'
 'FTP history': FTP-historiek
 Fastest: Snelste
 Favourite: Favoriet
@@ -252,6 +255,7 @@ Maintenance: Onderhoud
 'Manage recording devices': 'Registratietoestellen beheren'
 'Manage segments': 'Manage segments'
 'Map settings': Kaartinstellingen
+'Map tiles at zoom level 14 that your activities passed through': 'Kaarttegels op zoomniveau 14 waar je activiteiten doorheen gingen'
 Mar: Mrt
 Max: Max
 'Max cluster': 'Grootste cluster'
@@ -566,6 +570,7 @@ Usage: Usage
 'Virtual Run': 'Virtuele loop'
 'Virtual Runs': 'Virtuele loopsessies'
 'Virtual workout assistant': 'Virtuele trainingsassistent'
+'Visited tiles': 'Bezochte tegels'
 Volleyball: Volleybal
 Volume: Volume
 Wakeboarding: Wakeboarden
@@ -630,7 +635,6 @@ days: dagen
 'days needed for next Eddington': 'dagen nodig voor volgende Eddington'
 'days to reach {n}': 'dagen om {n} te bereiken'
 'every {interval}': 'elke {interval}'
-'explorer tiles': explorer-tegels
 hours: uur
 hrs: u
 humidity: luchtvochtigheid
