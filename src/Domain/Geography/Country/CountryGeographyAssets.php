@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Activity\Route;
+namespace App\Domain\Geography\Country;
 
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\BoundingBox;

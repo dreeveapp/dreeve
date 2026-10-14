@@ -2,8 +2,8 @@
 
 namespace App\Tests\Domain\Activity\Route;
 
-use App\Domain\Activity\Route\CountryGeographyAssets;
 use App\Domain\Activity\Route\RouteGeographyAnalyzer;
+use App\Domain\Geography\Country\CountryGeographyAssets;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use PHPUnit\Framework\Attributes\TestWith;

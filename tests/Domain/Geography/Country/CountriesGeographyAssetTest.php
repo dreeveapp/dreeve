@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\Activity\Route;
+namespace App\Tests\Domain\Geography\Country;
 
 use App\Infrastructure\Serialization\Json;
 use PHPUnit\Framework\TestCase;
