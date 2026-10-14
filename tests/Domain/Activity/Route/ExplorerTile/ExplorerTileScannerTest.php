@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Route\ExplorerTile\ActivityExplorerTilesRepository;
 use App\Domain\Activity\Route\ExplorerTile\ExplorerTileGrid;
 use App\Domain\Activity\Route\ExplorerTile\ExplorerTileScanner;
+use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\Scan\ActivityScan;
 use App\Domain\Activity\Scan\ActivityScanRepository;
 use App\Domain\Activity\Scan\ActivityScanType;
@@ -39,6 +40,7 @@ class ExplorerTileScannerTest extends ContainerTestCase
                     ->withActivityId($activityId)
                     ->withWorldType($worldType)
                     ->withPolyline($polyline)
+                    ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))
                     ->build(),
                 []
             ));
@@ -79,7 +81,11 @@ class ExplorerTileScannerTest extends ContainerTestCase
                     ExplorerTileGrid::tileKey(8365, 5482),
                 ],
             ],
-            $this->getContainer()->get(ActivityExplorerTilesRepository::class)->findAll()
+            $this->getContainer()->get(ActivityExplorerTilesRepository::class)->findAllOnHeatmap()
+        );
+        $this->assertSame(
+            ['activity-with-polyline-only', 'activity-with-stream'],
+            $this->getConnection()->executeQuery('SELECT activityId FROM ActivityExplorerTiles ORDER BY activityId')->fetchFirstColumn()
         );
         $this->assertSame(
             ['activity-virtual', 'activity-with-polyline-only', 'activity-with-stream'],

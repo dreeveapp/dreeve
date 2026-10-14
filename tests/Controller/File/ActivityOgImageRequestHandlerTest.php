@@ -2,7 +2,7 @@
 
 namespace App\Tests\Controller\File;
 
-use App\Domain\Activity\OpenGraph\ActivityOpenGraphImage;
+use App\Domain\Activity\ActivityOpenGraphImage;
 use App\Tests\Controller\ControllerWebTestCase;
 
 class ActivityOgImageRequestHandlerTest extends ControllerWebTestCase

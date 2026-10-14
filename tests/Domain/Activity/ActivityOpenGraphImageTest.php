@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Tests\Domain\Activity\OpenGraph;
+namespace App\Tests\Domain\Activity;
 
-use App\Domain\Activity\OpenGraph\ActivityOpenGraphImage;
+use App\Domain\Activity\ActivityOpenGraphImage;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\ContainerTestCase;
-use App\Tests\Domain\Activity\ActivityBuilder;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Psr7\Request;

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests\Controller\Api\Internal\Activity;
+namespace App\Tests\Controller\Api\Internal\Heatmap;
 
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class HeatmapCountriesRequestHandlerTest extends ControllerWebTestCase
+class HeatmapRoutesRequestHandlerTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
     use ProvideTestData;
@@ -15,12 +15,13 @@ class HeatmapCountriesRequestHandlerTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
 
-        $this->client->request('GET', '/api/internal/heatmap/countries');
+        $this->client->request('GET', '/api/internal/heatmap/routes');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
+        $this->assertStringContainsString('Night Ride', (string) $this->client->getResponse()->getContent());
         $this->assertStringEndsWith(
-            'heatmap.countries',
+            'heatmap.routes',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
         $this->assertResponseHeaderSame(

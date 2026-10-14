@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Activity\OpenGraph;
+namespace App\Domain\Activity;
 
-use App\Domain\Activity\Activity;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\ProvideMeasurementFormats;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;

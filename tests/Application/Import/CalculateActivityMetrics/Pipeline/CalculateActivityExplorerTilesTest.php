@@ -6,7 +6,6 @@ use App\Application\Import\CalculateActivityMetrics\Pipeline\CalculateActivityEx
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Activity\Route\ExplorerTile\ActivityExplorerTilesRepository;
 use App\Domain\Activity\Scan\ActivityScan;
 use App\Domain\Activity\Scan\ActivityScanRepository;
 use App\Domain\Activity\Scan\ActivityScanType;
@@ -49,7 +48,7 @@ class CalculateActivityExplorerTilesTest extends ContainerTestCase
 
         $this->assertSame(
             ['activity-ride', 'activity-run'],
-            array_keys($this->getContainer()->get(ActivityExplorerTilesRepository::class)->findAll())
+            $this->getConnection()->executeQuery('SELECT activityId FROM ActivityExplorerTiles ORDER BY activityId')->fetchFirstColumn()
         );
         $this->assertSame(
             "  => Calculated explorer tiles for 0 activities (3 s)\n"

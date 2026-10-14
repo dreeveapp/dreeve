@@ -15,5 +15,5 @@ interface ActivityExplorerTilesRepository
     /**
      * @return array<string, list<int>>
      */
-    public function findAll(): array;
+    public function findAllOnHeatmap(): array;
 }

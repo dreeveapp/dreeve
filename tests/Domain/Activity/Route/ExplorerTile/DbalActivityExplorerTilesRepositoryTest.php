@@ -3,33 +3,56 @@
 namespace App\Tests\Domain\Activity\Route\ExplorerTile;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Route\ExplorerTile\ActivityExplorerTilesRepository;
 use App\Domain\Activity\Route\ExplorerTile\ExplorerTiles;
+use App\Domain\Activity\Route\RouteGeography;
+use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\WorldType;
 use App\Tests\ContainerTestCase;
+use App\Tests\Domain\Activity\ActivityBuilder;
 
 class DbalActivityExplorerTilesRepositoryTest extends ContainerTestCase
 {
-    public function testAddAndFindAll(): void
+    public function testAddAndFindAllOnHeatmap(): void
     {
         $repository = $this->getContainer()->get(ActivityExplorerTilesRepository::class);
 
-        $repository->add(
-            ActivityExplorerTilesBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('test-2'))
-                ->withTiles(ExplorerTiles::fromArray([40]))
-                ->build()
-        );
-        $repository->add(
-            ActivityExplorerTilesBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('test'))
-                ->withTiles(ExplorerTiles::fromArray([10, 20, 30]))
-                ->build()
-        );
+        foreach ([
+            'on-heatmap' => [SportType::RIDE, WorldType::REAL_WORLD, 'tqafAua~y^vG{D', ['country_code' => 'BE'], [10, 20, 30]],
+            'on-heatmap-2' => [SportType::RUN, WorldType::REAL_WORLD, 'tqafAua~y^vG{D', ['country_code' => 'BE'], [40]],
+            'without-polyline' => [SportType::RIDE, WorldType::REAL_WORLD, null, ['country_code' => 'BE'], [50]],
+            'without-country' => [SportType::RIDE, WorldType::REAL_WORLD, 'tqafAua~y^vG{D', [], [60]],
+            'virtual-world' => [SportType::RIDE, WorldType::ZWIFT, 'tqafAua~y^vG{D', ['country_code' => 'BE'], [70]],
+            'virtual-sport-type' => [SportType::VIRTUAL_RIDE, WorldType::REAL_WORLD, 'tqafAua~y^vG{D', ['country_code' => 'BE'], [80]],
+        ] as $activityId => [$sportType, $worldType, $polyline, $routeGeography, $tiles]) {
+            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withSportType($sportType)
+                    ->withWorldType($worldType)
+                    ->withPolyline($polyline)
+                    ->withRouteGeography(RouteGeography::create($routeGeography))
+                    ->build(),
+                []
+            ));
+            $repository->add(
+                ActivityExplorerTilesBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withTiles(ExplorerTiles::fromArray($tiles))
+                    ->build()
+            );
+        }
 
         $this->assertEquals(
             [
-                ['activityId' => 'activity-test', 'tileCount' => 3],
-                ['activityId' => 'activity-test-2', 'tileCount' => 1],
+                ['activityId' => 'activity-on-heatmap', 'tileCount' => 3],
+                ['activityId' => 'activity-on-heatmap-2', 'tileCount' => 1],
+                ['activityId' => 'activity-virtual-sport-type', 'tileCount' => 1],
+                ['activityId' => 'activity-virtual-world', 'tileCount' => 1],
+                ['activityId' => 'activity-without-country', 'tileCount' => 1],
+                ['activityId' => 'activity-without-polyline', 'tileCount' => 1],
             ],
             $this->getConnection()
                 ->executeQuery('SELECT activityId, tileCount FROM ActivityExplorerTiles ORDER BY activityId')
@@ -37,10 +60,10 @@ class DbalActivityExplorerTilesRepositoryTest extends ContainerTestCase
         );
         $this->assertSame(
             [
-                'activity-test' => [10, 20, 30],
-                'activity-test-2' => [40],
+                'activity-on-heatmap' => [10, 20, 30],
+                'activity-on-heatmap-2' => [40],
             ],
-            $repository->findAll()
+            $repository->findAllOnHeatmap()
         );
     }
 
@@ -60,6 +83,9 @@ class DbalActivityExplorerTilesRepositoryTest extends ContainerTestCase
 
         $repository->deleteForActivity(ActivityId::fromUnprefixed('test'));
 
-        $this->assertSame(['activity-test-2'], array_keys($repository->findAll()));
+        $this->assertSame(
+            ['activity-test-2'],
+            $this->getConnection()->executeQuery('SELECT activityId FROM ActivityExplorerTiles')->fetchFirstColumn()
+        );
     }
 }

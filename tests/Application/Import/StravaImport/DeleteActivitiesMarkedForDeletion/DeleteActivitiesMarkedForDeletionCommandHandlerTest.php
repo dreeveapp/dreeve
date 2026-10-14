@@ -171,7 +171,7 @@ class DeleteActivitiesMarkedForDeletionCommandHandlerTest extends ContainerTestC
         );
         $this->assertEquals(
             ['activity-4'],
-            array_keys($this->getContainer()->get(ActivityExplorerTilesRepository::class)->findAll())
+            $this->getConnection()->executeQuery('SELECT activityId FROM ActivityExplorerTiles ORDER BY activityId')->fetchFirstColumn()
         );
     }
 

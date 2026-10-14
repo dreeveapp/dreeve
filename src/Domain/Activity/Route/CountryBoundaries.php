@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Activity\Route\Heatmap;
+namespace App\Domain\Activity\Route;
 
-use App\Domain\Activity\Route\CountryGeographyAssets;
 use App\Infrastructure\ValueObject\Geography\Polygon;
 use App\Infrastructure\ValueObject\Geography\Polyline;
 

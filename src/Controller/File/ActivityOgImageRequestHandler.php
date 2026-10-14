@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\File;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityOpenGraphImage;
 use App\Domain\Activity\ActivityRepository;
-use App\Domain\Activity\OpenGraph\ActivityOpenGraphImage;
 use App\Infrastructure\Exception\EntityNotFound;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;

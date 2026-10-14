@@ -50,6 +50,7 @@ class CacheContextGuardTest extends AdminWebTestCase
         'gear_maintenance_due' => '/api/internal/gear/maintenance-due',
         'heatmap_countries' => '/api/internal/heatmap/countries',
         'heatmap_routes' => '/api/internal/heatmap/routes',
+        'heatmap_tiles' => '/api/internal/heatmap/tiles',
         'segment_data_table' => '/api/internal/segments/data-table',
         'segment_polylines' => '/api/internal/segments/segment-10/polylines',
         'badge_dreeve' => '/badge/dreeve.svg',

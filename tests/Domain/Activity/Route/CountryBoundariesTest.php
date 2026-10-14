@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Domain\Activity\Route\Heatmap;
+namespace App\Tests\Domain\Activity\Route;
 
+use App\Domain\Activity\Route\CountryBoundaries;
 use App\Domain\Activity\Route\CountryGeographyAssets;
-use App\Domain\Activity\Route\Heatmap\CountryBoundaries;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 

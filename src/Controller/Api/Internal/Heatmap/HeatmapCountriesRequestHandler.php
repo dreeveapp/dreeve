@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\Internal\Activity;
+namespace App\Controller\Api\Internal\Heatmap;
 
-use App\Domain\Activity\Route\Heatmap\CountryBoundaries;
+use App\Domain\Activity\Route\CountryBoundaries;
 use App\Domain\Activity\Route\RouteRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
