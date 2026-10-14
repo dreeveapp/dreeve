@@ -5,22 +5,25 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Route\ExplorerTile;
 
 use App\Domain\Activity\ActivityId;
+use App\Infrastructure\Eventing\RecordsEvents;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'ActivityExplorerTiles')]
-final readonly class ActivityExplorerTiles
+final class ActivityExplorerTiles
 {
+    use RecordsEvents;
+
     /**
      * @param list<int> $tiles
      */
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string')]
-        private ActivityId $activityId,
+        private readonly ActivityId $activityId,
         #[ORM\Column(type: 'integer')]
-        private int $tileCount,
+        private readonly int $tileCount,
         #[ORM\Column(type: 'blob')]
-        private array $tiles,
+        private readonly array $tiles,
     ) {
     }
 
@@ -28,11 +31,14 @@ final readonly class ActivityExplorerTiles
         ActivityId $activityId,
         ExplorerTiles $tiles,
     ): self {
-        return new self(
+        $activityExplorerTiles = new self(
             activityId: $activityId,
             tileCount: $tiles->count(),
             tiles: $tiles->toArray(),
         );
+        $activityExplorerTiles->recordThat(new ActivityExplorerTilesWereCalculated());
+
+        return $activityExplorerTiles;
     }
 
     /**

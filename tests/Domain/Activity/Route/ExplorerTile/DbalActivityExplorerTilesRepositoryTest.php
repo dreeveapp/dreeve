@@ -3,7 +3,7 @@
 namespace App\Tests\Domain\Activity\Route\ExplorerTile;
 
 use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\Route\ExplorerTile\DbalActivityExplorerTilesRepository;
+use App\Domain\Activity\Route\ExplorerTile\ActivityExplorerTilesRepository;
 use App\Domain\Activity\Route\ExplorerTile\ExplorerTiles;
 use App\Tests\ContainerTestCase;
 
@@ -11,7 +11,7 @@ class DbalActivityExplorerTilesRepositoryTest extends ContainerTestCase
 {
     public function testAddAndFindAll(): void
     {
-        $repository = new DbalActivityExplorerTilesRepository($this->getConnection());
+        $repository = $this->getContainer()->get(ActivityExplorerTilesRepository::class);
 
         $repository->add(
             ActivityExplorerTilesBuilder::fromDefaults()
@@ -46,7 +46,7 @@ class DbalActivityExplorerTilesRepositoryTest extends ContainerTestCase
 
     public function testDeleteForActivity(): void
     {
-        $repository = new DbalActivityExplorerTilesRepository($this->getConnection());
+        $repository = $this->getContainer()->get(ActivityExplorerTilesRepository::class);
         $repository->add(
             ActivityExplorerTilesBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('test'))

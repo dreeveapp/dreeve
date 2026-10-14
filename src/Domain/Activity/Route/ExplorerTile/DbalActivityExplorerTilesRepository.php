@@ -5,11 +5,20 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Route\ExplorerTile;
 
 use App\Domain\Activity\ActivityId;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Serialization\Json;
+use Doctrine\DBAL\Connection;
 
 final readonly class DbalActivityExplorerTilesRepository extends DbalRepository implements ActivityExplorerTilesRepository
 {
+    public function __construct(
+        Connection $connection,
+        private EventBus $eventBus,
+    ) {
+        parent::__construct($connection);
+    }
+
     public function add(ActivityExplorerTiles $activityExplorerTiles): void
     {
         $sql = 'INSERT INTO ActivityExplorerTiles (activityId, tileCount, tiles)
@@ -20,6 +29,8 @@ final readonly class DbalActivityExplorerTilesRepository extends DbalRepository 
             'tileCount' => $activityExplorerTiles->getTileCount(),
             'tiles' => Json::encodeAndCompress($activityExplorerTiles->getTiles()->toArray()),
         ]);
+
+        $this->eventBus->publishEvents($activityExplorerTiles->getRecordedEvents());
     }
 
     public function deleteForActivity(ActivityId $activityId): void

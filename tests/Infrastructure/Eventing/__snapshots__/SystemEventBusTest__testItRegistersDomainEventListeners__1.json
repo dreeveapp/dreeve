@@ -4,6 +4,7 @@
         "reactToActivityWasUpdated",
         "reactToActivityImagesHaveBeenUpdated",
         "reactToActivityRouteWasUpdated",
+        "reactToActivityExplorerTilesWereCalculated",
         "reactToActivityWasDeleted"
     ],
     "App\\Domain\\Theme\\RecalculateChartColorsListener": [

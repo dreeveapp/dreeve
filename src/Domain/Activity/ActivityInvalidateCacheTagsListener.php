@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
+use App\Domain\Activity\Route\ExplorerTile\ActivityExplorerTilesWereCalculated;
 use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
@@ -51,6 +52,12 @@ final readonly class ActivityInvalidateCacheTagsListener
 
     #[AsEventListener]
     public function reactToActivityRouteWasUpdated(ActivityRouteWasUpdated $event): void
+    {
+        $this->renderCache->invalidateTags(RootCacheTag::ACTIVITY_ROUTE);
+    }
+
+    #[AsEventListener]
+    public function reactToActivityExplorerTilesWereCalculated(ActivityExplorerTilesWereCalculated $event): void
     {
         $this->renderCache->invalidateTags(RootCacheTag::ACTIVITY_ROUTE);
     }

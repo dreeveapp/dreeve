@@ -7,6 +7,9 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\Route\ExplorerTile\ActivityExplorerTiles;
+use App\Domain\Activity\Route\ExplorerTile\ActivityExplorerTilesRepository;
+use App\Domain\Activity\Route\ExplorerTile\ExplorerTiles;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorldType;
@@ -79,6 +82,19 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
         ));
 
         $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITY_IMAGES));
+        $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITY_ROUTE));
+    }
+
+    public function testItInvalidatesTheRouteWhenExplorerTilesAreCalculated(): void
+    {
+        $this->warmUpRenderCache();
+
+        $this->getContainer()->get(ActivityExplorerTilesRepository::class)->add(ActivityExplorerTiles::create(
+            activityId: ActivityId::fromUnprefixed('test'),
+            tiles: ExplorerTiles::fromArray([1, 2, 3]),
+        ));
+
+        $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITIES));
         $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITY_ROUTE));
     }
 
