@@ -4,7 +4,7 @@ namespace App\Tests\Domain\Activity\Route\ExplorerTile;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\Route\ExplorerTile\ActivityExplorerTilesRepository;
-use App\Domain\Activity\Route\ExplorerTile\ExplorerTiles;
+use App\Domain\Geography\ExplorerTile\ExplorerTiles;
 use App\Tests\ContainerTestCase;
 
 class DbalActivityExplorerTilesRepositoryTest extends ContainerTestCase

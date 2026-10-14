@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Route\ExplorerTile;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Geography\ExplorerTile\ExplorerTiles;
 use App\Infrastructure\Eventing\RecordsEvents;
 use Doctrine\ORM\Mapping as ORM;
 

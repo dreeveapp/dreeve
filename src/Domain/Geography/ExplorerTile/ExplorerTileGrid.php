@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Activity\Route\ExplorerTile;
+namespace App\Domain\Geography\ExplorerTile;
 
 final readonly class ExplorerTileGrid
 {

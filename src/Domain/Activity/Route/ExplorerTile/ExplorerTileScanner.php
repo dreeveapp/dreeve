@@ -12,6 +12,7 @@ use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\WorldType;
+use App\Domain\Geography\ExplorerTile\ExplorerTileGrid;
 use App\Infrastructure\Exception\EntityNotFound;
 
 final readonly class ExplorerTileScanner
