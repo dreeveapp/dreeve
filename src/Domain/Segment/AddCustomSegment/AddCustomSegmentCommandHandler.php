@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Segment\AddCustomSegment;
 
 use App\Domain\Activity\ActivityRepository;
-use App\Domain\Activity\Route\RouteGeographyAnalyzer;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Geography\Country\RouteGeographyAnalyzer;
 use App\Domain\Segment\Segment;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;

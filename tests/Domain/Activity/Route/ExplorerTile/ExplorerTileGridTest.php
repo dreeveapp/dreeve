@@ -48,7 +48,7 @@ class ExplorerTileGridTest extends TestCase
     public function testTilesForARoute(): void
     {
         $tiles = ExplorerTileGrid::tilesFor(
-            EncodedPolyline::fromString((string) file_get_contents(__DIR__.'/../fixtures/route-be-nl.txt'))->decodeAndPairLatLng()
+            EncodedPolyline::fromString((string) file_get_contents(__DIR__.'/../../../Geography/fixtures/route-be-nl.txt'))->decodeAndPairLatLng()
         );
 
         $this->assertMatchesJsonSnapshot(Json::encode($tiles->toArray()));

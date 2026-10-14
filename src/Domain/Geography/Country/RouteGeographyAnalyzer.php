@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Activity\Route;
+namespace App\Domain\Geography\Country;
 
-use App\Domain\Geography\Country\CountryGeographyAssets;
 use App\Infrastructure\ValueObject\Geography\BoundingBox;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\Geography\Polygon;

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Domain\Activity\Route;
+namespace App\Tests\Domain\Geography\Country;
 
-use App\Domain\Activity\Route\RouteGeographyAnalyzer;
 use App\Domain\Geography\Country\CountryGeographyAssets;
+use App\Domain\Geography\Country\RouteGeographyAnalyzer;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use PHPUnit\Framework\Attributes\TestWith;
@@ -18,7 +18,7 @@ class RouteGeographyAnalyzerTest extends TestCase
         $this->assertEquals(
             ['CZ', 'PL'],
             $this->analyzer->analyzeForPolyline(EncodedPolyline::fromString(trim(
-                file_get_contents(__DIR__.'/fixtures/route-pl-cz.txt') ?: ''
+                file_get_contents(__DIR__.'/../fixtures/route-pl-cz.txt') ?: ''
             )))
         );
     }
@@ -28,7 +28,7 @@ class RouteGeographyAnalyzerTest extends TestCase
         $this->assertEquals(
             ['BE', 'NL'],
             $this->analyzer->analyzeForPolyline(EncodedPolyline::fromString(trim(
-                file_get_contents(__DIR__.'/fixtures/route-be-nl.txt') ?: ''
+                file_get_contents(__DIR__.'/../fixtures/route-be-nl.txt') ?: ''
             )))
         );
     }
@@ -36,7 +36,7 @@ class RouteGeographyAnalyzerTest extends TestCase
     public function testAnalyzeForPolylineIsIndependentOfDirection(): void
     {
         $reversed = array_reverse(EncodedPolyline::fromString(trim(
-            file_get_contents(__DIR__.'/fixtures/route-pl-cz.txt') ?: ''
+            file_get_contents(__DIR__.'/../fixtures/route-pl-cz.txt') ?: ''
         ))->decodeAndPairLatLng());
 
         $this->assertEquals(

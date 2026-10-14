@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Import\FileImport\ImportActivityFiles\Pipeline;
 
 use App\Domain\Activity\Route\RouteGeography;
-use App\Domain\Activity\Route\RouteGeographyAnalyzer;
+use App\Domain\Geography\Country\RouteGeographyAnalyzer;
 use App\Domain\Integration\Geocoding\Nominatim\CouldNotReverseGeocodeAddress;
 use App\Domain\Integration\Geocoding\Nominatim\Nominatim;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
