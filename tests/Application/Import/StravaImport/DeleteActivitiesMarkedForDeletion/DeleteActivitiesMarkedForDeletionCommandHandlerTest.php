@@ -10,6 +10,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\Lap\ActivityLapRepository;
+use App\Domain\Activity\Route\ExplorerTile\ActivityExplorerTilesRepository;
 use App\Domain\Activity\Scan\ActivityScan;
 use App\Domain\Activity\Scan\ActivityScanRepository;
 use App\Domain\Activity\Scan\ActivityScanType;
@@ -26,6 +27,7 @@ use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\BestEffort\ActivityBestEffortBuilder;
 use App\Tests\Domain\Activity\Lap\ActivityLapBuilder;
+use App\Tests\Domain\Activity\Route\ExplorerTile\ActivityExplorerTilesBuilder;
 use App\Tests\Domain\Activity\Split\ActivitySplitBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\Domain\Segment\SegmentBuilder;
@@ -110,6 +112,13 @@ class DeleteActivitiesMarkedForDeletionCommandHandlerTest extends ContainerTestC
             ActivityScan::create(activityId: ActivityId::fromUnprefixed(4), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-custom')
         );
 
+        $this->getContainer()->get(ActivityExplorerTilesRepository::class)->add(ActivityExplorerTilesBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed(1001))
+            ->build());
+        $this->getContainer()->get(ActivityExplorerTilesRepository::class)->add(ActivityExplorerTilesBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed(4))
+            ->build());
+
         $this->getContainer()->get(ActivityRepository::class)->markActivitiesForDeletion(ActivityIds::fromArray([
             ActivityId::fromUnprefixed(1000),
             ActivityId::fromUnprefixed(1001),
@@ -159,6 +168,10 @@ class DeleteActivitiesMarkedForDeletionCommandHandlerTest extends ContainerTestC
         $this->assertEquals(
             ['activity-4'],
             $this->getConnection()->executeQuery('SELECT activityId FROM ActivityScan')->fetchFirstColumn()
+        );
+        $this->assertEquals(
+            ['activity-4'],
+            array_keys($this->getContainer()->get(ActivityExplorerTilesRepository::class)->findAll())
         );
     }
 
