@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Internal\Heatmap;
 
-use App\Domain\Activity\Route\CountryBoundaries;
 use App\Domain\Activity\Route\RouteRepository;
+use App\Domain\Geography\Country\CountryBoundaries;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;

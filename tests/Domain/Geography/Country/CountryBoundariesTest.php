@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Domain\Activity\Route;
+namespace App\Tests\Domain\Geography\Country;
 
-use App\Domain\Activity\Route\CountryBoundaries;
+use App\Domain\Geography\Country\CountryBoundaries;
 use App\Domain\Geography\Country\CountryGeographyAssets;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use PHPUnit\Framework\Attributes\TestWith;
