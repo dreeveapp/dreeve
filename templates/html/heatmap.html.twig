@@ -166,20 +166,19 @@
             {% set percentage = (summary.getNumberOfCountries() / 195 * 100)|formatNumber(0) %}
             <div class="font-semibold text-gray-700 text-sm mb-0.5">{{ summary.getNumberOfCountries() }} {{ "countries"|trans }}</div>
             <div class="text-gray-500"> {{ "That's {percentage}% of all countries 🌍"|trans({'{percentage}': percentage}) }}</div>
-            {% set tileColor = heatmapConfig.getLeafletConfig().getPolylineColor() %}
             <div class="hidden mt-2 pt-2 border-t border-gray-200 max-w-64" data-heatmap-tiles-stats>
                 <div class="font-semibold text-gray-700 text-sm mb-0.5">{{ "Explorer tiles"|trans }}</div>
                 <div class="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-1 text-gray-700">
-                    <span class="size-3 rounded-xs border" style="background-color: color-mix(in srgb, {{ tileColor }} 15%, transparent); border-color: color-mix(in srgb, {{ tileColor }} 50%, transparent)"></span>
+                    <span class="size-3 rounded-xs border" data-heatmap-tiles-swatch="visited"></span>
                     <span class="cursor-help underline decoration-dotted decoration-gray-400 underline-offset-2" title="{{ "Map tiles at zoom level 14 that your activities passed through"|trans }}">{{ "Visited tiles"|trans }}</span>
                     <span class="font-semibold text-right" data-heatmap-tiles-stat="total"></span>
-                    <span class="size-3 rounded-xs border" style="background-color: color-mix(in srgb, {{ tileColor }} 35%, transparent); border-color: color-mix(in srgb, {{ tileColor }} 50%, transparent)"></span>
+                    <span class="size-3 rounded-xs border" data-heatmap-tiles-swatch="cluster"></span>
                     <span class="cursor-help underline decoration-dotted decoration-gray-400 underline-offset-2" title="{{ "A cluster tile is a visited tile whose four neighbours are visited too"|trans }}">{{ "Cluster tiles"|trans }}</span>
                     <span class="font-semibold text-right" data-heatmap-tiles-stat="clusterTiles"></span>
-                    <span class="size-3 rounded-xs border" style="background-color: color-mix(in srgb, {{ tileColor }} 55%, transparent); border-color: color-mix(in srgb, {{ tileColor }} 50%, transparent)"></span>
+                    <span class="size-3 rounded-xs border" data-heatmap-tiles-swatch="maxCluster"></span>
                     <span class="cursor-help underline decoration-dotted decoration-gray-400 underline-offset-2" title="{{ "The largest connected group of cluster tiles"|trans }}">{{ "Max cluster"|trans }}</span>
                     <span class="font-semibold text-right" data-heatmap-tiles-stat="maxCluster"></span>
-                    <span class="size-3 rounded-xs border-2" style="border-color: {{ tileColor }}"></span>
+                    <span class="size-3 rounded-xs border-2" data-heatmap-tiles-swatch="maxSquare"></span>
                     <span class="cursor-help underline decoration-dotted decoration-gray-400 underline-offset-2" title="{{ "The largest square of visited tiles"|trans }}">{{ "Max square"|trans }}</span>
                     <span class="font-semibold text-right" data-heatmap-tiles-stat="maxSquare"></span>
                 </div>

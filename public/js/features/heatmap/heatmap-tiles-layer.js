@@ -3,6 +3,15 @@ import {fetchJson} from "../../utils";
 import {clusters, maxSquare, tileBounds, tileKey} from "./explorer-tiles";
 
 const PANE_NAME = 'heatmapTiles';
+const TILE_BORDER = {opacity: 0.5, weight: 1};
+const STYLES = {
+    visited: {...TILE_BORDER, fillOpacity: 0.15},
+    cluster: {...TILE_BORDER, fillOpacity: 0.35},
+    maxCluster: {...TILE_BORDER, fillOpacity: 0.55},
+    maxSquare: {fill: false, opacity: 1, weight: 3},
+};
+
+const colorWithOpacity = (color, opacity) => `color-mix(in srgb, ${color} ${Math.round(opacity * 100)}%, transparent)`;
 
 export default class HeatmapTilesLayer {
     static ICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg>';
@@ -21,27 +30,25 @@ export default class HeatmapTilesLayer {
         pane.style.pointerEvents = 'none';
 
         const renderer = L.canvas({pane: PANE_NAME, padding: 0.2});
-        const tilesPolygon = (fillOpacity) => L.polygon([], {
+        const layerOptions = (name) => ({
             renderer: renderer,
             interactive: false,
             fillColor: color,
-            fillOpacity: fillOpacity,
             color: color,
-            opacity: 0.5,
-            weight: 1,
+            ...STYLES[name],
         });
-        this.visitedTilesLayer = tilesPolygon(0.15);
-        this.clusterTilesLayer = tilesPolygon(0.35);
-        this.maxClusterTilesLayer = tilesPolygon(0.55);
-        this.maxSquareLayer = L.rectangle([[0, 0], [0, 0]], {
-            renderer: renderer,
-            interactive: false,
-            fill: false,
-            color: color,
-            opacity: 1,
-            weight: 3,
-        });
+        this.visitedTilesLayer = L.polygon([], layerOptions('visited'));
+        this.clusterTilesLayer = L.polygon([], layerOptions('cluster'));
+        this.maxClusterTilesLayer = L.polygon([], layerOptions('maxCluster'));
+        this.maxSquareLayer = L.rectangle([[0, 0], [0, 0]], layerOptions('maxSquare'));
         this.featureGroup = L.featureGroup([this.visitedTilesLayer, this.clusterTilesLayer, this.maxClusterTilesLayer]);
+
+        this.statsNode?.querySelectorAll('[data-heatmap-tiles-swatch]').forEach(swatch => {
+            const style = STYLES[swatch.getAttribute('data-heatmap-tiles-swatch')];
+            if (!style) return;
+            swatch.style.backgroundColor = false === style.fill ? 'transparent' : colorWithOpacity(color, style.fillOpacity);
+            swatch.style.borderColor = colorWithOpacity(color, style.opacity);
+        });
     }
 
     setActiveActivityIds(activityIds) {
