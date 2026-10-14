@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Domain\Activity\Route\Signature;
+namespace App\Tests\Domain\Geography\Grid;
 
-use App\Domain\Activity\Route\Signature\RouteGrid;
-use App\Domain\Activity\Route\Signature\RouteWaypoints;
+use App\Domain\Geography\Grid\RouteGrid;
+use App\Domain\Geography\Grid\RouteWaypoints;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use PHPUnit\Framework\TestCase;
 

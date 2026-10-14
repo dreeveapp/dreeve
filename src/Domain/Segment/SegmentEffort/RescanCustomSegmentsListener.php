@@ -6,11 +6,11 @@ namespace App\Domain\Segment\SegmentEffort;
 
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivitySportTypeWasChanged;
-use App\Domain\Activity\Route\Signature\RouteGrid;
 use App\Domain\Activity\Scan\ActivityScanRepository;
 use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Geography\Grid\RouteGrid;
 use App\Domain\Segment\SegmentRepository;
 use App\Domain\Segment\SegmentType;
 use App\Infrastructure\Exception\EntityNotFound;

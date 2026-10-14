@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Route\Signature;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Geography\Grid\RouteCells;
+use App\Domain\Geography\Grid\RouteWaypoints;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]

@@ -6,8 +6,8 @@ namespace App\Tests\Domain\Activity\Route\Signature;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\Route\Signature\ActivityRouteSignature;
-use App\Domain\Activity\Route\Signature\RouteCells;
-use App\Domain\Activity\Route\Signature\RouteWaypoints;
+use App\Domain\Geography\Grid\RouteCells;
+use App\Domain\Geography\Grid\RouteWaypoints;
 
 final class ActivityRouteSignatureBuilder
 {

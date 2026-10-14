@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Activity\Route\Signature;
+namespace App\Domain\Geography\Grid;
 
 final readonly class RouteWaypoints
 {

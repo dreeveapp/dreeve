@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\Import\CalculateActivityMetrics\Pipeline;
 
-use App\Domain\Activity\Route\Signature\RouteGrid;
 use App\Domain\Activity\Scan\ActivityScanRepository;
 use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Geography\Grid\RouteGrid;
 use App\Domain\Segment\SegmentEffort\CustomSegmentScanner;
 use App\Domain\Segment\SegmentRepository;
 use App\Domain\Segment\SegmentType;

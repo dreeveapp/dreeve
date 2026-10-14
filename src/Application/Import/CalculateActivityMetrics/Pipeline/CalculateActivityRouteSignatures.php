@@ -7,7 +7,7 @@ namespace App\Application\Import\CalculateActivityMetrics\Pipeline;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Route\Signature\ActivityRouteSignature;
 use App\Domain\Activity\Route\Signature\ActivityRouteSignatureRepository;
-use App\Domain\Activity\Route\Signature\RouteGrid;
+use App\Domain\Geography\Grid\RouteGrid;
 use App\Infrastructure\Console\ProgressIndicator;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use Symfony\Component\Console\Output\OutputInterface;
