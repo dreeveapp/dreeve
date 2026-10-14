@@ -1,6 +1,6 @@
 import L from 'leaflet';
 import {fetchJson} from "../../utils";
-import {tileBounds} from "./explorer-tiles";
+import {clusters, maxSquare, tileBounds, tileKey} from "./explorer-tiles";
 
 const PANE_NAME = 'heatmapTiles';
 
@@ -19,15 +19,28 @@ export default class HeatmapTilesLayer {
         pane.style.zIndex = 390;
         pane.style.pointerEvents = 'none';
 
-        this.visitedTilesLayer = L.polygon([], {
-            renderer: L.canvas({pane: PANE_NAME, padding: 0.2}),
+        const renderer = L.canvas({pane: PANE_NAME, padding: 0.2});
+        const tilesPolygon = (fillOpacity) => L.polygon([], {
+            renderer: renderer,
             interactive: false,
             fillColor: color,
-            fillOpacity: 0.2,
+            fillOpacity: fillOpacity,
             color: color,
             opacity: 0.5,
             weight: 1,
         });
+        this.visitedTilesLayer = tilesPolygon(0.15);
+        this.clusterTilesLayer = tilesPolygon(0.35);
+        this.maxClusterTilesLayer = tilesPolygon(0.55);
+        this.maxSquareLayer = L.rectangle([[0, 0], [0, 0]], {
+            renderer: renderer,
+            interactive: false,
+            fill: false,
+            color: color,
+            opacity: 1,
+            weight: 3,
+        });
+        this.featureGroup = L.featureGroup([this.visitedTilesLayer, this.clusterTilesLayer, this.maxClusterTilesLayer]);
     }
 
     setActiveActivityIds(activityIds) {
@@ -58,7 +71,7 @@ export default class HeatmapTilesLayer {
 
     _sync() {
         if (!this.enabled || !this.tilesPerActivity) {
-            this.map.removeLayer(this.visitedTilesLayer);
+            this.map.removeLayer(this.featureGroup);
             return;
         }
 
@@ -66,11 +79,27 @@ export default class HeatmapTilesLayer {
         this.activeActivityIds.forEach(activityId => {
             (this.tilesPerActivity[activityId] || []).forEach(tile => visitedTiles.add(tile));
         });
+        const {clusterTiles, maxCluster} = clusters(visitedTiles);
 
-        this.visitedTilesLayer.setLatLngs([...visitedTiles].map(tile => {
+        this.visitedTilesLayer.setLatLngs(this._rings([...visitedTiles].filter(tile => !clusterTiles.has(tile))));
+        this.clusterTilesLayer.setLatLngs(this._rings([...clusterTiles].filter(tile => !maxCluster.has(tile))));
+        this.maxClusterTilesLayer.setLatLngs(this._rings([...maxCluster]));
+
+        const square = maxSquare(visitedTiles);
+        if (square) {
+            this.maxSquareLayer.setBounds(L.latLngBounds(tileBounds(tileKey(square.x, square.y)))
+                .extend(L.latLngBounds(tileBounds(tileKey(square.x + square.size - 1, square.y + square.size - 1)))));
+            this.featureGroup.addLayer(this.maxSquareLayer);
+        } else {
+            this.featureGroup.removeLayer(this.maxSquareLayer);
+        }
+        this.featureGroup.addTo(this.map);
+    }
+
+    _rings(tiles) {
+        return tiles.map(tile => {
             const [[south, west], [north, east]] = tileBounds(tile);
             return [[[north, west], [north, east], [south, east], [south, west]]];
-        }));
-        this.visitedTilesLayer.addTo(this.map);
+        });
     }
 }
