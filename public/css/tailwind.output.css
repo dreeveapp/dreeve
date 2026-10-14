@@ -2204,6 +2204,9 @@
   .cursor-grab {
     cursor: grab;
   }
+  .cursor-help {
+    cursor: help;
+  }
   .cursor-not-allowed {
     cursor: not-allowed;
   }
@@ -3563,6 +3566,15 @@
   }
   .underline {
     text-decoration-line: underline;
+  }
+  .decoration-gray-400 {
+    text-decoration-color: var(--color-gray-400);
+  }
+  .decoration-dotted {
+    text-decoration-style: dotted;
+  }
+  .underline-offset-2 {
+    text-underline-offset: 2px;
   }
   .antialiased {
     -webkit-font-smoothing: antialiased;

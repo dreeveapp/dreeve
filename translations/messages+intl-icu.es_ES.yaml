@@ -518,6 +518,8 @@ Tennis: Tenis
 "That's {number} days of at least {distance}": 'Eso son {number} días de al menos {distance}'
 "That's {percentage}% of all countries 🌍": 'Eso es el {percentage}% de todos los países 🌍'
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'El número de Eddington en el contexto del ciclismo o la carrera se define como el número máximo E tal que el atleta ha cubierto al menos E km en al menos E días.'
+'The largest connected group of cluster tiles': 'The largest connected group of cluster tiles'
+'The largest square of visited tiles': 'The largest square of visited tiles'
 "The page you're looking for doesn't exist or may have been moved.": 'La página que buscas no existe o puede que se haya movido.'
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': 'Estas insignias se crean dinámicamente. Puedes usarlas en cualquier etiqueta &lt;img&gt;'
 'These components are not installed on any gear at the moment.': 'These components are not installed on any gear at the moment.'
