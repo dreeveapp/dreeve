@@ -26,11 +26,18 @@ class ExplorerTileGridTest extends TestCase
         );
     }
 
-    public function testTilesForSkipsInvalidPoints(): void
+    public function testTilesForAStreamWithGaps(): void
     {
         $this->assertSame(
-            [ExplorerTileGrid::tileKey(8361, 5481)],
-            new ExplorerTileGrid()->tilesFor(Json::decode((string) file_get_contents(__DIR__.'/fixtures/stream-with-null-points.json')))->toArray()
+            [
+                ExplorerTileGrid::tileKey(8361, 5481),
+                ExplorerTileGrid::tileKey(8362, 5481),
+                ExplorerTileGrid::tileKey(8363, 5481),
+                ExplorerTileGrid::tileKey(8364, 5481),
+                ExplorerTileGrid::tileKey(8364, 5482),
+                ExplorerTileGrid::tileKey(8365, 5482),
+            ],
+            new ExplorerTileGrid()->tilesFor(Json::decode((string) file_get_contents(__DIR__.'/fixtures/stream-with-gaps.json')))->toArray()
         );
 
         $tiles = new ExplorerTileGrid()->tilesFor([]);
