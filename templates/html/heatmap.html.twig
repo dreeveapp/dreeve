@@ -156,6 +156,7 @@
         <!-- HEATMAP -->
         <div id="heatmap" data-heatmap-config='{{ heatmapConfig|json_encode}}' data-leaflet-routes='{{ relativeUrl(path('heatmap_routes')) }}'
              data-leaflet-countries='{{ relativeUrl(path('heatmap_countries')) }}' data-leaflet-countries-label='{{ "Highlight visited countries"|trans }}'
+             data-leaflet-tiles='{{ relativeUrl(path('heatmap_tiles')) }}' data-leaflet-tiles-label='{{ "Highlight explorer tiles"|trans }}'
              data-leaflet-popup-labels='{{ {
                  'nearbyRoutes': "{numberOfRoutes} nearby route(s)"|trans({'{numberOfRoutes}': '{numberOfRoutes}'}),
              }|json_encode(constant('JSON_HEX_APOS')) }}'

@@ -2,6 +2,7 @@ import {pointToLineDistance, point, lineString} from "../../../libraries/turf";
 import L from 'leaflet';
 import {createFlyToPlacesControl, createMapToolsControl} from "../maps/leaflet-controls";
 import HeatmapCountriesLayer from "./heatmap-countries-layer";
+import HeatmapTilesLayer from "./heatmap-tiles-layer";
 import '../maps/ctrl-scroll-zoom';
 
 export default class HeatmapDrawer {
@@ -44,6 +45,11 @@ export default class HeatmapDrawer {
         this.popupLabels = JSON.parse(this.wrapper.getAttribute('data-leaflet-popup-labels') ?? '{}');
         this.countriesLayer = countriesUrl
             ? new HeatmapCountriesLayer(this.map, countriesUrl, this.config.polylineColor)
+            : null;
+        const tilesUrl = this.wrapper.getAttribute('data-leaflet-tiles');
+        this.tilesLabel = this.wrapper.getAttribute('data-leaflet-tiles-label');
+        this.tilesLayer = tilesUrl
+            ? new HeatmapTilesLayer(this.map, tilesUrl, this.config.polylineColor)
             : null;
 
         this.map.on("click", (e) => this._handleMapClick(e));
@@ -169,6 +175,7 @@ export default class HeatmapDrawer {
             });
         });
         this.countriesLayer?.setActiveCountryCodes([...countryBounds.keys()]);
+        this.tilesLayer?.setActiveActivityIds(routes.map(route => route.id));
         this.mainFeatureGroup.addTo(this.map);
 
         this.placesControl = createFlyToPlacesControl({places});
@@ -177,11 +184,18 @@ export default class HeatmapDrawer {
         if (!this.mapToolsControl) {
             this.mapToolsControl = createMapToolsControl({
                 showReset: false,
-                toggles: this.countriesLayer ? [{
-                    icon: HeatmapCountriesLayer.ICON,
-                    title: this.countriesLabel,
-                    onToggle: (active) => this.countriesLayer.setEnabled(active),
-                }] : [],
+                toggles: [
+                    this.countriesLayer ? {
+                        icon: HeatmapCountriesLayer.ICON,
+                        title: this.countriesLabel,
+                        onToggle: (active) => this.countriesLayer.setEnabled(active),
+                    } : null,
+                    this.tilesLayer ? {
+                        icon: HeatmapTilesLayer.ICON,
+                        title: this.tilesLabel,
+                        onToggle: (active) => this.tilesLayer.setEnabled(active),
+                    } : null,
+                ].filter(Boolean),
             });
             this.map.addControl(this.mapToolsControl);
         }
