@@ -1,3 +1,36 @@
+# [v5.6.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.6.0) - 2026-10-14
+
+## New features
+* Added explorer tiles to the heatmap
+* Added the ability to download original activity files from the activity detail page
+* Added an API endpoint for upcoming gear maintenance
+* Added an activity description condition to automation rules
+
+## Improvements
+* Reworked the gear maintenance features based on feedback of several users
+* Added "unspecified" filter options to the activity overview
+* Recalculate activity metrics when an activity's sport type changes
+* Hide the segments icon in the admin panel when segments aren't applicable
+* Redesigned the gear pages
+* Added the number of days needed to reach upcoming Eddington numbers
+
+## Technical details
+* German Translation for Segment Management by @effectpears in https://github.com/dreeveapp/dreeve/pull/2798
+* ISSUE #2794: Download original activity files by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2799
+* ISSUE #2803: Add "unspecified" filter options in the activity overview by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2804
+* ISSUE #2800: Recalculate activity metrics when activity sport type is updated by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2805
+* ISSUE #2806: Hide segments icon in admin panel when not applicable by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2807
+* ISSUE #2808: Gear page re-vamp by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2809
+* ISSUE #2771: Gear Configurations by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2797
+* ISSUE #2792: API endpoint for upcoming gear maintenance by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2801
+* ISSUE #2810: Show days needed for upcoming Eddington numbers by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2811
+* German Translation (var commits) by @effectpears in https://github.com/dreeveapp/dreeve/pull/2814
+* ISSUE #2812: Automation condition on activity description by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2815
+* ISSUE #2816: Clean up gear component refactor by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2817
+* ISSUE #2813: Show explorer tiles on the heatmap by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2820
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.5.0...v5.6.0
+
 # [v5.5.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.5.0) - 2026-10-12
 
 > [!NOTE]
@@ -14,7 +47,7 @@
 * File import filters are now preserved after deleting an entry
 * Added a workout type dropdown to the activity edit form
 
-## What's Changed
+## Technical details
 * ISSUE #2767: in DEMO mode, hide start time of activities by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2768
 * ISSUE #2773: Use separate admin labels for the widget dropdown button by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2774
 * ISSUE #2772: Mention the number of imported activities in the import notification by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2775
