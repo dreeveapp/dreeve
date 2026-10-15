@@ -10,6 +10,8 @@ use App\Domain\Image\ImageDirectory;
 use App\Domain\Image\ImagePath;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Image\RemovedImage;
+use App\Domain\Settings\SettingsName;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 
@@ -18,6 +20,7 @@ final readonly class UpdateActivityCommandHandler implements CommandHandler
     public function __construct(
         private ActivityRepository $activityRepository,
         private ImageStorage $imageStorage,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -79,6 +82,17 @@ final readonly class UpdateActivityCommandHandler implements CommandHandler
 
         foreach ($imagePathsThatNeedRemoval as $path) {
             $this->imageStorage->remove($path);
+        }
+
+        $isExcludedFromPeakPowerOutputs = $command->isExcludedFromPeakPowerOutputs();
+        $excludedFromPeakPowerOutputs = $this->settingsRepository->activityExclusions()->getExcludedFromPeakPowerOutputs();
+        if (null !== $isExcludedFromPeakPowerOutputs && $isExcludedFromPeakPowerOutputs !== $excludedFromPeakPowerOutputs->has($activity->getId())) {
+            $excludedActivityIds = $excludedFromPeakPowerOutputs->without($activity->getId());
+
+            $this->settingsRepository->save(
+                name: SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS,
+                value: $isExcludedFromPeakPowerOutputs ? $excludedActivityIds->add($activity->getId()) : $excludedActivityIds,
+            );
         }
     }
 }

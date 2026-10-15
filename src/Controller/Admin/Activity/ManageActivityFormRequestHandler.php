@@ -85,6 +85,7 @@ final readonly class ManageActivityFormRequestHandler
             'gears' => $gears,
             'gearIsReadOnly' => $gearIsReadOnly,
             'recordingDevices' => $this->recordingDeviceRepository->findAll(),
+            'isExcludedFromPeakPowerOutputs' => $this->settingsRepository->activityExclusions()->getExcludedFromPeakPowerOutputs()->has($activity->getId()),
         ]));
     }
 

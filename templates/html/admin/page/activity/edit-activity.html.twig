@@ -109,6 +109,11 @@
                         {% if isImportedFromStrava %}{% include 'html/admin/component/strava-imported-badge.html.twig' %}{% endif %}
                     </label>
                 </div>
+                <div class="flex items-center gap-2">
+                    <input type="hidden" name="isExcludedFromPeakPowerOutputs" value="false">
+                    <input type="checkbox" id="activity-is-excluded-from-peak-power-outputs" name="isExcludedFromPeakPowerOutputs" value="true" {{ isExcludedFromPeakPowerOutputs ? 'checked' }}>
+                    <label for="activity-is-excluded-from-peak-power-outputs" class="mt-0!">{{ "Exclude from peak power outputs"|trans({}, 'admin') }}</label>
+                </div>
                 {% if not isImportedFromStrava %}
                     <div>
                         <label>{{ "Images"|trans({}, 'admin') }}</label>

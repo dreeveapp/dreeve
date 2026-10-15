@@ -82,6 +82,16 @@ abstract class Collection implements \Countable, \IteratorAggregate, \JsonSerial
     }
 
     /**
+     * @param T $item
+     */
+    public function without(mixed $item): static
+    {
+        $this->guardItemIsInstanceOfItemClassName($item);
+
+        return $this->filter(fn (mixed $existingItem): bool => $existingItem != $item);
+    }
+
+    /**
      * @param T $itemToReplace
      * @param T $itemTobeReplacedWith
      */

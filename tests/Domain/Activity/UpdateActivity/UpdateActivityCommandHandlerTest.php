@@ -11,6 +11,8 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\UpdateActivity\UpdateActivity;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
+use App\Domain\Settings\SettingsName;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Tests\ContainerTestCase;
@@ -22,6 +24,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
     private CommandBus $commandBus;
     private ActivityRepository $activityRepository;
     private FilesystemOperator $fileStorage;
+    private SettingsRepository $settingsRepository;
 
     public function testHandle(): void
     {
@@ -33,6 +36,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
                 ->build(),
             rawData: [],
         ));
+        $this->settingsRepository->save(SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS, ['activity-2']);
 
         $this->commandBus->dispatch(UpdateActivity::fromPayload([
             'activityId' => 'activity-1',
@@ -45,6 +49,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
             'calories' => '500',
             'isCommute' => 'true',
             'isGroupActivity' => 'true',
+            'isExcludedFromPeakPowerOutputs' => 'true',
         ]));
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
@@ -57,6 +62,33 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
         $this->assertSame(500, $activity->getCalories());
         $this->assertTrue($activity->isCommute());
         $this->assertTrue($activity->isGroupActivity());
+        $this->assertSame(
+            ['activity-2', 'activity-1'],
+            $this->settingsRepository->find(SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS),
+        );
+    }
+
+    public function testHandleRemovesTheExclusionFromPeakPowerOutputs(): void
+    {
+        $this->activityRepository->add(ActivityWithRawData::fromState(
+            activity: ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->build(),
+            rawData: [],
+        ));
+        $this->settingsRepository->save(SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS, ['activity-1', 'activity-2']);
+
+        $this->commandBus->dispatch(UpdateActivity::fromPayload([
+            'activityId' => 'activity-1',
+            'name' => 'Updated activity',
+            'sportType' => 'Ride',
+            'isExcludedFromPeakPowerOutputs' => 'false',
+        ]));
+
+        $this->assertSame(
+            ['activity-2'],
+            $this->settingsRepository->find(SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS),
+        );
     }
 
     public function testHandleClearsCalories(): void
@@ -68,6 +100,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
                 ->build(),
             rawData: [],
         ));
+        $this->settingsRepository->save(SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS, ['activity-1']);
 
         $this->commandBus->dispatch(UpdateActivity::fromPayload([
             'activityId' => 'activity-1',
@@ -77,6 +110,10 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
         ]));
 
         $this->assertNull($this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getCalories());
+        $this->assertSame(
+            ['activity-1'],
+            $this->settingsRepository->find(SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS),
+        );
     }
 
     public function testHandleLeavesImagesUntouchedWhenImagesKeyIsMissing(): void
@@ -229,5 +266,6 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
         $this->commandBus = $this->getContainer()->get(CommandBus::class);
         $this->activityRepository = $this->getContainer()->get(ActivityRepository::class);
         $this->fileStorage = $this->getContainer()->get('file.storage');
+        $this->settingsRepository = $this->getContainer()->get(SettingsRepository::class);
     }
 }

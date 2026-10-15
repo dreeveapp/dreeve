@@ -164,6 +164,7 @@ Endpoint: Endpoint
 'Enter your password': 'Enter your password'
 'Enter your username': 'Enter your username'
 Every: Every
+'Exclude from peak power outputs': 'Exclude from peak power outputs'
 FTP: FTP
 'FTP history (cycling)': 'FTP history (cycling)'
 'FTP history (running)': 'FTP history (running)'

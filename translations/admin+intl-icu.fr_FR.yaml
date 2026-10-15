@@ -164,6 +164,7 @@ Endpoint: 'Point de passage'
 'Enter your password': 'Saisissez votre mot de passe'
 'Enter your username': "Saisissez votre nom d'utilisateur"
 Every: Chaque
+'Exclude from peak power outputs': 'Exclude from peak power outputs'
 FTP: FTP
 'FTP history (cycling)': 'Historique FTP (vélo)'
 'FTP history (running)': 'Historique FTP (course à pied)'

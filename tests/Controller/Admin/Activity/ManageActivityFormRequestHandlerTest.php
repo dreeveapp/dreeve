@@ -13,6 +13,7 @@ use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearType;
 use App\Domain\Import\ImportMode;
 use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
@@ -201,6 +202,11 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
             [],
         ));
 
+        static::getContainer()->get(SettingsRepository::class)->save(
+            SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS,
+            ['activity-1'],
+        );
+
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('1').'/edit');
@@ -234,6 +240,10 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         // The commute checkbox can't submit while disabled, so its real value is preserved.
         $this->assertSame('true', $crawler->filter('input[type="hidden"][name="isCommute"]')->attr('value'));
         $this->assertSame('true', $crawler->filter('input[type="hidden"][name="isGroupActivity"]')->attr('value'));
+
+        // Exclusions are local data, so they stay editable for Strava activities.
+        $this->assertNull($crawler->filter('input#activity-is-excluded-from-peak-power-outputs')->attr('disabled'));
+        $this->assertNotNull($crawler->filter('input#activity-is-excluded-from-peak-power-outputs')->attr('checked'));
 
         // The image upload is hidden entirely, since images can't be managed in Strava API mode.
         $this->assertCount(0, $crawler->filter('[data-image-dropzone]'));
@@ -439,6 +449,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="deviceName"]'));
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="calories"]'));
         $this->assertSame('false', $crawler->filter('input[type="hidden"][name="isCommute"]')->attr('value'));
+        $this->assertNull($crawler->filter('input#activity-is-excluded-from-peak-power-outputs')->attr('checked'));
 
         // In files mode all gears are selectable, imported or custom.
         $this->assertSame(

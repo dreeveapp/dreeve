@@ -29,6 +29,7 @@ class UpdateActivityTest extends TestCase
             'calories' => '500',
             'isCommute' => 'true',
             'isGroupActivity' => 'true',
+            'isExcludedFromPeakPowerOutputs' => 'true',
         ]);
 
         $this->assertEquals(ActivityId::fromUnprefixed('1'), $command->getActivityId());
@@ -41,6 +42,7 @@ class UpdateActivityTest extends TestCase
         $this->assertSame(500, $command->getCalories());
         $this->assertTrue($command->isCommute());
         $this->assertTrue($command->isGroupActivity());
+        $this->assertTrue($command->isExcludedFromPeakPowerOutputs());
     }
 
     public function testFromPayloadWithoutImagesKeyLeavesImagesUntouched(): void
@@ -53,6 +55,7 @@ class UpdateActivityTest extends TestCase
 
         $this->assertSame([], $command->getNewImages());
         $this->assertSame([], $command->getRemovedImages());
+        $this->assertNull($command->isExcludedFromPeakPowerOutputs());
     }
 
     public function testFromPayloadWithEmptyImages(): void

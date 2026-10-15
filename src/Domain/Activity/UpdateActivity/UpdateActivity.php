@@ -39,6 +39,7 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
         private ?int $calories,
         private bool $isCommute,
         private bool $isGroupActivity,
+        private ?bool $isExcludedFromPeakPowerOutputs,
         private array $newImages,
         private array $removedImages,
     ) {
@@ -87,6 +88,9 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
             calories: self::parseCalories($payload),
             isCommute: filter_var($payload['isCommute'] ?? false, FILTER_VALIDATE_BOOLEAN),
             isGroupActivity: filter_var($payload['isGroupActivity'] ?? false, FILTER_VALIDATE_BOOLEAN),
+            isExcludedFromPeakPowerOutputs: array_key_exists('isExcludedFromPeakPowerOutputs', $payload)
+                ? filter_var($payload['isExcludedFromPeakPowerOutputs'], FILTER_VALIDATE_BOOLEAN)
+                : null,
             newImages: $newImages,
             removedImages: $removedImages,
         );
@@ -140,6 +144,11 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
     public function isGroupActivity(): bool
     {
         return $this->isGroupActivity;
+    }
+
+    public function isExcludedFromPeakPowerOutputs(): ?bool
+    {
+        return $this->isExcludedFromPeakPowerOutputs;
     }
 
     /**
