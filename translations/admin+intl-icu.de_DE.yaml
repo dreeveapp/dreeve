@@ -164,9 +164,9 @@ Endpoint: Endpunkt
 'Enter your password': 'Gib dein Passwort ein'
 'Enter your username': 'Gib deinen Benutzernamen ein'
 Every: Alle
-'Exclude from': 'Exclude from'
+'Exclude from': 'Ausschließen von'
 'Excluded activities are left out of these statistics, but still show up everywhere else.': 'Excluded activities are left out of these statistics, but still show up everywhere else.'
-'Excluded from': 'Excluded from'
+'Excluded from': 'Ausgeschlossen von'
 FTP: FTP
 'FTP history (cycling)': 'FTP-Verlauf (Radfahren)'
 'FTP history (running)': 'FTP-Verlauf (Laufen)'
