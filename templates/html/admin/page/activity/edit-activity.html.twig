@@ -109,18 +109,6 @@
                         {% if isImportedFromStrava %}{% include 'html/admin/component/strava-imported-badge.html.twig' %}{% endif %}
                     </label>
                 </div>
-                <div>
-                    <label>{{ "Exclude from"|trans({}, 'admin') }}</label>
-                    <div class="flex flex-col gap-2">
-                        {% for item in exclusions %}
-                            <div class="flex items-center gap-2">
-                                <input type="hidden" name="excludedFrom[{{ item.exclusion.value }}]" value="false">
-                                <input type="checkbox" id="activity-excluded-from-{{ item.exclusion.value }}" name="excludedFrom[{{ item.exclusion.value }}]" value="true" {{ item.isExcluded ? 'checked' }}>
-                                <label for="activity-excluded-from-{{ item.exclusion.value }}" class="mt-0!">{{ item.exclusion|trans }}</label>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
                 {% if not isImportedFromStrava %}
                     <div>
                         <label>{{ "Images"|trans({}, 'admin') }}</label>
@@ -131,6 +119,19 @@
                         {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'images', maxImages: 5, existingImages: existingImages } %}
                     </div>
                 {% endif %}
+                <div>
+                    <label>{{ "Exclude from"|trans({}, 'admin') }}</label>
+                    <div class="mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-3">
+                        {% for item in exclusions %}
+                            <label class="flex items-center gap-2 text-sm cursor-pointer min-w-0">
+                                <input type="hidden" name="excludedFrom[{{ item.exclusion.value }}]" value="false">
+                                <input type="checkbox" name="excludedFrom[{{ item.exclusion.value }}]" value="true" {{ item.isExcluded ? 'checked' }}>
+                                <span class="truncate min-w-0">{{ item.exclusion|trans }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                    <p class="mt-1.5 text-xxs text-gray-500">{{ "Excluded activities are left out of these statistics, but still show up everywhere else."|trans({}, 'admin') }}</p>
+                </div>
                 <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
                     {% if importMode.isFiles() %}
                         <a href="{{ relativeUrl(path('admin_delete_activity', {activityId: activity.getId()})) }}" type="button" class="btn--danger me-auto">{{ "Delete"|trans({}, 'admin') }}</a>

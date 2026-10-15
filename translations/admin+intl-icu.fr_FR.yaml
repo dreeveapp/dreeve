@@ -165,6 +165,7 @@ Endpoint: 'Point de passage'
 'Enter your username': "Saisissez votre nom d'utilisateur"
 Every: Chaque
 'Exclude from': 'Exclude from'
+'Excluded activities are left out of these statistics, but still show up everywhere else.': 'Excluded activities are left out of these statistics, but still show up everywhere else.'
 FTP: FTP
 'FTP history (cycling)': 'Historique FTP (vélo)'
 'FTP history (running)': 'Historique FTP (course à pied)'

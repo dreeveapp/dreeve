@@ -165,6 +165,7 @@ Endpoint: Endpoint
 'Enter your username': 'Geef je gebruikersnaam in'
 Every: Elke
 'Exclude from': 'Exclude from'
+'Excluded activities are left out of these statistics, but still show up everywhere else.': 'Excluded activities are left out of these statistics, but still show up everywhere else.'
 FTP: FTP
 'FTP history (cycling)': 'FTP-historiek (fietsen)'
 'FTP history (running)': 'FTP-historiek (lopen)'
