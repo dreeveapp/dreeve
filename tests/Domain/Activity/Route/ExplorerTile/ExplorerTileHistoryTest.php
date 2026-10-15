@@ -62,6 +62,12 @@ class ExplorerTileHistoryTest extends ContainerTestCase
             ],
             $this->getContainer()->get(ExplorerTileHistory::class)->calculate()
         );
+
+        $explorerTileHistory = $this->getContainer()->get(ExplorerTileHistory::class);
+        $this->assertSame(4, $explorerTileHistory->calculateNewTileCountFor(ActivityId::fromUnprefixed('2x2')));
+        $this->assertSame(0, $explorerTileHistory->calculateNewTileCountFor(ActivityId::fromUnprefixed('2x2-again')));
+        $this->assertSame(5, $explorerTileHistory->calculateNewTileCountFor(ActivityId::fromUnprefixed('3x3')));
+        $this->assertSame(0, $explorerTileHistory->calculateNewTileCountFor(ActivityId::fromUnprefixed('unknown')));
     }
 
     public function testCalculateWithoutTiles(): void

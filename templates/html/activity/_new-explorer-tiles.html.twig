@@ -1,0 +1,6 @@
+{% if newTileCount > 0 %}
+    <span class="inline-flex items-center gap-1.5" title="{{ "Tiles visited for the first time in this activity"|trans }}">
+        {{ svg('explorer-tiles', 'size-3.5', 'text-gray-400') }}
+        {{ "{numberOfTiles} new tile(s)"|trans({'{numberOfTiles}': newTileCount}) }}
+    </span>
+{% endif %}

@@ -52,6 +52,7 @@
                             {{ "Group activity"|trans }}
                 </span>
                     {% endif %}
+                    <span class="inline-flex" data-async-content-url="{{ relativeUrl(path('activity_explorer_tiles', {'activityId': activity.getId()})) }}"></span>
                     {% set weather = activity.getWeather() %}
                     {% if weather %}
                         <span class="inline-flex items-center gap-1.5">

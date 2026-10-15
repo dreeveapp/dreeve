@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Route\ExplorerTile;
 
+use App\Domain\Activity\ActivityId;
 use App\Domain\Geography\ExplorerTile\ExplorerTiles;
 
 final readonly class ExplorerTileHistory
@@ -47,5 +48,20 @@ final readonly class ExplorerTileHistory
         }
 
         return $entries;
+    }
+
+    public function calculateNewTileCountFor(ActivityId $activityId): int
+    {
+        $visitedTiles = [];
+        foreach ($this->activityExplorerTilesRepository->findAllOrderedByStartDateTime() as $activityTiles) {
+            if ((string) $activityTiles['activityId'] !== (string) $activityId) {
+                $visitedTiles += array_fill_keys($activityTiles['tiles']->toArray(), true);
+                continue;
+            }
+
+            return count(array_filter($activityTiles['tiles']->toArray(), fn (int $tile): bool => !isset($visitedTiles[$tile])));
+        }
+
+        return 0;
     }
 }

@@ -41,6 +41,7 @@ class CacheContextGuardTest extends AdminWebTestCase
         'activity_best_efforts' => '/api/internal/activities/activity-9542782314/best-efforts',
         'activity_coordinates' => '/api/internal/activities/activity-9756441741/coordinates',
         'activity_data_table' => '/api/internal/activities/data-table',
+        'activity_explorer_tiles' => '/api/internal/activities/activity-9542782314/explorer-tiles',
         'activity_metrics' => '/api/internal/activities/activity-9756441741/metrics',
         'activity_polylines' => '/api/internal/activities/activity-9830227112/polylines',
         'activity_route_matches' => '/api/internal/activities/activity-9542782314/route-matches',

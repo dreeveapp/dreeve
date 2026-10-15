@@ -533,6 +533,7 @@ Thinking...: Gondolkodás...
 'This week': 'Ez a hét'
 Thu: Cs
 Thu.: Csüt.
+'Tiles visited for the first time in this activity': 'Tiles visited for the first time in this activity'
 Time: Idő
 'Time in gear': 'Idő a felszereléssel'
 'Time in zone': 'Idő a zónában'
@@ -676,6 +677,7 @@ workouts: edzések
 '{numberOfResults} results': '{numberOfResults} találat'
 '{numberOfResults} routes': '{numberOfResults} útvonal'
 '{numberOfRoutes} nearby route(s)': '{numberOfRoutes} nearby route(s)'
+'{numberOfTiles} new tile(s)': '{numberOfTiles} new tile(s)'
 '{numberOfWeeks} weeks': '{numberOfWeeks} hét'
 '{threshold} hours using {gearName}': '{threshold} óra {gearName} felhasználásával'
 '{threshold} total distance using {gearName}': '{threshold} össztávolság {gearName} felhasználásával'

@@ -533,6 +533,7 @@ Thinking...: Réfléchit...
 'This week': 'Cette semaine'
 Thu: Jeu
 Thu.: Jeu.
+'Tiles visited for the first time in this activity': 'Tiles visited for the first time in this activity'
 Time: Temps
 'Time in gear': 'Temps par matériel'
 'Time in zone': 'Temps dans la zone'
@@ -676,6 +677,7 @@ workouts: entraînements
 '{numberOfResults} results': '{numberOfResults} résultats'
 '{numberOfResults} routes': '{numberOfResults} parcours'
 '{numberOfRoutes} nearby route(s)': '{numberOfRoutes} parcours à proximité'
+'{numberOfTiles} new tile(s)': '{numberOfTiles} new tile(s)'
 '{numberOfWeeks} weeks': '{numberOfWeeks} semaines'
 '{threshold} hours using {gearName}': '{threshold} heures en utilisant {gearName}'
 '{threshold} total distance using {gearName}': '{threshold} distance totale en utilisant {gearName}'
