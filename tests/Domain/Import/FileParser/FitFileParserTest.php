@@ -222,6 +222,17 @@ class FitFileParserTest extends ActivityFileParserTestCase
         $this->assertSame('Suunto Vertical', $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))->getActivity()->getDeviceName());
     }
 
+    public function testParseIgnoresProductNameForZwift(): void
+    {
+        $document = $this->minimalFitDocument(fileIdFields: [
+            ['name' => 'manufacturer', 'value' => 260],
+            ['name' => 'product_name', 'value' => 'with {wo'],
+        ]);
+        $this->givenFitToolReturns(Json::encode($document));
+
+        $this->assertSame('Zwift', $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))->getActivity()->getDeviceName());
+    }
+
     public function testParseFallsBackToManufacturerWhenProductNameMissing(): void
     {
         $document = $this->minimalFitDocument(fileIdFields: [
