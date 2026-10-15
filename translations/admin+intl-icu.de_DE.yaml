@@ -20,7 +20,7 @@ Activity: Aktivität
 'Add Eddington': 'Eddington hinzufügen'
 'Add FTP': 'FTP hinzufügen'
 'Add a component to start tracking maintenance.': 'Füge eine Komponente hinzu, um mit der Wartungsverfolgung zu beginnen.'
-'Add a row for every period the component was fitted. Leave the end date empty while it is still fitted.': 'Füge für jeden Zeitraum, in dem das Bauteil eingebaut war, eine Zeile hinzu. Lasse das Enddatum leer, solange es noch eingebaut ist.“'
+'Add a row for every period the component was fitted. Leave the end date empty while it is still fitted.': 'Füge für jeden Zeitraum, in dem das Bauteil eingebaut war, eine Zeile hinzu. Lasse das Enddatum leer, solange es noch eingebaut ist.'
 'Add a rule to start automating your activity details.': 'Füge eine Regel hinzu, um deine Aktivitätsdetails automatisch auszufüllen.'
 'Add a widget': 'Widget hinzufügen'
 'Add action': 'Aktion hinzufügen'
@@ -171,7 +171,7 @@ FTP: FTP
 'FTP history (cycling)': 'FTP-Verlauf (Radfahren)'
 'FTP history (running)': 'FTP-Verlauf (Laufen)'
 Failed: Fehlgeschlagen
-Favourite: Favourite
+Favourite: Favorit
 Female: Weiblich
 'File exceeds {max} MB': 'Datei überschreitet {max} MB'
 'File imports': 'Datei Importe'
@@ -263,8 +263,8 @@ Mode: Modus
 Model: Modell
 Monday: Montag
 'More pages': 'Weitere Seiten'
-'Most recent activities (cards)': 'Most recent activities (cards)'
-'Most recent activities (list)': 'Most recent activities (list)'
+'Most recent activities (cards)': 'Neueste Aktivitäten (Karten)'
+'Most recent activities (list)': 'Neueste Aktivitäten (Liste)'
 'Moving time': Bewegungszeit
 'No activities imported yet.': 'Noch keine Aktivitäten importiert.'
 'No activities match the current filters.': 'Keine Aktivitäten entsprechen den aktuellen Filtern.'
@@ -315,7 +315,7 @@ Password: Passwort
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Fotos von Strava-Aktivitäten werden nicht heruntergeladen oder auf der Festplatte gespeichert. Bereits heruntergeladene Fotos bleiben erhalten.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos der ausgewählten Sportarten werden von der Fotogalerie ausgeschlossen.'
 'Pick a device you already recorded with, or type a new name.': 'Wähle ein Gerät, mit dem du bereits aufgezeichnet hast, oder gib einen neuen Namen ein.'
-'Pick an activity to select the segment on its route.': 'Wähle eine Aktivität aus und markiere das Segment auf ihrer Strecke.'
+'Pick an activity to select the segment on its route.': 'Wähle eine Aktivität aus und markiere das Segment auf der Strecke.'
 'Pick the rules you want to apply to see which activities would change.': 'Wähle die Regeln aus, die du anwenden möchten, um zu sehen, welche Aktivitäten sich ändern würden.'
 'Polyline color': Routenfarbe
 'Preview selection': Vorschaubereich
@@ -510,7 +510,7 @@ URL: URL
 Unit: Einheit
 'Unit system': Einheitensystem
 'Unsupported file type': 'Nicht unterstützter Dateityp'
-Until: Enddatum
+Until: Bis
 'Upload activity files': 'Aktivitätsdateien hochladen'
 'Upload failed': 'Upload fehlgeschlagen'
 'Upload files': 'Dateien hochladen'
