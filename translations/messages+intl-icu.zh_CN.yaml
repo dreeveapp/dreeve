@@ -351,6 +351,7 @@ Race: 比赛
 'Racquet Ball': 壁球
 Rank: Rank
 Ranking: Ranking
+'Reached a {size}×{size} max square': '达成 {size}×{size} 最大方块'
 'Reached {threshold} hours total moving time': 'Reached {threshold} hours total moving time'
 'Reached {threshold} total distance': 'Reached {threshold} total distance'
 'Reached {threshold} total elevation': 'Reached {threshold} total elevation'

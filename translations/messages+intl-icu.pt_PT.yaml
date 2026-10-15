@@ -351,6 +351,7 @@ Race: Corrida
 'Racquet Ball': Racquetball
 Rank: Rank
 Ranking: Ranking
+'Reached a {size}×{size} max square': 'Maior quadrado de {size}×{size} alcançado'
 'Reached {threshold} hours total moving time': 'Reached {threshold} hours total moving time'
 'Reached {threshold} total distance': 'Reached {threshold} total distance'
 'Reached {threshold} total elevation': 'Reached {threshold} total elevation'

@@ -351,6 +351,7 @@ Race: Gara
 'Racquet Ball': Racquetball
 Rank: Rank
 Ranking: Classifica
+'Reached a {size}×{size} max square': 'Raggiunto un quadrato più grande di {size}×{size}'
 'Reached {threshold} hours total moving time': 'Raggiunte {threshold} ore di tempo totale in movimento'
 'Reached {threshold} total distance': 'Raggiunta distanza totale di {threshold}'
 'Reached {threshold} total elevation': 'Raggiunto dislivello totale di {threshold}'

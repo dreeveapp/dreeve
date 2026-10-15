@@ -351,6 +351,7 @@ Race: Tävling
 'Racquet Ball': Racketboll
 Rank: Rank
 Ranking: Rankning
+'Reached a {size}×{size} max square': 'Största kvadrat på {size}×{size} uppnådd'
 'Reached {threshold} hours total moving time': 'Reached {threshold} hours total moving time'
 'Reached {threshold} total distance': 'Reached {threshold} total distance'
 'Reached {threshold} total elevation': 'Reached {threshold} total elevation'

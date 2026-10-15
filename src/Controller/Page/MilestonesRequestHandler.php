@@ -39,6 +39,7 @@ final readonly class MilestonesRequestHandler
                     // The Eddington milestones depend on the configured sport types.
                     RootCacheTag::SETTINGS_METRICS,
                     RootCacheTag::SETTINGS_ACTIVITY_EXCLUSIONS,
+                    RootCacheTag::ACTIVITY_ROUTE,
                 ),
             ),
             render: fn (): string => $this->renderFor(),

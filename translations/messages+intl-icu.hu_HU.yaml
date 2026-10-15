@@ -351,6 +351,7 @@ Race: Verseny
 'Racquet Ball': 'Squash labda'
 Rank: Helyezés
 Ranking: Ranglista
+'Reached a {size}×{size} max square': 'Elérted a {size}×{size} méretű legnagyobb négyzetet'
 'Reached {threshold} hours total moving time': '{threshold} óra összes mozgásidő elérve'
 'Reached {threshold} total distance': '{threshold} összes távolság elérve'
 'Reached {threshold} total elevation': '{threshold} összes szintemelkedés elérve'

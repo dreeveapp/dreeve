@@ -351,6 +351,7 @@ Race: Wedstrijd
 'Racquet Ball': Racquetball
 Rank: Rang
 Ranking: Rangschikking
+'Reached a {size}×{size} max square': 'Grootste vierkant van {size}×{size} bereikt'
 'Reached {threshold} hours total moving time': '{threshold} uur totale beweegtijd bereikt'
 'Reached {threshold} total distance': '{threshold} totale afstand bereikt'
 'Reached {threshold} total elevation': '{threshold} totale hoogtemeters bereikt'

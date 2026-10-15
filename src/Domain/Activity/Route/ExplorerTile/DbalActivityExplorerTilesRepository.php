@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Route\ExplorerTile;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Geography\ExplorerTile\ExplorerTiles;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\Connection;
 
 final readonly class DbalActivityExplorerTilesRepository extends DbalRepository implements ActivityExplorerTilesRepository
@@ -54,5 +56,27 @@ final readonly class DbalActivityExplorerTilesRepository extends DbalRepository 
         }
 
         return $tilesPerActivity;
+    }
+
+    public function findAllOrderedByStartDateTime(): array
+    {
+        $sql = 'SELECT ActivityExplorerTiles.activityId, Activity.startDateTime, ActivityExplorerTiles.tiles
+                FROM ActivityExplorerTiles
+                INNER JOIN Activity ON Activity.activityId = ActivityExplorerTiles.activityId
+                ORDER BY Activity.startDateTime ASC, ActivityExplorerTiles.activityId ASC';
+
+        $results = [];
+        foreach ($this->connection->executeQuery($sql)->iterateAssociative() as $result) {
+            $results[] = [
+                'activityId' => ActivityId::fromString($result['activityId']),
+                'startDateTime' => SerializableDateTime::fromString($result['startDateTime']),
+                'tiles' => ExplorerTiles::fromArray(array_values(array_map(
+                    intval(...),
+                    (array) Json::uncompressAndDecode($result['tiles'])
+                ))),
+            ];
+        }
+
+        return $results;
     }
 }

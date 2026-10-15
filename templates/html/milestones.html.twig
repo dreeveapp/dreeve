@@ -140,6 +140,8 @@
             '{threshold}': context.getThreshold().toFloat()|formatNumber(0),
             '{gearName}': context.getGearName()
         })|raw }}
+    {% elseif milestoneCategory == categoryEnum.EXPLORER_TILES_MAX_SQUARE %}
+        {{ "Reached a {size}×{size} max square"|trans({'{size}': context.getSize()}) }}
     {% endif %}
 {% endmacro %}
 
@@ -149,6 +151,8 @@
         <span class="underline">{{ previousMilestone.getThreshold()|formatSecondsAsPaddedClock }}</span>
     {% elseif milestoneCategory == categoryEnum.ACTIVITY_MOVING_TIME %}
         <span class="underline">{{ previousMilestone.getThreshold()|formatSeconds }}</span>
+    {% elseif milestoneCategory == categoryEnum.EXPLORER_TILES_MAX_SQUARE %}
+        <span class="underline">{{ previousMilestone.getThreshold().toInt() }}×{{ previousMilestone.getThreshold().toInt() }}</span>
     {% else %}
         <span class="underline">{{ previousMilestone.getThreshold()|renderMeasurement(0)|raw }}</span>
     {% endif %}
