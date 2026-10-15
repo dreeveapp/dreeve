@@ -166,6 +166,7 @@ Endpoint: Endpoint
 Every: Cada
 'Exclude from': 'Exclude from'
 'Excluded activities are left out of these statistics, but still show up everywhere else.': 'Excluded activities are left out of these statistics, but still show up everywhere else.'
+'Excluded from': 'Excluded from'
 FTP: FTP
 'FTP history (cycling)': 'Historial de FTP (ciclismo)'
 'FTP history (running)': 'Historial de FTP (carrera)'

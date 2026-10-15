@@ -63,6 +63,13 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $form->filter('select[name="filters[gear]"]'));
         $this->assertCount(1, $form->filter('select[name="filters[device]"]'));
         $this->assertCount(1, $form->filter('select[name="filters[importSource]"]'));
+        $this->assertSame(
+            ['peakPowerOutputs' => 'Peak power outputs', 'bestEfforts' => 'Best efforts'],
+            array_combine(
+                $form->filter('select[name="filters[excludedFrom]"] option:not([value=""])')->each(fn ($option) => $option->attr('value')),
+                $form->filter('select[name="filters[excludedFrom]"] option:not([value=""])')->each(fn ($option) => $option->text()),
+            ),
+        );
         $this->assertCount(1, $form->filter('button[type="submit"]'));
         $this->assertCount(0, $form->filter('a.btn--secondary'));
 

@@ -7,6 +7,7 @@ namespace App\Domain\Activity\Overview;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
+use App\Domain\Settings\ActivityExclusion;
 use App\Infrastructure\Http\Request\Filters;
 
 final readonly class ActivityOverviewFilters extends Filters
@@ -16,7 +17,8 @@ final readonly class ActivityOverviewFilters extends Filters
         return !$this->getSportType() instanceof SportType
             && !$this->getGearId() instanceof GearId
             && null === $this->getDevice()
-            && !$this->getImportSource() instanceof ImportSource;
+            && !$this->getImportSource() instanceof ImportSource
+            && !$this->getExcludedFrom() instanceof ActivityExclusion;
     }
 
     public function getSportType(): ?SportType
@@ -53,5 +55,14 @@ final readonly class ActivityOverviewFilters extends Filters
         }
 
         return ImportSource::tryFrom($importSource);
+    }
+
+    public function getExcludedFrom(): ?ActivityExclusion
+    {
+        if (null === $excludedFrom = $this->getString('excludedFrom')) {
+            return null;
+        }
+
+        return ActivityExclusion::tryFrom($excludedFrom);
     }
 }

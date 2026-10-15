@@ -121,7 +121,7 @@
                 {% endif %}
                 <div>
                     <label>{{ "Exclude from"|trans({}, 'admin') }}</label>
-                    <div class="mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-3">
+                    <div class="mt-2 space-y-1.5">
                         {% for item in exclusions %}
                             <label class="flex items-center gap-2 text-sm cursor-pointer min-w-0">
                                 <input type="hidden" name="excludedFrom[{{ item.exclusion.value }}]" value="false">

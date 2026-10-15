@@ -19,6 +19,8 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\DbalGearRepository;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Settings\SettingsName;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
@@ -375,6 +377,20 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
             1,
         ];
 
+        yield 'an excluded from filter narrows the items to the excluded activities' => [
+            ['excludedFrom' => 'peakPowerOutputs'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            ['Middle'],
+            1,
+        ];
+
+        yield 'an excluded from filter without excluded activities yields an empty overview' => [
+            ['excludedFrom' => 'bestEfforts'],
+            Pagination::fromOffsetAndLimit(0, 10),
+            [],
+            0,
+        ];
+
         yield 'filters combine' => [
             ['sportType' => 'Run', 'importSource' => 'gpxFile'],
             Pagination::fromOffsetAndLimit(0, 10),
@@ -433,6 +449,7 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
                 ->build(),
             [],
         ));
+        $this->getContainer()->get(SettingsRepository::class)->save(SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS, ['activity-2']);
     }
 
     private function seedSearchableActivities(): void
@@ -476,7 +493,8 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
             new SpyEventBus(),
         );
         $this->activityOverviewRepository = new DbalActivityOverviewRepository(
-            $this->getConnection()
+            $this->getConnection(),
+            $this->getContainer()->get(SettingsRepository::class),
         );
         $this->gearRepository = new DbalGearRepository(
             $this->getConnection(),

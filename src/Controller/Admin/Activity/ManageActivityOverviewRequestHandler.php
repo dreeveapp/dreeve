@@ -11,6 +11,7 @@ use App\Domain\Activity\Overview\ActivityOverviewRepository;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
+use App\Domain\Settings\ActivityExclusion;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Http\Request\PaginationFromRequest;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,6 +49,7 @@ final readonly class ManageActivityOverviewRequestHandler
             'gearOptions' => $this->gearRepository->findAllUsed(),
             'deviceOptions' => $this->recordingDeviceRepository->findAll(),
             'importSourceOptions' => ImportSource::cases(),
+            'exclusionOptions' => ActivityExclusion::cases(),
         ]));
     }
 }

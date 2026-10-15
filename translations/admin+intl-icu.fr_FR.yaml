@@ -166,6 +166,7 @@ Endpoint: 'Point de passage'
 Every: Chaque
 'Exclude from': 'Exclude from'
 'Excluded activities are left out of these statistics, but still show up everywhere else.': 'Excluded activities are left out of these statistics, but still show up everywhere else.'
+'Excluded from': 'Excluded from'
 FTP: FTP
 'FTP history (cycling)': 'Historique FTP (vélo)'
 'FTP history (running)': 'Historique FTP (course à pied)'

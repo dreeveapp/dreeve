@@ -68,6 +68,15 @@
                         {% endfor %}
                     </select>
                 </div>
+                <div>
+                    <label for="filter-excluded-from" class="mt-0! text-xs text-gray-500">{{ "Excluded from"|trans({}, 'admin') }}</label>
+                    <select id="filter-excluded-from" name="filters[excludedFrom]">
+                        <option value="">{{ "All"|trans }}</option>
+                        {% for exclusion in exclusionOptions %}
+                            <option value="{{ exclusion.value }}" {{ exclusion == filters.getExcludedFrom() ? 'selected' }}>{{ exclusion|trans }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <button type="submit" class="btn--primary">{{ "Apply"|trans({}, 'admin') }}</button>
                 {% if not filters.isEmpty() %}
                     <a href="{{ relativeUrl(path('admin_manage_activity_overview')) }}" type="button" class="btn--secondary">

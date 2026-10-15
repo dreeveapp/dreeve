@@ -8,6 +8,7 @@ use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\Overview\ActivityOverviewFilters;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
+use App\Domain\Settings\ActivityExclusion;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,7 @@ class ActivityOverviewFiltersTest extends TestCase
         $this->assertNull($filters->getGearId());
         $this->assertNull($filters->getDevice());
         $this->assertNull($filters->getImportSource());
+        $this->assertNull($filters->getExcludedFrom());
         $this->assertTrue($filters->isEmpty());
     }
 
@@ -33,6 +35,7 @@ class ActivityOverviewFiltersTest extends TestCase
                 'gear' => (string) GearId::fromUnprefixed('99'),
                 'device' => 'Garmin Forerunner',
                 'importSource' => 'fitFile',
+                'excludedFrom' => 'bestEfforts',
             ],
         ]));
 
@@ -40,6 +43,7 @@ class ActivityOverviewFiltersTest extends TestCase
         $this->assertEquals(GearId::fromUnprefixed('99'), $filters->getGearId());
         $this->assertSame('Garmin Forerunner', $filters->getDevice());
         $this->assertEquals(ImportSource::FIT_FILE, $filters->getImportSource());
+        $this->assertSame(ActivityExclusion::BEST_EFFORTS, $filters->getExcludedFrom());
         $this->assertFalse($filters->isEmpty());
     }
 
@@ -57,6 +61,9 @@ class ActivityOverviewFiltersTest extends TestCase
         $this->assertFalse(ActivityOverviewFilters::fromRequest(new Request(query: [
             'filters' => ['importSource' => 'gpxFile'],
         ]))->isEmpty());
+        $this->assertFalse(ActivityOverviewFilters::fromRequest(new Request(query: [
+            'filters' => ['excludedFrom' => 'peakPowerOutputs'],
+        ]))->isEmpty());
     }
 
     #[DataProvider('provideIgnoredFilterValues')]
@@ -68,21 +75,22 @@ class ActivityOverviewFiltersTest extends TestCase
         $this->assertNull($filters->getGearId());
         $this->assertNull($filters->getDevice());
         $this->assertNull($filters->getImportSource());
+        $this->assertNull($filters->getExcludedFrom());
         $this->assertTrue($filters->isEmpty());
     }
 
     public static function provideIgnoredFilterValues(): iterable
     {
         yield 'values that are not backed enum values or valid identifiers' => [
-            ['filters' => ['sportType' => 'bogus', 'gear' => 'not-a-gear-id', 'importSource' => 'bogus']],
+            ['filters' => ['sportType' => 'bogus', 'gear' => 'not-a-gear-id', 'importSource' => 'bogus', 'excludedFrom' => 'bogus']],
         ];
 
         yield 'empty strings, as submitted by the "All" options' => [
-            ['filters' => ['sportType' => '', 'gear' => '', 'device' => '', 'importSource' => '']],
+            ['filters' => ['sportType' => '', 'gear' => '', 'device' => '', 'importSource' => '', 'excludedFrom' => '']],
         ];
 
         yield 'nested arrays instead of scalar values' => [
-            ['filters' => ['sportType' => ['Run'], 'gear' => ['gear-99'], 'device' => ['x'], 'importSource' => ['fitFile']]],
+            ['filters' => ['sportType' => ['Run'], 'gear' => ['gear-99'], 'device' => ['x'], 'importSource' => ['fitFile'], 'excludedFrom' => ['bestEfforts']]],
         ];
 
         yield 'unrelated filter names' => [
