@@ -497,8 +497,13 @@ final class FitProduct
 
     public static function supports(int $manufacturerId): bool
     {
-        // Garmin & favero_electronics.
-        return in_array($manufacturerId, [1, 13, 15, 89, 263], true);
+        return in_array($manufacturerId, [
+            FitManufacturer::GARMIN,
+            FitManufacturer::DYNASTREAM_OEM,
+            FitManufacturer::DYNASTREAM,
+            FitManufacturer::TACX,
+            FitManufacturer::FAVERO_ELECTRONICS,
+        ], true);
     }
 
     public static function name(int $manufacturerId, int $productId): ?string
@@ -508,7 +513,7 @@ final class FitProduct
         }
 
         $product = match ($manufacturerId) {
-            263 => self::FAVERO[$productId] ?? null,
+            FitManufacturer::FAVERO_ELECTRONICS => self::FAVERO[$productId] ?? null,
             default => self::GARMIN[$productId] ?? null,
         };
 

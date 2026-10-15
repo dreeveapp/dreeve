@@ -44,7 +44,6 @@ final readonly class FitFileParser implements ActivityFileParser
     // A multi-sport file groups its legs with transition sessions, they carry no sport of their own.
     private const int FIT_SPORT_TRANSITION = 3;
     private const int FIT_SPORT_MULTISPORT = 18;
-    private const int FIT_MANUFACTURER_ZWIFT = 260;
 
     public function __construct(
         private ActivityIdFactory $activityIdFactory,
@@ -136,7 +135,7 @@ final readonly class FitFileParser implements ActivityFileParser
 
         $deviceName = match (true) {
             null === $manufacturerId => $productName,
-            self::FIT_MANUFACTURER_ZWIFT === $manufacturerId => FitManufacturer::name($manufacturerId),
+            FitManufacturer::hasUnreliableProductName($manufacturerId) => FitManufacturer::name($manufacturerId),
             null !== $productId && FitProduct::supports($manufacturerId) => FitProduct::name($manufacturerId, $productId) ?? $productName ?? FitManufacturer::name($manufacturerId),
             default => $productName ?? FitManufacturer::name($manufacturerId),
         };

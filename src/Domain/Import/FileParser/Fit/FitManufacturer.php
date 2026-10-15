@@ -6,9 +6,16 @@ namespace App\Domain\Import\FileParser\Fit;
 
 final class FitManufacturer
 {
+    public const int GARMIN = 1;
+    public const int DYNASTREAM_OEM = 13;
+    public const int DYNASTREAM = 15;
+    public const int TACX = 89;
+    public const int FAVERO_ELECTRONICS = 263;
+    private const int ZWIFT = 260;
+
     /** @var array<int, string> */
     private const array NAMES = [
-        1 => 'Garmin',
+        self::GARMIN => 'Garmin',
         2 => 'Garmin Forerunner 405 ANT-FS',
         3 => 'Zephyr',
         4 => 'Dayton',
@@ -20,9 +27,9 @@ final class FitManufacturer
         10 => 'Spark HK',
         11 => 'Tanita',
         12 => 'Echowell',
-        13 => 'Dynastream OEM',
+        self::DYNASTREAM_OEM => 'Dynastream OEM',
         14 => 'Nautilus',
-        15 => 'Dynastream',
+        self::DYNASTREAM => 'Dynastream',
         16 => 'Timex',
         17 => 'MetriGear',
         18 => 'Xelic',
@@ -94,7 +101,7 @@ final class FitManufacturer
         86 => 'Elite',
         87 => 'Nielsen-Kellerman',
         88 => 'DK City',
-        89 => 'Tacx',
+        self::TACX => 'Tacx',
         90 => 'Direction Technology',
         91 => 'Magtonic',
         92 => '1partCarbon',
@@ -163,10 +170,10 @@ final class FitManufacturer
         257 => 'Health and Life',
         258 => 'Lezyne',
         259 => 'Scribe Labs',
-        260 => 'Zwift',
+        self::ZWIFT => 'Zwift',
         261 => 'Watteam',
         262 => 'Recon',
-        263 => 'Favero Electronics',
+        self::FAVERO_ELECTRONICS => 'Favero Electronics',
         264 => 'Dynovelo',
         265 => 'Strava',
         266 => 'Precor',
@@ -256,5 +263,10 @@ final class FitManufacturer
     public static function name(int $id): ?string
     {
         return self::NAMES[$id] ?? null;
+    }
+
+    public static function hasUnreliableProductName(int $id): bool
+    {
+        return in_array($id, [self::ZWIFT], true);
     }
 }
