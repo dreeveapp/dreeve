@@ -15,6 +15,8 @@ use App\Domain\Milestone\MilestoneCategory;
 use App\Domain\Milestone\MilestoneId;
 use App\Domain\Milestone\MilestoneIdFactory;
 use App\Domain\Milestone\PreviousMilestone;
+use App\Domain\Settings\SettingsName;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
@@ -59,6 +61,11 @@ class PersonalBestMilestoneDiscovererTest extends ContainerTestCase
 
         $this->insertActivity(2, '2024-01-02', SportType::RUN);
         $this->insertBestEffort(2, SportType::RUN, 5000, 1100);
+
+        // An excluded activity never becomes a personal best, even when it's faster.
+        $this->insertActivity(3, '2024-01-03', SportType::RUN);
+        $this->insertBestEffort(3, SportType::RUN, 5000, 900);
+        $this->getContainer()->get(SettingsRepository::class)->save(SettingsName::ACTIVITIES_EXCLUDED_FROM_BEST_EFFORTS, ['activity-3']);
 
         $milestones = $this->discoverer->discover($this->milestoneIdFactory);
         $this->assertEquals(
@@ -164,7 +171,7 @@ class PersonalBestMilestoneDiscovererTest extends ContainerTestCase
     {
         parent::setUp();
         $this->milestoneIdFactory = new MilestoneIdFactory();
-        $this->discoverer = new PersonalBestMilestoneDiscoverer($this->getConnection());
+        $this->discoverer = new PersonalBestMilestoneDiscoverer($this->getConnection(), $this->getContainer()->get(SettingsRepository::class));
     }
 
     private function insertActivity(int $id, string $date, SportType $sportType): void

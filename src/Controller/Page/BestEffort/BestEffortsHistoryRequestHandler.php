@@ -52,7 +52,7 @@ final readonly class BestEffortsHistoryRequestHandler
         return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('%s.%s.%d', self::BASE_PATH, $activityType->value, $distanceInMeter),
-                cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
+                cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_ACTIVITY_EXCLUSIONS),
             ),
             render: fn (): string => $this->renderFor($activityType, $distance),
             navigationSection: NavigationSection::BEST_EFFORTS,

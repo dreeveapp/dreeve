@@ -29,7 +29,7 @@ class ActivityBestEffortsRequestHandlerTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/internal/activities/activity-9542782314/best-efforts');
 
         $this->assertResponseHeaderSame('X-Dreeve-Cache', 'MISS');
-        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activities.9542782314, activities');
+        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activities.9542782314, activities, settings.activityExclusions');
     }
 
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void

@@ -23,7 +23,7 @@ class MilestonesRequestHandlerTest extends ControllerWebTestCase
             'milestones',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
-        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activities, gear, settings.metrics');
+        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activities, gear, settings.metrics, settings.activityExclusions');
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 

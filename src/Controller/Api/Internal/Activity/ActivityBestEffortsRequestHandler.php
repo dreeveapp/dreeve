@@ -44,6 +44,7 @@ final readonly class ActivityBestEffortsRequestHandler
                 cacheTags: CacheTags::of(
                     ActivityCacheTag::for($activityId),
                     RootCacheTag::ACTIVITIES,
+                    RootCacheTag::SETTINGS_ACTIVITY_EXCLUSIONS,
                 ),
             ),
             render: fn (): string => $this->twig->load('html/activity/_best-efforts.html.twig')->render([

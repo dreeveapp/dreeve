@@ -214,7 +214,7 @@ class MilestoneCollectorTest extends ContainerTestCase
             new GearDistanceMilestoneDiscoverer($connection, $settingsRepository),
             new GearElevationMilestoneDiscoverer($connection, $settingsRepository),
             new GearMovingTimeMilestoneDiscoverer($connection),
-            new PersonalBestMilestoneDiscoverer($connection),
+            new PersonalBestMilestoneDiscoverer($connection, $settingsRepository),
             new StreakMilestoneDiscoverer($connection),
         ]);
     }

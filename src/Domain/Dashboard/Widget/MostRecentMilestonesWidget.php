@@ -40,7 +40,12 @@ final readonly class MostRecentMilestonesWidget implements Widget
 
     public function getCacheTags(): CacheTags
     {
-        return CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::GEAR, RootCacheTag::SETTINGS_METRICS);
+        return CacheTags::of(
+            RootCacheTag::ACTIVITIES,
+            RootCacheTag::GEAR,
+            RootCacheTag::SETTINGS_METRICS,
+            RootCacheTag::SETTINGS_ACTIVITY_EXCLUSIONS
+        );
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration

@@ -13,10 +13,13 @@ use App\Domain\Milestone\MilestoneCategory;
 use App\Domain\Milestone\MilestoneIdFactory;
 use App\Domain\Milestone\Milestones;
 use App\Domain\Milestone\PreviousMilestone;
+use App\Domain\Settings\ActivityExclusion;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\ConvertableToMeter;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 
 final readonly class PersonalBestMilestoneDiscoverer implements MilestoneDiscoverer
@@ -25,6 +28,7 @@ final readonly class PersonalBestMilestoneDiscoverer implements MilestoneDiscove
 
     public function __construct(
         private Connection $connection,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -34,7 +38,14 @@ final readonly class PersonalBestMilestoneDiscoverer implements MilestoneDiscove
             'SELECT be.activityId, be.sportType, be.distanceInMeter, be.timeInSeconds, a.startDateTime
              FROM ActivityBestEffort be
              INNER JOIN Activity a ON a.activityId = be.activityId
-             ORDER BY a.startDateTime ASC, be.distanceInMeter ASC'
+             WHERE be.activityId NOT IN (:excludedActivityIds)
+             ORDER BY a.startDateTime ASC, be.distanceInMeter ASC',
+            [
+                'excludedActivityIds' => $this->settingsRepository->activityExclusions()->getExcludedActivityIds(ActivityExclusion::BEST_EFFORTS)->map(fn (ActivityId $activityId): string => (string) $activityId) ?: ['unexisting-id'],
+            ],
+            [
+                'excludedActivityIds' => ArrayParameterType::STRING,
+            ]
         )->fetchAllAssociative();
 
         $distanceMap = $this->buildDistanceMap();

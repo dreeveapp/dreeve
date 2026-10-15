@@ -16,6 +16,7 @@ enum SettingsName: string
     case EDDINGTON = 'eddington';
     case REQUIRES_AUTHENTICATION = 'requiresAuthentication';
     case ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS = 'excludedFromPeakPowerOutputs';
+    case ACTIVITIES_EXCLUDED_FROM_BEST_EFFORTS = 'excludedFromBestEfforts';
 
     public function group(): SettingsGroup
     {
@@ -24,7 +25,7 @@ enum SettingsName: string
             self::UNIT_SYSTEM, self::LOCALE => SettingsGroup::APPEARANCE,
             self::EDDINGTON => SettingsGroup::METRICS,
             self::REQUIRES_AUTHENTICATION => SettingsGroup::SECURITY,
-            self::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS => SettingsGroup::ACTIVITY_EXCLUSIONS,
+            self::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS, self::ACTIVITIES_EXCLUDED_FROM_BEST_EFFORTS => SettingsGroup::ACTIVITY_EXCLUSIONS,
         };
     }
 

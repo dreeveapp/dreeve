@@ -9,12 +9,22 @@ use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Settings\ActivityExclusion;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Repository\DbalRepository;
 use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\Connection;
 
 final readonly class DbalActivityBestEffortRepository extends DbalRepository implements ActivityBestEffortRepository
 {
+    public function __construct(
+        Connection $connection,
+        private SettingsRepository $settingsRepository,
+    ) {
+        parent::__construct($connection);
+    }
+
     public function add(ActivityBestEffort $activityBestEffort): void
     {
         $sql = 'INSERT INTO ActivityBestEffort (activityId, sportType, distanceInMeter, timeInSeconds)
@@ -85,6 +95,7 @@ final readonly class DbalActivityBestEffortRepository extends DbalRepository imp
                         ) AS rn
                     FROM ActivityBestEffort
                     WHERE sportType IN (:sportTypes)
+                    AND activityId NOT IN (:excludedActivityIds)
                 ) ranked
                 WHERE rn = 1
                 AND activityId = :activityId
@@ -102,9 +113,11 @@ final readonly class DbalActivityBestEffortRepository extends DbalRepository imp
                 [
                     'sportTypes' => array_map(fn (SportType $sportType) => $sportType->value, SportTypes::thatSupportsBestEfforts()->toArray()),
                     'activityId' => (string) $activity,
+                    'excludedActivityIds' => $this->settingsRepository->activityExclusions()->getExcludedActivityIds(ActivityExclusion::BEST_EFFORTS)->map(fn (ActivityId $activityId): string => (string) $activityId) ?: ['unexisting-id'],
                 ],
                 [
                     'sportTypes' => ArrayParameterType::STRING,
+                    'excludedActivityIds' => ArrayParameterType::STRING,
                 ]
             )->fetchAllAssociative()
         ));

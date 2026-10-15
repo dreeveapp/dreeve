@@ -12,6 +12,8 @@ use App\Domain\Activity\BestEffort\DbalActivityBestEffortRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Settings\SettingsName;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -143,14 +145,13 @@ class DbalActivityBestEffortRepositoryTest extends ContainerTestCase
                 ->withTimeInSeconds(1800)
                 ->build()
         );
-        $this->activityBestEffortRepository->add(
-            ActivityBestEffortBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('slowest'))
-                ->withSportType(SportType::RIDE)
-                ->withDistanceInMeter(Meter::from(10000))
-                ->withTimeInSeconds(3600)
-                ->build()
-        );
+        $slowestSharedBestEffort = ActivityBestEffortBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed('slowest'))
+            ->withSportType(SportType::RIDE)
+            ->withDistanceInMeter(Meter::from(10000))
+            ->withTimeInSeconds(3600)
+            ->build();
+        $this->activityBestEffortRepository->add($slowestSharedBestEffort);
         // A distance only the slowest activity has ridden, so it holds that record.
         $slowestOnlyBestEffort = ActivityBestEffortBuilder::fromDefaults()
             ->withActivityId(ActivityId::fromUnprefixed('slowest'))
@@ -163,6 +164,17 @@ class DbalActivityBestEffortRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             ActivityBestEfforts::fromArray([$slowestOnlyBestEffort]),
             $this->activityBestEffortRepository->findByActivity(ActivityId::fromUnprefixed('slowest'))
+        );
+
+        // Once the fastest activity is excluded, the slowest one takes over its record.
+        $this->getContainer()->get(SettingsRepository::class)->save(SettingsName::ACTIVITIES_EXCLUDED_FROM_BEST_EFFORTS, ['activity-fastest']);
+
+        $this->assertEquals(
+            ActivityBestEfforts::fromArray([$slowestSharedBestEffort, $slowestOnlyBestEffort]),
+            $this->activityBestEffortRepository->findByActivity(ActivityId::fromUnprefixed('slowest'))
+        );
+        $this->assertEmpty(
+            $this->activityBestEffortRepository->findByActivity(ActivityId::fromUnprefixed('fastest'))->toArray()
         );
     }
 
@@ -218,6 +230,7 @@ class DbalActivityBestEffortRepositoryTest extends ContainerTestCase
         parent::setUp();
         $this->activityBestEffortRepository = new DbalActivityBestEffortRepository(
             $this->getConnection(),
+            $this->getContainer()->get(SettingsRepository::class),
         );
     }
 }

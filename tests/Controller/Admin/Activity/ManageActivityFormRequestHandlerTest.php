@@ -244,6 +244,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         // Exclusions are local data, so they stay editable for Strava activities.
         $this->assertNull($crawler->filter('input[type="checkbox"][name="excludedFrom[peakPowerOutputs]"]')->attr('disabled'));
         $this->assertNotNull($crawler->filter('input[type="checkbox"][name="excludedFrom[peakPowerOutputs]"]')->attr('checked'));
+        $this->assertNull($crawler->filter('input[type="checkbox"][name="excludedFrom[bestEfforts]"]')->attr('checked'));
 
         // The image upload is hidden entirely, since images can't be managed in Strava API mode.
         $this->assertCount(0, $crawler->filter('[data-image-dropzone]'));

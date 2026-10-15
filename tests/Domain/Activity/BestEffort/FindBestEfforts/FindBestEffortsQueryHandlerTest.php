@@ -11,6 +11,8 @@ use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\BestEffort\FindBestEfforts\FindBestEfforts;
 use App\Domain\Activity\BestEffort\FindBestEfforts\FindBestEffortsQueryHandler;
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Settings\SettingsName;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -137,6 +139,18 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
             ['activity-2', 'activity-1'],
             $response->getBestEfforts()->map(fn ($bestEffort): string => (string) $bestEffort->getActivityId())
         );
+
+        $this->getContainer()->get(SettingsRepository::class)->save(SettingsName::ACTIVITIES_EXCLUDED_FROM_BEST_EFFORTS, ['activity-2']);
+        $response = $this->queryHandler->handle(new FindBestEfforts());
+
+        $this->assertEquals(
+            ['activity-1'],
+            $response->getBestEfforts()->map(fn ($bestEffort): string => (string) $bestEffort->getActivityId())
+        );
+        $this->assertEquals(
+            ['activity-1' => SerializableDateTime::fromString('2023-01-02 10:00:00')],
+            $response->getStartDateTimePerActivity()
+        );
     }
 
     public function testHandleWithoutBestEfforts(): void
@@ -152,7 +166,7 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->queryHandler = new FindBestEffortsQueryHandler($this->getConnection());
+        $this->queryHandler = new FindBestEffortsQueryHandler($this->getConnection(), $this->getContainer()->get(SettingsRepository::class));
         $this->activityRepository = $this->getContainer()->get(ActivityRepository::class);
         $this->activityBestEffortRepository = $this->getContainer()->get(ActivityBestEffortRepository::class);
     }
