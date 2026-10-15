@@ -14,144 +14,146 @@
 {% autoescape false %}
     <div class="grid grid-cols-1 gap-y-2 heatmap-wrapper relative">
         <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-            <form class="flex flex-col gap-y-2 mb-2" autocomplete="off">
-                <div class="flex flex-wrap gap-2">
-                    {% if summary.getSportTypes()|length > 0 %}
-                        <div class="filter-dropdown">
-                            <button id="dropdownSportTypesButton"
-                                    data-dropdown="dropdownSportTypes" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                <span>{{ "Filter on sport type"|trans }}</span>
-                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
-                            <div id="dropdownSportTypes" class="divide-y divide-gray-100">
-                                <ul class="space-y-1" aria-labelledby="dropdownSportTypesButton">
-                                    {% for sportType in summary.getSportTypes() %}
-                                        <li>
-                                            <div>
-                                                <input type="checkbox" id="{{ sportType.value }}" data-dataTable-filter="sportType" name="sportType[{{ sportType.value }}]" value="{{ sportType.value }}" class="peer" />
-                                                <label for="{{ sportType.value }}" class="flex gap-x-1 items-center">
-                                                    {{ svgSportType(sportType) }}
-                                                    <div>{{ sportType|trans }}</div>
-                                                </label>
-                                                <a href="#" data-datatable-filter-clear="sportType[{{ sportType.value }}]">{{ "clear"|trans }}</a>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    {% endif %}
-                    <div class="filter-dropdown">
-                        <button id="dropdownDateRangeButton"
-                                data-dropdown="dropdownDateRange" type="button">
-                            <span>{{ "Date"|trans }}</span>
-                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                            </svg>
-                        </button>
-                        <div id="dropdownDateRange" class="divide-y divide-gray-100">
-                            <div class="flex items-center gap-x-2 p-3" aria-labelledby="dropdownDateRangeButton">
-                                <div class="flex items-center" data-dataTable-filter="start-date[]">
-                                    <input name="start-date[from]" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                                    <span class="mx-2 text-gray-500">{{ "to"|trans }}</span>
-                                    <input name="start-date[to]" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                                </div>
-                                <a href="#" class="text-primary text-sm text-right underline" data-dataTable-filter-clear="start-date">{{ "clear"|trans }}</a>
-                            </div>
-                            <div class="hidden lg:flex flex-wrap gap-1.5 p-3" data-date-preset-filter="start-date">
-                                <a href="#" data-date-preset="this-week" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "This week"|trans }}</a>
-                                <a href="#" data-date-preset="last-week" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "Last week"|trans }}</a>
-                                <a href="#" data-date-preset="this-month" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "This month"|trans }}</a>
-                                <a href="#" data-date-preset="last-month" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "Last month"|trans }}</a>
-                                <a href="#" data-date-preset="last-30-days" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "Last 30 days"|trans }}</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="filter-dropdown">
-                        <button id="otherButton" data-dropdown="dropdownOther" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                            <span>{{ "Other"|trans }}</span>
-                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                            </svg>
-                        </button>
-                        <div id="dropdownOther">
-                            <div class="px-1 py-2 flex gap-x-2 divide-x divide-gray-100">
-                                <div class="flex flex-col items-center">
-                                    <div class="text-xs font-medium items-center">{{ "Commutes"|trans }}</div>
-                                    <ul class="text-sm text-gray-700">
-                                        <li>
-                                            <div>
-                                                <input type="radio" id="true" data-dataTable-filter="isCommute" name="isCommute" value="true" class="peer" />
-                                                <label for="true">
-                                                    {{ "Commutes only"|trans }}
-                                                </label>
-                                                <a href="#" data-datatable-filter-clear="isCommute">{{ "clear"|trans }}</a>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <input type="radio" id="false" data-dataTable-filter="isCommute" name="isCommute" value="false" class="peer" />
-                                                <label for="false">
-                                                    {{ "Excludes commutes"|trans }}
-                                                </label>
-                                                <a href="#" data-datatable-filter-clear="isCommute">{{ "clear"|trans }}</a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="flex flex-col items-center">
-                                    <div class="text-xs font-medium items-center">{{ "Group activities"|trans }}</div>
-                                    <ul class="text-sm text-gray-700">
-                                        <li>
-                                            <div>
-                                                <input type="radio" id="isGroupActivity-true" data-dataTable-filter="isGroupActivity" name="isGroupActivity" value="true" class="peer" />
-                                                <label for="isGroupActivity-true">
-                                                    {{ "Group activities only"|trans }}
-                                                </label>
-                                                <a href="#" data-datatable-filter-clear="isGroupActivity">{{ "clear"|trans }}</a>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div>
-                                                <input type="radio" id="isGroupActivity-false" data-dataTable-filter="isGroupActivity" name="isGroupActivity" value="false" class="peer" />
-                                                <label for="isGroupActivity-false">
-                                                    {{ "Excludes group activities"|trans }}
-                                                </label>
-                                                <a href="#" data-datatable-filter-clear="isGroupActivity">{{ "clear"|trans }}</a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="flex flex-col items-center">
-                                    <div class="text-xs font-medium">{{ "Workout type"|trans }}</div>
-                                    <ul class="text-sm text-gray-700">
-                                        {% for workoutType in enum('App\\Domain\\Activity\\WorkoutType').cases() %}
+            <fieldset class="min-w-0 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed disabled:*:pointer-events-none" data-heatmap-filters>
+                <form class="flex flex-col gap-y-2 mb-2" autocomplete="off">
+                    <div class="flex flex-wrap gap-2">
+                        {% if summary.getSportTypes()|length > 0 %}
+                            <div class="filter-dropdown">
+                                <button id="dropdownSportTypesButton"
+                                        data-dropdown="dropdownSportTypes" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
+                                    <span>{{ "Filter on sport type"|trans }}</span>
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                                    </svg>
+                                </button>
+                                <div id="dropdownSportTypes" class="divide-y divide-gray-100">
+                                    <ul class="space-y-1" aria-labelledby="dropdownSportTypesButton">
+                                        {% for sportType in summary.getSportTypes() %}
                                             <li>
                                                 <div>
-                                                    <input type="radio" id="{{ workoutType.value }}" data-dataTable-filter="workoutType" name="workoutType" value="{{ workoutType.value }}" class="peer" />
-                                                    <label for="{{ workoutType.value }}">
-                                                        {{ workoutType|trans }}
+                                                    <input type="checkbox" id="{{ sportType.value }}" data-dataTable-filter="sportType" name="sportType[{{ sportType.value }}]" value="{{ sportType.value }}" class="peer" />
+                                                    <label for="{{ sportType.value }}" class="flex gap-x-1 items-center">
+                                                        {{ svgSportType(sportType) }}
+                                                        <div>{{ sportType|trans }}</div>
                                                     </label>
-                                                    <a href="#" data-datatable-filter-clear="workoutType">{{ "clear"|trans }}</a>
+                                                    <a href="#" data-datatable-filter-clear="sportType[{{ sportType.value }}]">{{ "clear"|trans }}</a>
                                                 </div>
                                             </li>
                                         {% endfor %}
                                     </ul>
                                 </div>
                             </div>
+                        {% endif %}
+                        <div class="filter-dropdown">
+                            <button id="dropdownDateRangeButton"
+                                    data-dropdown="dropdownDateRange" type="button">
+                                <span>{{ "Date"|trans }}</span>
+                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                                </svg>
+                            </button>
+                            <div id="dropdownDateRange" class="divide-y divide-gray-100">
+                                <div class="flex items-center gap-x-2 p-3" aria-labelledby="dropdownDateRangeButton">
+                                    <div class="flex items-center" data-dataTable-filter="start-date[]">
+                                        <input name="start-date[from]" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                                        <span class="mx-2 text-gray-500">{{ "to"|trans }}</span>
+                                        <input name="start-date[to]" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                                    </div>
+                                    <a href="#" class="text-primary text-sm text-right underline" data-dataTable-filter-clear="start-date">{{ "clear"|trans }}</a>
+                                </div>
+                                <div class="hidden lg:flex flex-wrap gap-1.5 p-3" data-date-preset-filter="start-date">
+                                    <a href="#" data-date-preset="this-week" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "This week"|trans }}</a>
+                                    <a href="#" data-date-preset="last-week" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "Last week"|trans }}</a>
+                                    <a href="#" data-date-preset="this-month" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "This month"|trans }}</a>
+                                    <a href="#" data-date-preset="last-month" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "Last month"|trans }}</a>
+                                    <a href="#" data-date-preset="last-30-days" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "Last 30 days"|trans }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="filter-dropdown">
+                            <button id="otherButton" data-dropdown="dropdownOther" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
+                                <span>{{ "Other"|trans }}</span>
+                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                                </svg>
+                            </button>
+                            <div id="dropdownOther">
+                                <div class="px-1 py-2 flex gap-x-2 divide-x divide-gray-100">
+                                    <div class="flex flex-col items-center">
+                                        <div class="text-xs font-medium items-center">{{ "Commutes"|trans }}</div>
+                                        <ul class="text-sm text-gray-700">
+                                            <li>
+                                                <div>
+                                                    <input type="radio" id="true" data-dataTable-filter="isCommute" name="isCommute" value="true" class="peer" />
+                                                    <label for="true">
+                                                        {{ "Commutes only"|trans }}
+                                                    </label>
+                                                    <a href="#" data-datatable-filter-clear="isCommute">{{ "clear"|trans }}</a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    <input type="radio" id="false" data-dataTable-filter="isCommute" name="isCommute" value="false" class="peer" />
+                                                    <label for="false">
+                                                        {{ "Excludes commutes"|trans }}
+                                                    </label>
+                                                    <a href="#" data-datatable-filter-clear="isCommute">{{ "clear"|trans }}</a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="text-xs font-medium items-center">{{ "Group activities"|trans }}</div>
+                                        <ul class="text-sm text-gray-700">
+                                            <li>
+                                                <div>
+                                                    <input type="radio" id="isGroupActivity-true" data-dataTable-filter="isGroupActivity" name="isGroupActivity" value="true" class="peer" />
+                                                    <label for="isGroupActivity-true">
+                                                        {{ "Group activities only"|trans }}
+                                                    </label>
+                                                    <a href="#" data-datatable-filter-clear="isGroupActivity">{{ "clear"|trans }}</a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    <input type="radio" id="isGroupActivity-false" data-dataTable-filter="isGroupActivity" name="isGroupActivity" value="false" class="peer" />
+                                                    <label for="isGroupActivity-false">
+                                                        {{ "Excludes group activities"|trans }}
+                                                    </label>
+                                                    <a href="#" data-datatable-filter-clear="isGroupActivity">{{ "clear"|trans }}</a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="text-xs font-medium">{{ "Workout type"|trans }}</div>
+                                        <ul class="text-sm text-gray-700">
+                                            {% for workoutType in enum('App\\Domain\\Activity\\WorkoutType').cases() %}
+                                                <li>
+                                                    <div>
+                                                        <input type="radio" id="{{ workoutType.value }}" data-dataTable-filter="workoutType" name="workoutType" value="{{ workoutType.value }}" class="peer" />
+                                                        <label for="{{ workoutType.value }}">
+                                                            {{ workoutType|trans }}
+                                                        </label>
+                                                        <a href="#" data-datatable-filter-clear="workoutType">{{ "clear"|trans }}</a>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </form>
+                <div class="flex items-center justify-between gap-x-2 text-xs text-gray-700">
+                    <div>
+                        {% set numberOfResults = '<span class="font-bold" data-dataTable-result-count>' ~ summary.getNumberOfRoutes() ~ '</span>' %}
+                        {{ "{numberOfResults} routes"|trans({'{numberOfResults}': numberOfResults}) }}
+                    </div>
+                    <a href="#" class="hidden font-medium text-primary hover:underline" data-dataTable-reset>{{ "Clear all filters"|trans }}</a>
                 </div>
-            </form>
-            <div class="flex items-center justify-between gap-x-2 text-xs text-gray-700">
-                <div>
-                    {% set numberOfResults = '<span class="font-bold" data-dataTable-result-count>' ~ summary.getNumberOfRoutes() ~ '</span>' %}
-                    {{ "{numberOfResults} routes"|trans({'{numberOfResults}': numberOfResults}) }}
-                </div>
-                <a href="#" class="hidden font-medium text-primary hover:underline" data-dataTable-reset>{{ "Clear all filters"|trans }}</a>
-            </div>
+            </fieldset>
         </div>
         <!-- HEATMAP -->
         <div id="heatmap" data-heatmap-config='{{ heatmapConfig|json_encode}}' data-leaflet-routes='{{ relativeUrl(path('heatmap_routes')) }}'
@@ -168,6 +170,7 @@
             <div class="text-gray-500"> {{ "That's {percentage}% of all countries 🌍"|trans({'{percentage}': percentage}) }}</div>
             <div class="hidden mt-2 pt-2 border-t border-gray-200 max-w-64" data-heatmap-tiles-stats>
                 <div class="font-semibold text-gray-700 text-sm mb-0.5">{{ "Explorer tiles"|trans }}</div>
+                <div class="text-gray-500 mb-1.5">{{ "Explorer tiles include all your activities"|trans }}</div>
                 <div class="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-1 text-gray-700">
                     <span class="size-3 rounded-xs border" data-heatmap-tiles-swatch="visited"></span>
                     <span class="cursor-help underline decoration-dotted decoration-gray-400 underline-offset-2" title="{{ "Map tiles at zoom level 14 that your activities passed through"|trans }}">{{ "Visited tiles"|trans }}</span>

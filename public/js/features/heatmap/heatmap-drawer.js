@@ -47,6 +47,7 @@ export default class HeatmapDrawer {
         this.countriesLayer = countriesUrl
             ? new HeatmapCountriesLayer(this.map, countriesUrl, this.config.polylineColor)
             : null;
+        this.filtersNode = this.wrapper.closest('.heatmap-wrapper')?.querySelector('[data-heatmap-filters]');
         const tilesUrl = this.wrapper.getAttribute('data-leaflet-tiles');
         this.tilesLabel = this.wrapper.getAttribute('data-leaflet-tiles-label');
         this.tilesLayer = tilesUrl
@@ -60,6 +61,10 @@ export default class HeatmapDrawer {
 
         this.map.on("click", (e) => this._handleMapClick(e));
         this.map.on("popupclose", () => this._resetRouteStyles());
+    }
+
+    _setFiltersDisabled(disabled) {
+        if (this.filtersNode) this.filtersNode.disabled = disabled;
     }
 
     _setRoutesVisible(visible) {
@@ -217,8 +222,10 @@ export default class HeatmapDrawer {
                         title: this.tilesLabel,
                         onToggle: (active) => {
                             this._setRoutesVisible(!active);
+                            this._setFiltersDisabled(active);
                             return this.tilesLayer.setEnabled(active).catch(error => {
                                 this._setRoutesVisible(true);
+                                this._setFiltersDisabled(false);
                                 throw error;
                             });
                         },

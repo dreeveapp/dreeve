@@ -4165,6 +4165,12 @@
   .disabled\:bg-gray-100:disabled {
     background-color: var(--color-gray-100);
   }
+  .disabled\:opacity-50:disabled {
+    opacity: 50%;
+  }
+  :is(.disabled\:\*\:pointer-events-none:disabled > *) {
+    pointer-events: none;
+  }
   @media (hover: hover) {
     .disabled\:hover\:bg-white:disabled:hover {
       background-color: var(--color-white);
