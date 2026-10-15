@@ -267,6 +267,6 @@ final class FitManufacturer
 
     public static function hasUnreliableProductName(int $id): bool
     {
-        return $id === self::ZWIFT;
+        return self::ZWIFT === $id;
     }
 }
