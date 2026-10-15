@@ -196,7 +196,6 @@ export default class HeatmapDrawer {
             });
         });
         this.countriesLayer?.setActiveCountryCodes([...countryBounds.keys()]);
-        this.tilesLayer?.setActiveActivityIds(routes.map(route => route.id));
         if (this.routesVisible) {
             this.mainFeatureGroup.addTo(this.map);
         }

@@ -1,6 +1,6 @@
 import L from 'leaflet';
 import {fetchJson} from "../../utils";
-import {clusters, maxSquare, tileBounds, tileKey} from "./explorer-tiles";
+import {tileBounds, tileKey} from "./explorer-tiles";
 
 const PANE_NAME = 'heatmapTiles';
 const TILE_BORDER = {opacity: 0.5, weight: 1};
@@ -21,8 +21,7 @@ export default class HeatmapTilesLayer {
         this.statsNode = statsNode;
         this.url = url;
         this.enabled = false;
-        this.activeActivityIds = [];
-        this.tilesPerActivity = null;
+        this.tiles = null;
         this.loadPromise = null;
 
         const pane = this.map.createPane(PANE_NAME);
@@ -51,11 +50,6 @@ export default class HeatmapTilesLayer {
         });
     }
 
-    setActiveActivityIds(activityIds) {
-        this.activeActivityIds = activityIds;
-        this._sync();
-    }
-
     async setEnabled(enabled) {
         this.enabled = enabled;
         if (enabled) {
@@ -66,8 +60,8 @@ export default class HeatmapTilesLayer {
 
     _load() {
         this.loadPromise ??= fetchJson(this.url)
-            .then(tilesPerActivity => {
-                this.tilesPerActivity = tilesPerActivity;
+            .then(tiles => {
+                this.tiles = tiles;
             })
             .catch(error => {
                 this.loadPromise = null;
@@ -78,26 +72,20 @@ export default class HeatmapTilesLayer {
     }
 
     _sync() {
-        if (!this.enabled || !this.tilesPerActivity) {
+        if (!this.enabled || !this.tiles) {
             this.map.removeLayer(this.featureGroup);
             this.statsNode?.classList.add('hidden');
             return;
         }
 
-        const visitedTiles = new Set();
-        this.activeActivityIds.forEach(activityId => {
-            (this.tilesPerActivity[activityId] || []).forEach(tile => visitedTiles.add(tile));
-        });
-        const {clusterTiles, maxCluster} = clusters(visitedTiles);
+        const {visited, cluster, maxCluster, maxSquare, stats} = this.tiles;
+        this.visitedTilesLayer.setLatLngs(this._rings(visited));
+        this.clusterTilesLayer.setLatLngs(this._rings(cluster));
+        this.maxClusterTilesLayer.setLatLngs(this._rings(maxCluster));
 
-        this.visitedTilesLayer.setLatLngs(this._rings([...visitedTiles].filter(tile => !clusterTiles.has(tile))));
-        this.clusterTilesLayer.setLatLngs(this._rings([...clusterTiles].filter(tile => !maxCluster.has(tile))));
-        this.maxClusterTilesLayer.setLatLngs(this._rings([...maxCluster]));
-
-        const square = maxSquare(visitedTiles);
-        if (square) {
-            this.maxSquareLayer.setBounds(L.latLngBounds(tileBounds(tileKey(square.x, square.y)))
-                .extend(L.latLngBounds(tileBounds(tileKey(square.x + square.size - 1, square.y + square.size - 1)))));
+        if (maxSquare) {
+            this.maxSquareLayer.setBounds(L.latLngBounds(tileBounds(tileKey(maxSquare.x, maxSquare.y)))
+                .extend(L.latLngBounds(tileBounds(tileKey(maxSquare.x + maxSquare.size - 1, maxSquare.y + maxSquare.size - 1)))));
             this.featureGroup.addLayer(this.maxSquareLayer);
         } else {
             this.featureGroup.removeLayer(this.maxSquareLayer);
@@ -105,10 +93,10 @@ export default class HeatmapTilesLayer {
         this.featureGroup.addTo(this.map);
 
         if (this.statsNode) {
-            this._setStat('total', visitedTiles.size);
-            this._setStat('clusterTiles', clusterTiles.size);
-            this._setStat('maxSquare', square ? `${square.size}×${square.size}` : 0);
-            this._setStat('maxCluster', maxCluster.size);
+            this._setStat('total', stats.visitedTiles);
+            this._setStat('clusterTiles', stats.clusterTiles);
+            this._setStat('maxSquare', stats.maxSquare ? `${stats.maxSquare}×${stats.maxSquare}` : 0);
+            this._setStat('maxCluster', stats.maxCluster);
             this.statsNode.classList.remove('hidden');
         }
     }
