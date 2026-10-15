@@ -45,16 +45,19 @@ class ExplorerTileHistoryTest extends ContainerTestCase
                     activityId: ActivityId::fromUnprefixed('2x2'),
                     startDateTime: SerializableDateTime::fromString('2024-01-01'),
                     maxSquareSize: 2,
+                    maxClusterSize: 0,
                 ),
                 new ExplorerTileHistoryEntry(
                     activityId: ActivityId::fromUnprefixed('2x2-again'),
                     startDateTime: SerializableDateTime::fromString('2024-01-02'),
                     maxSquareSize: 2,
+                    maxClusterSize: 0,
                 ),
                 new ExplorerTileHistoryEntry(
                     activityId: ActivityId::fromUnprefixed('3x3'),
                     startDateTime: SerializableDateTime::fromString('2024-01-03'),
                     maxSquareSize: 3,
+                    maxClusterSize: 1,
                 ),
             ],
             $this->getContainer()->get(ExplorerTileHistory::class)->calculate()

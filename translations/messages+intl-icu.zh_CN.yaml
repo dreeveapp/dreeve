@@ -144,7 +144,7 @@ Evening: 晚上
 'Excludes commutes': 筛除通勤
 'Excludes group activities': 'Excludes group activities'
 'Explorer tiles': 探索方块
-'Explorer tiles include all your activities': '探索方块包含你的所有活动'
+'Explorer tiles include all your activities': 'Explorer tiles include all your activities'
 'FTP history': FTP历史
 Fastest: Fastest
 Favourite: 收藏夹
@@ -351,7 +351,8 @@ Race: 比赛
 'Racquet Ball': 壁球
 Rank: Rank
 Ranking: Ranking
-'Reached a {size}×{size} max square': '达成 {size}×{size} 最大方块'
+'Reached a max cluster of {tileCount} tiles': 'Reached a max cluster of {tileCount} tiles'
+'Reached a {size}×{size} max square': 'Reached a {size}×{size} max square'
 'Reached {threshold} hours total moving time': 'Reached {threshold} hours total moving time'
 'Reached {threshold} total distance': 'Reached {threshold} total distance'
 'Reached {threshold} total elevation': 'Reached {threshold} total elevation'

@@ -351,6 +351,7 @@ Race: Race
 'Racquet Ball': 'Racquet Ball'
 Rank: Rank
 Ranking: Ranking
+'Reached a max cluster of {tileCount} tiles': 'Reached a max cluster of {tileCount} tiles'
 'Reached a {size}×{size} max square': 'Reached a {size}×{size} max square'
 'Reached {threshold} hours total moving time': 'Reached {threshold} hours total moving time'
 'Reached {threshold} total distance': 'Reached {threshold} total distance'

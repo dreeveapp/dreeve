@@ -144,7 +144,7 @@ Evening: Este
 'Excludes commutes': 'Ingázások nélkül'
 'Excludes group activities': 'A csoportos tevékenységek kivételével'
 'Explorer tiles': 'Felfedezett csempék'
-'Explorer tiles include all your activities': 'A felfedezett csempék az összes tevékenységedet tartalmazzák'
+'Explorer tiles include all your activities': 'Explorer tiles include all your activities'
 'FTP history': 'FTP előzmények'
 Fastest: Leggyorsabb
 Favourite: Kedvenc
@@ -351,7 +351,8 @@ Race: Verseny
 'Racquet Ball': 'Squash labda'
 Rank: Helyezés
 Ranking: Ranglista
-'Reached a {size}×{size} max square': 'Elérted a {size}×{size} méretű legnagyobb négyzetet'
+'Reached a max cluster of {tileCount} tiles': 'Reached a max cluster of {tileCount} tiles'
+'Reached a {size}×{size} max square': 'Reached a {size}×{size} max square'
 'Reached {threshold} hours total moving time': '{threshold} óra összes mozgásidő elérve'
 'Reached {threshold} total distance': '{threshold} összes távolság elérve'
 'Reached {threshold} total elevation': '{threshold} összes szintemelkedés elérve'

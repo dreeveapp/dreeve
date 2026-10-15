@@ -21,6 +21,7 @@ final readonly class ExplorerTileHistory
         $entries = [];
         $visitedTiles = [];
         $maxSquareSize = 0;
+        $maxClusterSize = 0;
         foreach ($this->activityExplorerTilesRepository->findAllOrderedByStartDateTime() as $activityTiles) {
             $hasNewTiles = false;
             foreach ($activityTiles['tiles']->toArray() as $tile) {
@@ -32,13 +33,16 @@ final readonly class ExplorerTileHistory
             }
 
             if ($hasNewTiles) {
-                $maxSquareSize = ExplorerTiles::fromFlippedTileKeys($visitedTiles)->maxSquare()?->getSize() ?? 0;
+                $tiles = ExplorerTiles::fromFlippedTileKeys($visitedTiles);
+                $maxSquareSize = $tiles->maxSquare()?->getSize() ?? 0;
+                $maxClusterSize = $tiles->clusters()->getMaxCluster()->count();
             }
 
             $entries[] = new ExplorerTileHistoryEntry(
                 activityId: $activityTiles['activityId'],
                 startDateTime: $activityTiles['startDateTime'],
                 maxSquareSize: $maxSquareSize,
+                maxClusterSize: $maxClusterSize,
             );
         }
 

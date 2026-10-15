@@ -142,6 +142,8 @@
         })|raw }}
     {% elseif milestoneCategory == categoryEnum.EXPLORER_TILES_MAX_SQUARE %}
         {{ "Reached a {size}×{size} max square"|trans({'{size}': context.getSize()}) }}
+    {% elseif milestoneCategory == categoryEnum.EXPLORER_TILES_MAX_CLUSTER %}
+        {{ "Reached a max cluster of {tileCount} tiles"|trans({'{tileCount}': context.getTileCount()|formatNumber(0)}) }}
     {% endif %}
 {% endmacro %}
 

@@ -8,8 +8,9 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Route\ExplorerTile\ActivityExplorerTilesRepository;
 use App\Domain\Geography\ExplorerTile\ExplorerTileGrid;
 use App\Domain\Geography\ExplorerTile\ExplorerTiles;
+use App\Domain\Milestone\Context\MaxClusterContext;
 use App\Domain\Milestone\Context\MaxSquareContext;
-use App\Domain\Milestone\Discoverer\MaxSquareMilestoneDiscoverer;
+use App\Domain\Milestone\Discoverer\ExplorerTilesMilestoneDiscoverer;
 use App\Domain\Milestone\Milestone;
 use App\Domain\Milestone\MilestoneCategory;
 use App\Domain\Milestone\MilestoneId;
@@ -21,7 +22,7 @@ use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Route\ExplorerTile\ActivityExplorerTilesBuilder;
 
-class MaxSquareMilestoneDiscovererTest extends ContainerTestCase
+class ExplorerTilesMilestoneDiscovererTest extends ContainerTestCase
 {
     public function testDiscover(): void
     {
@@ -30,7 +31,8 @@ class MaxSquareMilestoneDiscovererTest extends ContainerTestCase
             range(10, 9 + $size),
         )));
         foreach ([
-            ['5x5', '2024-01-04', $square(5)],
+            ['7x7', '2024-01-05', $square(7)],
+            ['6x6', '2024-01-04', $square(6)],
             ['2x2', '2024-01-01', $square(2)],
             ['3x3', '2024-01-02', $square(3)],
             ['3x3-again', '2024-01-03', $square(3)],
@@ -59,21 +61,52 @@ class MaxSquareMilestoneDiscovererTest extends ContainerTestCase
                     id: MilestoneId::fromString('milestone-2'),
                     achievedOn: SerializableDateTime::fromString('2024-01-04'),
                     category: MilestoneCategory::EXPLORER_TILES_MAX_SQUARE,
-                    context: new MaxSquareContext(size: 5),
+                    context: new MaxSquareContext(size: 6),
                 )
-                    ->withActivityId(ActivityId::fromUnprefixed('5x5'))
+                    ->withActivityId(ActivityId::fromUnprefixed('6x6'))
                     ->withPrevious(PreviousMilestone::create(
                         previousMilestoneId: MilestoneId::fromString('milestone-1'),
                         threshold: SimpleUnit::from(3),
                         achievedOn: SerializableDateTime::fromString('2024-01-02'),
                     )),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-3'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-04'),
+                    category: MilestoneCategory::EXPLORER_TILES_MAX_CLUSTER,
+                    context: new MaxClusterContext(tileCount: 10),
+                )->withActivityId(ActivityId::fromUnprefixed('6x6')),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-4'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-05'),
+                    category: MilestoneCategory::EXPLORER_TILES_MAX_SQUARE,
+                    context: new MaxSquareContext(size: 7),
+                )
+                    ->withActivityId(ActivityId::fromUnprefixed('7x7'))
+                    ->withPrevious(PreviousMilestone::create(
+                        previousMilestoneId: MilestoneId::fromString('milestone-2'),
+                        threshold: SimpleUnit::from(6),
+                        achievedOn: SerializableDateTime::fromString('2024-01-04'),
+                    )),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-5'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-05'),
+                    category: MilestoneCategory::EXPLORER_TILES_MAX_CLUSTER,
+                    context: new MaxClusterContext(tileCount: 25),
+                )
+                    ->withActivityId(ActivityId::fromUnprefixed('7x7'))
+                    ->withPrevious(PreviousMilestone::create(
+                        previousMilestoneId: MilestoneId::fromString('milestone-3'),
+                        threshold: SimpleUnit::from(10),
+                        achievedOn: SerializableDateTime::fromString('2024-01-04'),
+                    )),
             ],
-            $this->getContainer()->get(MaxSquareMilestoneDiscoverer::class)->discover(new MilestoneIdFactory())->toArray(),
+
+            $this->getContainer()->get(ExplorerTilesMilestoneDiscoverer::class)->discover(new MilestoneIdFactory())->toArray(),
         );
     }
 
     public function testDiscoverWithoutTiles(): void
     {
-        $this->assertTrue($this->getContainer()->get(MaxSquareMilestoneDiscoverer::class)->discover(new MilestoneIdFactory())->isEmpty());
+        $this->assertTrue($this->getContainer()->get(ExplorerTilesMilestoneDiscoverer::class)->discover(new MilestoneIdFactory())->isEmpty());
     }
 }

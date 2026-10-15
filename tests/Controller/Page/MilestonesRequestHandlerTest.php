@@ -25,7 +25,7 @@ class MilestonesRequestHandlerTest extends ControllerWebTestCase
             range(10, 9 + $size),
         )));
         $activityIds = $this->getContainer()->get(Connection::class)->executeQuery('SELECT activityId FROM Activity ORDER BY startDateTime LIMIT 2')->fetchFirstColumn();
-        foreach ([3, 4] as $index => $size) {
+        foreach ([3, 6] as $index => $size) {
             $this->getContainer()->get(ActivityExplorerTilesRepository::class)->add(ActivityExplorerTilesBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromString($activityIds[$index]))
                 ->withTiles($square($size))

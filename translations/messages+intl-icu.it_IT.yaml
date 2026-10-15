@@ -144,7 +144,7 @@ Evening: Sera
 'Excludes commutes': 'Esclude gli spostamenti casa-lavoro'
 'Excludes group activities': 'Excludes group activities'
 'Explorer tiles': 'Tessere esplorate'
-'Explorer tiles include all your activities': 'Le tessere esplorate includono tutte le tue attività'
+'Explorer tiles include all your activities': 'Explorer tiles include all your activities'
 'FTP history': 'Storico FTP'
 Fastest: Fastest
 Favourite: Preferito
@@ -351,7 +351,8 @@ Race: Gara
 'Racquet Ball': Racquetball
 Rank: Rank
 Ranking: Classifica
-'Reached a {size}×{size} max square': 'Raggiunto un quadrato più grande di {size}×{size}'
+'Reached a max cluster of {tileCount} tiles': 'Reached a max cluster of {tileCount} tiles'
+'Reached a {size}×{size} max square': 'Reached a {size}×{size} max square'
 'Reached {threshold} hours total moving time': 'Raggiunte {threshold} ore di tempo totale in movimento'
 'Reached {threshold} total distance': 'Raggiunta distanza totale di {threshold}'
 'Reached {threshold} total elevation': 'Raggiunto dislivello totale di {threshold}'

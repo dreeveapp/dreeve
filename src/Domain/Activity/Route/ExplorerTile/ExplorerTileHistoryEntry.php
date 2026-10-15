@@ -13,6 +13,7 @@ final readonly class ExplorerTileHistoryEntry
         private ActivityId $activityId,
         private SerializableDateTime $startDateTime,
         private int $maxSquareSize,
+        private int $maxClusterSize,
     ) {
     }
 
@@ -29,5 +30,10 @@ final readonly class ExplorerTileHistoryEntry
     public function getMaxSquareSize(): int
     {
         return $this->maxSquareSize;
+    }
+
+    public function getMaxClusterSize(): int
+    {
+        return $this->maxClusterSize;
     }
 }
