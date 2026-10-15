@@ -45,7 +45,7 @@ final readonly class PeakPowerOutputsWidget implements Widget, DependsOnCurrentD
 
     public function getCacheTags(): CacheTags
     {
-        return CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_METRICS);
+        return CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_ACTIVITY_EXCLUSIONS);
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration

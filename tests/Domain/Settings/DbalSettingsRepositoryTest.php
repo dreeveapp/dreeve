@@ -135,11 +135,10 @@ class DbalSettingsRepositoryTest extends ContainerTestCase
 
     public function testFindGroupAppliesTheDefaultEddingtonConfiguration(): void
     {
-        $this->settingsRepository->saveGroup(SettingsGroup::METRICS, ['excludeActivitiesFromPeakPowerOutputs' => []]);
+        $this->settingsRepository->saveGroup(SettingsGroup::METRICS, ['eddington' => []]);
 
         $this->assertEquals(
             [
-                'excludeActivitiesFromPeakPowerOutputs' => [],
                 'eddington' => EddingtonConfiguration::getDefaultConfig(),
             ],
             $this->settingsRepository->findGroup(SettingsGroup::METRICS)

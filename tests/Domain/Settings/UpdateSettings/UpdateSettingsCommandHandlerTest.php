@@ -92,7 +92,6 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
     public function testItUpdatesMetricsSettings(): void
     {
         $data = [
-            'excludeActivitiesFromPeakPowerOutputs' => ['123456'],
             'eddington' => [
                 [
                     'label' => 'Ride',

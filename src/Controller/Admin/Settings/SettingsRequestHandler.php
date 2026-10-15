@@ -79,6 +79,10 @@ final readonly class SettingsRequestHandler
         $settingsGroup = SettingsGroup::tryFrom($group)
             ?? throw new NotFoundHttpException(sprintf('Unknown settings group "%s"', $group));
 
+        if (!$settingsGroup->hasSettingsPage()) {
+            throw new NotFoundHttpException(sprintf('Unknown settings group "%s"', $group));
+        }
+
         if (SettingsGroup::IMPORT === $settingsGroup && !$this->importMode->isStravaApi()) {
             throw new NotFoundHttpException('Page not found');
         }

@@ -139,4 +139,9 @@ final readonly class DbalSettingsRepository extends DbalRepository implements Se
     {
         return SecuritySettings::fromArray($this->findGroup(SettingsGroup::SECURITY));
     }
+
+    public function activityExclusions(): ActivityExclusionSettings
+    {
+        return ActivityExclusionSettings::fromArray($this->findGroup(SettingsGroup::ACTIVITY_EXCLUSIONS));
+    }
 }

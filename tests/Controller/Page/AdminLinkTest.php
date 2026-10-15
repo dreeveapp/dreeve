@@ -81,7 +81,6 @@ class AdminLinkTest extends AdminWebTestCase
         yield 'activities' => ['/activities', 'admin/activities', 'admin/activities?redirectTo=%2Factivities'];
         yield 'activity' => ['/activities/activity-9756441741', 'admin/activities/activity-9756441741/edit', 'admin/activities/activity-9756441741/edit?redirectTo=%2Factivities%2Factivity-9756441741'];
         yield 'dashboard' => ['/dashboard', 'admin/settings/dashboard', 'admin/settings/dashboard?redirectTo=%2Fdashboard'];
-        yield 'power output' => ['/dashboard/power-output', 'admin/settings/metrics', 'admin/settings/metrics?redirectTo=%2Fdashboard%2Fpower-output'];
         yield 'eddington' => ['/eddington', 'admin/settings/metrics', 'admin/settings/metrics?redirectTo=%2Feddington'];
         yield 'heatmap' => ['/heatmap', 'admin/settings/maps', 'admin/settings/maps?redirectTo=%2Fheatmap'];
         yield 'gear' => ['/gear', 'admin/gear', 'admin/gear?redirectTo=%2Fgear'];

@@ -27,7 +27,7 @@ final readonly class UpdateSettings extends DomainCommand implements Deserializa
     public static function fromPayload(array $payload): self
     {
         $group = is_string($payload['group'] ?? null) ? SettingsGroup::tryFrom($payload['group']) : null;
-        if (null === $group) {
+        if (null === $group || !$group->hasSettingsPage()) {
             throw CouldNotDeserializeCommand::invalidPayload('A valid "group" is required.');
         }
 

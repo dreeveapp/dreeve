@@ -37,4 +37,6 @@ interface SettingsRepository
     public function daemon(): DaemonSettings;
 
     public function security(): SecuritySettings;
+
+    public function activityExclusions(): ActivityExclusionSettings;
 }

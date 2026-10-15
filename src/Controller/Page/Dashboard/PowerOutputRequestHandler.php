@@ -49,7 +49,7 @@ final readonly class PowerOutputRequestHandler
         return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'dashboard.power-output',
-                cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_METRICS),
+                cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_ACTIVITY_EXCLUSIONS),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
                 ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
             ),

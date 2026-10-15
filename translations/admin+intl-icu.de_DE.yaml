@@ -7,14 +7,12 @@ AM/PM: morgens/abends
 'API key': API-Schlüssel
 Actions: Aktionen
 Active: Aktiv
-'Activities excluded from peak power outputs': 'Aktivitäten, die von Maximalleistungswerten ausgeschlossen werden'
 'Activities scanned': 'untersuchte Aktivitäten'
 'Activities to skip during import': 'Aktivitäten, die beim Import übersprungen werden'
 'Activities to update': 'zu aktualisierende Aktivitäten'
 'Activities will appear here once they are imported.': 'Aktivitäten werden hier angezeigt, sobald sie importiert wurden.'
 Activity: Aktivität
 'Activity ID': Aktivitäts-ID
-'Activity IDs to exclude when calculating peak power outputs.': 'Aktivität-IDs, die bei der Berechnung der Maximalleistungswerte ausgeschlossen werden.'
 'Activity description': Aktivitätsbeschreibung
 'Activity management': Aktivitätenverwaltung
 'Activity name': Aktivitätsname

@@ -7,14 +7,12 @@ AM/PM: AM/PM
 'API key': 'clé API'
 Actions: Actions
 Active: Actif
-'Activities excluded from peak power outputs': 'Activités exclues des puissances maximales'
 'Activities scanned': 'Activités analysées'
 'Activities to skip during import': "Activités à ignorer lors de l'import"
 'Activities to update': 'Activités à mettre à jour'
 'Activities will appear here once they are imported.': 'Les activités apparaîtront ici une fois importées.'
 Activity: Activité
 'Activity ID': "ID de l'activité"
-'Activity IDs to exclude when calculating peak power outputs.': 'ID des activités à exclure du calcul des puissances maximales.'
 'Activity description': "Description de l'activité"
 'Activity management': 'Gestion des activités'
 'Activity name': "Nom de l'activité"

@@ -17,13 +17,11 @@ class MetricsSettingsTest extends TestCase
 
         // An empty eddington configuration falls back to the built-in default config.
         $this->assertGreaterThan(0, count($settings->getEddingtonConfiguration()));
-        $this->assertCount(0, $settings->getActivitiesExcludedFromPeakPowerOutputs());
     }
 
     public function testItBuildsFromStoredValues(): void
     {
         $settings = MetricsSettings::fromArray([
-            'excludeActivitiesFromPeakPowerOutputs' => [15320954660, '  42  ', ''],
             'eddington' => [
                 [
                     'label' => 'Ride',
@@ -39,9 +37,6 @@ class MetricsSettingsTest extends TestCase
         $this->assertSame('Ride', $item->getLabel());
         $this->assertFalse($item->showInDashboardWidget());
         $this->assertTrue($item->getSportTypesToInclude()->has(SportType::RIDE));
-
-        // Empty/whitespace-only ids are filtered out, the rest are trimmed.
-        $this->assertCount(2, $settings->getActivitiesExcludedFromPeakPowerOutputs());
     }
 
     public function testItNormalizesCheckboxBooleansFromFormPayload(): void

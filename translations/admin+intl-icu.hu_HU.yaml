@@ -7,14 +7,12 @@ AM/PM: AM/PM
 'API key': API-kulcs
 Actions: Actions
 Active: Aktív
-'Activities excluded from peak power outputs': 'A csúcsteljesítményből kizárt tevékenységek'
 'Activities scanned': 'Átvizsgált tevékenységek'
 'Activities to skip during import': 'Importáláskor kihagyandó tevékenységek'
 'Activities to update': 'Frissítendő tevékenységek'
 'Activities will appear here once they are imported.': 'A tevékenységek itt jelennek meg, miután importáltad őket.'
 Activity: Tevékenység
 'Activity ID': Tevékenység-azonosító
-'Activity IDs to exclude when calculating peak power outputs.': 'A csúcsteljesítmény számításakor kizárandó tevékenység-azonosítók.'
 'Activity description': 'Tevékenység leírása'
 'Activity management': 'Tevékenységek kezelése'
 'Activity name': 'Tevékenység neve'

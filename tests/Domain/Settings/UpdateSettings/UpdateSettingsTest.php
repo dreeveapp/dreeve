@@ -38,6 +38,11 @@ class UpdateSettingsTest extends TestCase
             'A valid "group" is required.',
         ];
 
+        yield 'group without a settings page' => [
+            ['group' => 'activityExclusions', 'data' => []],
+            'A valid "group" is required.',
+        ];
+
         yield 'data is not an array' => [
             ['group' => 'general', 'data' => 'not-an-array'],
             '"data" must be an object.',

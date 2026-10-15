@@ -15,6 +15,7 @@ enum SettingsGroup: string
     case INTEGRATIONS = 'integrations';
     case DAEMON = 'daemon';
     case SECURITY = 'security';
+    case ACTIVITY_EXCLUSIONS = 'activityExclusions';
 
     /**
      * @param array<string, mixed> $data
@@ -31,6 +32,12 @@ enum SettingsGroup: string
             self::INTEGRATIONS => IntegrationsSettings::fromArray($data),
             self::DAEMON => DaemonSettings::fromArray($data),
             self::SECURITY => SecuritySettings::fromArray($data),
+            self::ACTIVITY_EXCLUSIONS => ActivityExclusionSettings::fromArray($data),
         };
+    }
+
+    public function hasSettingsPage(): bool
+    {
+        return self::ACTIVITY_EXCLUSIONS !== $this;
     }
 }

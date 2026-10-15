@@ -7,14 +7,12 @@ AM/PM: AM/PM
 'API key': API-sleutel
 Actions: Acties
 Active: Actief
-'Activities excluded from peak power outputs': 'Activiteiten uitgesloten van piekvermogens'
 'Activities scanned': 'Gescande activiteiten'
 'Activities to skip during import': 'Over te slaan activiteiten bij het importeren'
 'Activities to update': 'Bij te werken activiteiten'
 'Activities will appear here once they are imported.': 'Activiteiten verschijnen hier zodra ze geïmporteerd zijn.'
 Activity: Activiteit
 'Activity ID': Activiteits-ID
-'Activity IDs to exclude when calculating peak power outputs.': "Activiteits-ID's die uitgesloten worden bij het berekenen van piekvermogens."
 'Activity description': 'Beschrijving activiteit'
 'Activity management': Activiteitenbeheer
 'Activity name': 'Naam activiteit'

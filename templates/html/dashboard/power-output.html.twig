@@ -4,13 +4,6 @@
             'url': 'dashboard/power-output',
             'label': 'Peak power outputs'|trans
         }], 'disableMargin': true} %}
-    {% include 'html/navigation/admin-edit-link.html.twig' with {
-        path: 'admin/settings/metrics',
-        redirectTo: 'dashboard/power-output',
-        title: "Metrics settings"|trans,
-        label: "Settings"|trans({}, 'admin'),
-        icon: 'cog'
-    } %}
 </div>
 {% autoescape false %}
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs space-y-4">
