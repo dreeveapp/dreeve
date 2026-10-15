@@ -9,8 +9,11 @@ use App\Domain\Activity\ActivityIds;
 
 final readonly class ActivityExclusionSettings
 {
+    /**
+     * @param array<string, ActivityIds> $excludedActivityIds
+     */
     private function __construct(
-        private ActivityIds $activitiesExcludedFromPeakPowerOutputs,
+        private array $excludedActivityIds,
     ) {
     }
 
@@ -21,22 +24,25 @@ final readonly class ActivityExclusionSettings
     {
         $data ??= [];
 
-        $excludedActivityIds = $data[SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS->value] ?? [];
-        $excludedActivityIds = array_values(array_filter(
-            array_map(
-                static fn (mixed $id): string => trim((string) $id),
-                is_array($excludedActivityIds) ? $excludedActivityIds : []
-            ),
-            static fn (string $id): bool => '' !== $id
-        ));
+        $excludedActivityIds = [];
+        foreach (ActivityExclusion::cases() as $exclusion) {
+            $activityIds = $data[$exclusion->getSettingsName()->value] ?? [];
+            $activityIds = array_values(array_filter(
+                array_map(
+                    static fn (mixed $id): string => trim((string) $id),
+                    is_array($activityIds) ? $activityIds : []
+                ),
+                static fn (string $id): bool => '' !== $id
+            ));
 
-        return new self(
-            activitiesExcludedFromPeakPowerOutputs: ActivityIds::fromArray(array_map(ActivityId::fromString(...), $excludedActivityIds)),
-        );
+            $excludedActivityIds[$exclusion->value] = ActivityIds::fromArray(array_map(ActivityId::fromString(...), $activityIds));
+        }
+
+        return new self($excludedActivityIds);
     }
 
-    public function getExcludedFromPeakPowerOutputs(): ActivityIds
+    public function getExcludedActivityIds(ActivityExclusion $exclusion): ActivityIds
     {
-        return $this->activitiesExcludedFromPeakPowerOutputs;
+        return $this->excludedActivityIds[$exclusion->value];
     }
 }

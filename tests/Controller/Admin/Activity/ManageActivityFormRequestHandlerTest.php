@@ -242,8 +242,8 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('true', $crawler->filter('input[type="hidden"][name="isGroupActivity"]')->attr('value'));
 
         // Exclusions are local data, so they stay editable for Strava activities.
-        $this->assertNull($crawler->filter('input#activity-is-excluded-from-peak-power-outputs')->attr('disabled'));
-        $this->assertNotNull($crawler->filter('input#activity-is-excluded-from-peak-power-outputs')->attr('checked'));
+        $this->assertNull($crawler->filter('input#activity-excluded-from-peakPowerOutputs')->attr('disabled'));
+        $this->assertNotNull($crawler->filter('input#activity-excluded-from-peakPowerOutputs')->attr('checked'));
 
         // The image upload is hidden entirely, since images can't be managed in Strava API mode.
         $this->assertCount(0, $crawler->filter('[data-image-dropzone]'));
@@ -449,7 +449,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="deviceName"]'));
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="calories"]'));
         $this->assertSame('false', $crawler->filter('input[type="hidden"][name="isCommute"]')->attr('value'));
-        $this->assertNull($crawler->filter('input#activity-is-excluded-from-peak-power-outputs')->attr('checked'));
+        $this->assertNull($crawler->filter('input#activity-excluded-from-peakPowerOutputs')->attr('checked'));
 
         // In files mode all gears are selectable, imported or custom.
         $this->assertSame(

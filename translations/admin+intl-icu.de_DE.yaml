@@ -164,7 +164,7 @@ Endpoint: Endpunkt
 'Enter your password': 'Gib dein Passwort ein'
 'Enter your username': 'Gib deinen Benutzernamen ein'
 Every: Alle
-'Exclude from peak power outputs': 'Exclude from peak power outputs'
+'Exclude from': 'Exclude from'
 FTP: FTP
 'FTP history (cycling)': 'FTP-Verlauf (Radfahren)'
 'FTP history (running)': 'FTP-Verlauf (Laufen)'

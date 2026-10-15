@@ -10,7 +10,7 @@ use App\Domain\Image\ImageDirectory;
 use App\Domain\Image\ImagePath;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Image\RemovedImage;
-use App\Domain\Settings\SettingsName;
+use App\Domain\Settings\ActivityExclusion;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -84,14 +84,17 @@ final readonly class UpdateActivityCommandHandler implements CommandHandler
             $this->imageStorage->remove($path);
         }
 
-        $isExcludedFromPeakPowerOutputs = $command->isExcludedFromPeakPowerOutputs();
-        $excludedFromPeakPowerOutputs = $this->settingsRepository->activityExclusions()->getExcludedFromPeakPowerOutputs();
-        if (null !== $isExcludedFromPeakPowerOutputs && $isExcludedFromPeakPowerOutputs !== $excludedFromPeakPowerOutputs->has($activity->getId())) {
-            $excludedActivityIds = $excludedFromPeakPowerOutputs->without($activity->getId());
+        foreach (ActivityExclusion::cases() as $exclusion) {
+            $isExcluded = $command->isExcludedFrom($exclusion);
+            $excludedActivityIds = $this->settingsRepository->activityExclusions()->getExcludedActivityIds($exclusion);
+            if (null === $isExcluded || $isExcluded === $excludedActivityIds->has($activity->getId())) {
+                continue;
+            }
 
+            $excludedActivityIds = $excludedActivityIds->without($activity->getId());
             $this->settingsRepository->save(
-                name: SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS,
-                value: $isExcludedFromPeakPowerOutputs ? $excludedActivityIds->add($activity->getId()) : $excludedActivityIds,
+                name: $exclusion->getSettingsName(),
+                value: $isExcluded ? $excludedActivityIds->add($activity->getId()) : $excludedActivityIds,
             );
         }
     }

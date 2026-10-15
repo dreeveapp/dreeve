@@ -49,7 +49,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
             'calories' => '500',
             'isCommute' => 'true',
             'isGroupActivity' => 'true',
-            'isExcludedFromPeakPowerOutputs' => 'true',
+            'excludedFrom' => ['peakPowerOutputs' => 'true'],
         ]));
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
@@ -82,7 +82,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
             'activityId' => 'activity-1',
             'name' => 'Updated activity',
             'sportType' => 'Ride',
-            'isExcludedFromPeakPowerOutputs' => 'false',
+            'excludedFrom' => ['peakPowerOutputs' => 'false'],
         ]));
 
         $this->assertSame(

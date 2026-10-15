@@ -7,6 +7,7 @@ use App\Domain\Activity\ActivitySummaryRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
+use App\Domain\Settings\ActivityExclusion;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
@@ -66,7 +67,7 @@ final readonly class StreamBasedActivityPowerRepository implements ActivityPower
             'sportTypes' => $sportTypes->map(fn (SportType $sportType) => $sportType->value),
             'dateFrom' => $dateRange->getFrom()->format('Y-m-d 00:00:00'),
             'dateTill' => $dateRange->getTill()->format('Y-m-d 23:59:59'),
-            'excludedActivityIds' => $this->settingsRepository->activityExclusions()->getExcludedFromPeakPowerOutputs()->map(fn (ActivityId $activityId): string => (string) $activityId) ?: ['unexisting-id'],
+            'excludedActivityIds' => $this->settingsRepository->activityExclusions()->getExcludedActivityIds(ActivityExclusion::PEAK_POWER_OUTPUTS)->map(fn (ActivityId $activityId): string => (string) $activityId) ?: ['unexisting-id'],
         ];
         $types = [
             'sportTypes' => ArrayParameterType::STRING,

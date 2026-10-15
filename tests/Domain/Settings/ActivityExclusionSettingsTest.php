@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Settings;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Settings\ActivityExclusion;
 use App\Domain\Settings\ActivityExclusionSettings;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsName;
 use PHPUnit\Framework\TestCase;
 
 class ActivityExclusionSettingsTest extends TestCase
@@ -14,7 +17,9 @@ class ActivityExclusionSettingsTest extends TestCase
     {
         $settings = ActivityExclusionSettings::fromArray(null);
 
-        $this->assertCount(0, $settings->getExcludedFromPeakPowerOutputs());
+        foreach (ActivityExclusion::cases() as $exclusion) {
+            $this->assertCount(0, $settings->getExcludedActivityIds($exclusion));
+        }
     }
 
     public function testItBuildsFromStoredValues(): void
@@ -25,8 +30,21 @@ class ActivityExclusionSettingsTest extends TestCase
 
         $this->assertEquals(
             [ActivityId::fromUnprefixed('15320954660'), ActivityId::fromUnprefixed('42')],
-            $settings->getExcludedFromPeakPowerOutputs()->toArray(),
+            $settings->getExcludedActivityIds(ActivityExclusion::PEAK_POWER_OUTPUTS)->toArray(),
         );
+    }
+
+    public function testEveryExclusionIsStoredUnderItsOwnSettingInTheActivityExclusionsGroup(): void
+    {
+        $settingsNames = array_map(
+            fn (ActivityExclusion $exclusion): SettingsName => $exclusion->getSettingsName(),
+            ActivityExclusion::cases(),
+        );
+
+        $this->assertCount(count(ActivityExclusion::cases()), array_unique(array_map(fn (SettingsName $name): string => $name->value, $settingsNames)));
+        foreach ($settingsNames as $settingsName) {
+            $this->assertSame(SettingsGroup::ACTIVITY_EXCLUSIONS, $settingsName->group());
+        }
     }
 
     public function testItThrowsForAnUnprefixedActivityId(): void
