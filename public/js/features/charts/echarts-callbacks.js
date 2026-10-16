@@ -5,7 +5,14 @@ export const resolveEchartsCallbacks = (obj) => {
 
     for (const key of Object.keys(obj)) {
         const value = obj[key];
-        if (typeof value === 'string' && value.startsWith(CALLBACK_PREFIX)) {
+        if (value && typeof value === 'object' && typeof value.callback === 'string') {
+            const {callback: callbackName, args} = value;
+            if (callbackName in window.dreeve.callbacks) {
+                obj[key] = (...params) => window.dreeve.callbacks[callbackName](args, ...params);
+            } else {
+                console.error(`ECharts callback "${callbackName}" not registered in window.dreeve.callbacks`);
+            }
+        } else if (typeof value === 'string' && value.startsWith(CALLBACK_PREFIX)) {
             const callbackName = value.slice(CALLBACK_PREFIX.length);
             if (callbackName in window.dreeve.callbacks) {
                 obj[key] = window.dreeve.callbacks[callbackName];
@@ -95,6 +102,10 @@ export const registerEchartsCallbacks = () => {
         },
         symbolSize: (params) => {
             return (params[2] / 100) * 15 + 5;
+        },
+        formatRounded: ({decimals, suffix}, value) => {
+            const rounded = Number(value).toFixed(decimals);
+            return suffix ? `${rounded} ${suffix}` : rounded;
         },
         toInteger: (value) => {
             return value.toFixed(0);

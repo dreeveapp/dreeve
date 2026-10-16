@@ -204,6 +204,27 @@ class CombinedStreamProfileChartsTest extends ContainerTestCase
         $this->assertTrue($chart['xAxis'][0]['axisPointer']['label']['show']);
     }
 
+    #[TestWith(data: [SportType::RIDE, 0])]
+    #[TestWith(data: [SportType::RUN, 1])]
+    public function testItShouldRoundTheDistanceTicksPerActivityType(SportType $sportType, int $expectedDecimals): void
+    {
+        $chart = $this->buildChart(
+            items: [
+                ['yAxisData' => [100, 120, 140], 'yAxisStreamType' => CombinedStreamType::WATTS],
+                ['yAxisData' => [10, 12, 14], 'yAxisStreamType' => CombinedStreamType::ALTITUDE],
+            ],
+            bottomXAxisData: [0.12, 0.57, 1.04],
+            sportType: $sportType,
+        );
+
+        $this->assertEquals('{value} ', $chart['xAxis'][0]['axisLabel']['formatter']);
+        $this->assertEquals(
+            ['callback' => 'formatRounded', 'args' => ['decimals' => $expectedDecimals, 'suffix' => 'km']],
+            $chart['xAxis'][1]['axisLabel']['formatter']
+        );
+        $this->assertEquals('{value} km', $chart['xAxis'][1]['axisPointer']['label']['formatter']);
+    }
+
     public function testItShouldRenderTheTemperatureAsAShortRibbonAboveTheLanes(): void
     {
         $chart = $this->buildChart(
@@ -342,6 +363,7 @@ class CombinedStreamProfileChartsTest extends ContainerTestCase
     /**
      * @param list<array{yAxisData: array<int, int|float>, yAxisStreamType: CombinedStreamType}> $items
      * @param array<int, int|float>                                                              $temperatures
+     * @param array<int, int|float>                                                              $bottomXAxisData
      *
      * @return array<string, mixed>
      */
@@ -349,17 +371,19 @@ class CombinedStreamProfileChartsTest extends ContainerTestCase
         array $items,
         int $maximumNumberOfDigitsOnYAxis = 3,
         array $temperatures = [],
+        array $bottomXAxisData = [],
+        SportType $sportType = SportType::RIDE,
     ): array {
         return CombinedStreamProfileCharts::create(
             items: $items,
             topXAxisData: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            bottomXAxisData: [],
-            bottomXAxisSuffix: null,
+            bottomXAxisData: $bottomXAxisData,
+            bottomXAxisSuffix: [] === $bottomXAxisData ? null : 'km',
             grades: [],
             temperatures: $temperatures,
             maximumNumberOfDigitsOnYAxis: $maximumNumberOfDigitsOnYAxis,
             unitSystem: UnitSystem::METRIC,
-            sportType: SportType::RIDE,
+            sportType: $sportType,
             athleteMaxHeartRate: 185,
             heartRateZones: HeartRateZones::fromScalarValues(
                 mode: HeartRateZoneMode::RELATIVE,

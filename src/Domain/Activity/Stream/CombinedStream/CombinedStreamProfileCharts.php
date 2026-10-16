@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Stream\CombinedStream;
 
+use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Athlete\HeartRateZone\HeartRateZones;
 use App\Domain\Theme\Theme;
@@ -181,7 +182,13 @@ final readonly class CombinedStreamProfileCharts
                 'boundaryGap' => false,
                 'axisLabel' => [
                     'show' => !is_null($xAxisPosition),
-                    'formatter' => '{value} '.$xAxisLabelSuffix,
+                    'formatter' => is_null($xAxisLabelSuffix) ? '{value} ' : [
+                        'callback' => 'formatRounded',
+                        'args' => [
+                            'decimals' => ActivityType::RIDE === $this->sportType->getActivityType() ? 0 : 1,
+                            'suffix' => $xAxisLabelSuffix,
+                        ],
+                    ],
                 ],
                 'axisPointer' => [
                     'label' => [

@@ -178,7 +178,13 @@
             "boundaryGap": false,
             "axisLabel": {
                 "show": true,
-                "formatter": "{value} km"
+                "formatter": {
+                    "callback": "formatRounded",
+                    "args": {
+                        "decimals": 0,
+                        "suffix": "km"
+                    }
+                }
             },
             "axisPointer": {
                 "label": {
