@@ -34,9 +34,9 @@ final readonly class ExplorerTileSquare implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'x' => $this->x,
-            'y' => $this->y,
-            'size' => $this->size,
+            'x' => $this->getX(),
+            'y' => $this->getY(),
+            'size' => $this->getSize(),
         ];
     }
 }
