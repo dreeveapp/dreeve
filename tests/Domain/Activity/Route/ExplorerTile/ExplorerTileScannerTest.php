@@ -15,7 +15,6 @@ use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\WorldType;
 use App\Domain\Geography\ExplorerTile\ExplorerTileGrid;
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -25,7 +24,14 @@ class ExplorerTileScannerTest extends ContainerTestCase
 {
     public function testScan(): void
     {
-        $streamData = Json::decode((string) file_get_contents(__DIR__.'/../../../Geography/ExplorerTile/fixtures/stream-with-gaps.json'));
+        $streamData = [
+            null,
+            [51.048301, 3.724365],
+            null,
+            [51.0545],
+            [51.048301, 3.790283],
+            [51.033104, 3.812256],
+        ];
         $polyline = (string) EncodedPolyline::fromCoordinates([[51.048301, 3.724365]]);
 
         foreach ([

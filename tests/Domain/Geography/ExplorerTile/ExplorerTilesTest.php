@@ -11,18 +11,19 @@ use PHPUnit\Framework\TestCase;
 class ExplorerTilesTest extends TestCase
 {
     /**
+     * @param list<string>          $grid
      * @param list<array{int, int}> $expectedMaxCluster
      */
     #[DataProvider(methodName: 'provideGrids')]
     public function testClustersAndMaxSquare(
-        string $fixture,
+        array $grid,
         int $offsetX,
         int $offsetY,
         int $expectedClusterTileCount,
         array $expectedMaxCluster,
         ?ExplorerTileSquare $expectedMaxSquare,
     ): void {
-        $tiles = self::tilesFromFixture($fixture, $offsetX, $offsetY);
+        $tiles = self::tilesFromGrid($grid, $offsetX, $offsetY);
         $clusters = $tiles->clusters();
 
         $this->assertSame($expectedClusterTileCount, $clusters->getClusterTiles()->count());
@@ -36,7 +37,20 @@ class ExplorerTilesTest extends TestCase
     public static function provideGrids(): iterable
     {
         yield 'separate clusters' => [
-            'grid-with-clusters.txt', 100, 200, 20,
+            [
+                '######....',
+                '######..##',
+                '######..##',
+                '######..##',
+                '######..##',
+                '######....',
+                '..........',
+                '.####.....',
+                '.####.....',
+                '.####.....',
+                '.####.....',
+            ],
+            100, 200, 20,
             [
                 [1, 1], [1, 2], [1, 3], [1, 4],
                 [2, 1], [2, 2], [2, 3], [2, 4],
@@ -46,17 +60,34 @@ class ExplorerTilesTest extends TestCase
             new ExplorerTileSquare(x: 100, y: 200, size: 6),
         ];
         yield 'hole in the middle' => [
-            'grid-with-hole.txt', 100, 200, 4,
+            [
+                '#####',
+                '#####',
+                '##.##',
+                '#####',
+                '#####',
+            ],
+            100, 200, 4,
             [[1, 1]],
             new ExplorerTileSquare(x: 100, y: 200, size: 2),
         ];
         yield 'top left edge of the world' => [
-            'grid-block.txt', 0, 0, 1,
+            [
+                '###',
+                '###',
+                '###',
+            ],
+            0, 0, 1,
             [[1, 1]],
             new ExplorerTileSquare(x: 0, y: 0, size: 3),
         ];
         yield 'bottom right edge of the world' => [
-            'grid-block.txt', ExplorerTileGrid::TILES_PER_AXIS - 3, ExplorerTileGrid::TILES_PER_AXIS - 3, 1,
+            [
+                '###',
+                '###',
+                '###',
+            ],
+            ExplorerTileGrid::TILES_PER_AXIS - 3, ExplorerTileGrid::TILES_PER_AXIS - 3, 1,
             [[1, 1]],
             new ExplorerTileSquare(x: ExplorerTileGrid::TILES_PER_AXIS - 3, y: ExplorerTileGrid::TILES_PER_AXIS - 3, size: 3),
         ];
@@ -79,10 +110,13 @@ class ExplorerTilesTest extends TestCase
         $this->assertSame([1, 5], $tiles->without(ExplorerTiles::fromArray([3, 4, 9]))->toArray());
     }
 
-    private static function tilesFromFixture(string $fixture, int $offsetX, int $offsetY): ExplorerTiles
+    /**
+     * @param list<string> $grid
+     */
+    private static function tilesFromGrid(array $grid, int $offsetX, int $offsetY): ExplorerTiles
     {
         $tiles = [];
-        foreach (file(__DIR__.'/fixtures/'.$fixture, FILE_IGNORE_NEW_LINES) ?: [] as $y => $row) {
+        foreach ($grid as $y => $row) {
             foreach (str_split($row) as $x => $cell) {
                 if ('#' === $cell) {
                     $tiles[ExplorerTileGrid::tileKey($x + $offsetX, $y + $offsetY)] = true;

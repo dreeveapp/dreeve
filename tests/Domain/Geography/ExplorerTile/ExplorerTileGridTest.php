@@ -22,7 +22,13 @@ class ExplorerTileGridTest extends TestCase
                 ExplorerTileGrid::tileKey(15073, 9831),
                 ExplorerTileGrid::tileKey(ExplorerTileGrid::TILES_PER_AXIS - 1, 0),
             ],
-            ExplorerTileGrid::tilesFor(Json::decode((string) file_get_contents(__DIR__.'/fixtures/reference-points.json')))->toArray()
+            ExplorerTileGrid::tilesFor([
+                [0.0, 0.0],
+                [51.0543, 3.7174],
+                [-33.8568, 151.2153],
+                [90.0, 180.0],
+                [-90.0, -180.0],
+            ])->toArray()
         );
     }
 
@@ -37,7 +43,14 @@ class ExplorerTileGridTest extends TestCase
                 ExplorerTileGrid::tileKey(8364, 5482),
                 ExplorerTileGrid::tileKey(8365, 5482),
             ],
-            ExplorerTileGrid::tilesFor(Json::decode((string) file_get_contents(__DIR__.'/fixtures/stream-with-gaps.json')))->toArray()
+            ExplorerTileGrid::tilesFor([
+                null,
+                [51.048301, 3.724365],
+                null,
+                [51.0545],
+                [51.048301, 3.790283],
+                [51.033104, 3.812256],
+            ])->toArray()
         );
 
         $tiles = ExplorerTileGrid::tilesFor([]);
