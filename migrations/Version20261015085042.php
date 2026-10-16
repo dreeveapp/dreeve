@@ -18,6 +18,8 @@ final class Version20261015085042 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        $this->addSql('DELETE FROM CombinedActivityStream');
+
         $value = $this->connection->fetchOne(
             'SELECT value FROM Setting WHERE settingsGroup = :settingsGroup AND name = :name',
             ['settingsGroup' => 'metrics', 'name' => 'excludeActivitiesFromPeakPowerOutputs']

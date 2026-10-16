@@ -31,7 +31,6 @@ final readonly class ActivityStreamCombiner
     {
         $activity = $this->activityRepository->find($activityId);
         $sportType = $activity->getSportType();
-        $activityType = $sportType->getActivityType();
 
         $streams = $this->activityStreamRepository->findByActivityId($activityId);
         if (!($timeStream = $streams->filterOnType(StreamType::TIME)) instanceof ActivityStream) {
@@ -132,10 +131,7 @@ final readonly class ActivityStreamCombiner
                 $distance = $sportType->toDisplayDistance(
                     Meter::from($distanceData[$i] ?? 0)->toKilometer()
                 )->toUnitSystem($unitSystem)->toFloat();
-                $combinedPoint[] = match ($activityType) {
-                    ActivityType::RIDE => $distance < 1 ? round($distance, 1) : round($distance),
-                    default => round($distance, 1),
-                };
+                $combinedPoint[] = round($distance, 2);
             }
 
             if ($hasLatLngData) {
