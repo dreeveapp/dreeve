@@ -15,6 +15,8 @@ use App\Domain\Activity\EnrichedActivityRepository;
 use App\Domain\Activity\GpxFileName;
 use App\Domain\Activity\Lap\ActivityLapRepository;
 use App\Domain\Activity\LeafletMap;
+use App\Domain\Activity\Shifting\ActivityDrivetrainUsageRepository;
+use App\Domain\Activity\Shifting\ActivityDrivetrainUsages;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\Stream\ActivityHeartRateRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
@@ -55,6 +57,7 @@ final readonly class ActivityRequestHandler
         private CombinedActivityStreamRepository $combinedActivityStreamRepository,
         private ActivitySplitRepository $activitySplitRepository,
         private ActivityLapRepository $activityLapRepository,
+        private ActivityDrivetrainUsageRepository $activityDrivetrainUsageRepository,
         private SettingsRepository $settingsRepository,
         private TranslatorInterface $translator,
         private PageRenderer $pageRenderer,
@@ -156,6 +159,9 @@ final readonly class ActivityRequestHandler
             'hasProfileChart' => $numberOfProfileChartLanes > 0,
             'heartRateZones' => $timeInHeartRateZones,
             'showStartTime' => $this->visitor->isTrusted(),
+            'drivetrainUsages' => $activity->getSportType()->supportsShiftingStats()
+                ? $this->activityDrivetrainUsageRepository->findByActivity($activityId)
+                : ActivityDrivetrainUsages::empty(),
         ]);
     }
 }

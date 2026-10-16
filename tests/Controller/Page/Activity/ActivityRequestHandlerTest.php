@@ -8,6 +8,8 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\Lap\ActivityLapId;
 use App\Domain\Activity\Lap\ActivityLapRepository;
+use App\Domain\Activity\Shifting\ActivityDrivetrainUsageRepository;
+use App\Domain\Activity\Shifting\DrivetrainPosition;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
@@ -24,6 +26,7 @@ use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Lap\ActivityLapBuilder;
+use App\Tests\Domain\Activity\Shifting\ActivityDrivetrainUsageBuilder;
 use App\Tests\Domain\Activity\Split\ActivitySplitBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\Domain\Import\FileImportBuilder;
@@ -128,6 +131,43 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('>141</div>', $content);
         $this->assertStringContainsString('173', $content);
         $this->assertStringNotContainsString('Time in zone', $content);
+    }
+
+    public function testItRendersTheShiftingStats(): void
+    {
+        $this->provideFullTestSet();
+
+        $activityId = ActivityId::fromUnprefixed('123456789');
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withSportType(SportType::RIDE)
+                ->build(),
+            [],
+        ));
+        $gears = [
+            [DrivetrainPosition::FRONT, 2, 53, 13615, 0],
+            [DrivetrainPosition::REAR, 1, 26, 20, 1],
+            [DrivetrainPosition::REAR, 4, 19, 351, 43],
+            [DrivetrainPosition::REAR, 5, 17, 1332, 117],
+            [DrivetrainPosition::REAR, 6, 16, 7219, 140],
+            [DrivetrainPosition::REAR, 7, 15, 4554, 63],
+        ];
+        foreach ($gears as [$position, $gearNumber, $teeth, $timeInSeconds, $shiftCount]) {
+            $this->getContainer()->get(ActivityDrivetrainUsageRepository::class)->add(
+                ActivityDrivetrainUsageBuilder::fromDefaults()
+                    ->withActivityId($activityId)
+                    ->withGear($position, $gearNumber, $teeth)
+                    ->withTimeInSeconds($timeInSeconds)
+                    ->withShiftCount($shiftCount)
+                    ->build()
+            );
+        }
+
+        $crawler = $this->client->request('GET', '/activities/'.$activityId);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesHtmlSnapshot($crawler->filterXPath('//section[div/h3[text()="Shifting"]]')->outerHtml());
     }
 
     public function testItLabelsTheVelocityDistributionOfARunAsPace(): void

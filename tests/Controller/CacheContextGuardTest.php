@@ -46,7 +46,6 @@ class CacheContextGuardTest extends AdminWebTestCase
         'activity_polylines' => '/api/internal/activities/activity-9830227112/polylines',
         'activity_route_matches' => '/api/internal/activities/activity-9542782314/route-matches',
         'activity_segments' => '/api/internal/activities/activity-9542782314/segments',
-        'activity_shifting' => '/api/internal/activities/activity-9542782314/shifting',
         'dashboard_widget' => '/api/internal/dashboard/widget/dashboardWidget-introText',
         'gear_maintenance_due' => '/api/internal/gear/maintenance-due',
         'heatmap_countries' => '/api/internal/heatmap/countries',
