@@ -58,7 +58,7 @@ final readonly class ExplorerTiles
         $visitedTiles = array_flip($this->tiles);
         $clusterTiles = [];
         foreach ($this->tiles as $tile) {
-            if (array_all(self::neighbours($tile), fn (?int $neighbour): bool => null !== $neighbour && isset($visitedTiles[$neighbour]))) {
+            if (array_all($this->neighbours($tile), fn (?int $neighbour): bool => null !== $neighbour && isset($visitedTiles[$neighbour]))) {
                 $clusterTiles[$tile] = true;
             }
         }
@@ -74,7 +74,7 @@ final readonly class ExplorerTiles
             $cluster = [$start => true];
             $queue = [$start];
             while ([] !== $queue) {
-                foreach (self::neighbours(array_pop($queue)) as $neighbour) {
+                foreach ($this->neighbours(array_pop($queue)) as $neighbour) {
                     if (null === $neighbour || !isset($clusterTiles[$neighbour]) || isset($seen[$neighbour])) {
                         continue;
                     }
@@ -109,7 +109,7 @@ final readonly class ExplorerTiles
             );
             $sizes[$tile] = $size;
 
-            if (!$maxSquare || $size > $maxSquare->getSize()) {
+            if (!$maxSquare instanceof ExplorerTileSquare || $size > $maxSquare->getSize()) {
                 $maxSquare = new ExplorerTileSquare(
                     x: $x - $size + 1,
                     y: $y - $size + 1,
@@ -142,7 +142,7 @@ final readonly class ExplorerTiles
     /**
      * @return array{?int, ?int, ?int, ?int}
      */
-    private static function neighbours(int $tile): array
+    private function neighbours(int $tile): array
     {
         $x = intdiv($tile, ExplorerTileGrid::TILES_PER_AXIS);
         $y = $tile % ExplorerTileGrid::TILES_PER_AXIS;

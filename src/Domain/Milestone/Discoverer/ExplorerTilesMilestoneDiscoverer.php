@@ -43,7 +43,7 @@ final readonly class ExplorerTilesMilestoneDiscoverer implements MilestoneDiscov
                     context: new MaxSquareContext(size: $maxSquareSize),
                 )
                     ->withActivityId($entry->getActivityId())
-                    ->withPrevious($previousMaxSquareMilestone ? PreviousMilestone::create(
+                    ->withPrevious($previousMaxSquareMilestone instanceof Milestone ? PreviousMilestone::create(
                         previousMilestoneId: $previousMaxSquareMilestone->getId(),
                         threshold: SimpleUnit::from($previousMaxSquareSize),
                         achievedOn: $previousMaxSquareMilestone->getAchievedOn(),
@@ -65,7 +65,7 @@ final readonly class ExplorerTilesMilestoneDiscoverer implements MilestoneDiscov
                     context: new MaxClusterContext(tileCount: $threshold),
                 )
                     ->withActivityId($entry->getActivityId())
-                    ->withPrevious($previousMaxClusterMilestone ? PreviousMilestone::create(
+                    ->withPrevious($previousMaxClusterMilestone instanceof Milestone ? PreviousMilestone::create(
                         previousMilestoneId: $previousMaxClusterMilestone->getId(),
                         threshold: SimpleUnit::from($previousMaxClusterThreshold),
                         achievedOn: $previousMaxClusterMilestone->getAchievedOn(),
