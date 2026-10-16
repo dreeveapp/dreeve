@@ -36,7 +36,7 @@ class CalculateCustomSegmentEffortsTest extends ContainerTestCase
     {
         $output = new SpyOutput();
         $segmentRepository = $this->getContainer()->get(SegmentRepository::class);
-        $segmentPolyline = EncodedPolyline::fromString(file_get_contents(self::FIXTURES.'segment-polyline.txt') ?: '');
+        $segmentPolyline = EncodedPolyline::fromString('_}gvH_glW?sk@{Ro^');
         $segmentRepository->add(SegmentBuilder::fromDefaults()
             ->withSegmentId(SegmentId::fromUnprefixed('custom'))
             ->withName(Name::fromString('Custom segment'))

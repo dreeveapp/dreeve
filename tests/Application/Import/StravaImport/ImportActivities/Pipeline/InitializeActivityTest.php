@@ -32,7 +32,7 @@ class InitializeActivityTest extends ContainerTestCase
             [],
         ));
 
-        $rawStravaData = Json::decode(file_get_contents(__DIR__.'/fixtures/raw-strava-activity.json') ?: '');
+        $rawStravaData = Json::decode(file_get_contents(__DIR__.'/../../../../../Domain/Activity/fixtures/raw-strava-activity.json') ?: '');
         $rawStravaData['athlete_count'] = $athleteCount;
 
         $context = $this->initializeActivity->process(ActivityImportContext::create(
@@ -55,7 +55,7 @@ class InitializeActivityTest extends ContainerTestCase
             [],
         ));
 
-        $rawStravaData = Json::decode(file_get_contents(__DIR__.'/fixtures/raw-strava-activity.json') ?: '');
+        $rawStravaData = Json::decode(file_get_contents(__DIR__.'/../../../../../Domain/Activity/fixtures/raw-strava-activity.json') ?: '');
         unset($rawStravaData['athlete_count']);
 
         $context = $this->initializeActivity->process(ActivityImportContext::create(
@@ -78,7 +78,7 @@ class InitializeActivityTest extends ContainerTestCase
             [],
         ));
 
-        $rawStravaData = Json::decode(file_get_contents(__DIR__.'/fixtures/raw-strava-activity.json') ?: '');
+        $rawStravaData = Json::decode(file_get_contents(__DIR__.'/../../../../../Domain/Activity/fixtures/raw-strava-activity.json') ?: '');
         $rawStravaData['description'] = 'Updated description';
 
         $context = $this->initializeActivity->process(ActivityImportContext::create(
@@ -101,7 +101,7 @@ class InitializeActivityTest extends ContainerTestCase
             [],
         ));
 
-        $rawStravaData = Json::decode(file_get_contents(__DIR__.'/fixtures/raw-strava-activity.json') ?: '');
+        $rawStravaData = Json::decode(file_get_contents(__DIR__.'/../../../../../Domain/Activity/fixtures/raw-strava-activity.json') ?: '');
         unset($rawStravaData['description']);
 
         $context = $this->initializeActivity->process(ActivityImportContext::create(

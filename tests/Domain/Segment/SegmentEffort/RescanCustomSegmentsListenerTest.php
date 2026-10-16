@@ -37,7 +37,7 @@ class RescanCustomSegmentsListenerTest extends ContainerTestCase
 
     public function testItRescansWhenTheSportTypeChanges(): void
     {
-        $segmentPolyline = EncodedPolyline::fromString(file_get_contents(self::FIXTURES.'segment-polyline.txt') ?: '');
+        $segmentPolyline = EncodedPolyline::fromString('_}gvH_glW?sk@{Ro^');
         $this->segmentRepository->add(SegmentBuilder::fromDefaults()
             ->withSegmentId(SegmentId::fromUnprefixed('custom-ride'))
             ->withType(SegmentType::CUSTOM)
@@ -121,7 +121,7 @@ class RescanCustomSegmentsListenerTest extends ContainerTestCase
             ->withSegmentId(SegmentId::fromUnprefixed('custom-run'))
             ->withType(SegmentType::CUSTOM)
             ->withSportType(SportType::RUN)
-            ->withPolyline(EncodedPolyline::fromString(file_get_contents(self::FIXTURES.'segment-polyline.txt') ?: ''))
+            ->withPolyline(EncodedPolyline::fromString('_}gvH_glW?sk@{Ro^'))
             ->build());
         $activity = ActivityBuilder::fromDefaults()
             ->withActivityId(ActivityId::fromUnprefixed('1'))

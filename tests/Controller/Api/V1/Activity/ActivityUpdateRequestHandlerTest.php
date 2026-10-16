@@ -34,7 +34,7 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
             'PATCH',
             self::PATH,
             server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
-            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity.json'),
+            content: '{"name": "Corrected ride", "sportType": "GravelRide", "description": "Rerouted around the closed bridge"}',
         );
 
         $this->assertResponseIsSuccessful();
@@ -56,7 +56,7 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
             'PATCH',
             self::PATH,
             server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
-            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity-name-only.json'),
+            content: '{"name": "Only the name changed"}',
         );
 
         $this->assertResponseIsSuccessful();
@@ -79,7 +79,7 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
             'PATCH',
             self::PATH,
             server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
-            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity-clear-description.json'),
+            content: '{"description": null}',
         );
 
         $this->assertResponseIsSuccessful();
@@ -101,7 +101,7 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
             'PATCH',
             self::PATH,
             server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
-            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity-gear.json'),
+            content: '{"gearId": "gear-2"}',
         );
 
         $this->assertResponseIsSuccessful();
@@ -118,7 +118,7 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
             'PATCH',
             self::PATH,
             server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
-            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity-clear-gear.json'),
+            content: '{"gearId": null}',
         );
 
         $this->assertResponseIsSuccessful();
@@ -164,7 +164,7 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
             'PATCH',
             '/api/v1/activities/'.$activityId,
             server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
-            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity.json'),
+            content: '{"name": "Corrected ride", "sportType": "GravelRide", "description": "Rerouted around the closed bridge"}',
         );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
@@ -179,7 +179,7 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
             'PATCH',
             self::PATH,
             server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token, 'CONTENT_TYPE' => 'application/json'],
-            content: (string) file_get_contents(__DIR__.'/fixtures/patch-activity.json'),
+            content: '{"name": "Corrected ride", "sportType": "GravelRide", "description": "Rerouted around the closed bridge"}',
         );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_CONFLICT);

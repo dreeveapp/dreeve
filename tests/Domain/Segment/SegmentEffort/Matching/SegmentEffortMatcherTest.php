@@ -21,7 +21,7 @@ class SegmentEffortMatcherTest extends TestCase
         $matchedEfforts = new SegmentEffortMatcher()->match(
             segment: SegmentBuilder::fromDefaults()
                 ->withDistance(Kilometer::from(1))
-                ->withPolyline(EncodedPolyline::fromString(file_get_contents(__DIR__.'/fixtures/segment-polyline.txt') ?: ''))
+                ->withPolyline(EncodedPolyline::fromString('_}gvH_glW?sk@{Ro^'))
                 ->build(),
             latLng: $streams['latlng'],
             time: $streams['time'],
@@ -57,7 +57,7 @@ class SegmentEffortMatcherTest extends TestCase
         $matchedEfforts = new SegmentEffortMatcher()->match(
             segment: SegmentBuilder::fromDefaults()
                 ->withDistance(Kilometer::from(1))
-                ->withPolyline(EncodedPolyline::fromString(file_get_contents(__DIR__.'/fixtures/segment-polyline.txt') ?: ''))
+                ->withPolyline(EncodedPolyline::fromString('_}gvH_glW?sk@{Ro^'))
                 ->build(),
             latLng: $streams['latlng'],
             time: $streams['time'],
@@ -82,7 +82,7 @@ class SegmentEffortMatcherTest extends TestCase
     {
         $this->assertSame([], new SegmentEffortMatcher()->match(
             segment: SegmentBuilder::fromDefaults()
-                ->withPolyline(EncodedPolyline::fromString(file_get_contents(__DIR__.'/fixtures/segment-polyline.txt') ?: ''))
+                ->withPolyline(EncodedPolyline::fromString('_}gvH_glW?sk@{Ro^'))
                 ->build(),
             latLng: [],
             time: [],
