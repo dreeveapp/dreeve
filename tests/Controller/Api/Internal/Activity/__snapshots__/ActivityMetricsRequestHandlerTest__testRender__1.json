@@ -99,6 +99,12 @@
                 "show": true,
                 "formatter": "{value} "
             },
+            "axisPointer": {
+                "label": {
+                    "show": true,
+                    "formatter": "{value} "
+                }
+            },
             "data": [
                 1,
                 2,
@@ -119,6 +125,12 @@
             "axisLabel": {
                 "show": false,
                 "formatter": "{value} "
+            },
+            "axisPointer": {
+                "label": {
+                    "show": false,
+                    "formatter": "{value} "
+                }
             },
             "data": [
                 1,
@@ -141,6 +153,12 @@
                 "show": false,
                 "formatter": "{value} "
             },
+            "axisPointer": {
+                "label": {
+                    "show": false,
+                    "formatter": "{value} "
+                }
+            },
             "data": [
                 1,
                 2,
@@ -161,6 +179,12 @@
             "axisLabel": {
                 "show": true,
                 "formatter": "{value} km"
+            },
+            "axisPointer": {
+                "label": {
+                    "show": true,
+                    "formatter": "{value} km"
+                }
             },
             "data": [
                 2,

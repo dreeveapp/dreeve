@@ -201,6 +201,7 @@ class CombinedStreamProfileChartsTest extends ContainerTestCase
         $this->assertCount(1, $chart['grid']);
         $this->assertArrayNotHasKey('visualMap', $chart);
         $this->assertEquals(Theme::POSITION_TOP, $chart['xAxis'][0]['position']);
+        $this->assertTrue($chart['xAxis'][0]['axisPointer']['label']['show']);
     }
 
     public function testItShouldRenderTheTemperatureAsAShortRibbonAboveTheLanes(): void
@@ -233,6 +234,9 @@ class CombinedStreamProfileChartsTest extends ContainerTestCase
         $this->assertEquals(Theme::POSITION_TOP, $chart['xAxis'][0]['position']);
         $this->assertNull($chart['xAxis'][1]['position']);
         $this->assertEquals(Theme::POSITION_BOTTOM, $chart['xAxis'][2]['position']);
+        $this->assertTrue($chart['xAxis'][0]['axisPointer']['label']['show']);
+        $this->assertFalse($chart['xAxis'][1]['axisPointer']['label']['show']);
+        $this->assertTrue($chart['xAxis'][2]['axisPointer']['label']['show']);
     }
 
     public function testItShouldPointEveryLaneAtItsOwnGridWhenARibbonIsPresent(): void

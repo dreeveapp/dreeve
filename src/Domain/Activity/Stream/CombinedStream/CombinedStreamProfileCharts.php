@@ -183,6 +183,12 @@ final readonly class CombinedStreamProfileCharts
                     'show' => !is_null($xAxisPosition),
                     'formatter' => '{value} '.$xAxisLabelSuffix,
                 ],
+                'axisPointer' => [
+                    'label' => [
+                        'show' => !is_null($xAxisPosition),
+                        'formatter' => '{value} '.$xAxisLabelSuffix,
+                    ],
+                ],
                 'data' => $xAxisData,
                 'min' => 0,
                 'axisTick' => [
@@ -373,6 +379,12 @@ final readonly class CombinedStreamProfileCharts
                 'axisLabel' => [
                     'show' => true,
                     'formatter' => '{value} ',
+                ],
+                'axisPointer' => [
+                    'label' => [
+                        'show' => true,
+                        'formatter' => '{value} ',
+                    ],
                 ],
                 'data' => $this->topXAxisData,
                 'min' => 0,
