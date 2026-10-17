@@ -23,7 +23,7 @@ class ChallengesRequestHandlerTest extends ControllerWebTestCase
             'challenges',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
-        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, challenges');
+        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, challenges');
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 

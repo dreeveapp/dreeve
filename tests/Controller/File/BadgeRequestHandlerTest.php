@@ -44,7 +44,7 @@ class BadgeRequestHandlerTest extends ControllerWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities, challenges',
+            'settings.appearance, activities, challenges, settings.general',
         );
         $this->assertMatchesXmlSnapshot((string) $this->client->getResponse()->getContent());
     }

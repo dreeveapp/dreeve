@@ -39,7 +39,7 @@ class SegmentRequestHandlerTest extends ControllerWebTestCase
         // Scoped to this segment, so importing an activity that rode another segment leaves it alone.
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, segments.1, gear, activities.9542782314',
+            'settings.appearance, segments.1, gear, activities.9542782314',
         );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }

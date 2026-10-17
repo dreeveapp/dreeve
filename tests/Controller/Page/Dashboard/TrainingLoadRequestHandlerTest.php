@@ -31,7 +31,7 @@ class TrainingLoadRequestHandlerTest extends ControllerWebTestCase
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities',
+            'settings.appearance, activities, settings.general',
         );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }

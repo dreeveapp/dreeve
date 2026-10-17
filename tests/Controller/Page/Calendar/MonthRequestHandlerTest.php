@@ -57,7 +57,7 @@ class MonthRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities.2022-12, activities.2023-01, activities.2023-02',
+            'settings.appearance, activities.2022-12, activities.2023-01, activities.2023-02',
         );
     }
 

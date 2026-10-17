@@ -28,7 +28,7 @@ class MonthlyStatsRequestHandlerTest extends ControllerWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, '.RootCacheTag::ACTIVITIES->toTagString(),
+            'settings.appearance, '.RootCacheTag::ACTIVITIES->toTagString(),
         );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }

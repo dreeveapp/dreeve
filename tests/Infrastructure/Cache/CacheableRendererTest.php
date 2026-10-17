@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class CacheableRendererTest extends ContainerTestCase
 {
-    private const array CACHE_TAGS = ['settings.appearance', 'settings.general', 'activity.images'];
+    private const array CACHE_TAGS = ['settings.appearance', 'activity.images'];
     private RenderCache $renderCache;
     private CacheableRenderer $cacheableRenderer;
 

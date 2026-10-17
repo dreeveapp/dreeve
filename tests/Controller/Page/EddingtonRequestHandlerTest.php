@@ -23,7 +23,7 @@ class EddingtonRequestHandlerTest extends AdminWebTestCase
             'eddington.auth=anon',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
-        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activities, settings.metrics');
+        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, activities, settings.metrics');
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 

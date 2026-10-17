@@ -25,7 +25,7 @@ class SegmentDataTableRequestHandlerTest extends ControllerWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, segments',
+            'settings.appearance, segments',
         );
         $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
     }

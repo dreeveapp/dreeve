@@ -26,7 +26,7 @@ class HeatmapRoutesRequestHandlerTest extends ControllerWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activity.route',
+            'settings.appearance, activity.route',
         );
         $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
     }

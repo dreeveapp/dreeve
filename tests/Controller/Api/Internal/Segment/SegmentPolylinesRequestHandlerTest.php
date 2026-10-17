@@ -25,7 +25,7 @@ class SegmentPolylinesRequestHandlerTest extends ControllerWebTestCase
         // Without this tag a re-imported segment would keep serving its old route forever.
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, segments',
+            'settings.appearance, segments',
         );
         $this->assertSame('[[[-11.64587,166.94827],[-11.64727,166.94921]]]', $this->client->getResponse()->getContent());
     }

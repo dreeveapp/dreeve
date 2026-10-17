@@ -31,7 +31,7 @@ class RewindRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertEqualsCanonicalizing(
-            ['activities.2023', 'activity.images.2023', 'gear', 'settings.appearance', 'settings.general'],
+            ['activities.2023', 'activity.images.2023', 'gear', 'settings.appearance'],
             explode(', ', (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Tags')),
         );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
@@ -71,7 +71,7 @@ class RewindRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertEqualsCanonicalizing(
-            ['activities', 'activity.images', 'gear', 'settings.appearance', 'settings.general'],
+            ['activities', 'activity.images', 'gear', 'settings.appearance'],
             explode(', ', (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Tags')),
         );
     }

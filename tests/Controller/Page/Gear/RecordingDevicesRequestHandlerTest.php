@@ -25,7 +25,7 @@ class RecordingDevicesRequestHandlerTest extends AdminWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, gear.recording-devices, activities',
+            'settings.appearance, gear.recording-devices, activities',
         );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }

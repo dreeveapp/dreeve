@@ -40,7 +40,7 @@ class GearMaintenanceRequestHandlerTest extends AdminWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, gear.maintenance, activities, gear',
+            'settings.appearance, gear.maintenance, activities, gear',
         );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }

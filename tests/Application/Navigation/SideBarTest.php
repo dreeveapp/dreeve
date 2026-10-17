@@ -57,7 +57,6 @@ class SideBarTest extends ContainerTestCase
                 RootCacheTag::ACTIVITY_IMAGES,
                 RootCacheTag::CHALLENGES,
                 RootCacheTag::GEAR,
-                RootCacheTag::SETTINGS_GENERAL,
                 RootCacheTag::SETTINGS_APPEARANCE,
             ], true)];
         }

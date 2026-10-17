@@ -21,7 +21,7 @@ class DashboardRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, dashboard',
+            'settings.appearance, dashboard',
         );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }

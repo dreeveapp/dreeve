@@ -51,7 +51,7 @@ class ActivityCoordinatesRequestHandlerTest extends ControllerWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities.1',
+            'settings.appearance, activities.1',
         );
         $this->assertSame('[[51.2,3.2],[51.3,3.3]]', $this->client->getResponse()->getContent());
     }

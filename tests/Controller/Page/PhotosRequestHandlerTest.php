@@ -23,7 +23,7 @@ class PhotosRequestHandlerTest extends ControllerWebTestCase
             'photos.trust=',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
-        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activity.images');
+        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, activity.images');
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 

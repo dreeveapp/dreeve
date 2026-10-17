@@ -24,7 +24,7 @@ class RewindCompareRequestHandlerTest extends ControllerWebTestCase
             [
                 'activities.2023', 'activity.images.2023',
                 'activities.2022', 'activity.images.2022',
-                'gear', 'settings.appearance', 'settings.general',
+                'gear', 'settings.appearance',
             ],
             explode(', ', (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Tags')),
         );
@@ -80,7 +80,7 @@ class RewindCompareRequestHandlerTest extends ControllerWebTestCase
             [
                 'activities.2023', 'activity.images.2023',
                 'activities', 'activity.images',
-                'gear', 'settings.appearance', 'settings.general',
+                'gear', 'settings.appearance',
             ],
             explode(', ', (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Tags')),
         );

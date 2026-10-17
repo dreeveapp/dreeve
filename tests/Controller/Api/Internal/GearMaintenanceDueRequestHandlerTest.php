@@ -33,7 +33,7 @@ class GearMaintenanceDueRequestHandlerTest extends ControllerWebTestCase
         $this->assertStringNotContainsString('sidebar-collapsed', (string) $this->client->getResponse()->getContent());
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, gear.maintenance, activities, gear',
+            'settings.appearance, gear.maintenance, activities, gear',
         );
         $this->assertSelectorExists('div[title="One of your gear maintenance tasks is due"]');
     }

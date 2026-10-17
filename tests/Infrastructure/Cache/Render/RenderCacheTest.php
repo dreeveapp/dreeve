@@ -29,7 +29,7 @@ class RenderCacheTest extends ContainerTestCase
             Render::freshlyRendered(
                 'rendered',
                 AppVersion::getSemanticVersion().'.activity_123.tz=Europe_Brussels.user=me_example.com',
-                ['settings.appearance', 'settings.general', 'activity.images'],
+                ['settings.appearance', 'activity.images'],
             ),
             $render
         );
@@ -47,7 +47,7 @@ class RenderCacheTest extends ContainerTestCase
             Render::servedFromCache(
                 'rendered',
                 AppVersion::getSemanticVersion().'.segment_9_special',
-                ['settings.appearance', 'settings.general', 'activity.images'],
+                ['settings.appearance', 'activity.images'],
             ),
             $render
         );
@@ -92,7 +92,7 @@ class RenderCacheTest extends ContainerTestCase
 
         $this->assertEquals(3600, $render->getTtlInSeconds());
         $this->assertEquals(
-            ['settings.appearance', 'settings.general', 'activity.images'],
+            ['settings.appearance', 'activity.images'],
             $render->getCacheTags()
         );
     }
@@ -156,7 +156,7 @@ class RenderCacheTest extends ContainerTestCase
             Render::servedFromCache(
                 'rendered',
                 AppVersion::getSemanticVersion().'.photos',
-                ['settings.appearance', 'settings.general', 'activity.images'],
+                ['settings.appearance', 'activity.images'],
             ),
             $render
         );

@@ -23,7 +23,7 @@ class HeatmapRequestHandlerTest extends AdminWebTestCase
             'heatmap.auth=anon',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
         );
-        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activity.route, settings.maps');
+        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, activity.route, settings.maps');
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 

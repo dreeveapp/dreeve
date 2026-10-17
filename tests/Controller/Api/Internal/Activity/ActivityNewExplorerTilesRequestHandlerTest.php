@@ -41,7 +41,7 @@ class ActivityNewExplorerTilesRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
-        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activities.later, activity.route');
+        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, activities.later, activity.route');
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
 
         $this->client->request('GET', '/api/internal/activities/activity-latest/explorer-tiles');

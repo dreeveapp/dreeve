@@ -39,7 +39,7 @@ class ActivitySegmentsRequestHandlerTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/internal/activities/activity-9542782314/segments');
 
         $this->assertResponseHeaderSame('X-Dreeve-Cache', 'MISS');
-        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activities.9542782314, segments');
+        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, activities.9542782314, segments');
     }
 
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void

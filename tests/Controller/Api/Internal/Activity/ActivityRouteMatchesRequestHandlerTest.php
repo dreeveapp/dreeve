@@ -32,7 +32,7 @@ class ActivityRouteMatchesRequestHandlerTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/internal/activities/activity-9830227167/route-matches');
 
         $this->assertResponseHeaderSame('X-Dreeve-Cache', 'MISS');
-        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, settings.general, activities.9830227167, activities');
+        $this->assertResponseHeaderSame('X-Dreeve-Cache-Tags', 'settings.appearance, activities.9830227167, activities');
     }
 
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void

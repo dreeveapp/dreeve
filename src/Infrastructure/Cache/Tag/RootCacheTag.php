@@ -51,7 +51,7 @@ enum RootCacheTag: string implements CacheTag
      */
     public static function crossCutting(): array
     {
-        return [self::SETTINGS_APPEARANCE, self::SETTINGS_GENERAL];
+        return [self::SETTINGS_APPEARANCE];
     }
 
     public static function forSettingsGroup(SettingsGroup $settingsGroup): self

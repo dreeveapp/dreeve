@@ -30,7 +30,7 @@ class ActivityPolylinesRequestHandlerTest extends ControllerWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities.9830227112',
+            'settings.appearance, activities.9830227112',
         );
         $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
     }
