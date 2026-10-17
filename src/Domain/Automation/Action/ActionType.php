@@ -7,6 +7,7 @@ namespace App\Domain\Automation\Action;
 enum ActionType: string
 {
     case ASSIGN_GEAR = 'assignGear';
+    case REMOVE_GEAR = 'removeGear';
     case SET_DEVICE = 'setDevice';
     case MARK_AS_COMMUTE = 'markAsCommute';
     case MARK_AS_GROUP_ACTIVITY = 'markAsGroupActivity';

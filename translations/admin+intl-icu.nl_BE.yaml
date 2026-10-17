@@ -56,6 +56,7 @@ Admin: Beheer
 'Allowed IP addresses for the admin panel': 'Toegestane IP-adressen voor het beheerpaneel'
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Maakt de trainingsassistent ook beschikbaar in de webinterface. Vereist dat de AI-integratie hierboven ingeschakeld is. Wees voorzichtig als je app publiek toegankelijk is.'
 'Any IP address': 'Eender welk IP-adres'
+'Any gear assigned to the activity will be removed.': 'Any gear assigned to the activity will be removed.'
 'App URL': App-URL
 'App subtitle': App-ondertitel
 'App update available notification': 'Melding bij beschikbare app-update'
@@ -337,6 +338,7 @@ Remove: Verwijderen
 'Remove challenge': 'Uitdaging verwijderen'
 'Remove command': 'Commando verwijderen'
 'Remove condition': 'Voorwaarde verwijderen'
+'Remove gear': 'Remove gear'
 'Remove goal': 'Doel verwijderen'
 'Remove installation': 'Remove installation'
 'Remove task': 'Taak verwijderen'

@@ -419,6 +419,13 @@ final class Activity
         ]));
     }
 
+    public function withoutGear(): self
+    {
+        return $this->recordUpdate(clone ($this, [
+            'gearId' => null,
+        ]));
+    }
+
     public function getWeather(): ?Weather
     {
         if (!$this->weather) {
