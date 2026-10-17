@@ -7,11 +7,11 @@ use App\Controller\Page\ChatRequestHandler;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Integration\AI\Chat\DbalChatRepository;
-use App\Domain\Integration\AI\Chat\SafeMarkdownRenderer;
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\Renderer\MarkdownRenderer;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
@@ -228,7 +228,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             settingsRepository: $this->buildSettingsRepository($aiUIEnabled),
             formFactory: $this->getContainer()->get(FormFactoryInterface::class),
             appShell: $this->getContainer()->get(AppShell::class),
-            safeMarkdownRenderer: new SafeMarkdownRenderer(),
+            markdownRenderer: new MarkdownRenderer(),
         );
     }
 
@@ -245,7 +245,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             settingsRepository: $this->buildSettingsRepository(true),
             formFactory: $this->getContainer()->get(FormFactoryInterface::class),
             appShell: $this->getContainer()->get(AppShell::class),
-            safeMarkdownRenderer: new SafeMarkdownRenderer(),
+            markdownRenderer: new MarkdownRenderer(),
         );
     }
 

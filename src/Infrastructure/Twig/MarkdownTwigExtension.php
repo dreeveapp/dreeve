@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Twig;
 
-use App\Domain\Integration\AI\Chat\SafeMarkdownRenderer;
+use App\Infrastructure\Renderer\MarkdownRenderer;
 use Twig\Attribute\AsTwigFilter;
 
 final readonly class MarkdownTwigExtension
 {
     public function __construct(
-        private SafeMarkdownRenderer $safeMarkdownRenderer,
+        private MarkdownRenderer $markdownRenderer,
     ) {
     }
 
-    #[AsTwigFilter('chat_markdown', isSafe: ['html'])]
-    public function chatMarkdown(string $markdown): string
+    #[AsTwigFilter('markdown', isSafe: ['html'])]
+    public function markdown(string $markdown): string
     {
-        return $this->safeMarkdownRenderer->render($markdown);
+        return $this->markdownRenderer->render($markdown);
     }
 }

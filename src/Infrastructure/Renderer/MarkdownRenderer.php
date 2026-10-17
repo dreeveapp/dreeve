@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Integration\AI\Chat;
+namespace App\Infrastructure\Renderer;
 
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\MarkdownConverter;
 
-final readonly class SafeMarkdownRenderer
+final readonly class MarkdownRenderer
 {
     private MarkdownConverter $converter;
 

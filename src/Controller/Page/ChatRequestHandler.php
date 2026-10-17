@@ -7,11 +7,11 @@ namespace App\Controller\Page;
 use App\Application\AppShell;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Domain\Integration\AI\Chat\ChatRepository;
-use App\Domain\Integration\AI\Chat\SafeMarkdownRenderer;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
 use App\Infrastructure\Http\ServerSentEvent;
+use App\Infrastructure\Renderer\MarkdownRenderer;
 use App\Infrastructure\Serialization\Json;
 use GuzzleHttp\Exception\ClientException;
 use NeuronAI\Agent\AgentInterface;
@@ -40,7 +40,7 @@ final readonly class ChatRequestHandler
         private FormFactoryInterface $formFactory,
         private AppShell $appShell,
         private Environment $twig,
-        private SafeMarkdownRenderer $safeMarkdownRenderer,
+        private MarkdownRenderer $markdownRenderer,
     ) {
     }
 
@@ -146,7 +146,7 @@ final readonly class ChatRequestHandler
             }
 
             $response->sendEvent(new ServerSentEvent(
-                data: $this->safeMarkdownRenderer->render($fullResponse),
+                data: $this->markdownRenderer->render($fullResponse),
                 type: 'done'
             ));
         });
