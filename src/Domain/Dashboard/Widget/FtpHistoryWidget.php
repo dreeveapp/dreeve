@@ -44,7 +44,7 @@ final readonly class FtpHistoryWidget implements Widget
 
     public function getCacheTags(): CacheTags
     {
-        return CacheTags::of(RootCacheTag::SETTINGS_ATHLETE_WEIGHT);
+        return CacheTags::of(RootCacheTag::SETTINGS_GENERAL, RootCacheTag::SETTINGS_ATHLETE_WEIGHT);
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration

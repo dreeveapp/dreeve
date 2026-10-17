@@ -51,7 +51,7 @@ final readonly class TrainingLoadWidget implements Widget, DependsOnCurrentDay
 
     public function getCacheTags(): CacheTags
     {
-        return CacheTags::of(RootCacheTag::ACTIVITIES);
+        return CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_GENERAL);
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration

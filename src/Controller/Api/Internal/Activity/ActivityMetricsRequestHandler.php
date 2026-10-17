@@ -13,6 +13,7 @@ use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -51,7 +52,7 @@ final readonly class ActivityMetricsRequestHandler
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('activities.%s.metrics', $activityId->toUnprefixedString()),
-                cacheTags: CacheTags::of(ActivityCacheTag::for($activityId)),
+                cacheTags: CacheTags::of(ActivityCacheTag::for($activityId), RootCacheTag::SETTINGS_GENERAL),
             ),
             render: fn (): string => Json::encode($this->profileChartsFor($activityId)->build()),
         );

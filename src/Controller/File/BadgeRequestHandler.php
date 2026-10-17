@@ -50,7 +50,7 @@ final readonly class BadgeRequestHandler
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'badge.dreeve',
-                cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::CHALLENGES),
+                cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::CHALLENGES, RootCacheTag::SETTINGS_GENERAL),
             ),
             render: fn (): string => $this->twig->load('svg/badge/svg-dreeve-badge.html.twig')->render([
                 'athlete' => $this->settingsRepository->general()->getAthlete(),

@@ -48,7 +48,7 @@ final readonly class AthleteProfileWidget implements Widget, DependsOnCurrentDay
 
     public function getCacheTags(): CacheTags
     {
-        return CacheTags::of(RootCacheTag::ACTIVITIES);
+        return CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_GENERAL);
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration
