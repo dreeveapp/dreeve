@@ -83,8 +83,10 @@
             {{ "The formula used to calculate your resting heart rate. The default is an age-based estimate."|trans({}, 'admin') }}
         </p>
         <div class="hidden mt-2 border-l-2 border-gray-200 pl-4 group-has-[option[value=fixed]:checked]/resting-hr:block">
-            <label for="restingHeartRateFormulaFixedValue" class="mt-0! text-xs text-gray-500">{{ "Resting heart rate (bpm)"|trans({}, 'admin') }}</label>
-            <input type="number" min="20" max="250" step="1" id="restingHeartRateFormulaFixedValue" name="{{ fieldPrefix }}[restingHeartRateFormulaFixedValue]" value="{{ restingHeartRateFixedValue }}">
+            <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <label for="restingHeartRateFormulaFixedValue" class="mt-0! text-xs text-gray-500">{{ "Resting heart rate (bpm)"|trans({}, 'admin') }}</label>
+                <input type="number" min="20" max="250" step="1" id="restingHeartRateFormulaFixedValue" name="{{ fieldPrefix }}[restingHeartRateFormulaFixedValue]" value="{{ restingHeartRateFixedValue }}">
+            </div>
         </div>
         <div class="hidden mt-2 border-l-2 border-gray-200 pl-4 group-has-[option[value=dateRangeBased]:checked]/resting-hr:block">
             {{ editor.historyEditor(
