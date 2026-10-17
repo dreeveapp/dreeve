@@ -55,8 +55,8 @@ final readonly class RelativeHeartRateDistribution
                 $upperBound = (int) ceil($percentage / self::SNAP_TO) * self::SNAP_TO;
             }
         }
-        $lowerBound ??= (int) array_key_first($this->secondsPerPercentage);
-        $upperBound ??= (int) array_key_last($this->secondsPerPercentage);
+        $lowerBound ??= array_key_first($this->secondsPerPercentage);
+        $upperBound ??= array_key_last($this->secondsPerPercentage);
 
         $bins = array_fill($lowerBound, $upperBound - $lowerBound + 1, 0.0);
         foreach ($this->secondsPerPercentage as $percentage => $seconds) {
