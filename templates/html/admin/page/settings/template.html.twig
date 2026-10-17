@@ -7,7 +7,7 @@
             <input type="hidden" name="group" value="{{ group.value }}">
             <div data-form-error class="form-error hidden" role="alert"></div>
             {% block sections %}{% endblock %}
-            <div class="sticky bottom-0 z-10 flex justify-end gap-2 rounded-lg border border-gray-200 bg-white p-3 shadow-xs">
+            <div class="flex justify-end">
                 <button type="submit" data-has-loading-state class="group btn--primary">
                     <span class="label">{{ "Save settings"|trans({}, 'admin') }}</span>
                     <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>

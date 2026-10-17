@@ -1,20 +1,14 @@
-{% extends "html/admin/page/template.html.twig" %}
+{% extends "html/admin/page/settings/template.html.twig" %}
+{% set settingsTitle = "Metrics"|trans({}, 'admin') %}
+{% set formRedirect = redirectUrl('') %}
 
-{% block main %}
-    {% set returnUrl = redirectUrl('') %}
-    <div class="flex flex-col gap-4">
-        <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ returnUrl }}"
-              class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-            <input type="hidden" name="group" value="{{ group.value }}">
-            <div class="mb-5">
-                <h3 class="text-lg font-semibold">{{ "Metrics"|trans({}, 'admin') }}</h3>
-            </div>
-            <div data-form-error class="form-error hidden" role="alert"></div>
+{% block sections %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {
+        title: "Eddington"|trans,
+        description: "Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget."|trans({}, 'admin'),
+    } %}
+        {% block body %}
             <div data-repeater data-repeater-min="0">
-                <label class="mt-0!">{{ "Eddington"|trans }}</label>
-                <p class="description mb-2">
-                    {{ "Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget."|trans({}, 'admin') }}
-                </p>
                 <div class="flex flex-col gap-3"
                      data-repeater-list
                      data-repeater-initial="{{ (settings.eddington ?? [])|json_encode|e('html_attr') }}">
@@ -40,7 +34,7 @@
                                    data-repeater-field="label" required placeholder="{{ "Ride"|trans({}, 'admin') }}">
                         </div>
                         <div class="flex flex-col gap-2">
-                            <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
+                            <label class="flex items-center gap-2 mt-0! font-medium cursor-pointer">
                                 <input type="checkbox" name="data[eddington][__index__][showInDashboardWidget]" value="1"
                                        data-repeater-field="showInDashboardWidget">
                                 <span>{{ "Show in dashboard widget"|trans({}, 'admin') }}</span>
@@ -62,12 +56,6 @@
                     </div>
                 </template>
             </div>
-            <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
-                <button type="submit" data-has-loading-state class="group btn--primary">
-                    <span class="label">{{ "Save settings"|trans({}, 'admin') }}</span>
-                    <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
-                </button>
-            </div>
-        </form>
-    </div>
-{% endblock main %}
+        {% endblock %}
+    {% endembed %}
+{% endblock sections %}
