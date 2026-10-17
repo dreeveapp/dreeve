@@ -10,7 +10,7 @@ class AthleteWeightSettingsRequestHandlerTest extends AdminWebTestCase
     {
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/athleteWeight');
+        $crawler = $this->client->request('GET', '/admin/settings/athlete-weight');
 
         $this->assertResponseIsSuccessful();
 
