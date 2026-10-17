@@ -9,7 +9,7 @@ use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\MarkdownConverter;
 
-final class SafeMarkdownRenderer
+final readonly class SafeMarkdownRenderer
 {
     private MarkdownConverter $converter;
 
