@@ -104,7 +104,8 @@
                                     <ul>
                                         {% for activity in day.getActivities() %}
                                             {% set color = activity.getSportType().getActivityType().getColor() %}
-                                            <li class="mb-1 truncate pl-1 bg-{{ color }}/[.1] border-l-2 border-l-{{ color }}">
+                                            {% set distance = activity.getDistanceInDisplayUnit() %}
+                                            <li class="mb-1 truncate pl-1 bg-{{ color }}/[.1] border-l-2 border-l-{{ color }}" title="{{ activity.getName()|e }}&#10;{{ activity.getMovingTimeFormatted() }}{% if distance.toFloat() > 0 %} · {{ distance|formatMeasurement(activity.getSportType().getDistancePrecision()) }} {{ distance|measurementSymbol }}{% endif %}">
                                                 {{ activity|activityLink(truncate: true) }}
                                             </li>
                                         {% endfor %}

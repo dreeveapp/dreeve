@@ -38,6 +38,17 @@ class MonthRequestHandlerTest extends ControllerWebTestCase
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
+    public function testItSummarisesEachActivityOnHover(): void
+    {
+        $this->provideFullTestSet();
+
+        $this->client->request('GET', '/monthly-stats/2023-07');
+
+        $content = (string) $this->client->getResponse()->getContent();
+        $this->assertStringContainsString('title="Morning Ride&#10;31:56 · 112 km"', $content);
+        $this->assertStringContainsString('title="Virtual ride Zwift&#10;1:03:06"', $content);
+    }
+
     public function testItIsTaggedWithTheMonthsItRenders(): void
     {
         $this->provideFullTestSet();
