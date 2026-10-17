@@ -1,7 +1,8 @@
-{% extends "html/admin/page/template.html.twig" %}
+{% extends "html/admin/page/settings/template.html.twig" %}
+{% set settingsTitle = "Integrations"|trans({}, 'admin') %}
+{% set formRedirect = redirectUrl('') %}
 
-{% block main %}
-    {% set returnUrl = redirectUrl('') %}
+{% block sections %}
     {% set ai = settings.ai ?? {} %}
     {% set aiConfiguration = ai.configuration ?? {} %}
     {% set notifications = settings.notifications ?? {} %}
@@ -14,77 +15,71 @@
         {% set notificationServiceRows = notificationServiceRows|merge([{'value': service}]) %}
     {% endfor %}
     {% set aiProviders = ['anthropic', 'azureOpenAI', 'deepseek', 'gemini', 'grok', 'huggingFace', 'ollama', 'openAI', 'openAILike', 'openAIResponses', 'mistral'] %}
-    <div class="flex flex-col gap-4">
-        <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ returnUrl }}"
-              class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-            <input type="hidden" name="group" value="{{ group.value }}">
-            <div class="mb-5">
-                <h3 class="text-lg font-semibold">{{ "Integrations"|trans({}, 'admin') }}</h3>
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "AI"|trans({}, 'admin')} %}
+        {% block body %}
+            <div>
+                <label class="flex items-center gap-2 mt-0! font-medium cursor-pointer">
+                    <input type="checkbox" id="aiEnabled" name="data[ai][enabled]" value="1" {{ (ai.enabled ?? false) ? 'checked' : '' }}>
+                    <span>{{ "Enable AI integration"|trans({}, 'admin') }}</span>
+                </label>
+                <p class="description">
+                    {{ "Turns on the AI-powered workout assistant, which can then be used from the command line."|trans({}, 'admin') }}
+                </p>
             </div>
-            <div data-form-error class="form-error hidden" role="alert"></div>
-            <div class="flex flex-col gap-4">
-                <h4 class="mt-0!">{{ "AI"|trans({}, 'admin') }}</h4>
+            <div class="flex flex-col gap-4 border-l-2 border-gray-200 pl-4" data-dependent-on="aiEnabled" data-visible-when="checked">
                 <div>
-                    <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
-                        <input type="checkbox" id="aiEnabled" name="data[ai][enabled]" value="1" {{ (ai.enabled ?? false) ? 'checked' : '' }}>
-                        <span>{{ "Enable AI integration"|trans({}, 'admin') }}</span>
+                    <label class="flex items-center gap-2 mt-0! font-medium cursor-pointer">
+                        <input type="checkbox" name="data[ai][enableUI]" value="1" {{ (ai.enableUI ?? false) ? 'checked' : '' }}>
+                        <span>{{ "Show the workout assistant in the UI."|trans({}, 'admin') }}</span>
                     </label>
                     <p class="description">
-                        {{ "Turns on the AI-powered workout assistant, which can then be used from the command line."|trans({}, 'admin') }}
+                        {{ "Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible."|trans({}, 'admin') }}
                     </p>
                 </div>
-                <div class="flex flex-col gap-4" data-dependent-on="aiEnabled" data-visible-when="checked">
-                    <div>
-                        <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
-                            <input type="checkbox" name="data[ai][enableUI]" value="1" {{ (ai.enableUI ?? false) ? 'checked' : '' }}>
-                            <span>{{ "Show the workout assistant in the UI."|trans({}, 'admin') }}</span>
-                        </label>
+                <div>
+                    <label for="aiProvider">{{ "Provider"|trans({}, 'admin') }}</label>
+                    <select id="aiProvider" name="data[ai][provider]">
+                        <option value="">{{ "None"|trans }}</option>
+                        {% for provider in aiProviders %}
+                            <option value="{{ provider }}" {{ (ai.provider ?? '') == provider ? 'selected' : '' }}>{{ provider }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviders|join(',') }}">
+                        <label for="aiModel">{{ "Model"|trans({}, 'admin') }}</label>
+                        <input type="text" id="aiModel" name="data[ai][configuration][model]" value="{{ aiConfiguration.model ?? '' }}">
+                    </div>
+                    <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviders|filter(p => p != 'ollama')|join(',') }}">
+                        <label for="aiKey">{{ "API key"|trans({}, 'admin') }}</label>
+                        <input type="text" id="aiKey" value="{{ AIApiKey }}" disabled>
                         <p class="description">
-                            {{ "Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible."|trans({}, 'admin') }}
+                            {{ "Configured via an environment variable and cannot be changed here."|trans({}, 'admin') }}
                         </p>
                     </div>
-                    <div>
-                        <label for="aiProvider">{{ "Provider"|trans({}, 'admin') }}</label>
-                        <select id="aiProvider" name="data[ai][provider]">
-                            <option value="">{{ "None"|trans }}</option>
-                            {% for provider in aiProviders %}
-                                <option value="{{ provider }}" {{ (ai.provider ?? '') == provider ? 'selected' : '' }}>{{ provider }}</option>
-                            {% endfor %}
-                        </select>
+                    <div data-dependent-on="aiProvider" data-visible-when="ollama">
+                        <label for="aiUrl">{{ "URL"|trans({}, 'admin') }}</label>
+                        <input type="text" id="aiUrl" name="data[ai][configuration][url]" value="{{ aiConfiguration.url ?? '' }}" placeholder="http://dreeve-ollama:11434/api">
                     </div>
-                    <div class="grid gap-4 sm:grid-cols-2">
-                        <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviders|join(',') }}">
-                            <label for="aiModel">{{ "Model"|trans({}, 'admin') }}</label>
-                            <input type="text" id="aiModel" name="data[ai][configuration][model]" value="{{ aiConfiguration.model ?? '' }}">
-                        </div>
-                        <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviders|filter(p => p != 'ollama')|join(',') }}">
-                            <label for="aiKey">{{ "API key"|trans({}, 'admin') }}</label>
-                            <input type="text" id="aiKey" value="{{ AIApiKey }}" disabled>
-                            <p class="description">
-                                {{ "Configured via an environment variable and cannot be changed here."|trans({}, 'admin') }}
-                            </p>
-                        </div>
-                        <div data-dependent-on="aiProvider" data-visible-when="ollama">
-                            <label for="aiUrl">{{ "URL"|trans({}, 'admin') }}</label>
-                            <input type="text" id="aiUrl" name="data[ai][configuration][url]" value="{{ aiConfiguration.url ?? '' }}" placeholder="http://dreeve-ollama:11434/api">
-                        </div>
-                        <div data-dependent-on="aiProvider" data-visible-when="openAILike">
-                            <label for="aiBaseUri">{{ "Base URI"|trans({}, 'admin') }}</label>
-                            <input type="text" id="aiBaseUri" name="data[ai][configuration][baseUri]" value="{{ aiConfiguration.baseUri ?? '' }}">
-                        </div>
-                        <div data-dependent-on="aiProvider" data-visible-when="azureOpenAI">
-                            <label for="aiEndpoint">{{ "Endpoint"|trans({}, 'admin') }}</label>
-                            <input type="text" id="aiEndpoint" name="data[ai][configuration][endpoint]" value="{{ aiConfiguration.endpoint ?? '' }}">
-                        </div>
+                    <div data-dependent-on="aiProvider" data-visible-when="openAILike">
+                        <label for="aiBaseUri">{{ "Base URI"|trans({}, 'admin') }}</label>
+                        <input type="text" id="aiBaseUri" name="data[ai][configuration][baseUri]" value="{{ aiConfiguration.baseUri ?? '' }}">
+                    </div>
+                    <div data-dependent-on="aiProvider" data-visible-when="azureOpenAI">
+                        <label for="aiEndpoint">{{ "Endpoint"|trans({}, 'admin') }}</label>
+                        <input type="text" id="aiEndpoint" name="data[ai][configuration][endpoint]" value="{{ aiConfiguration.endpoint ?? '' }}">
                     </div>
                 </div>
             </div>
-            <div class="mt-6 border-t border-gray-200 pt-6" data-repeater data-repeater-min="0"
-                 data-dependent-on="aiEnabled" data-visible-when="checked">
-                <label class="mt-0!">{{ "Chat commands"|trans({}, 'admin') }}</label>
-                <p class="description mb-2">
-                    {{ "Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash."|trans({}, 'admin') }}
-                </p>
+        {% endblock %}
+    {% endembed %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {
+        title: "Chat commands"|trans({}, 'admin'),
+        description: "Shortcuts a user can pick in the workout assistant. Do not prefix the command with a slash."|trans({}, 'admin'),
+        attributes: 'data-dependent-on="aiEnabled" data-visible-when="checked"',
+    } %}
+        {% block body %}
+            <div data-repeater data-repeater-min="0">
                 <div class="flex flex-col gap-3"
                      data-repeater-list
                      data-repeater-initial="{{ commandRows|json_encode|e('html_attr') }}">
@@ -117,12 +112,17 @@
                     </div>
                 </template>
             </div>
-            <div class="mt-6 border-t border-gray-200 pt-6">
-                <h4 class="mt-0!">{{ "Notification services"|trans({}, 'admin') }}</h4>
-                <div data-repeater data-repeater-min="0">
-                    <p class="description mb-2">
-                        {{ "{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely."|trans({'{shoutrrr}': '<a class="underline" href="https://shoutrrr.nickfedor.com/dev/services/overview/" target="_blank" rel="noopener">Shoutrrr</a>'}, 'admin')|raw }}
-                    </p>
+        {% endblock %}
+    {% endembed %}
+    {% set notificationServicesDescription %}
+        {{ "{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely."|trans({'{shoutrrr}': '<a class="underline" href="https://shoutrrr.nickfedor.com/dev/services/overview/" target="_blank" rel="noopener">Shoutrrr</a>'}, 'admin')|raw }}
+    {% endset %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "Notifications"|trans({}, 'admin')} %}
+        {% block body %}
+            <div>
+                <label class="mt-0!">{{ "Notification services"|trans({}, 'admin') }}</label>
+                <p class="description mb-2">{{ notificationServicesDescription }}</p>
+                <div class="p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater data-repeater-min="0">
                     <div class="flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ notificationServiceRows|json_encode|e('html_attr') }}"></div>
                     <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
                         <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -145,24 +145,18 @@
                         </div>
                     </template>
                 </div>
-                <div class="mt-4">
-                    <label class="flex items-center gap-2 mt-0! font-normal cursor-pointer">
-                        <input type="hidden" name="data[notifications][notifyOnSuccessfulBuild]" value="0">
-                        <input type="checkbox" name="data[notifications][notifyOnSuccessfulBuild]" value="1"
-                               {{ (notifications.notifyOnSuccessfulBuild ?? true) ? 'checked' : '' }}>
-                        <span>{{ "Notify when an import was successful"|trans({}, 'admin') }}</span>
-                    </label>
-                    <p class="description">
-                        {{ "Sends a notification after every successful import."|trans({}, 'admin') }}
-                    </p>
-                </div>
             </div>
-            <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
-                <button type="submit" data-has-loading-state class="group btn--primary">
-                    <span class="label">{{ "Save settings"|trans({}, 'admin') }}</span>
-                    <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
-                </button>
+            <div>
+                <label class="flex items-center gap-2 mt-0! font-medium cursor-pointer">
+                    <input type="hidden" name="data[notifications][notifyOnSuccessfulBuild]" value="0">
+                    <input type="checkbox" name="data[notifications][notifyOnSuccessfulBuild]" value="1"
+                           {{ (notifications.notifyOnSuccessfulBuild ?? true) ? 'checked' : '' }}>
+                    <span>{{ "Notify when an import was successful"|trans({}, 'admin') }}</span>
+                </label>
+                <p class="description">
+                    {{ "Sends a notification after every successful import."|trans({}, 'admin') }}
+                </p>
             </div>
-        </form>
-    </div>
-{% endblock main %}
+        {% endblock %}
+    {% endembed %}
+{% endblock sections %}
