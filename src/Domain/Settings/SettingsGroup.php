@@ -16,6 +16,7 @@ enum SettingsGroup: string
     case DAEMON = 'daemon';
     case SECURITY = 'security';
     case ACTIVITY_EXCLUSIONS = 'activityExclusions';
+    case ATHLETE_WEIGHT = 'athleteWeight';
 
     /**
      * @param array<string, mixed> $data
@@ -33,11 +34,12 @@ enum SettingsGroup: string
             self::DAEMON => DaemonSettings::fromArray($data),
             self::SECURITY => SecuritySettings::fromArray($data),
             self::ACTIVITY_EXCLUSIONS => ActivityExclusionSettings::fromArray($data),
+            self::ATHLETE_WEIGHT => AthleteWeightSettings::fromArray($data),
         };
     }
 
     public function hasSettingsPage(): bool
     {
-        return self::ACTIVITY_EXCLUSIONS !== $this;
+        return !in_array($this, [self::ACTIVITY_EXCLUSIONS, self::ATHLETE_WEIGHT], true);
     }
 }

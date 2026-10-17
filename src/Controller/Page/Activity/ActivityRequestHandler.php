@@ -88,6 +88,7 @@ final readonly class ActivityRequestHandler
                     ActivityCacheTag::for($activityId),
                     RootCacheTag::GEAR,
                     RootCacheTag::SETTINGS_SECURITY,
+                    RootCacheTag::SETTINGS_ATHLETE_WEIGHT,
                 ),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class, TrustedVisitorCacheContext::class),
             ),

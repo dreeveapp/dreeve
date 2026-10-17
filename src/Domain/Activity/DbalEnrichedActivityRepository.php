@@ -148,7 +148,7 @@ final readonly class DbalEnrichedActivityRepository extends DbalRepository imple
 
     private function athleteWeightHistory(): AthleteWeightHistory
     {
-        return $this->settingsRepository->general()->getAthleteWeightHistory(
+        return $this->settingsRepository->athleteWeight()->getHistory(
             $this->settingsRepository->appearance()->getUnitSystem()
         );
     }

@@ -3,7 +3,6 @@
 namespace App\Tests\Controller\Admin\Settings;
 
 use App\Tests\Controller\Admin\AdminWebTestCase;
-use Symfony\Component\DomCrawler\Crawler;
 
 class GeneralSettingsRequestHandlerTest extends AdminWebTestCase
 {
@@ -22,15 +21,9 @@ class GeneralSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('input[name="data[firstName]"][required]'));
         $this->assertCount(1, $crawler->filter('input[name="data[lastName]"][required]'));
 
-        // Five repeaters: max heart rate ranges, resting heart rate ranges, weight, FTP cycling, FTP running.
-        $this->assertCount(5, $crawler->filter('form[data-dispatch-command="update-settings"] [data-repeater]'));
-
-        $initial = (string) $crawler->filter('[data-repeater]')
-            ->reduce(fn (Crawler $repeater) => str_contains($repeater->html(), 'data[weightHistory]'))
-            ->filter('[data-repeater-list]')
-            ->attr('data-repeater-initial');
-        $this->assertStringContainsString('2020-01-01', $initial);
-        $this->assertStringContainsString('"weight"', $initial);
+        // Four repeaters: max heart rate ranges, resting heart rate ranges, FTP cycling, FTP running.
+        $this->assertCount(4, $crawler->filter('form[data-dispatch-command="update-settings"] [data-repeater]'));
+        $this->assertCount(0, $crawler->filter('[name^="data[weightHistory]"]'));
 
         // The heart rate zones editor.
         $this->assertCount(1, $crawler->filter('select[name="data[heartRateZones][mode]"]'));

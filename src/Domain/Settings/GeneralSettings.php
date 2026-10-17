@@ -11,22 +11,16 @@ use App\Domain\Athlete\AthleteBirthDate;
 use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
 use App\Domain\Athlete\MaxHeartRate\MaxHeartRateFormulas;
 use App\Domain\Athlete\RestingHeartRate\RestingHeartRateFormulas;
-use App\Domain\Athlete\Weight\AthleteWeightHistory;
 use App\Domain\Ftp\FtpHistory;
-use App\Infrastructure\Measurement\UnitSystem;
 
 final readonly class GeneralSettings
 {
-    /**
-     * @param array<string, mixed> $weightHistory
-     */
     private function __construct(
         private ?AppSubTitle $appSubTitle,
         private ?ProfilePictureUrl $profilePictureUrl,
         private Athlete $athlete,
         private HeartRateZoneConfiguration $heartRateZoneConfiguration,
         private FtpHistory $ftpHistory,
-        private array $weightHistory,
     ) {
     }
 
@@ -80,7 +74,6 @@ final readonly class GeneralSettings
             ),
             heartRateZoneConfiguration: HeartRateZoneConfiguration::fromArray($data['heartRateZones'] ?? []),
             ftpHistory: FtpHistory::fromArray($data['ftpHistory'] ?? []),
-            weightHistory: $data['weightHistory'] ?? [],
         );
     }
 
@@ -107,13 +100,5 @@ final readonly class GeneralSettings
     public function getFtpHistory(): FtpHistory
     {
         return $this->ftpHistory;
-    }
-
-    public function getAthleteWeightHistory(UnitSystem $unitSystem): AthleteWeightHistory
-    {
-        /** @var array<string, float> $weightHistory */
-        $weightHistory = $this->weightHistory;
-
-        return AthleteWeightHistory::fromArray($weightHistory, $unitSystem);
     }
 }

@@ -41,7 +41,6 @@ Activity: Tevékenység
 'Add service': 'Szerviz hozzáadása'
 'Add task': 'Feladat hozzáadása'
 'Add tile layer': 'Csempe-réteg hozzáadása'
-'Add weight': 'Testsúly hozzáadása'
 'Add widget': 'Widget hozzáadása'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Adj hozzá {fit}, {tcx} vagy {gpx} fájlokat. Néhány percenként feldolgozásra kerülnek.'
 Admin: Admin
@@ -203,7 +202,6 @@ Heatmap: Hőtérkép
 'Hide photos for sport types': 'Fotók elrejtése sporttípusonként'
 'History of cycling FTP. Needed to calculate activity stress level.': 'A kerékpáros FTP előzményei. A tevékenység terhelési szintjének kiszámításához szükséges.'
 'History of running FTP. Needed to calculate activity stress level.': 'A futó FTP előzményei. A tevékenység terhelési szintjének kiszámításához szükséges.'
-'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'A testsúly előzményei (kg-ban vagy fontban, a megjelenítési mértékegységrendszertől függően). A relatív W/kg kiszámításához szükséges.'
 'Hold ctrl (⌘ on Mac) to zoom the map with the scroll wheel': 'Tartsd lenyomva a Ctrl-t (⌘ Mac-en) a térkép nagyításához a görgővel'
 Hours: Óra
 'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'Milyen gyakran (percben, 1 és 60 között) kerülnek feldolgozásra a sorban álló webhook-események.'

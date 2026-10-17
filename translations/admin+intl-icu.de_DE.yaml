@@ -41,7 +41,6 @@ Activity: Aktivität
 'Add service': 'Service hinzufügen'
 'Add task': 'Aufgabe hinzufügen'
 'Add tile layer': 'Kachelebene hinzufügen'
-'Add weight': 'Gewicht hinzufügen'
 'Add widget': 'Widget hinzufügen'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Füge {fit}, {tcx} oder {gpx} Dateien hinzu. Sie werden alle paar Minuten verarbeitet'
 Admin: Admin
@@ -203,7 +202,6 @@ Heatmap: Heatmap
 'Hide photos for sport types': 'Fotos für Sportarten ausblenden'
 'History of cycling FTP. Needed to calculate activity stress level.': 'Verlauf der Radfahr-FTP. Wird benötigt, um das Belastungsniveau der Aktivität zu berechnen.'
 'History of running FTP. Needed to calculate activity stress level.': 'Verlauf der Lauf-FTP. Wird benötigt, um das Belastungsniveau der Aktivität zu berechnen.'
-'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'Gewichtsverlauf (in kg oder Pfund, abhängig vom eingestellten Einheitensystem). Wird benötigt, um die relative Leistung in W/kg zu berechnen.'
 'Hold ctrl (⌘ on Mac) to zoom the map with the scroll wheel': 'Halte Strg (⌘ auf dem Mac) gedrückt, um die Karte mit dem Mausrad zu zoomen.'
 Hours: Stunden
 'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'Wie oft (in Minuten, zwischen 1 und 60) in der Warteschlange stehende Webhook-Ereignisse verarbeitet werden.'

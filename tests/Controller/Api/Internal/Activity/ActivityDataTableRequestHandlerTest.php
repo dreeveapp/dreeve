@@ -25,7 +25,7 @@ class ActivityDataTableRequestHandlerTest extends ControllerWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities',
+            'settings.appearance, settings.general, activities, settings.athleteWeight',
         );
         $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
     }

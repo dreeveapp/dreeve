@@ -8,6 +8,7 @@ use App\Domain\Athlete\Weight\AthleteWeightHistoryChart;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -38,7 +39,7 @@ final readonly class AthleteWeightHistoryWidget implements Widget
 
     public function getCacheTags(): CacheTags
     {
-        return CacheTags::empty();
+        return CacheTags::of(RootCacheTag::SETTINGS_ATHLETE_WEIGHT);
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration
@@ -53,7 +54,7 @@ final readonly class AthleteWeightHistoryWidget implements Widget
     public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): ?string
     {
         $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
-        $allWeights = $this->settingsRepository->general()->getAthleteWeightHistory($unitSystem)->findAll();
+        $allWeights = $this->settingsRepository->athleteWeight()->getHistory($unitSystem)->findAll();
         if ([] === $allWeights) {
             return null;
         }

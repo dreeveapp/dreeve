@@ -25,7 +25,7 @@ class UpdateAthleteSettingsCommandHandlerTest extends ContainerTestCase
                 'birthday' => '1980-01-01',
                 'firstName' => 'John',
                 'maxHeartRateFormula' => 'fox',
-                'weightHistory' => [['on' => '2020-01-01', 'weight' => 70]],
+                'ftpHistory' => ['cycling' => [['on' => '2020-01-01', 'ftp' => 250]]],
                 'heartRateZones' => ['mode' => 'absolute'],
             ]
         );
@@ -45,8 +45,8 @@ class UpdateAthleteSettingsCommandHandlerTest extends ContainerTestCase
             'birthday' => '1990-01-01',
             'firstName' => 'Jane',
             'maxHeartRateFormula' => 'arena',
-            // The weight history and heart rate zones are managed on the general settings form.
-            'weightHistory' => [['on' => '2020-01-01', 'weight' => 70]],
+            // The FTP history and heart rate zones are managed on the general settings form.
+            'ftpHistory' => ['cycling' => [['on' => '2020-01-01', 'ftp' => 250]]],
             'heartRateZones' => ['mode' => 'absolute'],
             'restingHeartRateFormula' => 'heuristicAgeBased',
             'lastName' => 'Doe',

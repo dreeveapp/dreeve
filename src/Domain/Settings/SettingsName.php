@@ -21,7 +21,8 @@ enum SettingsName: string
     public function group(): SettingsGroup
     {
         return match ($this) {
-            self::MAX_HEART_RATE_FORMULA, self::RESTING_HEART_RATE_FORMULA, self::WEIGHT_HISTORY => SettingsGroup::GENERAL,
+            self::MAX_HEART_RATE_FORMULA, self::RESTING_HEART_RATE_FORMULA => SettingsGroup::GENERAL,
+            self::WEIGHT_HISTORY => SettingsGroup::ATHLETE_WEIGHT,
             self::UNIT_SYSTEM, self::LOCALE => SettingsGroup::APPEARANCE,
             self::EDDINGTON => SettingsGroup::METRICS,
             self::REQUIRES_AUTHENTICATION => SettingsGroup::SECURITY,

@@ -39,4 +39,6 @@ interface SettingsRepository
     public function security(): SecuritySettings;
 
     public function activityExclusions(): ActivityExclusionSettings;
+
+    public function athleteWeight(): AthleteWeightSettings;
 }

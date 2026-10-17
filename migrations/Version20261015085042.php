@@ -19,6 +19,10 @@ final class Version20261015085042 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql('DELETE FROM CombinedActivityStream');
+        $this->addSql(
+            'UPDATE Setting SET settingsGroup = :to WHERE settingsGroup = :from AND name = :name',
+            ['to' => 'athleteWeight', 'from' => 'general', 'name' => 'weightHistory']
+        );
 
         $value = $this->connection->fetchOne(
             'SELECT value FROM Setting WHERE settingsGroup = :settingsGroup AND name = :name',

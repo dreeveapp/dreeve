@@ -76,7 +76,7 @@ final readonly class StreamBasedActivityPowerRepository implements ActivityPower
 
         $results = $this->connection->executeQuery($sql, $params, $types)->fetchAllAssociative();
 
-        $athleteWeightHistory = $this->settingsRepository->general()->getAthleteWeightHistory($this->settingsRepository->appearance()->getUnitSystem());
+        $athleteWeightHistory = $this->settingsRepository->athleteWeight()->getHistory($this->settingsRepository->appearance()->getUnitSystem());
 
         /** @var array<int, array{activityId: string, power: int}> $bestPerInterval */
         $bestPerInterval = [];

@@ -35,7 +35,7 @@ final readonly class ActivityDataTableRequestHandler
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'activities.data-table',
-                cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
+                cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_ATHLETE_WEIGHT),
             ),
             render: fn (): string => $this->renderFor(),
         );

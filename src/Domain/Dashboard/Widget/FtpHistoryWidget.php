@@ -11,6 +11,7 @@ use App\Domain\Ftp\FtpHistoryChart;
 use App\Domain\Ftp\Ftps;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -43,7 +44,7 @@ final readonly class FtpHistoryWidget implements Widget
 
     public function getCacheTags(): CacheTags
     {
-        return CacheTags::empty();
+        return CacheTags::of(RootCacheTag::SETTINGS_ATHLETE_WEIGHT);
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration
@@ -59,9 +60,8 @@ final readonly class FtpHistoryWidget implements Widget
     {
         $ftpHistoryCharts = [];
 
-        $general = $this->settingsRepository->general();
-        $ftpHistory = $general->getFtpHistory();
-        $athleteWeightHistory = $general->getAthleteWeightHistory($this->settingsRepository->appearance()->getUnitSystem());
+        $ftpHistory = $this->settingsRepository->general()->getFtpHistory();
+        $athleteWeightHistory = $this->settingsRepository->athleteWeight()->getHistory($this->settingsRepository->appearance()->getUnitSystem());
 
         /** @var ActivityType $activityType */
         foreach ($this->activityTypeRepository->findAll() as $activityType) {

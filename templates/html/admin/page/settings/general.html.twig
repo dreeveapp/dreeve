@@ -37,24 +37,6 @@
         {% endblock %}
     {% endembed %}
     {% embed 'html/admin/page/settings/component/section.html.twig' with {
-        title: "Weight history"|trans,
-        description: "History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg."|trans({}, 'admin'),
-    } %}
-        {% block body %}
-            {% import 'html/admin/page/settings/macro/history-editor.html.twig' as editor %}
-            {{ editor.historyEditor(
-                'data[weightHistory]',
-                settings.weightHistory ?? [],
-                null,
-                null,
-                "Weight"|trans,
-                "Add weight"|trans({}, 'admin'),
-                'weight',
-                'any'
-            ) }}
-        {% endblock %}
-    {% endembed %}
-    {% embed 'html/admin/page/settings/component/section.html.twig' with {
         title: "FTP history (cycling)"|trans({}, 'admin'),
         description: "History of cycling FTP. Needed to calculate activity stress level."|trans({}, 'admin'),
     } %}

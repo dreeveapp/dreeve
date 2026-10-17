@@ -33,7 +33,7 @@ class PowerOutputRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseHeaderSame('Content-Type', 'text/html; charset=UTF-8');
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, settings.general, activities, settings.activityExclusions',
+            'settings.appearance, settings.general, activities, settings.activityExclusions, settings.athleteWeight',
         );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }

@@ -31,8 +31,8 @@ final readonly class AthleteWeightRequestHandler
     #[Route(path: '/api/v1/athlete/weights', name: 'api_v1_athlete_weights', methods: ['GET'], priority: 3)]
     public function list(): JsonResponse
     {
-        $weights = $this->settingsRepository->general()
-            ->getAthleteWeightHistory($this->settingsRepository->appearance()->getUnitSystem())
+        $weights = $this->settingsRepository->athleteWeight()
+            ->getHistory($this->settingsRepository->appearance()->getUnitSystem())
             ->findAll();
 
         return new JsonResponse(['weights' => array_values($weights)]);
