@@ -41,6 +41,7 @@ Activity: Activité
 'Add service': 'Ajouter un service'
 'Add task': 'Ajouter une tâche'
 'Add tile layer': 'Ajouter une couche de tuiles'
+'Add weight': 'Add weight'
 'Add widget': 'Ajouter un widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Ajoutez des fichiers {fit}, {tcx} ou {gpx}. Ils sont traités toutes les minutes.'
 Admin: Admin
@@ -202,6 +203,7 @@ Heatmap: 'Carte thermique'
 'Hide photos for sport types': 'Masquer les photos pour les types de sport'
 'History of cycling FTP. Needed to calculate activity stress level.': 'Historique de la FTP vélo. Nécessaire pour calculer le niveau de stress des activités.'
 'History of running FTP. Needed to calculate activity stress level.': 'Historique de la FTP course à pied. Nécessaire pour calculer le niveau de stress des activités.'
+'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.'
 'Hold ctrl (⌘ on Mac) to zoom the map with the scroll wheel': 'Maintenez ctrl (⌘ sur Mac) pour zoomer sur la carte avec la molette'
 Hours: Heures
 'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'Fréquence (en minutes, entre 1 et 60) de traitement des événements webhook en attente.'
@@ -535,6 +537,7 @@ Webhooks: 'Crochets web'
 Wednesday: Mercredi
 Weekday: 'Jour de la semaine'
 Weekdays: 'Jours de la semaine'
+Weigh-ins: Weigh-ins
 'What is my FTP?': 'Quelle est ma FTP?'
 'What to import': 'What to import'
 "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": "Si coché, aucune règle suivante n'est traitée une fois que cette règle correspond. Décochez pour laisser les règles suivantes s'exécuter aussi. Elles peuvent écraser les modifications de cette règle."

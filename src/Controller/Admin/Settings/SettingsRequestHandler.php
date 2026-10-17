@@ -30,6 +30,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
+use function Symfony\Component\String\u;
+
 #[AsController]
 final readonly class SettingsRequestHandler
 {
@@ -88,7 +90,7 @@ final readonly class SettingsRequestHandler
         }
 
         return new HtmlResponse($this->twig->render(
-            sprintf('html/admin/page/settings/%s.html.twig', $settingsGroup->value),
+            sprintf('html/admin/page/settings/%s.html.twig', u($settingsGroup->value)->kebab()),
             [
                 'dispatchCommand' => UpdateSettings::getCommandName(),
                 'group' => $settingsGroup,

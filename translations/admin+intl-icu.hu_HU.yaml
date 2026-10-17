@@ -41,6 +41,7 @@ Activity: Tevékenység
 'Add service': 'Szerviz hozzáadása'
 'Add task': 'Feladat hozzáadása'
 'Add tile layer': 'Csempe-réteg hozzáadása'
+'Add weight': 'Add weight'
 'Add widget': 'Widget hozzáadása'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Adj hozzá {fit}, {tcx} vagy {gpx} fájlokat. Néhány percenként feldolgozásra kerülnek.'
 Admin: Admin
@@ -202,6 +203,7 @@ Heatmap: Hőtérkép
 'Hide photos for sport types': 'Fotók elrejtése sporttípusonként'
 'History of cycling FTP. Needed to calculate activity stress level.': 'A kerékpáros FTP előzményei. A tevékenység terhelési szintjének kiszámításához szükséges.'
 'History of running FTP. Needed to calculate activity stress level.': 'A futó FTP előzményei. A tevékenység terhelési szintjének kiszámításához szükséges.'
+'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.'
 'Hold ctrl (⌘ on Mac) to zoom the map with the scroll wheel': 'Tartsd lenyomva a Ctrl-t (⌘ Mac-en) a térkép nagyításához a görgővel'
 Hours: Óra
 'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'Milyen gyakran (percben, 1 és 60 között) kerülnek feldolgozásra a sorban álló webhook-események.'
@@ -535,6 +537,7 @@ Webhooks: Webhookok
 Wednesday: Szerda
 Weekday: 'Hét napja'
 Weekdays: 'Hét napjai'
+Weigh-ins: Weigh-ins
 'What is my FTP?': 'Mi az én FTP-m?'
 'What to import': 'What to import'
 "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": 'Ha be van jelölve, ennek a szabálynak az illeszkedése után nem kerül feldolgozásra több szabály. Szüntesd meg a jelölést, hogy a későbbi szabályok is fussanak. Ezek felülírhatják ennek a szabálynak a módosításait.'

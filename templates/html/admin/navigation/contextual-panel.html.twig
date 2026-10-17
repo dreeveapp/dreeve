@@ -78,6 +78,7 @@
     {% endif %}
     {% if isActiveNavItem({'/admin/settings': false}) %}
         {% set inGeneral = isActiveNavItem({'/admin/settings/general': false}) %}
+        {% set inAthleteWeight = isActiveNavItem({'/admin/settings/athleteWeight': false}) %}
         {% set inAppearance = isActiveNavItem({'/admin/settings/appearance': false}) %}
         {% set inMaps = isActiveNavItem({'/admin/settings/maps': false}) %}
         {% set inImport = isActiveNavItem({'/admin/settings/import': false}) %}
@@ -95,6 +96,11 @@
                 <li>
                     <a href="{{ relativeUrl(path('admin_settings', {'group': 'general'})) }}" {{ inGeneral ? 'aria-selected="true"' : '' }}>
                         {{ "General"|trans({}, 'admin') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'athleteWeight'})) }}" {{ inAthleteWeight ? 'aria-selected="true"' : '' }}>
+                        {{ "Weight history"|trans }}
                     </a>
                 </li>
                 <li>

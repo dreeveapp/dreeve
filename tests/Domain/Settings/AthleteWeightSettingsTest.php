@@ -33,9 +33,9 @@ class AthleteWeightSettingsTest extends TestCase
         );
     }
 
-    public function testTheWeightHistoryIsStoredInTheAthleteWeightGroup(): void
+    public function testTheWeightHistoryIsStoredInTheAthleteWeightGroupWithItsOwnSettingsPage(): void
     {
         $this->assertSame(SettingsGroup::ATHLETE_WEIGHT, SettingsName::WEIGHT_HISTORY->group());
-        $this->assertFalse(SettingsGroup::ATHLETE_WEIGHT->hasSettingsPage());
+        $this->assertTrue(SettingsGroup::ATHLETE_WEIGHT->hasSettingsPage());
     }
 }

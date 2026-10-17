@@ -40,6 +40,6 @@ enum SettingsGroup: string
 
     public function hasSettingsPage(): bool
     {
-        return !in_array($this, [self::ACTIVITY_EXCLUSIONS, self::ATHLETE_WEIGHT], true);
+        return self::ACTIVITY_EXCLUSIONS !== $this;
     }
 }

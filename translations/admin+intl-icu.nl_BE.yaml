@@ -41,6 +41,7 @@ Activity: Activiteit
 'Add service': 'Dienst toevoegen'
 'Add task': 'Taak toevoegen'
 'Add tile layer': 'Tegellaag toevoegen'
+'Add weight': 'Add weight'
 'Add widget': 'Widget toevoegen'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Voeg {fit}-, {tcx}- of {gpx}-bestanden toe. Ze worden om de paar minuten verwerkt.'
 Admin: Beheer
@@ -202,6 +203,7 @@ Heatmap: Heatmap
 'Hide photos for sport types': "Foto's verbergen voor sporttypes"
 'History of cycling FTP. Needed to calculate activity stress level.': 'Historiek van je FTP bij het fietsen. Nodig om het stressniveau van activiteiten te berekenen.'
 'History of running FTP. Needed to calculate activity stress level.': 'Historiek van je FTP bij het lopen. Nodig om het stressniveau van activiteiten te berekenen.'
+'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.'
 'Hold ctrl (⌘ on Mac) to zoom the map with the scroll wheel': 'Houd ctrl (⌘ op Mac) ingedrukt om met het scrollwiel in te zoomen op de kaart'
 Hours: Uren
 'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'Hoe vaak (in minuten, tussen 1 en 60) webhook-events in de wachtrij verwerkt worden.'
@@ -535,6 +537,7 @@ Webhooks: Webhooks
 Wednesday: Woensdag
 Weekday: Weekdag
 Weekdays: Weekdagen
+Weigh-ins: Weigh-ins
 'What is my FTP?': 'Wat is mijn FTP?'
 'What to import': 'What to import'
 "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": 'Indien aangevinkt, worden er geen verdere regels verwerkt zodra deze regel overeenkomt. Vink uit om latere regels ook te laten uitvoeren. Die kunnen de wijzigingen van deze regel overschrijven.'

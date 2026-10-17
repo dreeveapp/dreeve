@@ -41,6 +41,7 @@ Activity: Activity
 'Add service': 'Add service'
 'Add task': 'Add task'
 'Add tile layer': 'Add tile layer'
+'Add weight': 'Add weight'
 'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
 Admin: Admin
@@ -202,6 +203,7 @@ Heatmap: Heatmap
 'Hide photos for sport types': 'Hide photos for sport types'
 'History of cycling FTP. Needed to calculate activity stress level.': 'History of cycling FTP. Needed to calculate activity stress level.'
 'History of running FTP. Needed to calculate activity stress level.': 'History of running FTP. Needed to calculate activity stress level.'
+'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.'
 'Hold ctrl (⌘ on Mac) to zoom the map with the scroll wheel': 'Hold ctrl (⌘ on Mac) to zoom the map with the scroll wheel'
 Hours: Hours
 'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'How often (in minutes, between 1 and 60) queued webhook events are processed.'
@@ -535,6 +537,7 @@ Webhooks: Webhooks
 Wednesday: Wednesday
 Weekday: Weekday
 Weekdays: Weekdays
+Weigh-ins: Weigh-ins
 'What is my FTP?': 'What is my FTP?'
 'What to import': 'What to import'
 "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes."
