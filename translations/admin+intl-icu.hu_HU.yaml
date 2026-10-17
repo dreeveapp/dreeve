@@ -5,6 +5,7 @@ AI: AI
 AM/PM: AM/PM
 'API access': API-hozzáférés
 'API key': API-kulcs
+Access: Access
 Actions: Actions
 Active: Aktív
 'Activities scanned': 'Átvizsgált tevékenységek'
@@ -118,6 +119,7 @@ Configured: Beállítva
 Custom: Custom
 Daemon: Daemon
 'Dashboard layout': 'Dashboard elrendezés'
+'Date & time': 'Date & time'
 'Date range based': 'Dátumtartomány alapú'
 'Define what needs doing and how often.': 'Add meg, mit kell csinálni és milyen gyakran.'
 Delete: Törlés
@@ -214,6 +216,7 @@ Images: Képek
 Import: Importálás
 'Import Strava data': 'Strava-adatok importálása'
 'Import activities': 'Tevékenységek importálása'
+'Import behaviour': 'Import behaviour'
 'Import pending': 'Importálás függőben'
 'Import segment details': 'Szegmens-részletek importálása'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Importálja a szegmens-részleteket, hogy a szegmenstérképek megjeleníthetők legyenek. Ehhez szegmensenként egy extra Strava API-hívás szükséges, és jelentősen megnöveli az importálási időt.'
@@ -224,6 +227,7 @@ Import: Importálás
 'Include retired gear': 'Nyugdíjazott felszerelés belefoglalása'
 Info: Infó
 'Installed on': 'Installed on'
+Instance: Instance
 Integrations: Integrációk
 'Intro text': 'Bevezető szöveg'
 'Invalid CSRF token.': 'Érvénytelen CSRF-token.'
@@ -245,6 +249,7 @@ Longitude: Hosszúság
 'Maintenance tasks': 'Karbantartási feladatok'
 Male: Férfi
 Manage: Kezelés
+'Map style': 'Map style'
 Maps: Térképek
 'Mark as commute': 'Megjelölés ingázásként'
 'Mark as group activity': 'Megjelölés csoportos tevékenységként'
@@ -288,6 +293,7 @@ Monday: Hétfő
 'Not fitted': 'Not fitted'
 Notes: Notes
 'Notification services': 'Értesítési szolgáltatások'
+Notifications: Notifications
 'Notify when an import was successful': 'Értesítés sikeres importáláskor'
 'Number of activities to display': 'Megjelenítendő tevékenységek száma'
 'Number of challenges to display': 'Megjelenítendő kihívások száma'
@@ -368,6 +374,7 @@ Save: Mentés
 'Save settings': 'Beállítások mentése'
 Saved: Mentve
 Saving...: Mentés...
+'Scheduled actions': 'Scheduled actions'
 'Scheduled actions the daemon runs at regular intervals.': 'Ütemezett műveletek, amelyeket a daemon rendszeres időközönként futtat.'
 'Search by name, date or activity ID': 'Keresés név, dátum vagy tevékenység-azonosító alapján'
 Seconds: Másodperc
@@ -429,6 +436,7 @@ Source: Forrás
 'Stop processing further rules when this rule matches': 'A további szabályok feldolgozásának leállítása, ha ez a szabály illeszkedik'
 'Stops after match': 'Illeszkedés után leáll'
 'Stops here': 'Itt leáll'
+'Strava API': 'Strava API'
 'Strava API credentials.': 'Strava API hitelesítő adatok.'
 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': 'A Strava API-nak korlátai vannak, ezért maximáljuk az importálásonként feldolgozott új tevékenységek számát. A 250 biztonságos érték.'
 'Strava activity IDs to skip during import.': 'Importáláskor kihagyandó Strava tevékenység-azonosítók.'
@@ -511,6 +519,7 @@ Type: Típus
 URL: URL
 Unit: Mértékegység
 'Unit system': Mértékegységrendszer
+'Units & language': 'Units & language'
 'Unsupported file type': 'Nem támogatott fájltípus'
 Until: Until
 'Upload activity files': 'Tevékenységfájlok feltöltése'
@@ -529,6 +538,7 @@ Wednesday: Szerda
 Weekday: 'Hét napja'
 Weekdays: 'Hét napjai'
 'What is my FTP?': 'Mi az én FTP-m?'
+'What to import': 'What to import'
 "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": 'Ha be van jelölve, ennek a szabálynak az illeszkedése után nem kerül feldolgozásra több szabály. Szüntesd meg a jelölést, hogy a későbbi szabályok is fussanak. Ezek felülírhatják ennek a szabálynak a módosításait.'
 'When disabled, gear marked as retired is left out of the chart.': 'Ha ki van kapcsolva, a nyugdíjazottként megjelölt felszerelés kimarad a diagramból.'
 'When disabled, scrolling over a map zooms it instead of scrolling the page.': 'Ha ki van kapcsolva, a térkép feletti görgetés nagyítja azt, ahelyett hogy az oldalt görgetné.'
@@ -550,6 +560,7 @@ Zone: Zóna
 'Zoom level': 'Nagyítási szint'
 Zwift: Zwift
 'Zwift level': Zwift-szint
+'Zwift profile': 'Zwift profile'
 'Zwift racing score': 'Zwift versenypontszám'
 'active days': 'aktív napok'
 after: után

@@ -5,6 +5,7 @@ AI: AI
 AM/PM: AM/PM
 'API access': API-toegang
 'API key': API-sleutel
+Access: Access
 Actions: Acties
 Active: Actief
 'Activities scanned': 'Gescande activiteiten'
@@ -118,6 +119,7 @@ Configured: Geconfigureerd
 Custom: Custom
 Daemon: Daemon
 'Dashboard layout': Dashboardindeling
+'Date & time': 'Date & time'
 'Date range based': 'Op basis van datumbereik'
 'Define what needs doing and how often.': 'Bepaal wat er moet gebeuren en hoe vaak.'
 Delete: Verwijderen
@@ -214,6 +216,7 @@ Images: Afbeeldingen
 Import: Importeren
 'Import Strava data': 'Strava-gegevens importeren'
 'Import activities': 'Activiteiten importeren'
+'Import behaviour': 'Import behaviour'
 'Import pending': 'Import in behandeling'
 'Import segment details': 'Segmentdetails importeren'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Importeer segmentdetails zodat segmentkaarten getoond kunnen worden. Dit vraagt een extra Strava API-call per segment en verlengt de importtijd aanzienlijk.'
@@ -224,6 +227,7 @@ Import: Importeren
 'Include retired gear': 'Uitrusting buiten gebruik meenemen'
 Info: Info
 'Installed on': 'Installed on'
+Instance: Instance
 Integrations: Integraties
 'Intro text': Introtekst
 'Invalid CSRF token.': 'Ongeldig CSRF-token.'
@@ -245,6 +249,7 @@ Longitude: Lengtegraad
 'Maintenance tasks': Onderhoudstaken
 Male: Man
 Manage: Beheren
+'Map style': 'Map style'
 Maps: Kaarten
 'Mark as commute': 'Markeren als woon-werk'
 'Mark as group activity': 'Markeren als groepsactiviteit'
@@ -288,6 +293,7 @@ Monday: Maandag
 'Not fitted': 'Not fitted'
 Notes: Notes
 'Notification services': Meldingsdiensten
+Notifications: Notifications
 'Notify when an import was successful': 'Melden wanneer een import geslaagd is'
 'Number of activities to display': 'Aantal te tonen activiteiten'
 'Number of challenges to display': 'Aantal te tonen uitdagingen'
@@ -368,6 +374,7 @@ Save: Opslaan
 'Save settings': 'Instellingen opslaan'
 Saved: Opgeslagen
 Saving...: 'Aan het opslaan...'
+'Scheduled actions': 'Scheduled actions'
 'Scheduled actions the daemon runs at regular intervals.': 'Geplande acties die de daemon op regelmatige tijdstippen uitvoert.'
 'Search by name, date or activity ID': 'Zoeken op naam, datum of activiteits-ID'
 Seconds: Seconden
@@ -429,6 +436,7 @@ Source: Bron
 'Stop processing further rules when this rule matches': 'Stop met het verwerken van volgende regels wanneer deze regel overeenkomt'
 'Stops after match': 'Stopt na overeenkomst'
 'Stops here': 'Stopt hier'
+'Strava API': 'Strava API'
 'Strava API credentials.': 'Strava API-gegevens.'
 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': 'De Strava API heeft limieten, dus beperken we het aantal nieuwe activiteiten dat per import verwerkt wordt. 250 is een veilig aantal.'
 'Strava activity IDs to skip during import.': "Strava-activiteits-ID's die overgeslagen worden bij het importeren."
@@ -511,6 +519,7 @@ Type: Type
 URL: URL
 Unit: Eenheid
 'Unit system': Eenhedenstelsel
+'Units & language': 'Units & language'
 'Unsupported file type': 'Niet-ondersteund bestandstype'
 Until: Until
 'Upload activity files': 'Activiteitsbestanden uploaden'
@@ -529,6 +538,7 @@ Wednesday: Woensdag
 Weekday: Weekdag
 Weekdays: Weekdagen
 'What is my FTP?': 'Wat is mijn FTP?'
+'What to import': 'What to import'
 "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": 'Indien aangevinkt, worden er geen verdere regels verwerkt zodra deze regel overeenkomt. Vink uit om latere regels ook te laten uitvoeren. Die kunnen de wijzigingen van deze regel overschrijven.'
 'When disabled, gear marked as retired is left out of the chart.': 'Indien uitgeschakeld, wordt uitrusting die buiten gebruik is weggelaten uit de grafiek.'
 'When disabled, scrolling over a map zooms it instead of scrolling the page.': 'Indien uitgeschakeld, zoomt scrollen over een kaart in plaats van de pagina te scrollen.'
@@ -550,6 +560,7 @@ Zone: Zone
 'Zoom level': Zoomniveau
 Zwift: Zwift
 'Zwift level': Zwift-level
+'Zwift profile': 'Zwift profile'
 'Zwift racing score': 'Zwift Racing Score'
 'active days': 'actieve dagen'
 after: na

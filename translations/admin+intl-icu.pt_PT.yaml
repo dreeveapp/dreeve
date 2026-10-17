@@ -5,6 +5,7 @@ AI: AI
 AM/PM: AM/PM
 'API access': 'API access'
 'API key': 'API key'
+Access: Access
 Actions: Actions
 Active: Active
 'Activities scanned': 'Activities scanned'
@@ -118,6 +119,7 @@ Configured: Configured
 Custom: Custom
 Daemon: Daemon
 'Dashboard layout': 'Dashboard layout'
+'Date & time': 'Date & time'
 'Date range based': 'Date range based'
 'Define what needs doing and how often.': 'Define what needs doing and how often.'
 Delete: Delete
@@ -214,6 +216,7 @@ Images: Images
 Import: Import
 'Import Strava data': 'Import Strava data'
 'Import activities': 'Import activities'
+'Import behaviour': 'Import behaviour'
 'Import pending': 'Import pending'
 'Import segment details': 'Import segment details'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
@@ -224,6 +227,7 @@ Import: Import
 'Include retired gear': 'Include retired gear'
 Info: Info
 'Installed on': 'Installed on'
+Instance: Instance
 Integrations: Integrations
 'Intro text': 'Intro text'
 'Invalid CSRF token.': 'Invalid CSRF token.'
@@ -245,6 +249,7 @@ Longitude: Longitude
 'Maintenance tasks': 'Maintenance tasks'
 Male: Male
 Manage: Manage
+'Map style': 'Map style'
 Maps: Maps
 'Mark as commute': 'Mark as commute'
 'Mark as group activity': 'Mark as group activity'
@@ -288,6 +293,7 @@ Monday: Monday
 'Not fitted': 'Not fitted'
 Notes: Notes
 'Notification services': 'Notification services'
+Notifications: Notifications
 'Notify when an import was successful': 'Notify when an import was successful'
 'Number of activities to display': 'Number of activities to display'
 'Number of challenges to display': 'Number of challenges to display'
@@ -368,6 +374,7 @@ Save: Save
 'Save settings': 'Save settings'
 Saved: Saved
 Saving...: Saving...
+'Scheduled actions': 'Scheduled actions'
 'Scheduled actions the daemon runs at regular intervals.': 'Scheduled actions the daemon runs at regular intervals.'
 'Search by name, date or activity ID': 'Search by name, date or activity ID'
 Seconds: Seconds
@@ -429,6 +436,7 @@ Source: Source
 'Stop processing further rules when this rule matches': 'Stop processing further rules when this rule matches'
 'Stops after match': 'Stops after match'
 'Stops here': 'Stops here'
+'Strava API': 'Strava API'
 'Strava API credentials.': 'Strava API credentials.'
 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.'
 'Strava activity IDs to skip during import.': 'Strava activity IDs to skip during import.'
@@ -511,6 +519,7 @@ Type: Type
 URL: URL
 Unit: Unit
 'Unit system': 'Unit system'
+'Units & language': 'Units & language'
 'Unsupported file type': 'Unsupported file type'
 Until: Until
 'Upload activity files': 'Upload activity files'
@@ -529,6 +538,7 @@ Wednesday: Wednesday
 Weekday: Weekday
 Weekdays: Weekdays
 'What is my FTP?': 'What is my FTP?'
+'What to import': 'What to import'
 "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes."
 'When disabled, gear marked as retired is left out of the chart.': 'When disabled, gear marked as retired is left out of the chart.'
 'When disabled, scrolling over a map zooms it instead of scrolling the page.': 'When disabled, scrolling over a map zooms it instead of scrolling the page.'
@@ -550,6 +560,7 @@ Zone: Zone
 'Zoom level': 'Zoom level'
 Zwift: Zwift
 'Zwift level': 'Zwift level'
+'Zwift profile': 'Zwift profile'
 'Zwift racing score': 'Zwift racing score'
 'active days': 'active days'
 after: after

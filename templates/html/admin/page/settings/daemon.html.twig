@@ -1,18 +1,14 @@
-{% extends "html/admin/page/template.html.twig" %}
+{% extends "html/admin/page/settings/template.html.twig" %}
+{% set settingsTitle = "Daemon"|trans({}, 'admin') %}
 
-{% block main %}
+{% block sections %}
     {% set cron = settings.cron ?? {} %}
-    <div class="flex flex-col gap-4">
-        <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-            <input type="hidden" name="group" value="{{ group.value }}">
-            <div class="mb-5">
-                <h3 class="text-lg font-semibold">{{ "Daemon"|trans({}, 'admin') }}</h3>
-                <p class="description">
-                    {{ "Scheduled actions the daemon runs at regular intervals."|trans({}, 'admin') }}
-                </p>
-            </div>
-            <div data-form-error class="form-error hidden" role="alert"></div>
-            <div class="alert alert--info mb-4" role="alert">
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {
+        title: "Scheduled actions"|trans({}, 'admin'),
+        description: "Scheduled actions the daemon runs at regular intervals."|trans({}, 'admin'),
+    } %}
+        {% block body %}
+            <div class="alert alert--info" role="alert">
                 <span class="sr-only">{{ "Info"|trans({}, 'admin') }}</span>
                 <div>
                     {{ "Changes to these settings only take effect after you restart the daemon container."|trans({}, 'admin') }}
@@ -42,12 +38,6 @@
                     </div>
                 {% endfor %}
             </div>
-            <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
-                <button type="submit" data-has-loading-state class="group btn--primary">
-                    <span class="label">{{ "Save settings"|trans({}, 'admin') }}</span>
-                    <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
-                </button>
-            </div>
-        </form>
-    </div>
-{% endblock main %}
+        {% endblock %}
+    {% endembed %}
+{% endblock sections %}

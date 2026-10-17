@@ -5,6 +5,7 @@ AI: IA
 AM/PM: AM/PM
 'API access': 'accès API'
 'API key': 'clé API'
+Access: Access
 Actions: Actions
 Active: Actif
 'Activities scanned': 'Activités analysées'
@@ -118,6 +119,7 @@ Configured: Configuré
 Custom: Custom
 Daemon: Daemon
 'Dashboard layout': 'Disposition du tableau de bord'
+'Date & time': 'Date & time'
 'Date range based': 'Par plage de dates'
 'Define what needs doing and how often.': 'Définissez ce qui doit être fait et à quelle fréquence.'
 Delete: Supprimer
@@ -214,6 +216,7 @@ Images: Images
 Import: Import
 'Import Strava data': 'Importer les données Strava'
 'Import activities': 'Importer des activités'
+'Import behaviour': 'Import behaviour'
 'Import pending': 'Import en cours'
 'Import segment details': 'Importer les détails des segments'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': "Importe les détails des segments afin de pouvoir afficher leurs cartes. Cela nécessite un appel supplémentaire à l'API Strava par segment et augmente considérablement la durée de l'import."
@@ -224,6 +227,7 @@ Import: Import
 'Include retired gear': 'Inclure le matériel décommissionné'
 Info: Info
 'Installed on': 'Installed on'
+Instance: Instance
 Integrations: Intégrations
 'Intro text': "Texte d'introduction"
 'Invalid CSRF token.': 'Jeton CSRF invalide.'
@@ -245,6 +249,7 @@ Longitude: Longitude
 'Maintenance tasks': 'Tâches de maintenance'
 Male: Homme
 Manage: Gérer
+'Map style': 'Map style'
 Maps: Cartes
 'Mark as commute': 'Marquer comme trajet domicile-travail'
 'Mark as group activity': 'Marquer comme activité de groupe'
@@ -288,6 +293,7 @@ Monday: Lundi
 'Not fitted': 'Not fitted'
 Notes: Notes
 'Notification services': 'Services de notifications'
+Notifications: Notifications
 'Notify when an import was successful': "Notifier lorsqu'un import a réussi"
 'Number of activities to display': "Nombre d'activités à afficher"
 'Number of challenges to display': 'Nombre de défis à afficher'
@@ -368,6 +374,7 @@ Save: Enregistrer
 'Save settings': 'Enregistrer les paramètres'
 Saved: Enregistré
 Saving...: 'Enregistrement en cours'
+'Scheduled actions': 'Scheduled actions'
 'Scheduled actions the daemon runs at regular intervals.': 'Actions planifiées exécutées par le daemon à intervalles réguliers.'
 'Search by name, date or activity ID': "Rechercher par nom, date ou ID d'activité"
 Seconds: Secondes
@@ -429,6 +436,7 @@ Source: Source
 'Stop processing further rules when this rule matches': 'Arrêter le traitement des règles suivantes lorsque cette règle correspond'
 'Stops after match': "S'arrête après correspondance"
 'Stops here': "S'arrête ici"
+'Strava API': 'Strava API'
 'Strava API credentials.': "Identifiants de l'API Strava."
 'Strava API has rate limits, so we cap the number of new activities processed per import. 250 is a safe number.': "L'API Strava impose des limites de requêtes, nous limitons donc le nombre de nouvelles activités traitées par import. 250 est une valeur sûre."
 'Strava activity IDs to skip during import.': "ID des activités Strava à ignorer lors de l'import."
@@ -511,6 +519,7 @@ Type: Type
 URL: URL
 Unit: Unité
 'Unit system': "Système d'unité"
+'Units & language': 'Units & language'
 'Unsupported file type': 'Type de fichier non supporté'
 Until: Until
 'Upload activity files': "Téléverser des fichiers d'activité"
@@ -529,6 +538,7 @@ Wednesday: Mercredi
 Weekday: 'Jour de la semaine'
 Weekdays: 'Jours de la semaine'
 'What is my FTP?': 'Quelle est ma FTP?'
+'What to import': 'What to import'
 "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": "Si coché, aucune règle suivante n'est traitée une fois que cette règle correspond. Décochez pour laisser les règles suivantes s'exécuter aussi. Elles peuvent écraser les modifications de cette règle."
 'When disabled, gear marked as retired is left out of the chart.': 'Si désactivé, le matériel décommissionné est exclu du graphique.'
 'When disabled, scrolling over a map zooms it instead of scrolling the page.': 'Si désactivé, faire défiler sur une carte zoome dessus au lieu de faire défiler la page.'
@@ -550,6 +560,7 @@ Zone: Zone
 'Zoom level': 'Niveau de zoom'
 Zwift: Zwift
 'Zwift level': 'Niveau Zwift'
+'Zwift profile': 'Zwift profile'
 'Zwift racing score': 'Racing score Zwift'
 'active days': 'jours actifs'
 after: après
