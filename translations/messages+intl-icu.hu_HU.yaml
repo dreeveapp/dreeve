@@ -46,6 +46,7 @@ Badges: Kitűzők
 Badminton: Tollaslabda
 Bananas: Banán
 Basketball: Kosárlabda
+'Below zone 1': 'Below zone 1'
 Best: Legjobb
 'Best effort': 'Legjobb teljesítmény'
 'Best efforts': 'Legjobb teljesítmények'
@@ -621,11 +622,11 @@ Z3: Z3
 Z4: Z4
 'Z4-5 (High)': 'Z4-5 (Magas)'
 Z5: Z5
-'Zone 1 (recovery)': '1. zóna (regeneráció)'
-'Zone 2 (aerobic)': '2. zóna (aerob)'
-'Zone 3 (aerobic/anaerobic)': '3. zóna (aerob/anaerob)'
-'Zone 4 (anaerobic)': '4. zóna (anaerob)'
-'Zone 5 (maximal)': '5. zóna (maximális)'
+'Zone 1': 'Zone 1'
+'Zone 2': 'Zone 2'
+'Zone 3': 'Zone 3'
+'Zone 4': 'Zone 4'
+'Zone 5': 'Zone 5'
 'Zwift Statistics': 'Zwift statisztikák'
 'Zwift badge': 'Zwift kitűző'
 'Zwift stats': 'Zwift statisztikák'

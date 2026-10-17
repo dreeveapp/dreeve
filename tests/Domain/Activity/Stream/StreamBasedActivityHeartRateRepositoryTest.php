@@ -4,7 +4,6 @@ namespace App\Tests\Domain\Activity\Stream;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
-use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityHeartRateRepository;
@@ -124,44 +123,6 @@ class StreamBasedActivityHeartRateRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             $before,
             $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesForActivity($activityId),
-        );
-    }
-
-    public function testFindTotalTimeInSecondsInHeartRateZonesSeesEveryActivity(): void
-    {
-        $this->provideFullTestSet();
-
-        $before = $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZones();
-
-        $this->addActivityWithHeartRateDistribution(
-            activityId: ActivityId::fromUnprefixed('42'),
-            heartRateDistribution: [180 => 600],
-        );
-
-        $this->assertEquals(
-            $before->getTotalTimeInSeconds() + 600,
-            $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZones()->getTotalTimeInSeconds(),
-        );
-    }
-
-    public function testFindTotalTimeInSecondsInHeartRateZonesPerActivityType(): void
-    {
-        $this->provideFullTestSet();
-
-        $perActivityType = $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesPerActivityType();
-
-        $this->assertEqualsCanonicalizing(
-            array_map(fn (ActivityType $activityType): string => $activityType->value, ActivityType::cases()),
-            array_keys($perActivityType),
-        );
-        $this->assertContainsOnlyInstancesOf(TimeInHeartRateZones::class, $perActivityType);
-
-        $this->assertEquals(
-            $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZones()->getTotalTimeInSeconds(),
-            array_sum(array_map(
-                fn (TimeInHeartRateZones $timeInHeartRateZones): int => $timeInHeartRateZones->getTotalTimeInSeconds(),
-                $perActivityType
-            )),
         );
     }
 

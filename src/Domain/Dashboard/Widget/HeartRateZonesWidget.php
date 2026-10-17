@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget;
 
-use App\Domain\Activity\ActivityTypeRepository;
 use App\Domain\Activity\Stream\ActivityHeartRateRepository;
-use App\Domain\Athlete\HeartRateZone\TimeInHeartRateZoneChart;
+use App\Domain\Athlete\HeartRateZone\RelativeHeartRateDistributionChart;
 use App\Domain\Dashboard\DashboardWidgetId;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Serialization\Json;
@@ -18,7 +18,7 @@ final readonly class HeartRateZonesWidget implements Widget
 {
     public function __construct(
         private ActivityHeartRateRepository $activityHeartRateRepository,
-        private ActivityTypeRepository $activityTypeRepository,
+        private SettingsRepository $settingsRepository,
         private WidgetRenderer $widgetRenderer,
         private TranslatorInterface $translator,
     ) {
@@ -55,31 +55,18 @@ final readonly class HeartRateZonesWidget implements Widget
 
     public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
-        $chartsPerActivityType = [];
-        $importedActivityTypes = $this->activityTypeRepository->findAll();
-
-        /* @var \App\Domain\Activity\ActivityType $activityType */
-        if (count($importedActivityTypes) > 1) {
-            $timeInHeartRateZonesPerActivityType = $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZonesPerActivityType();
-            foreach ($importedActivityTypes as $activityType) {
-                $chartsPerActivityType[$activityType->value] = Json::encode(
-                    TimeInHeartRateZoneChart::create(
-                        timeInHeartRateZones: $timeInHeartRateZonesPerActivityType[$activityType->value],
-                        translator: $this->translator,
-                    )->build(),
-                );
-            }
-        }
+        $relativeHeartRateDistribution = $this->activityHeartRateRepository->findRelativeHeartRateDistribution();
+        $general = $this->settingsRepository->general();
 
         return $this->widgetRenderer->render($this, $configuration, [
-            'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
-            'timeInHeartRateZoneChart' => Json::encode(
-                TimeInHeartRateZoneChart::create(
-                    timeInHeartRateZones: $this->activityHeartRateRepository->findTotalTimeInSecondsInHeartRateZones(),
+            'relativeHeartRateDistributionChart' => 0 === $relativeHeartRateDistribution->getTotalTimeInSeconds() ? null : Json::encode(
+                RelativeHeartRateDistributionChart::create(
+                    relativeHeartRateDistribution: $relativeHeartRateDistribution,
+                    heartRateZones: $general->getHeartRateZoneConfiguration()->getDefaultHeartRateZones(null),
+                    athleteMaxHeartRate: $general->getAthlete()->getMaxHeartRate($now),
                     translator: $this->translator,
                 )->build(),
             ),
-            'chartsPerActivityType' => $chartsPerActivityType,
         ]);
     }
 }

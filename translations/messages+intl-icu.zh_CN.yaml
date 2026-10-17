@@ -46,6 +46,7 @@ Badges: Badges
 Badminton: 羽毛球
 Bananas: Bananas
 Basketball: Basketball
+'Below zone 1': 'Below zone 1'
 Best: 最佳
 'Best effort': 最佳努力
 'Best efforts': 最佳努力
@@ -621,11 +622,11 @@ Z3: Z3
 Z4: Z4
 'Z4-5 (High)': Z4-5（高）
 Z5: Z5
-'Zone 1 (recovery)': 区域1（恢复）
-'Zone 2 (aerobic)': 区域2（有氧）
-'Zone 3 (aerobic/anaerobic)': 区域3（有氧/无氧）
-'Zone 4 (anaerobic)': 区域4（无氧）
-'Zone 5 (maximal)': 区域5（最大）
+'Zone 1': 'Zone 1'
+'Zone 2': 'Zone 2'
+'Zone 3': 'Zone 3'
+'Zone 4': 'Zone 4'
+'Zone 5': 'Zone 5'
 'Zwift Statistics': Zwift统计
 'Zwift badge': Zwift徽章
 'Zwift stats': Zwift统计

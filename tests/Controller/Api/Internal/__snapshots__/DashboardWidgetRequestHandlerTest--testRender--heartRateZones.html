@@ -8,34 +8,5 @@
             <span class="sr-only">Enter fullscreen mode</span>
         </button>
     </div>
-            <div class="tabs tabs--default">
-            <ul id="hearRateZoneStatsActivityTypeTab--dashboardWidget-heartRateZones" data-tabs="#hearRateZoneStatsActivityTypeTabContent--dashboardWidget-heartRateZones" role="tablist">
-                <li role="presentation">
-                    <a href="#" data-tabs-target="#hearRateZoneStatsAll--dashboardWidget-heartRateZones" role="tab" aria-controls="all">
-                        All
-                    </a>
-                </li>
-                                    <li role="presentation">
-                        <a href="#" data-tabs-target="#hearRateZoneStatsRide--dashboardWidget-heartRateZones" role="tab" aria-controls="hearRateZoneStatsRide--dashboardWidget-heartRateZones">
-                            Cycling
-                        </a>
-                    </li>
-                                    <li role="presentation">
-                        <a href="#" data-tabs-target="#hearRateZoneStatsRun--dashboardWidget-heartRateZones" role="tab" aria-controls="hearRateZoneStatsRun--dashboardWidget-heartRateZones">
-                            Running
-                        </a>
-                    </li>
-                            </ul>
-        </div>
-        <div id="hearRateZoneStatsActivityTypeTabContent--dashboardWidget-heartRateZones" class="flex flex-col grow">
-        <div class="grow" id="hearRateZoneStatsAll--dashboardWidget-heartRateZones" role="tabpanel" aria-labelledby="hearRateZoneStatsAll--dashboardWidget-heartRateZones-tab">
-            <div class="h-full min-h-64" data-echarts-options='{"backgroundColor":null,"animation":true,"grid":{"left":"3%","right":"4%","bottom":"3%","containLabel":true},"tooltip":{"trigger":"item","formatter":"{d}%"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{zone|{b}}\n{sub|{d}%}","lineHeight":15,"rich":{"zone":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":0,"name":"Zone 1 (recovery)","itemStyle":{"color":"#DF584A"}},{"value":9,"name":"Zone 2 (aerobic)","itemStyle":{"color":"#D63522"}},{"value":36,"name":"Zone 3 (aerobic\/anaerobic)","itemStyle":{"color":"#BD2D22"}},{"value":1145,"name":"Zone 4 (anaerobic)","itemStyle":{"color":"#942319"}},{"value":4704,"name":"Zone 5 (maximal)","itemStyle":{"color":"#6A1009"}}]}]}'></div>
-        </div>
-                    <div class="grow" id="hearRateZoneStatsRide--dashboardWidget-heartRateZones" role="tabpanel" aria-labelledby="hearRateZoneStatsRide--dashboardWidget-heartRateZones-tab">
-                <div class="h-full min-h-64" data-echarts-options='{"backgroundColor":null,"animation":true,"grid":{"left":"3%","right":"4%","bottom":"3%","containLabel":true},"tooltip":{"trigger":"item","formatter":"{d}%"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{zone|{b}}\n{sub|{d}%}","lineHeight":15,"rich":{"zone":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":0,"name":"Zone 1 (recovery)","itemStyle":{"color":"#DF584A"}},{"value":0,"name":"Zone 2 (aerobic)","itemStyle":{"color":"#D63522"}},{"value":0,"name":"Zone 3 (aerobic\/anaerobic)","itemStyle":{"color":"#BD2D22"}},{"value":85,"name":"Zone 4 (anaerobic)","itemStyle":{"color":"#942319"}},{"value":4178,"name":"Zone 5 (maximal)","itemStyle":{"color":"#6A1009"}}]}]}'></div>
-            </div>
-                    <div class="grow" id="hearRateZoneStatsRun--dashboardWidget-heartRateZones" role="tabpanel" aria-labelledby="hearRateZoneStatsRun--dashboardWidget-heartRateZones-tab">
-                <div class="h-full min-h-64" data-echarts-options='{"backgroundColor":null,"animation":true,"grid":{"left":"3%","right":"4%","bottom":"3%","containLabel":true},"tooltip":{"trigger":"item","formatter":"{d}%"},"series":[{"type":"pie","itemStyle":{"borderColor":"#fff","borderWidth":2},"label":{"formatter":"{zone|{b}}\n{sub|{d}%}","lineHeight":15,"rich":{"zone":{"fontWeight":"bold"},"sub":{"fontSize":12}}},"data":[{"value":0,"name":"Zone 1 (recovery)","itemStyle":{"color":"#DF584A"}},{"value":9,"name":"Zone 2 (aerobic)","itemStyle":{"color":"#D63522"}},{"value":36,"name":"Zone 3 (aerobic\/anaerobic)","itemStyle":{"color":"#BD2D22"}},{"value":1060,"name":"Zone 4 (anaerobic)","itemStyle":{"color":"#942319"}},{"value":526,"name":"Zone 5 (maximal)","itemStyle":{"color":"#6A1009"}}]}]}'></div>
-            </div>
-            </div>
-</body></html>
+            <div class="grow min-h-72" data-echarts-options='{"backgroundColor":null,"animationDuration":300,"grid":{"left":52,"right":16,"top":40,"bottom":30},"legend":{"top":0,"left":0,"icon":"rect","itemWidth":10,"itemHeight":10,"data":["Zone 1","Zone 2","Zone 3","Zone 4","Zone 5"]},"tooltip":{"trigger":"item","formatter":"{a}: &lt;strong&gt;{c}%&lt;\/strong&gt;"},"xAxis":{"type":"category","data":["\u226470","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","\u2265105"],"axisTick":{"show":false},"axisLabel":{"interval":4,"fontFamily":"monospace","fontSize":11,"formatter":"{value}%"}},"yAxis":{"type":"value","axisLabel":{"fontFamily":"monospace","fontSize":11,"formatter":"{value}%"}},"series":[{"name":"Zone 1","type":"bar","stack":"heartRate","barCategoryGap":"18%","emphasis":{"focus":"none"},"itemStyle":{"color":"#DF584A","borderRadius":[2,2,0,0]},"data":["-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"]},{"name":"Zone 2","type":"bar","stack":"heartRate","barCategoryGap":"18%","emphasis":{"focus":"none"},"itemStyle":{"color":"#D63522","borderRadius":[2,2,0,0]},"data":[0.41,"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"]},{"name":"Zone 3","type":"bar","stack":"heartRate","barCategoryGap":"18%","emphasis":{"focus":"none"},"itemStyle":{"color":"#BD2D22","borderRadius":[2,2,0,0]},"data":["-",0.05,0.03,0.05,0.02,0.05,0.03,0.14,0.08,0.1,0.07,"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"]},{"name":"Zone 4","type":"bar","stack":"heartRate","barCategoryGap":"18%","emphasis":{"focus":"none"},"itemStyle":{"color":"#942319","borderRadius":[2,2,0,0]},"data":["-","-","-","-","-","-","-","-","-","-","-",0.2,0.22,0.44,0.91,1.17,0.56,2.25,3.23,4.79,4.67,"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"]},{"name":"Zone 5","type":"bar","stack":"heartRate","barCategoryGap":"18%","emphasis":{"focus":"none"},"itemStyle":{"color":"#6A1009","borderRadius":[2,2,0,0]},"data":["-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-",4.92,5.4,9.36,12.93,16.53,9.61,8.17,6.16,2.84,2.45,1.71,0.42,0,0,0]},{"name":"Below zone 1","type":"bar","stack":"heartRate","barCategoryGap":"18%","emphasis":{"focus":"none"},"itemStyle":{"color":"#7F7F7F","borderRadius":[2,2,0,0]},"data":["-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"]}]}'></div>
+    </body></html>

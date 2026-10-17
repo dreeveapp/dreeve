@@ -46,6 +46,7 @@ Badges: Badges
 Badminton: Badminton
 Bananas: Bananas
 Basketball: Basketball
+'Below zone 1': 'Below zone 1'
 Best: Bästa
 'Best effort': 'Bästa resultatet'
 'Best efforts': 'Bästa Insatser'
@@ -621,11 +622,11 @@ Z3: Z3
 Z4: Z4
 'Z4-5 (High)': 'Z4-5 (Hög)'
 Z5: Z5
-'Zone 1 (recovery)': 'Fas 1 (återhämtning)'
-'Zone 2 (aerobic)': 'Fas 2 (aerob)'
-'Zone 3 (aerobic/anaerobic)': 'Fas 3 (aerob/anaerob)'
-'Zone 4 (anaerobic)': 'Fas 4 (anaerob)'
-'Zone 5 (maximal)': 'Fas 5 (maximal)'
+'Zone 1': 'Zone 1'
+'Zone 2': 'Zone 2'
+'Zone 3': 'Zone 3'
+'Zone 4': 'Zone 4'
+'Zone 5': 'Zone 5'
 'Zwift Statistics': 'Sammanställning Zwift'
 'Zwift badge': 'Zwift märke'
 'Zwift stats': 'Sammanställning Zwift'

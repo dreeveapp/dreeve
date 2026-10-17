@@ -8,36 +8,9 @@
             <span class="sr-only">{{ "Enter fullscreen mode"|trans }}</span>
         </button>
     </div>
-    {% if chartsPerActivityType|length > 0 %}
-        <div class="tabs tabs--default">
-            <ul id="hearRateZoneStatsActivityTypeTab{{ uniqueId }}" data-tabs="#hearRateZoneStatsActivityTypeTabContent{{ uniqueId }}"
-                role="tablist">
-                <li role="presentation">
-                    <a href="#" data-tabs-target="#hearRateZoneStatsAll{{ uniqueId }}" role="tab" aria-controls="all">
-                        {{ "All"|trans }}
-                    </a>
-                </li>
-                {% for activityType,charts in chartsPerActivityType %}
-                    <li role="presentation">
-                        <a href="#" data-tabs-target="#hearRateZoneStats{{ activityType }}{{ uniqueId }}" role="tab"
-                           aria-controls="hearRateZoneStats{{ activityType }}{{ uniqueId }}">
-                            {{ activityTypeFrom(activityType)|trans }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+    {% if relativeHeartRateDistributionChart %}
+        <div class="grow min-h-72" data-echarts-options='{{ relativeHeartRateDistributionChart }}'></div>
+    {% else %}
+        <div class="grow flex items-center justify-center min-h-72 text-gray-500">{{ "No data available"|trans }}</div>
     {% endif %}
-    <div id="hearRateZoneStatsActivityTypeTabContent{{ uniqueId }}" class="flex flex-col grow">
-        <div class="grow" id="hearRateZoneStatsAll{{ uniqueId }}" role="tabpanel"
-             aria-labelledby="hearRateZoneStatsAll{{ uniqueId }}-tab">
-            <div class="h-full min-h-64" data-echarts-options='{{ timeInHeartRateZoneChart }}'></div>
-        </div>
-        {% for activityType,chart in chartsPerActivityType %}
-            <div class="grow" id="hearRateZoneStats{{ activityType }}{{ uniqueId }}" role="tabpanel"
-                 aria-labelledby="hearRateZoneStats{{ activityType }}{{ uniqueId }}-tab">
-                <div class="h-full min-h-64" data-echarts-options='{{ chart }}'></div>
-            </div>
-        {% endfor %}
-    </div>
 {% endautoescape %}

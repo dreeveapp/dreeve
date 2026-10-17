@@ -11,13 +11,6 @@ use App\Domain\Athlete\HeartRateZone\TimeInHeartRateZonesForRollingWindow;
 
 interface ActivityHeartRateRepository
 {
-    public function findTotalTimeInSecondsInHeartRateZones(): TimeInHeartRateZones;
-
-    /**
-     * @return array<string, TimeInHeartRateZones> keyed by ActivityType->value
-     */
-    public function findTotalTimeInSecondsInHeartRateZonesPerActivityType(): array;
-
     public function findTotalTimeInSecondsInHeartRateZonesForActivity(ActivityId $activityId): TimeInHeartRateZones;
 
     public function findTimeInHeartRateZonesForLast30Days(): TimeInHeartRateZonesForRollingWindow;

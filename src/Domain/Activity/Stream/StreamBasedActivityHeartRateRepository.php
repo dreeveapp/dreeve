@@ -6,7 +6,6 @@ namespace App\Domain\Activity\Stream;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivitySummaryRepository;
-use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
@@ -51,22 +50,6 @@ final readonly class StreamBasedActivityHeartRateRepository implements ActivityH
             on: $activitySummary->getStartDate(),
             heartRateDistribution: $heartRateDistribution,
         ));
-    }
-
-    public function findTotalTimeInSecondsInHeartRateZones(): TimeInHeartRateZones
-    {
-        return $this->toTimeInHeartRateZones($this->aggregate()->getTotal());
-    }
-
-    /**
-     * @return array<string, TimeInHeartRateZones>
-     */
-    public function findTotalTimeInSecondsInHeartRateZonesPerActivityType(): array
-    {
-        return array_map(
-            $this->toTimeInHeartRateZones(...),
-            $this->aggregate()->getPerActivityType()
-        );
     }
 
     public function findTimeInHeartRateZonesForLast30Days(): TimeInHeartRateZonesForRollingWindow
@@ -114,13 +97,8 @@ final readonly class StreamBasedActivityHeartRateRepository implements ActivityH
         $previousDayCutOffDate = $now->sub(\DateInterval::createFromDateString('1 day'));
         $previousDayWindowStart = $previousDayCutOffDate->sub($rollingWindow);
 
-        $total = $this->emptyZones();
         $inLastXDays = $this->emptyZones();
         $inLastXDaysAsOfPreviousDay = $this->emptyZones();
-        $perActivityType = array_combine(
-            array_map(fn (ActivityType $activityType): string => $activityType->value, ActivityType::cases()),
-            array_map(fn (ActivityType $activityType): array => $this->emptyZones(), ActivityType::cases()),
-        );
 
         foreach ($this->fetchHeartRateDistributions() as $result) {
             $heartRateDistribution = Json::uncompressAndDecode($result['data']);
@@ -136,15 +114,11 @@ final readonly class StreamBasedActivityHeartRateRepository implements ActivityH
                 heartRateDistribution: $heartRateDistribution,
             );
 
-            $activityType = $sportType->getActivityType();
             $isInCurrentWindow = $startDate->isAfterOrOn($cutOffDate);
             $isInPreviousDayWindow = $startDate->isAfterOrOn($previousDayWindowStart)
                 && $startDate->isBeforeOrOn($previousDayCutOffDate);
 
             foreach ($zoneSeconds as $zoneName => $secondsInZone) {
-                $total[$zoneName] += $secondsInZone;
-                $perActivityType[$activityType->value][$zoneName] += $secondsInZone;
-
                 if ($isInCurrentWindow) {
                     $inLastXDays[$zoneName] += $secondsInZone;
                 }
@@ -155,8 +129,6 @@ final readonly class StreamBasedActivityHeartRateRepository implements ActivityH
         }
 
         return HeartRateZoneTotals::fromState(
-            total: $total,
-            perActivityType: $perActivityType,
             inLastXDays: $inLastXDays,
             inLastXDaysAsOfPreviousDay: $inLastXDaysAsOfPreviousDay,
         );

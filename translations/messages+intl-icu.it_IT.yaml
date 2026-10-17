@@ -46,6 +46,7 @@ Badges: Badges
 Badminton: Badminton
 Bananas: Bananas
 Basketball: Basket
+'Below zone 1': 'Below zone 1'
 Best: Migliore
 'Best effort': 'Miglior sforzo'
 'Best efforts': 'Migliori Sforzi'
@@ -621,11 +622,11 @@ Z3: Z3
 Z4: Z4
 'Z4-5 (High)': 'Z4-5 (Alto)'
 Z5: Z5
-'Zone 1 (recovery)': 'Zona 1 (recupero)'
-'Zone 2 (aerobic)': 'Zona 2 (aerobica)'
-'Zone 3 (aerobic/anaerobic)': 'Zona 3 (aerobica/anaerobica)'
-'Zone 4 (anaerobic)': 'Zona 4 (anaerobica)'
-'Zone 5 (maximal)': 'Zona 5 (massimale)'
+'Zone 1': 'Zone 1'
+'Zone 2': 'Zone 2'
+'Zone 3': 'Zone 3'
+'Zone 4': 'Zone 4'
+'Zone 5': 'Zone 5'
 'Zwift Statistics': 'Statistiche Zwift'
 'Zwift badge': 'Badge Zwift'
 'Zwift stats': 'Statistiche Zwift'
