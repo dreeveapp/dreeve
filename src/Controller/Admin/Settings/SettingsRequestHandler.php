@@ -30,8 +30,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
-use function Symfony\Component\String\u;
-
 #[AsController]
 final readonly class SettingsRequestHandler
 {
@@ -78,7 +76,7 @@ final readonly class SettingsRequestHandler
     #[Route(path: '/admin/settings/{group}', name: 'admin_settings', methods: ['GET'], priority: 5)]
     public function handle(string $group, Request $request): HtmlResponse
     {
-        $settingsGroup = SettingsGroup::tryFrom((string) u($group)->camel())
+        $settingsGroup = SettingsGroup::fromSlug($group)
             ?? throw new NotFoundHttpException(sprintf('Unknown settings group "%s"', $group));
 
         if (!$settingsGroup->hasSettingsPage()) {
@@ -90,7 +88,7 @@ final readonly class SettingsRequestHandler
         }
 
         return new HtmlResponse($this->twig->render(
-            sprintf('html/admin/page/settings/%s.html.twig', u($settingsGroup->value)->kebab()),
+            sprintf('html/admin/page/settings/%s.html.twig', $settingsGroup->getSlug()),
             [
                 'dispatchCommand' => UpdateSettings::getCommandName(),
                 'group' => $settingsGroup,

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Settings;
 
+use function Symfony\Component\String\u;
+
 enum SettingsGroup: string
 {
     case GENERAL = 'general';
@@ -17,6 +19,16 @@ enum SettingsGroup: string
     case SECURITY = 'security';
     case ACTIVITY_EXCLUSIONS = 'activityExclusions';
     case ATHLETE_WEIGHT = 'athleteWeight';
+
+    public static function fromSlug(string $slug): ?self
+    {
+        return self::tryFrom((string) u($slug)->camel());
+    }
+
+    public function getSlug(): string
+    {
+        return (string) u($this->value)->kebab();
+    }
 
     /**
      * @param array<string, mixed> $data
