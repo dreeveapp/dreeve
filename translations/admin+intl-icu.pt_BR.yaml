@@ -20,7 +20,7 @@ Activity: Atividade
 'Add Eddington': 'Adicionar Eddington'
 'Add FTP': 'Adicionar FTP'
 'Add a component to start tracking maintenance.': 'Adicione um componente para começar a monitorar a manutenção.'
-'Add a row for every period the component was fitted. Leave the end date empty while it is still fitted.': 'Add a row for every period the component was fitted. Leave the end date empty while it is still fitted.'
+'Add a row for every period the component was fitted. Leave the end date empty while it is still fitted.': 'Adicione uma linha para cada período em que o componente esteve instalado. Deixe a data final vazia enquanto ele ainda estiver instalado.'
 'Add a rule to start automating your activity details.': 'Adicione uma regra para começar a automatizar os detalhes das suas atividades.'
 'Add a widget': 'Adicionar um widget'
 'Add action': 'Adicionar ação'
@@ -32,11 +32,11 @@ Activity: Atividade
 'Add condition': 'Adicionar condição'
 'Add gear': 'Adicionar equipamento'
 'Add goal': 'Adicionar meta'
-'Add installation': 'Add installation'
+'Add installation': 'Adicionar instalação'
 'Add max heart rate': 'Adicionar frequência cardíaca máxima'
 'Add resting heart rate': 'Adicionar frequência cardíaca de repouso'
 'Add rule': 'Adicionar regra'
-'Add segment': 'Add segment'
+'Add segment': 'Adicionar segmento'
 'Add service': 'Adicionar serviço'
 'Add task': 'Adicionar tarefa'
 'Add tile layer': 'Adicionar camada de mapa'
@@ -49,10 +49,10 @@ Admin: Admin
 'Advanced (per-date & per-sport-type overrides)': 'Avançado (substituições por data e por tipo de esporte)'
 'Age-based estimate': 'Estimativa baseada na idade'
 'All associated maintenance tasks and logs will be removed. This action cannot be undone.': 'Todas as tarefas de manutenção e registros associados serão removidos. Esta ação não pode ser desfeita.'
-'All efforts on this segment are deleted as well. This action cannot be undone.': 'All efforts on this segment are deleted as well. This action cannot be undone.'
+'All efforts on this segment are deleted as well. This action cannot be undone.': 'Todos os esforços neste segmento também serão excluídos. Esta ação não pode ser desfeita.'
 'All sport types': 'Todos os tipos de esporte'
 'All sport types must belong to the same activity type.': 'Todos os tipos de esporte devem pertencer ao mesmo tipo de atividade.'
-'Allow visitors to download original activity files': 'Allow visitors to download original activity files'
+'Allow visitors to download original activity files': 'Permitir que visitantes baixem os arquivos originais das atividades'
 'Allowed IP addresses for the admin panel': 'Endereços IP permitidos para o painel de administração'
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Também expõe o assistente de treino na interface web. Requer que a integração de IA acima esteja ativada. Tenha cuidado ao ativar isso se o seu aplicativo for acessível publicamente.'
 'Any IP address': 'Qualquer endereço IP'
@@ -84,7 +84,7 @@ Apply: Aplicar
 'Base URI': 'URI base'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Antes de poder usar o aplicativo, precisamos saber algumas coisas sobre você. Elas são usadas para calcular suas zonas de frequência cardíaca e carga de treinamento. Você pode ajustar todas as outras configurações mais tarde.'
 Birthday: 'Data de nascimento'
-'By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows.': 'By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows.'
+'By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows.': 'Por padrão, apenas você pode baixar o arquivo FIT, TCX ou GPX original de uma página de atividade. Os arquivos originais podem conter mais detalhes do que a página mostra.'
 'Calculate energy (kJ)': 'Calcular energia (kJ)'
 Cancel: Cancelar
 'Challenge name': 'Nome do desafio'
@@ -114,7 +114,7 @@ Configured: Configurado
 'Copy this API key': 'Copiar esta chave da API'
 'Cron expression': 'Expressão Cron'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Expressão Cron especificando quando a ação deve ser executada, ex. '0 14 * * *' executa todos os dias às 14:00. Consulte crontab.guru para obter ajuda."
-Custom: Custom
+Custom: Personalizado
 Daemon: Daemon
 'Dashboard layout': 'Layout do painel'
 'Date range based': 'Baseado em intervalo de datas'
@@ -126,7 +126,7 @@ Delete: Excluir
 'Delete file import': 'Excluir importação de arquivo'
 'Delete gear': 'Excluir equipamento'
 'Delete maintenance log': 'Excluir registro de manutenção'
-'Delete segment': 'Delete segment'
+'Delete segment': 'Excluir segmento'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Excluir uma regra não reverte as alterações já feitas nas atividades. Esta ação não pode ser desfeita.'
 Deleting...: Excluindo...
 Description: Descrição
@@ -136,7 +136,7 @@ Distance: Distância
 'Do not download activity photos': 'Não baixar fotos de atividades'
 Done: Concluído
 'Download original file': 'Baixar arquivo original'
-'Drag the start and end markers along the route to select the segment.': 'Drag the start and end markers along the route to select the segment.'
+'Drag the start and end markers along the route to select the segment.': 'Arraste os marcadores de início e fim ao longo da rota para selecionar o segmento.'
 'Drag to reorder': 'Arraste para reordenar'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Arraste para definir a ordem em que os tipos de esporte são exibidos em todo o aplicativo.'
 Duplicate: Duplicar
@@ -149,9 +149,9 @@ Edit: Editar
 'Edit gear': 'Editar equipamento'
 'Edit maintenance log': 'Editar registro de manutenção'
 'Edit recording device': 'Editar dispositivo de gravação'
-'Edit segment': 'Edit segment'
-Efforts: Efforts
-'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.': 'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.'
+'Edit segment': 'Editar segmento'
+Efforts: Esforços
+'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.': 'Os esforços não são calculados imediatamente. Suas atividades são pesquisadas para este segmento durante o próximo ciclo de importação, que é executado a cada 5 minutos.'
 Elevation: Elevação
 'Enable AI integration': 'Ativar integração de IA'
 'Enable Strava webhooks': 'Ativar webhooks do Strava'
@@ -164,14 +164,14 @@ Endpoint: Endpoint
 'Enter your password': 'Digite sua senha'
 'Enter your username': 'Digite seu nome de usuário'
 Every: 'A cada'
-'Exclude from': 'Exclude from'
-'Excluded activities are left out of these statistics, but still show up everywhere else.': 'Excluded activities are left out of these statistics, but still show up everywhere else.'
-'Excluded from': 'Excluded from'
+'Exclude from': 'Excluir de'
+'Excluded activities are left out of these statistics, but still show up everywhere else.': 'Atividades excluídas ficam de fora dessas estatísticas, mas ainda aparecem em todos os outros lugares.'
+'Excluded from': 'Excluído de'
 FTP: FTP
 'FTP history (cycling)': 'Histórico de FTP (ciclismo)'
 'FTP history (running)': 'Histórico de FTP (corrida)'
 Failed: Falhou
-Favourite: Favourite
+Favourite: Favorito
 Female: Feminino
 'File exceeds {max} MB': 'O arquivo excede {max} MB'
 'File imports': 'Importações de arquivo'
@@ -222,7 +222,7 @@ Import: Importar
 'Imports new Strava activities.': 'Importa novas atividades do Strava.'
 'Include retired gear': 'Incluir equipamento aposentado'
 Info: Informações
-'Installed on': 'Installed on'
+'Installed on': 'Instalado em'
 Integrations: Integrações
 'Intro text': 'Texto de introdução'
 'Invalid CSRF token.': 'Token CSRF inválido.'
@@ -234,7 +234,7 @@ Latitude: Latitude
 'Leave empty to include all sport types.': 'Deixe vazio para incluir todos os tipos de esporte.'
 'Leave empty to use the default title.': 'Deixe vazio para usar o título padrão.'
 'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Permite que um cliente externo envie arquivos de atividade via HTTP. A chave é a única proteção desse endpoint, portanto trate-a como uma senha.'
-'Loading the route...': 'Loading the route...'
+'Loading the route...': 'Carregando a rota...'
 Locale: Localidade
 Log: Registro
 'Log maintenance': 'Registrar manutenção'
@@ -263,8 +263,8 @@ Mode: Modo
 Model: Modelo
 Monday: Segunda-feira
 'More pages': 'Mais páginas'
-'Most recent activities (cards)': 'Most recent activities (cards)'
-'Most recent activities (list)': 'Most recent activities (list)'
+'Most recent activities (cards)': 'Atividades mais recentes (cartões)'
+'Most recent activities (list)': 'Atividades mais recentes (lista)'
 'Moving time': 'Tempo em movimento'
 'No activities imported yet.': 'Nenhuma atividade importada ainda.'
 'No activities match the current filters.': 'Nenhuma atividade corresponde aos filtros atuais.'
@@ -278,14 +278,14 @@ Monday: Segunda-feira
 'No recording devices yet.': 'Nenhum dispositivo de gravação ainda.'
 'No rule applies': 'Nenhuma regra se aplica'
 'No rules selected yet.': 'Nenhuma regra selecionada ainda.'
-'No segments added yet.': 'No segments added yet.'
-'No segments match the current filters.': 'No segments match the current filters.'
+'No segments added yet.': 'Nenhum segmento adicionado ainda.'
+'No segments match the current filters.': 'Nenhum segmento corresponde aos filtros atuais.'
 'No sport types selected': 'Nenhum tipo de esporte selecionado'
 'No unit': 'Sem unidade'
 'Normal date format': 'Formato de data normal'
 'Not configured, the API is closed': 'Não configurado, a API está fechada'
-'Not fitted': 'Not fitted'
-Notes: Notes
+'Not fitted': 'Não instalado'
+Notes: Anotações
 'Notification services': 'Serviços de notificação'
 'Notify when an import was successful': 'Notificar quando uma importação for bem-sucedida'
 'Number of activities to display': 'Número de atividades para exibir'
@@ -315,7 +315,7 @@ Password: Senha
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Fotos anexadas às suas atividades do Strava não serão baixadas nem armazenadas em disco. Fotos baixadas anteriormente serão mantidas.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos dos tipos de esporte selecionados são excluídas da galeria de fotos.'
 'Pick a device you already recorded with, or type a new name.': 'Escolha um dispositivo com o qual você já gravou ou digite um novo nome.'
-'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
+'Pick an activity to select the segment on its route.': 'Escolha uma atividade para selecionar o segmento na rota dela.'
 'Pick the rules you want to apply to see which activities would change.': 'Escolha as regras que você deseja aplicar para ver quais atividades mudariam.'
 'Polyline color': 'Cor da polilinha'
 'Preview selection': 'Pré-visualizar seleção'
@@ -338,7 +338,7 @@ Remove: Remover
 'Remove command': 'Remover comando'
 'Remove condition': 'Remover condição'
 'Remove goal': 'Remover meta'
-'Remove installation': 'Remove installation'
+'Remove installation': 'Remover instalação'
 'Remove task': 'Remover tarefa'
 'Remove tile layer': 'Remover camada de mapa'
 'Remove widget': 'Remover widget'
@@ -354,7 +354,7 @@ Resetting...: Restaurando...
 'Resting heart rate formula': 'Fórmula da frequência cardíaca de repouso'
 'Restrict to date range': 'Restringir a intervalo de datas'
 Retired: Aposentado
-'Retired components keep their history, but are hidden and no longer tracked.': 'Retired components keep their history, but are hidden and no longer tracked.'
+'Retired components keep their history, but are hidden and no longer tracked.': 'Componentes aposentados mantêm seu histórico, mas ficam ocultos e não são mais monitorados.'
 'Retry weather and reverse geocoding': 'Tentar novamente clima e geocodificação reversa'
 'Return to app': 'Retornar ao aplicativo'
 Ride: Pedal
@@ -370,8 +370,8 @@ Saving...: Salvando...
 'Search by name, date or activity ID': 'Buscar por nome, data ou ID da atividade'
 Seconds: Segundos
 Security: Segurança
-'Segment management': 'Segment management'
-'Segments will appear here once you create them from one of your activities.': 'Segments will appear here once you create them from one of your activities.'
+'Segment management': 'Gerenciamento de segmentos'
+'Segments will appear here once you create them from one of your activities.': 'Os segmentos aparecerão aqui assim que você criá-los a partir de uma de suas atividades.'
 'Select a component first...': 'Selecione um componente primeiro...'
 'Select a component…': 'Selecione um componente…'
 'Select all': 'Selecionar tudo'
@@ -380,7 +380,7 @@ Security: Segurança
 'Select at least one sensor.': 'Selecione pelo menos um sensor.'
 'Select at least one sport type.': 'Selecione pelo menos um tipo de esporte.'
 'Select at least one weekday.': 'Selecione pelo menos um dia da semana.'
-'Select gear or component': 'Select gear or component'
+'Select gear or component': 'Selecione o equipamento ou componente'
 'Select gear...': 'Selecionar equipamento...'
 'Select sensors': 'Selecionar sensores'
 'Select sport types': 'Selecionar tipos de esporte'
@@ -390,7 +390,7 @@ Security: Segurança
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Envia uma notificação quando a manutenção do equipamento está vencida. Requer um serviço de notificação configurado.'
 Sensors: Sensores
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Os sensores só são registrados para atividades importadas de arquivos FIT. Atividades do Strava, GPX ou TCX nunca correspondem a esta condição.'
-'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
+'Serial number, size, where you bought it, ...': 'Número de série, tamanho, onde você comprou, ...'
 'Set description': 'Definir descrição'
 'Set its status to Retired instead to hide it from your active gear.': 'Altere o status para Aposentado para ocultá-lo dos seus equipamentos ativos.'
 'Set name': 'Definir nome'
@@ -473,7 +473,7 @@ Tasks: Tarefas
 'The name of the gear assigned to the activity': 'O nome do equipamento atribuído à atividade'
 'The number of activities recorded with the gear': 'O número de atividades registradas com o equipamento'
 "The page you're looking for doesn't exist or may have been moved.": 'A página que você está procurando não existe ou pode ter sido movida.'
-'The segment has been created. Its efforts will show up after the next import run.': 'The segment has been created. Its efforts will show up after the next import run.'
+'The segment has been created. Its efforts will show up after the next import run.': 'O segmento foi criado. Seus esforços aparecerão após o próximo ciclo de importação.'
 'The sport type, e.g. "Walk" or "Trail Run"': 'O tipo de esporte, ex: "Caminhada" ou "Corrida em trilha"'
 'The start date, optionally with a custom PHP date format': 'A data de início, opcionalmente com um formato de data PHP personalizado'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'As URLs das camadas do mapa usadas para renderizar os mapas. Adicione mais de uma para empilhá-las, por exemplo, para sobrepor nomes de locais em uma camada de satélite.'
@@ -485,7 +485,7 @@ Tasks: Tarefas
 'Then do this': 'Então faça isso'
 'These rules will be applied to your existing activities on the next import cycle.': 'Estas regras serão aplicadas às suas atividades existentes no próximo ciclo de importação.'
 'This action cannot be undone.': 'Esta ação não pode ser desfeita.'
-'This activity has no GPS data.': 'This activity has no GPS data.'
+'This activity has no GPS data.': 'Esta atividade não tem dados de GPS.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Este componente está instalado em vários equipamentos, escolha aquele em que você fez a manutenção.'
 'This only removes the import record, the imported activity is kept.': 'Isso remove apenas o registro de importação; a atividade importada é mantida.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Esta página mostra uma chave diferente a cada vez que é aberta, e apenas aquela no seu arquivo de ambiente é aplicada.'
@@ -510,7 +510,7 @@ URL: URL
 Unit: Unidade
 'Unit system': 'Sistema de unidades'
 'Unsupported file type': 'Tipo de arquivo não suportado'
-Until: Until
+Until: Até
 'Upload activity files': 'Enviar arquivos de atividade'
 'Upload failed': 'O envio falhou'
 'Upload files': 'Enviar arquivos'
