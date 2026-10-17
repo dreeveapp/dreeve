@@ -165,6 +165,50 @@ class StreamBasedActivityHeartRateRepositoryTest extends ContainerTestCase
         );
     }
 
+    public function testFindRelativeHeartRateDistributionNormalisesByTheMaxHeartRateOnTheActivityDate(): void
+    {
+        $athlete = $this->getContainer()->get(SettingsRepository::class)->general()->getAthlete();
+        $longAgo = SerializableDateTime::fromString('2014-10-15 10:00:00');
+        $recently = SerializableDateTime::fromString('2023-10-15 10:00:00');
+        $this->assertNotEquals($athlete->getMaxHeartRate($longAgo), $athlete->getMaxHeartRate($recently));
+
+        $this->addActivityWithHeartRateDistribution(
+            activityId: ActivityId::fromUnprefixed('42'),
+            heartRateDistribution: [$athlete->getMaxHeartRate($longAgo) => 600],
+            startDate: $longAgo,
+        );
+        $this->addActivityWithHeartRateDistribution(
+            activityId: ActivityId::fromUnprefixed('43'),
+            heartRateDistribution: [$athlete->getMaxHeartRate($recently) => 300],
+            startDate: $recently,
+            sportType: SportType::RUN,
+        );
+
+        $relativeHeartRateDistribution = $this->activityHeartRateRepository->findRelativeHeartRateDistribution();
+
+        $this->assertEquals([100 => 900], $relativeHeartRateDistribution->getBins());
+        $this->assertEquals(900, $relativeHeartRateDistribution->getTotalTimeInSeconds());
+    }
+
+    public function testFindRelativeHeartRateDistributionSpreadsAHeartRateOverThePercentagesItCovers(): void
+    {
+        $athlete = $this->getContainer()->get(SettingsRepository::class)->general()->getAthlete();
+        $startDate = SerializableDateTime::fromString('2023-10-15 10:00:00');
+        $athleteMaxHeartRate = $athlete->getMaxHeartRate($startDate);
+
+        $this->addActivityWithHeartRateDistribution(
+            activityId: ActivityId::fromUnprefixed('42'),
+            heartRateDistribution: array_fill_keys(range($athleteMaxHeartRate - 40, $athleteMaxHeartRate), 60),
+            startDate: $startDate,
+        );
+
+        $bins = $this->activityHeartRateRepository->findRelativeHeartRateDistribution()->getBins();
+        $innerBins = array_slice(array_filter($bins), 1, -1);
+
+        $this->assertEqualsWithDelta(41 * 60, array_sum($bins), count($bins));
+        $this->assertLessThan(0.2 * max($innerBins), max($innerBins) - min($innerBins));
+    }
+
     public function testFindTimeInHeartRateZonesForLast30DaysIgnoresOlderActivities(): void
     {
         $this->provideFullTestSet();
@@ -243,11 +287,12 @@ class StreamBasedActivityHeartRateRepositoryTest extends ContainerTestCase
         ActivityId $activityId,
         array $heartRateDistribution,
         ?SerializableDateTime $startDate = null,
+        SportType $sportType = SportType::RIDE,
     ): void {
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId($activityId)
-                ->withSportType(SportType::RIDE)
+                ->withSportType($sportType)
                 ->withStartDateTime($startDate ?? SerializableDateTime::fromString('2023-10-15 10:00:00'))
                 ->build(),
             [],

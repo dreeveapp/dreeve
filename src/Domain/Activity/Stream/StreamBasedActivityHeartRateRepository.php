@@ -11,6 +11,7 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Athlete\HeartRateZone\HeartRateZone;
+use App\Domain\Athlete\HeartRateZone\RelativeHeartRateDistribution;
 use App\Domain\Athlete\HeartRateZone\TimeInHeartRateZones;
 use App\Domain\Athlete\HeartRateZone\TimeInHeartRateZonesForRollingWindow;
 use App\Domain\Settings\SettingsRepository;
@@ -78,6 +79,32 @@ final readonly class StreamBasedActivityHeartRateRepository implements ActivityH
         );
     }
 
+    public function findRelativeHeartRateDistribution(): RelativeHeartRateDistribution
+    {
+        $athlete = $this->settingsRepository->general()->getAthlete();
+
+        $secondsPerPercentage = [];
+        foreach ($this->fetchHeartRateDistributions() as $result) {
+            $heartRateDistribution = Json::uncompressAndDecode($result['data']);
+            $athleteMaxHeartRate = $athlete->getMaxHeartRate(SerializableDateTime::fromString($result['startDateTime']));
+
+            foreach ($heartRateDistribution as $heartRate => $numberOfSamples) {
+                $from = ($heartRate - 0.5) / $athleteMaxHeartRate * 100;
+                $to = ($heartRate + 0.5) / $athleteMaxHeartRate * 100;
+
+                for ($percentage = (int) round($from); $percentage <= (int) round($to); ++$percentage) {
+                    $overlap = min($to, $percentage + 0.5) - max($from, $percentage - 0.5);
+                    if ($overlap <= 0) {
+                        continue;
+                    }
+                    $secondsPerPercentage[$percentage] = ($secondsPerPercentage[$percentage] ?? 0) + $numberOfSamples * $overlap / ($to - $from);
+                }
+            }
+        }
+
+        return RelativeHeartRateDistribution::fromSecondsPerPercentage($secondsPerPercentage);
+    }
+
     private function aggregate(): HeartRateZoneTotals
     {
         $now = $this->clock->getCurrentDateTimeImmutable();
@@ -95,18 +122,7 @@ final readonly class StreamBasedActivityHeartRateRepository implements ActivityH
             array_map(fn (ActivityType $activityType): array => $this->emptyZones(), ActivityType::cases()),
         );
 
-        $results = $this->connection->executeQuery(
-            'SELECT a.startDateTime, a.sportType, m.data
-             FROM ActivityStreamMetric m
-             INNER JOIN Activity a ON a.activityId = m.activityId
-             WHERE m.streamType = :streamType AND m.metricType = :metricType',
-            [
-                'streamType' => StreamType::HEART_RATE->value,
-                'metricType' => ActivityStreamMetricType::VALUE_DISTRIBUTION->value,
-            ]
-        )->fetchAllAssociative();
-
-        foreach ($results as $result) {
+        foreach ($this->fetchHeartRateDistributions() as $result) {
             $heartRateDistribution = Json::uncompressAndDecode($result['data']);
             if ([] === $heartRateDistribution) {
                 continue;
@@ -144,6 +160,26 @@ final readonly class StreamBasedActivityHeartRateRepository implements ActivityH
             inLastXDays: $inLastXDays,
             inLastXDaysAsOfPreviousDay: $inLastXDaysAsOfPreviousDay,
         );
+    }
+
+    /**
+     * @return list<array{startDateTime: string, sportType: string, data: string}>
+     */
+    private function fetchHeartRateDistributions(): array
+    {
+        /** @var list<array{startDateTime: string, sportType: string, data: string}> $results */
+        $results = $this->connection->executeQuery(
+            'SELECT a.startDateTime, a.sportType, m.data
+             FROM ActivityStreamMetric m
+             INNER JOIN Activity a ON a.activityId = m.activityId
+             WHERE m.streamType = :streamType AND m.metricType = :metricType',
+            [
+                'streamType' => StreamType::HEART_RATE->value,
+                'metricType' => ActivityStreamMetricType::VALUE_DISTRIBUTION->value,
+            ]
+        )->fetchAllAssociative();
+
+        return $results;
     }
 
     /**
