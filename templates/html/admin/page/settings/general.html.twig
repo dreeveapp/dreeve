@@ -1,124 +1,138 @@
-{% extends "html/admin/page/template.html.twig" %}
-{% import 'html/admin/page/settings/macro/history-editor.html.twig' as editor %}
+{% extends "html/admin/page/settings/layout.html.twig" %}
+{% set settingsTitle = "General"|trans({}, 'admin') %}
 
-{% block main %}
-    <div class="flex flex-col gap-4">
-        <form data-dispatch-command="{{ dispatchCommand }}" class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-            <input type="hidden" name="group" value="{{ group.value }}">
-            <div class="mb-5">
-                <h3 class="text-lg font-semibold">{{ "General"|trans({}, 'admin') }}</h3>
-            </div>
-            <div data-form-error class="form-error hidden" role="alert"></div>
-            <div class="flex flex-col gap-4">
-                <div>
-                    <label for="appUrl">{{ "App URL"|trans({}, 'admin') }}</label>
-                    <input type="text" id="appUrl" value="{{ appUrl }}" disabled>
-                    <p class="description">
-                        {{ "The URL the app is hosted on."|trans({}, 'admin') }}
-                        {{ "Configured via an environment variable and cannot be changed here."|trans({}, 'admin') }}
-                    </p>
-                </div>
-                <div>
-                    <label for="appSubTitle">{{ "App subtitle"|trans({}, 'admin') }}</label>
-                    <input type="text" id="appSubTitle" name="data[appSubTitle]" value="{{ settings.appSubTitle ?? '' }}">
-                    <p class="description">
-                        {{ "Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable."|trans({}, 'admin') }}
-                    </p>
-                </div>
-                <div>
-                    <label for="profilePictureUrl">{{ "Profile picture URL"|trans({}, 'admin') }}</label>
-                    <input type="text" id="profilePictureUrl" name="data[profilePictureUrl]" value="{{ settings.profilePictureUrl ?? '' }}">
-                    <p class="description">
-                        {{ "Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable."|trans({}, 'admin') }}
-                    </p>
-                </div>
-                {% include 'html/admin/page/settings/athlete-fields.html.twig' with {
-                    fieldPrefix: 'data',
-                    athlete: settings,
-                } only %}
-            </div>
-            <div class="mt-6 flex flex-col gap-6 border-t border-gray-200 pt-6">
-                {{ editor.historyEditor(
-                    'data[weightHistory]',
-                    settings.weightHistory ?? [],
-                    "Weight history"|trans,
-                    "History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg."|trans({}, 'admin'),
-                    "Weight"|trans,
-                    "Add weight"|trans({}, 'admin'),
-                    'weight',
-                    'any'
-                ) }}
-                {{ editor.historyEditor(
-                    'data[ftpHistory][cycling]',
-                    settings.ftpHistory.cycling ?? [],
-                    "FTP history (cycling)"|trans({}, 'admin'),
-                    "History of cycling FTP. Needed to calculate activity stress level."|trans({}, 'admin'),
-                    "FTP"|trans({}, 'admin'),
-                    "Add FTP"|trans({}, 'admin'),
-                    'ftp',
-                    '1'
-                ) }}
-                {{ editor.historyEditor(
-                    'data[ftpHistory][running]',
-                    settings.ftpHistory.running ?? [],
-                    "FTP history (running)"|trans({}, 'admin'),
-                    "History of running FTP. Needed to calculate activity stress level."|trans({}, 'admin'),
-                    "FTP"|trans({}, 'admin'),
-                    "Add FTP"|trans({}, 'admin'),
-                    'ftp',
-                    '1'
-                ) }}
-            </div>
-            {% set heartRateZoneModeOptions = enum('App\\Domain\\Athlete\\HeartRateZone\\HeartRateZoneMode').cases() %}
-            {% set heartRateZones = settings.heartRateZones ?? {} %}
-            {% set heartRateZoneRows = (heartRateZones.zones is defined and heartRateZones.zones) ? heartRateZones.zones : defaultHeartRateZones %}
-            <div class="mt-6 border-t border-gray-200 pt-6">
-                <label class="mt-0!">{{ "Heart rate zones"|trans }}</label>
-                <p class="description mb-3">
-                    {{ "If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm."|trans({}, 'admin') }}
+{% block sections %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "Instance"|trans({}, 'admin')} %}
+        {% block body %}
+            <div>
+                <label for="appUrl">{{ "App URL"|trans({}, 'admin') }}</label>
+                <input type="text" id="appUrl" value="{{ appUrl }}" disabled>
+                <p class="description">
+                    {{ "The URL the app is hosted on."|trans({}, 'admin') }}
+                    {{ "Configured via an environment variable and cannot be changed here."|trans({}, 'admin') }}
                 </p>
-                <div class="max-w-md">
-                    <label for="heartRateZoneMode" class="mt-0! text-xs text-gray-500">{{ "Mode"|trans({}, 'admin') }}</label>
-                    <select id="heartRateZoneMode" name="data[heartRateZones][mode]">
-                        {% for mode in heartRateZoneModeOptions %}
-                            <option value="{{ mode.value }}" {{ (heartRateZones.mode ?? 'relative') == mode.value ? 'selected' : '' }}>{{ mode.value }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="mt-3 flex flex-col gap-2 max-w-md">
-                    {% for i in 0..4 %}
-                        {% set zone = heartRateZoneRows[i] ?? {} %}
-                        <div class="flex items-end gap-2">
-                            <span class="w-16 shrink-0 text-sm text-gray-600">{{ "Zone"|trans({}, 'admin') }} {{ i + 1 }}</span>
-                            <div class="flex-1">
-                                <label class="mt-0! text-xs text-gray-500">{{ "From"|trans({}, 'admin') }}</label>
-                                <input type="number" min="0" name="data[heartRateZones][zones][{{ i }}][from]" value="{{ zone.from ?? '' }}" required>
-                            </div>
-                            <div class="flex-1">
-                                <label class="mt-0! text-xs text-gray-500">{{ "To"|trans({}, 'admin') }}</label>
-                                {% if i == 4 %}
-                                    <input type="text" value="∞" title="{{ "The last zone has no upper bound."|trans({}, 'admin') }}" disabled>
-                                {% else %}
-                                    <input type="number" min="0" name="data[heartRateZones][zones][{{ i }}][to]" value="{{ zone.to ?? '' }}" required>
-                                {% endif %}
-                            </div>
-                        </div>
+            </div>
+            <div>
+                <label for="appSubTitle">{{ "App subtitle"|trans({}, 'admin') }}</label>
+                <input type="text" id="appSubTitle" name="data[appSubTitle]" value="{{ settings.appSubTitle ?? '' }}">
+                <p class="description">
+                    {{ "Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable."|trans({}, 'admin') }}
+                </p>
+            </div>
+            <div>
+                <label for="profilePictureUrl">{{ "Profile picture URL"|trans({}, 'admin') }}</label>
+                <input type="text" id="profilePictureUrl" name="data[profilePictureUrl]" value="{{ settings.profilePictureUrl ?? '' }}">
+                <p class="description">
+                    {{ "Optional link to your profile picture, shown in the nav bar. A square image is recommended. Leave empty to disable."|trans({}, 'admin') }}
+                </p>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "Athlete profile"|trans} %}
+        {% block body %}
+            {% include 'html/admin/page/settings/athlete-fields.html.twig' with {
+                fieldPrefix: 'data',
+                athlete: settings,
+            } only %}
+        {% endblock %}
+    {% endembed %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {
+        title: "Weight history"|trans,
+        description: "History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg."|trans({}, 'admin'),
+    } %}
+        {% block body %}
+            {% import 'html/admin/page/settings/macro/history-editor.html.twig' as editor %}
+            {{ editor.historyEditor(
+                'data[weightHistory]',
+                settings.weightHistory ?? [],
+                null,
+                null,
+                "Weight"|trans,
+                "Add weight"|trans({}, 'admin'),
+                'weight',
+                'any'
+            ) }}
+        {% endblock %}
+    {% endembed %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {
+        title: "FTP history (cycling)"|trans({}, 'admin'),
+        description: "History of cycling FTP. Needed to calculate activity stress level."|trans({}, 'admin'),
+    } %}
+        {% block body %}
+            {% import 'html/admin/page/settings/macro/history-editor.html.twig' as editor %}
+            {{ editor.historyEditor(
+                'data[ftpHistory][cycling]',
+                settings.ftpHistory.cycling ?? [],
+                null,
+                null,
+                "FTP"|trans({}, 'admin'),
+                "Add FTP"|trans({}, 'admin'),
+                'ftp',
+                '1'
+            ) }}
+        {% endblock %}
+    {% endembed %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {
+        title: "FTP history (running)"|trans({}, 'admin'),
+        description: "History of running FTP. Needed to calculate activity stress level."|trans({}, 'admin'),
+    } %}
+        {% block body %}
+            {% import 'html/admin/page/settings/macro/history-editor.html.twig' as editor %}
+            {{ editor.historyEditor(
+                'data[ftpHistory][running]',
+                settings.ftpHistory.running ?? [],
+                null,
+                null,
+                "FTP"|trans({}, 'admin'),
+                "Add FTP"|trans({}, 'admin'),
+                'ftp',
+                '1'
+            ) }}
+        {% endblock %}
+    {% endembed %}
+    {% set heartRateZoneModeOptions = enum('App\\Domain\\Athlete\\HeartRateZone\\HeartRateZoneMode').cases() %}
+    {% set heartRateZones = settings.heartRateZones ?? {} %}
+    {% set heartRateZoneRows = (heartRateZones.zones is defined and heartRateZones.zones) ? heartRateZones.zones : defaultHeartRateZones %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {
+        title: "Heart rate zones"|trans,
+        description: "If you're not sure about your zones, leave these unchanged, the defaults are sensible. In relative mode the numbers are percentages of your max heart rate; in absolute mode they are actual bpm."|trans({}, 'admin'),
+    } %}
+        {% block body %}
+            <div class="max-w-md">
+                <label for="heartRateZoneMode" class="mt-0! text-xs text-gray-500">{{ "Mode"|trans({}, 'admin') }}</label>
+                <select id="heartRateZoneMode" name="data[heartRateZones][mode]">
+                    {% for mode in heartRateZoneModeOptions %}
+                        <option value="{{ mode.value }}" {{ (heartRateZones.mode ?? 'relative') == mode.value ? 'selected' : '' }}>{{ mode.value }}</option>
                     {% endfor %}
-                </div>
-                <details class="mt-4">
-                    <summary class="cursor-pointer text-sm text-gray-600">{{ "Advanced (per-date & per-sport-type overrides)"|trans({}, 'admin') }}</summary>
-                    <p class="description mb-2">
-                        {{ "Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it."|trans({}, 'admin') }}
-                    </p>
-                    <textarea name="data[heartRateZones][advanced]" rows="8" class="font-mono text-xs" spellcheck="false">{{ heartRateZones.advanced ?? '' }}</textarea>
-                </details>
+                </select>
             </div>
-            <div class="flex justify-end gap-2 border-t border-gray-200 pt-4 mt-6">
-                <button type="submit" data-has-loading-state class="group btn--primary">
-                    <span class="label">{{ "Save settings"|trans({}, 'admin') }}</span>
-                    <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
-                </button>
+            <div class="flex flex-col gap-2 max-w-md">
+                {% for i in 0..4 %}
+                    {% set zone = heartRateZoneRows[i] ?? {} %}
+                    <div class="flex items-end gap-2">
+                        <span class="w-16 shrink-0 text-sm text-gray-600">{{ "Zone"|trans({}, 'admin') }} {{ i + 1 }}</span>
+                        <div class="flex-1">
+                            <label class="mt-0! text-xs text-gray-500">{{ "From"|trans({}, 'admin') }}</label>
+                            <input type="number" min="0" name="data[heartRateZones][zones][{{ i }}][from]" value="{{ zone.from ?? '' }}" required>
+                        </div>
+                        <div class="flex-1">
+                            <label class="mt-0! text-xs text-gray-500">{{ "To"|trans({}, 'admin') }}</label>
+                            {% if i == 4 %}
+                                <input type="text" value="∞" title="{{ "The last zone has no upper bound."|trans({}, 'admin') }}" disabled>
+                            {% else %}
+                                <input type="number" min="0" name="data[heartRateZones][zones][{{ i }}][to]" value="{{ zone.to ?? '' }}" required>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-        </form>
-    </div>
-{% endblock main %}
+            <details>
+                <summary class="cursor-pointer text-sm text-gray-600">{{ "Advanced (per-date & per-sport-type overrides)"|trans({}, 'admin') }}</summary>
+                <p class="description mb-2">
+                    {{ "Optional YAML for date-range and sport-type specific zones. Leave empty unless you know you need it."|trans({}, 'admin') }}
+                </p>
+                <textarea name="data[heartRateZones][advanced]" rows="8" class="font-mono text-xs" spellcheck="false">{{ heartRateZones.advanced ?? '' }}</textarea>
+            </details>
+        {% endblock %}
+    {% endembed %}
+{% endblock sections %}
