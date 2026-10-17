@@ -1,18 +1,7 @@
-import { marked } from 'marked';
-
 export default class ChatMessageRenderer {
     constructor(messageEl) {
         this.el = messageEl;
         this.buffer = '';
-
-        this.md = marked.setOptions({
-            gfm: true,
-            breaks: true,
-        });
-    }
-
-    setText(text) {
-        this.buffer = text;
     }
 
     append(chunk) {
@@ -37,8 +26,8 @@ export default class ChatMessageRenderer {
         this.el.innerHTML = text.replace(/\n/g, '<br>');
     }
 
-    renderFinal() {
+    renderFinal(sanitizedHtml) {
         this.el.dataset.markdownParsed = 'true';
-        this.el.innerHTML = this.md.parse(this.buffer.trim());
+        this.el.innerHTML = sanitizedHtml;
     }
 }

@@ -96,9 +96,9 @@ export default class Chat {
             renderer.append(event.data.replace(/\\n/g, '\n'));
         });
 
-        source.addEventListener('done', () => {
+        source.addEventListener('done', event => {
             source.close();
-            renderer?.renderFinal();
+            renderer?.renderFinal(event.data.replace(/\\n/g, '\n'));
             this.toggleElements(false);
             this.textInput.focus();
         });
@@ -137,22 +137,7 @@ export default class Chat {
         }
     }
 
-    parseExistingMessages() {
-        const messages = this.chatWrapper.querySelectorAll('div.message');
-        messages.forEach(messageEl => {
-            if (messageEl.dataset.markdownParsed === 'true') return;
-
-            const rawText = messageEl.textContent;
-            if (!rawText) return;
-
-            const renderer = new ChatMessageRenderer(messageEl);
-            renderer.setText(rawText);
-            renderer.renderFinal();
-        });
-    }
-
     render() {
-        this.parseExistingMessages();
         this.initAutoComplete();
         this.bindEvents();
     }

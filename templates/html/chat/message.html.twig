@@ -24,7 +24,7 @@
                 </div>
             </div>
         {% else %}
-            {{ chatMessage.getMessage()|raw }}
+            {{ chatMessage.getMessage()|chat_markdown }}
         {% endif %}
     </div>
 </div>
