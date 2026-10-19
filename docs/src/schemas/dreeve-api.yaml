@@ -832,6 +832,61 @@ paths:
                     message: '"filters[sportType]" contains an unknown sport type.'
         '401':
           $ref: '#/components/responses/Unauthorized'
+  /api/v1/metrics/streaks:
+    get:
+      operationId: getStreaks
+      tags: [Metrics]
+      summary: Get the activity streaks
+      description: |
+        Returns the current and longest streak of consecutive days, weeks (Monday to Sunday) and
+        months with at least one activity, calculated the same way as the streaks on the
+        dashboard.
+
+        ```
+        GET /api/v1/metrics/streaks?filters[sportType]=Run,TrailRun
+        ```
+      parameters:
+        - name: filters
+          in: query
+          required: false
+          style: deepObject
+          explode: true
+          schema:
+            type: object
+            properties:
+              sportType:
+                type: string
+                description: >-
+                  One sport type, or several separated by commas. Every sport type counts when
+                  left out.
+                examples: ['Ride', 'Run,TrailRun,Hike']
+      responses:
+        '200':
+          description: The day, week and month streaks.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [streaks]
+                properties:
+                  streaks:
+                    type: object
+                    required: [day, week, month]
+                    properties:
+                      day: { $ref: '#/components/schemas/Streak' }
+                      week: { $ref: '#/components/schemas/Streak' }
+                      month: { $ref: '#/components/schemas/Streak' }
+        '400':
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+              examples:
+                unknownSportType:
+                  value:
+                    error: bad_request
+                    message: '"filters[sportType]" contains an unknown sport type.'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
 components:
   securitySchemes:
     apiKey:
@@ -1232,6 +1287,26 @@ components:
         calories:
           type: integer
           examples: [2350]
+    Streak:
+      type: object
+      required: [current, currentStartDate, longest]
+      properties:
+        current:
+          type: integer
+          description: >-
+            The length of the streak that is still running. It is 0 when the streak was broken.
+          examples: [3]
+        currentStartDate:
+          type: [string, 'null']
+          format: date
+          description: >-
+            The day of the first activity in the current streak, or null when there is no
+            current streak.
+          examples: ['2023-07-31']
+        longest:
+          type: integer
+          description: The length of the longest streak ever.
+          examples: [12]
     Error:
       type: object
       required: [error, message]
