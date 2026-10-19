@@ -36,6 +36,7 @@ tags:
   - name: File imports
   - name: Gear
   - name: Weight
+  - name: Metrics
 paths:
   /api/v1/status:
     get:
@@ -743,6 +744,26 @@ paths:
               schema: { $ref: '#/components/schemas/Error' }
         '401':
           $ref: '#/components/responses/Unauthorized'
+  /api/v1/metrics/training-load:
+    get:
+      operationId: getTrainingLoad
+      tags: [Metrics]
+      summary: Get the current training load
+      description: >-
+        Returns today's training load metrics, calculated the same way as the training load
+        page on the dashboard.
+      responses:
+        '200':
+          description: The current training load.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [trainingLoad]
+                properties:
+                  trainingLoad: { $ref: '#/components/schemas/TrainingLoad' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
 components:
   securitySchemes:
     apiKey:
@@ -1060,6 +1081,62 @@ components:
           description: >-
             The measurement in the configured Appearance unit system: kilograms for Metric and
             pounds for Imperial.
+    TrainingLoad:
+      type: object
+      required: [ctl, atl, tsb, acRatio, weeklyTrimp, monotony, strain, restDaysLast7Days]
+      properties:
+        ctl:
+          type: number
+          description: Chronic Training Load (fitness), the 42-day weighted average of the daily load.
+          examples: [54.2]
+        atl:
+          type: number
+          description: Acute Training Load (fatigue), the 7-day weighted average of the daily load.
+          examples: [61.0]
+        tsb:
+          type: object
+          description: Training Stress Balance (form), CTL minus ATL.
+          required: [value, status]
+          properties:
+            value:
+              type: number
+              examples: [-6.8]
+            status:
+              type: string
+              description: >-
+                `POSSIBLE_DETRAINING` above 25, `PEAK_FRESH` from 10 to 25, `SLIGHTLY_FRESH` from 0
+                to 10, `NEUTRAL` from -10 to 0, `ACCUMULATED_FATIGUE` from -30 to -10 and
+                `OVER_FATIGUED` below -30.
+              enum: [POSSIBLE_DETRAINING, PEAK_FRESH, SLIGHTLY_FRESH, NEUTRAL, ACCUMULATED_FATIGUE, OVER_FATIGUED]
+        acRatio:
+          type: object
+          description: Acute:Chronic Workload Ratio, ATL divided by CTL.
+          required: [value, status]
+          properties:
+            value:
+              type: number
+              examples: [1.12]
+            status:
+              type: string
+              description: >-
+                `HIGH_RISK` above 1.3, `LOW_RISK` from 0.8 to 1.3 and `LOW_TRAINING_LOAD` below 0.8.
+              enum: [HIGH_RISK, LOW_RISK, LOW_TRAINING_LOAD]
+        weeklyTrimp:
+          type: integer
+          description: The total training load (TRIMP) of the last 7 days.
+          examples: [420]
+        monotony:
+          type: number
+          description: How evenly the load of the last 7 days was spread; higher means less variation.
+          examples: [1.4]
+        strain:
+          type: integer
+          description: The weekly load multiplied by its monotony.
+          examples: [590]
+        restDaysLast7Days:
+          type: integer
+          description: The number of days without an activity in the last 7 days, today included.
+          examples: [2]
     Error:
       type: object
       required: [error, message]
