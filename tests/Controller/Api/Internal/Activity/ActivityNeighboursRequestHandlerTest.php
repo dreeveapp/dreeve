@@ -50,7 +50,9 @@ class ActivityNeighboursRequestHandlerTest extends ControllerWebTestCase
         $this->client->request('GET', '/api/internal/activities/activity-903645/neighbours');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSame('', trim((string) $this->client->getResponse()->getContent()));
+        $content = (string) $this->client->getResponse()->getContent();
+        $this->assertStringNotContainsString('<a ', $content);
+        $this->assertSame(2, substr_count($content, 'aria-hidden="true"'));
     }
 
     public function testItDoesNotResolveAnActivityThatDoesNotExist(): void

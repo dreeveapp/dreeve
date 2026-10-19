@@ -14,7 +14,9 @@
             redirectTo: 'activities/' ~ activity.getId(),
             title: "Edit this activity"|trans
         } %}
-        <span class="inline-flex w-15 h-7" data-async-content-url="{{ relativeUrl(path('activity_neighbours', {'activityId': activity.getId()})) }}"></span>
+        <span class="inline-flex" data-async-content-url="{{ relativeUrl(path('activity_neighbours', {'activityId': activity.getId()})) }}">
+            {% include 'html/activity/_neighbours.html.twig' %}
+        </span>
     </div>
 </div>
 {% autoescape false %}
