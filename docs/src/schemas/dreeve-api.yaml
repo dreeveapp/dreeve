@@ -839,8 +839,7 @@ paths:
       summary: Get the activity streaks
       description: |
         Returns the current and longest streak of consecutive days, weeks (Monday to Sunday) and
-        months with at least one activity, calculated the same way as the streaks on the
-        dashboard.
+        months.
 
         ```
         GET /api/v1/metrics/streaks?filters[sportType]=Run,TrailRun
