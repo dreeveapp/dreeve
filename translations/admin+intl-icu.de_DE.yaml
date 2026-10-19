@@ -5,7 +5,7 @@ AI: KI
 AM/PM: morgens/abends
 'API access': API-Zugriff
 'API key': API-Schlüssel
-Access: Access
+Access: Zugriff
 Actions: Aktionen
 Active: Aktiv
 'Activities scanned': 'untersuchte Aktivitäten'
@@ -41,7 +41,7 @@ Activity: Aktivität
 'Add service': 'Service hinzufügen'
 'Add task': 'Aufgabe hinzufügen'
 'Add tile layer': 'Kachelebene hinzufügen'
-'Add weight': 'Add weight'
+'Add weight': 'Gewicht hinzufügen'
 'Add widget': 'Widget hinzufügen'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Füge {fit}, {tcx} oder {gpx} Dateien hinzu. Sie werden alle paar Minuten verarbeitet'
 Admin: Admin
@@ -57,7 +57,7 @@ Admin: Admin
 'Allowed IP addresses for the admin panel': 'Zulässige IP-Adressen für den Adminbereich'
 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Stellt außerdem den Trainingsassistenten in der Weboberfläche zur Verfügung. Erfordert die Aktivierung der oben genannten KI-Integration. Seien Sie vorsichtig, wenn Sie diese Option aktivieren, falls Ihre App öffentlich zugänglich ist.'
 'Any IP address': 'Beliebige IP-Addresse'
-'Any gear assigned to the activity will be removed.': 'Any gear assigned to the activity will be removed.'
+'Any gear assigned to the activity will be removed.': 'Der Aktivität zugeordnete Ausrüstung wird entfernt.'
 'App URL': App-URL
 'App subtitle': 'App Untertitel'
 'App update available notification': 'Benachrichtigung über App-Update'
@@ -119,7 +119,7 @@ Configured: Konfiguriert
 Custom: Custom
 Daemon: Daemon
 'Dashboard layout': Dashboard-Layout
-'Date & time': 'Date & time'
+'Date & time': 'Datum & Zeit'
 'Date range based': 'Nach Datumsbereich'
 'Define what needs doing and how often.': 'Lege fest, was wie oft erledigt werden muss.'
 Delete: Löschen
@@ -203,7 +203,7 @@ Heatmap: Heatmap
 'Hide photos for sport types': 'Fotos für Sportarten ausblenden'
 'History of cycling FTP. Needed to calculate activity stress level.': 'Verlauf der Radfahr-FTP. Wird benötigt, um das Belastungsniveau der Aktivität zu berechnen.'
 'History of running FTP. Needed to calculate activity stress level.': 'Verlauf der Lauf-FTP. Wird benötigt, um das Belastungsniveau der Aktivität zu berechnen.'
-'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.'
+'History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg.': 'Gewichtsverlauf (kg oder Pfund, je nach Einheitensystem). Erforderlich zur Berechnung der relativen Leistung in W/kg.'
 'Hold ctrl (⌘ on Mac) to zoom the map with the scroll wheel': 'Halte Strg (⌘ auf dem Mac) gedrückt, um die Karte mit dem Mausrad zu zoomen.'
 Hours: Stunden
 'How often (in minutes, between 1 and 60) queued webhook events are processed.': 'Wie oft (in Minuten, zwischen 1 und 60) in der Warteschlange stehende Webhook-Ereignisse verarbeitet werden.'
@@ -216,7 +216,7 @@ Images: Bilder
 Import: Import
 'Import Strava data': 'Strava-Daten importieren'
 'Import activities': 'Aktivitäten importieren'
-'Import behaviour': 'Import behaviour'
+'Import behaviour': 'Importverhalten'
 'Import pending': 'Import ausstehend'
 'Import segment details': 'Segmentdetails importieren'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Segmentdetails importieren, damit Segmentkarten angezeigt werden können. Dies erfordert einen zusätzlichen Strava-API-Aufruf pro Segment und erhöht die Importzeit erheblich.'
@@ -227,7 +227,7 @@ Import: Import
 'Include retired gear': 'Ausgemusterte Ausrüstung einbeziehen'
 Info: Info
 'Installed on': 'Hinzugefügt am'
-Instance: Instance
+Instance: Instanz
 Integrations: Integrationen
 'Intro text': Einleitungstext
 'Invalid CSRF token.': 'Ungültiger CSRF token.'
@@ -249,7 +249,7 @@ Longitude: Längengrad
 'Maintenance tasks': Wartungsaufgaben
 Male: Männlich
 Manage: Verwalten
-'Map style': 'Map style'
+'Map style': 'Kartenstil'
 Maps: Karte
 'Mark as commute': 'Als Pendelfahrt markieren'
 'Mark as group activity': 'Als Gruppenaktivität markieren'
@@ -293,7 +293,7 @@ Monday: Montag
 'Not fitted': 'nicht angebaut'
 Notes: Notizen
 'Notification services': Benachrichtungsdienste
-Notifications: Notifications
+Notifications: Benachrichtigungen
 'Notify when an import was successful': 'Benachrichtigung bei erfolgreichem Import'
 'Number of activities to display': 'Anzahl der anzuzeigenden Aktivitäten'
 'Number of challenges to display': 'Anzahl der anzuzeigenden Herausforderungen'
@@ -344,7 +344,7 @@ Remove: Entfernen
 'Remove challenge': 'Herausforderung entfernen'
 'Remove command': 'Befehl entfernen'
 'Remove condition': 'Bedingung entfernen'
-'Remove gear': 'Remove gear'
+'Remove gear': 'Ausrüstung entfernen'
 'Remove goal': 'Ziel entfernen'
 'Remove installation': 'Montage entfernen'
 'Remove task': 'Aufgabe entfernen'
@@ -374,7 +374,7 @@ Save: Speichern
 'Save settings': 'Einstellungen speichern'
 Saved: gespeichert
 Saving...: 'Wird gespeichert...'
-'Scheduled actions': 'Scheduled actions'
+'Scheduled actions': 'geplante Aktionen'
 'Scheduled actions the daemon runs at regular intervals.': 'Geplante Aktionen, die der Daemon in regelmäßigen Abständen ausführt.'
 'Search by name, date or activity ID': 'Nach Name, Datum oder Aktivitäts-ID suchen'
 Seconds: Sekunden
@@ -519,7 +519,7 @@ Type: Typ
 URL: URL
 Unit: Einheit
 'Unit system': Einheitensystem
-'Units & language': 'Units & language'
+'Units & language': 'Einheiten & Sprache'
 'Unsupported file type': 'Nicht unterstützter Dateityp'
 Until: Bis
 'Upload activity files': 'Aktivitätsdateien hochladen'
@@ -537,9 +537,9 @@ Webhooks: Webhooks
 Wednesday: Mittwoch
 Weekday: Wochentag
 Weekdays: Wochentage
-Weigh-ins: Weigh-ins
+Weigh-ins: Gewichtseinträge
 'What is my FTP?': 'Was ist meine FTP?'
-'What to import': 'What to import'
+'What to import': 'Was soll importiert werden'
 "When checked, no further rules are processed once this rule matches. Uncheck to let later rules run as well. They may overwrite this rule's changes.": 'Wenn diese Option aktiviert ist, werden keine weiteren Regeln verarbeitet, sobald diese Regel zutrifft. Deaktiviere die Option, damit auch spätere Regeln ausgeführt werden. Diese können die Änderungen dieser Regel überschreiben.'
 'When disabled, gear marked as retired is left out of the chart.': 'Wenn deaktiviert, wird als ausgemustert markierte Ausrüstung nicht im Diagramm angezeigt.'
 'When disabled, scrolling over a map zooms it instead of scrolling the page.': 'Wenn diese Option deaktiviert ist, wird beim Überfahren einer Karte mit der Maus die Karte gezoomt, anstatt die Seite zu scrollen.'
@@ -561,7 +561,7 @@ Zone: Zone
 'Zoom level': Zoomstufe
 Zwift: Zwift
 'Zwift level': Zwift-Level
-'Zwift profile': 'Zwift profile'
+'Zwift profile': 'Zwift Profil'
 'Zwift racing score': 'Zwift Rennwert'
 'active days': 'aktive Tage'
 after: nach
