@@ -1,0 +1,81 @@
+schemas:
+  PaginationMeta:
+    type: object
+    required: [page, size, total, totalPages]
+    properties:
+      page:
+        type: integer
+      size:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+  Error:
+    type: object
+    required: [error, message]
+    description: Every error uses this shape.
+    properties:
+      error:
+        type: string
+        description: >-
+          A stable, machine readable code.
+        enum:
+          - invalid_token
+          - missing_file
+          - unsupported_media_type
+          - unsupported_file_type
+          - file_too_large
+          - import_mode_not_files
+          - gpx_not_available
+          - not_found
+          - method_not_allowed
+          - bad_request
+          - forbidden
+          - internal_error
+      message:
+        type: string
+
+parameters:
+  ActivityId:
+    name: activityId
+    in: path
+    required: true
+    description: The prefixed activity identifier, `activity-` included.
+    schema:
+      type: string
+      examples: ['activity-9756441741']
+  ActivityImageId:
+    name: imageId
+    in: path
+    required: true
+    description: The prefixed image identifier, `activityImage-` included, as listed in the activity's `images`.
+    schema:
+      type: string
+      examples: ['activityImage-0a8cdfbb-63b4-4f0f-a09d-faedd5a00753']
+
+responses:
+  ActivityNotFound:
+    description: No activity with this identifier exists.
+    content:
+      application/json:
+        schema: { $ref: './dreeve-api.yaml#/components/schemas/Error' }
+        examples:
+          unknownActivity:
+            value: { error: not_found, message: 'Activity "activity-1" not found' }
+  Unauthorized:
+    description: >-
+      The `Authorization` header was missing, malformed, or did not match the configured key.
+    headers:
+      WWW-Authenticate:
+        schema:
+          type: string
+          examples: ['Bearer realm="Dreeve"']
+    content:
+      application/json:
+        schema: { $ref: './dreeve-api.yaml#/components/schemas/Error' }
+        examples:
+          invalidToken:
+            value:
+              error: invalid_token
+              message: A valid API token is required. Send it in the Authorization header as a Bearer token.

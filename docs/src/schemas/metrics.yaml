@@ -1,0 +1,297 @@
+paths:
+  trainingLoad:
+    get:
+      operationId: getTrainingLoad
+      tags: [Metrics]
+      summary: Get the current training load
+      description: >-
+        Returns today's training load metrics
+      responses:
+        '200':
+          description: The current training load.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [trainingLoad]
+                properties:
+                  trainingLoad: { $ref: './dreeve-api.yaml#/components/schemas/TrainingLoad' }
+        '401':
+          $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
+  trainingVolume:
+    get:
+      operationId: getTrainingVolume
+      tags: [Metrics]
+      summary: Get the training volume for a date range
+      description: |
+        Returns the total number of activities, moving time, distance, elevation and calories in a
+        date range
+
+        ```
+        GET /api/v1/metrics/training-volume?filters[from]=2023-09-04&filters[to]=2023-09-10&filters[sportType]=Run
+        ```
+      parameters:
+        - name: filters
+          in: query
+          required: true
+          style: deepObject
+          explode: true
+          schema:
+            type: object
+            required: [from, to]
+            properties:
+              from:
+                type: string
+                format: date
+                description: >-
+                  The first day of the range
+                examples: ['2023-09-04']
+              to:
+                type: string
+                format: date
+                description: >-
+                  The last day of the range, not before `from`
+                examples: ['2023-09-10']
+              sportType:
+                type: string
+                description: >-
+                  One sport type, or several separated by commas. Every sport type counts when
+                  left out.
+                examples: ['Ride', 'Run,TrailRun,Hike']
+      responses:
+        '200':
+          description: The training volume for the date range.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [trainingVolume]
+                properties:
+                  trainingVolume: { $ref: './dreeve-api.yaml#/components/schemas/TrainingVolume' }
+        '400':
+          content:
+            application/json:
+              schema: { $ref: './dreeve-api.yaml#/components/schemas/Error' }
+              examples:
+                missingDate:
+                  value:
+                    error: bad_request
+                    message: '"filters[from]" is required.'
+                fromAfterTo:
+                  value:
+                    error: bad_request
+                    message: '"filters[from]" must not be later than "filters[to]".'
+                unknownSportType:
+                  value:
+                    error: bad_request
+                    message: '"filters[sportType]" contains an unknown sport type.'
+        '401':
+          $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
+  streaks:
+    get:
+      operationId: getStreaks
+      tags: [Metrics]
+      summary: Get the activity streaks
+      description: |
+        Returns the current and longest streak of consecutive days, weeks (Monday to Sunday) and
+        months.
+
+        ```
+        GET /api/v1/metrics/streaks?filters[sportType]=Run,TrailRun
+        ```
+      parameters:
+        - name: filters
+          in: query
+          required: false
+          style: deepObject
+          explode: true
+          schema:
+            type: object
+            properties:
+              sportType:
+                type: string
+                description: >-
+                  One sport type, or several separated by commas. Every sport type counts when
+                  left out.
+                examples: ['Ride', 'Run,TrailRun,Hike']
+      responses:
+        '200':
+          description: The day, week and month streaks.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [streaks]
+                properties:
+                  streaks:
+                    type: object
+                    required: [day, week, month]
+                    properties:
+                      day: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
+                      week: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
+                      month: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
+        '400':
+          content:
+            application/json:
+              schema: { $ref: './dreeve-api.yaml#/components/schemas/Error' }
+              examples:
+                unknownSportType:
+                  value:
+                    error: bad_request
+                    message: '"filters[sportType]" contains an unknown sport type.'
+        '401':
+          $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
+  eddington:
+    get:
+      operationId: getEddington
+      tags: [Metrics]
+      summary: Get the Eddington numbers
+      description: |
+        Returns every Eddington number configured under **Settings → Metrics**
+      responses:
+        '200':
+          description: The Eddington numbers.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [eddington]
+                properties:
+                  eddington:
+                    type: array
+                    items: { $ref: './dreeve-api.yaml#/components/schemas/Eddington' }
+        '401':
+          $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
+
+schemas:
+  TrainingLoad:
+    type: object
+    required: [ctl, atl, tsb, acRatio, weeklyTrimp, monotony, strain, restDaysLast7Days]
+    properties:
+      ctl:
+        type: number
+        description: Chronic Training Load (fitness), the 42-day weighted average of the daily load.
+        examples: [54.2]
+      atl:
+        type: number
+        description: Acute Training Load (fatigue), the 7-day weighted average of the daily load.
+        examples: [61.0]
+      tsb:
+        type: object
+        description: Training Stress Balance (form), CTL minus ATL.
+        required: [value, status]
+        properties:
+          value:
+            type: number
+            examples: [-6.8]
+          status:
+            type: string
+            description: >-
+              `POSSIBLE_DETRAINING` above 25, `PEAK_FRESH` from 10 to 25, `SLIGHTLY_FRESH` from 0
+              to 10, `NEUTRAL` from -10 to 0, `ACCUMULATED_FATIGUE` from -30 to -10 and
+              `OVER_FATIGUED` below -30.
+            enum: [POSSIBLE_DETRAINING, PEAK_FRESH, SLIGHTLY_FRESH, NEUTRAL, ACCUMULATED_FATIGUE, OVER_FATIGUED]
+      acRatio:
+        type: object
+        description: Acute:Chronic Workload Ratio, ATL divided by CTL.
+        required: [value, status]
+        properties:
+          value:
+            type: number
+            examples: [1.12]
+          status:
+            type: string
+            description: >-
+              `HIGH_RISK` above 1.3, `LOW_RISK` from 0.8 to 1.3 and `LOW_TRAINING_LOAD` below 0.8.
+            enum: [HIGH_RISK, LOW_RISK, LOW_TRAINING_LOAD]
+      weeklyTrimp:
+        type: integer
+        description: The total training load (TRIMP) of the last 7 days.
+        examples: [420]
+      monotony:
+        type: number
+        description: How evenly the load of the last 7 days was spread; higher means less variation.
+        examples: [1.4]
+      strain:
+        type: integer
+        description: The weekly load multiplied by its monotony.
+        examples: [590]
+      restDaysLast7Days:
+        type: integer
+        description: The number of days without an activity in the last 7 days, today included.
+        examples: [2]
+  TrainingVolume:
+    type: object
+    required: [from, to, numberOfActivities, movingTimeInSeconds, distanceInMeter, elevationInMeter, calories]
+    properties:
+      from:
+        type: string
+        format: date
+        examples: ['2023-09-04']
+      to:
+        type: string
+        format: date
+        examples: ['2023-09-10']
+      numberOfActivities:
+        type: integer
+        examples: [4]
+      movingTimeInSeconds:
+        type: integer
+        examples: [14400]
+      distanceInMeter:
+        type: integer
+        examples: [82300]
+      elevationInMeter:
+        type: integer
+        examples: [910]
+      calories:
+        type: integer
+        examples: [2350]
+  Streak:
+    type: object
+    required: [current, currentStartDate, longest]
+    properties:
+      current:
+        type: integer
+        description: >-
+          The length of the streak that is still running. It is 0 when the streak was broken.
+        examples: [3]
+      currentStartDate:
+        type: [string, 'null']
+        format: date
+        description: >-
+          The day of the first activity in the current streak, or null when there is no
+          current streak.
+        examples: ['2023-07-31']
+      longest:
+        type: integer
+        description: The length of the longest streak ever.
+        examples: [12]
+  Eddington:
+    type: object
+    required: [label, sportTypes, unit, number, daysNeededForNextNumber, longestDistanceInADay]
+    properties:
+      label:
+        type: string
+        examples: ['Ride']
+      sportTypes:
+        type: array
+        description: The sport types that count towards this Eddington number.
+        items:
+          type: string
+        examples: [['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']]
+      unit:
+        type: string
+        enum: [km, mi]
+        description: The unit of `number` and `longestDistanceInADay`.
+      number:
+        type: integer
+        examples: [52]
+      daysNeededForNextNumber:
+        type: integer
+        description: How many more days with at least `number + 1` units are needed to reach it.
+        examples: [7]
+      longestDistanceInADay:
+        type: integer
+        description: The longest distance covered in a single day.
+        examples: [160]

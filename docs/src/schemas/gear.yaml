@@ -1,0 +1,163 @@
+paths:
+  list:
+    get:
+      operationId: listGear
+      tags: [Gear]
+      summary: List gear
+      description: >-
+        Lists all gear, active gear first
+      responses:
+        '200':
+          description: All gear.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [gear]
+                properties:
+                  gear:
+                    type: array
+                    items: { $ref: './dreeve-api.yaml#/components/schemas/Gear' }
+        '401':
+          $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
+  maintenanceTasks:
+    get:
+      operationId: listGearMaintenanceTasks
+      tags: [Gear]
+      summary: List gear maintenance tasks
+      description: |-
+        Lists the maintenance tasks of every gear component.
+
+        ```
+        GET /api/v1/gear/maintenance-tasks?filters[gearId]=gear-b12659861
+        ```
+      parameters:
+        - name: filters
+          in: query
+          required: false
+          style: deepObject
+          explode: true
+          schema:
+            type: object
+            properties:
+              gearId:
+                type: string
+                description: >-
+                  Only tasks of components that are currently fitted on this gear
+                examples: ['gear-b12659861']
+      responses:
+        '200':
+          description: All maintenance tasks, most urgent first.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [maintenanceTasks]
+                properties:
+                  maintenanceTasks:
+                    type: array
+                    items: { $ref: './dreeve-api.yaml#/components/schemas/MaintenanceTask' }
+        '400':
+          content:
+            application/json:
+              schema: { $ref: './dreeve-api.yaml#/components/schemas/Error' }
+              examples:
+                invalidGearId:
+                  value:
+                    error: bad_request
+                    message: '"filters[gearId]" is not a valid gear id.'
+        '401':
+          $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
+
+schemas:
+  Gear:
+    type: object
+    required: [id, name, type, isRetired, distanceInMeter, numberOfActivities]
+    properties:
+      id:
+        type: string
+        examples: ['gear-b12659861']
+      name:
+        type: string
+        examples: ['Canyon Grail']
+      type:
+        type: string
+        enum: [imported, custom]
+      isRetired:
+        type: boolean
+      distanceInMeter:
+        type: integer
+        examples: [10500]
+      numberOfActivities:
+        type: integer
+        examples: [1]
+  MaintenanceTask:
+    type: object
+    required: [id, label, component, gearIds, interval, lastPerformedOn, elapsed, remaining, percentage, isDue, isOverdue]
+    properties:
+      id:
+        type: string
+        examples: ['maintenanceTask-chain-lubed']
+      label:
+        type: string
+        examples: ['Lube']
+      component:
+        type: object
+        description: The gear component the task belongs to.
+        required: [id, label]
+        properties:
+          id:
+            type: string
+            examples: ['gearComponent-chain']
+          label:
+            type: string
+            examples: ['Chain']
+      gearIds:
+        type: array
+        description: >-
+          The gear the component is fitted on today.
+        items:
+          type: string
+        examples: [['gear-b12659861']]
+      interval:
+        type: object
+        description: How often the task has to be performed.
+        required: [value, unit]
+        properties:
+          value:
+            type: integer
+            examples: [500]
+          unit:
+            type: string
+            enum: [km, mi, hours, days, daysUsed]
+            description: >-
+              `km`, `mi`, `hours` and `daysUsed` count the use of the component; `days` counts
+              calendar days.
+      lastPerformedOn:
+        type: [string, 'null']
+        format: date
+        description: Null for a task that was never performed.
+        examples: ['2026-09-01']
+      elapsed:
+        type: [number, 'null']
+        description: >-
+          The use since the task was last performed, in the unit of the interval.
+        examples: [380.4]
+      remaining:
+        type: [number, 'null']
+        description: >-
+          What is left of the interval.
+        examples: [119.6]
+      percentage:
+        type: [integer, 'null']
+        minimum: 0
+        maximum: 100
+        description: >-
+          How far the task is into its interval, capped at 100.
+        examples: [76]
+      isDue:
+        type: boolean
+        description: True once the task is at 98% of its interval or more.
+      isOverdue:
+        type: boolean
+        description: True once the interval is exceeded.

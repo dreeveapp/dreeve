@@ -1,0 +1,36 @@
+paths:
+  status:
+    get:
+      operationId: getStatus
+      tags: [Status]
+      summary: Check the connection
+      responses:
+        '200':
+          description: The key is valid.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [app, version, canUpload]
+                properties:
+                  app:
+                    type: string
+                    const: dreeve
+                  version:
+                    type: string
+                    description: The running Dreeve version.
+                    examples: ['v5.2.3']
+                  canUpload:
+                    type: boolean
+                    description: >-
+                      Whether this instance accepts uploads. False when `IMPORT_MODE` is not
+                      `files`, in which case every upload answers 409.
+              examples:
+                filesMode:
+                  summary: Ready to accept uploads
+                  value: { app: dreeve, version: v5.2.3, canUpload: true }
+                stravaApiMode:
+                  summary: Valid key, but uploads are disabled
+                  value: { app: dreeve, version: v5.2.3, canUpload: false }
+        '401':
+          $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
