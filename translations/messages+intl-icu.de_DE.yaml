@@ -46,7 +46,7 @@ Badges: Abzeichen
 Badminton: Badminton
 Bananas: Bananen
 Basketball: Basketball
-'Below zone 1': 'Below zone 1'
+'Below zone 1': 'Unterhalb Zone 1'
 Best: Beste
 'Best effort': Bestzeit
 'Best efforts': Bestleistungen
@@ -145,7 +145,7 @@ Evening: Abend
 'Excludes commutes': 'Pendelfahrten ausschließen'
 'Excludes group activities': 'Gruppenaktivitäten ausschließen'
 'Explorer tiles': Explorer-Kacheln
-'Explorer tiles include all your activities': 'Explorer tiles include all your activities'
+'Explorer tiles include all your activities': 'Explorer-Kacheln enthalten alle Aktivitäten.'
 'FTP history': FTP-Verlauf
 Fastest: Schnellste
 Favourite: Favorit
@@ -352,8 +352,8 @@ Race: Wettkampf
 'Racquet Ball': Racquetball
 Rank: Rang
 Ranking: Rangliste
-'Reached a max cluster of {tileCount} tiles': 'Reached a max cluster of {tileCount} tiles'
-'Reached a {size}×{size} max square': 'Reached a {size}×{size} max square'
+'Reached a max cluster of {tileCount} tiles': 'Größter Cluster: {tileCount} Kacheln erreicht'
+'Reached a {size}×{size} max square': 'Größtes Quadrat: {size}×{size} Kacheln erreicht'
 'Reached {threshold} hours total moving time': '{threshold} Stunden gesamte Bewegungszeit erreicht'
 'Reached {threshold} total distance': '{threshold} Gesamtdistanz erreicht'
 'Reached {threshold} total elevation': '{threshold} Gesamthöhenmeter erreicht'
@@ -534,7 +534,7 @@ Thinking...: Denke...
 'This week': 'Diese Woche'
 Thu: Do
 Thu.: Do.
-'Tiles visited for the first time in this activity': 'Tiles visited for the first time in this activity'
+'Tiles visited for the first time in this activity': 'Mit dieser Aktivität neu besuchte Kacheln'
 Time: Zeit
 'Time in gear': 'Zeit je Gang'
 'Time in zone': 'Zeit in Zone'
@@ -678,7 +678,7 @@ workouts: Trainingseinheiten
 '{numberOfResults} results': '{numberOfResults} Ergebnisse'
 '{numberOfResults} routes': '{numberOfResults} Routen'
 '{numberOfRoutes} nearby route(s)': '{numberOfRoutes} Routen in der Nähe'
-'{numberOfTiles} new tile(s)': '{numberOfTiles} new tile(s)'
+'{numberOfTiles} new tile(s)': '{numberOfTiles} neue Kachel(n)'
 '{numberOfWeeks} weeks': '{numberOfWeeks} Wochen'
 '{threshold} hours using {gearName}': '{threshold} Stunden mit {gearName} aufgezeichnet'
 '{threshold} total distance using {gearName}': '{threshold} Gesamtdistanz mit {gearName} aufgezeichnet'
