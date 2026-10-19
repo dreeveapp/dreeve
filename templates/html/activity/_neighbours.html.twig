@@ -1,0 +1,27 @@
+{% set olderActivityId = neighbours.getOlderActivityId() %}
+{% set newerActivityId = neighbours.getNewerActivityId() %}
+{% if olderActivityId or newerActivityId %}
+    {% set buttonClasses = 'inline-flex items-center justify-center border border-gray-200 shadow-xs rounded-lg p-1.5 transition' %}
+    {% set enabledClasses = 'text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-50' %}
+    {% set disabledClasses = 'text-gray-300 bg-gray-50 cursor-not-allowed' %}
+    <span class="inline-flex items-center gap-1">
+        {% set olderIcon %}
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        {% endset %}
+        {% if olderActivityId %}
+            {% set olderLabel = "Older activity: {name}"|trans({'{name}': neighbours.getOlderActivityName()}) %}
+            <a href="{{ relativeUrl(path('activity', {'activityId': olderActivityId})) }}" class="{{ buttonClasses }} {{ enabledClasses }}" title="{{ olderLabel }}" aria-label="{{ olderLabel }}" data-keyboard-shortcut="ArrowLeft">{{ olderIcon }}</a>
+        {% else %}
+            <span class="{{ buttonClasses }} {{ disabledClasses }}" aria-hidden="true">{{ olderIcon }}</span>
+        {% endif %}
+        {% set newerIcon %}
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        {% endset %}
+        {% if newerActivityId %}
+            {% set newerLabel = "Newer activity: {name}"|trans({'{name}': neighbours.getNewerActivityName()}) %}
+            <a href="{{ relativeUrl(path('activity', {'activityId': newerActivityId})) }}" class="{{ buttonClasses }} {{ enabledClasses }}" title="{{ newerLabel }}" aria-label="{{ newerLabel }}" data-keyboard-shortcut="ArrowRight">{{ newerIcon }}</a>
+        {% else %}
+            <span class="{{ buttonClasses }} {{ disabledClasses }}" aria-hidden="true">{{ newerIcon }}</span>
+        {% endif %}
+    </span>
+{% endif %}

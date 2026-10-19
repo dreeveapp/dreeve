@@ -290,6 +290,7 @@ Morning: Morning
 Name: Name
 Neutral: Neutral
 'New personal best for': 'New personal best for'
+'Newer activity: {name}': 'Newer activity: {name}'
 'Next milestone': 'Next milestone'
 Night: Night
 'No activities': 'No activities'
@@ -309,6 +310,7 @@ Now: Now
 'Number of activities per month': 'Number of activities per month'
 'Number of times completed': 'Number of times completed'
 Oct: Oct
+'Older activity: {name}': 'Older activity: {name}'
 'Older effort': 'Older effort'
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.'
 'On your own': 'On your own'
