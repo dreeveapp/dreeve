@@ -2,11 +2,13 @@
     "activitiesSummary": [
         {
             "id": "123456789",
-            "on": "2025-01-01"
+            "on": "2025-01-01",
+            "url": "http://localhost:8080/activities/activity-123456789"
         },
         {
             "id": "987654321",
-            "on": "2020-01-01"
+            "on": "2020-01-01",
+            "url": "http://localhost:8080/activities/activity-987654321"
         }
     ],
     "totalActivityCount": 2

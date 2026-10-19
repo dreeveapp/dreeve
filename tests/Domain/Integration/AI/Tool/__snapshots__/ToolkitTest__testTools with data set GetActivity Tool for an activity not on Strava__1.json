@@ -26,5 +26,6 @@
     "isCommute": false,
     "isGroupActivity": false,
     "workoutType": null,
-    "stravaUrl": null
+    "stravaUrl": null,
+    "url": "http://localhost:8080/activities/activity-987654321"
 }

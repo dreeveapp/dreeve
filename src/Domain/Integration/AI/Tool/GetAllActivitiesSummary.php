@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Integration\AI\Tool;
 
+use App\Application\AppUrl;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivityRepository;
@@ -11,6 +12,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use NeuronAI\Tools\PropertyType;
 use NeuronAI\Tools\Tool;
 use NeuronAI\Tools\ToolProperty;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class GetAllActivitiesSummary extends Tool
 {
@@ -34,6 +36,8 @@ final class GetAllActivitiesSummary extends Tool
     public function __construct(
         private readonly ActivityRepository $activityRepository,
         private readonly ActivityIdRepository $activityIdRepository,
+        private readonly AppUrl $appUrl,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -84,6 +88,7 @@ final class GetAllActivitiesSummary extends Tool
             'activitiesSummary' => $activities->map(fn (Activity $activity): array => [
                 'id' => $activity->getId()->toUnprefixedString(),
                 'on' => $activity->getStartDate()->format('Y-m-d'),
+                'url' => (string) $this->appUrl->withPath($this->urlGenerator->generate('activity', ['activityId' => (string) $activity->getId()])),
             ]),
             'totalActivityCount' => $this->activityIdRepository->count(),
         ];

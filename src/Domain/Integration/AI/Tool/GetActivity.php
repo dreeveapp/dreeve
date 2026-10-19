@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Integration\AI\Tool;
 
+use App\Application\AppUrl;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\EnrichedActivityRepository;
 use NeuronAI\Tools\PropertyType;
 use NeuronAI\Tools\Tool;
 use NeuronAI\Tools\ToolProperty;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class GetActivity extends Tool
 {
@@ -25,6 +27,8 @@ final class GetActivity extends Tool
 
     public function __construct(
         private readonly EnrichedActivityRepository $enrichedActivityRepository,
+        private readonly AppUrl $appUrl,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -59,6 +63,9 @@ final class GetActivity extends Tool
     {
         $activityId = ActivityId::fromUnprefixed($activityId);
 
-        return $this->enrichedActivityRepository->find($activityId)->exportForAITooling();
+        return [
+            ...$this->enrichedActivityRepository->find($activityId)->exportForAITooling(),
+            'url' => (string) $this->appUrl->withPath($this->urlGenerator->generate('activity', ['activityId' => (string) $activityId])),
+        ];
     }
 }

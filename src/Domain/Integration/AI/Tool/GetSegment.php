@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Integration\AI\Tool;
 
+use App\Application\AppUrl;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
 use NeuronAI\Tools\PropertyType;
 use NeuronAI\Tools\Tool;
 use NeuronAI\Tools\ToolProperty;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class GetSegment extends Tool
 {
@@ -24,6 +26,8 @@ final class GetSegment extends Tool
 
     public function __construct(
         private readonly SegmentRepository $segmentRepository,
+        private readonly AppUrl $appUrl,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -52,6 +56,9 @@ final class GetSegment extends Tool
     {
         $segmentId = SegmentId::fromUnprefixed($segmentId);
 
-        return $this->segmentRepository->find($segmentId)->exportForAITooling();
+        return [
+            ...$this->segmentRepository->find($segmentId)->exportForAITooling(),
+            'url' => (string) $this->appUrl->withPath($this->urlGenerator->generate('segment', ['segmentId' => (string) $segmentId])),
+        ];
     }
 }
