@@ -18,6 +18,7 @@ use App\Domain\Gear\Sensor\ConnectedSensors;
 use App\Domain\Import\FileParser\Fit\FitDeviceType;
 use App\Domain\Import\FileParser\Fit\FitDrivetrainUsageExtractor;
 use App\Domain\Import\FileParser\Fit\FitManufacturer;
+use App\Domain\Import\FileParser\Fit\FitNikeSessionFix;
 use App\Domain\Import\FileParser\Fit\FitProduct;
 use App\Domain\Import\FileParser\Fit\FitSportType;
 use App\Domain\Import\FileParser\Fit\FitStrapHeartRate;
@@ -157,7 +158,7 @@ final readonly class FitFileParser implements ActivityFileParser
             throw new CouldNotParseActivityFile(message: sprintf('Multi-sport FIT file "%s" import not supported, each leg needs to be imported as a separate file', $file->getPath()->getFilename()), activityFile: $file);
         }
 
-        $session = $sessionMessages[0] ?? [];
+        $session = FitNikeSessionFix::apply($sessionMessages[0] ?? [], $manufacturerId);
 
         $startTimestamp = (is_numeric($session['start_time'] ?? null) ? (int) round((float) $session['start_time']) : null)
             ?? (is_numeric($records[0]['timestamp'] ?? null) ? (int) round((float) $records[0]['timestamp']) : null);

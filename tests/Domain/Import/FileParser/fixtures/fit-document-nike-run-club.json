@@ -1,0 +1,644 @@
+{
+  "files": [
+    {
+      "profileVersion": 21115,
+      "messages": [
+        {
+          "name": "file_id",
+          "num": 0,
+          "fields": [
+            {
+              "name": "manufacturer",
+              "num": 1,
+              "value": 326
+            },
+            {
+              "name": "type",
+              "num": 0,
+              "value": 4
+            },
+            {
+              "name": "product",
+              "num": 2,
+              "value": 0
+            },
+            {
+              "name": "serial_number",
+              "num": 3,
+              "value": 12345
+            },
+            {
+              "name": "time_created",
+              "num": 4,
+              "value": 1161078941
+            }
+          ]
+        },
+        {
+          "name": "record",
+          "num": 20,
+          "fields": [
+            {
+              "name": "timestamp",
+              "num": 253,
+              "units": "s",
+              "value": 1161079041
+            },
+            {
+              "name": "distance",
+              "num": 5,
+              "units": "m",
+              "value": 254.2
+            },
+            {
+              "name": "cadence",
+              "num": 4,
+              "units": "rpm",
+              "value": 70
+            },
+            {
+              "name": "speed",
+              "num": 6,
+              "units": "m/s",
+              "value": null
+            },
+            {
+              "name": "altitude",
+              "num": 2,
+              "units": "m",
+              "value": 2.3999999999999773
+            },
+            {
+              "name": "heart_rate",
+              "num": 3,
+              "units": "bpm",
+              "value": null
+            },
+            {
+              "name": "enhanced_altitude",
+              "num": 78,
+              "units": "m",
+              "value": 2.3999999999999773
+            }
+          ]
+        },
+        {
+          "name": "record",
+          "num": 20,
+          "fields": [
+            {
+              "name": "timestamp",
+              "num": 253,
+              "units": "s",
+              "value": 1161079241
+            },
+            {
+              "name": "distance",
+              "num": 5,
+              "units": "m",
+              "value": 797.96
+            },
+            {
+              "name": "cadence",
+              "num": 4,
+              "units": "rpm",
+              "value": 1
+            },
+            {
+              "name": "speed",
+              "num": 6,
+              "units": "m/s",
+              "value": null
+            },
+            {
+              "name": "altitude",
+              "num": 2,
+              "units": "m",
+              "value": 3.8000000000000114
+            },
+            {
+              "name": "heart_rate",
+              "num": 3,
+              "units": "bpm",
+              "value": null
+            },
+            {
+              "name": "enhanced_altitude",
+              "num": 78,
+              "units": "m",
+              "value": 3.8000000000000114
+            }
+          ]
+        },
+        {
+          "name": "record",
+          "num": 20,
+          "fields": [
+            {
+              "name": "timestamp",
+              "num": 253,
+              "units": "s",
+              "value": 1161079441
+            },
+            {
+              "name": "distance",
+              "num": 5,
+              "units": "m",
+              "value": 1081.6
+            },
+            {
+              "name": "cadence",
+              "num": 4,
+              "units": "rpm",
+              "value": 4
+            },
+            {
+              "name": "speed",
+              "num": 6,
+              "units": "m/s",
+              "value": null
+            },
+            {
+              "name": "altitude",
+              "num": 2,
+              "units": "m",
+              "value": null
+            },
+            {
+              "name": "heart_rate",
+              "num": 3,
+              "units": "bpm",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "record",
+          "num": 20,
+          "fields": [
+            {
+              "name": "timestamp",
+              "num": 253,
+              "units": "s",
+              "value": 1161079641
+            },
+            {
+              "name": "distance",
+              "num": 5,
+              "units": "m",
+              "value": 1425.85
+            },
+            {
+              "name": "cadence",
+              "num": 4,
+              "units": "rpm",
+              "value": 81
+            },
+            {
+              "name": "speed",
+              "num": 6,
+              "units": "m/s",
+              "value": null
+            },
+            {
+              "name": "altitude",
+              "num": 2,
+              "units": "m",
+              "value": 3
+            },
+            {
+              "name": "heart_rate",
+              "num": 3,
+              "units": "bpm",
+              "value": null
+            },
+            {
+              "name": "enhanced_altitude",
+              "num": 78,
+              "units": "m",
+              "value": 3
+            }
+          ]
+        },
+        {
+          "name": "record",
+          "num": 20,
+          "fields": [
+            {
+              "name": "timestamp",
+              "num": 253,
+              "units": "s",
+              "value": 1161079841
+            },
+            {
+              "name": "distance",
+              "num": 5,
+              "units": "m",
+              "value": 1704.3
+            },
+            {
+              "name": "cadence",
+              "num": 4,
+              "units": "rpm",
+              "value": 46
+            },
+            {
+              "name": "speed",
+              "num": 6,
+              "units": "m/s",
+              "value": null
+            },
+            {
+              "name": "altitude",
+              "num": 2,
+              "units": "m",
+              "value": null
+            },
+            {
+              "name": "heart_rate",
+              "num": 3,
+              "units": "bpm",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "record",
+          "num": 20,
+          "fields": [
+            {
+              "name": "timestamp",
+              "num": 253,
+              "units": "s",
+              "value": 1161080041
+            },
+            {
+              "name": "distance",
+              "num": 5,
+              "units": "m",
+              "value": 2054.27
+            },
+            {
+              "name": "cadence",
+              "num": 4,
+              "units": "rpm",
+              "value": 3
+            },
+            {
+              "name": "speed",
+              "num": 6,
+              "units": "m/s",
+              "value": null
+            },
+            {
+              "name": "altitude",
+              "num": 2,
+              "units": "m",
+              "value": null
+            },
+            {
+              "name": "heart_rate",
+              "num": 3,
+              "units": "bpm",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "record",
+          "num": 20,
+          "fields": [
+            {
+              "name": "timestamp",
+              "num": 253,
+              "units": "s",
+              "value": 1161080241
+            },
+            {
+              "name": "distance",
+              "num": 5,
+              "units": "m",
+              "value": 2387.7
+            },
+            {
+              "name": "cadence",
+              "num": 4,
+              "units": "rpm",
+              "value": 3
+            },
+            {
+              "name": "speed",
+              "num": 6,
+              "units": "m/s",
+              "value": null
+            },
+            {
+              "name": "altitude",
+              "num": 2,
+              "units": "m",
+              "value": null
+            },
+            {
+              "name": "heart_rate",
+              "num": 3,
+              "units": "bpm",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "record",
+          "num": 20,
+          "fields": [
+            {
+              "name": "timestamp",
+              "num": 253,
+              "units": "s",
+              "value": 1161080441
+            },
+            {
+              "name": "distance",
+              "num": 5,
+              "units": "m",
+              "value": 2693.45
+            },
+            {
+              "name": "cadence",
+              "num": 4,
+              "units": "rpm",
+              "value": 70
+            },
+            {
+              "name": "speed",
+              "num": 6,
+              "units": "m/s",
+              "value": null
+            },
+            {
+              "name": "altitude",
+              "num": 2,
+              "units": "m",
+              "value": null
+            },
+            {
+              "name": "heart_rate",
+              "num": 3,
+              "units": "bpm",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "record",
+          "num": 20,
+          "fields": [
+            {
+              "name": "timestamp",
+              "num": 253,
+              "units": "s",
+              "value": 1161080641
+            },
+            {
+              "name": "distance",
+              "num": 5,
+              "units": "m",
+              "value": 3005.33
+            },
+            {
+              "name": "cadence",
+              "num": 4,
+              "units": "rpm",
+              "value": 70
+            },
+            {
+              "name": "speed",
+              "num": 6,
+              "units": "m/s",
+              "value": null
+            },
+            {
+              "name": "altitude",
+              "num": 2,
+              "units": "m",
+              "value": 2.8000000000000114
+            },
+            {
+              "name": "heart_rate",
+              "num": 3,
+              "units": "bpm",
+              "value": 131
+            },
+            {
+              "name": "enhanced_altitude",
+              "num": 78,
+              "units": "m",
+              "value": 2.8000000000000114
+            }
+          ]
+        },
+        {
+          "name": "record",
+          "num": 20,
+          "fields": [
+            {
+              "name": "timestamp",
+              "num": 253,
+              "units": "s",
+              "value": 1161080841
+            },
+            {
+              "name": "distance",
+              "num": 5,
+              "units": "m",
+              "value": 3447.67
+            },
+            {
+              "name": "cadence",
+              "num": 4,
+              "units": "rpm",
+              "value": 70
+            },
+            {
+              "name": "speed",
+              "num": 6,
+              "units": "m/s",
+              "value": null
+            },
+            {
+              "name": "altitude",
+              "num": 2,
+              "units": "m",
+              "value": null
+            },
+            {
+              "name": "heart_rate",
+              "num": 3,
+              "units": "bpm",
+              "value": null
+            }
+          ]
+        },
+        {
+          "name": "lap",
+          "num": 19,
+          "fields": [
+            {
+              "name": "message_index",
+              "num": 254,
+              "value": 0
+            },
+            {
+              "name": "timestamp",
+              "num": 253,
+              "units": "s",
+              "value": 1161080891
+            },
+            {
+              "name": "start_time",
+              "num": 2,
+              "value": 1161078941
+            },
+            {
+              "name": "total_elapsed_time",
+              "num": 7,
+              "units": "s",
+              "value": 1950
+            },
+            {
+              "name": "total_timer_time",
+              "num": 8,
+              "units": "s",
+              "value": 1085
+            }
+          ]
+        },
+        {
+          "name": "session",
+          "num": 18,
+          "fields": [
+            {
+              "name": "message_index",
+              "num": 254,
+              "value": 0
+            },
+            {
+              "name": "timestamp",
+              "num": 253,
+              "units": "s",
+              "value": 1161080891
+            },
+            {
+              "name": "start_time",
+              "num": 2,
+              "value": 1161078941
+            },
+            {
+              "name": "sport",
+              "num": 5,
+              "value": 1
+            },
+            {
+              "name": "sub_sport",
+              "num": 6,
+              "value": 2
+            },
+            {
+              "name": "first_lap_index",
+              "num": 25,
+              "value": 0
+            },
+            {
+              "name": "num_laps",
+              "num": 26,
+              "value": 1
+            },
+            {
+              "name": "total_elapsed_time",
+              "num": 7,
+              "units": "s",
+              "value": 1950
+            },
+            {
+              "name": "total_timer_time",
+              "num": 8,
+              "units": "s",
+              "value": 1085
+            },
+            {
+              "name": "total_distance",
+              "num": 9,
+              "units": "m",
+              "value": 3499.98
+            },
+            {
+              "name": "total_calories",
+              "num": 11,
+              "units": "kcal",
+              "value": 384
+            },
+            {
+              "name": "avg_speed",
+              "num": 14,
+              "units": "m/s",
+              "value": 11.606
+            },
+            {
+              "name": "max_speed",
+              "num": 15,
+              "units": "m/s",
+              "value": 18.356
+            },
+            {
+              "name": "total_ascent",
+              "num": 22,
+              "units": "m",
+              "value": 13
+            },
+            {
+              "name": "total_descent",
+              "num": 23,
+              "units": "m",
+              "value": 13
+            },
+            {
+              "name": "avg_cadence",
+              "num": 18,
+              "units": "rpm",
+              "value": 140
+            },
+            {
+              "name": "total_cycles",
+              "num": 10,
+              "units": "cycles",
+              "value": 1270
+            },
+            {
+              "name": "avg_heart_rate",
+              "num": 16,
+              "units": "bpm",
+              "value": 139
+            },
+            {
+              "name": "max_heart_rate",
+              "num": 17,
+              "units": "bpm",
+              "value": 161
+            },
+            {
+              "name": "enhanced_avg_speed",
+              "num": 124,
+              "units": "m/s",
+              "value": 11.606
+            },
+            {
+              "name": "enhanced_max_speed",
+              "num": 125,
+              "units": "m/s",
+              "value": 18.356
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

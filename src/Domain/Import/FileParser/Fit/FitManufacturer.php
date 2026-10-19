@@ -11,6 +11,7 @@ final class FitManufacturer
     public const int DYNASTREAM = 15;
     public const int TACX = 89;
     public const int FAVERO_ELECTRONICS = 263;
+    public const int NIKE = 326;
     private const int ZWIFT = 260;
 
     /** @var array<int, string> */
