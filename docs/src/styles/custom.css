@@ -15,3 +15,7 @@ a.site-title {
 .tablist-wrapper [role='tab'] {
 	white-space: nowrap;
 }
+
+:root:has([class*='sl-openapi-']) {
+	--sl-content-width: 60rem;
+}
