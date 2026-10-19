@@ -1,0 +1,19 @@
+{
+    "streaks": {
+        "day": {
+            "current": 0,
+            "currentStartDate": null,
+            "longest": 1
+        },
+        "week": {
+            "current": 0,
+            "currentStartDate": null,
+            "longest": 1
+        },
+        "month": {
+            "current": 0,
+            "currentStartDate": null,
+            "longest": 1
+        }
+    }
+}
