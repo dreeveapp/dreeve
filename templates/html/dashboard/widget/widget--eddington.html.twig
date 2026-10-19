@@ -20,7 +20,7 @@
                 <hr class="w-full"/>
                 <div>
                     <div class="text-2xl font-extrabold">
-                        {{ eddington.getDaysToCompleteForFutureNumbers()[eddington.getNumber() + 1] ?? 1 }}
+                        {{ eddington.getDaysToCompleteForFutureNumbers()[eddington.getNumber() + 1] ?? (eddington.getNumber() + 1) }}
                     </div>
                     <div class="text-sm">{{ "days needed for next Eddington"|trans }}</div>
                 </div>
