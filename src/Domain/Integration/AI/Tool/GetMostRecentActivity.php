@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Integration\AI\Tool;
 
+use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\EnrichedActivityRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use NeuronAI\Tools\Tool;
@@ -21,6 +22,7 @@ final class GetMostRecentActivity extends Tool
         DESC;
 
     public function __construct(
+        private readonly ActivityRepository $activityRepository,
         private readonly EnrichedActivityRepository $enrichedActivityRepository,
     ) {
     }
@@ -30,12 +32,10 @@ final class GetMostRecentActivity extends Tool
      */
     public function __invoke(): array
     {
-        // findAll() is ordered on startDateTime DESC, so the first one is the most recent.
-        $allActivities = $this->enrichedActivityRepository->findAll();
-        if (!$mostRecentActivity = reset($allActivities)) {
+        if (!$mostRecentActivity = $this->activityRepository->findMostRecent(1)->getFirst()) {
             throw new EntityNotFound('No activities found');
         }
 
-        return $mostRecentActivity->exportForAITooling();
+        return $this->enrichedActivityRepository->find($mostRecentActivity->getId())->exportForAITooling();
     }
 }
