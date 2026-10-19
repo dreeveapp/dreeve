@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api\V1\Metrics;
 
 use App\Domain\Activity\DailyTrainingLoad;
+use App\Domain\Dashboard\Widget\TrainingLoad\AcRatio;
 use App\Domain\Dashboard\Widget\TrainingLoad\FindNumberOfRestDays\FindNumberOfRestDays;
 use App\Domain\Dashboard\Widget\TrainingLoad\TrainingLoadChart;
 use App\Domain\Dashboard\Widget\TrainingLoad\TrainingMetrics;
+use App\Domain\Dashboard\Widget\TrainingLoad\TSB;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\DateRange;
@@ -42,11 +44,11 @@ final readonly class TrainingLoadRequestHandler
             'trainingLoad' => [
                 'ctl' => $trainingMetrics->getCurrentCtl(),
                 'atl' => $trainingMetrics->getCurrentAtl(),
-                'tsb' => $tsb ? [
+                'tsb' => $tsb instanceof TSB ? [
                     'value' => $tsb->getValue(),
                     'status' => $tsb->getStatus()->name,
                 ] : null,
-                'acRatio' => $acRatio ? [
+                'acRatio' => $acRatio instanceof AcRatio ? [
                     'value' => $acRatio->getValue(),
                     'status' => $acRatio->getStatus()->name,
                 ] : null,
