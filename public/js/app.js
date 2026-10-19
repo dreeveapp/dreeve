@@ -12,6 +12,7 @@ import initDataTables from "./features/data-table/data-table-manager";
 import initFullscreen from "./components/fullscreen";
 import initLightGalleries from "./components/light-gallery";
 import initAsyncContent from "./components/async-content";
+import initKeyboardShortcuts from "./components/keyboard-shortcut";
 import ScrollTo from "./components/scroll-to";
 import MilestoneFilter from "./features/milestones/milestone-filter";
 import DarkModeManager from "./components/dark-mode";
@@ -49,6 +50,7 @@ const initElements = (rootNode) => {
 }
 
 initSidebar();
+initKeyboardShortcuts();
 darkModeManager.attachEventListeners();
 
 eventBus.on(Events.DARK_MODE_TOGGLED, ({darkModeEnabled}) => {
