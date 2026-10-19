@@ -22,7 +22,7 @@ paths:
     get:
       operationId: getTrainingVolume
       tags: [Metrics]
-      summary: Get the training volume for a date range
+      summary: Get the training volume
       description: |
         Returns the total number of activities, moving time, distance, elevation and calories in a
         date range
