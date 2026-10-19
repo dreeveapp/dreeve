@@ -130,7 +130,12 @@ class ToolkitTest extends ContainerTestCase
 
         yield 'GetAllActivitiesSummary Tool' => [
             GetAllActivitiesSummary::class,
-            [],
+            [null, null, null],
+        ];
+
+        yield 'GetAllActivitiesSummary Tool outside date range' => [
+            GetAllActivitiesSummary::class,
+            [null, '2024-01-01', '2024-12-31'],
         ];
 
         yield 'GetMostRecentActivity Tool' => [

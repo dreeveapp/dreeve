@@ -158,7 +158,10 @@ final readonly class FitFileParser implements ActivityFileParser
             throw new CouldNotParseActivityFile(message: sprintf('Multi-sport FIT file "%s" import not supported, each leg needs to be imported as a separate file', $file->getPath()->getFilename()), activityFile: $file);
         }
 
-        $session = FitNikeSessionFix::apply($sessionMessages[0] ?? [], $manufacturerId);
+        $session = FitNikeSessionFix::apply(
+            session: $sessionMessages[0] ?? [],
+            manufacturerId: $manufacturerId
+        );
 
         $startTimestamp = (is_numeric($session['start_time'] ?? null) ? (int) round((float) $session['start_time']) : null)
             ?? (is_numeric($records[0]['timestamp'] ?? null) ? (int) round((float) $records[0]['timestamp']) : null);
