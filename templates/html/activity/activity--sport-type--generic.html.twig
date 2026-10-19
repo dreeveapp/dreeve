@@ -8,11 +8,14 @@
             'url': 'activities/' ~ activity.getId(),
             'label': activity.getName()|ellipses(50)
         }], 'disableMargin': true} %}
-    {% include 'html/navigation/admin-edit-link.html.twig' with {
-        path: 'admin/activities/' ~ activity.getId() ~ '/edit',
-        redirectTo: 'activities/' ~ activity.getId(),
-        title: "Edit this activity"|trans
-    } %}
+    <div class="flex shrink-0 items-center gap-2">
+        {% include 'html/navigation/admin-edit-link.html.twig' with {
+            path: 'admin/activities/' ~ activity.getId() ~ '/edit',
+            redirectTo: 'activities/' ~ activity.getId(),
+            title: "Edit this activity"|trans
+        } %}
+        <span class="inline-flex w-15 h-7" data-async-content-url="{{ relativeUrl(path('activity_neighbours', {'activityId': activity.getId()})) }}"></span>
+    </div>
 </div>
 {% autoescape false %}
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs space-y-6">
