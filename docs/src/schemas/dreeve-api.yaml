@@ -886,6 +886,27 @@ paths:
                     message: '"filters[sportType]" contains an unknown sport type.'
         '401':
           $ref: '#/components/responses/Unauthorized'
+  /api/v1/metrics/eddington:
+    get:
+      operationId: getEddington
+      tags: [Metrics]
+      summary: Get the Eddington numbers
+      description: |
+        Returns every Eddington number configured under **Settings → Metrics**
+      responses:
+        '200':
+          description: The Eddington numbers.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [eddington]
+                properties:
+                  eddington:
+                    type: array
+                    items: { $ref: '#/components/schemas/Eddington' }
+        '401':
+          $ref: '#/components/responses/Unauthorized'
 components:
   securitySchemes:
     apiKey:
@@ -1306,6 +1327,34 @@ components:
           type: integer
           description: The length of the longest streak ever.
           examples: [12]
+    Eddington:
+      type: object
+      required: [label, sportTypes, unit, number, daysNeededForNextNumber, longestDistanceInADay]
+      properties:
+        label:
+          type: string
+          examples: ['Ride']
+        sportTypes:
+          type: array
+          description: The sport types that count towards this Eddington number.
+          items:
+            type: string
+          examples: [['Ride', 'MountainBikeRide', 'GravelRide', 'VirtualRide']]
+        unit:
+          type: string
+          enum: [km, mi]
+          description: The unit of `number` and `longestDistanceInADay`.
+        number:
+          type: integer
+          examples: [52]
+        daysNeededForNextNumber:
+          type: integer
+          description: How many more days with at least `number + 1` units are needed to reach it.
+          examples: [7]
+        longestDistanceInADay:
+          type: integer
+          description: The longest distance covered in a single day.
+          examples: [160]
     Error:
       type: object
       required: [error, message]
