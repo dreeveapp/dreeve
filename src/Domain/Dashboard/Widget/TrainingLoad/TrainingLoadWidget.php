@@ -66,7 +66,7 @@ final readonly class TrainingLoadWidget implements Widget, DependsOnCurrentDay
         );
 
         $intensities = $this->dailyTrainingLoad->calculateForDateRange(DateRange::fromDates(
-            from: $now->modify('- '.(TrainingLoadChart::NUMBER_OF_DAYS_TO_DISPLAY + 210).' days'),
+            from: $now->modify('- '.(TrainingLoadChart::NUMBER_OF_DAYS_TO_DISPLAY + TrainingLoadChart::EMA_WARMUP_DAYS).' days'),
             till: $now,
         ));
 

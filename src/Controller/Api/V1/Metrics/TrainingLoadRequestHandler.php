@@ -31,7 +31,7 @@ final readonly class TrainingLoadRequestHandler
         $now = $this->clock->getCurrentDateTimeImmutable();
 
         $trainingMetrics = TrainingMetrics::create($this->dailyTrainingLoad->calculateForDateRange(DateRange::fromDates(
-            from: $now->modify('- '.(TrainingLoadChart::NUMBER_OF_DAYS_TO_DISPLAY + 210).' days'),
+            from: $now->modify('- '.(TrainingLoadChart::NUMBER_OF_DAYS_TO_DISPLAY + TrainingLoadChart::EMA_WARMUP_DAYS).' days'),
             till: $now,
         )));
 

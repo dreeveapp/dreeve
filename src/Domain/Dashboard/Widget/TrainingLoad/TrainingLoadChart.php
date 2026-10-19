@@ -12,6 +12,7 @@ final readonly class TrainingLoadChart
 {
     public const int NUMBER_OF_DAYS_TO_DISPLAY = 366;
     public const int ROLLING_WINDOW_TO_CALCULATE_METRICS_AGAINST = 42;
+    public const int EMA_WARMUP_DAYS = 210;
 
     private function __construct(
         private TrainingMetrics $trainingMetrics,
