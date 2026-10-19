@@ -22,8 +22,8 @@ final class GetActivitySplits extends Tool
     #[\Override]
     protected ?string $description = <<<DESC
         Retrieves detailed split information for a specific activity using its unique activity ID.
-        Use this tool when the user asks about split data within an activity or requests all details for a specific activity. 
-        It requires the activity ID as input and provides the split-by-split breakdown needed for summaries, analysis, or comparisons. 
+        Use this tool when the user asks about split data within an activity or requests all details for a specific activity.
+        It requires the activity ID as input and provides the split-by-split breakdown needed for summaries, analysis, or comparisons.
         Example requests include “Show all splits for activity 12345” or “Give me detailed split stats for my last run.”
         Returns at most 60 splits, from the start of the activity. Compare "totalSplitCount" with the number of returned splits: if it is higher, tell the user you are only seeing part of the activity.
         DESC;

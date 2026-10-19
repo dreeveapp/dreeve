@@ -25,5 +25,6 @@
     "gearName": "Retro Race Bike",
     "isCommute": false,
     "isGroupActivity": false,
-    "workoutType": null
+    "workoutType": null,
+    "stravaUrl": "https://www.strava.com/activities/123456789"
 }

@@ -15,7 +15,7 @@ final class GetAthleteDetails extends Tool
     #[\Override]
     protected ?string $description = <<<DESC
         Retrieves the athlete’s personal details from the database.
-        Use this tool when the user asks about their profile or personal information, such as weight, height, or other stored attributes. 
+        Use this tool when the user asks about their profile or personal information, such as weight, height, or other stored attributes.
         Example requests include “Show my profile details”.
         DESC;
 

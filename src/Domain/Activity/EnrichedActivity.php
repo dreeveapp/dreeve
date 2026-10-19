@@ -118,6 +118,7 @@ final readonly class EnrichedActivity implements SupportsAITooling
             'isCommute' => $this->activity->isCommute(),
             'isGroupActivity' => $this->activity->isGroupActivity(),
             'workoutType' => $this->activity->getWorkoutType()?->value,
+            'stravaUrl' => ImportSource::STRAVA_API === $this->activity->getImportSource() ? $this->activity->getUrl() : null,
         ];
     }
 }

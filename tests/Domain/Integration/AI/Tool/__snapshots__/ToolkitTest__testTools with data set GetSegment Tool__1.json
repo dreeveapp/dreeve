@@ -4,5 +4,6 @@
     "sportType": "Ride",
     "distanceInKilometer": 0.1,
     "isFavourite": true,
-    "climbCategory": null
+    "climbCategory": null,
+    "stravaUrl": "https://www.strava.com/segments/1"
 }

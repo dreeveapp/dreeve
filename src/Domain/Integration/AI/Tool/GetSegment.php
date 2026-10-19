@@ -18,7 +18,7 @@ final class GetSegment extends Tool
     #[\Override]
     protected ?string $description = <<<DESC
         Retrieves detailed information about a specific segment using its unique ID, including name, distance, elevation, sport type, and climb category.
-        Use this tool when the user asks about a specific segment, for example “Tell me more about segment 1234” or “What’s the length of that climb?”. 
+        Use this tool when the user asks about a specific segment, for example “Tell me more about segment 1234” or “What’s the length of that climb?”.
         It provides the full segment data needed for summaries, comparisons, or analysis.
         DESC;
 

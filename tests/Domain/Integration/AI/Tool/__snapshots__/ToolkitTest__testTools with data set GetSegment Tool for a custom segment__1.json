@@ -1,0 +1,9 @@
+{
+    "id": "segment-custom",
+    "name": "Segment",
+    "sportType": "Ride",
+    "distanceInKilometer": 1,
+    "isFavourite": false,
+    "climbCategory": null,
+    "stravaUrl": null
+}

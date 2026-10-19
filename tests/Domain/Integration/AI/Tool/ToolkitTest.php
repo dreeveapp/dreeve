@@ -5,6 +5,7 @@ namespace App\Tests\Domain\Integration\AI\Tool;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\Lap\ActivityLapRepository;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\SportType\SportType;
@@ -30,9 +31,6 @@ use App\Domain\Integration\AI\Tool\GetFtpHistory;
 use App\Domain\Integration\AI\Tool\GetGear;
 use App\Domain\Integration\AI\Tool\GetMostRecentActivity;
 use App\Domain\Integration\AI\Tool\GetSegment;
-use App\Domain\Integration\AI\Tool\MakeStravaActivityLink;
-use App\Domain\Integration\AI\Tool\MakeStravaChallengeLink;
-use App\Domain\Integration\AI\Tool\MakeStravaSegmentLink;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
@@ -71,7 +69,7 @@ class ToolkitTest extends ContainerTestCase
     public function testItRegistersAllTools(): void
     {
         $this->assertCount(
-            16,
+            13,
             $this->getContainer()->get(ToolkitInterface::class)->tools(),
         );
     }
@@ -81,6 +79,11 @@ class ToolkitTest extends ContainerTestCase
         yield 'GetActivity Tool' => [
             GetActivity::class,
             ['123456789'],
+        ];
+
+        yield 'GetActivity Tool for an activity not on Strava' => [
+            GetActivity::class,
+            ['987654321'],
         ];
 
         yield 'GetActivityLaps Tool' => [
@@ -148,23 +151,8 @@ class ToolkitTest extends ContainerTestCase
             ['1'],
         ];
 
-        yield 'MakeStravaChallengeLink Tool' => [
-            MakeStravaChallengeLink::class,
-            ['tge-slug'],
-        ];
-
-        yield 'MakeStravaActivityLink Tool' => [
-            MakeStravaActivityLink::class,
-            ['1'],
-        ];
-
-        yield 'MakeStravaSegmentLink Tool' => [
-            MakeStravaSegmentLink::class,
-            ['1'],
-        ];
-
-        yield 'MakeStravaSegmentLink Tool for a custom segment' => [
-            MakeStravaSegmentLink::class,
+        yield 'GetSegment Tool for a custom segment' => [
+            GetSegment::class,
             ['custom'],
         ];
     }
@@ -180,6 +168,14 @@ class ToolkitTest extends ContainerTestCase
                 ->withGearId(GearId::fromUnprefixed('b12659861'))
                 ->withStartDateTime(SerializableDateTime::fromString('2025-01-01 02:00:00'))
                 ->withMovingTimeInSeconds(3600)
+                ->build(),
+            []
+        ));
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('987654321'))
+                ->withImportSource(ImportSource::FIT_FILE)
+                ->withStartDateTime(SerializableDateTime::fromString('2020-01-01 02:00:00'))
                 ->build(),
             []
         ));

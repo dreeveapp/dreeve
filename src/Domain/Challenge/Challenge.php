@@ -125,7 +125,7 @@ final class Challenge implements SupportsAITooling
             'id' => $this->getId()->toUnprefixedString(),
             'obtainedOn' => $this->getCreatedOn()->format('Y-m-d'),
             'name' => $this->getName(),
-            'slug' => $this->getSlug(),
+            'stravaUrl' => $this->getUrl(),
         ];
     }
 }
