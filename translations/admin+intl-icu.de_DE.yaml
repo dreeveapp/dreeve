@@ -219,7 +219,7 @@ Images: Bilder
 Import: Import
 'Import Strava data': 'Strava-Daten importieren'
 'Import activities': 'Aktivitäten importieren'
-'Import behaviour': 'Importverhalten'
+'Import behaviour': Importverhalten
 'Import pending': 'Import ausstehend'
 'Import segment details': 'Segmentdetails importieren'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Segmentdetails importieren, damit Segmentkarten angezeigt werden können. Dies erfordert einen zusätzlichen Strava-API-Aufruf pro Segment und erhöht die Importzeit erheblich.'
@@ -252,7 +252,7 @@ Longitude: Längengrad
 'Maintenance tasks': Wartungsaufgaben
 Male: Männlich
 Manage: Verwalten
-'Map style': 'Kartenstil'
+'Map style': Kartenstil
 Maps: Karte
 'Mark as commute': 'Als Pendelfahrt markieren'
 'Mark as group activity': 'Als Gruppenaktivität markieren'
