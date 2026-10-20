@@ -551,6 +551,18 @@
             "distancePrecision": 0
         }
     },
+    "Boxing": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
     "Pilates": {
         "metric": {
             "distance": "km",

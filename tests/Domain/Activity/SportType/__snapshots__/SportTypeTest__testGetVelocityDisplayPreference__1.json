@@ -45,6 +45,7 @@
     "HighIntensityIntervalTraining": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
     "Elliptical": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
     "Dance": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
+    "Boxing": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
     "Pilates": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
     "Yoga": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
     "PhysicalTherapy": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",

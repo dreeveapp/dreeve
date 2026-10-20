@@ -72,6 +72,7 @@ enum SportType: string implements TranslatableInterface
     case HIIT = 'HighIntensityIntervalTraining';
     case ELLIPTICAL = 'Elliptical';
     case DANCE = 'Dance';
+    case BOXING = 'Boxing';
     // Mind & Body Sports.
     case PILATES = 'Pilates';
     case YOGA = 'Yoga';
@@ -216,6 +217,7 @@ enum SportType: string implements TranslatableInterface
             self::VOLLEYBALL => $translator->trans('Volleyball', locale: $locale),
             self::CRICKET => $translator->trans('Cricket', locale: $locale),
             self::DANCE => $translator->trans('Dance', locale: $locale),
+            self::BOXING => $translator->trans('Boxing', locale: $locale),
             self::SQUASH => $translator->trans('Squash', locale: $locale),
             self::STAIR_STEPPER => $translator->trans('Stair Stepper', locale: $locale),
             self::TABLE_TENNIS => $translator->trans('Table Tennis', locale: $locale),
@@ -280,6 +282,7 @@ enum SportType: string implements TranslatableInterface
             self::VOLLEYBALL => $translator->trans('Volleyball', locale: $locale),
             self::CRICKET => $translator->trans('Cricket', locale: $locale),
             self::DANCE => $translator->trans('Dance', locale: $locale),
+            self::BOXING => $translator->trans('Boxing', locale: $locale),
             self::SQUASH => $translator->trans('Squash', locale: $locale),
             self::STAIR_STEPPER => $translator->trans('Stair Stepper', locale: $locale),
             self::TABLE_TENNIS => $translator->trans('Table Tennis', locale: $locale),
@@ -318,7 +321,7 @@ enum SportType: string implements TranslatableInterface
             SportType::SQUASH, SportType::TABLE_TENNIS, SportType::TENNIS, SportType::PADEL => ActivityType::RACQUET_PADDLE_SPORTS,
             // FITNESS.
             SportType::CROSSFIT, SportType::WEIGHT_TRAINING, SportType::WORKOUT, SportType::STAIR_STEPPER,
-            SportType::VIRTUAL_ROW, SportType::HIIT, SportType::ELLIPTICAL, SportType::DANCE => ActivityType::FITNESS,
+            SportType::VIRTUAL_ROW, SportType::HIIT, SportType::ELLIPTICAL, SportType::DANCE, SportType::BOXING => ActivityType::FITNESS,
             // MIND_BODY_SPORTS.
             SportType::PILATES, SportType::YOGA, SportType::PHYSICAL_THERAPY => ActivityType::MIND_BODY_SPORTS,
             // OUTDOOR_SPORTS.
@@ -392,6 +395,7 @@ enum SportType: string implements TranslatableInterface
             self::BASKETBALL,
             self::VOLLEYBALL,
             self::DANCE,
+            self::BOXING,
             self::PADEL,
             self::PHYSICAL_THERAPY,
         ]);
@@ -420,6 +424,7 @@ enum SportType: string implements TranslatableInterface
             self::BASKETBALL,
             self::VOLLEYBALL,
             self::DANCE,
+            self::BOXING,
             self::PADEL,
             self::PHYSICAL_THERAPY,
         ]);

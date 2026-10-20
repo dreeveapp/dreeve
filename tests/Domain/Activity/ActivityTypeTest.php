@@ -24,7 +24,7 @@ class ActivityTypeTest extends ContainerTestCase
                 ActivityType::WINTER_SPORTS->value => [SportType::BACK_COUNTRY_SKI, SportType::ALPINE_SKI, SportType::NORDIC_SKI, SportType::ICE_SKATE, SportType::SNOWBOARD, SportType::SNOWSHOE],
                 ActivityType::SKATING->value => [SportType::SKATEBOARD, SportType::INLINE_SKATE, SportType::ROLLER_SKI],
                 ActivityType::RACQUET_PADDLE_SPORTS->value => [SportType::BADMINTON, SportType::PICKLE_BALL, SportType::RACQUET_BALL, SportType::SQUASH, SportType::TABLE_TENNIS, SportType::TENNIS, SportType::PADEL],
-                ActivityType::FITNESS->value => [SportType::CROSSFIT, SportType::WEIGHT_TRAINING, SportType::WORKOUT, SportType::STAIR_STEPPER, SportType::VIRTUAL_ROW, SportType::HIIT, SportType::ELLIPTICAL, SportType::DANCE],
+                ActivityType::FITNESS->value => [SportType::CROSSFIT, SportType::WEIGHT_TRAINING, SportType::WORKOUT, SportType::STAIR_STEPPER, SportType::VIRTUAL_ROW, SportType::HIIT, SportType::ELLIPTICAL, SportType::DANCE, SportType::BOXING],
                 ActivityType::MIND_BODY_SPORTS->value => [SportType::PILATES, SportType::YOGA, SportType::PHYSICAL_THERAPY],
                 ActivityType::OUTDOOR_SPORTS->value => [SportType::GOLF, SportType::ROCK_CLIMBING, SportType::SAIL],
                 ActivityType::TEAM_SPORTS->value => [SportType::BASKETBALL, SportType::SOCCER, SportType::VOLLEYBALL, SportType::CRICKET],
