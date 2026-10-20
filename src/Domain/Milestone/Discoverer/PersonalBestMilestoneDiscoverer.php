@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Milestone\Discoverer;
 
+use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\SportType\SportType;
@@ -13,7 +14,6 @@ use App\Domain\Milestone\MilestoneCategory;
 use App\Domain\Milestone\MilestoneIdFactory;
 use App\Domain\Milestone\Milestones;
 use App\Domain\Milestone\PreviousMilestone;
-use App\Domain\Settings\ActivityExclusion;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\ConvertableToMeter;
 use App\Infrastructure\Measurement\Time\Seconds;

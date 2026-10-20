@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Activity;
 
 use App\Domain\Activity\Activity;
+use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\DeleteActivities\DeleteActivities;
@@ -18,7 +19,6 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Domain\Import\ImportMode;
-use App\Domain\Settings\ActivityExclusion;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpFoundation\Request;

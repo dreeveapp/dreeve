@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Overview;
 
+use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
-use App\Domain\Settings\ActivityExclusion;
 use App\Infrastructure\Http\Request\Filters;
 
 final readonly class ActivityOverviewFilters extends Filters

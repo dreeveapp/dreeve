@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Settings;
 
+use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityId;
-use App\Domain\Settings\ActivityExclusion;
 use App\Domain\Settings\ActivityExclusionSettings;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsName;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Settings;
 
+use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 

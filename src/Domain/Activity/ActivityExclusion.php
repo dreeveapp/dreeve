@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Settings;
+namespace App\Domain\Activity;
 
+use App\Domain\Settings\SettingsName;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\UpdateActivity;
 
+use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Image\ImageDirectory;
 use App\Domain\Image\ImagePath;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Image\RemovedImage;
-use App\Domain\Settings\ActivityExclusion;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
