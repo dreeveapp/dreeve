@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Activity;
 
 use App\Domain\Activity\Activity;
+use App\Domain\Activity\ActivityExclusion;
+use App\Domain\Activity\ActivityExclusions;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ImportSource;
@@ -57,6 +59,7 @@ final class ActivityBuilder
     private bool $isCommute;
     private bool $isGroupActivity;
     private ?WorkoutType $workoutType;
+    private ActivityExclusions $excludedFrom;
 
     private function __construct()
     {
@@ -77,6 +80,7 @@ final class ActivityBuilder
         $this->isCommute = false;
         $this->isGroupActivity = false;
         $this->workoutType = null;
+        $this->excludedFrom = ActivityExclusions::empty();
         $this->externalReferenceId = ExternalReferenceId::fromString('1234567');
     }
 
@@ -160,6 +164,7 @@ final class ActivityBuilder
             isCommute: $this->isCommute,
             isGroupActivity: $this->isGroupActivity,
             workoutType: $this->workoutType,
+            excludedFrom: $this->excludedFrom,
         );
     }
 
@@ -404,6 +409,13 @@ final class ActivityBuilder
     public function withWorkoutType(WorkoutType $workoutType): self
     {
         $this->workoutType = $workoutType;
+
+        return $this;
+    }
+
+    public function withExcludedFrom(ActivityExclusion ...$exclusions): self
+    {
+        $this->excludedFrom = ActivityExclusions::fromArray($exclusions);
 
         return $this;
     }

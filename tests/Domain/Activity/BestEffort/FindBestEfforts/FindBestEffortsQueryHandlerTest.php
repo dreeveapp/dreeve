@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Activity\BestEffort\FindBestEfforts;
 
+use App\Domain\Activity\ActivityExclusion;
+use App\Domain\Activity\ActivityExclusions;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
@@ -11,8 +13,6 @@ use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\BestEffort\FindBestEfforts\FindBestEfforts;
 use App\Domain\Activity\BestEffort\FindBestEfforts\FindBestEffortsQueryHandler;
 use App\Domain\Activity\SportType\SportType;
-use App\Domain\Settings\SettingsName;
-use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -140,7 +140,10 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
             $response->getBestEfforts()->map(fn ($bestEffort): string => (string) $bestEffort->getActivityId())
         );
 
-        $this->getContainer()->get(SettingsRepository::class)->save(SettingsName::ACTIVITIES_EXCLUDED_FROM_BEST_EFFORTS, ['activity-2']);
+        $this->activityRepository->update(ActivityWithRawData::fromState(
+            $this->activityRepository->find(ActivityId::fromUnprefixed('2'))->withExcludedFrom(ActivityExclusions::fromArray([ActivityExclusion::BEST_EFFORTS])),
+            []
+        ));
         $response = $this->queryHandler->handle(new FindBestEfforts());
 
         $this->assertEquals(
@@ -166,7 +169,7 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->queryHandler = new FindBestEffortsQueryHandler($this->getConnection(), $this->getContainer()->get(SettingsRepository::class));
+        $this->queryHandler = new FindBestEffortsQueryHandler($this->getConnection());
         $this->activityRepository = $this->getContainer()->get(ActivityRepository::class);
         $this->activityBestEffortRepository = $this->getContainer()->get(ActivityBestEffortRepository::class);
     }

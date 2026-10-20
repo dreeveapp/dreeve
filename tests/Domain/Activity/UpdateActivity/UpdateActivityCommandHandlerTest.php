@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Activity\UpdateActivity;
 
+use App\Domain\Activity\ActivityExclusion;
+use App\Domain\Activity\ActivityExclusions;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
@@ -11,8 +13,6 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\UpdateActivity\UpdateActivity;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
-use App\Domain\Settings\SettingsName;
-use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Tests\ContainerTestCase;
@@ -24,7 +24,6 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
     private CommandBus $commandBus;
     private ActivityRepository $activityRepository;
     private FilesystemOperator $fileStorage;
-    private SettingsRepository $settingsRepository;
 
     public function testHandle(): void
     {
@@ -36,7 +35,6 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
                 ->build(),
             rawData: [],
         ));
-        $this->settingsRepository->save(SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS, ['activity-2']);
 
         $this->commandBus->dispatch(UpdateActivity::fromPayload([
             'activityId' => 'activity-1',
@@ -62,13 +60,9 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
         $this->assertSame(500, $activity->getCalories());
         $this->assertTrue($activity->isCommute());
         $this->assertTrue($activity->isGroupActivity());
-        $this->assertSame(
-            ['activity-2', 'activity-1'],
-            $this->settingsRepository->find(SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS),
-        );
-        $this->assertSame(
-            ['activity-1'],
-            $this->settingsRepository->find(SettingsName::ACTIVITIES_EXCLUDED_FROM_BEST_EFFORTS),
+        $this->assertEquals(
+            ActivityExclusions::fromArray([ActivityExclusion::PEAK_POWER_OUTPUTS, ActivityExclusion::BEST_EFFORTS]),
+            $activity->getExcludedFrom(),
         );
     }
 
@@ -77,21 +71,21 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
         $this->activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withExcludedFrom(ActivityExclusion::PEAK_POWER_OUTPUTS, ActivityExclusion::BEST_EFFORTS)
                 ->build(),
             rawData: [],
         ));
-        $this->settingsRepository->save(SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS, ['activity-1', 'activity-2']);
 
         $this->commandBus->dispatch(UpdateActivity::fromPayload([
             'activityId' => 'activity-1',
             'name' => 'Updated activity',
             'sportType' => 'Ride',
-            'excludedFrom' => ['peakPowerOutputs' => 'false'],
+            'excludedFrom' => ['peakPowerOutputs' => 'false', 'bestEfforts' => 'true'],
         ]));
 
-        $this->assertSame(
-            ['activity-2'],
-            $this->settingsRepository->find(SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS),
+        $this->assertEquals(
+            ActivityExclusions::fromArray([ActivityExclusion::BEST_EFFORTS]),
+            $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getExcludedFrom(),
         );
     }
 
@@ -104,7 +98,6 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
                 ->build(),
             rawData: [],
         ));
-        $this->settingsRepository->save(SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS, ['activity-1']);
 
         $this->commandBus->dispatch(UpdateActivity::fromPayload([
             'activityId' => 'activity-1',
@@ -114,10 +107,6 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
         ]));
 
         $this->assertNull($this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getCalories());
-        $this->assertSame(
-            ['activity-1'],
-            $this->settingsRepository->find(SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS),
-        );
     }
 
     public function testHandleLeavesImagesUntouchedWhenImagesKeyIsMissing(): void
@@ -270,6 +259,5 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
         $this->commandBus = $this->getContainer()->get(CommandBus::class);
         $this->activityRepository = $this->getContainer()->get(ActivityRepository::class);
         $this->fileStorage = $this->getContainer()->get('file.storage');
-        $this->settingsRepository = $this->getContainer()->get(SettingsRepository::class);
     }
 }

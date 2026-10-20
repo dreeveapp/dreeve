@@ -91,7 +91,7 @@ final readonly class ManageActivityFormRequestHandler
             'exclusions' => array_map(
                 fn (ActivityExclusion $exclusion): array => [
                     'exclusion' => $exclusion,
-                    'isExcluded' => $this->settingsRepository->activityExclusions()->getExcludedActivityIds($exclusion)->has($activity->getId()),
+                    'isExcluded' => $activity->getExcludedFrom()->has($exclusion),
                 ],
                 ActivityExclusion::cases(),
             ),

@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\UpdateActivity;
 
-use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Image\ImageDirectory;
 use App\Domain\Image\ImagePath;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Image\RemovedImage;
-use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 
@@ -20,7 +18,6 @@ final readonly class UpdateActivityCommandHandler implements CommandHandler
     public function __construct(
         private ActivityRepository $activityRepository,
         private ImageStorage $imageStorage,
-        private SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -39,7 +36,8 @@ final readonly class UpdateActivityCommandHandler implements CommandHandler
             ->withGear($command->getGearId())
             ->withCalories($command->getCalories())
             ->withCommute($command->isCommute())
-            ->withGroupActivity($command->isGroupActivity());
+            ->withGroupActivity($command->isGroupActivity())
+            ->withExcludedFrom($command->getExcludedFrom());
 
         $newImages = $command->getNewImages();
         $removedImages = $command->getRemovedImages();
@@ -82,20 +80,6 @@ final readonly class UpdateActivityCommandHandler implements CommandHandler
 
         foreach ($imagePathsThatNeedRemoval as $path) {
             $this->imageStorage->remove($path);
-        }
-
-        foreach (ActivityExclusion::cases() as $exclusion) {
-            $isExcluded = $command->isExcludedFrom($exclusion);
-            $excludedActivityIds = $this->settingsRepository->activityExclusions()->getExcludedActivityIds($exclusion);
-            if (null === $isExcluded || $isExcluded === $excludedActivityIds->has($activity->getId())) {
-                continue;
-            }
-
-            $excludedActivityIds = $excludedActivityIds->without($activity->getId());
-            $this->settingsRepository->save(
-                name: $exclusion->getSettingsName(),
-                value: $isExcluded ? $excludedActivityIds->add($activity->getId()) : $excludedActivityIds,
-            );
         }
     }
 }

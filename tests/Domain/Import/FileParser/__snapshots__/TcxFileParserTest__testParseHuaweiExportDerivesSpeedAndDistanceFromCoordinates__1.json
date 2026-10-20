@@ -35,6 +35,7 @@
         "isCommute": 0,
         "isGroupActivity": 0,
         "workoutType": null,
+        "excludedFrom": null,
         "startingCoordinateLatitude": 43.633,
         "startingCoordinateLongitude": 3.9177
     }

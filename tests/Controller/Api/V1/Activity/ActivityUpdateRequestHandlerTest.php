@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Api\V1\Activity;
 
+use App\Domain\Activity\ActivityExclusion;
+use App\Domain\Activity\ActivityExclusions;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
@@ -71,6 +73,7 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
         $this->assertTrue($activity->isCommute());
         $this->assertTrue($activity->isGroupActivity());
         $this->assertSame(['/files/activities/9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11.jpg'], $activity->getLocalImagePaths());
+        $this->assertEquals(ActivityExclusions::fromArray([ActivityExclusion::BEST_EFFORTS]), $activity->getExcludedFrom());
     }
 
     public function testItClearsTheDescription(): void
@@ -223,6 +226,7 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
                 ->withIsCommute(true)
                 ->withIsGroupActivity(true)
                 ->withLocalImagePaths('files/activities/9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11.jpg')
+                ->withExcludedFrom(ActivityExclusion::BEST_EFFORTS)
                 ->build(),
             rawData: [],
         ));

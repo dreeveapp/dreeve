@@ -140,13 +140,13 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             elevation, startingCoordinateLatitude, startingCoordinateLongitude, calories, kilojoules,
             averagePower, maxPower, averageSpeed, maxSpeed, averageHeartRate, maxHeartRate,
             averageCadence,movingTimeInSeconds, elapsedTimeInSeconds, deviceName, connectedSensors, totalImageCount, localImagePaths,
-            polyline, routeGeography, weather, gearId, data, isCommute, isGroupActivity, workoutType
+            polyline, routeGeography, weather, gearId, data, isCommute, isGroupActivity, workoutType, excludedFrom
         ) VALUES(
             :activityId, :startDateTime, :sportType, :activityType, :worldType, :importSource, :externalReferenceId, :name, :description, :distance,
             :elevation, :startingCoordinateLatitude, :startingCoordinateLongitude, :calories, :kilojoules,
             :averagePower, :maxPower, :averageSpeed, :maxSpeed, :averageHeartRate, :maxHeartRate,
             :averageCadence, :movingTimeInSeconds, :elapsedTimeInSeconds, :deviceName, :connectedSensors, :totalImageCount, :localImagePaths,
-            :polyline, :routeGeography, :weather, :gearId, :data, :isCommute, :isGroupActivity, :workoutType
+            :polyline, :routeGeography, :weather, :gearId, :data, :isCommute, :isGroupActivity, :workoutType, :excludedFrom
         )';
 
         $activity = $activityWithRawData->getActivity();
@@ -187,6 +187,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'isCommute' => (int) $activity->isCommute(),
             'isGroupActivity' => (int) $activity->isGroupActivity(),
             'workoutType' => $activity->getWorkoutType()?->value,
+            'excludedFrom' => $activity->getExcludedFrom()->isEmpty() ? null : Json::encode($activity->getExcludedFrom()),
         ]);
 
         $this->eventBus->publishEvents($activity->getRecordedEvents());
@@ -223,7 +224,8 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
                     data = :data,
                     isCommute = :isCommute,
                     isGroupActivity = :isGroupActivity,
-                    workoutType = :workoutType    
+                    workoutType = :workoutType,
+                    excludedFrom = :excludedFrom
                     WHERE activityId = :activityId';
 
         $activity = $activityWithRawData->getActivity();
@@ -257,6 +259,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'isCommute' => (int) $activity->isCommute(),
             'isGroupActivity' => (int) $activity->isGroupActivity(),
             'workoutType' => $activity->getWorkoutType()?->value,
+            'excludedFrom' => $activity->getExcludedFrom()->isEmpty() ? null : Json::encode($activity->getExcludedFrom()),
             'data' => Json::encode($this->cleanData($activityWithRawData->getRawData())),
         ]);
 

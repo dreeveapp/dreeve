@@ -126,6 +126,8 @@ final class Activity
         private readonly bool $isGroupActivity,
         #[ORM\Column(type: 'string', nullable: true)]
         private readonly ?WorkoutType $workoutType,
+        #[ORM\Column(type: 'json', nullable: true)]
+        private readonly ActivityExclusions $excludedFrom,
     ) {
     }
 
@@ -254,6 +256,7 @@ final class Activity
             isCommute: $isCommute,
             isGroupActivity: $isGroupActivity,
             workoutType: $workoutType,
+            excludedFrom: ActivityExclusions::empty(),
         );
         $activity->recordThat(new ActivityWasAdded($activity->getStartDate()));
         if ($activity->hasMappableRoute()) {
@@ -300,6 +303,7 @@ final class Activity
         bool $isCommute,
         bool $isGroupActivity,
         ?WorkoutType $workoutType,
+        ActivityExclusions $excludedFrom,
     ): self {
         return new self(
             activityId: $activityId,
@@ -334,7 +338,8 @@ final class Activity
             gearId: $gearId,
             isCommute: $isCommute,
             isGroupActivity: $isGroupActivity,
-            workoutType: $workoutType
+            workoutType: $workoutType,
+            excludedFrom: $excludedFrom,
         );
     }
 
@@ -770,6 +775,18 @@ final class Activity
         ]));
     }
 
+    public function getExcludedFrom(): ActivityExclusions
+    {
+        return $this->excludedFrom;
+    }
+
+    public function withExcludedFrom(ActivityExclusions $excludedFrom): self
+    {
+        return $this->recordUpdate(clone ($this, [
+            'excludedFrom' => $excludedFrom,
+        ]));
+    }
+
     public function isZwiftRide(): bool
     {
         return WorldType::ZWIFT === $this->getWorldType();
@@ -893,6 +910,7 @@ final class Activity
             'isCommute' => $this->isCommute,
             'isGroupActivity' => $this->isGroupActivity,
             'workoutType' => $this->workoutType?->value,
+            'excludedFrom' => $this->excludedFrom->map(static fn (ActivityExclusion $exclusion): string => $exclusion->value),
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\Activity\BestEffort;
 
+use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
@@ -12,8 +13,6 @@ use App\Domain\Activity\BestEffort\DbalActivityBestEffortRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
-use App\Domain\Settings\SettingsName;
-use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -167,7 +166,13 @@ class DbalActivityBestEffortRepositoryTest extends ContainerTestCase
         );
 
         // Once the fastest activity is excluded, the slowest one takes over its record.
-        $this->getContainer()->get(SettingsRepository::class)->save(SettingsName::ACTIVITIES_EXCLUDED_FROM_BEST_EFFORTS, ['activity-fastest']);
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('fastest'))
+                ->withExcludedFrom(ActivityExclusion::BEST_EFFORTS)
+                ->build(),
+            []
+        ));
 
         $this->assertEquals(
             ActivityBestEfforts::fromArray([$slowestSharedBestEffort, $slowestOnlyBestEffort]),
@@ -230,7 +235,6 @@ class DbalActivityBestEffortRepositoryTest extends ContainerTestCase
         parent::setUp();
         $this->activityBestEffortRepository = new DbalActivityBestEffortRepository(
             $this->getConnection(),
-            $this->getContainer()->get(SettingsRepository::class),
         );
     }
 }

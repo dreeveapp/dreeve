@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\V1\Activity;
 
 use App\Application\AppUrl;
+use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
@@ -80,6 +81,9 @@ final readonly class ActivityUpdateRequestHandler
                 'calories' => $activity->getCalories(),
                 'isCommute' => $activity->isCommute(),
                 'isGroupActivity' => $activity->isGroupActivity(),
+                'excludedFrom' => array_fill_keys($activity->getExcludedFrom()->map(
+                    static fn (ActivityExclusion $exclusion): string => $exclusion->value
+                ), true),
                 ...$fields,
             ]);
         } catch (CouldNotDeserializeCommand $e) {

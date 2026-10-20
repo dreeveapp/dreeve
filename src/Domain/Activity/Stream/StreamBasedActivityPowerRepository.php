@@ -59,7 +59,7 @@ final readonly class StreamBasedActivityPowerRepository implements ActivityPower
                 AND m.metricType = :metricType
                 AND a.sportType IN(:sportTypes)
                 AND a.startDateTime >= :dateFrom AND a.startDateTime <= :dateTill
-                AND m.activityId NOT IN(:excludedActivityIds)';
+                AND NOT EXISTS (SELECT 1 FROM json_each(a.excludedFrom) WHERE json_each.value = :excludedFrom)';
 
         $params = [
             'streamType' => StreamType::WATTS->value,
@@ -67,11 +67,10 @@ final readonly class StreamBasedActivityPowerRepository implements ActivityPower
             'sportTypes' => $sportTypes->map(fn (SportType $sportType) => $sportType->value),
             'dateFrom' => $dateRange->getFrom()->format('Y-m-d 00:00:00'),
             'dateTill' => $dateRange->getTill()->format('Y-m-d 23:59:59'),
-            'excludedActivityIds' => $this->settingsRepository->activityExclusions()->getExcludedActivityIds(ActivityExclusion::PEAK_POWER_OUTPUTS)->map(fn (ActivityId $activityId): string => (string) $activityId) ?: ['unexisting-id'],
+            'excludedFrom' => ActivityExclusion::PEAK_POWER_OUTPUTS->value,
         ];
         $types = [
             'sportTypes' => ArrayParameterType::STRING,
-            'excludedActivityIds' => ArrayParameterType::STRING,
         ];
 
         $results = $this->connection->executeQuery($sql, $params, $types)->fetchAllAssociative();

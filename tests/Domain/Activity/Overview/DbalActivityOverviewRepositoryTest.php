@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Activity\Overview;
 
+use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ActivityRepository;
@@ -19,8 +20,6 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\DbalGearRepository;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
-use App\Domain\Settings\SettingsName;
-use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
@@ -436,6 +435,7 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
                 ->withDeviceName('Wahoo Elemnt')
                 ->withImportSource(ImportSource::FIT_FILE)
                 ->withStartDateTime(SerializableDateTime::fromString('2026-06-02 08:00:00'))
+                ->withExcludedFrom(ActivityExclusion::PEAK_POWER_OUTPUTS)
                 ->build(),
             [],
         ));
@@ -449,7 +449,6 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
                 ->build(),
             [],
         ));
-        $this->getContainer()->get(SettingsRepository::class)->save(SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS, ['activity-2']);
     }
 
     private function seedSearchableActivities(): void
@@ -494,7 +493,6 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         );
         $this->activityOverviewRepository = new DbalActivityOverviewRepository(
             $this->getConnection(),
-            $this->getContainer()->get(SettingsRepository::class),
         );
         $this->gearRepository = new DbalGearRepository(
             $this->getConnection(),

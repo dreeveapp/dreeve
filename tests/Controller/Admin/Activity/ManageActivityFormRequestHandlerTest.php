@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller\Admin\Activity;
 
+use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
@@ -13,7 +14,6 @@ use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearType;
 use App\Domain\Import\ImportMode;
 use App\Domain\Settings\SettingsGroup;
-use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
@@ -198,14 +198,10 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
                 ->withIsCommute(true)
                 ->withIsGroupActivity(true)
                 ->withLocalImagePaths('activity-1/image.jpg')
+                ->withExcludedFrom(ActivityExclusion::PEAK_POWER_OUTPUTS)
                 ->build(),
             [],
         ));
-
-        static::getContainer()->get(SettingsRepository::class)->save(
-            SettingsName::ACTIVITIES_EXCLUDED_FROM_PEAK_POWER_OUTPUTS,
-            ['activity-1'],
-        );
 
         $this->client->loginUser($this->adminUser());
 

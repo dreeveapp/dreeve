@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Activity\UpdateActivity;
 
 use App\Domain\Activity\ActivityExclusion;
+use App\Domain\Activity\ActivityExclusions;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\SportType\SportType;
@@ -43,7 +44,7 @@ class UpdateActivityTest extends TestCase
         $this->assertSame(500, $command->getCalories());
         $this->assertTrue($command->isCommute());
         $this->assertTrue($command->isGroupActivity());
-        $this->assertTrue($command->isExcludedFrom(ActivityExclusion::PEAK_POWER_OUTPUTS));
+        $this->assertEquals(ActivityExclusions::fromArray([ActivityExclusion::PEAK_POWER_OUTPUTS]), $command->getExcludedFrom());
     }
 
     public function testFromPayloadWithoutImagesKeyLeavesImagesUntouched(): void
@@ -56,7 +57,7 @@ class UpdateActivityTest extends TestCase
 
         $this->assertSame([], $command->getNewImages());
         $this->assertSame([], $command->getRemovedImages());
-        $this->assertNull($command->isExcludedFrom(ActivityExclusion::PEAK_POWER_OUTPUTS));
+        $this->assertEquals(ActivityExclusions::empty(), $command->getExcludedFrom());
     }
 
     public function testFromPayloadWithEmptyImages(): void

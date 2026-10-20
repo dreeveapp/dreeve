@@ -11,19 +11,16 @@ use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
-use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
-use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 
 final readonly class DbalActivityOverviewRepository extends DbalRepository implements ActivityOverviewRepository
 {
     public function __construct(
         Connection $connection,
-        private SettingsRepository $settingsRepository,
     ) {
         parent::__construct($connection);
     }
@@ -84,12 +81,8 @@ final readonly class DbalActivityOverviewRepository extends DbalRepository imple
             }
             if (($excludedFrom = $filters->getExcludedFrom()) instanceof ActivityExclusion) {
                 $builder
-                    ->andWhere('a.activityId IN (:excludedActivityIds)')
-                    ->setParameter(
-                        'excludedActivityIds',
-                        $this->settingsRepository->activityExclusions()->getExcludedActivityIds($excludedFrom)->map(fn (ActivityId $activityId): string => (string) $activityId) ?: ['unexisting-id'],
-                        ArrayParameterType::STRING,
-                    );
+                    ->andWhere('EXISTS (SELECT 1 FROM json_each(a.excludedFrom) WHERE json_each.value = :excludedFrom)')
+                    ->setParameter('excludedFrom', $excludedFrom->value);
             }
         }
 

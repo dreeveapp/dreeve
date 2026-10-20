@@ -3,6 +3,8 @@
 namespace App\Tests\Domain\Activity;
 
 use App\Domain\Activity\Activity;
+use App\Domain\Activity\ActivityExclusion;
+use App\Domain\Activity\ActivityExclusions;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityImagesHaveBeenUpdated;
 use App\Domain\Activity\ActivityName;
@@ -380,6 +382,9 @@ class ActivityTest extends TestCase
         yield 'group activity' => [fn (Activity $activity): Activity => $activity->withGroupActivity(true)];
         yield 'workout type' => [fn (Activity $activity): Activity => $activity->withWorkoutType(WorkoutType::RACE)];
         yield 'weather' => [fn (Activity $activity): Activity => $activity->withWeather(Weather::fromState(['temperature' => 18.3]))];
+        yield 'excluded from' => [fn (Activity $activity): Activity => $activity->withExcludedFrom(
+            ActivityExclusions::fromArray([ActivityExclusion::BEST_EFFORTS])
+        )];
     }
 
     #[DataProvider('provideNonUpdates')]
@@ -404,6 +409,7 @@ class ActivityTest extends TestCase
         yield 'the same start date' => [fn (Activity $activity): Activity => $activity->withStartDateTime(
             SerializableDateTime::fromString('2023-10-10')
         )];
+        yield 'the same exclusions' => [fn (Activity $activity): Activity => $activity->withExcludedFrom(ActivityExclusions::empty())];
     }
 
     public function testItShouldRecordThatTheActivityWasUpdatedOnlyOnce(): void
