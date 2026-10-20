@@ -22,6 +22,17 @@ class EnumTwigExtensionTest extends ContainerTestCase
         }
     }
 
+    public function testGroupSportTypesByActivityType(): void
+    {
+        $this->assertSame(
+            [
+                ['activityType' => ActivityType::WALK, 'sportTypes' => [SportType::WALK, SportType::HIKE]],
+                ['activityType' => ActivityType::RUN, 'sportTypes' => [SportType::RUN, SportType::TRAIL_RUN]],
+            ],
+            $this->enumTwigExtension->groupSportTypesByActivityType([SportType::WALK, SportType::RUN, SportType::HIKE, SportType::TRAIL_RUN]),
+        );
+    }
+
     public function testGetActivityTypeFrom(): void
     {
         $this->assertSame(

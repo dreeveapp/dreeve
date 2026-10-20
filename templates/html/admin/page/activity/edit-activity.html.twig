@@ -38,9 +38,10 @@
                     } %}
                         {% block control %}
                             <select id="activity-sport-type" name="sportType" required {{ disabled ? 'disabled' }}>
-                                {% for sportType in sportTypes %}
-                                    <option value="{{ sportType.value }}" {{ sportType == activity.getSportType() ? 'selected' }}>{{ sportType|trans }}</option>
-                                {% endfor %}
+                                {% include 'html/admin/component/sport-type-select-options.html.twig' with {
+                                    sportTypes: sportTypes,
+                                    selected: activity.getSportType(),
+                                } only %}
                             </select>
                         {% endblock %}
                     {% endembed %}

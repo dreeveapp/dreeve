@@ -31,6 +31,24 @@ final readonly class EnumTwigExtension
         );
     }
 
+    /**
+     * @param iterable<SportType> $sportTypes
+     *
+     * @return list<array{activityType: ActivityType, sportTypes: list<SportType>}>
+     */
+    #[AsTwigFunction('sportTypesGroupedByActivityType')]
+    public function groupSportTypesByActivityType(iterable $sportTypes): array
+    {
+        $groups = [];
+        foreach ($sportTypes as $sportType) {
+            $activityType = $sportType->getActivityType();
+            $groups[$activityType->value] ??= ['activityType' => $activityType, 'sportTypes' => []];
+            $groups[$activityType->value]['sportTypes'][] = $sportType;
+        }
+
+        return array_values($groups);
+    }
+
     #[AsTwigFunction('activityTypeFrom')]
     public function getActivityTypeFrom(string $activityType): ActivityType
     {

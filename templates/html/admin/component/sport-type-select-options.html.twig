@@ -1,0 +1,10 @@
+{% set selected = selected ?? null %}
+{% set singular = singular ?? false %}
+
+{% for group in sportTypesGroupedByActivityType(sportTypes) %}
+    <optgroup label="{{ group.activityType|trans }}">
+        {% for sportType in group.sportTypes %}
+            <option value="{{ sportType.value }}" {{ sportType == selected ? 'selected' }}>{{ singular ? sportType|transSingular : sportType|trans }}</option>
+        {% endfor %}
+    </optgroup>
+{% endfor %}

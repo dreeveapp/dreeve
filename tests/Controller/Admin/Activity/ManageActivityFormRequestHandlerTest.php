@@ -72,10 +72,12 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
             $crawler->filter('select#activity-workout-type option')->each(fn ($option) => $option->text()),
         );
 
-        // Every sport type can be picked, in the order configured by the user.
         $sportTypeOptions = $crawler->filter('select#activity-sport-type option')->each(fn ($option) => $option->attr('value'));
         $this->assertCount(count(SportType::cases()), $sportTypeOptions);
-        $this->assertSame([SportType::WALK->value, SportType::RUN->value], array_slice($sportTypeOptions, 0, 2));
+        $this->assertSame(
+            [SportType::WALK->value, SportType::HIKE->value, SportType::RUN->value],
+            array_slice($sportTypeOptions, 0, 3),
+        );
 
         // Distance and elevation are entered in the configured unit system.
         $this->assertStringContainsString('(km)', $crawler->filter('label[for="activity-distance"]')->text());

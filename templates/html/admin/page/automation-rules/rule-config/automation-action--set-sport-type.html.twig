@@ -1,8 +1,8 @@
 <div>
     <label class="mt-0! text-xs">{{ "Sport type"|trans({}, 'admin') }}</label>
     <select name="{{ namePrefix }}[sportType]" data-repeater-field="config.sportType" class="mt-0">
-        {% for sportType in enum('App\\Domain\\Activity\\SportType\\SportType').cases() %}
-            <option value="{{ sportType.value }}">{{ sportType|trans }}</option>
-        {% endfor %}
+        {% include 'html/admin/component/sport-type-select-options.html.twig' with {
+            sportTypes: enum('App\\Domain\\Activity\\SportType\\SportType').cases(),
+        } only %}
     </select>
 </div>

@@ -39,9 +39,11 @@
                     <div>
                         <label for="activity-sport-type">{{ "Sport type"|trans({}, 'admin') }}</label>
                         <select id="activity-sport-type" name="sportType" required>
-                            {% for sportType in sportTypes %}
-                                <option value="{{ sportType.value }}" {{ activity and sportType == activity.getSportType() ? 'selected' }}>{{ sportType|transSingular }}</option>
-                            {% endfor %}
+                            {% include 'html/admin/component/sport-type-select-options.html.twig' with {
+                                sportTypes: sportTypes,
+                                selected: activity ? activity.getSportType(),
+                                singular: true,
+                            } only %}
                         </select>
                     </div>
                     <div>
