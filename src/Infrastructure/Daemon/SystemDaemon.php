@@ -66,109 +66,72 @@ final class SystemDaemon implements Daemon
 
     public function configureCron(): void
     {
-        $actions = [];
-        $processedCronAction = [];
+        /** @var list<array{key: string, mutexTtl: int, expression: string, command: string}> $jobs */
+        $jobs = [];
         /** @var CronAction $cronAction */
         foreach ($this->settingsRepository->daemon()->getConfiguredCronActions() as $cronAction) {
             if (!$cronAction->supportsImportMode($this->importMode)) {
                 continue;
             }
-            $processedCronAction[] = $cronAction;
-            $actions[] = new Action(
-                key: $cronAction->getId()->value,
-                mutexTtl: 1200,
-                expression: (string) $cronAction->getExpression(),
-                performer: function () use ($cronAction): PromiseInterface {
-                    $process = new CronProcess(
-                        cronActionId: $cronAction->getId()->value,
-                        clock: $this->clock,
-                        output: $this->getConsoleOutput(),
-                        command: $cronAction->getCommand(),
-                    );
-                    $process->start();
-
-                    return resolve(true);
-                }
-            );
+            $jobs[] = [
+                'key' => $cronAction->getId()->value,
+                'mutexTtl' => 1200,
+                'expression' => (string) $cronAction->getExpression(),
+                'command' => $cronAction->getCommand(),
+            ];
         }
-
-        $extraConfiguredCronActionsOutput = [];
 
         if ($this->importMode->isFiles()) {
-            $extraConfiguredCronActionsOutput[] = sprintf('<info> - runFileImport: %s</info>', self::CRON_EVERY_5_MINUTES);
-            $actions[] = new Action(
-                key: 'runFileImport',
-                mutexTtl: 300,
-                expression: self::CRON_EVERY_5_MINUTES,
-                performer: function (): PromiseInterface {
-                    $process = new CronProcess(
-                        cronActionId: 'runFileImport',
-                        clock: $this->clock,
-                        output: $this->getConsoleOutput(),
-                        command: sprintf('bin/console %s', RunFileImportConsoleCommand::NAME)
-                    );
-                    $process->start();
-
-                    return resolve(true);
-                }
-            );
-
-            $extraConfiguredCronActionsOutput[] = sprintf('<info> - runAutomationRulesBackfill: %s</info>', self::CRON_EVERY_5_MINUTES);
-            $actions[] = new Action(
-                key: 'runAutomationRulesBackfill',
-                mutexTtl: 300,
-                expression: self::CRON_EVERY_5_MINUTES,
-                performer: function (): PromiseInterface {
-                    $process = new CronProcess(
-                        cronActionId: 'runAutomationRulesBackfill',
-                        clock: $this->clock,
-                        output: $this->getConsoleOutput(),
-                        command: sprintf('bin/console %s', RunAutomationRulesBackfillConsoleCommand::NAME)
-                    );
-                    $process->start();
-
-                    return resolve(true);
-                }
-            );
+            $jobs[] = [
+                'key' => 'runFileImport',
+                'mutexTtl' => 300,
+                'expression' => self::CRON_EVERY_5_MINUTES,
+                'command' => sprintf('bin/console %s', RunFileImportConsoleCommand::NAME),
+            ];
+            $jobs[] = [
+                'key' => 'runAutomationRulesBackfill',
+                'mutexTtl' => 300,
+                'expression' => self::CRON_EVERY_5_MINUTES,
+                'command' => sprintf('bin/console %s', RunAutomationRulesBackfillConsoleCommand::NAME),
+            ];
         }
 
-        $extraConfiguredCronActionsOutput[] = sprintf('<info> - pruneRenderCache: %s</info>', self::CRON_DAILY);
-        $actions[] = new Action(
-            key: 'pruneRenderCache',
-            mutexTtl: 300,
-            expression: self::CRON_DAILY,
-            performer: function (): PromiseInterface {
-                $process = new CronProcess(
-                    cronActionId: 'pruneRenderCache',
-                    clock: $this->clock,
-                    output: $this->getConsoleOutput(),
-                    command: sprintf('bin/console %s', PruneRenderCacheConsoleCommand::NAME),
-                );
-                $process->start();
-
-                return resolve(true);
-            }
-        );
+        $jobs[] = [
+            'key' => 'pruneRenderCache',
+            'mutexTtl' => 300,
+            'expression' => self::CRON_DAILY,
+            'command' => sprintf('bin/console %s', PruneRenderCacheConsoleCommand::NAME),
+        ];
 
         $webhookConfig = $this->settingsRepository->import()->getWebhookConfig();
         if ($this->importMode->isStravaApi() && $webhookConfig->isEnabled()) {
-            $extraConfiguredCronActionsOutput[] = sprintf('<info> - processStravaWebhooks: %s</info>', $webhookConfig->getCronExpression());
+            $jobs[] = [
+                'key' => 'processStravaWebhooks',
+                'mutexTtl' => 60,
+                'expression' => (string) $webhookConfig->getCronExpression(),
+                'command' => sprintf('bin/console %s', ProcessStravaWebhooksConsoleCommand::NAME),
+            ];
+        }
+
+        $actions = [];
+        $output = [];
+        foreach ($jobs as $job) {
             $actions[] = new Action(
-                key: 'processStravaWebhooks',
-                mutexTtl: 60,
-                expression: (string) $webhookConfig->getCronExpression(),
-                performer: function (): PromiseInterface {
-                    $process = new CronProcess(
-                        cronActionId: 'processStravaWebhooks',
+                key: $job['key'],
+                mutexTtl: $job['mutexTtl'],
+                expression: $job['expression'],
+                performer: function () use ($job): PromiseInterface {
+                    new CronProcess(
+                        cronActionId: $job['key'],
                         clock: $this->clock,
                         output: $this->getConsoleOutput(),
-                        command: sprintf('bin/console %s', ProcessStravaWebhooksConsoleCommand::NAME)
-                    );
-                    $process->start();
+                        command: $job['command'],
+                    )->start();
 
                     return resolve(true);
                 }
             );
+            $output[] = sprintf('<info> - %s: %s</info>', $job['key'], $job['expression']);
         }
 
         \WyriHaximus\React\Cron::create(...$actions)->on('error', function (\Throwable $throwable): void {
@@ -176,12 +139,6 @@ final class SystemDaemon implements Daemon
         });
 
         $this->getConsoleOutput()->writeln(sprintf('<info>%s</info>', 'Cron configured'));
-        $this->getConsoleOutput()->writeln([
-            ...array_map(
-                fn (CronAction $action): string => \sprintf('<info> - %s: %s</info>', $action->getId()->value, $action->getExpression()),
-                $processedCronAction
-            ),
-            ...$extraConfiguredCronActionsOutput,
-        ]);
+        $this->getConsoleOutput()->writeln($output);
     }
 }
