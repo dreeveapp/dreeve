@@ -68,6 +68,7 @@ Apply: Toepassen
 'Are you sure you want to delete the import of {name}?': 'Ben je zeker dat je de import van {name} wil verwijderen?'
 'Are you sure you want to delete the {component} component?': 'Ben je zeker dat je het onderdeel {component} wil verwijderen?'
 'Are you sure you want to delete the {rule} rule?': 'Ben je zeker dat je de regel {rule} wil verwijderen?'
+'Are you sure you want to delete {count} activities?': 'Are you sure you want to delete {count} activities?'
 'Are you sure you want to delete {name}?': 'Ben je zeker dat je {name} wil verwijderen?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Ben je zeker dat je {task} op {component} voor {gear}, uitgevoerd op {date}, wil verwijderen?'
 'Are you sure you want to remove the {widget} widget?': 'Ben je zeker dat je de widget {widget} wil verwijderen?'
@@ -123,6 +124,7 @@ Daemon: Daemon
 'Date range based': 'Op basis van datumbereik'
 'Define what needs doing and how often.': 'Bepaal wat er moet gebeuren en hoe vaak.'
 Delete: Verwijderen
+'Delete activities': 'Delete activities'
 'Delete activity': 'Activiteit verwijderen'
 'Delete automation rule': 'Automatiseringsregel verwijderen'
 'Delete component': 'Onderdeel verwijderen'

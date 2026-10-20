@@ -279,25 +279,35 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
     #[DataProvider('provideRedirectToQueryParams')]
     public function testDeleteHonoursASafeRedirectToOnEveryExit(string $redirectTo, string $expected): void
     {
+        $this->withImportMode(ImportMode::FILES);
+
         static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
                 ->build(),
             [],
         ));
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('2'))
+                ->build(),
+            [],
+        ));
 
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request(
-            'GET',
-            '/admin/activities/'.ActivityId::fromUnprefixed('1').'/delete?redirectTo='.urlencode($redirectTo)
-        );
+        foreach ([
+            '/admin/activities/'.ActivityId::fromUnprefixed('1').'/delete?redirectTo='.urlencode($redirectTo),
+            '/admin/activities/delete?activityIds[]=activity-1&activityIds[]=activity-2&redirectTo='.urlencode($redirectTo),
+        ] as $url) {
+            $crawler = $this->client->request('GET', $url);
 
-        $this->assertResponseIsSuccessful();
+            $this->assertResponseIsSuccessful();
 
-        $this->assertSame($expected, $crawler->filter('form[data-dispatch-command]')->attr('data-redirect'));
-        $this->assertSame($expected, $crawler->filter('a[aria-label="Close"]')->attr('href'));
-        $this->assertSame($expected, $crawler->filter('.btn--secondary')->attr('href'));
+            $this->assertSame($expected, $crawler->filter('form[data-dispatch-command]')->attr('data-redirect'));
+            $this->assertSame($expected, $crawler->filter('a[aria-label="Close"]')->attr('href'));
+            $this->assertSame($expected, $crawler->filter('.btn--secondary')->attr('href'));
+        }
     }
 
     public static function provideRedirectToQueryParams(): \Generator
@@ -489,5 +499,65 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $form);
 
         $this->assertSame((string) ActivityId::fromUnprefixed('1'), $form->filter('input[name="activityIds[]"]')->attr('value'));
+        $this->assertCount(0, $crawler->filter('[data-activities-to-delete]'));
+    }
+
+    public function testRendersTheDeleteConfirmationForMultipleActivities(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withName('Morning Run')
+                ->build(),
+            [],
+        ));
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('2'))
+                ->withName('Evening <Walk>')
+                ->build(),
+            [],
+        ));
+
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/activities/delete?activityIds[]=activity-1&activityIds[]=activity-2');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringContainsString('Delete activities', $crawler->filter('h3')->text());
+        $this->assertStringContainsString('Are you sure you want to delete 2 activities?', $crawler->filter('body')->text());
+
+        $form = $crawler->filter('form[data-dispatch-command="delete-activities"]');
+        $this->assertCount(1, $form);
+        $this->assertSame(
+            ['activity-1', 'activity-2'],
+            $form->filter('input[name="activityIds[]"]')->each(fn ($input): ?string => $input->attr('value')),
+        );
+
+        $listedActivities = $crawler->filter('[data-activities-to-delete] li');
+        $this->assertCount(2, $listedActivities);
+        $this->assertStringContainsString('Morning Run', $listedActivities->eq(0)->text());
+        $this->assertStringContainsString('Evening <Walk>', $listedActivities->eq(1)->text());
+    }
+
+    public function testBulkDeleteIsNotAvailableInStravaApiMode(): void
+    {
+        $this->client->loginUser($this->adminUser());
+
+        $this->client->request('GET', '/admin/activities/delete?activityIds[]=activity-1');
+
+        $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testBulkDeleteRequiresAtLeastOneActivity(): void
+    {
+        $this->withImportMode(ImportMode::FILES);
+        $this->client->loginUser($this->adminUser());
+
+        $this->client->request('GET', '/admin/activities/delete');
+
+        $this->assertResponseStatusCodeSame(404);
     }
 }

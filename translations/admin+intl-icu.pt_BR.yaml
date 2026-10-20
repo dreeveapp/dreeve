@@ -68,6 +68,7 @@ Apply: Aplicar
 'Are you sure you want to delete the import of {name}?': 'Tem certeza de que deseja excluir a importação de {name}?'
 'Are you sure you want to delete the {component} component?': 'Tem certeza de que deseja excluir o componente {component}?'
 'Are you sure you want to delete the {rule} rule?': 'Tem certeza de que deseja excluir a regra {rule}?'
+'Are you sure you want to delete {count} activities?': 'Are you sure you want to delete {count} activities?'
 'Are you sure you want to delete {name}?': 'Tem certeza de que deseja excluir {name}?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Tem certeza de que deseja excluir {task} no componente {component} para o equipamento {gear}, realizado em {date}?'
 'Are you sure you want to remove the {widget} widget?': 'Tem certeza de que deseja remover o widget {widget}?'
@@ -123,6 +124,7 @@ Daemon: Daemon
 'Date range based': 'Baseado em intervalo de datas'
 'Define what needs doing and how often.': 'Defina o que precisa ser feito e com que frequência.'
 Delete: Excluir
+'Delete activities': 'Delete activities'
 'Delete activity': 'Excluir atividade'
 'Delete automation rule': 'Excluir regra de automação'
 'Delete component': 'Excluir componente'

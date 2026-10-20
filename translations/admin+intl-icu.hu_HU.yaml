@@ -68,6 +68,7 @@ Apply: Alkalmaz
 'Are you sure you want to delete the import of {name}?': 'Biztosan törölni szeretnéd a(z) {name} importját?'
 'Are you sure you want to delete the {component} component?': 'Biztosan törölni szeretnéd a(z) {component} komponenst?'
 'Are you sure you want to delete the {rule} rule?': 'Biztosan törölni szeretnéd a(z) {rule} szabályt?'
+'Are you sure you want to delete {count} activities?': 'Are you sure you want to delete {count} activities?'
 'Are you sure you want to delete {name}?': 'Biztosan törölni szeretnéd: {name}?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Biztosan törölni szeretnéd a(z) {task} feladatot a(z) {component} komponensen a(z) {gear} felszereléshez, amely {date} napon történt?'
 'Are you sure you want to remove the {widget} widget?': 'Biztosan el szeretnéd távolítani a(z) {widget} widgetet?'
@@ -123,6 +124,7 @@ Daemon: Daemon
 'Date range based': 'Dátumtartomány alapú'
 'Define what needs doing and how often.': 'Add meg, mit kell csinálni és milyen gyakran.'
 Delete: Törlés
+'Delete activities': 'Delete activities'
 'Delete activity': 'Tevékenység törlése'
 'Delete automation rule': 'Automatizálási szabály törlése'
 'Delete component': 'Komponens törlése'
