@@ -13,16 +13,9 @@ use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Repository\DbalRepository;
 use Doctrine\DBAL\ArrayParameterType;
-use Doctrine\DBAL\Connection;
 
 final readonly class DbalActivityBestEffortRepository extends DbalRepository implements ActivityBestEffortRepository
 {
-    public function __construct(
-        Connection $connection,
-    ) {
-        parent::__construct($connection);
-    }
-
     public function add(ActivityBestEffort $activityBestEffort): void
     {
         $sql = 'INSERT INTO ActivityBestEffort (activityId, sportType, distanceInMeter, timeInSeconds)

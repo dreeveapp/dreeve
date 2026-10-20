@@ -15,16 +15,9 @@ use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
-use Doctrine\DBAL\Connection;
 
 final readonly class DbalActivityOverviewRepository extends DbalRepository implements ActivityOverviewRepository
 {
-    public function __construct(
-        Connection $connection,
-    ) {
-        parent::__construct($connection);
-    }
-
     public function find(Pagination $pagination, ActivityOverviewFilters $filters): Overview
     {
         $queryBuilder = $this->connection->createQueryBuilder()
