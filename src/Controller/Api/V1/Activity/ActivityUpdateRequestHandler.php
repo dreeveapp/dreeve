@@ -75,6 +75,7 @@ final readonly class ActivityUpdateRequestHandler
                 'activityId' => (string) $activity->getId(),
                 'name' => $activity->getOriginalName(),
                 'sportType' => $activity->getSportType()->value,
+                'workoutType' => $activity->getWorkoutType()?->value,
                 'description' => $activity->getDescription(),
                 'deviceName' => $activity->getDeviceName(),
                 'gearId' => $gearId instanceof GearId ? (string) $gearId : null,
