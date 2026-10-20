@@ -485,9 +485,9 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Delete activity', $crawler->filter('h3')->text());
         $this->assertStringContainsString('Morning Run', $crawler->filter('body')->text());
 
-        $form = $crawler->filter('form[data-dispatch-command="delete-activity"]');
+        $form = $crawler->filter('form[data-dispatch-command="delete-activities"]');
         $this->assertCount(1, $form);
 
-        $this->assertSame((string) ActivityId::fromUnprefixed('1'), $form->filter('input[name="activityId"]')->attr('value'));
+        $this->assertSame((string) ActivityId::fromUnprefixed('1'), $form->filter('input[name="activityIds[]"]')->attr('value'));
     }
 }

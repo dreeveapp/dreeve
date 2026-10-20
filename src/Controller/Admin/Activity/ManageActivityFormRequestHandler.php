@@ -6,7 +6,7 @@ namespace App\Controller\Admin\Activity;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
-use App\Domain\Activity\DeleteActivity\DeleteActivity;
+use App\Domain\Activity\DeleteActivities\DeleteActivities;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\ManuallyCreateActivity\ManuallyCreateActivity;
 use App\Domain\Activity\UpdateActivity\UpdateActivity;
@@ -100,7 +100,7 @@ final readonly class ManageActivityFormRequestHandler
     public function handleDelete(string $activityId): HtmlResponse
     {
         return new HtmlResponse($this->twig->render('html/admin/page/activity/delete-activity.html.twig', [
-            'dispatchCommand' => DeleteActivity::getCommandName(),
+            'dispatchCommand' => DeleteActivities::getCommandName(),
             'activity' => $this->activityRepository->find(ActivityId::fromString($activityId)),
         ]));
     }

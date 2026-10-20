@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Api\V1\Activity;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
-use App\Domain\Activity\DeleteActivity\DeleteActivity;
+use App\Domain\Activity\DeleteActivities\DeleteActivities;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Exception\EntityNotFound;
@@ -43,7 +44,7 @@ final readonly class ActivityDeleteRequestHandler
             throw new NotFoundHttpException(sprintf('Activity "%s" not found', $activityId));
         }
 
-        $this->commandBus->dispatch(new DeleteActivity($activity->getId()));
+        $this->commandBus->dispatch(new DeleteActivities(ActivityIds::fromArray([$activity->getId()])));
 
         return new Response(status: Response::HTTP_NO_CONTENT);
     }

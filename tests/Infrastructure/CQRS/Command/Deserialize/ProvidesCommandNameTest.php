@@ -2,7 +2,7 @@
 
 namespace App\Tests\Infrastructure\CQRS\Command\Deserialize;
 
-use App\Domain\Activity\DeleteActivity\DeleteActivity;
+use App\Domain\Activity\DeleteActivities\DeleteActivities;
 use App\Domain\Gear\AddGear\AddGear;
 use App\Domain\Gear\Maintenance\UpdateGearMaintenanceConfig\UpdateGearMaintenanceConfig;
 use App\Domain\Import\UploadActivityFile\UploadActivityFile;
@@ -28,7 +28,7 @@ class ProvidesCommandNameTest extends TestCase
      */
     public static function provideCommands(): iterable
     {
-        yield 'single word boundary' => [DeleteActivity::class, 'delete-activity'];
+        yield 'single word boundary' => [DeleteActivities::class, 'delete-activities'];
         yield 'two words' => [AddGear::class, 'add-gear'];
         yield 'many words' => [UpdateGearMaintenanceConfig::class, 'update-gear-maintenance-config'];
         yield 'previously without constant' => [UploadActivityFile::class, 'upload-activity-file'];

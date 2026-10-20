@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Activity\DeleteActivity;
+namespace App\Domain\Activity\DeleteActivities;
 
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
@@ -22,7 +22,7 @@ use App\Domain\Segment\SegmentRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 
-final readonly class DeleteActivityCommandHandler implements CommandHandler
+final readonly class DeleteActivitiesCommandHandler implements CommandHandler
 {
     public function __construct(
         private ActivityRepository $activityRepository,
@@ -45,24 +45,25 @@ final readonly class DeleteActivityCommandHandler implements CommandHandler
 
     public function handle(Command $command): void
     {
-        assert($command instanceof DeleteActivity);
+        assert($command instanceof DeleteActivities);
 
-        $activityId = $command->getActivityId();
+        foreach ($command->getActivityIds() as $activityId) {
+            $this->activityStreamRepository->deleteForActivity($activityId);
+            $this->activityStreamMetricRepository->deleteForActivity($activityId);
+            $this->combinedActivityStreamRepository->deleteForActivity($activityId);
+            $this->segmentEffortRepository->deleteForActivity($activityId);
+            $this->activityScanRepository->deleteForActivity($activityId);
+            $this->activitySplitRepository->deleteForActivity($activityId);
+            $this->activityLapRepository->deleteForActivity($activityId);
+            $this->activityBestEffortRepository->deleteForActivity($activityId);
+            $this->activityRouteSignatureRepository->deleteForActivity($activityId);
+            $this->activityExplorerTilesRepository->deleteForActivity($activityId);
+            $this->activityDrivetrainUsageRepository->deleteForActivity($activityId);
+            $this->fileImportRepository->deleteForActivity($activityId);
+            $this->imageRepository->deleteForActivity($activityId);
+            $this->activityRepository->delete($activityId);
+        }
 
-        $this->activityStreamRepository->deleteForActivity($activityId);
-        $this->activityStreamMetricRepository->deleteForActivity($activityId);
-        $this->combinedActivityStreamRepository->deleteForActivity($activityId);
-        $this->segmentEffortRepository->deleteForActivity($activityId);
         $this->segmentRepository->deleteOrphanedImported();
-        $this->activityScanRepository->deleteForActivity($activityId);
-        $this->activitySplitRepository->deleteForActivity($activityId);
-        $this->activityLapRepository->deleteForActivity($activityId);
-        $this->activityBestEffortRepository->deleteForActivity($activityId);
-        $this->activityRouteSignatureRepository->deleteForActivity($activityId);
-        $this->activityExplorerTilesRepository->deleteForActivity($activityId);
-        $this->activityDrivetrainUsageRepository->deleteForActivity($activityId);
-        $this->fileImportRepository->deleteForActivity($activityId);
-        $this->imageRepository->deleteForActivity($activityId);
-        $this->activityRepository->delete($activityId);
     }
 }

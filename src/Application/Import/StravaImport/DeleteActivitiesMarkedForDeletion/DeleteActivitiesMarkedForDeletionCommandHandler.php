@@ -4,7 +4,7 @@ namespace App\Application\Import\StravaImport\DeleteActivitiesMarkedForDeletion;
 
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivitySummaryRepository;
-use App\Domain\Activity\DeleteActivity\DeleteActivity;
+use App\Domain\Activity\DeleteActivities\DeleteActivities;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -31,11 +31,14 @@ final readonly class DeleteActivitiesMarkedForDeletionCommandHandler implements 
 
         $command->getOutput()->writeln('Deleting activities...');
 
+        $activitiesToDelete = [];
         foreach ($activityIdsToDelete as $activityId) {
-            $activity = $this->activitySummaryRepository->find($activityId);
+            $activitiesToDelete[] = $this->activitySummaryRepository->find($activityId);
+        }
 
-            $this->commandBus->dispatch(new DeleteActivity($activityId));
+        $this->commandBus->dispatch(new DeleteActivities($activityIdsToDelete));
 
+        foreach ($activitiesToDelete as $activity) {
             $command->getOutput()->writeln(sprintf(
                 '  => Activity "%s - %s" deleted',
                 $activity->getName(),
