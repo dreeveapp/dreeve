@@ -1,0 +1,21 @@
+{% autoescape false %}
+<div class="filter-dropdown">
+    {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownCountriesButton', dropdownId: 'dropdownCountries', label: label} only %}
+    <div id="dropdownCountries" class="divide-y divide-gray-100">
+        <ul aria-labelledby="dropdownCountriesButton">
+            {% for countryCode,countryName in countries %}
+                <li>
+                    <div>
+                        <input type="radio" id="{{ countryCode }}" data-dataTable-filter="countryCode" name="countryCode" value="{{ countryCode }}" class="peer" />
+                        <label for="{{ countryCode }}" class="flex gap-x-1 items-center">
+                            <img src="{{ countryCode|countryIcon }}" width="15" class="rounded-xs" title="{{ countryName }}" alt="{{ countryName }}">
+                            <span>{{ countryName }}</span>
+                        </label>
+                        <a href="#" data-datatable-filter-clear="countryCode">{{ "clear"|trans }}</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endautoescape %}

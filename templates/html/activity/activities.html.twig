@@ -33,94 +33,15 @@
                     </div>
                     <div class="flex flex-wrap gap-2">
                         {% if sportTypes|length > 0 %}
-                            <div class="filter-dropdown">
-                                <button id="dropdownSportTypesButton"
-                                        data-dropdown="dropdownSportTypes" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                    <span>{{ "Filter on sport type"|trans }}</span>
-                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                    </svg>
-                                </button>
-                                <div id="dropdownSportTypes" class="divide-y divide-gray-100">
-                                    <ul aria-labelledby="dropdownSportTypesButton">
-                                        {% for sportType in sportTypes %}
-                                            <li>
-                                                <div>
-                                                    <input type="checkbox" id="{{ sportType.value }}" data-dataTable-filter="sportType" name="sportType[{{ sportType.value }}]" value="{{ sportType.value }}" class="peer" />
-                                                    <label for="{{ sportType.value }}" class="flex gap-x-1 items-center">
-                                                        {{ svgSportType(sportType) }}
-                                                        <div>{{ sportType|trans }}</div>
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="sportType[{{ sportType.value }}]">{{ "clear"|trans }}</a>
-                                                </div>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
+                            {% include 'html/data-table/filter/sport-type.html.twig' with {sportTypes: sportTypes} only %}
                         {% endif %}
-                        <div class="filter-dropdown">
-                            <button id="dropdownDateRangeButton"
-                                    data-dropdown="dropdownDateRange" type="button">
-                                <span>{{ "Date"|trans }}</span>
-                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
-                            <div id="dropdownDateRange" class="divide-y divide-gray-100">
-                                <div class="flex items-center gap-x-2 p-3" aria-labelledby="dropdownDateRangeButton">
-                                    <div class="flex items-center" data-dataTable-filter="start-date[]">
-                                        <input name="start-date[from]" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                                        <span class="mx-2 text-gray-500">{{ "to"|trans }}</span>
-                                        <input name="start-date[to]" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                                    </div>
-                                    <a href="#" class="text-primary text-sm text-right underline" data-datatable-filter-clear="start-date">{{ "clear"|trans }}</a>
-                                </div>
-                                <div class="hidden lg:flex flex-wrap gap-1.5 p-3" data-date-preset-filter="start-date">
-                                    <a href="#" data-date-preset="this-week" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "This week"|trans }}</a>
-                                    <a href="#" data-date-preset="last-week" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "Last week"|trans }}</a>
-                                    <a href="#" data-date-preset="this-month" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "This month"|trans }}</a>
-                                    <a href="#" data-date-preset="last-month" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "Last month"|trans }}</a>
-                                    <a href="#" data-date-preset="last-30-days" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "Last 30 days"|trans }}</a>
-                                </div>
-                            </div>
-                        </div>
+                        {% include 'html/data-table/filter/date-range.html.twig' with {name: 'start-date', label: "Date"|trans, withPresets: true} only %}
                         {% if countries|length > 0 %}
-                            <div class="filter-dropdown">
-                                <button id="dropdownCountriesButton"
-                                        data-dropdown="dropdownCountries" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                    <span>{{ "Country"|trans }}</span>
-                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                    </svg>
-                                </button>
-                                <div id="dropdownCountries" class="divide-y divide-gray-100">
-                                    <ul aria-labelledby="dropdownCountriesButton">
-                                        {% for countryCode,countryName in countries %}
-                                            <li>
-                                                <div>
-                                                    <input type="radio" id="{{ countryCode }}" data-dataTable-filter="countryCode" name="countryCode" value="{{ countryCode }}" class="peer" />
-                                                    <label for="{{ countryCode }}" class="flex gap-x-1 items-center">
-                                                        <img src="{{ countryCode|countryIcon }}" width="15" class="rounded-xs" title="{{ countryName }}" alt="{{ countryName }}">
-                                                        <span>{{ countryName }}</span>
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="countryCode">{{ "clear"|trans }}</a>
-                                                </div>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
+                            {% include 'html/data-table/filter/country.html.twig' with {countries: countries, label: "Country"|trans} only %}
                         {% endif %}
                         {% if gears|length > 0 %}
                             <div class="filter-dropdown">
-                                <button id="dropdownGearsButton"
-                                        data-dropdown="dropdownGears" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                    <span>{{ "Gear"|trans }}</span>
-                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                    </svg>
-                                </button>
+                                {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownGearsButton', dropdownId: 'dropdownGears', label: "Gear"|trans} only %}
                                 <div id="dropdownGears" class="divide-y divide-gray-100">
                                     <ul aria-labelledby="dropdownGearsButton">
                                         {% for gear in gears %}
@@ -149,13 +70,7 @@
                         {% endif %}
                         {% if devices|length > 0 %}
                             <div class="filter-dropdown">
-                                <button id="dropdownDevicesButton"
-                                        data-dropdown="dropdownDevices" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                    <span>{{ "Device"|trans }}</span>
-                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                    </svg>
-                                </button>
+                                {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownDevicesButton', dropdownId: 'dropdownDevices', label: "Device"|trans} only %}
                                 <div id="dropdownDevices" class="divide-y divide-gray-100">
                                     <ul aria-labelledby="dropdownDevicesButton">
                                         {% for device in devices %}
@@ -183,72 +98,16 @@
                             </div>
                         {% endif %}
                         <div class="filter-dropdown">
-                            <button id="distanceElevationButton" data-dropdown="dropdownDistanceElevation" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                <span>{{ "Distance & Elevation"|trans }}</span>
-                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
+                            {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'distanceElevationButton', dropdownId: 'dropdownDistanceElevation', label: "Distance & Elevation"|trans} only %}
                             <div id="dropdownDistanceElevation">
                                 <div class="p-3 flex flex-col gap-y-2">
-                                    <div class="flex flex-col gap-y-2">
-                                        <label for="distance[from]" class="flex gap-x-1 items-center text-sm font-medium text-gray-500">
-                                            {{ svg('distance', 'size-4', 'text-gray-500') }}
-                                            <span>{{ "Distance"|trans }}</span>
-                                        </label>
-                                        <div class="group/range-filter flex items-center justify-between gap-x-2">
-                                            <div class="flex items-center justify-between w-full" data-dataTable-filter="distance[]">
-                                                <div class="flex items-center">
-                                                    <input name="distance[from]" type="number" min="0" step="0.1" placeholder="{{ "min"|trans }}" class="z-20 w-23 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s-lg block p-2.5">
-                                                    <span class="flex items-center py-3 px-3 bg-gray-100 text-gray-500 border border-l-0 border-gray-300 text-xs rounded-e-lg">
-                                                      {{ renderUnitSymbol('distance') }}
-                                                    </span>
-                                                </div>
-                                                <span class="mx-2 text-gray-500">{{ "to"|trans }}</span>
-                                                <div class="flex items-center">
-                                                    <input name="distance[to]" type="number" min="0" step="0.1" placeholder="{{ "max"|trans }}" class="z-20 w-23 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s-lg block p-2.5">
-                                                    <span class="flex items-center py-3 px-3 bg-gray-100 text-gray-500 border border-l-0 border-gray-300 text-xs rounded-e-lg">
-                                                      {{ renderUnitSymbol('distance') }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="invisible group-has-[input:not(:placeholder-shown)]/range-filter:visible text-primary text-sm text-right underline" data-datatable-filter-clear="distance">{{ "clear"|trans }}</a>
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-col gap-y-2">
-                                        <label for="elevation[from]" class="flex gap-x-1 items-center text-sm font-medium text-gray-500">
-                                            {{ svg('elevation', 'size-4', 'text-gray-500') }}
-                                            <span>{{ "Elevation"|trans }}</span>
-                                        </label>
-                                        <div class="group/range-filter flex items-center justify-between gap-x-2">
-                                            <div class="flex items-center justify-between w-full" data-dataTable-filter="elevation[]">
-                                                <div class="flex items-center">
-                                                    <input name="elevation[from]" type="number" min="0" step="0.1" placeholder="{{ "min"|trans }}" class="z-20 w-23 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s-lg block p-2.5">
-                                                    <span class="flex items-center py-3 px-3 bg-gray-100 text-gray-500 border border-l-0 border-gray-300 text-xs rounded-e-lg">
-                                                      {{ renderUnitSymbol('elevation') }}
-                                                    </span>
-                                                </div>
-                                                <span class="mx-2 text-gray-500">{{ "to"|trans }}</span>
-                                                <div class="flex items-center">
-                                                    <input name="elevation[to]" type="number" min="0" step="0.1" placeholder="{{ "max"|trans }}" class="z-20 w-23 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s-lg block p-2.5">
-                                                    <span class="flex items-center py-3 px-3 bg-gray-100 text-gray-500 border border-l-0 border-gray-300 text-xs rounded-e-lg">
-                                                      {{ renderUnitSymbol('elevation') }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="invisible group-has-[input:not(:placeholder-shown)]/range-filter:visible text-primary text-sm text-right underline" data-datatable-filter-clear="elevation">{{ "clear"|trans }}</a>
-                                        </div>
-                                    </div>
+                                    {% include 'html/data-table/filter/range.html.twig' with {name: 'distance', label: "Distance"|trans, icon: 'distance', unit: renderUnitSymbol('distance')} only %}
+                                    {% include 'html/data-table/filter/range.html.twig' with {name: 'elevation', label: "Elevation"|trans, icon: 'elevation', unit: renderUnitSymbol('elevation')} only %}
                                 </div>
                             </div>
                         </div>
                         <div class="filter-dropdown">
-                            <button id="otherButton" data-dropdown="dropdownOther" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                <span>{{ "Other"|trans }}</span>
-                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
+                            {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'otherButton', dropdownId: 'dropdownOther', label: "Other"|trans} only %}
                             <div id="dropdownOther">
                                 <div class="px-1 py-2 flex gap-x-2 divide-x divide-gray-100">
                                     <div class="flex flex-col items-center">

@@ -1,0 +1,24 @@
+{% autoescape false %}
+<div class="flex flex-col gap-y-2">
+    <label for="{{ name }}[from]" class="flex gap-x-1 items-center text-sm font-medium text-gray-500">
+        {{ svg(icon, 'size-4', 'text-gray-500') }}
+        <span>{{ label }}</span>
+    </label>
+    <div class="group/range-filter flex items-center justify-between gap-x-2">
+        <div class="flex items-center justify-between w-full" data-dataTable-filter="{{ name }}[]">
+            {% for bound, placeholder in {from: "min"|trans, to: "max"|trans} %}
+                {% if not loop.first %}
+                    <span class="mx-2 text-gray-500">{{ "to"|trans }}</span>
+                {% endif %}
+                <div class="flex items-center">
+                    <input name="{{ name }}[{{ bound }}]" type="number"{% if not (allowNegative ?? false) %} min="0"{% endif %} step="0.1" placeholder="{{ placeholder }}" class="z-20 w-23 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s-lg block p-2.5">
+                    <span class="flex items-center py-3 px-3 bg-gray-100 text-gray-500 border border-l-0 border-gray-300 text-xs rounded-e-lg">
+                      {{ unit }}
+                    </span>
+                </div>
+            {% endfor %}
+        </div>
+        <a href="#" class="invisible group-has-[input:not(:placeholder-shown)]/range-filter:visible text-primary text-sm text-right underline" data-datatable-filter-clear="{{ name }}">{{ "clear"|trans }}</a>
+    </div>
+</div>
+{% endautoescape %}

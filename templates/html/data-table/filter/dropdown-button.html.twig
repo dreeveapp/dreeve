@@ -1,0 +1,9 @@
+{% autoescape false %}
+<button id="{{ buttonId }}"
+        data-dropdown="{{ dropdownId }}"{% if withOffset ?? true %} data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0"{% endif %} type="button">
+    <span>{{ label }}</span>
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+    </svg>
+</button>
+{% endautoescape %}

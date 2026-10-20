@@ -1,0 +1,28 @@
+{% autoescape false %}
+<div class="filter-dropdown">
+    {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownDateRangeButton', dropdownId: 'dropdownDateRange', label: label, withOffset: false} only %}
+    <div id="dropdownDateRange" class="divide-y divide-gray-100">
+        <div class="flex items-center gap-x-2 p-3" aria-labelledby="dropdownDateRangeButton">
+            <div class="flex items-center" data-dataTable-filter="{{ name }}[]">
+                <input name="{{ name }}[from]" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                <span class="mx-2 text-gray-500">{{ "to"|trans }}</span>
+                <input name="{{ name }}[to]" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+            </div>
+            <a href="#" class="text-primary text-sm text-right underline" data-datatable-filter-clear="{{ name }}">{{ "clear"|trans }}</a>
+        </div>
+        {% if withPresets ?? false %}
+            <div class="hidden lg:flex flex-wrap gap-1.5 p-3" data-date-preset-filter="{{ name }}">
+                {% for preset, presetLabel in {
+                    'this-week': "This week"|trans,
+                    'last-week': "Last week"|trans,
+                    'this-month': "This month"|trans,
+                    'last-month': "Last month"|trans,
+                    'last-30-days': "Last 30 days"|trans,
+                } %}
+                    <a href="#" data-date-preset="{{ preset }}" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ presetLabel }}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endautoescape %}

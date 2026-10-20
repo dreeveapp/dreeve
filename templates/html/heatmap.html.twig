@@ -18,65 +18,11 @@
                 <form class="flex flex-col gap-y-2 mb-2" autocomplete="off">
                     <div class="flex flex-wrap gap-2">
                         {% if summary.getSportTypes()|length > 0 %}
-                            <div class="filter-dropdown">
-                                <button id="dropdownSportTypesButton"
-                                        data-dropdown="dropdownSportTypes" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                    <span>{{ "Filter on sport type"|trans }}</span>
-                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                    </svg>
-                                </button>
-                                <div id="dropdownSportTypes" class="divide-y divide-gray-100">
-                                    <ul class="space-y-1" aria-labelledby="dropdownSportTypesButton">
-                                        {% for sportType in summary.getSportTypes() %}
-                                            <li>
-                                                <div>
-                                                    <input type="checkbox" id="{{ sportType.value }}" data-dataTable-filter="sportType" name="sportType[{{ sportType.value }}]" value="{{ sportType.value }}" class="peer" />
-                                                    <label for="{{ sportType.value }}" class="flex gap-x-1 items-center">
-                                                        {{ svgSportType(sportType) }}
-                                                        <div>{{ sportType|trans }}</div>
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="sportType[{{ sportType.value }}]">{{ "clear"|trans }}</a>
-                                                </div>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
+                            {% include 'html/data-table/filter/sport-type.html.twig' with {sportTypes: summary.getSportTypes(), listClass: 'space-y-1'} only %}
                         {% endif %}
+                        {% include 'html/data-table/filter/date-range.html.twig' with {name: 'start-date', label: "Date"|trans, withPresets: true} only %}
                         <div class="filter-dropdown">
-                            <button id="dropdownDateRangeButton"
-                                    data-dropdown="dropdownDateRange" type="button">
-                                <span>{{ "Date"|trans }}</span>
-                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
-                            <div id="dropdownDateRange" class="divide-y divide-gray-100">
-                                <div class="flex items-center gap-x-2 p-3" aria-labelledby="dropdownDateRangeButton">
-                                    <div class="flex items-center" data-dataTable-filter="start-date[]">
-                                        <input name="start-date[from]" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                                        <span class="mx-2 text-gray-500">{{ "to"|trans }}</span>
-                                        <input name="start-date[to]" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                                    </div>
-                                    <a href="#" class="text-primary text-sm text-right underline" data-dataTable-filter-clear="start-date">{{ "clear"|trans }}</a>
-                                </div>
-                                <div class="hidden lg:flex flex-wrap gap-1.5 p-3" data-date-preset-filter="start-date">
-                                    <a href="#" data-date-preset="this-week" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "This week"|trans }}</a>
-                                    <a href="#" data-date-preset="last-week" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "Last week"|trans }}</a>
-                                    <a href="#" data-date-preset="this-month" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "This month"|trans }}</a>
-                                    <a href="#" data-date-preset="last-month" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "Last month"|trans }}</a>
-                                    <a href="#" data-date-preset="last-30-days" class="text-xs text-gray-500 hover:text-primary border border-gray-200 hover:border-primary rounded-full px-2.5 py-1">{{ "Last 30 days"|trans }}</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="filter-dropdown">
-                            <button id="otherButton" data-dropdown="dropdownOther" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                <span>{{ "Other"|trans }}</span>
-                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
+                            {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'otherButton', dropdownId: 'dropdownOther', label: "Other"|trans} only %}
                             <div id="dropdownOther">
                                 <div class="px-1 py-2 flex gap-x-2 divide-x divide-gray-100">
                                     <div class="flex flex-col items-center">

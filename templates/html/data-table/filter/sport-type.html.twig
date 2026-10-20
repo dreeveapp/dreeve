@@ -1,0 +1,21 @@
+{% autoescape false %}
+<div class="filter-dropdown">
+    {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownSportTypesButton', dropdownId: 'dropdownSportTypes', label: "Filter on sport type"|trans} only %}
+    <div id="dropdownSportTypes" class="divide-y divide-gray-100">
+        <ul{% if listClass ?? false %} class="{{ listClass }}"{% endif %} aria-labelledby="dropdownSportTypesButton">
+            {% for sportType in sportTypes %}
+                <li>
+                    <div>
+                        <input type="checkbox" id="{{ sportType.value }}" data-dataTable-filter="sportType" name="sportType[{{ sportType.value }}]" value="{{ sportType.value }}" class="peer" />
+                        <label for="{{ sportType.value }}" class="flex gap-x-1 items-center">
+                            {{ svgSportType(sportType) }}
+                            <div>{{ sportType|trans }}</div>
+                        </label>
+                        <a href="#" data-datatable-filter-clear="sportType[{{ sportType.value }}]">{{ "clear"|trans }}</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endautoescape %}

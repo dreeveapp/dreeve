@@ -8,58 +8,10 @@
         <form class="flex flex-col gap-y-2 mb-2" autocomplete="off">
             <div class="flex flex-wrap gap-2">
                 {% if sportTypes|length > 0 %}
-                    <div class="filter-dropdown">
-                        <button id="dropdownSportTypesButton"
-                                data-dropdown="dropdownSportTypes" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                            <span>{{ "Filter on sport type"|trans }}</span>
-                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                            </svg>
-                        </button>
-                        <div id="dropdownSportTypes" class="divide-y divide-gray-100">
-                            <ul aria-labelledby="dropdownSportTypesButton">
-                                {% for sportType in sportTypes %}
-                                    <li>
-                                        <div>
-                                            <input type="checkbox" id="{{ sportType.value }}" data-dataTable-filter="sportType" name="sportType[{{ sportType.value }}]" value="{{ sportType.value }}" class="peer" />
-                                            <label for="{{ sportType.value }}" class="flex gap-x-1 items-center">
-                                                {{ svgSportType(sportType) }}
-                                                <div>{{ sportType|trans }}</div>
-                                            </label>
-                                            <a href="#" data-datatable-filter-clear="sportType[{{ sportType.value }}]">{{ "clear"|trans }}</a>
-                                        </div>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
+                    {% include 'html/data-table/filter/sport-type.html.twig' with {sportTypes: sportTypes} only %}
                 {% endif %}
                 {% if countries|length > 0 %}
-                    <div class="filter-dropdown">
-                        <button id="dropdownCountriesButton"
-                                data-dropdown="dropdownCountries" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                            <span>{{ "Filter on country"|trans }}</span>
-                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                            </svg>
-                        </button>
-                        <div id="dropdownCountries" class="divide-y divide-gray-100">
-                            <ul aria-labelledby="dropdownCountriesButton">
-                                {% for countryCode,countryName in countries %}
-                                    <li>
-                                        <div>
-                                            <input type="radio" id="{{ countryCode }}" data-dataTable-filter="countryCode" name="countryCode" value="{{ countryCode }}" class="peer" />
-                                            <label for="{{ countryCode }}" class="flex gap-x-1 items-center">
-                                                <img src="{{ countryCode|countryIcon }}" width="15" class="rounded-xs" title="{{ countryName }}" alt="{{ countryName }}">
-                                                <span>{{ countryName }}</span>
-                                            </label>
-                                            <a href="#" data-datatable-filter-clear="countryCode">{{ "clear"|trans }}</a>
-                                        </div>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
+                    {% include 'html/data-table/filter/country.html.twig' with {countries: countries, label: "Filter on country"|trans} only %}
                 {% endif %}
             </div>
         </form>

@@ -31,182 +31,31 @@
                     </div>
                     <div class="flex flex-wrap gap-2">
                         {% if sportTypes|length > 0 %}
-                            <div class="filter-dropdown">
-                                <button id="dropdownSportTypesButton"
-                                        data-dropdown="dropdownSportTypes" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                    <span>{{ "Filter on sport type"|trans }}</span>
-                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                    </svg>
-                                </button>
-                                <div id="dropdownSportTypes" class="divide-y divide-gray-100">
-                                    <ul aria-labelledby="dropdownSportTypesButton">
-                                        {% for sportType in sportTypes %}
-                                            <li>
-                                                <div>
-                                                    <input type="checkbox" id="{{ sportType.value }}" data-dataTable-filter="sportType" name="sportType[{{ sportType.value }}]" value="{{ sportType.value }}" class="peer" />
-                                                    <label for="{{ sportType.value }}" class="flex gap-x-1 items-center">
-                                                        {{ svgSportType(sportType) }}
-                                                        <div>{{ sportType|trans }}</div>
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="sportType[{{ sportType.value }}]">{{ "clear"|trans }}</a>
-                                                </div>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
+                            {% include 'html/data-table/filter/sport-type.html.twig' with {sportTypes: sportTypes} only %}
                         {% endif %}
                         {% if countries|length > 0 %}
-                            <div class="filter-dropdown">
-                                <button id="dropdownCountriesButton"
-                                        data-dropdown="dropdownCountries" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                    <span>{{ "Country"|trans }}</span>
-                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                    </svg>
-                                </button>
-                                <div id="dropdownCountries" class="divide-y divide-gray-100">
-                                    <ul aria-labelledby="dropdownCountriesButton">
-                                        {% for countryCode,countryName in countries %}
-                                            <li>
-                                                <div>
-                                                    <input type="radio" id="{{ countryCode }}" data-dataTable-filter="countryCode" name="countryCode" value="{{ countryCode }}" class="peer" />
-                                                    <label for="{{ countryCode }}" class="flex gap-x-1 items-center">
-                                                        <img src="{{ countryCode|countryIcon }}" width="15" class="rounded-xs" title="{{ countryName }}" alt="{{ countryName }}">
-                                                        <span>{{ countryName }}</span>
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="countryCode">{{ "clear"|trans }}</a>
-                                                </div>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
+                            {% include 'html/data-table/filter/country.html.twig' with {countries: countries, label: "Country"|trans} only %}
                         {% endif %}
                         <div class="filter-dropdown">
-                            <button id="distanceButton" data-dropdown="dropdownDistance" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                <span>{{ "Distance"|trans }}</span>
-                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
+                            {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'distanceButton', dropdownId: 'dropdownDistance', label: "Distance"|trans} only %}
                             <div id="dropdownDistance">
                                 <div class="p-3 flex flex-col gap-y-2">
-                                    <div class="flex flex-col gap-y-2">
-                                        <label for="distance[from]" class="flex gap-x-1 items-center text-sm font-medium text-gray-500">
-                                            {{ svg('distance', 'size-4', 'text-gray-500') }}
-                                            <span>{{ "Distance"|trans }}</span>
-                                        </label>
-                                        <div class="group/range-filter flex items-center justify-between gap-x-2">
-                                            <div class="flex items-center justify-between w-full" data-dataTable-filter="distance[]">
-                                                <div class="flex items-center">
-                                                    <input name="distance[from]" type="number" min="0" step="0.1" placeholder="{{ "min"|trans }}" class="z-20 w-23 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s-lg block p-2.5">
-                                                    <span class="flex items-center py-3 px-3 bg-gray-100 text-gray-500 border border-l-0 border-gray-300 text-xs rounded-e-lg">
-                                                      {{ renderUnitSymbol('distance') }}
-                                                    </span>
-                                                </div>
-                                                <span class="mx-2 text-gray-500">{{ "to"|trans }}</span>
-                                                <div class="flex items-center">
-                                                    <input name="distance[to]" type="number" min="0" step="0.1" placeholder="{{ "max"|trans }}" class="z-20 w-23 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s-lg block p-2.5">
-                                                    <span class="flex items-center py-3 px-3 bg-gray-100 text-gray-500 border border-l-0 border-gray-300 text-xs rounded-e-lg">
-                                                      {{ renderUnitSymbol('distance') }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="invisible group-has-[input:not(:placeholder-shown)]/range-filter:visible text-primary text-sm text-right underline" data-datatable-filter-clear="distance">{{ "clear"|trans }}</a>
-                                        </div>
-                                    </div>
+                                    {% include 'html/data-table/filter/range.html.twig' with {name: 'distance', label: "Distance"|trans, icon: 'distance', unit: renderUnitSymbol('distance')} only %}
                                 </div>
                             </div>
                         </div>
                         <div class="filter-dropdown">
-                            <button id="gradientButton" data-dropdown="dropdownGradient" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                <span>{{ "Gradient"|trans }}</span>
-                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
+                            {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'gradientButton', dropdownId: 'dropdownGradient', label: "Gradient"|trans} only %}
                             <div id="dropdownGradient">
                                 <div class="p-3 flex flex-col gap-y-2">
-                                    <div class="flex flex-col gap-y-2">
-                                        <label for="averageGradient[from]" class="flex gap-x-1 items-center text-sm font-medium text-gray-500">
-                                            {{ svg('percentage', 'size-4', 'text-gray-500') }}
-                                            <span>{{ "Average gradient"|trans }}</span>
-                                        </label>
-                                        <div class="group/range-filter flex items-center justify-between gap-x-2">
-                                            <div class="flex items-center justify-between w-full" data-dataTable-filter="averageGradient[]">
-                                                <div class="flex items-center">
-                                                    <input name="averageGradient[from]" type="number" step="0.1" placeholder="{{ "min"|trans }}" class="z-20 w-23 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s-lg block p-2.5">
-                                                    <span class="flex items-center py-3 px-3 bg-gray-100 text-gray-500 border border-l-0 border-gray-300 text-xs rounded-e-lg">
-                                                      %
-                                                    </span>
-                                                </div>
-                                                <span class="mx-2 text-gray-500">{{ "to"|trans }}</span>
-                                                <div class="flex items-center">
-                                                    <input name="averageGradient[to]" type="number" step="0.1" placeholder="{{ "max"|trans }}" class="z-20 w-23 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s-lg block p-2.5">
-                                                    <span class="flex items-center py-3 px-3 bg-gray-100 text-gray-500 border border-l-0 border-gray-300 text-xs rounded-e-lg">
-                                                      %
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="invisible group-has-[input:not(:placeholder-shown)]/range-filter:visible text-primary text-sm text-right underline" data-datatable-filter-clear="averageGradient">{{ "clear"|trans }}</a>
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-col gap-y-2">
-                                        <label for="maxGradient[from]" class="flex gap-x-1 items-center text-sm font-medium text-gray-500">
-                                            {{ svg('percentage', 'size-4', 'text-gray-500') }}
-                                            <span>{{ "Max gradient"|trans }}</span>
-                                        </label>
-                                        <div class="group/range-filter flex items-center justify-between gap-x-2">
-                                            <div class="flex items-center justify-between w-full" data-dataTable-filter="maxGradient[]">
-                                                <div class="flex items-center">
-                                                    <input name="maxGradient[from]" type="number" step="0.1" placeholder="{{ "min"|trans }}" class="z-20 w-23 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s-lg block p-2.5">
-                                                    <span class="flex items-center py-3 px-3 bg-gray-100 text-gray-500 border border-l-0 border-gray-300 text-xs rounded-e-lg">
-                                                      %
-                                                    </span>
-                                                </div>
-                                                <span class="mx-2 text-gray-500">{{ "to"|trans }}</span>
-                                                <div class="flex items-center">
-                                                    <input name="maxGradient[to]" type="number" step="0.1" placeholder="{{ "max"|trans }}" class="z-20 w-23 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s-lg block p-2.5">
-                                                    <span class="flex items-center py-3 px-3 bg-gray-100 text-gray-500 border border-l-0 border-gray-300 text-xs rounded-e-lg">
-                                                      %
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="invisible group-has-[input:not(:placeholder-shown)]/range-filter:visible text-primary text-sm text-right underline" data-datatable-filter-clear="maxGradient">{{ "clear"|trans }}</a>
-                                        </div>
-                                    </div>
+                                    {% include 'html/data-table/filter/range.html.twig' with {name: 'averageGradient', label: "Average gradient"|trans, icon: 'percentage', unit: '%', allowNegative: true} only %}
+                                    {% include 'html/data-table/filter/range.html.twig' with {name: 'maxGradient', label: "Max gradient"|trans, icon: 'percentage', unit: '%', allowNegative: true} only %}
                                 </div>
                             </div>
                         </div>
+                        {% include 'html/data-table/filter/date-range.html.twig' with {name: 'lastEffortDate', label: "Last effort date"|trans} only %}
                         <div class="filter-dropdown">
-                            <button id="dropdownDateRangeButton"
-                                    data-dropdown="dropdownDateRange" type="button">
-                                <span>{{ "Last effort date"|trans }}</span>
-                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
-                            <div id="dropdownDateRange" class="divide-y divide-gray-100">
-                                <div class="flex items-center gap-x-2 p-3" aria-labelledby="dropdownDateRangeButton">
-                                    <div class="flex items-center" data-dataTable-filter="lastEffortDate[]">
-                                        <input name="lastEffortDate[from]" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                                        <span class="mx-2 text-gray-500">{{ "to"|trans }}</span>
-                                        <input name="lastEffortDate[to]" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
-                                    </div>
-                                    <a href="#" class="text-primary text-sm text-right underline" data-datatable-filter-clear="lastEffortDate">{{ "clear"|trans }}</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="filter-dropdown">
-                            <button id="dropdownOtherButton"
-                                    data-dropdown="dropdownOther" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
-                                <span>{{ "Other"|trans }}</span>
-                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                                </svg>
-                            </button>
+                            {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownOtherButton', dropdownId: 'dropdownOther', label: "Other"|trans} only %}
                             <div id="dropdownOther" class="divide-y divide-gray-100">
                                 <ul aria-labelledby="dropdownOtherButton">
                                     <li>
