@@ -147,7 +147,7 @@ final class FitSportType
             self::SPORT_KAYAKING => SportType::KAYAKING,
             self::SPORT_WINDSURFING => SportType::WIND_SURF,
             self::SPORT_KITESURFING => SportType::KITE_SURF,
-            self::SPORT_BOXING => SportType::WORKOUT,
+            self::SPORT_BOXING => SportType::BOXING,
             // Garmin "floor climbing" tracks flights of stairs climbed.
             self::SPORT_FLOOR_CLIMBING => SportType::STAIR_STEPPER,
             self::SPORT_HIIT => SportType::HIIT,

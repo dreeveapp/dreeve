@@ -113,7 +113,7 @@ class FitSportTypeTest extends TestCase
             'kayaking / whitewater' => [41, 41, SportType::KAYAKING],
             'windsurfing' => [43, null, SportType::WIND_SURF],
             'kitesurfing' => [44, null, SportType::KITE_SURF],
-            'boxing' => [47, null, SportType::WORKOUT],
+            'boxing' => [47, null, SportType::BOXING],
             'floor climbing' => [48, null, SportType::STAIR_STEPPER],
             'hiit' => [62, null, SportType::HIIT],
             'racket' => [64, null, SportType::WORKOUT],

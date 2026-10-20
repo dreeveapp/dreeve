@@ -70,6 +70,7 @@ class SportTypeNameTest extends TestCase
             'surfing' => ['Surfing', SportType::SURFING],
             // Values matching our own sport type names.
             'kayaking' => ['Kayaking', SportType::KAYAKING],
+            'boxing' => ['Boxing', SportType::BOXING],
             'rowing' => ['Rowing', SportType::ROWING],
             'canoeing' => ['canoeing', SportType::CANOEING],
             'trail run enum value' => ['TrailRun', SportType::TRAIL_RUN],
