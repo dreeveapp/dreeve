@@ -132,6 +132,7 @@ Delete: Delete
 'Delete gear': 'Delete gear'
 'Delete maintenance log': 'Delete maintenance log'
 'Delete segment': 'Delete segment'
+'Delete selected': 'Delete selected'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.'
 Deleting...: Deleting...
 Description: Description

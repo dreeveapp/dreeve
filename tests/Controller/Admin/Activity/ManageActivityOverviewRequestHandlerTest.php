@@ -31,7 +31,8 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertCount(1, $crawler->filter('table.data-table'));
         $this->assertStringContainsString('No activities imported yet.', $crawler->filter('body')->text());
-        $this->assertCount(1, $crawler->filter('table.data-table tbody td[colspan="9"]'));
+        $this->assertCount(1, $crawler->filter('table.data-table tbody td[colspan="10"]'));
+        $this->assertCount(0, $crawler->filter('table.data-table input[type="checkbox"]'));
         $this->assertCount(0, $crawler->filter('table.data-table tbody a[title="Edit"]'));
         $this->assertCount(0, $crawler->filter('[aria-label="Go to next page"]'));
     }
@@ -249,6 +250,8 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('of 30', $crawler->filter('body')->text());
 
         $this->assertCount(0, $crawler->filter('table.data-table tbody a[title="Delete"]'));
+        $this->assertCount(0, $crawler->filter('input[type="checkbox"]'));
+        $this->assertCount(0, $crawler->filter('form#bulk-delete-activities'));
     }
 
     public function testShowsDeleteLinksInFilesMode(): void
@@ -267,6 +270,15 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
             '/admin/activities/'.ActivityId::fromUnprefixed('1').'/delete',
             $deleteLinks->first()->attr('href')
         );
+
+        $this->assertCount(1, $crawler->filter('table.data-table thead input[type="checkbox"][data-checkbox-toggle]'));
+        $rowCheckboxes = $crawler->filter('table.data-table tbody input[type="checkbox"][form="bulk-delete-activities"][name="activityIds[]"]');
+        $this->assertCount(3, $rowCheckboxes);
+        $this->assertSame((string) ActivityId::fromUnprefixed('1'), $rowCheckboxes->first()->attr('value'));
+
+        $bulkDeleteForm = $crawler->filter('form#bulk-delete-activities[method="get"]');
+        $this->assertSame('/admin/activities/delete', $bulkDeleteForm->attr('action'));
+        $this->assertSame('/admin/activities', $bulkDeleteForm->filter('input[name="redirectTo"]')->attr('value'));
     }
 
     public function testEditAndDeleteLinksRedirectBackToTheFilteredPage(): void
@@ -287,6 +299,10 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString(
             $expectedRedirectTo,
             (string) $crawler->filter('table.data-table tbody a[title="Delete"]')->first()->attr('href')
+        );
+        $this->assertSame(
+            '/admin/activities?filters%5BsportType%5D=Ride&pagination%5Bpage%5D=2&pagination%5Bsize%5D=10',
+            $crawler->filter('form#bulk-delete-activities input[name="redirectTo"]')->attr('value')
         );
     }
 
@@ -311,7 +327,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSame(
             ['Manual', 'Strava API'],
-            $crawler->filter('table.data-table tbody tr td:nth-child(4)')->each(fn ($cell) => trim($cell->text())),
+            $crawler->filter('table.data-table tbody tr td:nth-child(5)')->each(fn ($cell) => trim($cell->text())),
         );
     }
 

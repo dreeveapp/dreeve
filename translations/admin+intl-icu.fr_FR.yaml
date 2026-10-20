@@ -132,6 +132,7 @@ Delete: Supprimer
 'Delete gear': 'Supprimer le matériel'
 'Delete maintenance log': "Supprimer l'entrée de maintenance"
 'Delete segment': 'Delete segment'
+'Delete selected': 'Delete selected'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': "Supprimer une règle n'annule pas les modifications qu'elle a déjà apportées aux activités. Cette action ne peut pas être annulée."
 Deleting...: 'Suppression en cours...'
 Description: Description

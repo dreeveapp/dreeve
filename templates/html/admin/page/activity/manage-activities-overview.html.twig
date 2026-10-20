@@ -2,13 +2,24 @@
 {% block main %}
     {% autoescape false %}
     {% set overviewUrl = path('admin_manage_activity_overview', app.request.query.all) %}
-    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+    <div class="group/bulk-delete p-4 bg-white border border-gray-200 rounded-lg shadow-xs" data-checkbox-toggle-scope>
         <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
             <h3 class="text-lg font-semibold">
                 {{ "Activity management"|trans({}, 'admin') }}
             </h3>
             {% if importMode.isFiles() %}
                 <div class="flex flex-wrap items-center gap-2">
+                    <form id="bulk-delete-activities" method="get" action="{{ relativeUrl(path('admin_delete_activities')) }}">
+                        <input type="hidden" name="redirectTo" value="{{ relativeUrl(overviewUrl) }}">
+                        <button type="submit" class="btn--danger gap-x-1 hidden group-has-[input:checked]/bulk-delete:inline-flex">
+                            <svg class="h-4 w-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="4 2 16 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                            </svg>
+                            <span>
+                                {{ "Delete selected"|trans({}, 'admin') }}
+                            </span>
+                        </button>
+                    </form>
                     <a href="{{ relativeUrl(path('admin_file_upload')) }}" type="button" class="btn--add">
                         <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01"/>
@@ -89,6 +100,13 @@
             <table class="data-table">
                 <thead>
                 <tr>
+                    {% if importMode.isFiles() %}
+                        <th scope="col" class="narrow">
+                            {% if not overview.isEmpty() %}
+                                <input type="checkbox" data-checkbox-toggle aria-label="{{ "Select all"|trans({}, 'admin') }}">
+                            {% endif %}
+                        </th>
+                    {% endif %}
                     <th scope="col" class="text-left">
                         {{ "Name"|trans }}
                     </th>
@@ -121,6 +139,11 @@
                 <tbody>
                 {% for activity in overview %}
                     <tr class="group/row">
+                        {% if importMode.isFiles() %}
+                            <td class="narrow">
+                                <input type="checkbox" form="bulk-delete-activities" name="activityIds[]" value="{{ activity.getActivityId() }}" aria-label="{{ activity.getName()|e('html_attr') }}">
+                            </td>
+                        {% endif %}
                         <td class="whitespace-nowrap text-left">
                             <div class="flex items-center gap-1.5">
                                 <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
@@ -211,7 +234,7 @@
                 {% endfor %}
                 {% if overview.isEmpty() %}
                     <tr>
-                        <td colspan="9">
+                        <td colspan="{{ importMode.isFiles() ? 10 : 9 }}">
                             <div class="flex flex-col items-center justify-center gap-3 py-12 px-4 text-center">
                                 <span class="grid place-items-center size-12 rounded-full bg-gray-100 text-gray-400" aria-hidden="true">
                                     <svg class="size-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

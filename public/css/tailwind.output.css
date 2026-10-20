@@ -3791,6 +3791,9 @@
       color: var(--color-primary);
     }
   }
+  .group-has-\[input\:checked\]\/bulk-delete\:inline-flex:is(:where(.group\/bulk-delete):has(:is(input:checked)) *) {
+    display: inline-flex;
+  }
   .group-has-\[input\:not\(\:placeholder-shown\)\]\/range-filter\:visible:is(:where(.group\/range-filter):has(:is(input:not(:placeholder-shown))) *) {
     visibility: visible;
   }

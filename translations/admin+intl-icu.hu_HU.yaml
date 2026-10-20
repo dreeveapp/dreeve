@@ -132,6 +132,7 @@ Delete: Törlés
 'Delete gear': 'Felszerelés törlése'
 'Delete maintenance log': 'Karbantartási napló törlése'
 'Delete segment': 'Delete segment'
+'Delete selected': 'Delete selected'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Egy szabály törlése nem vonja vissza a tevékenységeken már elvégzett módosításokat. Ez a művelet nem vonható vissza.'
 Deleting...: 'Törlés folyamatban...'
 Description: Leírás

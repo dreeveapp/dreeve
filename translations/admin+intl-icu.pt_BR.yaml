@@ -132,6 +132,7 @@ Delete: Excluir
 'Delete gear': 'Excluir equipamento'
 'Delete maintenance log': 'Excluir registro de manutenção'
 'Delete segment': 'Excluir segmento'
+'Delete selected': 'Delete selected'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Excluir uma regra não reverte as alterações já feitas nas atividades. Esta ação não pode ser desfeita.'
 Deleting...: Excluindo...
 Description: Descrição

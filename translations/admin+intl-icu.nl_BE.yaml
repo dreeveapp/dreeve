@@ -132,6 +132,7 @@ Delete: Verwijderen
 'Delete gear': 'Uitrusting verwijderen'
 'Delete maintenance log': 'Onderhoudslog verwijderen'
 'Delete segment': 'Delete segment'
+'Delete selected': 'Delete selected'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Een regel verwijderen draait de wijzigingen die hij al aan activiteiten maakte niet terug. Deze actie kan niet ongedaan gemaakt worden.'
 Deleting...: 'Aan het verwijderen...'
 Description: Beschrijving
