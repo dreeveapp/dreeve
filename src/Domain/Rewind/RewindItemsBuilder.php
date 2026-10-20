@@ -140,9 +140,14 @@ final readonly class RewindItemsBuilder
                 title: $this->translator->trans('Distance'),
                 subTitle: $this->translator->trans('Total distance per month'),
                 content: $this->twig->render('html/rewind/rewind-chart.html.twig', [
-                    'chart' => Json::encode(DistancePerMonthChart::create(
-                        distancePerMonth: $totalsPerMonthResponse->getDistancePerMonth(),
-                        unitSystem: $unitSystem,
+                    'chart' => Json::encode(PerMonthChart::create(
+                        valuesPerMonth: array_map(
+                            fn (array $row): array => [$row[0], $row[1], $row[2]->toUnitSystem($unitSystem)->toFloat()],
+                            $totalsPerMonthResponse->getDistancePerMonth(),
+                        ),
+                        yAxisName: $this->translator->trans('Distance in {unit}', ['{unit}' => $unitSystem->distanceSymbol()]),
+                        yAxisNameGap: 40,
+                        gridLeft: '20px',
                         translator: $this->translator,
                         theme: $this->theme,
                     )->build()),
@@ -155,8 +160,14 @@ final readonly class RewindItemsBuilder
                 title: $this->translator->trans('Moving time'),
                 subTitle: $this->translator->trans('Total moving time per month'),
                 content: $this->twig->render('html/rewind/rewind-chart.html.twig', [
-                    'chart' => Json::encode(MovingTimePerMonthChart::create(
-                        movingTimePerMonth: $totalsPerMonthResponse->getMovingTimePerMonth(),
+                    'chart' => Json::encode(PerMonthChart::create(
+                        valuesPerMonth: array_map(
+                            fn (array $row): array => [$row[0], $row[1], $row[2] / 3600],
+                            $totalsPerMonthResponse->getMovingTimePerMonth(),
+                        ),
+                        yAxisName: $this->translator->trans('Moving time in hours'),
+                        yAxisNameGap: 30,
+                        gridLeft: '20px',
                         translator: $this->translator,
                         theme: $this->theme,
                     )->build()),
@@ -169,9 +180,14 @@ final readonly class RewindItemsBuilder
                 title: $this->translator->trans('Elevation'),
                 subTitle: $this->translator->trans('Total elevation per month'),
                 content: $this->twig->render('html/rewind/rewind-chart.html.twig', [
-                    'chart' => Json::encode(ElevationPerMonthChart::create(
-                        elevationPerMonth: $totalsPerMonthResponse->getElevationPerMonth(),
-                        unitSystem: $unitSystem,
+                    'chart' => Json::encode(PerMonthChart::create(
+                        valuesPerMonth: array_map(
+                            fn (array $row): array => [$row[0], $row[1], $row[2]->toUnitSystem($unitSystem)->toFloat()],
+                            $totalsPerMonthResponse->getElevationPerMonth(),
+                        ),
+                        yAxisName: $this->translator->trans('Elevation in {unit}', ['{unit}' => $unitSystem->elevationSymbol()]),
+                        yAxisNameGap: 40,
+                        gridLeft: '25px',
                         translator: $this->translator,
                         theme: $this->theme,
                     )->build()),
@@ -231,8 +247,11 @@ final readonly class RewindItemsBuilder
                 title: $this->translator->trans('Activity count'),
                 subTitle: $this->translator->trans('Number of activities per month'),
                 content: $this->twig->render('html/rewind/rewind-chart.html.twig', [
-                    'chart' => Json::encode(ActivityCountPerMonthChart::create(
-                        activityCountPerMonth: $this->queryBus->ask(new FindActivityCountPerMonth($yearsToQuery))->getActivityCountPerMonth(),
+                    'chart' => Json::encode(PerMonthChart::create(
+                        valuesPerMonth: $this->queryBus->ask(new FindActivityCountPerMonth($yearsToQuery))->getActivityCountPerMonth(),
+                        yAxisName: null,
+                        yAxisNameGap: 0,
+                        gridLeft: '2px',
                         translator: $this->translator,
                         theme: $this->theme,
                     )->build()),
