@@ -16,7 +16,7 @@ use App\Infrastructure\Time\Format\ProvideTimeFormats;
 final readonly class VelocityDistributionChart
 {
     use ProvideTimeFormats;
-    use ProvideSteppedValue;
+    use ProvideDistributionChart;
 
     private function __construct(
         /** @var array<int, int> */
@@ -58,27 +58,8 @@ final readonly class VelocityDistributionChart
         $minVelocity = (int) floor(min($velocities) / 10) * 10;
         $maxVelocity = (int) ceil(max($velocities) / 10) * 10;
 
-        foreach (range($minVelocity, $maxVelocity) as $velocity) {
-            if (array_key_exists($velocity, $velocityData)) {
-                continue;
-            }
-            $velocityData[$velocity] = 0;
-        }
-        ksort($velocityData);
-
-        $step = (int) floor(($maxVelocity - $minVelocity) / 24) ?: 1;
-        $xAxisValues = range($minVelocity, $maxVelocity, $step);
-        if (end($xAxisValues) < $maxVelocity) {
-            $xAxisValues[] = $maxVelocity;
-        }
-
+        [$step, $xAxisValues, $data] = $this->distributeOverSteps($velocityData, $minVelocity, $maxVelocity);
         $velocityUnitPreference = $this->sportType->getVelocityDisplayPreference();
-        $totalTimeInSeconds = array_sum($velocityData);
-        $data = [];
-        foreach ($xAxisValues as $axisValue) {
-            $data[] = array_sum(array_splice($velocityData, 0, $step)) / $totalTimeInSeconds * 100;
-        }
-
         $yAxisMax = max($data) * 1.2;
 
         $steppedTarget = match (true) {
@@ -107,109 +88,14 @@ final readonly class VelocityDistributionChart
             );
         }
 
-        return [
-            'grid' => [
-                'left' => '1%',
-                'right' => '1%',
-                'bottom' => '7%',
-                'height' => '325px',
-                'containLabel' => false,
-            ],
-            'xAxis' => [
-                'type' => 'category',
-                'data' => $xAxisValues,
-                'axisTick' => [
-                    'show' => false,
-                ],
-                'axisLine' => [
-                    'show' => false,
-                ],
-                'axisLabel' => [
-                    'interval' => 2,
-                    'showMinLabel' => true,
-                ],
-            ],
-            'yAxis' => [
-                'show' => false,
-                'min' => 0,
-                'max' => $yAxisMax,
-            ],
-            'series' => [
-                [
-                    'data' => $data,
-                    'type' => 'bar',
-                    'cursor' => 'default',
-                    'barCategoryGap' => 1,
-                    'itemStyle' => [
-                        'color' => '#fff',
-                        'borderRadius' => [25, 25, 0, 0],
-                    ],
-                    'markPoint' => [
-                        'silent' => true,
-                        'animation' => false,
-                        'symbolSize' => 45,
-                        'symbol' => 'roundRect',
-                        'itemStyle' => [
-                            'color' => '#7F7F7F',
-                        ],
-                        'label' => [
-                            'formatter' => "{label|AVG}\n{sub|{c}}",
-                            'lineHeight' => 15,
-                            'rich' => [
-                                'label' => [
-                                    'fontWeight' => 'bold',
-                                ],
-                                'sub' => [
-                                    'fontSize' => 12,
-                                ],
-                            ],
-                        ],
-                        'data' => [
-                            [
-                                'value' => $convertedAverageVelocity,
-                                'coord' => [$xAxisValueAverageVelocity, $yAxisMax * 0.9],
-                            ],
-                        ],
-                    ],
-                    'markLine' => [
-                        'symbol' => 'none',
-                        'animation' => false,
-                        'lineStyle' => [
-                            'type' => 'solid',
-                            'width' => 2,
-                            'color' => '#7F7F7F',
-                        ],
-                        'label' => [
-                            'show' => false,
-                        ],
-                        'data' => [
-                            [
-                                ['xAxis' => $xAxisValueAverageVelocity, 'yAxis' => 0],
-                                ['xAxis' => $xAxisValueAverageVelocity, 'yAxis' => $yAxisMax * 0.9],
-                            ],
-                        ],
-                        'silent' => true,
-                    ],
-                    'markArea' => [
-                        'data' => [
-                            [
-                                [
-                                    'itemStyle' => [
-                                        'color' => '#3E444D',
-                                    ],
-                                    'emphasis' => [
-                                        'disabled' => true,
-                                    ],
-                                ],
-                                [
-                                    'x' => '100%',
-                                ],
-                            ],
-                        ],
-                        'silent' => true,
-                    ],
-                ],
-            ],
-        ];
+        return $this->buildDistributionChart(
+            xAxisValues: $xAxisValues,
+            data: $data,
+            yAxisMax: $yAxisMax,
+            averageValue: $convertedAverageVelocity,
+            averageXAxisIndex: $xAxisValueAverageVelocity,
+            markPointSymbol: ['symbolSize' => 45, 'symbol' => 'roundRect'],
+            markPointHeight: 0.9,
+        );
     }
 }

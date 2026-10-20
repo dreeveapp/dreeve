@@ -2,17 +2,17 @@
 
 namespace App\Tests\Domain\Activity;
 
-use App\Domain\Activity\ProvideSteppedValue;
+use App\Domain\Activity\ProvideDistributionChart;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class ProvideSteppedValueTest extends TestCase
+class ProvideDistributionChartTest extends TestCase
 {
     #[DataProvider(methodName: 'provideTestData')]
     public function testFindClosestSteppedValue(int $min, int $max, int $step, int|float $target, int $expectedOutcome): void
     {
         $class = new readonly class($min, $max, $step, $target) {
-            use ProvideSteppedValue;
+            use ProvideDistributionChart;
 
             public function __construct(
                 private int $min,
