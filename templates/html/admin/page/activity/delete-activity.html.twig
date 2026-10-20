@@ -1,72 +1,48 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
-    {% autoescape false %}
-    {% set overviewUrl = redirectUrl(relativeUrl(path('admin_manage_activity_overview'))) %}
     {% set isBulk = activities|length > 1 %}
-    <div class="modal-like-form">
-        <div class="w-full max-w-lg overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold">
-                    {% if isBulk %}
-                        {{ "Delete activities"|trans({}, 'admin') }}
-                    {% else %}
-                        {{ "Delete activity"|trans({}, 'admin') }}
-                    {% endif %}
-                </h3>
-                <a href="{{ overviewUrl }}" aria-label="{{ "Close"|trans({}, 'admin') }}"
-                   class="grid place-items-center size-8 rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900">
-                    <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
-                    </svg>
-                </a>
-            </div>
-            <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ overviewUrl }}" class="flex flex-col gap-4">
-                {% for activity in activities %}
-                    <input type="hidden" name="activityIds[]" value="{{ activity.getId() }}">
-                {% endfor %}
-                <div data-form-error class="form-error hidden" role="alert"></div>
-                <div class="flex items-start gap-3">
-                    <span class="grid place-items-center size-10 shrink-0 rounded-full bg-red-100 text-red-600" aria-hidden="true">
-                        <svg class="size-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
-                        </svg>
-                    </span>
-                    <div class="space-y-1 text-sm text-gray-600">
-                        <p>
-                            {% if isBulk %}
-                                {{ "Are you sure you want to delete {count} activities?"|trans({
-                                    '{count}': '<span class="font-semibold text-gray-900">' ~ activities|length ~ '</span>',
-                                }, 'admin') }}
-                            {% else %}
-                                {{ "Are you sure you want to delete {name}?"|trans({
-                                    '{name}': '<span class="font-semibold text-gray-900">' ~ (activities|first).getName() ~ '</span>',
-                                }, 'admin') }}
-                            {% endif %}
-                        </p>
-                        <p>
-                            {{ "This action cannot be undone."|trans({}, 'admin') }}
-                        </p>
-                    </div>
-                </div>
+    {% embed 'html/admin/component/delete-confirm-modal.html.twig' with {closeUrl: redirectUrl(relativeUrl(path('admin_manage_activity_overview')))} %}
+        {% block title %}
+            {% if isBulk %}
+                {{ "Delete activities"|trans({}, 'admin') }}
+            {% else %}
+                {{ "Delete activity"|trans({}, 'admin') }}
+            {% endif %}
+        {% endblock %}
+        {% block hidden_fields %}
+            {% for activity in activities %}
+                <input type="hidden" name="activityIds[]" value="{{ activity.getId() }}">
+            {% endfor %}
+        {% endblock %}
+        {% block message %}
+            {% autoescape false %}
+            <p>
                 {% if isBulk %}
-                    <ul data-activities-to-delete class="max-h-64 overflow-y-auto rounded-lg border border-gray-200 divide-y divide-gray-200 text-sm">
-                        {% for activity in activities %}
-                            <li class="flex items-center gap-2 px-3 py-2">
-                                <span class="min-w-0 truncate font-medium text-gray-800">{{ activity.getName()|e }}</span>
-                                <span class="ms-auto shrink-0 text-xs text-gray-500">{{ activity.getStartDate()|formatDate() }}</span>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                    {{ "Are you sure you want to delete {count} activities?"|trans({
+                        '{count}': '<span class="font-semibold text-gray-900">' ~ activities|length ~ '</span>',
+                    }, 'admin') }}
+                {% else %}
+                    {{ "Are you sure you want to delete {name}?"|trans({
+                        '{name}': '<span class="font-semibold text-gray-900">' ~ (activities|first).getName() ~ '</span>',
+                    }, 'admin') }}
                 {% endif %}
-                <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
-                    <a href="{{ overviewUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>
-                    <button type="submit" data-has-loading-state class="group btn--danger">
-                        <span class="label">{{ "Delete"|trans({}, 'admin') }}</span>
-                        <span class="label--loading">{{ "Deleting..."|trans({}, 'admin') }}</span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-    {% endautoescape %}
+            </p>
+            <p>
+                {{ "This action cannot be undone."|trans({}, 'admin') }}
+            </p>
+            {% endautoescape %}
+        {% endblock %}
+        {% block after_message %}
+            {% if isBulk %}
+                <ul data-activities-to-delete class="max-h-64 overflow-y-auto rounded-lg border border-gray-200 divide-y divide-gray-200 text-sm">
+                    {% for activity in activities %}
+                        <li class="flex items-center gap-2 px-3 py-2">
+                            <span class="min-w-0 truncate font-medium text-gray-800">{{ activity.getName() }}</span>
+                            <span class="ms-auto shrink-0 text-xs text-gray-500">{{ activity.getStartDate()|formatDate() }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
 {% endblock main %}
