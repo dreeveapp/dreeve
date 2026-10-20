@@ -111,7 +111,7 @@ final readonly class BadgeRequestHandler
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('badge.pb.%s', $sportType),
-                cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_ACTIVITY_EXCLUSIONS),
+                cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
             ),
             render: fn (): string => $this->twig->load('svg/badge/svg-pb-badge.html.twig')->render([
                 'sportType' => $sportTypeWithBestEfforts,

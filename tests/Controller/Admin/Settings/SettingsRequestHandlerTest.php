@@ -36,9 +36,6 @@ class SettingsRequestHandlerTest extends AdminWebTestCase
 
         $this->client->request('GET', '/admin/settings/does-not-exist');
         $this->assertResponseStatusCodeSame(404);
-
-        $this->client->request('GET', '/admin/settings/activityExclusions');
-        $this->assertResponseStatusCodeSame(404);
     }
 
     #[DataProvider('provideDeepLinkedSettingsGroups')]

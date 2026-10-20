@@ -44,7 +44,6 @@ final readonly class MostRecentMilestonesWidget implements Widget
             RootCacheTag::ACTIVITIES,
             RootCacheTag::GEAR,
             RootCacheTag::SETTINGS_METRICS,
-            RootCacheTag::SETTINGS_ACTIVITY_EXCLUSIONS,
             RootCacheTag::ACTIVITY_ROUTE,
         );
     }

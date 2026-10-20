@@ -35,7 +35,7 @@ final readonly class BadgesRequestHandler
         return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'badges',
-                cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_ZWIFT, RootCacheTag::SETTINGS_ACTIVITY_EXCLUSIONS),
+                cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_ZWIFT),
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: null,

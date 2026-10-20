@@ -28,7 +28,7 @@ class BestEffortsHistoryRequestHandlerTest extends ControllerWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, activities, settings.activityExclusions',
+            'settings.appearance, activities',
         );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }

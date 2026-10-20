@@ -17,13 +17,9 @@ class SettingsGroupTest extends TestCase
         $this->assertNull(SettingsGroup::fromSlug('unknown'));
     }
 
-    public function testEveryGroupWithASettingsPageRoundTripsItsSlugAndHasATemplate(): void
+    public function testEveryGroupRoundTripsItsSlugAndHasATemplate(): void
     {
         foreach (SettingsGroup::cases() as $group) {
-            if (!$group->hasSettingsPage()) {
-                continue;
-            }
-
             $this->assertSame($group, SettingsGroup::fromSlug($group->getSlug()));
             $this->assertFileExists(sprintf('%s/templates/html/admin/page/settings/%s.html.twig', dirname(__DIR__, 3), $group->getSlug()));
         }
