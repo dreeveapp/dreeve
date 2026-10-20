@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Eventing;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final readonly class SystemEventBus implements EventBus
 {
