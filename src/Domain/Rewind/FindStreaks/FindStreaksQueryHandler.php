@@ -9,6 +9,7 @@ use App\Infrastructure\CQRS\Query\Query;
 use App\Infrastructure\CQRS\Query\QueryHandler;
 use App\Infrastructure\CQRS\Query\Response;
 use App\Infrastructure\Time\Clock\Clock;
+use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
@@ -76,6 +77,10 @@ final readonly class FindStreaksQueryHandler implements QueryHandler
                 longestMonthStreak: 0,
                 currentMonthStreak: 0,
                 currentMonthStreakStartDate: null,
+                longestDayStreakPeriod: null,
+                longestWeekStreakPeriod: null,
+                longestMonthStreakPeriod: null,
+                longestBreak: null,
             );
         }
 
@@ -86,6 +91,13 @@ final readonly class FindStreaksQueryHandler implements QueryHandler
         $longestMonthStreak = $runningMonthStreak = 1;
 
         $previousDay = array_first($days);
+        $runningDayStreakEnd = $runningWeekStreakEnd = $runningMonthStreakEnd = $previousDay;
+        $runningDayStreakIsLongest = $runningWeekStreakIsLongest = $runningMonthStreakIsLongest = true;
+        $longestDayStreakPeriod = $longestWeekStreakPeriod = $longestMonthStreakPeriod = DateRange::fromDates($previousDay, $previousDay);
+
+        $yesterday = SerializableDateTime::fromString($today->format('Y-m-d'))->modify('-1 day');
+        $longestBreak = $previousDay < $yesterday ? DateRange::fromDates($previousDay->modify('+1 day'), $yesterday) : null;
+
         $keepTrackOfCurrentDayStreak = $today->diff($previousDay)->days < 2;
         $currentDayStreak = $keepTrackOfCurrentDayStreak ? 1 : 0;
         $currentDayStreakStartDate = $keepTrackOfCurrentDayStreak ? $previousDay : null;
@@ -112,10 +124,23 @@ final readonly class FindStreaksQueryHandler implements QueryHandler
                     ++$currentDayStreak;
                     $currentDayStreakStartDate = $currentDay;
                 }
-                $longestDayStreak = max($longestDayStreak, $runningDayStreak);
+                if ($runningDayStreak > $longestDayStreak) {
+                    $longestDayStreak = $runningDayStreak;
+                    $runningDayStreakIsLongest = true;
+                }
             } else {
                 $runningDayStreak = 1;
+                $runningDayStreakEnd = $currentDay;
+                $runningDayStreakIsLongest = false;
                 $keepTrackOfCurrentDayStreak = false;
+
+                $break = DateRange::fromDates($currentDay->modify('+1 day'), $previousDay->modify('-1 day'));
+                if (is_null($longestBreak) || $break->getNumberOfDays() > $longestBreak->getNumberOfDays()) {
+                    $longestBreak = $break;
+                }
+            }
+            if ($runningDayStreakIsLongest) {
+                $longestDayStreakPeriod = DateRange::fromDates($currentDay, $runningDayStreakEnd);
             }
 
             $diffInWeeks = (int) floor($previousDay->modify(self::FIRST_DAY_OF_THE_WEEK)
@@ -128,11 +153,19 @@ final readonly class FindStreaksQueryHandler implements QueryHandler
                         ++$currentWeekStreak;
                         $currentWeekStreakStartDate = $currentDay;
                     }
-                    $longestWeekStreak = max($longestWeekStreak, $runningWeekStreak);
+                    if ($runningWeekStreak > $longestWeekStreak) {
+                        $longestWeekStreak = $runningWeekStreak;
+                        $runningWeekStreakIsLongest = true;
+                    }
                 } else {
                     $runningWeekStreak = 1;
+                    $runningWeekStreakEnd = $currentDay;
+                    $runningWeekStreakIsLongest = false;
                     $keepTrackOfCurrentWeekStreak = false;
                 }
+            }
+            if ($runningWeekStreakIsLongest) {
+                $longestWeekStreakPeriod = DateRange::fromDates($currentDay, $runningWeekStreakEnd);
             }
 
             $diffInMonths = (($previousDay->getYear() - $currentDay->getYear()) * 12)
@@ -145,11 +178,19 @@ final readonly class FindStreaksQueryHandler implements QueryHandler
                         ++$currentMonthStreak;
                         $currentMonthStreakStartDate = $currentDay;
                     }
-                    $longestMonthStreak = max($longestMonthStreak, $runningMonthStreak);
+                    if ($runningMonthStreak > $longestMonthStreak) {
+                        $longestMonthStreak = $runningMonthStreak;
+                        $runningMonthStreakIsLongest = true;
+                    }
                 } else {
                     $runningMonthStreak = 1;
+                    $runningMonthStreakEnd = $currentDay;
+                    $runningMonthStreakIsLongest = false;
                     $keepTrackOfCurrentMonthStreak = false;
                 }
+            }
+            if ($runningMonthStreakIsLongest) {
+                $longestMonthStreakPeriod = DateRange::fromDates($currentDay, $runningMonthStreakEnd);
             }
 
             $previousDay = $currentDay;
@@ -165,6 +206,10 @@ final readonly class FindStreaksQueryHandler implements QueryHandler
             longestMonthStreak: $longestMonthStreak,
             currentMonthStreak: $currentMonthStreak,
             currentMonthStreakStartDate: $currentMonthStreakStartDate,
+            longestDayStreakPeriod: $longestDayStreakPeriod,
+            longestWeekStreakPeriod: $longestWeekStreakPeriod,
+            longestMonthStreakPeriod: $longestMonthStreakPeriod,
+            longestBreak: $longestBreak,
         );
     }
 }
