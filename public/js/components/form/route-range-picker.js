@@ -11,6 +11,7 @@ const ATTRIBUTION = '© <a href="https://www.openstreetmap.org/copyright" rel="n
 const MAX_ZOOM = 17;
 const ROUTE_COLOR = '#9CA3AF';
 const SELECTION_COLOR = '#F26722';
+const ELEVATION_COLOR = '#a6a6a6';
 
 const markerIcon = (L, fillColor) => L.divIcon({
     className: '',
@@ -132,31 +133,6 @@ class RouteRangePicker {
         await loadEcharts();
         this.chart = echarts.init(this.chartNode, new DarkModeManager().isDarkModeEnabled() ? 'v5-dark' : 'v5');
         new ResizeObserver(() => this.chart.resize()).observe(this.chartNode);
-
-        const hoverMarker = this.L.circleMarker([0, 0], {
-            radius: 6,
-            color: MARKER_BORDER_COLOR,
-            fillColor: SELECTION_COLOR,
-            weight: 2,
-            opacity: 0,
-            fillOpacity: 0,
-            interactive: false,
-        }).addTo(this.map);
-
-        this.chart.on('updateAxisPointer', (event) => {
-            const point = event.dataIndex === undefined ? undefined : this.route?.points[event.dataIndex];
-            if (!point) {
-                hoverMarker.setStyle({opacity: 0, fillOpacity: 0});
-
-                return;
-            }
-
-            hoverMarker.setLatLng(point);
-            hoverMarker.setStyle({opacity: 1, fillOpacity: 1});
-            if (!this.map.getBounds().contains(point)) {
-                this.map.panTo(point);
-            }
-        });
     }
 
     async renderChart() {
@@ -178,10 +154,21 @@ class RouteRangePicker {
             distance[index] / distanceInMetersPerUnit,
             elevation / elevationInMetersPerUnit,
         ]);
+        const elevations = data.map(([, elevation]) => elevation);
+        const [minElevation, maxElevation] = [Math.min(...elevations), Math.max(...elevations)];
+        const margin = (maxElevation - minElevation) * .1;
+        const minYAxis = Math.floor(minElevation - margin);
+        const maxYAxis = Math.ceil(maxElevation + margin);
 
         this.chart.setOption({
             animation: false,
-            grid: {left: 8, right: 16, top: 16, bottom: 8, containLabel: true},
+            grid: {
+                left: String(maxYAxis).length >= 4 ? 75 : 65,
+                right: 20,
+                top: 10,
+                bottom: 30,
+                containLabel: false,
+            },
             tooltip: {
                 trigger: 'axis',
                 formatter: ([{value: [pointDistance, pointElevation]}]) => `${pointDistance.toFixed(2)} ${distanceSymbol} · ${Math.round(pointElevation)} ${elevationSymbol}`,
@@ -190,18 +177,30 @@ class RouteRangePicker {
                 type: 'value',
                 min: 0,
                 max: data[data.length - 1][0],
-                axisLabel: {formatter: `{value} ${distanceSymbol}`},
+                axisTick: {show: false},
+                axisLabel: {formatter: (value) => `${parseFloat(value.toFixed(1))} ${distanceSymbol}`},
                 splitLine: {show: false},
             },
             yAxis: {
                 type: 'value',
-                min: (extent) => Math.floor(extent.min),
-                axisLabel: {formatter: `{value} ${elevationSymbol}`},
+                min: minYAxis,
+                max: maxYAxis,
+                axisTick: {show: false},
+                splitLine: {show: false},
+                axisLabel: {
+                    show: true,
+                    formatter: `{value} ${elevationSymbol}`,
+                    customValues: [minYAxis, maxYAxis],
+                    color: '#aaa',
+                    verticalAlignMaxLabel: 'top',
+                    verticalAlignMinLabel: 'bottom',
+                },
             },
             series: [{
                 type: 'line',
                 data,
-                color: ROUTE_COLOR,
+                color: ELEVATION_COLOR,
+                smooth: true,
                 showSymbol: false,
                 lineStyle: {width: 0},
                 areaStyle: {opacity: 1, origin: 'start'},
@@ -296,16 +295,8 @@ class RouteRangePicker {
         }
 
         let elevationGain = 0;
-        let lowestIndex = start;
-        let highestIndex = start;
         for (let index = start + 1; index <= end; index++) {
             elevationGain += Math.max(0, altitude[index] - altitude[index - 1]);
-            if (altitude[index] < altitude[lowestIndex]) {
-                lowestIndex = index;
-            }
-            if (altitude[index] > altitude[highestIndex]) {
-                highestIndex = index;
-            }
         }
 
         const {distanceInMetersPerUnit, elevationInMetersPerUnit} = this.options;
@@ -317,20 +308,12 @@ class RouteRangePicker {
             return;
         }
 
-        const coord = (index) => [distance[index] / distanceInMetersPerUnit, altitude[index] / elevationInMetersPerUnit];
         this.chart.setOption({
             series: [{
                 markArea: {
                     silent: true,
                     itemStyle: {color: SELECTION_COLOR, opacity: .25},
-                    data: [[{xAxis: coord(start)[0]}, {xAxis: coord(end)[0]}]],
-                },
-                markPoint: {
-                    silent: true,
-                    symbolSize: 40,
-                    itemStyle: {color: SELECTION_COLOR},
-                    label: {fontSize: 10, formatter: ({value}) => `${Math.round(value)}`},
-                    data: [lowestIndex, highestIndex].map((index) => ({coord: coord(index), value: coord(index)[1]})),
+                    data: [[{xAxis: distance[start] / distanceInMetersPerUnit}, {xAxis: distance[end] / distanceInMetersPerUnit}]],
                 },
             }],
         });

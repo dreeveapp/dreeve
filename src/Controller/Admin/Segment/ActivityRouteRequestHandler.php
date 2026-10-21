@@ -9,6 +9,8 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Import\ImportMode;
+use App\Domain\Segment\AddCustomSegment\AddSegmentElevationChart;
+use App\Domain\Settings\SettingsRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -21,6 +23,7 @@ final readonly class ActivityRouteRequestHandler
         private ActivityRepository $activityRepository,
         private ActivityStreamRepository $activityStreamRepository,
         private ImportMode $importMode,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -46,11 +49,18 @@ final readonly class ActivityRouteRequestHandler
         }
 
         $numberOfPoints = min(count($points), count($distance));
+        $distance = array_slice($distance, 0, $numberOfPoints);
+        $altitude = count($altitude) >= $numberOfPoints ? array_slice($altitude, 0, $numberOfPoints) : [];
 
         return new JsonResponse([
             'points' => array_slice($points, 0, $numberOfPoints),
-            'distance' => array_slice($distance, 0, $numberOfPoints),
-            'altitude' => count($altitude) >= $numberOfPoints ? array_slice($altitude, 0, $numberOfPoints) : [],
+            'distance' => $distance,
+            'altitude' => $altitude,
+            'chart' => [] === $altitude ? null : AddSegmentElevationChart::create(
+                distances: $distance,
+                altitudes: $altitude,
+                unitSystem: $this->settingsRepository->appearance()->getUnitSystem(),
+            )->build(),
         ]);
     }
 }

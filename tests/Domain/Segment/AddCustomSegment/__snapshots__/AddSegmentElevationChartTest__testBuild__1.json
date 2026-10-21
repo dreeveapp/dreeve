@@ -1,0 +1,85 @@
+{
+    "animation": false,
+    "grid": {
+        "left": "75px",
+        "right": "20px",
+        "top": "10px",
+        "bottom": "30px",
+        "containLabel": false
+    },
+    "tooltip": {
+        "trigger": "axis",
+        "formatter": "{b0} km · {c0} m"
+    },
+    "xAxis": {
+        "type": "category",
+        "boundaryGap": false,
+        "data": [
+            "0.00",
+            "0.45",
+            "1.20",
+            "2.50"
+        ],
+        "axisTick": {
+            "show": false
+        },
+        "axisLabel": {
+            "formatter": {
+                "callback": "formatRounded",
+                "args": {
+                    "decimals": 1,
+                    "suffix": "km"
+                }
+            }
+        },
+        "splitLine": {
+            "show": false
+        }
+    },
+    "yAxis": {
+        "type": "value",
+        "min": 967,
+        "max": 1114,
+        "axisTick": {
+            "show": false
+        },
+        "splitLine": {
+            "show": false
+        },
+        "axisLabel": {
+            "show": true,
+            "formatter": "{value} m",
+            "customValues": [
+                967,
+                1114
+            ],
+            "color": "#aaa",
+            "verticalAlignMaxLabel": "top",
+            "verticalAlignMinLabel": "bottom"
+        }
+    },
+    "series": [
+        {
+            "type": "line",
+            "data": [
+                980,
+                1010,
+                1101,
+                1050
+            ],
+            "color": "#a6a6a6",
+            "smooth": true,
+            "showSymbol": false,
+            "lineStyle": {
+                "width": 0
+            },
+            "areaStyle": {
+                "opacity": 1,
+                "origin": "start"
+            },
+            "emphasis": {
+                "disabled": true
+            }
+        }
+    ]
+}

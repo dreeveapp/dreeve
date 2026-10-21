@@ -38,14 +38,17 @@ class ActivityRouteRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/admin/activities/activity-1/route');
 
         $this->assertResponseIsSuccessful();
+        $route = Json::decode($this->client->getResponse()->getContent());
         $this->assertEquals(
             [
                 'points' => [[51.0, 4.0], [51.001, 4.0], [51.002, 4.0]],
                 'distance' => [0, 111.2, 222.4],
                 'altitude' => [10, 11, 12],
             ],
-            Json::decode($this->client->getResponse()->getContent()),
+            array_diff_key($route, ['chart' => null]),
         );
+        $this->assertSame(['0.00', '0.11', '0.22'], $route['chart']['xAxis']['data']);
+        $this->assertSame([10, 11, 12], $route['chart']['series'][0]['data']);
     }
 
     public function testItReturnsNoAltitudeWhenTheStreamIsMissing(): void
@@ -67,7 +70,9 @@ class ActivityRouteRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/admin/activities/activity-1/route');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSame([], Json::decode($this->client->getResponse()->getContent())['altitude']);
+        $route = Json::decode($this->client->getResponse()->getContent());
+        $this->assertSame([], $route['altitude']);
+        $this->assertNull($route['chart']);
     }
 
     public function testItReturnsNotFoundWhenTheActivityHasNoRoute(): void
