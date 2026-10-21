@@ -217,6 +217,26 @@ paths:
                   value:
                     error: gpx_not_available
                     message: 'Activity "activity-9542782314" has no GPS or time data to export as GPX.'
+  streams:
+    get:
+      operationId: getActivityStreams
+      tags: [Activities]
+      summary: Get activity streams
+      description: >-
+        Returns the streams of an activity: its time-series data, one array per metric. The
+        arrays line up by index, so the n-th value of every stream belongs to the same moment
+      parameters:
+        - $ref: './dreeve-api.yaml#/components/parameters/ActivityId'
+      responses:
+        '200':
+          description: The streams of the activity.
+          content:
+            application/json:
+              schema: { $ref: './dreeve-api.yaml#/components/schemas/ActivityStreams' }
+        '401':
+          $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: './dreeve-api.yaml#/components/responses/ActivityNotFound'
 
 schemas:
   ActivityList:
@@ -343,3 +363,83 @@ schemas:
       city:
         type: [string, 'null']
         examples: ['Brugge']
+  ActivityStreams:
+    type: object
+    required:
+      - timeInSeconds
+      - distanceInMeter
+      - latLng
+      - altitudeInMeter
+      - velocityInMeterPerSecond
+      - heartRate
+      - cadence
+      - powerInWatts
+      - temperatureInCelsius
+      - moving
+      - gradeInPercent
+    properties:
+      timeInSeconds:
+        type: [array, 'null']
+        description: Seconds since the start of the activity.
+        items:
+          type: integer
+        examples: [[0, 1, 2]]
+      distanceInMeter:
+        type: [array, 'null']
+        description: Distance covered since the start, in meters.
+        items:
+          type: number
+        examples: [[0, 4.1, 8.3]]
+      latLng:
+        type: [array, 'null']
+        description: '`[latitude, longitude]` pairs. A point without a GPS fix is `null`.'
+        items:
+          type: [array, 'null']
+          minItems: 2
+          maxItems: 2
+          items:
+            type: number
+        examples: [[[51.2, 3.18], [51.2001, 3.1802]]]
+      altitudeInMeter:
+        type: [array, 'null']
+        items:
+          type: number
+        examples: [[10.5, 11.0, 11.5]]
+      velocityInMeterPerSecond:
+        type: [array, 'null']
+        items:
+          type: number
+        examples: [[8.1, 8.3, 8.2]]
+      heartRate:
+        type: [array, 'null']
+        description: Beats per minute.
+        items:
+          type: integer
+        examples: [[120, 121, 122]]
+      cadence:
+        type: [array, 'null']
+        description: Revolutions or steps per minute.
+        items:
+          type: integer
+        examples: [[80, 81, 82]]
+      powerInWatts:
+        type: [array, 'null']
+        items:
+          type: integer
+        examples: [[200, 210, 220]]
+      temperatureInCelsius:
+        type: [array, 'null']
+        items:
+          type: number
+        examples: [[20, 20, 21]]
+      moving:
+        type: [array, 'null']
+        description: Whether the athlete was moving at that moment.
+        items:
+          type: boolean
+        examples: [[true, true, false]]
+      gradeInPercent:
+        type: [array, 'null']
+        items:
+          type: number
+        examples: [[0.5, 1.2, 1.1]]

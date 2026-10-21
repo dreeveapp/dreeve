@@ -43,6 +43,7 @@ paths:
   /api/v1/activities: { $ref: './activities.yaml#/paths/list' }
   /api/v1/activities/{activityId}: { $ref: './activities.yaml#/paths/detail' }
   /api/v1/activities/{activityId}/gpx: { $ref: './activities.yaml#/paths/gpx' }
+  /api/v1/activities/{activityId}/streams: { $ref: './activities.yaml#/paths/streams' }
   /api/v1/activities/{activityId}/images: { $ref: './activity-images.yaml#/paths/list' }
   /api/v1/activities/{activityId}/images/{imageId}: { $ref: './activity-images.yaml#/paths/detail' }
   /api/v1/file-imports: { $ref: './file-imports.yaml#/paths/list' }
@@ -71,6 +72,7 @@ components:
     Activity: { $ref: './activities.yaml#/schemas/Activity' }
     ActivityImage: { $ref: './activity-images.yaml#/schemas/ActivityImage' }
     ActivityLocation: { $ref: './activities.yaml#/schemas/ActivityLocation' }
+    ActivityStreams: { $ref: './activities.yaml#/schemas/ActivityStreams' }
     WeightHistory: { $ref: './weight.yaml#/schemas/WeightHistory' }
     WeightMeasurement: { $ref: './weight.yaml#/schemas/WeightMeasurement' }
     WeightRecorded: { $ref: './weight.yaml#/schemas/WeightRecorded' }
