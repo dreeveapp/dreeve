@@ -33,6 +33,14 @@
                     <span>{{ "Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes."|trans({}, 'admin') }}</span>
                 </div>
                 <div>
+                    <label for="segment-name">{{ "Name"|trans }}</label>
+                    <input type="text" id="segment-name" name="name" required>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="segment-is-favourite" name="isFavourite" value="true">
+                    <label for="segment-is-favourite" class="mt-0!">{{ "Favourite"|trans({}, 'admin') }}</label>
+                </div>
+                <div>
                     <label for="segment-activity">{{ "Activity"|trans({}, 'admin') }}</label>
                     <input type="text" id="segment-activity" name="activityId"
                            placeholder="{{ "Search by name, date or activity ID"|trans({}, 'admin') }}"
@@ -54,23 +62,15 @@
                     <div class="hidden group-data-[state=ready]/route:flex flex-col gap-3">
                         <p class="text-sm text-gray-500">{{ "Drag the start and end markers along the route to select the segment."|trans({}, 'admin') }}</p>
                         <div class="isolate h-80 rounded-lg border border-gray-200" data-route-range-picker-map></div>
-                        <div class="h-40 w-full" data-route-range-picker-chart></div>
-                        <input type="hidden" name="startIndex" value="0" data-route-range-picker-field="startIndex">
-                        <input type="hidden" name="endIndex" value="0" data-route-range-picker-field="endIndex">
-                        <p class="text-sm text-gray-700">
+                        <p class="text-xs text-gray-700">
                             {{ "Distance"|trans }}: <span class="font-semibold" data-route-range-picker-output="distance">0</span> {{ unitSystem.distanceSymbol() }}
                             &middot;
                             {{ "Elevation gain"|trans }}: <span class="font-semibold" data-route-range-picker-output="elevationGain">-</span> {{ unitSystem.elevationSymbol() }}
                         </p>
+                        <div class="h-40 w-full" data-route-range-picker-chart></div>
+                        <input type="hidden" name="startIndex" value="0" data-route-range-picker-field="startIndex">
+                        <input type="hidden" name="endIndex" value="0" data-route-range-picker-field="endIndex">
                     </div>
-                </div>
-                <div>
-                    <label for="segment-name">{{ "Name"|trans }}</label>
-                    <input type="text" id="segment-name" name="name" required>
-                </div>
-                <div class="flex items-center gap-2">
-                    <input type="checkbox" id="segment-is-favourite" name="isFavourite" value="true">
-                    <label for="segment-is-favourite" class="mt-0!">{{ "Favourite"|trans({}, 'admin') }}</label>
                 </div>
                 <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
                     <a href="{{ relativeUrl(path('admin_manage_segment_overview')) }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>

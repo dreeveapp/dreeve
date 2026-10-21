@@ -61,14 +61,10 @@ final readonly class AddSegmentElevationChart
         return [
             'animation' => false,
             'grid' => [
-                'left' => match (strlen((string) $maxYAxis)) {
-                    4 => '75px',
-                    5 => '85px',
-                    default => '65px',
-                },
-                'right' => '20px',
+                'left' =>'50px',
+                'right' => '0',
                 'top' => '10px',
-                'bottom' => '30px',
+                'bottom' => '0',
                 'containLabel' => false,
             ],
             'tooltip' => [
