@@ -9,7 +9,7 @@
     "fitness",
     "utilities"
   ],
-  "start_url": "/",
+  "start_url": "[APP_START_URL]",
   "scope": "[APP_HOST]",
   "display": "standalone",
   "display_override": [

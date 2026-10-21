@@ -37,7 +37,7 @@ security:
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800 # 7 days
-                path: /
+                path: '%env(app_base_path:APP_URL)%'
             logout:
                 path: admin_logout
                 target: admin_login

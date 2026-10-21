@@ -1,7 +1,8 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
-    session: true
+    session:
+        cookie_path: '%env(app_base_path:APP_URL)%'
     # Set TRUSTED_PROXIES to an empty value to stop trusting forwarded headers altogether.
     trusted_proxies: '%env(string:TRUSTED_PROXIES)%'
     trusted_headers: [ 'x-forwarded-for', 'x-forwarded-proto', 'x-forwarded-port' ]

@@ -91,7 +91,7 @@ This is the minimal `.env` to get started.
 IMPORT_MODE=files
 
 # The URL you will reach the app on. Include the port if you use one.
-# Must point at the root of a (sub)domain, subdirectories are not (fully) supported.
+# Can include a sub-path, e.g. https://example.com/dreeve, see "Hosting under a sub-path" below.
 APP_URL=http://localhost:8080
 # Valid timezones can be found under the TZ Identifier column here:
 # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
@@ -133,10 +133,44 @@ ADMIN_PASSWORD_HASH='replace-me'
 # FRANKENPHP_NUM_WORKERS=4
 ```
 
+## Hosting under a sub-path
+
+Dreeve can be served from a sub-path such as `https://your-domain.com/dreeve/`.
+Set `APP_URL` to the full public URL, **including** the sub-path:
+
+```dotenv title=".env"
+APP_URL=https://your-domain.com/dreeve
+```
+
+Dreeve itself keeps serving everything from `/`, so your reverse proxy **must strip the prefix** before forwarding the request.
+Dreeve then adds the prefix to all links, assets, redirects and cookies it generates.
+
+```caddyfile title="Caddyfile"
+your-domain.com {
+	# handle_path strips the /dreeve prefix
+	handle_path /dreeve/* {
+		reverse_proxy dreeve:8080
+	}
+}
+```
+
+```nginx title="nginx.conf"
+location /dreeve/ {
+    # The trailing slash on proxy_pass strips the /dreeve/ prefix
+    proxy_pass http://dreeve:8080/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+:::note
+Requests to `https://your-domain.com/dreeve` (without trailing slash) should be redirected to `https://your-domain.com/dreeve/` by your proxy.
+:::
+
 :::caution
-**Subdirectory hosting is not fully supported.** 
-`APP_URL` should point at the root of a domain or subdomain, for example `https://dreeve.your-domain.com` or `http://localhost:8080`. 
-Serving Dreeve from a subdirectory such as `https://your-domain.com/dreeve/` is not supported.
+The static error pages served directly by the web server (the 404 and 50x pages shown when the app itself can't respond) still reference
+their stylesheet and logo from the domain root, so they may render unstyled when hosted under a sub-path.
 :::
 
 ## Running behind a reverse proxy

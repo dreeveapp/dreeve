@@ -8,6 +8,7 @@ use App\Application\AppName;
 use App\Application\AppUrl;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
+use App\Infrastructure\ValueObject\String\RelativeUrl;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -33,7 +34,8 @@ final readonly class ManifestRequestHandler
             '[APP_NAME]' => sprintf('%s | %s', AppName::LABEL, $athlete->getName()),
             '[APP_HOST]' => (string) $this->appUrl,
             '[APP_SHORT_NAME]' => AppName::LABEL,
-            '[APP_BASE_PATH]' => $this->appUrl->getBasePath() ?? '',
+            '[APP_BASE_PATH]' => rtrim(RelativeUrl::from('/', $this->appUrl)->toRelativeUrl(), '/'),
+            '[APP_START_URL]' => RelativeUrl::from('/', $this->appUrl)->toRelativeUrl(),
         ]);
 
         $response = new Response($manifest);

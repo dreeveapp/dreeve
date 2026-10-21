@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Strava;
 
+use App\Application\AppUrl;
 use App\Domain\Import\ImportMode;
 use App\Domain\Strava\InsufficientStravaAccessTokenScopes;
 use App\Domain\Strava\InvalidStravaAccessToken;
@@ -12,6 +13,7 @@ use App\Domain\Strava\StravaClientId;
 use App\Domain\Strava\StravaClientSecret;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\String\RelativeUrl;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
@@ -34,6 +36,7 @@ final readonly class StravaOAuthRequestHandler
         private Client $client,
         private ImportMode $importMode,
         private Environment $twig,
+        private AppUrl $appUrl,
     ) {
     }
 
@@ -57,7 +60,7 @@ final readonly class StravaOAuthRequestHandler
             // Even though the docs state explicitly that this will not work, users still do this and "report issues".
             return new HtmlResponse($this->twig->render('html/strava-oauth/insufficient-scopes.html.twig', [
                 'stravaClientId' => $this->stravaClientId,
-                'returnUrl' => $request->getSchemeAndHttpHost().'/strava-oauth',
+                'returnUrl' => $this->appRootUrl($request).'/strava-oauth',
             ]));
         }
 
@@ -78,7 +81,7 @@ final readonly class StravaOAuthRequestHandler
 
                     return new HtmlResponse($this->twig->render('html/strava-oauth/refresh-token.html.twig', [
                         'refreshToken' => $refreshToken,
-                        'url' => $request->getSchemeAndHttpHost(),
+                        'url' => $this->appRootUrl($request),
                     ]));
                 } catch (ClientException|RequestException $e) {
                     $error = $e->getMessage();
@@ -90,7 +93,7 @@ final readonly class StravaOAuthRequestHandler
 
             return new HtmlResponse($this->twig->render('html/strava-oauth/start-authorization.html.twig', [
                 'stravaClientId' => $this->stravaClientId,
-                'returnUrl' => $request->getSchemeAndHttpHost().'/strava-oauth',
+                'returnUrl' => $this->appRootUrl($request).'/strava-oauth',
                 'error' => $error ?? null,
             ]));
         }
@@ -99,5 +102,10 @@ final readonly class StravaOAuthRequestHandler
         return new HtmlResponse($this->twig->render('html/strava-oauth/error-page.html.twig', [
             'error' => $e->getMessage(),
         ]));
+    }
+
+    private function appRootUrl(Request $request): string
+    {
+        return $request->getSchemeAndHttpHost().rtrim(RelativeUrl::from('/', $this->appUrl)->toRelativeUrl(), '/');
     }
 }
