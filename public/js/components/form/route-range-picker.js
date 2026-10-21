@@ -262,19 +262,53 @@ class RouteRangePicker {
             this.outputs.distance.textContent = ((distance[end] - distance[start]) / this.options.distanceInMetersPerUnit).toFixed(2);
         }
 
-        if (this.outputs.elevationGain) {
-            if (!Array.isArray(altitude) || altitude.length <= end) {
+        if (!Array.isArray(altitude) || altitude.length <= end) {
+            if (this.outputs.elevationGain) {
                 this.outputs.elevationGain.textContent = '-';
-
-                return;
             }
 
-            let elevationGain = 0;
-            for (let index = start + 1; index <= end; index++) {
-                elevationGain += Math.max(0, altitude[index] - altitude[index - 1]);
-            }
-            this.outputs.elevationGain.textContent = String(Math.round(elevationGain / this.options.elevationInMetersPerUnit));
+            return;
         }
+
+        let elevationGain = 0;
+        let lowestIndex = start;
+        let highestIndex = start;
+        for (let index = start + 1; index <= end; index++) {
+            elevationGain += Math.max(0, altitude[index] - altitude[index - 1]);
+            if (altitude[index] < altitude[lowestIndex]) {
+                lowestIndex = index;
+            }
+            if (altitude[index] > altitude[highestIndex]) {
+                highestIndex = index;
+            }
+        }
+
+        const {distanceInMetersPerUnit, elevationInMetersPerUnit} = this.options;
+        if (this.outputs.elevationGain) {
+            this.outputs.elevationGain.textContent = String(Math.round(elevationGain / elevationInMetersPerUnit));
+        }
+
+        if (!this.chart) {
+            return;
+        }
+
+        const coord = (index) => [distance[index] / distanceInMetersPerUnit, altitude[index] / elevationInMetersPerUnit];
+        this.chart.setOption({
+            series: [{
+                markArea: {
+                    silent: true,
+                    itemStyle: {color: SELECTION_COLOR, opacity: .25},
+                    data: [[{xAxis: coord(start)[0]}, {xAxis: coord(end)[0]}]],
+                },
+                markPoint: {
+                    silent: true,
+                    symbolSize: 40,
+                    itemStyle: {color: SELECTION_COLOR},
+                    label: {fontSize: 10, formatter: ({value}) => `${Math.round(value)}`},
+                    data: [lowestIndex, highestIndex].map((index) => ({coord: coord(index), value: coord(index)[1]})),
+                },
+            }],
+        });
     }
 }
 
