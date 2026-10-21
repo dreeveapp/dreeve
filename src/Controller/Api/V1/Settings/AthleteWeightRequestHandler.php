@@ -10,6 +10,8 @@ use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
+use App\Infrastructure\Http\Api\ProvidePagination;
+use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,6 +23,8 @@ use Symfony\Component\Routing\Attribute\Route;
 #[AsController]
 final readonly class AthleteWeightRequestHandler
 {
+    use ProvidePagination;
+
     public function __construct(
         #[Autowire(service: DbalSettingsRepository::class)]
         private SettingsRepository $settingsRepository,
@@ -35,7 +39,13 @@ final readonly class AthleteWeightRequestHandler
             ->getHistory($this->settingsRepository->appearance()->getUnitSystem())
             ->findAll();
 
-        return new JsonResponse(['weights' => array_values($weights)]);
+        $total = count($weights);
+        $pagination = Pagination::fromPageNumberAndSize(1, max(1, $total));
+
+        return new JsonResponse([
+            'weights' => array_values($weights),
+            'pagination' => self::buildPagination($pagination, $total),
+        ]);
     }
 
     #[Route(path: '/api/v1/athlete/weights', name: 'api_v1_athlete_weights_update', methods: ['POST'], priority: 3)]

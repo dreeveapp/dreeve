@@ -9,6 +9,7 @@ use App\Domain\Activity\Activity;
 use App\Domain\Activity\Image\ActivityImageId;
 use App\Domain\Activity\Search\ActivitySearchResult;
 use App\Domain\Image\ImagePath;
+use App\Infrastructure\Http\Api\ProvidePagination;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
@@ -16,6 +17,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class ActivityResponse extends JsonResponse
 {
+    use ProvidePagination;
+
     /**
      * @param Overview<ActivitySearchResult> $overview
      */
@@ -30,12 +33,7 @@ final class ActivityResponse extends JsonResponse
                 ),
                 $overview->getItems()
             ),
-            'pagination' => [
-                'page' => $pagination->getCurrentPage(),
-                'size' => $pagination->getLimit(),
-                'total' => $overview->getTotal(),
-                'totalPages' => (int) ceil($overview->getTotal() / $pagination->getLimit()),
-            ],
+            'pagination' => self::buildPagination($pagination, $overview->getTotal()),
         ]);
     }
 

@@ -7,6 +7,7 @@ namespace App\Controller\Api\V1\FileImport;
 use App\Domain\Import\Overview\FileImportOverviewItem;
 use App\Domain\Import\Search\FileImportSearchFilters;
 use App\Domain\Import\Search\FileImportSearchRepository;
+use App\Infrastructure\Http\Api\ProvidePagination;
 use App\Infrastructure\Http\Request\PaginationFromRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final readonly class FileImportSearchRequestHandler
 {
     use PaginationFromRequest;
+    use ProvidePagination;
 
     public function __construct(
         private FileImportSearchRepository $fileImportSearchRepository,
@@ -42,12 +44,7 @@ final readonly class FileImportSearchRequestHandler
                 ],
                 $overview->getItems()
             ),
-            'pagination' => [
-                'page' => $pagination->getCurrentPage(),
-                'size' => $pagination->getLimit(),
-                'total' => $overview->getTotal(),
-                'totalPages' => (int) ceil($overview->getTotal() / $pagination->getLimit()),
-            ],
+            'pagination' => self::buildPagination($pagination, $overview->getTotal()),
         ]);
     }
 }

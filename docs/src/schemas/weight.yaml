@@ -6,7 +6,7 @@ paths:
       summary: List weight measurements
       responses:
         '200':
-          description: Weight measurements, ordered from newest to oldest.
+          description: Weight measurements, ordered from newest to oldest, always returned as a single page.
           content:
             application/json:
               schema: { $ref: './dreeve-api.yaml#/components/schemas/WeightHistory' }
@@ -83,11 +83,12 @@ paths:
 schemas:
   WeightHistory:
     type: object
-    required: [weights]
+    required: [weights, pagination]
     properties:
       weights:
         type: array
         items: { $ref: './dreeve-api.yaml#/components/schemas/WeightMeasurement' }
+      pagination: { $ref: './dreeve-api.yaml#/components/schemas/PaginationMeta' }
   WeightMeasurement:
     type: object
     required: [on, weight]

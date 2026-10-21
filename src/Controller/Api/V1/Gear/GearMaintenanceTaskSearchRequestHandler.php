@@ -11,6 +11,8 @@ use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgress;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
+use App\Infrastructure\Http\Api\ProvidePagination;
+use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +22,8 @@ use Symfony\Component\Routing\Attribute\Route;
 #[AsController]
 final readonly class GearMaintenanceTaskSearchRequestHandler
 {
+    use ProvidePagination;
+
     public function __construct(
         private GearMaintenanceRepository $gearMaintenanceRepository,
         private GearComponentRepository $gearComponentRepository,
@@ -36,7 +40,10 @@ final readonly class GearMaintenanceTaskSearchRequestHandler
 
         $gearMaintenanceConfig = $this->gearMaintenanceRepository->find();
         if (!$gearMaintenanceConfig->isFeatureEnabled()) {
-            return new JsonResponse(['maintenanceTasks' => []]);
+            return new JsonResponse([
+                'maintenanceTasks' => [],
+                'pagination' => self::buildPagination(Pagination::fromPageNumberAndSize(1, 1), 0),
+            ]);
         }
 
         $now = $this->clock->getCurrentDateTimeImmutable();
@@ -87,9 +94,12 @@ final readonly class GearMaintenanceTaskSearchRequestHandler
         }
 
         usort($maintenanceTasks, static fn (array $a, array $b): int => $b['completionRatio'] <=> $a['completionRatio']);
+        $total = count($maintenanceTasks);
+        $pagination = Pagination::fromPageNumberAndSize(1, max(1, $total));
 
         return new JsonResponse([
             'maintenanceTasks' => array_column($maintenanceTasks, 'maintenanceTask'),
+            'pagination' => self::buildPagination($pagination, $total),
         ]);
     }
 }

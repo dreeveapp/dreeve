@@ -134,7 +134,10 @@ class GearMaintenanceTaskSearchRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSame(
-            ['maintenanceTasks' => []],
+            [
+                'maintenanceTasks' => [],
+                'pagination' => ['page' => 1, 'size' => 1, 'total' => 0, 'totalPages' => 0],
+            ],
             Json::decode((string) $this->client->getResponse()->getContent()),
         );
     }

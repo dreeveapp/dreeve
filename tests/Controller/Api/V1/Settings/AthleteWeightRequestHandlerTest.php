@@ -73,7 +73,9 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
         );
 
         $this->assertResponseIsSuccessful();
-        $this->assertSame(['on' => '2026-09-08', 'weight' => 71.4], Json::decode((string) $this->client->getResponse()->getContent())['weights'][0]);
+        $response = Json::decode((string) $this->client->getResponse()->getContent());
+        $this->assertSame(['on' => '2026-09-08', 'weight' => 71.4], $response['weights'][0]);
+        $this->assertSame(['page' => 1, 'size' => 5, 'total' => 5, 'totalPages' => 1], $response['pagination']);
     }
 
     public function testItDeletesAWeightForADate(): void

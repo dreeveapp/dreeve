@@ -5,7 +5,7 @@ paths:
       tags: [Gear]
       summary: List gear
       description: >-
-        Lists all gear, active gear first
+        Lists all gear, active gear first. Always returned as a single page.
       responses:
         '200':
           description: All gear.
@@ -13,11 +13,12 @@ paths:
             application/json:
               schema:
                 type: object
-                required: [gear]
+                required: [gear, pagination]
                 properties:
                   gear:
                     type: array
                     items: { $ref: './dreeve-api.yaml#/components/schemas/Gear' }
+                  pagination: { $ref: './dreeve-api.yaml#/components/schemas/PaginationMeta' }
         '401':
           $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
   maintenanceTasks:
@@ -26,7 +27,7 @@ paths:
       tags: [Gear]
       summary: List gear maintenance tasks
       description: |-
-        Lists the maintenance tasks of every gear component.
+        Lists the maintenance tasks of every gear component. Always returned as a single page.
 
         ```
         GET /api/v1/gear/maintenance-tasks?filters[gearId]=gear-b12659861
@@ -52,11 +53,12 @@ paths:
             application/json:
               schema:
                 type: object
-                required: [maintenanceTasks]
+                required: [maintenanceTasks, pagination]
                 properties:
                   maintenanceTasks:
                     type: array
                     items: { $ref: './dreeve-api.yaml#/components/schemas/MaintenanceTask' }
+                  pagination: { $ref: './dreeve-api.yaml#/components/schemas/PaginationMeta' }
         '400':
           content:
             application/json:

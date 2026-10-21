@@ -24,5 +24,11 @@
             "distanceInMeter": 0,
             "numberOfActivities": 0
         }
-    ]
+    ],
+    "pagination": {
+        "page": 1,
+        "size": 3,
+        "total": 3,
+        "totalPages": 1
+    }
 }
