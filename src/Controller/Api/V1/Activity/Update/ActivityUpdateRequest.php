@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\V1\Activity;
+namespace App\Controller\Api\V1\Activity\Update;
 
 use App\Infrastructure\Exception\CorruptedData;
 use App\Infrastructure\Serialization\Json;

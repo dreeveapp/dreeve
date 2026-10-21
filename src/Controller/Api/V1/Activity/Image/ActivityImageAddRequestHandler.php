@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\V1\Activity;
+namespace App\Controller\Api\V1\Activity\Image;
 
 use App\Application\AppUrl;
 use App\Domain\Activity\ActivityId;

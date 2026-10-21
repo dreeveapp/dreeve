@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Controller\Api\V1\Activity;
+namespace App\Tests\Controller\Api\V1\Activity\Update;
 
 use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityExclusions;

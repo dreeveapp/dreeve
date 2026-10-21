@@ -18,6 +18,23 @@ enum StreamType: string
     case MOVING = 'moving';
     case GRADE = 'grade_smooth';
 
+    public function getApiKey(): string
+    {
+        return match ($this) {
+            self::TIME => 'timeInSeconds',
+            self::DISTANCE => 'distanceInMeter',
+            self::LAT_LNG => 'latLng',
+            self::ALTITUDE => 'altitudeInMeter',
+            self::VELOCITY => 'velocityInMeterPerSecond',
+            self::HEART_RATE => 'heartRate',
+            self::CADENCE => 'cadence',
+            self::WATTS => 'powerInWatts',
+            self::TEMP => 'temperatureInCelsius',
+            self::MOVING => 'moving',
+            self::GRADE => 'gradeInPercent',
+        };
+    }
+
     /**
      * @return StreamType[]
      */

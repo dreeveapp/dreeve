@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\V1\Activity;
+namespace App\Controller\Api\V1\Activity\Update;
 
 use App\Application\AppUrl;
+use App\Controller\Api\V1\Activity\ActivityResponse;
 use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
