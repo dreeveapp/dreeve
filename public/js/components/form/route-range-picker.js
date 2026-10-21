@@ -132,6 +132,31 @@ class RouteRangePicker {
         await loadEcharts();
         this.chart = echarts.init(this.chartNode, new DarkModeManager().isDarkModeEnabled() ? 'v5-dark' : 'v5');
         new ResizeObserver(() => this.chart.resize()).observe(this.chartNode);
+
+        const hoverMarker = this.L.circleMarker([0, 0], {
+            radius: 6,
+            color: MARKER_BORDER_COLOR,
+            fillColor: SELECTION_COLOR,
+            weight: 2,
+            opacity: 0,
+            fillOpacity: 0,
+            interactive: false,
+        }).addTo(this.map);
+
+        this.chart.on('updateAxisPointer', (event) => {
+            const point = event.dataIndex === undefined ? undefined : this.route?.points[event.dataIndex];
+            if (!point) {
+                hoverMarker.setStyle({opacity: 0, fillOpacity: 0});
+
+                return;
+            }
+
+            hoverMarker.setLatLng(point);
+            hoverMarker.setStyle({opacity: 1, fillOpacity: 1});
+            if (!this.map.getBounds().contains(point)) {
+                this.map.panTo(point);
+            }
+        });
     }
 
     async renderChart() {
