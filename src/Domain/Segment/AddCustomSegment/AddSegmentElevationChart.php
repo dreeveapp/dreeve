@@ -61,7 +61,7 @@ final readonly class AddSegmentElevationChart
         return [
             'animation' => false,
             'grid' => [
-                'left' =>'50px',
+                'left' => '50px',
                 'right' => '0',
                 'top' => '10px',
                 'bottom' => '0',
