@@ -31,22 +31,20 @@ final readonly class StreaksRequestHandler
         ));
 
         return new JsonResponse([
-            'streaks' => [
-                'day' => [
-                    'current' => $streaks->getCurrentDayStreak(),
-                    'currentStartDate' => $streaks->getCurrentDayStreakStartDate()?->format('Y-m-d'),
-                    'longest' => $streaks->getLongestDayStreak(),
-                ],
-                'week' => [
-                    'current' => $streaks->getCurrentWeekStreak(),
-                    'currentStartDate' => $streaks->getCurrentWeekStreakStartDate()?->format('Y-m-d'),
-                    'longest' => $streaks->getLongestWeekStreak(),
-                ],
-                'month' => [
-                    'current' => $streaks->getCurrentMonthStreak(),
-                    'currentStartDate' => $streaks->getCurrentMonthStreakStartDate()?->format('Y-m-d'),
-                    'longest' => $streaks->getLongestMonthStreak(),
-                ],
+            'day' => [
+                'current' => $streaks->getCurrentDayStreak(),
+                'currentStartDate' => $streaks->getCurrentDayStreakStartDate()?->format('Y-m-d'),
+                'longest' => $streaks->getLongestDayStreak(),
+            ],
+            'week' => [
+                'current' => $streaks->getCurrentWeekStreak(),
+                'currentStartDate' => $streaks->getCurrentWeekStreakStartDate()?->format('Y-m-d'),
+                'longest' => $streaks->getLongestWeekStreak(),
+            ],
+            'month' => [
+                'current' => $streaks->getCurrentMonthStreak(),
+                'currentStartDate' => $streaks->getCurrentMonthStreakStartDate()?->format('Y-m-d'),
+                'longest' => $streaks->getLongestMonthStreak(),
             ],
         ]);
     }

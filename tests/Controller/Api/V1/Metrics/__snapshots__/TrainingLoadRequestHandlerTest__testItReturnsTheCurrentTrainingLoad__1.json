@@ -1,18 +1,16 @@
 {
-    "trainingLoad": {
-        "ctl": 2.6,
-        "atl": 0,
-        "tsb": {
-            "value": 2.5,
-            "status": "SLIGHTLY_FRESH"
-        },
-        "acRatio": {
-            "value": 0.02,
-            "status": "LOW_TRAINING_LOAD"
-        },
-        "weeklyTrimp": 0,
-        "monotony": 0,
-        "strain": 0,
-        "restDaysLast7Days": 7
-    }
+    "ctl": 2.6,
+    "atl": 0,
+    "tsb": {
+        "value": 2.5,
+        "status": "SLIGHTLY_FRESH"
+    },
+    "acRatio": {
+        "value": 0.02,
+        "status": "LOW_TRAINING_LOAD"
+    },
+    "weeklyTrimp": 0,
+    "monotony": 0,
+    "strain": 0,
+    "restDaysLast7Days": 7
 }

@@ -11,11 +11,7 @@ paths:
           description: The current training load.
           content:
             application/json:
-              schema:
-                type: object
-                required: [trainingLoad]
-                properties:
-                  trainingLoad: { $ref: './dreeve-api.yaml#/components/schemas/TrainingLoad' }
+              schema: { $ref: './dreeve-api.yaml#/components/schemas/TrainingLoad' }
         '401':
           $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
   trainingVolume:
@@ -63,11 +59,7 @@ paths:
           description: The training volume for the date range.
           content:
             application/json:
-              schema:
-                type: object
-                required: [trainingVolume]
-                properties:
-                  trainingVolume: { $ref: './dreeve-api.yaml#/components/schemas/TrainingVolume' }
+              schema: { $ref: './dreeve-api.yaml#/components/schemas/TrainingVolume' }
         '400':
           content:
             application/json:
@@ -119,17 +111,7 @@ paths:
           description: The day, week and month streaks.
           content:
             application/json:
-              schema:
-                type: object
-                required: [streaks]
-                properties:
-                  streaks:
-                    type: object
-                    required: [day, week, month]
-                    properties:
-                      day: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
-                      week: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
-                      month: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
+              schema: { $ref: './dreeve-api.yaml#/components/schemas/Streaks' }
         '400':
           content:
             application/json:
@@ -154,12 +136,8 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required: [eddington]
-                properties:
-                  eddington:
-                    type: array
-                    items: { $ref: './dreeve-api.yaml#/components/schemas/Eddington' }
+                type: array
+                items: { $ref: './dreeve-api.yaml#/components/schemas/Eddington' }
         '401':
           $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
 
@@ -247,6 +225,13 @@ schemas:
       calories:
         type: integer
         examples: [2350]
+  Streaks:
+    type: object
+    required: [day, week, month]
+    properties:
+      day: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
+      week: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
+      month: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
   Streak:
     type: object
     required: [current, currentStartDate, longest]

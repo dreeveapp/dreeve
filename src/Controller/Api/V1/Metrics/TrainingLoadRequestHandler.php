@@ -41,25 +41,23 @@ final readonly class TrainingLoadRequestHandler
         $acRatio = $trainingMetrics->getCurrentAcRatio();
 
         return new JsonResponse([
-            'trainingLoad' => [
-                'ctl' => $trainingMetrics->getCurrentCtl(),
-                'atl' => $trainingMetrics->getCurrentAtl(),
-                'tsb' => $tsb instanceof TSB ? [
-                    'value' => $tsb->getValue(),
-                    'status' => $tsb->getStatus()->name,
-                ] : null,
-                'acRatio' => $acRatio instanceof AcRatio ? [
-                    'value' => $acRatio->getValue(),
-                    'status' => $acRatio->getStatus()->name,
-                ] : null,
-                'weeklyTrimp' => $trainingMetrics->getWeeklyTrimp(),
-                'monotony' => $trainingMetrics->getCurrentMonotony(),
-                'strain' => $trainingMetrics->getCurrentStrain(),
-                'restDaysLast7Days' => $this->queryBus->ask(new FindNumberOfRestDays(DateRange::fromDates(
-                    from: $now->modify('-6 days'),
-                    till: $now,
-                )))->getNumberOfRestDays(),
-            ],
+            'ctl' => $trainingMetrics->getCurrentCtl(),
+            'atl' => $trainingMetrics->getCurrentAtl(),
+            'tsb' => $tsb instanceof TSB ? [
+                'value' => $tsb->getValue(),
+                'status' => $tsb->getStatus()->name,
+            ] : null,
+            'acRatio' => $acRatio instanceof AcRatio ? [
+                'value' => $acRatio->getValue(),
+                'status' => $acRatio->getStatus()->name,
+            ] : null,
+            'weeklyTrimp' => $trainingMetrics->getWeeklyTrimp(),
+            'monotony' => $trainingMetrics->getCurrentMonotony(),
+            'strain' => $trainingMetrics->getCurrentStrain(),
+            'restDaysLast7Days' => $this->queryBus->ask(new FindNumberOfRestDays(DateRange::fromDates(
+                from: $now->modify('-6 days'),
+                till: $now,
+            )))->getNumberOfRestDays(),
         ]);
     }
 }

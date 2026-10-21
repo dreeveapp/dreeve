@@ -1,11 +1,9 @@
 {
-    "trainingVolume": {
-        "from": "2023-10-09",
-        "to": "2023-10-15",
-        "numberOfActivities": 0,
-        "movingTimeInSeconds": 0,
-        "distanceInMeter": 0,
-        "elevationInMeter": 0,
-        "calories": 0
-    }
+    "from": "2023-10-09",
+    "to": "2023-10-15",
+    "numberOfActivities": 0,
+    "movingTimeInSeconds": 0,
+    "distanceInMeter": 0,
+    "elevationInMeter": 0,
+    "calories": 0
 }

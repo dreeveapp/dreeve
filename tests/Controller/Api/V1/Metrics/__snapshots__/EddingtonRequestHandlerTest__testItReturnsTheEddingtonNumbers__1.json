@@ -1,54 +1,52 @@
-{
-    "eddington": [
-        {
-            "label": "Ride",
-            "sportTypes": [
-                "Ride",
-                "MountainBikeRide",
-                "GravelRide",
-                "VirtualRide"
-            ],
-            "unit": "km",
-            "number": 6,
-            "daysNeededForNextNumber": 3,
-            "longestDistanceInADay": 124
-        },
-        {
-            "label": "Ride",
-            "sportTypes": [
-                "Ride",
-                "MountainBikeRide",
-                "GravelRide",
-                "VirtualRide"
-            ],
-            "unit": "mi",
-            "number": 4,
-            "daysNeededForNextNumber": 1,
-            "longestDistanceInADay": 77
-        },
-        {
-            "label": "Run",
-            "sportTypes": [
-                "Run",
-                "TrailRun",
-                "VirtualRun"
-            ],
-            "unit": "km",
-            "number": 2,
-            "daysNeededForNextNumber": 1,
-            "longestDistanceInADay": 50
-        },
-        {
-            "label": "Run",
-            "sportTypes": [
-                "Run",
-                "TrailRun",
-                "VirtualRun"
-            ],
-            "unit": "mi",
-            "number": 2,
-            "daysNeededForNextNumber": 1,
-            "longestDistanceInADay": 31
-        }
-    ]
-}
+[
+    {
+        "label": "Ride",
+        "sportTypes": [
+            "Ride",
+            "MountainBikeRide",
+            "GravelRide",
+            "VirtualRide"
+        ],
+        "unit": "km",
+        "number": 6,
+        "daysNeededForNextNumber": 3,
+        "longestDistanceInADay": 124
+    },
+    {
+        "label": "Ride",
+        "sportTypes": [
+            "Ride",
+            "MountainBikeRide",
+            "GravelRide",
+            "VirtualRide"
+        ],
+        "unit": "mi",
+        "number": 4,
+        "daysNeededForNextNumber": 1,
+        "longestDistanceInADay": 77
+    },
+    {
+        "label": "Run",
+        "sportTypes": [
+            "Run",
+            "TrailRun",
+            "VirtualRun"
+        ],
+        "unit": "km",
+        "number": 2,
+        "daysNeededForNextNumber": 1,
+        "longestDistanceInADay": 50
+    },
+    {
+        "label": "Run",
+        "sportTypes": [
+            "Run",
+            "TrailRun",
+            "VirtualRun"
+        ],
+        "unit": "mi",
+        "number": 2,
+        "daysNeededForNextNumber": 1,
+        "longestDistanceInADay": 31
+    }
+]

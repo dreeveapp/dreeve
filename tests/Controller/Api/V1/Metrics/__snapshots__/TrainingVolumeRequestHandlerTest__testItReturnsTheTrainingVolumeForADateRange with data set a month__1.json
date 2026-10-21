@@ -1,11 +1,9 @@
 {
-    "trainingVolume": {
-        "from": "2023-09-01",
-        "to": "2023-09-30",
-        "numberOfActivities": 4,
-        "movingTimeInSeconds": 4004,
-        "distanceInMeter": 24424,
-        "elevationInMeter": 36,
-        "calories": 652
-    }
+    "from": "2023-09-01",
+    "to": "2023-09-30",
+    "numberOfActivities": 4,
+    "movingTimeInSeconds": 4004,
+    "distanceInMeter": 24424,
+    "elevationInMeter": 36,
+    "calories": 652
 }

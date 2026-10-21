@@ -1,19 +1,17 @@
 {
-    "streaks": {
-        "day": {
-            "current": 0,
-            "currentStartDate": null,
-            "longest": 4
-        },
-        "week": {
-            "current": 0,
-            "currentStartDate": null,
-            "longest": 3
-        },
-        "month": {
-            "current": 3,
-            "currentStartDate": "2023-07-31",
-            "longest": 3
-        }
+    "day": {
+        "current": 0,
+        "currentStartDate": null,
+        "longest": 4
+    },
+    "week": {
+        "current": 0,
+        "currentStartDate": null,
+        "longest": 3
+    },
+    "month": {
+        "current": 3,
+        "currentStartDate": "2023-07-31",
+        "longest": 3
     }
 }

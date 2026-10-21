@@ -76,6 +76,7 @@ components:
     WeightRecorded: { $ref: './weight.yaml#/schemas/WeightRecorded' }
     TrainingLoad: { $ref: './metrics.yaml#/schemas/TrainingLoad' }
     TrainingVolume: { $ref: './metrics.yaml#/schemas/TrainingVolume' }
+    Streaks: { $ref: './metrics.yaml#/schemas/Streaks' }
     Streak: { $ref: './metrics.yaml#/schemas/Streak' }
     Eddington: { $ref: './metrics.yaml#/schemas/Eddington' }
     Error: { $ref: './common.yaml#/schemas/Error' }

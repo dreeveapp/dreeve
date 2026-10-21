@@ -33,15 +33,13 @@ final readonly class TrainingVolumeRequestHandler
         ));
 
         return new JsonResponse([
-            'trainingVolume' => [
-                'from' => $from->format('Y-m-d'),
-                'to' => $to->format('Y-m-d'),
-                'numberOfActivities' => $trainingVolume->getNumberOfActivities()->toInt(),
-                'movingTimeInSeconds' => $trainingVolume->getMovingTime()->toInt(),
-                'distanceInMeter' => $trainingVolume->getDistance()->toMeter()->toInt(),
-                'elevationInMeter' => $trainingVolume->getElevation()->toInt(),
-                'calories' => $trainingVolume->getCalories()->toInt(),
-            ],
+            'from' => $from->format('Y-m-d'),
+            'to' => $to->format('Y-m-d'),
+            'numberOfActivities' => $trainingVolume->getNumberOfActivities()->toInt(),
+            'movingTimeInSeconds' => $trainingVolume->getMovingTime()->toInt(),
+            'distanceInMeter' => $trainingVolume->getDistance()->toMeter()->toInt(),
+            'elevationInMeter' => $trainingVolume->getElevation()->toInt(),
+            'calories' => $trainingVolume->getCalories()->toInt(),
         ]);
     }
 }
