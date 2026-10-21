@@ -23,6 +23,7 @@ class ManageSegmentFormRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertCount(1, $crawler->filter('head link[rel="stylesheet"][href*="libraries/leaflet/leaflet.min.css"]'));
+        $this->assertStringContainsString('libraries/echarts/echarts.min.js', $crawler->filter('body script:not([src])')->text());
         $form = $crawler->filter('form[data-dispatch-command="add-custom-segment"]');
         $this->assertCount(1, $form);
         $this->assertStringEndsWith('/admin/segments', (string) $form->attr('data-redirect'));

@@ -36,6 +36,7 @@
             {% block main %}
             {% endblock main %}
         </main>
+        {% block javascript %}{% endblock %}
         <script src="{{ relativeUrl(asset('js/dist/admin.min.js')) }}" type="module"></script>
     </body>
     </html>

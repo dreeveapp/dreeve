@@ -2,6 +2,13 @@
 {% block stylesheets %}
     <link href="{{ relativeUrl(asset('libraries/leaflet/leaflet.min.css')) }}" rel="stylesheet"/>
 {% endblock %}
+{% block javascript %}
+    <script>
+        window.dreeve = Object.assign(window.dreeve ?? {}, {
+            echartsUrls: ["{{ relativeUrl(asset('libraries/echarts/echarts.min.js')) }}"],
+        });
+    </script>
+{% endblock %}
 {% block main %}
     {% autoescape false %}
     <div class="modal-like-form">
