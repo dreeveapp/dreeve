@@ -32,7 +32,7 @@
     </div>
     <div class="mt-1 text-xs text-center">
         {% if longestDayStreakPeriod %}
-            <span title="{{ longestDayStreakPeriod.getFrom()|formatDate('normal') }} - {{ longestDayStreakPeriod.getTill()|formatDate('normal') }}">
+            <span title="{{ longestDayStreakPeriod.getFrom()|formatDate('normal') }}{% if longestDayStreakPeriod.getNumberOfDays() > 1 %} - {{ longestDayStreakPeriod.getTill()|formatDate('normal') }}{% endif %}">
                 {{ "Longest streak"|trans }} <span class="font-bold">{{ longestDayStreakPeriod.getNumberOfDays() }} {{ "days"|trans }}</span>
             </span>
             &middot;

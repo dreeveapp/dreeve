@@ -216,6 +216,7 @@ final readonly class RewindItemsBuilder
                     'dayStreak' => $streaksResponse->getLongestDayStreak(),
                     'weekStreak' => $streaksResponse->getLongestWeekStreak(),
                     'monthStreak' => $streaksResponse->getLongestMonthStreak(),
+                    'dayStreakPeriod' => $streaksResponse->getLongestDayStreakPeriod(),
                 ])
             ))
             ->add(RewindItem::from(

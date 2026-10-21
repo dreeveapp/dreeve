@@ -1,22 +1,29 @@
 {% autoescape false %}
-<div class="w-full flex justify-center items-center gap-x-2 text-center">
-    <div class="grow py-5 border border-gray-200 border-t-4 border-t-primary rounded-sm">
-        <div class="text-3xl font-extrabold">
-            {{ dayStreak }}
+<div class="w-full flex flex-col justify-center">
+    <div class="w-full flex justify-center items-center gap-x-2 text-center">
+        <div class="grow py-5 border border-gray-200 border-t-4 border-t-primary rounded-sm">
+            <div class="text-3xl font-extrabold">
+                {{ dayStreak }}
+            </div>
+            <div class="text-sm">{{ "days"|trans }}</div>
         </div>
-        <div class="text-sm">{{ "days"|trans }}</div>
-    </div>
-    <div class="grow py-5 border border-gray-200 border-t-4 border-t-primary rounded-sm">
-        <div class="text-3xl font-extrabold">
-            {{ weekStreak }}
+        <div class="grow py-5 border border-gray-200 border-t-4 border-t-primary rounded-sm">
+            <div class="text-3xl font-extrabold">
+                {{ weekStreak }}
+            </div>
+            <div class="text-sm">{{ "weeks"|trans }}</div>
         </div>
-        <div class="text-sm">{{ "weeks"|trans }}</div>
-    </div>
-    <div class="grow py-5 border border-gray-200 border-t-4 border-t-primary rounded-sm">
-        <div class="text-3xl font-extrabold">
-            {{ monthStreak }}
+        <div class="grow py-5 border border-gray-200 border-t-4 border-t-primary rounded-sm">
+            <div class="text-3xl font-extrabold">
+                {{ monthStreak }}
+            </div>
+            <div class="text-sm">{{ "months"|trans }}</div>
         </div>
-        <div class="text-sm">{{ "months"|trans }}</div>
     </div>
+    {% if dayStreakPeriod %}
+        <div class="mt-1 text-xs text-center">
+            {{ "Longest streak"|trans }} <span class="font-bold">{{ dayStreakPeriod.getFrom()|formatDate('normal') }}{% if dayStreakPeriod.getNumberOfDays() > 1 %} - {{ dayStreakPeriod.getTill()|formatDate('normal') }}{% endif %}</span>
+        </div>
+    {% endif %}
 </div>
 {% endautoescape %}
