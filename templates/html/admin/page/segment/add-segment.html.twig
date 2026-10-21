@@ -45,8 +45,6 @@
                          url: relativeUrl(path('admin_activity_route', {activityId: 'activity-__ID__'})),
                          placeholder: 'activity-__ID__',
                          source: '#segment-activity',
-                         distanceSymbol: unitSystem.distanceSymbol(),
-                         elevationSymbol: unitSystem.elevationSymbol(),
                      }|merge(unitFactors)|json_encode }}'>
                     <p class="text-sm text-gray-500 group-data-[state=ready]/route:hidden">
                         <span class="hidden group-data-[state=empty]/route:inline">{{ "Pick an activity to select the segment on its route."|trans({}, 'admin') }}</span>

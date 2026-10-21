@@ -42,8 +42,6 @@ class ManageSegmentFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('#segment-activity', $options['source']);
         $this->assertEquals(1000, $options['distanceInMetersPerUnit']);
         $this->assertEquals(1, $options['elevationInMetersPerUnit']);
-        $this->assertSame('km', $options['distanceSymbol']);
-        $this->assertSame('m', $options['elevationSymbol']);
         $this->assertCount(1, $picker->filter('[data-route-range-picker-chart]'));
     }
 
