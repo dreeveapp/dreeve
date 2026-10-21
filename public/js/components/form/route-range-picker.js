@@ -1,8 +1,11 @@
 import {fetchJson} from "../../utils";
+import {loadEcharts} from "../../features/charts/echarts-loader";
+import DarkModeManager from "../dark-mode";
 import {END_MARKER_COLOR, MARKER_BORDER_COLOR, START_MARKER_COLOR} from "../../features/maps/route-marker-colors";
 
 const ROOT_SELECTOR = '[data-route-range-picker]';
 const MAP_SELECTOR = '[data-route-range-picker-map]';
+const CHART_SELECTOR = '[data-route-range-picker-chart]';
 const TILE_LAYER_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 const ATTRIBUTION = '© <a href="https://www.openstreetmap.org/copyright" rel="noreferrer noopener">OpenStreetMap</a>';
 const MAX_ZOOM = 17;
@@ -22,6 +25,7 @@ class RouteRangePicker {
         this.options = JSON.parse(root.getAttribute('data-route-range-picker') || '{}');
         this.source = this.options.source ? document.querySelector(this.options.source) : null;
         this.mapNode = root.querySelector(MAP_SELECTOR);
+        this.chartNode = root.querySelector(CHART_SELECTOR);
         this.fields = {
             start: root.querySelector('[data-route-range-picker-field="startIndex"]'),
             end: root.querySelector('[data-route-range-picker-field="endIndex"]'),
@@ -33,6 +37,7 @@ class RouteRangePicker {
 
         this.route = null;
         this.map = null;
+        this.chart = null;
         this.layers = null;
         this.requestId = 0;
         this.loadedValue = null;
@@ -95,6 +100,7 @@ class RouteRangePicker {
         this.setState('ready');
         await this.mount();
         this.renderRoute();
+        await this.renderChart();
         this.render();
     }
 
@@ -116,6 +122,67 @@ class RouteRangePicker {
             zoomDelta: .5,
         });
         L.tileLayer(TILE_LAYER_URL, {attribution: ATTRIBUTION, maxZoom: MAX_ZOOM}).addTo(this.map);
+    }
+
+    async mountChart() {
+        if (this.chart) {
+            return;
+        }
+
+        await loadEcharts();
+        this.chart = echarts.init(this.chartNode, new DarkModeManager().isDarkModeEnabled() ? 'v5-dark' : 'v5');
+        new ResizeObserver(() => this.chart.resize()).observe(this.chartNode);
+    }
+
+    async renderChart() {
+        if (!this.chartNode) {
+            return;
+        }
+
+        const {distance, altitude} = this.route;
+        const hasAltitude = Array.isArray(altitude) && altitude.length > 0;
+        this.chartNode.classList.toggle('hidden', !hasAltitude);
+        if (!hasAltitude) {
+            return;
+        }
+
+        await this.mountChart();
+
+        const {distanceInMetersPerUnit, elevationInMetersPerUnit, distanceSymbol, elevationSymbol} = this.options;
+        const data = altitude.map((elevation, index) => [
+            distance[index] / distanceInMetersPerUnit,
+            elevation / elevationInMetersPerUnit,
+        ]);
+
+        this.chart.setOption({
+            animation: false,
+            grid: {left: 8, right: 16, top: 16, bottom: 8, containLabel: true},
+            tooltip: {
+                trigger: 'axis',
+                formatter: ([{value: [pointDistance, pointElevation]}]) => `${pointDistance.toFixed(2)} ${distanceSymbol} · ${Math.round(pointElevation)} ${elevationSymbol}`,
+            },
+            xAxis: {
+                type: 'value',
+                min: 0,
+                max: data[data.length - 1][0],
+                axisLabel: {formatter: `{value} ${distanceSymbol}`},
+                splitLine: {show: false},
+            },
+            yAxis: {
+                type: 'value',
+                min: (extent) => Math.floor(extent.min),
+                axisLabel: {formatter: `{value} ${elevationSymbol}`},
+            },
+            series: [{
+                type: 'line',
+                data,
+                color: ROUTE_COLOR,
+                showSymbol: false,
+                lineStyle: {width: 0},
+                areaStyle: {opacity: 1, origin: 'start'},
+                emphasis: {disabled: true},
+            }],
+        }, {notMerge: true});
     }
 
     renderRoute() {
