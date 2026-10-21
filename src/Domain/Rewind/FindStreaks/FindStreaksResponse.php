@@ -23,7 +23,6 @@ final readonly class FindStreaksResponse implements Response
         private ?DateRange $longestDayStreakPeriod,
         private ?DateRange $longestWeekStreakPeriod,
         private ?DateRange $longestMonthStreakPeriod,
-        private ?DateRange $longestBreak,
     ) {
     }
 
@@ -85,10 +84,5 @@ final readonly class FindStreaksResponse implements Response
     public function getLongestMonthStreakPeriod(): ?DateRange
     {
         return $this->longestMonthStreakPeriod;
-    }
-
-    public function getLongestBreak(): ?DateRange
-    {
-        return $this->longestBreak;
     }
 }

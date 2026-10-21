@@ -86,7 +86,7 @@ paths:
       summary: Get the activity streaks
       description: |
         Returns the current and longest streak of consecutive days, weeks (Monday to Sunday) and
-        months, and the longest break without any activity.
+        months.
 
         ```
         GET /api/v1/metrics/streaks?filters[sportType]=Run,TrailRun
@@ -108,7 +108,7 @@ paths:
                 examples: ['Ride', 'Run,TrailRun,Hike']
       responses:
         '200':
-          description: The day, week and month streaks, and the longest break.
+          description: The day, week and month streaks.
           content:
             application/json:
               schema: { $ref: './dreeve-api.yaml#/components/schemas/Streaks' }
@@ -227,16 +227,11 @@ schemas:
         examples: [2350]
   Streaks:
     type: object
-    required: [day, week, month, longestBreak]
+    required: [day, week, month]
     properties:
       day: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
       week: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
       month: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
-      longestBreak:
-        oneOf:
-          - { $ref: './dreeve-api.yaml#/components/schemas/LongestBreak' }
-          - type: 'null'
-        description: The longest break, or null when there never was one.
   Streak:
     type: object
     required: [current, currentStartDate, longest, longestStartDate, longestEndDate]
@@ -271,25 +266,6 @@ schemas:
           The day of the last activity in the longest streak, or null when there are no
           activities.
         examples: ['2023-03-17']
-  LongestBreak:
-    type: object
-    required: [days, startDate, endDate]
-    properties:
-      days:
-        type: integer
-        description: The number of days without any activity, start and end date included.
-        examples: [110]
-      startDate:
-        type: string
-        format: date
-        description: The first day without an activity.
-        examples: ['2014-10-30']
-      endDate:
-        type: string
-        format: date
-        description: >-
-          The last day without an activity. A break that is still going ends yesterday.
-        examples: ['2015-02-16']
   Eddington:
     type: object
     required: [label, sportTypes, unit, number, daysNeededForNextNumber, longestDistanceInADay]

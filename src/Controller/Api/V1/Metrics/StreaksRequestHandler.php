@@ -30,8 +30,6 @@ final readonly class StreaksRequestHandler
             restrictToSportTypes: MetricsFilters::fromRequest($request)->getSportTypes(),
         ));
 
-        $longestBreak = $streaks->getLongestBreak();
-
         return new JsonResponse([
             'day' => [
                 'current' => $streaks->getCurrentDayStreak(),
@@ -54,11 +52,6 @@ final readonly class StreaksRequestHandler
                 'longestStartDate' => $streaks->getLongestMonthStreakPeriod()?->getFrom()->format('Y-m-d'),
                 'longestEndDate' => $streaks->getLongestMonthStreakPeriod()?->getTill()->format('Y-m-d'),
             ],
-            'longestBreak' => $longestBreak ? [
-                'days' => $longestBreak->getNumberOfDays(),
-                'startDate' => $longestBreak->getFrom()->format('Y-m-d'),
-                'endDate' => $longestBreak->getTill()->format('Y-m-d'),
-            ] : null,
         ]);
     }
 }

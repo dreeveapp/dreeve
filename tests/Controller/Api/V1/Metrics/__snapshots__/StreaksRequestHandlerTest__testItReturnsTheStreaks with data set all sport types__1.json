@@ -19,10 +19,5 @@
         "longest": 3,
         "longestStartDate": "2023-07-28",
         "longestEndDate": "2023-09-12"
-    },
-    "longestBreak": {
-        "days": 729,
-        "startDate": "2020-07-31",
-        "endDate": "2022-07-29"
     }
 }

@@ -35,7 +35,15 @@ class StreaksWidgetTest extends ContainerTestCase
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('2'))
-                ->withStartDateTime(SerializableDateTime::fromString('2025-01-02 00:00:00'))
+                ->withStartDateTime(SerializableDateTime::fromString('2023-10-14 00:00:00'))
+                ->withSportType(SportType::RIDE)
+                ->build(),
+            []
+        ));
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('3'))
+                ->withStartDateTime(SerializableDateTime::fromString('2023-10-13 00:00:00'))
                 ->withSportType(SportType::RIDE)
                 ->build(),
             []

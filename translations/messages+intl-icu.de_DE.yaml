@@ -88,7 +88,6 @@ Cricket: Cricket
 Crossfit: Crossfit
 'Crunching the numbers...': 'Zahlen werden berechnet...'
 'Current Status': 'Aktueller Status'
-'Current streaks': 'Aktuelle Serien'
 Cycling: Radfahren
 'Daily TRIMP': 'Täglicher TRIMP'
 'Daily activities': 'Tägliche Aktivitäten'
@@ -248,6 +247,7 @@ Loading...: Lädt...
 'Longest activity (h)': 'Längste Aktivität (h)'
 'Longest day': 'Längster Tag'
 'Longest distance': 'Weiteste Distanz'
+'Longest streak': 'Longest streak'
 'Longest streaks': 'Längste Serie'
 Low: Niedrig
 'Low risk': 'Geringes Risiko'

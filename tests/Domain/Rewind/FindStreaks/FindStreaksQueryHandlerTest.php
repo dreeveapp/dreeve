@@ -69,10 +69,6 @@ class FindStreaksQueryHandlerTest extends ContainerTestCase
                     SerializableDateTime::fromString('2024-05-10'),
                     SerializableDateTime::fromString('2025-01-10'),
                 ),
-                longestBreak: DateRange::fromDates(
-                    SerializableDateTime::fromString('2021-01-01'),
-                    SerializableDateTime::fromString('2023-12-28'),
-                ),
             ),
             $findStreaksQueryHandler->handle(
                 new FindStreaks(
@@ -80,20 +76,6 @@ class FindStreaksQueryHandlerTest extends ContainerTestCase
                     restrictToSportTypes: SportTypes::fromArray([SportType::RIDE])
                 )
             )
-        );
-
-        $clock = PausedClock::fromString('2030-01-01 14:00:00');
-        $this->assertEquals(
-            DateRange::fromDates(
-                SerializableDateTime::fromString('2025-01-11'),
-                SerializableDateTime::fromString('2029-12-31'),
-            ),
-            new FindStreaksQueryHandler($this->getConnection(), $clock)->handle(
-                new FindStreaks(
-                    years: Years::all($clock->getCurrentDateTimeImmutable()),
-                    restrictToSportTypes: SportTypes::fromArray([SportType::RIDE])
-                )
-            )->getLongestBreak()
         );
     }
 
@@ -118,7 +100,6 @@ class FindStreaksQueryHandlerTest extends ContainerTestCase
                 longestDayStreakPeriod: null,
                 longestWeekStreakPeriod: null,
                 longestMonthStreakPeriod: null,
-                longestBreak: null,
             ),
             $findStreaksQueryHandler->handle(
                 new FindStreaks(

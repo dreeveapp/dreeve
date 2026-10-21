@@ -80,7 +80,6 @@ final readonly class FindStreaksQueryHandler implements QueryHandler
                 longestDayStreakPeriod: null,
                 longestWeekStreakPeriod: null,
                 longestMonthStreakPeriod: null,
-                longestBreak: null,
             );
         }
 
@@ -94,9 +93,6 @@ final readonly class FindStreaksQueryHandler implements QueryHandler
         $runningDayStreakEnd = $runningWeekStreakEnd = $runningMonthStreakEnd = $previousDay;
         $runningDayStreakIsLongest = $runningWeekStreakIsLongest = $runningMonthStreakIsLongest = true;
         $longestDayStreakPeriod = $longestWeekStreakPeriod = $longestMonthStreakPeriod = DateRange::fromDates($previousDay, $previousDay);
-
-        $yesterday = SerializableDateTime::fromString($today->format('Y-m-d'))->modify('-1 day');
-        $longestBreak = $previousDay < $yesterday ? DateRange::fromDates($previousDay->modify('+1 day'), $yesterday) : null;
 
         $keepTrackOfCurrentDayStreak = $today->diff($previousDay)->days < 2;
         $currentDayStreak = $keepTrackOfCurrentDayStreak ? 1 : 0;
@@ -133,11 +129,6 @@ final readonly class FindStreaksQueryHandler implements QueryHandler
                 $runningDayStreakEnd = $currentDay;
                 $runningDayStreakIsLongest = false;
                 $keepTrackOfCurrentDayStreak = false;
-
-                $break = DateRange::fromDates($currentDay->modify('+1 day'), $previousDay->modify('-1 day'));
-                if (is_null($longestBreak) || $break->getNumberOfDays() > $longestBreak->getNumberOfDays()) {
-                    $longestBreak = $break;
-                }
             }
             if ($runningDayStreakIsLongest) {
                 $longestDayStreakPeriod = DateRange::fromDates($currentDay, $runningDayStreakEnd);
@@ -209,7 +200,6 @@ final readonly class FindStreaksQueryHandler implements QueryHandler
             longestDayStreakPeriod: $longestDayStreakPeriod,
             longestWeekStreakPeriod: $longestWeekStreakPeriod,
             longestMonthStreakPeriod: $longestMonthStreakPeriod,
-            longestBreak: $longestBreak,
         );
     }
 }

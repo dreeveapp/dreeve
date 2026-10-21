@@ -31,6 +31,12 @@
         </div>
     </div>
     <div class="mt-1 text-xs text-center">
+        {% if longestDayStreakPeriod %}
+            <span title="{{ longestDayStreakPeriod.getFrom()|formatDate('normal') }} - {{ longestDayStreakPeriod.getTill()|formatDate('normal') }}">
+                {{ "Longest streak"|trans }} <span class="font-bold">{{ longestDayStreakPeriod.getNumberOfDays() }} {{ "days"|trans }}</span>
+            </span>
+            &middot;
+        {% endif %}
         {{ "Last activity"|trans }} <span class="font-bold">{{ mostRecentActivity.getStartDate()|formatDate('normal') }}</span>
     </div>
 {% endautoescape %}

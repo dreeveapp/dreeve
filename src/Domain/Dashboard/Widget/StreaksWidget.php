@@ -31,7 +31,7 @@ final readonly class StreaksWidget implements Widget, DependsOnCurrentDay
 
     public function getLabel(): string
     {
-        return $this->translator->trans('Current streaks');
+        return $this->translator->trans('Streaks');
     }
 
     public function getAdminLabel(): string
@@ -96,6 +96,7 @@ final readonly class StreaksWidget implements Widget, DependsOnCurrentDay
             'weekStreakStartDate' => $findStreaksResponse->getCurrentWeekStreakStartDate(),
             'monthStreak' => $findStreaksResponse->getCurrentMonthStreak(),
             'monthStreakStartDate' => $findStreaksResponse->getCurrentMonthStreakStartDate(),
+            'longestDayStreakPeriod' => $findStreaksResponse->getLongestDayStreakPeriod(),
         ]);
     }
 }
