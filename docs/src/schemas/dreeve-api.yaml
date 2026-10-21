@@ -80,6 +80,7 @@ components:
     TrainingVolume: { $ref: './metrics.yaml#/schemas/TrainingVolume' }
     Streaks: { $ref: './metrics.yaml#/schemas/Streaks' }
     Streak: { $ref: './metrics.yaml#/schemas/Streak' }
+    LongestBreak: { $ref: './metrics.yaml#/schemas/LongestBreak' }
     Eddington: { $ref: './metrics.yaml#/schemas/Eddington' }
     Error: { $ref: './common.yaml#/schemas/Error' }
   parameters:

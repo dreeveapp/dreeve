@@ -86,7 +86,7 @@ paths:
       summary: Get the activity streaks
       description: |
         Returns the current and longest streak of consecutive days, weeks (Monday to Sunday) and
-        months.
+        months, and the longest break without any activity.
 
         ```
         GET /api/v1/metrics/streaks?filters[sportType]=Run,TrailRun
@@ -108,7 +108,7 @@ paths:
                 examples: ['Ride', 'Run,TrailRun,Hike']
       responses:
         '200':
-          description: The day, week and month streaks.
+          description: The day, week and month streaks, and the longest break.
           content:
             application/json:
               schema: { $ref: './dreeve-api.yaml#/components/schemas/Streaks' }
@@ -227,14 +227,19 @@ schemas:
         examples: [2350]
   Streaks:
     type: object
-    required: [day, week, month]
+    required: [day, week, month, longestBreak]
     properties:
       day: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
       week: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
       month: { $ref: './dreeve-api.yaml#/components/schemas/Streak' }
+      longestBreak:
+        oneOf:
+          - { $ref: './dreeve-api.yaml#/components/schemas/LongestBreak' }
+          - type: 'null'
+        description: The longest break, or null when there never was one.
   Streak:
     type: object
-    required: [current, currentStartDate, longest]
+    required: [current, currentStartDate, longest, longestStartDate, longestEndDate]
     properties:
       current:
         type: integer
@@ -252,6 +257,39 @@ schemas:
         type: integer
         description: The length of the longest streak ever.
         examples: [12]
+      longestStartDate:
+        type: [string, 'null']
+        format: date
+        description: >-
+          The day of the first activity in the longest streak, or null when there are no
+          activities. The most recent one wins when several streaks are equally long.
+        examples: ['2023-03-06']
+      longestEndDate:
+        type: [string, 'null']
+        format: date
+        description: >-
+          The day of the last activity in the longest streak, or null when there are no
+          activities.
+        examples: ['2023-03-17']
+  LongestBreak:
+    type: object
+    required: [days, startDate, endDate]
+    properties:
+      days:
+        type: integer
+        description: The number of days without any activity, start and end date included.
+        examples: [110]
+      startDate:
+        type: string
+        format: date
+        description: The first day without an activity.
+        examples: ['2014-10-30']
+      endDate:
+        type: string
+        format: date
+        description: >-
+          The last day without an activity. A break that is still going ends yesterday.
+        examples: ['2015-02-16']
   Eddington:
     type: object
     required: [label, sportTypes, unit, number, daysNeededForNextNumber, longestDistanceInADay]

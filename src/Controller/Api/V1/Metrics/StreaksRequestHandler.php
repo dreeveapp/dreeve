@@ -30,22 +30,35 @@ final readonly class StreaksRequestHandler
             restrictToSportTypes: MetricsFilters::fromRequest($request)->getSportTypes(),
         ));
 
+        $longestBreak = $streaks->getLongestBreak();
+
         return new JsonResponse([
             'day' => [
                 'current' => $streaks->getCurrentDayStreak(),
                 'currentStartDate' => $streaks->getCurrentDayStreakStartDate()?->format('Y-m-d'),
                 'longest' => $streaks->getLongestDayStreak(),
+                'longestStartDate' => $streaks->getLongestDayStreakPeriod()?->getFrom()->format('Y-m-d'),
+                'longestEndDate' => $streaks->getLongestDayStreakPeriod()?->getTill()->format('Y-m-d'),
             ],
             'week' => [
                 'current' => $streaks->getCurrentWeekStreak(),
                 'currentStartDate' => $streaks->getCurrentWeekStreakStartDate()?->format('Y-m-d'),
                 'longest' => $streaks->getLongestWeekStreak(),
+                'longestStartDate' => $streaks->getLongestWeekStreakPeriod()?->getFrom()->format('Y-m-d'),
+                'longestEndDate' => $streaks->getLongestWeekStreakPeriod()?->getTill()->format('Y-m-d'),
             ],
             'month' => [
                 'current' => $streaks->getCurrentMonthStreak(),
                 'currentStartDate' => $streaks->getCurrentMonthStreakStartDate()?->format('Y-m-d'),
                 'longest' => $streaks->getLongestMonthStreak(),
+                'longestStartDate' => $streaks->getLongestMonthStreakPeriod()?->getFrom()->format('Y-m-d'),
+                'longestEndDate' => $streaks->getLongestMonthStreakPeriod()?->getTill()->format('Y-m-d'),
             ],
+            'longestBreak' => $longestBreak ? [
+                'days' => $longestBreak->getNumberOfDays(),
+                'startDate' => $longestBreak->getFrom()->format('Y-m-d'),
+                'endDate' => $longestBreak->getTill()->format('Y-m-d'),
+            ] : null,
         ]);
     }
 }

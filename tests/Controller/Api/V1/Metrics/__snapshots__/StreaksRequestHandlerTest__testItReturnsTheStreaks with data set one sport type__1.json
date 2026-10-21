@@ -2,16 +2,27 @@
     "day": {
         "current": 0,
         "currentStartDate": null,
-        "longest": 1
+        "longest": 1,
+        "longestStartDate": "2023-08-31",
+        "longestEndDate": "2023-08-31"
     },
     "week": {
         "current": 0,
         "currentStartDate": null,
-        "longest": 1
+        "longest": 1,
+        "longestStartDate": "2023-08-31",
+        "longestEndDate": "2023-08-31"
     },
     "month": {
         "current": 0,
         "currentStartDate": null,
-        "longest": 1
+        "longest": 1,
+        "longestStartDate": "2023-08-31",
+        "longestEndDate": "2023-08-31"
+    },
+    "longestBreak": {
+        "days": 396,
+        "startDate": "2022-07-31",
+        "endDate": "2023-08-30"
     }
 }
