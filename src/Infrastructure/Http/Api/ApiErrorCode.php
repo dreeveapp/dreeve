@@ -7,6 +7,7 @@ namespace App\Infrastructure\Http\Api;
 enum ApiErrorCode: string
 {
     case INVALID_TOKEN = 'invalid_token';
+    case INSUFFICIENT_SCOPE = 'insufficient_scope';
     case MISSING_FILE = 'missing_file';
     case UNSUPPORTED_MEDIA_TYPE = 'unsupported_media_type';
     case UNSUPPORTED_FILE_TYPE = 'unsupported_file_type';

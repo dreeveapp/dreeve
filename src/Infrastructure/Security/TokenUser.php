@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Security\Api;
+namespace App\Infrastructure\Security;
 
-use App\Infrastructure\Security\Token;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-final readonly class ApiUser implements UserInterface
+final readonly class TokenUser implements UserInterface
 {
     /**
      * @param non-empty-string $identifier

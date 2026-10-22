@@ -2,29 +2,30 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Infrastructure\Security\Api;
+namespace App\Tests\Infrastructure\Security;
 
 use App\Infrastructure\Security\Api\ApiToken;
-use App\Infrastructure\Security\Api\ApiTokenHandler;
-use App\Infrastructure\Security\Api\ApiUser;
 use App\Infrastructure\Security\Mcp\McpToken;
-use App\Infrastructure\Security\Mcp\McpTokenHandler;
+use App\Infrastructure\Security\TokenHandler;
+use App\Infrastructure\Security\TokenUser;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
-class ApiTokenHandlerTest extends TestCase
+class TokenHandlerTest extends TestCase
 {
-    public function testItResolvesTheApiUserForTheConfiguredToken(): void
+    public function testItResolvesTheUserOfTheTokenThatMatches(): void
     {
-        $token = ApiToken::generate();
+        $apiToken = ApiToken::generate();
+        $mcpToken = McpToken::generate();
+        $handler = new TokenHandler($apiToken, $mcpToken);
 
-        $userBadge = new ApiTokenHandler($token)->getUserBadgeFrom((string) $token);
+        $userBadge = $handler->getUserBadgeFrom((string) $apiToken);
 
         $this->assertSame('dreeve-api', $userBadge->getUserIdentifier());
+        $this->assertSame(['ROLE_API'], $userBadge->getUser()->getRoles());
 
-        $token = McpToken::generate();
-        $userBadge = new McpTokenHandler($token)->getUserBadgeFrom((string) $token);
+        $userBadge = $handler->getUserBadgeFrom((string) $mcpToken);
 
         $this->assertSame('dreeve-mcp', $userBadge->getUserIdentifier());
         $this->assertSame(['ROLE_MCP'], $userBadge->getUser()->getRoles());
@@ -35,15 +36,15 @@ class ApiTokenHandlerTest extends TestCase
         $token = ApiToken::generate();
 
         // Without a loader the authenticator falls back to the user provider.
-        $userLoader = new ApiTokenHandler($token)->getUserBadgeFrom((string) $token)->getUserLoader();
+        $userLoader = new TokenHandler($token, McpToken::generate())->getUserBadgeFrom((string) $token)->getUserLoader();
 
         $this->assertNotNull($userLoader);
-        $this->assertEquals(new ApiUser('dreeve-api', 'ROLE_API'), $userLoader('dreeve-api'));
+        $this->assertEquals(new TokenUser('dreeve-api', 'ROLE_API'), $userLoader('dreeve-api'));
     }
 
     public function testItRejectsAnotherToken(): void
     {
-        $handler = new ApiTokenHandler(ApiToken::generate());
+        $handler = new TokenHandler(ApiToken::generate(), McpToken::generate());
 
         $this->expectException(BadCredentialsException::class);
 
@@ -53,7 +54,7 @@ class ApiTokenHandlerTest extends TestCase
     public function testItRejectsTheTokenWithoutItsPrefix(): void
     {
         $token = ApiToken::generate();
-        $handler = new ApiTokenHandler($token);
+        $handler = new TokenHandler($token, McpToken::generate());
 
         $this->expectException(BadCredentialsException::class);
 
@@ -62,7 +63,7 @@ class ApiTokenHandlerTest extends TestCase
 
     public function testItRejectsAnEmptyToken(): void
     {
-        $handler = new ApiTokenHandler(ApiToken::generate());
+        $handler = new TokenHandler(ApiToken::generate(), McpToken::generate());
 
         $this->expectException(BadCredentialsException::class);
 
@@ -72,7 +73,7 @@ class ApiTokenHandlerTest extends TestCase
     #[DataProvider('provideValuesThatCloseTheApi')]
     public function testItRejectsEveryTokenWhenTheKeyIsNotUsable(string $configured, string $sent): void
     {
-        $handler = new ApiTokenHandler(ApiToken::fromString($configured));
+        $handler = new TokenHandler(ApiToken::fromString($configured), McpToken::fromString($configured));
 
         $this->expectException(BadCredentialsException::class);
 
@@ -94,5 +95,6 @@ class ApiTokenHandlerTest extends TestCase
         yield 'a password someone typed' => ['hunter2', 'hunter2'];
         yield 'right length, no prefix' => [str_repeat('a', 64), str_repeat('a', 64)];
         yield 'uppercase hex' => ['drv_'.str_repeat('A', 64), 'drv_'.str_repeat('A', 64)];
+        yield 'uppercase hex, MCP prefix' => ['drvm_'.str_repeat('A', 64), 'drvm_'.str_repeat('A', 64)];
     }
 }

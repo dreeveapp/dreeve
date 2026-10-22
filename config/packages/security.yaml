@@ -7,8 +7,8 @@ security:
     providers:
         admin_provider:
             id: App\Infrastructure\Security\AdminUserProvider
-        api_provider:
-            id: App\Infrastructure\Security\Api\ApiUserProvider
+        token_provider:
+            id: App\Infrastructure\Security\TokenUserProvider
 
     firewalls:
         dev:
@@ -16,25 +16,16 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        api:
-            pattern: ^/api/v1(/|$)
+        token:
+            pattern: ^/(api/v1|mcp)(/|$)
             stateless: true
-            provider: api_provider
-            entry_point: App\Infrastructure\Security\Api\ApiAuthenticationEntryPoint
+            provider: token_provider
+            entry_point: App\Infrastructure\Security\TokenAuthenticationEntryPoint
+            access_denied_handler: App\Infrastructure\Security\TokenAuthenticationEntryPoint
             access_token:
                 realm: 'Dreeve'
-                token_handler: App\Infrastructure\Security\Api\ApiTokenHandler
-                failure_handler: App\Infrastructure\Security\Api\ApiAuthenticationEntryPoint
-
-        mcp:
-            pattern: ^/mcp(/|$)
-            stateless: true
-            provider: api_provider
-            entry_point: App\Infrastructure\Security\Api\ApiAuthenticationEntryPoint
-            access_token:
-                realm: 'Dreeve'
-                token_handler: App\Infrastructure\Security\Mcp\McpTokenHandler
-                failure_handler: App\Infrastructure\Security\Api\ApiAuthenticationEntryPoint
+                token_handler: App\Infrastructure\Security\TokenHandler
+                failure_handler: App\Infrastructure\Security\TokenAuthenticationEntryPoint
 
         main:
             lazy: true

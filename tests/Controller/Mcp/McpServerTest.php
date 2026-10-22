@@ -50,7 +50,10 @@ class McpServerTest extends ControllerWebTestCase
 
         $this->client->request('POST', '/mcp', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$apiKey]);
 
-        $this->assertSame(Response::HTTP_UNAUTHORIZED, $this->client->getResponse()->getStatusCode());
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertSame('Bearer realm="Dreeve", error="insufficient_scope"', $response->headers->get('WWW-Authenticate'));
+        $this->assertSame('insufficient_scope', Json::decode((string) $response->getContent())['error']);
     }
 
     public function testItRejectsEverythingWhenNoKeyIsConfigured(): void

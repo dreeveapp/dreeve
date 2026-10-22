@@ -22,6 +22,7 @@ schemas:
           A stable, machine readable code.
         enum:
           - invalid_token
+          - insufficient_scope
           - missing_file
           - unsupported_media_type
           - unsupported_file_type
@@ -85,4 +86,4 @@ responses:
           invalidToken:
             value:
               error: invalid_token
-              message: A valid API token is required. Send it in the Authorization header as a Bearer token.
+              message: A valid token is required. Send it in the Authorization header as a Bearer token.

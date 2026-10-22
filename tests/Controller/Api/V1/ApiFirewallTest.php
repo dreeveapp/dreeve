@@ -114,7 +114,10 @@ class ApiFirewallTest extends ControllerWebTestCase
 
         $this->client->request('GET', '/api/v1/status', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$mcpKey]);
 
-        $this->assertSame(Response::HTTP_UNAUTHORIZED, $this->client->getResponse()->getStatusCode());
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertSame('Bearer realm="Dreeve", error="insufficient_scope"', $response->headers->get('WWW-Authenticate'));
+        $this->assertSame('insufficient_scope', Json::decode((string) $response->getContent())['error']);
     }
 
     public function testItRejectsEverythingWhenTheConfiguredKeyIsMalformed(): void
