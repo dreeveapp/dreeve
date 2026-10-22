@@ -18,6 +18,7 @@ use App\Domain\Import\ImportMode;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Http\Api\ApiErrorCode;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,7 +46,7 @@ final readonly class ActivityUpdateRequestHandler
         if (!$this->importMode->isFiles()) {
             return new ApiErrorResponse(
                 statusCode: Response::HTTP_CONFLICT,
-                error: 'import_mode_not_files',
+                error: ApiErrorCode::IMPORT_MODE_NOT_FILES,
                 message: 'Activities can only be updated when running in file import mode.',
             );
         }

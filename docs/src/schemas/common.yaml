@@ -32,6 +32,7 @@ schemas:
           - method_not_allowed
           - bad_request
           - forbidden
+          - too_many_requests
           - internal_error
       message:
         type: string

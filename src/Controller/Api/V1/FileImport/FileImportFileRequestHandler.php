@@ -7,6 +7,7 @@ namespace App\Controller\Api\V1\FileImport;
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportRepository;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Http\Api\ApiErrorCode;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
 use App\Infrastructure\Http\AttachmentResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +35,7 @@ final readonly class FileImportFileRequestHandler
         if (null === $fileContents = $fileImport->getFileContents()) {
             return new ApiErrorResponse(
                 statusCode: Response::HTTP_NOT_FOUND,
-                error: 'file_not_available',
+                error: ApiErrorCode::FILE_NOT_AVAILABLE,
                 message: sprintf('File import "%s" has no stored file.', $fileImportId),
             );
         }

@@ -11,6 +11,7 @@ use App\Domain\Activity\RemoveActivityImage\RemoveActivityImage;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Http\Api\ApiErrorCode;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -33,7 +34,7 @@ final readonly class ActivityImageRemoveRequestHandler
         if (!$this->importMode->isFiles()) {
             return new ApiErrorResponse(
                 statusCode: Response::HTTP_CONFLICT,
-                error: 'import_mode_not_files',
+                error: ApiErrorCode::IMPORT_MODE_NOT_FILES,
                 message: 'Images can only be removed from activities when running in file import mode.',
             );
         }

@@ -8,6 +8,7 @@ use App\Domain\Import\InvalidActivityFileName;
 use App\Domain\Import\UploadActivityFile\CannotUploadActivityFile;
 use App\Domain\Import\UploadActivityFile\UploadActivityFile;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\Http\Api\ApiErrorCode;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
 use App\Infrastructure\Http\Api\CouldNotReadUploadedFilePart;
 use App\Infrastructure\Http\Api\UploadedFilePart;
@@ -45,7 +46,7 @@ final readonly class ActivityUploadRequestHandler
         } catch (InvalidActivityFileName $e) {
             return new ApiErrorResponse(
                 statusCode: Response::HTTP_UNPROCESSABLE_ENTITY,
-                error: 'unsupported_file_type',
+                error: ApiErrorCode::UNSUPPORTED_FILE_TYPE,
                 message: $e->getMessage(),
             );
         }
@@ -55,7 +56,7 @@ final readonly class ActivityUploadRequestHandler
         } catch (CannotUploadActivityFile $e) {
             return new ApiErrorResponse(
                 statusCode: Response::HTTP_CONFLICT,
-                error: 'import_mode_not_files',
+                error: ApiErrorCode::IMPORT_MODE_NOT_FILES,
                 message: $e->getMessage(),
             );
         }

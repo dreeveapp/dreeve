@@ -9,6 +9,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\GpxFileName;
 use App\Domain\Activity\GpxSerializer;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Http\Api\ApiErrorCode;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
 use App\Infrastructure\Http\AttachmentResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,7 +40,7 @@ final readonly class ActivityGpxRequestHandler
         if (null === $gpx = $this->gpxSerializer->serialize($activity->getId())) {
             return new ApiErrorResponse(
                 statusCode: Response::HTTP_NOT_FOUND,
-                error: 'file_not_available',
+                error: ApiErrorCode::FILE_NOT_AVAILABLE,
                 message: sprintf('Activity "%s" has no GPS data to export as GPX.', $activityId),
             );
         }

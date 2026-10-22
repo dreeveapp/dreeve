@@ -9,6 +9,7 @@ use App\Domain\Athlete\Weight\UpdateAthleteWeight\UpdateAthleteWeight;
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\Http\Api\ApiErrorCode;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
 use App\Infrastructure\Http\Api\ProvidePagination;
 use App\Infrastructure\Repository\Pagination;
@@ -72,7 +73,7 @@ final readonly class AthleteWeightRequestHandler
         } catch (\InvalidArgumentException) {
             return new ApiErrorResponse(
                 statusCode: Response::HTTP_BAD_REQUEST,
-                error: 'bad_request',
+                error: ApiErrorCode::BAD_REQUEST,
                 message: '"on" must be a date in YYYY-MM-DD format.',
             );
         }

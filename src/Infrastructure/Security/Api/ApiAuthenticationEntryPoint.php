@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Security\Api;
 
+use App\Infrastructure\Http\Api\ApiErrorCode;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +30,7 @@ final readonly class ApiAuthenticationEntryPoint implements AuthenticationEntryP
     {
         return new ApiErrorResponse(
             statusCode: Response::HTTP_UNAUTHORIZED,
-            error: 'invalid_token',
+            error: ApiErrorCode::INVALID_TOKEN,
             message: 'A valid API token is required. Send it in the Authorization header as a Bearer token.',
             headers: ['WWW-Authenticate' => sprintf('Bearer realm="%s"', self::REALM)],
         );

@@ -14,6 +14,7 @@ use App\Domain\Image\ImagePath;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Http\Api\ApiErrorCode;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
 use App\Infrastructure\Http\Api\CouldNotReadUploadedFilePart;
 use App\Infrastructure\Http\Api\UploadedFilePart;
@@ -44,7 +45,7 @@ final readonly class ActivityImageAddRequestHandler
         if (!$this->importMode->isFiles()) {
             return new ApiErrorResponse(
                 statusCode: Response::HTTP_CONFLICT,
-                error: 'import_mode_not_files',
+                error: ApiErrorCode::IMPORT_MODE_NOT_FILES,
                 message: 'Images can only be added to activities when running in file import mode.',
             );
         }
@@ -74,7 +75,7 @@ final readonly class ActivityImageAddRequestHandler
         if (null === $extension) {
             return new ApiErrorResponse(
                 statusCode: Response::HTTP_UNPROCESSABLE_ENTITY,
-                error: 'unsupported_file_type',
+                error: ApiErrorCode::UNSUPPORTED_FILE_TYPE,
                 message: 'The file is not a jpg, png or webp image.',
             );
         }

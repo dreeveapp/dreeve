@@ -11,11 +11,11 @@ final class ApiErrorResponse extends JsonResponse
     /**
      * @param array<string, string> $headers
      */
-    public function __construct(int $statusCode, string $error, string $message, array $headers = [])
+    public function __construct(int $statusCode, ApiErrorCode $error, string $message, array $headers = [])
     {
         parent::__construct(
             data: [
-                'error' => $error,
+                'error' => $error->value,
                 'message' => $message,
             ],
             status: $statusCode,
