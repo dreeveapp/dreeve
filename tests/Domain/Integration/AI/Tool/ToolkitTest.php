@@ -82,7 +82,7 @@ class ToolkitTest extends ContainerTestCase
         $tools = $this->getContainer()->get(ToolkitInterface::class)->tools();
         usort($tools, static fn (ToolInterface $a, ToolInterface $b): int => $a->getName() <=> $b->getName());
 
-        $this->assertCount(13, $tools);
+        $this->assertCount(14, $tools);
         $this->assertMatchesJsonSnapshot(Json::encode(array_map(
             static fn (ToolInterface $tool): array => [
                 'name' => $tool->getName(),
@@ -112,6 +112,8 @@ class ToolkitTest extends ContainerTestCase
         yield 'GetMostRecentActivity Tool' => ['get_most_recent_activity', []];
         yield 'GetSegment Tool' => ['get_segment_by_id', ['segmentId' => '1']];
         yield 'GetSegment Tool for a custom segment' => ['get_segment_by_id', ['segmentId' => 'custom']];
+        yield 'SearchActivities Tool' => ['search_activities', []];
+        yield 'SearchActivities Tool with filters' => ['search_activities', ['from' => '2025-01-01', 'to' => '2025-01-31', 'sportType' => 'Ride', 'hasGpx' => false, 'page' => 1, 'size' => 1]];
     }
 
     #[\Override]

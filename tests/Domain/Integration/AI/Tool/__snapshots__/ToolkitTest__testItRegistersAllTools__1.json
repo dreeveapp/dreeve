@@ -188,5 +188,40 @@
             ]
         },
         "maxRuns": null
+    },
+    {
+        "name": "search_activities",
+        "description": "Searches the user’s activities, newest first, and returns one compact row per activity: name, sport type, start date, distance, elevation, moving time and whether a GPX file is available.\nFilter by date range, by one or more sport types and by GPX availability. Results are paginated: request the next \"page\" until \"page\" equals \"totalPages\".\nUse this tool when the user asks a question that spans many activities, for example “How many trail runs did I do in 2024?” or “List all my rides over 100 km this year.”\nUse the activity tools with the returned ids for the details of a single activity.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "from": {
+                    "type": "string",
+                    "description": "Only include activities on or after this date (YYYY-MM-DD)."
+                },
+                "to": {
+                    "type": "string",
+                    "description": "Only include activities on or before this date (YYYY-MM-DD)."
+                },
+                "sportType": {
+                    "type": "string",
+                    "description": "Comma separated Strava sport types, for example \"Ride,VirtualRide\"."
+                },
+                "hasGpx": {
+                    "type": "boolean",
+                    "description": "Only include activities with (true) or without (false) a GPX file."
+                },
+                "page": {
+                    "type": "integer",
+                    "description": "The page to return, starting at 1."
+                },
+                "size": {
+                    "type": "integer",
+                    "description": "The number of activities per page. Defaults to 25, at most 100."
+                }
+            },
+            "required": []
+        },
+        "maxRuns": null
     }
 ]

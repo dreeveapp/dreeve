@@ -1,0 +1,32 @@
+{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "result": {
+        "content": [
+            {
+                "type": "text",
+                "text": "{\n    \"activities\": [\n        {\n            \"id\": \"903645\",\n            \"name\": \"Test activity\",\n            \"sportType\": \"Ride\",\n            \"startDateTime\": \"2023-10-10 00:00:00\",\n            \"distanceInKilometer\": 10,\n            \"elevationInMeter\": 0,\n            \"movingTimeInSeconds\": 10,\n            \"hasGpx\": false,\n            \"url\": \"http://localhost:8080/activities/activity-903645\"\n        }\n    ],\n    \"page\": 1,\n    \"size\": 10,\n    \"totalActivityCount\": 1,\n    \"totalPages\": 1\n}"
+            }
+        ],
+        "isError": false,
+        "structuredContent": {
+            "activities": [
+                {
+                    "id": "903645",
+                    "name": "Test activity",
+                    "sportType": "Ride",
+                    "startDateTime": "2023-10-10 00:00:00",
+                    "distanceInKilometer": 10,
+                    "elevationInMeter": 0,
+                    "movingTimeInSeconds": 10,
+                    "hasGpx": false,
+                    "url": "http://localhost:8080/activities/activity-903645"
+                }
+            ],
+            "page": 1,
+            "size": 10,
+            "totalActivityCount": 1,
+            "totalPages": 1
+        }
+    }
+}

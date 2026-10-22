@@ -34,6 +34,16 @@ final readonly class ToolParameter
         );
     }
 
+    public static function boolean(string $name, string $description, bool $required = false): self
+    {
+        return new self(
+            name: $name,
+            type: ToolParameterType::BOOLEAN,
+            description: $description,
+            required: $required,
+        );
+    }
+
     public function getName(): string
     {
         return $this->name;

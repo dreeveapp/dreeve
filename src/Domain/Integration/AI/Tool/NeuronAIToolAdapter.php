@@ -33,6 +33,7 @@ final class NeuronAIToolAdapter extends Tool
                 type: match ($parameter->getType()) {
                     ToolParameterType::STRING => PropertyType::STRING,
                     ToolParameterType::INTEGER => PropertyType::INTEGER,
+                    ToolParameterType::BOOLEAN => PropertyType::BOOLEAN,
                 },
                 description: $parameter->getDescription(),
                 required: $parameter->isRequired(),

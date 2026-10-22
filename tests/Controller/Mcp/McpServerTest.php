@@ -113,6 +113,8 @@ class McpServerTest extends ControllerWebTestCase
         yield 'get_heart_rate_zones for a sport type' => ['get_heart_rate_zones', ['sportType' => 'Run']];
         yield 'get_activity_by_id with a prefixed id' => ['get_activity_by_id', ['activityId' => 'activity-903645']];
         yield 'get_activity_by_id for an unknown activity' => ['get_activity_by_id', ['activityId' => 'activity-1']];
+        yield 'search_activities with filters' => ['search_activities', ['sportType' => 'Ride', 'hasGpx' => false, 'page' => 1, 'size' => 10]];
+        yield 'search_activities with an unknown sport type' => ['search_activities', ['sportType' => 'Flying']];
     }
 
     #[\Override]

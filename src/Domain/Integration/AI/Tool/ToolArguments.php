@@ -31,6 +31,13 @@ final readonly class ToolArguments
         return is_numeric($value) ? (int) $value : null;
     }
 
+    public function getBool(string $name): ?bool
+    {
+        $value = $this->arguments[$name] ?? null;
+
+        return is_bool($value) ? $value : null;
+    }
+
     public function getActivityId(): ActivityId
     {
         return ActivityId::fromPrefixedOrUnprefixed((string) $this->getString('activityId'));

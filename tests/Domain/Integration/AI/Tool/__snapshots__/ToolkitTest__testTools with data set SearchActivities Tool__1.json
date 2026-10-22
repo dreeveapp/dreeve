@@ -1,0 +1,30 @@
+{
+    "activities": [
+        {
+            "id": "123456789",
+            "name": "Test activity",
+            "sportType": "Ride",
+            "startDateTime": "2025-01-01 02:00:00",
+            "distanceInKilometer": 10,
+            "elevationInMeter": 0,
+            "movingTimeInSeconds": 3600,
+            "hasGpx": false,
+            "url": "http://localhost:8080/activities/activity-123456789"
+        },
+        {
+            "id": "987654321",
+            "name": "Test activity",
+            "sportType": "Ride",
+            "startDateTime": "2020-01-01 02:00:00",
+            "distanceInKilometer": 10,
+            "elevationInMeter": 0,
+            "movingTimeInSeconds": 10,
+            "hasGpx": false,
+            "url": "http://localhost:8080/activities/activity-987654321"
+        }
+    ],
+    "page": 1,
+    "size": 25,
+    "totalActivityCount": 2,
+    "totalPages": 1
+}
