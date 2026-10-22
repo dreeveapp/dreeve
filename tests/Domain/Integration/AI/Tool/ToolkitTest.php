@@ -59,12 +59,21 @@ class ToolkitTest extends ContainerTestCase
         $this->assertMatchesJsonSnapshot($result->getText());
     }
 
-    public function testItReturnsAToolErrorForAnUnknownActivity(): void
+    #[DataProvider(methodName: 'provideToolErrors')]
+    public function testItReturnsAToolError(string $name, array $inputs, string $message): void
     {
-        $result = $this->executeTool('get_activity_by_id', ['activityId' => '1']);
+        $result = $this->executeTool($name, $inputs);
 
         $this->assertTrue($result->isError());
-        $this->assertSame('Activity "activity-1" does not exist.', $result->getText());
+        $this->assertSame($message, $result->getText());
+    }
+
+    public static function provideToolErrors(): iterable
+    {
+        yield 'get_activity_by_id for an unknown activity' => ['get_activity_by_id', ['activityId' => '1'], 'Activity "activity-1" does not exist.'];
+        yield 'get_streaks with an unknown sport type' => ['get_streaks', ['sportType' => 'Ride,Flying'], '"Flying" is not a known sport type.'];
+        yield 'get_training_volume with an invalid date' => ['get_training_volume', ['from' => '2025-13-01', 'to' => '2025-12-31'], '"from" must be a date in YYYY-MM-DD format.'];
+        yield 'get_training_volume with a reversed date range' => ['get_training_volume', ['from' => '2025-02-01', 'to' => '2025-01-01'], '"from" must not be later than "to".'];
     }
 
     public function testItListsNoGearMaintenanceTasksWhenTheFeatureIsDisabled(): void
