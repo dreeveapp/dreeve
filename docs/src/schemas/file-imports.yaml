@@ -185,7 +185,7 @@ paths:
     get:
       operationId: downloadFileImport
       tags: [File imports]
-      summary: Download the original file
+      summary: Download original file
       description: >-
         Returns the file exactly as it was uploaded
       parameters:
