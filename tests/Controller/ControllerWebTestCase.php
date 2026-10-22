@@ -18,7 +18,8 @@ abstract class ControllerWebTestCase extends WebTestCase
     protected KernelBrowser $client;
 
     private ?string $originalImportMode;
-    private ?string $originalApiKey;
+    /** @var array<string, string|null> */
+    private array $originalKeys = [];
 
     #[\Override]
     protected function setUp(): void
@@ -26,7 +27,9 @@ abstract class ControllerWebTestCase extends WebTestCase
         parent::setUp();
 
         $this->originalImportMode = $_ENV['IMPORT_MODE'] ?? null;
-        $this->originalApiKey = $_ENV['DREEVE_API_KEY'] ?? null;
+        foreach (['DREEVE_API_KEY', 'DREEVE_MCP_KEY'] as $envVar) {
+            $this->originalKeys[$envVar] = $_ENV[$envVar] ?? null;
+        }
 
         $this->prepareEnvironment();
 
@@ -76,10 +79,12 @@ abstract class ControllerWebTestCase extends WebTestCase
 
         // Superglobals outlive the kernel, and the suite runs order-randomized, so a test that
         // configures an API key would otherwise leak it into one asserting there is none.
-        if (null === $this->originalApiKey) {
-            unset($_SERVER['DREEVE_API_KEY'], $_ENV['DREEVE_API_KEY']);
-        } else {
-            $_SERVER['DREEVE_API_KEY'] = $_ENV['DREEVE_API_KEY'] = $this->originalApiKey;
+        foreach ($this->originalKeys as $envVar => $originalKey) {
+            if (null === $originalKey) {
+                unset($_SERVER[$envVar], $_ENV[$envVar]);
+            } else {
+                $_SERVER[$envVar] = $_ENV[$envVar] = $originalKey;
+            }
         }
 
         parent::tearDown();
@@ -95,6 +100,13 @@ abstract class ControllerWebTestCase extends WebTestCase
     protected function withApiKey(string $apiKey): void
     {
         $_SERVER['DREEVE_API_KEY'] = $_ENV['DREEVE_API_KEY'] = $apiKey;
+
+        $this->rebootClient();
+    }
+
+    protected function withMcpKey(string $mcpKey): void
+    {
+        $_SERVER['DREEVE_MCP_KEY'] = $_ENV['DREEVE_MCP_KEY'] = $mcpKey;
 
         $this->rebootClient();
     }

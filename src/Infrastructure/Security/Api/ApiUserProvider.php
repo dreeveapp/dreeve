@@ -16,16 +16,19 @@ final readonly class ApiUserProvider implements UserProviderInterface
 {
     public function __construct(
         private ApiToken $apiToken,
+        private McpToken $mcpToken,
     ) {
     }
 
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        if ($this->apiToken->getUserIdentifier() !== $identifier) {
-            throw new UserNotFoundException();
+        foreach ([$this->apiToken, $this->mcpToken] as $token) {
+            if ($token->getUserIdentifier() === $identifier) {
+                return ApiUser::fromToken($token);
+            }
         }
 
-        return ApiUser::fromToken($this->apiToken);
+        throw new UserNotFoundException();
     }
 
     public function refreshUser(UserInterface $user): UserInterface

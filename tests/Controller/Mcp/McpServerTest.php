@@ -7,6 +7,7 @@ namespace App\Tests\Controller\Mcp;
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsName;
 use App\Infrastructure\Security\Api\ApiToken;
+use App\Infrastructure\Security\Api\McpToken;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -19,7 +20,7 @@ class McpServerTest extends ControllerWebTestCase
 
     private const string PROTOCOL_VERSION = '2025-11-25';
 
-    private ApiToken $token;
+    private McpToken $token;
 
     #[DataProvider('provideRequestsWithoutAValidToken')]
     public function testItRejectsARequestWithoutAValidToken(array $server): void
@@ -39,12 +40,22 @@ class McpServerTest extends ControllerWebTestCase
     public static function provideRequestsWithoutAValidToken(): iterable
     {
         yield 'no Authorization header' => [[]];
-        yield 'another token' => [['HTTP_AUTHORIZATION' => 'Bearer drv_'.str_repeat('a', 64)]];
+        yield 'another token' => [['HTTP_AUTHORIZATION' => 'Bearer drvm_'.str_repeat('a', 64)]];
+    }
+
+    public function testItRejectsTheApiKey(): void
+    {
+        $apiKey = ApiToken::generate();
+        $this->withApiKey((string) $apiKey);
+
+        $this->client->request('POST', '/mcp', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$apiKey]);
+
+        $this->assertSame(Response::HTTP_UNAUTHORIZED, $this->client->getResponse()->getStatusCode());
     }
 
     public function testItRejectsEverythingWhenNoKeyIsConfigured(): void
     {
-        $this->withApiKey('');
+        $this->withMcpKey('');
 
         $this->postToMcp(['jsonrpc' => '2.0', 'id' => 1, 'method' => 'tools/list']);
 
@@ -123,8 +134,8 @@ class McpServerTest extends ControllerWebTestCase
     #[\Override]
     protected function prepareEnvironment(): void
     {
-        $this->token = ApiToken::generate();
-        $_SERVER['DREEVE_API_KEY'] = $_ENV['DREEVE_API_KEY'] = (string) $this->token;
+        $this->token = McpToken::generate();
+        $_SERVER['DREEVE_MCP_KEY'] = $_ENV['DREEVE_MCP_KEY'] = (string) $this->token;
     }
 
     private function initializeSession(): string

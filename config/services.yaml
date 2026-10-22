@@ -10,6 +10,7 @@ parameters:
     env(ADMIN_PASSWORD_HASH): ''
     env(ADMIN_ALLOWED_IPS): ''
     env(DREEVE_API_KEY): ''
+    env(DREEVE_MCP_KEY): ''
     env(TRUSTED_PROXIES): 'private_ranges'
     env(STRAVA_CLIENT_ID): 'replace-me'
     env(STRAVA_CLIENT_SECRET): 'replace-me'
@@ -105,6 +106,10 @@ services:
     App\Infrastructure\Security\Api\ApiToken:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:DREEVE_API_KEY)%']
+
+    App\Infrastructure\Security\Api\McpToken:
+        factory: [ null, 'fromString' ]
+        arguments: ['%env(string:DREEVE_MCP_KEY)%']
 
     App\Domain\Import\ImportMode:
         public: true

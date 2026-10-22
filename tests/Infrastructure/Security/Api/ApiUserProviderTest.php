@@ -7,6 +7,7 @@ namespace App\Tests\Infrastructure\Security\Api;
 use App\Infrastructure\Security\Api\ApiToken;
 use App\Infrastructure\Security\Api\ApiUser;
 use App\Infrastructure\Security\Api\ApiUserProvider;
+use App\Infrastructure\Security\Api\McpToken;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
@@ -22,6 +23,11 @@ class ApiUserProviderTest extends TestCase
 
         $this->assertSame('dreeve-api', $user->getUserIdentifier());
         $this->assertSame(['ROLE_API'], $user->getRoles());
+
+        $user = $this->apiUserProvider->loadUserByIdentifier('dreeve-mcp');
+
+        $this->assertSame('dreeve-mcp', $user->getUserIdentifier());
+        $this->assertSame(['ROLE_MCP'], $user->getRoles());
     }
 
     public function testLoadUserByIdentifierForAnotherIdentifier(): void
@@ -54,6 +60,6 @@ class ApiUserProviderTest extends TestCase
     {
         parent::setUp();
 
-        $this->apiUserProvider = new ApiUserProvider(ApiToken::generate());
+        $this->apiUserProvider = new ApiUserProvider(ApiToken::generate(), McpToken::generate());
     }
 }

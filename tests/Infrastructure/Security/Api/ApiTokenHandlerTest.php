@@ -7,6 +7,8 @@ namespace App\Tests\Infrastructure\Security\Api;
 use App\Infrastructure\Security\Api\ApiToken;
 use App\Infrastructure\Security\Api\ApiTokenHandler;
 use App\Infrastructure\Security\Api\ApiUser;
+use App\Infrastructure\Security\Api\McpToken;
+use App\Infrastructure\Security\Api\McpTokenHandler;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
@@ -20,6 +22,12 @@ class ApiTokenHandlerTest extends TestCase
         $userBadge = new ApiTokenHandler($token)->getUserBadgeFrom((string) $token);
 
         $this->assertSame('dreeve-api', $userBadge->getUserIdentifier());
+
+        $token = McpToken::generate();
+        $userBadge = new McpTokenHandler($token)->getUserBadgeFrom((string) $token);
+
+        $this->assertSame('dreeve-mcp', $userBadge->getUserIdentifier());
+        $this->assertSame(['ROLE_MCP'], $userBadge->getUser()->getRoles());
     }
 
     public function testItSuppliesItsOwnUserLoader(): void

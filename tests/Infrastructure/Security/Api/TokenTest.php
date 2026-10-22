@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Infrastructure\Security\Api;
 
 use App\Infrastructure\Security\Api\ApiToken;
+use App\Infrastructure\Security\Api\McpToken;
 use App\Infrastructure\Serialization\Json;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -14,6 +15,7 @@ class TokenTest extends TestCase
     public function testGenerate(): void
     {
         $this->assertMatchesRegularExpression('/^drv_[a-f0-9]{64}$/', (string) ApiToken::generate());
+        $this->assertMatchesRegularExpression('/^drvm_[a-f0-9]{64}$/', (string) McpToken::generate());
     }
 
     public function testGenerateIsRandom(): void
@@ -75,6 +77,9 @@ class TokenTest extends TestCase
     {
         $this->assertTrue(ApiToken::generate()->hasValidFormat());
         $this->assertTrue(ApiToken::fromString((string) ApiToken::generate())->hasValidFormat());
+        $this->assertTrue(McpToken::fromString((string) McpToken::generate())->hasValidFormat());
+        $this->assertFalse(ApiToken::fromString((string) McpToken::generate())->hasValidFormat());
+        $this->assertFalse(McpToken::fromString((string) ApiToken::generate())->hasValidFormat());
     }
 
     public function testMatches(): void

@@ -7,6 +7,7 @@ namespace App\Tests\Controller\Api\V1;
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsName;
 use App\Infrastructure\Security\Api\ApiToken;
+use App\Infrastructure\Security\Api\McpToken;
 use App\Infrastructure\Security\Visitor;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
@@ -102,6 +103,16 @@ class ApiFirewallTest extends ControllerWebTestCase
         $this->withApiKey('');
 
         $this->client->request('GET', '/api/v1/status', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token]);
+
+        $this->assertSame(Response::HTTP_UNAUTHORIZED, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testItRejectsTheMcpKey(): void
+    {
+        $mcpKey = McpToken::generate();
+        $this->withMcpKey((string) $mcpKey);
+
+        $this->client->request('GET', '/api/v1/status', server: ['HTTP_AUTHORIZATION' => 'Bearer '.$mcpKey]);
 
         $this->assertSame(Response::HTTP_UNAUTHORIZED, $this->client->getResponse()->getStatusCode());
     }
