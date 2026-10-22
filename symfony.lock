@@ -72,6 +72,18 @@
             "var/storage/.gitignore"
         ]
     },
+    "php-http/discovery": {
+        "version": "1.20",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.18",
+            "ref": "f45b5dd173a27873ab19f5e3180b2f661c21de02"
+        },
+        "files": [
+            "config/packages/http_discovery.yaml"
+        ]
+    },
     "phpstan/phpstan": {
         "version": "2.0",
         "recipe": {
@@ -162,6 +174,9 @@
         "files": [
             "config/packages/lock.yaml"
         ]
+    },
+    "symfony/mcp-bundle": {
+        "version": "v0.14.1"
     },
     "symfony/messenger": {
         "version": "7.1",
@@ -265,5 +280,14 @@
             "config/packages/twig.yaml",
             "templates/base.html.twig"
         ]
+    },
+    "symfony/uid": {
+        "version": "8.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.0",
+            "ref": "0df5844274d871b37fc3816c57a768ffc60a43a5"
+        }
     }
 }

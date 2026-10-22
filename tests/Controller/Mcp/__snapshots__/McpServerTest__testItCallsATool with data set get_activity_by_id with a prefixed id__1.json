@@ -1,0 +1,44 @@
+{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "result": {
+        "content": [
+            {
+                "type": "text",
+                "text": "{\n    \"id\": \"903645\",\n    \"startDateTime\": \"2023-10-10 00:00:00\",\n    \"sportType\": \"Ride\",\n    \"name\": \"Test activity\",\n    \"description\": \"\",\n    \"distanceInKilometer\": 10,\n    \"elevationInMeter\": 0,\n    \"startingCoordinate\": null,\n    \"caloriesBurnt\": 0,\n    \"averagePowerInWatts\": null,\n    \"maxPowerInWatts\": null,\n    \"averageSpeed\": 0,\n    \"maxSpeed\": 0,\n    \"averageHeartRate\": null,\n    \"maxHeartRate\": null,\n    \"averageCadence\": null,\n    \"movingTimeInSeconds\": 10,\n    \"recordedOnDevice\": null,\n    \"totalImageCount\": 0,\n    \"startingPointCountryCode\": null,\n    \"startingPointState\": null,\n    \"weather\": null,\n    \"gearId\": null,\n    \"gearName\": null,\n    \"isCommute\": false,\n    \"isGroupActivity\": false,\n    \"workoutType\": null,\n    \"stravaUrl\": \"https://www.strava.com/activities/903645\",\n    \"url\": \"http://localhost:8080/activities/activity-903645\"\n}"
+            }
+        ],
+        "isError": false,
+        "structuredContent": {
+            "id": "903645",
+            "startDateTime": "2023-10-10 00:00:00",
+            "sportType": "Ride",
+            "name": "Test activity",
+            "description": "",
+            "distanceInKilometer": 10,
+            "elevationInMeter": 0,
+            "startingCoordinate": null,
+            "caloriesBurnt": 0,
+            "averagePowerInWatts": null,
+            "maxPowerInWatts": null,
+            "averageSpeed": 0,
+            "maxSpeed": 0,
+            "averageHeartRate": null,
+            "maxHeartRate": null,
+            "averageCadence": null,
+            "movingTimeInSeconds": 10,
+            "recordedOnDevice": null,
+            "totalImageCount": 0,
+            "startingPointCountryCode": null,
+            "startingPointState": null,
+            "weather": null,
+            "gearId": null,
+            "gearName": null,
+            "isCommute": false,
+            "isGroupActivity": false,
+            "workoutType": null,
+            "stravaUrl": "https://www.strava.com/activities/903645",
+            "url": "http://localhost:8080/activities/activity-903645"
+        }
+    }
+}

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Integration\AI\Tool;
 
+use App\Infrastructure\Serialization\Json;
 use NeuronAI\Tools\PropertyType;
 use NeuronAI\Tools\Tool;
+use NeuronAI\Tools\ToolOutput;
 use NeuronAI\Tools\ToolProperty;
 
 final class NeuronAIToolAdapter extends Tool
@@ -39,11 +41,14 @@ final class NeuronAIToolAdapter extends Tool
         );
     }
 
-    /**
-     * @return array<mixed>
-     */
-    public function __invoke(mixed ...$arguments): array
+    public function __invoke(mixed ...$arguments): ToolOutput
     {
-        return ($this->tool)(new ToolArguments($arguments));
+        try {
+            $result = ($this->tool)(new ToolArguments($arguments));
+        } catch (ToolFailed $e) {
+            return ToolOutput::error($e->getMessage());
+        }
+
+        return ToolOutput::text(Json::encode($result));
     }
 }

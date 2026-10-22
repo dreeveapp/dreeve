@@ -6,6 +6,7 @@ namespace App\Domain\Integration\AI\Tool;
 
 use App\Application\AppUrl;
 use App\Domain\Segment\SegmentRepository;
+use App\Infrastructure\Exception\EntityNotFound;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final readonly class GetSegment implements AITool
@@ -42,8 +43,14 @@ final readonly class GetSegment implements AITool
     {
         $segmentId = $arguments->getSegmentId();
 
+        try {
+            $segment = $this->segmentRepository->find($segmentId);
+        } catch (EntityNotFound) {
+            throw new ToolFailed(sprintf('Segment "%s" does not exist.', $segmentId));
+        }
+
         return [
-            ...$this->segmentRepository->find($segmentId)->exportForAITooling(),
+            ...$segment->exportForAITooling(),
             'url' => (string) $this->appUrl->withPath($this->urlGenerator->generate('segment', ['segmentId' => (string) $segmentId])),
         ];
     }

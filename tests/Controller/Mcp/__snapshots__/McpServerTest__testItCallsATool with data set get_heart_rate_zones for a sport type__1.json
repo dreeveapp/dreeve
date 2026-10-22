@@ -1,0 +1,35 @@
+{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "result": {
+        "content": [
+            {
+                "type": "text",
+                "text": "{\n    \"zone1\": [\n        93,\n        112\n    ],\n    \"zone2\": [\n        113,\n        131\n    ],\n    \"zone3\": [\n        132,\n        149\n    ],\n    \"zone4\": [\n        150,\n        168\n    ],\n    \"zone5\": [\n        169,\n        18600\n    ]\n}"
+            }
+        ],
+        "isError": false,
+        "structuredContent": {
+            "zone1": [
+                93,
+                112
+            ],
+            "zone2": [
+                113,
+                131
+            ],
+            "zone3": [
+                132,
+                149
+            ],
+            "zone4": [
+                150,
+                168
+            ],
+            "zone5": [
+                169,
+                18600
+            ]
+        }
+    }
+}

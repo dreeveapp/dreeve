@@ -17,7 +17,7 @@ security:
             security: false
 
         api:
-            pattern: ^/api/v1(/|$)
+            pattern: ^/(api/v1|mcp)(/|$)
             stateless: true
             provider: api_provider
             entry_point: App\Infrastructure\Security\Api\ApiAuthenticationEntryPoint
@@ -46,7 +46,7 @@ security:
     # Note: Only the *first* matching rule is applied.
     # The ^/admin/login PUBLIC_ACCESS rule must precede ^/admin to avoid a redirect loop.
     access_control:
-        - { path: '^/api/v1(/|$)', roles: ROLE_API }
+        - { path: '^/(api/v1|mcp)(/|$)', roles: ROLE_API }
         - { path: ^/admin/login, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
 

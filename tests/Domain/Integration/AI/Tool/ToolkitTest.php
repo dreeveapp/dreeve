@@ -40,6 +40,7 @@ use App\Tests\Domain\Segment\SegmentBuilder;
 use App\Tests\Domain\Segment\SegmentEffort\SegmentEffortBuilder;
 use NeuronAI\Tools\ToolInterface;
 use NeuronAI\Tools\Toolkits\ToolkitInterface;
+use NeuronAI\Tools\ToolOutput;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
@@ -56,7 +57,24 @@ class ToolkitTest extends ContainerTestCase
         );
         $tool->setInputs($inputs)->execute();
 
-        $this->assertMatchesJsonSnapshot($tool->getResult());
+        $result = $tool->getResult();
+        $this->assertInstanceOf(ToolOutput::class, $result);
+        $this->assertFalse($result->isError());
+        $this->assertMatchesJsonSnapshot($result->getText());
+    }
+
+    public function testItReturnsAToolErrorForAnUnknownActivity(): void
+    {
+        $tool = array_find(
+            $this->getContainer()->get(ToolkitInterface::class)->tools(),
+            static fn (ToolInterface $tool): bool => 'get_activity_by_id' === $tool->getName(),
+        );
+        $tool->setInputs(['activityId' => '1'])->execute();
+
+        $result = $tool->getResult();
+        $this->assertInstanceOf(ToolOutput::class, $result);
+        $this->assertTrue($result->isError());
+        $this->assertSame('Activity "activity-1" does not exist.', $result->getText());
     }
 
     public function testItRegistersAllTools(): void

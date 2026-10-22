@@ -1,0 +1,19 @@
+mcp:
+    servers:
+        dreeve:
+            name: 'Dreeve'
+            description: 'Read-only access to the activities, metrics and settings of a self-hosted Dreeve instance.'
+            website_url: 'https://docs.dreeve.app'
+            instructions: |
+                Dreeve is a self-hosted app that holds one athlete's sport activities, imported from Strava or from files.
+                Tools accept identifiers with or without their type prefix, for example "activity-123" or "123".
+                Dates use the YYYY-MM-DD format.
+                Distances, speeds and other measurements are returned in the unit system the instance is configured with.
+                Every tool is read-only.
+            http:
+                path: /mcp
+                allowed_hosts: false
+            session:
+                store: cache
+            registry:
+                tools: ['*']

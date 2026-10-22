@@ -57,6 +57,7 @@
         "symfony/framework-bundle": "8.1.*",
         "symfony/intl": "8.1.*",
         "symfony/lock": "8.1.*",
+        "symfony/mcp-bundle": "^0.14.1",
         "symfony/messenger": "8.1.*",
         "symfony/monolog-bundle": "^4.0",
         "symfony/process": "8.1.*",

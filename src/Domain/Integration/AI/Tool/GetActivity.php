@@ -6,6 +6,7 @@ namespace App\Domain\Integration\AI\Tool;
 
 use App\Application\AppUrl;
 use App\Domain\Activity\EnrichedActivityRepository;
+use App\Infrastructure\Exception\EntityNotFound;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final readonly class GetActivity implements AITool
@@ -43,8 +44,14 @@ final readonly class GetActivity implements AITool
     {
         $activityId = $arguments->getActivityId();
 
+        try {
+            $activity = $this->enrichedActivityRepository->find($activityId);
+        } catch (EntityNotFound) {
+            throw new ToolFailed(sprintf('Activity "%s" does not exist.', $activityId));
+        }
+
         return [
-            ...$this->enrichedActivityRepository->find($activityId)->exportForAITooling(),
+            ...$activity->exportForAITooling(),
             'url' => (string) $this->appUrl->withPath($this->urlGenerator->generate('activity', ['activityId' => (string) $activityId])),
         ];
     }

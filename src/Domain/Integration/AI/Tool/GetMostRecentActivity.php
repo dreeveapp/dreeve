@@ -7,7 +7,6 @@ namespace App\Domain\Integration\AI\Tool;
 use App\Application\AppUrl;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\EnrichedActivityRepository;
-use App\Infrastructure\Exception\EntityNotFound;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final readonly class GetMostRecentActivity implements AITool
@@ -42,7 +41,7 @@ final readonly class GetMostRecentActivity implements AITool
     public function __invoke(ToolArguments $arguments): array
     {
         if (!$mostRecentActivity = $this->activityRepository->findMostRecent(1)->getFirst()) {
-            throw new EntityNotFound('No activities found');
+            throw new ToolFailed('No activities found.');
         }
 
         return [

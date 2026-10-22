@@ -1,0 +1,13 @@
+{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "result": {
+        "content": [
+            {
+                "type": "text",
+                "text": "Activity \"activity-1\" does not exist."
+            }
+        ],
+        "isError": true
+    }
+}

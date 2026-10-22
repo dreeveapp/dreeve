@@ -1,0 +1,20 @@
+{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "result": {
+        "content": [
+            {
+                "type": "text",
+                "text": "{\n    \"id\": \"07762321586c\",\n    \"firstname\": \"Robin\",\n    \"lastname\": \"Ingelbrecht\",\n    \"sex\": null,\n    \"birthDate\": \"1989-08-14\"\n}"
+            }
+        ],
+        "isError": false,
+        "structuredContent": {
+            "id": "07762321586c",
+            "firstname": "Robin",
+            "lastname": "Ingelbrecht",
+            "sex": null,
+            "birthDate": "1989-08-14"
+        }
+    }
+}

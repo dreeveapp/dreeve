@@ -50,6 +50,7 @@ final readonly class GateRequestListener implements EventSubscriberInterface
     {
         return 1 === preg_match('#^/(_(profiler|wdt)|css|images|js|files)/#', $path)
             || '/api/v1' === $path || str_starts_with($path, '/api/v1/')
+            || '/mcp' === $path || str_starts_with($path, '/mcp/')
             || StravaWebhookRequestHandler::STRAVA_WEBHOOKS_ENDPOINT === $path;
     }
 
