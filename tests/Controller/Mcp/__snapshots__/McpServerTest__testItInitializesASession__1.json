@@ -22,6 +22,6 @@
             "description": "Read-only access to the activities, metrics and settings of a self-hosted Dreeve instance.",
             "websiteUrl": "https://docs.dreeve.app"
         },
-        "instructions": "Dreeve is a self-hosted app that holds one athlete's sport activities, imported from Strava or from files.\nTools accept identifiers with or without their type prefix, for example \"activity-123\" or \"123\".\nDates use the YYYY-MM-DD format.\nDistances, speeds and other measurements are returned in the unit system the instance is configured with.\nEvery tool is read-only.\n"
+        "instructions": "Dreeve is a self-hosted app that holds one athlete's sport activities, imported from Strava or from files.\nTools accept identifiers with or without their type prefix, for example \"activity-123\" or \"123\".\nDates use the YYYY-MM-DD format.\nField names state their unit, for example \"distanceInKilometer\". Splits follow the unit system the instance is configured with.\nEvery tool is read-only.\n"
     }
 }

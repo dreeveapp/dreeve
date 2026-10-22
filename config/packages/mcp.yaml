@@ -8,7 +8,7 @@ mcp:
                 Dreeve is a self-hosted app that holds one athlete's sport activities, imported from Strava or from files.
                 Tools accept identifiers with or without their type prefix, for example "activity-123" or "123".
                 Dates use the YYYY-MM-DD format.
-                Distances, speeds and other measurements are returned in the unit system the instance is configured with.
+                Field names state their unit, for example "distanceInKilometer". Splits follow the unit system the instance is configured with.
                 Every tool is read-only.
             http:
                 path: /mcp

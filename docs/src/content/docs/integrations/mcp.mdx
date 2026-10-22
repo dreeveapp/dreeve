@@ -1,0 +1,111 @@
+---
+title: "MCP server"
+description: "Connect Claude, Cursor, VS Code and other AI clients to your Dreeve data through the built-in MCP server."
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Dreeve ships with a [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server. It lets the AI client you
+already use, such as Claude Code, Claude Desktop, Cursor or VS Code, read your activities, metrics and settings and
+answer questions about them.
+
+:::note
+Every tool is read-only. An MCP client cannot change or delete anything in Dreeve.
+:::
+
+## Enabling the MCP server
+
+The MCP server is available at `/mcp`, for example `https://dreeve.example.com/mcp`. It has its own key:
+
+1. Generate a key under **Settings → Security → MCP access** in the admin panel. It looks like `drvm_` followed by
+   64 hex characters.
+2. Set it as `DREEVE_MCP_KEY` in your `.env` file and recreate your containers.
+
+While `DREEVE_MCP_KEY` is not set, the MCP server rejects every request.
+
+:::caution
+The key gives read access to all your data. Treat it like a password, and only expose `/mcp` to the internet if you need to.
+The allowed IP addresses for the admin panel do not apply to the MCP server: the key is the only access control.
+:::
+
+## Connecting a client
+
+Replace `https://dreeve.example.com` with the URL of your Dreeve instance and `drvm_...` with your key.
+
+<Tabs>
+
+<TabItem label="Claude Code">
+
+```bash
+> claude mcp add --transport http dreeve https://dreeve.example.com/mcp --header "Authorization: Bearer drvm_..."
+```
+
+</TabItem>
+
+<TabItem label="Claude Desktop">
+
+Add the server to `claude_desktop_config.json`:
+
+```json title="claude_desktop_config.json"
+{
+    "mcpServers": {
+        "dreeve": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "mcp-remote",
+                "https://dreeve.example.com/mcp",
+                "--header",
+                "Authorization:${AUTH_HEADER}"
+            ],
+            "env": {
+                "AUTH_HEADER": "Bearer drvm_..."
+            }
+        }
+    }
+}
+```
+
+</TabItem>
+
+<TabItem label="Cursor">
+
+```json title="~/.cursor/mcp.json"
+{
+    "mcpServers": {
+        "dreeve": {
+            "url": "https://dreeve.example.com/mcp",
+            "headers": {
+                "Authorization": "Bearer drvm_..."
+            }
+        }
+    }
+}
+```
+
+</TabItem>
+
+<TabItem label="VS Code">
+
+```json title=".vscode/mcp.json"
+{
+    "servers": {
+        "dreeve": {
+            "type": "http",
+            "url": "https://dreeve.example.com/mcp",
+            "headers": {
+                "Authorization": "Bearer drvm_..."
+            }
+        }
+    }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+:::note
+The web versions of Claude and ChatGPT only connect to MCP servers that support OAuth. Dreeve's MCP server uses a
+key, so use one of the clients above.
+:::

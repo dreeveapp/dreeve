@@ -109,6 +109,7 @@ export default defineConfig({
 									label: 'Integrations',
 									items: [
 										{ slug: 'integrations/ai', label: 'AI assistant' },
+										{ slug: 'integrations/mcp', label: 'MCP server' },
 										{ slug: 'integrations/garmin-connect', label: 'Garmin Connect' },
 										{ slug: 'integrations/polar-flow', label: 'Polar Flow' },
 										{ slug: 'integrations/wahoo-connector', label: 'Wahoo Connector' },

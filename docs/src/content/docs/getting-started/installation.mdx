@@ -117,6 +117,11 @@ ADMIN_PASSWORD_HASH='replace-me'
 # Generate a value under Settings -> Security -> API access in the admin panel.
 # DREEVE_API_KEY=drv_...
 
+# Enables the read-only MCP server at /mcp, for AI clients such as Claude or Cursor. Leave it
+# unset to keep the MCP server disabled; while it is unset every MCP request is rejected.
+# Generate a value under Settings -> Security -> MCP access in the admin panel.
+# DREEVE_MCP_KEY=drvm_...
+
 # Only needed when IMPORT_MODE=stravaApi.
 # See https://docs.dreeve.app/importing/strava-import/
 # STRAVA_CLIENT_ID=
