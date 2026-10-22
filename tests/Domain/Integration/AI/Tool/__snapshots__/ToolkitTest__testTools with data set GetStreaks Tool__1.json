@@ -1,0 +1,23 @@
+{
+    "day": {
+        "current": 0,
+        "currentStartDate": null,
+        "longest": 1,
+        "longestStartDate": "2020-01-01",
+        "longestEndDate": "2020-01-01"
+    },
+    "week": {
+        "current": 0,
+        "currentStartDate": null,
+        "longest": 1,
+        "longestStartDate": "2020-01-01",
+        "longestEndDate": "2020-01-01"
+    },
+    "month": {
+        "current": 0,
+        "currentStartDate": null,
+        "longest": 1,
+        "longestStartDate": "2020-01-01",
+        "longestEndDate": "2020-01-01"
+    }
+}

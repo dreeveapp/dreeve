@@ -115,6 +115,9 @@ class McpServerTest extends ControllerWebTestCase
         yield 'get_activity_by_id for an unknown activity' => ['get_activity_by_id', ['activityId' => 'activity-1']];
         yield 'search_activities with filters' => ['search_activities', ['sportType' => 'Ride', 'hasGpx' => false, 'page' => 1, 'size' => 10]];
         yield 'search_activities with an unknown sport type' => ['search_activities', ['sportType' => 'Flying']];
+        yield 'get_streaks with an unknown sport type' => ['get_streaks', ['sportType' => 'Ride,Flying']];
+        yield 'get_training_volume with an invalid date' => ['get_training_volume', ['from' => '2025-13-01', 'to' => '2025-12-31']];
+        yield 'get_training_volume with a reversed date range' => ['get_training_volume', ['from' => '2025-02-01', 'to' => '2025-01-01']];
     }
 
     #[\Override]

@@ -1,0 +1,9 @@
+{
+    "from": "2025-01-01",
+    "to": "2025-01-31",
+    "numberOfActivities": 1,
+    "movingTimeInSeconds": 3600,
+    "distanceInMeter": 10000,
+    "elevationInMeter": 0,
+    "calories": 0
+}

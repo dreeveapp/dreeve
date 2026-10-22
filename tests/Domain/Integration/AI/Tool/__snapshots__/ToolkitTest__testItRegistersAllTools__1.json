@@ -128,6 +128,16 @@
         "maxRuns": null
     },
     {
+        "name": "get_eddington",
+        "description": "Retrieves the athlete’s Eddington numbers per configured sport group, in both kilometers and miles.\nAn Eddington number E means the athlete covered at least E distance units on at least E different days.\nThe result also includes how many more days are needed to reach the next number.\nUse this tool when the user asks about their Eddington number or long-term distance consistency.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        },
+        "maxRuns": null
+    },
+    {
         "name": "get_ftp_history",
         "description": "Retrieves the athlete’s Functional Threshold Power (FTP) history from the database, providing a timeline of FTP values with corresponding dates.\nUse this tool when the user asks about changes in their FTP over time or when you need FTP to determine training intensity.\nExample requests include “Show my FTP progression over the last 6 months” or “What was my FTP during my last ride?”",
         "inputSchema": {
@@ -185,6 +195,57 @@
             },
             "required": [
                 "segmentId"
+            ]
+        },
+        "maxRuns": null
+    },
+    {
+        "name": "get_streaks",
+        "description": "Retrieves the athlete’s current and longest streaks of consecutive days, weeks and months with at least one activity, including when they started and ended.\nOptionally restrict it to one or more sport types.\nUse this tool when the user asks about consistency, for example “What is my longest running streak?”",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "sportType": {
+                    "type": "string",
+                    "description": "Comma separated Strava sport types, for example \"Run,TrailRun\". Leave empty for all sport types."
+                }
+            },
+            "required": []
+        },
+        "maxRuns": null
+    },
+    {
+        "name": "get_training_load",
+        "description": "Retrieves the athlete’s current training load: fitness (CTL), fatigue (ATL), form (TSB), the acute:chronic workload ratio, weekly TRIMP, monotony, strain and the number of rest days in the last 7 days.\nUse this tool when the user asks how fit, tired or fresh they are, whether they are overtraining, or if they are ready for a hard effort.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        },
+        "maxRuns": null
+    },
+    {
+        "name": "get_training_volume",
+        "description": "Retrieves the total training volume between two dates: number of activities, moving time, distance, elevation and calories.\nOptionally restrict it to one or more sport types.\nUse this tool when the user asks how much they trained in a period, for example “How far did I ride in March?” or “How many hours did I run this year?”",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "from": {
+                    "type": "string",
+                    "description": "The first day to include (YYYY-MM-DD)."
+                },
+                "to": {
+                    "type": "string",
+                    "description": "The last day to include (YYYY-MM-DD)."
+                },
+                "sportType": {
+                    "type": "string",
+                    "description": "Comma separated Strava sport types, for example \"Ride,VirtualRide\". Leave empty for all sport types."
+                }
+            },
+            "required": [
+                "from",
+                "to"
             ]
         },
         "maxRuns": null

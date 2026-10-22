@@ -1,0 +1,28 @@
+[
+    {
+        "label": "Ride",
+        "sportTypes": [
+            "Ride",
+            "MountainBikeRide",
+            "GravelRide",
+            "VirtualRide"
+        ],
+        "unit": "km",
+        "number": 2,
+        "daysNeededForNextNumber": 1,
+        "longestDistanceInADay": 10
+    },
+    {
+        "label": "Ride",
+        "sportTypes": [
+            "Ride",
+            "MountainBikeRide",
+            "GravelRide",
+            "VirtualRide"
+        ],
+        "unit": "mi",
+        "number": 2,
+        "daysNeededForNextNumber": 1,
+        "longestDistanceInADay": 6
+    }
+]
