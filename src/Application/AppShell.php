@@ -40,6 +40,7 @@ final readonly class AppShell
             'subTitle' => $general->getAppSubTitle(),
             'javascriptWindowConstants' => Json::encode([
                 'countries' => Countries::getNames($this->localeSwitcher->getLocale()),
+                'appVersion' => AppVersion::getSemanticVersion(),
                 'appUrl' => [
                     'basePath' => $this->appUrl->getBasePath() ?? '',
                 ],

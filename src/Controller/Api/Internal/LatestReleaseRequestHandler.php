@@ -39,7 +39,14 @@ final readonly class LatestReleaseRequestHandler
             render: fn (): string => $this->renderFor(),
         );
 
-        return new JsonResponse($render->getContent() ?? '{}', headers: $render->getCacheHeaders(), json: true);
+        return new JsonResponse(
+            $render->getContent() ?? '{}',
+            headers: [
+                ...$render->getCacheHeaders(),
+                'Cache-Control' => sprintf('private, max-age=%d', $render->getTtlInSeconds() ?? self::SIX_HOURS_IN_SECONDS),
+            ],
+            json: true,
+        );
     }
 
     private function renderFor(): string

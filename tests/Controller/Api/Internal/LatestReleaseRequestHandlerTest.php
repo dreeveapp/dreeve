@@ -37,6 +37,7 @@ class LatestReleaseRequestHandlerTest extends ContainerTestCase
         $this->assertEquals(['latestVersion' => 'v999.0.0', 'updateAvailable' => true], Json::decode((string) $response->getContent()));
         $this->assertSame('MISS', $response->headers->get('X-Dreeve-Cache'));
         $this->assertSame('21600', $response->headers->get('X-Dreeve-Cache-TTL'));
+        $this->assertSame('max-age=21600, private', $response->headers->get('Cache-Control'));
 
         $response = $handler->handle();
         $this->assertEquals(['latestVersion' => 'v999.0.0', 'updateAvailable' => true], Json::decode((string) $response->getContent()));

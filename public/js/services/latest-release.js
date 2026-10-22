@@ -5,7 +5,7 @@ export const updateLatestRelease = async () => {
     if (!$latestVersionEl) return;
 
     try {
-        const {latestVersion, updateAvailable} = await fetchJson(`${basePath()}/api/internal/latest-release`);
+        const {latestVersion, updateAvailable} = await fetchJson(`${basePath()}/api/internal/latest-release?v=${window.dreeve.appVersion}`);
         if (!updateAvailable) return;
 
         const $link = $latestVersionEl.querySelector('a');
