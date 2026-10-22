@@ -8,8 +8,8 @@ use App\Application\AppUrl;
 use App\Domain\Activity\Search\ActivitySearchFilters;
 use App\Domain\Activity\Search\ActivitySearchRepository;
 use App\Domain\Activity\Search\ActivitySearchResult;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Infrastructure\Repository\Pagination;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final readonly class SearchActivities implements AITool
@@ -53,22 +53,23 @@ final readonly class SearchActivities implements AITool
 
     public function __invoke(ToolArguments $arguments): array
     {
-        $hasGpx = $arguments->getBool('hasGpx');
+        $from = $arguments->getDate('from');
+        $to = $arguments->getDate('to');
+        if ($from && $to && $from->isAfter($to)) {
+            throw new ToolFailed('"from" must not be later than "to".');
+        }
+
         $pagination = Pagination::fromPageNumberAndSize(
             pageNumber: max(1, $arguments->getInt('page') ?? 1),
             pageSize: max(1, min($arguments->getInt('size') ?? self::DEFAULT_SIZE, self::MAX_SIZE)),
         );
 
-        try {
-            $activities = $this->activitySearchRepository->find($pagination, ActivitySearchFilters::fromArray([
-                'from' => $arguments->getString('from'),
-                'to' => $arguments->getString('to'),
-                'sportType' => $arguments->getString('sportType'),
-                'hasGpx' => null === $hasGpx ? null : ($hasGpx ? 'true' : 'false'),
-            ]));
-        } catch (BadRequestHttpException $e) {
-            throw new ToolFailed($e->getMessage());
-        }
+        $activities = $this->activitySearchRepository->find($pagination, ActivitySearchFilters::fromValues(
+            from: $from,
+            to: $to,
+            sportTypes: null === $arguments->getString('sportType') ? SportTypes::empty() : $arguments->getSportTypes(),
+            hasGpx: $arguments->getBool('hasGpx'),
+        ));
 
         return [
             'activities' => array_map(

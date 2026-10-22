@@ -21,14 +21,6 @@ abstract readonly class Filters
         return new static($request->query->all('filters'));
     }
 
-    /**
-     * @param array<array-key, mixed> $filters
-     */
-    public static function fromArray(array $filters): static
-    {
-        return new static($filters);
-    }
-
     protected function getString(string $name): ?string
     {
         $value = $this->filters[$name] ?? null;

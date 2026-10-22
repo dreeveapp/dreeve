@@ -74,6 +74,9 @@ class ToolkitTest extends ContainerTestCase
         yield 'get_streaks with an unknown sport type' => ['get_streaks', ['sportType' => 'Ride,Flying'], '"Flying" is not a known sport type.'];
         yield 'get_training_volume with an invalid date' => ['get_training_volume', ['from' => '2025-13-01', 'to' => '2025-12-31'], '"from" must be a date in YYYY-MM-DD format.'];
         yield 'get_training_volume with a reversed date range' => ['get_training_volume', ['from' => '2025-02-01', 'to' => '2025-01-01'], '"from" must not be later than "to".'];
+        yield 'search_activities with an unknown sport type' => ['search_activities', ['sportType' => 'Flying'], '"Flying" is not a known sport type.'];
+        yield 'search_activities with an invalid date' => ['search_activities', ['to' => '2025-02-30'], '"to" must be a date in YYYY-MM-DD format.'];
+        yield 'search_activities with a reversed date range' => ['search_activities', ['from' => '2025-02-01', 'to' => '2025-01-01'], '"from" must not be later than "to".'];
     }
 
     public function testItListsNoGearMaintenanceTasksWhenTheFeatureIsDisabled(): void

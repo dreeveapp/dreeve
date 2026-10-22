@@ -14,6 +14,20 @@ final readonly class ActivitySearchFilters extends Filters
 {
     public const string DATE_FORMAT = '!Y-m-d';
 
+    public static function fromValues(
+        ?SerializableDateTime $from,
+        ?SerializableDateTime $to,
+        SportTypes $sportTypes,
+        ?bool $hasGpx,
+    ): self {
+        return new self([
+            'from' => $from?->format('Y-m-d'),
+            'to' => $to?->format('Y-m-d'),
+            'sportType' => implode(',', $sportTypes->map(static fn (SportType $sportType): string => $sportType->value)),
+            'hasGpx' => null === $hasGpx ? null : ($hasGpx ? 'true' : 'false'),
+        ]);
+    }
+
     public function getFrom(): ?SerializableDateTime
     {
         return $this->getDate('from');
