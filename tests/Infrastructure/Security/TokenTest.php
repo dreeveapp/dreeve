@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Infrastructure\Security\Api;
+namespace App\Tests\Infrastructure\Security;
 
 use App\Infrastructure\Security\Api\ApiToken;
-use App\Infrastructure\Security\Api\McpToken;
+use App\Infrastructure\Security\Mcp\McpToken;
 use App\Infrastructure\Serialization\Json;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

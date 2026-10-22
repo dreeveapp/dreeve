@@ -33,7 +33,7 @@ security:
             entry_point: App\Infrastructure\Security\Api\ApiAuthenticationEntryPoint
             access_token:
                 realm: 'Dreeve'
-                token_handler: App\Infrastructure\Security\Api\McpTokenHandler
+                token_handler: App\Infrastructure\Security\Mcp\McpTokenHandler
                 failure_handler: App\Infrastructure\Security\Api\ApiAuthenticationEntryPoint
 
         main:

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Security\Api;
 
+use App\Infrastructure\Security\Mcp\McpToken;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;

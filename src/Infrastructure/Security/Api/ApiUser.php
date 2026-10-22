@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Security\Api;
 
+use App\Infrastructure\Security\Token;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 final readonly class ApiUser implements UserInterface

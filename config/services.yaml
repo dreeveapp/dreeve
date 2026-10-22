@@ -107,7 +107,7 @@ services:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:DREEVE_API_KEY)%']
 
-    App\Infrastructure\Security\Api\McpToken:
+    App\Infrastructure\Security\Mcp\McpToken:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:DREEVE_MCP_KEY)%']
 

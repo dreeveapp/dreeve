@@ -7,7 +7,7 @@ namespace App\Tests\Controller\Api\V1;
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsName;
 use App\Infrastructure\Security\Api\ApiToken;
-use App\Infrastructure\Security\Api\McpToken;
+use App\Infrastructure\Security\Mcp\McpToken;
 use App\Infrastructure\Security\Visitor;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;

@@ -7,7 +7,7 @@ namespace App\Tests\Infrastructure\Security\Api;
 use App\Infrastructure\Security\Api\ApiToken;
 use App\Infrastructure\Security\Api\ApiUser;
 use App\Infrastructure\Security\Api\ApiUserProvider;
-use App\Infrastructure\Security\Api\McpToken;
+use App\Infrastructure\Security\Mcp\McpToken;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;

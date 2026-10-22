@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Security\Api;
+namespace App\Infrastructure\Security;
 
 abstract readonly class Token implements \Stringable
 {
