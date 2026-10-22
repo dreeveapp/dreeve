@@ -1,6 +1,6 @@
 import "./core/public-path";
 import {eventBus, Events} from "./core/event-bus";
-import {updateLatestRelease} from "./services/latest-release";
+import {fetchAvailableUpdate, showLatestVersion, showReleaseAnnouncement} from "./services/latest-release";
 import initSidebar from "./components/sidebar";
 import ChartManager from "./features/charts/chart-manager";
 import {registerEchartsCallbacks} from "./features/charts/echarts-callbacks";
@@ -82,5 +82,13 @@ if (document.querySelector('.chat--wrapper')) {
 }
 
 (async () => {
-    await updateLatestRelease();
+    try {
+        const latestVersion = await fetchAvailableUpdate();
+        if (!latestVersion) return;
+
+        showLatestVersion(latestVersion);
+        await showReleaseAnnouncement(latestVersion);
+    } catch (err) {
+        console.error('Error checking latest release:', err);
+    }
 })();
