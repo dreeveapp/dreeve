@@ -101,7 +101,7 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
         $this->assertSame([
-            'error' => 'gpx_not_available',
+            'error' => 'file_not_available',
             'message' => 'Activity "activity-1" has no GPS data to export as GPX.',
         ], Json::decode((string) $this->client->getResponse()->getContent()));
     }

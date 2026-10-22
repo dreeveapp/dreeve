@@ -175,6 +175,44 @@ paths:
                     message: '"filters[status]" contains an unknown status.'
         '401':
           $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
+  file:
+    get:
+      operationId: downloadFileImport
+      tags: [File imports]
+      summary: Download the original file
+      description: >-
+        Returns the file exactly as it was uploaded
+      parameters:
+        - $ref: './dreeve-api.yaml#/components/parameters/FileImportId'
+      responses:
+        '200':
+          description: The original `.fit`, `.tcx` or `.gpx` file.
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+                examples: ['attachment; filename=morning-ride.fit']
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
+        '404':
+          description: The file import does not exist, or it has no stored file.
+          content:
+            application/json:
+              schema: { $ref: './dreeve-api.yaml#/components/schemas/Error' }
+              examples:
+                unknownFileImport:
+                  summary: No such file import
+                  value: { error: not_found, message: 'File import "fileImport-1" not found' }
+                withoutFile:
+                  summary: A skipped duplicate
+                  value:
+                    error: file_not_available
+                    message: 'File import "fileImport-0198a2b1-8f3e-7c2d-9a4b-1f2e3d4c5b6a" has no stored file.'
 
 schemas:
   FileImportList:

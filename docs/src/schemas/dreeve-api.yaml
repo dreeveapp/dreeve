@@ -47,6 +47,7 @@ paths:
   /api/v1/activities/{activityId}/images: { $ref: './activity-images.yaml#/paths/list' }
   /api/v1/activities/{activityId}/images/{imageId}: { $ref: './activity-images.yaml#/paths/detail' }
   /api/v1/file-imports: { $ref: './file-imports.yaml#/paths/list' }
+  /api/v1/file-imports/{fileImportId}/file: { $ref: './file-imports.yaml#/paths/file' }
   /api/v1/gear: { $ref: './gear.yaml#/paths/list' }
   /api/v1/gear/maintenance-tasks: { $ref: './gear.yaml#/paths/maintenanceTasks' }
   /api/v1/athlete/weights: { $ref: './weight.yaml#/paths/list' }
@@ -85,6 +86,7 @@ components:
   parameters:
     ActivityId: { $ref: './common.yaml#/parameters/ActivityId' }
     ActivityImageId: { $ref: './common.yaml#/parameters/ActivityImageId' }
+    FileImportId: { $ref: './common.yaml#/parameters/FileImportId' }
   responses:
     ActivityNotFound: { $ref: './common.yaml#/responses/ActivityNotFound' }
     Unauthorized: { $ref: './common.yaml#/responses/Unauthorized' }

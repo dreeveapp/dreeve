@@ -27,7 +27,7 @@ schemas:
           - unsupported_file_type
           - file_too_large
           - import_mode_not_files
-          - gpx_not_available
+          - file_not_available
           - not_found
           - method_not_allowed
           - bad_request
@@ -53,6 +53,14 @@ parameters:
     schema:
       type: string
       examples: ['activityImage-0a8cdfbb-63b4-4f0f-a09d-faedd5a00753']
+  FileImportId:
+    name: fileImportId
+    in: path
+    required: true
+    description: The prefixed file import identifier, `fileImport-` included, as listed in `/api/v1/file-imports`.
+    schema:
+      type: string
+      examples: ['fileImport-0198a2b1-8f3e-7c2d-9a4b-1f2e3d4c5b6a']
 
 responses:
   ActivityNotFound:

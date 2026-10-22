@@ -215,7 +215,7 @@ paths:
                 withoutGps:
                   summary: A manual or indoor activity
                   value:
-                    error: gpx_not_available
+                    error: file_not_available
                     message: 'Activity "activity-9542782314" has no GPS or time data to export as GPX.'
   streams:
     get:

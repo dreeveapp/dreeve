@@ -39,7 +39,7 @@ final readonly class ActivityGpxRequestHandler
         if (null === $gpx = $this->gpxSerializer->serialize($activity->getId())) {
             return new ApiErrorResponse(
                 statusCode: Response::HTTP_NOT_FOUND,
-                error: 'gpx_not_available',
+                error: 'file_not_available',
                 message: sprintf('Activity "%s" has no GPS data to export as GPX.', $activityId),
             );
         }
