@@ -7,6 +7,7 @@
 'A cluster tile is a visited tile whose four neighbours are visited too': 'A klasztercsempe olyan meglátogatott csempe, amelynek mind a négy szomszédja is meglátogatott'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'A magas intenzitási pontszám azt jelenti, hogy az edzéseid nagyobb része nehéz, nem könnyű.'
 'A high score means you concentrate more training into fewer, heavier days.': 'A magas pontszám azt jelenti, hogy több edzést koncentrálsz kevesebb, de nehezebb napra.'
+'A new version of Dreeve is available. Read the release notes before updating, they might contain breaking changes.': 'A new version of Dreeve is available. Read the release notes before updating, they might contain breaking changes.'
 'A:C Ratio': 'A:C arány'
 'A:C optimal in': 'A:C optimális ezután:'
 'AI integration settings': 'AI-integráció beállításai'
@@ -88,6 +89,7 @@ Cricket: Krikett
 Crossfit: Crossfit
 'Crunching the numbers...': 'Számok ropogtatása...'
 'Current Status': 'Jelenlegi állapot'
+'Current version': 'Current version'
 Cycling: Kerékpározás
 'Daily TRIMP': 'Napi TRIMP'
 'Daily activities': 'Napi tevékenységek'
@@ -177,6 +179,7 @@ Goal: Cél
 Golf: Golf
 'Good training variety': 'Jó edzésváltozatosság'
 'Google searches': 'Google keresések'
+'Got it': 'Got it'
 Grad.: Emelk.
 Gradient: Lejtés
 'Gravel Ride': 'Gravel kerékpározás'
@@ -236,6 +239,7 @@ Lap: Kör
 'Last used': 'Last used'
 'Last week': 'Előző hét'
 'Last {numberOfDays} days': 'Utolsó {numberOfDays} nap'
+'Latest version': 'Latest version'
 Lifetime: 'Teljes időszak'
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Enyhe fáradtság jó készenléti állapottal. Kiváló egyensúly a minőségi edzéshez vagy hosszabb erőfeszítésekhez'
 Load: Terhelés
@@ -291,6 +295,7 @@ Morning: Reggel
 Name: Név
 Neutral: Semleges
 'New personal best for': 'Új személyes rekord:'
+'New version available': 'New version available'
 'Newer activity: {name}': 'Newer activity: {name}'
 'Next milestone': 'Következő mérföldkő'
 Night: Éjjel
@@ -371,6 +376,7 @@ Recent: Legutóbbi
 'Recovery forecast': 'Regenerációs előrejelzés'
 'Reduced carbon emission by commuting': 'Csökkentett szén-dioxid kibocsátás ingázással'
 'Register maintenance': 'Karbantartás rögzítése'
+'Release notes': 'Release notes'
 'Rest Days': Pihenőnapok
 'Rest days': Pihenőnapok
 'Rest days in last 7 days': 'Pihenőnapok az utolsó 7 napban'

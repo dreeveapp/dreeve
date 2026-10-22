@@ -1092,6 +1092,9 @@
   .m-4 {
     margin: calc(var(--spacing) * 4);
   }
+  .m-auto {
+    margin: auto;
+  }
   .-mx-1 {
     margin-inline: calc(var(--spacing) * -1);
   }
@@ -3907,6 +3910,9 @@
     @supports (color: color-mix(in lab, red, red)) {
       --tw-ring-color: color-mix(in oklab, var(--color-primary) 40%, transparent);
     }
+  }
+  .backdrop\:bg-\[\#000\]\/50::backdrop {
+    background-color: color-mix(in oklab, #000 50%, transparent);
   }
   .after\:absolute::after {
     content: var(--tw-content);

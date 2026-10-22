@@ -7,6 +7,7 @@
 'A cluster tile is a visited tile whose four neighbours are visited too': 'Una cuadrícula de clúster es una cuadrícula visitada cuyas cuatro vecinas también están visitadas'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'Una puntuación de alta intensidad significa que una mayor parte de tu entrenamiento es dura en lugar de suave.'
 'A high score means you concentrate more training into fewer, heavier days.': 'Una puntuación alta significa que concentras más entrenamiento en menos días, más intensos.'
+'A new version of Dreeve is available. Read the release notes before updating, they might contain breaking changes.': 'A new version of Dreeve is available. Read the release notes before updating, they might contain breaking changes.'
 'A:C Ratio': 'Ratio A:C'
 'A:C optimal in': 'A:C óptimo en'
 'AI integration settings': 'Ajustes de integración de IA'
@@ -88,6 +89,7 @@ Cricket: Críquet
 Crossfit: Crossfit
 'Crunching the numbers...': 'Procesando los números...'
 'Current Status': 'Estado actual'
+'Current version': 'Current version'
 Cycling: Ciclismo
 'Daily TRIMP': 'TRIMP diario'
 'Daily activities': 'Actividades diarias'
@@ -177,6 +179,7 @@ Goal: Objetivo
 Golf: Golf
 'Good training variety': 'Buena variedad de entrenamiento'
 'Google searches': 'Búsquedas en Google'
+'Got it': 'Got it'
 Grad.: Pend.
 Gradient: Pendiente
 'Gravel Ride': Gravel
@@ -236,6 +239,7 @@ Lap: Vuelta
 'Last used': 'Last used'
 'Last week': 'Semana pasada'
 'Last {numberOfDays} days': 'Últimos {numberOfDays} días'
+'Latest version': 'Latest version'
 Lifetime: 'Toda la vida'
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Fatiga leve con buena disposición. Un gran equilibrio para el entrenamiento de calidad o esfuerzos más largos'
 Load: Carga
@@ -291,6 +295,7 @@ Morning: Mañana
 Name: Nombre
 Neutral: Neutral
 'New personal best for': 'Nuevo récord personal para'
+'New version available': 'New version available'
 'Newer activity: {name}': 'Newer activity: {name}'
 'Next milestone': 'Siguiente hito'
 Night: Noche
@@ -371,6 +376,7 @@ Recent: Reciente
 'Recovery forecast': 'Pronóstico de recuperación'
 'Reduced carbon emission by commuting': 'Emisiones de carbono reducidas por desplazamientos'
 'Register maintenance': 'Registrar mantenimiento'
+'Release notes': 'Release notes'
 'Rest Days': 'Días de descanso'
 'Rest days': 'Días de descanso'
 'Rest days in last 7 days': 'Días de descanso en los últimos 7 días'

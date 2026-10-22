@@ -86,5 +86,6 @@ class AdminLinkTest extends AdminWebTestCase
         yield 'gear' => ['/gear', 'admin/gear', 'admin/gear?redirectTo=%2Fgear'];
         yield 'gear maintenance' => ['/gear/maintenance', 'admin/gear/maintenance-config', 'admin/gear/maintenance-config?redirectTo=%2Fgear%2Fmaintenance'];
         yield 'recording devices' => ['/gear/recording-devices', 'admin/gear/recording-devices', 'admin/gear/recording-devices?redirectTo=%2Fgear%2Frecording-devices'];
+        yield 'release announcement' => ['/api/internal/release-announcement', 'data-release-announcement', 'data-release-announcement'];
     }
 }
