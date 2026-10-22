@@ -40,6 +40,7 @@ final readonly class FileImportSearchRequestHandler
                     'status' => $fileImport->getStatus()->value,
                     'errorMessage' => $fileImport->getErrorMessage(),
                     'activityId' => (string) $fileImport->getActivityId() ?: null,
+                    'hasFile' => $fileImport->hasFileContents(),
                     'importedOn' => $fileImport->getImportedOn()?->format('Y-m-d\TH:i:s'),
                 ],
                 $overview->getItems()

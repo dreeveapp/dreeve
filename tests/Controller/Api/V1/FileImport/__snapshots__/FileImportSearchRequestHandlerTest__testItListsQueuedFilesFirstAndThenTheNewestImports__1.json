@@ -7,6 +7,7 @@
             "status": "queued",
             "errorMessage": null,
             "activityId": null,
+            "hasFile": false,
             "importedOn": null
         },
         {
@@ -16,6 +17,7 @@
             "status": "success",
             "errorMessage": null,
             "activityId": "activity-42",
+            "hasFile": true,
             "importedOn": "2026-06-03T08:00:00"
         },
         {
@@ -25,6 +27,7 @@
             "status": "failed",
             "errorMessage": "Could not parse file",
             "activityId": null,
+            "hasFile": true,
             "importedOn": "2026-06-02T08:00:00"
         },
         {
@@ -34,6 +37,7 @@
             "status": "skipped",
             "errorMessage": "Skipped, activity was already imported",
             "activityId": null,
+            "hasFile": false,
             "importedOn": "2026-06-01T08:00:00"
         }
     ],

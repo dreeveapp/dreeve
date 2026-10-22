@@ -225,7 +225,7 @@ schemas:
       pagination: { $ref: './dreeve-api.yaml#/components/schemas/PaginationMeta' }
   FileImport:
     type: object
-    required: [id, filename, source, status, errorMessage, activityId, importedOn]
+    required: [id, filename, source, status, errorMessage, activityId, hasFile, importedOn]
     properties:
       id:
         type: [string, 'null']
@@ -247,6 +247,10 @@ schemas:
         type: [string, 'null']
         description: The imported activity. Only set when the status is `success`.
         examples: ['activity-9542782314']
+      hasFile:
+        type: boolean
+        description: >-
+          Whether the original file is stored
       importedOn:
         type: [string, 'null']
         format: date-time
