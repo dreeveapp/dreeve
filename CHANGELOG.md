@@ -1,3 +1,50 @@
+# [v5.6.2](https://github.com/dreeveapp/dreeve/releases/tag/v5.6.2) - 2026-10-22
+
+> [!WARNING]
+> The PHP team, the technology that Dreeve is built with, has announced a **critical security update**.
+> This release includes the security fix. Update to this version as soon as possible, as earlier versions of Dreeve are vulnerable to remote code execution.
+> * https://www.php.net/archive/2026.php#2026-10-20-1
+> * https://sansec.io/research/php2shell
+
+## New features
+* Added API endpoints for several dashboard metrics
+* Added an API endpoint to fetch activity streams
+* Added previous and next buttons to navigate between activities
+* Added bulk activity deletion
+* Added support for importing boxing `.fit` files
+
+## Improvements
+* Moved activity exclusion settings to the activity edit page
+* Added an elevation graph to the segment creation page
+* Included e-bike rides in best effort statistics
+* Added the longest streak to the streaks widget
+
+## Bug fixes
+* Fixed chat commands containing apostrophes.
+
+## Technical details
+* ISSUE #2840: Read-only endpoints for the dashboard's metrics by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2861
+* German Translation for v5.6.1 by @effectpears in https://github.com/dreeveapp/dreeve/pull/2863
+* ISSUE #2860: previous and next arrows to move between activities by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2864
+* ISSUE #2862: Bulk delete activities by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2865
+* ISSUE #2866: Migrate activity exclusion settings to the Activity entity by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2868
+* Fix chat being unusable when a chat command contains an apostrophe by @TanguyBaudrin in https://github.com/dreeveapp/dreeve/pull/2867
+* ISSUE #2869: Build all daemon cron actions from one list in SystemDaemon by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2870
+* ISSUE #2871: Reduce duplicated code across the charts and templates by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2872
+* Support boxing .fit files by @techk1ng in https://github.com/dreeveapp/dreeve/pull/2873
+* ISSUE #2874: Group single sport type selects by activity type by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2875
+* ISSUE #2876: Dispatch domain events through the Contracts event dispa… by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2877
+* ISSUE #2879: Add elevation graph underneath the segment creation window by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2882
+* ISSUE #2881: Add e-bike rides to best efforts stats by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2883
+* ISSUE #2878: Expose activity streams through the API by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2884
+* ISSUE #2880: Show the longest streak in the streaks widget and rewind by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2888
+
+## New Contributors
+* @TanguyBaudrin made their first contribution in https://github.com/dreeveapp/dreeve/pull/2867
+* @techk1ng made their first contribution in https://github.com/dreeveapp/dreeve/pull/2873
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.6.1...v5.6.2
+
 # [v5.6.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.6.1) - 2026-10-19
 
 > [!NOTE]
