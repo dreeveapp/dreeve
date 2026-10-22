@@ -47,7 +47,7 @@ final readonly class DbalFileImportSearchRepository extends DbalRepository imple
                     ->andWhere('fi.originalFilename = :filename')
                     ->setParameter('filename', $filename);
             }
-            if (null !== $activityId = $filters->getActivityId()) {
+            if (($activityId = $filters->getActivityId()) instanceof ActivityId) {
                 $builder
                     ->andWhere('fi.activityId = :activityId')
                     ->setParameter('activityId', (string) $activityId);
@@ -84,7 +84,7 @@ final readonly class DbalFileImportSearchRepository extends DbalRepository imple
                     source: SupportedFileExtension::from($path->getExtension())->getImportSource(),
                 );
             })
-            ->filter(static fn (FileImportOverviewItem $item): bool => null === $activityId
+            ->filter(static fn (FileImportOverviewItem $item): bool => !$activityId instanceof ActivityId
                 && (null === $filename || $filename === $item->getOriginalFilename())
                 && ([] === $sources || in_array($item->getSource(), $sources, true)))
             ->toArray();
