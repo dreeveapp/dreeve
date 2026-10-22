@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Api\Internal;
+namespace App\Controller\Api\Internal\Release;
 
 use App\Application\AppVersion;
 use App\Domain\Integration\GitHub\GitHub;

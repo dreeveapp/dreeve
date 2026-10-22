@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Controller\Api\Internal;
+namespace App\Tests\Controller\Api\Internal\Release;
 
 use App\Application\AppVersion;
-use App\Controller\Api\Internal\LatestReleaseRequestHandler;
+use App\Controller\Api\Internal\Release\LatestReleaseRequestHandler;
 use App\Domain\Integration\GitHub\GitHub;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Serialization\Json;
