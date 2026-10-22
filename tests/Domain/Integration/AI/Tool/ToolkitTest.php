@@ -18,19 +18,6 @@ use App\Domain\Challenge\ChallengeId;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
-use App\Domain\Integration\AI\Tool\GetActivity;
-use App\Domain\Integration\AI\Tool\GetActivityLaps;
-use App\Domain\Integration\AI\Tool\GetActivitySegmentEfforts;
-use App\Domain\Integration\AI\Tool\GetActivitySplits;
-use App\Domain\Integration\AI\Tool\GetActivityStreams;
-use App\Domain\Integration\AI\Tool\GetAllActivitiesSummary;
-use App\Domain\Integration\AI\Tool\GetAthleteDetails;
-use App\Domain\Integration\AI\Tool\GetChallenges;
-use App\Domain\Integration\AI\Tool\GetDefaultHeartRateZone;
-use App\Domain\Integration\AI\Tool\GetFtpHistory;
-use App\Domain\Integration\AI\Tool\GetGear;
-use App\Domain\Integration\AI\Tool\GetMostRecentActivity;
-use App\Domain\Integration\AI\Tool\GetSegment;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
@@ -51,6 +38,7 @@ use App\Tests\Domain\Challenge\ChallengeBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\Domain\Segment\SegmentBuilder;
 use App\Tests\Domain\Segment\SegmentEffort\SegmentEffortBuilder;
+use NeuronAI\Tools\ToolInterface;
 use NeuronAI\Tools\Toolkits\ToolkitInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -60,101 +48,52 @@ class ToolkitTest extends ContainerTestCase
     use MatchesSnapshots;
 
     #[DataProvider(methodName: 'provideTools')]
-    public function testTools(string $className, array $invokeParams): void
+    public function testTools(string $name, array $inputs): void
     {
-        $tool = $this->getContainer()->get($className);
-        $this->assertMatchesJsonSnapshot(Json::encode($tool->__invoke(...$invokeParams)));
+        $tool = array_find(
+            $this->getContainer()->get(ToolkitInterface::class)->tools(),
+            static fn (ToolInterface $tool): bool => $name === $tool->getName(),
+        );
+        $tool->setInputs($inputs)->execute();
+
+        $this->assertMatchesJsonSnapshot($tool->getResult());
     }
 
     public function testItRegistersAllTools(): void
     {
-        $this->assertCount(
-            13,
-            $this->getContainer()->get(ToolkitInterface::class)->tools(),
-        );
+        $tools = $this->getContainer()->get(ToolkitInterface::class)->tools();
+        usort($tools, static fn (ToolInterface $a, ToolInterface $b): int => $a->getName() <=> $b->getName());
+
+        $this->assertCount(13, $tools);
+        $this->assertMatchesJsonSnapshot(Json::encode(array_map(
+            static fn (ToolInterface $tool): array => [
+                'name' => $tool->getName(),
+                'description' => $tool->getDescription(),
+                'inputSchema' => $tool->getInputSchema(),
+                'maxRuns' => $tool->getMaxRuns(),
+            ],
+            $tools,
+        )));
     }
 
     public static function provideTools(): iterable
     {
-        yield 'GetActivity Tool' => [
-            GetActivity::class,
-            ['123456789'],
-        ];
-
-        yield 'GetActivity Tool for an activity not on Strava' => [
-            GetActivity::class,
-            ['987654321'],
-        ];
-
-        yield 'GetActivityLaps Tool' => [
-            GetActivityLaps::class,
-            ['123456789'],
-        ];
-
-        yield 'GetActivitySegmentEfforts Tool' => [
-            GetActivitySegmentEfforts::class,
-            ['123456789'],
-        ];
-
-        yield 'GetActivityStreams Tool' => [
-            GetActivityStreams::class,
-            ['123456789'],
-        ];
-
-        yield 'GetActivitySplits Tool' => [
-            GetActivitySplits::class,
-            ['123456789'],
-        ];
-
-        yield 'GetAthleteDetails Tool' => [
-            GetAthleteDetails::class,
-            [],
-        ];
-
-        yield 'GetChallenges Tool' => [
-            GetChallenges::class,
-            [],
-        ];
-
-        yield 'GetDefaultHeartRateZone Tool' => [
-            GetDefaultHeartRateZone::class,
-            [null],
-        ];
-
-        yield 'GetGear Tool' => [
-            GetGear::class,
-            [],
-        ];
-
-        yield 'GetFtpHistory Tool' => [
-            GetFtpHistory::class,
-            [],
-        ];
-
-        yield 'GetAllActivitiesSummary Tool' => [
-            GetAllActivitiesSummary::class,
-            [null, null, null],
-        ];
-
-        yield 'GetAllActivitiesSummary Tool outside date range' => [
-            GetAllActivitiesSummary::class,
-            [null, '2024-01-01', '2024-12-31'],
-        ];
-
-        yield 'GetMostRecentActivity Tool' => [
-            GetMostRecentActivity::class,
-            [],
-        ];
-
-        yield 'GetSegment Tool' => [
-            GetSegment::class,
-            ['1'],
-        ];
-
-        yield 'GetSegment Tool for a custom segment' => [
-            GetSegment::class,
-            ['custom'],
-        ];
+        yield 'GetActivity Tool' => ['get_activity_by_id', ['activityId' => '123456789']];
+        yield 'GetActivity Tool for an activity not on Strava' => ['get_activity_by_id', ['activityId' => '987654321']];
+        yield 'GetActivityLaps Tool' => ['get_activity_laps', ['activityId' => '123456789']];
+        yield 'GetActivitySegmentEfforts Tool' => ['get_activity_segments_efforts', ['activityId' => '123456789']];
+        yield 'GetActivityStreams Tool' => ['get_activity_streams', ['activityId' => '123456789']];
+        yield 'GetActivitySplits Tool' => ['get_activity_splits', ['activityId' => '123456789']];
+        yield 'GetAthleteDetails Tool' => ['get_athlete_details', []];
+        yield 'GetChallenges Tool' => ['get_challenges', []];
+        yield 'GetDefaultHeartRateZone Tool' => ['get_heart_rate_zones', []];
+        yield 'GetGear Tool' => ['get_gear', []];
+        yield 'GetFtpHistory Tool' => ['get_ftp_history', []];
+        yield 'GetAllActivitiesSummary Tool' => ['get_activities_summary', []];
+        yield 'GetAllActivitiesSummary Tool outside date range' => ['get_activities_summary', ['from' => '2024-01-01', 'to' => '2024-12-31']];
+        yield 'GetMostRecentActivity Tool' => ['get_most_recent_activity', []];
+        yield 'GetSegment Tool' => ['get_segment_by_id', ['segmentId' => '1']];
+        yield 'GetSegment Tool for a custom segment' => ['get_segment_by_id', ['segmentId' => 'custom']];
     }
 
     #[\Override]

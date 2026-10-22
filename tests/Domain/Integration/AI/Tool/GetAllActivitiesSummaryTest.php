@@ -6,6 +6,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Integration\AI\Tool\GetAllActivitiesSummary;
+use App\Domain\Integration\AI\Tool\ToolArguments;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -26,7 +27,11 @@ class GetAllActivitiesSummaryTest extends ContainerTestCase
             ));
         }
 
-        $summary = $this->getContainer()->get(GetAllActivitiesSummary::class)->__invoke($limit, $from, $to);
+        $summary = $this->getContainer()->get(GetAllActivitiesSummary::class)->__invoke(new ToolArguments([
+            'limit' => $limit,
+            'from' => $from,
+            'to' => $to,
+        ]));
 
         $this->assertSame($expectedIds, array_column($summary['activitiesSummary'], 'id'));
         $this->assertSame(4, $summary['totalActivityCount']);

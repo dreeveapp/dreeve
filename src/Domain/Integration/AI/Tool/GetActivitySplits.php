@@ -4,68 +4,47 @@ declare(strict_types=1);
 
 namespace App\Domain\Integration\AI\Tool;
 
-use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\Split\ActivitySplit;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Settings\SettingsRepository;
-use NeuronAI\Tools\PropertyType;
-use NeuronAI\Tools\Tool;
-use NeuronAI\Tools\ToolProperty;
 
-final class GetActivitySplits extends Tool
+final readonly class GetActivitySplits implements AITool
 {
     private const int MAX_RESULTS = 60;
 
-    #[\Override]
-    protected string $name = 'get_activity_splits';
-
-    #[\Override]
-    protected ?string $description = <<<DESC
-        Retrieves detailed split information for a specific activity using its unique activity ID.
-        Use this tool when the user asks about split data within an activity or requests all details for a specific activity.
-        It requires the activity ID as input and provides the split-by-split breakdown needed for summaries, analysis, or comparisons.
-        Example requests include “Show all splits for activity 12345” or “Give me detailed split stats for my last run.”
-        Returns at most 60 splits, from the start of the activity. Compare "totalSplitCount" with the number of returned splits: if it is higher, tell the user you are only seeing part of the activity.
-        DESC;
-
     public function __construct(
-        private readonly ActivitySplitRepository $activitySplitRepository,
-        private readonly SettingsRepository $settingsRepository,
+        private ActivitySplitRepository $activitySplitRepository,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
-    #[\Override]
-    public function getMaxRuns(): int
+    public function getName(): string
     {
-        return 25;
+        return 'get_activity_splits';
     }
 
-    /**
-     * @return \NeuronAI\Tools\ToolPropertyInterface[]
-     *
-     * @codeCoverageIgnore
-     */
-    #[\Override]
-    protected function properties(): array
+    public function getDescription(): string
+    {
+        return <<<DESC
+            Retrieves detailed split information for a specific activity using its unique activity ID.
+            Use this tool when the user asks about split data within an activity or requests all details for a specific activity.
+            It requires the activity ID as input and provides the split-by-split breakdown needed for summaries, analysis, or comparisons.
+            Example requests include “Show all splits for activity 12345” or “Give me detailed split stats for my last run.”
+            Returns at most 60 splits, from the start of the activity. Compare "totalSplitCount" with the number of returned splits: if it is higher, tell the user you are only seeing part of the activity.
+            DESC;
+    }
+
+    public function getParameters(): array
     {
         return [
-            new ToolProperty(
-                name: 'activityId',
-                type: PropertyType::STRING,
-                description: 'The id of the activity.',
-                required: true
-            ),
+            ToolParameter::string('activityId', 'The id of the activity.', required: true),
         ];
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function __invoke(string $activityId): array
+    public function __invoke(ToolArguments $arguments): array
     {
-        $activityId = ActivityId::fromUnprefixed($activityId);
         $splits = $this->activitySplitRepository->findBy(
-            activityId: $activityId,
+            activityId: $arguments->getActivityId(),
             unitSystem: $this->settingsRepository->appearance()->getUnitSystem()
         );
 
