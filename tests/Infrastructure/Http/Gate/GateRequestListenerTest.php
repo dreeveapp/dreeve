@@ -158,8 +158,8 @@ class GateRequestListenerTest extends TestCase
              */
             public function __construct(
                 private \ArrayObject $calls,
-                private string $name,
-                private GateDecision $decision,
+                private readonly string $name,
+                private readonly GateDecision $decision,
             ) {
             }
 

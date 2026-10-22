@@ -10,6 +10,7 @@ use App\Domain\Activity\Search\ActivitySearchRepository;
 use App\Domain\Activity\Search\ActivitySearchResult;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Infrastructure\Repository\Pagination;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final readonly class SearchActivities implements AITool
@@ -55,7 +56,7 @@ final readonly class SearchActivities implements AITool
     {
         $from = $arguments->getDate('from');
         $to = $arguments->getDate('to');
-        if ($from && $to && $from->isAfter($to)) {
+        if ($from instanceof SerializableDateTime && $to instanceof SerializableDateTime && $from->isAfter($to)) {
             throw new ToolFailed('"from" must not be later than "to".');
         }
 
