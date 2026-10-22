@@ -115,6 +115,7 @@ Configured: Beállítva
 'Connected sensors': 'Csatlakoztatott érzékelők'
 'Continues to next rule': 'Folytatja a következő szabállyal'
 'Copy this API key': 'Másold ki ezt az API-kulcsot'
+'Copy this MCP key': 'Copy this MCP key'
 'Cron expression': 'Cron kifejezés'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": 'Cron kifejezés, amely megadja, mikor fusson a művelet, pl. a „0 14 * * *" minden nap 14:00-kor fut. Segítségért lásd: crontab.guru.'
 Custom: Custom
@@ -197,6 +198,7 @@ From: Ettől
 Gender: Nem
 General: Általános
 'Generate an API key': 'API-kulcs generálása'
+'Generate an MCP key': 'Generate an MCP key'
 'Go to first page': 'Ugrás az első oldalra'
 'Go to last page': 'Ugrás az utolsó oldalra'
 'Go to next page': 'Ugrás a következő oldalra'
@@ -241,12 +243,15 @@ Latitude: Szélesség
 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Hagyj mindent bejelöletlenül az összes láthatóság importálásához. ⚠️ Ennek korlátozása a tevékenységek importálása után törli a kizárt láthatóságú tevékenységeket.'
 'Leave empty to include all sport types.': 'Hagyd üresen az összes sporttípus belefoglalásához.'
 'Leave empty to use the default title.': 'Leave empty to use the default title.'
-'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Lehetővé teszi egy külső kliens számára, hogy HTTP-n keresztül tevékenységfájlokat töltsön fel. A kulcs az egyetlen, ami védi ezt a végpontot, ezért kezeld jelszóként.'
+'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.': 'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.'
+'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.': 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.'
 'Loading the route...': 'Loading the route...'
 Locale: Nyelv
 Log: Napló
 'Log maintenance': 'Karbantartás naplózása'
 Longitude: Hosszúság
+'MCP access': 'MCP access'
+'MCP key': 'MCP key'
 'Maintenance log': 'Karbantartási napló'
 'Maintenance logs will appear here once maintenance has been registered.': 'A karbantartási naplók itt jelennek meg, miután rögzítettél egy karbantartást.'
 'Maintenance tasks': 'Karbantartási feladatok'
@@ -292,7 +297,8 @@ Monday: Hétfő
 'No sport types selected': 'Nincs kiválasztott sporttípus'
 'No unit': 'Nincs mértékegység'
 'Normal date format': 'Normál dátumformátum'
-'Not configured, the API is closed': 'Nincs beállítva, az API zárva van'
+'Not configured, API access is disabled': 'Not configured, API access is disabled'
+'Not configured, MCP server is disabled': 'Not configured, MCP server is disabled'
 'Not fitted': 'Not fitted'
 Notes: Notes
 'Notification services': 'Értesítési szolgáltatások'
@@ -475,7 +481,8 @@ Tasks: Feladatok
 'The elevation gain': 'A szintemelkedés'
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'A maximális pulzusod kiszámításához használt képlet. Az alapértelmezett a Fox (220 − életkor).'
 'The formula used to calculate your resting heart rate. The default is an age-based estimate.': 'A nyugalmi pulzusod kiszámításához használt képlet. Az alapértelmezett egy életkor alapú becslés.'
-'The key lets an external client upload activity files over HTTP. It is the only thing guarding that endpoint, so treat it like a password.': 'A kulcs lehetővé teszi egy külső kliens számára, hogy HTTP-n keresztül tevékenységfájlokat töltsön fel. Ez az egyetlen, ami védi ezt a végpontot, ezért kezeld jelszóként.'
+'The key lets an AI assistant read your data through the MCP server. It cannot change anything, but it does expose all of your activities, so treat it like a password.': 'The key lets an AI assistant read your data through the MCP server. It cannot change anything, but it does expose all of your activities, so treat it like a password.'
+'The key lets an external client access the API over HTTP. It is the only thing guarding the API, so treat it like a password.': 'The key lets an external client access the API over HTTP. It is the only thing guarding the API, so treat it like a password.'
 'The last zone has no upper bound.': 'Az utolsó zónának nincs felső határa.'
 'The locale used to render the app.': 'Az alkalmazás megjelenítéséhez használt nyelv.'
 'The max heart rate': 'A maximális pulzus'
@@ -605,7 +612,8 @@ then: akkor
 '{count} files uploaded': '{count} fájl feltöltve'
 '{count} images selected': '{count} kép kiválasztva'
 '{count} rules apply': '{count} szabály érvényes'
-'{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it.': 'A(z) {envVar} be van állítva, de ez nem egy olyan kulcs, amelyet ez az alkalmazás generált, ezért az API zárva marad. Generálj egy újat, és cseréld le.'
+'{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.'
+'{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.'
 '{label} (copy)': '{label} (másolat)'
 "{name} can't be deleted because it is still linked to activities, maintenance or automation rules.": '{name} nem törölhető, mert még tevékenységekhez, karbantartáshoz vagy automatizálási szabályokhoz van kapcsolva.'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} értesítési szolgáltatás URL-ek (pl. discord://token@id, telegram://token@telegram/?channels=channel). Hagyd üresen az értesítések teljes letiltásához.'

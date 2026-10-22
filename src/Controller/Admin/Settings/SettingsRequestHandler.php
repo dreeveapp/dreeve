@@ -21,6 +21,7 @@ use App\Infrastructure\Http\ClientIpResolver;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Security\AdminUserName;
 use App\Infrastructure\Security\Api\ApiToken;
+use App\Infrastructure\Security\Mcp\McpToken;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,6 +51,7 @@ final readonly class SettingsRequestHandler
         private AdminAllowedIpAddresses $adminAllowedIpAddresses,
         private ClientIpResolver $clientIpResolver,
         private ApiToken $apiKey,
+        private McpToken $mcpKey,
     ) {
     }
 
@@ -100,6 +102,7 @@ final readonly class SettingsRequestHandler
                 'adminAllowedIpAddresses' => $this->adminAllowedIpAddresses,
                 'clientIpAddress' => $this->clientIpResolver->resolve($request),
                 'apiKey' => $this->apiKey,
+                'mcpKey' => $this->mcpKey,
             ],
         ));
     }

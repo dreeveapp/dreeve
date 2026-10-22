@@ -115,6 +115,7 @@ Configured: Geconfigureerd
 'Connected sensors': 'Verbonden sensoren'
 'Continues to next rule': 'Gaat verder naar de volgende regel'
 'Copy this API key': 'Kopieer deze API-sleutel'
+'Copy this MCP key': 'Copy this MCP key'
 'Cron expression': Cron-expressie
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron-expressie die bepaalt wanneer de actie uitgevoerd wordt, bv. '0 14 * * *' wordt elke dag om 14:00 uitgevoerd. Zie crontab.guru voor hulp."
 Custom: Custom
@@ -197,6 +198,7 @@ From: Van
 Gender: Geslacht
 General: Algemeen
 'Generate an API key': 'Een API-sleutel genereren'
+'Generate an MCP key': 'Generate an MCP key'
 'Go to first page': 'Naar eerste pagina'
 'Go to last page': 'Naar laatste pagina'
 'Go to next page': 'Naar volgende pagina'
@@ -241,12 +243,15 @@ Latitude: Breedtegraad
 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Laat alles uitgevinkt om elke zichtbaarheid te importeren. ⚠️ Als je dit beperkt nadat activiteiten geïmporteerd zijn, worden activiteiten met uitgesloten zichtbaarheden verwijderd.'
 'Leave empty to include all sport types.': 'Laat leeg om alle sporttypes mee te nemen.'
 'Leave empty to use the default title.': 'Laat leeg om de standaardtitel te gebruiken.'
-'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Laat een externe client activiteitsbestanden uploaden via HTTP. De sleutel is het enige wat dat endpoint beveiligt, dus behandel hem als een wachtwoord.'
+'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.': 'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.'
+'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.': 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.'
 'Loading the route...': 'Loading the route...'
 Locale: Taalinstelling
 Log: Log
 'Log maintenance': 'Onderhoud loggen'
 Longitude: Lengtegraad
+'MCP access': 'MCP access'
+'MCP key': 'MCP key'
 'Maintenance log': Onderhoudslog
 'Maintenance logs will appear here once maintenance has been registered.': 'Onderhoudslogs verschijnen hier zodra er onderhoud geregistreerd is.'
 'Maintenance tasks': Onderhoudstaken
@@ -292,7 +297,8 @@ Monday: Maandag
 'No sport types selected': 'Geen sporttypes geselecteerd'
 'No unit': 'Geen eenheid'
 'Normal date format': 'Normaal datumformaat'
-'Not configured, the API is closed': 'Niet geconfigureerd, de API is gesloten'
+'Not configured, API access is disabled': 'Not configured, API access is disabled'
+'Not configured, MCP server is disabled': 'Not configured, MCP server is disabled'
 'Not fitted': 'Not fitted'
 Notes: Notes
 'Notification services': Meldingsdiensten
@@ -475,7 +481,8 @@ Tasks: Taken
 'The elevation gain': 'De hoogtewinst'
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'De formule om je maximale hartslag te berekenen. Standaard is Fox (220 − leeftijd).'
 'The formula used to calculate your resting heart rate. The default is an age-based estimate.': 'De formule om je rusthartslag te berekenen. Standaard is een schatting op basis van leeftijd.'
-'The key lets an external client upload activity files over HTTP. It is the only thing guarding that endpoint, so treat it like a password.': 'Met de sleutel kan een externe client activiteitsbestanden uploaden via HTTP. Het is het enige wat dat endpoint beveiligt, dus behandel hem als een wachtwoord.'
+'The key lets an AI assistant read your data through the MCP server. It cannot change anything, but it does expose all of your activities, so treat it like a password.': 'The key lets an AI assistant read your data through the MCP server. It cannot change anything, but it does expose all of your activities, so treat it like a password.'
+'The key lets an external client access the API over HTTP. It is the only thing guarding the API, so treat it like a password.': 'The key lets an external client access the API over HTTP. It is the only thing guarding the API, so treat it like a password.'
 'The last zone has no upper bound.': 'De laatste zone heeft geen bovengrens.'
 'The locale used to render the app.': 'De taal waarin de app weergegeven wordt.'
 'The max heart rate': 'De maximale hartslag'
@@ -605,7 +612,8 @@ then: dan
 '{count} files uploaded': '{count} bestanden geüpload'
 '{count} images selected': '{count} afbeeldingen geselecteerd'
 '{count} rules apply': '{count} regels van toepassing'
-'{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it.': '{envVar} is ingesteld, maar het is geen sleutel die deze app gegenereerd heeft, dus de API blijft gesloten. Genereer een nieuwe en vervang hem.'
+'{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.'
+'{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.'
 '{label} (copy)': '{label} (kopie)'
 "{name} can't be deleted because it is still linked to activities, maintenance or automation rules.": '{name} kan niet verwijderd worden omdat het nog gekoppeld is aan activiteiten, onderhoud of automatiseringsregels.'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': "{shoutrrr}-URL's voor meldingsdiensten (bv. discord://token@id, telegram://token@telegram/?channels=channel). Laat leeg om meldingen volledig uit te schakelen."

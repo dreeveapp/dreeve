@@ -115,6 +115,7 @@ Configured: Configurado
 'Connected sensors': 'Sensores conectados'
 'Continues to next rule': 'Continua para a próxima regra'
 'Copy this API key': 'Copiar esta chave da API'
+'Copy this MCP key': 'Copy this MCP key'
 'Cron expression': 'Expressão Cron'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Expressão Cron especificando quando a ação deve ser executada, ex. '0 14 * * *' executa todos os dias às 14:00. Consulte crontab.guru para obter ajuda."
 Custom: Personalizado
@@ -197,6 +198,7 @@ From: De
 Gender: Gênero
 General: Geral
 'Generate an API key': 'Gerar uma chave da API'
+'Generate an MCP key': 'Generate an MCP key'
 'Go to first page': 'Ir para a primeira página'
 'Go to last page': 'Ir para a última página'
 'Go to next page': 'Ir para a próxima página'
@@ -241,12 +243,15 @@ Latitude: Latitude
 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Deixe tudo desmarcado para importar todas as visibilidades. ⚠️ Restringir isso após a importação das atividades excluirá as atividades das visibilidades excluídas.'
 'Leave empty to include all sport types.': 'Deixe vazio para incluir todos os tipos de esporte.'
 'Leave empty to use the default title.': 'Deixe vazio para usar o título padrão.'
-'Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password.': 'Permite que um cliente externo envie arquivos de atividade via HTTP. A chave é a única proteção desse endpoint, portanto trate-a como uma senha.'
+'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.': 'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.'
+'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.': 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.'
 'Loading the route...': 'Carregando a rota...'
 Locale: Localidade
 Log: Registro
 'Log maintenance': 'Registrar manutenção'
 Longitude: Longitude
+'MCP access': 'MCP access'
+'MCP key': 'MCP key'
 'Maintenance log': 'Registro de manutenção'
 'Maintenance logs will appear here once maintenance has been registered.': 'Os registros de manutenção aparecerão aqui assim que a manutenção for registrada.'
 'Maintenance tasks': 'Tarefas de manutenção'
@@ -292,7 +297,8 @@ Monday: Segunda-feira
 'No sport types selected': 'Nenhum tipo de esporte selecionado'
 'No unit': 'Sem unidade'
 'Normal date format': 'Formato de data normal'
-'Not configured, the API is closed': 'Não configurado, a API está fechada'
+'Not configured, API access is disabled': 'Not configured, API access is disabled'
+'Not configured, MCP server is disabled': 'Not configured, MCP server is disabled'
 'Not fitted': 'Não instalado'
 Notes: Anotações
 'Notification services': 'Serviços de notificação'
@@ -475,7 +481,8 @@ Tasks: Tarefas
 'The elevation gain': 'O ganho de elevação'
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'A fórmula usada para calcular sua frequência cardíaca máxima. O padrão é Fox (220 − idade).'
 'The formula used to calculate your resting heart rate. The default is an age-based estimate.': 'A fórmula usada para calcular sua frequência cardíaca de repouso. O padrão é uma estimativa baseada na idade.'
-'The key lets an external client upload activity files over HTTP. It is the only thing guarding that endpoint, so treat it like a password.': 'A chave permite que um cliente externo envie arquivos de atividade via HTTP. Ela é a única proteção desse endpoint, portanto trate-a como uma senha.'
+'The key lets an AI assistant read your data through the MCP server. It cannot change anything, but it does expose all of your activities, so treat it like a password.': 'The key lets an AI assistant read your data through the MCP server. It cannot change anything, but it does expose all of your activities, so treat it like a password.'
+'The key lets an external client access the API over HTTP. It is the only thing guarding the API, so treat it like a password.': 'The key lets an external client access the API over HTTP. It is the only thing guarding the API, so treat it like a password.'
 'The last zone has no upper bound.': 'A última zona não tem limite superior.'
 'The locale used to render the app.': 'A localidade usada para renderizar o aplicativo.'
 'The max heart rate': 'A frequência cardíaca máxima'
@@ -605,7 +612,8 @@ then: então
 '{count} files uploaded': '{count} arquivos enviados'
 '{count} images selected': '{count} imagens selecionadas'
 '{count} rules apply': '{count} regras se aplicam'
-'{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it.': '{envVar} está definido, mas não é uma chave gerada por este aplicativo, portanto a API permanece fechada. Gere uma nova chave e substitua-a.'
+'{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.'
+'{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.'
 '{label} (copy)': '{label} (cópia)'
 "{name} can't be deleted because it is still linked to activities, maintenance or automation rules.": '{name} não pode ser excluído porque ainda está vinculado a atividades, manutenção ou regras de automação.'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': 'URLs de serviços de notificação {shoutrrr} (ex. discord://token@id, telegram://token@telegram/?channels=canal). Deixe vazio para desativar as notificações totalmente.'

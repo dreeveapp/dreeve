@@ -1,0 +1,5 @@
+{% extends "html/admin/page/settings/token/generate.html.twig" %}
+{% set envVar = 'DREEVE_MCP_KEY' %}
+{% block title %}{{ "Generate an MCP key"|trans({}, 'admin') }}{% endblock %}
+{% block description %}{{ "The key lets an AI assistant read your data through the MCP server. It cannot change anything, but it does expose all of your activities, so treat it like a password."|trans({}, 'admin') }}{% endblock %}
+{% block copyLabel %}{{ "Copy this MCP key"|trans({}, 'admin') }}{% endblock %}

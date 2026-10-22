@@ -48,7 +48,7 @@
     {% endembed %}
     {% embed 'html/admin/page/settings/component/section.html.twig' with {
         title: "API access"|trans({}, 'admin'),
-        description: "Lets an external client upload activity files over HTTP. The key is the only thing guarding that endpoint, so treat it like a password."|trans({}, 'admin') ~ ' ' ~ "The allowed IP addresses above do not apply to it, the key is the only access control there."|trans({}, 'admin'),
+        description: "Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password."|trans({}, 'admin') ~ ' ' ~ "The allowed IP addresses above do not apply to it, the key is the only access control there."|trans({}, 'admin'),
     } %}
         {% block body %}
             {% if not apiKey.isEmpty() and not apiKey.hasValidFormat() %}
@@ -57,21 +57,51 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v4m0 4h.01M10.6 3.5a1.6 1.6 0 0 1 2.8 0l7.7 13.8a1.6 1.6 0 0 1-1.4 2.4H4.3a1.6 1.6 0 0 1-1.4-2.4l7.7-13.8Z"/>
                     </svg>
                     <span>
-                        {{ "{envVar} is set, but it is not a key this app generated, so the API stays closed. Generate a new one and replace it."|trans({'{envVar}': 'DREEVE_API_KEY'}, 'admin') }}
+                        {{ "{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it."|trans({'{envVar}': 'DREEVE_API_KEY'}, 'admin') }}
                     </span>
                 </div>
             {% endif %}
             <div>
                 <label for="apiKeyState" class="mt-0!">{{ "API key"|trans({}, 'admin') }}</label>
                 <input type="text" id="apiKeyState" disabled
-                       value="{{ apiKey.isEmpty() ? "Not configured, the API is closed"|trans({}, 'admin') : "Configured"|trans({}, 'admin') }}">
+                       value="{{ apiKey.isEmpty() ? "Not configured, API access is disabled"|trans({}, 'admin') : "Configured"|trans({}, 'admin') }}">
                 <p class="description">
                     {{ "Set through the {envVar} environment variable and cannot be changed here."|trans({'{envVar}': 'DREEVE_API_KEY'}, 'admin') }}
                 </p>
             </div>
             <div class="flex">
-                <a href="{{ relativeUrl(path('admin_generate_api_key')) }}" type="button" class="btn--primary">
+                <a href="{{ relativeUrl(path('admin_generate_token', {'type': 'api'})) }}" type="button" class="btn--primary">
                     {{ "Generate an API key"|trans({}, 'admin') }}
+                </a>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {
+        title: "MCP access"|trans({}, 'admin'),
+        description: "Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything."|trans({}, 'admin') ~ ' ' ~ "The allowed IP addresses above do not apply to it, the key is the only access control there."|trans({}, 'admin'),
+    } %}
+        {% block body %}
+            {% if not mcpKey.isEmpty() and not mcpKey.hasValidFormat() %}
+                <div class="flex items-start gap-3 p-3 rounded-lg bg-red-50 text-sm text-red-800" role="alert">
+                    <svg class="size-5 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v4m0 4h.01M10.6 3.5a1.6 1.6 0 0 1 2.8 0l7.7 13.8a1.6 1.6 0 0 1-1.4 2.4H4.3a1.6 1.6 0 0 1-1.4-2.4l7.7-13.8Z"/>
+                    </svg>
+                    <span>
+                        {{ "{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it."|trans({'{envVar}': 'DREEVE_MCP_KEY'}, 'admin') }}
+                    </span>
+                </div>
+            {% endif %}
+            <div>
+                <label for="mcpKeyState" class="mt-0!">{{ "MCP key"|trans({}, 'admin') }}</label>
+                <input type="text" id="mcpKeyState" disabled
+                       value="{{ mcpKey.isEmpty() ? "Not configured, MCP server is disabled"|trans({}, 'admin') : "Configured"|trans({}, 'admin') }}">
+                <p class="description">
+                    {{ "Set through the {envVar} environment variable and cannot be changed here."|trans({'{envVar}': 'DREEVE_MCP_KEY'}, 'admin') }}
+                </p>
+            </div>
+            <div class="flex">
+                <a href="{{ relativeUrl(path('admin_generate_token', {'type': 'mcp'})) }}" type="button" class="btn--primary">
+                    {{ "Generate an MCP key"|trans({}, 'admin') }}
                 </a>
             </div>
         {% endblock %}

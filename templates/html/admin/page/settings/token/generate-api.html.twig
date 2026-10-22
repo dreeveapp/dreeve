@@ -1,0 +1,5 @@
+{% extends "html/admin/page/settings/token/generate.html.twig" %}
+{% set envVar = 'DREEVE_API_KEY' %}
+{% block title %}{{ "Generate an API key"|trans({}, 'admin') }}{% endblock %}
+{% block description %}{{ "The key lets an external client access the API over HTTP. It is the only thing guarding the API, so treat it like a password."|trans({}, 'admin') }}{% endblock %}
+{% block copyLabel %}{{ "Copy this API key"|trans({}, 'admin') }}{% endblock %}

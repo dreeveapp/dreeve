@@ -80,7 +80,8 @@ class RequireAuthenticationTest extends AdminWebTestCase
         yield 'recording devices' => ['GET', '/admin/gear/recording-devices'];
         yield 'edit recording device' => ['GET', '/admin/gear/recording-devices/recordingDevice-garmin-edge-530/edit'];
         yield 'settings' => ['GET', '/admin/settings'];
-        yield 'api key generation' => ['GET', '/admin/settings/api-key/generate'];
+        yield 'api key generation' => ['GET', '/admin/settings/token/generate/api'];
+        yield 'mcp key generation' => ['GET', '/admin/settings/token/generate/mcp'];
         yield 'dashboard settings' => ['GET', '/admin/settings/dashboard'];
         yield 'delete dashboard widget' => ['GET', '/admin/settings/dashboard/widget/dashboardWidget-eddington/delete'];
         yield 'athlete settings' => ['GET', '/admin/settings/athlete'];
