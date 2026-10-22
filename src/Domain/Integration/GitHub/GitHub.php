@@ -25,4 +25,22 @@ final readonly class GitHub
 
         return Json::decode($json)['name'];
     }
+
+    /**
+     * @param array<string, string> $query
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function getWorkflowRuns(array $query = []): array
+    {
+        $response = $this->client->request(
+            method: 'GET',
+            uri: 'https://api.github.com/repos/dreeveapp/dreeve/actions/runs',
+            options: ['query' => $query]
+        );
+
+        $json = $response->getBody()->getContents();
+
+        return Json::decode($json)['workflow_runs'];
+    }
 }
