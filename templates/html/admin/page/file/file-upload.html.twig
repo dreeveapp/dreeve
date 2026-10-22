@@ -18,14 +18,14 @@
                     }, 'admin') }}
                 </p>
                 <form id="upload-form" class="flex flex-col mt-8"
-                      data-supported-file-extensions='{{ supportedFileExtensions }}' data-translations='{{ {
+                      data-supported-file-extensions='{{ supportedFileExtensions|e('html_attr') }}' data-translations='{{ {
                     "filesReadyToUpload": "{count} files ready to upload"|trans({}, 'admin'),
                     "filesUploaded": "{count} files uploaded"|trans({}, 'admin'),
                     "unsupportedFileType": "Unsupported file type"|trans({}, 'admin'),
                     "uploading": "Uploading..."|trans({}, 'admin'),
                     "uploaded": "Uploaded"|trans({}, 'admin'),
                     "uploadFailed": "Upload failed"|trans({}, 'admin'),
-                }|json_encode }}' novalidate>
+                }|json_encode|e('html_attr') }}' novalidate>
                     <label id="dropzone"
                            class="group relative flex flex-col items-center text-center gap-1.5 px-6 py-10 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 cursor-pointer transition-colors hover:border-primary hover:bg-primary-soft [&.is-dragging]:border-primary [&.is-dragging]:bg-primary-soft [&.is-dragging]:ring-4 [&.is-dragging]:ring-primary/10"
                            for="file-input">

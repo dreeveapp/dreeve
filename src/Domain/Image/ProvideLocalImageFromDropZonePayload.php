@@ -27,6 +27,13 @@ trait ProvideLocalImageFromDropZonePayload
             throw CouldNotDeserializeCommand::invalidPayload(sprintf('The "%s" field is invalid.', $payloadKey));
         }
 
+        // An empty value means "no images". This can happen when the drop zone JS
+        // did not populate the hidden field, for example when the page was served
+        // with a broken data-translations attribute and init() bailed out.
+        if ('' === trim($payload[$payloadKey])) {
+            return [$newImages, $removedImages];
+        }
+
         $decodedImages = Json::decode($payload[$payloadKey]);
         if (!is_array($decodedImages)) {
             throw CouldNotDeserializeCommand::invalidPayload(sprintf('The "%s" field is invalid.', $payloadKey));

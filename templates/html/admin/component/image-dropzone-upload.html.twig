@@ -16,8 +16,8 @@
          data-max-images="{{ maxImages }}"
          data-max-file-size="{{ maxFileSize * 1024 * 1024 }}"
          data-max-total-size="{{ maxTotalSize * 1024 * 1024 }}"
-         data-supported-extensions='{{ extensions|json_encode }}'
-         data-existing-images='{{ existingImages|json_encode }}'
+         data-supported-extensions='{{ extensions|json_encode|e('html_attr') }}'
+         data-existing-images='{{ existingImages|json_encode|e('html_attr') }}'
          data-translations='{{ {
              "imagesSelected": "{count} images selected"|trans({}, 'admin'),
              "unsupportedFileType": "Unsupported file type"|trans({}, 'admin'),
@@ -25,7 +25,7 @@
              "limitReached": "You can select up to {max} images"|trans({}, 'admin'),
              "totalSizeExceeded": "Total size exceeds {max} MB"|trans({}, 'admin'),
              "existingImage": "Saved"|trans({}, 'admin'),
-         }|json_encode }}'
+         }|json_encode|e('html_attr') }}'
          class="flex flex-col">
         <input type="hidden" data-images-field name="{{ name }}"/>
         {% if title %}<h3 class="text-lg font-semibold">{{ title }}</h3>{% endif %}
