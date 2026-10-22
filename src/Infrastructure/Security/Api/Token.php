@@ -6,23 +6,28 @@ namespace App\Infrastructure\Security\Api;
 
 final readonly class Token implements \Stringable
 {
-    private const string PREFIX = 'drv_';
     private const int LENGTH_IN_BYTES = 32;
 
     private function __construct(
+        private TokenType $type,
         #[\SensitiveParameter]
         private string $token,
     ) {
     }
 
-    public static function generate(): self
+    public static function generate(TokenType $type): self
     {
-        return new self(self::PREFIX.bin2hex(random_bytes(self::LENGTH_IN_BYTES)));
+        return new self($type, $type->getPrefix().bin2hex(random_bytes(self::LENGTH_IN_BYTES)));
     }
 
-    public static function fromString(#[\SensitiveParameter] string $token): self
+    public static function fromString(TokenType $type, #[\SensitiveParameter] string $token): self
     {
-        return new self(trim($token));
+        return new self($type, trim($token));
+    }
+
+    public function getType(): TokenType
+    {
+        return $this->type;
     }
 
     public function isEmpty(): bool
@@ -32,7 +37,7 @@ final readonly class Token implements \Stringable
 
     public function hasValidFormat(): bool
     {
-        return 1 === preg_match('/^'.self::PREFIX.'[a-f0-9]{'.(self::LENGTH_IN_BYTES * 2).'}$/', $this->token);
+        return 1 === preg_match('/^'.$this->type->getPrefix().'[a-f0-9]{'.(self::LENGTH_IN_BYTES * 2).'}$/', $this->token);
     }
 
     public function matches(#[\SensitiveParameter] string $token): bool

@@ -7,6 +7,7 @@ namespace App\Tests\Controller\Api\V1;
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsName;
 use App\Infrastructure\Security\Api\Token;
+use App\Infrastructure\Security\Api\TokenType;
 use App\Infrastructure\Security\Visitor;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
@@ -120,7 +121,7 @@ class ApiFirewallTest extends ControllerWebTestCase
     protected function prepareEnvironment(): void
     {
         // Runs before createClient(), so the container is built with the key already in place.
-        $this->token = Token::generate();
+        $this->token = Token::generate(TokenType::API);
         $_SERVER['DREEVE_API_KEY'] = $_ENV['DREEVE_API_KEY'] = (string) $this->token;
     }
 }

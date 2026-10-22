@@ -21,6 +21,8 @@ final readonly class ApiTokenHandler implements AccessTokenHandlerInterface
             throw new BadCredentialsException();
         }
 
-        return new UserBadge(ApiUser::IDENTIFIER, static fn (): ApiUser => new ApiUser());
+        $tokenType = $this->token->getType();
+
+        return new UserBadge($tokenType->getUserIdentifier(), static fn (): ApiUser => new ApiUser($tokenType));
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Infrastructure\Security\Api;
 
 use App\Infrastructure\Security\Api\Token;
+use App\Infrastructure\Security\Api\TokenType;
 use App\Infrastructure\Serialization\Json;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -13,19 +14,19 @@ class TokenTest extends TestCase
 {
     public function testGenerate(): void
     {
-        $this->assertMatchesRegularExpression('/^drv_[a-f0-9]{64}$/', (string) Token::generate());
+        $this->assertMatchesRegularExpression('/^drv_[a-f0-9]{64}$/', (string) Token::generate(TokenType::API));
     }
 
     public function testGenerateIsRandom(): void
     {
-        $tokens = array_map(static fn (): string => (string) Token::generate(), range(1, 50));
+        $tokens = array_map(static fn (): string => (string) Token::generate(TokenType::API), range(1, 50));
 
         $this->assertCount(50, array_unique($tokens));
     }
 
     public function testItDoesNotLeakThroughDebugOutput(): void
     {
-        $token = Token::generate();
+        $token = Token::generate(TokenType::API);
 
         $this->assertStringNotContainsString((string) $token, print_r($token, true));
         $this->assertStringNotContainsString((string) $token, Json::encode(['token' => $token]));
@@ -37,7 +38,7 @@ class TokenTest extends TestCase
 
     public function testFromStringTrims(): void
     {
-        $this->assertSame('drv_abc', (string) Token::fromString("  drv_abc\n"));
+        $this->assertSame('drv_abc', (string) Token::fromString(TokenType::API, "  drv_abc\n"));
     }
 
     #[DataProvider('provideValuesThatMustNotThrow')]
@@ -45,7 +46,7 @@ class TokenTest extends TestCase
     {
         // It is built from an environment variable at container build time, so throwing would
         // take down the whole app instead of just closing the API.
-        $this->assertFalse(Token::fromString($value)->hasValidFormat());
+        $this->assertFalse(Token::fromString(TokenType::API, $value)->hasValidFormat());
     }
 
     /**
@@ -66,30 +67,30 @@ class TokenTest extends TestCase
 
     public function testIsEmpty(): void
     {
-        $this->assertTrue(Token::fromString('')->isEmpty());
-        $this->assertTrue(Token::fromString('   ')->isEmpty());
-        $this->assertFalse(Token::generate()->isEmpty());
+        $this->assertTrue(Token::fromString(TokenType::API, '')->isEmpty());
+        $this->assertTrue(Token::fromString(TokenType::API, '   ')->isEmpty());
+        $this->assertFalse(Token::generate(TokenType::API)->isEmpty());
     }
 
     public function testHasValidFormat(): void
     {
-        $this->assertTrue(Token::generate()->hasValidFormat());
-        $this->assertTrue(Token::fromString((string) Token::generate())->hasValidFormat());
+        $this->assertTrue(Token::generate(TokenType::API)->hasValidFormat());
+        $this->assertTrue(Token::fromString(TokenType::API, (string) Token::generate(TokenType::API))->hasValidFormat());
     }
 
     public function testMatches(): void
     {
-        $token = Token::generate();
+        $token = Token::generate(TokenType::API);
 
         $this->assertTrue($token->matches((string) $token));
         $this->assertFalse($token->matches(substr((string) $token, 4)));
-        $this->assertFalse($token->matches((string) Token::generate()));
+        $this->assertFalse($token->matches((string) Token::generate(TokenType::API)));
     }
 
     public function testAnEmptyTokenMatchesNothing(): void
     {
         // hash_equals('', '') is true, so this is the case the handler has to guard first.
-        $this->assertTrue(Token::fromString('')->matches(''));
-        $this->assertTrue(Token::fromString('')->isEmpty());
+        $this->assertTrue(Token::fromString(TokenType::API, '')->matches(''));
+        $this->assertTrue(Token::fromString(TokenType::API, '')->isEmpty());
     }
 }

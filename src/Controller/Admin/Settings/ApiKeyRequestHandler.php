@@ -6,6 +6,7 @@ namespace App\Controller\Admin\Settings;
 
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Security\Api\Token;
+use App\Infrastructure\Security\Api\TokenType;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -22,7 +23,7 @@ final readonly class ApiKeyRequestHandler
     public function handle(): HtmlResponse
     {
         $response = new HtmlResponse($this->twig->render('html/admin/page/settings/api-key/generate-api-key.html.twig', [
-            'apiKey' => Token::generate(),
+            'apiKey' => Token::generate(TokenType::API),
         ]));
 
         $response->headers->set('Cache-Control', 'no-store');

@@ -7,6 +7,7 @@ namespace App\Tests\Controller\Api\V1;
 use App\Application\AppVersion;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\Security\Api\Token;
+use App\Infrastructure\Security\Api\TokenType;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 
@@ -41,7 +42,7 @@ class StatusRequestHandlerTest extends ControllerWebTestCase
     #[\Override]
     protected function prepareEnvironment(): void
     {
-        $this->token = Token::generate();
+        $this->token = Token::generate(TokenType::API);
         $_SERVER['DREEVE_API_KEY'] = $_ENV['DREEVE_API_KEY'] = (string) $this->token;
         $_SERVER['IMPORT_MODE'] = $_ENV['IMPORT_MODE'] = ImportMode::FILES->value;
     }

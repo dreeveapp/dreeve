@@ -16,11 +16,13 @@ final readonly class ApiUserProvider implements UserProviderInterface
 {
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        if (ApiUser::IDENTIFIER !== $identifier) {
-            throw new UserNotFoundException();
+        foreach (TokenType::cases() as $tokenType) {
+            if ($tokenType->getUserIdentifier() === $identifier) {
+                return new ApiUser($tokenType);
+            }
         }
 
-        return new ApiUser();
+        throw new UserNotFoundException();
     }
 
     public function refreshUser(UserInterface $user): UserInterface
@@ -29,7 +31,7 @@ final readonly class ApiUserProvider implements UserProviderInterface
             throw new UnsupportedUserException();
         }
 
-        return new ApiUser();
+        return new ApiUser($user->getTokenType());
     }
 
     public function supportsClass(string $class): bool

@@ -104,7 +104,7 @@ services:
 
     App\Infrastructure\Security\Api\Token:
         factory: [ null, 'fromString' ]
-        arguments: ['%env(string:DREEVE_API_KEY)%']
+        arguments: [!php/enum App\Infrastructure\Security\Api\TokenType::API, '%env(string:DREEVE_API_KEY)%']
 
     App\Domain\Import\ImportMode:
         public: true
