@@ -20,7 +20,7 @@ use App\Infrastructure\Config\AdminAllowedIpAddresses;
 use App\Infrastructure\Http\ClientIpResolver;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Security\AdminUserName;
-use App\Infrastructure\Security\Api\Token;
+use App\Infrastructure\Security\Api\ApiToken;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,7 +49,7 @@ final readonly class SettingsRequestHandler
         private AdminUserName $adminUserName,
         private AdminAllowedIpAddresses $adminAllowedIpAddresses,
         private ClientIpResolver $clientIpResolver,
-        private Token $apiKey,
+        private ApiToken $apiKey,
     ) {
     }
 

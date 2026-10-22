@@ -14,15 +14,18 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 final readonly class ApiUserProvider implements UserProviderInterface
 {
+    public function __construct(
+        private ApiToken $apiToken,
+    ) {
+    }
+
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        foreach (TokenType::cases() as $tokenType) {
-            if ($tokenType->getUserIdentifier() === $identifier) {
-                return new ApiUser($tokenType);
-            }
+        if ($this->apiToken->getUserIdentifier() !== $identifier) {
+            throw new UserNotFoundException();
         }
 
-        throw new UserNotFoundException();
+        return ApiUser::fromToken($this->apiToken);
     }
 
     public function refreshUser(UserInterface $user): UserInterface
@@ -31,7 +34,7 @@ final readonly class ApiUserProvider implements UserProviderInterface
             throw new UnsupportedUserException();
         }
 
-        return new ApiUser($user->getTokenType());
+        return $user;
     }
 
     public function supportsClass(string $class): bool

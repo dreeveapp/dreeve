@@ -8,8 +8,7 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
-use App\Infrastructure\Security\Api\Token;
-use App\Infrastructure\Security\Api\TokenType;
+use App\Infrastructure\Security\Api\ApiToken;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -19,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ActivityStreamsRequestHandlerTest extends ControllerWebTestCase
 {
-    private Token $token;
+    private ApiToken $token;
 
     public function testItReturnsTheStreamsOfAnActivityWithoutGps(): void
     {
@@ -89,7 +88,7 @@ class ActivityStreamsRequestHandlerTest extends ControllerWebTestCase
     #[\Override]
     protected function prepareEnvironment(): void
     {
-        $this->token = Token::generate(TokenType::API);
+        $this->token = ApiToken::generate();
         $_SERVER['DREEVE_API_KEY'] = $_ENV['DREEVE_API_KEY'] = (string) $this->token;
     }
 }

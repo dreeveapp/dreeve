@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Infrastructure\Security\Api;
 
+use App\Infrastructure\Security\Api\ApiToken;
 use App\Infrastructure\Security\Api\ApiUser;
 use App\Infrastructure\Security\Api\ApiUserProvider;
-use App\Infrastructure\Security\Api\TokenType;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
@@ -18,9 +18,9 @@ class ApiUserProviderTest extends TestCase
 
     public function testLoadUserByIdentifier(): void
     {
-        $user = $this->apiUserProvider->loadUserByIdentifier(TokenType::API->getUserIdentifier());
+        $user = $this->apiUserProvider->loadUserByIdentifier('dreeve-api');
 
-        $this->assertSame(TokenType::API->getUserIdentifier(), $user->getUserIdentifier());
+        $this->assertSame('dreeve-api', $user->getUserIdentifier());
         $this->assertSame(['ROLE_API'], $user->getRoles());
     }
 
@@ -33,7 +33,7 @@ class ApiUserProviderTest extends TestCase
 
     public function testRefreshUser(): void
     {
-        $this->assertEquals(new ApiUser(TokenType::API), $this->apiUserProvider->refreshUser(new ApiUser(TokenType::API)));
+        $this->assertEquals(new ApiUser('dreeve-api', 'ROLE_API'), $this->apiUserProvider->refreshUser(new ApiUser('dreeve-api', 'ROLE_API')));
     }
 
     public function testRefreshUserForAnotherUser(): void
@@ -54,6 +54,6 @@ class ApiUserProviderTest extends TestCase
     {
         parent::setUp();
 
-        $this->apiUserProvider = new ApiUserProvider();
+        $this->apiUserProvider = new ApiUserProvider(ApiToken::generate());
     }
 }

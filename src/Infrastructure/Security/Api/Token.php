@@ -4,30 +4,33 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Security\Api;
 
-final readonly class Token implements \Stringable
+abstract readonly class Token implements \Stringable
 {
     private const int LENGTH_IN_BYTES = 32;
 
-    private function __construct(
-        private TokenType $type,
+    final private function __construct(
         #[\SensitiveParameter]
         private string $token,
     ) {
     }
 
-    public static function generate(TokenType $type): self
+    abstract protected static function getPrefix(): string;
+
+    abstract public function getRole(): string;
+
+    /**
+     * @return non-empty-string
+     */
+    abstract public function getUserIdentifier(): string;
+
+    public static function generate(): static
     {
-        return new self($type, $type->getPrefix().bin2hex(random_bytes(self::LENGTH_IN_BYTES)));
+        return new static(static::getPrefix().bin2hex(random_bytes(self::LENGTH_IN_BYTES)));
     }
 
-    public static function fromString(TokenType $type, #[\SensitiveParameter] string $token): self
+    public static function fromString(#[\SensitiveParameter] string $token): static
     {
-        return new self($type, trim($token));
-    }
-
-    public function getType(): TokenType
-    {
-        return $this->type;
+        return new static(trim($token));
     }
 
     public function isEmpty(): bool
@@ -37,7 +40,7 @@ final readonly class Token implements \Stringable
 
     public function hasValidFormat(): bool
     {
-        return 1 === preg_match('/^'.$this->type->getPrefix().'[a-f0-9]{'.(self::LENGTH_IN_BYTES * 2).'}$/', $this->token);
+        return 1 === preg_match('/^'.static::getPrefix().'[a-f0-9]{'.(self::LENGTH_IN_BYTES * 2).'}$/', $this->token);
     }
 
     public function matches(#[\SensitiveParameter] string $token): bool

@@ -2,8 +2,7 @@
 
 namespace App\Tests\Controller\Api\V1\Metrics;
 
-use App\Infrastructure\Security\Api\Token;
-use App\Infrastructure\Security\Api\TokenType;
+use App\Infrastructure\Security\Api\ApiToken;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -13,7 +12,7 @@ class TrainingLoadRequestHandlerTest extends ControllerWebTestCase
     use MatchesSnapshots;
     use ProvideTestData;
 
-    private Token $token;
+    private ApiToken $token;
 
     public function testItReturnsTheCurrentTrainingLoad(): void
     {
@@ -34,7 +33,7 @@ class TrainingLoadRequestHandlerTest extends ControllerWebTestCase
     #[\Override]
     protected function prepareEnvironment(): void
     {
-        $this->token = Token::generate(TokenType::API);
+        $this->token = ApiToken::generate();
         $_SERVER['DREEVE_API_KEY'] = $_ENV['DREEVE_API_KEY'] = (string) $this->token;
     }
 }

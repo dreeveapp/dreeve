@@ -4,15 +4,14 @@ namespace App\Tests\Controller\Admin\Settings;
 
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\Security\Api\Token;
-use App\Infrastructure\Security\Api\TokenType;
+use App\Infrastructure\Security\Api\ApiToken;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
 {
     public function testItRendersTheApiKeyCardWhenAKeyIsConfigured(): void
     {
-        $this->withApiKey((string) Token::generate(TokenType::API));
+        $this->withApiKey((string) ApiToken::generate());
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/settings/security');

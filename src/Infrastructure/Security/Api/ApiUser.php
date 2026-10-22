@@ -8,14 +8,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 final readonly class ApiUser implements UserInterface
 {
+    /**
+     * @param non-empty-string $identifier
+     */
     public function __construct(
-        private TokenType $tokenType,
+        private string $identifier,
+        private string $role,
     ) {
     }
 
-    public function getTokenType(): TokenType
+    public static function fromToken(Token $token): self
     {
-        return $this->tokenType;
+        return new self($token->getUserIdentifier(), $token->getRole());
     }
 
     /**
@@ -23,11 +27,11 @@ final readonly class ApiUser implements UserInterface
      */
     public function getRoles(): array
     {
-        return [$this->tokenType->getRole()];
+        return [$this->role];
     }
 
     public function getUserIdentifier(): string
     {
-        return $this->tokenType->getUserIdentifier();
+        return $this->identifier;
     }
 }

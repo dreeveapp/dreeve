@@ -8,8 +8,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Import\ImportMode;
-use App\Infrastructure\Security\Api\Token;
-use App\Infrastructure\Security\Api\TokenType;
+use App\Infrastructure\Security\Api\ApiToken;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -23,7 +22,7 @@ class ActivityImageAddRequestHandlerTest extends ControllerWebTestCase
     private const string PATH = '/api/v1/activities/activity-1/images';
     private const string EXISTING_IMAGE = 'files/activities/9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11.jpg';
 
-    private Token $token;
+    private ApiToken $token;
     private ActivityRepository $activityRepository;
     private FilesystemOperator $fileStorage;
 
@@ -179,7 +178,7 @@ class ActivityImageAddRequestHandlerTest extends ControllerWebTestCase
     #[\Override]
     protected function prepareEnvironment(): void
     {
-        $this->token = Token::generate(TokenType::API);
+        $this->token = ApiToken::generate();
         $_SERVER['DREEVE_API_KEY'] = $_ENV['DREEVE_API_KEY'] = (string) $this->token;
         $_SERVER['IMPORT_MODE'] = $_ENV['IMPORT_MODE'] = ImportMode::FILES->value;
     }

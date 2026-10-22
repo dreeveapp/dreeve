@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Api\V1\Activity;
 
 use App\Domain\Import\ImportMode;
-use App\Infrastructure\Security\Api\Token;
-use App\Infrastructure\Security\Api\TokenType;
+use App\Infrastructure\Security\Api\ApiToken;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use League\Flysystem\FilesystemOperator;
@@ -18,7 +17,7 @@ class ActivityUploadRequestHandlerTest extends ControllerWebTestCase
 {
     private const string PATH = '/api/v1/activity/upload';
 
-    private Token $token;
+    private ApiToken $token;
     private FilesystemOperator $filesystem;
 
     #[DataProvider('provideMethods')]
@@ -229,7 +228,7 @@ class ActivityUploadRequestHandlerTest extends ControllerWebTestCase
     #[\Override]
     protected function prepareEnvironment(): void
     {
-        $this->token = Token::generate(TokenType::API);
+        $this->token = ApiToken::generate();
         $_SERVER['DREEVE_API_KEY'] = $_ENV['DREEVE_API_KEY'] = (string) $this->token;
         $_SERVER['IMPORT_MODE'] = $_ENV['IMPORT_MODE'] = ImportMode::FILES->value;
     }

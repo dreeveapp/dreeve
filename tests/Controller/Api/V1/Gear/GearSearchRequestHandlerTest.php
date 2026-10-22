@@ -9,8 +9,7 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearType;
 use App\Infrastructure\Measurement\Length\Kilometer;
-use App\Infrastructure\Security\Api\Token;
-use App\Infrastructure\Security\Api\TokenType;
+use App\Infrastructure\Security\Api\ApiToken;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
@@ -20,7 +19,7 @@ class GearSearchRequestHandlerTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
 
-    private Token $token;
+    private ApiToken $token;
 
     public function testItListsAllGear(): void
     {
@@ -72,7 +71,7 @@ class GearSearchRequestHandlerTest extends ControllerWebTestCase
     #[\Override]
     protected function prepareEnvironment(): void
     {
-        $this->token = Token::generate(TokenType::API);
+        $this->token = ApiToken::generate();
         $_SERVER['DREEVE_API_KEY'] = $_ENV['DREEVE_API_KEY'] = (string) $this->token;
     }
 }

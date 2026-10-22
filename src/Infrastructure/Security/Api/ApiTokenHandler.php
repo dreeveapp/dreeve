@@ -11,7 +11,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 final readonly class ApiTokenHandler implements AccessTokenHandlerInterface
 {
     public function __construct(
-        private Token $token,
+        private ApiToken $token,
     ) {
     }
 
@@ -21,8 +21,8 @@ final readonly class ApiTokenHandler implements AccessTokenHandlerInterface
             throw new BadCredentialsException();
         }
 
-        $tokenType = $this->token->getType();
+        $user = ApiUser::fromToken($this->token);
 
-        return new UserBadge($tokenType->getUserIdentifier(), static fn (): ApiUser => new ApiUser($tokenType));
+        return new UserBadge($user->getUserIdentifier(), static fn (): ApiUser => $user);
     }
 }
