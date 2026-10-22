@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Import\Search;
 
+use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Import\FileImportStatus;
 use App\Infrastructure\Http\Request\Filters;
@@ -14,6 +15,19 @@ final readonly class FileImportSearchFilters extends Filters
     public function getFilename(): ?string
     {
         return $this->getString('filename');
+    }
+
+    public function getActivityId(): ?ActivityId
+    {
+        if (null === $activityId = $this->getString('activityId')) {
+            return null;
+        }
+
+        try {
+            return ActivityId::fromString($activityId);
+        } catch (\InvalidArgumentException) {
+            throw new BadRequestHttpException('"filters[activityId]" is not a valid activity id.');
+        }
     }
 
     /**

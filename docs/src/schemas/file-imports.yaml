@@ -116,6 +116,7 @@ paths:
 
         ```
         GET /api/v1/file-imports?filters[filename]=morning-ride.fit
+        GET /api/v1/file-imports?filters[activityId]=activity-9542782314
         ```
       parameters:
         - name: filters
@@ -131,6 +132,11 @@ paths:
                 description: >-
                   Only imports of the file with exactly this name
                 examples: ['morning-ride.fit']
+              activityId:
+                type: string
+                description: >-
+                  Only imports of this activity
+                examples: ['activity-9542782314']
               status:
                 type: string
                 description: >-

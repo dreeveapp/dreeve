@@ -56,6 +56,8 @@ class FileImportSearchRequestHandlerTest extends ControllerWebTestCase
         yield 'several comma separated statuses' => ['?filters[status]=failed,skipped', ['queued.gpx', 'broken.tcx', 'ride.fit']];
         yield 'a single source' => ['?filters[source]=tcxFile', ['broken.tcx']];
         yield 'the source of a queued file' => ['?filters[source]=gpxFile', ['queued.gpx']];
+        yield 'an activity' => ['?filters[activityId]=activity-42', ['ride.fit']];
+        yield 'an activity without imports' => ['?filters[activityId]=activity-1', []];
         yield 'filters combine' => ['?filters[filename]=ride.fit&filters[status]=success', ['ride.fit']];
     }
 
@@ -95,6 +97,7 @@ class FileImportSearchRequestHandlerTest extends ControllerWebTestCase
         yield 'the queued status' => ['?filters[status]=queued'];
         yield 'an unknown source' => ['?filters[source]=pdfFile'];
         yield 'a source that is not file based' => ['?filters[source]=stravaApi'];
+        yield 'a malformed activity id' => ['?filters[activityId]=42'];
         yield 'a page size above the maximum' => ['?pagination[size]=101'];
     }
 
