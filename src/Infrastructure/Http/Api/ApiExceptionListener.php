@@ -52,11 +52,9 @@ final readonly class ApiExceptionListener implements EventSubscriberInterface
             error: match ($statusCode) {
                 Response::HTTP_BAD_REQUEST => ApiErrorCode::BAD_REQUEST,
                 Response::HTTP_UNAUTHORIZED => ApiErrorCode::INVALID_TOKEN,
-                Response::HTTP_FORBIDDEN => ApiErrorCode::FORBIDDEN,
                 Response::HTTP_NOT_FOUND => ApiErrorCode::NOT_FOUND,
                 Response::HTTP_METHOD_NOT_ALLOWED => ApiErrorCode::METHOD_NOT_ALLOWED,
                 Response::HTTP_UNSUPPORTED_MEDIA_TYPE => ApiErrorCode::UNSUPPORTED_MEDIA_TYPE,
-                Response::HTTP_TOO_MANY_REQUESTS => ApiErrorCode::TOO_MANY_REQUESTS,
                 default => ApiErrorCode::INTERNAL_ERROR,
             },
             message: match (true) {

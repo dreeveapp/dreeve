@@ -16,7 +16,5 @@ enum ApiErrorCode: string
     case NOT_FOUND = 'not_found';
     case METHOD_NOT_ALLOWED = 'method_not_allowed';
     case BAD_REQUEST = 'bad_request';
-    case FORBIDDEN = 'forbidden';
-    case TOO_MANY_REQUESTS = 'too_many_requests';
     case INTERNAL_ERROR = 'internal_error';
 }
