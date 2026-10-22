@@ -289,6 +289,23 @@
                 }
             },
             {
+                "name": "list_gear_maintenance_tasks",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "gearId": {
+                            "type": "string",
+                            "description": "Only include the tasks of this gear."
+                        }
+                    },
+                    "required": []
+                },
+                "description": "Retrieves the gear maintenance tasks, most urgent first, with how far each one has progressed towards its interval and whether it is due or overdue.\nOptionally restrict it to the tasks of a single piece of gear.\nUse this tool when the user asks what maintenance is coming up, for example “Do I need to replace my chain?” or “What is overdue on my bike?”\nReturns an empty list when gear maintenance is not enabled.",
+                "annotations": {
+                    "readOnlyHint": true
+                }
+            },
+            {
                 "name": "search_activities",
                 "inputSchema": {
                     "type": "object",

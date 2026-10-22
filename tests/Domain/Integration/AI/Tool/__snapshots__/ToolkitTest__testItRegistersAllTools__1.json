@@ -251,6 +251,21 @@
         "maxRuns": null
     },
     {
+        "name": "list_gear_maintenance_tasks",
+        "description": "Retrieves the gear maintenance tasks, most urgent first, with how far each one has progressed towards its interval and whether it is due or overdue.\nOptionally restrict it to the tasks of a single piece of gear.\nUse this tool when the user asks what maintenance is coming up, for example “Do I need to replace my chain?” or “What is overdue on my bike?”\nReturns an empty list when gear maintenance is not enabled.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "gearId": {
+                    "type": "string",
+                    "description": "Only include the tasks of this gear."
+                }
+            },
+            "required": []
+        },
+        "maxRuns": null
+    },
+    {
         "name": "search_activities",
         "description": "Searches the user’s activities, newest first, and returns one compact row per activity: name, sport type, start date, distance, elevation, moving time and whether a GPX file is available.\nFilter by date range, by one or more sport types and by GPX availability. Results are paginated: request the next \"page\" until \"page\" equals \"totalPages\".\nUse this tool when the user asks a question that spans many activities, for example “How many trail runs did I do in 2024?” or “List all my rides over 100 km this year.”\nUse the activity tools with the returned ids for the details of a single activity.",
         "inputSchema": {

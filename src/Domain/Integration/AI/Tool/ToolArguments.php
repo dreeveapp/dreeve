@@ -7,6 +7,7 @@ namespace App\Domain\Integration\AI\Tool;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
+use App\Domain\Gear\GearId;
 use App\Domain\Segment\SegmentId;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
@@ -70,6 +71,15 @@ final readonly class ToolArguments
     public function getActivityId(): ActivityId
     {
         return ActivityId::fromPrefixedOrUnprefixed((string) $this->getString('activityId'));
+    }
+
+    public function getGearId(): ?GearId
+    {
+        if (null === $gearId = $this->getString('gearId')) {
+            return null;
+        }
+
+        return GearId::fromPrefixedOrUnprefixed($gearId);
     }
 
     public function getSegmentId(): SegmentId

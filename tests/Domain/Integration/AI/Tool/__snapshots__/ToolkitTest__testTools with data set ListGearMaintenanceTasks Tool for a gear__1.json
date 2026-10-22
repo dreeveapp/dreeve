@@ -1,0 +1,73 @@
+{
+    "maintenanceTasks": [
+        {
+            "id": "maintenanceTask-chain-lubed",
+            "label": "Lube",
+            "component": {
+                "id": "gearComponent-chain",
+                "label": "Some cool chain"
+            },
+            "gearIds": [
+                "gear-g1233776",
+                "gear-g10130856",
+                "gear-retired"
+            ],
+            "interval": {
+                "value": 500,
+                "unit": "km"
+            },
+            "lastPerformedOn": null,
+            "elapsed": 0,
+            "remaining": 500,
+            "percentage": 0,
+            "isDue": false,
+            "isOverdue": false
+        },
+        {
+            "id": "maintenanceTask-chain-replaced",
+            "label": "Replace",
+            "component": {
+                "id": "gearComponent-chain",
+                "label": "Some cool chain"
+            },
+            "gearIds": [
+                "gear-g1233776",
+                "gear-g10130856",
+                "gear-retired"
+            ],
+            "interval": {
+                "value": 1000,
+                "unit": "km"
+            },
+            "lastPerformedOn": null,
+            "elapsed": 0,
+            "remaining": 1000,
+            "percentage": 0,
+            "isDue": false,
+            "isOverdue": false
+        },
+        {
+            "id": "maintenanceTask-chain-cleaned",
+            "label": "Clean",
+            "component": {
+                "id": "gearComponent-chain",
+                "label": "Some cool chain"
+            },
+            "gearIds": [
+                "gear-g1233776",
+                "gear-g10130856",
+                "gear-retired"
+            ],
+            "interval": {
+                "value": 1000,
+                "unit": "km"
+            },
+            "lastPerformedOn": null,
+            "elapsed": 0,
+            "remaining": 1000,
+            "percentage": 0,
+            "isDue": false,
+            "isOverdue": false
+        }
+    ]
+}

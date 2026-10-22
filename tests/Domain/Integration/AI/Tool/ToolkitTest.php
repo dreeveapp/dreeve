@@ -38,6 +38,7 @@ use App\Tests\Domain\Challenge\ChallengeBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\Domain\Segment\SegmentBuilder;
 use App\Tests\Domain\Segment\SegmentEffort\SegmentEffortBuilder;
+use App\Tests\ProvideGearMaintenanceConfig;
 use NeuronAI\Tools\ToolInterface;
 use NeuronAI\Tools\Toolkits\ToolkitInterface;
 use NeuronAI\Tools\ToolOutput;
@@ -47,34 +48,30 @@ use Spatie\Snapshots\MatchesSnapshots;
 class ToolkitTest extends ContainerTestCase
 {
     use MatchesSnapshots;
+    use ProvideGearMaintenanceConfig;
 
     #[DataProvider(methodName: 'provideTools')]
     public function testTools(string $name, array $inputs): void
     {
-        $tool = array_find(
-            $this->getContainer()->get(ToolkitInterface::class)->tools(),
-            static fn (ToolInterface $tool): bool => $name === $tool->getName(),
-        );
-        $tool->setInputs($inputs)->execute();
+        $result = $this->executeTool($name, $inputs);
 
-        $result = $tool->getResult();
-        $this->assertInstanceOf(ToolOutput::class, $result);
         $this->assertFalse($result->isError());
         $this->assertMatchesJsonSnapshot($result->getText());
     }
 
     public function testItReturnsAToolErrorForAnUnknownActivity(): void
     {
-        $tool = array_find(
-            $this->getContainer()->get(ToolkitInterface::class)->tools(),
-            static fn (ToolInterface $tool): bool => 'get_activity_by_id' === $tool->getName(),
-        );
-        $tool->setInputs(['activityId' => '1'])->execute();
+        $result = $this->executeTool('get_activity_by_id', ['activityId' => '1']);
 
-        $result = $tool->getResult();
-        $this->assertInstanceOf(ToolOutput::class, $result);
         $this->assertTrue($result->isError());
         $this->assertSame('Activity "activity-1" does not exist.', $result->getText());
+    }
+
+    public function testItListsNoGearMaintenanceTasksWhenTheFeatureIsDisabled(): void
+    {
+        $this->importGearMaintenanceConfigFromArray(['enabled' => false]);
+
+        $this->assertSame('{"maintenanceTasks":[]}', $this->executeTool('list_gear_maintenance_tasks', [])->getText());
     }
 
     public function testItRegistersAllTools(): void
@@ -82,7 +79,7 @@ class ToolkitTest extends ContainerTestCase
         $tools = $this->getContainer()->get(ToolkitInterface::class)->tools();
         usort($tools, static fn (ToolInterface $a, ToolInterface $b): int => $a->getName() <=> $b->getName());
 
-        $this->assertCount(18, $tools);
+        $this->assertCount(19, $tools);
         $this->assertMatchesJsonSnapshot(Json::encode(array_map(
             static fn (ToolInterface $tool): array => [
                 'name' => $tool->getName(),
@@ -118,6 +115,8 @@ class ToolkitTest extends ContainerTestCase
         yield 'GetTrainingVolume Tool for a sport type' => ['get_training_volume', ['from' => '2025-01-01', 'to' => '2025-01-31', 'sportType' => 'Run']];
         yield 'GetStreaks Tool' => ['get_streaks', []];
         yield 'GetEddington Tool' => ['get_eddington', []];
+        yield 'ListGearMaintenanceTasks Tool' => ['list_gear_maintenance_tasks', []];
+        yield 'ListGearMaintenanceTasks Tool for a gear' => ['list_gear_maintenance_tasks', ['gearId' => 'retired']];
         yield 'SearchActivities Tool with filters' => ['search_activities', ['from' => '2025-01-01', 'to' => '2025-01-31', 'sportType' => 'Ride', 'hasGpx' => false, 'page' => 1, 'size' => 1]];
     }
 
@@ -125,6 +124,8 @@ class ToolkitTest extends ContainerTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->importGearMaintenanceConfig();
 
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
@@ -263,5 +264,22 @@ class ToolkitTest extends ContainerTestCase
                 ->withLocalLogoUrl('files/challenges/b7537b1e-69f7-11ee-a81e-0242a0cd5a47.png')
                 ->build()
         );
+    }
+
+    /**
+     * @param array<string, mixed> $inputs
+     */
+    private function executeTool(string $name, array $inputs): ToolOutput
+    {
+        $tool = array_find(
+            $this->getContainer()->get(ToolkitInterface::class)->tools(),
+            static fn (ToolInterface $tool): bool => $name === $tool->getName(),
+        );
+        $tool->setInputs($inputs)->execute();
+
+        $result = $tool->getResult();
+        $this->assertInstanceOf(ToolOutput::class, $result);
+
+        return $result;
     }
 }
