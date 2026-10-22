@@ -7,7 +7,6 @@
 'A cluster tile is a visited tile whose four neighbours are visited too': 'Een clustertegel is een bezochte tegel waarvan de vier buren ook bezocht zijn'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'Een hoge intensiteitsscore betekent dat een groter deel van je training zwaar is in plaats van licht.'
 'A high score means you concentrate more training into fewer, heavier days.': 'Een hoge score betekent dat je meer training concentreert in minder, zwaardere dagen.'
-'A new version of Dreeve is available. Read the release notes before updating, they might contain breaking changes.': 'A new version of Dreeve is available. Read the release notes before updating, they might contain breaking changes.'
 'A:C Ratio': 'A:C-ratio'
 'A:C optimal in': 'A:C optimaal binnen'
 'AI integration settings': 'Instellingen AI-integratie'
@@ -70,6 +69,7 @@ Challenges: Uitdagingen
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Chronic Training Load (Fitheid) - exponentieel gewogen gemiddelde over 42 dagen van je dagelijkse trainingsbelasting. Geeft de trainingsaanpassing op lange termijn weer.'
 'Clear all filters': 'Alle filters wissen'
 'Clear chat': 'Chat wissen'
+Close: Close
 'Cluster tiles': Clustertegels
 Columns: Kolommen
 Commute: Woon-werk
@@ -89,7 +89,6 @@ Cricket: Cricket
 Crossfit: Crossfit
 'Crunching the numbers...': 'De cijfers aan het doorrekenen...'
 'Current Status': 'Huidige status'
-'Current version': 'Current version'
 Cycling: Fietsen
 'Daily TRIMP': 'Dagelijkse TRIMP'
 'Daily activities': 'Dagelijkse activiteiten'
@@ -179,7 +178,6 @@ Goal: Doel
 Golf: Golf
 'Good training variety': 'Goede trainingsvariatie'
 'Google searches': Google-zoekopdrachten
-'Got it': 'Got it'
 Grad.: Hel.
 Gradient: Helling
 'Gravel Ride': Gravelrit
@@ -239,7 +237,6 @@ Lap: Ronde
 'Last used': 'Last used'
 'Last week': 'Vorige week'
 'Last {numberOfDays} days': 'Laatste {numberOfDays} dagen'
-'Latest version': 'Latest version'
 Lifetime: 'Sinds het begin'
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Lichte vermoeidheid met goede paraatheid. Een mooi evenwicht voor kwaliteitstrainingen of langere inspanningen'
 Load: Belasting
@@ -376,7 +373,6 @@ Recent: Recent
 'Recovery forecast': Herstelprognose
 'Reduced carbon emission by commuting': 'Verminderde CO₂-uitstoot door woon-werkverkeer'
 'Register maintenance': 'Onderhoud registreren'
-'Release notes': 'Release notes'
 'Rest Days': Rustdagen
 'Rest days': Rustdagen
 'Rest days in last 7 days': 'Rustdagen in de laatste 7 dagen'
@@ -400,6 +396,7 @@ Sat.: Za.
 Search: Zoeken
 'Search activity...': 'Zoek activiteit...'
 'Search segment...': 'Zoek segment...'
+"See what's new": "See what's new"
 Segments: Segmenten
 Sep: Sep
 Shifting: Schakelen
@@ -596,6 +593,7 @@ Walks: Wandelingen
 'Water Sports': Watersport
 'Waxing the chain...': 'De ketting aan het waxen...'
 'We detected following issues': 'We hebben de volgende problemen gedetecteerd'
+"We've been busy! Check out what's new and read about any breaking changes before you update.": "We've been busy! Check out what's new and read about any breaking changes before you update."
 Wed: Woe
 Wed.: Wo.
 Weekly: Wekelijks

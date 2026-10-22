@@ -7,7 +7,6 @@
 'A cluster tile is a visited tile whose four neighbours are visited too': 'Um quadrado de cluster é um quadrado visitado cujos quatro vizinhos também foram visitados'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'A high intensity score means a larger share of your training is hard rather than easy.'
 'A high score means you concentrate more training into fewer, heavier days.': 'A high score means you concentrate more training into fewer, heavier days.'
-'A new version of Dreeve is available. Read the release notes before updating, they might contain breaking changes.': 'A new version of Dreeve is available. Read the release notes before updating, they might contain breaking changes.'
 'A:C Ratio': 'Rácio A:C'
 'A:C optimal in': 'A:C optimal in'
 'AI integration settings': 'AI integration settings'
@@ -70,6 +69,7 @@ Challenges: Desafios
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Carga de Treino Crónica (Forma) - média ponderada exponencial de 42-dias da carga diária de treino. Representa adaptação ao treino de longo prazo.'
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Clear chat'
+Close: Close
 'Cluster tiles': 'Quadrados de cluster'
 Columns: Columns
 Commute: Commute
@@ -89,7 +89,6 @@ Cricket: Cricket
 Crossfit: Crossfit
 'Crunching the numbers...': 'Crunching the numbers...'
 'Current Status': 'Current Status'
-'Current version': 'Current version'
 Cycling: Cycling
 'Daily TRIMP': 'TRIMP Diário'
 'Daily activities': 'Actividades diárias'
@@ -179,7 +178,6 @@ Goal: Goal
 Golf: Golfe
 'Good training variety': 'Boa diversidade de treino'
 'Google searches': 'Google searches'
-'Got it': 'Got it'
 Grad.: Grad.
 Gradient: Gradient
 'Gravel Ride': 'Gravel Ride'
@@ -239,7 +237,6 @@ Lap: Volta
 'Last used': 'Last used'
 'Last week': 'Last week'
 'Last {numberOfDays} days': 'Últimos {numberOfDays} dias'
-'Latest version': 'Latest version'
 Lifetime: Lifetime
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Light fatigue with good readiness. A great balance for quality training or longer efforts'
 Load: Load
@@ -376,7 +373,6 @@ Recent: Recent
 'Recovery forecast': 'Recovery forecast'
 'Reduced carbon emission by commuting': 'Reduced carbon emission by commuting'
 'Register maintenance': 'Register maintenance'
-'Release notes': 'Release notes'
 'Rest Days': 'Dias de Descanso'
 'Rest days': 'Dias de descanso'
 'Rest days in last 7 days': 'Descanso nos últimos 7 dias'
@@ -400,6 +396,7 @@ Sat.: Sat.
 Search: Pesquisar
 'Search activity...': 'Pesquisar atividade...'
 'Search segment...': 'Pesquisar segmento...'
+"See what's new": "See what's new"
 Segments: Segmentos
 Sep: Set
 Shifting: Shifting
@@ -596,6 +593,7 @@ Walks: Passeios
 'Water Sports': 'Desportos Aquáticos'
 'Waxing the chain...': 'Waxing the chain...'
 'We detected following issues': 'Foram detectadas as seguintes situações'
+"We've been busy! Check out what's new and read about any breaking changes before you update.": "We've been busy! Check out what's new and read about any breaking changes before you update."
 Wed: Qua
 Wed.: Wed.
 Weekly: Weekly

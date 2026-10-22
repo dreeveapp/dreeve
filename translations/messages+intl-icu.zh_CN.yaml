@@ -7,7 +7,6 @@
 'A cluster tile is a visited tile whose four neighbours are visited too': 集群方块是指四个相邻方块也都已访问的已访问方块
 'A high intensity score means a larger share of your training is hard rather than easy.': 'A high intensity score means a larger share of your training is hard rather than easy.'
 'A high score means you concentrate more training into fewer, heavier days.': 'A high score means you concentrate more training into fewer, heavier days.'
-'A new version of Dreeve is available. Read the release notes before updating, they might contain breaking changes.': 'A new version of Dreeve is available. Read the release notes before updating, they might contain breaking changes.'
 'A:C Ratio': 'A:C 比值'
 'A:C optimal in': 'A:C optimal in'
 'AI integration settings': 'AI integration settings'
@@ -70,6 +69,7 @@ Challenges: 挑战
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': '长期训练负荷（体能）— 42天训练的负荷指数加权平均值。代表长期训练适应情况。'
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Clear chat'
+Close: Close
 'Cluster tiles': 集群方块
 Columns: Columns
 Commute: Commute
@@ -89,7 +89,6 @@ Cricket: Cricket
 Crossfit: 交叉健身
 'Crunching the numbers...': 'Crunching the numbers...'
 'Current Status': 'Current Status'
-'Current version': 'Current version'
 Cycling: 骑行
 'Daily TRIMP': 每日TRIMP
 'Daily activities': 每日活动
@@ -179,7 +178,6 @@ Goal: Goal
 Golf: 高尔夫
 'Good training variety': 良好的训练多样性
 'Google searches': Google搜索
-'Got it': 'Got it'
 Grad.: Grad.
 Gradient: Gradient
 'Gravel Ride': 'Gravel Ride'
@@ -239,7 +237,6 @@ Lap: 圈
 'Last used': 'Last used'
 'Last week': 'Last week'
 'Last {numberOfDays} days': '最近{numberOfDays}天'
-'Latest version': 'Latest version'
 Lifetime: Lifetime
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Light fatigue with good readiness. A great balance for quality training or longer efforts'
 Load: Load
@@ -376,7 +373,6 @@ Recent: Recent
 'Recovery forecast': 'Recovery forecast'
 'Reduced carbon emission by commuting': 通勤减少的碳排放
 'Register maintenance': 'Register maintenance'
-'Release notes': 'Release notes'
 'Rest Days': 休息日
 'Rest days': 休息日
 'Rest days in last 7 days': 最近7天的休息日
@@ -400,6 +396,7 @@ Sat.: Sat.
 Search: 搜索
 'Search activity...': 搜索活动...
 'Search segment...': 搜索路段...
+"See what's new": "See what's new"
 Segments: 路段
 Sep: 九月
 Shifting: Shifting
@@ -596,6 +593,7 @@ Walks: 散步
 'Water Sports': 水上运动
 'Waxing the chain...': 'Waxing the chain...'
 'We detected following issues': 检测到以下问题
+"We've been busy! Check out what's new and read about any breaking changes before you update.": "We've been busy! Check out what's new and read about any breaking changes before you update."
 Wed: 周三
 Wed.: Wed.
 Weekly: Weekly
