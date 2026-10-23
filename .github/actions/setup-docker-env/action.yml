@@ -1,0 +1,53 @@
+name: Setup CI environment in Docker
+description: Build the php-cli image and install Composer dependencies inside it
+
+runs:
+  using: composite
+  steps:
+    - name: Copy .env file
+      run: cp .env.test .env
+      shell: bash
+
+    - name: Set Compose project name
+      run: echo "COMPOSE_PROJECT_NAME=dreeve" >> "$GITHUB_ENV"
+      shell: bash
+
+    # https://github.com/marketplace/actions/docker-setup-buildx
+    - name: Setup Docker Buildx
+      uses: docker/setup-buildx-action@v4
+
+    # https://github.com/marketplace/actions/docker-buildx-bake
+    - name: Build php-cli image
+      uses: docker/bake-action@v7
+      with:
+        source: .
+        files: docker-compose.yml
+        targets: php-cli
+        load: true
+        set: |
+          php-cli.tags=dreeve-php-cli
+          php-cli.cache-from=type=gha,scope=php-cli
+          php-cli.cache-to=type=gha,mode=max,scope=php-cli
+
+    - name: Cache Composer dependencies
+      uses: actions/cache@v5
+      with:
+        path: var/composer-cache
+        key: ${{ runner.os }}-docker-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-docker-composer-
+
+    - name: Install dependencies
+      run: docker compose run --rm --no-build -e XDEBUG_MODE=off -e COMPOSER_CACHE_DIR=/var/www/var/composer-cache php-cli composer install --prefer-dist
+      shell: bash
+
+    - name: Cache countries geography asset
+      id: countries-asset
+      uses: actions/cache@v5
+      with:
+        path: resources/countries
+        key: ${{ runner.os }}-countries-asset-${{ hashFiles('src/Console/BuildCountriesGeographyAssetConsoleCommand.php') }}
+
+    - name: Build countries geography asset
+      if: steps.countries-asset.outputs.cache-hit != 'true'
+      run: docker compose run --rm --no-build -e XDEBUG_MODE=off php-cli bin/console app:geography:build-countries-asset
+      shell: bash
