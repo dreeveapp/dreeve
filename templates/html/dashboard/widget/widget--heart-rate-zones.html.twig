@@ -9,8 +9,8 @@
         </button>
     </div>
     {% if relativeHeartRateDistributionChart %}
-        <div class="grow min-h-72" data-echarts-options='{{ relativeHeartRateDistributionChart }}'></div>
+        <div class="grow h-72" data-echarts-options='{{ relativeHeartRateDistributionChart }}'></div>
     {% else %}
-        <div class="grow flex items-center justify-center min-h-72 text-gray-500">{{ "No data available"|trans }}</div>
+        <div class="grow flex items-center justify-center h-72 text-gray-500">{{ "No data available"|trans }}</div>
     {% endif %}
 {% endautoescape %}
