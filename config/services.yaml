@@ -83,7 +83,7 @@ services:
         arguments: ['%env(string:APP_URL)%']
 
     Symfony\AI\Agent\AgentInterface:
-        class: App\Domain\Integration\AI\ChatAgent
+        class: App\Domain\Integration\AI\Chat\ChatAgent
 
     App\Domain\Strava\StravaClientId:
         factory: [ null, 'fromString' ]

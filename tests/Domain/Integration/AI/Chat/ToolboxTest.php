@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\Integration\AI\Tool;
+namespace App\Tests\Domain\Integration\AI\Chat;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
@@ -18,7 +18,7 @@ use App\Domain\Challenge\ChallengeId;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
-use App\Domain\Integration\AI\Tool\Toolbox;
+use App\Domain\Integration\AI\Chat\Toolbox;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;

@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Integration\AI\Tool;
+namespace App\Domain\Integration\AI\Chat;
 
+use App\Domain\Integration\AI\Tool\AITool;
+use App\Domain\Integration\AI\Tool\ToolArguments;
+use App\Domain\Integration\AI\Tool\ToolFailed;
 use App\Infrastructure\Serialization\Json;
 use Symfony\AI\Agent\Toolbox\Exception\ToolNotFoundException;
 use Symfony\AI\Agent\Toolbox\ToolboxInterface;

@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Integration\AI;
+namespace App\Domain\Integration\AI\Chat;
 
-use App\Domain\Integration\AI\Tool\Toolbox;
 use App\Domain\Settings\SettingsRepository;
 use Symfony\AI\Agent\Agent;
 use Symfony\AI\Agent\AgentInterface;
