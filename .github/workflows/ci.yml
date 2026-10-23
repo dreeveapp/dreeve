@@ -11,41 +11,35 @@ jobs:
   ci:
     name: Run CI
     runs-on: ubuntu-24.04
+    env:
+      PHP: docker compose run --rm -e XDEBUG_MODE=coverage php-cli
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
       - name: Setup CI environment
-        uses: ./.github/actions/setup-env
+        uses: ./.github/actions/setup-docker-env
 
       - name: Validate composer.json
-        run: composer validate --strict
+        run: $PHP composer validate --strict
 
       - name: Validate PSR-4 compliance
-        run: composer dump-autoload --dev --optimize --strict-psr
+        run: $PHP composer dump-autoload --dev --optimize --strict-psr
 
       - name: Run PHPStan
-        run: vendor/bin/phpstan analyse
+        run: $PHP vendor/bin/phpstan analyse
 
       - name: Run Rector
-        run: vendor/bin/rector --dry-run
+        run: $PHP vendor/bin/rector --dry-run
 
       - name: Run PHPcs fixer dry-run
-        run: vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --config=.php-cs-fixer.dist.php
+        run: $PHP vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --config=.php-cs-fixer.dist.php
 
       - name: Run test suite
-        run: vendor/bin/paratest --order-by=random --fail-on-incomplete --log-junit junit.xml --coverage-clover=clover.xml
-
-      - name: Setup Caddy
-        run: |
-          curl -fsSL -o caddy.tar.gz https://github.com/caddyserver/caddy/releases/download/v2.10.2/caddy_2.10.2_linux_amd64.tar.gz
-          tar -xzf caddy.tar.gz caddy
-          sudo install -m 0755 caddy /usr/bin/caddy
-          rm caddy.tar.gz
-          caddy version
+        run: $PHP vendor/bin/paratest --order-by=random --fail-on-incomplete --log-junit junit.xml --coverage-clover=clover.xml
 
       - name: Run Caddy test suite
-        run: vendor/bin/paratest --testsuite caddy
+        run: $PHP vendor/bin/paratest --testsuite caddy
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7

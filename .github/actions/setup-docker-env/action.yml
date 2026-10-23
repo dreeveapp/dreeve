@@ -37,7 +37,7 @@ runs:
         restore-keys: ${{ runner.os }}-docker-composer-
 
     - name: Install dependencies
-      run: docker compose run --rm --no-build -e XDEBUG_MODE=off -e COMPOSER_CACHE_DIR=/var/www/var/composer-cache php-cli composer install --prefer-dist
+      run: docker compose run --rm -e XDEBUG_MODE=off -e COMPOSER_CACHE_DIR=/var/www/var/composer-cache php-cli composer install --prefer-dist
       shell: bash
 
     - name: Cache countries geography asset
@@ -49,5 +49,5 @@ runs:
 
     - name: Build countries geography asset
       if: steps.countries-asset.outputs.cache-hit != 'true'
-      run: docker compose run --rm --no-build -e XDEBUG_MODE=off php-cli bin/console app:geography:build-countries-asset
+      run: docker compose run --rm -e XDEBUG_MODE=off php-cli bin/console app:geography:build-countries-asset
       shell: bash
