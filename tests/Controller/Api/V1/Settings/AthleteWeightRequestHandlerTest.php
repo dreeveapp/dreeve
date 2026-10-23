@@ -6,7 +6,7 @@ namespace App\Tests\Controller\Api\V1\Settings;
 
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\Security\Api\ApiToken;
+use App\Infrastructure\Security\Token\ApiToken;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;

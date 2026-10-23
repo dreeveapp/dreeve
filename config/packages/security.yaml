@@ -8,7 +8,7 @@ security:
         admin_provider:
             id: App\Infrastructure\Security\Admin\AdminUserProvider
         token_provider:
-            id: App\Infrastructure\Security\TokenUserProvider
+            id: App\Infrastructure\Security\Token\TokenUserProvider
 
     firewalls:
         dev:
@@ -20,12 +20,12 @@ security:
             pattern: ^/(api/v1|mcp)(/|$)
             stateless: true
             provider: token_provider
-            entry_point: App\Infrastructure\Security\TokenAuthenticationEntryPoint
-            access_denied_handler: App\Infrastructure\Security\TokenAuthenticationEntryPoint
+            entry_point: App\Infrastructure\Security\Token\TokenAuthenticationEntryPoint
+            access_denied_handler: App\Infrastructure\Security\Token\TokenAuthenticationEntryPoint
             access_token:
                 realm: 'Dreeve'
-                token_handler: App\Infrastructure\Security\TokenHandler
-                failure_handler: App\Infrastructure\Security\TokenAuthenticationEntryPoint
+                token_handler: App\Infrastructure\Security\Token\TokenHandler
+                failure_handler: App\Infrastructure\Security\Token\TokenAuthenticationEntryPoint
 
         main:
             lazy: true

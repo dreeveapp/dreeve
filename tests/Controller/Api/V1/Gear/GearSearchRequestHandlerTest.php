@@ -9,7 +9,7 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearType;
 use App\Infrastructure\Measurement\Length\Kilometer;
-use App\Infrastructure\Security\Api\ApiToken;
+use App\Infrastructure\Security\Token\ApiToken;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;

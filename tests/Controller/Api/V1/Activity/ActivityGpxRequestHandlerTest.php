@@ -8,7 +8,7 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
-use App\Infrastructure\Security\Api\ApiToken;
+use App\Infrastructure\Security\Token\ApiToken;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;

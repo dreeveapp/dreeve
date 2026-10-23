@@ -6,7 +6,7 @@ namespace App\Tests\Controller\Api\V1;
 
 use App\Application\AppVersion;
 use App\Domain\Import\ImportMode;
-use App\Infrastructure\Security\Api\ApiToken;
+use App\Infrastructure\Security\Token\ApiToken;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 

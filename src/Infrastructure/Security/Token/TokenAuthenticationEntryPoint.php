@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Security;
+namespace App\Infrastructure\Security\Token;
 
 use App\Infrastructure\Http\Api\ApiErrorCode;
 use App\Infrastructure\Http\Api\ApiErrorResponse;

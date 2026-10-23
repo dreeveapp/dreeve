@@ -4,8 +4,8 @@ namespace App\Tests\Controller\Admin\Settings;
 
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\Security\Api\ApiToken;
-use App\Infrastructure\Security\Mcp\McpToken;
+use App\Infrastructure\Security\Token\ApiToken;
+use App\Infrastructure\Security\Token\McpToken;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class SecuritySettingsRequestHandlerTest extends AdminWebTestCase

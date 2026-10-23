@@ -5,7 +5,7 @@ namespace App\Tests\Controller\Api\V1\Activity;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
-use App\Infrastructure\Security\Api\ApiToken;
+use App\Infrastructure\Security\Token\ApiToken;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;

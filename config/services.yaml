@@ -103,11 +103,11 @@ services:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:STRAVA_REFRESH_TOKEN)%']
 
-    App\Infrastructure\Security\Api\ApiToken:
+    App\Infrastructure\Security\Token\ApiToken:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:DREEVE_API_KEY)%']
 
-    App\Infrastructure\Security\Mcp\McpToken:
+    App\Infrastructure\Security\Token\McpToken:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:DREEVE_MCP_KEY)%']
 

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Infrastructure\Security;
+namespace App\Tests\Infrastructure\Security\Token;
 
-use App\Infrastructure\Security\Api\ApiToken;
-use App\Infrastructure\Security\Mcp\McpToken;
-use App\Infrastructure\Security\TokenHandler;
-use App\Infrastructure\Security\TokenUser;
+use App\Infrastructure\Security\Token\ApiToken;
+use App\Infrastructure\Security\Token\McpToken;
+use App\Infrastructure\Security\Token\TokenHandler;
+use App\Infrastructure\Security\Token\TokenUser;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;

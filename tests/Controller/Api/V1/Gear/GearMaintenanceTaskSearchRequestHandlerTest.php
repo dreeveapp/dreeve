@@ -11,7 +11,7 @@ use App\Domain\Gear\Maintenance\Log\GearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Infrastructure\Measurement\Length\Kilometer;
-use App\Infrastructure\Security\Api\ApiToken;
+use App\Infrastructure\Security\Token\ApiToken;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;

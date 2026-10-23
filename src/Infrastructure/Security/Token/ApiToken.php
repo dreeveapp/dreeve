@@ -2,24 +2,22 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Security\Mcp;
+namespace App\Infrastructure\Security\Token;
 
-use App\Infrastructure\Security\Token;
-
-final readonly class McpToken extends Token
+final readonly class ApiToken extends Token
 {
     protected static function getPrefix(): string
     {
-        return 'drvm_';
+        return 'drv_';
     }
 
     public function getRole(): string
     {
-        return 'ROLE_MCP';
+        return 'ROLE_API';
     }
 
     public function getUserIdentifier(): string
     {
-        return 'dreeve-mcp';
+        return 'dreeve-api';
     }
 }

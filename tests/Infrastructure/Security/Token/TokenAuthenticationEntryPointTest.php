@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Infrastructure\Security;
+namespace App\Tests\Infrastructure\Security\Token;
 
-use App\Infrastructure\Security\TokenAuthenticationEntryPoint;
+use App\Infrastructure\Security\Token\TokenAuthenticationEntryPoint;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

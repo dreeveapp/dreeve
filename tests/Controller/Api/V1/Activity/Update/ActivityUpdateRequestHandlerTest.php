@@ -15,7 +15,7 @@ use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Import\ImportMode;
-use App\Infrastructure\Security\Api\ApiToken;
+use App\Infrastructure\Security\Token\ApiToken;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;

@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Security;
+namespace App\Infrastructure\Security\Token;
 
-use App\Infrastructure\Security\Api\ApiToken;
-use App\Infrastructure\Security\Mcp\McpToken;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;

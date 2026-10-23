@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Security;
+namespace App\Infrastructure\Security\Token;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 

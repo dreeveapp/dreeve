@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Api\V1\Activity;
 
 use App\Domain\Import\ImportMode;
-use App\Infrastructure\Security\Api\ApiToken;
+use App\Infrastructure\Security\Token\ApiToken;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use League\Flysystem\FilesystemOperator;
