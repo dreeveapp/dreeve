@@ -9320,16 +9320,16 @@
     "packages-dev": [
         {
             "name": "brianium/paratest",
-            "version": "v7.27.3",
+            "version": "v7.27.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paratestphp/paratest.git",
-                "reference": "428bbd887c2e811686c9bfd7e0eda8f09cff6964"
+                "reference": "6d73b615611a2da7af85637d99d1b0efac9fcd00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/428bbd887c2e811686c9bfd7e0eda8f09cff6964",
-                "reference": "428bbd887c2e811686c9bfd7e0eda8f09cff6964",
+                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/6d73b615611a2da7af85637d99d1b0efac9fcd00",
+                "reference": "6d73b615611a2da7af85637d99d1b0efac9fcd00",
                 "shasum": ""
             },
             "require": {
@@ -9397,7 +9397,7 @@
             ],
             "support": {
                 "issues": "https://github.com/paratestphp/paratest/issues",
-                "source": "https://github.com/paratestphp/paratest/tree/v7.27.3"
+                "source": "https://github.com/paratestphp/paratest/tree/v7.27.4"
             },
             "funding": [
                 {
@@ -9409,7 +9409,7 @@
                     "type": "paypal"
                 }
             ],
-            "time": "2026-10-21T05:29:09+00:00"
+            "time": "2026-10-22T06:15:12+00:00"
         },
         {
             "name": "clue/ndjson-react",
@@ -9553,16 +9553,16 @@
         },
         {
             "name": "composer/semver",
-            "version": "3.5.1",
+            "version": "3.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "528948210cc46f967a4b98e83b19e76f2b504993"
+                "reference": "9dfce66f1e97360ea5e6d3e38ab14277e4cc591e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/528948210cc46f967a4b98e83b19e76f2b504993",
-                "reference": "528948210cc46f967a4b98e83b19e76f2b504993",
+                "url": "https://api.github.com/repos/composer/semver/zipball/9dfce66f1e97360ea5e6d3e38ab14277e4cc591e",
+                "reference": "9dfce66f1e97360ea5e6d3e38ab14277e4cc591e",
                 "shasum": ""
             },
             "require": {
@@ -9614,7 +9614,7 @@
             "support": {
                 "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/semver/issues",
-                "source": "https://github.com/composer/semver/tree/3.5.1"
+                "source": "https://github.com/composer/semver/tree/3.5.2"
             },
             "funding": [
                 {
@@ -9626,7 +9626,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-05T13:12:12+00:00"
+            "time": "2026-10-22T15:37:26+00:00"
         },
         {
             "name": "composer/xdebug-handler",
