@@ -101,6 +101,8 @@ class IntegrationsSettingsTest extends TestCase
     #[DataProvider(methodName: 'provideGetAIPlatformConfig')]
     public function testGetAIPlatform(array $config, string $expectedModelClass, ?int $expectedMaxTokens = null): void
     {
+        $_SERVER['AI_API_KEY'] = 'sk-key';
+
         $settings = IntegrationsSettings::fromArray(['ai' => [
             'enabled' => true,
             ...$config,
