@@ -1,0 +1,17 @@
+{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "error": {
+        "code": -32602,
+        "message": "Invalid parameters for tool 'get_athlete_details': Additional object properties are not allowed: [\"unknown\"]",
+        "data": {
+            "validation_errors": [
+                {
+                    "pointer": "/",
+                    "keyword": "additionalProperties",
+                    "message": "Additional object properties are not allowed: [\"unknown\"]"
+                }
+            ]
+        }
+    }
+}

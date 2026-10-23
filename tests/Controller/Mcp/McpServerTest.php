@@ -128,6 +128,7 @@ class McpServerTest extends ControllerWebTestCase
         yield 'get_activity_by_id with a prefixed id' => ['get_activity_by_id', ['activityId' => 'activity-903645']];
         yield 'get_activity_by_id for an unknown activity' => ['get_activity_by_id', ['activityId' => 'activity-1']];
         yield 'search_activities with filters' => ['search_activities', ['sportType' => 'Ride', 'hasGpx' => false, 'page' => 1, 'size' => 10]];
+        yield 'get_athlete_details with an unknown argument' => ['get_athlete_details', ['unknown' => 'value']];
     }
 
     #[\Override]

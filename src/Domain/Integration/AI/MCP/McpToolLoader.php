@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Integration\AI\MCP;
 
 use App\Domain\Integration\AI\Tool\AITool;
+use App\Domain\Integration\AI\Tool\ToolInputSchema;
 use Mcp\Capability\Registry\Loader\ExplicitElementLoader;
 use Mcp\Capability\Registry\Loader\LoaderInterface;
 use Mcp\Capability\RegistryInterface;
@@ -27,24 +28,15 @@ final readonly class McpToolLoader implements LoaderInterface
     {
         $tools = [];
         foreach ($this->tools as $tool) {
-            $properties = [];
-            $required = [];
-            foreach ($tool->getParameters() as $parameter) {
-                $properties[$parameter->getName()] = $parameter->toJsonSchema();
-                if ($parameter->isRequired()) {
-                    $required[] = $parameter->getName();
-                }
-            }
+            $inputSchema = ToolInputSchema::fromParameters($tool->getParameters());
 
             $tools[] = [
                 'definition' => new Tool(
                     name: $tool->getName(),
                     title: null,
-                    inputSchema: [
-                        'type' => 'object',
-                        'properties' => [] === $properties ? new \stdClass() : $properties,
-                        'required' => $required,
-                    ],
+                    inputSchema: $inputSchema->hasParameters()
+                        ? $inputSchema->toJsonSchema()
+                        : [...$inputSchema->toJsonSchema(), 'properties' => new \stdClass()],
                     description: $tool->getDescription(),
                     annotations: new ToolAnnotations(readOnlyHint: true),
                 ),

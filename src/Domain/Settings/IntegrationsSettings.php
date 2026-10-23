@@ -67,7 +67,6 @@ final readonly class IntegrationsSettings
             aiConfig: $aiConfig,
             chatCommands: ChatCommands::fromArray($aiConfig['agent']['commands'] ?? []),
             configuredNotificationUrls: ConfiguredNotificationUrls::fromConfig($services),
-            // The stored key predates the removal of the build phase, renaming it would reset the user's setting.
             notifyOnSuccessfulImport: filter_var($notifications['notifyOnSuccessfulBuild'] ?? true, FILTER_VALIDATE_BOOLEAN),
         );
     }

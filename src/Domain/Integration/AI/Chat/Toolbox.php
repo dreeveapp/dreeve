@@ -7,6 +7,7 @@ namespace App\Domain\Integration\AI\Chat;
 use App\Domain\Integration\AI\Tool\AITool;
 use App\Domain\Integration\AI\Tool\ToolArguments;
 use App\Domain\Integration\AI\Tool\ToolFailed;
+use App\Domain\Integration\AI\Tool\ToolInputSchema;
 use App\Infrastructure\Serialization\Json;
 use Symfony\AI\Agent\Toolbox\Exception\ToolNotFoundException;
 use Symfony\AI\Agent\Toolbox\ToolboxInterface;
@@ -34,25 +35,13 @@ final readonly class Toolbox implements ToolboxInterface
     {
         $definitions = [];
         foreach ($this->tools as $tool) {
-            $properties = [];
-            $required = [];
-            foreach ($tool->getParameters() as $parameter) {
-                $properties[$parameter->getName()] = $parameter->toJsonSchema();
-                if ($parameter->isRequired()) {
-                    $required[] = $parameter->getName();
-                }
-            }
+            $inputSchema = ToolInputSchema::fromParameters($tool->getParameters());
 
             $definitions[] = new Tool(
                 reference: new ExecutionReference($tool::class),
                 name: $tool->getName(),
                 description: $tool->getDescription(),
-                parameters: [] === $properties ? null : [
-                    'type' => 'object',
-                    'properties' => $properties,
-                    'required' => $required,
-                    'additionalProperties' => false,
-                ],
+                parameters: $inputSchema->hasParameters() ? $inputSchema->toJsonSchema() : null,
             );
         }
 
