@@ -10,13 +10,6 @@ use App\Domain\Integration\Notification\Shoutrrr\ShoutrrrUrl;
 use App\Domain\Settings\IntegrationsSettings;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Symfony\AI\Platform\Bridge\Anthropic\Claude;
-use Symfony\AI\Platform\Bridge\DeepSeek\DeepSeek;
-use Symfony\AI\Platform\Bridge\Gemini\Gemini;
-use Symfony\AI\Platform\Bridge\Generic\CompletionsModel;
-use Symfony\AI\Platform\Bridge\Mistral\Mistral;
-use Symfony\AI\Platform\Bridge\OpenAi\Gpt;
-use Symfony\AI\Platform\Platform;
 
 class IntegrationsSettingsTest extends TestCase
 {
@@ -55,6 +48,8 @@ class IntegrationsSettingsTest extends TestCase
 
         $this->assertTrue($settings->isAIIntegrationEnabled());
         $this->assertTrue($settings->isAIIntegrationWithUIEnabled());
+        $this->assertSame('openAI', $settings->getAIProvider());
+        $this->assertSame(['key' => 'my-key', 'model' => 'cool-model'], $settings->getAIConfiguration());
     }
 
     public function testItEnablesTheAIIntegrationWithoutUI(): void
@@ -98,23 +93,6 @@ class IntegrationsSettingsTest extends TestCase
         ]);
     }
 
-    #[DataProvider(methodName: 'provideGetAIPlatformConfig')]
-    public function testGetAIPlatform(array $config, string $expectedModelClass, ?int $expectedMaxTokens = null): void
-    {
-        $_SERVER['AI_API_KEY'] = 'sk-key';
-
-        $settings = IntegrationsSettings::fromArray(['ai' => [
-            'enabled' => true,
-            ...$config,
-        ]]);
-
-        $model = $settings->getAIPlatform()->getModelCatalog()->getModel($settings->getAIModel());
-
-        $this->assertInstanceOf($expectedModelClass, $model);
-        $this->assertSame('model', $model->getName());
-        $this->assertSame($expectedMaxTokens, $model->getOptions()['max_tokens'] ?? null);
-    }
-
     public function testItGuardsAValidOllamaUrl(): void
     {
         $this->expectExceptionObject(new \InvalidArgumentException('Invalid url "dreeve-ollama:11434/api"'));
@@ -127,21 +105,6 @@ class IntegrationsSettingsTest extends TestCase
                 'model' => 'model',
             ],
         ]]);
-    }
-
-    public function testGetAIPlatformForOllama(): void
-    {
-        $settings = IntegrationsSettings::fromArray(['ai' => [
-            'enabled' => true,
-            'provider' => 'ollama',
-            'configuration' => [
-                'url' => 'http://dreeve-ollama:11434/api',
-                'model' => 'model',
-            ],
-        ]]);
-
-        $this->assertInstanceOf(Platform::class, $settings->getAIPlatform());
-        $this->assertSame('model', $settings->getAIModel());
     }
 
     public function testItBuildsChatCommands(): void
@@ -192,122 +155,6 @@ class IntegrationsSettingsTest extends TestCase
                 ],
             ],
         ]);
-    }
-
-    public static function provideGetAIPlatformConfig(): iterable
-    {
-        yield 'anthropic' => [
-            [
-                'provider' => 'anthropic',
-                'configuration' => [
-                    'key' => 'key',
-                    'model' => 'model',
-                ],
-            ],
-            Claude::class,
-            8192,
-        ];
-
-        yield 'azureOpenAI' => [
-            [
-                'provider' => 'azureOpenAI',
-                'configuration' => [
-                    'key' => 'key',
-                    'model' => 'model',
-                    'endpoint' => 'endpoint',
-                ],
-            ],
-            Gpt::class,
-        ];
-
-        yield 'deepseek' => [
-            [
-                'provider' => 'deepseek',
-                'configuration' => [
-                    'key' => 'key',
-                    'model' => 'model',
-                ],
-            ],
-            DeepSeek::class,
-        ];
-
-        yield 'gemini' => [
-            [
-                'provider' => 'gemini',
-                'configuration' => [
-                    'key' => 'key',
-                    'model' => 'model',
-                ],
-            ],
-            Gemini::class,
-        ];
-
-        yield 'grok' => [
-            [
-                'provider' => 'grok',
-                'configuration' => [
-                    'key' => 'key',
-                    'model' => 'model',
-                ],
-            ],
-            CompletionsModel::class,
-        ];
-
-        yield 'huggingFace' => [
-            [
-                'provider' => 'huggingFace',
-                'configuration' => [
-                    'key' => 'key',
-                    'model' => 'model',
-                ],
-            ],
-            CompletionsModel::class,
-        ];
-
-        yield 'openAI' => [
-            [
-                'provider' => 'openAI',
-                'configuration' => [
-                    'key' => 'key',
-                    'model' => 'model',
-                ],
-            ],
-            Gpt::class,
-        ];
-
-        yield 'openAILike' => [
-            [
-                'provider' => 'openAILike',
-                'configuration' => [
-                    'baseUri' => 'baseUri',
-                    'key' => 'key',
-                    'model' => 'model',
-                ],
-            ],
-            CompletionsModel::class,
-        ];
-
-        yield 'openAIResponses' => [
-            [
-                'provider' => 'openAIResponses',
-                'configuration' => [
-                    'key' => 'key',
-                    'model' => 'model',
-                ],
-            ],
-            Gpt::class,
-        ];
-
-        yield 'mistral' => [
-            [
-                'provider' => 'mistral',
-                'configuration' => [
-                    'key' => 'key',
-                    'model' => 'model',
-                ],
-            ],
-            Mistral::class,
-        ];
     }
 
     public static function provideInvalidAIConfig(): iterable
