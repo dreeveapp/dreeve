@@ -40,6 +40,9 @@
                             {% if countries|length > 0 %}
                                 {% include 'html/data-table/filter/country.html.twig' with {countries: countries, label: "Country"|trans} only %}
                             {% endif %}
+                            {% if zwiftWorlds|length > 0 %}
+                                {% include 'html/data-table/filter/zwift-world.html.twig' with {zwiftWorlds: zwiftWorlds} only %}
+                            {% endif %}
                             {% if gears|length > 0 %}
                                 <div class="filter-dropdown">
                                     {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownGearsButton', dropdownId: 'dropdownGears', label: "Gear"|trans} only %}

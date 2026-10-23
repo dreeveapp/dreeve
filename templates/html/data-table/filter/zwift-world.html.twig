@@ -1,0 +1,21 @@
+{% autoescape false %}
+<div class="filter-dropdown">
+    {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownZwiftWorldsButton', dropdownId: 'dropdownZwiftWorlds', label: "Zwift world"|trans} only %}
+    <div id="dropdownZwiftWorlds" class="divide-y divide-gray-100">
+        <ul aria-labelledby="dropdownZwiftWorldsButton">
+            {% for zwiftWorld in zwiftWorlds %}
+                <li>
+                    <div>
+                        <input type="radio" id="zwiftWorld-{{ zwiftWorld.getId() }}" data-dataTable-filter="zwiftWorld" name="zwiftWorld" value="{{ zwiftWorld.getId() }}" class="peer" />
+                        <label for="zwiftWorld-{{ zwiftWorld.getId() }}" class="flex gap-x-1 items-center">
+                            <img src="{{ relativeUrl('assets/images/maps/thumbs/zwift-' ~ zwiftWorld.getId() ~ '.webp') }}" class="size-5 object-cover rounded-xs" alt="{{ zwiftWorld.getLabel() }}">
+                            <span>{{ zwiftWorld.getLabel() }}</span>
+                        </label>
+                        <a href="#" data-datatable-filter-clear="zwiftWorld">{{ "clear"|trans }}</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endautoescape %}

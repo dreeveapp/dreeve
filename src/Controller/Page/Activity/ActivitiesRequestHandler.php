@@ -11,6 +11,7 @@ use App\Domain\Activity\FindActivityTotals\FindActivityTotals;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
+use App\Domain\Zwift\ZwiftWorlds;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
@@ -31,6 +32,7 @@ final readonly class ActivitiesRequestHandler
         private RecordingDeviceRepository $recordingDeviceRepository,
         private GearRepository $gearRepository,
         private Countries $countries,
+        private ZwiftWorlds $zwiftWorlds,
         private Environment $twig,
         private PageRenderer $pageRenderer,
     ) {
@@ -60,6 +62,7 @@ final readonly class ActivitiesRequestHandler
             'devices' => $this->recordingDeviceRepository->findAll(),
             'activityTotals' => $this->queryBus->ask(new FindActivityTotals()),
             'countries' => $this->countries->getUsedInActivities(),
+            'zwiftWorlds' => $this->zwiftWorlds->getUsedInActivities(),
             'gears' => $this->gearRepository->findAllUsed(),
         ]);
     }

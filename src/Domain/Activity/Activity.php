@@ -950,6 +950,7 @@ final class Activity
             'sportType' => $this->getSportType()->value,
             'start-date' => $this->getStartDate()->getTimestamp() * 1000, // JS timestamp is in milliseconds,
             'countryCode' => $this->getRouteGeography()->getPassedThroughCountries(),
+            'zwiftWorld' => $this->isZwiftRide() ? $this->getRouteGeography()->getStartingPointState() : null,
             'isCommute' => $this->isCommute() ? 'true' : 'false',
             'isGroupActivity' => $this->isGroupActivity() ? 'true' : 'false',
             'gear' => $this->getGearIdIncludingNone(),

@@ -163,6 +163,7 @@
         "filterables": {
             "sportType": "VirtualRide",
             "start-date": 1693499735000,
+            "zwiftWorld": "watopia",
             "isCommute": "false",
             "isGroupActivity": "false",
             "gear": "gear-b12659861",
