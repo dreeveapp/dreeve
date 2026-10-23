@@ -10,6 +10,7 @@
 <a href="https://hub.docker.com/r/robiningelbrecht/dreeve"><img src="https://img.shields.io/docker/v/robiningelbrecht/dreeve?sort=semver&logo=docker&logoColor=white" alt="Docker version"></a>
 <a href="https://codecov.io/gh/dreeveapp/dreeve" ><img src="https://codecov.io/gh/dreeveapp/dreeve/branch/master/graph/badge.svg?token=R9hqxRcmi9" alt="codecov.io"/></a>
 <a href="https://discord.gg/p4zpZyCHNc"><img src="https://img.shields.io/badge/Dreeve-%235865F4?logo=discord&logoColor=%23ffffff&label=%20&labelColor=585858" alt="Discord server"></a>  
+<a href="https://app.railyard.run/deploy?repo=https://github.com/dreeveapp/dreeve"><img src="https://app.railyard.run/deploy/badge" alt="Deploy to Railyard"></a>
 </p>
 
 ---
