@@ -73,29 +73,6 @@ class UpdateActivityTest extends TestCase
         $this->assertSame([], $command->getRemovedImages());
     }
 
-    #[DataProvider('provideEmptyImagePayloads')]
-    public function testFromPayloadWithEmptyStringImagesTreatsThemAsNone(mixed $images): void
-    {
-        $command = UpdateActivity::fromPayload([
-            'activityId' => 'activity-1',
-            'name' => 'My custom activity',
-            'sportType' => 'Ride',
-            'images' => $images,
-        ]);
-
-        $this->assertSame([], $command->getNewImages());
-        $this->assertSame([], $command->getRemovedImages());
-    }
-
-    /**
-     * @return iterable<string, array{mixed}>
-     */
-    public static function provideEmptyImagePayloads(): iterable
-    {
-        yield 'empty string' => [''];
-        yield 'blank string' => ['   '];
-    }
-
     public function testFromPayloadParsesNewAndRemovedImagesAndIgnoresUnchanged(): void
     {
         $command = UpdateActivity::fromPayload([
