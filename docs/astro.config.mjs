@@ -11,6 +11,13 @@ import remarkGemoji from 'remark-gemoji';
 
 export default defineConfig({
 	site: 'https://docs.dreeve.app',
+	redirects: {
+		'/integrations/garmin-connect': '/connectors/garmin-connect/',
+		'/integrations/polar-flow': '/connectors/polar-flow/',
+		'/integrations/wahoo-connector': '/connectors/wahoo-connector/',
+		'/integrations/hammerhead-connector': '/connectors/hammerhead-connector/',
+		'/integrations/zepp-connector': '/connectors/zepp-connector/',
+	},
 	markdown: {
 		remarkPlugins: [remarkGemoji],
 	},
@@ -47,8 +54,13 @@ export default defineConfig({
 							paths: ['importing/**'],
 						},
 						{
+							label: 'Connectors',
+							description: 'automatically downloading activity files from Garmin, Polar, Wahoo, Hammerhead and Zepp into the watch folder',
+							paths: ['connectors/**'],
+						},
+						{
 							label: 'Integrations',
-							description: 'connecting Dreeve to AI providers, devices and notification services',
+							description: 'connecting Dreeve to AI providers, AI clients and notification services',
 							paths: ['integrations/**'],
 						},
 						{
@@ -106,15 +118,20 @@ export default defineConfig({
 									],
 								},
 								{
+									label: 'Connectors',
+									items: [
+										{ slug: 'connectors/garmin-connect', label: 'Garmin Connect' },
+										{ slug: 'connectors/polar-flow', label: 'Polar Flow' },
+										{ slug: 'connectors/wahoo-connector', label: 'Wahoo Connector' },
+										{ slug: 'connectors/hammerhead-connector', label: 'Hammerhead Connector' },
+										{ slug: 'connectors/zepp-connector', label: 'Zepp Connector' },
+									],
+								},
+								{
 									label: 'Integrations',
 									items: [
 										{ slug: 'integrations/ai', label: 'AI assistant' },
 										{ slug: 'integrations/mcp', label: 'MCP server' },
-										{ slug: 'integrations/garmin-connect', label: 'Garmin Connect' },
-										{ slug: 'integrations/polar-flow', label: 'Polar Flow' },
-										{ slug: 'integrations/wahoo-connector', label: 'Wahoo Connector' },
-										{ slug: 'integrations/hammerhead-connector', label: 'Hammerhead Connector' },
-										{ slug: 'integrations/zepp-connector', label: 'Zepp Connector' },
 										{ slug: 'integrations/notifications', label: 'Notifications' },
 									],
 								},

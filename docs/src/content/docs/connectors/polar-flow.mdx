@@ -19,7 +19,7 @@ already mount.
 :::note[Important]
 Polar's API only hands out exercises uploaded in the **last 30 days**, and only those
 uploaded *after* you connect. Older history cannot be fetched at all. Read
-[Only the last 30 days](/integrations/polar-flow/#only-the-last-30-days)
+[Only the last 30 days](/connectors/polar-flow/#only-the-last-30-days)
 before you rely on it.
 :::
 
@@ -36,7 +36,7 @@ http://<this-host>:8080/callback
 ```
 
 If Polar later refuses that URL, see
-[When Polar refuses the redirect](/integrations/polar-flow/#when-polar-refuses-the-redirect).
+[When Polar refuses the redirect](/connectors/polar-flow/#when-polar-refuses-the-redirect).
 
 ### 2. Add the container
 
@@ -161,7 +161,7 @@ Fetch the status by running:
 | `POLAR_CLIENT_ID` | -                | **Required.** From [admin.polaraccesslink.com](https://admin.polaraccesslink.com). Also accepts `POLAR_CLIENT_ID_FILE` for Docker secrets. |
 | `POLAR_CLIENT_SECRET` | -                | **Required.** Also accepts `POLAR_CLIENT_SECRET_FILE`. |
 | `PUBLIC_URL` | -                | Where this connector is reachable in a browser. The redirect URI becomes `<PUBLIC_URL>/callback`. Leave empty when your client has exactly one registered URL — Polar then picks it. |
-| `REDIRECT_URI` | -                | Sent verbatim, overriding the `PUBLIC_URL` default. See [When Polar refuses the redirect](/integrations/polar-flow/#when-polar-refuses-the-redirect). |
+| `REDIRECT_URI` | -                | Sent verbatim, overriding the `PUBLIC_URL` default. See [When Polar refuses the redirect](/connectors/polar-flow/#when-polar-refuses-the-redirect). |
 | `WATCH_DIR` | `/watch`         | Dreeve's watch folder. |
 | `STATE_DIR` | `/state`         | Where the ledger is stored. Mount it as a volume. |
 | `POLAR_TOKENS` | `/tokens`        | Where the access token and webhook signing key are stored. Mount it as a volume. |
@@ -175,7 +175,7 @@ Fetch the status by running:
 | `MAX_DOWNLOADS_PER_CYCLE` | `25`             | The per-cycle cap. See above. |
 | `DOWNLOAD_DELAY_SECONDS` | `1`              | Pause between downloads. |
 | `MAX_BACKOFF_SECONDS` | `21600`          | Cap on the backoff after a rate limit (6 hours). |
-| `WEBHOOK_URL` | -                | A publicly reachable HTTPS URL ending in `/webhook`. See [Instant delivery via webhook](/integrations/polar-flow/#instant-delivery-via-webhook). |
+| `WEBHOOK_URL` | -                | A publicly reachable HTTPS URL ending in `/webhook`. See [Instant delivery via webhook](/connectors/polar-flow/#instant-delivery-via-webhook). |
 | `HTTP_ADDR` | `0.0.0.0:8080`   | Serves `/healthz`, `/status`, `/authorize`, `/callback` and `/webhook`. `off` disables the server, moving authorization to the `login` command and the healthcheck to a heartbeat file in `STATE_DIR`. |
 | `MAX_CYCLES` | `0`              | `0` runs forever; anything else runs that many cycles and exits. |
 | `DRY_RUN` | `false`          | List what would be downloaded, download nothing, leave the ledger untouched. |
