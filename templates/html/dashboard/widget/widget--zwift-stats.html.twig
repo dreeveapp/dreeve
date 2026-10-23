@@ -33,7 +33,7 @@
                         class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
                         <div class="flex items-center gap-x-2">
                             <img class="shrink-0 size-10 object-cover lazy rounded-sm" src="{{ placeholderImage() }}" data-src="{{ relativeUrl('assets/images/maps/thumbs/zwift-' ~ statistic.zwiftWorld.getId() ~ '.webp') }}" alt="{{ statistic.zwiftWorld.getLabel() }}">
-                            <div>{{ statistic.zwiftWorld.getLabel() }}</div>
+                            <a href="{{ filteredUrl(path('activities'), {zwiftWorld: statistic.zwiftWorld.getId()}) }}" class="text-blue-600 hover:underline">{{ statistic.zwiftWorld.getLabel() }}</a>
                         </div>
                     </th>
                     <td class="narrow">
