@@ -8,20 +8,15 @@ use App\Domain\Integration\AI\Chat\InvalidChatCommandsConfig;
 use App\Domain\Integration\AI\InvalidAIConfiguration;
 use App\Domain\Integration\Notification\Shoutrrr\ShoutrrrUrl;
 use App\Domain\Settings\IntegrationsSettings;
-use NeuronAI\Providers\AIProviderInterface;
-use NeuronAI\Providers\Anthropic\Anthropic;
-use NeuronAI\Providers\Deepseek\Deepseek;
-use NeuronAI\Providers\Gemini\Gemini;
-use NeuronAI\Providers\HuggingFace\HuggingFace;
-use NeuronAI\Providers\Mistral\Mistral;
-use NeuronAI\Providers\Ollama\Ollama;
-use NeuronAI\Providers\OpenAI\AzureOpenAI;
-use NeuronAI\Providers\OpenAI\OpenAI;
-use NeuronAI\Providers\OpenAI\Responses\OpenAIResponses;
-use NeuronAI\Providers\OpenAILike;
-use NeuronAI\Providers\XAI\Grok;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\AI\Platform\Bridge\Anthropic\Claude;
+use Symfony\AI\Platform\Bridge\DeepSeek\DeepSeek;
+use Symfony\AI\Platform\Bridge\Gemini\Gemini;
+use Symfony\AI\Platform\Bridge\Generic\CompletionsModel;
+use Symfony\AI\Platform\Bridge\Mistral\Mistral;
+use Symfony\AI\Platform\Bridge\OpenAi\Gpt;
+use Symfony\AI\Platform\Platform;
 
 class IntegrationsSettingsTest extends TestCase
 {
@@ -103,17 +98,19 @@ class IntegrationsSettingsTest extends TestCase
         ]);
     }
 
-    #[DataProvider(methodName: 'provideGetAIProviderConfig')]
-    public function testGetAIProvider(array $config, AIProviderInterface $expectedProvider): void
+    #[DataProvider(methodName: 'provideGetAIPlatformConfig')]
+    public function testGetAIPlatform(array $config, string $expectedModelClass, ?int $expectedMaxTokens = null): void
     {
         $settings = IntegrationsSettings::fromArray(['ai' => [
             'enabled' => true,
             ...$config,
         ]]);
-        $this->assertEquals(
-            $expectedProvider::class,
-            $settings->getAIProvider()::class
-        );
+
+        $model = $settings->getAIPlatform()->getModelCatalog()->getModel($settings->getAIModel());
+
+        $this->assertInstanceOf($expectedModelClass, $model);
+        $this->assertSame('model', $model->getName());
+        $this->assertSame($expectedMaxTokens, $model->getOptions()['max_tokens'] ?? null);
     }
 
     public function testItGuardsAValidOllamaUrl(): void
@@ -130,7 +127,7 @@ class IntegrationsSettingsTest extends TestCase
         ]]);
     }
 
-    public function testGetAIProviderUsesTheConfiguredOllamaUrl(): void
+    public function testGetAIPlatformForOllama(): void
     {
         $settings = IntegrationsSettings::fromArray(['ai' => [
             'enabled' => true,
@@ -141,10 +138,8 @@ class IntegrationsSettingsTest extends TestCase
             ],
         ]]);
 
-        $this->assertEquals(
-            new Ollama('http://dreeve-ollama:11434/api', 'model'),
-            $settings->getAIProvider()
-        );
+        $this->assertInstanceOf(Platform::class, $settings->getAIPlatform());
+        $this->assertSame('model', $settings->getAIModel());
     }
 
     public function testItBuildsChatCommands(): void
@@ -197,7 +192,7 @@ class IntegrationsSettingsTest extends TestCase
         ]);
     }
 
-    public static function provideGetAIProviderConfig(): iterable
+    public static function provideGetAIPlatformConfig(): iterable
     {
         yield 'anthropic' => [
             [
@@ -207,7 +202,8 @@ class IntegrationsSettingsTest extends TestCase
                     'model' => 'model',
                 ],
             ],
-            new Anthropic('key', 'model'),
+            Claude::class,
+            8192,
         ];
 
         yield 'azureOpenAI' => [
@@ -219,7 +215,7 @@ class IntegrationsSettingsTest extends TestCase
                     'endpoint' => 'endpoint',
                 ],
             ],
-            new AzureOpenAI('key', 'endpoint', 'model'),
+            Gpt::class,
         ];
 
         yield 'deepseek' => [
@@ -230,7 +226,7 @@ class IntegrationsSettingsTest extends TestCase
                     'model' => 'model',
                 ],
             ],
-            new Deepseek('key', 'model'),
+            DeepSeek::class,
         ];
 
         yield 'gemini' => [
@@ -241,7 +237,7 @@ class IntegrationsSettingsTest extends TestCase
                     'model' => 'model',
                 ],
             ],
-            new Gemini('key', 'model'),
+            Gemini::class,
         ];
 
         yield 'grok' => [
@@ -252,7 +248,7 @@ class IntegrationsSettingsTest extends TestCase
                     'model' => 'model',
                 ],
             ],
-            new Grok('key', 'model'),
+            CompletionsModel::class,
         ];
 
         yield 'huggingFace' => [
@@ -263,18 +259,7 @@ class IntegrationsSettingsTest extends TestCase
                     'model' => 'model',
                 ],
             ],
-            new HuggingFace('key', 'model'),
-        ];
-
-        yield 'ollama' => [
-            [
-                'provider' => 'ollama',
-                'configuration' => [
-                    'url' => 'http://dreeve-ollama:11434/api',
-                    'model' => 'model',
-                ],
-            ],
-            new Ollama('http://dreeve-ollama:11434/api', 'model'),
+            CompletionsModel::class,
         ];
 
         yield 'openAI' => [
@@ -285,7 +270,7 @@ class IntegrationsSettingsTest extends TestCase
                     'model' => 'model',
                 ],
             ],
-            new OpenAI('key', 'model'),
+            Gpt::class,
         ];
 
         yield 'openAILike' => [
@@ -297,7 +282,7 @@ class IntegrationsSettingsTest extends TestCase
                     'model' => 'model',
                 ],
             ],
-            new OpenAILike('baseUri', 'key', 'model'),
+            CompletionsModel::class,
         ];
 
         yield 'openAIResponses' => [
@@ -308,7 +293,7 @@ class IntegrationsSettingsTest extends TestCase
                     'model' => 'model',
                 ],
             ],
-            new OpenAIResponses('key', 'model'),
+            Gpt::class,
         ];
 
         yield 'mistral' => [
@@ -319,7 +304,7 @@ class IntegrationsSettingsTest extends TestCase
                     'model' => 'model',
                 ],
             ],
-            new Mistral('key', 'model'),
+            Mistral::class,
         ];
     }
 

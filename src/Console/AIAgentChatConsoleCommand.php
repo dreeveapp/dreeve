@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Console;
 
+use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Doctrine\Migrations\RequiresUpToDateDatabaseSchema;
-use GuzzleHttp\Exception\ClientException;
-use NeuronAI\Agent\AgentInterface;
-use NeuronAI\Chat\Messages\Stream\Chunks\TextChunk;
-use NeuronAI\Chat\Messages\UserMessage;
+use Symfony\AI\Agent\AgentInterface;
+use Symfony\AI\Platform\Message\Message;
+use Symfony\AI\Platform\Message\MessageBag;
+use Symfony\AI\Platform\Message\Role;
+use Symfony\AI\Platform\Result\Stream\Delta\TextDelta;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -28,6 +31,7 @@ final class AIAgentChatConsoleCommand extends Command
     public function __construct(
         private readonly AgentInterface $agent,
         private readonly SettingsRepository $settingsRepository,
+        private readonly CommandBus $commandBus,
     ) {
         parent::__construct();
     }
@@ -54,6 +58,7 @@ final class AIAgentChatConsoleCommand extends Command
             padding: true
         );
 
+        $conversation = new MessageBag();
         while (true) {
             $question = new Question('<info><You></info> ');
             $userInput = $helper->ask($input, $output, $question);
@@ -67,34 +72,42 @@ final class AIAgentChatConsoleCommand extends Command
                 break;
             }
 
+            $conversation->add(Message::ofUser($userInput));
+            $this->commandBus->dispatch(new AddChatMessage(
+                message: $userInput,
+                messageRole: Role::User,
+            ));
+
             try {
-                $first = true;
-                foreach ($this->agent->stream(new UserMessage($userInput)) as $chunk) {
-                    if (!$chunk instanceof TextChunk) {
+                $answer = '';
+                $execution = $this->agent->call($conversation, ['stream' => true]);
+                foreach ($execution->asStream() as $delta) {
+                    if (!$delta instanceof TextDelta) {
                         continue;
                     }
-                    if ($first) {
+                    if ('' === $answer) {
                         $output->write('<comment><Mark></comment> ');
-                        $first = false;
                     }
-                    $output->write($chunk->content);
+                    $answer .= $delta->getText();
+                    $output->write($delta->getText());
                 }
                 $output->writeln('');
             } catch (\Exception $e) {
-                $message = $e->getMessage();
-                if ($e instanceof ClientException) {
-                    $message = $e->getResponse()->getBody()->getContents();
-                }
-
                 $output->writeln('');
                 $output->writeln('<comment><Mark></comment> Oh no, I made a booboo...');
                 $output->writeln(sprintf(
                     '<error>%s</error>',
-                    $message
+                    $e->getMessage()
                 ));
 
                 break;
             }
+
+            $conversation->add(Message::ofAssistant($answer));
+            $this->commandBus->dispatch(new AddChatMessage(
+                message: $answer,
+                messageRole: Role::Assistant,
+            ));
         }
 
         return Command::SUCCESS;

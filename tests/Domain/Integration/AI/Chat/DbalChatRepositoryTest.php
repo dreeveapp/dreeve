@@ -9,8 +9,8 @@ use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
-use NeuronAI\Chat\Enums\MessageRole;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\AI\Platform\Message\Role;
 
 class DbalChatRepositoryTest extends ContainerTestCase
 {
@@ -23,7 +23,7 @@ class DbalChatRepositoryTest extends ContainerTestCase
             ChatMessageBuilder::fromDefaults()
                 ->withMessageId(ChatMessageId::fromUnprefixed('test'))
                 ->withMessage('User Message')
-                ->withMessageRole(MessageRole::USER)
+                ->withMessageRole(Role::User)
                 ->withFirstLetterOfFirstName('R')
                 ->build()
         );
@@ -32,7 +32,7 @@ class DbalChatRepositoryTest extends ContainerTestCase
             ChatMessageBuilder::fromDefaults()
                 ->withMessageId(ChatMessageId::fromUnprefixed('test-2'))
                 ->withMessage('Assistant Message')
-                ->withMessageRole(MessageRole::ASSISTANT)
+                ->withMessageRole(Role::Assistant)
                 ->withFirstLetterOfFirstName('R')
                 ->build()
         );
@@ -42,13 +42,13 @@ class DbalChatRepositoryTest extends ContainerTestCase
                 ChatMessageBuilder::fromDefaults()
                     ->withMessageId(ChatMessageId::fromUnprefixed('test'))
                     ->withMessage('User Message')
-                    ->withMessageRole(MessageRole::USER)
+                    ->withMessageRole(Role::User)
                     ->withFirstLetterOfFirstName('R')
                     ->build(),
                 ChatMessageBuilder::fromDefaults()
                     ->withMessageId(ChatMessageId::fromUnprefixed('test-2'))
                     ->withMessage('Assistant Message')
-                    ->withMessageRole(MessageRole::ASSISTANT)
+                    ->withMessageRole(Role::Assistant)
                     ->withFirstLetterOfFirstName('R')
                     ->build(),
             ],
@@ -61,13 +61,13 @@ class DbalChatRepositoryTest extends ContainerTestCase
 
     public function testCreate(): void
     {
-        $message = $this->chatRepository->buildMessage('The message', MessageRole::USER);
+        $message = $this->chatRepository->buildMessage('The message', Role::User);
         $this->assertEquals(
             'The message',
             $message->getMessage(),
         );
         $this->assertEquals(
-            MessageRole::USER,
+            Role::User,
             $message->getMessageRole(),
         );
     }

@@ -9,21 +9,33 @@ use App\Domain\Integration\AI\Chat\ChatCommands;
 use App\Domain\Integration\AI\InvalidAIConfiguration;
 use App\Domain\Integration\Notification\Shoutrrr\ConfiguredNotificationUrls;
 use App\Infrastructure\ValueObject\String\Url;
-use NeuronAI\Providers\AIProviderInterface;
-use NeuronAI\Providers\Anthropic\Anthropic;
-use NeuronAI\Providers\Deepseek\Deepseek;
-use NeuronAI\Providers\Gemini\Gemini;
-use NeuronAI\Providers\HuggingFace\HuggingFace;
-use NeuronAI\Providers\Mistral\Mistral;
-use NeuronAI\Providers\Ollama\Ollama;
-use NeuronAI\Providers\OpenAI\AzureOpenAI;
-use NeuronAI\Providers\OpenAI\OpenAI;
-use NeuronAI\Providers\OpenAI\Responses\OpenAIResponses;
-use NeuronAI\Providers\OpenAILike;
-use NeuronAI\Providers\XAI\Grok;
+use Symfony\AI\Platform\Bridge\Anthropic\Claude;
+use Symfony\AI\Platform\Bridge\Anthropic\Factory as AnthropicFactory;
+use Symfony\AI\Platform\Bridge\Anthropic\ModelCatalog as AnthropicModelCatalog;
+use Symfony\AI\Platform\Bridge\Azure\OpenAi\Factory as AzureOpenAiFactory;
+use Symfony\AI\Platform\Bridge\Azure\OpenAi\ModelCatalog as AzureOpenAiModelCatalog;
+use Symfony\AI\Platform\Bridge\DeepSeek\DeepSeek;
+use Symfony\AI\Platform\Bridge\DeepSeek\Factory as DeepSeekFactory;
+use Symfony\AI\Platform\Bridge\DeepSeek\ModelCatalog as DeepSeekModelCatalog;
+use Symfony\AI\Platform\Bridge\Gemini\Factory as GeminiFactory;
+use Symfony\AI\Platform\Bridge\Gemini\Gemini;
+use Symfony\AI\Platform\Bridge\Gemini\ModelCatalog as GeminiModelCatalog;
+use Symfony\AI\Platform\Bridge\Generic\Factory as GenericFactory;
+use Symfony\AI\Platform\Bridge\Mistral\Factory as MistralFactory;
+use Symfony\AI\Platform\Bridge\Mistral\Mistral;
+use Symfony\AI\Platform\Bridge\Mistral\ModelCatalog as MistralModelCatalog;
+use Symfony\AI\Platform\Bridge\Ollama\Factory as OllamaFactory;
+use Symfony\AI\Platform\Bridge\OpenAi\Factory as OpenAiFactory;
+use Symfony\AI\Platform\Bridge\OpenAi\Gpt;
+use Symfony\AI\Platform\Bridge\OpenAi\ModelCatalog as OpenAiModelCatalog;
+use Symfony\AI\Platform\Capability;
+use Symfony\AI\Platform\PlatformInterface;
 
 final readonly class IntegrationsSettings
 {
+    private const string AZURE_OPEN_AI_API_VERSION = '2024-10-21';
+    private const int ANTHROPIC_MAX_TOKENS = 8192;
+
     private function __construct(
         private bool $aiIntegrationEnabled,
         private bool $aiIntegrationWithUIEnabled,
@@ -115,59 +127,80 @@ final readonly class IntegrationsSettings
         return $this->notifyOnSuccessfulImport;
     }
 
-    public function getAIProvider(): AIProviderInterface
+    /**
+     * @return non-empty-string
+     */
+    public function getAIModel(): string
     {
-        $providerName = $this->aiConfig['provider'];
-        $apiKey = AIApiKey::fromServerVar();
+        $model = $this->aiConfig['configuration']['model'];
 
-        return match ($providerName) {
-            'anthropic' => new Anthropic(
-                key: (string) $apiKey,
-                model: $this->aiConfig['configuration']['model'],
+        return match ($this->aiConfig['provider']) {
+            'anthropic' => sprintf('%s?max_tokens=%d', $model, self::ANTHROPIC_MAX_TOKENS),
+            default => $model,
+        };
+    }
+
+    public function getAIPlatform(): PlatformInterface
+    {
+        $configuration = $this->aiConfig['configuration'];
+        $apiKey = (string) AIApiKey::fromServerVar();
+        $model = $configuration['model'];
+        $capabilities = [
+            Capability::INPUT_MESSAGES,
+            Capability::OUTPUT_TEXT,
+            Capability::OUTPUT_STREAMING,
+            Capability::TOOL_CALLING,
+        ];
+
+        return match ($this->aiConfig['provider']) {
+            'anthropic' => AnthropicFactory::createPlatform(
+                apiKey: $apiKey,
+                modelCatalog: new AnthropicModelCatalog([$model => ['class' => Claude::class, 'capabilities' => $capabilities]]),
             ),
-            'azureOpenAI' => new AzureOpenAI(
-                key: (string) $apiKey,
-                endpoint: $this->aiConfig['configuration']['endpoint'],
-                model: $this->aiConfig['configuration']['model'],
+            'azureOpenAI' => AzureOpenAiFactory::createPlatform(
+                baseUrl: $configuration['endpoint'],
+                deployment: $model,
+                apiVersion: self::AZURE_OPEN_AI_API_VERSION,
+                apiKey: $apiKey,
+                modelCatalog: new AzureOpenAiModelCatalog([$model => ['class' => Gpt::class, 'capabilities' => $capabilities]]),
             ),
-            'deepseek' => new Deepseek(
-                key: (string) $apiKey,
-                model: $this->aiConfig['configuration']['model'],
+            'deepseek' => DeepSeekFactory::createPlatform(
+                apiKey: $apiKey,
+                modelCatalog: new DeepSeekModelCatalog([$model => ['class' => DeepSeek::class, 'capabilities' => $capabilities]]),
             ),
-            'gemini' => new Gemini(
-                key: (string) $apiKey,
-                model: $this->aiConfig['configuration']['model'],
+            'gemini' => GeminiFactory::createPlatform(
+                apiKey: $apiKey,
+                modelCatalog: new GeminiModelCatalog([$model => ['class' => Gemini::class, 'capabilities' => $capabilities]]),
             ),
-            'grok' => new Grok(
-                key: (string) $apiKey,
-                model: $this->aiConfig['configuration']['model'],
+            'grok' => GenericFactory::createPlatform(
+                baseUrl: 'https://api.x.ai/v1',
+                apiKey: $apiKey,
+                completionsPath: '/chat/completions',
+                name: 'grok',
             ),
-            'huggingFace' => new HuggingFace(
-                key: (string) $apiKey,
-                model: $this->aiConfig['configuration']['model'],
+            'huggingFace' => GenericFactory::createPlatform(
+                baseUrl: 'https://router.huggingface.co/v1',
+                apiKey: $apiKey,
+                completionsPath: '/chat/completions',
+                name: 'huggingFace',
             ),
-            'ollama' => new Ollama(
-                url: $this->aiConfig['configuration']['url'],
-                model: $this->aiConfig['configuration']['model'],
+            'ollama' => OllamaFactory::createPlatform(
+                endpoint: rtrim((string) $configuration['url'], '/'),
             ),
-            'openAI' => new OpenAI(
-                key: (string) $apiKey,
-                model: $this->aiConfig['configuration']['model'],
+            'openAI', 'openAIResponses' => OpenAiFactory::createPlatform(
+                apiKey: $apiKey,
+                modelCatalog: new OpenAiModelCatalog([$model => ['class' => Gpt::class, 'capabilities' => $capabilities]]),
             ),
-            'openAILike' => new OpenAILike(
-                baseUri: $this->aiConfig['configuration']['baseUri'],
-                key: (string) $apiKey,
-                model: $this->aiConfig['configuration']['model'],
+            'openAILike' => GenericFactory::createPlatform(
+                baseUrl: $configuration['baseUri'],
+                apiKey: $apiKey,
+                completionsPath: '/chat/completions',
             ),
-            'openAIResponses' => new OpenAIResponses(
-                key: (string) $apiKey,
-                model: $this->aiConfig['configuration']['model'],
+            'mistral' => MistralFactory::createPlatform(
+                apiKey: $apiKey,
+                modelCatalog: new MistralModelCatalog([$model => ['class' => Mistral::class, 'capabilities' => $capabilities]]),
             ),
-            'mistral' => new Mistral(
-                key: (string) $apiKey,
-                model: $this->aiConfig['configuration']['model'],
-            ),
-            default => throw new InvalidAIConfiguration(sprintf('AI provider "%s" is not supported', $providerName)),
+            default => throw new InvalidAIConfiguration(sprintf('AI provider "%s" is not supported', $this->aiConfig['provider'])),
         };
     }
 }

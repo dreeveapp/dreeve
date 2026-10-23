@@ -9,7 +9,7 @@ use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\Connection;
-use NeuronAI\Chat\Enums\MessageRole;
+use Symfony\AI\Platform\Message\Role;
 
 final readonly class DbalChatRepository extends DbalRepository implements ChatRepository
 {
@@ -46,7 +46,7 @@ final readonly class DbalChatRepository extends DbalRepository implements ChatRe
             $history[] = new ChatMessage(
                 messageId: ChatMessageId::fromString($result['messageId']),
                 message: (string) $result['message'],
-                messageRole: MessageRole::from($result['messageRole']),
+                messageRole: Role::from($result['messageRole']),
                 on: SerializableDateTime::fromString($result['on']),
             )->withUserProfilePictureUrl($general->getProfilePictureUrl())
                 ->withFirstLetterOfFirstName($general->getAthlete()->getFirstLetterOfFirstName());
@@ -60,7 +60,7 @@ final readonly class DbalChatRepository extends DbalRepository implements ChatRe
         $this->connection->executeStatement('DELETE FROM ChatMessage');
     }
 
-    public function buildMessage(string $message, MessageRole $messageRole): ChatMessage
+    public function buildMessage(string $message, Role $messageRole): ChatMessage
     {
         $general = $this->settingsRepository->general();
 

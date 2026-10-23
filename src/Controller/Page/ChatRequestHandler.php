@@ -13,11 +13,10 @@ use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
 use App\Infrastructure\Http\ServerSentEvent;
 use App\Infrastructure\Renderer\MarkdownRenderer;
 use App\Infrastructure\Serialization\Json;
-use GuzzleHttp\Exception\ClientException;
-use NeuronAI\Agent\AgentInterface;
-use NeuronAI\Chat\Enums\MessageRole;
-use NeuronAI\Chat\Messages\Stream\Chunks\TextChunk;
-use NeuronAI\Chat\Messages\UserMessage;
+use Symfony\AI\Agent\AgentInterface;
+use Symfony\AI\Platform\Message\Message;
+use Symfony\AI\Platform\Message\Role;
+use Symfony\AI\Platform\Result\Stream\Delta\TextDelta;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -33,7 +32,7 @@ use Twig\Environment;
 final readonly class ChatRequestHandler
 {
     public function __construct(
-        private AgentInterface $neuronAIAgent,
+        private AgentInterface $chatAgent,
         private ChatRepository $chatRepository,
         private CommandBus $commandBus,
         private SettingsRepository $settingsRepository,
@@ -85,7 +84,7 @@ final readonly class ChatRequestHandler
                 data: $this->twig->render('html/chat/message.html.twig', [
                     'chatMessage' => $this->chatRepository->buildMessage(
                         message: $message,
-                        messageRole: MessageRole::USER,
+                        messageRole: Role::User,
                     ),
                     'isThinking' => false,
                 ]),
@@ -96,17 +95,23 @@ final readonly class ChatRequestHandler
                 data: $this->twig->render('html/chat/message.html.twig', [
                     'chatMessage' => $this->chatRepository->buildMessage(
                         message: '__PLACEHOLDER__',
-                        messageRole: MessageRole::ASSISTANT,
+                        messageRole: Role::Assistant,
                     ),
                     'isThinking' => true,
                 ]),
                 type: 'fullMessage'
             ));
 
+            $this->commandBus->dispatch(new AddChatMessage(
+                message: $message,
+                messageRole: Role::User,
+            ));
+
             $fullResponse = '';
             try {
-                foreach ($this->neuronAIAgent->stream(new UserMessage($message)) as $chunk) {
-                    if (!$chunk instanceof TextChunk) {
+                $execution = $this->chatAgent->call(Message::ofUser($message), ['stream' => true]);
+                foreach ($execution->asStream() as $delta) {
+                    if (!$delta instanceof TextDelta) {
                         continue;  // @codeCoverageIgnore
                     }
                     $response->sendEvent(new ServerSentEvent(
@@ -114,10 +119,10 @@ final readonly class ChatRequestHandler
                         type: 'removeThinking'
                     ));
 
-                    $fullResponse .= $chunk->content;
+                    $fullResponse .= $delta->getText();
 
                     $response->sendEvent(new ServerSentEvent(
-                        data: $chunk->content,
+                        data: $delta->getText(),
                         type: 'agentResponse'
                     ));
                 }
@@ -127,23 +132,18 @@ final readonly class ChatRequestHandler
                     type: 'removeThinking'
                 ));
 
-                $message = $e->getMessage();
-                if ($e instanceof ClientException) {
-                    $message = $e->getResponse()->getBody()->getContents(); // @codeCoverageIgnore
-                }
-
-                $fullResponse = 'Oh no, I made a booboo...'."\n\n".trim((string) preg_replace('/\s+/', ' ', $message));
+                $fullResponse = 'Oh no, I made a booboo...'."\n\n".trim((string) preg_replace('/\s+/', ' ', $e->getMessage()));
 
                 $response->sendEvent(new ServerSentEvent(
                     data: $fullResponse,
                     type: 'agentResponse'
                 ));
-
-                $this->commandBus->dispatch(new AddChatMessage(
-                    message: $fullResponse,
-                    messageRole: MessageRole::ASSISTANT,
-                ));
             }
+
+            $this->commandBus->dispatch(new AddChatMessage(
+                message: $fullResponse,
+                messageRole: Role::Assistant,
+            ));
 
             $response->sendEvent(new ServerSentEvent(
                 data: $this->markdownRenderer->render($fullResponse),

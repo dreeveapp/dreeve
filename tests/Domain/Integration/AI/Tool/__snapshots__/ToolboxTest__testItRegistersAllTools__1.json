@@ -2,7 +2,7 @@
     {
         "name": "get_activities_summary",
         "description": "Retrieves a list of the user’s activities, sorted from newest to oldest, along with summary data for each activity.\nBy default only the 25 most recent activities are returned.\nUse this tool whenever you need to identify which activities to include in a query or summary.\nFor example, when the user asks for insights like “Summarize my last week’s activities” or \"Compare my last three rides.\"\nWhen the user asks about a specific period, like \"last week\", \"March 2025\" or \"this year\", pass the \"from\" and \"to\" dates instead of fetching more activities.\nOnly raise the \"limit\" when you need more recent activities than the default returns.\nThis tool helps you determine which specific activities match the user’s time range or criteria, so you can use their IDs in subsequent tool calls.",
-        "inputSchema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "limit": {
@@ -18,14 +18,14 @@
                     "description": "Only include activities on or before this date (YYYY-MM-DD)."
                 }
             },
-            "required": []
-        },
-        "maxRuns": null
+            "required": [],
+            "additionalProperties": false
+        }
     },
     {
         "name": "get_activity_by_id",
         "description": "Retrieves detailed information for a single activity, identified by its unique ID.\nUse this tool when the user refers to a specific activity or asks for details about a particular workout.\nIt requires the activity ID as input and provides the full activity data needed for summaries, comparisons, or insights.\nExample requests include “Show details for activity 12345” or “Compare my Sunday ride with activity 67890.”",
-        "inputSchema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "activityId": {
@@ -35,14 +35,14 @@
             },
             "required": [
                 "activityId"
-            ]
-        },
-        "maxRuns": 25
+            ],
+            "additionalProperties": false
+        }
     },
     {
         "name": "get_activity_laps",
         "description": "Retrieves detailed lap information for a specific activity using its unique activity ID.\nUse this tool when the user asks about lap data within an activity or requests all details for a specific activity.\nIt requires the activity ID as input and provides the lap-by-lap breakdown needed for summaries, analysis, or comparisons.\nExample requests include “Show all laps for activity 12345” or “Give me detailed summary of activity 12345.”\nReturns at most 50 laps, from the start of the activity. Compare \"totalLapCount\" with the number of returned laps: if it is higher, tell the user you are only seeing part of the activity.",
-        "inputSchema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "activityId": {
@@ -52,14 +52,14 @@
             },
             "required": [
                 "activityId"
-            ]
-        },
-        "maxRuns": 25
+            ],
+            "additionalProperties": false
+        }
     },
     {
         "name": "get_activity_segments_efforts",
         "description": "Retrieves detailed segment and segment effort information for a specific activity using its unique activity ID.\nUse this tool when the user asks about segments or segment efforts within an activity, or requests all details for a specific activity.\nIt requires the activity ID as input and provides the full segment-level data needed for analysis, comparisons, or summaries.\nExample requests include “Show all segment efforts for activity 12345” or “Give me detailed segment stats for my last ride.”\nReturns at most 30 segment efforts. Compare \"totalSegmentEffortCount\" with the number of returned efforts: if it is higher, tell the user you are only showing some of them.",
-        "inputSchema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "activityId": {
@@ -69,14 +69,14 @@
             },
             "required": [
                 "activityId"
-            ]
-        },
-        "maxRuns": 25
+            ],
+            "additionalProperties": false
+        }
     },
     {
         "name": "get_activity_splits",
         "description": "Retrieves detailed split information for a specific activity using its unique activity ID.\nUse this tool when the user asks about split data within an activity or requests all details for a specific activity.\nIt requires the activity ID as input and provides the split-by-split breakdown needed for summaries, analysis, or comparisons.\nExample requests include “Show all splits for activity 12345” or “Give me detailed split stats for my last run.”\nReturns at most 60 splits, from the start of the activity. Compare \"totalSplitCount\" with the number of returned splits: if it is higher, tell the user you are only seeing part of the activity.",
-        "inputSchema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "activityId": {
@@ -86,14 +86,14 @@
             },
             "required": [
                 "activityId"
-            ]
-        },
-        "maxRuns": 25
+            ],
+            "additionalProperties": false
+        }
     },
     {
         "name": "get_activity_streams",
         "description": "Retrieves aggregated stream statistics for a specific activity using its unique activity ID.\nUse this tool when the user asks about heart rate, power or speed ranges within an activity.\nIt requires the activity ID as input and returns, per available stream, the number of recorded points plus the minimum, maximum and average value.\nIt does NOT return the raw time-series, so it cannot be used to analyse how a value evolved over the course of the activity.\nExample requests include “What was my average and max power on activity 12345?”",
-        "inputSchema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "activityId": {
@@ -103,64 +103,39 @@
             },
             "required": [
                 "activityId"
-            ]
-        },
-        "maxRuns": 25
+            ],
+            "additionalProperties": false
+        }
     },
     {
         "name": "get_athlete_details",
         "description": "Retrieves the athlete’s personal details from the database.\nUse this tool when the user asks about their profile or personal information, such as weight, height, or other stored attributes.\nExample requests include “Show my profile details”.",
-        "inputSchema": {
-            "type": "object",
-            "properties": {},
-            "required": []
-        },
-        "maxRuns": null
+        "parameters": null
     },
     {
         "name": "get_challenges",
         "description": "Retrieves the user’s most recently obtained challenges, including challenge name, start date, and completion date.\nUse this tool when the user asks about current, upcoming, or past challenges.\nExample requests include “List the challenges I completed last month.”\nReturns at most 50 challenges, most recent first. Compare \"totalChallengeCount\" with the number of returned challenges: if it is higher, tell the user you are only showing the most recent ones and do not present the list as complete.",
-        "inputSchema": {
-            "type": "object",
-            "properties": {},
-            "required": []
-        },
-        "maxRuns": null
+        "parameters": null
     },
     {
         "name": "get_eddington",
         "description": "Retrieves the athlete’s Eddington numbers per configured sport group, in both kilometers and miles.\nAn Eddington number E means the athlete covered at least E distance units on at least E different days.\nThe result also includes how many more days are needed to reach the next number.\nUse this tool when the user asks about their Eddington number or long-term distance consistency.",
-        "inputSchema": {
-            "type": "object",
-            "properties": {},
-            "required": []
-        },
-        "maxRuns": null
+        "parameters": null
     },
     {
         "name": "get_ftp_history",
         "description": "Retrieves the athlete’s Functional Threshold Power (FTP) history from the database, providing a timeline of FTP values with corresponding dates.\nUse this tool when the user asks about changes in their FTP over time or when you need FTP to determine training intensity.\nExample requests include “Show my FTP progression over the last 6 months” or “What was my FTP during my last ride?”",
-        "inputSchema": {
-            "type": "object",
-            "properties": {},
-            "required": []
-        },
-        "maxRuns": null
+        "parameters": null
     },
     {
         "name": "get_gear",
         "description": "Retrieves the athlete’s gear information from the database, including name, type, and distance.\nUse this tool when the user asks about equipment such as shoes, bikes, or other gear.\nIt provides the details needed to track usage or summarize performance by equipment.\nExample requests include “Show my bike details” or “How many kilometers have I run with my shoes?”",
-        "inputSchema": {
-            "type": "object",
-            "properties": {},
-            "required": []
-        },
-        "maxRuns": null
+        "parameters": null
     },
     {
         "name": "get_heart_rate_zones",
         "description": "Retrieves the athlete’s personalized heart rate zones from the database, including ranges based on the athlete’s maximum heart rate or custom configuration.\nYou can optionally provide a sportType to fetch zones specific to a particular sport.\nUse this tool when the user asks about heart rate zones, training intensity, or zone-based performance. If a sportType is specified, the zones returned will correspond to that sport.\nIt provides the data needed to interpret workouts, plan training, or summarize effort by zone.\nExample requests include “Show my heart rate zones” or “What zone was I in during my last ride?”",
-        "inputSchema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "sportType": {
@@ -168,24 +143,19 @@
                     "description": "The sport type to get the heart rate zones for."
                 }
             },
-            "required": []
-        },
-        "maxRuns": null
+            "required": [],
+            "additionalProperties": false
+        }
     },
     {
         "name": "get_most_recent_activity",
         "description": "Retrieves the user’s most recent activity, including its ID and summary details.\nUse this tool whenever the user refers to “my last activity” or asks for information about their most recent workout or ride. For example, “Show stats from my last activity”.\nThis tool helps you quickly identify the latest activity to use in further analysis or comparisons.",
-        "inputSchema": {
-            "type": "object",
-            "properties": {},
-            "required": []
-        },
-        "maxRuns": null
+        "parameters": null
     },
     {
         "name": "get_segment_by_id",
         "description": "Retrieves detailed information about a specific segment using its unique ID, including name, distance, elevation, sport type, and climb category.\nUse this tool when the user asks about a specific segment, for example “Tell me more about segment 1234” or “What’s the length of that climb?”.\nIt provides the full segment data needed for summaries, comparisons, or analysis.",
-        "inputSchema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "segmentId": {
@@ -195,14 +165,14 @@
             },
             "required": [
                 "segmentId"
-            ]
-        },
-        "maxRuns": null
+            ],
+            "additionalProperties": false
+        }
     },
     {
         "name": "get_streaks",
         "description": "Retrieves the athlete’s current and longest streaks of consecutive days, weeks and months with at least one activity, including when they started and ended.\nOptionally restrict it to one or more sport types.\nUse this tool when the user asks about consistency, for example “What is my longest running streak?”",
-        "inputSchema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "sportType": {
@@ -210,24 +180,19 @@
                     "description": "Comma separated Strava sport types, for example \"Run,TrailRun\". Leave empty for all sport types."
                 }
             },
-            "required": []
-        },
-        "maxRuns": null
+            "required": [],
+            "additionalProperties": false
+        }
     },
     {
         "name": "get_training_load",
         "description": "Retrieves the athlete’s current training load: fitness (CTL), fatigue (ATL), form (TSB), the acute:chronic workload ratio, weekly TRIMP, monotony, strain and the number of rest days in the last 7 days.\nUse this tool when the user asks how fit, tired or fresh they are, whether they are overtraining, or if they are ready for a hard effort.",
-        "inputSchema": {
-            "type": "object",
-            "properties": {},
-            "required": []
-        },
-        "maxRuns": null
+        "parameters": null
     },
     {
         "name": "get_training_volume",
         "description": "Retrieves the total training volume between two dates: number of activities, moving time, distance, elevation and calories.\nOptionally restrict it to one or more sport types.\nUse this tool when the user asks how much they trained in a period, for example “How far did I ride in March?” or “How many hours did I run this year?”",
-        "inputSchema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "from": {
@@ -246,14 +211,14 @@
             "required": [
                 "from",
                 "to"
-            ]
-        },
-        "maxRuns": null
+            ],
+            "additionalProperties": false
+        }
     },
     {
         "name": "list_gear_maintenance_tasks",
         "description": "Retrieves the gear maintenance tasks, most urgent first, with how far each one has progressed towards its interval and whether it is due or overdue.\nOptionally restrict it to the tasks of a single piece of gear.\nUse this tool when the user asks what maintenance is coming up, for example “Do I need to replace my chain?” or “What is overdue on my bike?”\nReturns an empty list when gear maintenance is not enabled.",
-        "inputSchema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "gearId": {
@@ -261,14 +226,14 @@
                     "description": "Only include the tasks of this gear."
                 }
             },
-            "required": []
-        },
-        "maxRuns": null
+            "required": [],
+            "additionalProperties": false
+        }
     },
     {
         "name": "search_activities",
         "description": "Searches the user’s activities, newest first, and returns one compact row per activity: name, sport type, start date, distance, elevation, moving time and whether a GPX file is available.\nFilter by date range, by one or more sport types and by GPX availability. Results are paginated: request the next \"page\" until \"page\" equals \"totalPages\".\nUse this tool when the user asks a question that spans many activities, for example “How many trail runs did I do in 2024?” or “List all my rides over 100 km this year.”\nUse the activity tools with the returned ids for the details of a single activity.",
-        "inputSchema": {
+        "parameters": {
             "type": "object",
             "properties": {
                 "from": {
@@ -296,8 +261,8 @@
                     "description": "The number of activities per page. Defaults to 25, at most 100."
                 }
             },
-            "required": []
-        },
-        "maxRuns": null
+            "required": [],
+            "additionalProperties": false
+        }
     }
 ]

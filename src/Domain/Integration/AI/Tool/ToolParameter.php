@@ -65,7 +65,7 @@ final readonly class ToolParameter
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array{type: string, description: string}
      */
     public function toJsonSchema(): array
     {

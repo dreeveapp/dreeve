@@ -7,7 +7,7 @@ namespace App\Domain\Integration\AI\Chat;
 use App\Application\ProfilePictureUrl;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\ORM\Mapping as ORM;
-use NeuronAI\Chat\Enums\MessageRole;
+use Symfony\AI\Platform\Message\Role;
 
 #[ORM\Entity]
 #[ORM\Index(name: 'ChatMessage_on', columns: ['on'])]
@@ -22,7 +22,7 @@ final class ChatMessage
         #[ORM\Column(type: 'text')]
         private readonly string $message,
         #[ORM\Column(type: 'string')]
-        private readonly MessageRole $messageRole,
+        private readonly Role $messageRole,
         #[ORM\Column(type: 'datetime_immutable')]
         private readonly SerializableDateTime $on,
     ) {
@@ -38,7 +38,7 @@ final class ChatMessage
         return $this->message;
     }
 
-    public function getMessageRole(): MessageRole
+    public function getMessageRole(): Role
     {
         return $this->messageRole;
     }
@@ -74,6 +74,6 @@ final class ChatMessage
 
     public function isUserMessage(): bool
     {
-        return MessageRole::USER === $this->messageRole;
+        return Role::User === $this->messageRole;
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Integration\AI\Chat;
 
-use NeuronAI\Chat\Enums\MessageRole;
+use Symfony\AI\Platform\Message\Role;
 
 interface ChatRepository
 {
@@ -17,5 +17,5 @@ interface ChatRepository
 
     public function clear(): void;
 
-    public function buildMessage(string $message, MessageRole $messageRole): ChatMessage;
+    public function buildMessage(string $message, Role $messageRole): ChatMessage;
 }

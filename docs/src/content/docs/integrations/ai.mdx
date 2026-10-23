@@ -17,8 +17,9 @@ Prefer to use your own AI client, such as Claude or Cursor? Connect it to the [M
 :::
 
 :::note[Important]
-Dreeve uses the [Neuron AI](https://docs.neuron-ai.dev) library to interface with AI models.
-Only providers supported by Neuron AI are compatible. See the full list of [supported providers](https://docs.neuron-ai.dev/providers/ai-provider)
+Dreeve uses [Symfony AI](https://symfony.com/doc/current/ai/index.html) to interface with AI models. The supported providers are
+`anthropic`, `azureOpenAI`, `deepseek`, `gemini`, `grok`, `huggingFace`, `mistral`, `ollama`, `openAI`, `openAIResponses`
+and `openAILike`, the latter for any OpenAI-compatible API. The model you pick must support tool calling.
 :::
 
 ## Configuring an AI provider

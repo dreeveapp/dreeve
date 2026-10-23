@@ -18,6 +18,7 @@ use App\Domain\Challenge\ChallengeId;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Integration\AI\Tool\Toolbox;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
@@ -39,13 +40,12 @@ use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\Domain\Segment\SegmentBuilder;
 use App\Tests\Domain\Segment\SegmentEffort\SegmentEffortBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
-use NeuronAI\Tools\ToolInterface;
-use NeuronAI\Tools\Toolkits\ToolkitInterface;
-use NeuronAI\Tools\ToolOutput;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
+use Symfony\AI\Platform\Result\ToolCall;
+use Symfony\AI\Platform\Tool\Tool;
 
-class ToolkitTest extends ContainerTestCase
+class ToolboxTest extends ContainerTestCase
 {
     use MatchesSnapshots;
     use ProvideGearMaintenanceConfig;
@@ -53,19 +53,13 @@ class ToolkitTest extends ContainerTestCase
     #[DataProvider(methodName: 'provideTools')]
     public function testTools(string $name, array $inputs): void
     {
-        $result = $this->executeTool($name, $inputs);
-
-        $this->assertFalse($result->isError());
-        $this->assertMatchesJsonSnapshot($result->getText());
+        $this->assertMatchesJsonSnapshot($this->executeTool($name, $inputs));
     }
 
     #[DataProvider(methodName: 'provideToolErrors')]
     public function testItReturnsAToolError(string $name, array $inputs, string $message): void
     {
-        $result = $this->executeTool($name, $inputs);
-
-        $this->assertTrue($result->isError());
-        $this->assertSame($message, $result->getText());
+        $this->assertSame($message, $this->executeTool($name, $inputs));
     }
 
     public static function provideToolErrors(): iterable
@@ -83,21 +77,20 @@ class ToolkitTest extends ContainerTestCase
     {
         $this->importGearMaintenanceConfigFromArray(['enabled' => false]);
 
-        $this->assertSame('{"maintenanceTasks":[]}', $this->executeTool('list_gear_maintenance_tasks', [])->getText());
+        $this->assertSame('{"maintenanceTasks":[]}', $this->executeTool('list_gear_maintenance_tasks', []));
     }
 
     public function testItRegistersAllTools(): void
     {
-        $tools = $this->getContainer()->get(ToolkitInterface::class)->tools();
-        usort($tools, static fn (ToolInterface $a, ToolInterface $b): int => $a->getName() <=> $b->getName());
+        $tools = $this->getContainer()->get(Toolbox::class)->getTools();
+        usort($tools, static fn (Tool $a, Tool $b): int => $a->getName() <=> $b->getName());
 
         $this->assertCount(19, $tools);
         $this->assertMatchesJsonSnapshot(Json::encode(array_map(
-            static fn (ToolInterface $tool): array => [
+            static fn (Tool $tool): array => [
                 'name' => $tool->getName(),
                 'description' => $tool->getDescription(),
-                'inputSchema' => $tool->getInputSchema(),
-                'maxRuns' => $tool->getMaxRuns(),
+                'parameters' => $tool->getParameters(),
             ],
             $tools,
         )));
@@ -281,16 +274,10 @@ class ToolkitTest extends ContainerTestCase
     /**
      * @param array<string, mixed> $inputs
      */
-    private function executeTool(string $name, array $inputs): ToolOutput
+    private function executeTool(string $name, array $inputs): string
     {
-        $tool = array_find(
-            $this->getContainer()->get(ToolkitInterface::class)->tools(),
-            static fn (ToolInterface $tool): bool => $name === $tool->getName(),
-        );
-        $tool->setInputs($inputs)->execute();
-
-        $result = $tool->getResult();
-        $this->assertInstanceOf(ToolOutput::class, $result);
+        $result = $this->getContainer()->get(Toolbox::class)->execute(new ToolCall('call', $name, $inputs))->getResult();
+        $this->assertIsString($result);
 
         return $result;
     }

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Domain\Integration\AI\Chat\AddChatMessage;
 
 use App\Infrastructure\CQRS\Command\DomainCommand;
-use NeuronAI\Chat\Enums\MessageRole;
+use Symfony\AI\Platform\Message\Role;
 
 final readonly class AddChatMessage extends DomainCommand
 {
     public function __construct(
         private string $message,
-        private MessageRole $messageRole,
+        private Role $messageRole,
     ) {
     }
 
@@ -20,7 +20,7 @@ final readonly class AddChatMessage extends DomainCommand
         return $this->message;
     }
 
-    public function getMessageRole(): MessageRole
+    public function getMessageRole(): Role
     {
         return $this->messageRole;
     }

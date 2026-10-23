@@ -82,14 +82,8 @@ services:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:APP_URL)%']
 
-    NeuronAI\Agent\AgentInterface:
-        class: App\Domain\Integration\AI\NeuronAIAgent
-
-    NeuronAI\Chat\History\MessageStoreInterface:
-        class: App\Domain\Integration\AI\Chat\SFSMessageStore
-
-    NeuronAI\Tools\Toolkits\ToolkitInterface:
-        class: App\Domain\Integration\AI\Tool\Toolkit
+    Symfony\AI\Agent\AgentInterface:
+        class: App\Domain\Integration\AI\ChatAgent
 
     App\Domain\Strava\StravaClientId:
         factory: [ null, 'fromString' ]

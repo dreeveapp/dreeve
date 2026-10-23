@@ -18,12 +18,14 @@ use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
 use App\Tests\Infrastructure\Eventing\SpyEventBus;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use Doctrine\DBAL\Connection;
-use NeuronAI\Agent\Agent;
-use NeuronAI\Agent\AgentInterface;
-use NeuronAI\Chat\Messages\AssistantMessage;
-use NeuronAI\Testing\FakeAIProvider;
 use PHPUnit\Framework\MockObject\Stub;
 use Spatie\Snapshots\MatchesSnapshots;
+use Symfony\AI\Agent\Agent;
+use Symfony\AI\Agent\AgentInterface;
+use Symfony\AI\Platform\Message\Role;
+use Symfony\AI\Platform\Result\Stream\Delta\TextDelta;
+use Symfony\AI\Platform\Result\StreamResult;
+use Symfony\AI\Platform\Test\InMemoryPlatform;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\EventStreamResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +39,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
     /**
      * @var Stub&AgentInterface
      */
-    private Stub $neuronAIAgent;
+    private Stub $chatAgent;
 
     public function testRender(): void
     {
@@ -143,14 +145,20 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );
 
-        $agent = Agent::make(workflowId: 'chat')->setAiProvider(
-            new FakeAIProvider(new AssistantMessage('<img src=x onerror=alert(1)> **Hello** World'))
+        $agent = new Agent(
+            new InMemoryPlatform(static fn (): StreamResult => new StreamResult((static function (): \Generator {
+                yield new TextDelta('<img src=x onerror=alert(1)> **Hello**');
+                yield new TextDelta(' World');
+            })())),
+            'model',
         );
+
+        $spyCommandBus = new SpyCommandBus();
 
         $requestHandler = $this->buildRequestHandlerForSse(
             chatRepository: $chatRepository,
             agent: $agent,
-            commandBus: new SpyCommandBus(),
+            commandBus: $spyCommandBus,
         );
 
         $request = new Request(query: ['message' => 'What is my FTP?']);
@@ -170,6 +178,14 @@ class ChatRequestHandlerTest extends AdminWebTestCase
 
         $this->assertStringContainsString('&lt;img src=x onerror=alert(1)&gt;', $content);
         $this->assertStringContainsString('<strong>Hello</strong>', $content);
+
+        $this->assertEquals(
+            [
+                new AddChatMessage('What is my FTP?', Role::User),
+                new AddChatMessage('<img src=x onerror=alert(1)> **Hello** World', Role::Assistant),
+            ],
+            $spyCommandBus->getDispatchedCommands(),
+        );
     }
 
     public function testChatSseOnError(): void
@@ -180,8 +196,9 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );
 
-        $agent = Agent::make(workflowId: 'chat')->setAiProvider(
-            new FakeAIProvider()
+        $agent = new Agent(
+            new InMemoryPlatform(static fn (): never => throw new \RuntimeException('Invalid API key')),
+            'model',
         );
 
         $spyCommandBus = new SpyCommandBus();
@@ -205,9 +222,13 @@ class ChatRequestHandlerTest extends AdminWebTestCase
         $this->assertStringNotContainsString('#0 ', $content);
         $this->assertStringContainsString('event: done', $content);
 
-        $dispatchedCommands = $spyCommandBus->getDispatchedCommands();
-        $this->assertCount(1, $dispatchedCommands);
-        $this->assertInstanceOf(AddChatMessage::class, $dispatchedCommands[0]);
+        $this->assertEquals(
+            [
+                new AddChatMessage('What is my FTP?', Role::User),
+                new AddChatMessage("Oh no, I made a booboo...\n\nInvalid API key", Role::Assistant),
+            ],
+            $spyCommandBus->getDispatchedCommands(),
+        );
     }
 
     public function testChatSseAINotEnabled(): void
@@ -224,7 +245,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
     private function buildRequestHandler(bool $aiUIEnabled, ChatRepository $chatRepository): ChatRequestHandler
     {
         return new ChatRequestHandler(
-            neuronAIAgent: $this->neuronAIAgent,
+            chatAgent: $this->chatAgent,
             chatRepository: $chatRepository,
             commandBus: $this->getContainer()->get(CommandBus::class),
             twig: $this->getContainer()->get(Environment::class),
@@ -241,7 +262,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
         CommandBus $commandBus,
     ): ChatRequestHandler {
         return new ChatRequestHandler(
-            neuronAIAgent: $agent,
+            chatAgent: $agent,
             chatRepository: $chatRepository,
             commandBus: $commandBus,
             twig: $this->getContainer()->get(Environment::class),
@@ -275,6 +296,6 @@ class ChatRequestHandlerTest extends AdminWebTestCase
     {
         parent::setUp();
 
-        $this->neuronAIAgent = $this->createStub(AgentInterface::class);
+        $this->chatAgent = $this->createStub(AgentInterface::class);
     }
 }

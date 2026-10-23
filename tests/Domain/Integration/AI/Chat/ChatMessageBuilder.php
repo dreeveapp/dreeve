@@ -8,13 +8,13 @@ use App\Application\ProfilePictureUrl;
 use App\Domain\Integration\AI\Chat\ChatMessage;
 use App\Domain\Integration\AI\Chat\ChatMessageId;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
-use NeuronAI\Chat\Enums\MessageRole;
+use Symfony\AI\Platform\Message\Role;
 
 final class ChatMessageBuilder
 {
     private ChatMessageId $messageId;
     private string $message = 'Cool';
-    private MessageRole $messageRole = MessageRole::USER;
+    private Role $messageRole = Role::User;
     private readonly SerializableDateTime $on;
     private readonly ?ProfilePictureUrl $userProfilePictureUrl;
     private ?string $firstLetterOfFirstName = 'r';
@@ -56,7 +56,7 @@ final class ChatMessageBuilder
         return $this;
     }
 
-    public function withMessageRole(MessageRole $messageRole): self
+    public function withMessageRole(Role $messageRole): self
     {
         $this->messageRole = $messageRole;
 

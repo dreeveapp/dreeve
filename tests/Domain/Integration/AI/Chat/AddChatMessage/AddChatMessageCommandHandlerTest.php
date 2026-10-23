@@ -8,7 +8,7 @@ use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
-use NeuronAI\Chat\Enums\MessageRole;
+use Symfony\AI\Platform\Message\Role;
 
 class AddChatMessageCommandHandlerTest extends ContainerTestCase
 {
@@ -18,7 +18,7 @@ class AddChatMessageCommandHandlerTest extends ContainerTestCase
     {
         $this->addChatMessageCommandHandler->handle(new AddChatMessage(
             message: 'Le message',
-            messageRole: MessageRole::USER
+            messageRole: Role::User
         ));
 
         $results = $this->getConnection()->executeQuery('SELECT * FROM ChatMessage')->fetchAllAssociative();
