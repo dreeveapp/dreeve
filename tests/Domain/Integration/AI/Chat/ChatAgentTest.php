@@ -6,7 +6,6 @@ namespace App\Tests\Domain\Integration\AI\Chat;
 
 use App\Domain\Integration\AI\Chat\ChatAgent;
 use App\Domain\Integration\AI\Chat\Toolbox;
-use App\Domain\Integration\AI\InvalidAIConfiguration;
 use App\Domain\Settings\IntegrationsSettings;
 use App\Domain\Settings\SettingsRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -54,20 +53,6 @@ class ChatAgentTest extends TestCase
         }
 
         $this->assertSame([$expectedRequest], $requests);
-    }
-
-    public function testItThrowsForAnUnsupportedProvider(): void
-    {
-        $settingsRepository = $this->createStub(SettingsRepository::class);
-        $settingsRepository->method('integrations')->willReturn(IntegrationsSettings::fromArray(['ai' => [
-            'enabled' => true,
-            'provider' => 'unknown',
-            'configuration' => ['model' => 'model'],
-        ]]));
-
-        $this->expectExceptionObject(new InvalidAIConfiguration('AI provider "unknown" is not supported'));
-
-        new ChatAgent($settingsRepository, new Toolbox([]), new MockHttpClient())->call('Hi');
     }
 
     public static function provideProviders(): iterable

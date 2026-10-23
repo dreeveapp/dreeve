@@ -14,7 +14,7 @@
     {% for service in notifications.services ?? [] %}
         {% set notificationServiceRows = notificationServiceRows|merge([{'value': service}]) %}
     {% endfor %}
-    {% set aiProviders = ['anthropic', 'azureOpenAI', 'deepseek', 'gemini', 'grok', 'huggingFace', 'ollama', 'openAI', 'openAILike', 'openAIResponses', 'mistral'] %}
+    {% set aiProviderEnum = enum('App\\Domain\\Integration\\AI\\AIProvider') %}
     {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "AI"|trans({}, 'admin')} %}
         {% block body %}
             <div>
@@ -41,31 +41,31 @@
                     <select id="aiProvider" name="data[ai][provider]">
                         <option value="">{{ "None"|trans }}</option>
                         {% for provider in aiProviders %}
-                            <option value="{{ provider }}" {{ (ai.provider ?? '') == provider ? 'selected' : '' }}>{{ provider }}</option>
+                            <option value="{{ provider.value }}" {{ (ai.provider ?? '') == provider.value ? 'selected' : '' }}>{{ provider.value }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="grid gap-4 sm:grid-cols-2">
-                    <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviders|join(',') }}">
+                    <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviders|map(provider => provider.value)|join(',') }}">
                         <label for="aiModel">{{ "Model"|trans({}, 'admin') }}</label>
                         <input type="text" id="aiModel" name="data[ai][configuration][model]" value="{{ aiConfiguration.model ?? '' }}">
                     </div>
-                    <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviders|filter(p => p != 'ollama')|join(',') }}">
+                    <div data-dependent-on="aiProvider" data-visible-when="{{ aiProvidersRequiringApiKey|map(provider => provider.value)|join(',') }}">
                         <label for="aiKey">{{ "API key"|trans({}, 'admin') }}</label>
                         <input type="text" id="aiKey" value="{{ AIApiKey }}" disabled>
                         <p class="description">
                             {{ "Configured via an environment variable and cannot be changed here."|trans({}, 'admin') }}
                         </p>
                     </div>
-                    <div data-dependent-on="aiProvider" data-visible-when="ollama">
+                    <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviderEnum.OLLAMA.value }}">
                         <label for="aiUrl">{{ "URL"|trans({}, 'admin') }}</label>
                         <input type="text" id="aiUrl" name="data[ai][configuration][url]" value="{{ aiConfiguration.url ?? '' }}" placeholder="http://dreeve-ollama:11434/api">
                     </div>
-                    <div data-dependent-on="aiProvider" data-visible-when="openAILike">
+                    <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviderEnum.OPEN_AI_LIKE.value }}">
                         <label for="aiBaseUri">{{ "Base URI"|trans({}, 'admin') }}</label>
                         <input type="text" id="aiBaseUri" name="data[ai][configuration][baseUri]" value="{{ aiConfiguration.baseUri ?? '' }}">
                     </div>
-                    <div data-dependent-on="aiProvider" data-visible-when="azureOpenAI">
+                    <div data-dependent-on="aiProvider" data-visible-when="{{ aiProviderEnum.AZURE_OPEN_AI.value }}">
                         <label for="aiEndpoint">{{ "Endpoint"|trans({}, 'admin') }}</label>
                         <input type="text" id="aiEndpoint" name="data[ai][configuration][endpoint]" value="{{ aiConfiguration.endpoint ?? '' }}">
                     </div>

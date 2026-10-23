@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Settings;
 
 use App\Domain\Integration\AI\AIApiKey;
+use App\Domain\Integration\AI\AIProvider;
 use App\Domain\Integration\AI\Chat\ChatCommands;
 use App\Domain\Integration\AI\InvalidAIConfiguration;
 use App\Domain\Integration\Notification\Shoutrrr\ConfiguredNotificationUrls;
@@ -36,26 +37,20 @@ final readonly class IntegrationsSettings
 
         if ($aiEnabled) {
             $providerName = empty($aiConfig['provider']) ? throw new InvalidAIConfiguration('Provider cannot be empty') : $aiConfig['provider'];
+            $provider = AIProvider::tryFrom($providerName) ?? throw new InvalidAIConfiguration(sprintf('AI provider "%s" is not supported', $providerName));
             $config = isset($aiConfig['configuration']) && [] !== $aiConfig['configuration'] ? $aiConfig['configuration'] : throw new InvalidAIConfiguration('Config cannot be empty');
 
-            $requiredConfigKeys = match ($providerName) {
-                'ollama' => ['model', 'url'],
-                'azureOpenAI' => ['endpoint', 'model'],
-                'openAILike' => ['baseUri', 'model'],
-                default => ['model'],
-            };
-
-            if ('ollama' !== $providerName && AIApiKey::fromServerVar()->isEmpty()) {
+            if ($provider->requiresApiKey() && AIApiKey::fromServerVar()->isEmpty()) {
                 throw new InvalidAIConfiguration('API key cannot be empty');
             }
 
-            foreach ($requiredConfigKeys as $key) {
+            foreach ($provider->getRequiredConfigKeys() as $key) {
                 if (empty($config[$key])) {
                     throw new InvalidAIConfiguration(sprintf('%s cannot be empty', ucfirst($key)));
                 }
             }
 
-            if ('ollama' === $providerName) {
+            if (AIProvider::OLLAMA === $provider) {
                 Url::fromString($config['url']);
             }
         }
@@ -103,9 +98,9 @@ final readonly class IntegrationsSettings
         return $this->notifyOnSuccessfulImport;
     }
 
-    public function getAIProvider(): string
+    public function getAIProvider(): AIProvider
     {
-        return $this->aiConfig['provider'];
+        return AIProvider::from($this->aiConfig['provider']);
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Settings;
 
+use App\Domain\Integration\AI\AIProvider;
 use App\Domain\Integration\AI\Chat\InvalidChatCommandsConfig;
 use App\Domain\Integration\AI\InvalidAIConfiguration;
 use App\Domain\Integration\Notification\Shoutrrr\ShoutrrrUrl;
@@ -48,7 +49,7 @@ class IntegrationsSettingsTest extends TestCase
 
         $this->assertTrue($settings->isAIIntegrationEnabled());
         $this->assertTrue($settings->isAIIntegrationWithUIEnabled());
-        $this->assertSame('openAI', $settings->getAIProvider());
+        $this->assertSame(AIProvider::OPEN_AI, $settings->getAIProvider());
         $this->assertSame(['key' => 'my-key', 'model' => 'cool-model'], $settings->getAIConfiguration());
     }
 
@@ -162,6 +163,16 @@ class IntegrationsSettingsTest extends TestCase
         yield 'Empty provider name' => [
             [],
             'Provider cannot be empty',
+        ];
+
+        yield 'Unsupported provider' => [
+            [
+                'provider' => 'unknown',
+                'configuration' => [
+                    'model' => 'lol',
+                ],
+            ],
+            'AI provider "unknown" is not supported',
         ];
 
         yield 'Empty provider config' => [

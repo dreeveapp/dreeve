@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Integration\AI\Chat;
 
 use App\Domain\Integration\AI\AIApiKey;
-use App\Domain\Integration\AI\InvalidAIConfiguration;
+use App\Domain\Integration\AI\AIProvider;
 use App\Domain\Settings\SettingsRepository;
 use Symfony\AI\Agent\Agent;
 use Symfony\AI\Agent\AgentInterface;
@@ -80,7 +80,7 @@ final readonly class ChatAgent implements AgentInterface
 
         return new Agent(
             platform: $this->createPlatform($provider, $model, $configuration),
-            model: 'anthropic' === $provider ? sprintf('%s?max_tokens=%d', $model, self::ANTHROPIC_MAX_TOKENS) : $model,
+            model: AIProvider::ANTHROPIC === $provider ? sprintf('%s?max_tokens=%d', $model, self::ANTHROPIC_MAX_TOKENS) : $model,
             inputProcessors: [new SystemPromptInputProcessor(self::INSTRUCTIONS)],
             name: $this->getName(),
             toolbox: new FaultTolerantToolbox($this->toolbox),
@@ -95,7 +95,7 @@ final readonly class ChatAgent implements AgentInterface
     /**
      * @param array<string, string> $configuration
      */
-    private function createPlatform(string $provider, string $model, array $configuration): PlatformInterface
+    private function createPlatform(AIProvider $provider, string $model, array $configuration): PlatformInterface
     {
         $apiKey = (string) AIApiKey::fromServerVar();
         $capabilities = [
@@ -106,12 +106,12 @@ final readonly class ChatAgent implements AgentInterface
         ];
 
         return match ($provider) {
-            'anthropic' => AnthropicFactory::createPlatform(
+            AIProvider::ANTHROPIC => AnthropicFactory::createPlatform(
                 apiKey: $apiKey,
                 httpClient: $this->httpClient,
                 modelCatalog: new AnthropicModelCatalog([$model => ['class' => Claude::class, 'capabilities' => $capabilities]]),
             ),
-            'azureOpenAI' => AzureOpenAiFactory::createPlatform(
+            AIProvider::AZURE_OPEN_AI => AzureOpenAiFactory::createPlatform(
                 baseUrl: $configuration['endpoint'],
                 deployment: $model,
                 apiVersion: self::AZURE_OPEN_AI_API_VERSION,
@@ -119,51 +119,50 @@ final readonly class ChatAgent implements AgentInterface
                 httpClient: $this->httpClient,
                 modelCatalog: new AzureOpenAiModelCatalog([$model => ['class' => Gpt::class, 'capabilities' => $capabilities]]),
             ),
-            'deepseek' => DeepSeekFactory::createPlatform(
+            AIProvider::DEEPSEEK => DeepSeekFactory::createPlatform(
                 apiKey: $apiKey,
                 httpClient: $this->httpClient,
                 modelCatalog: new DeepSeekModelCatalog([$model => ['class' => DeepSeek::class, 'capabilities' => $capabilities]]),
             ),
-            'gemini' => GeminiFactory::createPlatform(
+            AIProvider::GEMINI => GeminiFactory::createPlatform(
                 apiKey: $apiKey,
                 httpClient: $this->httpClient,
                 modelCatalog: new GeminiModelCatalog([$model => ['class' => Gemini::class, 'capabilities' => $capabilities]]),
             ),
-            'grok' => GenericFactory::createPlatform(
+            AIProvider::GROK => GenericFactory::createPlatform(
                 baseUrl: 'https://api.x.ai/v1',
                 apiKey: $apiKey,
                 httpClient: $this->httpClient,
                 completionsPath: '/chat/completions',
                 name: 'grok',
             ),
-            'huggingFace' => GenericFactory::createPlatform(
+            AIProvider::HUGGING_FACE => GenericFactory::createPlatform(
                 baseUrl: 'https://router.huggingface.co/v1',
                 apiKey: $apiKey,
                 httpClient: $this->httpClient,
                 completionsPath: '/chat/completions',
                 name: 'huggingFace',
             ),
-            'ollama' => OllamaFactory::createPlatform(
+            AIProvider::OLLAMA => OllamaFactory::createPlatform(
                 endpoint: rtrim($configuration['url'], '/'),
                 httpClient: $this->httpClient,
             ),
-            'openAI', 'openAIResponses' => OpenAiFactory::createPlatform(
+            AIProvider::OPEN_AI, AIProvider::OPEN_AI_RESPONSES => OpenAiFactory::createPlatform(
                 apiKey: $apiKey,
                 httpClient: $this->httpClient,
                 modelCatalog: new OpenAiModelCatalog([$model => ['class' => Gpt::class, 'capabilities' => $capabilities]]),
             ),
-            'openAILike' => GenericFactory::createPlatform(
+            AIProvider::OPEN_AI_LIKE => GenericFactory::createPlatform(
                 baseUrl: $configuration['baseUri'],
                 apiKey: $apiKey,
                 httpClient: $this->httpClient,
                 completionsPath: '/chat/completions',
             ),
-            'mistral' => MistralFactory::createPlatform(
+            AIProvider::MISTRAL => MistralFactory::createPlatform(
                 apiKey: $apiKey,
                 httpClient: $this->httpClient,
                 modelCatalog: new MistralModelCatalog([$model => ['class' => Mistral::class, 'capabilities' => $capabilities]]),
             ),
-            default => throw new InvalidAIConfiguration(sprintf('AI provider "%s" is not supported', $provider)),
         };
     }
 }
