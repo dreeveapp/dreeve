@@ -21,6 +21,7 @@
                             {% include 'html/data-table/filter/sport-type.html.twig' with {sportTypes: summary.getSportTypes(), listClass: 'space-y-1'} only %}
                         {% endif %}
                         {% include 'html/data-table/filter/date-range.html.twig' with {name: 'start-date', label: "Date"|trans, withPresets: true} only %}
+                        {% include 'html/data-table/filter/workout-type.html.twig' only %}
                         {% include 'html/data-table/filter/other.html.twig' only %}
                     </div>
                 </form>

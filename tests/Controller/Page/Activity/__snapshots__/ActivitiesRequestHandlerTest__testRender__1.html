@@ -290,8 +290,9 @@
                             <input id="search" type="search" placeholder="Search activity..." class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition block w-full ps-10 p-2.5">
                         </div>
                     </div>
-                    <div class="flex flex-wrap gap-2">
-                                                    <div class="filter-dropdown">
+                    <div class="flex items-start gap-2">
+                        <div class="flex flex-wrap gap-2 grow">
+                                                            <div class="filter-dropdown">
     <button id="dropdownSportTypesButton" data-dropdown="dropdownSportTypes" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
     <span>Filter on sport type</span>
     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
@@ -333,7 +334,7 @@
                     </ul>
     </div>
 </div>
-                                                <div class="filter-dropdown">
+                                                        <div class="filter-dropdown">
     <button id="dropdownDateRangeButton" data-dropdown="dropdownDateRange" type="button">
     <span>Date</span>
     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
@@ -358,7 +359,7 @@
                             </div>
             </div>
 </div>
-                                                    <div class="filter-dropdown">
+                                                            <div class="filter-dropdown">
     <button id="dropdownCountriesButton" data-dropdown="dropdownCountries" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
     <span>Country</span>
     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
@@ -380,112 +381,112 @@
                     </ul>
     </div>
 </div>
-                                                                            <div class="filter-dropdown">
-                                <button id="dropdownGearsButton" data-dropdown="dropdownGears" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
+                                                                                        <div class="filter-dropdown">
+                                    <button id="dropdownGearsButton" data-dropdown="dropdownGears" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
     <span>Gear</span>
     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"></path>
     </svg>
 </button>
-                                <div id="dropdownGears" class="divide-y divide-gray-100">
-                                    <ul aria-labelledby="dropdownGearsButton">
-                                                                                    <li>
+                                    <div id="dropdownGears" class="divide-y divide-gray-100">
+                                        <ul aria-labelledby="dropdownGearsButton">
+                                                                                            <li>
+                                                    <div>
+                                                        <input type="radio" id="gear-b12659861" data-datatable-filter="gear" name="gear" value="gear-b12659861" class="peer">
+                                                        <label for="gear-b12659861">
+                                                            <span>Retro Race Bike</span>
+                                                        </label>
+                                                        <a href="#" data-datatable-filter-clear="gear">clear</a>
+                                                    </div>
+                                                </li>
+                                                                                            <li>
+                                                    <div>
+                                                        <input type="radio" id="gear-b12659862" data-datatable-filter="gear" name="gear" value="gear-b12659862" class="peer">
+                                                        <label for="gear-b12659862">
+                                                            <span>Zwift hub</span>
+                                                        </label>
+                                                        <a href="#" data-datatable-filter-clear="gear">clear</a>
+                                                    </div>
+                                                </li>
+                                                                                            <li>
+                                                    <div>
+                                                        <input type="radio" id="gear-b12659562" data-datatable-filter="gear" name="gear" value="gear-b12659562" class="peer">
+                                                        <label for="gear-b12659562">
+                                                            <span>Zwift One &#9760;&#65039;</span>
+                                                        </label>
+                                                        <a href="#" data-datatable-filter-clear="gear">clear</a>
+                                                    </div>
+                                                </li>
+                                                                                        <li>
                                                 <div>
-                                                    <input type="radio" id="gear-b12659861" data-datatable-filter="gear" name="gear" value="gear-b12659861" class="peer">
-                                                    <label for="gear-b12659861">
-                                                        <span>Retro Race Bike</span>
+                                                    <input type="radio" id="gear-none" data-datatable-filter="gear" name="gear" value="gear-none" class="peer">
+                                                    <label for="gear-none">
+                                                        <span>Unspecified</span>
                                                     </label>
                                                     <a href="#" data-datatable-filter-clear="gear">clear</a>
                                                 </div>
                                             </li>
-                                                                                    <li>
-                                                <div>
-                                                    <input type="radio" id="gear-b12659862" data-datatable-filter="gear" name="gear" value="gear-b12659862" class="peer">
-                                                    <label for="gear-b12659862">
-                                                        <span>Zwift hub</span>
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="gear">clear</a>
-                                                </div>
-                                            </li>
-                                                                                    <li>
-                                                <div>
-                                                    <input type="radio" id="gear-b12659562" data-datatable-filter="gear" name="gear" value="gear-b12659562" class="peer">
-                                                    <label for="gear-b12659562">
-                                                        <span>Zwift One &#9760;&#65039;</span>
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="gear">clear</a>
-                                                </div>
-                                            </li>
-                                                                                <li>
-                                            <div>
-                                                <input type="radio" id="gear-none" data-datatable-filter="gear" name="gear" value="gear-none" class="peer">
-                                                <label for="gear-none">
-                                                    <span>Unspecified</span>
-                                                </label>
-                                                <a href="#" data-datatable-filter-clear="gear">clear</a>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                                                                            <div class="filter-dropdown">
-                                <button id="dropdownDevicesButton" data-dropdown="dropdownDevices" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
+                                                                                        <div class="filter-dropdown">
+                                    <button id="dropdownDevicesButton" data-dropdown="dropdownDevices" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
     <span>Device</span>
     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"></path>
     </svg>
 </button>
-                                <div id="dropdownDevices" class="divide-y divide-gray-100">
-                                    <ul aria-labelledby="dropdownDevicesButton">
-                                                                                    <li>
+                                    <div id="dropdownDevices" class="divide-y divide-gray-100">
+                                        <ul aria-labelledby="dropdownDevicesButton">
+                                                                                            <li>
+                                                    <div>
+                                                        <input type="radio" id="recordingDevice-polar-vantage-m" data-datatable-filter="device" name="device" value="recordingDevice-polar-vantage-m" class="peer">
+                                                        <label for="recordingDevice-polar-vantage-m">
+                                                            <span>Polar Vantage M</span>
+                                                        </label>
+                                                        <a href="#" data-datatable-filter-clear="device">clear</a>
+                                                    </div>
+                                                </li>
+                                                                                            <li>
+                                                    <div>
+                                                        <input type="radio" id="recordingDevice-zwift" data-datatable-filter="device" name="device" value="recordingDevice-zwift" class="peer">
+                                                        <label for="recordingDevice-zwift">
+                                                            <span>Zwift</span>
+                                                        </label>
+                                                        <a href="#" data-datatable-filter-clear="device">clear</a>
+                                                    </div>
+                                                </li>
+                                                                                            <li>
+                                                    <div>
+                                                        <input type="radio" id="recordingDevice-rouvy" data-datatable-filter="device" name="device" value="recordingDevice-rouvy" class="peer">
+                                                        <label for="recordingDevice-rouvy">
+                                                            <span>Rouvy</span>
+                                                        </label>
+                                                        <a href="#" data-datatable-filter-clear="device">clear</a>
+                                                    </div>
+                                                </li>
+                                                                                        <li>
                                                 <div>
-                                                    <input type="radio" id="recordingDevice-polar-vantage-m" data-datatable-filter="device" name="device" value="recordingDevice-polar-vantage-m" class="peer">
-                                                    <label for="recordingDevice-polar-vantage-m">
-                                                        <span>Polar Vantage M</span>
+                                                    <input type="radio" id="recordingDevice-none" data-datatable-filter="device" name="device" value="recordingDevice-none" class="peer">
+                                                    <label for="recordingDevice-none">
+                                                        <span>Unspecified</span>
                                                     </label>
                                                     <a href="#" data-datatable-filter-clear="device">clear</a>
                                                 </div>
                                             </li>
-                                                                                    <li>
-                                                <div>
-                                                    <input type="radio" id="recordingDevice-zwift" data-datatable-filter="device" name="device" value="recordingDevice-zwift" class="peer">
-                                                    <label for="recordingDevice-zwift">
-                                                        <span>Zwift</span>
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="device">clear</a>
-                                                </div>
-                                            </li>
-                                                                                    <li>
-                                                <div>
-                                                    <input type="radio" id="recordingDevice-rouvy" data-datatable-filter="device" name="device" value="recordingDevice-rouvy" class="peer">
-                                                    <label for="recordingDevice-rouvy">
-                                                        <span>Rouvy</span>
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="device">clear</a>
-                                                </div>
-                                            </li>
-                                                                                <li>
-                                            <div>
-                                                <input type="radio" id="recordingDevice-none" data-datatable-filter="device" name="device" value="recordingDevice-none" class="peer">
-                                                <label for="recordingDevice-none">
-                                                    <span>Unspecified</span>
-                                                </label>
-                                                <a href="#" data-datatable-filter-clear="device">clear</a>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                                                <div class="filter-dropdown">
-                            <button id="distanceElevationButton" data-dropdown="dropdownDistanceElevation" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
+                                                        <div class="filter-dropdown">
+                                <button id="distanceElevationButton" data-dropdown="dropdownDistanceElevation" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
     <span>Distance &amp; Elevation</span>
     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"></path>
     </svg>
 </button>
-                            <div id="dropdownDistanceElevation">
-                                <div class="p-3 flex flex-col gap-y-2">
-                                    <div class="flex flex-col gap-y-2">
+                                <div id="dropdownDistanceElevation">
+                                    <div class="p-3 flex flex-col gap-y-2">
+                                        <div class="flex flex-col gap-y-2">
     <label for="distance[from]" class="flex gap-x-1 items-center text-sm font-medium text-gray-500">
         <svg class="size-4 text-gray-500" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 21C7.9 21 6.95833 20.6083 6.175 19.825C5.39167 19.0417 5 18.1 5 17V8.825C4.41667 8.60833 3.9375 8.24583 3.5625 7.7375C3.1875 7.22917 3 6.65 3 6C3 5.16667 3.29167 4.45833 3.875 3.875C4.45833 3.29167 5.16667 3 6 3C6.83333 3 7.54167 3.29167 8.125 3.875C8.70833 4.45833 9 5.16667 9 6C9 6.65 8.8125 7.22917 8.4375 7.7375C8.0625 8.24583 7.58333 8.60833 7 8.825V17C7 17.55 7.19583 18.0208 7.5875 18.4125C7.97917 18.8042 8.45 19 9 19C9.55 19 10.0208 18.8042 10.4125 18.4125C10.8042 18.0208 11 17.55 11 17V7C11 5.9 11.3917 4.95833 12.175 4.175C12.9583 3.39167 13.9 3 15 3C16.1 3 17.0417 3.39167 17.825 4.175C18.6083 4.95833 19 5.9 19 7V15.175C19.5833 15.3917 20.0625 15.7542 20.4375 16.2625C20.8125 16.7708 21 17.35 21 18C21 18.8333 20.7083 19.5417 20.125 20.125C19.5417 20.7083 18.8333 21 18 21C17.1667 21 16.4583 20.7083 15.875 20.125C15.2917 19.5417 15 18.8333 15 18C15 17.35 15.1875 16.7667 15.5625 16.25C15.9375 15.7333 16.4167 15.375 17 15.175V7C17 6.45 16.8042 5.97917 16.4125 5.5875C16.0208 5.19583 15.55 5 15 5C14.45 5 13.9792 5.19583 13.5875 5.5875C13.1958 5.97917 13 6.45 13 7V17C13 18.1 12.6083 19.0417 11.825 19.825C11.0417 20.6083 10.1 21 9 21ZM6 7C6.28333 7 6.52083 6.90417 6.7125 6.7125C6.90417 6.52083 7 6.28333 7 6C7 5.71667 6.90417 5.47917 6.7125 5.2875C6.52083 5.09583 6.28333 5 6 5C5.71667 5 5.47917 5.09583 5.2875 5.2875C5.09583 5.47917 5 5.71667 5 6C5 6.28333 5.09583 6.52083 5.2875 6.7125C5.47917 6.90417 5.71667 7 6 7ZM18 19C18.2833 19 18.5208 18.9042 18.7125 18.7125C18.9042 18.5208 19 18.2833 19 18C19 17.7167 18.9042 17.4792 18.7125 17.2875C18.5208 17.0958 18.2833 17 18 17C17.7167 17 17.4792 17.0958 17.2875 17.2875C17.0958 17.4792 17 17.7167 17 18C17 18.2833 17.0958 18.5208 17.2875 18.7125C17.4792 18.9042 17.7167 19 18 19Z" fill="currentColor"></path></svg>
         <span>Distance</span>
@@ -509,7 +510,7 @@
         <a href="#" class="invisible group-has-[input:not(:placeholder-shown)]/range-filter:visible text-primary text-sm text-right underline" data-datatable-filter-clear="distance">clear</a>
     </div>
 </div>
-                                    <div class="flex flex-col gap-y-2">
+                                        <div class="flex flex-col gap-y-2">
     <label for="elevation[from]" class="flex gap-x-1 items-center text-sm font-medium text-gray-500">
         <svg class="size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24"><path fill="currentColor" d="M21.85,17.47l-5-8a1,1,0,0,0-1.7,0l-1,1.63L10.86,5.5a1,1,0,0,0-1.72,0l-7,12A1,1,0,0,0,3,19H21a1,1,0,0,0,.85-1.53ZM10.45,17H4.74L10,8l2.93,5Zm2.35,0L15,13.57h0L16,11.89,19.2,17Z"></path></svg>
         <span>Elevation</span>
@@ -533,10 +534,49 @@
         <a href="#" class="invisible group-has-[input:not(:placeholder-shown)]/range-filter:visible text-primary text-sm text-right underline" data-datatable-filter-clear="elevation">clear</a>
     </div>
 </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="filter-dropdown">
+                            <div class="filter-dropdown">
+    <button id="dropdownWorkoutTypeButton" data-dropdown="dropdownWorkoutType" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
+    <span>Workout type</span>
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"></path>
+    </svg>
+</button>
+    <div id="dropdownWorkoutType">
+        <ul aria-labelledby="dropdownWorkoutTypeButton">
+                            <li>
+                    <div>
+                        <input type="radio" id="race" data-datatable-filter="workoutType" name="workoutType" value="race" class="peer">
+                        <label for="race">
+                            Race
+                        </label>
+                        <a href="#" data-datatable-filter-clear="workoutType">clear</a>
+                    </div>
+                </li>
+                            <li>
+                    <div>
+                        <input type="radio" id="workout" data-datatable-filter="workoutType" name="workoutType" value="workout" class="peer">
+                        <label for="workout">
+                            Workout
+                        </label>
+                        <a href="#" data-datatable-filter-clear="workoutType">clear</a>
+                    </div>
+                </li>
+                            <li>
+                    <div>
+                        <input type="radio" id="longRun" data-datatable-filter="workoutType" name="workoutType" value="longRun" class="peer">
+                        <label for="longRun">
+                            Long run
+                        </label>
+                        <a href="#" data-datatable-filter-clear="workoutType">clear</a>
+                    </div>
+                </li>
+                    </ul>
+    </div>
+</div>
+                            <div class="filter-dropdown">
     <button id="otherButton" data-dropdown="dropdownOther" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
     <span>Other</span>
     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
@@ -544,8 +584,8 @@
     </svg>
 </button>
     <div id="dropdownOther">
-        <div class="px-1 py-2 flex gap-x-2 divide-x divide-gray-100">
-            <div class="flex flex-col items-center">
+        <div class="px-1 py-2 flex flex-col gap-2 divide-y divide-gray-100 md:flex-row md:divide-y-0 md:divide-x">
+            <div class="flex flex-col items-center not-last:pb-2 md:not-last:pb-0">
                 <div class="text-xs font-medium items-center">Commutes</div>
                 <ul class="text-sm text-gray-700">
                     <li>
@@ -568,7 +608,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="flex flex-col items-center">
+            <div class="flex flex-col items-center not-last:pb-2 md:not-last:pb-0">
                 <div class="text-xs font-medium items-center">Group activities</div>
                 <ul class="text-sm text-gray-700">
                     <li>
@@ -591,42 +631,11 @@
                     </li>
                 </ul>
             </div>
-            <div class="flex flex-col items-center">
-                <div class="text-xs font-medium">Workout type</div>
-                <ul class="text-sm text-gray-700">
-                                            <li>
-                            <div>
-                                <input type="radio" id="race" data-datatable-filter="workoutType" name="workoutType" value="race" class="peer">
-                                <label for="race">
-                                    Race
-                                </label>
-                                <a href="#" data-datatable-filter-clear="workoutType">clear</a>
-                            </div>
-                        </li>
-                                            <li>
-                            <div>
-                                <input type="radio" id="workout" data-datatable-filter="workoutType" name="workoutType" value="workout" class="peer">
-                                <label for="workout">
-                                    Workout
-                                </label>
-                                <a href="#" data-datatable-filter-clear="workoutType">clear</a>
-                            </div>
-                        </li>
-                                            <li>
-                            <div>
-                                <input type="radio" id="longRun" data-datatable-filter="workoutType" name="workoutType" value="longRun" class="peer">
-                                <label for="longRun">
-                                    Long run
-                                </label>
-                                <a href="#" data-datatable-filter-clear="workoutType">clear</a>
-                            </div>
-                        </li>
-                                    </ul>
-            </div>
         </div>
     </div>
 </div>
-                        <div class="filter-dropdown filter-dropdown--icon ms-auto">
+                        </div>
+                        <div class="filter-dropdown filter-dropdown--icon shrink-0">
                             <button id="dropdownColumnsButton" data-dropdown="dropdownColumns" data-dropdown-placement="bottom-end" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button" title="Columns">
                                 <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v14M9 5v14M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"></path></svg>
                                 <span class="sr-only">Columns</span>

@@ -1,8 +1,8 @@
 <div class="filter-dropdown">
     {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'otherButton', dropdownId: 'dropdownOther', label: "Other"|trans} only %}
     <div id="dropdownOther">
-        <div class="px-1 py-2 flex gap-x-2 divide-x divide-gray-100">
-            <div class="flex flex-col items-center">
+        <div class="px-1 py-2 flex flex-col gap-2 divide-y divide-gray-100 md:flex-row md:divide-y-0 md:divide-x">
+            <div class="flex flex-col items-center not-last:pb-2 md:not-last:pb-0">
                 <div class="text-xs font-medium items-center">{{ "Commutes"|trans }}</div>
                 <ul class="text-sm text-gray-700">
                     <li>
@@ -25,7 +25,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="flex flex-col items-center">
+            <div class="flex flex-col items-center not-last:pb-2 md:not-last:pb-0">
                 <div class="text-xs font-medium items-center">{{ "Group activities"|trans }}</div>
                 <ul class="text-sm text-gray-700">
                     <li>
@@ -46,22 +46,6 @@
                             <a href="#" data-datatable-filter-clear="isGroupActivity">{{ "clear"|trans }}</a>
                         </div>
                     </li>
-                </ul>
-            </div>
-            <div class="flex flex-col items-center">
-                <div class="text-xs font-medium">{{ "Workout type"|trans }}</div>
-                <ul class="text-sm text-gray-700">
-                    {% for workoutType in enum('App\\Domain\\Activity\\WorkoutType').cases() %}
-                        <li>
-                            <div>
-                                <input type="radio" id="{{ workoutType.value }}" data-dataTable-filter="workoutType" name="workoutType" value="{{ workoutType.value }}" class="peer" />
-                                <label for="{{ workoutType.value }}">
-                                    {{ workoutType|trans }}
-                                </label>
-                                <a href="#" data-datatable-filter-clear="workoutType">{{ "clear"|trans }}</a>
-                            </div>
-                        </li>
-                    {% endfor %}
                 </ul>
             </div>
         </div>

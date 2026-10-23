@@ -326,6 +326,45 @@
             </div>
 </div>
                         <div class="filter-dropdown">
+    <button id="dropdownWorkoutTypeButton" data-dropdown="dropdownWorkoutType" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
+    <span>Workout type</span>
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"></path>
+    </svg>
+</button>
+    <div id="dropdownWorkoutType">
+        <ul aria-labelledby="dropdownWorkoutTypeButton">
+                            <li>
+                    <div>
+                        <input type="radio" id="race" data-datatable-filter="workoutType" name="workoutType" value="race" class="peer">
+                        <label for="race">
+                            Race
+                        </label>
+                        <a href="#" data-datatable-filter-clear="workoutType">clear</a>
+                    </div>
+                </li>
+                            <li>
+                    <div>
+                        <input type="radio" id="workout" data-datatable-filter="workoutType" name="workoutType" value="workout" class="peer">
+                        <label for="workout">
+                            Workout
+                        </label>
+                        <a href="#" data-datatable-filter-clear="workoutType">clear</a>
+                    </div>
+                </li>
+                            <li>
+                    <div>
+                        <input type="radio" id="longRun" data-datatable-filter="workoutType" name="workoutType" value="longRun" class="peer">
+                        <label for="longRun">
+                            Long run
+                        </label>
+                        <a href="#" data-datatable-filter-clear="workoutType">clear</a>
+                    </div>
+                </li>
+                    </ul>
+    </div>
+</div>
+                        <div class="filter-dropdown">
     <button id="otherButton" data-dropdown="dropdownOther" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
     <span>Other</span>
     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
@@ -333,8 +372,8 @@
     </svg>
 </button>
     <div id="dropdownOther">
-        <div class="px-1 py-2 flex gap-x-2 divide-x divide-gray-100">
-            <div class="flex flex-col items-center">
+        <div class="px-1 py-2 flex flex-col gap-2 divide-y divide-gray-100 md:flex-row md:divide-y-0 md:divide-x">
+            <div class="flex flex-col items-center not-last:pb-2 md:not-last:pb-0">
                 <div class="text-xs font-medium items-center">Commutes</div>
                 <ul class="text-sm text-gray-700">
                     <li>
@@ -357,7 +396,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="flex flex-col items-center">
+            <div class="flex flex-col items-center not-last:pb-2 md:not-last:pb-0">
                 <div class="text-xs font-medium items-center">Group activities</div>
                 <ul class="text-sm text-gray-700">
                     <li>
@@ -379,38 +418,6 @@
                         </div>
                     </li>
                 </ul>
-            </div>
-            <div class="flex flex-col items-center">
-                <div class="text-xs font-medium">Workout type</div>
-                <ul class="text-sm text-gray-700">
-                                            <li>
-                            <div>
-                                <input type="radio" id="race" data-datatable-filter="workoutType" name="workoutType" value="race" class="peer">
-                                <label for="race">
-                                    Race
-                                </label>
-                                <a href="#" data-datatable-filter-clear="workoutType">clear</a>
-                            </div>
-                        </li>
-                                            <li>
-                            <div>
-                                <input type="radio" id="workout" data-datatable-filter="workoutType" name="workoutType" value="workout" class="peer">
-                                <label for="workout">
-                                    Workout
-                                </label>
-                                <a href="#" data-datatable-filter-clear="workoutType">clear</a>
-                            </div>
-                        </li>
-                                            <li>
-                            <div>
-                                <input type="radio" id="longRun" data-datatable-filter="workoutType" name="workoutType" value="longRun" class="peer">
-                                <label for="longRun">
-                                    Long run
-                                </label>
-                                <a href="#" data-datatable-filter-clear="workoutType">clear</a>
-                            </div>
-                        </li>
-                                    </ul>
             </div>
         </div>
     </div>

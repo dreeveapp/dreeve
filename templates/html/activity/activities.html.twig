@@ -31,83 +31,86 @@
                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition block w-full ps-10 p-2.5">
                         </div>
                     </div>
-                    <div class="flex flex-wrap gap-2">
-                        {% if sportTypes|length > 0 %}
-                            {% include 'html/data-table/filter/sport-type.html.twig' with {sportTypes: sportTypes} only %}
-                        {% endif %}
-                        {% include 'html/data-table/filter/date-range.html.twig' with {name: 'start-date', label: "Date"|trans, withPresets: true} only %}
-                        {% if countries|length > 0 %}
-                            {% include 'html/data-table/filter/country.html.twig' with {countries: countries, label: "Country"|trans} only %}
-                        {% endif %}
-                        {% if gears|length > 0 %}
-                            <div class="filter-dropdown">
-                                {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownGearsButton', dropdownId: 'dropdownGears', label: "Gear"|trans} only %}
-                                <div id="dropdownGears" class="divide-y divide-gray-100">
-                                    <ul aria-labelledby="dropdownGearsButton">
-                                        {% for gear in gears %}
+                    <div class="flex items-start gap-2">
+                        <div class="flex flex-wrap gap-2 grow">
+                            {% if sportTypes|length > 0 %}
+                                {% include 'html/data-table/filter/sport-type.html.twig' with {sportTypes: sportTypes} only %}
+                            {% endif %}
+                            {% include 'html/data-table/filter/date-range.html.twig' with {name: 'start-date', label: "Date"|trans, withPresets: true} only %}
+                            {% if countries|length > 0 %}
+                                {% include 'html/data-table/filter/country.html.twig' with {countries: countries, label: "Country"|trans} only %}
+                            {% endif %}
+                            {% if gears|length > 0 %}
+                                <div class="filter-dropdown">
+                                    {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownGearsButton', dropdownId: 'dropdownGears', label: "Gear"|trans} only %}
+                                    <div id="dropdownGears" class="divide-y divide-gray-100">
+                                        <ul aria-labelledby="dropdownGearsButton">
+                                            {% for gear in gears %}
+                                                <li>
+                                                    <div>
+                                                        <input type="radio" id="{{ gear.getId() }}" data-dataTable-filter="gear" name="gear" value="{{ gear.getId() }}" class="peer" />
+                                                        <label for="{{ gear.getId() }}">
+                                                            <span>{{ gear.getName() }}</span>
+                                                        </label>
+                                                        <a href="#" data-datatable-filter-clear="gear">{{ "clear"|trans }}</a>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
                                             <li>
                                                 <div>
-                                                    <input type="radio" id="{{ gear.getId() }}" data-dataTable-filter="gear" name="gear" value="{{ gear.getId() }}" class="peer" />
-                                                    <label for="{{ gear.getId() }}">
-                                                        <span>{{ gear.getName() }}</span>
+                                                    <input type="radio" id="gear-none" data-dataTable-filter="gear" name="gear" value="gear-none" class="peer" />
+                                                    <label for="gear-none">
+                                                        <span>{{ "Unspecified"|trans }}</span>
                                                     </label>
                                                     <a href="#" data-datatable-filter-clear="gear">{{ "clear"|trans }}</a>
                                                 </div>
                                             </li>
-                                        {% endfor %}
-                                        <li>
-                                            <div>
-                                                <input type="radio" id="gear-none" data-dataTable-filter="gear" name="gear" value="gear-none" class="peer" />
-                                                <label for="gear-none">
-                                                    <span>{{ "Unspecified"|trans }}</span>
-                                                </label>
-                                                <a href="#" data-datatable-filter-clear="gear">{{ "clear"|trans }}</a>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                        {% endif %}
-                        {% if devices|length > 0 %}
-                            <div class="filter-dropdown">
-                                {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownDevicesButton', dropdownId: 'dropdownDevices', label: "Device"|trans} only %}
-                                <div id="dropdownDevices" class="divide-y divide-gray-100">
-                                    <ul aria-labelledby="dropdownDevicesButton">
-                                        {% for device in devices %}
+                            {% endif %}
+                            {% if devices|length > 0 %}
+                                <div class="filter-dropdown">
+                                    {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownDevicesButton', dropdownId: 'dropdownDevices', label: "Device"|trans} only %}
+                                    <div id="dropdownDevices" class="divide-y divide-gray-100">
+                                        <ul aria-labelledby="dropdownDevicesButton">
+                                            {% for device in devices %}
+                                                <li>
+                                                    <div>
+                                                        <input type="radio" id="{{ device.getId() }}" data-dataTable-filter="device" name="device" value="{{ device.getId() }}" class="peer" />
+                                                        <label for="{{ device.getId() }}">
+                                                            <span>{{ device.getName() }}</span>
+                                                        </label>
+                                                        <a href="#" data-datatable-filter-clear="device">{{ "clear"|trans }}</a>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
                                             <li>
                                                 <div>
-                                                    <input type="radio" id="{{ device.getId() }}" data-dataTable-filter="device" name="device" value="{{ device.getId() }}" class="peer" />
-                                                    <label for="{{ device.getId() }}">
-                                                        <span>{{ device.getName() }}</span>
+                                                    <input type="radio" id="recordingDevice-none" data-dataTable-filter="device" name="device" value="recordingDevice-none" class="peer" />
+                                                    <label for="recordingDevice-none">
+                                                        <span>{{ "Unspecified"|trans }}</span>
                                                     </label>
                                                     <a href="#" data-datatable-filter-clear="device">{{ "clear"|trans }}</a>
                                                 </div>
                                             </li>
-                                        {% endfor %}
-                                        <li>
-                                            <div>
-                                                <input type="radio" id="recordingDevice-none" data-dataTable-filter="device" name="device" value="recordingDevice-none" class="peer" />
-                                                <label for="recordingDevice-none">
-                                                    <span>{{ "Unspecified"|trans }}</span>
-                                                </label>
-                                                <a href="#" data-datatable-filter-clear="device">{{ "clear"|trans }}</a>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="filter-dropdown">
+                                {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'distanceElevationButton', dropdownId: 'dropdownDistanceElevation', label: "Distance & Elevation"|trans} only %}
+                                <div id="dropdownDistanceElevation">
+                                    <div class="p-3 flex flex-col gap-y-2">
+                                        {% include 'html/data-table/filter/range.html.twig' with {name: 'distance', label: "Distance"|trans, icon: 'distance', unit: renderUnitSymbol('distance')} only %}
+                                        {% include 'html/data-table/filter/range.html.twig' with {name: 'elevation', label: "Elevation"|trans, icon: 'elevation', unit: renderUnitSymbol('elevation')} only %}
+                                    </div>
                                 </div>
                             </div>
-                        {% endif %}
-                        <div class="filter-dropdown">
-                            {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'distanceElevationButton', dropdownId: 'dropdownDistanceElevation', label: "Distance & Elevation"|trans} only %}
-                            <div id="dropdownDistanceElevation">
-                                <div class="p-3 flex flex-col gap-y-2">
-                                    {% include 'html/data-table/filter/range.html.twig' with {name: 'distance', label: "Distance"|trans, icon: 'distance', unit: renderUnitSymbol('distance')} only %}
-                                    {% include 'html/data-table/filter/range.html.twig' with {name: 'elevation', label: "Elevation"|trans, icon: 'elevation', unit: renderUnitSymbol('elevation')} only %}
-                                </div>
-                            </div>
+                            {% include 'html/data-table/filter/workout-type.html.twig' only %}
+                            {% include 'html/data-table/filter/other.html.twig' only %}
                         </div>
-                        {% include 'html/data-table/filter/other.html.twig' only %}
-                        <div class="filter-dropdown filter-dropdown--icon ms-auto">
+                        <div class="filter-dropdown filter-dropdown--icon shrink-0">
                             <button id="dropdownColumnsButton" data-dropdown="dropdownColumns" data-dropdown-placement="bottom-end" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button" title="{{ "Columns"|trans }}">
                                 {{ svg('columns') }}
                                 <span class="sr-only">{{ "Columns"|trans }}</span>

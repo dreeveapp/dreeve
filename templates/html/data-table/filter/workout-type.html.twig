@@ -1,0 +1,18 @@
+<div class="filter-dropdown">
+    {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownWorkoutTypeButton', dropdownId: 'dropdownWorkoutType', label: "Workout type"|trans} only %}
+    <div id="dropdownWorkoutType">
+        <ul aria-labelledby="dropdownWorkoutTypeButton">
+            {% for workoutType in enum('App\\Domain\\Activity\\WorkoutType').cases() %}
+                <li>
+                    <div>
+                        <input type="radio" id="{{ workoutType.value }}" data-dataTable-filter="workoutType" name="workoutType" value="{{ workoutType.value }}" class="peer" />
+                        <label for="{{ workoutType.value }}">
+                            {{ workoutType|trans }}
+                        </label>
+                        <a href="#" data-datatable-filter-clear="workoutType">{{ "clear"|trans }}</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

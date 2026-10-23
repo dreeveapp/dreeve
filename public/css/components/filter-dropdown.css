@@ -17,7 +17,7 @@
         }
 
         & > div {
-            @apply z-1002 w-fit hidden border border-gray-200 bg-white rounded-lg shadow-xs;
+            @apply z-1002 w-fit max-w-[calc(100vw-2rem)] hidden border border-gray-200 bg-white rounded-lg shadow-xs;
 
             & > ul {
                 @apply max-h-48 overflow-y-auto px-1 py-2 text-sm text-gray-700;
