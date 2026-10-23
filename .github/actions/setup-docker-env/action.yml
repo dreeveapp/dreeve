@@ -4,8 +4,10 @@ description: Build the php-cli image and install Composer dependencies inside it
 runs:
   using: composite
   steps:
-    - name: Copy .env file
-      run: cp .env.test .env
+    - name: Copy .env files
+      run: |
+        cp .env.test .env
+        touch .env.local
       shell: bash
 
     - name: Set Compose project name
