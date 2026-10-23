@@ -9,7 +9,7 @@ permissions:
 jobs:
   coverage:
     name: Upload coverage to Codecov
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     env:
       PHP: docker compose run --rm -e XDEBUG_MODE=coverage php-cli
     steps:
