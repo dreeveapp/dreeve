@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Security;
+namespace App\Infrastructure\Security\Admin;
 
 final readonly class AdminPasswordHash implements \Stringable
 {

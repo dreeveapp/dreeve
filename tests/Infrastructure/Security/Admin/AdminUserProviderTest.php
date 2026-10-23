@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\Infrastructure\Security;
+namespace App\Tests\Infrastructure\Security\Admin;
 
-use App\Infrastructure\Security\AdminPasswordHash;
-use App\Infrastructure\Security\AdminUserName;
-use App\Infrastructure\Security\AdminUserProvider;
+use App\Infrastructure\Security\Admin\AdminPasswordHash;
+use App\Infrastructure\Security\Admin\AdminUserName;
+use App\Infrastructure\Security\Admin\AdminUserProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;

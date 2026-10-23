@@ -19,7 +19,7 @@ use App\Domain\Strava\StravaRefreshToken;
 use App\Infrastructure\Config\AdminAllowedIpAddresses;
 use App\Infrastructure\Http\ClientIpResolver;
 use App\Infrastructure\Http\HtmlResponse;
-use App\Infrastructure\Security\AdminUserName;
+use App\Infrastructure\Security\Admin\AdminUserName;
 use App\Infrastructure\Security\Api\ApiToken;
 use App\Infrastructure\Security\Mcp\McpToken;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;

@@ -70,11 +70,11 @@ services:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:DEV_MODE_IS_ENABLED)%']
 
-    App\Infrastructure\Security\AdminUserName:
+    App\Infrastructure\Security\Admin\AdminUserName:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:ADMIN_USERNAME)%']
 
-    App\Infrastructure\Security\AdminPasswordHash:
+    App\Infrastructure\Security\Admin\AdminPasswordHash:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:ADMIN_PASSWORD_HASH)%']
 

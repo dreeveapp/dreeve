@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Security;
+namespace App\Infrastructure\Security\Admin;
 
 use App\Infrastructure\ValueObject\String\NonEmptyStringLiteral;
 

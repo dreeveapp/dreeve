@@ -6,7 +6,7 @@ security:
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         admin_provider:
-            id: App\Infrastructure\Security\AdminUserProvider
+            id: App\Infrastructure\Security\Admin\AdminUserProvider
         token_provider:
             id: App\Infrastructure\Security\TokenUserProvider
 
