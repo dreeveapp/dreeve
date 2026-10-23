@@ -333,6 +333,7 @@ Password: Passwort
 'Pick an activity to select the segment on its route.': 'Wähle eine Aktivität aus und markiere das Segment auf der Strecke.'
 'Pick the rules you want to apply to see which activities would change.': 'Wähle die Regeln aus, die du anwenden möchten, um zu sehen, welche Aktivitäten sich ändern würden.'
 'Polyline color': Routenfarbe
+'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.'
 'Preview selection': Vorschaubereich
 'Processed on': 'Verarbeitet am'
 'Profile picture URL': Profilbild-URL

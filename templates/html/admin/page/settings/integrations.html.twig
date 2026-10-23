@@ -15,7 +15,10 @@
         {% set notificationServiceRows = notificationServiceRows|merge([{'value': service}]) %}
     {% endfor %}
     {% set aiProviderEnum = enum('App\\Domain\\Integration\\AI\\AIProvider') %}
-    {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "AI"|trans({}, 'admin')} %}
+    {% set aiDescription %}
+        {{ "Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}."|trans({'{linkOpen}': '<a class="underline" href="' ~ relativeUrl(path('admin_settings', {group: 'security'})) ~ '">', '{linkClose}': '</a>'}, 'admin')|raw }}
+    {% endset %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "AI"|trans({}, 'admin'), description: aiDescription} %}
         {% block body %}
             <div>
                 <label class="flex items-center gap-2 mt-0! font-medium cursor-pointer">

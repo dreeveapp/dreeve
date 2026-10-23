@@ -333,6 +333,7 @@ Password: Contraseña
 'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Elige las reglas que quieres aplicar para ver qué actividades cambiarían.'
 'Polyline color': 'Color de la polilínea'
+'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.'
 'Preview selection': 'Previsualizar selección'
 'Processed on': 'Procesado el'
 'Profile picture URL': 'URL de la foto de perfil'

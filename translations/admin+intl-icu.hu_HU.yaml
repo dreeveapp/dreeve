@@ -333,6 +333,7 @@ Password: Jelszó
 'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Válaszd ki az alkalmazandó szabályokat, hogy lásd, mely tevékenységek változnának.'
 'Polyline color': 'Vonallánc színe'
+'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.'
 'Preview selection': 'Kiválasztás előnézete'
 'Processed on': 'Feldolgozva ekkor'
 'Profile picture URL': 'Profilkép URL'
