@@ -106,75 +106,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="filter-dropdown">
-                            {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'otherButton', dropdownId: 'dropdownOther', label: "Other"|trans} only %}
-                            <div id="dropdownOther">
-                                <div class="px-1 py-2 flex gap-x-2 divide-x divide-gray-100">
-                                    <div class="flex flex-col items-center">
-                                        <div class="text-xs font-medium items-center">{{ "Commutes"|trans }}</div>
-                                        <ul class="text-sm text-gray-700">
-                                            <li>
-                                                <div>
-                                                    <input type="radio" id="true" data-dataTable-filter="isCommute" name="isCommute" value="true" class="peer" />
-                                                    <label for="true">
-                                                        {{ "Commutes only"|trans }}
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="isCommute">{{ "clear"|trans }}</a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div>
-                                                    <input type="radio" id="false" data-dataTable-filter="isCommute" name="isCommute" value="false" class="peer" />
-                                                    <label for="false">
-                                                        {{ "Excludes commutes"|trans }}
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="isCommute">{{ "clear"|trans }}</a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="text-xs font-medium items-center">{{ "Group activities"|trans }}</div>
-                                        <ul class="text-sm text-gray-700">
-                                            <li>
-                                                <div>
-                                                    <input type="radio" id="isGroupActivity-true" data-dataTable-filter="isGroupActivity" name="isGroupActivity" value="true" class="peer" />
-                                                    <label for="isGroupActivity-true">
-                                                        {{ "Group activities only"|trans }}
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="isGroupActivity">{{ "clear"|trans }}</a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div>
-                                                    <input type="radio" id="isGroupActivity-false" data-dataTable-filter="isGroupActivity" name="isGroupActivity" value="false" class="peer" />
-                                                    <label for="isGroupActivity-false">
-                                                        {{ "Excludes group activities"|trans }}
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="isGroupActivity">{{ "clear"|trans }}</a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="text-xs font-medium">{{ "Workout type"|trans }}</div>
-                                        <ul class="text-sm text-gray-700">
-                                            {% for workoutType in enum('App\\Domain\\Activity\\WorkoutType').cases() %}
-                                                <li>
-                                                    <div>
-                                                        <input type="radio" id="{{ workoutType.value }}" data-dataTable-filter="workoutType" name="workoutType" value="{{ workoutType.value }}" class="peer" />
-                                                        <label for="{{ workoutType.value }}">
-                                                            {{ workoutType|trans }}
-                                                        </label>
-                                                        <a href="#" data-datatable-filter-clear="workoutType">{{ "clear"|trans }}</a>
-                                                    </div>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {% include 'html/data-table/filter/other.html.twig' only %}
                         <div class="filter-dropdown filter-dropdown--icon ms-auto">
                             <button id="dropdownColumnsButton" data-dropdown="dropdownColumns" data-dropdown-placement="bottom-end" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button" title="{{ "Columns"|trans }}">
                                 {{ svg('columns') }}

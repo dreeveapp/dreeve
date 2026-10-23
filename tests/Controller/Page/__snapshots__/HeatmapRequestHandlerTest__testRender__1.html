@@ -326,95 +326,95 @@
             </div>
 </div>
                         <div class="filter-dropdown">
-                            <button id="otherButton" data-dropdown="dropdownOther" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
+    <button id="otherButton" data-dropdown="dropdownOther" data-dropdown-offset-distance="10" data-dropdown-offset-skidding="0" type="button">
     <span>Other</span>
     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"></path>
     </svg>
 </button>
-                            <div id="dropdownOther">
-                                <div class="px-1 py-2 flex gap-x-2 divide-x divide-gray-100">
-                                    <div class="flex flex-col items-center">
-                                        <div class="text-xs font-medium items-center">Commutes</div>
-                                        <ul class="text-sm text-gray-700">
-                                            <li>
-                                                <div>
-                                                    <input type="radio" id="true" data-datatable-filter="isCommute" name="isCommute" value="true" class="peer">
-                                                    <label for="true">
-                                                        Commutes only
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="isCommute">clear</a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div>
-                                                    <input type="radio" id="false" data-datatable-filter="isCommute" name="isCommute" value="false" class="peer">
-                                                    <label for="false">
-                                                        Excludes commutes
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="isCommute">clear</a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="text-xs font-medium items-center">Group activities</div>
-                                        <ul class="text-sm text-gray-700">
-                                            <li>
-                                                <div>
-                                                    <input type="radio" id="isGroupActivity-true" data-datatable-filter="isGroupActivity" name="isGroupActivity" value="true" class="peer">
-                                                    <label for="isGroupActivity-true">
-                                                        Group activities only
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="isGroupActivity">clear</a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div>
-                                                    <input type="radio" id="isGroupActivity-false" data-datatable-filter="isGroupActivity" name="isGroupActivity" value="false" class="peer">
-                                                    <label for="isGroupActivity-false">
-                                                        Excludes group activities
-                                                    </label>
-                                                    <a href="#" data-datatable-filter-clear="isGroupActivity">clear</a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <div class="text-xs font-medium">Workout type</div>
-                                        <ul class="text-sm text-gray-700">
-                                                                                            <li>
-                                                    <div>
-                                                        <input type="radio" id="race" data-datatable-filter="workoutType" name="workoutType" value="race" class="peer">
-                                                        <label for="race">
-                                                            Race
-                                                        </label>
-                                                        <a href="#" data-datatable-filter-clear="workoutType">clear</a>
-                                                    </div>
-                                                </li>
-                                                                                            <li>
-                                                    <div>
-                                                        <input type="radio" id="workout" data-datatable-filter="workoutType" name="workoutType" value="workout" class="peer">
-                                                        <label for="workout">
-                                                            Workout
-                                                        </label>
-                                                        <a href="#" data-datatable-filter-clear="workoutType">clear</a>
-                                                    </div>
-                                                </li>
-                                                                                            <li>
-                                                    <div>
-                                                        <input type="radio" id="longRun" data-datatable-filter="workoutType" name="workoutType" value="longRun" class="peer">
-                                                        <label for="longRun">
-                                                            Long run
-                                                        </label>
-                                                        <a href="#" data-datatable-filter-clear="workoutType">clear</a>
-                                                    </div>
-                                                </li>
-                                                                                    </ul>
-                                    </div>
-                                </div>
-                            </div>
+    <div id="dropdownOther">
+        <div class="px-1 py-2 flex gap-x-2 divide-x divide-gray-100">
+            <div class="flex flex-col items-center">
+                <div class="text-xs font-medium items-center">Commutes</div>
+                <ul class="text-sm text-gray-700">
+                    <li>
+                        <div>
+                            <input type="radio" id="true" data-datatable-filter="isCommute" name="isCommute" value="true" class="peer">
+                            <label for="true">
+                                Commutes only
+                            </label>
+                            <a href="#" data-datatable-filter-clear="isCommute">clear</a>
                         </div>
+                    </li>
+                    <li>
+                        <div>
+                            <input type="radio" id="false" data-datatable-filter="isCommute" name="isCommute" value="false" class="peer">
+                            <label for="false">
+                                Excludes commutes
+                            </label>
+                            <a href="#" data-datatable-filter-clear="isCommute">clear</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="text-xs font-medium items-center">Group activities</div>
+                <ul class="text-sm text-gray-700">
+                    <li>
+                        <div>
+                            <input type="radio" id="isGroupActivity-true" data-datatable-filter="isGroupActivity" name="isGroupActivity" value="true" class="peer">
+                            <label for="isGroupActivity-true">
+                                Group activities only
+                            </label>
+                            <a href="#" data-datatable-filter-clear="isGroupActivity">clear</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <input type="radio" id="isGroupActivity-false" data-datatable-filter="isGroupActivity" name="isGroupActivity" value="false" class="peer">
+                            <label for="isGroupActivity-false">
+                                Excludes group activities
+                            </label>
+                            <a href="#" data-datatable-filter-clear="isGroupActivity">clear</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="text-xs font-medium">Workout type</div>
+                <ul class="text-sm text-gray-700">
+                                            <li>
+                            <div>
+                                <input type="radio" id="race" data-datatable-filter="workoutType" name="workoutType" value="race" class="peer">
+                                <label for="race">
+                                    Race
+                                </label>
+                                <a href="#" data-datatable-filter-clear="workoutType">clear</a>
+                            </div>
+                        </li>
+                                            <li>
+                            <div>
+                                <input type="radio" id="workout" data-datatable-filter="workoutType" name="workoutType" value="workout" class="peer">
+                                <label for="workout">
+                                    Workout
+                                </label>
+                                <a href="#" data-datatable-filter-clear="workoutType">clear</a>
+                            </div>
+                        </li>
+                                            <li>
+                            <div>
+                                <input type="radio" id="longRun" data-datatable-filter="workoutType" name="workoutType" value="longRun" class="peer">
+                                <label for="longRun">
+                                    Long run
+                                </label>
+                                <a href="#" data-datatable-filter-clear="workoutType">clear</a>
+                            </div>
+                        </li>
+                                    </ul>
+            </div>
+        </div>
+    </div>
+</div>
                     </div>
                 </form>
                 <div class="flex items-center justify-between gap-x-2 text-xs text-gray-700">
