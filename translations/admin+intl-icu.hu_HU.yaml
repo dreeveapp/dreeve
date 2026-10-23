@@ -55,7 +55,6 @@ Admin: Admin
 'All sport types must belong to the same activity type.': 'Minden sporttípusnak ugyanahhoz a tevékenységtípushoz kell tartoznia.'
 'Allow visitors to download original activity files': 'Allow visitors to download original activity files'
 'Allowed IP addresses for the admin panel': 'Az adminfelülethez engedélyezett IP-címek'
-'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Emellett elérhetővé teszi az edzésasszisztenst a webes felületen. Ehhez a fenti AI-integrációnak bekapcsolva kell lennie. Óvatosan használd, ha az alkalmazásod nyilvánosan elérhető.'
 'Any IP address': 'Bármely IP-cím'
 'Any gear assigned to the activity will be removed.': 'Any gear assigned to the activity will be removed.'
 'App URL': 'Alkalmazás URL'
@@ -424,7 +423,6 @@ Settings: Beállítások
 'Show last X years by default': 'Alapértelmezés szerint az utolsó X év megjelenítése'
 'Show options': 'Beállítások megjelenítése'
 'Show password': 'Jelszó megjelenítése'
-'Show the workout assistant in the UI.': 'Az edzésasszisztens megjelenítése a felületen.'
 'Showing {first} - {last} of {total}': '{first} – {last} megjelenítve, összesen {total}'
 'Sign in': Bejelentkezés
 'Sign in to the admin panel': 'Bejelentkezés az adminfelületre'
@@ -524,7 +522,7 @@ To: Eddig
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Kövesd a felszerelés használatát a tevékenységeidből, és tartsd kézben a használat- és időalapú karbantartást.'
 Tuesday: Kedd
 'Turn gear maintenance tracking on or off.': 'A felszerelés-karbantartás követésének be- vagy kikapcsolása.'
-'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Bekapcsolja az AI-alapú edzésasszisztenst, amely ezután a parancssorból használható.'
+'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
 Type: Típus
 URL: URL
 Unit: Mértékegység
@@ -537,6 +535,7 @@ Until: Until
 'Upload files': 'Fájlok feltöltése'
 Uploaded: Feltöltve
 Uploading...: Feltöltés...
+'Use caution when enabling this if your app is publicly accessible.': 'Use caution when enabling this if your app is publicly accessible.'
 'Used to calculate the training load of this activity': 'Used to calculate the training load of this activity'
 Username: Felhasználónév
 'Verify token': 'Ellenőrző token'

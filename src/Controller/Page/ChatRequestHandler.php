@@ -46,7 +46,7 @@ final readonly class ChatRequestHandler
     #[Route(path: '/chat', name: 'chat', methods: ['GET'])]
     public function handle(): PrivateNoStoreHtmlResponse
     {
-        if (!$this->settingsRepository->integrations()->isAIIntegrationWithUIEnabled()) {
+        if (!$this->settingsRepository->integrations()->isAIIntegrationEnabled()) {
             throw new NotFoundHttpException('Not found');
         }
 
@@ -60,7 +60,7 @@ final readonly class ChatRequestHandler
     #[Route(path: '/chat/clear', name: 'ai_chat_clear', methods: ['POST'], priority: 2)]
     public function clearChat(): Response
     {
-        if (!$this->settingsRepository->integrations()->isAIIntegrationWithUIEnabled()) {
+        if (!$this->settingsRepository->integrations()->isAIIntegrationEnabled()) {
             throw new NotFoundHttpException('Not found');
         }
 
@@ -72,7 +72,7 @@ final readonly class ChatRequestHandler
     #[Route('/chat/sse', name: 'ai_chat_sse', methods: ['GET'], priority: 2)]
     public function chatSse(Request $request): EventStreamResponse
     {
-        if (!$this->settingsRepository->integrations()->isAIIntegrationWithUIEnabled()) {
+        if (!$this->settingsRepository->integrations()->isAIIntegrationEnabled()) {
             throw new NotFoundHttpException('Not found');
         }
 

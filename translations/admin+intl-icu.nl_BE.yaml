@@ -55,7 +55,6 @@ Admin: Beheer
 'All sport types must belong to the same activity type.': 'Alle sporttypes moeten tot hetzelfde activiteitstype behoren.'
 'Allow visitors to download original activity files': 'Allow visitors to download original activity files'
 'Allowed IP addresses for the admin panel': 'Toegestane IP-adressen voor het beheerpaneel'
-'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Maakt de trainingsassistent ook beschikbaar in de webinterface. Vereist dat de AI-integratie hierboven ingeschakeld is. Wees voorzichtig als je app publiek toegankelijk is.'
 'Any IP address': 'Eender welk IP-adres'
 'Any gear assigned to the activity will be removed.': 'Any gear assigned to the activity will be removed.'
 'App URL': App-URL
@@ -424,7 +423,6 @@ Settings: Instellingen
 'Show last X years by default': 'Standaard de laatste X jaar tonen'
 'Show options': 'Opties tonen'
 'Show password': 'Wachtwoord tonen'
-'Show the workout assistant in the UI.': 'Toon de trainingsassistent in de interface.'
 'Showing {first} - {last} of {total}': '{first} - {last} van {total} getoond'
 'Sign in': Aanmelden
 'Sign in to the admin panel': 'Aanmelden bij het beheerpaneel'
@@ -524,7 +522,7 @@ To: Tot
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Volg het gebruik van je uitrusting op basis van je activiteiten en blijf op de hoogte van onderhoud op basis van gebruik en tijd.'
 Tuesday: Dinsdag
 'Turn gear maintenance tracking on or off.': 'Het opvolgen van onderhoud van uitrusting in- of uitschakelen.'
-'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Schakelt de AI-gestuurde trainingsassistent in, die dan via de command line gebruikt kan worden.'
+'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
 Type: Type
 URL: URL
 Unit: Eenheid
@@ -537,6 +535,7 @@ Until: Until
 'Upload files': 'Bestanden uploaden'
 Uploaded: Geüpload
 Uploading...: 'Aan het uploaden...'
+'Use caution when enabling this if your app is publicly accessible.': 'Use caution when enabling this if your app is publicly accessible.'
 'Used to calculate the training load of this activity': 'Gebruikt om de trainingsbelasting van deze activiteit te berekenen'
 Username: Gebruikersnaam
 'Verify token': Verificatietoken

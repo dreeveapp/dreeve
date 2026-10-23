@@ -21,7 +21,6 @@ class IntegrationsSettingsTest extends TestCase
         $settings = IntegrationsSettings::fromArray([]);
 
         $this->assertFalse($settings->isAIIntegrationEnabled());
-        $this->assertFalse($settings->isAIIntegrationWithUIEnabled());
         $this->assertSame([], $settings->getChatCommands()->jsonSerialize());
         $this->assertCount(0, iterator_to_array($settings->getConfiguredNotificationUrls()));
         $this->assertTrue($settings->shouldNotifyOnSuccessfulImport());
@@ -41,19 +40,17 @@ class IntegrationsSettingsTest extends TestCase
         $settings = IntegrationsSettings::fromArray([
             'ai' => [
                 'enabled' => true,
-                'enableUI' => true,
                 'provider' => 'openAI',
                 'configuration' => ['key' => 'my-key', 'model' => 'cool-model'],
             ],
         ]);
 
         $this->assertTrue($settings->isAIIntegrationEnabled());
-        $this->assertTrue($settings->isAIIntegrationWithUIEnabled());
         $this->assertSame(AIProvider::OPEN_AI, $settings->getAIProvider());
         $this->assertSame(['key' => 'my-key', 'model' => 'cool-model'], $settings->getAIConfiguration());
     }
 
-    public function testItEnablesTheAIIntegrationWithoutUI(): void
+    public function testItKeepsTheAIIntegrationDisabledWhenTheUIWasDisabled(): void
     {
         $settings = IntegrationsSettings::fromArray([
             'ai' => [
@@ -64,8 +61,7 @@ class IntegrationsSettingsTest extends TestCase
             ],
         ]);
 
-        $this->assertTrue($settings->isAIIntegrationEnabled());
-        $this->assertFalse($settings->isAIIntegrationWithUIEnabled());
+        $this->assertFalse($settings->isAIIntegrationEnabled());
     }
 
     #[DataProvider(methodName: 'provideInvalidAIConfig')]
@@ -87,7 +83,6 @@ class IntegrationsSettingsTest extends TestCase
         IntegrationsSettings::fromArray([
             'ai' => [
                 'enabled' => true,
-                'enableUI' => false,
                 'provider' => 'openAI',
                 'configuration' => ['model' => 'cool-model'],
             ],

@@ -55,7 +55,6 @@ Admin: Admin
 'All sport types must belong to the same activity type.': 'Todos los tipos de deporte deben pertenecer al mismo tipo de actividad.'
 'Allow visitors to download original activity files': 'Allow visitors to download original activity files'
 'Allowed IP addresses for the admin panel': 'Direcciones IP permitidas para el panel de administración'
-'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'También expone el asistente de entrenamiento en la interfaz web. Requiere que la integración de IA anterior esté activada. Ten precaución al activar esto si tu aplicación es de acceso público.'
 'Any IP address': 'Cualquier dirección IP'
 'Any gear assigned to the activity will be removed.': 'Any gear assigned to the activity will be removed.'
 'App URL': 'URL de la aplicación'
@@ -424,7 +423,6 @@ Settings: Ajustes
 'Show last X years by default': 'Mostrar los últimos X años por defecto'
 'Show options': 'Mostrar opciones'
 'Show password': 'Mostrar contraseña'
-'Show the workout assistant in the UI.': 'Mostrar el asistente de entrenamiento en la interfaz.'
 'Showing {first} - {last} of {total}': 'Mostrando del {first} al {last} de {total}'
 'Sign in': 'Iniciar sesión'
 'Sign in to the admin panel': 'Iniciar sesión en el panel de administración'
@@ -524,7 +522,7 @@ To: Hasta
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Haz un seguimiento del uso del equipamiento a partir de tus actividades y mantente al día con el mantenimiento basado en uso y tiempo.'
 Tuesday: Martes
 'Turn gear maintenance tracking on or off.': 'Activa o desactiva el seguimiento del mantenimiento del equipamiento.'
-'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Activa el asistente de entrenamiento con IA, que luego se puede usar desde la línea de comandos.'
+'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
 Type: Tipo
 URL: URL
 Unit: Unidad
@@ -537,6 +535,7 @@ Until: Until
 'Upload files': 'Subir archivos'
 Uploaded: Subido
 Uploading...: Subiendo...
+'Use caution when enabling this if your app is publicly accessible.': 'Use caution when enabling this if your app is publicly accessible.'
 'Used to calculate the training load of this activity': 'Used to calculate the training load of this activity'
 Username: 'Nombre de usuario'
 'Verify token': 'Verificar token'

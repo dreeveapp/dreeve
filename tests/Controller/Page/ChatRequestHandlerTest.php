@@ -71,8 +71,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
     {
         $this->getContainer()->get(DbalSettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
             'ai' => [
-                'enabled' => true,
-                'enableUI' => $enabled,
+                'enabled' => $enabled,
                 'provider' => 'openAI',
                 'configuration' => [
                     'key' => 'my-key',
@@ -111,7 +110,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             ->method('clear');
 
         $requestHandler = $this->buildRequestHandler(
-            aiUIEnabled: true,
+            aiEnabled: true,
             chatRepository: $chatRepository,
         );
 
@@ -129,7 +128,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             ->method('clear');
 
         $requestHandler = $this->buildRequestHandler(
-            aiUIEnabled: false,
+            aiEnabled: false,
             chatRepository: $chatRepository,
         );
 
@@ -234,7 +233,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
     public function testChatSseAINotEnabled(): void
     {
         $requestHandler = $this->buildRequestHandler(
-            aiUIEnabled: false,
+            aiEnabled: false,
             chatRepository: $this->createStub(ChatRepository::class),
         );
 
@@ -242,14 +241,14 @@ class ChatRequestHandlerTest extends AdminWebTestCase
         $requestHandler->chatSse(new Request(query: ['message' => 'What is my FTP?']));
     }
 
-    private function buildRequestHandler(bool $aiUIEnabled, ChatRepository $chatRepository): ChatRequestHandler
+    private function buildRequestHandler(bool $aiEnabled, ChatRepository $chatRepository): ChatRequestHandler
     {
         return new ChatRequestHandler(
             chatAgent: $this->chatAgent,
             chatRepository: $chatRepository,
             commandBus: $this->getContainer()->get(CommandBus::class),
             twig: $this->getContainer()->get(Environment::class),
-            settingsRepository: $this->buildSettingsRepository($aiUIEnabled),
+            settingsRepository: $this->buildSettingsRepository($aiEnabled),
             formFactory: $this->getContainer()->get(FormFactoryInterface::class),
             appShell: $this->getContainer()->get(AppShell::class),
             markdownRenderer: new MarkdownRenderer(),
@@ -273,13 +272,12 @@ class ChatRequestHandlerTest extends AdminWebTestCase
         );
     }
 
-    private function buildSettingsRepository(bool $aiUIEnabled): SettingsRepository
+    private function buildSettingsRepository(bool $aiEnabled): SettingsRepository
     {
         $settingsRepository = new DbalSettingsRepository($this->getContainer()->get(Connection::class), new SpyEventBus());
         $settingsRepository->saveGroup(SettingsGroup::INTEGRATIONS, [
             'ai' => [
-                'enabled' => true,
-                'enableUI' => $aiUIEnabled,
+                'enabled' => $aiEnabled,
                 'provider' => 'openAI',
                 'configuration' => [
                     'key' => 'my-key',

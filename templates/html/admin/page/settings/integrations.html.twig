@@ -23,19 +23,11 @@
                     <span>{{ "Enable AI integration"|trans({}, 'admin') }}</span>
                 </label>
                 <p class="description">
-                    {{ "Turns on the AI-powered workout assistant, which can then be used from the command line."|trans({}, 'admin') }}
+                    {{ "Turns on the AI-powered workout assistant."|trans({}, 'admin') }}
+                    {{ "Use caution when enabling this if your app is publicly accessible."|trans({}, 'admin') }}
                 </p>
             </div>
             <div class="flex flex-col gap-4 border-l-2 border-gray-200 pl-4" data-dependent-on="aiEnabled" data-visible-when="checked">
-                <div>
-                    <label class="flex items-center gap-2 mt-0! font-medium cursor-pointer">
-                        <input type="checkbox" name="data[ai][enableUI]" value="1" {{ (ai.enableUI ?? false) ? 'checked' : '' }}>
-                        <span>{{ "Show the workout assistant in the UI."|trans({}, 'admin') }}</span>
-                    </label>
-                    <p class="description">
-                        {{ "Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible."|trans({}, 'admin') }}
-                    </p>
-                </div>
                 <div>
                     <label for="aiProvider">{{ "Provider"|trans({}, 'admin') }}</label>
                     <select id="aiProvider" name="data[ai][provider]">

@@ -55,7 +55,6 @@ Admin: Admin
 'All sport types must belong to the same activity type.': 'All sport types must belong to the same activity type.'
 'Allow visitors to download original activity files': 'Allow visitors to download original activity files'
 'Allowed IP addresses for the admin panel': 'Allowed IP addresses for the admin panel'
-'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.': 'Also exposes the workout assistant in the web interface. Requires the AI integration above to be enabled. Use caution when enabling this if your app is publicly accessible.'
 'Any IP address': 'Any IP address'
 'Any gear assigned to the activity will be removed.': 'Any gear assigned to the activity will be removed.'
 'App URL': 'App URL'
@@ -424,7 +423,6 @@ Settings: Settings
 'Show last X years by default': 'Show last X years by default'
 'Show options': 'Show options'
 'Show password': 'Show password'
-'Show the workout assistant in the UI.': 'Show the workout assistant in the UI.'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'
 'Sign in': 'Sign in'
 'Sign in to the admin panel': 'Sign in to the admin panel'
@@ -524,7 +522,7 @@ To: To
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.'
 Tuesday: Tuesday
 'Turn gear maintenance tracking on or off.': 'Turn gear maintenance tracking on or off.'
-'Turns on the AI-powered workout assistant, which can then be used from the command line.': 'Turns on the AI-powered workout assistant, which can then be used from the command line.'
+'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
 Type: Type
 URL: URL
 Unit: Unit
@@ -537,6 +535,7 @@ Until: Until
 'Upload files': 'Upload files'
 Uploaded: Uploaded
 Uploading...: Uploading...
+'Use caution when enabling this if your app is publicly accessible.': 'Use caution when enabling this if your app is publicly accessible.'
 'Used to calculate the training load of this activity': 'Used to calculate the training load of this activity'
 Username: Username
 'Verify token': 'Verify token'

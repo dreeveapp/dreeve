@@ -15,7 +15,6 @@ final readonly class IntegrationsSettings
 {
     private function __construct(
         private bool $aiIntegrationEnabled,
-        private bool $aiIntegrationWithUIEnabled,
         /** @var array<string, mixed> */
         #[\SensitiveParameter]
         private array $aiConfig,
@@ -33,7 +32,8 @@ final readonly class IntegrationsSettings
         $data ??= [];
 
         $aiConfig = $data['ai'] ?? [];
-        $aiEnabled = filter_var($aiConfig['enabled'] ?? false, FILTER_VALIDATE_BOOLEAN);
+        $aiEnabled = filter_var($aiConfig['enabled'] ?? false, FILTER_VALIDATE_BOOLEAN)
+            && filter_var($aiConfig['enableUI'] ?? true, FILTER_VALIDATE_BOOLEAN);
 
         if ($aiEnabled) {
             $providerName = empty($aiConfig['provider']) ? throw new InvalidAIConfiguration('Provider cannot be empty') : $aiConfig['provider'];
@@ -64,7 +64,6 @@ final readonly class IntegrationsSettings
 
         return new self(
             aiIntegrationEnabled: $aiEnabled,
-            aiIntegrationWithUIEnabled: $aiEnabled && filter_var($aiConfig['enableUI'] ?? false, FILTER_VALIDATE_BOOLEAN),
             aiConfig: $aiConfig,
             chatCommands: ChatCommands::fromArray($aiConfig['agent']['commands'] ?? []),
             configuredNotificationUrls: ConfiguredNotificationUrls::fromConfig($services),
@@ -76,11 +75,6 @@ final readonly class IntegrationsSettings
     public function isAIIntegrationEnabled(): bool
     {
         return $this->aiIntegrationEnabled;
-    }
-
-    public function isAIIntegrationWithUIEnabled(): bool
-    {
-        return $this->aiIntegrationWithUIEnabled;
     }
 
     public function getChatCommands(): ChatCommands

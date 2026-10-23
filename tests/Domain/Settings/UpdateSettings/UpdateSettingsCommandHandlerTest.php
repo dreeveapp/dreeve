@@ -114,7 +114,6 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
         $data = [
             'ai' => [
                 'enabled' => true,
-                'enableUI' => true,
                 'provider' => 'openAI',
                 'configuration' => [
                     'key' => 'my-key',
