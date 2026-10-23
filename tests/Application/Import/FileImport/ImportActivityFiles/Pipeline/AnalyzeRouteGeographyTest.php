@@ -65,7 +65,7 @@ class AnalyzeRouteGeographyTest extends ContainerTestCase
         $context = $this->analyzeRouteGeography->process($context);
 
         $this->assertEquals(
-            RouteGeography::create(['test' => 'lol', 'state' => 'Watopia']),
+            RouteGeography::create(['test' => 'lol', 'state' => 'watopia']),
             $context->getActivity()->getRouteGeography(),
         );
     }

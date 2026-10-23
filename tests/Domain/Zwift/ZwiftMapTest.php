@@ -23,6 +23,7 @@ class ZwiftMapTest extends TestCase
         $this->assertSame($expectedLabel, $map->getLabel());
         $this->assertSame($expectedOverlayImageUrl, $map->getOverlayImageUrl());
         $this->assertSame($expectedBackgroundColor, $map->getBackgroundColor());
+        $this->assertEquals($map, ZwiftMap::fromId($map->getId()));
     }
 
     public function testFromStartingCoordinateItShouldThrow(): void

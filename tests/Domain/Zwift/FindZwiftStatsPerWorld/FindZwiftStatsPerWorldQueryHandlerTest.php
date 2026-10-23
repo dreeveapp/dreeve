@@ -9,6 +9,7 @@ use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\WorldType;
 use App\Domain\Zwift\FindZwiftStatsPerWorld\FindZwiftStatsPerWorld;
 use App\Domain\Zwift\FindZwiftStatsPerWorld\FindZwiftStatsPerWorldQueryHandler;
+use App\Domain\Zwift\ZwiftMap;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
@@ -40,7 +41,7 @@ class FindZwiftStatsPerWorldQueryHandlerTest extends ContainerTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('2'))
                 ->withWorldType(WorldType::ZWIFT)
-                ->withRouteGeography(RouteGeography::create(['state' => 'Watopia']))
+                ->withRouteGeography(RouteGeography::create(['state' => 'watopia']))
                 ->build(),
             []
         ));
@@ -48,7 +49,7 @@ class FindZwiftStatsPerWorldQueryHandlerTest extends ContainerTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('3'))
                 ->withWorldType(WorldType::ZWIFT)
-                ->withRouteGeography(RouteGeography::create(['state' => 'Watopia']))
+                ->withRouteGeography(RouteGeography::create(['state' => 'watopia']))
                 ->build(),
             []
         ));
@@ -56,7 +57,7 @@ class FindZwiftStatsPerWorldQueryHandlerTest extends ContainerTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('4'))
                 ->withWorldType(WorldType::ZWIFT)
-                ->withRouteGeography(RouteGeography::create(['state' => 'Makuri islands']))
+                ->withRouteGeography(RouteGeography::create(['state' => 'makuri-islands']))
                 ->build(),
             []
         ));
@@ -64,7 +65,7 @@ class FindZwiftStatsPerWorldQueryHandlerTest extends ContainerTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('8'))
                 ->withWorldType(WorldType::ZWIFT)
-                ->withRouteGeography(RouteGeography::create(['state' => 'New York']))
+                ->withRouteGeography(RouteGeography::create(['state' => 'new-york']))
                 ->build(),
             []
         ));
@@ -74,7 +75,7 @@ class FindZwiftStatsPerWorldQueryHandlerTest extends ContainerTestCase
         $this->assertEquals(
             [
                 [
-                    'zwiftWorld' => 'Watopia',
+                    'zwiftWorld' => ZwiftMap::fromId('watopia'),
                     'numberOfActivities' => 2,
                     'distance' => Kilometer::from(20),
                     'elevation' => Meter::from(0),
@@ -82,7 +83,7 @@ class FindZwiftStatsPerWorldQueryHandlerTest extends ContainerTestCase
                     'calories' => 0,
                 ],
                 [
-                    'zwiftWorld' => 'New York',
+                    'zwiftWorld' => ZwiftMap::fromId('new-york'),
                     'numberOfActivities' => 1,
                     'distance' => Kilometer::from(10),
                     'elevation' => Meter::from(0),
@@ -90,7 +91,7 @@ class FindZwiftStatsPerWorldQueryHandlerTest extends ContainerTestCase
                     'calories' => 0,
                 ],
                 [
-                    'zwiftWorld' => 'Makuri islands',
+                    'zwiftWorld' => ZwiftMap::fromId('makuri-islands'),
                     'numberOfActivities' => 1,
                     'distance' => Kilometer::from(10),
                     'elevation' => Meter::from(0),

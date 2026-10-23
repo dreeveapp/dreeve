@@ -32,6 +32,11 @@ final readonly class ZwiftMap implements LeafletMap
     ) {
     }
 
+    public function getId(): string
+    {
+        return $this->mapName;
+    }
+
     public function getLabel(): string
     {
         return ucwords(str_replace('-', ' ', $this->mapName));
@@ -67,12 +72,40 @@ final readonly class ZwiftMap implements LeafletMap
         return '#bbbbb7';
     }
 
+    public static function fromId(string $id): self
+    {
+        return new self(
+            mapName: $id,
+            bounds: self::getBoundMap()[$id] ?? throw new CouldNotDetermineZwiftMap('Unknown Zwift map '.$id),
+        );
+    }
+
     public static function forStartingCoordinate(Coordinate $coordinate): self
+    {
+        foreach (self::getBoundMap() as $mapName => $bounds) {
+            if ($coordinate->getLatitude()->toFloat() <= $bounds[0]->getLatitude()->toFloat()
+                && $coordinate->getLatitude()->toFloat() >= $bounds[1]->getLatitude()->toFloat()
+                && $coordinate->getLongitude()->toFloat() >= $bounds[0]->getLongitude()->toFloat()
+                && $coordinate->getLongitude()->toFloat() <= $bounds[1]->getLongitude()->toFloat()) {
+                return new ZwiftMap(
+                    mapName: $mapName,
+                    bounds: $bounds
+                );
+            }
+        }
+
+        throw new CouldNotDetermineZwiftMap('Could not determine Zwift map '.Json::encode($coordinate));
+    }
+
+    /**
+     * @return array<string, Coordinate[]>
+     */
+    private static function getBoundMap(): array
     {
         // https://zwiftinsider.com/hilly-kom-bypass/
         // https://cf.veloviewer.com/js/vv.lmap.61.js
         // https://github.com/andipaetzold/zwift-data/blob/main/src/worlds.ts
-        $boundMap = [
+        return [
             self::BOLOGNA => [
                 Coordinate::createFromLatAndLng(Latitude::fromString('44.5308037'), Longitude::fromString('11.26261748')),
                 Coordinate::createFromLatAndLng(Latitude::fromString('44.45463821'), Longitude::fromString('11.36991729102076')),
@@ -122,19 +155,5 @@ final readonly class ZwiftMap implements LeafletMap
                 Coordinate::createFromLatAndLng(Latitude::fromString('53.9491'), Longitude::fromString('-1.5022')),
             ],
         ];
-
-        foreach ($boundMap as $mapName => $bounds) {
-            if ($coordinate->getLatitude()->toFloat() <= $bounds[0]->getLatitude()->toFloat()
-                && $coordinate->getLatitude()->toFloat() >= $bounds[1]->getLatitude()->toFloat()
-                && $coordinate->getLongitude()->toFloat() >= $bounds[0]->getLongitude()->toFloat()
-                && $coordinate->getLongitude()->toFloat() <= $bounds[1]->getLongitude()->toFloat()) {
-                return new ZwiftMap(
-                    mapName: $mapName,
-                    bounds: $bounds
-                );
-            }
-        }
-
-        throw new CouldNotDetermineZwiftMap('Could not determine Zwift map '.Json::encode($coordinate));
     }
 }

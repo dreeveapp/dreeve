@@ -8,6 +8,7 @@ use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Geography\Country\RouteGeographyAnalyzer;
 use App\Domain\Integration\Geocoding\Nominatim\CouldNotReverseGeocodeAddress;
 use App\Domain\Integration\Geocoding\Nominatim\Nominatim;
+use App\Domain\Zwift\ZwiftMap;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
 #[AsTaggedItem(priority: 80)]
@@ -33,9 +34,9 @@ final readonly class AnalyzeRouteGeography implements ActivityImportStep
                     );
                 } catch (CouldNotReverseGeocodeAddress) {
                 }
-            } elseif ($activity->isZwiftRide() && ($zwiftMap = $activity->getLeafletMap())) {
+            } elseif ($activity->isZwiftRide() && ($zwiftMap = $activity->getLeafletMap()) instanceof ZwiftMap) {
                 $routeGeography = $routeGeography->updateWith([
-                    'state' => $zwiftMap->getLabel(),
+                    'state' => $zwiftMap->getId(),
                 ]);
             }
         }

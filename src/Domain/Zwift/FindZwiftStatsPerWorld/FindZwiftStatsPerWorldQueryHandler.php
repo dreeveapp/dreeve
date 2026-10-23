@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Zwift\FindZwiftStatsPerWorld;
 
 use App\Domain\Activity\WorldType;
+use App\Domain\Zwift\ZwiftMap;
 use App\Infrastructure\CQRS\Query\Query;
 use App\Infrastructure\CQRS\Query\QueryHandler;
 use App\Infrastructure\CQRS\Query\Response;
@@ -46,7 +47,7 @@ final readonly class FindZwiftStatsPerWorldQueryHandler implements QueryHandler
             $zwiftWorld = $result['zwiftWorld'];
             assert(is_string($zwiftWorld));
             $statsPerWorld[] = [
-                'zwiftWorld' => $zwiftWorld,
+                'zwiftWorld' => ZwiftMap::fromId($zwiftWorld),
                 'numberOfActivities' => (int) $result['numberOfActivities'],
                 'distance' => Meter::from($result['totalDistance'])->toKilometer(),
                 'elevation' => Meter::from($result['totalElevation']),
