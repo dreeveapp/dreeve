@@ -1,0 +1,109 @@
+---
+title: "Google Health Sync"
+description: "Import GPS-tracked Google Health workouts into Dreeve with the community-maintained Google Health Sync connector."
+---
+
+**[Google Health Sync](https://github.com/francesconazzaro/dreeve-google-health-sync)** is a
+community-maintained connector that exports GPS-tracked workouts from the Google Health API as
+`.tcx` files and writes them to Dreeve's `watch/` folder. It can be used for Pixel Watch and Fitbit
+workouts available through that API.
+
+```text
+Google Health API → Google Health Sync
+  → watch/ → Dreeve imports it
+```
+
+The connector runs as a separate container alongside Dreeve and uses the
+[ghealth CLI](https://github.com/rudrankriyam/Google-Health-CLI) for API access. It uses Google's
+cloud API rather than reading the Android Health Connect store directly. Dreeve imports the files
+through its existing [file import pipeline](/importing/file-import/); no Dreeve API key is needed.
+
+:::note
+This is a third-party project, maintained separately from Dreeve. See its
+[repository and setup guide](https://github.com/francesconazzaro/dreeve-google-health-sync#setup)
+for current requirements and support.
+:::
+
+## Setup
+
+### 1. Register and authorize a Google client
+
+Follow the project's [Google Cloud OAuth setup](https://github.com/francesconazzaro/dreeve-google-health-sync#1-register-a-google-cloud-oauth-app)
+to enable the Google Health API and create a **Desktop app** OAuth client. You will need its
+Client ID and Client Secret, a Google account with workouts available through the API, and a
+machine with a browser for the initial authorization.
+
+On that machine, install [uv](https://docs.astral.sh/uv/getting-started/installation/), clone the
+connector repository and run its login script:
+
+```bash
+> git clone https://github.com/francesconazzaro/dreeve-google-health-sync.git
+> cd dreeve-google-health-sync
+> export GHEALTH_CLIENT_ID='your-google-client-id'
+> export GHEALTH_CLIENT_SECRET='your-google-client-secret'
+> uv run bootstrap_login.py
+```
+
+Approve the requested read access in the browser. The script writes `token.json` in the current
+directory. Keep that file and the client secret private; copy the token securely to your server.
+
+:::caution[Testing-mode tokens expire]
+With an external OAuth app in **Testing** status, Google's refresh token expires after **7 days**
+for these scopes. Repeat the browser login and replace the server's `token.json` when it expires.
+See [Google's refresh-token policy](https://developers.google.com/identity/protocols/oauth2#expiration)
+and the connector's [limitations](https://github.com/francesconazzaro/dreeve-google-health-sync#notes-and-limitations).
+:::
+
+### 2. Add the connector to your Dreeve stack
+
+Use Dreeve in [file import mode](/importing/file-import/) (`IMPORT_MODE=files`). Add the service
+from the project's [Docker Compose example](https://github.com/francesconazzaro/dreeve-google-health-sync/blob/main/docker-compose.example.yml)
+alongside your existing `app` and `daemon` services. It builds the connector from source and mounts:
+
+- `./watch:/watch`, which must be the same host folder Dreeve imports from.
+- `./google-health-token:/data`, for the OAuth token and export history.
+
+From the directory containing your Dreeve `docker-compose.yml`, copy in the token:
+
+```bash
+> mkdir -p google-health-token
+> cp /path/to/token.json google-health-token/token.json
+```
+
+Set the same Google client credentials in your Dreeve stack's `.env` file:
+
+```dotenv title=".env"
+GHEALTH_CLIENT_ID=your-google-client-id
+GHEALTH_CLIENT_SECRET=your-google-client-secret
+```
+
+### 3. Start sync
+
+```bash
+> docker compose up -d --build google-health-sync
+> docker compose logs -f google-health-sync
+```
+
+By default, the connector checks the previous **30 days** every **hour**. Dreeve's daemon then
+imports the exported files on its own schedule. Check the
+[file import log](/importing/file-import/#the-import-log) at `/admin/file-imports` for the outcome.
+
+## Configuration and limitations
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `GHEALTH_CLIENT_ID` | Required | Google OAuth client ID. |
+| `GHEALTH_CLIENT_SECRET` | Required | Google OAuth client secret. |
+| `LOOKBACK_DAYS` | `30` | Rolling history window checked on each sync. |
+| `SYNC_INTERVAL_SECONDS` | `3600` | Delay between sync runs. |
+
+Only exercises marked `hasGps: true` with exported trackpoints are written to the watch folder.
+Workouts without GPS and passive activity such as daily step counts are skipped. This connector
+does not transfer every kind of data stored in Google Health or Health Connect.
+
+The `/data` volume retains `token.json` and `exported_ids.json`. Keep it between container restarts
+so authorization and export history survive. The connector avoids re-exporting recorded IDs, and
+Dreeve applies its own duplicate detection during import.
+
+For historical backfills using `FROM_DATE` and `TO_DATE`, follow the
+[project's backfill instructions](https://github.com/francesconazzaro/dreeve-google-health-sync#environment-variables).
