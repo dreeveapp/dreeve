@@ -110,6 +110,8 @@ export default defineConfig({
 									items: [
 										{ slug: 'integrations/ai', label: 'AI assistant' },
 										{ slug: 'integrations/mcp', label: 'MCP server' },
+										{ slug: 'integrations/apple-health', label: 'Apple Health' },
+										{ slug: 'integrations/google-health-sync', label: 'Google Health Sync' },
 										{ slug: 'integrations/garmin-connect', label: 'Garmin Connect' },
 										{ slug: 'integrations/polar-flow', label: 'Polar Flow' },
 										{ slug: 'integrations/wahoo-connector', label: 'Wahoo Connector' },
