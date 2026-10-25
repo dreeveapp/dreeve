@@ -34,22 +34,23 @@ https://github.com/user-attachments/assets/2789c961-f04f-4804-b6eb-88d45e62687c
 
 ### Key Features
 
-* **Import activities** - Use raw FIT/TCX/GPX files or connect your Strava account
-* **Admin panel** - Manage activities, gear and every setting with an easy-to-use browser-based interface
-* **Dashboard** - Gain a quick overview of stats and charts
-* **Automation rules** - Set up automation rules to streamline gear tracking, commuting flags, and more
-* **Activities** -  Browse a detailed list of everything you've done
-* **Monthly View** - Monthly stats with an interactive calendar
+* **Import activities** - Use raw FIT/TCX/GPX files, sync from Garmin, Polar, Wahoo, Apple Health and more, or connect your Strava account
+* **Admin panel** - Manage activities, gear and every setting from your browser
+* **Dashboard** - See all your stats and charts at a glance, arranged the way you like
+* **Automation rules** - Automatically fill in gear, commute flags, sport types and more
+* **Activities** - Browse a detailed list of everything you've done
+* **Monthly view** - Monthly stats with an interactive calendar
 * **Gear stats** - Track how much you've used each bike, shoe, etc.
-* **Maintenance Tracking** - Keep tabs on gear wear and tear
-* **Eddington** - For your distance milestones
-* **Segments & Efforts** - Dive into your segment history and times
+* **Maintenance tracking** - Keep tabs on gear wear and tear
+* **Eddington** - Track the largest number E for which you covered at least E km on E different days
+* **Segments & efforts** - Dive into your segment history and times
 * **Heatmap** - Visualize where you’ve been active the most
 * **Milestones** - A timeline view of your key achievements and milestones over time
 * **Rewind** - A fun way to look back on your year in motion
-* **Challenges** - See which Strava challenges you've conquered
-* **Activity Photos** - Relive your moments with a photo archive
-* **AI workout assistant** - Get personalized workout suggestions and insights powered by AI
+* **Challenges** - Browse the Strava challenges and trophies you have earned
+* **Activity photos** - Relive your moments with a photo archive
+* **AI workout assistant** - Get workout suggestions and insights from the AI provider of your choice, or a local Ollama model
+* **MCP server** - Connect Claude, Cursor or any other MCP client to your data
 * **User badges** - Shareable badges you can embed on your website, blog, or forum profiles
 * **PWA support** - Use it like a native app on your phone
 
