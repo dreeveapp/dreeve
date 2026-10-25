@@ -34,12 +34,12 @@ class DayTimeStatsWidgetTest extends ContainerTestCase
                 ->build());
         }
 
-        $statistics = DaytimeStats::create($activities, [
+        $daytimeStats = DaytimeStats::create($activities, [
             Daytime::MORNING->value => 4,
             Daytime::AFTERNOON->value => 11,
             Daytime::EVENING->value => 17,
             Daytime::NIGHT->value => 1,
-        ])->getData();
+        ]);
 
         $this->assertSame(
             [
@@ -50,8 +50,19 @@ class DayTimeStatsWidgetTest extends ContainerTestCase
             ],
             array_map(
                 static fn (array $statistic): array => [$statistic['numberOfWorkouts'], $statistic['startHour'], $statistic['endHour']],
-                $statistics,
+                $daytimeStats->getData(),
             ),
+        );
+
+        $numberOfWorkoutsPerHour = $daytimeStats->getNumberOfWorkoutsPerHour();
+        $this->assertSame([...range(4, 23), ...range(0, 3)], array_keys($numberOfWorkoutsPerHour));
+        $this->assertSame(
+            [4 => 1, 11 => 1, 23 => 1, 0 => 1, 3 => 1],
+            array_filter(array_map(static fn (array $statistic): int => $statistic['numberOfWorkouts'], $numberOfWorkoutsPerHour)),
+        );
+        $this->assertSame(
+            [Daytime::EVENING, Daytime::NIGHT, Daytime::NIGHT, Daytime::MORNING],
+            [$numberOfWorkoutsPerHour[0]['daytime'], $numberOfWorkoutsPerHour[1]['daytime'], $numberOfWorkoutsPerHour[3]['daytime'], $numberOfWorkoutsPerHour[4]['daytime']],
         );
     }
 

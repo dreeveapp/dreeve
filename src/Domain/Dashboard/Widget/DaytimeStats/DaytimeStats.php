@@ -82,6 +82,28 @@ final readonly class DaytimeStats
         return $statistics;
     }
 
+    /**
+     * @return array<int, array{daytime: Daytime, numberOfWorkouts: int}>
+     */
+    public function getNumberOfWorkoutsPerHour(): array
+    {
+        $countsPerHour = array_fill(0, 24, 0);
+        foreach ($this->activities as $activity) {
+            ++$countsPerHour[$activity->getStartDate()->getHourWithoutLeadingZero()];
+        }
+
+        $numberOfWorkoutsPerHour = [];
+        foreach (range(0, 23) as $offset) {
+            $hour = ($this->startHours[Daytime::MORNING->value] + $offset) % 24;
+            $numberOfWorkoutsPerHour[$hour] = [
+                'daytime' => $this->findDaytime($hour),
+                'numberOfWorkouts' => $countsPerHour[$hour],
+            ];
+        }
+
+        return $numberOfWorkoutsPerHour;
+    }
+
     private function findDaytime(int $hour): Daytime
     {
         $found = Daytime::MORNING;

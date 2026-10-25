@@ -34,6 +34,16 @@ enum Daytime: string implements TranslatableInterface
         };
     }
 
+    public function getColor(): string
+    {
+        return match ($this) {
+            self::MORNING => '#dd6b20',
+            self::AFTERNOON => '#fe9a00',
+            self::EVENING => '#ff2056',
+            self::NIGHT => '#62748e',
+        };
+    }
+
     public function getStartHourConfigKey(): string
     {
         return match ($this) {
