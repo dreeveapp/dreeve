@@ -148,6 +148,7 @@ Done: Done
 Duplicate: Duplicate
 Duration: Duration
 'Each data point sums everything logged in the preceding number of days.': 'Each data point sums everything logged in the preceding number of days.'
+'Each period ends when the next one starts.': 'Each period ends when the next one starts.'
 Edit: Edit
 'Edit activity': 'Edit activity'
 'Edit automation rule': 'Edit automation rule'
@@ -440,6 +441,7 @@ Source: Source
 'Sport types to include': 'Sport types to include'
 'Start date': 'Start date'
 'Start date and time': 'Start date and time'
+'Start hour of each period': 'Start hour of each period'
 'Starts near': 'Starts near'
 'Stop processing further rules when this rule matches': 'Stop processing further rules when this rule matches'
 'Stops after match': 'Stops after match'

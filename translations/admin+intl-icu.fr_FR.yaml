@@ -148,6 +148,7 @@ Done: Fait
 Duplicate: Dupliquer
 Duration: Durée
 'Each data point sums everything logged in the preceding number of days.': 'Chaque point additionne tout ce qui a été enregistré sur le nombre de jours précédents.'
+'Each period ends when the next one starts.': 'Each period ends when the next one starts.'
 Edit: Editer
 'Edit activity': "Editer l'activité"
 'Edit automation rule': "Editer la règle d'automatisation"
@@ -440,6 +441,7 @@ Source: Source
 'Sport types to include': 'Types de sport à inclure'
 'Start date': 'Date de début'
 'Start date and time': 'Date et heure de début'
+'Start hour of each period': 'Start hour of each period'
 'Starts near': 'Commence près de'
 'Stop processing further rules when this rule matches': 'Arrêter le traitement des règles suivantes lorsque cette règle correspond'
 'Stops after match': "S'arrête après correspondance"

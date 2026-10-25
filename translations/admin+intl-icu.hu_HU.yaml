@@ -148,6 +148,7 @@ Done: Kész
 Duplicate: Másolat
 Duration: Időtartam
 'Each data point sums everything logged in the preceding number of days.': 'Each data point sums everything logged in the preceding number of days.'
+'Each period ends when the next one starts.': 'Each period ends when the next one starts.'
 Edit: Szerkesztés
 'Edit activity': 'Tevékenység szerkesztése'
 'Edit automation rule': 'Automatizálási szabály szerkesztése'
@@ -440,6 +441,7 @@ Source: Forrás
 'Sport types to include': 'Belefoglalandó sporttípusok'
 'Start date': 'Start date'
 'Start date and time': 'Kezdő dátum és idő'
+'Start hour of each period': 'Start hour of each period'
 'Starts near': 'A közelében kezdődik'
 'Stop processing further rules when this rule matches': 'A további szabályok feldolgozásának leállítása, ha ez a szabály illeszkedik'
 'Stops after match': 'Illeszkedés után leáll'

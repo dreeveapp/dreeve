@@ -1,0 +1,13 @@
+@<div>
+    <label>{{ "Start hour of each period"|trans({}, 'admin') }}</label>
+    <p class="mt-0.5 mb-2 text-xxs text-gray-500">{{ "Each period ends when the next one starts."|trans({}, 'admin') }}</p>
+    <div class="grid gap-4 sm:grid-cols-2">
+        {% for daytime in enum('App\\Domain\\Dashboard\\Widget\\DaytimeStats\\Daytime').cases() %}
+            {% set key = daytime.getStartHourConfigKey() %}
+            <div>
+                <label for="config-{{ key }}">{{ daytime|trans }}</label>
+                <input type="number" min="0" max="23" step="1" required id="config-{{ key }}" name="config[{{ key }}]" value="{{ configuration.get(key) }}">
+            </div>
+        {% endfor %}
+    </div>
+</div>

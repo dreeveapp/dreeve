@@ -148,6 +148,7 @@ Done: Klaar
 Duplicate: Dupliceren
 Duration: Duur
 'Each data point sums everything logged in the preceding number of days.': 'Elk datapunt telt alles op wat in het voorafgaande aantal dagen gelogd werd.'
+'Each period ends when the next one starts.': 'Each period ends when the next one starts.'
 Edit: Bewerken
 'Edit activity': 'Activiteit bewerken'
 'Edit automation rule': 'Automatiseringsregel bewerken'
@@ -440,6 +441,7 @@ Source: Bron
 'Sport types to include': 'Mee te nemen sporttypes'
 'Start date': Startdatum
 'Start date and time': 'Startdatum en -tijd'
+'Start hour of each period': 'Start hour of each period'
 'Starts near': 'Start nabij'
 'Stop processing further rules when this rule matches': 'Stop met het verwerken van volgende regels wanneer deze regel overeenkomt'
 'Stops after match': 'Stopt na overeenkomst'
