@@ -12,10 +12,10 @@ class DayTimeStatsWidgetTest extends ContainerTestCase
 {
     private DayTimeStatsWidget $widget;
 
+    #[\PHPUnit\Framework\Attributes\DoesNotPerformAssertions]
     public function testGuardValidConfigurationAcceptsANightThatStartsAfterMidnight(): void
     {
         $this->widget->guardValidConfiguration(WidgetConfiguration::empty()->add('morningStartHour', 4)->add('afternoonStartHour', 11)->add('eveningStartHour', 17)->add('nightStartHour', 1));
-        $this->addToAssertionCount(1);
     }
 
     #[DataProvider(methodName: 'provideInvalidConfig')]
