@@ -1,0 +1,44 @@
+---
+title: "Apple Health"
+description: "Send Apple Health workouts directly from your iPhone to your Dreeve server with Exerzio."
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Workouts recorded with an Apple Watch, or another app that saves workouts to Apple Health, can reach
+Dreeve through **[Exerzio](https://exerzio.com/exerzio)**. Exerzio reads the workouts you allow it to
+access on your iPhone and uploads them as `.tcx` files through Dreeve's HTTP API.
+
+```text
+Apple Watch or workout app
+  → Apple Health on iPhone
+  → Exerzio → your Dreeve server
+```
+
+## Exerzio for iPhone
+
+**Exerzio is free to download and use, including Dreeve sync.** There is no subscription or Exerzio
+account to create. Optional Tip Jar purchases support development and do not unlock features.
+
+The app gives you a view of the activity already on your iPhone:
+
+- **Workout history and detail:** browse your sessions, personal records, routes and available
+  heart-rate, cadence and power readings.
+- **Atlas and Tiles:** see your recorded routes together on one map, or explore a grid of squares
+  that tracks the places you have covered during workouts.
+- **Daily activity and sleep:** review steps, energy, workouts and sleep from Apple Health.
+- **Sharing:** turn workouts, routes and activity summaries into cards with Create Studio.
+
+Dreeve sync is an optional part of that app. You can keep recording with Apple Watch or your usual
+workout app: once a supported workout reaches Apple Health on your iPhone, Exerzio can read it and
+send it to Dreeve. You do not need to record it again in Exerzio or export an Apple Health archive.
+
+<CardGrid>
+  <LinkCard title="Exerzio on the App Store" description="Free for iPhone, including Dreeve sync." href="https://apps.apple.com/app/exerzio/id6806954443" />
+  <LinkCard title="Exerzio website" description="App screenshots, features and support." href="https://exerzio.com/exerzio" />
+</CardGrid>
+
+:::note
+Exerzio is an independent third-party app and is not affiliated with the Dreeve project.
+The connection runs on your iPhone; no extra connector container or Strava account is needed.
+:::

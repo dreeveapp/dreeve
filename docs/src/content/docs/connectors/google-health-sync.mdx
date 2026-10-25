@@ -1,0 +1,25 @@
+---
+title: "Google Health Sync"
+description: "Import GPS-tracked Google Health workouts into Dreeve with the community-maintained Google Health Sync connector."
+---
+
+**[Google Health Sync](https://github.com/francesconazzaro/dreeve-google-health-sync)** is a
+community-maintained connector that exports GPS-tracked workouts from the Google Health API as
+`.tcx` files and writes them to Dreeve's `watch/` folder. It can be used for Pixel Watch and Fitbit
+workouts available through that API.
+
+```text
+Google Health API → Google Health Sync
+  → watch/ → Dreeve imports it
+```
+
+The connector runs as a separate container alongside Dreeve and uses the
+[ghealth CLI](https://github.com/rudrankriyam/Google-Health-CLI) for API access. It uses Google's
+cloud API rather than reading the Android Health Connect store directly. Dreeve imports the files
+through its existing [file import pipeline](/importing/file-import/); no Dreeve API key is needed.
+
+:::note
+This is a third-party project, maintained separately from Dreeve. See its
+[repository and setup guide](https://github.com/francesconazzaro/dreeve-google-health-sync#setup)
+for current requirements and support.
+:::

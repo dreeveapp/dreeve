@@ -55,7 +55,7 @@ export default defineConfig({
 						},
 						{
 							label: 'Connectors',
-							description: 'automatically downloading activity files from Garmin, Polar, Wahoo, Hammerhead and Zepp into the watch folder',
+							description: 'automatically getting activities from Garmin, Polar, Wahoo, Hammerhead, Zepp, Apple Health and Google Health into Dreeve',
 							paths: ['connectors/**'],
 						},
 						{
@@ -125,6 +125,8 @@ export default defineConfig({
 										{ slug: 'connectors/wahoo-connector', label: 'Wahoo Connector' },
 										{ slug: 'connectors/hammerhead-connector', label: 'Hammerhead Connector' },
 										{ slug: 'connectors/zepp-connector', label: 'Zepp Connector' },
+										{ slug: 'connectors/apple-health', label: 'Apple Health', badge: { text: 'Community', variant: 'note' } },
+										{ slug: 'connectors/google-health-sync', label: 'Google Health Sync', badge: { text: 'Community', variant: 'note' } },
 									],
 								},
 								{
