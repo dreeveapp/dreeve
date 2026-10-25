@@ -6,18 +6,27 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class DaytimeStatsChart
 {
+    /**
+     * @param array<int, int> $numberOfActivitiesPerHour
+     */
     private function __construct(
-        private DaytimeStats $daytimeStats,
+        private array $numberOfActivitiesPerHour,
+        private DaytimeStartHours $startHours,
         private TranslatorInterface $translator,
     ) {
     }
 
+    /**
+     * @param array<int, int> $numberOfActivitiesPerHour
+     */
     public static function create(
-        DaytimeStats $daytimeStats,
+        array $numberOfActivitiesPerHour,
+        DaytimeStartHours $startHours,
         TranslatorInterface $translator,
     ): self {
         return new self(
-            $daytimeStats,
+            $numberOfActivitiesPerHour,
+            $startHours,
             $translator,
         );
     }
@@ -27,30 +36,29 @@ final readonly class DaytimeStatsChart
      */
     public function build(): array
     {
-        $numberOfWorkoutsPerHour = $this->daytimeStats->getNumberOfWorkoutsPerHour();
-        $totalNumberOfWorkouts = array_sum(array_column($numberOfWorkoutsPerHour, 'numberOfWorkouts'));
+        $totalNumberOfActivities = array_sum($this->numberOfActivitiesPerHour);
 
         $series = [];
         $legend = [];
         foreach (Daytime::cases() as $daytime) {
             $data = [];
-            $daytimeNumberOfWorkouts = 0;
-            foreach ($numberOfWorkoutsPerHour as $hour => $statistic) {
-                if ($statistic['daytime'] !== $daytime) {
+            $daytimeNumberOfActivities = 0;
+            foreach ($this->numberOfActivitiesPerHour as $hour => $numberOfActivities) {
+                if ($this->startHours->findDaytime($hour) !== $daytime) {
                     $data[] = '-';
                     continue;
                 }
                 $data[] = [
-                    'value' => $statistic['numberOfWorkouts'],
+                    'value' => $numberOfActivities,
                     'name' => sprintf('%dh - %dh', $hour, ($hour + 1) % 24),
                 ];
-                $daytimeNumberOfWorkouts += $statistic['numberOfWorkouts'];
+                $daytimeNumberOfActivities += $numberOfActivities;
             }
 
             $name = sprintf(
                 '%s (%s%%)',
                 $daytime->trans($this->translator),
-                $totalNumberOfWorkouts > 0 ? round($daytimeNumberOfWorkouts / $totalNumberOfWorkouts * 100, 1) : 0,
+                $totalNumberOfActivities > 0 ? round($daytimeNumberOfActivities / $totalNumberOfActivities * 100, 1) : 0,
             );
             $legend[] = $name;
 
@@ -93,7 +101,7 @@ final readonly class DaytimeStatsChart
             ],
             'xAxis' => [
                 'type' => 'category',
-                'data' => array_map(static fn (int $hour): string => $hour.'h', array_keys($numberOfWorkoutsPerHour)),
+                'data' => array_map(static fn (int $hour): string => $hour.'h', array_keys($this->numberOfActivitiesPerHour)),
                 'axisTick' => [
                     'show' => false,
                 ],

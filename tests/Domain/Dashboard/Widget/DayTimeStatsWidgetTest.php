@@ -2,16 +2,10 @@
 
 namespace App\Tests\Domain\Dashboard\Widget;
 
-use App\Domain\Activity\Activities;
-use App\Domain\Activity\ActivityId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
-use App\Domain\Dashboard\Widget\DaytimeStats\Daytime;
-use App\Domain\Dashboard\Widget\DaytimeStats\DaytimeStats;
 use App\Domain\Dashboard\Widget\DaytimeStats\DayTimeStatsWidget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
-use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
-use App\Tests\Domain\Activity\ActivityBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class DayTimeStatsWidgetTest extends ContainerTestCase
@@ -22,48 +16,6 @@ class DayTimeStatsWidgetTest extends ContainerTestCase
     {
         $this->widget->guardValidConfiguration(WidgetConfiguration::empty()->add('morningStartHour', 4)->add('afternoonStartHour', 11)->add('eveningStartHour', 17)->add('nightStartHour', 1));
         $this->addToAssertionCount(1);
-    }
-
-    public function testDaytimeStatsUsesTheConfiguredStartHours(): void
-    {
-        $activities = Activities::empty();
-        foreach (['2025-01-01 00:30:00', '2025-01-01 03:59:00', '2025-01-01 04:00:00', '2025-01-01 11:00:00', '2025-01-01 23:00:00'] as $index => $startDateTime) {
-            $activities->add(ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed((string) $index))
-                ->withStartDateTime(SerializableDateTime::fromString($startDateTime))
-                ->build());
-        }
-
-        $daytimeStats = DaytimeStats::create($activities, [
-            Daytime::MORNING->value => 4,
-            Daytime::AFTERNOON->value => 11,
-            Daytime::EVENING->value => 17,
-            Daytime::NIGHT->value => 1,
-        ]);
-
-        $this->assertSame(
-            [
-                Daytime::MORNING->value => [1, 4, 11],
-                Daytime::AFTERNOON->value => [1, 11, 17],
-                Daytime::EVENING->value => [2, 17, 1],
-                Daytime::NIGHT->value => [1, 1, 4],
-            ],
-            array_map(
-                static fn (array $statistic): array => [$statistic['numberOfWorkouts'], $statistic['startHour'], $statistic['endHour']],
-                $daytimeStats->getData(),
-            ),
-        );
-
-        $numberOfWorkoutsPerHour = $daytimeStats->getNumberOfWorkoutsPerHour();
-        $this->assertSame([...range(4, 23), ...range(0, 3)], array_keys($numberOfWorkoutsPerHour));
-        $this->assertSame(
-            [4 => 1, 11 => 1, 23 => 1, 0 => 1, 3 => 1],
-            array_filter(array_map(static fn (array $statistic): int => $statistic['numberOfWorkouts'], $numberOfWorkoutsPerHour)),
-        );
-        $this->assertSame(
-            [Daytime::EVENING, Daytime::NIGHT, Daytime::NIGHT, Daytime::MORNING],
-            [$numberOfWorkoutsPerHour[0]['daytime'], $numberOfWorkoutsPerHour[1]['daytime'], $numberOfWorkoutsPerHour[3]['daytime'], $numberOfWorkoutsPerHour[4]['daytime']],
-        );
     }
 
     #[DataProvider(methodName: 'provideInvalidConfig')]

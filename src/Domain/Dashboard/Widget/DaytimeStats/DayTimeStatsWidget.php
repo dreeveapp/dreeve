@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget\DaytimeStats;
 
-use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityTypeRepository;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
+use App\Domain\Dashboard\Widget\DaytimeStats\FindDaytimeStats\FindDaytimeStats;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Domain\Dashboard\Widget\WidgetRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -20,7 +21,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final readonly class DayTimeStatsWidget implements Widget
 {
     public function __construct(
-        private ActivityRepository $activityRepository,
+        private QueryBus $queryBus,
         private ActivityTypeRepository $activityTypeRepository,
         private WidgetRenderer $widgetRenderer,
         private TranslatorInterface $translator,
@@ -89,41 +90,42 @@ final readonly class DayTimeStatsWidget implements Widget
 
     public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
-        $startHours = [];
-        foreach (Daytime::cases() as $daytime) {
-            $startHours[$daytime->value] = (int) $configuration->get($daytime->getStartHourConfigKey());
-        }
+        $startHours = DaytimeStartHours::create(
+            morning: (int) $configuration->get(Daytime::MORNING->getStartHourConfigKey()),
+            afternoon: (int) $configuration->get(Daytime::AFTERNOON->getStartHourConfigKey()),
+            evening: (int) $configuration->get(Daytime::EVENING->getStartHourConfigKey()),
+            night: (int) $configuration->get(Daytime::NIGHT->getStartHourConfigKey()),
+        );
+        $daytimeStats = $this->queryBus->ask(new FindDaytimeStats());
 
         $statsPerActivityType = [];
-        $allActivities = $this->activityRepository->findAll();
-        $activitiesPerActivityType = $allActivities->groupByActivityType($this->activityTypeRepository->findAll());
-        if (count($activitiesPerActivityType) > 1) {
-            foreach ($activitiesPerActivityType as $activityType => $activities) {
-                $dayTimeStats = DaytimeStats::create($activities, $startHours);
-                $statsPerActivityType[$activityType] = [
+        $activityTypes = $this->activityTypeRepository->findAll();
+        if (count($activityTypes) > 1) {
+            foreach ($activityTypes as $activityType) {
+                $statsPerActivityType[$activityType->value] = [
                     'chart' => Json::encode(
                         DaytimeStatsChart::create(
-                            daytimeStats: $dayTimeStats,
+                            numberOfActivitiesPerHour: $daytimeStats->getNumberOfActivitiesPerHour($startHours, $activityType),
+                            startHours: $startHours,
                             translator: $this->translator,
                         )->build(),
                     ),
-                    'dayTimeStats' => $dayTimeStats,
+                    'statsPerDaytime' => $daytimeStats->getStatsPerDaytime($startHours, $activityType),
                 ];
             }
         }
-
-        $allDayTimeStats = DaytimeStats::create($allActivities, $startHours);
 
         return $this->widgetRenderer->render($this, $configuration, [
             'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'allActivities' => [
                 'chart' => Json::encode(
                     DaytimeStatsChart::create(
-                        daytimeStats: $allDayTimeStats,
+                        numberOfActivitiesPerHour: $daytimeStats->getNumberOfActivitiesPerHour($startHours, null),
+                        startHours: $startHours,
                         translator: $this->translator,
                     )->build(),
                 ),
-                'dayTimeStats' => $allDayTimeStats,
+                'statsPerDaytime' => $daytimeStats->getStatsPerDaytime($startHours, null),
             ],
             'statsPerActivityType' => $statsPerActivityType,
         ]);

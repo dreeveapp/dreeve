@@ -53,7 +53,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for statistic in allActivities.dayTimeStats.getData() %}
+                    {% for statistic in allActivities.statsPerDaytime %}
                         <tr class="group/row">
                             <th scope="row"
                                 class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
@@ -68,21 +68,21 @@
                                 </div>
                             </th>
                             <td class="narrow">
-                                {{ statistic.numberOfWorkouts }}
+                                {{ statistic.numberOfActivities }}
                             </td>
                             <td class="truncate">
-                                {% if statistic.totalDistance.toFloat() > 0 %}
+                                {% if statistic.distance.toFloat() > 0 %}
                                     {{ statistic.averageDistance|renderMeasurement(0, 'avg'|trans) }} /
-                                    {{ statistic.totalDistance|renderMeasurement(0, 'total'|trans) }}
+                                    {{ statistic.distance|renderMeasurement(0, 'total'|trans) }}
                                 {% else %}
-                                    0<span class="text-xxs ml-px">{{ statistic.totalDistance.getSymbol() }}</span>
+                                    0<span class="text-xxs ml-px">{{ statistic.distance.getSymbol() }}</span>
                                 {% endif %}
                             </td>
                             <td class="truncate">
-                                {{ statistic.totalElevation|renderMeasurement(0) }}
+                                {{ statistic.elevation|renderMeasurement(0) }}
                             </td>
-                            <td class="truncate" title="{{ statistic.movingTimeInHours.toFloat()|formatNumber(1) }}h">
-                                {{ statistic.movingTimeForHumans }}
+                            <td class="truncate" title="{{ statistic.movingTime.toHour().toFloat()|formatNumber(1) }}h">
+                                {{ statistic.movingTime|formatSeconds }}
                             </td>
                         </tr>
                     {% endfor %}
@@ -115,7 +115,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for statistic in stats.dayTimeStats.getData() %}
+                        {% for statistic in stats.statsPerDaytime %}
                             <tr class="group/row">
                                 <th scope="row"
                                     class="narrow sticky left-0 bg-white font-medium text-gray-900 whitespace-nowrap">
@@ -130,21 +130,21 @@
                                     </div>
                                 </th>
                                 <td class="narrow">
-                                    {{ statistic.numberOfWorkouts }}
+                                    {{ statistic.numberOfActivities }}
                                 </td>
                                 <td class="truncate">
-                                    {% if statistic.totalDistance.toFloat() > 0 %}
+                                    {% if statistic.distance.toFloat() > 0 %}
                                         {{ statistic.averageDistance|renderMeasurement(0, 'avg'|trans) }} /
-                                        {{ statistic.totalDistance|renderMeasurement(0, 'total'|trans) }}
+                                        {{ statistic.distance|renderMeasurement(0, 'total'|trans) }}
                                     {% else %}
-                                        0<span class="text-xxs ml-px">{{ statistic.totalDistance.getSymbol() }}</span>
+                                        0<span class="text-xxs ml-px">{{ statistic.distance.getSymbol() }}</span>
                                     {% endif %}
                                 </td>
                                 <td class="truncate">
-                                    {{ statistic.totalElevation|renderMeasurement(0) }}
+                                    {{ statistic.elevation|renderMeasurement(0) }}
                                 </td>
                                 <td class="truncate">
-                                    {{ statistic.movingTimeForHumans }}
+                                    {{ statistic.movingTime|formatSeconds }}
                                 </td>
                             </tr>
                         {% endfor %}
