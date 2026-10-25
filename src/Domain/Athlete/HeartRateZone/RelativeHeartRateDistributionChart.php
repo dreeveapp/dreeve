@@ -59,22 +59,41 @@ final readonly class RelativeHeartRateDistributionChart
             }
         }
 
+        $bpm = $this->translator->trans('bpm');
+        $percentages = array_keys($bins);
+        $bpmLabelPerBin = [];
+        foreach ($percentages as $index => $percentage) {
+            $fromBpm = (int) ceil(($percentage - 0.5) * $this->athleteMaxHeartRate / 100);
+            $toBpm = (int) ceil(($percentage + 0.5) * $this->athleteMaxHeartRate / 100) - 1;
+            $bpmLabelPerBin[$percentage] = match (true) {
+                0 === $index => sprintf('≤%d %s', $toBpm, $bpm),
+                count($percentages) - 1 === $index => sprintf('≥%d %s', $fromBpm, $bpm),
+                $fromBpm >= $toBpm => sprintf('%d %s', $fromBpm, $bpm),
+                default => sprintf('%d–%d %s', $fromBpm, $toBpm, $bpm),
+            };
+        }
+
         $series = [];
         $legend = [];
         foreach ([...$this->heartRateZones->getZones(), null] as $heartRateZone) {
             $zoneName = $heartRateZone?->getName();
             $data = [];
+            $zoneSecondsTotal = 0;
             foreach ($bins as $percentage => $seconds) {
                 if ($zoneNamePerBin[$percentage] !== $zoneName) {
                     $data[] = '-';
                     continue;
                 }
-                $data[] = round($seconds / $totalTimeInSeconds * 100, 2);
+                $data[] = [
+                    'value' => round($seconds / $totalTimeInSeconds * 100, 2),
+                    'name' => $bpmLabelPerBin[$percentage],
+                ];
+                $zoneSecondsTotal += $seconds;
             }
 
             $name = $this->translator->trans('Below zone 1');
             if (null !== $zoneName) {
-                $name = $zoneLabels[$zoneName];
+                $name = sprintf('%s (%s%%)', $zoneLabels[$zoneName], round($zoneSecondsTotal / $totalTimeInSeconds * 100, 1));
                 $legend[] = $name;
             }
 
@@ -94,7 +113,6 @@ final readonly class RelativeHeartRateDistributionChart
             ];
         }
 
-        $percentages = array_keys($bins);
         $xAxisLabels = array_map(strval(...), $percentages);
         $xAxisLabels[0] = '≤'.$xAxisLabels[0];
         if (count($xAxisLabels) > 1) {
@@ -112,7 +130,7 @@ final readonly class RelativeHeartRateDistributionChart
             ],
             'legend' => [
                 'top' => 0,
-                'left' => 0,
+                'left' => 'center',
                 'icon' => 'rect',
                 'itemWidth' => 10,
                 'itemHeight' => 10,
@@ -120,7 +138,7 @@ final readonly class RelativeHeartRateDistributionChart
             ],
             'tooltip' => [
                 'trigger' => 'item',
-                'formatter' => '{a}: <strong>{c}%</strong>',
+                'formatter' => '{b}: <strong>{c}%</strong>',
             ],
             'xAxis' => [
                 'type' => 'category',

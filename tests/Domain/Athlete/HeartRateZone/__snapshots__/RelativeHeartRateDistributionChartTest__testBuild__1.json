@@ -9,21 +9,21 @@
     },
     "legend": {
         "top": 0,
-        "left": 0,
+        "left": "center",
         "icon": "rect",
         "itemWidth": 10,
         "itemHeight": 10,
         "data": [
-            "Zone 1",
-            "Zone 2",
-            "Zone 3",
-            "Zone 4",
-            "Zone 5"
+            "Zone 1 (13%)",
+            "Zone 2 (60%)",
+            "Zone 3 (15%)",
+            "Zone 4 (8%)",
+            "Zone 5 (3%)"
         ]
     },
     "tooltip": {
         "trigger": "item",
-        "formatter": "{a}: <strong>{c}%</strong>"
+        "formatter": "{b}: <strong>{c}%</strong>"
     },
     "xAxis": {
         "type": "category",
@@ -100,7 +100,7 @@
     },
     "series": [
         {
-            "name": "Zone 1",
+            "name": "Zone 1 (13%)",
             "type": "bar",
             "stack": "heartRate",
             "barCategoryGap": "18%",
@@ -122,17 +122,50 @@
                 "-",
                 "-",
                 "-",
-                3,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                10,
+                {
+                    "value": 3,
+                    "name": "95 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "96–97 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "98–99 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "100–101 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "102–103 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "104–105 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "106–107 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "108–109 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "110–111 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "112–113 bpm"
+                },
+                {
+                    "value": 10,
+                    "name": "114 bpm"
+                },
                 "-",
                 "-",
                 "-",
@@ -171,7 +204,7 @@
             ]
         },
         {
-            "name": "Zone 2",
+            "name": "Zone 2 (60%)",
             "type": "bar",
             "stack": "heartRate",
             "barCategoryGap": "18%",
@@ -204,16 +237,46 @@
                 "-",
                 "-",
                 "-",
-                20,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                40,
+                {
+                    "value": 20,
+                    "name": "115–116 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "117–118 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "119–120 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "121–122 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "123–124 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "125–126 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "127–128 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "129–130 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "131–132 bpm"
+                },
+                {
+                    "value": 40,
+                    "name": "133 bpm"
+                },
                 "-",
                 "-",
                 "-",
@@ -242,7 +305,7 @@
             ]
         },
         {
-            "name": "Zone 3",
+            "name": "Zone 3 (15%)",
             "type": "bar",
             "stack": "heartRate",
             "barCategoryGap": "18%",
@@ -285,16 +348,46 @@
                 "-",
                 "-",
                 "-",
-                15,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
+                {
+                    "value": 15,
+                    "name": "134–135 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "136–137 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "138–139 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "140–141 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "142–143 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "144–145 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "146–147 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "148–149 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "150–151 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "152 bpm"
+                },
                 "-",
                 "-",
                 "-",
@@ -313,7 +406,7 @@
             ]
         },
         {
-            "name": "Zone 4",
+            "name": "Zone 4 (8%)",
             "type": "bar",
             "stack": "heartRate",
             "barCategoryGap": "18%",
@@ -366,16 +459,46 @@
                 "-",
                 "-",
                 "-",
-                0,
-                0,
-                0,
-                0,
-                8,
-                0,
-                0,
-                0,
-                0,
-                0,
+                {
+                    "value": 0,
+                    "name": "153–154 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "155–156 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "157–158 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "159–160 bpm"
+                },
+                {
+                    "value": 8,
+                    "name": "161–162 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "163–164 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "165–166 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "167–168 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "169–170 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "171 bpm"
+                },
                 "-",
                 "-",
                 "-",
@@ -384,7 +507,7 @@
             ]
         },
         {
-            "name": "Zone 5",
+            "name": "Zone 5 (3%)",
             "type": "bar",
             "stack": "heartRate",
             "barCategoryGap": "18%",
@@ -447,11 +570,26 @@
                 "-",
                 "-",
                 "-",
-                0,
-                0,
-                0,
-                3,
-                0
+                {
+                    "value": 0,
+                    "name": "172–173 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "174–175 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "176–177 bpm"
+                },
+                {
+                    "value": 3,
+                    "name": "178–179 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "≥180 bpm"
+                }
             ]
         },
         {
@@ -472,11 +610,26 @@
                 ]
             },
             "data": [
-                1,
-                0,
-                0,
-                0,
-                0,
+                {
+                    "value": 1,
+                    "name": "≤86 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "87–88 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "89–90 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "91–92 bpm"
+                },
+                {
+                    "value": 0,
+                    "name": "93–94 bpm"
+                },
                 "-",
                 "-",
                 "-",
