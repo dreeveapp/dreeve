@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget\WeekdayStats;
 
-use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityTypeRepository;
 use App\Domain\Dashboard\DashboardWidgetId;
+use App\Domain\Dashboard\Widget\WeekdayStats\FindWeekdayStats\FindWeekdayStats;
 use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Domain\Dashboard\Widget\WidgetRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -19,7 +20,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final readonly class WeekdayStatsWidget implements Widget
 {
     public function __construct(
-        private ActivityRepository $activityRepository,
+        private QueryBus $queryBus,
         private ActivityTypeRepository $activityTypeRepository,
         private WidgetRenderer $widgetRenderer,
         private TranslatorInterface $translator,
@@ -57,36 +58,37 @@ final readonly class WeekdayStatsWidget implements Widget
 
     public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): string
     {
+        $weekdayStats = $this->queryBus->ask(new FindWeekdayStats());
+
         $statsPerActivityType = [];
-        $allActivities = $this->activityRepository->findAll();
-        $activitiesPerActivityType = $allActivities->groupByActivityType($this->activityTypeRepository->findAll());
-        if (count($activitiesPerActivityType) > 1) {
-            foreach ($activitiesPerActivityType as $activityType => $activities) {
-                $weekdayStats = WeekdayStats::create(
-                    activities: $activities,
-                    translator: $this->translator,
-                );
-                $statsPerActivityType[$activityType] = [
+        $activityTypes = $this->activityTypeRepository->findAll();
+        if (count($activityTypes) > 1) {
+            foreach ($activityTypes as $activityType) {
+                $statsPerWeekday = $weekdayStats->getStatsPerWeekday($activityType);
+                $statsPerActivityType[$activityType->value] = [
                     'chart' => Json::encode(
-                        WeekdayStatsChart::create($weekdayStats)->build(),
+                        WeekdayStatsChart::create(
+                            statsPerWeekday: $statsPerWeekday,
+                            translator: $this->translator,
+                        )->build(),
                     ),
-                    'weekDayStats' => $weekdayStats,
+                    'statsPerWeekday' => $statsPerWeekday,
                 ];
             }
         }
 
-        $allWeekdayStats = WeekdayStats::create(
-            activities: $allActivities,
-            translator: $this->translator,
-        );
+        $allStatsPerWeekday = $weekdayStats->getStatsPerWeekday(null);
 
         return $this->widgetRenderer->render($this, $configuration, [
             'uniqueId' => $dashboardWidgetId->toHtmlIdSuffix(),
             'allActivities' => [
                 'chart' => Json::encode(
-                    WeekdayStatsChart::create($allWeekdayStats)->build(),
+                    WeekdayStatsChart::create(
+                        statsPerWeekday: $allStatsPerWeekday,
+                        translator: $this->translator,
+                    )->build(),
                 ),
-                'weekDayStats' => $allWeekdayStats,
+                'statsPerWeekday' => $allStatsPerWeekday,
             ],
             'statsPerActivityType' => $statsPerActivityType,
         ]);

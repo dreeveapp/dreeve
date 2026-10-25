@@ -2,17 +2,30 @@
 
 namespace App\Domain\Dashboard\Widget\WeekdayStats;
 
+use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Time\Seconds;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 final readonly class WeekdayStatsChart
 {
+    /**
+     * @param array<int, array{weekday: Weekday, numberOfActivities: int, distance: Kilometer, averageDistance: Kilometer, elevation: Meter, movingTime: Seconds, percentage: float|int}> $statsPerWeekday
+     */
     private function __construct(
-        private WeekdayStats $weekdayStats,
+        private array $statsPerWeekday,
+        private TranslatorInterface $translator,
     ) {
     }
 
+    /**
+     * @param array<int, array{weekday: Weekday, numberOfActivities: int, distance: Kilometer, averageDistance: Kilometer, elevation: Meter, movingTime: Seconds, percentage: float|int}> $statsPerWeekday
+     */
     public static function create(
-        WeekdayStats $weekdayStats,
+        array $statsPerWeekday,
+        TranslatorInterface $translator,
     ): self {
-        return new self($weekdayStats);
+        return new self($statsPerWeekday, $translator);
     }
 
     /**
@@ -67,10 +80,10 @@ final readonly class WeekdayStatsChart
     private function getData(): array
     {
         $data = [];
-        foreach ($this->weekdayStats->getData() as $weekday => $statistic) {
+        foreach ($this->statsPerWeekday as $statistic) {
             $data[] = [
                 'value' => $statistic['percentage'],
-                'name' => $weekday,
+                'name' => $statistic['weekday']->trans($this->translator),
             ];
         }
 
