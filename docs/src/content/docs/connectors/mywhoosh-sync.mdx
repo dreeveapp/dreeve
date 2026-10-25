@@ -1,0 +1,26 @@
+---
+title: "MyWhoosh Sync"
+description: "Import your MyWhoosh rides into Dreeve with the community-maintained MyWhoosh Sync connector."
+---
+
+**[MyWhoosh Sync](https://github.com/julien-gasnier/dreeve-mywhoosh-sync)** is a community-maintained
+connector that downloads your new [MyWhoosh](https://www.mywhoosh.com/) activities and writes them to
+Dreeve's `watch/` folder.
+
+```text
+MyWhoosh → MyWhoosh Sync → watch/ → Dreeve imports it
+```
+
+The connector runs as a separate container alongside Dreeve and logs in with your MyWhoosh email and
+password. Dreeve imports the files through its existing [file import pipeline](/importing/file-import/);
+no Dreeve API key is needed.
+
+:::caution
+The connector uses MyWhoosh's unofficial API, which may change without notice.
+:::
+
+:::note
+This is a third-party project, maintained separately from Dreeve. See its
+[repository and setup guide](https://github.com/julien-gasnier/dreeve-mywhoosh-sync#installation-step-by-step)
+for current requirements and support.
+:::

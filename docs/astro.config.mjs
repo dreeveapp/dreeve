@@ -13,7 +13,7 @@ export default defineConfig({
 	site: 'https://docs.dreeve.app',
 	redirects: {
 		'/integrations/garmin-connect': '/connectors/garmin-connect/',
-		'/integrations/polar-flow': '/connectors/polar-flow/',
+		'/integrations/polar-flow': '/connectors/polar-flow-connector/',
 		'/integrations/wahoo-connector': '/connectors/wahoo-connector/',
 		'/integrations/hammerhead-connector': '/connectors/hammerhead-connector/',
 		'/integrations/zepp-connector': '/connectors/zepp-connector/',
@@ -55,7 +55,7 @@ export default defineConfig({
 						},
 						{
 							label: 'Connectors',
-							description: 'automatically getting activities from Garmin, Polar, Wahoo, Hammerhead, Zepp, Apple Health and Google Health into Dreeve',
+							description: 'automatically getting activities from Garmin, Polar, Wahoo, Hammerhead, Zepp, Apple Health, Google Health, MyWhoosh and iGPSPORT into Dreeve',
 							paths: ['connectors/**'],
 						},
 						{
@@ -121,12 +121,14 @@ export default defineConfig({
 									label: 'Connectors',
 									items: [
 										{ slug: 'connectors/garmin-connect', label: 'Garmin Connect' },
-										{ slug: 'connectors/polar-flow', label: 'Polar Flow' },
+										{ slug: 'connectors/polar-flow-connector', label: 'Polar Flow Connector' },
 										{ slug: 'connectors/wahoo-connector', label: 'Wahoo Connector' },
 										{ slug: 'connectors/hammerhead-connector', label: 'Hammerhead Connector' },
 										{ slug: 'connectors/zepp-connector', label: 'Zepp Connector' },
 										{ slug: 'connectors/apple-health', label: 'Apple Health', badge: { text: 'Community', variant: 'note' } },
 										{ slug: 'connectors/google-health-sync', label: 'Google Health Sync', badge: { text: 'Community', variant: 'note' } },
+										{ slug: 'connectors/mywhoosh-sync', label: 'MyWhoosh Sync', badge: { text: 'Community', variant: 'note' } },
+										{ slug: 'connectors/igpsport-sync', label: 'iGPSPORT Sync', badge: { text: 'Community', variant: 'note' } },
 									],
 								},
 								{

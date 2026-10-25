@@ -1,0 +1,26 @@
+---
+title: "iGPSPORT Sync"
+description: "Import your iGPSPORT activities into Dreeve with the community-maintained iGPSPORT Sync connector."
+---
+
+**[iGPSPORT Sync](https://github.com/julien-gasnier/dreeve-igpsport-sync)** is a community-maintained
+connector that downloads your new [iGPSPORT](https://www.igpsport.com/) activities and writes them to
+Dreeve's `watch/` folder.
+
+```text
+iGPSPORT → iGPSPORT Sync → watch/ → Dreeve imports it
+```
+
+The connector runs as a separate container alongside Dreeve and logs in with your iGPSPORT email and
+password, or a JWT token. Dreeve imports the files through its existing
+[file import pipeline](/importing/file-import/); no Dreeve API key is needed.
+
+:::caution
+The connector uses iGPSPORT's unofficial API, which may change without notice.
+:::
+
+:::note
+This is a third-party project, maintained separately from Dreeve. See its
+[repository and setup guide](https://github.com/julien-gasnier/dreeve-igpsport-sync#installation-step-by-step)
+for current requirements and support.
+:::
