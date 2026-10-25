@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget\DaytimeStats;
 
-use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -25,20 +24,6 @@ enum Daytime: string implements TranslatableInterface
         };
     }
 
-    public static function fromSerializableDateTime(SerializableDateTime $dateTime): self
-    {
-        $hour = $dateTime->getHourWithoutLeadingZero();
-
-        return match (true) {
-            $hour >= 6 && $hour < 12 => self::MORNING, //  6 - 12
-            $hour >= 12 && $hour < 17 => self::AFTERNOON, // 12 - 17
-            $hour >= 17 && $hour < 23 => self::EVENING, //  17 -23
-            $hour >= 23,
-            $hour >= 0 => self::NIGHT, // 0 - 6,
-            default => throw new \RuntimeException('Could not determine daytime'),
-        };
-    }
-
     public function getSvgIcon(): string
     {
         return match ($this) {
@@ -49,16 +34,13 @@ enum Daytime: string implements TranslatableInterface
         };
     }
 
-    /**
-     * @return array<int, int>
-     */
-    public function getHours(): array
+    public function getStartHourConfigKey(): string
     {
         return match ($this) {
-            self::MORNING => [6, 12],
-            self::AFTERNOON => [12, 17],
-            self::EVENING => [17, 23],
-            self::NIGHT => [23, 6],
+            self::MORNING => 'morningStartHour',
+            self::AFTERNOON => 'afternoonStartHour',
+            self::EVENING => 'eveningStartHour',
+            self::NIGHT => 'nightStartHour',
         };
     }
 }

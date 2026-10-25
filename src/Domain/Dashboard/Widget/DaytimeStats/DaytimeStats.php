@@ -16,15 +16,23 @@ final readonly class DaytimeStats
 {
     use ProvideTimeFormats;
 
+    /**
+     * @param array<string, int> $startHours
+     */
     private function __construct(
         private Activities $activities,
+        private array $startHours,
     ) {
     }
 
+    /**
+     * @param array<string, int> $startHours
+     */
     public static function create(
         Activities $activities,
+        array $startHours,
     ): self {
-        return new self($activities);
+        return new self($activities, $startHours);
     }
 
     /**
@@ -35,9 +43,12 @@ final readonly class DaytimeStats
         $statistics = [];
         $totalMovingTime = $this->activities->sum(fn (Activity $activity): int => $activity->getMovingTimeInSeconds());
 
-        foreach (Daytime::cases() as $daytime) {
+        $daytimes = Daytime::cases();
+        foreach ($daytimes as $index => $daytime) {
             $statistics[$daytime->value] = [
                 'daytime' => $daytime,
+                'startHour' => $this->startHours[$daytime->value],
+                'endHour' => $this->startHours[$daytimes[($index + 1) % count($daytimes)]->value],
                 'numberOfWorkouts' => 0,
                 'totalDistance' => 0,
                 'totalElevation' => 0,
@@ -50,7 +61,7 @@ final readonly class DaytimeStats
 
         /** @var Activity $activity */
         foreach ($this->activities as $activity) {
-            $daytime = Daytime::fromSerializableDateTime($activity->getStartDate());
+            $daytime = $this->findDaytime($activity->getStartDate()->getHourWithoutLeadingZero());
 
             ++$statistics[$daytime->value]['numberOfWorkouts'];
             $statistics[$daytime->value]['totalDistance'] += $activity->getDistance()->toFloat();
@@ -69,5 +80,22 @@ final readonly class DaytimeStats
         }
 
         return $statistics;
+    }
+
+    private function findDaytime(int $hour): Daytime
+    {
+        $found = Daytime::MORNING;
+        foreach (Daytime::cases() as $daytime) {
+            if ($this->hoursSinceMorning($this->startHours[$daytime->value]) <= $this->hoursSinceMorning($hour)) {
+                $found = $daytime;
+            }
+        }
+
+        return $found;
+    }
+
+    private function hoursSinceMorning(int $hour): int
+    {
+        return ($hour - $this->startHours[Daytime::MORNING->value] + 24) % 24;
     }
 }

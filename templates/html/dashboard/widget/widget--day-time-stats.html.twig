@@ -61,8 +61,8 @@
                                     {{ svg(statistic.daytime.getSvgIcon()) }}
                                     <div>
                                         <div>{{ statistic.daytime|trans }}</div>
-                                        <div class="font-normal text-xs text-gray-500">{{ statistic.daytime.getHours()[0] }}h
-                                            - {{ statistic.daytime.getHours()[1] }}h
+                                        <div class="font-normal text-xs text-gray-500">{{ statistic.startHour }}h
+                                            - {{ statistic.endHour }}h
                                         </div>
                                     </div>
                                 </div>
@@ -123,8 +123,8 @@
                                         {{ svg(statistic.daytime.getSvgIcon()) }}
                                         <div>
                                             <div>{{ statistic.daytime|trans }}</div>
-                                            <div class="font-normal text-xs text-gray-500">{{ statistic.daytime.getHours()[0] }}h
-                                                - {{ statistic.daytime.getHours()[1] }}h
+                                            <div class="font-normal text-xs text-gray-500">{{ statistic.startHour }}h
+                                                - {{ statistic.endHour }}h
                                             </div>
                                         </div>
                                     </div>
