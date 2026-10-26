@@ -108,6 +108,13 @@ ADMIN_PASSWORD_HASH='replace-me'
 # Takes a comma-separated allowlist. When it is set, requests to /admin* from any other IP are rejected.
 # CIDR ranges are supported, so 192.168.1.0/24 allows your whole home network.
 # ADMIN_ALLOWED_IPS=192.168.1.10,192.168.1.11,10.0.0.0/24
+
+# Optional login through your own identity provider (Authentik, Authelia, Pocket ID, ...).
+# See https://docs.dreeve.app/integrations/single-sign-on/
+# OIDC_ISSUER_URL=
+# OIDC_CLIENT_ID=
+# OIDC_CLIENT_SECRET=
+# OIDC_ALLOWED_USERS=
 # Which peers Dreeve accepts X-Forwarded-* headers from. Defaults to private_ranges,
 # which is what you want in Docker. See the "Running behind a reverse proxy" section below.
 # TRUSTED_PROXIES=private_ranges

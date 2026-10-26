@@ -136,6 +136,7 @@ export default defineConfig({
 									items: [
 										{ slug: 'integrations/ai', label: 'AI assistant' },
 										{ slug: 'integrations/mcp', label: 'MCP server' },
+										{ slug: 'integrations/single-sign-on', label: 'Single sign-on (OIDC)' },
 										{ slug: 'integrations/notifications', label: 'Notifications' },
 									],
 								},
