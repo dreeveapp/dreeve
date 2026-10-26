@@ -58,7 +58,10 @@ export default class HeatmapDrawer {
             )
             : null;
         this.locationLayer = HeatmapLocationLayer.isSupported()
-            ? new HeatmapLocationLayer(this.map)
+            ? new HeatmapLocationLayer(this.map, {
+                blocked: this.translations.locationBlocked,
+                unavailable: this.translations.locationUnavailable,
+            })
             : null;
 
         this.map.on("click", (e) => this._handleMapClick(e));

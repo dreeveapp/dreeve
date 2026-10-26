@@ -84,6 +84,7 @@ Components: Onderdelen
 'Consider reducing load': 'Overweeg de belasting te verminderen'
 Consistency: Consistentie
 Cost: Cost
+'Could not determine your location': 'Could not determine your location'
 Country: Land
 Cricket: Cricket
 Crossfit: Crossfit
@@ -242,6 +243,7 @@ Lifetime: 'Sinds het begin'
 Load: Belasting
 'Load (CTL/ATL)': 'Belasting (CTL/ATL)'
 Loading...: 'Aan het laden...'
+'Location access is blocked. Allow it in your browser settings to see your location.': 'Location access is blocked. Allow it in your browser settings to see your location.'
 'Locations over the globe': 'Locaties over de hele wereld'
 'Long run': Duurloop
 'Longest activity': 'Langste activiteit'

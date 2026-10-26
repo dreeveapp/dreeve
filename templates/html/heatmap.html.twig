@@ -42,6 +42,8 @@
                  'highlightCountries': "Highlight visited countries"|trans,
                  'highlightTiles': "Highlight explorer tiles"|trans,
                  'showLocation': "Show my location"|trans,
+                 'locationUnavailable': "Could not determine your location"|trans,
+                 'locationBlocked': "Location access is blocked. Allow it in your browser settings to see your location."|trans,
                  'nearbyRoutes': "{numberOfRoutes} nearby route(s)"|trans({'{numberOfRoutes}': '{numberOfRoutes}'}),
              }|json_encode|e('html_attr') }}'
              class="grid grid-cols-1 h-[calc(100vh-235px)] rounded-lg {{ heatmapConfig.getLeafletConfig().enableGreyScale() ? 'enable-grey-scale' : '' }}">

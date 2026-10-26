@@ -1,6 +1,6 @@
 @layer components {
     .flash-toast-container {
-        @apply fixed bottom-5 right-4 z-50 flex flex-col gap-3;
+        @apply fixed bottom-5 right-4 z-10001 flex flex-col gap-3;
 
         .flash-toast {
             @apply flex items-center w-full max-w-xs p-4 text-sm font-medium text-gray-800 bg-white rounded-lg shadow-2xl ring-1 ring-black/5 border-l-4 border-l-gray-300 transition-opacity duration-300;

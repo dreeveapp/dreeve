@@ -84,6 +84,7 @@ Components: Komponensek
 'Consider reducing load': 'Fontold meg a terhelés csökkentését'
 Consistency: Következetesség
 Cost: Cost
+'Could not determine your location': 'Could not determine your location'
 Country: Ország
 Cricket: Krikett
 Crossfit: Crossfit
@@ -242,6 +243,7 @@ Lifetime: 'Teljes időszak'
 Load: Terhelés
 'Load (CTL/ATL)': 'Terhelés (CTL/ATL)'
 Loading...: Betöltés...
+'Location access is blocked. Allow it in your browser settings to see your location.': 'Location access is blocked. Allow it in your browser settings to see your location.'
 'Locations over the globe': 'Helyszínek a Földön'
 'Long run': 'Hosszú futás'
 'Longest activity': 'Leghosszabb tevékenység'

@@ -6246,7 +6246,7 @@ table.data-table {
     position: fixed;
     right: calc(var(--spacing) * 4);
     bottom: calc(var(--spacing) * 5);
-    z-index: 50;
+    z-index: 10001;
     display: flex;
     flex-direction: column;
     gap: calc(var(--spacing) * 3);
