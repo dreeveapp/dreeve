@@ -428,6 +428,7 @@ Settings: Paramètres
 'Showing {first} - {last} of {total}': 'Affichage de {first} à {last} sur {total}'
 'Sign in': Connexion
 'Sign in to the admin panel': "Connexion au panneau d'administration"
+'Sign in with single sign-on': 'Sign in with single sign-on'
 'Sign out': Déconnexion
 'Signing in...': 'Connexion en cours...'
 'Skip activities recorded before': 'Ignorer les activités enregistrées avant'
@@ -607,6 +608,7 @@ minutes: minutes
 'on': le
 'on or after': 'le ou après le'
 'on or before': 'le ou avant le'
+or: or
 'outside radius': 'hors du rayon'
 then: alors
 'within radius': 'dans le rayon'

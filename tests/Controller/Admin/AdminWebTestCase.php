@@ -19,6 +19,10 @@ abstract class AdminWebTestCase extends ControllerWebTestCase
             PASSWORD_BCRYPT,
             ['cost' => 4],
         );
+
+        foreach (['OIDC_ISSUER_URL', 'OIDC_CLIENT_ID', 'OIDC_CLIENT_SECRET', 'OIDC_ALLOWED_USERS'] as $envVar) {
+            $_SERVER[$envVar] = $_ENV[$envVar] = '';
+        }
     }
 
     protected function adminUser(): InMemoryUser

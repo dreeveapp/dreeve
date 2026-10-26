@@ -72,6 +72,16 @@
                     <span class="label--loading">{{ "Signing in..."|trans({}, 'admin') }}</span>
                 </button>
             </form>
+            {% if oidcIsEnabled %}
+                <div class="mt-4 mb-4 flex items-center gap-3 text-xs uppercase text-gray-400">
+                    <span class="flex-1 border-t border-gray-200"></span>
+                    {{ "or"|trans({}, 'admin') }}
+                    <span class="flex-1 border-t border-gray-200"></span>
+                </div>
+                <a href="{{ relativeUrl(path('admin_login_oidc')) }}" type="button" class="w-full">
+                    {{ "Sign in with single sign-on"|trans({}, 'admin') }}
+                </a>
+            {% endif %}
             </div>
             <p class="mt-6 text-center">
                 <a href="{{ relativeUrl('/') }}"

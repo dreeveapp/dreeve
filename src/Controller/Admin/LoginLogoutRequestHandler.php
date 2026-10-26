@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Security\Oidc\OidcConfig;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +23,7 @@ final readonly class LoginLogoutRequestHandler
         private Environment $twig,
         private Security $security,
         private UrlGeneratorInterface $urlGenerator,
+        private OidcConfig $oidcConfig,
     ) {
     }
 
@@ -34,6 +36,7 @@ final readonly class LoginLogoutRequestHandler
 
         return new HtmlResponse($this->twig->render('html/admin/login.html.twig', [
             'error' => $authenticationUtils->getLastAuthenticationError(),
+            'oidcIsEnabled' => $this->oidcConfig->isEnabled(),
         ]));
     }
 

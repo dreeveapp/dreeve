@@ -428,6 +428,7 @@ Settings: Settings
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'
 'Sign in': 'Sign in'
 'Sign in to the admin panel': 'Sign in to the admin panel'
+'Sign in with single sign-on': 'Sign in with single sign-on'
 'Sign out': 'Sign out'
 'Signing in...': 'Signing in...'
 'Skip activities recorded before': 'Skip activities recorded before'
@@ -607,6 +608,7 @@ minutes: minutes
 'on': 'on'
 'on or after': 'on or after'
 'on or before': 'on or before'
+or: or
 'outside radius': 'outside radius'
 then: then
 'within radius': 'within radius'

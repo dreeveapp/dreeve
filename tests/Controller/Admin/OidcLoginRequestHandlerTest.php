@@ -107,7 +107,8 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
     #[DataProvider(methodName: 'provideAllowedClaims')]
     public function testCallbackLogsInTheAdmin(array $claims): void
     {
-        $this->client->request('GET', '/admin/login/oidc');
+        $crawler = $this->client->request('GET', '/admin/login');
+        $this->client->click($crawler->filter('a[href$="/admin/login/oidc"]')->link());
         /** @var OidcLoginAttempt $loginAttempt */
         $loginAttempt = $this->client->getRequest()->getSession()->get(OidcLoginAttempt::SESSION_KEY);
 

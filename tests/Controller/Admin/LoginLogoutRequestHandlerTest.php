@@ -3,6 +3,7 @@
 namespace App\Tests\Controller\Admin;
 
 use App\Controller\Admin\LoginLogoutRequestHandler;
+use App\Infrastructure\Security\Oidc\OidcConfig;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -18,6 +19,7 @@ class LoginLogoutRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('input[name="_username"]'));
         $this->assertCount(1, $crawler->filter('input[name="_password"]'));
         $this->assertCount(1, $crawler->filter('input[name="_csrf_token"]'));
+        $this->assertCount(0, $crawler->filter('a[href$="/admin/login/oidc"]'));
     }
 
     public function testAuthenticatedUsersAreRedirectedAwayFromTheLoginPage(): void
@@ -80,6 +82,7 @@ class LoginLogoutRequestHandlerTest extends AdminWebTestCase
             $this->createStub(Environment::class),
             $this->createStub(Security::class),
             $this->createStub(UrlGeneratorInterface::class),
+            OidcConfig::fromStrings('', '', '', ''),
         );
 
         $this->expectExceptionObject(new \LogicException('Intercepted by the logout key on the firewall.'));

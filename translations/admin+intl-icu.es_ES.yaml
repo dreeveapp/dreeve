@@ -428,6 +428,7 @@ Settings: Ajustes
 'Showing {first} - {last} of {total}': 'Mostrando del {first} al {last} de {total}'
 'Sign in': 'Iniciar sesión'
 'Sign in to the admin panel': 'Iniciar sesión en el panel de administración'
+'Sign in with single sign-on': 'Sign in with single sign-on'
 'Sign out': 'Cerrar sesión'
 'Signing in...': 'Iniciando sesión...'
 'Skip activities recorded before': 'Omitir actividades registradas antes del'
@@ -607,6 +608,7 @@ minutes: minutos
 'on': el
 'on or after': 'el o después del'
 'on or before': 'el o antes del'
+or: or
 'outside radius': 'fuera del radio'
 then: entonces
 'within radius': 'dentro del radio'

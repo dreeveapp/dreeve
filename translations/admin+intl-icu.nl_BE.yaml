@@ -428,6 +428,7 @@ Settings: Instellingen
 'Showing {first} - {last} of {total}': '{first} - {last} van {total} getoond'
 'Sign in': Aanmelden
 'Sign in to the admin panel': 'Aanmelden bij het beheerpaneel'
+'Sign in with single sign-on': 'Sign in with single sign-on'
 'Sign out': Afmelden
 'Signing in...': 'Aan het aanmelden...'
 'Skip activities recorded before': 'Activiteiten overslaan die geregistreerd zijn voor'
@@ -607,6 +608,7 @@ minutes: minuten
 'on': op
 'on or after': 'op of na'
 'on or before': 'op of voor'
+or: or
 'outside radius': 'buiten straal'
 then: dan
 'within radius': 'binnen straal'
