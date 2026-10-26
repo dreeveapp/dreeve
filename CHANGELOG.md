@@ -2,6 +2,7 @@
 
 > [!NOTE]
 > Dreeve now includes a read-only MCP server, allowing AI assistants to access your activity data and statistics.
+> See the [MCP integration documentation](https://docs.dreeve.app/integrations/mcp/) for setup instructions.
 
 ## New features
 * Added a read-only MCP server for AI integrations
