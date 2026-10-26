@@ -1,3 +1,44 @@
+# [v5.7.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.7.0) - 2026-10-26
+
+> [!NOTE]
+> Dreeve now includes a read-only MCP server, allowing AI assistants to access your activity data and statistics.
+
+## New features
+* Added a read-only MCP server for AI integrations
+* Added API support for downloading original activity files
+* Added a one-time popup when a new release is available
+* Added a "Show my location" toggle to the heatmap
+
+## Improvements
+* Added configurable time ranges to the daytime statistics widget
+* Added filtering activities by Zwift world
+
+## Bug fixes
+* Fixed JSON escaping in file upload templates and handling of empty image payloads
+* Fixed activity overview dropdowns breaking the page width
+* Fixed the heart rate zones chart retaining its fullscreen height after exiting fullscreen
+
+## Technical details
+* ISSUE #2892: Show a one-time popup when a new release is available by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2894
+* ISSUE #2893: Download original activity files via the API by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2895
+* Escape JSON data attributes in drop zone templates and handle empty images payload by @julien-gasnier in https://github.com/dreeveapp/dreeve/pull/2898
+* ISSUE #2905: Run CI inside the php-cli Docker image by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2906
+* ISSUE #2901: Drop-down menus in activitiy overview break page width by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2907
+* ISSUE #2902: Stop the heart rate zones chart from keeping its fullscreen height by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2908
+* ISSUE #2909: Allow to filter activities on Zwift world by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2910
+* ISSUE #2896: Add a read-only MCP server by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2911
+* ISSUE #2904: Replace NeuronAI with Symfony AI package by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2912
+* ISSUE #2915: Ability to adjust the times in the daytime stats widget by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2917
+* docs: add Apple Health and Google Health Sync integrations by @jminke in https://github.com/dreeveapp/dreeve/pull/2916
+* ISSUE #2896: List the MCP server under key features by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2919
+* ISSUE #2922: Add a 'Show my location' toggle to the heatmap by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2923
+
+## New Contributors
+* @julien-gasnier made their first contribution in https://github.com/dreeveapp/dreeve/pull/2898
+* @jminke made their first contribution in https://github.com/dreeveapp/dreeve/pull/2916
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.6.2...v5.7.0
+
 # [v5.6.2](https://github.com/dreeveapp/dreeve/releases/tag/v5.6.2) - 2026-10-22
 
 > [!WARNING]
