@@ -3,6 +3,7 @@ import L from 'leaflet';
 import {createFlyToPlacesControl, createMapToolsControl} from "../maps/leaflet-controls";
 import HeatmapCountriesLayer from "./heatmap-countries-layer";
 import HeatmapTilesLayer from "./heatmap-tiles-layer";
+import HeatmapLocationLayer from "./heatmap-location-layer";
 import '../maps/ctrl-scroll-zoom';
 
 export default class HeatmapDrawer {
@@ -42,14 +43,12 @@ export default class HeatmapDrawer {
         }
 
         const countriesUrl = this.wrapper.getAttribute('data-leaflet-countries');
-        this.countriesLabel = this.wrapper.getAttribute('data-leaflet-countries-label');
-        this.popupLabels = JSON.parse(this.wrapper.getAttribute('data-leaflet-popup-labels') ?? '{}');
+        this.translations = JSON.parse(this.wrapper.getAttribute('data-translations'));
         this.countriesLayer = countriesUrl
             ? new HeatmapCountriesLayer(this.map, countriesUrl, this.config.polylineColor)
             : null;
         this.filtersNode = this.wrapper.closest('.heatmap-wrapper')?.querySelector('[data-heatmap-filters]');
         const tilesUrl = this.wrapper.getAttribute('data-leaflet-tiles');
-        this.tilesLabel = this.wrapper.getAttribute('data-leaflet-tiles-label');
         this.tilesLayer = tilesUrl
             ? new HeatmapTilesLayer(
                 this.map,
@@ -57,6 +56,9 @@ export default class HeatmapDrawer {
                 this.config.polylineColor,
                 this.wrapper.closest('.heatmap-wrapper')?.querySelector('[data-heatmap-tiles-stats]'),
             )
+            : null;
+        this.locationLayer = HeatmapLocationLayer.isSupported()
+            ? new HeatmapLocationLayer(this.map)
             : null;
 
         this.map.on("click", (e) => this._handleMapClick(e));
@@ -121,7 +123,7 @@ export default class HeatmapDrawer {
 
         const html = `
             <div class="m-4 text-sm max-h-50 overflow-y-auto no-dark">
-                <div class="font-medium">${this.popupLabels.nearbyRoutes.replace('{numberOfRoutes}', nearby.length)}</div>
+                <div class="font-medium">${this.translations.nearbyRoutes.replace('{numberOfRoutes}', nearby.length)}</div>
                  <ul class="divide-default divide-y divide-gray-200">
                     ${nearby.map(entry => `
                      <li class="py-2">
@@ -214,12 +216,12 @@ export default class HeatmapDrawer {
                 toggles: [
                     this.countriesLayer ? {
                         icon: HeatmapCountriesLayer.ICON,
-                        title: this.countriesLabel,
+                        title: this.translations.highlightCountries,
                         onToggle: (active) => this.countriesLayer.setEnabled(active),
                     } : null,
                     this.tilesLayer ? {
                         icon: HeatmapTilesLayer.ICON,
-                        title: this.tilesLabel,
+                        title: this.translations.highlightTiles,
                         onToggle: (active) => {
                             this._setRoutesVisible(!active);
                             this._setFiltersDisabled(active);
@@ -229,6 +231,11 @@ export default class HeatmapDrawer {
                                 throw error;
                             });
                         },
+                    } : null,
+                    this.locationLayer ? {
+                        icon: HeatmapLocationLayer.ICON,
+                        title: this.translations.showLocation,
+                        onToggle: (active) => this.locationLayer.setEnabled(active),
                     } : null,
                 ].filter(Boolean),
             });
