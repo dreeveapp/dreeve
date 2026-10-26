@@ -31,6 +31,10 @@
         }
     }
 
+    .leaflet-location-dot {
+        @apply rounded-full border-2 border-[#ffffff] bg-[#2563eb] shadow-md;
+    }
+
     @keyframes leaflet-ctrl-scroll-zoom-fadein {
         from { opacity: 0; }
         to   { opacity: 1; }

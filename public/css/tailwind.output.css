@@ -6778,6 +6778,15 @@ table.data-table {
       opacity: 50% !important;
     }
   }
+  .leaflet-location-dot {
+    border-radius: calc(infinity * 1px);
+    border-style: var(--tw-border-style);
+    border-width: 2px;
+    border-color: #ffffff;
+    background-color: #2563eb;
+    --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
   @keyframes leaflet-ctrl-scroll-zoom-fadein {
     from {
       opacity: 0;

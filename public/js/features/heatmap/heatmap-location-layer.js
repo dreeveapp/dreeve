@@ -63,14 +63,10 @@ export default class HeatmapLocationLayer {
                 fillColor: DOT_COLOR,
                 fillOpacity: 0.1,
             }).addTo(this.featureGroup);
-            this.dot = L.circleMarker(e.latlng, {
-                radius: 7,
+            this.dot = L.marker(e.latlng, {
+                icon: L.divIcon({className: 'leaflet-location-dot', iconSize: [16, 16]}),
                 interactive: false,
-                color: '#ffffff',
-                weight: 2,
-                opacity: 1,
-                fillColor: DOT_COLOR,
-                fillOpacity: 1,
+                keyboard: false,
             }).addTo(this.featureGroup);
             this.featureGroup.addTo(this.map);
             return;
