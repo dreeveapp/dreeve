@@ -6,6 +6,14 @@ use App\Controller\Admin\OidcLoginRequestHandler;
 use App\Infrastructure\Security\Oidc\OidcConfig;
 use App\Infrastructure\Security\Oidc\OidcLoginAttempt;
 use App\Infrastructure\Security\Oidc\OidcProvider;
+use App\Infrastructure\Serialization\Json;
+use Jose\Component\Core\AlgorithmManager;
+use Jose\Component\Core\JWK;
+use Jose\Component\KeyManagement\JWKFactory;
+use Jose\Component\Signature\Algorithm\ES256;
+use Jose\Component\Signature\JWSBuilder;
+use Jose\Component\Signature\Serializer\CompactSerializer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\JsonMockResponse;
@@ -16,9 +24,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class OidcLoginRequestHandlerTest extends AdminWebTestCase
 {
     private const string ISSUER_URL = 'https://idp.example.com/application/o/dreeve/';
+    private const string TOKEN_ENDPOINT = 'https://idp.example.com/application/o/token/';
+    private const string JWKS_URI = 'https://idp.example.com/application/o/dreeve/jwks/';
 
-    /** @var string[] */
-    private array $requestedUrls = [];
+    private JWK $signingKey;
+    private string $idToken = '';
+    /** @var array<int, array{method: string, url: string, options: array<string, mixed>}> */
+    private array $requests = [];
 
     #[\Override]
     protected function prepareEnvironment(): void
@@ -36,16 +48,22 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
     {
         parent::setUp();
 
+        $this->signingKey = JWKFactory::createECKey('P-256', ['alg' => 'ES256', 'use' => 'sig', 'kid' => 'dreeve-test']);
+
         static::getContainer()->set(OidcProvider::class, new OidcProvider(
             static::getContainer()->get(OidcConfig::class),
-            new MockHttpClient(function (string $method, string $url): JsonMockResponse {
-                $this->requestedUrls[] = $url;
+            new MockHttpClient(function (string $method, string $url, array $options): JsonMockResponse {
+                $this->requests[] = ['method' => $method, 'url' => $url, 'options' => $options];
 
                 return match ($url) {
                     self::ISSUER_URL.'.well-known/openid-configuration' => new JsonMockResponse([
                         'issuer' => self::ISSUER_URL,
                         'authorization_endpoint' => 'https://idp.example.com/application/o/authorize/',
+                        'token_endpoint' => self::TOKEN_ENDPOINT,
+                        'jwks_uri' => self::JWKS_URI,
                     ]),
+                    self::JWKS_URI => new JsonMockResponse(['keys' => [$this->signingKey->toPublic()->all()]]),
+                    self::TOKEN_ENDPOINT => new JsonMockResponse(['access_token' => 'access-token', 'token_type' => 'Bearer', 'id_token' => $this->idToken]),
                     default => throw new \LogicException(sprintf('Unexpected request to "%s"', $url)),
                 };
             }),
@@ -59,7 +77,10 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/admin/login/oidc');
         $this->client->request('GET', '/admin/login/oidc');
 
-        $this->assertSame([self::ISSUER_URL.'.well-known/openid-configuration'], $this->requestedUrls);
+        $this->assertSame(
+            [self::ISSUER_URL.'.well-known/openid-configuration'],
+            array_column($this->requests, 'url'),
+        );
 
         $location = (string) $this->client->getResponse()->headers->get('Location');
         $this->assertStringStartsWith('https://idp.example.com/application/o/authorize/?', $location);
@@ -78,6 +99,90 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
             'code_challenge' => rtrim(strtr(base64_encode(hash('sha256', $loginAttempt->getCodeVerifier(), true)), '+/', '-_'), '='),
             'code_challenge_method' => 'S256',
         ], $query);
+    }
+
+    /**
+     * @param array<string, mixed> $claims
+     */
+    #[DataProvider(methodName: 'provideAllowedClaims')]
+    public function testCallbackLogsInTheAdmin(array $claims): void
+    {
+        $this->client->request('GET', '/admin/login/oidc');
+        /** @var OidcLoginAttempt $loginAttempt */
+        $loginAttempt = $this->client->getRequest()->getSession()->get(OidcLoginAttempt::SESSION_KEY);
+
+        $this->idToken = $this->signIdToken([...$this->validClaims($loginAttempt), ...$claims], $this->signingKey);
+
+        $this->client->request('GET', '/admin/login/oidc/callback', ['code' => 'the-code', 'state' => $loginAttempt->getState()]);
+        $this->assertResponseRedirects('/admin/upload');
+        $this->assertNotNull($this->client->getCookieJar()->get('REMEMBERME'));
+
+        $tokenRequest = array_values(array_filter($this->requests, fn (array $request): bool => self::TOKEN_ENDPOINT === $request['url']))[0];
+        $this->assertSame('POST', $tokenRequest['method']);
+        $this->assertContains('Authorization: Basic '.base64_encode('dreeve:secret'), $tokenRequest['options']['normalized_headers']['authorization']);
+        parse_str($tokenRequest['options']['body'], $tokenRequestBody);
+        $this->assertSame([
+            'grant_type' => 'authorization_code',
+            'code' => 'the-code',
+            'redirect_uri' => 'http://localhost/admin/login/oidc/callback',
+            'code_verifier' => $loginAttempt->getCodeVerifier(),
+        ], $tokenRequestBody);
+
+        $this->client->followRedirect();
+        $this->assertResponseIsSuccessful();
+    }
+
+    /**
+     * @return iterable<string, array{0: array<string, mixed>}>
+     */
+    public static function provideAllowedClaims(): iterable
+    {
+        yield 'allowed subject' => [['sub' => 'athlete-subject']];
+        yield 'allowed verified email' => [['sub' => 'unknown', 'email' => 'Athlete@Example.com', 'email_verified' => true]];
+    }
+
+    /**
+     * @param array<string, mixed> $claims
+     */
+    #[DataProvider(methodName: 'provideRejectedCallbacks')]
+    public function testCallbackRejectsTheLogin(array $claims, bool $signWithForeignKey, bool $tamperWithState): void
+    {
+        $this->client->request('GET', '/admin/login/oidc');
+        /** @var OidcLoginAttempt $loginAttempt */
+        $loginAttempt = $this->client->getRequest()->getSession()->get(OidcLoginAttempt::SESSION_KEY);
+
+        $this->idToken = $this->signIdToken(
+            array_filter([...$this->validClaims($loginAttempt), ...$claims], fn (mixed $value): bool => null !== $value),
+            $signWithForeignKey ? JWKFactory::createECKey('P-256', ['alg' => 'ES256', 'use' => 'sig', 'kid' => 'dreeve-test']) : $this->signingKey,
+        );
+
+        $this->client->request('GET', '/admin/login/oidc/callback', [
+            'code' => 'the-code',
+            'state' => $tamperWithState ? 'tampered' : $loginAttempt->getState(),
+        ]);
+        $this->assertResponseRedirects('/admin/login');
+
+        $crawler = $this->client->followRedirect();
+        $this->assertCount(1, $crawler->filter('.text-red-700'));
+
+        $this->client->request('GET', '/admin/upload');
+        $this->assertResponseRedirects('/admin/login');
+    }
+
+    /**
+     * @return iterable<string, array{0: array<string, mixed>, 1: bool, 2: bool}>
+     */
+    public static function provideRejectedCallbacks(): iterable
+    {
+        yield 'tampered state' => [[], false, true];
+        yield 'foreign signing key' => [[], true, false];
+        yield 'wrong nonce' => [['nonce' => 'wrong'], false, false];
+        yield 'missing nonce' => [['nonce' => null], false, false];
+        yield 'wrong audience' => [['aud' => 'another-client'], false, false];
+        yield 'wrong issuer' => [['iss' => 'https://evil.example.com/'], false, false];
+        yield 'expired' => [['exp' => time() - 60], false, false];
+        yield 'subject not allowed' => [['sub' => 'someone-else'], false, false];
+        yield 'unverified email' => [['sub' => 'someone-else', 'email' => 'athlete@example.com', 'email_verified' => false], false, false];
     }
 
     public function testLoginIsNotFoundWhenOidcIsNotConfigured(): void
@@ -104,5 +209,34 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
         $this->expectException(NotFoundHttpException::class);
 
         $handler->callback();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function validClaims(OidcLoginAttempt $loginAttempt): array
+    {
+        return [
+            'iss' => self::ISSUER_URL,
+            'sub' => 'athlete-subject',
+            'aud' => 'dreeve',
+            'iat' => time(),
+            'exp' => time() + 300,
+            'nonce' => $loginAttempt->getNonce(),
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $claims
+     */
+    private function signIdToken(array $claims, JWK $key): string
+    {
+        $jws = new JWSBuilder(new AlgorithmManager([new ES256()]))
+            ->create()
+            ->withPayload(Json::encode($claims))
+            ->addSignature($key, ['alg' => 'ES256', 'kid' => 'dreeve-test'])
+            ->build();
+
+        return new CompactSerializer()->serialize($jws, 0);
     }
 }

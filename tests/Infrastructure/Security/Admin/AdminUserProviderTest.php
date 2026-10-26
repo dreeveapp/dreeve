@@ -5,6 +5,7 @@ namespace App\Tests\Infrastructure\Security\Admin;
 use App\Infrastructure\Security\Admin\AdminPasswordHash;
 use App\Infrastructure\Security\Admin\AdminUserName;
 use App\Infrastructure\Security\Admin\AdminUserProvider;
+use App\Infrastructure\Security\Oidc\OidcConfig;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
@@ -18,6 +19,7 @@ class AdminUserProviderTest extends TestCase
         $provider = new AdminUserProvider(
             AdminUserName::fromString('admin'),
             AdminPasswordHash::fromString('hashed-password'),
+            OidcConfig::fromStrings('', '', '', ''),
         );
 
         $user = $provider->loadUserByIdentifier('admin');
@@ -33,6 +35,7 @@ class AdminUserProviderTest extends TestCase
         $provider = new AdminUserProvider(
             AdminUserName::fromString('admin'),
             AdminPasswordHash::fromString(''),
+            OidcConfig::fromStrings('', '', '', ''),
         );
 
         $this->expectExceptionObject(new UserNotFoundException(''));
@@ -40,11 +43,26 @@ class AdminUserProviderTest extends TestCase
         $provider->loadUserByIdentifier('admin');
     }
 
+    public function testLoadUserByIdentifierWithoutPasswordHashWhenOidcIsEnabled(): void
+    {
+        $provider = new AdminUserProvider(
+            AdminUserName::fromString('admin'),
+            AdminPasswordHash::fromString(''),
+            OidcConfig::fromStrings('https://idp.example.com', 'dreeve', 'secret', 'athlete@example.com'),
+        );
+
+        $user = $provider->loadUserByIdentifier('admin');
+
+        $this->assertEquals('admin', $user->getUserIdentifier());
+        $this->assertEquals(['ROLE_ADMIN'], $user->getRoles());
+    }
+
     public function testLoadUserByIdentifierItShouldThrowWhenIdentifierDoesNotMatch(): void
     {
         $provider = new AdminUserProvider(
             AdminUserName::fromString('admin'),
             AdminPasswordHash::fromString('hashed-password'),
+            OidcConfig::fromStrings('', '', '', ''),
         );
 
         $this->expectExceptionObject(new UserNotFoundException(''));
@@ -57,6 +75,7 @@ class AdminUserProviderTest extends TestCase
         $provider = new AdminUserProvider(
             AdminUserName::fromString('admin'),
             AdminPasswordHash::fromString('hashed-password'),
+            OidcConfig::fromStrings('', '', '', ''),
         );
 
         $user = $provider->refreshUser(new InMemoryUser('admin', 'hashed-password', ['ROLE_ADMIN']));
@@ -75,6 +94,7 @@ class AdminUserProviderTest extends TestCase
         $provider = new AdminUserProvider(
             AdminUserName::fromString('admin'),
             AdminPasswordHash::fromString('hashed-password'),
+            OidcConfig::fromStrings('', '', '', ''),
         );
 
         $this->expectExceptionObject(new UnsupportedUserException(''));

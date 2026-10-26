@@ -46,4 +46,27 @@ final readonly class OidcConfig
     {
         return $this->clientId;
     }
+
+    public function getClientSecret(): string
+    {
+        return $this->clientSecret;
+    }
+
+    /**
+     * @param array<string, mixed> $claims
+     */
+    public function allows(array $claims): bool
+    {
+        $subject = $claims['sub'] ?? null;
+        if (is_string($subject) && in_array($subject, $this->allowedUsers, true)) {
+            return true;
+        }
+
+        $email = $claims['email'] ?? null;
+        if (!is_string($email) || true !== ($claims['email_verified'] ?? null)) {
+            return false;
+        }
+
+        return in_array(mb_strtolower($email), array_map(mb_strtolower(...), $this->allowedUsers), true);
+    }
 }

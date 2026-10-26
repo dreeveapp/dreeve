@@ -4,7 +4,18 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Security\Oidc;
 
+use Jose\Component\Core\AlgorithmManager;
+use Jose\Component\Signature\Algorithm\ES256;
+use Jose\Component\Signature\Algorithm\ES384;
+use Jose\Component\Signature\Algorithm\ES512;
+use Jose\Component\Signature\Algorithm\PS256;
+use Jose\Component\Signature\Algorithm\PS384;
+use Jose\Component\Signature\Algorithm\PS512;
+use Jose\Component\Signature\Algorithm\RS256;
+use Jose\Component\Signature\Algorithm\RS384;
+use Jose\Component\Signature\Algorithm\RS512;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Http\AccessToken\Oidc\OidcTokenHandler;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -33,6 +44,54 @@ final readonly class OidcProvider
             'code_challenge' => $loginAttempt->getCodeChallenge(),
             'code_challenge_method' => 'S256',
         ], encoding_type: PHP_QUERY_RFC3986);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function fetchIdTokenClaims(string $code, OidcLoginAttempt $loginAttempt): array
+    {
+        $tokens = $this->httpClient->request('POST', $this->getDiscoveredString('token_endpoint'), [
+            'auth_basic' => [rawurlencode($this->oidcConfig->getClientId()), rawurlencode($this->oidcConfig->getClientSecret())],
+            'body' => [
+                'grant_type' => 'authorization_code',
+                'code' => $code,
+                'redirect_uri' => $this->getRedirectUri(),
+                'code_verifier' => $loginAttempt->getCodeVerifier(),
+            ],
+        ])->toArray();
+
+        $idToken = $tokens['id_token'] ?? null;
+        if (!is_string($idToken) || '' === $idToken) {
+            throw new \RuntimeException('The OIDC token response has no "id_token"');
+        }
+
+        $issuerUrl = (string) $this->oidcConfig->getIssuerUrl();
+        $idTokenHandler = new OidcTokenHandler(
+            signatureAlgorithm: new AlgorithmManager([
+                new RS256(), new RS384(), new RS512(),
+                new PS256(), new PS384(), new PS512(),
+                new ES256(), new ES384(), new ES512(),
+            ]),
+            signatureKeyset: null,
+            audience: $this->oidcConfig->getClientId(),
+            issuers: [$this->getDiscoveredString('issuer')],
+        );
+        $idTokenHandler->enableDiscovery(
+            cache: $this->cache,
+            client: $this->httpClient->withOptions(['base_uri' => rtrim($issuerUrl, '/').'/']),
+            oidcConfigurationCacheKey: 'oidc_jwks_'.hash('xxh128', $issuerUrl),
+            enforceKeyUsageVerification: false,
+        );
+
+        $claims = $idTokenHandler->getUserBadgeFrom($idToken)->getAttributes() ?? [];
+
+        $nonce = $claims['nonce'] ?? null;
+        if (!is_string($nonce) || !hash_equals($loginAttempt->getNonce(), $nonce)) {
+            throw new \RuntimeException('The OIDC id token has an invalid nonce');
+        }
+
+        return $claims;
     }
 
     private function getRedirectUri(): string

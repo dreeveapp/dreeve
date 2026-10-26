@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Security\Admin;
 
+use App\Infrastructure\Security\Oidc\OidcConfig;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\InMemoryUser;
@@ -18,12 +19,16 @@ final readonly class AdminUserProvider implements UserProviderInterface
     public function __construct(
         private AdminUserName $adminUsername,
         private AdminPasswordHash $adminPasswordHash,
+        private OidcConfig $oidcConfig,
     ) {
     }
 
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        if ($this->adminPasswordHash->isEmpty() || $identifier !== (string) $this->adminUsername) {
+        if ($identifier !== (string) $this->adminUsername) {
+            throw new UserNotFoundException();
+        }
+        if ($this->adminPasswordHash->isEmpty() && !$this->oidcConfig->isEnabled()) {
             throw new UserNotFoundException();
         }
 

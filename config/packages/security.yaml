@@ -30,6 +30,9 @@ security:
         main:
             lazy: true
             provider: admin_provider
+            entry_point: form_login
+            custom_authenticators:
+                - App\Infrastructure\Security\Oidc\OidcAuthenticator
             form_login:
                 login_path: admin_login
                 check_path: admin_login
