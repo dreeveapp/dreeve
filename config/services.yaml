@@ -11,6 +11,10 @@ parameters:
     env(ADMIN_ALLOWED_IPS): ''
     env(DREEVE_API_KEY): ''
     env(DREEVE_MCP_KEY): ''
+    env(OIDC_ISSUER_URL): ''
+    env(OIDC_CLIENT_ID): ''
+    env(OIDC_CLIENT_SECRET): ''
+    env(OIDC_ALLOWED_USERS): ''
     env(TRUSTED_PROXIES): 'private_ranges'
     env(STRAVA_CLIENT_ID): 'replace-me'
     env(STRAVA_CLIENT_SECRET): 'replace-me'
@@ -77,6 +81,10 @@ services:
     App\Infrastructure\Security\Admin\AdminPasswordHash:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:ADMIN_PASSWORD_HASH)%']
+
+    App\Infrastructure\Security\Oidc\OidcConfig:
+        factory: [ null, 'fromStrings' ]
+        arguments: ['%env(string:OIDC_ISSUER_URL)%', '%env(string:OIDC_CLIENT_ID)%', '%env(string:OIDC_CLIENT_SECRET)%', '%env(string:OIDC_ALLOWED_USERS)%']
 
     App\Application\AppUrl:
         factory: [ null, 'fromString' ]

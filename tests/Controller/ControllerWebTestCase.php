@@ -27,7 +27,7 @@ abstract class ControllerWebTestCase extends WebTestCase
         parent::setUp();
 
         $this->originalImportMode = $_ENV['IMPORT_MODE'] ?? null;
-        foreach (['DREEVE_API_KEY', 'DREEVE_MCP_KEY'] as $envVar) {
+        foreach (['DREEVE_API_KEY', 'DREEVE_MCP_KEY', 'OIDC_ISSUER_URL', 'OIDC_CLIENT_ID', 'OIDC_CLIENT_SECRET', 'OIDC_ALLOWED_USERS'] as $envVar) {
             $this->originalKeys[$envVar] = $_ENV[$envVar] ?? null;
         }
 
