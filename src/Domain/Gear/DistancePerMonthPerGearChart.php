@@ -81,7 +81,7 @@ final readonly class DistancePerMonthPerGearChart
                 'axisPointer' => [
                     'type' => 'shadow',
                 ],
-                'formatter' => EChartsCallback::formatStackedDistanceTooltip(),
+                'formatter' => EChartsCallback::formatStackedDistanceTooltip($this->unitSystem->distanceSymbol()),
             ],
             'legend' => [
                 'type' => 'scroll',

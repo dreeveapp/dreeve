@@ -23,7 +23,10 @@
     "tooltip": {
         "trigger": "axis",
         "formatter": {
-            "callback": "formatCombinedProfileTooltip"
+            "callback": "formatCombinedProfileTooltip",
+            "args": {
+                "paceSymbol": "/km"
+            }
         }
     },
     "dataZoom": [

@@ -26,9 +26,6 @@ final readonly class AppShell
 
     public function render(string $content, ?NavigationSection $navigationSection, ?OpenGraph $openGraph): string
     {
-        $appearance = $this->settingsRepository->appearance();
-        $unitSystem = $appearance->getUnitSystem();
-
         $general = $this->settingsRepository->general();
 
         return $this->twig->load('html/app-shell.html.twig')->render([
@@ -43,12 +40,6 @@ final readonly class AppShell
                 'appVersion' => AppVersion::getSemanticVersion(),
                 'appUrl' => [
                     'basePath' => $this->appUrl->getBasePath() ?? '',
-                ],
-                'unitSystem' => [
-                    'name' => $unitSystem->value,
-                    'paceSymbol' => $unitSystem->paceSymbol(),
-                    'distanceSymbol' => $unitSystem->distanceSymbol(),
-                    'elevationSymbol' => $unitSystem->elevationSymbol(),
                 ],
                 'leafletConfig' => $this->settingsRepository->maps()->getLeafletConfig(),
             ]),

@@ -110,8 +110,8 @@ final readonly class MonthlyStatsChart
                 'trigger' => 'axis',
                 'valueFormatter' => match ($this->context) {
                     StatsContext::MOVING_TIME => EChartsCallback::formatHours(),
-                    StatsContext::DISTANCE => EChartsCallback::formatDistance(),
-                    StatsContext::ELEVATION => EChartsCallback::formatElevation(),
+                    StatsContext::DISTANCE => EChartsCallback::formatWholeNumberWithSymbol($this->unitSystem->distanceSymbol()),
+                    StatsContext::ELEVATION => EChartsCallback::formatWholeNumberWithSymbol($this->unitSystem->elevationSymbol()),
                 },
             ],
             'legend' => [

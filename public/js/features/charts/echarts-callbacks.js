@@ -27,8 +27,7 @@ const formatSeconds = (secondsToFormat) => {
     return `${hours}:${minutes}:${seconds}`;
 };
 
-const formatPace = (seconds) => {
-    const paceSymbol = window.dreeve.unitSystem.paceSymbol;
+const formatPace = (paceSymbol, seconds) => {
     const secondsToFormat = seconds;
     if (secondsToFormat < 60) {
         return `<strong>${secondsToFormat}s</strong>${paceSymbol}`;
@@ -53,7 +52,6 @@ const formatDuration = (seconds) => {
 export const registerEchartsCallbacks = () => {
     window.dreeve.callbacks = {
         formatSeconds,
-        formatPace,
         formatDuration,
         formatSecondsTrimZero: (secondsToFormat) => {
             const time = formatSeconds(secondsToFormat);
@@ -61,11 +59,11 @@ export const registerEchartsCallbacks = () => {
             let [hours, minutes, seconds] = time.split(':');
             return String(Number(hours)) === "0" ? `${minutes}:${seconds}` : `${hours}:${minutes}:${seconds}`;
         },
-        formatCombinedProfileTooltip: (params) => {
+        formatCombinedProfileTooltip: ({paceSymbol}, params) => {
             if (!Array.isArray(params)) params = [params];
             return [...params].sort((a, b) => a.seriesIndex - b.seriesIndex).map(p => {
                 if (p.seriesName === '__pace') {
-                    return `${p.marker} ${window.dreeve.callbacks.formatPace(p.value)}`;
+                    return `${p.marker} ${formatPace(paceSymbol, p.value)}`;
                 }
 
                 const extra = p.data?.extra !== undefined ? ` (${p.data.extra})` : '';
@@ -100,23 +98,14 @@ export const registerEchartsCallbacks = () => {
             }
             return `${value.toFixed(0)}h`;
         },
-        formatDistance: (value) => {
+        formatWholeNumberWithSymbol: ({symbol}, value) => {
             if (value === undefined || value === null) {
                 return '-';
             }
-            const distanceSymbol = window.dreeve.unitSystem.distanceSymbol;
-            return `${value.toFixed(0)}${distanceSymbol}`;
+            return `${value.toFixed(0)}${symbol}`;
         },
-        formatElevation: (value) => {
-            if (value === undefined || value === null) {
-                return '-';
-            }
-            const elevationSymbol = window.dreeve.unitSystem.elevationSymbol;
-            return `${value.toFixed(0)}${elevationSymbol}`;
-        },
-        formatStackedDistanceTooltip: (params) => {
+        formatStackedDistanceTooltip: ({symbol: distanceSymbol}, params) => {
             if (!Array.isArray(params)) params = [params];
-            const distanceSymbol = window.dreeve.unitSystem.distanceSymbol;
             const used = params.filter(p => p.value > 0).sort((a, b) => b.value - a.value);
             const total = used.reduce((sum, p) => sum + p.value, 0);
             return '<b>' + params[0].axisValue + ': ' + total + distanceSymbol + '</b>' + used

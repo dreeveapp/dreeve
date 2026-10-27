@@ -35,14 +35,9 @@ final readonly class EChartsCallback implements \JsonSerializable
         return new self(__FUNCTION__);
     }
 
-    public static function formatDistance(): self
+    public static function formatWholeNumberWithSymbol(string $symbol): self
     {
-        return new self(__FUNCTION__);
-    }
-
-    public static function formatElevation(): self
-    {
-        return new self(__FUNCTION__);
+        return new self(__FUNCTION__, ['symbol' => $symbol]);
     }
 
     public static function formatPercentage(): self
@@ -65,9 +60,9 @@ final readonly class EChartsCallback implements \JsonSerializable
         return new self(__FUNCTION__, ['decimals' => $decimals, 'suffix' => $suffix]);
     }
 
-    public static function formatCombinedProfileTooltip(): self
+    public static function formatCombinedProfileTooltip(string $paceSymbol): self
     {
-        return new self(__FUNCTION__);
+        return new self(__FUNCTION__, ['paceSymbol' => $paceSymbol]);
     }
 
     public static function formatDataTooltip(): self
@@ -80,9 +75,9 @@ final readonly class EChartsCallback implements \JsonSerializable
         return new self(__FUNCTION__);
     }
 
-    public static function formatStackedDistanceTooltip(): self
+    public static function formatStackedDistanceTooltip(string $symbol): self
     {
-        return new self(__FUNCTION__);
+        return new self(__FUNCTION__, ['symbol' => $symbol]);
     }
 
     public static function formatDateOnlyTooltip(): self

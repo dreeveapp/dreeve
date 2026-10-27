@@ -308,7 +308,7 @@ final readonly class CombinedStreamProfileCharts
             ],
             'tooltip' => [
                 'trigger' => 'axis',
-                'formatter' => EChartsCallback::formatCombinedProfileTooltip(),
+                'formatter' => EChartsCallback::formatCombinedProfileTooltip($this->unitSystem->paceSymbol()),
             ],
             'dataZoom' => [
                 [

@@ -109,9 +109,9 @@ final readonly class RollingStatsChart
                     'yAxisId' => $context->value,
                     'tooltip' => [
                         'valueFormatter' => match ($context) {
-                            StatsContext::DISTANCE => EChartsCallback::formatDistance(),
+                            StatsContext::DISTANCE => EChartsCallback::formatWholeNumberWithSymbol($this->unitSystem->distanceSymbol()),
                             StatsContext::MOVING_TIME => EChartsCallback::formatHours(),
-                            StatsContext::ELEVATION => EChartsCallback::formatElevation(),
+                            StatsContext::ELEVATION => EChartsCallback::formatWholeNumberWithSymbol($this->unitSystem->elevationSymbol()),
                         },
                     ],
                 ],
