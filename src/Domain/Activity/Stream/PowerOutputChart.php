@@ -6,15 +6,25 @@ namespace App\Domain\Activity\Stream;
 
 final readonly class PowerOutputChart
 {
+    private const array X_AXIS_TICKS_IN_SECONDS = [2, 5, 10, 30, 60, 120, 300, 600, 1200, 3600];
+
+    /**
+     * @param string[] $visibleSeries
+     */
     private function __construct(
         private BestPowerOutputs $bestPowerOutputs,
+        private array $visibleSeries,
     ) {
     }
 
+    /**
+     * @param string[] $visibleSeries
+     */
     public static function create(
         BestPowerOutputs $bestPowerOutputs,
+        array $visibleSeries,
     ): self {
-        return new self($bestPowerOutputs);
+        return new self($bestPowerOutputs, $visibleSeries);
     }
 
     /**
@@ -23,6 +33,8 @@ final readonly class PowerOutputChart
     public function build(): array
     {
         $series = [];
+        $selectedSeries = [];
+        $minPowerOutput = null;
         $maxPowerOutput = 100;
 
         foreach ($this->bestPowerOutputs as $bestPowerOutputs) {
@@ -30,7 +42,10 @@ final readonly class PowerOutputChart
             assert($powerOutputs instanceof PowerOutputs);
 
             $data = $powerOutputs->map(
-                fn (PowerOutput $powerOutput): array => [$powerOutput->getTimeIntervalInSeconds(), $powerOutput->getPower()]
+                fn (PowerOutput $powerOutput): array => [
+                    'value' => [$powerOutput->getTimeIntervalInSeconds(), $powerOutput->getPower()],
+                    'relativePower' => $powerOutput->getRelativePower(),
+                ]
             );
 
             if ([] === $data) {
@@ -38,19 +53,22 @@ final readonly class PowerOutputChart
             }
 
             $powers = $powerOutputs->map(fn (PowerOutput $powerOutput): int => $powerOutput->getPower());
+            $minPowerOutput = min($minPowerOutput ?? PHP_INT_MAX, ...$powers);
             $maxPowerOutput = max($maxPowerOutput, ...$powers);
 
+            $selectedSeries[$description] = in_array($description, $this->visibleSeries, true);
             $series[] = [
                 'type' => 'line',
                 'name' => $description,
-                'smooth' => 0.3,
                 'symbol' => 'none',
+                'lineStyle' => ['width' => 2],
+                'emphasis' => ['focus' => 'series'],
                 'data' => $data,
             ];
         }
 
+        $yAxisMinValue = (int) (floor(($minPowerOutput ?? 0) / 100) * 100);
         $yAxisMaxValue = (int) (ceil($maxPowerOutput / 100) * 100);
-        $yAxisInterval = (int) ($yAxisMaxValue / 5);
 
         return [
             'animation' => true,
@@ -58,11 +76,14 @@ final readonly class PowerOutputChart
             'grid' => [
                 'left' => '2px',
                 'right' => '10px',
-                'bottom' => '3%',
+                'top' => '10px',
+                'bottom' => '40px',
                 'containLabel' => true,
             ],
             'legend' => [
                 'show' => true,
+                'bottom' => 0,
+                'selected' => $selectedSeries,
             ],
             'tooltip' => [
                 'show' => true,
@@ -75,9 +96,14 @@ final readonly class PowerOutputChart
                 'max' => 3600,
                 'axisLabel' => [
                     'formatter' => 'callback:formatDuration',
+                    'customValues' => self::X_AXIS_TICKS_IN_SECONDS,
+                    'hideOverlap' => true,
+                ],
+                'axisTick' => [
+                    'customValues' => self::X_AXIS_TICKS_IN_SECONDS,
                 ],
                 'splitLine' => [
-                    'lineStyle' => ['type' => 'dashed'],
+                    'show' => false,
                 ],
             ],
             'yAxis' => [
@@ -86,8 +112,12 @@ final readonly class PowerOutputChart
                     'axisLabel' => [
                         'formatter' => '{value} w',
                     ],
+                    'min' => $yAxisMinValue,
                     'max' => $yAxisMaxValue,
-                    'interval' => $yAxisInterval,
+                    'splitNumber' => 5,
+                    'splitLine' => [
+                        'lineStyle' => ['type' => 'solid'],
+                    ],
                 ],
             ],
             'series' => $series,

@@ -98,6 +98,7 @@ export const registerEchartsCallbacks = () => {
             const duration = formatDuration(params[0].value[0]);
             return '<b>' + duration + '</b><br/>' + params.map(
                 p => p.marker + ' ' + p.seriesName + ': <b>' + p.value[1] + 'w</b>'
+                    + (p.data?.relativePower ? ' · ' + p.data.relativePower + ' w/kg' : '')
             ).join('<br/>');
         },
         symbolSize: (params) => {

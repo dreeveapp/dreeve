@@ -63,6 +63,7 @@ final readonly class PowerOutputRequestHandler
         $now = $this->clock->getCurrentDateTimeImmutable();
 
         $allYears = null;
+        $allTimeLabel = $this->translator->trans('All time');
         /** @var array<string, BestPowerOutputs> $bestPowerOutputsPerActivityType */
         $bestPowerOutputsPerActivityType = [];
         /** @var array<string, string> $powerOutputChartsPerActivityType */
@@ -87,7 +88,7 @@ final readonly class PowerOutputRequestHandler
 
             $bestPowerOutputs = BestPowerOutputs::empty();
             $bestPowerOutputs->add(
-                description: $this->translator->trans('All time'),
+                description: $allTimeLabel,
                 powerOutputs: $bestAllTimePowerOutputs,
             );
             foreach ([45, 90] as $numberOfDays) {
@@ -111,7 +112,10 @@ final readonly class PowerOutputRequestHandler
 
             $bestPowerOutputsPerActivityType[$activityType->value] = $bestPowerOutputs;
             $powerOutputChartsPerActivityType[$activityType->value] = Json::encode(
-                PowerOutputChart::create($bestPowerOutputs)->build()
+                PowerOutputChart::create(
+                    bestPowerOutputs: $bestPowerOutputs,
+                    visibleSeries: [$allTimeLabel, $this->translator->trans('Last {numberOfDays} days', ['{numberOfDays}' => 90])],
+                )->build()
             );
         }
 
