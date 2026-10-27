@@ -148,7 +148,7 @@ final readonly class ZwiftMap implements LeafletMap
             ],
             self::WATOPIA => [
                 Coordinate::createFromLatAndLng(Latitude::fromString('-11.626'), Longitude::fromString('166.87747')),
-                Coordinate::createFromLatAndLng(Latitude::fromString('-11.729'), Longitude::fromString('167.03255')),
+                Coordinate::createFromLatAndLng(Latitude::fromString('-11.74087'), Longitude::fromString('167.03255')),
             ],
             self::YORKSHIRE => [
                 Coordinate::createFromLatAndLng(Latitude::fromString('54.0254'), Longitude::fromString('-1.6320')),
