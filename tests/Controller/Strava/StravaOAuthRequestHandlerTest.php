@@ -108,8 +108,25 @@ class StravaOAuthRequestHandlerTest extends ContainerTestCase
         $this->assertMatchesHtmlSnapshot($this->stravaOAuthRequestHandler->handle(new Request())->getContent());
     }
 
+    public function testHandleWhenTheAccessTokenHasInsufficientScopes(): void
+    {
+        $this->strava
+            ->expects($this->once())
+            ->method('verifyAccessToken')
+            ->willThrowException(new InsufficientStravaAccessTokenScopes());
+
+        $this->client
+            ->expects($this->never())
+            ->method('post');
+
+        $page = new Crawler((string) $this->stravaOAuthRequestHandler->handle(new Request())->getContent());
+
+        $this->assertSame('Your refresh token is missing a scope', $page->filter('h2')->text());
+        $this->assertCount(0, $page->filter('.text-red-800'));
+    }
+
     #[DataProvider('provideVerificationErrors')]
-    public function testHandleWhenTheAccessTokenCannotBeVerified(\Throwable $exception, string $expectedTitle, ?string $expectedError): void
+    public function testHandleWhenTheAccessTokenCannotBeVerified(\Throwable $exception, string $expectedError): void
     {
         $this->strava
             ->expects($this->once())
@@ -122,24 +139,17 @@ class StravaOAuthRequestHandlerTest extends ContainerTestCase
 
         $page = new Crawler((string) $this->stravaOAuthRequestHandler->handle(new Request())->getContent());
 
-        $this->assertSame($expectedTitle, $page->filter('h2')->text());
-        if (null === $expectedError) {
-            $this->assertCount(0, $page->filter('.text-red-800'));
-
-            return;
-        }
+        $this->assertSame('Hmmm, something went wrong', $page->filter('h2')->text());
         $this->assertSame($expectedError, $page->filter('.text-red-800')->text());
     }
 
     public static function provideVerificationErrors(): iterable
     {
-        yield 'insufficient scopes' => [new InsufficientStravaAccessTokenScopes(), 'Your refresh token is missing a scope', null];
         yield 'inactive application' => [
             StravaApplicationIsInactive::create(),
-            'Hmmm, something went wrong',
             'Your Strava API application is inactive, so Dreeve can no longer access the Strava API. Reactivate it on https://www.strava.com/settings/api, or switch to IMPORT_MODE=files',
         ];
-        yield 'random error' => [new \RuntimeException('OH NOWZ'), 'Hmmm, something went wrong', 'OH NOWZ'];
+        yield 'random error' => [new \RuntimeException('OH NOWZ'), 'OH NOWZ'];
     }
 
     public function testHandleItShouldWhenImportModeIsFiles(): void

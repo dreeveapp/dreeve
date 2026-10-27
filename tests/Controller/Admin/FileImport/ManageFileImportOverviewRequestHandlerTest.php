@@ -129,42 +129,30 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Clear filters', $crawler->filter('table.data-table tbody a')->text());
     }
 
-    #[DataProvider('provideStatusFilterScenarios')]
-    public function testRendersTheSubmittedStatusFilterBack(
-        string $statusFilter,
-        ?string $expectedSelectedOption,
-    ): void {
+    public function testRendersTheSubmittedStatusFilterBack(): void
+    {
         $this->withImportMode(ImportMode::FILES);
         $this->seedFileImports(3);
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/file-imports?filters[status]='.$statusFilter);
+        $crawler = $this->client->request('GET', '/admin/file-imports?filters[status]=failed');
 
         $this->assertResponseIsSuccessful();
-
-        $selectedOption = $crawler->filter('select[name="filters[status]"] option[selected]');
-        if (null === $expectedSelectedOption) {
-            $this->assertCount(0, $selectedOption);
-        } else {
-            $this->assertSame($expectedSelectedOption, $selectedOption->attr('value'));
-        }
-
-        // The clear button only shows up when the active filters resolve to something usable.
-        $this->assertCount(
-            null === $expectedSelectedOption ? 0 : 1,
-            $crawler->filter('form[method="get"] a.btn--secondary')
-        );
+        $this->assertSame('failed', $crawler->filter('select[name="filters[status]"] option[selected]')->attr('value'));
+        $this->assertCount(1, $crawler->filter('form[method="get"] a.btn--secondary'));
     }
 
-    public static function provideStatusFilterScenarios(): iterable
+    public function testIgnoresAnInvalidStatusFilter(): void
     {
-        yield 'a valid status filter pre-selects the option' => [
-            'failed', 'failed',
-        ];
+        $this->withImportMode(ImportMode::FILES);
+        $this->seedFileImports(3);
+        $this->client->loginUser($this->adminUser());
 
-        yield 'an invalid status value is silently ignored' => [
-            'bogus', null,
-        ];
+        $crawler = $this->client->request('GET', '/admin/file-imports?filters[status]=bogus');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(0, $crawler->filter('select[name="filters[status]"] option[selected]'));
+        $this->assertCount(0, $crawler->filter('form[method="get"] a.btn--secondary'));
     }
 
     #[DataProvider('provideTextFilterScenarios')]

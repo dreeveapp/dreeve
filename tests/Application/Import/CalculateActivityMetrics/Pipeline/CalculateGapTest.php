@@ -138,8 +138,8 @@ class CalculateGapTest extends ContainerTestCase
      * @param list<int>   $time
      * @param list<bool>  $moving
      */
-    #[DataProvider('provideRawStreams')]
-    public function testProcessWithRawStreams(array $latLng, array $altitude, array $time, array $moving, bool $expectGap): void
+    #[DataProvider('provideRawStreamsWithGap')]
+    public function testProcessCalculatesGapFromRawStreams(array $latLng, array $altitude, array $time, array $moving): void
     {
         $activityId = ActivityId::fromUnprefixed('run-raw-streams');
         $this->addActivity($activityId, SportType::RUN);
@@ -156,27 +156,53 @@ class CalculateGapTest extends ContainerTestCase
         $this->calculateGap->process($output);
 
         $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
-        if (!$expectGap) {
-            $this->assertNull($split->getGapPaceInSecondsPerKm());
-            $this->assertSame('', (string) $output);
-
-            return;
-        }
         $this->assertNotNull($split->getGapPaceInSecondsPerKm());
         $this->assertStringContainsString('Calculated GAP for 1 activities', (string) $output);
     }
 
-    public static function provideRawStreams(): iterable
+    public static function provideRawStreamsWithGap(): iterable
     {
-        yield 'malformed coordinate items are skipped' => [['invalid', [50.0], [50.0, 4.0], [50.009, 4.0]], [100.0, 100.0, 100.0, 100.0], [0, 5, 10, 20], [], true];
-        yield 'the shortest stream length is used' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0, 100.0], [0, 10], [], true];
-        yield 'moving stream keeps the last two points' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0, 100.0, 100.0], [0, 10, 20], [false, true, true], true];
-        yield 'moving stream keeps all points' => [[[50.0, 4.0], [50.009, 4.0]], [100.0, 100.0], [0, 10], [true, true], true];
-        yield 'missing moving entries count as not moving' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0, 100.0, 100.0], [0, 10, 20], [true], false];
-        yield 'all coordinates malformed' => [['invalid', [50.0], [50.0, 4.0, 1.0]], [100.0, 100.0, 100.0], [0, 10, 20], [], false];
-        yield 'moving stream filters out all points' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0, 100.0, 100.0], [0, 10, 20], [false, false, false], false];
-        yield 'shortest stream leaves fewer than two points' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0], [0, 10, 20], [], false];
-        yield 'no segments are generated' => [[[50.0, 4.0], [50.0, 4.0], [50.009, 4.0]], [100.0, 100.0, 100.0], [0, 10, 10], [], false];
+        yield 'malformed coordinate items are skipped' => [['invalid', [50.0], [50.0, 4.0], [50.009, 4.0]], [100.0, 100.0, 100.0, 100.0], [0, 5, 10, 20], []];
+        yield 'the shortest stream length is used' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0, 100.0], [0, 10], []];
+        yield 'moving stream keeps the last two points' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0, 100.0, 100.0], [0, 10, 20], [false, true, true]];
+        yield 'moving stream keeps all points' => [[[50.0, 4.0], [50.009, 4.0]], [100.0, 100.0], [0, 10], [true, true]];
+    }
+
+    /**
+     * @param list<mixed> $latLng
+     * @param list<float> $altitude
+     * @param list<int>   $time
+     * @param list<bool>  $moving
+     */
+    #[DataProvider('provideRawStreamsWithoutGap')]
+    public function testProcessSkipsGapForUnusableRawStreams(array $latLng, array $altitude, array $time, array $moving): void
+    {
+        $activityId = ActivityId::fromUnprefixed('run-raw-streams');
+        $this->addActivity($activityId, SportType::RUN);
+        $this->addRawStreams(
+            activityId: $activityId,
+            latLng: $latLng,
+            altitude: $altitude,
+            time: $time,
+            moving: $moving,
+        );
+        $this->addMetricSplitWithSpeed($activityId, 1000.0, 1000.0 / 10.0);
+
+        $output = new SpyOutput();
+        $this->calculateGap->process($output);
+
+        $split = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC)->toArray()[0];
+        $this->assertNull($split->getGapPaceInSecondsPerKm());
+        $this->assertSame('', (string) $output);
+    }
+
+    public static function provideRawStreamsWithoutGap(): iterable
+    {
+        yield 'missing moving entries count as not moving' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0, 100.0, 100.0], [0, 10, 20], [true]];
+        yield 'all coordinates malformed' => [['invalid', [50.0], [50.0, 4.0, 1.0]], [100.0, 100.0, 100.0], [0, 10, 20], []];
+        yield 'moving stream filters out all points' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0, 100.0, 100.0], [0, 10, 20], [false, false, false]];
+        yield 'shortest stream leaves fewer than two points' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0], [0, 10, 20], []];
+        yield 'no segments are generated' => [[[50.0, 4.0], [50.0, 4.0], [50.009, 4.0]], [100.0, 100.0, 100.0], [0, 10, 10], []];
     }
 
     public function testProcessUpdatesImperialSplitsWhenMetricSplitsAreMissing(): void

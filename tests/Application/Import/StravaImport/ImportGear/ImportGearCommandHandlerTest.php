@@ -28,13 +28,10 @@ class ImportGearCommandHandlerTest extends ContainerTestCase
      * @param list<string>      $expectedOutput
      */
     #[DataProvider('provideImports')]
-    public function testHandle(int $maxNumberOfCallsBeforeTriggering429, bool $throwException, ?array $restrictToActivityIds, array $expectedOutput): void
+    public function testHandle(int $maxNumberOfCallsBeforeTriggering429, ?array $restrictToActivityIds, array $expectedOutput): void
     {
         $output = new SpyOutput();
         $this->strava->setMaxNumberOfCallsBeforeTriggering429($maxNumberOfCallsBeforeTriggering429);
-        if ($throwException) {
-            $this->strava->triggerExceptionOnNextCall();
-        }
 
         $this->getContainer()->get(GearRepository::class)->add(
             GearBuilder::fromDefaults()
@@ -73,26 +70,44 @@ class ImportGearCommandHandlerTest extends ContainerTestCase
 
     public static function provideImports(): iterable
     {
-        yield 'all gear' => [10000, false, null, [
+        yield 'all gear' => [10000, null, [
             'Importing gear...',
             '  => Imported gear "Retro Race Bike"',
             '  => Imported gear "Zwift Hub"',
             '  => Imported gear "Elite Direto XR-T ☠️"',
         ]];
-        yield 'restricted to activity ids' => [10000, false, ['1'], [
+        yield 'restricted to activity ids' => [10000, ['1'], [
             'Importing gear...',
             '  => Imported gear "Retro Race Bike"',
         ]];
-        yield 'too many requests' => [3, false, null, [
+        yield 'too many requests' => [3, null, [
             'Importing gear...',
             '  => Imported gear "Retro Race Bike"',
             '  => Imported gear "Zwift Hub"',
             '<error>You reached the daily Strava API rate limit. You will need to import the rest of your data tomorrow</error>',
         ]];
-        yield 'unexpected error' => [1000, true, null, [
+    }
+
+    public function testHandleWhenStravaThrowsAnError(): void
+    {
+        $output = new SpyOutput();
+        $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
+        $this->strava->triggerExceptionOnNextCall();
+
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withGearId(GearId::fromUnprefixed('b12659861'))
+                ->build(),
+            ['gear_id' => 'b12659861']
+        ));
+
+        $this->commandBus->dispatch(new ImportGear($output, null));
+
+        $this->assertSame(implode("\n", [
             'Importing gear...',
             '<error>Strava API threw error: The error</error>',
-        ]];
+        ]), (string) $output);
     }
 
     #[\Override]

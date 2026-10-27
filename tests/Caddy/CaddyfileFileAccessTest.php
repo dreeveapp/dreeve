@@ -19,35 +19,34 @@ class CaddyfileFileAccessTest extends TestCase
     private static ?Process $caddy = null;
     private static Client $http;
 
-    #[DataProvider('provideAccessRules')]
-    public function testPathRoutingRule(string $path, int $expectedStatus, ?string $expectedCacheControlContains): void
+    public function testAssetsAreServedAndCached(): void
+    {
+        $response = self::$http->get('/assets/app.css');
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertStringContainsString('max-age=86400', $response->getHeaderLine('Cache-Control'));
+    }
+
+    #[DataProvider('provideFilesNotServedByCaddy')]
+    public function testFilesAreNotServedByCaddy(string $path): void
     {
         $response = self::$http->get($path);
 
-        self::assertSame($expectedStatus, $response->getStatusCode(), sprintf('Unexpected status code for "%s"', $path));
-
-        if (null !== $expectedCacheControlContains) {
-            self::assertStringContainsString(
-                $expectedCacheControlContains,
-                $response->getHeaderLine('Cache-Control'),
-                sprintf('Unexpected Cache-Control for "%s"', $path)
-            );
-        }
+        self::assertSame(404, $response->getStatusCode(), sprintf('Unexpected status code for "%s"', $path));
     }
 
     /**
-     * @return iterable<string, array{string, int, string|null}>
+     * @return iterable<string, array{string}>
      */
-    public static function provideAccessRules(): iterable
+    public static function provideFilesNotServedByCaddy(): iterable
     {
-        yield 'asset is served and cached' => ['/assets/app.css', 200, 'max-age=86400'];
-        yield 'top-level image is not served by Caddy' => ['/files/sample.png', 404, null];
-        yield 'nested image is not served by Caddy' => ['/files/challenges/nested.png', 404, null];
-        yield 'uppercase extension is not served by Caddy' => ['/files/UPPER.PNG', 404, null];
-        yield 'activity photo is not served by Caddy' => ['/files/activities/secret.jpg', 404, null];
-        yield 'nested activity photo is not served by Caddy' => ['/files/activities/2024/secret.jpg', 404, null];
-        yield 'non-image file is not served by Caddy' => ['/files/secret.txt', 404, null];
-        yield 'log file is not served by Caddy' => ['/files/strava.log', 404, null];
+        yield 'top-level image' => ['/files/sample.png'];
+        yield 'nested image' => ['/files/challenges/nested.png'];
+        yield 'uppercase extension' => ['/files/UPPER.PNG'];
+        yield 'activity photo' => ['/files/activities/secret.jpg'];
+        yield 'nested activity photo' => ['/files/activities/2024/secret.jpg'];
+        yield 'non-image file' => ['/files/secret.txt'];
+        yield 'log file' => ['/files/strava.log'];
     }
 
     public static function setUpBeforeClass(): void

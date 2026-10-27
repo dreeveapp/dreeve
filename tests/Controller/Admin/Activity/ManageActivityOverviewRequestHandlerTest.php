@@ -17,7 +17,6 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
 {
@@ -147,43 +146,32 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(0, $rows->eq(1)->filter('form[data-dispatch-command="enrich-activity"]'));
     }
 
-    #[DataProvider('provideSportTypeFilterScenarios')]
-    public function testFiltersTheTableOnSportType(
-        string $sportTypeFilter,
-        int $expectedRowCount,
-        ?string $expectedSelectedOption,
-    ): void {
+    public function testFiltersTheTableOnSportType(): void
+    {
         $this->seedActivities(3);
         $this->seedActivity();
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/activities?filters[sportType]='.$sportTypeFilter);
+        $crawler = $this->client->request('GET', '/admin/activities?filters[sportType]=Run');
 
         $this->assertResponseIsSuccessful();
-        $this->assertCount($expectedRowCount, $crawler->filter('table.data-table tbody tr'));
-
-        $selectedOption = $crawler->filter('select[name="filters[sportType]"] option[selected]');
-        if (null === $expectedSelectedOption) {
-            $this->assertCount(0, $selectedOption);
-        } else {
-            $this->assertSame($expectedSelectedOption, $selectedOption->attr('value'));
-        }
-
-        $this->assertCount(
-            null === $expectedSelectedOption ? 0 : 1,
-            $crawler->filter('form[method="get"] a.btn--secondary')
-        );
+        $this->assertCount(1, $crawler->filter('table.data-table tbody tr'));
+        $this->assertSame('Run', $crawler->filter('select[name="filters[sportType]"] option[selected]')->attr('value'));
+        $this->assertCount(1, $crawler->filter('form[method="get"] a.btn--secondary'));
     }
 
-    public static function provideSportTypeFilterScenarios(): iterable
+    public function testIgnoresAnInvalidSportTypeFilter(): void
     {
-        yield 'a valid sport type filter narrows the rows and pre-selects the option' => [
-            'Run', 1, 'Run',
-        ];
+        $this->seedActivities(3);
+        $this->seedActivity();
+        $this->client->loginUser($this->adminUser());
 
-        yield 'an invalid sport type value is silently ignored' => [
-            'bogus', 3, null,
-        ];
+        $crawler = $this->client->request('GET', '/admin/activities?filters[sportType]=bogus');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(3, $crawler->filter('table.data-table tbody tr'));
+        $this->assertCount(0, $crawler->filter('select[name="filters[sportType]"] option[selected]'));
+        $this->assertCount(0, $crawler->filter('form[method="get"] a.btn--secondary'));
     }
 
     public function testFiltersTheTableOnUnspecifiedGear(): void
