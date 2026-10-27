@@ -55,6 +55,7 @@ Admin: Admin
 'All sport types must belong to the same activity type.': 'Alle Sportarten müssen demselben Aktivitätstyp angehören.'
 'Allow visitors to download original activity files': 'Besuchern das Herunterladen von Original-Aktivitätsdateien erlauben.'
 'Allowed IP addresses for the admin panel': 'Zulässige IP-Adressen für den Adminbereich'
+'Allowed users': 'Allowed users'
 'Any IP address': 'Beliebige IP-Addresse'
 'Any gear assigned to the activity will be removed.': 'Der Aktivität zugeordnete Ausrüstung wird entfernt.'
 'App URL': App-URL
@@ -99,6 +100,8 @@ Clear: Leeren
 'Clear filters': 'Filter zurücksetzen'
 'Click the map to set the center, or drag the marker to fine-tune it.': 'Klicke auf die Karte, um den Mittelpunkt festzulegen, oder ziehe den Marker für die Feineinstellung.'
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Klicke auf die Karte, um den Ort festzulegen, oder ziehe den Marker für die Feineinstellung.'
+'Client ID': 'Client ID'
+'Client secret': 'Client secret'
 Close: Schließen
 Command: Befehl
 Commute: Pendeln
@@ -236,6 +239,7 @@ Instance: Instanz
 Integrations: Integrationen
 'Intro text': Einleitungstext
 'Invalid CSRF token.': 'Ungültiger CSRF token.'
+'Issuer URL': 'Issuer URL'
 Label: Bezeichnung
 'Last name': Nachname
 Latitude: Breitengrad
@@ -245,6 +249,7 @@ Latitude: Breitengrad
 'Leave empty to use the default title.': 'Leer lassen, um den Standardtitel zu verwenden.'
 'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.': 'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.'
 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.': 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.'
+'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.': 'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.'
 'Loading the route...': 'Loading the route...'
 Locale: Sprache
 Log: Protokoll
@@ -346,7 +351,9 @@ Radius: Radius
 'Recording device management': 'Verwaltung der Aufzeichnungsgeräte'
 'Recording devices will appear here once activities have been imported.': 'Aufzeichnungsgeräte werden hier angezeigt, sobald Aktivitäten importiert wurden.'
 'Recreate your containers': 'Container neu erstellen'
+'Redirect URI': 'Redirect URI'
 'Register maintenance': 'Wartung erfassen'
+'Register this URL as the redirect URI with your identity provider.': 'Register this URL as the redirect URI with your identity provider.'
 'Remember me for 7 days': 'Für 7 Tage angemeldet bleiben'
 Remove: Entfernen
 'Remove Eddington': 'Eddington entfernen'
@@ -431,6 +438,7 @@ Settings: Einstellungen
 'Sign in with single sign-on': 'Sign in with single sign-on'
 'Sign out': Abmelden
 'Signing in...': 'Anmeldung läuft...'
+'Single sign-on': 'Single sign-on'
 'Skip activities recorded before': 'Aktivitäten überspringen, die aufgezeichnet wurden vor'
 Skipped: Übersprungen
 'Skipped (an earlier rule stopped processing).': 'Übersprungen (eine vorherige Regel hat die Verarbeitung gestoppt).'

@@ -53,6 +53,14 @@ final readonly class OidcConfig
     }
 
     /**
+     * @return string[]
+     */
+    public function getAllowedUsers(): array
+    {
+        return $this->allowedUsers;
+    }
+
+    /**
      * @param array<string, mixed> $claims
      */
     public function allows(array $claims): bool

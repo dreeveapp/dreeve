@@ -55,6 +55,7 @@ Admin: Admin
 'All sport types must belong to the same activity type.': 'Minden sporttípusnak ugyanahhoz a tevékenységtípushoz kell tartoznia.'
 'Allow visitors to download original activity files': 'Allow visitors to download original activity files'
 'Allowed IP addresses for the admin panel': 'Az adminfelülethez engedélyezett IP-címek'
+'Allowed users': 'Allowed users'
 'Any IP address': 'Bármely IP-cím'
 'Any gear assigned to the activity will be removed.': 'Any gear assigned to the activity will be removed.'
 'App URL': 'Alkalmazás URL'
@@ -99,6 +100,8 @@ Clear: Törlés
 'Clear filters': 'Szűrők törlése'
 'Click the map to set the center, or drag the marker to fine-tune it.': 'Kattints a térképre a középpont beállításához, vagy húzd a jelölőt a finomhangoláshoz.'
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Kattints a térképre a hely beállításához, vagy húzd a jelölőt a finomhangoláshoz.'
+'Client ID': 'Client ID'
+'Client secret': 'Client secret'
 Close: Bezárás
 Command: Parancs
 Commute: Ingázás
@@ -236,6 +239,7 @@ Instance: Instance
 Integrations: Integrációk
 'Intro text': 'Bevezető szöveg'
 'Invalid CSRF token.': 'Érvénytelen CSRF-token.'
+'Issuer URL': 'Issuer URL'
 Label: Címke
 'Last name': Vezetéknév
 Latitude: Szélesség
@@ -245,6 +249,7 @@ Latitude: Szélesség
 'Leave empty to use the default title.': 'Leave empty to use the default title.'
 'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.': 'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.'
 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.': 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.'
+'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.': 'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.'
 'Loading the route...': 'Loading the route...'
 Locale: Nyelv
 Log: Napló
@@ -346,7 +351,9 @@ Radius: Sugár
 'Recording device management': 'Rögzítő eszközök kezelése'
 'Recording devices will appear here once activities have been imported.': 'A rögzítő eszközök itt jelennek meg, miután tevékenységeket importáltál.'
 'Recreate your containers': 'Hozd létre újra a konténereket'
+'Redirect URI': 'Redirect URI'
 'Register maintenance': 'Karbantartás rögzítése'
+'Register this URL as the redirect URI with your identity provider.': 'Register this URL as the redirect URI with your identity provider.'
 'Remember me for 7 days': 'Emlékezz rám 7 napig'
 Remove: Eltávolítás
 'Remove Eddington': 'Eddington eltávolítása'
@@ -431,6 +438,7 @@ Settings: Beállítások
 'Sign in with single sign-on': 'Sign in with single sign-on'
 'Sign out': Kijelentkezés
 'Signing in...': Bejelentkezés...
+'Single sign-on': 'Single sign-on'
 'Skip activities recorded before': 'Az ezen dátum előtt rögzített tevékenységek kihagyása'
 Skipped: Kihagyva
 'Skipped (an earlier rule stopped processing).': 'Kihagyva (egy korábbi szabály leállította a feldolgozást).'

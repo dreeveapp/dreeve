@@ -111,6 +111,16 @@ abstract class ControllerWebTestCase extends WebTestCase
         $this->rebootClient();
     }
 
+    protected function withOidc(string $issuerUrl, string $clientId, string $clientSecret, string $allowedUsers): void
+    {
+        $_SERVER['OIDC_ISSUER_URL'] = $_ENV['OIDC_ISSUER_URL'] = $issuerUrl;
+        $_SERVER['OIDC_CLIENT_ID'] = $_ENV['OIDC_CLIENT_ID'] = $clientId;
+        $_SERVER['OIDC_CLIENT_SECRET'] = $_ENV['OIDC_CLIENT_SECRET'] = $clientSecret;
+        $_SERVER['OIDC_ALLOWED_USERS'] = $_ENV['OIDC_ALLOWED_USERS'] = $allowedUsers;
+
+        $this->rebootClient();
+    }
+
     private function rebootClient(): void
     {
         static::ensureKernelShutdown();

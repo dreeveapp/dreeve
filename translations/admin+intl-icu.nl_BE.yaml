@@ -55,6 +55,7 @@ Admin: Beheer
 'All sport types must belong to the same activity type.': 'Alle sporttypes moeten tot hetzelfde activiteitstype behoren.'
 'Allow visitors to download original activity files': 'Allow visitors to download original activity files'
 'Allowed IP addresses for the admin panel': 'Toegestane IP-adressen voor het beheerpaneel'
+'Allowed users': 'Allowed users'
 'Any IP address': 'Eender welk IP-adres'
 'Any gear assigned to the activity will be removed.': 'Any gear assigned to the activity will be removed.'
 'App URL': App-URL
@@ -99,6 +100,8 @@ Clear: Wissen
 'Clear filters': 'Filters wissen'
 'Click the map to set the center, or drag the marker to fine-tune it.': 'Klik op de kaart om het middelpunt in te stellen, of sleep de markering om het te verfijnen.'
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Klik op de kaart om de locatie in te stellen, of sleep de markering om ze te verfijnen.'
+'Client ID': 'Client ID'
+'Client secret': 'Client secret'
 Close: Sluiten
 Command: Commando
 Commute: Woon-werk
@@ -236,6 +239,7 @@ Instance: Instance
 Integrations: Integraties
 'Intro text': Introtekst
 'Invalid CSRF token.': 'Ongeldig CSRF-token.'
+'Issuer URL': 'Issuer URL'
 Label: Label
 'Last name': Achternaam
 Latitude: Breedtegraad
@@ -245,6 +249,7 @@ Latitude: Breedtegraad
 'Leave empty to use the default title.': 'Laat leeg om de standaardtitel te gebruiken.'
 'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.': 'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.'
 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.': 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.'
+'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.': 'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.'
 'Loading the route...': 'Loading the route...'
 Locale: Taalinstelling
 Log: Log
@@ -346,7 +351,9 @@ Radius: Straal
 'Recording device management': 'Beheer registratietoestellen'
 'Recording devices will appear here once activities have been imported.': 'Registratietoestellen verschijnen hier zodra activiteiten geïmporteerd zijn.'
 'Recreate your containers': 'Maak je containers opnieuw aan'
+'Redirect URI': 'Redirect URI'
 'Register maintenance': 'Onderhoud registreren'
+'Register this URL as the redirect URI with your identity provider.': 'Register this URL as the redirect URI with your identity provider.'
 'Remember me for 7 days': 'Onthoud mij 7 dagen'
 Remove: Verwijderen
 'Remove Eddington': 'Eddington verwijderen'
@@ -431,6 +438,7 @@ Settings: Instellingen
 'Sign in with single sign-on': 'Sign in with single sign-on'
 'Sign out': Afmelden
 'Signing in...': 'Aan het aanmelden...'
+'Single sign-on': 'Single sign-on'
 'Skip activities recorded before': 'Activiteiten overslaan die geregistreerd zijn voor'
 Skipped: Overgeslagen
 'Skipped (an earlier rule stopped processing).': 'Overgeslagen (een eerdere regel stopte de verwerking).'

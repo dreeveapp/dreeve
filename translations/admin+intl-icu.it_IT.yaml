@@ -55,6 +55,7 @@ Admin: Admin
 'All sport types must belong to the same activity type.': 'All sport types must belong to the same activity type.'
 'Allow visitors to download original activity files': 'Allow visitors to download original activity files'
 'Allowed IP addresses for the admin panel': 'Allowed IP addresses for the admin panel'
+'Allowed users': 'Allowed users'
 'Any IP address': 'Any IP address'
 'Any gear assigned to the activity will be removed.': 'Any gear assigned to the activity will be removed.'
 'App URL': 'App URL'
@@ -99,6 +100,8 @@ Clear: Clear
 'Clear filters': 'Clear filters'
 'Click the map to set the center, or drag the marker to fine-tune it.': 'Click the map to set the center, or drag the marker to fine-tune it.'
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Click the map to set the location, or drag the marker to fine-tune it.'
+'Client ID': 'Client ID'
+'Client secret': 'Client secret'
 Close: Close
 Command: Command
 Commute: Commute
@@ -236,6 +239,7 @@ Instance: Instance
 Integrations: Integrations
 'Intro text': 'Intro text'
 'Invalid CSRF token.': 'Invalid CSRF token.'
+'Issuer URL': 'Issuer URL'
 Label: Label
 'Last name': 'Last name'
 Latitude: Latitude
@@ -245,6 +249,7 @@ Latitude: Latitude
 'Leave empty to use the default title.': 'Leave empty to use the default title.'
 'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.': 'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.'
 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.': 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.'
+'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.': 'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.'
 'Loading the route...': 'Loading the route...'
 Locale: Locale
 Log: Log
@@ -346,7 +351,9 @@ Radius: Radius
 'Recording device management': 'Recording device management'
 'Recording devices will appear here once activities have been imported.': 'Recording devices will appear here once activities have been imported.'
 'Recreate your containers': 'Recreate your containers'
+'Redirect URI': 'Redirect URI'
 'Register maintenance': 'Register maintenance'
+'Register this URL as the redirect URI with your identity provider.': 'Register this URL as the redirect URI with your identity provider.'
 'Remember me for 7 days': 'Remember me for 7 days'
 Remove: Remove
 'Remove Eddington': 'Remove Eddington'
@@ -431,6 +438,7 @@ Settings: Settings
 'Sign in with single sign-on': 'Sign in with single sign-on'
 'Sign out': 'Sign out'
 'Signing in...': 'Signing in...'
+'Single sign-on': 'Single sign-on'
 'Skip activities recorded before': 'Skip activities recorded before'
 Skipped: Skipped
 'Skipped (an earlier rule stopped processing).': 'Skipped (an earlier rule stopped processing).'

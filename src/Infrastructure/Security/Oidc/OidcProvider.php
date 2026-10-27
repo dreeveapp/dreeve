@@ -94,7 +94,7 @@ final readonly class OidcProvider
         return $claims;
     }
 
-    private function getRedirectUri(): string
+    public function getRedirectUri(): string
     {
         return $this->urlGenerator->generate('admin_login_oidc_callback', [], UrlGeneratorInterface::ABSOLUTE_URL);
     }

@@ -21,6 +21,8 @@ use App\Infrastructure\Config\AdminAllowedIpAddresses;
 use App\Infrastructure\Http\ClientIpResolver;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Security\Admin\AdminUserName;
+use App\Infrastructure\Security\Oidc\OidcConfig;
+use App\Infrastructure\Security\Oidc\OidcProvider;
 use App\Infrastructure\Security\Token\ApiToken;
 use App\Infrastructure\Security\Token\McpToken;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -53,6 +55,9 @@ final readonly class SettingsRequestHandler
         private ClientIpResolver $clientIpResolver,
         private ApiToken $apiKey,
         private McpToken $mcpKey,
+        #[\SensitiveParameter]
+        private OidcConfig $oidcConfig,
+        private OidcProvider $oidcProvider,
     ) {
     }
 
@@ -106,6 +111,8 @@ final readonly class SettingsRequestHandler
                 'clientIpAddress' => $this->clientIpResolver->resolve($request),
                 'apiKey' => $this->apiKey,
                 'mcpKey' => $this->mcpKey,
+                'oidcConfig' => $this->oidcConfig,
+                'oidcRedirectUri' => $this->oidcProvider->getRedirectUri(),
             ],
         ));
     }

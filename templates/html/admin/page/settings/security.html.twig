@@ -47,6 +47,56 @@
         {% endblock %}
     {% endembed %}
     {% embed 'html/admin/page/settings/component/section.html.twig' with {
+        title: "Single sign-on"|trans({}, 'admin') ~ ' (' ~ (oidcConfig.isEnabled() ? "Enabled"|trans({}, 'admin')|lower : "Disabled"|trans({}, 'admin'))|lower ~ ')',
+        description: "Lets you log in to the admin panel through your own identity provider, next to the admin username and password."|trans({}, 'admin'),
+    } %}
+        {% block body %}
+            {% if oidcConfig.isEnabled() %}
+                <div>
+                    <label for="oidcIssuerUrl" class="mt-0!">{{ "Issuer URL"|trans({}, 'admin') }}</label>
+                    <input type="text" id="oidcIssuerUrl" value="{{ oidcConfig.getIssuerUrl() }}" disabled>
+                    <p class="description">
+                        {{ "Set through the {envVar} environment variable and cannot be changed here."|trans({'{envVar}': 'OIDC_ISSUER_URL'}, 'admin') }}
+                    </p>
+                </div>
+                <div>
+                    <label for="oidcClientId">{{ "Client ID"|trans({}, 'admin') }}</label>
+                    <input type="text" id="oidcClientId" value="{{ oidcConfig.getClientId() }}" disabled>
+                    <p class="description">
+                        {{ "Set through the {envVar} environment variable and cannot be changed here."|trans({'{envVar}': 'OIDC_CLIENT_ID'}, 'admin') }}
+                    </p>
+                </div>
+                <div>
+                    <label for="oidcClientSecretState">{{ "Client secret"|trans({}, 'admin') }}</label>
+                    <input type="text" id="oidcClientSecretState" value="{{ "Configured"|trans({}, 'admin') }}" disabled>
+                    <p class="description">
+                        {{ "Set through the {envVar} environment variable and cannot be changed here."|trans({'{envVar}': 'OIDC_CLIENT_SECRET'}, 'admin') }}
+                    </p>
+                </div>
+                <div>
+                    <label for="oidcAllowedUsers">{{ "Allowed users"|trans({}, 'admin') }}</label>
+                    <input type="text" id="oidcAllowedUsers" value="{{ oidcConfig.getAllowedUsers()|join(', ') }}" disabled>
+                    <p class="description">
+                        {{ "Set through the {envVar} environment variable and cannot be changed here."|trans({'{envVar}': 'OIDC_ALLOWED_USERS'}, 'admin') }}
+                    </p>
+                </div>
+                <div>
+                    <label for="oidcRedirectUri">{{ "Redirect URI"|trans({}, 'admin') }}</label>
+                    <input type="text" id="oidcRedirectUri" value="{{ oidcRedirectUri }}" readonly>
+                    <p class="description">
+                        {{ "Register this URL as the redirect URI with your identity provider."|trans({}, 'admin') }}
+                    </p>
+                </div>
+            {% else %}
+                {% set linkOpen = '<a class="font-semibold underline hover:no-underline" href="https://docs.dreeve.app/integrations/single-sign-on/">' %}
+                {% set linkClose = '</a>' %}
+                <p class="text-sm text-gray-500">
+                    {{ "Detailed instructions are available in {linkOpen}the documentation{linkClose}."|trans({'{linkOpen}': linkOpen, '{linkClose}': linkClose}, 'admin')|raw }}
+                </p>
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {
         title: "API access"|trans({}, 'admin'),
         description: "Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password."|trans({}, 'admin') ~ ' ' ~ "The allowed IP addresses above do not apply to it, the key is the only access control there."|trans({}, 'admin'),
     } %}

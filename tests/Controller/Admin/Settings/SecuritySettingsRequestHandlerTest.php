@@ -10,10 +10,11 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
 {
-    public function testItRendersTheApiKeyCardWhenAKeyIsConfigured(): void
+    public function testItRendersTheEnvironmentDrivenAccessWhenConfigured(): void
     {
         $this->withApiKey((string) ApiToken::generate());
         $this->withMcpKey((string) McpToken::generate());
+        $this->withOidc('https://idp.example.com/application/o/dreeve/', 'dreeve', 'oidc-client-secret', 'athlete-subject, athlete@example.com');
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/settings/security');
@@ -21,6 +22,15 @@ class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('Configured', $crawler->filter('input#apiKeyState[disabled]')->attr('value'));
         $this->assertSame('Configured', $crawler->filter('input#mcpKeyState[disabled]')->attr('value'));
         $this->assertStringNotContainsString('drv', $crawler->filter('main')->text());
+
+        $this->assertStringContainsString('Single sign-on (Enabled)', $crawler->filter('main')->text());
+        $this->assertSame('https://idp.example.com/application/o/dreeve/', $crawler->filter('input#oidcIssuerUrl[disabled]')->attr('value'));
+        $this->assertSame('dreeve', $crawler->filter('input#oidcClientId[disabled]')->attr('value'));
+        $this->assertSame('Configured', $crawler->filter('input#oidcClientSecretState[disabled]')->attr('value'));
+        $this->assertSame('athlete-subject, athlete@example.com', $crawler->filter('input#oidcAllowedUsers[disabled]')->attr('value'));
+        $this->assertSame('http://localhost/admin/login/oidc/callback', $crawler->filter('input#oidcRedirectUri[readonly]')->attr('value'));
+        $this->assertCount(0, $crawler->filter('a[href="https://docs.dreeve.app/integrations/single-sign-on/"]'));
+        $this->assertStringNotContainsString('oidc-client-secret', (string) $this->client->getResponse()->getContent());
     }
 
     public function testItWarnsWhenTheConfiguredApiKeyIsMalformed(): void
@@ -83,6 +93,11 @@ class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
         // The MCP access card, with no key configured.
         $this->assertStringContainsString('Not configured, MCP server is disabled', (string) $crawler->filter('input#mcpKeyState[disabled]')->attr('value'));
         $this->assertCount(1, $crawler->filter('a[href="/admin/settings/token/generate/mcp"]'));
+
+        // The single sign-on card, with nothing configured.
+        $this->assertStringContainsString('Single sign-on (Disabled)', $crawler->filter('main')->text());
+        $this->assertCount(0, $crawler->filter('input#oidcIssuerUrl'));
+        $this->assertCount(1, $crawler->filter('a[href="https://docs.dreeve.app/integrations/single-sign-on/"]'));
 
         // The keys themselves must never reach the shared settings render context.
         $this->assertStringNotContainsString('drv', $crawler->filter('main')->text());
