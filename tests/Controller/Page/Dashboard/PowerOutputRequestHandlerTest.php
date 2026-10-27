@@ -86,8 +86,8 @@ class PowerOutputRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSame(
             [
-                ['All time', '900w', '-', '500w', '-', '250w', '-'],
-                ['2019', '900w', '-', '500w', '-', '250w', '-'],
+                ['All time', '-', '-', '900w', '-', '-', '-', '500w', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '250w', '-'],
+                ['2019', '-', '-', '900w', '-', '-', '-', '500w', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '250w', '-'],
             ],
             $crawler->filter('table:contains("Best 1h") tbody tr')->each(
                 fn (Crawler $row): array => $row->filter('td')->each(fn (Crawler $cell): string => $cell->text()),

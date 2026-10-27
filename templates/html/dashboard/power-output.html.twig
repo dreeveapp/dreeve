@@ -34,7 +34,7 @@
                         <div class="h-80" data-echarts-options='{{ powerOutputChartsPerActivityType[activityType] }}'></div>
                         <div>
                             <h3 class="mb-4 font-semibold">
-                                Details
+                                {{ "Details"|trans }}
                             </h3>
                             <div class="relative overflow-x-auto">
                                 <table class="data-table">
@@ -43,40 +43,14 @@
                                         <th scope="col" class="bg-gray-50 sticky left-0">
                                             <div class="w-24">&nbsp;</div>
                                         </th>
-                                        <th scope="col" colspan="2">
-                                            {{ "Best"|trans }} 1s
-                                        </th>
-                                        <th scope="col" colspan="2">
-                                            {{ "Best"|trans }} 5s
-                                        </th>
-                                        <th scope="col" colspan="2">
-                                            {{ "Best"|trans }} 15s
-                                        </th>
-                                        <th scope="col" colspan="2">
-                                            {{ "Best"|trans }} 1m
-                                        </th>
-                                        <th scope="col" colspan="2">
-                                            {{ "Best"|trans }} 2m
-                                        </th>
-                                        <th scope="col" colspan="2">
-                                            {{ "Best"|trans }} 5m
-                                        </th>
-                                        <th scope="col" colspan="2">
-                                            {{ "Best"|trans }} 8m
-                                        </th>
-                                        <th scope="col" colspan="2">
-                                            {{ "Best"|trans }} 20m
-                                        </th>
-                                        <th scope="col" colspan="2">
-                                            {{ "Best"|trans }} 30m
-                                        </th>
-                                        <th scope="col" colspan="2">
-                                            {{ "Best"|trans }} 1h
-                                        </th>
+                                        {% for timeIntervalLabel in timeIntervalsToDisplay %}
+                                            <th scope="col" colspan="2">
+                                                {{ "Best"|trans }} {{ timeIntervalLabel }}
+                                            </th>
+                                        {% endfor %}
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% set timeIntervalsToDisplay = [1, 5, 15, 60, 120, 300, 480, 1200, 1800, 3600] %}
                                     {% for bestPowerOutput in bestPowerOutputs %}
                                         {% set description = bestPowerOutput[0] %}
                                         {% set powerOutputs = bestPowerOutput[1] %}
@@ -84,15 +58,14 @@
                                             <td class="font-medium bg-white text-gray-900 sticky left-0">
                                                 {{ description }}
                                             </td>
-                                            {% for powerOutput in powerOutputs %}
-                                                {% if powerOutput.getTimeIntervalInSeconds() in timeIntervalsToDisplay %}
-                                                    <td>
-                                                        {{ powerOutput.getPower() }}<span class="text-xxs ml-px">w</span>
-                                                    </td>
-                                                    <td class="border-r-2">
-                                                        {{ powerOutput.getRelativePower() ? powerOutput.getRelativePower() ~ '<span class="text-xxs ml-px">w/kg</span>' : '-' }}
-                                                    </td>
-                                                {% endif %}
+                                            {% for timeIntervalInSeconds in timeIntervalsToDisplay|keys %}
+                                                {% set powerOutput = powerOutputs.findByTimeInterval(timeIntervalInSeconds) %}
+                                                <td>
+                                                    {{ powerOutput ? powerOutput.getPower() ~ '<span class="text-xxs ml-px">w</span>' : '-' }}
+                                                </td>
+                                                <td class="border-r-2">
+                                                    {{ powerOutput and powerOutput.getRelativePower() ? powerOutput.getRelativePower() ~ '<span class="text-xxs ml-px">w/kg</span>' : '-' }}
+                                                </td>
                                             {% endfor %}
                                         </tr>
                                     {% endfor %}

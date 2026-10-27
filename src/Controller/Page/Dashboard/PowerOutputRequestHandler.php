@@ -122,6 +122,18 @@ final readonly class PowerOutputRequestHandler
         return $this->twig->load('html/dashboard/power-output.html.twig')->render([
             'powerOutputChartsPerActivityType' => $powerOutputChartsPerActivityType,
             'bestPowerOutputsPerActivityType' => $bestPowerOutputsPerActivityType,
+            'timeIntervalsToDisplay' => [
+                1 => '1s',
+                5 => '5s',
+                15 => '15s',
+                60 => '1m',
+                120 => '2m',
+                300 => '5m',
+                480 => '8m',
+                1200 => '20m',
+                1800 => '30m',
+                3600 => '1h',
+            ],
         ]);
     }
 }

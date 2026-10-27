@@ -22,6 +22,13 @@ final class PowerOutputs extends Collection
         )))->unique();
     }
 
+    public function findByTimeInterval(int $timeIntervalInSeconds): ?PowerOutput
+    {
+        return $this->find(
+            fn (PowerOutput $powerOutput): bool => $powerOutput->getTimeIntervalInSeconds() === $timeIntervalInSeconds
+        );
+    }
+
     public function getItemClassName(): string
     {
         return PowerOutput::class;
