@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Rewind;
 
+use App\Infrastructure\ECharts\EChartsCallback;
+
 final readonly class ActivityLocationsChart
 {
     private function __construct(
@@ -46,7 +48,7 @@ final readonly class ActivityLocationsChart
             'series' => [
                 'type' => 'effectScatter',
                 'coordinateSystem' => 'geo',
-                'symbolSize' => 'callback:symbolSize',
+                'symbolSize' => EChartsCallback::symbolSize(),
                 'itemStyle' => [
                     'color' => '#E34902',
                 ],

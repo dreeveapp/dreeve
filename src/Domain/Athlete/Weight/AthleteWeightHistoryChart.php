@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Athlete\Weight;
 
+use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -78,7 +79,7 @@ final readonly class AthleteWeightHistoryChart
             'backgroundColor' => null,
             'tooltip' => [
                 'trigger' => 'axis',
-                'formatter' => 'callback:formatDateOnlyTooltip',
+                'formatter' => EChartsCallback::formatDateOnlyTooltip(),
             ],
             'grid' => [
                 'top' => '2%',

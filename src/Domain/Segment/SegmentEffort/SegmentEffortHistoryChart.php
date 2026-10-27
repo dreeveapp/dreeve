@@ -2,6 +2,8 @@
 
 namespace App\Domain\Segment\SegmentEffort;
 
+use App\Infrastructure\ECharts\EChartsCallback;
+
 final readonly class SegmentEffortHistoryChart
 {
     private function __construct(
@@ -42,7 +44,7 @@ final readonly class SegmentEffortHistoryChart
             'tooltip' => [
                 'show' => true,
                 'trigger' => 'axis',
-                'valueFormatter' => 'callback:formatSecondsTrimZero',
+                'valueFormatter' => EChartsCallback::formatSecondsTrimZero(),
             ],
             'xAxis' => [
                 [
@@ -70,7 +72,7 @@ final readonly class SegmentEffortHistoryChart
                     'type' => 'value',
                     'min' => max(0, floor($minYAxisValue / 5) * 5),
                     'axisLabel' => [
-                        'formatter' => 'callback:formatSecondsTrimZero',
+                        'formatter' => EChartsCallback::formatSecondsTrimZero(),
                     ],
                 ],
             ],

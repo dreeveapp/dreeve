@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Segment\AddCustomSegment;
 
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
+use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\UnitSystem;
 
@@ -79,13 +80,10 @@ final readonly class AddSegmentElevationChart
                     'show' => false,
                 ],
                 'axisLabel' => [
-                    'formatter' => [
-                        'callback' => 'formatRounded',
-                        'args' => [
-                            'decimals' => 1,
-                            'suffix' => $distanceSymbol,
-                        ],
-                    ],
+                    'formatter' => EChartsCallback::formatRounded(
+                        decimals: 1,
+                        suffix: $distanceSymbol,
+                    ),
                 ],
                 'splitLine' => [
                     'show' => false,

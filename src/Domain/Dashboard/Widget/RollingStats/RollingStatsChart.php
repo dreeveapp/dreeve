@@ -6,6 +6,7 @@ use App\Domain\Activity\Activities;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Dashboard\StatsContext;
+use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -108,9 +109,9 @@ final readonly class RollingStatsChart
                     'yAxisId' => $context->value,
                     'tooltip' => [
                         'valueFormatter' => match ($context) {
-                            StatsContext::DISTANCE => 'callback:formatDistance',
-                            StatsContext::MOVING_TIME => 'callback:formatHours',
-                            StatsContext::ELEVATION => 'callback:formatElevation',
+                            StatsContext::DISTANCE => EChartsCallback::formatDistance(),
+                            StatsContext::MOVING_TIME => EChartsCallback::formatHours(),
+                            StatsContext::ELEVATION => EChartsCallback::formatElevation(),
                         },
                     ],
                 ],

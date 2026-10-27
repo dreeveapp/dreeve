@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Athlete\HeartRateZone\HeartRateZones;
 use App\Domain\Theme\Theme;
+use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\Measurement\UnitSystem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -182,13 +183,10 @@ final readonly class CombinedStreamProfileCharts
                 'boundaryGap' => false,
                 'axisLabel' => [
                     'show' => !is_null($xAxisPosition),
-                    'formatter' => is_null($xAxisLabelSuffix) ? '{value} ' : [
-                        'callback' => 'formatRounded',
-                        'args' => [
-                            'decimals' => ActivityType::RIDE === $this->sportType->getActivityType() ? 0 : 1,
-                            'suffix' => $xAxisLabelSuffix,
-                        ],
-                    ],
+                    'formatter' => is_null($xAxisLabelSuffix) ? '{value} ' : EChartsCallback::formatRounded(
+                        decimals: ActivityType::RIDE === $this->sportType->getActivityType() ? 0 : 1,
+                        suffix: $xAxisLabelSuffix,
+                    ),
                 ],
                 'axisPointer' => [
                     'label' => [
@@ -219,7 +217,7 @@ final readonly class CombinedStreamProfileCharts
                 'axisLabel' => [
                     'show' => true,
                     'customValues' => [$minYAxis, $maxYAxis],
-                    'formatter' => CombinedStreamType::PACE === $yAxisStreamType ? 'callback:formatSecondsTrimZero' : null,
+                    'formatter' => CombinedStreamType::PACE === $yAxisStreamType ? EChartsCallback::formatSecondsTrimZero() : null,
                     'color' => '#aaa',
                     'verticalAlignMaxLabel' => 'top',
                     'verticalAlignMinLabel' => 'bottom',
@@ -310,7 +308,7 @@ final readonly class CombinedStreamProfileCharts
             ],
             'tooltip' => [
                 'trigger' => 'axis',
-                'formatter' => 'callback:formatCombinedProfileTooltip',
+                'formatter' => EChartsCallback::formatCombinedProfileTooltip(),
             ],
             'dataZoom' => [
                 [

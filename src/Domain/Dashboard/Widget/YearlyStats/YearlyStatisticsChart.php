@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityType;
 use App\Domain\Dashboard\StatsContext;
 use App\Domain\Dashboard\Widget\YearlyStats\FindYearlyStatsPerDay\FindYearlyStatsPerDayResponse;
 use App\Domain\Theme\Theme;
+use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Hour;
@@ -164,9 +165,9 @@ final readonly class YearlyStatisticsChart
                 'show' => true,
                 'trigger' => 'axis',
                 'valueFormatter' => match ($this->context) {
-                    StatsContext::MOVING_TIME => 'callback:formatHours',
-                    StatsContext::DISTANCE => 'callback:formatDistance',
-                    StatsContext::ELEVATION => 'callback:formatElevation',
+                    StatsContext::MOVING_TIME => EChartsCallback::formatHours(),
+                    StatsContext::DISTANCE => EChartsCallback::formatDistance(),
+                    StatsContext::ELEVATION => EChartsCallback::formatElevation(),
                 },
             ],
             'yAxis' => [

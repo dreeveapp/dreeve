@@ -6,6 +6,7 @@ namespace App\Domain\Activity\BestEffort;
 
 use App\Domain\Activity\ActivityType;
 use App\Domain\Theme\Theme;
+use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\Measurement\Length\ConvertableToMeter;
 use App\Infrastructure\Measurement\Unit;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -90,7 +91,7 @@ final readonly class BestEffortChart
                 'axisPointer' => [
                     'type' => 'none',
                 ],
-                'valueFormatter' => 'callback:formatSeconds',
+                'valueFormatter' => EChartsCallback::formatSeconds(),
             ],
             'legend' => [
                 'show' => true,
@@ -110,7 +111,7 @@ final readonly class BestEffortChart
             'yAxis' => [
                 'type' => 'log',
                 'axisLabel' => [
-                    'formatter' => 'callback:formatSeconds',
+                    'formatter' => EChartsCallback::formatSeconds(),
                     'showMaxLabel' => false,
                 ],
             ],

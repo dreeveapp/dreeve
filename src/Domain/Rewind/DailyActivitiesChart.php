@@ -2,6 +2,7 @@
 
 namespace App\Domain\Rewind;
 
+use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Year;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -67,7 +68,7 @@ final readonly class DailyActivitiesChart
             'animation' => false,
             'tooltip' => [
                 'trigger' => 'item',
-                'formatter' => 'callback:formatActivityGridTooltip',
+                'formatter' => EChartsCallback::formatActivityGridTooltip(),
             ],
             'visualMap' => [
                 'type' => 'piecewise',

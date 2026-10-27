@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget\TrainingLoad;
 
+use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\Serialization\Escape;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -143,7 +144,7 @@ final readonly class TrainingLoadChart
                     'position' => 'left',
                     'alignTicks' => true,
                     'axisLine' => ['show' => true, 'lineStyle' => ['color' => '#cccccc']],
-                    'axisLabel' => ['formatter' => 'callback:toInteger'],
+                    'axisLabel' => ['formatter' => EChartsCallback::toInteger()],
                     'splitLine' => ['show' => true],
                     'minInterval' => 1,
                 ],
@@ -159,7 +160,7 @@ final readonly class TrainingLoadChart
                     'min' => (int) floor(min(-35, ...$tsbValues)),
                     'minInterval' => 1,
                     'axisLine' => ['show' => true, 'lineStyle' => ['color' => '#cccccc']],
-                    'axisLabel' => ['formatter' => 'callback:toInteger'],
+                    'axisLabel' => ['formatter' => EChartsCallback::toInteger()],
                     'splitLine' => ['show' => false],
                 ],
             ],

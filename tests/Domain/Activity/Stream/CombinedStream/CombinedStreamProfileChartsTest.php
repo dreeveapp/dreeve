@@ -8,6 +8,7 @@ use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Athlete\HeartRateZone\HeartRateZoneMode;
 use App\Domain\Athlete\HeartRateZone\HeartRateZones;
 use App\Domain\Theme\Theme;
+use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Tests\ContainerTestCase;
 use PHPUnit\Framework\Attributes\TestWith;
@@ -219,7 +220,7 @@ class CombinedStreamProfileChartsTest extends ContainerTestCase
 
         $this->assertEquals('{value} ', $chart['xAxis'][0]['axisLabel']['formatter']);
         $this->assertEquals(
-            ['callback' => 'formatRounded', 'args' => ['decimals' => $expectedDecimals, 'suffix' => 'km']],
+            EChartsCallback::formatRounded(decimals: $expectedDecimals, suffix: 'km'),
             $chart['xAxis'][1]['axisLabel']['formatter']
         );
         $this->assertEquals('{value} km', $chart['xAxis'][1]['axisPointer']['label']['formatter']);

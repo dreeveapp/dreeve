@@ -3,6 +3,7 @@
 namespace App\Domain\Segment\SegmentEffort;
 
 use App\Domain\Activity\SportType\SportType;
+use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
@@ -109,7 +110,7 @@ final readonly class SegmentEffortVsHeartRateChart
             'tooltip' => [
                 'show' => true,
                 'trigger' => 'item',
-                'formatter' => 'callback:formatEffortVsHeartRateTooltip',
+                'formatter' => EChartsCallback::formatEffortVsHeartRateTooltip(),
             ],
             'xAxis' => [
                 [
@@ -127,7 +128,7 @@ final readonly class SegmentEffortVsHeartRateChart
                     'min' => max(0, floor($minElapsedTime / 5) * 5),
                     'max' => ceil($maxElapsedTime / 5) * 5,
                     'axisLabel' => [
-                        'formatter' => 'callback:formatSecondsTrimZero',
+                        'formatter' => EChartsCallback::formatSecondsTrimZero(),
                     ],
                 ],
             ],

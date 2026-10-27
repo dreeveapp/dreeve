@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Stream;
 
+use App\Infrastructure\ECharts\EChartsCallback;
+
 final readonly class PowerOutputChart
 {
     private const array X_AXIS_TICKS_IN_SECONDS = [2, 5, 10, 30, 60, 120, 300, 600, 1200, 3600];
@@ -88,14 +90,14 @@ final readonly class PowerOutputChart
             'tooltip' => [
                 'show' => true,
                 'trigger' => 'axis',
-                'formatter' => 'callback:formatPowerDurationTooltip',
+                'formatter' => EChartsCallback::formatPowerDurationTooltip(),
             ],
             'xAxis' => [
                 'type' => 'log',
                 'min' => 1,
                 'max' => 3600,
                 'axisLabel' => [
-                    'formatter' => 'callback:formatDuration',
+                    'formatter' => EChartsCallback::formatDuration(),
                     'customValues' => self::X_AXIS_TICKS_IN_SECONDS,
                     'hideOverlap' => true,
                 ],

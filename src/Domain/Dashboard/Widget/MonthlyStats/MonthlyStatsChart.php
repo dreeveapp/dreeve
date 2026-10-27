@@ -9,6 +9,7 @@ use App\Domain\Calendar\FindMonthlyStats\FindMonthlyStatsResponse;
 use App\Domain\Calendar\Month;
 use App\Domain\Dashboard\StatsContext;
 use App\Domain\Theme\Theme;
+use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\ValueObject\Time\Year;
 use App\Infrastructure\ValueObject\Time\Years;
@@ -108,9 +109,9 @@ final readonly class MonthlyStatsChart
             'tooltip' => [
                 'trigger' => 'axis',
                 'valueFormatter' => match ($this->context) {
-                    StatsContext::MOVING_TIME => 'callback:formatHours',
-                    StatsContext::DISTANCE => 'callback:formatDistance',
-                    StatsContext::ELEVATION => 'callback:formatElevation',
+                    StatsContext::MOVING_TIME => EChartsCallback::formatHours(),
+                    StatsContext::DISTANCE => EChartsCallback::formatDistance(),
+                    StatsContext::ELEVATION => EChartsCallback::formatElevation(),
                 },
             ],
             'legend' => [

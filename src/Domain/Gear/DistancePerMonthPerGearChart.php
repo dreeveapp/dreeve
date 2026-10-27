@@ -8,6 +8,7 @@ use App\Domain\Calendar\Month;
 use App\Domain\Calendar\Months;
 use App\Domain\Gear\FindGearUsagePerMonth\FindGearUsagePerMonthResponse;
 use App\Domain\Theme\Theme;
+use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Serialization\Escape;
 
@@ -80,7 +81,7 @@ final readonly class DistancePerMonthPerGearChart
                 'axisPointer' => [
                     'type' => 'shadow',
                 ],
-                'formatter' => 'callback:formatStackedDistanceTooltip',
+                'formatter' => EChartsCallback::formatStackedDistanceTooltip(),
             ],
             'legend' => [
                 'type' => 'scroll',

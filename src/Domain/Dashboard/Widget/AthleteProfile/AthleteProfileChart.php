@@ -2,6 +2,7 @@
 
 namespace App\Domain\Dashboard\Widget\AthleteProfile;
 
+use App\Infrastructure\ECharts\EChartsCallback;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class AthleteProfileChart
@@ -56,7 +57,7 @@ final readonly class AthleteProfileChart
             ],
             'tooltip' => [
                 'show' => true,
-                'valueFormatter' => 'callback:formatPercentage',
+                'valueFormatter' => EChartsCallback::formatPercentage(),
             ],
             'radar' => [
                 'indicator' => [

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Dashboard\Widget\ActivityGrid;
 
+use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -49,7 +50,7 @@ final readonly class ActivityGridChart
             ],
             'tooltip' => [
                 'trigger' => 'item',
-                'formatter' => 'callback:formatActivityGridTooltip',
+                'formatter' => EChartsCallback::formatActivityGridTooltip(),
             ],
             'visualMap' => [
                 'type' => 'piecewise',

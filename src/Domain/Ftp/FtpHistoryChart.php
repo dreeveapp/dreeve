@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Ftp;
 
+use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class FtpHistoryChart
@@ -51,7 +52,7 @@ final readonly class FtpHistoryChart
             'backgroundColor' => null,
             'tooltip' => [
                 'trigger' => 'axis',
-                'formatter' => 'callback:formatDateOnlyTooltip',
+                'formatter' => EChartsCallback::formatDateOnlyTooltip(),
             ],
             'grid' => [
                 'top' => '2%',
