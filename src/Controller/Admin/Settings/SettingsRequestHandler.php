@@ -6,8 +6,6 @@ namespace App\Controller\Admin\Settings;
 
 use App\Application\AppUrl;
 use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
-use App\Domain\Integration\AI\AIApiKey;
-use App\Domain\Integration\AI\AIProvider;
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
@@ -67,9 +65,6 @@ final readonly class SettingsRequestHandler
                 'group' => $settingsGroup,
                 'settings' => $this->settingsRepository->findGroup($settingsGroup),
                 'appUrl' => $this->appUrl,
-                'AIApiKey' => AIApiKey::fromServerVar(),
-                'aiProviders' => AIProvider::cases(),
-                'aiProvidersRequiringApiKey' => array_filter(AIProvider::cases(), static fn (AIProvider $provider): bool => $provider->requiresApiKey()),
                 'sportTypes' => $this->settingsRepository->appearance()->getSportTypesSortingOrder(),
                 'defaultHeartRateZones' => HeartRateZoneConfiguration::getDefaultZones(),
             ],
