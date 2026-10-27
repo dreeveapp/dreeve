@@ -145,8 +145,8 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
     /**
      * @param array<string, mixed> $claims
      */
-    #[DataProvider(methodName: 'provideRejectedCallbacks')]
-    public function testCallbackRejectsTheLogin(array $claims, bool $signWithForeignKey, bool $tamperWithState): void
+    #[DataProvider(methodName: 'provideRejectedClaims')]
+    public function testCallbackRejectsTheClaims(array $claims): void
     {
         $this->client->request('GET', '/admin/login/oidc');
         /** @var OidcLoginAttempt $loginAttempt */
@@ -154,36 +154,62 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
 
         $this->idToken = $this->signIdToken(
             array_filter([...$this->validClaims($loginAttempt), ...$claims], fn (mixed $value): bool => null !== $value),
-            $signWithForeignKey ? JWKFactory::createECKey('P-256', ['alg' => 'ES256', 'use' => 'sig', 'kid' => 'dreeve-test']) : $this->signingKey,
+            $this->signingKey,
         );
 
-        $this->client->request('GET', '/admin/login/oidc/callback', [
-            'code' => 'the-code',
-            'state' => $tamperWithState ? 'tampered' : $loginAttempt->getState(),
-        ]);
-        $this->assertResponseRedirects('/admin/login');
-
-        $crawler = $this->client->followRedirect();
-        $this->assertCount(1, $crawler->filter('.text-red-700'));
-
-        $this->client->request('GET', '/admin/upload');
-        $this->assertResponseRedirects('/admin/login');
+        $this->client->request('GET', '/admin/login/oidc/callback', ['code' => 'the-code', 'state' => $loginAttempt->getState()]);
+        $this->assertLoginIsRejected();
     }
 
     /**
-     * @return iterable<string, array{0: array<string, mixed>, 1: bool, 2: bool}>
+     * @return iterable<string, array{0: array<string, mixed>}>
      */
-    public static function provideRejectedCallbacks(): iterable
+    public static function provideRejectedClaims(): iterable
     {
-        yield 'tampered state' => [[], false, true];
-        yield 'foreign signing key' => [[], true, false];
-        yield 'wrong nonce' => [['nonce' => 'wrong'], false, false];
-        yield 'missing nonce' => [['nonce' => null], false, false];
-        yield 'wrong audience' => [['aud' => 'another-client'], false, false];
-        yield 'wrong issuer' => [['iss' => 'https://evil.example.com/'], false, false];
-        yield 'expired' => [['exp' => time() - 60], false, false];
-        yield 'subject not allowed' => [['sub' => 'someone-else'], false, false];
-        yield 'unverified email' => [['sub' => 'someone-else', 'email' => 'athlete@example.com', 'email_verified' => false], false, false];
+        yield 'wrong nonce' => [['nonce' => 'wrong']];
+        yield 'missing nonce' => [['nonce' => null]];
+        yield 'wrong audience' => [['aud' => 'another-client']];
+        yield 'wrong issuer' => [['iss' => 'https://evil.example.com/']];
+        yield 'expired' => [['exp' => time() - 60]];
+        yield 'subject not allowed' => [['sub' => 'someone-else']];
+        yield 'unverified email' => [['sub' => 'someone-else', 'email' => 'athlete@example.com', 'email_verified' => false]];
+    }
+
+    public function testCallbackRejectsATamperedState(): void
+    {
+        $this->client->request('GET', '/admin/login/oidc');
+        /** @var OidcLoginAttempt $loginAttempt */
+        $loginAttempt = $this->client->getRequest()->getSession()->get(OidcLoginAttempt::SESSION_KEY);
+
+        $this->idToken = $this->signIdToken($this->validClaims($loginAttempt), $this->signingKey);
+
+        $this->client->request('GET', '/admin/login/oidc/callback', ['code' => 'the-code', 'state' => 'tampered']);
+        $this->assertLoginIsRejected();
+    }
+
+    public function testCallbackRejectsAForeignSigningKey(): void
+    {
+        $this->client->request('GET', '/admin/login/oidc');
+        /** @var OidcLoginAttempt $loginAttempt */
+        $loginAttempt = $this->client->getRequest()->getSession()->get(OidcLoginAttempt::SESSION_KEY);
+
+        $this->idToken = $this->signIdToken(
+            $this->validClaims($loginAttempt),
+            JWKFactory::createECKey('P-256', ['alg' => 'ES256', 'use' => 'sig', 'kid' => 'dreeve-test']),
+        );
+
+        $this->client->request('GET', '/admin/login/oidc/callback', ['code' => 'the-code', 'state' => $loginAttempt->getState()]);
+        $this->assertLoginIsRejected();
+    }
+
+    public function testCallbackRejectsATokenResponseWithoutIdToken(): void
+    {
+        $this->client->request('GET', '/admin/login/oidc');
+        /** @var OidcLoginAttempt $loginAttempt */
+        $loginAttempt = $this->client->getRequest()->getSession()->get(OidcLoginAttempt::SESSION_KEY);
+
+        $this->client->request('GET', '/admin/login/oidc/callback', ['code' => 'the-code', 'state' => $loginAttempt->getState()]);
+        $this->assertLoginIsRejected();
     }
 
     public function testLoginIsNotFoundWhenOidcIsNotConfigured(): void
@@ -210,6 +236,17 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
         $this->expectException(NotFoundHttpException::class);
 
         $handler->callback();
+    }
+
+    private function assertLoginIsRejected(): void
+    {
+        $this->assertResponseRedirects('/admin/login');
+
+        $crawler = $this->client->followRedirect();
+        $this->assertCount(1, $crawler->filter('.text-red-700'));
+
+        $this->client->request('GET', '/admin/upload');
+        $this->assertResponseRedirects('/admin/login');
     }
 
     /**
