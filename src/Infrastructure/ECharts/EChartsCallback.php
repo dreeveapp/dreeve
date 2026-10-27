@@ -70,7 +70,7 @@ final readonly class EChartsCallback implements \JsonSerializable
         return new self(__FUNCTION__);
     }
 
-    public static function formatEffortVsHeartRateTooltip(): self
+    public static function formatDataTooltip(): self
     {
         return new self(__FUNCTION__);
     }

@@ -72,21 +72,7 @@ export const registerEchartsCallbacks = () => {
                 return `${p.marker} <strong>${p.value}</strong> ${p.seriesName}${extra}`;
             }).join('<br/>');
         },
-        formatEffortVsHeartRateTooltip: (params) => {
-            const heartRate = params.value[0];
-            const velocityIsPace = params.value[4];
-            const velocityUnit = params.value[5];
-            const velocity = velocityIsPace
-                ? window.dreeve.callbacks.formatSecondsTrimZero(params.value[1])
-                : params.value[1];
-            const elapsed = window.dreeve.callbacks.formatSecondsTrimZero(params.value[2]);
-            const date = params.value[3];
-
-            return `${date}<br/>`
-                + `Heart rate: <strong>${heartRate}</strong> bpm<br/>`
-                + `${velocityIsPace ? 'Pace' : 'Speed'}: <strong>${velocity}</strong> ${velocityUnit}<br/>`
-                + `Time: <strong>${elapsed}</strong>`;
-        },
+        formatDataTooltip: (params) => params.data?.tooltip ?? '',
         formatPowerDurationTooltip: (params) => {
             if (!Array.isArray(params)) params = [params];
             const duration = formatDuration(params[0].value[0]);

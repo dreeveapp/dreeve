@@ -7,10 +7,13 @@ use App\Infrastructure\ECharts\EChartsCallback;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
+use App\Infrastructure\Time\Format\ProvideTimeFormats;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class SegmentEffortVsHeartRateChart
 {
+    use ProvideTimeFormats;
+
     /** @var array{int, int, int} */
     private const array COLOR_OLDEST = [212, 212, 212];
     /** @var array{int, int, int} */
@@ -59,7 +62,9 @@ final readonly class SegmentEffortVsHeartRateChart
         $maxHeartRate = PHP_INT_MIN;
 
         $preference = $this->sportType->getVelocityDisplayPreference();
-        $velocityIsPace = $preference instanceof SecPer100Meter || $preference instanceof SecPerKm;
+        $velocityLabel = $preference instanceof SecPer100Meter || $preference instanceof SecPerKm
+            ? $this->translator->trans('Pace')
+            : $this->translator->trans('Speed');
         $velocityUnit = match (true) {
             $preference instanceof SecPer100Meter => '/'.SecPerKm::zero()->getSymbol(),
             $preference instanceof SecPerKm => $this->unitSystem->paceSymbol(),
@@ -69,9 +74,9 @@ final readonly class SegmentEffortVsHeartRateChart
         $data = [];
         foreach ($effortsWithHeartRate as $index => $effort) {
             $velocity = match (true) {
-                $preference instanceof SecPer100Meter => round($effort->getPaceInSecPer100Meter()->toFloat(), 1),
-                $preference instanceof SecPerKm => round($effort->getPaceInSecPerKm()->toFloat()),
-                default => round($this->sportType->toDisplaySpeed($effort->getAverageSpeed())->toUnitSystem($this->unitSystem)->toFloat(), 1),
+                $preference instanceof SecPer100Meter => $this->formatDurationAsPaddedClock((int) round($effort->getPaceInSecPer100Meter()->toFloat())),
+                $preference instanceof SecPerKm => $this->formatDurationAsPaddedClock((int) round($effort->getPaceInSecPerKm()->toFloat())),
+                default => (string) round($this->sportType->toDisplaySpeed($effort->getAverageSpeed())->toUnitSystem($this->unitSystem)->toFloat(), 1),
             };
             $heartRate = $effort->getAverageHeartRate();
 
@@ -84,14 +89,18 @@ final readonly class SegmentEffortVsHeartRateChart
             $ratio = $count > 1 ? 1 - $index / ($count - 1) : 1.0;
 
             $data[] = [
-                'value' => [
-                    $heartRate,
-                    $velocity,
-                    $elapsedTime,
+                'value' => [$heartRate, $elapsedTime],
+                'tooltip' => sprintf(
+                    '%s<br/>%s: <strong>%d</strong> bpm<br/>%s: <strong>%s</strong> %s<br/>%s: <strong>%s</strong>',
                     $effort->getStartDateTime()->format('Y-m-d'),
-                    $velocityIsPace,
-                    $velocityUnit,
-                ],
+                    htmlspecialchars($this->translator->trans('Heart rate')),
+                    $heartRate,
+                    htmlspecialchars($velocityLabel),
+                    $velocity,
+                    htmlspecialchars($velocityUnit),
+                    htmlspecialchars($this->translator->trans('Time')),
+                    $this->formatDurationAsPaddedClock((int) $elapsedTime),
+                ),
                 'itemStyle' => [
                     'color' => $this->interpolateColor($ratio),
                 ],
@@ -110,7 +119,7 @@ final readonly class SegmentEffortVsHeartRateChart
             'tooltip' => [
                 'show' => true,
                 'trigger' => 'item',
-                'formatter' => EChartsCallback::formatEffortVsHeartRateTooltip(),
+                'formatter' => EChartsCallback::formatDataTooltip(),
             ],
             'xAxis' => [
                 [
@@ -163,7 +172,7 @@ final readonly class SegmentEffortVsHeartRateChart
                     'data' => $data,
                     'encode' => [
                         'x' => 0,
-                        'y' => 2,
+                        'y' => 1,
                     ],
                 ],
             ],
