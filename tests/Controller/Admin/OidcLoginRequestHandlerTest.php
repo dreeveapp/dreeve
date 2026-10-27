@@ -29,6 +29,8 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
 
     private JWK $signingKey;
     private string $idToken = '';
+    /** @var array<string, string> */
+    private array $discoveryDocument = [];
     /** @var array<int, array{method: string, url: string, options: array<string, mixed>}> */
     private array $requests = [];
 
@@ -49,6 +51,12 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
         parent::setUp();
 
         $this->signingKey = JWKFactory::createECKey('P-256', ['alg' => 'ES256', 'use' => 'sig', 'kid' => 'dreeve-test']);
+        $this->discoveryDocument = [
+            'issuer' => self::ISSUER_URL,
+            'authorization_endpoint' => 'https://idp.example.com/application/o/authorize/',
+            'token_endpoint' => self::TOKEN_ENDPOINT,
+            'jwks_uri' => self::JWKS_URI,
+        ];
 
         static::getContainer()->set(OidcProvider::class, new OidcProvider(
             static::getContainer()->get(OidcConfig::class),
@@ -56,12 +64,7 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
                 $this->requests[] = ['method' => $method, 'url' => $url, 'options' => $options];
 
                 return match ($url) {
-                    self::ISSUER_URL.'.well-known/openid-configuration' => new JsonMockResponse([
-                        'issuer' => self::ISSUER_URL,
-                        'authorization_endpoint' => 'https://idp.example.com/application/o/authorize/',
-                        'token_endpoint' => self::TOKEN_ENDPOINT,
-                        'jwks_uri' => self::JWKS_URI,
-                    ]),
+                    self::ISSUER_URL.'.well-known/openid-configuration' => new JsonMockResponse($this->discoveryDocument),
                     self::JWKS_URI => new JsonMockResponse(['keys' => [$this->signingKey->toPublic()->all()]]),
                     self::TOKEN_ENDPOINT => new JsonMockResponse(['access_token' => 'access-token', 'token_type' => 'Bearer', 'id_token' => $this->idToken]),
                     default => throw new \LogicException(sprintf('Unexpected request to "%s"', $url)),
@@ -210,6 +213,19 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
 
         $this->client->request('GET', '/admin/login/oidc/callback', ['code' => 'the-code', 'state' => $loginAttempt->getState()]);
         $this->assertLoginIsRejected();
+    }
+
+    public function testCallbackRejectsADiscoveryDocumentWithoutTokenEndpoint(): void
+    {
+        unset($this->discoveryDocument['token_endpoint']);
+
+        $this->client->request('GET', '/admin/login/oidc');
+        /** @var OidcLoginAttempt $loginAttempt */
+        $loginAttempt = $this->client->getRequest()->getSession()->get(OidcLoginAttempt::SESSION_KEY);
+
+        $this->client->request('GET', '/admin/login/oidc/callback', ['code' => 'the-code', 'state' => $loginAttempt->getState()]);
+        $this->assertLoginIsRejected();
+        $this->assertNotContains(self::TOKEN_ENDPOINT, array_column($this->requests, 'url'));
     }
 
     public function testLoginIsNotFoundWhenOidcIsNotConfigured(): void
