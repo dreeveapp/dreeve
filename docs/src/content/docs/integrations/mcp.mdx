@@ -1,12 +1,12 @@
 ---
 title: "MCP server"
-description: "Connect Claude, Cursor, VS Code and other AI clients to your Dreeve data through the built-in MCP server."
+description: "Connect Claude, Cursor, VS Code, Codex and other AI clients to your Dreeve data through the built-in MCP server."
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 Dreeve ships with a [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server. It lets the AI client you
-already use, such as Claude Code, Claude Desktop, Cursor or VS Code, read your activities, metrics and settings and
+already use, such as Claude Code, Claude Desktop, Cursor, VS Code or Codex, read your activities, metrics and settings and
 answer questions about them.
 
 :::note
@@ -99,6 +99,16 @@ Add the server to `claude_desktop_config.json`:
         }
     }
 }
+```
+
+</TabItem>
+
+<TabItem label="Codex">
+
+```toml title="~/.codex/config.toml"
+[mcp_servers.dreeve]
+url = "https://dreeve.example.com/mcp"
+http_headers = { Authorization = "Bearer drvm_..." }
 ```
 
 </TabItem>
