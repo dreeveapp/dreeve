@@ -34,7 +34,7 @@ final readonly class PowerOutputChart
     {
         $series = [];
         $selectedSeries = [];
-        $minPowerOutput = null;
+        $minPowerOutput = PHP_INT_MAX;
         $maxPowerOutput = 100;
 
         foreach ($this->bestPowerOutputs as $bestPowerOutputs) {
@@ -53,7 +53,7 @@ final readonly class PowerOutputChart
             }
 
             $powers = $powerOutputs->map(fn (PowerOutput $powerOutput): int => $powerOutput->getPower());
-            $minPowerOutput = min($minPowerOutput ?? PHP_INT_MAX, ...$powers);
+            $minPowerOutput = min($minPowerOutput, ...$powers);
             $maxPowerOutput = max($maxPowerOutput, ...$powers);
 
             $selectedSeries[$description] = in_array($description, $this->visibleSeries, true);
@@ -67,7 +67,7 @@ final readonly class PowerOutputChart
             ];
         }
 
-        $yAxisMinValue = (int) (floor(($minPowerOutput ?? 0) / 100) * 100);
+        $yAxisMinValue = (int) (floor($minPowerOutput / 100) * 100);
         $yAxisMaxValue = (int) (ceil($maxPowerOutput / 100) * 100);
 
         return [
