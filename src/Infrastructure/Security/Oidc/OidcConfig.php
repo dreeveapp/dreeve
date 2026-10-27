@@ -31,7 +31,7 @@ final readonly class OidcConfig
 
     public function isEnabled(): bool
     {
-        return null !== $this->issuerUrl
+        return $this->issuerUrl instanceof Url
             && '' !== $this->clientId
             && '' !== $this->clientSecret
             && [] !== $this->allowedUsers;

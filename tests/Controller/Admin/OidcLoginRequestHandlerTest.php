@@ -118,7 +118,7 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseRedirects('/admin/upload');
         $this->assertNotNull($this->client->getCookieJar()->get('REMEMBERME'));
 
-        $tokenRequest = array_values(array_filter($this->requests, fn (array $request): bool => self::TOKEN_ENDPOINT === $request['url']))[0];
+        $tokenRequest = array_first(array_filter($this->requests, fn (array $request): bool => self::TOKEN_ENDPOINT === $request['url']));
         $this->assertSame('POST', $tokenRequest['method']);
         $this->assertContains('Authorization: Basic '.base64_encode('dreeve:secret'), $tokenRequest['options']['normalized_headers']['authorization']);
         parse_str($tokenRequest['options']['body'], $tokenRequestBody);

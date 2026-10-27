@@ -9,7 +9,6 @@ use App\Infrastructure\Security\Oidc\OidcLoginAttempt;
 use App\Infrastructure\Security\Oidc\OidcProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,7 +23,7 @@ final readonly class OidcLoginRequestHandler
     }
 
     #[Route(path: '/admin/login/oidc', name: 'admin_login_oidc', methods: ['GET'], priority: 10)]
-    public function login(Request $request): Response
+    public function login(Request $request): RedirectResponse
     {
         if (!$this->oidcConfig->isEnabled()) {
             throw new NotFoundHttpException('Not found');
