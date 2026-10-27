@@ -62,7 +62,7 @@ export default class ChartManager {
     getClickHandlers() {
         return {
             handleMonthlyStatsClick: (params, clickData) => {
-                if (!params || !params.dataIndex || !params.seriesName) {
+                if (params?.dataIndex === undefined || !params.seriesName) {
                     return;
                 }
                 const month = (params.dataIndex + 1).toString().padStart(2, "0");
@@ -70,12 +70,12 @@ export default class ChartManager {
                 window.location.assign(`${basePath()}/monthly-stats/${params.seriesName}-${month}`);
             },
             handleWeeklyStatsClick: (params, clickData) => {
-                if (!params || !params.dataIndex) {
+                if (params?.dataIndex === undefined) {
                     return;
                 }
 
                 const weeks = clickData.weeks;
-                if (!params.dataIndex in weeks) {
+                if (!(params.dataIndex in weeks)) {
                     return;
                 }
                 const filters = serialize({filters: {
