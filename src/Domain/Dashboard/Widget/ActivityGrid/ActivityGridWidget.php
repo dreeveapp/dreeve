@@ -13,6 +13,7 @@ use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Domain\Dashboard\Widget\WidgetRenderer;
 use App\Domain\Rewind\FindMovingTimePerDay\FindMovingTimePerDay;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
@@ -29,6 +30,7 @@ final readonly class ActivityGridWidget implements Widget, DependsOnCurrentDay
         private QueryBus $queryBus,
         private WidgetRenderer $widgetRenderer,
         private TranslatorInterface $translator,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -127,12 +129,14 @@ final readonly class ActivityGridWidget implements Widget, DependsOnCurrentDay
         /** @var string[] $metricsDisplayOrder */
         $metricsDisplayOrder = $configuration->get('metricsDisplayOrder');
 
+        $dateFormat = $this->settingsRepository->appearance()->getDateAndTimeFormat()->getDateFormatShort();
         $activityGridsCharts = [];
         foreach (ActivityGridType::cases() as $activityGridType) {
             $activityGridsCharts[$activityGridType->value] = Json::encode(ActivityGridChart::create(
                 activityGrid: $activityGrids[$activityGridType->value],
                 fromDate: $fromDate,
                 toDate: $toDate,
+                dateFormat: $dateFormat,
                 translator: $this->translator
             )->build());
         }

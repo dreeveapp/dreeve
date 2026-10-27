@@ -3,6 +3,7 @@
 namespace App\Domain\Rewind;
 
 use App\Infrastructure\ECharts\EChartsCallback;
+use App\Infrastructure\Time\Format\DateFormat;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Year;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -16,6 +17,7 @@ final readonly class DailyActivitiesChart
         /** @var array<string, int> */
         private array $movingTimePerDay,
         private Year $year,
+        private DateFormat $dateFormat,
         private TranslatorInterface $translator,
     ) {
         $this->fromDate = SerializableDateTime::fromString(sprintf('%s-01-01 00:00:00', $this->year));
@@ -28,11 +30,13 @@ final readonly class DailyActivitiesChart
     public static function create(
         array $movingTimePerDay,
         Year $year,
+        DateFormat $dateFormat,
         TranslatorInterface $translator,
     ): self {
         return new self(
             movingTimePerDay: $movingTimePerDay,
             year: $year,
+            dateFormat: $dateFormat,
             translator: $translator,
         );
     }
@@ -53,14 +57,17 @@ final readonly class DailyActivitiesChart
 
         foreach ($period as $dt) {
             $day = $dt->format('Y-m-d');
-            if (!array_key_exists($day, $this->movingTimePerDay)) {
-                $data[] = [$day, 0];
-
-                continue;
-            }
-
-            $level = max(min(floor($this->movingTimePerDay[$day] / 1000), 4), 1);
-            $data[] = [$day, $level];
+            $movingTimeInSeconds = $this->movingTimePerDay[$day] ?? 0;
+            $movingTimeInMinutes = (int) round($movingTimeInSeconds / 60);
+            $data[] = [
+                'value' => [$day, array_key_exists($day, $this->movingTimePerDay) ? max(min(floor($movingTimeInSeconds / 1000), 4), 1) : 0],
+                'tooltip' => sprintf(
+                    '%s: %02dh%02d',
+                    htmlspecialchars(SerializableDateTime::fromDateTimeImmutable($dt)->translatedFormat((string) $this->dateFormat)),
+                    intdiv($movingTimeInMinutes, 60),
+                    $movingTimeInMinutes % 60,
+                ),
+            ];
         }
 
         return [
@@ -68,7 +75,7 @@ final readonly class DailyActivitiesChart
             'animation' => false,
             'tooltip' => [
                 'trigger' => 'item',
-                'formatter' => EChartsCallback::formatActivityGridTooltip(),
+                'formatter' => EChartsCallback::formatDataTooltip(),
             ],
             'visualMap' => [
                 'type' => 'piecewise',

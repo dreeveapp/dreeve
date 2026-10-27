@@ -90,11 +90,6 @@ final readonly class EChartsCallback implements \JsonSerializable
         return new self(__FUNCTION__);
     }
 
-    public static function formatActivityGridTooltip(): self
-    {
-        return new self(__FUNCTION__);
-    }
-
     /**
      * @return array{callback: string, args?: array<string, mixed>}
      */

@@ -132,20 +132,5 @@ export const registerEchartsCallbacks = () => {
                 .map(p => '<br/>' + p.marker + ' ' + p.seriesName + ': <b>' + p.data[1] + '</b>')
                 .join('');
         },
-        formatActivityGridTooltip: (value) => {
-            if (value === undefined || value === null) {
-                return '-';
-            }
-
-            const dateFormat = window.dreeve.unitSystem.name === 'metric' ? '{dd}-{MM}-{yyyy}' : '{MM}-{dd}-{yyyy}';
-            const date = echarts.time.format(value.data[0], dateFormat, false);
-            if ('movingTime' === value.seriesName) {
-                const secondsToFormat = value.data[1] * 60;
-                const hours = String(Math.floor(secondsToFormat / 3600)).padStart(2, '0');
-                const minutes = String(Math.floor((secondsToFormat % 3600) / 60)).padStart(2, '0');
-                return date + ': ' + `${hours}h${minutes}`;
-            }
-            return date + ': ' + value.data[1];
-        },
     };
 };

@@ -3,6 +3,7 @@
 namespace App\Domain\Dashboard\Widget\ActivityGrid;
 
 use App\Infrastructure\ECharts\EChartsCallback;
+use App\Infrastructure\Time\Format\DateFormat;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -12,6 +13,7 @@ final readonly class ActivityGridChart
         private ActivityGrid $activityGrid,
         private SerializableDateTime $fromDate,
         private SerializableDateTime $toDate,
+        private DateFormat $dateFormat,
         private TranslatorInterface $translator,
     ) {
     }
@@ -20,12 +22,14 @@ final readonly class ActivityGridChart
         ActivityGrid $activityGrid,
         SerializableDateTime $fromDate,
         SerializableDateTime $toDate,
+        DateFormat $dateFormat,
         TranslatorInterface $translator,
     ): self {
         return new self(
             activityGrid: $activityGrid,
             fromDate: $fromDate,
             toDate: $toDate,
+            dateFormat: $dateFormat,
             translator: $translator
         );
     }
@@ -50,7 +54,7 @@ final readonly class ActivityGridChart
             ],
             'tooltip' => [
                 'trigger' => 'item',
-                'formatter' => EChartsCallback::formatActivityGridTooltip(),
+                'formatter' => EChartsCallback::formatDataTooltip(),
             ],
             'visualMap' => [
                 'type' => 'piecewise',
@@ -95,7 +99,19 @@ final readonly class ActivityGridChart
             'series' => [
                 'type' => 'heatmap',
                 'coordinateSystem' => 'calendar',
-                'data' => $this->activityGrid->getData(),
+                'data' => array_map(
+                    fn (array $item): array => [
+                        'value' => $item,
+                        'tooltip' => sprintf(
+                            '%s: %s',
+                            htmlspecialchars(SerializableDateTime::fromString($item[0])->translatedFormat((string) $this->dateFormat)),
+                            ActivityGridType::MOVING_TIME === $this->activityGrid->getGridType()
+                                ? sprintf('%02dh%02d', intdiv($item[1], 60), $item[1] % 60)
+                                : $item[1],
+                        ),
+                    ],
+                    $this->activityGrid->getData(),
+                ),
                 'name' => $this->activityGrid->getGridType()->value,
             ],
         ];

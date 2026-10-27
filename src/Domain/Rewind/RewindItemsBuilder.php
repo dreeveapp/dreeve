@@ -92,6 +92,7 @@ final readonly class RewindItemsBuilder
                     'chart' => Json::encode(DailyActivitiesChart::create(
                         movingTimePerDay: $findMovingTimePerDayResponse->getMovingTimePerDay(),
                         year: Year::fromInt((int) $rewindOption),
+                        dateFormat: $this->settingsRepository->appearance()->getDateAndTimeFormat()->getDateFormatShort(),
                         translator: $this->translator,
                     )->build()),
                 ]),
