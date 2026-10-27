@@ -1,7 +1,7 @@
-import {basePath, fetchJson} from "../../utils";
+import {fetchJson} from "../../utils";
 import {resolveEchartsCallbacks} from "./echarts-callbacks";
 import {loadEcharts} from "./echarts-loader";
-import {serialize} from "../data-table/filter-url";
+import {echartsClickHandlers} from "./echarts-click-handlers";
 
 export default class ChartManager {
     constructor() {
@@ -24,7 +24,6 @@ export default class ChartManager {
 
     init(rootNode, isDarkMode) {
         this.theme = isDarkMode ? 'v5-dark' : 'v5';
-        const handlers = this.getClickHandlers();
         const chartNodes = rootNode.querySelectorAll('[data-echarts-options], [data-echarts-options-url]');
         if (0 === chartNodes.length) return;
 
@@ -47,56 +46,16 @@ export default class ChartManager {
             });
 
             const clickHandlerName = chartNode.getAttribute('data-echarts-click');
-            if (clickHandlerName && handlers[clickHandlerName]) {
+            if (clickHandlerName && echartsClickHandlers[clickHandlerName]) {
                 chart.on('click', function (params) {
                     const clickData = JSON.parse(chartNode.getAttribute('data-echarts-click-data') || '{}');
-                    handlers[clickHandlerName](params, clickData);
+                    echartsClickHandlers[clickHandlerName](params, clickData);
                 });
             }
 
             this.allCharts.push(chart);
             this.resizeObserver.observe(chartNode);
         }));
-    }
-
-    getClickHandlers() {
-        return {
-            handleMonthlyStatsClick: (params, clickData) => {
-                if (params?.dataIndex === undefined || !params.seriesName) {
-                    return;
-                }
-                const month = (params.dataIndex + 1).toString().padStart(2, "0");
-
-                window.location.assign(`${basePath()}/monthly-stats/${params.seriesName}-${month}`);
-            },
-            handleWeeklyStatsClick: (params, clickData) => {
-                if (params?.dataIndex === undefined) {
-                    return;
-                }
-
-                const weeks = clickData.weeks;
-                if (!(params.dataIndex in weeks)) {
-                    return;
-                }
-                const filters = serialize({filters: {
-                    "sportType": clickData.sportTypes,
-                    "start-date": {"from": weeks[params.dataIndex]['from'], "to": weeks[params.dataIndex]['to']},
-                }});
-
-                window.location.assign(`${basePath()}/activities?${filters}`);
-            },
-            handleActivityGridChartClick: (params, clickData) => {
-                if (!params || !params.value || params.value < 1) {
-                    return;
-                }
-
-                const filters = serialize({filters: {
-                    "start-date": {"from": params.value[0], "to": params.value[0]},
-                }});
-
-                window.location.assign(`${basePath()}/activities?${filters}`);
-            },
-        };
     }
 
     toggleDarkTheme(isDarkMode) {
