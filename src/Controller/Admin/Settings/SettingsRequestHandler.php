@@ -17,17 +17,9 @@ use App\Domain\Settings\UpdateSettings\UpdateSettings;
 use App\Domain\Strava\StravaClientId;
 use App\Domain\Strava\StravaClientSecret;
 use App\Domain\Strava\StravaRefreshToken;
-use App\Infrastructure\Config\AdminAllowedIpAddresses;
-use App\Infrastructure\Http\ClientIpResolver;
 use App\Infrastructure\Http\HtmlResponse;
-use App\Infrastructure\Security\Admin\AdminUserName;
-use App\Infrastructure\Security\Oidc\OidcConfig;
-use App\Infrastructure\Security\Oidc\OidcProvider;
-use App\Infrastructure\Security\Token\ApiToken;
-use App\Infrastructure\Security\Token\McpToken;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -50,14 +42,6 @@ final readonly class SettingsRequestHandler
         private StravaRefreshToken $stravaRefreshToken,
         private ImportMode $importMode,
         private UrlGeneratorInterface $urlGenerator,
-        private AdminUserName $adminUserName,
-        private AdminAllowedIpAddresses $adminAllowedIpAddresses,
-        private ClientIpResolver $clientIpResolver,
-        private ApiToken $apiKey,
-        private McpToken $mcpKey,
-        #[\SensitiveParameter]
-        private OidcConfig $oidcConfig,
-        private OidcProvider $oidcProvider,
     ) {
     }
 
@@ -82,7 +66,7 @@ final readonly class SettingsRequestHandler
     }
 
     #[Route(path: '/admin/settings/{group}', name: 'admin_settings', methods: ['GET'], priority: 5)]
-    public function handle(string $group, Request $request): HtmlResponse
+    public function handle(string $group): HtmlResponse
     {
         $settingsGroup = SettingsGroup::fromSlug($group)
             ?? throw new NotFoundHttpException(sprintf('Unknown settings group "%s"', $group));
@@ -106,13 +90,6 @@ final readonly class SettingsRequestHandler
                 'aiProvidersRequiringApiKey' => array_filter(AIProvider::cases(), static fn (AIProvider $provider): bool => $provider->requiresApiKey()),
                 'sportTypes' => $this->settingsRepository->appearance()->getSportTypesSortingOrder(),
                 'defaultHeartRateZones' => HeartRateZoneConfiguration::getDefaultZones(),
-                'adminUsername' => $this->adminUserName,
-                'adminAllowedIpAddresses' => $this->adminAllowedIpAddresses,
-                'clientIpAddress' => $this->clientIpResolver->resolve($request),
-                'apiKey' => $this->apiKey,
-                'mcpKey' => $this->mcpKey,
-                'oidcConfig' => $this->oidcConfig,
-                'oidcRedirectUri' => $this->oidcProvider->getRedirectUri(),
             ],
         ));
     }

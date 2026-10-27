@@ -23,7 +23,7 @@ class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('Configured', $crawler->filter('input#mcpKeyState[disabled]')->attr('value'));
         $this->assertStringNotContainsString('drv', $crawler->filter('main')->text());
 
-        $this->assertStringContainsString('Single sign-on (Enabled)', $crawler->filter('main')->text());
+        $this->assertStringContainsString('Single sign-on (enabled)', $crawler->filter('main')->text());
         $this->assertSame('https://idp.example.com/application/o/dreeve/', $crawler->filter('input#oidcIssuerUrl[disabled]')->attr('value'));
         $this->assertSame('dreeve', $crawler->filter('input#oidcClientId[disabled]')->attr('value'));
         $this->assertSame('Configured', $crawler->filter('input#oidcClientSecretState[disabled]')->attr('value'));
@@ -95,7 +95,7 @@ class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('a[href="/admin/settings/token/generate/mcp"]'));
 
         // The single sign-on card, with nothing configured.
-        $this->assertStringContainsString('Single sign-on (Disabled)', $crawler->filter('main')->text());
+        $this->assertStringContainsString('Single sign-on (disabled)', $crawler->filter('main')->text());
         $this->assertCount(0, $crawler->filter('input#oidcIssuerUrl'));
         $this->assertCount(1, $crawler->filter('a[href="https://docs.dreeve.app/integrations/single-sign-on/"]'));
 
