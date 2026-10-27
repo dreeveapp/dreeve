@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Ftp;
 
 use App\Infrastructure\ECharts\EChartsCallback;
+use App\Infrastructure\Time\Format\DateFormat;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class FtpHistoryChart
@@ -12,16 +13,19 @@ final readonly class FtpHistoryChart
     private function __construct(
         private Ftps $ftps,
         private SerializableDateTime $now,
+        private DateFormat $dateFormat,
     ) {
     }
 
     public static function create(
         Ftps $ftps,
         SerializableDateTime $now,
+        DateFormat $dateFormat,
     ): self {
         return new self(
             ftps: $ftps,
-            now: $now
+            now: $now,
+            dateFormat: $dateFormat,
         );
     }
 
@@ -153,14 +157,14 @@ final readonly class FtpHistoryChart
                     'data' => [
                         ...$this->ftps->map(
                             fn (Ftp $ftp): array => [
-                                $ftp->getSetOn()->format('Y-m-d'),
-                                $ftp->getFtp(),
+                                'value' => [$ftp->getSetOn()->format('Y-m-d'), $ftp->getFtp()],
+                                'date' => $ftp->getSetOn()->translatedFormat((string) $this->dateFormat),
                             ],
                         ),
                         $this->ftps->getLast() && $this->now->format('Y-m-d') != $this->ftps->getLast()->getSetOn()->format('Y-m-d') ?
                         [
-                            $this->now->format('Y-m-d'),
-                            $this->ftps->getLast()->getFtp(),
+                            'value' => [$this->now->format('Y-m-d'), $this->ftps->getLast()->getFtp()],
+                            'date' => $this->now->translatedFormat((string) $this->dateFormat),
                         ] : [],
                     ],
                 ],
@@ -183,14 +187,14 @@ final readonly class FtpHistoryChart
                     'data' => [
                         ...$this->ftps->map(
                             fn (Ftp $ftp): array => [
-                                $ftp->getSetOn()->format('Y-m-d'),
-                                $ftp->getRelativeFtp(),
-                            ]
+                                'value' => [$ftp->getSetOn()->format('Y-m-d'), $ftp->getRelativeFtp()],
+                                'date' => $ftp->getSetOn()->translatedFormat((string) $this->dateFormat),
+                            ],
                         ),
                         $this->ftps->getLast() && $this->now->format('Y-m-d') != $this->ftps->getLast()->getSetOn()->format('Y-m-d') ?
                         [
-                            $this->now->format('Y-m-d'),
-                            $this->ftps->getLast()->getRelativeFtp(),
+                            'value' => [$this->now->format('Y-m-d'), $this->ftps->getLast()->getRelativeFtp()],
+                            'date' => $this->now->translatedFormat((string) $this->dateFormat),
                         ] : [],
                     ],
                 ] : [],

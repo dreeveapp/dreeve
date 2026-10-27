@@ -125,11 +125,9 @@ export const registerEchartsCallbacks = () => {
         },
         formatDateOnlyTooltip: (params) => {
             if (!Array.isArray(params)) params = [params];
-            const dateFormat = window.dreeve.unitSystem.name === 'metric' ? '{dd}-{MM}-{yyyy}' : '{MM}-{dd}-{yyyy}';
-            const date = echarts.time.format(params[0].axisValue, dateFormat, false);
-            return date + params
-                .filter(p => p.data && p.data.length > 0)
-                .map(p => '<br/>' + p.marker + ' ' + p.seriesName + ': <b>' + p.data[1] + '</b>')
+            const points = params.filter(p => p.data?.value);
+            return (points[0]?.data.date ?? '') + points
+                .map(p => '<br/>' + p.marker + ' ' + p.seriesName + ': <b>' + p.data.value[1] + '</b>')
                 .join('');
         },
     };

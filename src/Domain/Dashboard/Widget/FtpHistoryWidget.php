@@ -86,7 +86,8 @@ final readonly class FtpHistoryWidget implements Widget
 
             $ftpHistoryCharts[$activityType->value] = Json::encode(FtpHistoryChart::create(
                 ftps: $ftpsEnrichedWithAthleteWeight,
-                now: $now
+                now: $now,
+                dateFormat: $this->settingsRepository->appearance()->getDateAndTimeFormat()->getDateFormatShort(),
             )->build());
         }
 

@@ -65,6 +65,7 @@ final readonly class AthleteWeightHistoryWidget implements Widget
                     athleteWeights: $allWeights,
                     now: $now,
                     unitSystem: $unitSystem,
+                    dateFormat: $this->settingsRepository->appearance()->getDateAndTimeFormat()->getDateFormatShort(),
                     translator: $this->translator
                 )->build()
             ),
