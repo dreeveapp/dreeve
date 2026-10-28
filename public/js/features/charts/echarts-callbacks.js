@@ -70,7 +70,16 @@ export const registerEchartsCallbacks = () => {
                 return `${p.marker} <strong>${p.value}</strong> ${p.seriesName}${extra}`;
             }).join('<br/>');
         },
-        formatDataTooltip: (params) => params.data?.tooltip ?? '',
+        formatDataTooltip: (params) => {
+            if (!Array.isArray(params)) return params.data?.tooltip ?? '';
+
+            const rows = params.filter(p => p.data?.tooltip);
+            if (rows.length === 0) return '';
+
+            return '<strong>' + rows[0].axisValueLabel + '</strong>' + rows
+                .map(p => '<br/>' + p.marker + ' ' + p.data.tooltip)
+                .join('');
+        },
         formatPowerDurationTooltip: (params) => {
             if (!Array.isArray(params)) params = [params];
             const duration = formatDuration(params[0].value[0]);

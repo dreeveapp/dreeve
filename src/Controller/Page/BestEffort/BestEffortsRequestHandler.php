@@ -10,6 +10,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\BestEffort\BestEffortChart;
 use App\Domain\Activity\BestEffort\BestEffortPeriod;
 use App\Domain\Activity\BestEffort\BestEffortsCalculator;
+use App\Domain\Settings\SettingsRepository;
 use App\Domain\Theme\Theme;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -33,6 +34,7 @@ final readonly class BestEffortsRequestHandler
         private Environment $twig,
         private Theme $theme,
         private PageRenderer $pageRenderer,
+        private SettingsRepository $settingsRepository,
     ) {
     }
 
@@ -54,6 +56,7 @@ final readonly class BestEffortsRequestHandler
     {
         $bestEfforts = $this->bestEffortsCalculator->calculate();
         $bestEffortsCharts = [];
+        $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
 
         foreach ($bestEfforts->getActivityTypes() as $activityType) {
             foreach (BestEffortPeriod::cases() as $bestEffortPeriod) {
@@ -64,6 +67,7 @@ final readonly class BestEffortsRequestHandler
                         bestEfforts: $bestEfforts,
                         translator: $this->translator,
                         theme: $this->theme,
+                        unitSystem: $unitSystem,
                     )->build()
                 );
             }
