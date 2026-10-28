@@ -938,7 +938,11 @@ final class Activity
      */
     public function getSearchables(): array
     {
-        return array_map(strtolower(...), [$this->getName()]);
+        return array_map(strtolower(...), array_filter([
+            $this->getName(),
+            $this->getRouteGeography()->getStartingPointCity(),
+            $this->getRouteGeography()->getStartingPointState(),
+        ]));
     }
 
     /**

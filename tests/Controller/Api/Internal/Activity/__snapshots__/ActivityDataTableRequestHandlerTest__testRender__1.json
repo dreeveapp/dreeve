@@ -63,7 +63,7 @@
     },
     {
         "active": true,
-        "searchables": "night ride",
+        "searchables": "night ride brugge west-vlaanderen",
         "filterables": {
             "sportType": "Ride",
             "start-date": 1693947938000,
@@ -159,7 +159,7 @@
     },
     {
         "active": true,
-        "searchables": "watopia flat forward in london",
+        "searchables": "watopia flat forward in london watopia",
         "filterables": {
             "sportType": "VirtualRide",
             "start-date": 1693499735000,
