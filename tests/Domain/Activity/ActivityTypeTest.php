@@ -35,32 +35,6 @@ class ActivityTypeTest extends ContainerTestCase
         );
     }
 
-    public function testGetColor(): void
-    {
-        $actual = [];
-        foreach (ActivityType::cases() as $activityType) {
-            $actual[] = $activityType->getColor();
-        }
-        $this->assertEquals(
-            [
-                'emerald-600',
-                'orange-500',
-                'yellow-300',
-                'blue-600',
-                'red-600',
-                'gray-600',
-                'gray-600',
-                'gray-600',
-                'gray-600',
-                'gray-600',
-                'gray-600',
-                'gray-600',
-                'gray-600',
-            ],
-            $actual,
-        );
-    }
-
     public function testGetTranslations(): void
     {
         $actual = [];

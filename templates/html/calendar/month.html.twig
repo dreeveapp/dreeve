@@ -86,14 +86,6 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-7 gap-px leading-6 text-xs w-full bg-gray-200 border">
-                    {#
-                    class="bg-emerald-600/10 border-l-emerald-600"
-                    class="bg-orange-500/10 border-l-orange-500"
-                    class="bg-yellow-300/10 border-l-yellow-300"
-                    class="bg-blue-600/10 border-l-blue-600"
-                    class="bg-red-600/10 border-l-red-600"
-                    class="bg-gray-600/10 border-l-gray-600"
-                    #}
                     {% for day in calendar.getDays() %}
                         <div class="py-2 px-3 {{ day.isCurrentMonth ? 'bg-white' : 'bg-gray-100' }}">
                             <div class="text-right text-gray-400">
@@ -103,9 +95,8 @@
                                 {% if not day.getActivities().isEmpty() %}
                                     <ul>
                                         {% for activity in day.getActivities() %}
-                                            {% set color = activity.getSportType().getActivityType().getColor() %}
                                             {% set distance = activity.getDistanceInDisplayUnit() %}
-                                            <li class="mb-1 truncate pl-1 bg-{{ color }}/[.1] border-l-2 border-l-{{ color }}" title="{{ activity.getName()|e }}&#10;{{ activity.getMovingTimeFormatted() }}{% if distance.toFloat() > 0 %} · {{ distance|formatMeasurement(activity.getSportType().getDistancePrecision()) }} {{ distance|measurementSymbol }}{% endif %}">
+                                            <li class="mb-1 truncate" title="{{ activity.getName()|e }}&#10;{{ activity.getMovingTimeFormatted() }}{% if distance.toFloat() > 0 %} · {{ distance|formatMeasurement(activity.getSportType().getDistancePrecision()) }} {{ distance|measurementSymbol }}{% endif %}">
                                                 {{ activity|activityLink(truncate: true) }}
                                             </li>
                                         {% endfor %}

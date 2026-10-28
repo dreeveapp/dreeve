@@ -2806,24 +2806,6 @@
   .border-t-primary {
     border-top-color: var(--color-primary);
   }
-  .border-l-blue-600 {
-    border-left-color: var(--color-blue-600);
-  }
-  .border-l-emerald-600 {
-    border-left-color: var(--color-emerald-600);
-  }
-  .border-l-gray-600 {
-    border-left-color: var(--color-gray-600);
-  }
-  .border-l-orange-500 {
-    border-left-color: var(--color-orange-500);
-  }
-  .border-l-red-600 {
-    border-left-color: var(--color-red-600);
-  }
-  .border-l-yellow-300 {
-    border-left-color: var(--color-yellow-300);
-  }
   .apexcharts-canvas .apexcharts-tooltip-series-group.apexcharts-active .apexcharts-tooltip-y-group {
     padding: 0 !important;
   }
@@ -2883,23 +2865,11 @@
   .bg-blue-50 {
     background-color: var(--color-blue-50);
   }
-  .bg-blue-600\/10 {
-    background-color: color-mix(in srgb, #2563EB 10%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-blue-600) 10%, transparent);
-    }
-  }
   .bg-blue-700 {
     background-color: var(--color-blue-700);
   }
   .bg-current {
     background-color: currentcolor;
-  }
-  .bg-emerald-600\/10 {
-    background-color: color-mix(in srgb, oklch(59.6% 0.145 163.225) 10%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-emerald-600) 10%, transparent);
-    }
   }
   .bg-gray-50 {
     background-color: var(--color-gray-50);
@@ -2931,12 +2901,6 @@
   .bg-gray-400 {
     background-color: var(--color-gray-400);
   }
-  .bg-gray-600\/10 {
-    background-color: color-mix(in srgb, #4B5563 10%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-gray-600) 10%, transparent);
-    }
-  }
   .bg-gray-900\/50 {
     background-color: color-mix(in srgb, #111827 50%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -2957,12 +2921,6 @@
   }
   .bg-orange-100 {
     background-color: var(--color-orange-100);
-  }
-  .bg-orange-500\/10 {
-    background-color: color-mix(in srgb, #DD6B20 10%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-orange-500) 10%, transparent);
-    }
   }
   .bg-primary {
     background-color: var(--color-primary);
@@ -3006,12 +2964,6 @@
   .bg-red-600 {
     background-color: var(--color-red-600);
   }
-  .bg-red-600\/10 {
-    background-color: color-mix(in srgb, #DC2626 10%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-red-600) 10%, transparent);
-    }
-  }
   .bg-rose-500\/10 {
     background-color: color-mix(in srgb, oklch(64.5% 0.246 16.439) 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -3038,12 +2990,6 @@
   }
   .bg-yellow-100 {
     background-color: var(--color-yellow-100);
-  }
-  .bg-yellow-300\/10 {
-    background-color: color-mix(in srgb, #FCD34D 10%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-yellow-300) 10%, transparent);
-    }
   }
   .bg-yellow-400 {
     background-color: var(--color-yellow-400);
@@ -3277,9 +3223,6 @@
   }
   .pb-4 {
     padding-bottom: calc(var(--spacing) * 4);
-  }
-  .pl-1 {
-    padding-left: var(--spacing);
   }
   .pl-2 {
     padding-left: calc(var(--spacing) * 2);
