@@ -5,9 +5,9 @@
                 <div class="text-sm font-medium text-gray-900 truncate">{{ name }}</div>
                 <div class="text-xs text-gray-500 truncate">{{ subtitle }}</div>
             </div>
-            <div class="text-sm font-bold text-gray-900">{{ distance|renderMeasurement(0) }}</div>
+            <div class="text-sm font-semibold text-gray-700">{{ distance|renderMeasurement(0) }}</div>
             <div class="hidden lg:flex items-baseline gap-2">
-                <span class="text-sm font-bold text-gray-900">{{ movingTime }}</span>
+                <span class="text-sm font-semibold text-gray-700">{{ movingTime }}</span>
                 <span class="text-xs text-gray-500 tabular-nums">{{ shareOfMovingTime|formatNumber(0) }}%</span>
             </div>
             {% set maxMonthlyDistance = max(monthlyDistances|map(monthlyDistance => monthlyDistance.distance.toFloat())) %}
@@ -35,7 +35,7 @@
                     {% for stat in usageStats %}
                         <div>
                             <div class="text-xxs uppercase font-semibold text-gray-400 tracking-wider">{{ stat.label }}</div>
-                            <div class="text-sm font-bold text-gray-900">{{ stat.value }}</div>
+                            <div class="text-sm font-semibold text-gray-700">{{ stat.value }}</div>
                         </div>
                     {% endfor %}
                 </div>
@@ -46,19 +46,19 @@
                     <div class="grid grid-cols-2 lg:grid-cols-6 gap-x-2 gap-y-3">
                         <div>
                             <div class="text-xxs uppercase font-semibold text-gray-400 tracking-wider">{{ "Purchase price"|trans }}</div>
-                            <div class="text-sm font-bold text-gray-900">{{ purchasePrice|formatMoney }}</div>
+                            <div class="text-sm font-semibold text-gray-700">{{ purchasePrice|formatMoney }}</div>
                         </div>
                         <div>
                             <div class="text-xxs uppercase font-semibold text-gray-400 tracking-wider">{{ "per"|trans }} {{ renderUnitSymbol('distance') }}</div>
-                            <div class="text-sm font-bold text-gray-900">{{ relativeCostPerDistanceUnit|formatMoney }}</div>
+                            <div class="text-sm font-semibold text-gray-700">{{ relativeCostPerDistanceUnit|formatMoney }}</div>
                         </div>
                         <div>
                             <div class="text-xxs uppercase font-semibold text-gray-400 tracking-wider">{{ "per hour"|trans }}</div>
-                            <div class="text-sm font-bold text-gray-900">{{ relativeCostPerHour|formatMoney }}</div>
+                            <div class="text-sm font-semibold text-gray-700">{{ relativeCostPerHour|formatMoney }}</div>
                         </div>
                         <div>
                             <div class="text-xxs uppercase font-semibold text-gray-400 tracking-wider">{{ "per activity"|trans }}</div>
-                            <div class="text-sm font-bold text-gray-900">{{ relativeCostPerWorkout|formatMoney }}</div>
+                            <div class="text-sm font-semibold text-gray-700">{{ relativeCostPerWorkout|formatMoney }}</div>
                         </div>
                     </div>
                 {% else %}

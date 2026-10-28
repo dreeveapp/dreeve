@@ -60,7 +60,7 @@
                                 {% endif %}
                                 <div class="text-sm font-medium text-gray-900 truncate">{{ gear.getName() }}</div>
                             </div>
-                            <div class="text-sm font-bold text-gray-900">{{ gear.getDistance()|renderMeasurement(0) }}</div>
+                            <div class="text-sm font-semibold text-gray-700">{{ gear.getDistance()|renderMeasurement(0) }}</div>
                             <div class="hidden lg:block text-sm text-gray-500 truncate">
                                 {{ componentsAttachedToGear|map(component => component.getLabel())|join(', ') }}
                             </div>

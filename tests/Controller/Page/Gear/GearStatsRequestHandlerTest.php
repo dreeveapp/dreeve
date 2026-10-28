@@ -80,7 +80,7 @@ class GearStatsRequestHandlerTest extends AdminWebTestCase
                 fn (Crawler $row): array => [
                     $row->filter('summary .font-medium')->text(),
                     $row->filter('summary .text-xs')->first()->text(),
-                    $row->filter('.grid-cols-3 .font-bold')->last()->text(),
+                    $row->filter('.grid-cols-3 .text-sm.font-semibold')->last()->text(),
                 ],
             ),
         );
@@ -111,7 +111,7 @@ class GearStatsRequestHandlerTest extends AdminWebTestCase
                 fn (Crawler $row): array => [
                     $row->filter('summary .font-medium')->text(),
                     $row->filter('summary .text-xs')->first()->text(),
-                    $row->filter('.grid-cols-3 .font-bold')->last()->text(),
+                    $row->filter('.grid-cols-3 .text-sm.font-semibold')->last()->text(),
                 ],
             ),
         );
@@ -142,7 +142,7 @@ class GearStatsRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSame(
             ['€1,000.00', '€10.00', '€500.00', '€1,000.00'],
-            $crawler->filter('details.group\\/row .grid-cols-2 .font-bold')->each(fn (Crawler $cost): string => $cost->text()),
+            $crawler->filter('details.group\\/row .grid-cols-2 .text-sm.font-semibold')->each(fn (Crawler $cost): string => $cost->text()),
         );
     }
 

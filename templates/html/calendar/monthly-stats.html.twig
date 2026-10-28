@@ -12,7 +12,7 @@
                     <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ year.totals.numberOfActivities }} {{ "workouts"|trans }}</span>
                 </div>
                 <div class="flex items-center gap-4">
-                    <div class="hidden sm:flex items-baseline gap-4 text-sm font-bold text-gray-900">
+                    <div class="hidden sm:flex items-baseline gap-4 text-sm font-semibold text-gray-700">
                         <span>{{ year.totals.distance|renderMeasurement(0) }}</span>
                         <span>{{ year.totals.movingTime|formatSeconds }}</span>
                         <span class="hidden lg:inline">{{ year.totals.elevation|renderMeasurement(0) }}</span>
@@ -42,9 +42,9 @@
                                 </div>
                                 <div class="text-xs text-gray-500 truncate">{{ stats.numberOfActivities }} {{ "workouts"|trans }}</div>
                             </div>
-                            <div class="text-sm font-bold text-gray-900">{{ stats.distance|renderMeasurement(0) }}</div>
-                            <div class="hidden lg:block text-sm font-bold text-gray-900" title="{{ stats.movingTime.toHour().toFloat()|formatNumber(1) }}h">{{ stats.movingTime|formatSeconds }}</div>
-                            <div class="hidden lg:block text-sm font-bold text-gray-900">{{ stats.elevation|renderMeasurement(0) }}</div>
+                            <div class="text-sm font-semibold text-gray-700">{{ stats.distance|renderMeasurement(0) }}</div>
+                            <div class="hidden lg:block text-sm font-semibold text-gray-700" title="{{ stats.movingTime.toHour().toFloat()|formatNumber(1) }}h">{{ stats.movingTime|formatSeconds }}</div>
+                            <div class="hidden lg:block text-sm font-semibold text-gray-700">{{ stats.elevation|renderMeasurement(0) }}</div>
                             <div class="hidden lg:flex items-center gap-2">
                                 <div class="flex-1 flex gap-px">
                                     {% for day in monthEntry.days %}
@@ -82,10 +82,10 @@
                                                 </div>
                                             {% endif %}
                                         </div>
-                                        <div class="text-sm font-bold text-gray-900">{{ sportTypeStats.numberOfActivities }}</div>
-                                        <div class="text-sm font-bold text-gray-900">{{ sportTypeStats.distance|renderMeasurement(0) }}</div>
-                                        <div class="hidden lg:block text-sm font-bold text-gray-900">{{ sportTypeStats.elevation|renderMeasurement(0) }}</div>
-                                        <div class="hidden lg:block text-sm font-bold text-gray-900" title="{{ sportTypeStats.movingTime.toHour().toFloat()|formatNumber(1) }}h">{{ sportTypeStats.movingTime|formatSeconds }}</div>
+                                        <div class="text-sm font-semibold text-gray-700">{{ sportTypeStats.numberOfActivities }}</div>
+                                        <div class="text-sm font-semibold text-gray-700">{{ sportTypeStats.distance|renderMeasurement(0) }}</div>
+                                        <div class="hidden lg:block text-sm font-semibold text-gray-700">{{ sportTypeStats.elevation|renderMeasurement(0) }}</div>
+                                        <div class="hidden lg:block text-sm font-semibold text-gray-700" title="{{ sportTypeStats.movingTime.toHour().toFloat()|formatNumber(1) }}h">{{ sportTypeStats.movingTime|formatSeconds }}</div>
                                     </div>
                                 {% endfor %}
                             </div>
