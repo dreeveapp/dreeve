@@ -75,9 +75,27 @@ final readonly class FindMonthlyStatsQueryHandler implements QueryHandler
             ];
         }
 
+        $activeDayResults = $this->connection->executeQuery(
+            <<<SQL
+                SELECT DISTINCT strftime('%Y-%m', startDateTime) AS yearAndMonth,
+                       CAST(strftime('%d', startDateTime) AS INTEGER) AS day
+                FROM Activity
+                ORDER BY yearAndMonth, day
+            SQL,
+        )->fetchAllAssociative();
+
+        $activeDays = [];
+        foreach ($activeDayResults as $activeDayResult) {
+            $activeDays[] = [
+                'month' => Month::fromDate(SerializableDateTime::fromString(sprintf('%s-01 00:00:00', $activeDayResult['yearAndMonth']))),
+                'day' => (int) $activeDayResult['day'],
+            ];
+        }
+
         return new FindMonthlyStatsResponse(
             statsPerMonth: $statsPerMonth,
             minMaxMonthPerActivityType: $minMaxDatePerActivityType,
+            activeDays: $activeDays,
         );
     }
 }

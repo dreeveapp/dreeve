@@ -25,14 +25,18 @@ final readonly class FindMonthlyStatsResponse implements Response
     private ?Month $firstMonth;
     /** @var array<string, array{min: Month, max: Month}> */
     private array $minMaxMonthPerActivityTypeValue;
+    /** @var array<string, list<int>> */
+    private array $activeDaysPerMonthId;
 
     /**
      * @param array<int, array{'month': Month, 'sportType': SportType, 'numberOfActivities': int, 'distance': Kilometer, 'elevation': Meter, 'movingTime': Seconds, 'calories': int}> $statsPerMonth
      * @param array<int, array{'activityType': ActivityType, min: Month, max: Month}>                                                                                                 $minMaxMonthPerActivityType
+     * @param array<int, array{'month': Month, 'day': int}>                                                                                                                           $activeDays
      */
     public function __construct(
         array $statsPerMonth,
         array $minMaxMonthPerActivityType,
+        array $activeDays,
     ) {
         $totals = $this->emptyRawTotals();
         $perMonthId = [];
@@ -78,6 +82,12 @@ final readonly class FindMonthlyStatsResponse implements Response
             ];
         }
         $this->minMaxMonthPerActivityTypeValue = $minMaxMonthPerActivityTypeValue;
+
+        $activeDaysPerMonthId = [];
+        foreach ($activeDays as $activeDay) {
+            $activeDaysPerMonthId[$activeDay['month']->getId()][] = $activeDay['day'];
+        }
+        $this->activeDaysPerMonthId = $activeDaysPerMonthId;
     }
 
     public function getFirstMonthFor(ActivityType $activityType): Month
@@ -120,6 +130,14 @@ final readonly class FindMonthlyStatsResponse implements Response
     {
         return $this->statsPerMonthIdAndSportType[$month->getId()][$sportType->value]
             ?? $this->toMeasuredTotals($this->emptyRawTotals());
+    }
+
+    /**
+     * @return list<int>
+     */
+    public function getActiveDaysFor(Month $month): array
+    {
+        return $this->activeDaysPerMonthId[$month->getId()] ?? [];
     }
 
     /**
