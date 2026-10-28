@@ -57,19 +57,19 @@
                                 <path d="m1 1 4 4 4-4"/>
                             </svg>
                         </summary>
-                        <div class="px-8 py-5 border-t border-gray-100">
-                            <div class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_4rem_5rem] lg:grid-cols-[8rem_minmax(0,1fr)_5rem_6rem_6rem_6rem] pb-1 text-xxs uppercase font-semibold text-gray-400 tracking-wider">
+                        <div class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_minmax(4rem,auto)_minmax(5rem,auto)] lg:grid-cols-[8rem_minmax(0,1fr)_minmax(5rem,auto)_minmax(6rem,auto)_minmax(6rem,auto)_minmax(6rem,auto)] px-8 py-5 border-t border-gray-100">
+                            <div class="col-span-full grid grid-cols-subgrid items-center pb-1 text-xxs uppercase font-semibold text-gray-400 tracking-wider">
                                 <div></div>
                                 <div class="hidden lg:block"></div>
-                                <div># {{ "workouts"|trans }}</div>
+                                <div class="whitespace-nowrap"># {{ "workouts"|trans }}</div>
                                 <div>{{ "Dist."|trans }}</div>
                                 <div class="hidden lg:block">{{ "Elev."|trans }}</div>
                                 <div class="hidden lg:block">{{ "Moving time"|trans }}</div>
                             </div>
-                            <div class="divide-y divide-gray-100">
+                            <div class="col-span-full grid grid-cols-subgrid divide-y divide-gray-100">
                                 {% for sportTypeEntry in monthEntry.sportTypes %}
                                     {% set sportTypeStats = sportTypeEntry.stats %}
-                                    <div class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_4rem_5rem] lg:grid-cols-[8rem_minmax(0,1fr)_5rem_6rem_6rem_6rem] py-2">
+                                    <div class="col-span-full grid grid-cols-subgrid items-center py-2">
                                         <div class="text-sm font-medium text-gray-900 truncate">{{ sportTypeEntry.sportType|trans }}</div>
                                         <div class="hidden lg:block w-full rounded-full bg-gray-200">
                                             {% if sportTypeEntry.shareOfMovingTime > 0 %}

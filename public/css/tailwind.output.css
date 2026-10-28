@@ -1078,6 +1078,9 @@
   .col-span-2 {
     grid-column: span 2 / span 2;
   }
+  .col-span-full {
+    grid-column: 1 / -1;
+  }
   .container {
     width: 100%;
     @media (width >= 40rem) {
@@ -2272,17 +2275,20 @@
   .grid-cols-\[auto_1fr_auto\] {
     grid-template-columns: auto 1fr auto;
   }
-  .grid-cols-\[minmax\(0\,1fr\)_4rem_5rem\] {
-    grid-template-columns: minmax(0,1fr) 4rem 5rem;
-  }
   .grid-cols-\[minmax\(0\,1fr\)_6rem_0\.75rem\] {
     grid-template-columns: minmax(0,1fr) 6rem 0.75rem;
+  }
+  .grid-cols-\[minmax\(0\,1fr\)_minmax\(4rem\,auto\)_minmax\(5rem\,auto\)\] {
+    grid-template-columns: minmax(0,1fr) minmax(4rem,auto) minmax(5rem,auto);
   }
   .grid-cols-\[repeat\(auto-fit\,minmax\(80px\,1fr\)\)\] {
     grid-template-columns: repeat(auto-fit,minmax(80px,1fr));
   }
   .grid-cols-\[repeat\(auto-fit\,minmax\(170px\,1fr\)\)\] {
     grid-template-columns: repeat(auto-fit,minmax(170px,1fr));
+  }
+  .grid-cols-subgrid {
+    grid-template-columns: subgrid;
   }
   .flex-col {
     flex-direction: column;
@@ -4444,8 +4450,8 @@
     .lg\:grid-cols-\[3rem_minmax\(0\,1fr\)_6rem_minmax\(0\,2fr\)_0\.75rem\] {
       grid-template-columns: 3rem minmax(0,1fr) 6rem minmax(0,2fr) 0.75rem;
     }
-    .lg\:grid-cols-\[8rem_minmax\(0\,1fr\)_5rem_6rem_6rem_6rem\] {
-      grid-template-columns: 8rem minmax(0,1fr) 5rem 6rem 6rem 6rem;
+    .lg\:grid-cols-\[8rem_minmax\(0\,1fr\)_minmax\(5rem\,auto\)_minmax\(6rem\,auto\)_minmax\(6rem\,auto\)_minmax\(6rem\,auto\)\] {
+      grid-template-columns: 8rem minmax(0,1fr) minmax(5rem,auto) minmax(6rem,auto) minmax(6rem,auto) minmax(6rem,auto);
     }
     .lg\:grid-cols-\[minmax\(0\,1fr\)_6rem_8rem_6rem_12rem_0\.75rem\] {
       grid-template-columns: minmax(0,1fr) 6rem 8rem 6rem 12rem 0.75rem;
