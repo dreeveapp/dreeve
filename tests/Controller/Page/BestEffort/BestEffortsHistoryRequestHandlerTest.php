@@ -47,9 +47,11 @@ class BestEffortsHistoryRequestHandlerTest extends ControllerWebTestCase
 
         foreach ($distances as $index => $distance) {
             [$label, $bestTime] = $expected[$index];
-            $this->client->request('GET', sprintf('/best-efforts/Ride/%d', $distance->toMeter()->toInt()));
+            $crawler = $this->client->request('GET', sprintf('/best-efforts/Ride/%d', $distance->toMeter()->toInt()));
 
             $this->assertResponseIsSuccessful();
+            $this->assertCount(count($expected), $crawler->filter('ul.tabs--menu-item a'));
+            $this->assertSame($label, $crawler->filter('ul.tabs--menu-item a.active')->text());
             $content = (string) $this->client->getResponse()->getContent();
             $this->assertStringContainsString('<span>Best efforts - Cycling - '.$label.'</span>', $content);
             $this->assertStringContainsString('<div class="font-semibold text-gray-700">'.$bestTime.'</div>', $content);

@@ -9,6 +9,16 @@
         'label': (activityType|trans) ~ ' - ' ~ distanceLabel
     }]} %}
 {% autoescape false %}
+    <ul class="tabs tabs--menu-item">
+        {% for distanceForBestEffort in activityType.getDistancesForBestEffortCalculation() %}
+            <li>
+                <a href="{{ relativeUrl(path('best_efforts_history', {'activityType': activityType.value, 'distanceInMeter': distanceForBestEffort.toMeter().toInt()})) }}"
+                   class="{{ distanceForBestEffort.toMeter().toInt() == distance.toMeter().toInt() ? 'active' : '' }}">
+                    {{ distanceForBestEffort.isLowerThanOne() ? distanceForBestEffort.toFloat()|round(1) : distanceForBestEffort.toInt() }} {{ distanceForBestEffort.getSymbol() }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
     {% set sportTypes = history.getSportTypes() %}
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs space-y-4">
         <div class="mb-4 flex items-center justify-between">
