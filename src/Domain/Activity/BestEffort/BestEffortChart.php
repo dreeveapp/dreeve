@@ -153,7 +153,7 @@ final readonly class BestEffortChart
                         'show' => false,
                     ],
                     'data' => array_map(
-                        fn (Unit $distance): string => $this->formatDistance($distance),
+                        $this->formatDistance(...),
                         $distances
                     ),
                 ],
