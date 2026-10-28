@@ -16,6 +16,7 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Time\Clock\Clock;
+use App\Infrastructure\ValueObject\Time\Year;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -48,17 +49,72 @@ final readonly class MonthlyStatsRequestHandler
     private function renderFor(): string
     {
         $monthlyStats = $this->queryBus->ask(new FindMonthlyStats());
+        $now = $this->clock->getCurrentDateTimeImmutable();
+        $currentMonth = Month::fromDate($now);
+        $today = $now->getDayOfTheMonth();
+        $sportTypes = $this->sportTypeRepository->findAll();
 
         $firstMonth = $monthlyStats->getFirstMonth();
         $allMonths = $firstMonth instanceof Month ? Months::create(
             startDate: $firstMonth->getFirstDay(),
-            endDate: $this->clock->getCurrentDateTimeImmutable()
+            endDate: $now
         ) : Months::empty();
 
+        $years = [];
+        foreach ($allMonths->reverse() as $month) {
+            $stats = $monthlyStats->getForMonth($month);
+            if (null === $stats) {
+                continue;
+            }
+
+            $year = Year::fromInt($month->getYear());
+            $years[$year->toInt()] ??= [
+                'year' => $year,
+                'totals' => $monthlyStats->getForYear($year),
+                'isCurrent' => $year->toInt() === $now->getYear(),
+                'months' => [],
+            ];
+
+            $statsPerSportType = [];
+            foreach ($sportTypes as $sportType) {
+                $statsForSportType = $monthlyStats->getForMonthAndSportType($month, $sportType);
+                if (0 === $statsForSportType['numberOfActivities']) {
+                    continue;
+                }
+                $statsPerSportType[] = [
+                    'sportType' => $sportType,
+                    'stats' => $statsForSportType,
+                    'shareOfMovingTime' => $stats['movingTime']->toInt() > 0
+                        ? (int) round($statsForSportType['movingTime']->toInt() / $stats['movingTime']->toInt() * 100)
+                        : 0,
+                ];
+            }
+
+            $activeDays = $monthlyStats->getActiveDaysFor($month);
+            $isCurrentMonth = $month->getId() === $currentMonth->getId();
+            $days = [];
+            for ($dayNumber = 1; $dayNumber <= $month->getNumberOfDays(); ++$dayNumber) {
+                $days[] = [
+                    'dayNumber' => $dayNumber,
+                    'state' => match (true) {
+                        in_array($dayNumber, $activeDays, true) => 'active',
+                        $isCurrentMonth && $dayNumber > $today => 'upcoming',
+                        default => 'rest',
+                    },
+                ];
+            }
+
+            $years[$year->toInt()]['months'][] = [
+                'month' => $month,
+                'stats' => $stats,
+                'sportTypes' => $statsPerSportType,
+                'days' => $days,
+                'numberOfActiveDays' => count($activeDays),
+            ];
+        }
+
         return $this->twig->load('html/calendar/monthly-stats.html.twig')->render([
-            'monthlyStatistics' => $monthlyStats,
-            'months' => $allMonths->reverse(),
-            'sportTypes' => $this->sportTypeRepository->findAll(),
+            'years' => array_values($years),
         ]);
     }
 }

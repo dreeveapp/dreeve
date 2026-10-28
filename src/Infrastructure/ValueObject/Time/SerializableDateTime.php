@@ -107,6 +107,11 @@ class SerializableDateTime extends \DateTimeImmutable implements \JsonSerializab
         return (int) $this->format('N');
     }
 
+    public function getDayOfTheMonth(): int
+    {
+        return (int) $this->format('j');
+    }
+
     public function isAfterOrOn(SerializableDateTime $that): bool
     {
         return $this >= $that;

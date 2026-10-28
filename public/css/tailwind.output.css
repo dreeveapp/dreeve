@@ -2269,6 +2269,9 @@
   .grid-cols-\[3rem_minmax\(0\,1fr\)_5rem_0\.75rem\] {
     grid-template-columns: 3rem minmax(0,1fr) 5rem 0.75rem;
   }
+  .grid-cols-\[8rem_minmax\(0\,1fr\)_4rem_5rem\] {
+    grid-template-columns: 8rem minmax(0,1fr) 4rem 5rem;
+  }
   .grid-cols-\[auto_1fr_auto\] {
     grid-template-columns: auto 1fr auto;
   }
@@ -3256,6 +3259,9 @@
   }
   .pb-0 {
     padding-bottom: 0px;
+  }
+  .pb-1 {
+    padding-bottom: var(--spacing);
   }
   .pb-1\.5 {
     padding-bottom: calc(var(--spacing) * 1.5);
@@ -4474,6 +4480,9 @@
     .lg\:hidden {
       display: none;
     }
+    .lg\:inline {
+      display: inline;
+    }
     .lg\:w-md {
       width: var(--container-md);
     }
@@ -4491,6 +4500,12 @@
     }
     .lg\:grid-cols-\[3rem_minmax\(0\,1fr\)_6rem_minmax\(0\,2fr\)_0\.75rem\] {
       grid-template-columns: 3rem minmax(0,1fr) 6rem minmax(0,2fr) 0.75rem;
+    }
+    .lg\:grid-cols-\[8rem_minmax\(0\,1fr\)_5rem_6rem_6rem_6rem\] {
+      grid-template-columns: 8rem minmax(0,1fr) 5rem 6rem 6rem 6rem;
+    }
+    .lg\:grid-cols-\[minmax\(0\,1fr\)_6rem_8rem_6rem_12rem_0\.75rem\] {
+      grid-template-columns: minmax(0,1fr) 6rem 8rem 6rem 12rem 0.75rem;
     }
     .lg\:grid-cols-\[minmax\(0\,1fr\)_6rem_9rem_9rem_7rem_0\.75rem\] {
       grid-template-columns: minmax(0,1fr) 6rem 9rem 9rem 7rem 0.75rem;
