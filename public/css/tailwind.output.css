@@ -2269,11 +2269,11 @@
   .grid-cols-\[3rem_minmax\(0\,1fr\)_5rem_0\.75rem\] {
     grid-template-columns: 3rem minmax(0,1fr) 5rem 0.75rem;
   }
-  .grid-cols-\[8rem_minmax\(0\,1fr\)_4rem_5rem\] {
-    grid-template-columns: 8rem minmax(0,1fr) 4rem 5rem;
-  }
   .grid-cols-\[auto_1fr_auto\] {
     grid-template-columns: auto 1fr auto;
+  }
+  .grid-cols-\[minmax\(0\,1fr\)_4rem_5rem\] {
+    grid-template-columns: minmax(0,1fr) 4rem 5rem;
   }
   .grid-cols-\[minmax\(0\,1fr\)_6rem_0\.75rem\] {
     grid-template-columns: minmax(0,1fr) 6rem 0.75rem;
