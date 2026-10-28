@@ -11,6 +11,7 @@ use App\Infrastructure\CQRS\Query\Response;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
+use App\Infrastructure\ValueObject\Time\Year;
 
 final readonly class FindMonthlyStatsResponse implements Response
 {
@@ -18,6 +19,8 @@ final readonly class FindMonthlyStatsResponse implements Response
     private array $totals;
     /** @var array<string, array{'numberOfActivities': int, 'distance': Kilometer, 'elevation': Meter, 'movingTime': Seconds, 'calories': int}> */
     private array $statsPerMonthId;
+    /** @var array<int, array{'numberOfActivities': int, 'distance': Kilometer, 'elevation': Meter, 'movingTime': Seconds, 'calories': int}> */
+    private array $statsPerYear;
     /** @var array<string, array<string, array{'numberOfActivities': int, 'distance': Kilometer, 'elevation': Meter, 'movingTime': Seconds, 'calories': int}>> */
     private array $statsPerMonthIdAndSportType;
     /** @var array<string, array<string, array{'numberOfActivities': int, 'distance': Kilometer, 'elevation': Meter, 'movingTime': Seconds, 'calories': int}>> */
@@ -40,6 +43,7 @@ final readonly class FindMonthlyStatsResponse implements Response
     ) {
         $totals = $this->emptyRawTotals();
         $perMonthId = [];
+        $perYear = [];
         $perMonthIdAndSportType = [];
         $perMonthIdAndActivityType = [];
         $firstMonth = null;
@@ -58,12 +62,14 @@ final readonly class FindMonthlyStatsResponse implements Response
 
             $totals = $this->addToRawTotals($totals, $entry);
             $perMonthId[$monthId] = $this->addToRawTotals($perMonthId[$monthId] ?? $this->emptyRawTotals(), $entry);
+            $perYear[$month->getYear()] = $this->addToRawTotals($perYear[$month->getYear()] ?? $this->emptyRawTotals(), $entry);
             $perMonthIdAndSportType[$monthId][$sportTypeValue] = $this->addToRawTotals($perMonthIdAndSportType[$monthId][$sportTypeValue] ?? $this->emptyRawTotals(), $entry);
             $perMonthIdAndActivityType[$monthId][$activityTypeValue] = $this->addToRawTotals($perMonthIdAndActivityType[$monthId][$activityTypeValue] ?? $this->emptyRawTotals(), $entry);
         }
 
         $this->totals = $this->toMeasuredTotals($totals);
         $this->statsPerMonthId = array_map($this->toMeasuredTotals(...), $perMonthId);
+        $this->statsPerYear = array_map($this->toMeasuredTotals(...), $perYear);
         $this->statsPerMonthIdAndSportType = array_map(
             fn (array $perSportType): array => array_map($this->toMeasuredTotals(...), $perSportType),
             $perMonthIdAndSportType
@@ -121,6 +127,14 @@ final readonly class FindMonthlyStatsResponse implements Response
     public function getForMonth(Month $month): ?array
     {
         return $this->statsPerMonthId[$month->getId()] ?? null;
+    }
+
+    /**
+     * @return array{'numberOfActivities': int, 'distance': Kilometer, 'elevation': Meter, 'movingTime': Seconds, 'calories': int}|null
+     */
+    public function getForYear(Year $year): ?array
+    {
+        return $this->statsPerYear[$year->toInt()] ?? null;
     }
 
     /**

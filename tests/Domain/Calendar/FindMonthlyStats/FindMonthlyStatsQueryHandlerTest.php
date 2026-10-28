@@ -15,6 +15,7 @@ use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use App\Infrastructure\ValueObject\Time\Year;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 
@@ -98,6 +99,11 @@ class FindMonthlyStatsQueryHandlerTest extends ContainerTestCase
         $this->assertNull($response->getForMonth(Month::fromDate(SerializableDateTime::fromString('2026-01-03 00:00:00'))));
         $this->assertSame([1, 3, 10, 15], $response->getActiveDaysFor($month));
         $this->assertSame([], $response->getActiveDaysFor(Month::fromDate(SerializableDateTime::fromString('2026-01-03 00:00:00'))));
+        $this->assertEquals(
+            ['numberOfActivities' => 6, 'distance' => Kilometer::from(60), 'elevation' => Meter::from(0), 'movingTime' => Seconds::from(60), 'calories' => 0],
+            $response->getForYear(Year::fromInt(2024))
+        );
+        $this->assertNull($response->getForYear(Year::fromInt(2026)));
         $this->assertEquals(
             ['numberOfActivities' => 4, 'distance' => Kilometer::from(40), 'elevation' => Meter::from(0), 'movingTime' => Seconds::from(40), 'calories' => 0],
             $response->getForMonthAndActivityType($month, ActivityType::RIDE)
