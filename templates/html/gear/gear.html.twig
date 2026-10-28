@@ -22,7 +22,7 @@
             </div>
             <div class="grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_6rem_9rem_9rem_7rem_0.75rem] px-4 py-3 bg-gray-50 text-gray-500 text-xxs uppercase font-semibold">
                 <div>{{ "Gear"|trans }}</div>
-                <div>{{ "Distance"|trans }}</div>
+                <div>{{ "Dist."|trans }}</div>
                 <div class="hidden lg:block">{{ "Moving time"|trans }}</div>
                 <div class="hidden lg:block">{{ "Last 12 months"|trans }}</div>
                 <div class="hidden lg:block">{{ "Last used"|trans }}</div>
@@ -47,7 +47,7 @@
             </summary>
             <div class="mt-4 grid items-center gap-x-4 grid-cols-[minmax(0,1fr)_6rem_0.75rem] lg:grid-cols-[minmax(0,1fr)_6rem_9rem_9rem_7rem_0.75rem] px-4 py-3 bg-gray-50 text-gray-500 text-xxs uppercase font-semibold">
                 <div>{{ "Gear"|trans }}</div>
-                <div>{{ "Distance"|trans }}</div>
+                <div>{{ "Dist."|trans }}</div>
                 <div class="hidden lg:block">{{ "Moving time"|trans }}</div>
                 <div class="hidden lg:block">{{ "Last 12 months"|trans }}</div>
                 <div class="hidden lg:block">{{ "Last used"|trans }}</div>
@@ -109,10 +109,10 @@
             usageStats: [
                 {label: "workouts"|trans, value: gear.getNumberOfActivities()|formatNumber(0)},
                 {label: "Avg distance"|trans, value: gear.getAverageDistance()|renderMeasurement(0)},
-                {label: "Elevation"|trans, value: gear.getElevation()|renderMeasurement(0)},
+                {label: "Elev."|trans, value: gear.getElevation()|renderMeasurement(0)},
                 {label: "Moving time"|trans, value: gear.getMovingTimeFormatted()},
                 {label: "Avg speed"|trans, value: gear.getAverageSpeed()|renderMeasurement(1)},
-                {label: "Calories"|trans, value: gear.getTotalCalories()|formatNumber(0) ~ '<span class="text-xxs ml-px">kcal</span>'},
+                {label: "Cal."|trans, value: gear.getTotalCalories()|formatNumber(0) ~ '<span class="text-xxs ml-px">kcal</span>'},
             ],
             purchasePrice: gear.getPurchasePrice(),
             relativeCostPerDistanceUnit: gear.getRelativeCostPerDistanceUnit(unitSystem),
