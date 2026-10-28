@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\BestEffort;
 
+use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypeRepository;
 use App\Domain\Activity\ActivityTypes;
 use App\Domain\Activity\BestEffort\FindBestEfforts\FindBestEfforts;
+use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
+use App\Infrastructure\Measurement\Length\ConvertableToMeter;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -39,16 +42,11 @@ final readonly class BestEffortsCalculator
         }
 
         $bestEffortPerPeriod = [];
-        $historyPerSportType = [];
 
         foreach ($response->getBestEfforts() as $bestEffort) {
             $sportType = $bestEffort->getSportType()->value;
             $distanceInMeter = $bestEffort->getDistanceInMeter()->toInt();
             $startDateTime = $startDateTimePerActivity[(string) $bestEffort->getActivityId()];
-
-            if (count($historyPerSportType[$sportType][$distanceInMeter] ?? []) < self::HISTORY_SIZE) {
-                $historyPerSportType[$sportType][$distanceInMeter][] = $bestEffort;
-            }
 
             foreach ($periodBoundaries as $periodValue => [$from, $till]) {
                 if (isset($bestEffortPerPeriod[$periodValue][$sportType][$distanceInMeter])) {
@@ -68,13 +66,36 @@ final readonly class BestEffortsCalculator
 
         return BestEfforts::create(
             bestEffortPerPeriod: $bestEffortPerPeriod,
-            historyPerSportType: $historyPerSportType,
             periods: array_values(array_filter(
                 BestEffortPeriod::cases(),
                 fn (BestEffortPeriod $period): bool => isset($bestEffortPerPeriod[$period->value])
             )),
             sportTypesPerPeriod: $sportTypesPerPeriod,
             activityTypes: $this->buildActivityTypes($sportTypesPerPeriod),
+        );
+    }
+
+    public function calculateHistory(ActivityType $activityType, ConvertableToMeter $distance): BestEffortHistory
+    {
+        $response = $this->queryBus->ask(new FindBestEfforts(
+            activityType: $activityType,
+            distance: $distance,
+        ));
+
+        $topPerSportType = [];
+        foreach ($response->getBestEfforts() as $bestEffort) {
+            $sportType = $bestEffort->getSportType()->value;
+            if (count($topPerSportType[$sportType] ?? []) >= self::HISTORY_SIZE) {
+                continue;
+            }
+            $topPerSportType[$sportType][] = $bestEffort;
+        }
+
+        return BestEffortHistory::create(
+            sportTypes: $this->sportTypeRepository->findAll()->filter(
+                fn (SportType $sportType): bool => isset($topPerSportType[$sportType->value])
+            ),
+            topPerSportType: $topPerSportType,
         );
     }
 

@@ -8,7 +8,6 @@ use App\Application\Navigation\NavigationSection;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
-use App\Domain\Activity\BestEffort\BestEffortPeriod;
 use App\Domain\Activity\BestEffort\BestEffortsCalculator;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -61,14 +60,16 @@ final readonly class BestEffortsHistoryRequestHandler
 
     private function renderFor(ActivityType $activityType, ConvertableToMeter $distance): string
     {
-        $bestEfforts = $this->bestEffortsCalculator->calculate();
+        $history = $this->bestEffortsCalculator->calculateHistory(
+            activityType: $activityType,
+            distance: $distance
+        );
 
         return $this->twig->load('html/best-efforts/best-efforts-history.html.twig')->render([
             'activityType' => $activityType,
-            'period' => BestEffortPeriod::ALL_TIME,
             'distance' => $distance,
-            'bestEfforts' => $bestEfforts,
-            'activitiesPerActivityId' => $this->activityRepository->findByIds($bestEfforts->getActivityIds())->keyByActivityId(),
+            'history' => $history,
+            'activitiesPerActivityId' => $this->activityRepository->findByIds($history->getActivityIds())->keyByActivityId(),
         ]);
     }
 }

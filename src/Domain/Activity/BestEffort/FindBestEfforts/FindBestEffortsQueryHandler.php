@@ -28,6 +28,12 @@ final readonly class FindBestEffortsQueryHandler implements QueryHandler
     public function handle(Query $query): Response
     {
         assert($query instanceof FindBestEfforts);
+        $activityType = $query->getActivityType();
+        $sportTypes = SportTypes::thatSupportsBestEfforts()->filter(
+            fn (SportType $sportType): bool => null === $activityType || $sportType->getActivityType() === $activityType
+        );
+        $distanceInMeter = $query->getDistance()?->toMeter()->toInt();
+
         $results = $this->connection->executeQuery(
             <<<SQL
                 SELECT ActivityBestEffort.activityId,
@@ -38,13 +44,15 @@ final readonly class FindBestEffortsQueryHandler implements QueryHandler
                 FROM ActivityBestEffort
                 INNER JOIN Activity ON ActivityBestEffort.activityId = Activity.activityId
                 WHERE ActivityBestEffort.sportType IN (:sportTypes)
+                AND (:distanceInMeter IS NULL OR ActivityBestEffort.distanceInMeter = :distanceInMeter)
                 AND NOT EXISTS (SELECT 1 FROM json_each(Activity.excludedFrom) WHERE json_each.value = :excludedFrom)
                 ORDER BY ActivityBestEffort.timeInSeconds ASC,
                          Activity.startDateTime ASC,
                          ActivityBestEffort.activityId ASC
             SQL,
             [
-                'sportTypes' => SportTypes::thatSupportsBestEfforts()->map(fn (SportType $sportType): string => $sportType->value),
+                'sportTypes' => $sportTypes->map(fn (SportType $sportType): string => $sportType->value),
+                'distanceInMeter' => $distanceInMeter,
                 'excludedFrom' => ActivityExclusion::BEST_EFFORTS->value,
             ],
             [

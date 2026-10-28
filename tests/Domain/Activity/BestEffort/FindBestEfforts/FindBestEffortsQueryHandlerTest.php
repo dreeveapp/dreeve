@@ -8,11 +8,13 @@ use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityExclusions;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\BestEffort\FindBestEfforts\FindBestEfforts;
 use App\Domain\Activity\BestEffort\FindBestEfforts\FindBestEffortsQueryHandler;
 use App\Domain\Activity\SportType\SportType;
+use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -41,6 +43,14 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
                 ->withSportType(SportType::RIDE)
                 ->withDistanceInMeter(Meter::from(10000))
                 ->withTimeInSeconds(1800)
+                ->build()
+        );
+        $this->activityBestEffortRepository->add(
+            ActivityBestEffortBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withSportType(SportType::RIDE)
+                ->withDistanceInMeter(Meter::from(20000))
+                ->withTimeInSeconds(3600)
                 ->build()
         );
         $this->activityRepository->add(ActivityWithRawData::fromState(
@@ -82,6 +92,7 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
             [
                 ['activity-2', 1500],
                 ['activity-1', 1800],
+                ['activity-1', 3600],
             ],
             $response->getBestEfforts()->map(fn ($bestEffort): array => [
                 (string) $bestEffort->getActivityId(),
@@ -96,6 +107,24 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
             ],
             $response->getStartDateTimePerActivity()
         );
+
+        $response = $this->queryHandler->handle(new FindBestEfforts(ActivityType::RIDE, Kilometer::from(20)));
+        $this->assertEquals(
+            [['activity-1', 3600]],
+            $response->getBestEfforts()->map(fn ($bestEffort): array => [
+                (string) $bestEffort->getActivityId(),
+                $bestEffort->getTimeInSeconds(),
+            ])
+        );
+
+        $response = $this->queryHandler->handle(new FindBestEfforts(ActivityType::RIDE, Kilometer::from(10)));
+        $this->assertEquals(
+            ['activity-2', 'activity-1'],
+            $response->getBestEfforts()->map(fn ($bestEffort): string => (string) $bestEffort->getActivityId())
+        );
+
+        $response = $this->queryHandler->handle(new FindBestEfforts(ActivityType::WALK, Kilometer::from(10)));
+        $this->assertTrue($response->getBestEfforts()->isEmpty());
     }
 
     public function testHandleWithEqualTimes(): void

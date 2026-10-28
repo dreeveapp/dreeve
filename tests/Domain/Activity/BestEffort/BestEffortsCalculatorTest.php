@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\BestEffort\ActivityBestEffort;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\BestEffort\BestEffortPeriod;
 use App\Domain\Activity\BestEffort\BestEffortsCalculator;
@@ -131,15 +132,24 @@ class BestEffortsCalculatorTest extends ContainerTestCase
             $bestEfforts->getSportTypesFor(BestEffortPeriod::ALL_TIME, ActivityType::WALK)->isEmpty()
         );
 
+        $history = $this->bestEffortsCalculator->calculateHistory(ActivityType::RIDE, Kilometer::from(10));
+
         $this->assertEquals(
-            1500,
-            $bestEfforts->historyFor(SportType::RIDE, Kilometer::from(10), 0)?->getTimeInSeconds()
+            [SportType::RIDE, SportType::MOUNTAIN_BIKE_RIDE],
+            $history->getSportTypes()->toArray()
         );
         $this->assertEquals(
-            1800,
-            $bestEfforts->historyFor(SportType::RIDE, Kilometer::from(10), 1)?->getTimeInSeconds()
+            [1500, 1800],
+            array_map(fn (ActivityBestEffort $bestEffort): int => $bestEffort->getTimeInSeconds(), $history->getTopFor(SportType::RIDE))
         );
-        $this->assertNull($bestEfforts->historyFor(SportType::RIDE, Kilometer::from(10), 2));
+        $this->assertEquals([], $history->getTopFor(SportType::GRAVEL_RIDE));
+        $this->assertEquals(
+            ['activity-2', 'activity-1', 'activity-3'],
+            $history->getActivityIds()->map(fn (ActivityId $activityId): string => (string) $activityId)
+        );
+        $this->assertTrue(
+            $this->bestEffortsCalculator->calculateHistory(ActivityType::RIDE, Kilometer::from(20))->getSportTypes()->isEmpty()
+        );
     }
 
     public function testCalculateWithoutRecentActivities(): void
@@ -171,7 +181,7 @@ class BestEffortsCalculatorTest extends ContainerTestCase
         );
     }
 
-    public function testCalculateItShouldKeepTheTenFastestEfforts(): void
+    public function testCalculateHistoryItShouldKeepTheTenFastestEfforts(): void
     {
         for ($i = 1; $i <= 12; ++$i) {
             $this->activityRepository->add(ActivityWithRawData::fromState(
@@ -192,17 +202,12 @@ class BestEffortsCalculatorTest extends ContainerTestCase
             );
         }
 
-        $bestEfforts = $this->bestEffortsCalculator->calculate();
+        $history = $this->bestEffortsCalculator->calculateHistory(ActivityType::RIDE, Kilometer::from(10));
 
         $this->assertEquals(
-            1801,
-            $bestEfforts->historyFor(SportType::RIDE, Kilometer::from(10), 0)?->getTimeInSeconds()
+            range(1801, 1810),
+            array_map(fn (ActivityBestEffort $bestEffort): int => $bestEffort->getTimeInSeconds(), $history->getTopFor(SportType::RIDE))
         );
-        $this->assertEquals(
-            1810,
-            $bestEfforts->historyFor(SportType::RIDE, Kilometer::from(10), 9)?->getTimeInSeconds()
-        );
-        $this->assertNull($bestEfforts->historyFor(SportType::RIDE, Kilometer::from(10), 10));
     }
 
     public function testCalculateWithoutBestEfforts(): void
@@ -212,7 +217,9 @@ class BestEffortsCalculatorTest extends ContainerTestCase
         $this->assertEquals([], $bestEfforts->getPeriods());
         $this->assertTrue($bestEfforts->getActivityTypes()->isEmpty());
         $this->assertNull($bestEfforts->for(BestEffortPeriod::ALL_TIME, SportType::RIDE, Kilometer::from(10)));
-        $this->assertNull($bestEfforts->historyFor(SportType::RIDE, Kilometer::from(10), 0));
+        $this->assertTrue(
+            $this->bestEffortsCalculator->calculateHistory(ActivityType::RIDE, Kilometer::from(10))->getSportTypes()->isEmpty()
+        );
     }
 
     #[\Override]
