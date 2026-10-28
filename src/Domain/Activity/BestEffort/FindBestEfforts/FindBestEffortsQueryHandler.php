@@ -6,6 +6,7 @@ namespace App\Domain\Activity\BestEffort\FindBestEfforts;
 
 use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\BestEffort\ActivityBestEffort;
 use App\Domain\Activity\BestEffort\ActivityBestEfforts;
 use App\Domain\Activity\SportType\SportType;
@@ -30,7 +31,7 @@ final readonly class FindBestEffortsQueryHandler implements QueryHandler
         assert($query instanceof FindBestEfforts);
         $activityType = $query->getActivityType();
         $sportTypes = SportTypes::thatSupportsBestEfforts()->filter(
-            fn (SportType $sportType): bool => null === $activityType || $sportType->getActivityType() === $activityType
+            fn (SportType $sportType): bool => !$activityType instanceof ActivityType || $sportType->getActivityType() === $activityType
         );
         $distanceInMeter = $query->getDistance()?->toMeter()->toInt();
 
