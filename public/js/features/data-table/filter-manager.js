@@ -9,6 +9,10 @@ export class FilterManager {
         return typeof value === 'object' && value !== null && 'from' in value && 'to' in value;
     }
 
+    _normalizeForSearch(value) {
+        return value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+    }
+
     prefillFromUrl(filters) {
         Object.entries(filters).forEach(([key, value]) => {
             if (this._isRangeFilter(value)) {
@@ -145,10 +149,11 @@ export class FilterManager {
 
     applyFiltersToRows(rows, search = '') {
         const filters = this.getActiveFilters();
-        const searchLower = search.toLowerCase();
+        const searchTerms = this._normalizeForSearch(search).split(/\s+/).filter(Boolean);
 
         rows.forEach(row => {
-            row.active = !row.searchables || row.searchables.toLowerCase().includes(searchLower);
+            const searchables = row.searchables ? this._normalizeForSearch(row.searchables) : '';
+            row.active = !row.searchables || searchTerms.every(term => searchables.includes(term));
 
             for (const [key, activeFilter] of Object.entries(filters)) {
                 const filterValue = row.filterables[key];
