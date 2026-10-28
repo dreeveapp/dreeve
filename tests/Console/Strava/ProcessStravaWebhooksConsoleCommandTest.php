@@ -6,6 +6,8 @@ use App\Application\AppStatusChecker;
 use App\Application\Import\StravaImport\ImportActivities\ImportActivities;
 use App\Console\Import\RunStravaImportConsoleCommand;
 use App\Console\Strava\ProcessStravaWebhooksConsoleCommand;
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Import\ImportMode;
@@ -34,10 +36,18 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
 
     public function testProcessesWebhooksAndDelegatesToStravaImport(): void
     {
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()->withActivityId(ActivityId::fromUnprefixed('4'))->build(),
+            [],
+        ));
+        $this->getContainer()->get(Strava::class)->setMaxNumberOfCallsBeforeTriggering429(100);
+
         foreach ([
             ['1', WebhookAspectType::CREATE],
             ['2', WebhookAspectType::UPDATE],
             ['3', WebhookAspectType::DELETE],
+            ['903645', WebhookAspectType::DELETE],
+            ['4', WebhookAspectType::DELETE],
         ] as [$objectId, $aspectType]) {
             $this->getContainer()->get(WebhookEventRepository::class)->add(WebhookEvent::create(
                 objectId: $objectId,
@@ -58,6 +68,10 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
         $this->assertSame(
             ['activity-1', 'activity-2'],
             array_map(strval(...), $importActivities->getRestrictToActivityIds()->toArray()),
+        );
+        $this->assertSame(
+            ['activity-903645'],
+            array_map(strval(...), $this->getContainer()->get(ActivityIdRepository::class)->findMarkedForDeletion()->toArray()),
         );
     }
 
@@ -138,6 +152,8 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
                 lockName: LockName::IMPORT_DATA,
             ),
             importMode: $importMode,
+            strava: $this->getContainer()->get(Strava::class),
+            logger: new NullLogger(),
         );
     }
 
