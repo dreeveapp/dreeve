@@ -71,7 +71,7 @@ final readonly class PageMetadataRenderer
                 name: $request->attributes->getString('_route'),
                 parameters: $request->attributes->all('_route_params')
             ),
-            'imagePath' => $metadata->getImagePath() ?? $this->urlGenerator->generate('og_image'),
+            'imagePath' => $metadata->getImagePath(),
         ]);
     }
 
