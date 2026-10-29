@@ -8,7 +8,6 @@ use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\ContainerTestCase;
 use Symfony\Component\Translation\Extractor\ExtractorInterface;
 use Symfony\Component\Translation\MessageCatalogue;
-use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Yaml\Yaml;
 
 class TranslationsTest extends ContainerTestCase
@@ -28,7 +27,7 @@ class TranslationsTest extends ContainerTestCase
             $translatableKeys = array_keys($catalogue->all()[$domain] ?? []);
 
             foreach (Locale::cases() as $locale) {
-                $translationFilePath = sprintf('%s/translations/%s%s.%s.yaml', $this->kernelProjectDir, $domain, MessageCatalogue::INTL_DOMAIN_SUFFIX, $locale->value);
+                $translationFilePath = ExtractTranslationsConsoleCommand::getTranslationFilePath($this->kernelProjectDir, $domain, $locale);
                 if (!file_exists($translationFilePath)) {
                     $this->fail(sprintf('Not all translations for locale %s have been exported. Please run "make translation-extract"', $locale->value));
                 }
@@ -61,7 +60,7 @@ class TranslationsTest extends ContainerTestCase
     {
         foreach (ExtractTranslationsConsoleCommand::DOMAINS as $domain) {
             foreach (Locale::cases() as $locale) {
-                $translationFilePath = sprintf('%s/translations/%s%s.%s.yaml', $this->kernelProjectDir, $domain, MessageCatalogueInterface::INTL_DOMAIN_SUFFIX, $locale->value);
+                $translationFilePath = ExtractTranslationsConsoleCommand::getTranslationFilePath($this->kernelProjectDir, $domain, $locale);
                 if (!file_exists($translationFilePath)) {
                     continue;
                 }

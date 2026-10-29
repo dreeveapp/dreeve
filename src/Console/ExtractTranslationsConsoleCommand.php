@@ -43,7 +43,7 @@ class ExtractTranslationsConsoleCommand extends Command
             $translatableKeys = array_keys($messages->all($domain));
 
             foreach (Locale::cases() as $locale) {
-                $translationFilePath = sprintf('%s/translations/%s%s.%s.yaml', $this->kernelProjectDir, $domain, MessageCatalogue::INTL_DOMAIN_SUFFIX, $locale->value);
+                $translationFilePath = self::getTranslationFilePath($this->kernelProjectDir, $domain, $locale);
                 $translations = file_exists($translationFilePath) ? Yaml::parse(file_get_contents($translationFilePath) ?: '') ?? [] : [];
 
                 foreach ($translatableKeys as $translatableKey) {
@@ -55,6 +55,9 @@ class ExtractTranslationsConsoleCommand extends Command
                 }
 
                 ksort($translations);
+                if (!is_dir(dirname($translationFilePath))) {
+                    mkdir(dirname($translationFilePath), recursive: true);
+                }
                 file_put_contents($translationFilePath, Yaml::dump($translations));
 
                 $output->writeln(sprintf('<info>Extracted "%s" translations for "%s"</info>', $domain, $locale->value));
@@ -62,5 +65,17 @@ class ExtractTranslationsConsoleCommand extends Command
         }
 
         return Command::SUCCESS;
+    }
+
+    public static function getTranslationFilePath(KernelProjectDir $kernelProjectDir, string $domain, Locale $locale): string
+    {
+        return sprintf(
+            '%s/translations/%s/%s%s.%s.yaml',
+            $kernelProjectDir,
+            $locale->value,
+            $domain,
+            MessageCatalogue::INTL_DOMAIN_SUFFIX,
+            $locale->value,
+        );
     }
 }
