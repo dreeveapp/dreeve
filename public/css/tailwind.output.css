@@ -4356,6 +4356,9 @@
     .md\:grid-cols-4 {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
+    .md\:grid-cols-\[6rem_minmax\(0\,1fr\)_minmax\(4rem\,auto\)_minmax\(5rem\,auto\)\] {
+      grid-template-columns: 6rem minmax(0,1fr) minmax(4rem,auto) minmax(5rem,auto);
+    }
     .md\:flex-row {
       flex-direction: row;
     }
